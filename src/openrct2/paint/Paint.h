@@ -138,33 +138,59 @@ struct tunnel_entry
 #define MAX_PAINT_QUADRANTS 512
 #define TUNNEL_MAX_COUNT 65
 
-struct PaintStructPool
+/**
+ * A pool of paint_entry instances that can be rented out.
+ * The internal implementation uses an unrolled linked list so that each
+ * paint session can quickly allocate a new paint entry until it requires
+ * another node / block of paint entries. Only the node allocation needs to
+ * be thread safe.
+ */
+class PaintEntryPool
 {
-    FixedVector<paint_entry, 0x80000> PaintStructs;
+    static constexpr size_t NodeSize = 512;
+
+public:
+    struct Node
+    {
+        Node* Next{};
+        size_t Count{};
+        paint_entry PaintStructs[NodeSize]{};
+    };
+
+    struct Chain
+    {
+        PaintEntryPool* Pool{};
+        Node* Head{};
+        Node* Current{};
+
+        Chain() = default;
+        Chain(PaintEntryPool* pool);
+        Chain(Chain&& chain);
+        ~Chain();
+
+        Chain& operator=(Chain&& chain) noexcept;
+
+        paint_entry* Allocate();
+        void Clear();
+    };
+
+private:
+    std::vector<Node*> _available;
     std::mutex _mutex;
 
-    paint_entry* Allocate()
-    {
-        std::lock_guard<std::mutex> guard(_mutex);
+    Node* AllocateNode();
 
-        if (PaintStructs.size() < PaintStructs.capacity())
-        {
-            return &PaintStructs.emplace_back();
-        }
-        return nullptr;
-    }
+public:
+    ~PaintEntryPool();
 
-    void Clear()
-    {
-        PaintStructs.clear();
-    }
+    Chain Create();
+    void FreeNodes(Node* head);
 };
 
 struct paint_session
 {
     rct_drawpixelinfo DPI;
-    // FixedVector<paint_entry, 4000> PaintStructs;
-    PaintStructPool* SharedPaintStructPool;
+    PaintEntryPool::Chain PaintEntryChain;
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     paint_struct* LastPS;
     paint_string_struct* PSStringHead;
@@ -197,7 +223,7 @@ struct paint_session
 
     paint_struct* AllocateNormalPaintEntry() noexcept
     {
-        auto* entry = SharedPaintStructPool->Allocate();
+        auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
         {
             LastPS = &entry->basic;
@@ -208,7 +234,7 @@ struct paint_session
 
     attached_paint_struct* AllocateAttachedPaintEntry() noexcept
     {
-        auto* entry = SharedPaintStructPool->Allocate();
+        auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
         {
             LastAttachedPS = &entry->attached;
@@ -219,7 +245,7 @@ struct paint_session
 
     paint_string_struct* AllocateStringPaintEntry() noexcept
     {
-        auto* entry = SharedPaintStructPool->Allocate();
+        auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
         {
             auto* string = &entry->string;

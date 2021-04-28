@@ -968,3 +968,121 @@ void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
             FontSpriteBase::MEDIUM);
     } while ((ps = ps->next) != nullptr);
 }
+
+PaintEntryPool::Chain::Chain(PaintEntryPool* pool)
+    : Pool(pool)
+{
+}
+
+PaintEntryPool::Chain::Chain(Chain&& chain)
+{
+    *this = std::move(chain);
+}
+
+PaintEntryPool::Chain::~Chain()
+{
+    Clear();
+}
+
+PaintEntryPool::Chain& PaintEntryPool::Chain::operator=(Chain&& chain) noexcept
+{
+    Pool = chain.Pool;
+    Head = chain.Head;
+    Current = chain.Current;
+    chain.Pool = nullptr;
+    chain.Head = nullptr;
+    chain.Current = nullptr;
+    return *this;
+}
+
+paint_entry* PaintEntryPool::Chain::Allocate()
+{
+    if (Pool == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (Current == nullptr)
+    {
+        assert(Head == nullptr);
+        Head = Pool->AllocateNode();
+        if (Head == nullptr)
+        {
+            // Unable to allocate any more nodes
+            return nullptr;
+        }
+        Current = Head;
+    }
+    else if (Current->Count >= NodeSize)
+    {
+        // We need another node
+        Current->Next = Pool->AllocateNode();
+        if (Current->Next == nullptr)
+        {
+            // Unable to allocate any more nodes
+            return nullptr;
+        }
+        Current = Current->Next;
+    }
+
+    assert(Current->Count < NodeSize);
+    return &Current->PaintStructs[Current->Count++];
+}
+
+void PaintEntryPool::Chain::Clear()
+{
+    if (Pool != nullptr)
+    {
+        Pool->FreeNodes(Head);
+        Head = nullptr;
+        Current = nullptr;
+    }
+    assert(Head == nullptr);
+    assert(Current == nullptr);
+}
+
+PaintEntryPool::~PaintEntryPool()
+{
+    for (auto node : _available)
+    {
+        delete node;
+    }
+    _available.clear();
+}
+
+PaintEntryPool::Node* PaintEntryPool::AllocateNode()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    PaintEntryPool::Node* result;
+    if (_available.size() > 0)
+    {
+        result = _available.back();
+        _available.pop_back();
+    }
+    else
+    {
+        result = new (std::nothrow) PaintEntryPool::Node();
+    }
+    return result;
+}
+
+PaintEntryPool::Chain PaintEntryPool::Create()
+{
+    return PaintEntryPool::Chain(this);
+}
+
+void PaintEntryPool::FreeNodes(PaintEntryPool::Node* head)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    auto node = head;
+    while (node != nullptr)
+    {
+        auto next = node->Next;
+        node->Next = nullptr;
+        node->Count = 0;
+        _available.push_back(node);
+        node = next;
+    }
+}

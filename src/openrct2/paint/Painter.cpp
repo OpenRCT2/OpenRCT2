@@ -37,8 +37,6 @@ Painter::Painter(const std::shared_ptr<IUiContext>& uiContext)
 
 void Painter::Paint(IDrawingEngine& de)
 {
-    _paintStructPool.Clear();
-
     auto dpi = de.GetDrawingPixelInfo();
     if (gIntroState != IntroState::None)
     {
@@ -153,7 +151,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     session->ViewFlags = viewFlags;
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
-    session->SharedPaintStructPool = &_paintStructPool;
+    session->PaintEntryChain = _paintStructPool.Create();
 
     std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);
     session->LastPS = nullptr;
@@ -169,5 +167,6 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
 
 void Painter::ReleaseSession(paint_session* session)
 {
+    session->PaintEntryChain.Clear();
     _freePaintSessions.push_back(session);
 }
