@@ -478,6 +478,8 @@ public:
         }
 
         research_determine_first_of_type();
+
+        CheatsReset();
     }
 
     void ImportRides()
