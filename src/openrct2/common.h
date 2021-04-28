@@ -143,7 +143,7 @@ using money64 = fixed64_1dp;
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 #define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))
 
-static constexpr money64 ToMoney64(money32 value)
+[[maybe_unused]] static constexpr money64 ToMoney64(money32 value)
 {
     return value == MONEY32_UNDEFINED ? MONEY64_UNDEFINED : value;
 }
