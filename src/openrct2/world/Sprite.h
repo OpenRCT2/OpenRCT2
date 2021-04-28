@@ -18,7 +18,7 @@
 #include "SpriteBase.h"
 
 enum LitterType : uint8_t;
-struct DataSerialiser;
+class DataSerialiser;
 
 struct Litter : SpriteBase
 {

@@ -50,6 +50,8 @@ constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 class Formatter;
 struct TileElement;
 struct Ride;
+class DataSerialiser;
+
 namespace GameActions
 {
     class Result;
@@ -649,7 +651,7 @@ struct Peep : SpriteBase
     int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
     ride_id_t PreviousRide;
     uint16_t PreviousRideTimeOut;
-    rct_peep_thought Thoughts[PEEP_MAX_THOUGHTS];
+    std::array<rct_peep_thought, PEEP_MAX_THOUGHTS> Thoughts;
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     union
     {
@@ -664,7 +666,7 @@ struct Peep : SpriteBase
     ride_id_t Photo1RideRef;
     uint32_t PeepFlags;
     rct12_xyzd8 PathfindGoal;
-    rct12_xyzd8 PathfindHistory[4];
+    std::array<rct12_xyzd8, 4> PathfindHistory;
     uint8_t WalkingFrameNum;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t LitterCount;

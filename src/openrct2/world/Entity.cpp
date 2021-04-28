@@ -108,276 +108,177 @@ static void PeepBaseSerialise(Peep& base, DataSerialiser& stream)
     {
         base.Name = nullptr;
     }
-    CoordsXYZ NextLoc;
-    uint8_t NextFlags;
-    PeepState State;
-    union
-    {
-        uint8_t SubState;
-        PeepSittingSubState SittingSubState;
-        PeepRideSubState RideSubState;
-        PeepUsingBinSubState UsingBinSubState;
-    };
-    PeepSpriteType SpriteType;
-    uint8_t TshirtColour;
-    uint8_t TrousersColour;
-    uint16_t DestinationX; // Location that the peep is trying to get to
-    uint16_t DestinationY;
-    uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
-    uint8_t Var37;
-    uint8_t Energy;
-    uint8_t EnergyTarget;
-    uint8_t Mass;
-    uint8_t WindowInvalidateFlags;
-    union
-    {
-        ride_id_t CurrentRide;
-        ParkEntranceIndex ChosenParkEntrance;
-    };
-    StationIndex CurrentRideStation;
-    uint8_t CurrentTrain;
-    union
-    {
-        struct
-        {
-            uint8_t CurrentCar;
-            uint8_t CurrentSeat;
-        };
-        uint16_t TimeToSitdown;
-        struct
-        {
-            uint8_t TimeToStand;
-            uint8_t StandingFlags;
-        };
-    };
-    // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8_t SpecialSprite;
-    PeepActionSpriteType ActionSpriteType;
-    // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
-    // reads this again
-    PeepActionSpriteType NextActionSpriteType;
-    uint8_t ActionSpriteImageOffset;
-    PeepActionType Action;
-    uint8_t ActionFrame;
-    uint8_t StepProgress;
-    union
-    {
-        uint8_t MazeLastEdge;
-        Direction PeepDirection; // Direction ?
-    };
-    ride_id_t InteractionRideIndex;
-    uint32_t Id;
-    uint8_t PathCheckOptimisation; // see peep.checkForPath
-    rct12_xyzd8 PathfindGoal;
-    rct12_xyzd8 PathfindHistory[4];
-    uint8_t WalkingFrameNum;
-    uint32_t PeepFlags;
+    stream << base.NextLoc;
+    stream << base.NextFlags;
+    stream << base.State;
+    stream << base.SubState;
+    stream << base.SpriteType;
+    stream << base.TshirtColour;
+    stream << base.TrousersColour;
+    stream << base.DestinationX;
+    stream << base.DestinationY;
+    stream << base.DestinationTolerance;
+    stream << base.Var37;
+    stream << base.Energy;
+    stream << base.EnergyTarget;
+    stream << base.Mass;
+    //stream << base.WindowInvalidateFlags;
+    stream << base.CurrentRide;
+    stream << base.CurrentRideStation;
+    stream << base.CurrentTrain;
+    stream << base.CurrentCar;
+    stream << base.CurrentSeat;
+    stream << base.SpecialSprite;
+    stream << base.ActionSpriteType;
+    stream << base.NextActionSpriteType;
+    stream << base.ActionSpriteImageOffset;
+    stream << base.Action;
+    stream << base.ActionFrame;
+    stream << base.StepProgress;
+    stream << base.PeepDirection;
+    stream << base.InteractionRideIndex;
+    stream << base.Id;
+    stream << base.PathCheckOptimisation;
+    stream << base.PathfindGoal;
+    stream << base.PathfindHistory;
+    stream << base.WalkingFrameNum;
+    stream << base.PeepFlags;
 }
 
 void Guest::Serialise(DataSerialiser& stream)
 {
     PeepBaseSerialise(*this, stream);
-    uint8_t GuestNumRides;
-    uint16_t GuestNextInQueue;
-    int32_t ParkEntryTime;
-    ride_id_t GuestHeadingToRideId;
-    uint8_t GuestIsLostCountdown;
-    uint8_t GuestTimeOnRide;
-    money16 PaidToEnter;
-    money16 PaidOnRides;
-    money16 PaidOnFood;
-    money16 PaidOnDrink;
-    money16 PaidOnSouvenirs;
-    bool OutsideOfPark;
-    uint8_t Happiness;
-    uint8_t HappinessTarget;
-    uint8_t Nausea;
-    uint8_t NauseaTarget;
-    uint8_t Hunger;
-    uint8_t Thirst;
-    uint8_t Toilet;
-    uint8_t TimeToConsume;
-    IntensityRange Intensity{ 0 };
-    PeepNauseaTolerance NauseaTolerance;
-    uint8_t RideTypesBeenOn[16];
-    uint16_t TimeInQueue;
-    // 255 bit bitmap of every ride the peep has been on see
-    // window_peep_rides_update for how to use.
-    uint8_t RidesBeenOn[32];
-    money32 CashInPocket;
-    money32 CashSpent;
-    ride_id_t Photo1RideRef;
-    ride_id_t Photo2RideRef;
-    ride_id_t Photo3RideRef;
-    ride_id_t Photo4RideRef;
-
-    int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
-    ride_id_t PreviousRide;
-    uint16_t PreviousRideTimeOut;
-    rct_peep_thought Thoughts[PEEP_MAX_THOUGHTS];
-    // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t LitterCount;
-    // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t DisgustingCount;
-    uint8_t AmountOfFood;
-    uint8_t AmountOfDrinks;
-    uint8_t AmountOfSouvenirs;
-    uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
-    uint8_t VoucherType;
-    union
-    {
-        ride_id_t VoucherRideId;
-        ShopItemIndex VoucherShopItem;
-    };
-    uint8_t SurroundingsThoughtTimeout;
-    uint8_t Angriness;
-    uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
-    uint8_t DaysInQueue;
-    uint8_t BalloonColour;
-    uint8_t UmbrellaColour;
-    uint8_t HatColour;
-    ride_id_t FavouriteRide;
-    uint8_t FavouriteRideRating;
-    uint64_t ItemFlags;
+    stream << GuestNumRides;
+    stream << GuestNextInQueue;
+    stream << ParkEntryTime;
+    stream << GuestHeadingToRideId;
+    stream << GuestIsLostCountdown;
+    stream << GuestTimeOnRide;
+    stream << PaidToEnter;
+    stream << PaidOnRides;
+    stream << PaidOnFood;
+    stream << PaidOnDrink;
+    stream << PaidOnSouvenirs;
+    stream << OutsideOfPark;
+    stream << Happiness;
+    stream << HappinessTarget;
+    stream << Nausea;
+    stream << NauseaTarget;
+    stream << Hunger;
+    stream << Thirst;
+    stream << Toilet;
+    stream << TimeToConsume;
+    stream << Intensity;
+    stream << NauseaTolerance;
+    stream << RideTypesBeenOn;
+    stream << TimeInQueue;
+    stream << RidesBeenOn;
+    stream << CashInPocket;
+    stream << CashSpent;
+    stream << Photo1RideRef;
+    stream << Photo2RideRef;
+    stream << Photo3RideRef;
+    stream << Photo4RideRef;
+    stream << RejoinQueueTimeout;
+    stream << PreviousRide;
+    stream << PreviousRideTimeOut;
+    stream << Thoughts;
+    stream << LitterCount;
+    stream << DisgustingCount;
+    stream << AmountOfFood;
+    stream << AmountOfDrinks;
+    stream << AmountOfSouvenirs;
+    stream << VandalismSeen;
+    stream << VoucherType;
+    stream << VoucherRideId;
+    stream << SurroundingsThoughtTimeout;
+    stream << Angriness;
+    stream << TimeLost;
+    stream << DaysInQueue;
+    stream << BalloonColour;
+    stream << UmbrellaColour;
+    stream << HatColour;
+    stream << FavouriteRide;
+    stream << FavouriteRideRating;
+    stream << ItemFlags;
 }
 
 void Staff::Serialise(DataSerialiser& stream)
 {
     PeepBaseSerialise(*this, stream);
-    StaffType AssignedStaffType;
-    uint16_t MechanicTimeSinceCall; // time getting to ride to fix
-    int32_t HireDate;
-    uint8_t StaffId;
-    uint8_t StaffOrders;
-    uint8_t StaffMowingTimeout;
-    union
-    {
-        uint16_t StaffLawnsMown;
-        uint16_t StaffRidesFixed;
-    };
-    union
-    {
-        uint16_t StaffGardensWatered;
-        uint16_t StaffRidesInspected;
-    };
-    union
-    {
-        uint16_t StaffLitterSwept;
-        uint16_t StaffVandalsStopped;
-    };
-    uint16_t StaffBinsEmptied;
+    stream << AssignedStaffType;
+    stream << MechanicTimeSinceCall;
+    stream << HireDate;
+    stream << StaffId;
+    stream << StaffOrders;
+    stream << StaffMowingTimeout;
+    stream << StaffLawnsMown;
+    stream << StaffGardensWatered;
+    stream << StaffLitterSwept;
+    stream << StaffBinsEmptied;
 }
 
 void Vehicle::Serialise(DataSerialiser& stream)
 {
     EntityBaseSerialise(*this, stream);
-    Type SubType;
-    uint8_t vehicle_sprite_type;
-    uint8_t bank_rotation;
-    int32_t remaining_distance;
-    int32_t velocity;
-    int32_t acceleration;
-    ride_id_t ride;
-    uint8_t vehicle_type;
-    rct_vehicle_colour colours;
-    union
-    {
-        uint16_t track_progress;
-        struct
-        {
-            int8_t var_34;
-            uint8_t var_35;
-        };
-    };
-    uint16_t TrackTypeAndDirection;
-    CoordsXYZ TrackLocation;
-    uint16_t next_vehicle_on_train;
-
-    // The previous vehicle on the same train or the last vehicle on the previous or only train.
-    uint16_t prev_vehicle_on_ride;
-
-    // The next vehicle on the same train or the first vehicle on the next or only train
-    uint16_t next_vehicle_on_ride;
-
-    uint16_t var_44;
-    uint16_t mass;
-    uint16_t update_flags;
-    uint8_t SwingSprite;
-    StationIndex current_station;
-    union
-    {
-        int16_t SwingPosition;
-        int16_t current_time;
-        struct
-        {
-            int8_t ferris_wheel_var_0;
-            int8_t ferris_wheel_var_1;
-        };
-    };
-    union
-    {
-        int16_t SwingSpeed;
-        int16_t crash_z;
-    };
-    Status status;
-    uint8_t sub_state;
-    uint16_t peep[32];
-    uint8_t peep_tshirt_colours[32];
-    uint8_t num_seats;
-    uint8_t num_peeps;
-    uint8_t next_free_seat;
-    uint8_t restraints_position; // 0 == Close, 255 == Open
-    union
-    {
-        int16_t spin_speed;
-        int16_t crash_x;
-    };
-    uint16_t sound2_flags;
-    uint8_t spin_sprite; // lowest 3 bits not used for sprite selection (divide by 8 to use)
-    OpenRCT2::Audio::SoundId sound1_id;
-    uint8_t sound1_volume;
-    OpenRCT2::Audio::SoundId sound2_id;
-    uint8_t sound2_volume;
-    int8_t sound_vector_factor;
-    union
-    {
-        uint16_t var_C0;
-        int16_t crash_y;
-        uint16_t time_waiting;
-        uint16_t cable_lift_target;
-    };
-    uint8_t speed;
-    uint8_t powered_acceleration;
-    union
-    {
-        uint8_t dodgems_collision_direction;
-        uint8_t var_C4;
-    };
-    uint8_t animation_frame;
-    uint8_t pad_C6[0x2];
-    uint16_t var_C8;
-    uint16_t var_CA;
-    OpenRCT2::Audio::SoundId scream_sound_id;
-    VehicleTrackSubposition TrackSubposition;
-    union
-    {
-        uint8_t var_CE;
-        uint8_t num_laps;
-    };
-    union
-    {
-        uint8_t var_CF;
-        uint8_t brake_speed;
-    };
-    uint16_t lost_time_out;
-    int8_t vertical_drop_countdown;
-    uint8_t var_D3;
-    uint8_t mini_golf_current_animation;
-    uint8_t mini_golf_flags;
-    ObjectEntryIndex ride_subtype;
-    uint8_t colours_extended;
-    uint8_t seat_rotation;
-    uint8_t target_seat_rotation;
-    CoordsXY BoatLocation;
-    bool IsCrashedVehicle;
+    stream << SubType;
+    stream << vehicle_sprite_type;
+    stream << bank_rotation;
+    stream << remaining_distance;
+    stream << velocity;
+    stream << acceleration;
+    stream << ride;
+    stream << vehicle_type;
+    stream << colours;
+    stream << track_progress;
+    stream << TrackTypeAndDirection;
+    stream << TrackLocation;
+    stream << next_vehicle_on_train;
+    stream << prev_vehicle_on_ride;
+    stream << next_vehicle_on_ride;
+    stream << var_44;
+    stream << mass;
+    stream << update_flags;
+    stream << SwingSprite;
+    stream << current_station;
+    stream << SwingPosition;
+    stream << SwingSpeed;
+    stream << status;
+    stream << sub_state;
+    stream << peep;
+    stream << peep_tshirt_colours;
+    stream << num_seats;
+    stream << num_peeps;
+    stream << next_free_seat;
+    stream << restraints_position;
+    stream << spin_speed;
+    stream << sound2_flags;
+    stream << spin_sprite;
+    stream << sound1_id;
+    stream << sound1_volume;
+    stream << sound2_id;
+    stream << sound2_volume;
+    stream << sound_vector_factor;
+    stream << var_C0;
+    stream << speed;
+    stream << powered_acceleration;
+    stream << dodgems_collision_direction;
+    stream << animation_frame;
+    stream << var_C8;
+    stream << var_CA;
+    stream << scream_sound_id;
+    stream << TrackSubposition;
+    stream << var_CE;
+    stream << var_CF;
+    stream << lost_time_out;
+    stream << vertical_drop_countdown;
+    stream << var_D3;
+    stream << mini_golf_current_animation;
+    stream << mini_golf_flags;
+    stream << ride_subtype;
+    stream << colours_extended;
+    stream << seat_rotation;
+    stream << target_seat_rotation;
+    stream << BoatLocation;
+    stream << IsCrashedVehicle;
 }
