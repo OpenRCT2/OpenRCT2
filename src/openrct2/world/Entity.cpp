@@ -122,7 +122,7 @@ static void PeepBaseSerialise(Peep& base, DataSerialiser& stream)
     stream << base.Energy;
     stream << base.EnergyTarget;
     stream << base.Mass;
-    //stream << base.WindowInvalidateFlags;
+    // stream << base.WindowInvalidateFlags;
     stream << base.CurrentRide;
     stream << base.CurrentRideStation;
     stream << base.CurrentTrain;

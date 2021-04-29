@@ -14,7 +14,9 @@
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "../core/Crypt.h"
+#include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"
+#include "../core/MemoryStream.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -275,34 +277,17 @@ void reset_sprite_spatial_index()
 
 #ifndef DISABLE_NETWORK
 
-template<typename T> void ComputeChecksumForEntityType(Crypt::HashAlgorithm<20>* _entityHashAlg)
+template<typename T> void NetworkSerialseEntityType(DataSerialiser& ds)
 {
     for (auto* ent : EntityList<T>())
     {
-        T copy = *ent;
-
-        // Only required for rendering/invalidation, has no meaning to the game state.
-        copy.sprite_left = copy.sprite_right = copy.sprite_top = copy.sprite_bottom = 0;
-        copy.sprite_width = copy.sprite_height_negative = copy.sprite_height_positive = 0;
-
-        if constexpr (std::is_base_of_v<Peep, T>)
-        {
-            // Name is pointer and will not be the same across clients
-            copy.Name = {};
-
-            // We set this to 0 because as soon the client selects a guest the window will remove the
-            // invalidation flags causing the sprite checksum to be different than on server, the flag does not
-            // affect game state.
-            copy.WindowInvalidateFlags = 0;
-        }
-
-        _entityHashAlg->Update(&copy, sizeof(copy));
+        ent->Serialise(ds);
     }
 }
 
-template<typename... T> void ComputeChecksumForEntityTypes(Crypt::HashAlgorithm<20>* _entityHashAlg)
+template<typename... T> void NetworkSerialiseEntityTypes(DataSerialiser& ds)
 {
-    (ComputeChecksumForEntityType<T>(_entityHashAlg), ...);
+    (NetworkSerialseEntityType<T>(ds), ...);
 }
 
 rct_sprite_checksum sprite_checksum()
@@ -323,9 +308,11 @@ rct_sprite_checksum sprite_checksum()
         }
 
         _spriteHashAlg->Clear();
+        OpenRCT2::MemoryStream ms;
+        DataSerialiser ds(true, ms);
 
-        ComputeChecksumForEntityTypes<Guest, Staff, Vehicle, Litter>(_spriteHashAlg.get());
-
+        NetworkSerialiseEntityTypes<Guest, Staff, Vehicle, Litter>(ds);
+        _spriteHashAlg->Update(ms.GetData(), ms.GetLength());
         checksum.raw = _spriteHashAlg->Finish();
     }
     catch (std::exception& e)
