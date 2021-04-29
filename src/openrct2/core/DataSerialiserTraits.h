@@ -862,8 +862,8 @@ template<> struct DataSerializerTraits_t<rct_peep_thought>
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "rct_peep_thought(type = %d, item = %d, freshness = %d, freshtimeout = %d)", val.type, val.item,
-            val.freshness, val.fresh_timeout);
+            msg, sizeof(msg), "rct_peep_thought(type = %d, item = %d, freshness = %d, freshtimeout = %d)",
+            static_cast<int32_t>(val.type), val.item, val.freshness, val.fresh_timeout);
         stream->Write(msg, strlen(msg));
     }
 };
