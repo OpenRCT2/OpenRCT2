@@ -289,17 +289,18 @@ template<typename... T> void NetworkSerialiseEntityTypes(DataSerialiser& ds)
 {
     (NetworkSerialseEntityType<T>(ds), ...);
 }
+
+static std::unique_ptr<Crypt::Sha1Algorithm> _spriteHashAlg;
+
 /**
  * A stream for reading and writing to a buffer in memory. By default this buffer can grow.
  */
 class ChecksumStream final : public OpenRCT2::IStream
 {
-    static std::unique_ptr<Crypt::Sha1Algorithm> _spriteHashAlg;
-
 public:
     ChecksumStream()
     {
-        if (_spriteHashAlg)
+        if (!_spriteHashAlg)
         {
             _spriteHashAlg = Crypt::CreateSHA1();
         }
