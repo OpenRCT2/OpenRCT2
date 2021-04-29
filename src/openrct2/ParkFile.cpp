@@ -47,6 +47,7 @@
 
 #include <cstdint>
 #include <ctime>
+#include <future>
 #include <numeric>
 #include <string_view>
 #include <vector>
@@ -108,7 +109,9 @@ namespace OpenRCT2
 
         void Load(IStream& stream)
         {
-            _os = std::make_unique<OrcaStream>(stream, OrcaStream::Mode::READING);
+            _os = std::make_unique<OrcaStream>(OrcaStream::Mode::READING);
+            _os->Load(stream);
+
             RequiredObjects = {};
             ReadWriteObjectsChunk(*_os);
             ReadWritePackedObjectsChunk(*_os);
@@ -137,35 +140,25 @@ namespace OpenRCT2
 
         void Save(IStream& stream)
         {
-            OrcaStream os(stream, OrcaStream::Mode::WRITING);
-
-            auto& header = os.GetHeader();
-            header.Magic = PARK_FILE_MAGIC;
-            header.TargetVersion = PARK_FILE_CURRENT_VERSION;
-            header.MinVersion = PARK_FILE_MIN_VERSION;
-
-            ReadWriteAuthoringChunk(os);
-            ReadWriteObjectsChunk(os);
-            ReadWriteTilesChunk(os);
-            ReadWriteBannersChunk(os);
-            ReadWriteRidesChunk(os);
-            ReadWriteEntitiesChunk(os);
-            ReadWriteScenarioChunk(os);
-            ReadWriteGeneralChunk(os);
-            ReadWriteParkChunk(os);
-            ReadWriteClimateChunk(os);
-            ReadWriteResearchChunk(os);
-            ReadWriteNotificationsChunk(os);
-            ReadWriteInterfaceChunk(os);
-            ReadWriteCheatsChunk(os);
-            ReadWriteRestrictedObjectsChunk(os);
-            ReadWritePackedObjectsChunk(os);
+            OrcaStream os(OrcaStream::Mode::WRITING);
+            Serialise(os);
+            os.Save(stream);
         }
 
         void Save(const std::string_view& path)
         {
-            FileStream fs(path, FILE_MODE_WRITE);
-            Save(fs);
+            // Capture current state.
+            OrcaStream os(OrcaStream::Mode::WRITING);
+            Serialise(os);
+
+            // Write file in background.
+            auto _ = std::async(
+                std::launch::async,
+                [](OrcaStream&& os, const std::string& path) {
+                    FileStream fs(path, FILE_MODE_WRITE);
+                    os.Save(fs);
+                },
+                std::move(os), std::string{ path });
         }
 
         scenario_index_entry ReadScenarioChunk()
@@ -198,6 +191,31 @@ namespace OpenRCT2
         }
 
     private:
+        void Serialise(OrcaStream& os)
+        {
+            auto& header = os.GetHeader();
+            header.Magic = PARK_FILE_MAGIC;
+            header.TargetVersion = PARK_FILE_CURRENT_VERSION;
+            header.MinVersion = PARK_FILE_MIN_VERSION;
+
+            ReadWriteAuthoringChunk(os);
+            ReadWriteObjectsChunk(os);
+            ReadWriteTilesChunk(os);
+            ReadWriteBannersChunk(os);
+            ReadWriteRidesChunk(os);
+            ReadWriteEntitiesChunk(os);
+            ReadWriteScenarioChunk(os);
+            ReadWriteGeneralChunk(os);
+            ReadWriteParkChunk(os);
+            ReadWriteClimateChunk(os);
+            ReadWriteResearchChunk(os);
+            ReadWriteNotificationsChunk(os);
+            ReadWriteInterfaceChunk(os);
+            ReadWriteCheatsChunk(os);
+            ReadWriteRestrictedObjectsChunk(os);
+            ReadWritePackedObjectsChunk(os);
+        }
+
         void ReadWriteAuthoringChunk(OrcaStream& os)
         {
             // Write-only for now

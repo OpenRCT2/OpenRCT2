@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -64,113 +64,109 @@ namespace OpenRCT2
         };
 #pragma pack(pop)
 
-        IStream* _stream;
-        Mode _mode;
-        Header _header;
+        Mode _mode{};
+        Header _header{};
         std::vector<ChunkEntry> _chunks;
         MemoryStream _buffer;
         ChunkEntry _currentChunk;
         std::unique_ptr<Crypt::FNV1aAlgorithm> _hasher;
 
     public:
-        OrcaStream(IStream& stream, Mode mode)
-            : _hasher(Crypt::CreateHasher<Hasher>())
+        OrcaStream(Mode mode)
+            : _mode{ mode }
+            , _hasher(Crypt::CreateHasher<Hasher>())
         {
-            _stream = &stream;
-            _mode = mode;
-            if (mode == Mode::READING)
-            {
-                _header = _stream->ReadValue<Header>();
+        }
 
-                _chunks.clear();
-                for (uint32_t i = 0; i < _header.NumChunks; i++)
-                {
-                    auto entry = _stream->ReadValue<ChunkEntry>();
-                    _chunks.push_back(entry);
-                }
-
-                // Read compressed data into buffer (read in blocks)
-                _buffer = MemoryStream{};
-                uint8_t temp[2048];
-                uint64_t bytesLeft = _header.CompressedSize;
-                do
-                {
-                    auto readLen = std::min(size_t(bytesLeft), sizeof(temp));
-                    _stream->Read(temp, readLen);
-                    _buffer.Write(temp, readLen);
-                    bytesLeft -= readLen;
-                } while (bytesLeft > 0);
-
-                // Uncompress
-                if (_header.Compression == COMPRESSION_GZIP)
-                {
-                    auto uncompressedData = Ungzip(_buffer.GetData(), _buffer.GetLength());
-                    if (_header.UncompressedSize != uncompressedData.size())
-                    {
-                        // Warning?
-                    }
-                    _buffer.Clear();
-                    _buffer.Write(uncompressedData.data(), uncompressedData.size());
-                }
-            }
-            else
-            {
-                _header = {};
-                _header.Compression = COMPRESSION_GZIP;
-
-                _buffer = MemoryStream{};
-            }
+        OrcaStream(OrcaStream&& other) noexcept
+            : _mode{ other._mode }
+            , _header{ other._header }
+            , _chunks{ std::move(other._chunks) }
+            , _buffer{ std::move(other._buffer) }
+            , _currentChunk{ other._currentChunk }
+            , _hasher(std::move(other._hasher))
+        {
         }
 
         OrcaStream(const OrcaStream&) = delete;
 
-        ~OrcaStream()
+        void Load(IStream& stream)
         {
-            if (_mode == Mode::READING)
+            _header = stream.ReadValue<Header>();
+
+            _chunks.clear();
+            for (uint32_t i = 0; i < _header.NumChunks; i++)
             {
+                auto entry = stream.ReadValue<ChunkEntry>();
+                _chunks.push_back(entry);
             }
-            else
+
+            // Read compressed data into buffer (read in blocks)
+            _buffer = MemoryStream{};
+            uint8_t temp[2048];
+            uint64_t bytesLeft = _header.CompressedSize;
+            do
             {
-                const void* uncompressedData = _buffer.GetData();
-                const uint64_t uncompressedSize = _buffer.GetLength();
+                auto readLen = std::min(size_t(bytesLeft), sizeof(temp));
+                stream.Read(temp, readLen);
+                _buffer.Write(temp, readLen);
+                bytesLeft -= readLen;
+            } while (bytesLeft > 0);
 
-                _header.NumChunks = static_cast<uint32_t>(_chunks.size());
-                _header.UncompressedSize = uncompressedSize;
-                _header.CompressedSize = uncompressedSize;
-                _header.Hash = _hasher->Update(uncompressedData, uncompressedSize)->Finish();
-
-                // Compress data
-                std::optional<std::vector<uint8_t>> compressedBytes;
-                if (_header.Compression == COMPRESSION_GZIP)
+            // Uncompress
+            if (_header.Compression == COMPRESSION_GZIP)
+            {
+                auto uncompressedData = Ungzip(_buffer.GetData(), _buffer.GetLength());
+                if (_header.UncompressedSize != uncompressedData.size())
                 {
-                    compressedBytes = Gzip(uncompressedData, uncompressedSize);
-                    if (compressedBytes)
-                    {
-                        _header.CompressedSize = compressedBytes->size();
-                    }
-                    else
-                    {
-                        // Compression failed
-                        _header.Compression = COMPRESSION_NONE;
-                    }
+                    // Warning?
                 }
+                _buffer.Clear();
+                _buffer.Write(uncompressedData.data(), uncompressedData.size());
+            }
+        }
 
-                // Write header and chunk table
-                _stream->WriteValue(_header);
-                for (const auto& chunk : _chunks)
-                {
-                    _stream->WriteValue(chunk);
-                }
+        void Save(IStream& stream)
+        {
+            const void* uncompressedData = _buffer.GetData();
+            const uint64_t uncompressedSize = _buffer.GetLength();
 
-                // Write chunk data
+            _header.NumChunks = static_cast<uint32_t>(_chunks.size());
+            _header.UncompressedSize = uncompressedSize;
+            _header.CompressedSize = uncompressedSize;
+            _header.Hash = _hasher->Update(uncompressedData, uncompressedSize)->Finish();
+
+            // Compress data
+            std::optional<std::vector<uint8_t>> compressedBytes;
+            if (_header.Compression == COMPRESSION_GZIP)
+            {
+                compressedBytes = Gzip(uncompressedData, uncompressedSize);
                 if (compressedBytes)
                 {
-                    _stream->Write(compressedBytes->data(), compressedBytes->size());
+                    _header.CompressedSize = compressedBytes->size();
                 }
                 else
                 {
-                    _stream->Write(uncompressedData, uncompressedSize);
+                    // Compression failed
+                    _header.Compression = COMPRESSION_NONE;
                 }
+            }
+
+            // Write header and chunk table
+            stream.WriteValue(_header);
+            for (const auto& chunk : _chunks)
+            {
+                stream.WriteValue(chunk);
+            }
+
+            // Write chunk data
+            if (compressedBytes)
+            {
+                stream.Write(compressedBytes->data(), compressedBytes->size());
+            }
+            else
+            {
+                stream.Write(uncompressedData, uncompressedSize);
             }
         }
 
