@@ -48,8 +48,8 @@ namespace OpenRCT2
             uint64_t UncompressedSize{};
             uint32_t Compression{};
             uint64_t CompressedSize{};
-            std::array<uint8_t, 20> Sha1{};
-            uint8_t padding[8];
+            std::array<uint8_t, 8> FNV1a{};
+            uint8_t padding[20];
         };
         static_assert(sizeof(Header) == 64, "Header should be 64 bytes");
 
@@ -132,7 +132,7 @@ namespace OpenRCT2
                 _header.NumChunks = static_cast<uint32_t>(_chunks.size());
                 _header.UncompressedSize = uncompressedSize;
                 _header.CompressedSize = uncompressedSize;
-                _header.Sha1 = Crypt::SHA1(uncompressedData, uncompressedSize);
+                _header.FNV1a = Crypt::FNV1a(uncompressedData, uncompressedSize);
 
                 // Compress data
                 std::optional<std::vector<uint8_t>> compressedBytes;
