@@ -187,7 +187,7 @@ static void init_scenery_entry(
 {
     Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, OBJECT_ENTRY_INDEX_NULL);
 
-    if (gCheatsIgnoreResearchStatus || scenery_is_invented(selection))
+    if (IsSceneryAvailableToBuild(selection))
     {
         // Check if in any other groups
         for (const auto& otherTab : _tabEntries)
@@ -296,7 +296,7 @@ static void window_scenery_init(rct_window* w)
             for (size_t i = 0; i < sceneryGroupEntry->entry_count; i++)
             {
                 auto sceneryEntry = sceneryGroupEntry->scenery_entries[i];
-                if (scenery_is_invented(sceneryEntry) || gCheatsIgnoreResearchStatus)
+                if (IsSceneryAvailableToBuild(sceneryEntry))
                 {
                     tabInfo.Entries.push_back(sceneryEntry);
                 }

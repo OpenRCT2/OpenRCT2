@@ -84,6 +84,7 @@ namespace OpenRCT2
         constexpr uint32_t BANNERS          = 0x33;
 //        constexpr uint32_t STAFF            = 0x35;
         constexpr uint32_t CHEATS           = 0x36;
+        constexpr uint32_t RESTRICTED_OBJECTS = 0x37;
         constexpr uint32_t PACKED_OBJECTS   = 0x80;
         // clang-format on
     }; // namespace ParkFileChunkType
@@ -128,6 +129,7 @@ namespace OpenRCT2
             ReadWriteNotificationsChunk(os);
             ReadWriteInterfaceChunk(os);
             ReadWriteCheatsChunk(os);
+            ReadWriteRestrictedObjectsChunk(os);
 
             // Initial cash will eventually be removed
             gInitialCash = gCash;
@@ -156,6 +158,7 @@ namespace OpenRCT2
             ReadWriteNotificationsChunk(os);
             ReadWriteInterfaceChunk(os);
             ReadWriteCheatsChunk(os);
+            ReadWriteRestrictedObjectsChunk(os);
             ReadWritePackedObjectsChunk(os);
         }
 
@@ -435,6 +438,28 @@ namespace OpenRCT2
             os.ReadWriteChunk(ParkFileChunkType::CHEATS, [](OrcaStream::ChunkStream& cs) {
                 DataSerialiser ds(cs.GetMode() == OrcaStream::Mode::WRITING, cs.GetStream());
                 CheatsSerialise(ds);
+            });
+        }
+
+        void ReadWriteRestrictedObjectsChunk(OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::RESTRICTED_OBJECTS, [](OrcaStream::ChunkStream& cs) {
+                auto& restrictedScenery = GetRestrictedScenery();
+
+                // We are want to support all object types in the future, so convert scenery type
+                // to object type when we write the list
+                cs.ReadWriteVector(restrictedScenery, [&cs](ScenerySelection& item) {
+                    if (cs.GetMode() == OrcaStream::Mode::READING)
+                    {
+                        item.SceneryType = GetSceneryTypeFromObjectType(static_cast<ObjectType>(cs.Read<uint16_t>()));
+                        item.EntryIndex = cs.Read<ObjectEntryIndex>();
+                    }
+                    else
+                    {
+                        cs.Write(static_cast<uint16_t>(GetObjectTypeFromSceneryType(item.SceneryType)));
+                        cs.Write(item.EntryIndex);
+                    }
+                });
             });
         }
 

@@ -480,6 +480,7 @@ public:
         research_determine_first_of_type();
 
         CheatsReset();
+        ClearRestrictedScenery();
     }
 
     void ImportRides()

@@ -219,6 +219,8 @@ public:
         research_determine_first_of_type();
 
         CheatsReset();
+        ClearRestrictedScenery();
+        RestrictAllMiscScenery();
     }
 
     bool GetDetails(scenario_index_entry* dst) override
