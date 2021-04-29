@@ -275,7 +275,9 @@ void reset_sprite_spatial_index()
 
 #ifndef DISABLE_NETWORK
 
-template<typename T> void ComputeChecksumForEntityType(Crypt::HashAlgorithm<20>* _entityHashAlg)
+using EntityHasher = Crypt::Sha1Algorithm;
+
+template<typename T> void ComputeChecksumForEntityType(EntityHasher* _entityHashAlg)
 {
     for (auto* ent : EntityList<T>())
     {
@@ -300,7 +302,7 @@ template<typename T> void ComputeChecksumForEntityType(Crypt::HashAlgorithm<20>*
     }
 }
 
-template<typename... T> void ComputeChecksumForEntityTypes(Crypt::HashAlgorithm<20>* _entityHashAlg)
+template<typename... T> void ComputeChecksumForEntityTypes(EntityHasher* _entityHashAlg)
 {
     (ComputeChecksumForEntityType<T>(_entityHashAlg), ...);
 }
@@ -309,24 +311,15 @@ rct_sprite_checksum sprite_checksum()
 {
     using namespace Crypt;
 
-    // TODO Remove statics, should be one of these per sprite manager / OpenRCT2 context.
-    //      Alternatively, make a new class for this functionality.
-    static std::unique_ptr<HashAlgorithm<20>> _spriteHashAlg;
+    auto hasher = Crypt::CreateHasher<EntityHasher>();
 
     rct_sprite_checksum checksum;
 
     try
     {
-        if (_spriteHashAlg == nullptr)
-        {
-            _spriteHashAlg = CreateSHA1();
-        }
+        ComputeChecksumForEntityTypes<Guest, Staff, Vehicle, Litter>(hasher.get());
 
-        _spriteHashAlg->Clear();
-
-        ComputeChecksumForEntityTypes<Guest, Staff, Vehicle, Litter>(_spriteHashAlg.get());
-
-        checksum.raw = _spriteHashAlg->Finish();
+        checksum.raw = hasher->Finish();
     }
     catch (std::exception& e)
     {

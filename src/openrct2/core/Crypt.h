@@ -16,7 +16,14 @@
 
 namespace Crypt
 {
-    template<size_t TLength> class HashAlgorithm
+    enum class HashType
+    {
+        Fnv1a,
+        Sha1,
+        Sha256,
+    };
+
+    template<size_t TLength, HashType TType> class HashAlgorithm
     {
     public:
         using Result = std::array<uint8_t, TLength>;
@@ -46,16 +53,30 @@ namespace Crypt
         virtual bool VerifyData(const RsaKey& key, const void* data, size_t dataLen, const void* sig, size_t sigLen) = 0;
     };
 
-    using Sha1Algorithm = HashAlgorithm<20>;
-    using Sha256Algorithm = HashAlgorithm<32>;
-    using FNV1aAlgorithm = HashAlgorithm<8>;
+    using Sha1Algorithm = HashAlgorithm<20, HashType::Sha1>;
+    using Sha256Algorithm = HashAlgorithm<32, HashType::Sha256>;
+    using FNV1aAlgorithm = HashAlgorithm<8, HashType::Fnv1a>;
 
     // Factories
     std::unique_ptr<FNV1aAlgorithm> CreateFNV1a();
     std::unique_ptr<Sha1Algorithm> CreateSHA1();
     std::unique_ptr<Sha256Algorithm> CreateSHA256();
-    std::unique_ptr<RsaAlgorithm> CreateRSA();
-    std::unique_ptr<RsaKey> CreateRSAKey();
+
+    template<typename T> std::unique_ptr<T> CreateHasher();
+    template<> inline std::unique_ptr<FNV1aAlgorithm> CreateHasher<FNV1aAlgorithm>()
+    {
+        return CreateFNV1a();
+    }
+
+    template<> inline std::unique_ptr<Sha1Algorithm> CreateHasher<Sha1Algorithm>()
+    {
+        return CreateSHA1();
+    }
+
+    template<> inline std::unique_ptr<Sha256Algorithm> CreateHasher<Sha256Algorithm>()
+    {
+        return CreateSHA256();
+    }
 
     inline Sha1Algorithm::Result SHA1(const void* data, size_t dataLen)
     {
@@ -66,4 +87,8 @@ namespace Crypt
     {
         return CreateSHA256()->Update(data, dataLen)->Finish();
     }
+
+    std::unique_ptr<RsaAlgorithm> CreateRSA();
+    std::unique_ptr<RsaKey> CreateRSAKey();
+
 } // namespace Crypt
