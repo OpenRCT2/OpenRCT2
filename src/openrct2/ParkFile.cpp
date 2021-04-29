@@ -154,9 +154,9 @@ namespace OpenRCT2
             // Write file in background.
             auto _ = std::async(
                 std::launch::async,
-                [](OrcaStream&& os, const std::string& path) {
-                    FileStream fs(path, FILE_MODE_WRITE);
-                    os.Save(fs);
+                [](OrcaStream&& stream, const std::string& filePath) {
+                    FileStream fs(filePath, FILE_MODE_WRITE);
+                    stream.Save(fs);
                 },
                 std::move(os), std::string{ path });
         }
