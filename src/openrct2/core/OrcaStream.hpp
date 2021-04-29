@@ -27,6 +27,8 @@ namespace OpenRCT2
 {
     class OrcaStream
     {
+        using Hasher = Crypt::FNV1aAlgorithm;
+
     public:
         enum class Mode
         {
@@ -48,9 +50,10 @@ namespace OpenRCT2
             uint64_t UncompressedSize{};
             uint32_t Compression{};
             uint64_t CompressedSize{};
-            std::array<uint8_t, 20> Sha1{};
-            uint8_t padding[8];
+            Hasher::Result Hash{};
+            uint8_t padding[20];
         };
+
         static_assert(sizeof(Header) == 64, "Header should be 64 bytes");
 
         struct ChunkEntry
@@ -67,9 +70,11 @@ namespace OpenRCT2
         std::vector<ChunkEntry> _chunks;
         MemoryStream _buffer;
         ChunkEntry _currentChunk;
+        std::unique_ptr<Crypt::FNV1aAlgorithm> _hasher;
 
     public:
         OrcaStream(IStream& stream, Mode mode)
+            : _hasher(Crypt::CreateHasher<Hasher>())
         {
             _stream = &stream;
             _mode = mode;
@@ -132,7 +137,7 @@ namespace OpenRCT2
                 _header.NumChunks = static_cast<uint32_t>(_chunks.size());
                 _header.UncompressedSize = uncompressedSize;
                 _header.CompressedSize = uncompressedSize;
-                _header.Sha1 = Crypt::SHA1(uncompressedData, uncompressedSize);
+                _header.Hash = _hasher->Update(uncompressedData, uncompressedSize)->Finish();
 
                 // Compress data
                 std::optional<std::vector<uint8_t>> compressedBytes;
