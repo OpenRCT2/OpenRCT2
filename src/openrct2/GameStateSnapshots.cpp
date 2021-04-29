@@ -82,30 +82,31 @@ struct GameStateSnapshot_t
             switch (sprite.misc.Type)
             {
                 case EntityType::Vehicle:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(Vehicle)]>(sprite.vehicle);
+                    reinterpret_cast<Vehicle&>(sprite).Serialise(ds);
                     break;
                 case EntityType::Guest:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(Guest)]>(sprite.peep);
+                    reinterpret_cast<Guest&>(sprite).Serialise(ds);
                     break;
                 case EntityType::Staff:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(Staff)]>(sprite.peep);
+                    reinterpret_cast<Staff&>(sprite).Serialise(ds);
                     break;
                 case EntityType::Litter:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(Litter)]>(sprite.litter);
+                    reinterpret_cast<Litter&>(sprite).Serialise(ds);
                     break;
                 case EntityType::MoneyEffect:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(MoneyEffect)]>(sprite.money_effect);
+                    reinterpret_cast<MoneyEffect&>(sprite).Serialise(ds);
                     break;
                 case EntityType::Balloon:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(Balloon)]>(sprite.balloon);
+                    reinterpret_cast<Balloon&>(sprite).Serialise(ds);
                     break;
                 case EntityType::Duck:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(Duck)]>(sprite.duck);
+                    reinterpret_cast<Duck&>(sprite).Serialise(ds);
                     break;
                 case EntityType::JumpingFountain:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(JumpingFountain)]>(sprite.jumping_fountain);
+                    reinterpret_cast<JumpingFountain&>(sprite).Serialise(ds);
                     break;
                 case EntityType::SteamParticle:
+                    reinterpret_cast<SteamParticle&>(sprite).Serialise(ds);
                     ds << reinterpret_cast<uint8_t(&)[sizeof(SteamParticle)]>(sprite.steam_particle);
                     break;
                 case EntityType::Null:

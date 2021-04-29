@@ -101,6 +101,18 @@ void SteamParticle::Serialise(DataSerialiser& stream)
     stream << time_to_move;
 }
 
+void JumpingFountain::Serialise(DataSerialiser& stream)
+{
+    EntityBaseSerialise(*this, stream);
+    stream << frame;
+    stream << FountainType;
+    stream << NumTicksAlive;
+    stream << FountainFlags;
+    stream << TargetX;
+    stream << TargetY;
+    stream << Iteration;
+}
+
 static void PeepBaseSerialise(Peep& base, DataSerialiser& stream)
 {
     EntityBaseSerialise(base, stream);
