@@ -9,6 +9,7 @@
 
 #include "Crypt.h"
 
+#include <cstddef>
 #include <cstring>
 
 using namespace Crypt;
