@@ -7,18 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef DISABLE_NETWORK
+#include "Crypt.h"
 
-#    include "Crypt.h"
-
-#    include <cstring>
+#include <cstring>
 
 using namespace Crypt;
 
 // https://github.com/CTrabant/teeny-sha1
 static int sha1digest(uint8_t* digest, const uint8_t* data, size_t databytes)
 {
-#    define SHA1ROTATELEFT(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
+#define SHA1ROTATELEFT(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
 
     uint32_t W[80];
     uint32_t H[] = { 0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0 };
@@ -185,12 +183,55 @@ public:
     }
 };
 
+class OpenRCT2FNV1aAlgorithm : public FNV1aAlgorithm
+{
+private:
+    static constexpr uint64_t Offset = 0xcbf29ce484222325ULL;
+    static constexpr uint64_t Prime = 0x00000100000001B3ULL;
+
+    uint64_t _data = Offset;
+
+public:
+    HashAlgorithm* Clear() override
+    {
+        _data = Offset;
+        return this;
+    }
+
+    HashAlgorithm* Update(const void* data, size_t dataLen) override
+    {
+        // 64b aligned updates.
+        for (size_t i = 0; i < dataLen; i += sizeof(uint64_t))
+        {
+            const auto maxLen = std::min(sizeof(uint64_t), dataLen - i);
+
+            uint64_t temp{};
+            std::memcpy(&temp, reinterpret_cast<const std::byte*>(data) + i, maxLen);
+
+            _data ^= temp;
+            _data *= Prime;
+        }
+        return this;
+    }
+
+    Result Finish() override
+    {
+        Result res;
+        std::memcpy(res.data(), &_data, sizeof(_data));
+        return res;
+    }
+};
+
 namespace Crypt
 {
+    std::unique_ptr<FNV1aAlgorithm> CreateFNV1a()
+    {
+        return std::make_unique<OpenRCT2FNV1aAlgorithm>();
+    }
+
     std::unique_ptr<Sha1Algorithm> CreateSHA1()
     {
         return std::make_unique<OpenRCT2Sha1Algorithm>();
     }
-} // namespace Crypt
 
-#endif // DISABLE_NETWORK
+} // namespace Crypt

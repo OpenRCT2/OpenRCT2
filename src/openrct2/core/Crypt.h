@@ -48,8 +48,10 @@ namespace Crypt
 
     using Sha1Algorithm = HashAlgorithm<20>;
     using Sha256Algorithm = HashAlgorithm<32>;
+    using FNV1aAlgorithm = HashAlgorithm<8>;
 
     // Factories
+    std::unique_ptr<FNV1aAlgorithm> CreateFNV1a();
     std::unique_ptr<Sha1Algorithm> CreateSHA1();
     std::unique_ptr<Sha256Algorithm> CreateSHA256();
     std::unique_ptr<RsaAlgorithm> CreateRSA();

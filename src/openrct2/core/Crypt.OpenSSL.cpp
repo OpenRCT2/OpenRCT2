@@ -325,12 +325,6 @@ public:
 
 namespace Crypt
 {
-    std::unique_ptr<Sha1Algorithm> CreateSHA1()
-    {
-        OpenSSLInitialise();
-        return std::make_unique<OpenSSLHashAlgorithm<Sha1Algorithm>>(EVP_sha1());
-    }
-
     std::unique_ptr<Sha256Algorithm> CreateSHA256()
     {
         OpenSSLInitialise();

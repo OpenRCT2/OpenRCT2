@@ -665,11 +665,6 @@ private:
 
 namespace Crypt
 {
-    std::unique_ptr<Sha1Algorithm> CreateSHA1()
-    {
-        return std::make_unique<CngHashAlgorithm<Sha1Algorithm>>(BCRYPT_SHA1_ALGORITHM);
-    }
-
     std::unique_ptr<Sha256Algorithm> CreateSHA256()
     {
         return std::make_unique<CngHashAlgorithm<Sha256Algorithm>>(BCRYPT_SHA256_ALGORITHM);
