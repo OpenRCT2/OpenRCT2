@@ -289,31 +289,126 @@ template<typename... T> void NetworkSerialiseEntityTypes(DataSerialiser& ds)
 {
     (NetworkSerialseEntityType<T>(ds), ...);
 }
+/**
+ * A stream for reading and writing to a buffer in memory. By default this buffer can grow.
+ */
+class ChecksumStream final : public OpenRCT2::IStream
+{
+    static std::unique_ptr<Crypt::Sha1Algorithm> _spriteHashAlg;
 
+public:
+    ChecksumStream()
+    {
+        if (_spriteHashAlg)
+        {
+            _spriteHashAlg = Crypt::CreateSHA1();
+        }
+        _spriteHashAlg->Clear();
+    }
+
+    virtual ~ChecksumStream() = default;
+
+    const void* GetData() const override
+    {
+        return nullptr;
+    };
+
+    ///////////////////////////////////////////////////////////////////////////
+    // ISteam methods
+    ///////////////////////////////////////////////////////////////////////////
+    bool CanRead() const override
+    {
+        return false;
+    }
+    bool CanWrite() const override
+    {
+        return true;
+    }
+
+    uint64_t GetLength() const override
+    {
+        return 0;
+    }
+    uint64_t GetPosition() const override
+    {
+        return 0;
+    }
+    void SetPosition(uint64_t position) override
+    {
+    }
+    void Seek(int64_t offset, int32_t origin) override
+    {
+    }
+
+    void Read(void* buffer, uint64_t length) override
+    {
+    }
+    void Read1(void* buffer) override
+    {
+    }
+    void Read2(void* buffer) override
+    {
+    }
+    void Read4(void* buffer) override
+    {
+    }
+    void Read8(void* buffer) override
+    {
+    }
+    void Read16(void* buffer) override
+    {
+    }
+
+    void Write(const void* buffer, uint64_t length) override
+    {
+        _spriteHashAlg->Update(buffer, length);
+    }
+    void Write1(const void* buffer) override
+    {
+        Write<1>(buffer);
+    }
+    void Write2(const void* buffer) override
+    {
+        Write<2>(buffer);
+    }
+    void Write4(const void* buffer) override
+    {
+        Write<4>(buffer);
+    }
+    void Write8(const void* buffer) override
+    {
+        Write<8>(buffer);
+    }
+    void Write16(const void* buffer) override
+    {
+        Write<16>(buffer);
+    }
+
+    template<size_t N> void Write(const void* buffer)
+    {
+        _spriteHashAlg->Update(buffer, N);
+    }
+
+    uint64_t TryRead(void* buffer, uint64_t length) override
+    {
+        return 0;
+    }
+
+    Crypt::Sha1Algorithm::Result Finish()
+    {
+        return _spriteHashAlg->Finish();
+    }
+};
 rct_sprite_checksum sprite_checksum()
 {
-    using namespace Crypt;
-
-    // TODO Remove statics, should be one of these per sprite manager / OpenRCT2 context.
-    //      Alternatively, make a new class for this functionality.
-    static std::unique_ptr<HashAlgorithm<20>> _spriteHashAlg;
-
     rct_sprite_checksum checksum;
 
     try
     {
-        if (_spriteHashAlg == nullptr)
-        {
-            _spriteHashAlg = CreateSHA1();
-        }
-
-        _spriteHashAlg->Clear();
-        OpenRCT2::MemoryStream ms;
+        ChecksumStream ms;
         DataSerialiser ds(true, ms);
-
         NetworkSerialiseEntityTypes<Guest, Staff, Vehicle, Litter>(ds);
-        _spriteHashAlg->Update(ms.GetData(), ms.GetLength());
-        checksum.raw = _spriteHashAlg->Finish();
+        checksum.raw = ms.Finish();
     }
     catch (std::exception& e)
     {
