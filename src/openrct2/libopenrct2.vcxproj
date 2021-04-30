@@ -147,6 +147,7 @@
     <ClInclude Include="config\IniReader.hpp" />
     <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="Context.h" />
+    <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
     <ClInclude Include="core\Collections.hpp" />
     <ClInclude Include="core\Console.hpp" />
@@ -571,6 +572,7 @@
     <ClCompile Include="config\IniReader.cpp" />
     <ClCompile Include="config\IniWriter.cpp" />
     <ClCompile Include="Context.cpp" />
+    <ClCompile Include="core\ChecksumStream.cpp" />
     <ClCompile Include="core\Console.cpp" />
     <ClCompile Include="core\Crypt.CNG.cpp" />
     <ClCompile Include="core\Crypt.OpenSSL.cpp" />
