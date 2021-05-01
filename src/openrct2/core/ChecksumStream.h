@@ -20,14 +20,20 @@ namespace OpenRCT2
      */
     class ChecksumStream final : public IStream
     {
+        // FIXME: Move the checksum implementation out.
+        std::array<std::byte, 8>& _checksum;
+
+        static constexpr uint64_t Seed = 0xcbf29ce484222325ULL;
+        static constexpr uint64_t Prime = 0x00000100000001B3ULL;
+
     public:
-        ChecksumStream();
+        ChecksumStream(std::array<std::byte, 8>& buf);
 
         virtual ~ChecksumStream() = default;
 
         const void* GetData() const override
         {
-            return nullptr;
+            return _checksum.data();
         };
 
         ///////////////////////////////////////////////////////////////////////////
@@ -44,15 +50,18 @@ namespace OpenRCT2
 
         uint64_t GetLength() const override
         {
-            return 0;
+            return _checksum.size();
         }
+
         uint64_t GetPosition() const override
         {
             return 0;
         }
+
         void SetPosition(uint64_t position) override
         {
         }
+
         void Seek(int64_t offset, int32_t origin) override
         {
         }
@@ -60,39 +69,29 @@ namespace OpenRCT2
         void Read(void* buffer, uint64_t length) override
         {
         }
-        void Read1(void* buffer) override
-        {
-        }
-        void Read2(void* buffer) override
-        {
-        }
-        void Read4(void* buffer) override
-        {
-        }
-        void Read8(void* buffer) override
-        {
-        }
-        void Read16(void* buffer) override
-        {
-        }
 
         void Write(const void* buffer, uint64_t length) override;
+
         void Write1(const void* buffer) override
         {
             Write<1>(buffer);
         }
+
         void Write2(const void* buffer) override
         {
             Write<2>(buffer);
         }
+
         void Write4(const void* buffer) override
         {
             Write<4>(buffer);
         }
+
         void Write8(const void* buffer) override
         {
             Write<8>(buffer);
         }
+
         void Write16(const void* buffer) override
         {
             Write<16>(buffer);
@@ -107,8 +106,6 @@ namespace OpenRCT2
         {
             return 0;
         }
-
-        Crypt::Sha1Algorithm::Result Finish();
     };
 
 } // namespace OpenRCT2

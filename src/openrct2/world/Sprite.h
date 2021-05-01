@@ -164,7 +164,7 @@ assert_struct_size(rct_sprite, 0x200);
 
 struct rct_sprite_checksum
 {
-    std::array<uint8_t, 20> raw;
+    std::array<std::byte, 8> raw;
 
     std::string ToString() const;
 };
