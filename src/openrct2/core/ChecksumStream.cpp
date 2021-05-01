@@ -11,6 +11,7 @@
 
 namespace OpenRCT2
 {
+#ifndef DISABLE_NETWORK
     static std::unique_ptr<Crypt::Sha1Algorithm> _spriteHashAlg;
 
     ChecksumStream::ChecksumStream()
@@ -31,5 +32,5 @@ namespace OpenRCT2
     {
         return _spriteHashAlg->Finish();
     }
-
+#endif
 } // namespace OpenRCT2
