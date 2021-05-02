@@ -805,7 +805,7 @@ void viewport_update_smart_vehicle_follow(rct_window* window)
  */
 void viewport_render(
     rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
-    std::vector<paint_session>* sessions)
+    std::vector<RecordedPaintSession>* sessions)
 {
     if (right <= viewport->pos.x)
         return;
@@ -846,32 +846,68 @@ void viewport_render(
 #endif
 }
 
-static void record_session(const paint_session* session, std::vector<paint_session>* recorded_sessions, size_t record_index)
+static void record_session(
+    const paint_session* session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
 {
     // Perform a deep copy of the paint session, use relative offsets.
     // This is done to extract the session for benchmark.
     // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy;
     // there is no column information embedded in the session itself.
-    /*
-    (*recorded_sessions)[record_index] = (*session);
-    paint_session* session_copy = &recorded_sessions->at(record_index);
+    auto& recordedSession = recorded_sessions->at(record_index);
+    recordedSession.Session = *session;
+    recordedSession.Entries.resize(session->PaintEntryChain.GetCount());
 
     // Mind the offset needs to be calculated against the original `session`, not `session_copy`
-    for (auto& ps : session_copy->PaintStructs)
+    std::unordered_map<paint_struct*, paint_struct*> entryRemap;
+
+    // Copy all entries
+    auto paintIndex = 0;
+    auto chain = session->PaintEntryChain.Head;
+    while (chain != nullptr)
     {
-        ps.basic.next_quadrant_ps = reinterpret_cast<paint_struct*>(
-            ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic)
-                                      : std::size(session->PaintStructs));
+        for (size_t i = 0; i < chain->Count; i++)
+        {
+            auto& src = chain->PaintStructs[i];
+            auto& dst = recordedSession.Entries[paintIndex++];
+            dst = src;
+            entryRemap[&src.basic] = reinterpret_cast<paint_struct*>(i * sizeof(paint_entry));
+        }
+        chain = chain->Next;
     }
-    for (auto& quad : session_copy->Quadrants)
+    entryRemap[nullptr] = reinterpret_cast<paint_struct*>(-1);
+
+    // Remap all entries
+    for (auto& ps : recordedSession.Entries)
     {
-        quad = reinterpret_cast<paint_struct*>(
-            quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
+        auto& ptr = ps.basic.next_quadrant_ps;
+        auto it = entryRemap.find(ptr);
+        if (it == entryRemap.end())
+        {
+            assert(false);
+            ptr = nullptr;
+        }
+        else
+        {
+            ptr = it->second;
+        }
     }
-    */
+    for (auto& ptr : recordedSession.Session.Quadrants)
+    {
+        auto it = entryRemap.find(ptr);
+        if (it == entryRemap.end())
+        {
+            assert(false);
+            ptr = nullptr;
+        }
+        else
+        {
+            ptr = it->second;
+        }
+    }
 }
 
-static void viewport_fill_column(paint_session* session, std::vector<paint_session>* recorded_sessions, size_t record_index)
+static void viewport_fill_column(
+    paint_session* session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
 {
     PaintSessionGenerate(session);
     if (recorded_sessions != nullptr)
@@ -924,7 +960,7 @@ static void viewport_paint_column(paint_session* session)
  */
 void viewport_paint(
     const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
-    std::vector<paint_session>* recorded_sessions)
+    std::vector<RecordedPaintSession>* recorded_sessions)
 {
     uint32_t viewFlags = viewport->flags;
     uint16_t width = right - left;

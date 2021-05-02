@@ -172,6 +172,7 @@ public:
 
         paint_entry* Allocate();
         void Clear();
+        size_t GetCount() const;
     };
 
 private:
@@ -187,10 +188,8 @@ public:
     void FreeNodes(Node* head);
 };
 
-struct paint_session
+struct PaintSessionCore
 {
-    rct_drawpixelinfo DPI;
-    PaintEntryPool::Chain PaintEntryChain;
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     paint_struct* LastPS;
     paint_string_struct* PSStringHead;
@@ -220,6 +219,12 @@ struct paint_session
     uint8_t Unk141E9DB;
     uint16_t WaterHeight;
     uint32_t TrackColours[4];
+};
+
+struct paint_session : public PaintSessionCore
+{
+    rct_drawpixelinfo DPI;
+    PaintEntryPool::Chain PaintEntryChain;
 
     paint_struct* AllocateNormalPaintEntry() noexcept
     {
@@ -262,6 +267,12 @@ struct paint_session
         }
         return nullptr;
     }
+};
+
+struct RecordedPaintSession
+{
+    PaintSessionCore Session;
+    std::vector<paint_entry> Entries;
 };
 
 extern paint_session gPaintSession;

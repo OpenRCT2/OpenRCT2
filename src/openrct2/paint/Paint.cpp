@@ -1041,6 +1041,18 @@ void PaintEntryPool::Chain::Clear()
     assert(Current == nullptr);
 }
 
+size_t PaintEntryPool::Chain::GetCount() const
+{
+    size_t count = 0;
+    auto current = Head;
+    while (current != nullptr)
+    {
+        count += current->Count;
+        current = current->Next;
+    }
+    return count;
+}
+
 PaintEntryPool::~PaintEntryPool()
 {
     for (auto node : _available)
