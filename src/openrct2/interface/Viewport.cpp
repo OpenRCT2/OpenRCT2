@@ -35,6 +35,7 @@
 #include <algorithm>
 #include <cstring>
 #include <list>
+#include <unordered_map>
 
 using namespace OpenRCT2;
 

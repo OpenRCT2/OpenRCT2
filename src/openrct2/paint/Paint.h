@@ -333,7 +333,7 @@ void PaintFloatingMoneyEffect(
 paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
 void PaintSessionFree(paint_session* session);
 void PaintSessionGenerate(paint_session* session);
-void PaintSessionArrange(paint_session* session);
+void PaintSessionArrange(PaintSessionCore* session);
 void PaintDrawStructs(paint_session* session);
 void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
 

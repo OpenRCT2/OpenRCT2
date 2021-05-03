@@ -385,7 +385,7 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
     }
 }
 
-template<int TRotation> static void PaintSessionArrange(paint_session* session, bool)
+template<int TRotation> static void PaintSessionArrange(PaintSessionCore* session, bool)
 {
     paint_struct* psHead = &session->PaintHead;
 
@@ -425,7 +425,7 @@ template<int TRotation> static void PaintSessionArrange(paint_session* session, 
  *
  *  rct2: 0x00688217
  */
-void PaintSessionArrange(paint_session* session)
+void PaintSessionArrange(PaintSessionCore* session)
 {
     switch (session->CurrentRotation)
     {
