@@ -16,8 +16,6 @@
 namespace OpenRCT2
 {
 #ifndef DISABLE_NETWORK
-    static std::unique_ptr<Crypt::Sha1Algorithm> _spriteHashAlg;
-
     ChecksumStream::ChecksumStream(std::array<std::byte, 8>& buf)
         : _checksum(buf)
     {
@@ -30,7 +28,7 @@ namespace OpenRCT2
         uint64_t* hash = reinterpret_cast<uint64_t*>(_checksum.data());
         for (size_t i = 0; i < length; i += sizeof(uint64_t))
         {
-            const auto maxLen = std::min(sizeof(uint64_t), length - i);
+            const auto maxLen = std::min<size_t>(sizeof(uint64_t), length - i);
 
             uint64_t temp{};
             std::memcpy(&temp, reinterpret_cast<const std::byte*>(buffer) + i, maxLen);

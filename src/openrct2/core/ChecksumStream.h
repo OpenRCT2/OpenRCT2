@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "Crypt.h"
 #include "IStream.hpp"
 
 namespace OpenRCT2
