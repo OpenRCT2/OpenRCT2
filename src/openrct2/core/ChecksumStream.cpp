@@ -16,7 +16,7 @@
 namespace OpenRCT2
 {
 #ifndef DISABLE_NETWORK
-    ChecksumStream::ChecksumStream(std::array<std::byte, 8>& buf)
+    ChecksumStream::ChecksumStream(std::array<std::byte, 20>& buf)
         : _checksum(buf)
     {
         uint64_t* hash = reinterpret_cast<uint64_t*>(_checksum.data());

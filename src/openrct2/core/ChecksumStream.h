@@ -20,13 +20,13 @@ namespace OpenRCT2
     class ChecksumStream final : public IStream
     {
         // FIXME: Move the checksum implementation out.
-        std::array<std::byte, 8>& _checksum;
+        std::array<std::byte, 20>& _checksum;
 
         static constexpr uint64_t Seed = 0xcbf29ce484222325ULL;
         static constexpr uint64_t Prime = 0x00000100000001B3ULL;
 
     public:
-        ChecksumStream(std::array<std::byte, 8>& buf);
+        ChecksumStream(std::array<std::byte, 20>& buf);
 
         virtual ~ChecksumStream() = default;
 
