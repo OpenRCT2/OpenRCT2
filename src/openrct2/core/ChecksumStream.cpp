@@ -9,28 +9,41 @@
 
 #include "ChecksumStream.h"
 
+#include "Endianness.h"
+
+#include <cstddef>
+
 namespace OpenRCT2
 {
 #ifndef DISABLE_NETWORK
     static std::unique_ptr<Crypt::Sha1Algorithm> _spriteHashAlg;
 
-    ChecksumStream::ChecksumStream()
+    ChecksumStream::ChecksumStream(std::array<std::byte, 8>& buf)
+        : _checksum(buf)
     {
-        if (!_spriteHashAlg)
-        {
-            _spriteHashAlg = Crypt::CreateSHA1();
-        }
-        _spriteHashAlg->Clear();
+        uint64_t* hash = reinterpret_cast<uint64_t*>(_checksum.data());
+        *hash = Seed;
     }
 
     void ChecksumStream::Write(const void* buffer, uint64_t length)
     {
-        _spriteHashAlg->Update(buffer, length);
+        uint64_t* hash = reinterpret_cast<uint64_t*>(_checksum.data());
+        for (size_t i = 0; i < length; i += sizeof(uint64_t))
+        {
+            const auto maxLen = std::min(sizeof(uint64_t), length - i);
+
+            uint64_t temp{};
+            std::memcpy(&temp, reinterpret_cast<const std::byte*>(buffer) + i, maxLen);
+
+            // Always use value as little endian, most common systems are little.
+#    if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+            temp = ByteSwapBE(temp);
+#    endif
+
+            *hash ^= temp;
+            *hash *= Prime;
+        }
     }
 
-    Crypt::Sha1Algorithm::Result ChecksumStream::Finish()
-    {
-        return _spriteHashAlg->Finish();
-    }
 #endif
 } // namespace OpenRCT2

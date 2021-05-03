@@ -295,18 +295,9 @@ rct_sprite_checksum sprite_checksum()
 {
     rct_sprite_checksum checksum;
 
-    try
-    {
-        OpenRCT2::ChecksumStream ms;
-        DataSerialiser ds(true, ms);
-        NetworkSerialiseEntityTypes<Guest, Staff, Vehicle, Litter>(ds);
-        checksum.raw = ms.Finish();
-    }
-    catch (std::exception& e)
-    {
-        log_error("sprite_checksum failed: %s", e.what());
-        throw;
-    }
+    OpenRCT2::ChecksumStream ms(checksum.raw);
+    DataSerialiser ds(true, ms);
+    NetworkSerialiseEntityTypes<Guest, Staff, Vehicle, Litter>(ds);
 
     return checksum;
 }
