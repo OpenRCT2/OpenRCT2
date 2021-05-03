@@ -139,7 +139,7 @@ std::string rct_sprite_checksum::ToString() const
     for (auto b : raw)
     {
         char buf[3];
-        snprintf(buf, 3, "%02hhx", b);
+        snprintf(buf, 3, "%02hhx", static_cast<int32_t>(b));
         result.append(buf);
     }
 
