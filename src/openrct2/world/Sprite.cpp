@@ -139,7 +139,7 @@ std::string rct_sprite_checksum::ToString() const
     for (auto b : raw)
     {
         char buf[3];
-        snprintf(buf, 3, "%02hhx", static_cast<int32_t>(b));
+        snprintf(buf, 3, "%02x", static_cast<int32_t>(b));
         result.append(buf);
     }
 
@@ -293,7 +293,7 @@ template<typename... T> void NetworkSerialiseEntityTypes(DataSerialiser& ds)
 
 rct_sprite_checksum sprite_checksum()
 {
-    rct_sprite_checksum checksum;
+    rct_sprite_checksum checksum{};
 
     OpenRCT2::ChecksumStream ms(checksum.raw);
     DataSerialiser ds(true, ms);
