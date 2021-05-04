@@ -179,11 +179,24 @@ constexpr uint16_t SPRITE_INDEX_NULL = 0xFFFF;
 #    define PLATFORM_X86
 #endif
 
+#if defined(__GNUC__) && defined(__arm__)
+#   define OPENRCT2_ARM
+#elif defined(_MSC_VER) && (defined(_M_ARM))
+#   define OPENRCT2_ARM
+#endif
+
+#if defined(__GNUC__) && defined(__aarch64__)
+#   define OPENRCT2_AARCH64
+#elif defined(_MSC_VER) && (defined(_M_ARM64))
+#   define OPENRCT2_AARCH64
+#endif
+
 #if defined(__LP64__) || defined(_WIN64)
 #    define PLATFORM_64BIT
 #else
 #    define PLATFORM_32BIT
 #endif
+
 
 // C99's restrict keywords guarantees the pointer in question, for the whole of its lifetime,
 // will be the only way to access a given memory region. In other words: there is no other pointer

@@ -568,6 +568,11 @@ void mask_init()
         log_verbose("registering SSE4.1 mask function");
         mask_fn = mask_sse4_1;
     }
+    else if (neon_available())
+    {
+        log_verbose("registering NEON mask function");
+        mask_fn = mask_neon;
+    }
     else
     {
         log_verbose("registering scalar mask function");

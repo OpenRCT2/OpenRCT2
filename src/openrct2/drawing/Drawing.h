@@ -780,6 +780,9 @@ void mask_sse4_1(
 void mask_avx2(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
+void mask_neon(
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 void mask_init();
 
 extern void (*mask_fn)(
