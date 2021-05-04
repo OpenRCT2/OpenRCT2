@@ -394,6 +394,12 @@ void research_reset_current_item()
  */
 static void research_insert_unresearched(ResearchItem&& item)
 {
+    // First check to make sure that entry is not already accounted for
+    if (item.Exists())
+    {
+        return;
+    }
+
     gResearchItemsUninvented.push_back(std::move(item));
 }
 

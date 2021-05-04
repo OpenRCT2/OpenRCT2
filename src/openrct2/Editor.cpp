@@ -358,8 +358,6 @@ namespace Editor
         gGuestChangeModifier = 0;
         if (fromSave)
         {
-            research_populate_list_random();
-
             if (gParkFlags & PARK_FLAGS_NO_MONEY)
             {
                 gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
