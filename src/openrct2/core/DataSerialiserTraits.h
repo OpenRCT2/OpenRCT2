@@ -302,7 +302,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraitsPODArray
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
 
-        DataSerializerTraits<uint8_t> s;
+        DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.encode(stream, sub);
