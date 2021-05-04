@@ -1633,18 +1633,6 @@ void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32
 }
 
 /**
- * Bubbles an item one position up in the window list.  This is done by swapping
- * the two locations.
- *  rct2: New function not from rct2
- */
-void window_bubble_list_item(rct_window* w, int32_t item_position)
-{
-    char swap = w->list_item_positions[item_position];
-    w->list_item_positions[item_position] = w->list_item_positions[item_position + 1];
-    w->list_item_positions[item_position + 1] = swap;
-}
-
-/**
  *
  *  rct2: 0x006ED710
  * Called after a window resize to move windows if they
