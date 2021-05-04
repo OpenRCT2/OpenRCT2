@@ -11,7 +11,7 @@
 #include "../core/Guard.hpp"
 #include "Drawing.h"
 
-#ifdef __NEON__
+#if defined(__ARM_NEON__) || defined(__ARM_NEON)
 
 #    include <arm_neon.h>
 
@@ -21,7 +21,7 @@ void mask_neon(
 {
     if (width == 32)
     {
-        const int8x16_t zero128 = {};
+        const uint8x16_t zero128 = {};
         for (int32_t yy = 0; yy < height; yy++)
         {
             int32_t colourStep = yy * (colourWrap + 32);
@@ -29,29 +29,29 @@ void mask_neon(
             int32_t dstStep = yy * (dstWrap + 32);
 
             // first half
-            const int8x16_t colour1 = _mm_lddqu_si128(reinterpret_cast<const int8x16_t*>(colourSrc + colourStep));
-            const int8x16_t mask1 = _mm_lddqu_si128(reinterpret_cast<const int8x16_t*>(maskSrc + maskStep));
-            const int8x16_t dest1 = _mm_lddqu_si128(reinterpret_cast<const int8x16_t*>(dst + dstStep));
-            const int8x16_t mc1 = vandq_s8(colour1, mask1);
-            const int8x16_t saturate1 = vceqq_s8(mc1, zero128);
+            const uint8x16_t colour1 = vld1q_u8(reinterpret_cast<const uint8_t*>(colourSrc + colourStep));
+            const uint8x16_t mask1 = vld1q_u8(reinterpret_cast<const uint8_t*>(maskSrc + maskStep));
+            const uint8x16_t dest1 = vld1q_u8(reinterpret_cast<const uint8_t*>(dst + dstStep));
+            const uint8x16_t mc1 = vandq_u8(colour1, mask1);
+            const uint8x16_t saturate1 = vceqq_u8(mc1, zero128);
             // blended = (for each bit) if mc1 then satureate1 else dest1
-            const int8x16_t blended1_tmp1 = vandq_s8(mc1, saturate1);          // tmp1     = mc1 & saturate1
-            const int8x16_t blended1_tmp2 = vandq_s8(mc1, dest1);              // tmp2     = mc1 & dest1
-            const int8x16_t blended1 = vornq_s8(blended1_tmp1, blended1_tmp2); // blended1 = tmp1 | !tmp2
+            const uint8x16_t blended1_tmp1 = vandq_u8(mc1, saturate1);          // tmp1     = mc1 & saturate1
+            const uint8x16_t blended1_tmp2 = vandq_u8(mc1, dest1);              // tmp2     = mc1 & dest1
+            const uint8x16_t blended1 = vornq_u8(blended1_tmp1, blended1_tmp2); // blended1 = tmp1 | !tmp2
 
             // second half
-            const int8x16_t colour2 = _mm_lddqu_si128(reinterpret_cast<const int8x16_t*>(colourSrc + 16 + colourStep));
-            const int8x16_t mask2 = _mm_lddqu_si128(reinterpret_cast<const int8x16_t*>(maskSrc + 16 + maskStep));
-            const int8x16_t dest2 = _mm_lddqu_si128(reinterpret_cast<const int8x16_t*>(dst + 16 + dstStep));
-            const int8x16_t mc2 = vandq_s8(colour2, mask2);
-            const int8x16_t saturate2 = vceqq_s8(mc2, zero128);
+            const uint8x16_t colour2 = vld1q_u8(reinterpret_cast<const uint8_t*>(colourSrc + 16 + colourStep));
+            const uint8x16_t mask2 = vld1q_u8(reinterpret_cast<const uint8_t*>(maskSrc + 16 + maskStep));
+            const uint8x16_t dest2 = vld1q_u8(reinterpret_cast<const uint8_t*>(dst + 16 + dstStep));
+            const uint8x16_t mc2 = vandq_u8(colour2, mask2);
+            const uint8x16_t saturate2 = vceqq_u8(mc2, zero128);
             // blended = (for each bit) if mc1 then satureate1 else dest1
-            const int8x16_t blended2_tmp1 = vandq_s8(mc2, saturate2);          // tmp1     = mc1 & saturate1
-            const int8x16_t blended2_tmp2 = vandq_s8(mc2, des21);              // tmp2     = mc1 & dest1
-            const int8x16_t blended2 = vornq_s8(blended2_tmp1, blended2_tmp2); // blended2 = tmp1 | !tmp2
+            const uint8x16_t blended2_tmp1 = vandq_u8(mc2, saturate2);          // tmp1     = mc1 & saturate1
+            const uint8x16_t blended2_tmp2 = vandq_u8(mc2, dest2);              // tmp2     = mc1 & dest1
+            const uint8x16_t blended2 = vornq_u8(blended2_tmp1, blended2_tmp2); // blended2 = tmp1 | !tmp2
 
-            _mm_storeu_si128(reinterpret_cast<int8x16_t*>(dst + dstStep), blended1);
-            _mm_storeu_si128(reinterpret_cast<int8x16_t*>(dst + 16 + dstStep), blended2);
+            vst1q_u8(reinterpret_cast<uint8_t*>(dst + dstStep), blended1);
+            vst1q_u8(reinterpret_cast<uint8_t*>(dst + 16 + dstStep), blended2);
         }
     }
     else
