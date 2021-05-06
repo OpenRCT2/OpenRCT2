@@ -24,8 +24,8 @@
 #include <random>
 
 #if defined(__linux__) && (defined(OPENRCT2_ARM) || defined(OPENRCT2_AARCH64))
-#include <sys/auxv.h>
-#include <asm/hwcap.h>
+#    include <asm/hwcap.h>
+#    include <sys/auxv.h>
 #endif
 
 int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres)
@@ -279,14 +279,13 @@ bool avx2_available()
 
 bool neon_available()
 {
-#   if defined(__linux__) && defined(OPENRCT2_ARM)
+#if defined(__linux__) && defined(OPENRCT2_ARM)
     return getauxval(AT_HWCAP) & HWCAP_NEON;
-#   elif defined(__linux__) && defined(OPENRCT2_AARCH64)
+#elif defined(__linux__) && defined(OPENRCT2_AARCH64)
     return getauxval(AT_HWCAP) & HWCAP_ASIMD;
-#   endif
+#endif
     return false;
 }
-
 
 static bool bitcount_popcnt_available()
 {

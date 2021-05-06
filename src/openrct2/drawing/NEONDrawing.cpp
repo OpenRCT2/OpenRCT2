@@ -73,5 +73,4 @@ void mask_neon(
     openrct2_assert(false, "ARM NEON function called on a CPU that doesn't support NEON");
 }
 
-#endif // __NEON__
-
+#endif // defined(__ARM_NEON__) || defined(__ARM_NEON)
