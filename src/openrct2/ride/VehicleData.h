@@ -19,7 +19,7 @@ extern const uint8_t* Rotation3TimeToSpriteMaps[];
 struct top_spin_time_to_sprite_map
 {
     uint8_t arm_rotation;
-    uint8_t bank_rotation;
+    uint8_t Roll;
 };
 
 extern const top_spin_time_to_sprite_map* TopSpinTimeToSpriteMaps[];

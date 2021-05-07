@@ -185,7 +185,7 @@ static void paint_magic_carpet_structure(
     uint32_t swingImageId = 0;
     if (vehicle != nullptr)
     {
-        swingImageId = vehicle->vehicle_sprite_type;
+        swingImageId = vehicle->Pitch;
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }

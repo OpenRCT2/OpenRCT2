@@ -53,7 +53,7 @@ static void paint_haunted_house_structure(
     {
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
-        frameNum = vehicle->vehicle_sprite_type;
+        frameNum = vehicle->Pitch;
     }
 
     uint32_t imageId = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];

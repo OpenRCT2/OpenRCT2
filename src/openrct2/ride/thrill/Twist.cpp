@@ -44,7 +44,7 @@ static void paint_twist_structure(
     if (vehicle != nullptr)
     {
         frameNum += (vehicle->sprite_direction >> 3) << 4;
-        frameNum += vehicle->vehicle_sprite_type;
+        frameNum += vehicle->Pitch;
         frameNum = frameNum % 216;
     }
 

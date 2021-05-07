@@ -66,8 +66,8 @@ static void top_spin_paint_vehicle(
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
 
-        armRotation = vehicle->vehicle_sprite_type;
-        seatRotation = vehicle->bank_rotation;
+        armRotation = vehicle->Pitch;
+        seatRotation = vehicle->Roll;
     }
 
     boundBoxOffsetX = al + 16;

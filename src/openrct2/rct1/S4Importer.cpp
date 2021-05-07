@@ -2699,8 +2699,8 @@ template<> void S4Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& srcBase
     dst->var_CE = src->var_CE;
     dst->var_D3 = src->var_D3;
     dst->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    dst->vehicle_sprite_type = src->vehicle_sprite_type;
-    dst->bank_rotation = src->bank_rotation;
+    dst->Pitch = src->Pitch;
+    dst->Roll = src->Roll;
 
     // Seat rotation was not in RCT1
     dst->target_seat_rotation = DEFAULT_SEAT_ROTATION;

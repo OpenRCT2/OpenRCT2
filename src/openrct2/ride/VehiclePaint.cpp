@@ -1370,7 +1370,7 @@ static void vehicle_sprite_0(
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     // 0x009A3DE4:
-    switch (vehicle->bank_rotation)
+    switch (vehicle->Roll)
     {
         case 0:
             vehicle_sprite_0_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1527,7 +1527,7 @@ static void vehicle_sprite_1(
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     // 0x009A3C04:
-    switch (vehicle->bank_rotation)
+    switch (vehicle->Roll)
     {
         case 0:
             vehicle_sprite_1_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1715,7 +1715,7 @@ static void vehicle_sprite_2(
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     // 0x009A3CA4:
-    switch (vehicle->bank_rotation)
+    switch (vehicle->Roll)
     {
         case 0:
             vehicle_sprite_2_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1907,7 +1907,7 @@ static void vehicle_sprite_5(
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     // 0x009A3C54:
-    switch (vehicle->bank_rotation)
+    switch (vehicle->Roll)
     {
         case 0:
             vehicle_sprite_5_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2098,7 +2098,7 @@ static void vehicle_sprite_6(
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     // 0x009A3CF4:
-    switch (vehicle->bank_rotation)
+    switch (vehicle->Roll)
     {
         case 0:
             vehicle_sprite_6_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2499,7 +2499,7 @@ static void vehicle_sprite_24(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS)
     {
-        int32_t eax = ((vehicle->vehicle_sprite_type - 24) * 4);
+        int32_t eax = ((vehicle->Pitch - 24) * 4);
         int32_t ecx = (imageDirection / 8) + eax + 144;
         int32_t ebx = (((imageDirection / 8) + eax) * vehicleEntry->base_num_frames) + vehicleEntry->corkscrew_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
@@ -2569,7 +2569,7 @@ static void vehicle_sprite_50(
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     // 0x009A3D44:
-    switch (vehicle->bank_rotation)
+    switch (vehicle->Roll)
     {
         case 0:
             vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2727,7 +2727,7 @@ static void vehicle_sprite_53(
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     // 0x009A3D94:
-    switch (vehicle->bank_rotation)
+    switch (vehicle->Roll)
     {
         case 0:
             vehicle_sprite_53_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2995,7 +2995,7 @@ static void vehicle_visual_splash2_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3018,7 +3018,7 @@ static void vehicle_visual_splash3_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3050,7 +3050,7 @@ static void vehicle_visual_splash4_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3078,7 +3078,7 @@ static void vehicle_visual_splash5_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3122,9 +3122,9 @@ void vehicle_visual_default(
     paint_session* session, int32_t imageDirection, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->vehicle_sprite_type < std::size(vehicle_sprite_funcs))
+    if (vehicle->Pitch < std::size(vehicle_sprite_funcs))
     {
-        vehicle_sprite_funcs[vehicle->vehicle_sprite_type](session, vehicle, imageDirection, z, vehicleEntry);
+        vehicle_sprite_funcs[vehicle->Pitch](session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 

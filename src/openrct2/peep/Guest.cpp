@@ -2432,7 +2432,7 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
 
     if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
     {
-        chosen_seat = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
+        chosen_seat = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
         if (vehicle->next_free_seat & 1)
         {
             chosen_seat++;
@@ -2547,7 +2547,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
 
         if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
         {
-            uint8_t position = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
+            uint8_t position = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
             if (vehicle->peep[position] != SPRITE_INDEX_NULL)
                 continue;
         }

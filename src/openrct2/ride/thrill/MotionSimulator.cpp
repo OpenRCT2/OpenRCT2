@@ -64,7 +64,7 @@ static void paint_motionsimulator_vehicle(
         }
         else
         {
-            simulatorImageId += vehicle->vehicle_sprite_type * 4;
+            simulatorImageId += vehicle->Pitch * 4;
         }
     }
 
