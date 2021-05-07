@@ -3664,6 +3664,10 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     vehicle = vehicle->GetCar(CurrentCar);
+    if (vehicle == nullptr)
+    {
+        return;
+    }
 
     ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
@@ -3981,6 +3985,10 @@ void Guest::UpdateRideEnterVehicle()
         if (vehicle != nullptr)
         {
             vehicle = vehicle->GetCar(CurrentCar);
+            if (vehicle == nullptr)
+            {
+                return;
+            }
 
             if (ride->mode != RideMode::ForwardRotation && ride->mode != RideMode::BackwardRotation)
             {
