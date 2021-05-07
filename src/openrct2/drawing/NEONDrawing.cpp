@@ -34,10 +34,8 @@ void mask_neon(
             const uint8x16_t dest1 = vld1q_u8(reinterpret_cast<const uint8_t*>(dst + dstStep));
             const uint8x16_t mc1 = vandq_u8(colour1, mask1);
             const uint8x16_t saturate1 = vceqq_u8(mc1, zero128);
-            // blended = (for each bit) if mc1 then satureate1 else dest1
-            const uint8x16_t blended1_tmp1 = vandq_u8(mc1, saturate1);          // tmp1     = mc1 & saturate1
-            const uint8x16_t blended1_tmp2 = vandq_u8(mc1, dest1);              // tmp2     = mc1 & dest1
-            const uint8x16_t blended1 = vornq_u8(blended1_tmp1, blended1_tmp2); // blended1 = tmp1 | !tmp2
+            // blended = (for each bit) if saturate1 then dest1 else mc1
+            const uint8x16_t blended1 = vbslq_u8(saturate1, dest1, mc1);
 
             // second half
             const uint8x16_t colour2 = vld1q_u8(reinterpret_cast<const uint8_t*>(colourSrc + 16 + colourStep));
@@ -45,10 +43,8 @@ void mask_neon(
             const uint8x16_t dest2 = vld1q_u8(reinterpret_cast<const uint8_t*>(dst + 16 + dstStep));
             const uint8x16_t mc2 = vandq_u8(colour2, mask2);
             const uint8x16_t saturate2 = vceqq_u8(mc2, zero128);
-            // blended = (for each bit) if mc1 then satureate1 else dest1
-            const uint8x16_t blended2_tmp1 = vandq_u8(mc2, saturate2);          // tmp1     = mc1 & saturate1
-            const uint8x16_t blended2_tmp2 = vandq_u8(mc2, dest2);              // tmp2     = mc1 & dest1
-            const uint8x16_t blended2 = vornq_u8(blended2_tmp1, blended2_tmp2); // blended2 = tmp1 | !tmp2
+            // blended = (for each bit) if saturate1 then dest1 else mc1
+            const uint8x16_t blended2 = vbslq_u8(saturate2, dest2, mc2);
 
             vst1q_u8(reinterpret_cast<uint8_t*>(dst + dstStep), blended1);
             vst1q_u8(reinterpret_cast<uint8_t*>(dst + 16 + dstStep), blended2);
