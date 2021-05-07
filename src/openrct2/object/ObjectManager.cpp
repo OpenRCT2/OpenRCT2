@@ -14,6 +14,7 @@
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
+#include "../ride/RideData.h"
 #include "../util/Util.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
@@ -37,7 +38,15 @@ class ObjectManager final : public IObjectManager
 private:
     IObjectRepository& _objectRepository;
     std::vector<std::unique_ptr<Object>> _loadedObjects;
-    std::array<std::vector<ObjectEntryIndex>, RIDE_TYPE_COUNT> _rideTypeToObjectMap;
+
+    struct _mapSortFunctor
+    {
+        bool operator()(const RideTypeDescriptor& rtd1, const RideTypeDescriptor& rtd2) const
+        {
+            return rtd1.ID < rtd2.ID;
+        }
+    };
+    std::map<RideTypeDescriptor, std::vector<ObjectEntryIndex>, _mapSortFunctor> _rideTypeToObjectMap;
 
     // Used to return a safe empty vector back from GetAllRideEntries, can be removed when std::span is available
     std::vector<ObjectEntryIndex> _nullRideTypeEntries;
@@ -314,13 +323,8 @@ public:
         }
     }
 
-    const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) override
+    const std::vector<ObjectEntryIndex>& GetAllRideEntries(const RideTypeDescriptor& rideType) override
     {
-        if (rideType >= RIDE_TYPE_COUNT)
-        {
-            // Return an empty vector
-            return _nullRideTypeEntries;
-        }
         return _rideTypeToObjectMap[rideType];
     }
 
@@ -752,7 +756,7 @@ private:
         // Clear all ride objects
         for (auto& v : _rideTypeToObjectMap)
         {
-            v.clear();
+            v.second.clear();
         }
 
         // Build object lists
@@ -767,11 +771,8 @@ private:
                 {
                     for (auto rideType : entry->ride_type)
                     {
-                        if (rideType < _rideTypeToObjectMap.size())
-                        {
-                            auto& v = _rideTypeToObjectMap[rideType];
-                            v.push_back(static_cast<ObjectEntryIndex>(i));
-                        }
+                        auto& v = _rideTypeToObjectMap[GetRideTypeDescriptor(rideType)];
+                        v.push_back(static_cast<ObjectEntryIndex>(i));
                     }
                 }
             }

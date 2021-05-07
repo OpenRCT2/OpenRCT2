@@ -35,7 +35,7 @@ struct TrackRepositoryItem
 {
     std::string Name;
     std::string Path;
-    uint8_t RideType = RIDE_TYPE_NULL;
+    RideTypeDescriptor RideType = DummyRTD;
     std::string ObjectEntry;
     uint32_t Flags = 0;
 };
@@ -81,7 +81,7 @@ public:
             TrackRepositoryItem item;
             item.Name = GetNameFromTrackPath(path);
             item.Path = path;
-            item.RideType = td6->type;
+            item.RideType = GetRideTypeDescriptor(td6->type);
             item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
             item.Flags = 0;
             if (IsTrackReadOnly(path))
@@ -101,7 +101,7 @@ protected:
     {
         ds << item.Name;
         ds << item.Path;
-        ds << item.RideType;
+        ds << item.RideType.ID;
         ds << item.ObjectEntry;
         ds << item.Flags;
     }
@@ -138,7 +138,8 @@ public:
      * @param entry The entry name to count the track list of. Leave empty to count track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const override
+
+    size_t GetCountForObjectEntry(const RideTypeDescriptor& rideType, const std::string& entry) const override
     {
         size_t count = 0;
         const auto& repo = GetContext()->GetObjectRepository();
@@ -155,7 +156,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObjectLegacy(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (ori == nullptr || !rideType.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                     entryIsNotSeparate = true;
             }
 
@@ -179,7 +180,7 @@ public:
 
         for (const auto& item : _items)
         {
-            if (item.RideType != rideType)
+            if (item.RideType != GetRideTypeDescriptor(rideType))
             {
                 continue;
             }
@@ -285,7 +286,7 @@ private:
         std::sort(_items.begin(), _items.end(), [](const TrackRepositoryItem& a, const TrackRepositoryItem& b) -> bool {
             if (a.RideType != b.RideType)
             {
-                return a.RideType < b.RideType;
+                return a.RideType.ID < b.RideType.ID;
             }
             return strlogicalcmp(a.Name.c_str(), b.Name.c_str()) < 0;
         });

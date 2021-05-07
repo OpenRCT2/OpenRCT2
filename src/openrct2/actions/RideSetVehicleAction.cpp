@@ -238,7 +238,7 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
         }
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
+        auto& rideEntries = objManager.GetAllRideEntries(GetRideTypeDescriptor(rideTypeIterator));
         for (auto rideEntryIndex : rideEntries)
         {
             if (rideEntryIndex == _value)

@@ -2080,7 +2080,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
         if (selectionShouldBeExpanded && (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
             continue;
 
-        auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
+        auto& rideEntries = objManager.GetAllRideEntries(GetRideTypeDescriptor(rideTypeIterator));
         for (auto rideEntryIndex : rideEntries)
         {
             auto currentRideEntry = get_ride_entry(rideEntryIndex);

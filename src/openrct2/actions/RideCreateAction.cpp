@@ -87,7 +87,7 @@ GameActions::Result::Ptr RideCreateAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_RIDE_TYPE);
     }
 
-    int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
+    int32_t rideEntryIndex = ride_get_entry_index(GetRideTypeDescriptor(_rideType), _subType);
     if (rideEntryIndex >= MAX_RIDE_OBJECTS)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_RIDE_TYPE);
@@ -119,7 +119,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     rct_ride_entry* rideEntry;
     auto res = MakeResult();
 
-    int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
+    int32_t rideEntryIndex = ride_get_entry_index(GetRideTypeDescriptor(_rideType), _subType);
     auto rideIndex = GetNextFreeRideId();
 
     res->rideIndex = rideIndex;
