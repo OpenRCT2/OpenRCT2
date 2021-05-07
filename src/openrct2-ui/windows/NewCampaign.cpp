@@ -109,6 +109,7 @@ private:
             }
         }
 
+        ShopItems.clear();
         for (auto i = 0; i < EnumValue(ShopItem::Count); i++)
         {
             if (items[i])
