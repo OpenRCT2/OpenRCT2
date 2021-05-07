@@ -42,8 +42,8 @@ struct rct_vehicle_info
     int16_t y;                   // 0x02
     int16_t z;                   // 0x04
     uint8_t direction;           // 0x06
-    uint8_t Pitch; // 0x07
-    uint8_t Roll;       // 0x08
+    uint8_t Pitch;               // 0x07
+    uint8_t Roll;                // 0x08
 };
 
 struct SoundIdVolume;
