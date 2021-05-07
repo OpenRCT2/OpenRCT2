@@ -16,6 +16,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor MotionSimulatorRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_MOTION_SIMULATOR),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, 0),

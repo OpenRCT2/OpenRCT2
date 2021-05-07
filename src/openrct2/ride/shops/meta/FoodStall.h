@@ -16,6 +16,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor FoodStallRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_FOOD_STALL),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_SHOP),
     SET_FIELD(EnabledTrackPieces, 0),

@@ -17,6 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor MiniGolfRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_MINI_GOLF),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_MINI_GOLF_HOLE)),

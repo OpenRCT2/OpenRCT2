@@ -17,6 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_REVERSE_FREEFALL_COASTER),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_REVERSE_FREEFALL) | (1ULL << TRACK_ON_RIDE_PHOTO)),

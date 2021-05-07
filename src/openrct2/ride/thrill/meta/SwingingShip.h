@@ -17,6 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor SwingingShipRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_SWINGING_SHIP),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, 0),
