@@ -94,7 +94,6 @@ private:
     void GetShopItems()
     {
         std::bitset<EnumValue(ShopItem::Count)> items = {};
-        ShopItems.clear();
         for (auto& curRide : GetRideManager())
         {
             auto rideEntry = curRide.GetRideEntry();
@@ -110,6 +109,7 @@ private:
             }
         }
 
+        ShopItems.clear();
         for (auto i = 0; i < EnumValue(ShopItem::Count); i++)
         {
             if (items[i])
