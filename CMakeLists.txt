@@ -401,22 +401,28 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
     install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
     if (DOWNLOAD_TITLE_SEQUENCES)
         # Checks if this version of the title sequences are already installed, updates if necessary
+        # if /data/sequence exists, it will overwrite this anyways (see `install(DIRECTORY "data/" ...)` below)
+        # therefore, the existence of that directory will skip this download
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
                 ZIP_VERSION ${TITLE_SEQUENCE_VERSION}
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/sequence/
+                SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/sequence/
                 ZIP_URL ${TITLE_SEQUENCE_URL}
                 SHA1 ${TITLE_SEQUENCE_SHA1}
             )")
     endif ()
     if (DOWNLOAD_OBJECTS)
         # Checks if this version of the objects are already installed, updates if necessary
+        # if /data/object exists, it will overwrite this anyways (see `install(DIRECTORY "data/" ...)` below)
+        # therefore, the existence of that directory will skip this download
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
                 ZIP_VERSION ${OBJECTS_VERSION}
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/object/
+                SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/object/
                 ZIP_URL ${OBJECTS_URL}
                 SHA1 ${OBJECTS_SHA1}
             )")
