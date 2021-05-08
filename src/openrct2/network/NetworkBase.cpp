@@ -504,12 +504,12 @@ void NetworkBase::UpdateServer()
     for (auto& connection : client_connection_list)
     {
         // This can be called multiple times before the connection is removed.
-        if (connection->IsDisconnected)
+        if (!connection->IsValid())
             continue;
 
         if (!ProcessConnection(*connection))
         {
-            connection->IsDisconnected = true;
+            connection->Disconnect();
         }
         else
         {
@@ -716,12 +716,6 @@ void NetworkBase::SendPacketToClients(const NetworkPacket& packet, bool front, b
 {
     for (auto& client_connection : client_connection_list)
     {
-        if (client_connection->IsDisconnected)
-        {
-            // Client will be removed at the end of the tick, don't bother.
-            continue;
-        }
-
         if (gameCmd)
         {
             // If marked as game command we can not send the packet to connections that are not fully connected.
@@ -826,7 +820,7 @@ void NetworkBase::KickPlayer(int32_t playerId)
             char str_disconnect_msg[256];
             format_string(str_disconnect_msg, 256, STR_MULTIPLAYER_KICKED_REASON, nullptr);
             Server_Send_SETDISCONNECTMSG(*client_connection, str_disconnect_msg);
-            client_connection->Socket->Disconnect();
+            client_connection->Disconnect();
             break;
         }
     }
@@ -841,7 +835,7 @@ void NetworkBase::ServerClientDisconnected()
 {
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
-        _serverConnection->Socket->Disconnect();
+        _serverConnection->Disconnect();
     }
 }
 
@@ -1356,7 +1350,7 @@ void NetworkBase::Server_Send_AUTH(NetworkConnection& connection)
     connection.QueuePacket(std::move(packet));
     if (connection.AuthStatus != NetworkAuth::Ok && connection.AuthStatus != NetworkAuth::RequirePassword)
     {
-        connection.Socket->Disconnect();
+        connection.Disconnect();
     }
 }
 
@@ -1382,7 +1376,7 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
         if (connection)
         {
             connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
-            connection->Socket->Disconnect();
+            connection->Disconnect();
         }
         return;
     }
@@ -1461,7 +1455,7 @@ void NetworkBase::Server_Send_CHAT(const char* text, const std::vector<uint8_t>&
         for (auto playerId : playerIds)
         {
             auto conn = GetPlayerConnection(playerId);
-            if (conn != nullptr && !conn->IsDisconnected)
+            if (conn != nullptr)
             {
                 conn->QueuePacket(packet);
             }
@@ -1674,7 +1668,7 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
             case NetworkReadPacket::Success:
                 // done reading in packet
                 ProcessPacket(connection, connection.InboundPacket);
-                if (connection.Socket == nullptr)
+                if (!connection.IsValid())
                 {
                     return false;
                 }
@@ -1687,8 +1681,6 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
                 break;
         }
     } while (packetStatus == NetworkReadPacket::Success);
-
-    connection.SendQueuedPackets();
 
     if (!connection.ReceivedPacketRecently())
     {
@@ -1920,17 +1912,21 @@ void NetworkBase::ProcessDisconnectedClients()
     for (auto it = client_connection_list.begin(); it != client_connection_list.end();)
     {
         auto& connection = *it;
-        if (connection->IsDisconnected)
-        {
-            ServerClientDisconnected(connection);
-            RemovePlayer(connection);
 
-            it = client_connection_list.erase(it);
-        }
-        else
+        if (!connection->ShouldDisconnect)
         {
             it++;
+            continue;
         }
+
+        // Make sure to send all remaining packets out before disconnecting.
+        connection->SendQueuedPackets();
+        connection->Socket->Disconnect();
+
+        ServerClientDisconnected(connection);
+        RemovePlayer(connection);
+
+        it = client_connection_list.erase(it);
     }
 }
 
@@ -2133,7 +2129,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
     {
         log_error("Failed to load key %s", keyPath);
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-        connection.Socket->Disconnect();
+        connection.Disconnect();
         return;
     }
 
@@ -2150,7 +2146,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
     {
         log_error("Failed to sign server's challenge.");
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-        connection.Socket->Disconnect();
+        connection.Disconnect();
         return;
     }
     // Don't keep private key in memory. There's no need and it may get leaked
@@ -2221,37 +2217,37 @@ void NetworkBase::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             break;
         case NetworkAuth::BadName:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
-            connection.Socket->Disconnect();
+            connection.Disconnect();
             break;
         case NetworkAuth::BadVersion:
         {
             const char* version = packet.ReadString();
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &version);
-            connection.Socket->Disconnect();
+            connection.Disconnect();
             break;
         }
         case NetworkAuth::BadPassword:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
-            connection.Socket->Disconnect();
+            connection.Disconnect();
             break;
         case NetworkAuth::VerificationFailure:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-            connection.Socket->Disconnect();
+            connection.Disconnect();
             break;
         case NetworkAuth::Full:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
-            connection.Socket->Disconnect();
+            connection.Disconnect();
             break;
         case NetworkAuth::RequirePassword:
             context_open_window_view(WV_NETWORK_PASSWORD);
             break;
         case NetworkAuth::UnknownKeyDisallowed:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
-            connection.Socket->Disconnect();
+            connection.Disconnect();
             break;
         default:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_RECEIVED_INVALID_DATA);
-            connection.Socket->Disconnect();
+            connection.Disconnect();
             break;
     }
 }
@@ -2311,7 +2307,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
     if (totalObjects > OBJECT_ENTRY_COUNT)
     {
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_INVALID_REQUEST);
-        connection.Socket->Disconnect();
+        connection.Disconnect();
         log_warning("Server sent invalid amount of objects");
         return;
     }
@@ -2460,7 +2456,7 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
     if (size > OBJECT_ENTRY_COUNT)
     {
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_CLIENT_INVALID_REQUEST);
-        connection.Socket->Disconnect();
+        connection.Disconnect();
         std::string playerName = "(unknown)";
         if (connection.Player)
         {
