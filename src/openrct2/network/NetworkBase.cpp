@@ -2496,6 +2496,8 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
 {
     if (connection.AuthStatus != NetworkAuth::Ok)
     {
+        const char* hostName = connection.Socket->GetHostName();
+
         const char* gameversion = packet.ReadString();
         const char* name = packet.ReadString();
         const char* password = packet.ReadString();
@@ -2531,10 +2533,10 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
                 const std::string hash = connection.Key.PublicKeyHash();
                 if (verified)
                 {
-                    log_verbose("Signature verification ok. Hash %s", hash.c_str());
+                    log_verbose("Connection %s: Signature verification ok. Hash %s", hostName, hash.c_str());
                     if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr)
                     {
-                        log_verbose("Hash %s, not known", hash.c_str());
+                        log_verbose("Connection %s: Hash %s, not known", hostName, hash.c_str());
                         connection.AuthStatus = NetworkAuth::UnknownKeyDisallowed;
                     }
                     else
@@ -2545,13 +2547,13 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
                 else
                 {
                     connection.AuthStatus = NetworkAuth::VerificationFailure;
-                    log_verbose("Signature verification failed!");
+                    log_verbose("Connection %s: Signature verification failed!", hostName);
                 }
             }
             catch (const std::exception&)
             {
                 connection.AuthStatus = NetworkAuth::VerificationFailure;
-                log_verbose("Signature verification failed, invalid data!");
+                log_verbose("Connection %s: Signature verification failed, invalid data!", hostName);
             }
         }
 
@@ -2564,26 +2566,31 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
         if (!gameversion || network_get_version() != gameversion)
         {
             connection.AuthStatus = NetworkAuth::BadVersion;
+            log_info("Connection %s: Bad version.", hostName);
         }
         else if (!name)
         {
             connection.AuthStatus = NetworkAuth::BadName;
+            log_info("Connection %s: Bad name.", connection.Socket->GetHostName());
         }
         else if (!passwordless)
         {
             if ((!password || strlen(password) == 0) && !_password.empty())
             {
                 connection.AuthStatus = NetworkAuth::RequirePassword;
+                log_info("Connection %s: Requires password.", hostName);
             }
             else if (password && _password != password)
             {
                 connection.AuthStatus = NetworkAuth::BadPassword;
+                log_info("Connection %s: Bad password.", hostName);
             }
         }
 
         if (static_cast<size_t>(gConfigNetwork.maxplayers) <= player_list.size())
         {
             connection.AuthStatus = NetworkAuth::Full;
+            log_info("Connection %s: Server is full.", hostName);
         }
         else if (connection.AuthStatus == NetworkAuth::Verified)
         {
@@ -2596,12 +2603,10 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             else
             {
                 connection.AuthStatus = NetworkAuth::VerificationFailure;
+                log_info("Connection %s: Denied by plugin.", hostName);
             }
         }
-        else if (connection.AuthStatus != NetworkAuth::RequirePassword)
-        {
-            log_error("Unknown failure (%d) while authenticating client", connection.AuthStatus);
-        }
+
         Server_Send_AUTH(connection);
     }
 }
