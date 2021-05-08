@@ -47,6 +47,10 @@
 #include <algorithm>
 #include <iterator>
 
+#ifdef OPENRCT2_MOCK_VEHICLE
+void hit_goto_callsite(std::string, int);
+#endif
+
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
@@ -929,6 +933,7 @@ template<typename T> int32_t Train<T>::Mass()
 
 bool Vehicle::SoundCanPlay() const
 {
+#ifndef OPENRCT2_MOCK_VEHICLE
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return false;
 
@@ -969,6 +974,7 @@ bool Vehicle::SoundCanPlay() const
 
     if (right < sprite_left || top < sprite_top)
         return false;
+#endif // OPENRCT2_MOCK_VEHICLE
 
     return true;
 }
@@ -979,6 +985,7 @@ bool Vehicle::SoundCanPlay() const
  */
 uint16_t Vehicle::GetSoundPriority() const
 {
+#ifndef OPENRCT2_MOCK_VEHICLE
     int32_t result = Train(this).Mass() + (std::abs(velocity) >> 13);
 
     for (const auto& vehicleSound : OpenRCT2::Audio::gVehicleSoundList)
@@ -991,11 +998,15 @@ uint16_t Vehicle::GetSoundPriority() const
     }
 
     return result;
+#else
+    return 0;
+#endif // OPENRCT2_MOCK_VEHICLE
 }
 
 OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority) const
 {
-    OpenRCT2::Audio::VehicleSoundParams param;
+    OpenRCT2::Audio::VehicleSoundParams param{};
+#ifndef OPENRCT2_MOCK_VEHICLE
     param.priority = priority;
     int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->viewPos.x;
     panX = panX / g_music_tracking_viewport->zoom;
@@ -1051,6 +1062,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
             param.volume = 0x30;
         }
     }
+#endif // OPENRCT2_MOCK_VEHICLE
     return param;
 }
 
@@ -1060,6 +1072,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
  */
 void Vehicle::UpdateSoundParams(std::vector<OpenRCT2::Audio::VehicleSoundParams>& vehicleSoundParamsList) const
 {
+#ifndef OPENRCT2_MOCK_VEHICLE
     if (!SoundCanPlay())
         return;
 
@@ -1088,8 +1101,10 @@ void Vehicle::UpdateSoundParams(std::vector<OpenRCT2::Audio::VehicleSoundParams>
             *soundParamIter = CreateSoundParam(soundPriority);
         }
     }
+#endif // OPENRCT2_MOCK_VEHICLE
 }
 
+#ifndef OPENRCT2_MOCK_VEHICLE
 static void vehicle_sounds_update_window_setup()
 {
     g_music_tracking_viewport = nullptr;
@@ -1281,6 +1296,7 @@ static void UpdateSound(
         }
     }
 }
+#endif // OPENRCT2_MOCK_VEHICLE
 
 /**
  *
@@ -1288,6 +1304,7 @@ static void UpdateSound(
  */
 void vehicle_sounds_update()
 {
+#ifndef OPENRCT2_MOCK_VEHICLE
     if (!OpenRCT2::Audio::IsAvailable())
         return;
 
@@ -1365,6 +1382,7 @@ void vehicle_sounds_update()
                 vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->OtherSound, panVol);
         }
     }
+#endif // OPENRCT2_MOCK_VEHICLE
 }
 
 /**
@@ -1373,11 +1391,13 @@ void vehicle_sounds_update()
  */
 void vehicle_update_all()
 {
+#ifndef OPENRCT2_MOCK_VEHICLE
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return;
+#endif // OPENRCT2_MOCK_VEHICLE
 
     for (auto vehicle : TrainManager::View())
     {
@@ -3579,9 +3599,11 @@ void Vehicle::UpdateCollisionSetup()
 
         if (curRide->status != RIDE_STATUS_CLOSED)
         {
+#ifndef OPENRCT2_MOCK_VEHICLE
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = RideSetStatusAction(curRide->id, RIDE_STATUS_CLOSED);
             GameActions::ExecuteNested(&gameAction);
+#endif // OPENRCT2_MOCK_VEHICLE
         }
     }
 
@@ -3951,6 +3973,9 @@ void Vehicle::UpdateArriving()
     {
         if (curRide->mode == RideMode::Race && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         {
+#ifdef OPENRCT2_MOCK_VEHICLE
+            hit_goto_callsite("loc_6D8E36", 1);
+#endif
             goto loc_6D8E36;
         }
 
@@ -5341,9 +5366,11 @@ void Vehicle::CrashOnLand()
 
         if (curRide->status != RIDE_STATUS_CLOSED)
         {
+#ifndef OPENRCT2_MOCK_VEHICLE
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = RideSetStatusAction(curRide->id, RIDE_STATUS_CLOSED);
             GameActions::ExecuteNested(&gameAction);
+#endif // OPENRCT2_MOCK_VEHICLE
         }
     }
     curRide->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
@@ -5403,9 +5430,11 @@ void Vehicle::CrashOnWater()
 
         if (curRide->status != RIDE_STATUS_CLOSED)
         {
+#ifndef OPENRCT2_MOCK_VEHICLE
             // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = RideSetStatusAction(curRide->id, RIDE_STATUS_CLOSED);
             GameActions::ExecuteNested(&gameAction);
+#endif // OPENRCT2_MOCK_VEHICLE
         }
     }
     curRide->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
@@ -8707,7 +8736,7 @@ loc_6DBA33:;
  *
  *
  */
-void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, rct_ride_entry_vehicle* vehicleEntry)
+void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, bool vehicleHasFlag25, rct_ride_entry_vehicle* vehicleEntry)
 {
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
     TileElement* tileElement = nullptr;
@@ -8991,7 +9020,7 @@ loc_6DC743:
     bank_rotation = moveInfo->bank_rotation;
     vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
-    if (rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_25)
+    if (vehicleHasFlag25)
     {
         if (vehicle_sprite_type != 0)
         {
@@ -9107,7 +9136,7 @@ loc_6DCC2C:
     bank_rotation = moveInfo->bank_rotation;
     vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
-    if (rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_25)
+    if (vehicleHasFlag25)
     {
         if (vehicle_sprite_type != 0)
         {
@@ -9258,7 +9287,8 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
 
     for (Vehicle* vehicle = _vehicleFrontVehicle; vehicle != nullptr;)
     {
-        vehicle->UpdateTrackMotionMiniGolfVehicle(curRide, rideEntry, vehicleEntry);
+        bool vehicleHasFlag25 = rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_25;
+        vehicle->UpdateTrackMotionMiniGolfVehicle(curRide, vehicleHasFlag25, vehicleEntry);
         if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
