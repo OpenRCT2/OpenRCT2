@@ -247,10 +247,11 @@ void research_finish_item(ResearchItem* researchItem)
 
             // If a vehicle is the first to be invented for its ride type, show the ride type/group name.
             // Independently listed vehicles (like all flat rides and shops) should always be announced as such.
-            if (GetRideTypeDescriptor(base_ride_type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+            const auto& rideTypeDescriptor = GetRideTypeDescriptor(base_ride_type);
+            if (rideTypeDescriptor.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
                 || researchItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
             {
-                RideNaming naming = get_ride_naming(base_ride_type, rideEntry);
+                RideNaming naming = get_ride_naming(rideTypeDescriptor, rideEntry);
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
                 ft.Add<rct_string_id>(naming.Name);
             }
@@ -259,7 +260,7 @@ void research_finish_item(ResearchItem* researchItem)
             else
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_VEHICLE_AVAILABLE;
-                RideNaming baseRideNaming = get_ride_naming(base_ride_type, rideEntry);
+                RideNaming baseRideNaming = get_ride_naming(rideTypeDescriptor, rideEntry);
 
                 ft.Add<rct_string_id>(baseRideNaming.Name);
                 ft.Add<rct_string_id>(rideEntry->naming.Name);

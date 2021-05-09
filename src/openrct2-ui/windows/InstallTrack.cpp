@@ -246,7 +246,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (objectEntry != nullptr)
         {
             auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
-            auto rideName = get_ride_naming(td6->type, get_ride_entry(groupIndex));
+            auto rideName = get_ride_naming(GetRideTypeDescriptor(td6->type), get_ride_entry(groupIndex));
             ft.Add<rct_string_id>(rideName.Name);
         }
         else

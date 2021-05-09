@@ -315,6 +315,37 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER         */ SingleRailRollerCoasterRTD,
 };
 
+constexpr const RideTypeDescriptor RideTypeDescriptorsByViewOrder[] = {
+    // Transport rides
+    MiniatureRailwayRTD, MonorailRTD, SuspendedMonorailRTD, ChairliftRTD, LiftRTD,
+
+    // Roller Coasters
+    SideFrictionRollerCoasterRTD, VirginiaReelRTD, ReverserRollerCoasterRTD, WoodenRollerCoasterRTD, WoodenWildMouseRTD,
+    SteelWildMouseRTD, SpinningWildMouseRTD, InvertedHairpinCoasterRTD, JuniorRollerCoasterRTD, ClassicMiniRollerCoasterRTD,
+    MiniRollerCoasterRTD, SpiralRollerCoasterRTD, MineTrainCoasterRTD, LoopingRollerCoasterRTD, StandUpRollerCoasterRTD,
+    CorkscrewRollerCoasterRTD, HypercoasterRTD, LIMLaunchedRollerCoasterRTD, TwisterRollerCoasterRTD, HyperTwisterRTD,
+    GigaCoasterRTD, SuspendedSwingingCoasterRTD, CompactInvertedCoasterRTD, InvertedRollerCoasterRTD, InvertedImpulseCoasterRTD,
+    MiniSuspendedCoasterRTD, SteeplechaseRTD, BobsleighCoasterRTD, MineRideRTD, HeartlineTwisterCoasterRTD,
+    LayDownRollerCoasterRTD, FlyingRollerCoasterRTD, MultiDimensionRollerCoasterRTD, ReverseFreefallCoasterRTD,
+    VerticalDropCoasterRTD, AirPoweredVerticalCoasterRTD, HybridCoasterRTD, SingleRailRollerCoasterRTD,
+
+    // Gentle rides
+    MonorailCyclesRTD, CrookedHouseRTD, HauntedHouseRTD, FerrisWheelRTD, MazeRTD, MerryGoRoundRTD, MiniGolfRTD,
+    ObservationTowerRTD, CarRideRTD, MonsterTrucksRTD, MiniHelicoptersRTD, SpiralSlideRTD, DodgemsRTD, SpaceRingsRTD, CircusRTD,
+    GhostTrainRTD, FlyingSaucersRTD,
+
+    // Thrill rides
+    TwistRTD, MagicCarpetRTD, LaunchedFreefallRTD, SwingingShipRTD, GoKartsRTD, SwingingInverterShipRTD, MotionSimulatorRTD,
+    CinemaRTD, TopSpinRTD, RotoDropRTD, EnterpriseRTD,
+
+    // Water rides
+    DinghySlideRTD, LogFlumeRTD, RiverRapidsRTD, SplashBoatsRTD, SubmarineRideRTD, BoatHireRTD, RiverRaftsRTD, WaterCoasterRTD,
+
+    // Shops / stalls
+    FoodStallRTD, DummyRTD, DrinkStallRTD, DummyRTD, ShopRTD, DummyRTD, InformationKioskRTD, FirstAidRTD, CashMachineRTD,
+    ToiletsRTD
+};
+
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const
 {
     return Flags & flag;
@@ -355,4 +386,14 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
     }
     log_error("Cannot get Research Category of invalid RideCategory");
     return ResearchCategory::Transport;
+}
+
+bool RideTypeDescriptor::operator==(const RideTypeDescriptor& other) const
+{
+    return this->ID == other.ID;
+}
+
+bool RideTypeDescriptor::operator!=(const RideTypeDescriptor& other) const
+{
+    return !(*this == other);
 }

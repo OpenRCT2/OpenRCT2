@@ -17,6 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor SpiralSlideRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_SPIRAL_SLIDE),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, 0),

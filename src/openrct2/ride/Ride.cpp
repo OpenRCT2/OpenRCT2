@@ -5343,11 +5343,11 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
+RideNaming get_ride_naming(const RideTypeDescriptor& rideType, rct_ride_entry* rideEntry)
 {
-    if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    if (!rideType.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        return GetRideTypeDescriptor(rideType).Naming;
+        return rideType.Naming;
     }
     else
     {
@@ -7074,7 +7074,7 @@ bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category)
     return GetRideTypeDescriptor(rideType).Category == category;
 }
 
-int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
+int32_t ride_get_entry_index(const RideTypeDescriptor& rideType, int32_t rideSubType)
 {
     int32_t subType = rideSubType;
 
@@ -7099,7 +7099,7 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
                     continue;
                 }
 
-                if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (!rideType.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                 {
                     subType = rideEntryIndex;
                     break;

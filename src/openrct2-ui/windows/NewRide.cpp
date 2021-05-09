@@ -42,119 +42,8 @@ static uint8_t _windowNewRideCurrentTab;
 static RideSelection _windowNewRideHighlightedItem[6];
 static RideSelection _windowNewRideListItems[384];
 
-#pragma region Ride type view order
-
-// clang-format off
-/**
- * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
- * type are kept together.
- */
-static constexpr const char RideTypeViewOrder[] = {
-    // Transport rides
-    RIDE_TYPE_MINIATURE_RAILWAY,
-    RIDE_TYPE_MONORAIL,
-    RIDE_TYPE_SUSPENDED_MONORAIL,
-    RIDE_TYPE_CHAIRLIFT,
-    RIDE_TYPE_LIFT,
-
-    // Roller Coasters
-    RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER,
-    RIDE_TYPE_VIRGINIA_REEL,
-    RIDE_TYPE_REVERSER_ROLLER_COASTER,
-    RIDE_TYPE_WOODEN_ROLLER_COASTER,
-    RIDE_TYPE_WOODEN_WILD_MOUSE,
-    RIDE_TYPE_STEEL_WILD_MOUSE,
-    RIDE_TYPE_SPINNING_WILD_MOUSE,
-    RIDE_TYPE_INVERTED_HAIRPIN_COASTER,
-    RIDE_TYPE_JUNIOR_ROLLER_COASTER,
-    RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,
-    RIDE_TYPE_MINI_ROLLER_COASTER,
-    RIDE_TYPE_SPIRAL_ROLLER_COASTER,
-    RIDE_TYPE_MINE_TRAIN_COASTER,
-    RIDE_TYPE_LOOPING_ROLLER_COASTER,
-    RIDE_TYPE_STAND_UP_ROLLER_COASTER,
-    RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
-    RIDE_TYPE_HYPERCOASTER,
-    RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER,
-    RIDE_TYPE_TWISTER_ROLLER_COASTER,
-    RIDE_TYPE_HYPER_TWISTER,
-    RIDE_TYPE_GIGA_COASTER,
-    RIDE_TYPE_SUSPENDED_SWINGING_COASTER,
-    RIDE_TYPE_COMPACT_INVERTED_COASTER,
-    RIDE_TYPE_INVERTED_ROLLER_COASTER,
-    RIDE_TYPE_INVERTED_IMPULSE_COASTER,
-    RIDE_TYPE_MINI_SUSPENDED_COASTER,
-    RIDE_TYPE_STEEPLECHASE,
-    RIDE_TYPE_BOBSLEIGH_COASTER,
-    RIDE_TYPE_MINE_RIDE,
-    RIDE_TYPE_HEARTLINE_TWISTER_COASTER,
-    RIDE_TYPE_LAY_DOWN_ROLLER_COASTER,
-    RIDE_TYPE_FLYING_ROLLER_COASTER,
-    RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER,
-    RIDE_TYPE_REVERSE_FREEFALL_COASTER,
-    RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER,
-    RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER,
-    RIDE_TYPE_HYBRID_COASTER,
-    RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER,
-
-    // Gentle rides
-    RIDE_TYPE_MONORAIL_CYCLES,
-    RIDE_TYPE_CROOKED_HOUSE,
-    RIDE_TYPE_HAUNTED_HOUSE,
-    RIDE_TYPE_FERRIS_WHEEL,
-    RIDE_TYPE_MAZE,
-    RIDE_TYPE_MERRY_GO_ROUND,
-    RIDE_TYPE_MINI_GOLF,
-    RIDE_TYPE_OBSERVATION_TOWER,
-    RIDE_TYPE_CAR_RIDE,
-    RIDE_TYPE_MONSTER_TRUCKS,
-    RIDE_TYPE_MINI_HELICOPTERS,
-    RIDE_TYPE_SPIRAL_SLIDE,
-    RIDE_TYPE_DODGEMS,
-    RIDE_TYPE_SPACE_RINGS,
-    RIDE_TYPE_CIRCUS,
-    RIDE_TYPE_GHOST_TRAIN,
-    RIDE_TYPE_FLYING_SAUCERS,
-
-    // Thrill rides
-    RIDE_TYPE_TWIST,
-    RIDE_TYPE_MAGIC_CARPET,
-    RIDE_TYPE_LAUNCHED_FREEFALL,
-    RIDE_TYPE_SWINGING_SHIP,
-    RIDE_TYPE_GO_KARTS,
-    RIDE_TYPE_SWINGING_INVERTER_SHIP,
-    RIDE_TYPE_MOTION_SIMULATOR,
-    RIDE_TYPE_3D_CINEMA,
-    RIDE_TYPE_TOP_SPIN,
-    RIDE_TYPE_ROTO_DROP,
-    RIDE_TYPE_ENTERPRISE,
-
-    // Water rides
-    RIDE_TYPE_DINGHY_SLIDE,
-    RIDE_TYPE_LOG_FLUME,
-    RIDE_TYPE_RIVER_RAPIDS,
-    RIDE_TYPE_SPLASH_BOATS,
-    RIDE_TYPE_SUBMARINE_RIDE,
-    RIDE_TYPE_BOAT_HIRE,
-    RIDE_TYPE_RIVER_RAFTS,
-    RIDE_TYPE_WATER_COASTER,
-
-    // Shops / stalls
-    RIDE_TYPE_FOOD_STALL,
-    RIDE_TYPE_1D,
-    RIDE_TYPE_DRINK_STALL,
-    RIDE_TYPE_1F,
-    RIDE_TYPE_SHOP,
-    RIDE_TYPE_22,
-    RIDE_TYPE_INFORMATION_KIOSK,
-    RIDE_TYPE_FIRST_AID,
-    RIDE_TYPE_CASH_MACHINE,
-    RIDE_TYPE_TOILETS
-};
-
-#pragma endregion
-
-enum {
+enum
+{
     WINDOW_NEW_RIDE_PAGE_TRANSPORT,
     WINDOW_NEW_RIDE_PAGE_GENTLE,
     WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER,
@@ -167,7 +56,8 @@ enum {
 
 #pragma region Widgets
 
-enum {
+enum
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -189,19 +79,21 @@ enum {
 
 static rct_widget window_new_ride_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0,  43}, {601, 339}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
-    MakeTab   ({  3,  17},                                                                                  STR_TRANSPORT_RIDES_TIP         ),
-    MakeTab   ({ 34,  17},                                                                                  STR_GENTLE_RIDES_TIP            ),
-    MakeTab   ({ 65,  17},                                                                                  STR_ROLLER_COASTERS_TIP         ),
-    MakeTab   ({ 96,  17},                                                                                  STR_THRILL_RIDES_TIP            ),
-    MakeTab   ({127,  17},                                                                                  STR_WATER_RIDES_TIP             ),
-    MakeTab   ({158,  17},                                                                                  STR_SHOPS_STALLS_TIP            ),
-    MakeTab   ({189,  17},                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
-    MakeWidget({  3,  46}, {595, 272}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ),
-    MakeWidget({  3,  47}, {290,  70}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-    MakeWidget({  3, 124}, {290,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_LAST_DEVELOPMENT                                          ),
-    MakeWidget({265, 161}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary , 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
-    MakeWidget({265,  68}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary , SPR_FINANCE,                  STR_FINANCES_RESEARCH_TIP       ),
+    MakeWidget({ 0, 43 }, { 601, 339 }, WindowWidgetType::Resize, WindowColour::Secondary),
+    MakeTab({ 3, 17 }, STR_TRANSPORT_RIDES_TIP),
+    MakeTab({ 34, 17 }, STR_GENTLE_RIDES_TIP),
+    MakeTab({ 65, 17 }, STR_ROLLER_COASTERS_TIP),
+    MakeTab({ 96, 17 }, STR_THRILL_RIDES_TIP),
+    MakeTab({ 127, 17 }, STR_WATER_RIDES_TIP),
+    MakeTab({ 158, 17 }, STR_SHOPS_STALLS_TIP),
+    MakeTab({ 189, 17 }, STR_RESEARCH_AND_DEVELOPMENT_TIP),
+    MakeWidget({ 3, 46 }, { 595, 272 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
+    MakeWidget({ 3, 47 }, { 290, 70 }, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_CURRENTLY_IN_DEVELOPMENT),
+    MakeWidget({ 3, 124 }, { 290, 65 }, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_LAST_DEVELOPMENT),
+    MakeWidget(
+        { 265, 161 }, { 24, 24 }, WindowWidgetType::FlatBtn, WindowColour::Tertiary, 0xFFFFFFFF, STR_RESEARCH_SHOW_DETAILS_TIP),
+    MakeWidget(
+        { 265, 68 }, { 24, 24 }, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_FINANCE, STR_FINANCES_RESEARCH_TIP),
     { WIDGETS_END },
 };
 
@@ -209,20 +101,20 @@ static rct_widget window_new_ride_widgets[] = {
 
 #pragma region Events
 
-static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_new_ride_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_new_ride_update(rct_window *w);
-static void window_new_ride_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_new_ride_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_new_ride_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_new_ride_invalidate(rct_window *w);
-static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
-static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen);
+static void window_new_ride_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_new_ride_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_new_ride_update(rct_window* w);
+static void window_new_ride_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_new_ride_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_new_ride_invalidate(rct_window* w);
+static void window_new_ride_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
+static void window_new_ride_list_vehicles_for(
+    const RideTypeDescriptor& rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen);
 
 // 0x0098E354
-static rct_window_event_list window_new_ride_events([](auto& events)
-{
+static rct_window_event_list window_new_ride_events([](auto& events) {
     events.mouse_up = &window_new_ride_mouseup;
     events.mouse_down = &window_new_ride_mousedown;
     events.update = &window_new_ride_update;
@@ -237,13 +129,8 @@ static rct_window_event_list window_new_ride_events([](auto& events)
 #pragma endregion
 
 static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE_COUNT] = {
-    STR_NEW_TRANSPORT_RIDES,
-    STR_NEW_GENTLE_RIDES,
-    STR_NEW_ROLLER_COASTERS,
-    STR_NEW_THRILL_RIDES,
-    STR_NEW_WATER_RIDES,
-    STR_NEW_SHOPS_STALLS,
-    STR_RESEARCH_AND_DEVELOPMENT,
+    STR_NEW_TRANSPORT_RIDES, STR_NEW_GENTLE_RIDES, STR_NEW_ROLLER_COASTERS,      STR_NEW_THRILL_RIDES,
+    STR_NEW_WATER_RIDES,     STR_NEW_SHOPS_STALLS, STR_RESEARCH_AND_DEVELOPMENT,
 };
 
 static constexpr const int32_t window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
@@ -256,7 +143,7 @@ static RideSelection window_new_ride_scroll_get_ride_list_item_at(rct_window* w,
 static void window_new_ride_paint_ride_information(
     rct_window* w, rct_drawpixelinfo* dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t width);
 static void window_new_ride_select(rct_window* w);
-static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, RideSelection* nextListItem);
+static RideSelection* window_new_ride_iterate_over_ride_type(const RideTypeDescriptor& rideType, RideSelection* nextListItem);
 
 static RideSelection _lastTrackDesignCountRideType;
 static int32_t _lastTrackDesignCount;
@@ -299,23 +186,20 @@ static void window_new_ride_populate_list()
     RideSelection* nextListItem = _windowNewRideListItems;
 
     // For each ride type in the view order list
-    for (int32_t i = 0; i < static_cast<int32_t>(std::size(RideTypeViewOrder)); i++)
+    for (int32_t i = 0; i < static_cast<int32_t>(std::size(RideTypeDescriptorsByViewOrder)); i++)
     {
-        uint8_t rideType = RideTypeViewOrder[i];
-        if (rideType == RIDE_TYPE_NULL)
+        const auto& rideTypeDescriptor = RideTypeDescriptorsByViewOrder[i];
+        if (rideTypeDescriptor.Category != currentCategory)
             continue;
 
-        if (GetRideTypeDescriptor(rideType).Category != currentCategory)
-            continue;
-
-        nextListItem = window_new_ride_iterate_over_ride_type(rideType, nextListItem);
+        nextListItem = window_new_ride_iterate_over_ride_type(rideTypeDescriptor, nextListItem);
     }
 
     nextListItem->Type = RIDE_TYPE_NULL;
     nextListItem->EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 }
 
-static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, RideSelection* nextListItem)
+static RideSelection* window_new_ride_iterate_over_ride_type(const RideTypeDescriptor& rideType, RideSelection* nextListItem)
 {
     bool buttonForRideTypeCreated = false;
     bool allowDrawingOverLastButton = false;
@@ -335,19 +219,18 @@ static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, R
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
-        if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
-            && highestVehiclePriority > rideEntry->BuildMenuPriority)
+        if (!rideType.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY) && highestVehiclePriority > rideEntry->BuildMenuPriority)
         {
             continue;
         }
         highestVehiclePriority = rideEntry->BuildMenuPriority;
 
         // Determines how and where to draw a button for this ride type/vehicle.
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (rideType.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             // Separate, draw apart
             allowDrawingOverLastButton = false;
-            nextListItem->Type = rideType;
+            nextListItem->Type = rideType.ID;
             nextListItem->EntryIndex = rideEntryIndex;
             nextListItem++;
         }
@@ -356,17 +239,17 @@ static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, R
             // Non-separate, draw-apart
             buttonForRideTypeCreated = true;
             allowDrawingOverLastButton = true;
-            nextListItem->Type = rideType;
+            nextListItem->Type = rideType.ID;
             nextListItem->EntryIndex = rideEntryIndex;
             nextListItem++;
         }
         else if (allowDrawingOverLastButton)
         {
             // Non-separate, draw over previous
-            if (rideType == rideEntry->ride_type[0])
+            if (rideType == GetRideTypeDescriptor(rideEntry->ride_type[0]))
             {
                 nextListItem--;
-                nextListItem->Type = rideType;
+                nextListItem->Type = rideType.ID;
                 nextListItem->EntryIndex = rideEntryIndex;
                 nextListItem++;
             }
@@ -873,16 +756,14 @@ static int32_t get_num_track_designs(RideSelection item)
 {
     std::string entryName;
 
-    if (item.Type < 0x80)
+    const auto& rideTypeDescriptor = GetRideTypeDescriptor(item.Type);
+    if (rideTypeDescriptor.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
-        {
-            entryName = get_ride_entry_name(item.EntryIndex);
-        }
+        entryName = get_ride_entry_name(item.EntryIndex);
     }
 
     auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-    return static_cast<int32_t>(repo->GetCountForObjectEntry(item.Type, entryName));
+    return static_cast<int32_t>(repo->GetCountForObjectEntry(rideTypeDescriptor, entryName));
 }
 
 /**
@@ -896,14 +777,15 @@ static void window_new_ride_paint_ride_information(
     RideNaming rideNaming;
 
     // Ride name and description
-    rideNaming = get_ride_naming(item.Type, rideEntry);
+    const auto& rideTypeDescriptor = GetRideTypeDescriptor(item.Type);
+    rideNaming = get_ride_naming(rideTypeDescriptor, rideEntry);
     auto ft = Formatter();
     ft.Add<rct_string_id>(rideNaming.Name);
     ft.Add<rct_string_id>(rideNaming.Description);
     DrawTextWrapped(dpi, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
 
     char availabilityString[AVAILABILITY_STRING_SIZE];
-    window_new_ride_list_vehicles_for(item.Type, rideEntry, availabilityString, sizeof(availabilityString));
+    window_new_ride_list_vehicles_for(rideTypeDescriptor, rideEntry, availabilityString, sizeof(availabilityString));
 
     if (availabilityString[0] != 0)
     {
@@ -941,14 +823,15 @@ static void window_new_ride_paint_ride_information(
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Get price of ride
-        int32_t unk2 = GetRideTypeDescriptor(item.Type).StartTrackPiece;
-        money32 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
+        const auto& rtd = GetRideTypeDescriptor(item.Type);
+        int32_t unk2 = rtd.StartTrackPiece;
+        money32 price = rtd.BuildCosts.TrackPrice;
         price *= TrackPricing[unk2];
-        price = (price >> 17) * 10 * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
+        price = (price >> 17) * 10 * rtd.BuildCosts.PriceEstimateMultiplier;
 
         //
         rct_string_id stringId = STR_NEW_RIDE_COST;
-        if (!GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
             stringId = STR_NEW_RIDE_COST_FROM;
 
         ft = Formatter();
@@ -973,7 +856,7 @@ static void window_new_ride_select(rct_window* w)
     if (_lastTrackDesignCount > 0)
     {
         auto intent = Intent(WC_TRACK_DESIGN_LIST);
-        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.Type);
+        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, static_cast<uint32_t>(item.Type));
         intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.EntryIndex);
         context_open_intent(&intent);
         return;
@@ -982,10 +865,11 @@ static void window_new_ride_select(rct_window* w)
     ride_construct_new(item);
 }
 
-static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen)
+static void window_new_ride_list_vehicles_for(
+    const RideTypeDescriptor& rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen)
 {
     std::fill_n(buffer, bufferLen, 0);
-    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    if (rideType.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         return;
     }

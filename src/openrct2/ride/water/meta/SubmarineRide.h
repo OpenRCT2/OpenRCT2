@@ -17,6 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor SubmarineRideRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_SUBMARINE_RIDE),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL)),

@@ -16,6 +16,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor ClassicMiniRollerCoasterRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL)

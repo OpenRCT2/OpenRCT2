@@ -17,6 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor LiftRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_LIFT),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_TRANSPORT),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),

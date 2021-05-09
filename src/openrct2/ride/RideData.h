@@ -133,6 +133,7 @@ struct UpkeepCostsDescriptor
 
 struct RideTypeDescriptor
 {
+    uint64_t ID;
     uint8_t AlternateType;
     uint8_t Category;
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
@@ -180,6 +181,8 @@ struct RideTypeDescriptor
     uint64_t GetAvailableTrackPieces() const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
     ResearchCategory GetResearchCategory() const;
+    bool operator==(const RideTypeDescriptor& other) const;
+    bool operator!=(const RideTypeDescriptor& other) const;
 };
 
 #ifdef _WIN32
@@ -189,6 +192,7 @@ struct RideTypeDescriptor
 #endif
 
 extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
+extern const RideTypeDescriptor RideTypeDescriptorsByViewOrder[RIDE_TYPE_COUNT];
 
 enum
 {
@@ -320,6 +324,7 @@ extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 // clang-format off
 constexpr const RideTypeDescriptor DummyRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_NULL),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_NONE),
     SET_FIELD(EnabledTrackPieces, 0),

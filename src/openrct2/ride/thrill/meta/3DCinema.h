@@ -17,6 +17,7 @@
 // C++ does not allow names to start with a number, hence the absence of the '3D' prefix.
 constexpr const RideTypeDescriptor CinemaRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_3D_CINEMA),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, 0),

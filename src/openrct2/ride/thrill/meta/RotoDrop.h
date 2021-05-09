@@ -17,6 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor RotoDropRTD =
 {
+    SET_FIELD(ID, RIDE_TYPE_ROTO_DROP),
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),

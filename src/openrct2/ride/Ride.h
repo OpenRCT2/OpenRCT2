@@ -1155,7 +1155,7 @@ void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 money32 ride_get_common_price(Ride* forRide);
-RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
+RideNaming get_ride_naming(const RideTypeDescriptor& rideType, rct_ride_entry* rideEntry);
 
 void ride_clear_for_construction(Ride* ride);
 void ride_entrance_exit_place_provisional_ghost();
@@ -1243,7 +1243,7 @@ int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 
-int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
+int32_t ride_get_entry_index(const RideTypeDescriptor& rideType, int32_t rideSubType);
 StationObject* ride_get_station_object(const Ride* ride);
 
 void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);

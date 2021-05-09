@@ -17,6 +17,7 @@
 struct IObjectRepository;
 class Object;
 struct ObjectRepositoryItem;
+struct RideTypeDescriptor;
 
 struct IObjectManager
 {
@@ -40,7 +41,7 @@ struct IObjectManager
     virtual void ResetObjects() abstract;
 
     virtual std::vector<const ObjectRepositoryItem*> GetPackableObjects() abstract;
-    virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) abstract;
+    virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(const RideTypeDescriptor& rideType) abstract;
 };
 
 std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);
