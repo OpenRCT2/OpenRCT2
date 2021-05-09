@@ -28,7 +28,7 @@ SignSetNameAction::SignSetNameAction(BannerIndex bannerIndex, const std::string&
 
 void SignSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-    visitor.Visit("banner", _bannerIndex);
+    visitor.Visit("id", _bannerIndex);
     visitor.Visit("name", _name);
 }
 

@@ -32,7 +32,7 @@ void ParkMarketingAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("type", _type);
     visitor.Visit("item", _item);
-    visitor.Visit("length", _numWeeks);
+    visitor.Visit("duration", _numWeeks);
 }
 
 uint16_t ParkMarketingAction::GetActionFlags() const

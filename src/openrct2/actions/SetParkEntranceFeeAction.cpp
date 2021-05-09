@@ -22,7 +22,7 @@ SetParkEntranceFeeAction::SetParkEntranceFeeAction(money16 fee)
 
 void SetParkEntranceFeeAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-    visitor.Visit("fee", _fee);
+    visitor.Visit("value", _fee);
 }
 
 uint16_t SetParkEntranceFeeAction::GetActionFlags() const
