@@ -155,6 +155,8 @@ namespace OpenRCT2
             Guard::Assert(Instance == nullptr);
 
             Instance = this;
+
+            log_info("%s, %s:%d", __builtin_FUNCTION(), __builtin_FILE(), __builtin_LINE());
         }
 
         ~Context() override
