@@ -1220,7 +1220,7 @@ namespace RCT1
             "rct2.wbr1",        // RCT1_WALL_TYPE_BRICK
             "rct2.wbrg",        // RCT1_WALL_TYPE_BRICK_WITH_GATE
             "rct2.wfw1",        // RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE
-            "rct2.wfw1",        // RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE
+            "rct1.wfw0",        // RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE
             "rct2.wbr2",        // RCT1_WALL_TYPE_STONE
             "rct2.wbr3",        // RCT1_WALL_TYPE_STONE_WITH_GATE
             "rct2.wpw3",        // RCT1_WALL_TYPE_WOODEN_FENCE
@@ -1369,7 +1369,7 @@ namespace RCT1
               "rct2.ts0", "rct2.ts1", "rct2.ts2", "rct2.ts3", "rct2.ts4", "rct2.ts5", "rct2.ts6", "rct2.tef", "rct2.tal", "rct2.tsq", "rct2.tht", "rct2.tcb", "rct2.tdm", "rct2.tsd", "rct2.torn1", "rct2.torn2", "rct2.tgs", "rct2.tus", "rct2.tbc", "rct2.tsc", "rct2.twf", "rct2.tsh0", "rct2.tsh1", "rct2.tsh2", "rct2.tsh3", "rct2.tsh4", "rct2.tsh5", "rct2.tdf", "rct2.tsh", "rct2.thrs", "rct2.tstd", "rct2.tbr", "rct2.ttf", "rct2.whg", "rct2.whgg", "rct2.wch", "rct2.wchg",
               "rct2.tg1", "rct2.tg2", "rct2.tg3", "rct2.tg4", "rct2.tg5", "rct2.tg6", "rct2.tg7", "rct2.tg8", "rct2.tg9", "rct2.tg10", "rct2.tg11", "rct2.tg12", "rct2.tg13", "rct2.tg14", "rct2.tg15", "rct2.tg16", "rct2.tg17", "rct2.tg18", "rct2.tg19", "rct2.tg20", "rct2.tg21",
               "rct2.wbr1a", "rct2.wbr2a", "rct2.wallbb34", "rct2.walltn32", "rct2.tntroof1", "rct2.wallbb33", "rct2.wallbb32", "rct2.wallbb16", "rct2.wallbb8", "rct2.roof5", "rct2.roof7", "rct2.wallrs32", "rct2.wallrs16", "rct2.wallrs8", "rct2.wallbr32", "rct2.wallbr16", "rct2.wallbr8", "rct2.wallbrdr", "rct2.wallbrwn", "rct2.brbase", "rct2.roof1", "rct2.roof2", "rct2.roof3", "rct2.roof4", "rct2.wallcb32", "rct2.wallcb16", "rct2.wallcb8", "rct2.wallcbdr", "rct2.wallcbwn", "rct2.brbase2", "rct2.cwbcrv33", "rct2.cwbcrv32", "rct2.brcrrf1", "rct2.roof6", "rct2.roof8", "rct2.wallcf32", "rct2.wallcf16", "rct2.wallcf8", "rct2.wallcfdr", "rct2.wallcfwn", "rct2.wallcfar", "rct2.brbase3", "rct2.cwfcrv33", "rct2.cwfcrv32", "rct2.brcrrf2", "rct2.roof9", "rct2.roof11", "rct2.roof10", "rct2.roof12", "rct2.corroof2", "rct2.wallco16", "rct2.corroof", "rct2.walllt32", "rct2.wallsk16", "rct2.wallsk32", "rct2.sktdw2", "rct2.sktdw", "rct2.sktbase", "rct2.sktbaset", "rct2.suppw2", "rct2.suppw1", "rct2.suppw3", "rct2.suppleg1", "rct2.suppleg2", "rct2.sumrf", "rct2.wallrh32",
-              "rct2.wmf", "rct2.wmfg", "rct2.wsw", "rct2.wswg", "rct2.wfw1", "rct2.wfwg", "rct2.wpf", "rct2.wpfg", "rct2.wsw1", "rct2.wsw2", "rct2.wbr1", "rct2.wbrg", "rct2.wbr2", "rct2.wbr3", "rct2.wallmm16", "rct2.wallmm17",
+              "rct2.wmf", "rct2.wmfg", "rct2.wsw", "rct2.wswg", "rct2.wfw1", "rct1.wfw0", "rct2.wfwg", "rct2.wpf", "rct2.wpfg", "rct2.wsw1", "rct2.wsw2", "rct2.wbr1", "rct2.wbrg", "rct2.wbr2", "rct2.wbr3", "rct2.wallmm16", "rct2.wallmm17",
               "rct2.lamp1", "rct2.lamp2", "rct2.litter1", "rct2.bench1", "rct2.qtv1", "rct2.bn1", "rct2.wallpost", "rct2.wallsign", "rct2.ssig1", "rct2.ssig2", "rct2.ssig3", "rct2.ssig4" },
             // RCT1_SCENERY_THEME_MINE
             { "rct2.smh1", "rct2.smh2", "rct2.smn1", "rct2.tbw", "rct2.tbr1", "rct2.tbr2", "rct2.tml", "rct2.tmw", "rct2.tbr3", "rct2.tbr4", "rct2.tmj", "rct2.bn5", "rct2.wallwd8", "rct2.wallwd16", "rct2.wallwd32", "rct2.wallwd33", "rct2.wallmn32", "rct2.wdbase", "rct2.minroof1", "rct2.roof13", "rct2.littermn" },
