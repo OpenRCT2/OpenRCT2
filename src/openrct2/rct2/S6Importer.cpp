@@ -230,8 +230,8 @@ public:
         ImportTileElements();
         ImportEntities();
 
-        gInitialCash = _s6.initial_cash;
-        gBankLoan = _s6.current_loan;
+        gInitialCash = ToMoney64(_s6.initial_cash);
+        gBankLoan = ToMoney64(_s6.current_loan);
         gParkFlags = _s6.park_flags;
         gParkEntranceFee = _s6.park_entrance_fee;
         // rct1_park_entrance_x
@@ -256,7 +256,7 @@ public:
         {
             for (size_t j = 0; j < RCT12_EXPENDITURE_TYPE_COUNT; j++)
             {
-                gExpenditureTable[i][j] = _s6.expenditure_table[i][j];
+                gExpenditureTable[i][j] = ToMoney64(_s6.expenditure_table[i][j]);
             }
         }
 
@@ -293,7 +293,7 @@ public:
         gParkSize = _s6.park_size;
         _guestGenerationProbability = _s6.guest_generation_probability;
         gTotalRideValueForMoney = _s6.total_ride_value_for_money;
-        gMaxBankLoan = _s6.maximum_loan;
+        gMaxBankLoan = ToMoney64(_s6.maximum_loan);
         gGuestInitialCash = _s6.guest_initial_cash;
         gGuestInitialHunger = _s6.guest_initial_hunger;
         gGuestInitialThirst = _s6.guest_initial_thirst;
@@ -309,25 +309,25 @@ public:
             gScenarioObjective.NumGuests = _s6.objective_guests;
         ImportMarketingCampaigns();
 
-        gCurrentExpenditure = _s6.current_expenditure;
-        gCurrentProfit = _s6.current_profit;
+        gCurrentExpenditure = ToMoney64(_s6.current_expenditure);
+        gCurrentProfit = ToMoney64(_s6.current_profit);
         gWeeklyProfitAverageDividend = ToMoney64(_s6.weekly_profit_average_dividend);
         gWeeklyProfitAverageDivisor = _s6.weekly_profit_average_divisor;
         // pad_0135833A
 
-        gParkValue = _s6.park_value;
+        gParkValue = ToMoney64(_s6.park_value);
 
         for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
         {
-            gCashHistory[i] = _s6.balance_history[i];
+            gCashHistory[i] = ToMoney64(_s6.balance_history[i]);
             gWeeklyProfitHistory[i] = ToMoney64(_s6.weekly_profit_history[i]);
             gParkValueHistory[i] = ToMoney64(_s6.park_value_history[i]);
         }
 
-        gScenarioCompletedCompanyValue = _s6.completed_company_value;
+        gScenarioCompletedCompanyValue = ToMoney64(_s6.completed_company_value);
         gTotalAdmissions = _s6.total_admissions;
-        gTotalIncomeFromAdmissions = _s6.income_from_admissions;
-        gCompanyValue = _s6.company_value;
+        gTotalIncomeFromAdmissions = ToMoney64(_s6.income_from_admissions);
+        gCompanyValue = ToMoney64(_s6.company_value);
         std::memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
 
         // Awards
@@ -348,10 +348,10 @@ public:
         gScenarioCompanyValueRecord = _s6.completed_company_value_record;
         // _s6.loan_hash;
         // pad_013587CA
-        gHistoricalProfit = _s6.historical_profit;
+        gHistoricalProfit = ToMoney64(_s6.historical_profit);
         // pad_013587D4
         gScenarioCompletedBy = std::string_view(_s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
-        gCash = DECRYPT_MONEY(_s6.cash);
+        gCash = ToMoney64(DECRYPT_MONEY(_s6.cash));
         // pad_013587FC
         gParkRatingCasualtyPenalty = _s6.park_rating_casualty_penalty;
         gMapSizeUnits = _s6.map_size_units;
