@@ -308,7 +308,7 @@ public:
 
         gCurrentExpenditure = _s6.current_expenditure;
         gCurrentProfit = _s6.current_profit;
-        gWeeklyProfitAverageDividend = _s6.weekly_profit_average_dividend;
+        gWeeklyProfitAverageDividend = ToMoney64(_s6.weekly_profit_average_dividend);
         gWeeklyProfitAverageDivisor = _s6.weekly_profit_average_divisor;
         // pad_0135833A
 
@@ -317,7 +317,7 @@ public:
         for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
         {
             gCashHistory[i] = _s6.balance_history[i];
-            gWeeklyProfitHistory[i] = _s6.weekly_profit_history[i];
+            gWeeklyProfitHistory[i] = ToMoney64(_s6.weekly_profit_history[i]);
             gParkValueHistory[i] = ToMoney64(_s6.park_value_history[i]);
         }
 
