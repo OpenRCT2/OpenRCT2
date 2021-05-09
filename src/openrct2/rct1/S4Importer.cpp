@@ -1334,7 +1334,7 @@ private:
         {
             gCashHistory[i] = _s4.cash_history[i];
             gParkValueHistory[i] = ToMoney64(CorrectRCT1ParkValue(_s4.park_value_history[i]));
-            gWeeklyProfitHistory[i] = _s4.weekly_profit_history[i];
+            gWeeklyProfitHistory[i] = ToMoney64(_s4.weekly_profit_history[i]);
         }
 
         for (size_t i = 0; i < RCT12_EXPENDITURE_TABLE_MONTH_COUNT; i++)

@@ -194,7 +194,7 @@ struct rct_s6_data
     // SC6[11]
     money32 current_expenditure;
     money32 current_profit;
-    uint32_t weekly_profit_average_dividend;
+    money32 weekly_profit_average_dividend;
     uint16_t weekly_profit_average_divisor;
     uint8_t pad_0135833A[2];
 
