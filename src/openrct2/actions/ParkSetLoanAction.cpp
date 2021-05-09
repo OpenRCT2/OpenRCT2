@@ -22,6 +22,11 @@ ParkSetLoanAction::ParkSetLoanAction(money32 value)
 {
 }
 
+void ParkSetLoanAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("loanAmount", _value);
+}
+
 uint16_t ParkSetLoanAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
