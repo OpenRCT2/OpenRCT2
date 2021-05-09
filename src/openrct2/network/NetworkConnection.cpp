@@ -155,6 +155,16 @@ void NetworkConnection::QueuePacket(NetworkPacket&& packet, bool front)
     }
 }
 
+void NetworkConnection::Disconnect()
+{
+    ShouldDisconnect = true;
+}
+
+bool NetworkConnection::IsValid() const
+{
+    return !ShouldDisconnect && Socket->GetStatus() == SocketStatus::Connected;
+}
+
 void NetworkConnection::SendQueuedPackets()
 {
     while (!_outboundPackets.empty() && SendPacket(_outboundPackets.front()))

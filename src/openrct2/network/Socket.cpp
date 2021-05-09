@@ -541,6 +541,7 @@ public:
         {
             shutdown(_socket, SHUT_RDWR);
         }
+        _status = SocketStatus::Closed;
     }
 
     size_t SendData(const void* buffer, size_t size) override
