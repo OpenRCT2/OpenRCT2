@@ -70,7 +70,7 @@ static void paint_merry_go_round_structure(
     PaintAddImageAsParent(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
 
     rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level == 0 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (dpi->zoom_level <= 0 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t peep = 0; peep <= 14; peep += 2)
         {
