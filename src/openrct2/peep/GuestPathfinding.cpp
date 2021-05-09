@@ -1410,7 +1410,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
         peep->PathfindGoal.direction = 0;
 
         // Clear pathfinding history
-        std::fill_n(reinterpret_cast<uint8_t*>(peep->PathfindHistory), sizeof(peep->PathfindHistory), 0xFF);
+        std::fill(std::begin(peep->PathfindHistory), std::end(peep->PathfindHistory), rct12_xyzd8{ 0xFF, 0xFF, 0xFF, 0xFF });
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {

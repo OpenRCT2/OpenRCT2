@@ -60,6 +60,8 @@
 		4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */; };
 		4C91FD5F25AE476700CA5DA4 /* MusicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */; };
 		4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD6025AE483600CA5DA4 /* RideAudio.cpp */; };
+		4CA23D64263C91D800077AA1 /* ChecksumStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA23D62263C91D700077AA1 /* ChecksumStream.cpp */; };
+		4CA23DB2263C920900077AA1 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA23DB1263C920900077AA1 /* Entity.cpp */; };
 		4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */; };
 		4CA39E522513F8A00094066B /* RTL.FriBidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E502513F8A00094066B /* RTL.FriBidi.cpp */; };
 		4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */; };
@@ -1152,6 +1154,11 @@
 		4C93F1B71F8E185600A9330D /* NewsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsItem.h; sourceTree = "<group>"; };
 		4C93F1B81F8E185600A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1B91F8E185600A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
+		4CA23D62263C91D700077AA1 /* ChecksumStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChecksumStream.cpp; sourceTree = "<group>"; };
+		4CA23D63263C91D700077AA1 /* ChecksumStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecksumStream.h; sourceTree = "<group>"; };
+		4CA23DAF263C920900077AA1 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
+		4CA23DB0263C920900077AA1 /* EntityList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityList.h; sourceTree = "<group>"; };
+		4CA23DB1263C920900077AA1 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTL.ICU.cpp; sourceTree = "<group>"; };
 		4CA39E4F2513F8A00094066B /* RTL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTL.h; sourceTree = "<group>"; };
 		4CA39E502513F8A00094066B /* RTL.FriBidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTL.FriBidi.cpp; sourceTree = "<group>"; };
@@ -2433,6 +2440,8 @@
 		F76C83781EC4E7CC00FA49E2 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				4CA23D62263C91D700077AA1 /* ChecksumStream.cpp */,
+				4CA23D63263C91D700077AA1 /* ChecksumStream.h */,
 				2A5354EA22099C7200A5440F /* CircularBuffer.h */,
 				F76C83791EC4E7CC00FA49E2 /* Collections.hpp */,
 				F76C837A1EC4E7CC00FA49E2 /* Console.cpp */,
@@ -3066,6 +3075,9 @@
 				4C7B54202007646A00A52E21 /* Climate.cpp */,
 				4C7B54212007646A00A52E21 /* Climate.h */,
 				4C7B54222007646A00A52E21 /* Duck.cpp */,
+				4CA23DB1263C920900077AA1 /* Entity.cpp */,
+				4CA23DAF263C920900077AA1 /* Entity.h */,
+				4CA23DB0263C920900077AA1 /* EntityList.h */,
 				4C7B54232007646A00A52E21 /* Entrance.cpp */,
 				4C7B54242007646A00A52E21 /* Entrance.h */,
 				4C7B54252007646A00A52E21 /* Footpath.cpp */,
@@ -3774,6 +3786,7 @@
 				4C8BB67925533D4C005C8830 /* FileStream.cpp in Sources */,
 				933CBDBD20CB1BA900134678 /* ViewportInteraction.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
+				4CA23DB2263C920900077AA1 /* Entity.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
 				C68878C720289B710084B384 /* OpenGLShaderProgram.cpp in Sources */,
 				4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */,
@@ -3839,6 +3852,7 @@
 				4C8BB67C25533D59005C8830 /* JobPool.cpp in Sources */,
 				01C6F0C222FD519E0057E2F7 /* TrackImporter.cpp in Sources */,
 				4C8BB68125533D65005C8830 /* StringBuilder.cpp in Sources */,
+				4CA23D64263C91D800077AA1 /* ChecksumStream.cpp in Sources */,
 				C666EE761F37ACB10061AA04 /* Options.cpp in Sources */,
 				4CB991CC25CEE54500C692B4 /* Shortcuts.cpp in Sources */,
 				C666EE6E1F37ACB10061AA04 /* CustomCurrency.cpp in Sources */,
