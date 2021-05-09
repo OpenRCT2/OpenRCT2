@@ -1360,20 +1360,20 @@ private:
         gLandPrice = _s4.land_price;
         gConstructionRightsPrice = _s4.construction_rights_price;
 
-        gCash = _s4.cash;
-        gBankLoan = _s4.loan;
-        gMaxBankLoan = _s4.max_loan;
+        gCash = ToMoney64(_s4.cash);
+        gBankLoan = ToMoney64(_s4.loan);
+        gMaxBankLoan = ToMoney64(_s4.max_loan);
         // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
         gBankLoanInterestRate = 1;
-        gInitialCash = _s4.cash;
+        gInitialCash = ToMoney64(_s4.cash);
 
-        gCompanyValue = _s4.company_value;
+        gCompanyValue = ToMoney64(_s4.company_value);
         gParkValue = ToMoney64(CorrectRCT1ParkValue(_s4.park_value));
-        gCurrentProfit = _s4.profit;
+        gCurrentProfit = ToMoney64(_s4.profit);
 
         for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
         {
-            gCashHistory[i] = _s4.cash_history[i];
+            gCashHistory[i] = ToMoney64(_s4.cash_history[i]);
             gParkValueHistory[i] = ToMoney64(CorrectRCT1ParkValue(_s4.park_value_history[i]));
             gWeeklyProfitHistory[i] = ToMoney64(_s4.weekly_profit_history[i]);
         }
@@ -1382,14 +1382,14 @@ private:
         {
             for (size_t j = 0; j < RCT12_EXPENDITURE_TYPE_COUNT; j++)
             {
-                gExpenditureTable[i][j] = _s4.expenditure[i][j];
+                gExpenditureTable[i][j] = ToMoney64(_s4.expenditure[i][j]);
             }
         }
-        gCurrentExpenditure = _s4.total_expenditure;
+        gCurrentExpenditure = ToMoney64(_s4.total_expenditure);
 
-        gScenarioCompletedCompanyValue = _s4.completed_company_value;
+        gScenarioCompletedCompanyValue = ToMoney64(_s4.completed_company_value);
         gTotalAdmissions = _s4.num_admissions;
-        gTotalIncomeFromAdmissions = _s4.admission_total_income;
+        gTotalIncomeFromAdmissions = ToMoney64(_s4.admission_total_income);
 
         // TODO marketing campaigns not working
         static_assert(
