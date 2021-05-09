@@ -704,7 +704,7 @@ public:
         // pad_14E[0x02];
 
         dst->total_customers = src->total_customers;
-        dst->total_profit = src->total_profit;
+        dst->total_profit = ToMoney64(src->total_profit);
         dst->popularity = src->popularity;
         dst->popularity_time_out = src->popularity_time_out;
         dst->popularity_next = src->popularity_next;
@@ -755,8 +755,8 @@ public:
         dst->last_crash_type = src->last_crash_type;
         dst->connected_message_throttle = src->connected_message_throttle;
 
-        dst->income_per_hour = src->income_per_hour;
-        dst->profit = src->profit;
+        dst->income_per_hour = ToMoney64(src->income_per_hour);
+        dst->profit = ToMoney64(src->profit);
 
         for (uint8_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
         {

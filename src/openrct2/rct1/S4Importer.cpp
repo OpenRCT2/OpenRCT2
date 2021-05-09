@@ -958,10 +958,10 @@ private:
         dst->upkeep_cost = src->upkeep_cost;
         dst->price[0] = src->price;
         dst->price[1] = src->price_secondary;
-        dst->income_per_hour = src->income_per_hour;
+        dst->income_per_hour = ToMoney64(src->income_per_hour);
         dst->total_customers = src->total_customers;
-        dst->profit = src->profit;
-        dst->total_profit = src->total_profit;
+        dst->profit = ToMoney64(src->profit);
+        dst->total_profit = ToMoney64(src->total_profit);
         dst->value = src->value;
         for (size_t i = 0; i < std::size(src->num_customers); i++)
         {
