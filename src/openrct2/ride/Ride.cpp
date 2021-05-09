@@ -382,7 +382,7 @@ void ride_update_favourited_stat()
  *
  *  rct2: 0x006AC3AB
  */
-money32 Ride::CalculateIncomePerHour() const
+money64 Ride::CalculateIncomePerHour() const
 {
     // Get entry by ride to provide better reporting
     rct_ride_entry* entry = GetRideEntry();
@@ -390,8 +390,8 @@ money32 Ride::CalculateIncomePerHour() const
     {
         return 0;
     }
-    money32 customersPerHour = ride_customers_per_hour(this);
-    money32 priceMinusCost = ride_get_price(this);
+    auto customersPerHour = ride_customers_per_hour(this);
+    money64 priceMinusCost = ride_get_price(this);
 
     ShopItem currentShopItem = entry->shop_item[0];
     if (currentShopItem != ShopItem::None)
