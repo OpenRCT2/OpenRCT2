@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -363,7 +363,7 @@ static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, ZoomLeve
     return viewport;
 }
 
-static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& viewport, rct_drawpixelinfo& dpi)
+static void RenderViewport(IDrawingEngine* drawingEngine, rct_viewport& viewport, rct_drawpixelinfo& dpi)
 {
     // Ensure sprites appear regardless of rotation
     reset_all_sprite_quadrant_placements();

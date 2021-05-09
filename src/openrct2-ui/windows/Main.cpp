@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -21,10 +21,12 @@ static rct_widget window_main_widgets[] = {
     { WIDGETS_END },
 };
 
-void window_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_main_update(rct_window* w);
+static void window_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_main_events([](auto& events)
 {
+    events.update = &window_main_update;
     events.paint = &window_main_paint;
 });
 // clang-format on
@@ -51,6 +53,14 @@ rct_window* window_main_open()
     window_footpath_reset_selected_path();
 
     return window;
+}
+
+void window_main_update(rct_window* w)
+{
+    if (!w->viewport)
+        return;
+
+    w->viewport->sessions.clear();
 }
 
 /**

@@ -48,7 +48,6 @@ static std::list<rct_viewport> _viewports;
 rct_viewport* g_music_tracking_viewport;
 
 static std::unique_ptr<JobPool> _paintJobs;
-static std::vector<paint_session*> _paintColumns;
 
 ScreenCoordsXY gSavedView;
 ZoomLevel gSavedViewZoom;
@@ -805,7 +804,7 @@ void viewport_update_smart_vehicle_follow(rct_window* window)
  *  ebp: bottom
  */
 void viewport_render(
-    rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    rct_drawpixelinfo* dpi, rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
     std::vector<RecordedPaintSession>* sessions)
 {
     if (right <= viewport->pos.x)
@@ -949,20 +948,14 @@ static void viewport_paint_column(paint_session* session)
     PaintSessionFree(session);
 }
 
-/**
- *
- *  rct2: 0x00685CBF
- *  eax: left
- *  ebx: top
- *  edx: right
- *  esi: viewport
- *  edi: dpi
- *  ebp: bottom
- */
-void viewport_paint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
+static void viewport_build_renderables(
+    rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
     std::vector<RecordedPaintSession>* recorded_sessions)
 {
+    auto& paintColumns = viewport->sessions;
+    if (!paintColumns.empty())
+        return;
+
     uint32_t viewFlags = viewport->flags;
     uint16_t width = right - left;
     uint16_t height = bottom - top;
@@ -1000,8 +993,6 @@ void viewport_paint(
     const int16_t rightBorder = dpi1.x + dpi1.width;
     const int16_t alignedX = floor2(dpi1.x, 32);
 
-    _paintColumns.clear();
-
     bool useMultithreading = gConfigGeneral.multithreading;
     if (useMultithreading && _paintJobs == nullptr)
     {
@@ -1025,7 +1016,7 @@ void viewport_paint(
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
         paint_session* session = PaintSessionAlloc(&dpi1, viewFlags);
-        _paintColumns.push_back(session);
+        paintColumns.push_back(session);
 
         rct_drawpixelinfo& dpi2 = session->DPI;
         if (x >= dpi2.x)
@@ -1061,8 +1052,25 @@ void viewport_paint(
     {
         _paintJobs->Join();
     }
+}
 
-    for (auto column : _paintColumns)
+/**
+ *
+ *  rct2: 0x00685CBF
+ *  eax: left
+ *  ebx: top
+ *  edx: right
+ *  esi: viewport
+ *  edi: dpi
+ *  ebp: bottom
+ */
+void viewport_paint(
+    rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
+    std::vector<RecordedPaintSession>* recorded_sessions)
+{
+    viewport_build_renderables(viewport, dpi, left, top, right, bottom, recorded_sessions);
+
+    for (auto column : viewport->sessions)
     {
         viewport_paint_column(column);
     }
