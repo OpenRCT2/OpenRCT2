@@ -22,6 +22,7 @@
 #include "../actions/SetCheatAction.h"
 #include "../actions/StaffSetCostumeAction.h"
 #include "../config/Config.h"
+#include "../core/Console.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -1434,7 +1435,7 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const argument
 
         const char* logFmt = "Replay recording started: (%s) %s";
         console.WriteFormatLine(logFmt, info.Name.c_str(), info.FilePath.c_str());
-        log_info(logFmt, info.Name.c_str(), info.FilePath.c_str());
+        Console::WriteLine(logFmt, info.Name.c_str(), info.FilePath.c_str());
 
         return 1;
     }
@@ -1469,7 +1470,7 @@ static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments
 
         console.WriteFormatLine(
             logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
-        log_info(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+        Console::WriteLine(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
 
         return 1;
     }
@@ -1511,7 +1512,7 @@ static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& a
                              "  Checksums: %u";
 
         console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
-        log_info(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
+        Console::WriteLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
 
         return 1;
     }
@@ -1661,7 +1662,6 @@ static int32_t cc_assert([[maybe_unused]] InteractiveConsole& console, [[maybe_u
 
 static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    printf("argv.size() = %zu\n", argv.size());
     if (argv.size() < 2)
     {
         console.WriteLineWarning("Too few arguments");

@@ -837,7 +837,7 @@ void start_silent_record()
         safe_strcpy(gSilentRecordingName, info.FilePath.c_str(), MAX_PATH);
 
         const char* logFmt = "Silent replay recording started: (%s) %s\n";
-        printf(logFmt, info.Name.c_str(), info.FilePath.c_str());
+        Console::WriteLine(logFmt, info.Name.c_str(), info.FilePath.c_str());
     }
 }
 
@@ -859,7 +859,7 @@ bool stop_silent_record()
                              "  Commands: %u\n"
                              "  Checksums: %u";
 
-        printf(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+        Console::WriteLine(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
 
         return true;
     }
