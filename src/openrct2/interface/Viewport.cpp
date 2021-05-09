@@ -944,8 +944,6 @@ static void viewport_paint_column(paint_session* session)
     {
         PaintDrawMoneyStructs(&session->DPI, session->PSStringHead);
     }
-
-    PaintSessionFree(session);
 }
 
 static void viewport_build_renderables(

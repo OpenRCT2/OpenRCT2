@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -12,6 +12,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/paint/Paint.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Sprite.h>
 
@@ -59,6 +60,11 @@ void window_main_update(rct_window* w)
 {
     if (!w->viewport)
         return;
+
+    for (auto* session : w->viewport->sessions)
+    {
+        PaintSessionFree(session);
+    }
 
     w->viewport->sessions.clear();
 }
