@@ -282,6 +282,10 @@ public:
         RemoveViewport();
 
         auto banner = GetBanner(number);
+        if (banner == nullptr)
+        {
+            return;
+        }
 
         auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), frame_no };
 

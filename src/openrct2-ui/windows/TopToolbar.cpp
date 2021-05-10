@@ -1974,18 +1974,12 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
 
             CoordsXYZD loc{ gridPos, z, direction };
             auto primaryColour = gWindowSceneryPrimaryColour;
-            auto bannerIndex = create_new_banner(0);
-            if (bannerIndex == BANNER_INDEX_NULL)
-            {
-                context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME, {});
-                break;
-            }
-            auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, bannerIndex, primaryColour);
-            bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, primaryColour);
+            bannerPlaceAction.SetCallback([=](const GameAction* ga, const BannerPlaceActionResult* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                    context_open_detail_window(WD_BANNER, bannerIndex);
+                    context_open_detail_window(WD_BANNER, result->bannerId);
                 }
             });
             GameActions::Execute(&bannerPlaceAction);
@@ -2571,13 +2565,7 @@ static money32 try_place_ghost_banner(CoordsXYZD loc, ObjectEntryIndex entryInde
 
     // 6e2612
     auto primaryColour = gWindowSceneryPrimaryColour;
-    auto bannerIndex = create_new_banner(0);
-    if (bannerIndex == BANNER_INDEX_NULL)
-    {
-        // Silently fail as this is just for the ghost
-        return 0;
-    }
-    auto bannerPlaceAction = BannerPlaceAction(loc, entryIndex, bannerIndex, primaryColour);
+    auto bannerPlaceAction = BannerPlaceAction(loc, entryIndex, primaryColour);
     bannerPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
     auto res = GameActions::Execute(&bannerPlaceAction);
     if (res->Error != GameActions::Status::Ok)

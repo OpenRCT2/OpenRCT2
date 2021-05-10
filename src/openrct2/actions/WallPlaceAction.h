@@ -11,6 +11,7 @@
 
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../world/Banner.h"
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
@@ -23,6 +24,7 @@ public:
     WallPlaceActionResult(GameActions::Status error, rct_string_id msg, uint8_t* args);
 
     TileElement* tileElement = nullptr;
+    BannerIndex bannerId = BANNER_INDEX_NULL;
 };
 
 DEFINE_GAME_ACTION(WallPlaceAction, GameCommand::PlaceWall, WallPlaceActionResult)
@@ -34,7 +36,6 @@ private:
     int32_t _primaryColour{ COLOUR_BLACK };
     int32_t _secondaryColour{ COLOUR_BLACK };
     int32_t _tertiaryColour{ COLOUR_BLACK };
-    BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
     WallPlaceAction() = default;

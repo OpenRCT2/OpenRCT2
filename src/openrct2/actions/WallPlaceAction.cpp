@@ -50,14 +50,6 @@ WallPlaceAction::WallPlaceAction(
     , _secondaryColour(secondaryColour)
     , _tertiaryColour(tertiaryColour)
 {
-    auto* sceneryEntry = get_wall_entry(_wallType);
-    if (sceneryEntry != nullptr)
-    {
-        if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
-        {
-            _bannerId = create_new_banner(0);
-        }
-    }
 }
 
 void WallPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
@@ -68,14 +60,6 @@ void WallPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit("primaryColour", _primaryColour);
     visitor.Visit("secondaryColour", _secondaryColour);
     visitor.Visit("tertiaryColour", _tertiaryColour);
-    auto* sceneryEntry = get_wall_entry(_wallType);
-    if (sceneryEntry != nullptr)
-    {
-        if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
-        {
-            _bannerId = create_new_banner(0);
-        }
-    }
 }
 
 uint16_t WallPlaceAction::GetActionFlags() const
@@ -88,7 +72,7 @@ void WallPlaceAction::Serialise(DataSerialiser& stream)
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_wallType) << DS_TAG(_loc) << DS_TAG(_edge) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour)
-           << DS_TAG(_tertiaryColour) << DS_TAG(_bannerId);
+           << DS_TAG(_tertiaryColour);
 }
 
 GameActions::Result::Ptr WallPlaceAction::Query() const
@@ -253,18 +237,10 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
 
     if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
-        if (_bannerId == BANNER_INDEX_NULL)
-        {
-            log_error("Banner Index not specified.");
-            return std::make_unique<WallPlaceActionResult>(
-                GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
-        }
-
-        auto banner = GetBanner(_bannerId);
-        if (!banner->IsNull())
+        if (HasReachedBannerLimit())
         {
             log_error("No free banners available");
-            return std::make_unique<WallPlaceActionResult>(GameActions::Status::NoFreeElements);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
         }
     }
 
@@ -361,20 +337,14 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         }
     }
 
+    Banner* banner = nullptr;
     if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
-        if (_bannerId == BANNER_INDEX_NULL)
-        {
-            log_error("Banner Index not specified.");
-            return std::make_unique<WallPlaceActionResult>(
-                GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
-        }
-
-        auto banner = GetBanner(_bannerId);
-        if (!banner->IsNull())
+        banner = CreateBanner();
+        if (banner == nullptr)
         {
             log_error("No free banners available");
-            return std::make_unique<WallPlaceActionResult>(GameActions::Status::NoFreeElements);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
         }
 
         banner->text = {};
@@ -390,6 +360,8 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
             banner->ride_index = rideIndex;
             banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
         }
+
+        res->bannerId = banner->id;
     }
 
     auto* wallElement = TileElementInsert<WallElement>(targetLoc, 0b0000);
@@ -404,9 +376,9 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     wallElement->SetAcrossTrack(wallAcrossTrack);
 
     wallElement->SetEntryIndex(_wallType);
-    if (_bannerId != BANNER_INDEX_NULL)
+    if (banner != nullptr)
     {
-        wallElement->SetBannerIndex(_bannerId);
+        wallElement->SetBannerIndex(banner->id);
     }
 
     if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)

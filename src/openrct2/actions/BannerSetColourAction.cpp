@@ -84,10 +84,11 @@ GameActions::Result::Ptr BannerSetColourAction::QueryExecute(bool isExecuting) c
     }
 
     auto index = bannerElement->GetIndex();
-    if (index >= MAX_BANNERS || index == BANNER_INDEX_NULL)
+    auto banner = GetBanner(index);
+    if (banner == nullptr)
     {
         log_error("Invalid banner index: index = %u", index);
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
     }
 
     if (isExecuting)
@@ -96,7 +97,6 @@ GameActions::Result::Ptr BannerSetColourAction::QueryExecute(bool isExecuting) c
         intent.putExtra(INTENT_EXTRA_BANNER_INDEX, index);
         context_broadcast_intent(&intent);
 
-        auto banner = GetBanner(index);
         banner->colour = _primaryColour;
         map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
     }
