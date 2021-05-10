@@ -12,6 +12,7 @@
 - Fix: [#13986] OpenGL: Track preview window, flip/rotate button do not update the thumbnail.
 - Fix: [#14315] Crash when trying to rename Air Powered Vertical Coaster in Korean.
 - Fix: [#14330] join_server uses default_port from config.
+- Fix: [#14449] Surface smoothing at extra zoom levels not working.
 - Fix: [#14493] [Plugin] isHidden only works for tile elements up to the first element with a base height of over 32.
 
 0.3.3 (2021-03-13)
