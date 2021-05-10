@@ -1619,6 +1619,40 @@ declare global {
         readonly guests: number;
 
         /**
+         * The maximum number of guests that will spawn naturally (soft guest cap).
+         * In scenarios with difficult guest generation, guests will not spawn above
+         * this value without advertisements.
+         */
+        readonly suggestedGuestMaximum: number;
+
+        /**
+         * The probability out of 65535 that guests will spawn per tick.
+         * The number of guest spawns per second is equal to
+         * guests per second = 40 * (guestGenerationProbability / 65535)
+         */
+        readonly guestGenerationProbability: number;
+
+        /**
+         * The average amount of cash guests will spawn with.
+         */
+        readonly guestInitialCash: number;
+
+        /**
+         * The average happiness guests will spawn at out of 255.
+         */
+        readonly guestInitialHappiness: number;
+
+        /**
+         * The average hunger guests will spawn at out of 255.
+         */
+        readonly guestInitialHunger: number;
+
+        /**
+         * The average thirst guests will spawn at out of 255.
+         */
+        readonly guestInitialThirst: number;
+
+        /**
          * The park value, will be updated every 512 ticks.
          */
         value: number;
@@ -1628,6 +1662,13 @@ declare global {
          * Calculation is: `park.value + park.cash - park.bankLoan`
          */
         companyValue: number;
+
+        /**
+         * The sum of ride values, used to determine the most guests will
+         * pay to enter the park and for some awards.
+         * Calculated as the sum of (ride value - ride price) * 2.
+         */
+        readonly totalRideValueForMoney: number;
 
         /**
          * The total number of guests that have entered the park.

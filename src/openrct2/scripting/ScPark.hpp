@@ -332,6 +332,36 @@ namespace OpenRCT2::Scripting
             return gNumGuestsInPark;
         }
 
+        uint32_t suggestedGuestMaximum_get() const
+        {
+            return _suggestedGuestMaximum;
+        }
+
+        int32_t guestGenerationProbability_get() const
+        {
+            return _guestGenerationProbability;
+        }
+
+        money16 guestInitialCash_get() const
+        {
+            return gGuestInitialCash;
+        }
+
+        uint8_t guestInitialHappiness_get() const
+        {
+            return gGuestInitialHappiness;
+        }
+
+        uint8_t guestInitialHunger_get() const
+        {
+            return gGuestInitialHunger;
+        }
+
+        uint8_t guestInitialThirst_get() const
+        {
+            return gGuestInitialThirst;
+        }
+
         money32 value_get() const
         {
             return gParkValue;
@@ -362,6 +392,11 @@ namespace OpenRCT2::Scripting
                 auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
                 context_broadcast_intent(&intent);
             }
+        }
+
+        money16 totalRideValueForMoney_get() const
+        {
+            return gTotalRideValueForMoney;
         }
 
         uint32_t totalAdmissions_get() const
@@ -546,8 +581,15 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::maxBankLoan_get, &ScPark::maxBankLoan_set, "maxBankLoan");
             dukglue_register_property(ctx, &ScPark::entranceFee_get, &ScPark::entranceFee_set, "entranceFee");
             dukglue_register_property(ctx, &ScPark::guests_get, nullptr, "guests");
+            dukglue_register_property(ctx, &ScPark::suggestedGuestMaximum_get, nullptr, "suggestedGuestMaximum");
+            dukglue_register_property(ctx, &ScPark::guestGenerationProbability_get, nullptr, "guestGenerationProbability");
+            dukglue_register_property(ctx, &ScPark::guestInitialCash_get, nullptr, "guestInitialCash");
+            dukglue_register_property(ctx, &ScPark::guestInitialHappiness_get, nullptr, "guestInitialHappiness");
+            dukglue_register_property(ctx, &ScPark::guestInitialHunger_get, nullptr, "guestInitialHunger");
+            dukglue_register_property(ctx, &ScPark::guestInitialThirst_get, nullptr, "guestInitialThirst");
             dukglue_register_property(ctx, &ScPark::value_get, &ScPark::value_set, "value");
             dukglue_register_property(ctx, &ScPark::companyValue_get, &ScPark::companyValue_set, "companyValue");
+            dukglue_register_property(ctx, &ScPark::totalRideValueForMoney_get, nullptr, "totalRideValueForMoney");
             dukglue_register_property(ctx, &ScPark::totalAdmissions_get, &ScPark::totalAdmissions_set, "totalAdmissions");
             dukglue_register_property(
                 ctx, &ScPark::totalIncomeFromAdmissions_get, &ScPark::totalIncomeFromAdmissions_set,
