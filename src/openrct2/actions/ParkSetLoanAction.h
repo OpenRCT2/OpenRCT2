@@ -20,6 +20,8 @@ public:
     ParkSetLoanAction() = default;
     ParkSetLoanAction(money32 value);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
