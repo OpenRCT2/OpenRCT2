@@ -61,16 +61,17 @@ GameActions::Result::Ptr BannerRemoveAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
-    if (bannerElement->GetIndex() >= MAX_BANNERS || bannerElement->GetIndex() == BANNER_INDEX_NULL)
+    auto bannerIndex = bannerElement->GetIndex();
+    if (bannerIndex == BANNER_INDEX_NULL)
     {
-        log_error("Invalid banner index. index = ", bannerElement->GetIndex());
+        log_error("Invalid banner index. index = ", bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
     auto banner = bannerElement->GetBanner();
     if (banner == nullptr)
     {
-        log_error("Invalid banner index. index = ", bannerElement->GetIndex());
+        log_error("Invalid banner index. index = ", bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
@@ -99,16 +100,17 @@ GameActions::Result::Ptr BannerRemoveAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
-    if (bannerElement->GetIndex() >= MAX_BANNERS || bannerElement->GetIndex() == BANNER_INDEX_NULL)
+    auto bannerIndex = bannerElement->GetIndex();
+    if (bannerIndex == BANNER_INDEX_NULL)
     {
-        log_error("Invalid banner index. index = ", bannerElement->GetIndex());
+        log_error("Invalid banner index. index = ", bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
     auto banner = bannerElement->GetBanner();
     if (banner == nullptr)
     {
-        log_error("Invalid banner index. index = ", bannerElement->GetIndex());
+        log_error("Invalid banner index. index = ", bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 

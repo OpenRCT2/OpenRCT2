@@ -1774,19 +1774,27 @@ private:
                 auto dst2 = dst->AsBanner();
                 auto src2 = src->AsBanner();
 
-                auto index = src2->GetIndex();
-                if (index != RCT12_BANNER_INDEX_NULL)
-                    dst2->SetIndex(index);
-                else
-                    dst2->SetIndex(BANNER_INDEX_NULL);
                 dst2->SetPosition(src2->GetPosition());
                 dst2->SetAllowedEdges(src2->GetAllowedEdges());
 
+                auto index = src2->GetIndex();
                 if (index < std::size(_s4.banners))
                 {
                     auto srcBanner = &_s4.banners[index];
-                    auto dstBanner = GetBanner(index);
-                    ImportBanner(dstBanner, srcBanner);
+                    auto dstBanner = GetOrCreateBanner(index);
+                    if (dstBanner == nullptr)
+                    {
+                        dst2->SetIndex(BANNER_INDEX_NULL);
+                    }
+                    else
+                    {
+                        ImportBanner(dstBanner, srcBanner);
+                        dst2->SetIndex(index);
+                    }
+                }
+                else
+                {
+                    dst2->SetIndex(BANNER_INDEX_NULL);
                 }
                 return 1;
             }

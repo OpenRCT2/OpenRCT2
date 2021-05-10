@@ -58,10 +58,10 @@ namespace OpenRCT2
     constexpr uint32_t PARK_FILE_MAGIC = 0x4B524150; // PARK
 
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x0;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x1;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x0;
+    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x1;
 
     namespace ParkFileChunkType
     {
@@ -832,34 +832,68 @@ namespace OpenRCT2
 
         void ReadWriteBannersChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::BANNERS, [](OrcaStream::ChunkStream& cs) {
-                std::vector<Banner> banners;
+            os.ReadWriteChunk(ParkFileChunkType::BANNERS, [this, &os](OrcaStream::ChunkStream& cs) {
+                auto version = os.GetHeader().TargetVersion;
                 if (cs.GetMode() == OrcaStream::Mode::WRITING)
                 {
-                    for (BannerIndex i = 0; i < MAX_BANNERS; i++)
-                    {
-                        banners.push_back(*GetBanner(i));
-                    }
-                }
-                cs.ReadWriteVector(banners, [&cs](Banner& banner) {
-                    cs.ReadWrite(banner.type);
-                    cs.ReadWrite(banner.flags);
-                    cs.ReadWrite(banner.text);
-                    cs.ReadWrite(banner.colour);
-                    cs.ReadWrite(banner.ride_index);
-                    cs.ReadWrite(banner.text_colour);
-                    cs.ReadWrite(banner.position.x);
-                    cs.ReadWrite(banner.position.y);
-                });
-                if (cs.GetMode() == OrcaStream::Mode::READING)
-                {
+                    auto numBanners = GetNumBanners();
+                    cs.Write(static_cast<uint32_t>(numBanners));
+
+                    [[maybe_unused]] size_t numWritten = 0;
                     for (BannerIndex i = 0; i < MAX_BANNERS; i++)
                     {
                         auto banner = GetBanner(i);
-                        *banner = banners[i];
+                        if (banner != nullptr)
+                        {
+                            cs.Write(i);
+                            ReadWriteBanner(cs, *banner);
+                            numWritten++;
+                        }
+                    }
+
+                    assert(numWritten == numBanners);
+                }
+                else if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    if (version == 0)
+                    {
+                        for (BannerIndex i = 0; i < MAX_BANNERS; i++)
+                        {
+                            auto banner = GetOrCreateBanner(i);
+                            ReadWriteBanner(cs, *banner);
+                        }
+                    }
+                    else
+                    {
+                        auto numBanners = cs.Read<uint32_t>();
+                        for (size_t i = 0; i < numBanners; i++)
+                        {
+                            auto bannerIndex = cs.Read<BannerIndex>();
+                            auto banner = GetOrCreateBanner(bannerIndex);
+                            if (banner == nullptr)
+                            {
+                                throw std::runtime_error("Invalid banner index");
+                            }
+                            else
+                            {
+                                ReadWriteBanner(cs, *banner);
+                            }
+                        }
                     }
                 }
             });
+        }
+
+        void ReadWriteBanner(OrcaStream::ChunkStream& cs, Banner& banner)
+        {
+            cs.ReadWrite(banner.type);
+            cs.ReadWrite(banner.flags);
+            cs.ReadWrite(banner.text);
+            cs.ReadWrite(banner.colour);
+            cs.ReadWrite(banner.ride_index);
+            cs.ReadWrite(banner.text_colour);
+            cs.ReadWrite(banner.position.x);
+            cs.ReadWrite(banner.position.y);
         }
 
         void ReadWriteRidesChunk(OrcaStream& os)

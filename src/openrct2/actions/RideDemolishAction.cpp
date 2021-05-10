@@ -133,15 +133,7 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     ride_clear_leftover_entrances(ride);
     News::DisableNewsItems(News::ItemType::Ride, _rideIndex);
 
-    for (BannerIndex i = 0; i < MAX_BANNERS; i++)
-    {
-        auto banner = GetBanner(i);
-        if (!banner->IsNull() && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
-        {
-            banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner->text = {};
-        }
-    }
+    UnlinkAllBannersForRide(_rideIndex);
 
     for (auto peep : EntityList<Guest>())
     {

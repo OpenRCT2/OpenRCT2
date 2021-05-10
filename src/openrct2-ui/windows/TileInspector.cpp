@@ -2081,7 +2081,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (wallEntry != nullptr && wallEntry->wall.flags & WALL_SCENERY_IS_BANNER)
                 {
                     auto banner = tileElement->AsWall()->GetBanner();
-                    if (banner != nullptr && !banner->IsNull())
+                    if (banner != nullptr)
                     {
                         Formatter ft;
                         banner->FormatTextTo(ft);
@@ -2147,7 +2147,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (largeSceneryEntry != nullptr && largeSceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto banner = sceneryElement->GetBanner();
-                    if (banner != nullptr && !banner->IsNull())
+                    if (banner != nullptr)
                     {
                         Formatter ft;
                         banner->FormatTextTo(ft);
@@ -2180,7 +2180,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Details
                 // Banner info
                 auto banner = tileElement->AsBanner()->GetBanner();
-                if (banner != nullptr && !banner->IsNull())
+                if (banner != nullptr)
                 {
                     Formatter ft;
                     banner->FormatTextTo(ft);

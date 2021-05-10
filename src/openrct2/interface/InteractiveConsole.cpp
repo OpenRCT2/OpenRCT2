@@ -1250,15 +1250,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
 
     int32_t staffCount = GetEntityListCount(EntityType::Staff);
 
-    int32_t bannerCount = 0;
-    for (BannerIndex i = 0; i < MAX_BANNERS; ++i)
-    {
-        auto banner = GetBanner(i);
-        if (!banner->IsNull())
-        {
-            bannerCount++;
-        }
-    }
+    auto bannerCount = GetNumBanners();
 
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
     console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);

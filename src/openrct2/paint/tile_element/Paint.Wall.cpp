@@ -432,7 +432,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     }
 
     auto banner = tile_element->AsWall()->GetBanner();
-    if (banner != nullptr && !banner->IsNull())
+    if (banner != nullptr)
     {
         auto ft = Formatter();
         banner->FormatTextTo(ft);

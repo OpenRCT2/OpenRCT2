@@ -327,16 +327,7 @@ namespace Editor
     static void ClearMapForEditing(bool fromSave)
     {
         map_remove_all_rides();
-
-        //
-        for (BannerIndex i = 0; i < MAX_BANNERS; i++)
-        {
-            auto banner = GetBanner(i);
-            if (banner->IsNull())
-            {
-                banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            }
-        }
+        UnlinkAllRideBanners();
 
         ride_init_all();
 

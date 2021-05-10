@@ -18,10 +18,29 @@
 
 using namespace OpenRCT2;
 
-BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour)
+BannerPlaceActionResult::BannerPlaceActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_CANT_POSITION_THIS_HERE)
+{
+}
+
+BannerPlaceActionResult::BannerPlaceActionResult(GameActions::Status err)
+    : GameActions::Result(err, STR_CANT_POSITION_THIS_HERE)
+{
+}
+
+BannerPlaceActionResult::BannerPlaceActionResult(GameActions::Status err, rct_string_id msg)
+    : GameActions::Result(err, STR_CANT_POSITION_THIS_HERE, msg)
+{
+}
+
+BannerPlaceActionResult::BannerPlaceActionResult(GameActions::Status err, rct_string_id title, rct_string_id message)
+    : GameActions::Result(err, title, message)
+{
+}
+
+BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, uint8_t primaryColour)
     : _loc(loc)
     , _bannerType(bannerType)
-    , _bannerIndex(bannerIndex)
     , _primaryColour(primaryColour)
 {
 }
@@ -31,7 +50,6 @@ void BannerPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit(_loc);
     visitor.Visit("object", _bannerType);
     visitor.Visit("primaryColour", _primaryColour);
-    _bannerIndex = create_new_banner(0);
 }
 
 uint16_t BannerPlaceAction::GetActionFlags() const
@@ -43,7 +61,7 @@ void BannerPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_bannerType) << DS_TAG(_bannerIndex) << DS_TAG(_primaryColour);
+    stream << DS_TAG(_loc) << DS_TAG(_bannerType) << DS_TAG(_primaryColour);
 }
 
 GameActions::Result::Ptr BannerPlaceAction::Query() const
@@ -86,17 +104,10 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
         return MakeResult(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_BANNER_SIGN_IN_THE_WAY);
     }
 
-    if (_bannerIndex == BANNER_INDEX_NULL || _bannerIndex >= MAX_BANNERS)
+    if (HasReachedBannerLimit())
     {
-        log_error("Invalid banner index, bannerIndex = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
-    }
-
-    auto banner = GetBanner(_bannerIndex);
-    if (!banner->IsNull())
-    {
-        log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+        log_error("No free banners available");
+        return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
     }
 
     rct_scenery_entry* bannerEntry = get_banner_entry(_bannerType);
@@ -124,12 +135,6 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
     }
 
-    if (_bannerIndex == BANNER_INDEX_NULL || _bannerIndex >= MAX_BANNERS)
-    {
-        log_error("Invalid banner index, bannerIndex = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
-    }
-
     rct_scenery_entry* bannerEntry = get_banner_entry(_bannerType);
     if (bannerEntry == nullptr)
     {
@@ -137,11 +142,11 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
     }
 
-    auto banner = GetBanner(_bannerIndex);
-    if (!banner->IsNull())
+    auto banner = CreateBanner();
+    if (banner == nullptr)
     {
-        log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+        log_error("No free banners available");
+        return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
     }
     banner->flags = 0;
     banner->text = {};
@@ -150,13 +155,15 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     banner->colour = _primaryColour;
     banner->position = TileCoordsXY(_loc);
 
+    res->bannerId = banner->id;
+
     auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
     Guard::Assert(bannerElement != nullptr);
 
     bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);
     bannerElement->SetPosition(_loc.direction);
     bannerElement->ResetAllowedEdges();
-    bannerElement->SetIndex(_bannerIndex);
+    bannerElement->SetIndex(banner->id);
     bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
     map_invalidate_tile_full(_loc);
