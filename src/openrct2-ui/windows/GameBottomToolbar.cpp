@@ -198,8 +198,8 @@ static OpenRCT2String window_game_bottom_toolbar_tooltip(
     switch (widgetIndex)
     {
         case WIDX_MONEY:
-            ft.Add<int32_t>(gCurrentProfit);
-            ft.Add<int32_t>(gParkValue);
+            ft.Add<money64>(gCurrentProfit);
+            ft.Add<money64>(gParkValue);
             break;
         case WIDX_PARK_RATING:
             ft.Add<int16_t>(gParkRating);
