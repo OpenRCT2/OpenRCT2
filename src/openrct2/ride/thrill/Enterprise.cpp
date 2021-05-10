@@ -42,7 +42,7 @@ static void paint_enterprise_structure(
     uint32_t imageOffset = tileElement->GetDirectionWithOffset(session->CurrentRotation);
     if (vehicle != nullptr)
     {
-        imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + session->CurrentRotation) % 4);
+        imageOffset = (vehicle->Pitch << 2) + (((vehicle->sprite_direction >> 3) + session->CurrentRotation) % 4);
     }
 
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];

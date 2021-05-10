@@ -186,15 +186,15 @@ void vehicle_visual_river_rapids(
     uint32_t rotation = session->CurrentRotation;
     int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
     int32_t j = 0;
-    if (vehicle->vehicle_sprite_type == 0)
+    if (vehicle->Pitch == 0)
     {
         baseImage_id = ecx & 7;
     }
     else
     {
-        if (vehicle->vehicle_sprite_type == 1 || vehicle->vehicle_sprite_type == 5)
+        if (vehicle->Pitch == 1 || vehicle->Pitch == 5)
         {
-            if (vehicle->vehicle_sprite_type == 5)
+            if (vehicle->Pitch == 5)
             {
                 baseImage_id = imageDirection ^ 16;
             }
@@ -203,9 +203,9 @@ void vehicle_visual_river_rapids(
             baseImage_id += (ecx & 7);
             baseImage_id += 8;
         }
-        else if (vehicle->vehicle_sprite_type == 2 || vehicle->vehicle_sprite_type == 6)
+        else if (vehicle->Pitch == 2 || vehicle->Pitch == 6)
         {
-            if (vehicle->vehicle_sprite_type == 6)
+            if (vehicle->Pitch == 6)
             {
                 baseImage_id = imageDirection ^ 16;
             }

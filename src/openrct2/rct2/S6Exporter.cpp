@@ -1087,7 +1087,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpriteVehicle* dst, const Vehicle* 
 
     ExportEntityCommonProperties(dst, src);
     dst->type = EnumValue(src->SubType);
-    dst->vehicle_sprite_type = src->vehicle_sprite_type;
+    dst->Pitch = src->Pitch;
     dst->bank_rotation = src->bank_rotation;
     dst->remaining_distance = src->remaining_distance;
     dst->velocity = src->velocity;

@@ -43,7 +43,7 @@ struct rct_vehicle_info
     int16_t y;                   // 0x02
     int16_t z;                   // 0x04
     uint8_t direction;           // 0x06
-    uint8_t vehicle_sprite_type; // 0x07
+    uint8_t Pitch; // 0x07
     uint8_t bank_rotation;       // 0x08
 };
 
@@ -98,7 +98,7 @@ struct Vehicle : SpriteBase
     };
 
     Type SubType;
-    uint8_t vehicle_sprite_type;
+    uint8_t Pitch;
     uint8_t bank_rotation;
     int32_t remaining_distance;
     int32_t velocity;

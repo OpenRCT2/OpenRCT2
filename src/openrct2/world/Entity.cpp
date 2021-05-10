@@ -234,7 +234,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
 {
     EntityBaseSerialise(*this, stream);
     stream << SubType;
-    stream << vehicle_sprite_type;
+    stream << Pitch;
     stream << bank_rotation;
     stream << remaining_distance;
     stream << velocity;
