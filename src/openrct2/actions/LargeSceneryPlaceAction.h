@@ -23,6 +23,7 @@ public:
 
     uint8_t GroundFlags{ 0 };
     TileElement* tileElement = nullptr;
+    BannerIndex bannerId = BANNER_INDEX_NULL;
 };
 
 DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GameCommand::PlaceLargeScenery, LargeSceneryPlaceActionResult)
@@ -32,7 +33,6 @@ private:
     ObjectEntryIndex _sceneryType{ OBJECT_ENTRY_INDEX_NULL };
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
-    BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
     LargeSceneryPlaceAction() = default;

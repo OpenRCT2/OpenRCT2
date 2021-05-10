@@ -46,12 +46,12 @@ GameActions::Result::Ptr BannerSetStyleAction::Query() const
 {
     auto res = MakeResult();
 
-    if (_bannerIndex >= MAX_BANNERS || _bannerIndex == BANNER_INDEX_NULL)
-    {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
-    }
-
     auto banner = GetBanner(_bannerIndex);
+    if (banner == nullptr)
+    {
+        log_error("Invalid banner index: index = %u", _bannerIndex);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+    }
 
     res->Expenditure = ExpenditureType::Landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
@@ -101,6 +101,11 @@ GameActions::Result::Ptr BannerSetStyleAction::Execute() const
     auto res = MakeResult();
 
     auto banner = GetBanner(_bannerIndex);
+    if (banner == nullptr)
+    {
+        log_error("Invalid banner index: index = %u", _bannerIndex);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+    }
 
     res->Expenditure = ExpenditureType::Landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
