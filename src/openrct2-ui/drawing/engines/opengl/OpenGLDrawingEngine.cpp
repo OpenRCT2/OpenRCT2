@@ -794,10 +794,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t ma
     right -= _dpi->x;
     bottom -= _dpi->y;
 
-    left = left * _dpi->zoom_level;
-    top = top * _dpi->zoom_level;
-    right = right * _dpi->zoom_level;
-    bottom = bottom * _dpi->zoom_level;
+    left = left / _dpi->zoom_level;
+    top = top / _dpi->zoom_level;
+    right = right / _dpi->zoom_level;
+    bottom = bottom / _dpi->zoom_level;
 
     left += _spriteOffset.x;
     top += _spriteOffset.y;
