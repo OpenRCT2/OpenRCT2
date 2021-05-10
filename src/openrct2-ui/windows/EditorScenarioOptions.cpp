@@ -970,8 +970,8 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
         // Cash per guest value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_CASH_PER_GUEST].left + 1, w->widgets[WIDX_CASH_PER_GUEST].top };
-        arg = gGuestInitialCash;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        money64 value = gGuestInitialCash;
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &value);
     }
 
     // Guest initial happiness label
