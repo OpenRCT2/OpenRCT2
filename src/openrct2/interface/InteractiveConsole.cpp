@@ -196,7 +196,15 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     int32_t res = set_operating_setting(ride_index, RideSetSetting::RideType, type);
                     if (res == MONEY32_UNDEFINED)
                     {
-                        console.WriteFormatLine("That didn't work");
+                        if (!gCheatsAllowArbitraryRideTypeChanges)
+                        {
+                            console.WriteFormatLine(
+                                "That didn't work. Try enabling the 'Allow arbitrary ride type changes' cheat");
+                        }
+                        else
+                        {
+                            console.WriteFormatLine("That didn't work");
+                        }
                     }
                 }
             }
