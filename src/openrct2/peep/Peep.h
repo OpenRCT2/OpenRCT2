@@ -743,6 +743,7 @@ public: // Peep
     void FormatNameTo(Formatter&) const;
     std::string GetName() const;
     bool SetName(std::string_view value);
+    bool IsWalking() const;
 
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.

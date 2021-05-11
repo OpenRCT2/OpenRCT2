@@ -405,7 +405,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     xy_distance = x_delta + y_delta;
 
-    if (Action == PeepActionType::Walking)
+    if (IsWalking())
     {
         if (xy_distance <= DestinationTolerance)
         {
@@ -930,7 +930,7 @@ void Peep::Update()
         stepsToTake = 95;
     if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::Queuing)
         stepsToTake /= 2;
-    if (Action == PeepActionType::Walking && (GetNextIsSloped()))
+    if (IsWalking() && GetNextIsSloped())
     {
         stepsToTake /= 2;
         if (State == PeepState::Queuing)
@@ -1526,6 +1526,11 @@ bool Peep::SetName(std::string_view value)
         }
     }
     return false;
+}
+
+bool Peep::IsWalking() const
+{
+    return Action == PeepActionType::Walking;
 }
 
 void peep_set_map_tooltip(Peep* peep)

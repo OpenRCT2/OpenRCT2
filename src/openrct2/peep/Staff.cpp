@@ -1213,7 +1213,7 @@ void Staff::UpdateWatering()
     }
     else if (SubState == 1)
     {
-        if (Action != PeepActionType::Walking)
+        if (!IsWalking())
         {
             UpdateAction();
             Invalidate();
@@ -1277,7 +1277,7 @@ void Staff::UpdateEmptyingBin()
     }
     else if (SubState == 1)
     {
-        if (Action == PeepActionType::Walking)
+        if (IsWalking())
         {
             StateReset();
             return;
@@ -1496,7 +1496,7 @@ void Staff::UpdateAnswering()
     }
     else if (SubState == 1)
     {
-        if (Action == PeepActionType::Walking)
+        if (IsWalking())
         {
             SubState = 2;
             peep_window_state_update(this);
@@ -2184,7 +2184,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride* ride)
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PeepActionType::Walking)
+    if (IsWalking())
     {
         return true;
     }
@@ -2226,7 +2226,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride* ride)
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PeepActionType::Walking)
+    if (IsWalking())
     {
         return true;
     }
@@ -2331,7 +2331,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PeepActionType::Walking)
+    if (IsWalking())
     {
         return true;
     }
@@ -2472,7 +2472,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PeepActionType::Walking)
+    if (IsWalking())
     {
         return true;
     }
@@ -2564,7 +2564,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action != PeepActionType::Walking)
+    if (!IsWalking())
     {
         UpdateAction();
         Invalidate();

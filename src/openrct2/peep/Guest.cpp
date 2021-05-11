@@ -3290,7 +3290,7 @@ void Guest::UpdateBuying()
 
     if (SubState == 1)
     {
-        if (Action != PeepActionType::Walking)
+        if (!IsWalking())
         {
             UpdateAction();
             Invalidate();
@@ -5655,7 +5655,7 @@ void Guest::UpdateWatching()
             // 6917F6
             UpdateAction();
             Invalidate();
-            if (Action != PeepActionType::Walking)
+            if (!IsWalking())
                 return;
             Action = PeepActionType::Idle;
         }
@@ -5736,7 +5736,7 @@ void Guest::UpdateUsingBin()
         }
         case PeepUsingBinSubState::GoingBack:
         {
-            if (Action != PeepActionType::Walking)
+            if (!IsWalking())
             {
                 UpdateAction();
                 Invalidate();
@@ -7273,7 +7273,7 @@ bool Guest::UpdateQueuePosition(PeepActionType previous_action)
     if (Action < PeepActionType::Idle)
         UpdateAction();
 
-    if (Action != PeepActionType::Walking)
+    if (!IsWalking())
         return true;
 
     Action = PeepActionType::Idle;
