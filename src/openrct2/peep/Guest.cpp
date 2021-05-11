@@ -474,7 +474,7 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
     if (peepDirection == otherPeepOppositeDirection)
     {
-        if (passingPeep->Action == PeepActionType::Idle || passingPeep->Action == PeepActionType::Walking)
+        if (passingPeep->IsActionInterruptable())
         {
             passingPeep->Action = PeepActionType::Wave2;
             passingPeep->ActionFrame = 0;
@@ -491,7 +491,7 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
     if (passingPeep->State != PeepState::Walking)
         return;
 
-    if (passingPeep->Action == PeepActionType::Idle || passingPeep->Action == PeepActionType::Walking)
+    if (passingPeep->IsActionInterruptable())
     {
         passingPeep->Action = PeepActionType::ThrowUp;
         passingPeep->ActionFrame = 0;
@@ -536,7 +536,7 @@ void Guest::UpdateEasterEggInteractions()
     {
         if (scenario_rand() <= 1456)
         {
-            if (Action == PeepActionType::Idle || Action == PeepActionType::Walking)
+            if (IsActionInterruptable())
             {
                 Action = PeepActionType::Joy;
                 ActionFrame = 0;
@@ -744,7 +744,7 @@ void Guest::loc_68F9F3()
     {
         if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
         {
-            if (Action >= PeepActionType::Idle)
+            if (IsActionInterruptable())
             {
                 Action = PeepActionType::ThrowUp;
                 ActionFrame = 0;
@@ -1247,10 +1247,10 @@ void Guest::UpdateSitting()
     }
     else if (SittingSubState == PeepSittingSubState::SatDown)
     {
-        if (Action < PeepActionType::Idle)
+        if (!IsActionInterruptable())
         {
             UpdateAction();
-            if (Action != PeepActionType::Walking)
+            if (!IsActionWalking())
                 return;
 
             Action = PeepActionType::Idle;
@@ -2341,7 +2341,7 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 
 void Guest::ReadMap()
 {
-    if (Action == PeepActionType::Idle || Action == PeepActionType::Walking)
+    if (IsActionInterruptable())
     {
         Action = PeepActionType::ReadMap;
         ActionFrame = 0;
@@ -3290,7 +3290,7 @@ void Guest::UpdateBuying()
 
     if (SubState == 1)
     {
-        if (!IsWalking())
+        if (!IsActionWalking())
         {
             UpdateAction();
             Invalidate();
@@ -4781,7 +4781,7 @@ void Guest::UpdateRideMazePathfinding()
         return;
     }
 
-    if (Action >= PeepActionType::Idle)
+    if (IsActionInterruptable())
     {
         if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
         {
@@ -5174,7 +5174,7 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_WAVING)
     {
-        if (Action >= PeepActionType::Idle)
+        if (IsActionInterruptable())
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
@@ -5189,7 +5189,7 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_PHOTO)
     {
-        if (Action >= PeepActionType::Idle)
+        if (IsActionInterruptable())
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
@@ -5204,7 +5204,7 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_PAINTING)
     {
-        if (Action >= PeepActionType::Idle)
+        if (IsActionInterruptable())
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
@@ -5481,7 +5481,7 @@ void Guest::UpdateQueuing()
 
     uint8_t pathingResult;
     PerformNextAction(pathingResult);
-    if (Action < PeepActionType::Idle)
+    if (!IsActionInterruptable())
         return;
     if (SpriteType == PeepSpriteType::Normal)
     {
@@ -5501,7 +5501,7 @@ void Guest::UpdateQueuing()
     }
     else
     {
-        if (!(TimeInQueue & 0x3F) && Action == PeepActionType::Idle && NextActionSpriteType == PeepActionSpriteType::WatchRide)
+        if (!(TimeInQueue & 0x3F) && IsActionIdle() && NextActionSpriteType == PeepActionSpriteType::WatchRide)
         {
             switch (SpriteType)
             {
@@ -5650,12 +5650,12 @@ void Guest::UpdateWatching()
     }
     else if (SubState == 1)
     {
-        if (Action < PeepActionType::Idle)
+        if (!IsActionInterruptable())
         {
             // 6917F6
             UpdateAction();
             Invalidate();
-            if (!IsWalking())
+            if (!IsActionWalking())
                 return;
             Action = PeepActionType::Idle;
         }
@@ -5736,7 +5736,7 @@ void Guest::UpdateUsingBin()
         }
         case PeepUsingBinSubState::GoingBack:
         {
-            if (!IsWalking())
+            if (!IsActionWalking())
             {
                 UpdateAction();
                 Invalidate();
@@ -6592,7 +6592,7 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
     ActionSpriteImageOffset = 0;
     WalkingFrameNum = 0;
 
-    if (Action >= PeepActionType::Idle)
+    if (IsActionInterruptable())
         Action = PeepActionType::Walking;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
@@ -6803,7 +6803,7 @@ void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft
 void Guest::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
 {
     PeepActionType newAction = PeepThoughtToActionMap[EnumValue(thoughtType)].action;
-    if (newAction != PeepActionType::Walking && this->Action >= PeepActionType::Idle)
+    if (newAction != PeepActionType::Walking && IsActionInterruptable())
     {
         Action = newAction;
         ActionFrame = 0;
@@ -7270,10 +7270,10 @@ bool Guest::UpdateQueuePosition(PeepActionType previous_action)
         }
     }
 
-    if (Action < PeepActionType::Idle)
+    if (!IsActionInterruptable())
         UpdateAction();
 
-    if (!IsWalking())
+    if (!IsActionWalking())
         return true;
 
     Action = PeepActionType::Idle;

@@ -307,7 +307,7 @@ bool Peep::CheckForPath()
 
 PeepActionSpriteType Peep::GetActionSpriteType()
 {
-    if (Action >= PeepActionType::Idle)
+    if (IsActionInterruptable())
     { // PeepActionType::None1 or PeepActionType::None2
         return PeepSpecialSpriteToSpriteTypeMap[SpecialSprite];
     }
@@ -358,8 +358,7 @@ void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
 
     SpecialSprite = special_sprite_id;
 
-    // If NONE_1 or NONE_2
-    if (Action >= PeepActionType::Idle)
+    if (IsActionInterruptable())
     {
         ActionSpriteImageOffset = 0;
     }
@@ -405,7 +404,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     xy_distance = x_delta + y_delta;
 
-    if (IsWalking())
+    if (IsActionWalking())
     {
         if (xy_distance <= DestinationTolerance)
         {
@@ -930,7 +929,7 @@ void Peep::Update()
         stepsToTake = 95;
     if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::Queuing)
         stepsToTake /= 2;
-    if (IsWalking() && GetNextIsSloped())
+    if (IsActionWalking() && GetNextIsSloped())
     {
         stepsToTake /= 2;
         if (State == PeepState::Queuing)
@@ -1248,7 +1247,7 @@ void peep_applause()
         peep_release_balloon(peep, peep->z + 9);
 
         // Clap
-        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->Action >= PeepActionType::Idle)
+        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->IsActionInterruptable())
         {
             peep->Action = PeepActionType::Clap;
             peep->ActionFrame = 0;
@@ -1528,9 +1527,19 @@ bool Peep::SetName(std::string_view value)
     return false;
 }
 
-bool Peep::IsWalking() const
+bool Peep::IsActionWalking() const
 {
     return Action == PeepActionType::Walking;
+}
+
+bool Peep::IsActionIdle() const
+{
+    return Action == PeepActionType::Idle;
+}
+
+bool Peep::IsActionInterruptable() const
+{
+    return IsActionIdle() || IsActionWalking();
 }
 
 void peep_set_map_tooltip(Peep* peep)
