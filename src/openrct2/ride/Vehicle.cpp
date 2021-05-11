@@ -6999,11 +6999,11 @@ void Vehicle::UpdateSwingingCar()
         return;
     }
     int16_t dx = 3185;
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SUSPENDED_SWING)
     {
         dx = 5006;
     }
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
     {
         dx = 1820;
     }
@@ -8329,7 +8329,7 @@ loc_6DAEB9:
 
         moveInfovehicleSpriteType = moveInfo->Pitch;
 
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && moveInfo->Pitch != 0)
+        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && moveInfo->Pitch != 0)
         {
             SwingSprite = 0;
             SwingPosition = 0;
@@ -8638,7 +8638,7 @@ loc_6DBA33:;
         Pitch = moveInfo->Pitch;
         moveInfoVehicleSpriteType = moveInfo->Pitch;
 
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && Pitch != 0)
+        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && Pitch != 0)
         {
             SwingSprite = 0;
             SwingPosition = 0;
@@ -8991,7 +8991,7 @@ loc_6DC743:
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
 
-    if (rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_25)
+    if (rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
     {
         if (Pitch != 0)
         {
@@ -9107,7 +9107,7 @@ loc_6DCC2C:
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
 
-    if (rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_25)
+    if (rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
     {
         if (Pitch != 0)
         {
