@@ -790,7 +790,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 {
     int32_t width;
     rct_string_id stringId;
-    uint32_t arg;
+    uint64_t arg;
 
     WindowDrawWidgets(w, dpi);
     window_editor_objective_options_draw_tab_images(w, dpi);
