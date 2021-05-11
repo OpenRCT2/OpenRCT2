@@ -39,12 +39,12 @@ struct GForces
 // Size: 0x09
 struct rct_vehicle_info
 {
-    int16_t x;                   // 0x00
-    int16_t y;                   // 0x02
-    int16_t z;                   // 0x04
-    uint8_t direction;           // 0x06
-    uint8_t Pitch; // 0x07
-    uint8_t bank_rotation;       // 0x08
+    int16_t x;             // 0x00
+    int16_t y;             // 0x02
+    int16_t z;             // 0x04
+    uint8_t direction;     // 0x06
+    uint8_t Pitch;         // 0x07
+    uint8_t bank_rotation; // 0x08
 };
 
 struct SoundIdVolume;
