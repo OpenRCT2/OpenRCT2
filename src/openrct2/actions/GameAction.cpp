@@ -23,9 +23,9 @@
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../world/MoneyEffect.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 
 #include <algorithm>
 #include <iterator>

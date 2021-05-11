@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include "../../interface/Viewport.h"
-#include "../../world/Sprite.h"
+#include "../../world/Litter.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
 
