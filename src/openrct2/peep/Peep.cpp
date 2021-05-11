@@ -405,7 +405,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     xy_distance = x_delta + y_delta;
 
-    if (Action == PeepActionType::Idle || Action == PeepActionType::Walking)
+    if (Action == PeepActionType::Walking)
     {
         if (xy_distance <= DestinationTolerance)
         {
