@@ -116,7 +116,7 @@ namespace RCT1
         return map[rct1SpriteType];
     }
 
-    ObjectEntryIndex GetTerrain(uint8_t terrainSurface)
+    std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface)
     {
         static constexpr std::string_view map[RCT1_NUM_TERRAIN_SURFACES] =
         {
@@ -137,16 +137,10 @@ namespace RCT1
             "rct2.surface.gridpurple",
             "rct2.surface.gridgreen",
         };
-        std::string selectedSurface = "rct2.surface.grass";
-        if (terrainSurface < std::size(map))
-        {
-            selectedSurface = map[terrainSurface];
-        }
-
-        return object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(selectedSurface));
+        return terrainSurface < std::size(map) ? map[terrainSurface] : map[0];
     }
 
-    ObjectEntryIndex GetTerrainEdge(uint8_t terrainEdge)
+    std::string_view GetTerrainEdgeObject(uint8_t terrainEdge)
     {
         static constexpr std::string_view map[RCT1_NUM_TERRAIN_EDGES] =
         {
@@ -166,13 +160,7 @@ namespace RCT1
             "rct1.ll.edge.skyscrapera",
             "rct1.ll.edge.skyscraperb",
         };
-        std::string selectedEdge = "rct2.edge.rock";
-        if (terrainEdge < std::size(map))
-        {
-            selectedEdge = map[terrainEdge];
-        }
-
-        return object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(selectedEdge));
+        return terrainEdge < std::size(map) ? map[terrainEdge] : map[0];
     }
 
     uint8_t GetRideType(uint8_t rideType, uint8_t vehicleType)

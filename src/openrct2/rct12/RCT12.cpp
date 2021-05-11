@@ -1387,7 +1387,7 @@ std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
     return {};
 }
 
-void RCT12AddDefaultObjects(ObjectList& objectList)
+void SetDefaultRCT2TerrainObjects(ObjectList& objectList)
 {
     // Surfaces
     objectList.SetObject(ObjectType::TerrainSurface, 0, "rct2.surface.grass");
@@ -1425,7 +1425,10 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
     objectList.SetObject(ObjectType::TerrainEdge, 12, "rct1.ll.edge.stonegrey");
     objectList.SetObject(ObjectType::TerrainEdge, 13, "rct1.ll.edge.skyscrapera");
     objectList.SetObject(ObjectType::TerrainEdge, 14, "rct1.ll.edge.skyscraperb");
+}
 
+void RCT12AddDefaultObjects(ObjectList& objectList)
+{
     // Stations
     for (size_t i = 0; i < std::size(_stationStyles); i++)
     {

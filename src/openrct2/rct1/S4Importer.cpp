@@ -122,6 +122,8 @@ private:
     EntryList _pathAdditionEntries;
     EntryList _sceneryGroupEntries;
     EntryList _waterEntry;
+    EntryList _terrainSurfaceEntries;
+    EntryList _terrainEdgeEntries;
     EntryList _footpathSurfaceEntries;
     EntryList _footpathRailingsEntries;
 
@@ -134,6 +136,8 @@ private:
     ObjectEntryIndex _pathTypeToEntryMap[24]{};
     ObjectEntryIndex _pathAdditionTypeToEntryMap[16]{};
     ObjectEntryIndex _sceneryThemeTypeToEntryMap[24]{};
+    ObjectEntryIndex _terrainSurfaceTypeToEntryMap[16]{};
+    ObjectEntryIndex _terrainEdgeTypeToEntryMap[16]{};
     ObjectEntryIndex _footpathSurfaceTypeToEntryMap[32]{};
     ObjectEntryIndex _footpathRailingsTypeToEntryMap[4]{};
 
@@ -377,6 +381,8 @@ private:
         std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
         std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
         std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_terrainSurfaceTypeToEntryMap), std::end(_terrainSurfaceTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_terrainEdgeTypeToEntryMap), std::end(_terrainEdgeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
         std::fill(
             std::begin(_footpathSurfaceTypeToEntryMap), std::end(_footpathSurfaceTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
         std::fill(
@@ -419,6 +425,21 @@ private:
 
         _footpathRailingsEntries.AddRange(
             { "rct2.railings.wood", "rct1.ll.railings.space", "rct1.ll.railings.bamboo", "rct2.railings.concrete" });
+
+        // Add default surfaces
+        _terrainSurfaceEntries.AddRange({ "rct2.surface.grass", "rct2.surface.sand", "rct2.surface.dirt", "rct2.surface.rock",
+                                          "rct2.surface.martian", "rct2.surface.chequerboard", "rct2.surface.grassclumps",
+                                          "rct2.surface.ice", "rct2.surface.gridred", "rct2.surface.gridyellow",
+                                          "rct2.surface.gridpurple", "rct2.surface.gridgreen", "rct2.surface.sandred",
+                                          "rct2.surface.sandbrown", "rct1.aa.surface.roofred", "rct1.ll.surface.roofgrey",
+                                          "rct1.ll.surface.rust", "rct1.ll.surface.wood" });
+
+        // Add default edges
+        _terrainEdgeEntries.AddRange({ "rct2.edge.rock", "rct2.edge.woodred", "rct2.edge.woodblack", "rct2.edge.ice",
+                                       "rct1.edge.brick", "rct1.edge.iron", "rct1.aa.edge.grey", "rct1.aa.edge.yellow",
+                                       "rct1.aa.edge.red", "rct1.ll.edge.purple", "rct1.ll.edge.green",
+                                       "rct1.ll.edge.stonebrown", "rct1.ll.edge.stonegrey", "rct1.ll.edge.skyscrapera",
+                                       "rct1.ll.edge.skyscraperb" });
     }
 
     void AddAvailableEntriesFromResearchList()
@@ -473,6 +494,15 @@ private:
         {
             switch (tileElement->GetType())
             {
+                case TILE_ELEMENT_TYPE_SURFACE:
+                {
+                    auto surfaceEl = tileElement->AsSurface();
+                    auto surfaceStyle = surfaceEl->GetSurfaceStyle();
+                    auto edgeStyle = surfaceEl->GetEdgeStyle();
+                    AddEntryForTerrainSurface(surfaceStyle);
+                    AddEntryForTerrainEdge(edgeStyle);
+                    break;
+                }
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
@@ -707,6 +737,34 @@ private:
             {
                 auto entryIndex = _sceneryGroupEntries.GetOrAddEntry(entryName);
                 _sceneryThemeTypeToEntryMap[sceneryThemeType] = entryIndex;
+            }
+        }
+    }
+
+    void AddEntryForTerrainSurface(ObjectEntryIndex terrainSurfaceType)
+    {
+        assert(terrainSurfaceType < std::size(_terrainSurfaceTypeToEntryMap));
+        if (_terrainSurfaceTypeToEntryMap[terrainSurfaceType] == OBJECT_ENTRY_INDEX_NULL)
+        {
+            auto identifier = RCT1::GetTerrainSurfaceObject(terrainSurfaceType);
+            if (!identifier.empty())
+            {
+                auto entryIndex = _terrainSurfaceEntries.GetOrAddEntry(identifier);
+                _terrainSurfaceTypeToEntryMap[terrainSurfaceType] = entryIndex;
+            }
+        }
+    }
+
+    void AddEntryForTerrainEdge(ObjectEntryIndex terrainEdgeType)
+    {
+        assert(terrainEdgeType < std::size(_terrainEdgeTypeToEntryMap));
+        if (_terrainEdgeTypeToEntryMap[terrainEdgeType] == OBJECT_ENTRY_INDEX_NULL)
+        {
+            auto identifier = RCT1::GetTerrainEdgeObject(terrainEdgeType);
+            if (!identifier.empty())
+            {
+                auto entryIndex = _terrainEdgeEntries.GetOrAddEntry(identifier);
+                _terrainEdgeTypeToEntryMap[terrainEdgeType] = entryIndex;
             }
         }
     }
@@ -1455,6 +1513,8 @@ private:
             }));
         AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.pkent1" }));
         AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
+        AppendRequiredObjects(result, ObjectType::TerrainSurface, _terrainSurfaceEntries);
+        AppendRequiredObjects(result, ObjectType::TerrainEdge, _terrainEdgeEntries);
         AppendRequiredObjects(result, ObjectType::FootpathSurface, _footpathSurfaceEntries);
         AppendRequiredObjects(result, ObjectType::FootpathRailings, _footpathRailingsEntries);
         RCT12AddDefaultObjects(result);
@@ -1532,9 +1592,12 @@ private:
                 auto dst2 = dst->AsSurface();
                 auto src2 = src->AsSurface();
 
+                auto surfaceStyle = _terrainSurfaceTypeToEntryMap[src2->GetSurfaceStyle()];
+                auto edgeStyle = _terrainEdgeTypeToEntryMap[src2->GetEdgeStyle()];
+
                 dst2->SetSlope(src2->GetSlope());
-                dst2->SetSurfaceStyle(RCT1::GetTerrain(src2->GetSurfaceStyle()));
-                dst2->SetEdgeStyle(RCT1::GetTerrainEdge(src2->GetEdgeStyle()));
+                dst2->SetSurfaceStyle(surfaceStyle);
+                dst2->SetEdgeStyle(edgeStyle);
                 dst2->SetGrassLength(src2->GetGrassLength());
                 dst2->SetOwnership(src2->GetOwnership());
                 dst2->SetParkFences(src2->GetParkFences());

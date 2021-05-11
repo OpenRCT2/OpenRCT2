@@ -23,8 +23,6 @@ namespace RCT1
 
     colour_t GetColour(colour_t colour);
     PeepSpriteType GetPeepSpriteType(uint8_t rct1SpriteType);
-    ObjectEntryIndex GetTerrain(uint8_t terrain);
-    ObjectEntryIndex GetTerrainEdge(uint8_t terrainEdge);
 
     uint8_t GetRideType(uint8_t rideType, uint8_t vehicleType);
     RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType);
@@ -43,6 +41,8 @@ namespace RCT1
     std::string_view GetFootpathRailingsObject(uint8_t footpathRailingsType);
     std::string_view GetSceneryGroupObject(uint8_t sceneryGroupType);
     std::string_view GetWaterObject(uint8_t waterType);
+    std::string_view GetTerrainSurfaceObject(uint8_t terrain);
+    std::string_view GetTerrainEdgeObject(uint8_t terrainEdge);
 
     const std::vector<const char*> GetSceneryObjects(uint8_t sceneryType);
 } // namespace RCT1

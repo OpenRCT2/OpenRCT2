@@ -1549,6 +1549,7 @@ public:
             }
         }
 
+        SetDefaultRCT2TerrainObjects(objectList);
         RCT12AddDefaultObjects(objectList);
         return objectList;
     }
