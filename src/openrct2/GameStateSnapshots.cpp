@@ -107,7 +107,6 @@ struct GameStateSnapshot_t
                     break;
                 case EntityType::SteamParticle:
                     reinterpret_cast<SteamParticle&>(sprite).Serialise(ds);
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(SteamParticle)]>(sprite.steam_particle);
                     break;
                 case EntityType::Null:
                     break;
