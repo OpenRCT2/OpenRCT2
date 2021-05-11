@@ -314,8 +314,8 @@ enum class PeepActionType : uint8_t
     BeingWatched = 29,
     WithdrawMoney = 30,
 
-    None1 = 254,
-    None2 = 255,
+    Idle = 254,
+    Walking = 255,
 };
 
 enum class PeepActionSpriteType : uint8_t

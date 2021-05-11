@@ -996,7 +996,7 @@ void Staff::EntertainerUpdateNearbyPeeps() const
  */
 bool Staff::DoEntertainerPathFinding()
 {
-    if (((scenario_rand() & 0xFFFF) <= 0x4000) && (Action == PeepActionType::None1 || Action == PeepActionType::None2))
+    if (((scenario_rand() & 0xFFFF) <= 0x4000) && (Action == PeepActionType::Idle || Action == PeepActionType::Walking))
     {
         Action = (scenario_rand() & 1) ? PeepActionType::Wave2 : PeepActionType::Joy;
         ActionFrame = 0;
@@ -1213,7 +1213,7 @@ void Staff::UpdateWatering()
     }
     else if (SubState == 1)
     {
-        if (Action != PeepActionType::None2)
+        if (Action != PeepActionType::Walking)
         {
             UpdateAction();
             Invalidate();
@@ -1277,7 +1277,7 @@ void Staff::UpdateEmptyingBin()
     }
     else if (SubState == 1)
     {
-        if (Action == PeepActionType::None2)
+        if (Action == PeepActionType::Walking)
         {
             StateReset();
             return;
@@ -1496,7 +1496,7 @@ void Staff::UpdateAnswering()
     }
     else if (SubState == 1)
     {
-        if (Action == PeepActionType::None2)
+        if (Action == PeepActionType::Walking)
         {
             SubState = 2;
             peep_window_state_update(this);
@@ -1791,8 +1791,8 @@ void Staff::Tick128UpdateStaff()
     SpriteType = newSpriteType;
     ActionSpriteImageOffset = 0;
     WalkingFrameNum = 0;
-    if (Action < PeepActionType::None1)
-        Action = PeepActionType::None2;
+    if (Action < PeepActionType::Idle)
+        Action = PeepActionType::Walking;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (gSpriteTypeToSlowWalkMap[EnumValue(newSpriteType)])
@@ -2184,7 +2184,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride* ride)
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PeepActionType::None2)
+    if (Action == PeepActionType::Walking)
     {
         return true;
     }
@@ -2226,7 +2226,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride* ride)
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PeepActionType::None2)
+    if (Action == PeepActionType::Walking)
     {
         return true;
     }
@@ -2331,7 +2331,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PeepActionType::None2)
+    if (Action == PeepActionType::Walking)
     {
         return true;
     }
@@ -2444,7 +2444,7 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride* ride)
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PeepActionType::None2)
+    if (Action == PeepActionType::Walking)
     {
         return true;
     }
@@ -2472,7 +2472,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PeepActionType::None2)
+    if (Action == PeepActionType::Walking)
     {
         return true;
     }
@@ -2564,7 +2564,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action != PeepActionType::None2)
+    if (Action != PeepActionType::Walking)
     {
         UpdateAction();
         Invalidate();
