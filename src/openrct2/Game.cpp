@@ -515,6 +515,8 @@ void game_fix_save_vars()
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
     fix_park_entrance_locations();
+
+    staff_update_greyed_patrol_areas();
 }
 
 void game_load_init()

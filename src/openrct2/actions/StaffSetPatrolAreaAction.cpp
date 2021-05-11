@@ -63,27 +63,11 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    int32_t patrolOffset = staff->StaffId * STAFF_PATROL_AREA_SIZE;
-
-    staff_toggle_patrol_area(staff->StaffId, _loc);
-
-    bool isPatrolling = false;
-    for (int32_t i = 0; i < 128; i++)
+    staff->TogglePatrolArea(_loc);
+    if (!staff->HasPatrolArea())
     {
-        if (gStaffPatrolAreas[patrolOffset + i])
-        {
-            isPatrolling = true;
-            break;
-        }
-    }
-
-    if (isPatrolling)
-    {
-        gStaffModes[staff->StaffId] = StaffMode::Patrol;
-    }
-    else if (gStaffModes[staff->StaffId] == StaffMode::Patrol)
-    {
-        gStaffModes[staff->StaffId] = StaffMode::Walk;
+        // This frees the data if there is no patrol area
+        staff->ClearPatrolArea();
     }
 
     for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)

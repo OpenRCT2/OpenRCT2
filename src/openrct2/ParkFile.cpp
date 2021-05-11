@@ -1440,29 +1440,27 @@ namespace OpenRCT2
         ReadWritePeep(cs, entity);
     }
 
-    static std::vector<TileCoordsXY> GetPatrolArea(uint32_t staffId)
+    static std::vector<TileCoordsXY> GetPatrolArea(Staff& staff)
     {
         std::vector<TileCoordsXY> area;
-        auto hasPatrol = gStaffModes[staffId] == StaffMode::Patrol;
-        if (hasPatrol)
+        if (staff.PatrolInfo != nullptr)
         {
-            auto offset = staffId * STAFF_PATROL_AREA_SIZE;
-            for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+            for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
             {
                 // 32 blocks per array item (32 bits)
-                auto arrayItem = gStaffPatrolAreas[offset + i];
-                for (int32_t j = 0; j < 32; j++)
+                auto arrayItem = staff.PatrolInfo->Data[i];
+                for (size_t j = 0; j < 32; j++)
                 {
-                    int32_t blockIndex = (i * 32) + j;
+                    auto blockIndex = (i * 32) + j;
                     if (arrayItem & (1 << j))
                     {
-                        auto sx = (blockIndex % 64) * 4;
-                        auto sy = (blockIndex / 64) * 4;
-                        for (int32_t y = 0; y < 4; y++)
+                        auto sx = (blockIndex % STAFF_PATROL_AREA_BLOCKS_PER_LINE) * 4;
+                        auto sy = (blockIndex / STAFF_PATROL_AREA_BLOCKS_PER_LINE) * 4;
+                        for (size_t y = 0; y < 4; y++)
                         {
-                            for (int32_t x = 0; x < 4; x++)
+                            for (size_t x = 0; x < 4; x++)
                             {
-                                area.push_back({ sx + x, sy + y });
+                                area.push_back({ static_cast<int32_t>(sx + x), static_cast<int32_t>(sy + y) });
                             }
                         }
                     }
@@ -1472,18 +1470,17 @@ namespace OpenRCT2
         return area;
     }
 
-    static void SetPatrolArea(uint32_t staffId, const std::vector<TileCoordsXY>& area)
+    static void SetPatrolArea(Staff& staff, const std::vector<TileCoordsXY>& area)
     {
         if (area.empty())
         {
-            gStaffModes[staffId] = StaffMode::Walk;
+            staff.ClearPatrolArea();
         }
         else
         {
-            gStaffModes[staffId] = StaffMode::Patrol;
             for (const auto& coord : area)
             {
-                staff_set_patrol_area(staffId, coord.ToCoordsXY(), true);
+                staff.SetPatrolArea(coord.ToCoordsXY(), true);
             }
         }
     }
@@ -1495,12 +1492,12 @@ namespace OpenRCT2
         std::vector<TileCoordsXY> patrolArea;
         if (cs.GetMode() == OrcaStream::Mode::WRITING)
         {
-            patrolArea = GetPatrolArea(entity.StaffId);
+            patrolArea = GetPatrolArea(entity);
         }
         cs.ReadWriteVector(patrolArea, [&cs](TileCoordsXY& value) { cs.ReadWrite(value); });
         if (cs.GetMode() == OrcaStream::Mode::READING)
         {
-            SetPatrolArea(entity.StaffId, patrolArea);
+            SetPatrolArea(entity, patrolArea);
         }
     }
 
@@ -1647,11 +1644,6 @@ namespace OpenRCT2
                 WriteEntitiesOfTypes<
                     Vehicle, Guest, Staff, Litter, SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud,
                     CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(cs);
-            }
-
-            if (cs.GetMode() == OrcaStream::Mode::READING)
-            {
-                staff_update_greyed_patrol_areas();
             }
         });
     }

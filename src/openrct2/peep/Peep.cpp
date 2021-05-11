@@ -652,7 +652,6 @@ void peep_sprite_remove(Peep* peep)
     }
     else
     {
-        gStaffModes[staff->StaffId] = StaffMode::None;
         staff_update_greyed_patrol_areas();
 
         News::DisableNewsItems(News::ItemType::Peep, staff->sprite_index);

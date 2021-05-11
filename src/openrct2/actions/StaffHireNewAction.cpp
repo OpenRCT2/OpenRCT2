@@ -114,20 +114,6 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         }
     }
 
-    // Look for a free slot in the staff modes.
-    int32_t staffIndex;
-    for (staffIndex = 0; staffIndex < STAFF_MAX_COUNT; ++staffIndex)
-    {
-        if (gStaffModes[staffIndex] == StaffMode::None)
-            break;
-    }
-
-    if (staffIndex == STAFF_MAX_COUNT)
-    {
-        // Too many staff members exist already.
-        return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_STAFF_IN_GAME);
-    }
-
     Staff* newPeep = CreateEntity<Staff>();
     if (newPeep == nullptr)
     {
@@ -222,14 +208,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->EnergyTarget = 0x60;
         newPeep->StaffMowingTimeout = 0;
 
-        newPeep->StaffId = staffIndex;
-
-        gStaffModes[staffIndex] = StaffMode::Walk;
-
-        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-        {
-            gStaffPatrolAreas[staffIndex * STAFF_PATROL_AREA_SIZE + i] = 0;
-        }
+        newPeep->PatrolInfo = nullptr;
 
         res->peepSriteIndex = newPeep->sprite_index;
     }

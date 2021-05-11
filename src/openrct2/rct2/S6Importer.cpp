@@ -400,8 +400,6 @@ public:
         ImportRideMeasurements();
         gNextGuestNumber = _s6.next_guest_index;
         gGrassSceneryTileLoopPosition = _s6.grass_and_scenery_tilepos;
-        std::memcpy(gStaffPatrolAreas, _s6.patrol_areas, sizeof(_s6.patrol_areas));
-        std::memcpy(gStaffModes, _s6.staff_modes, sizeof(_s6.staff_modes));
         // unk_13CA73E
         // pad_13CA73F
         // unk_13CA740
@@ -1553,6 +1551,37 @@ public:
         RCT12AddDefaultObjects(objectList);
         return objectList;
     }
+
+    std::vector<TileCoordsXY> GetPatrolArea(uint8_t staffIndex)
+    {
+        std::vector<TileCoordsXY> area;
+        if (staffIndex < RCT2_MAX_STAFF && _s6.staff_modes[staffIndex] == 3)
+        {
+            auto offset = staffIndex * RCT12_PATROL_AREA_SIZE;
+            for (size_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
+            {
+                // 32 blocks per array item (32 bits)
+                auto arrayItem = _s6.patrol_areas[offset + i];
+                for (size_t j = 0; j < 32; j++)
+                {
+                    auto blockIndex = (i * 32) + j;
+                    if (arrayItem & (1 << j))
+                    {
+                        auto sx = (blockIndex % 64) * 4;
+                        auto sy = (blockIndex / 64) * 4;
+                        for (size_t y = 0; y < 4; y++)
+                        {
+                            for (size_t x = 0; x < 4; x++)
+                            {
+                                area.push_back({ static_cast<int32_t>(sx + x), static_cast<int32_t>(sy + y) });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return area;
+    }
 };
 
 template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc)
@@ -1748,13 +1777,19 @@ template<> void S6Importer::ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
     dst->AssignedStaffType = StaffType(src->staff_type);
     dst->MechanicTimeSinceCall = src->mechanic_time_since_call;
     dst->HireDate = src->park_entry_time;
-    dst->StaffId = src->staff_id;
     dst->StaffOrders = src->staff_orders;
     dst->StaffMowingTimeout = src->staff_mowing_timeout;
     dst->StaffLawnsMown = src->paid_to_enter;
     dst->StaffGardensWatered = src->paid_on_rides;
     dst->StaffLitterSwept = src->paid_on_food;
     dst->StaffBinsEmptied = src->paid_on_souvenirs;
+
+    dst->ClearPatrolArea();
+    auto patrolArea = GetPatrolArea(src->staff_id);
+    for (const auto& coord : patrolArea)
+    {
+        dst->SetPatrolArea(coord.ToCoordsXY(), true);
+    }
 }
 
 template<> void S6Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& baseSrc)

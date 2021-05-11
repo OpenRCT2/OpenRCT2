@@ -1218,7 +1218,6 @@ private:
         {
             ImportEntity(_s4.sprites[i].unknown);
         }
-        FixImportStaff();
     }
 
     void SetVehicleColours(Vehicle* dst, const rct1_vehicle* src)
@@ -1267,25 +1266,6 @@ private:
         {
             dst->colours_extended = colourSchemeCopyDescriptor.colour3;
         }
-    }
-
-    void FixImportStaff()
-    {
-        // The RCT2/OpenRCT2 structures are bigger than in RCT1, so initialise them to zero
-        std::fill(std::begin(gStaffModes), std::end(gStaffModes), StaffMode::None);
-        std::fill(std::begin(gStaffPatrolAreas), std::end(gStaffPatrolAreas), 0);
-
-        for (int32_t i = 0; i < RCT1_MAX_STAFF; i++)
-        {
-            gStaffModes[i] = static_cast<StaffMode>(_s4.staff_modes[i]);
-        }
-
-        for (auto peep : EntityList<Staff>())
-        {
-            ImportStaffPatrolArea(peep);
-        }
-        // Only the individual patrol areas have been converted, so generate the combined patrol areas of each staff type
-        staff_update_greyed_patrol_areas();
     }
 
     void ImportPeep(Peep* dst, const rct1_peep* src)
@@ -1346,7 +1326,7 @@ private:
         dst->PathfindGoal.direction = INVALID_DIRECTION;
     }
 
-    void ImportStaffPatrolArea(Staff* staffmember)
+    void ImportStaffPatrolArea(Staff* staffmember, size_t staffId)
     {
         // The patrol areas in RCT1 are encoded as follows, for coordinates x and y, separately for every staff member:
         // - Chop off the 7 lowest bits of the x and y coordinates, which leaves 5 bits per coordinate.
@@ -1358,9 +1338,11 @@ private:
         //                                          index in the array ----^     ^--- bit position in the 8-bit value
         // We do the opposite in this function to recover the x and y values.
 
-        int32_t peepOffset = staffmember->StaffId * RCT12_PATROL_AREA_SIZE;
+        int32_t peepOffset = staffId * RCT12_PATROL_AREA_SIZE;
         for (int32_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
         {
+            staffmember->ClearPatrolArea();
+
             if (_s4.patrol_areas[peepOffset + i] == 0)
             {
                 // No patrol for this area
@@ -1382,7 +1364,7 @@ private:
                 x <<= 7;
                 int32_t y = val & 0x3E0;
                 y <<= 2;
-                staff_set_patrol_area(staffmember->StaffId, { x, y }, true);
+                staffmember->SetPatrolArea({ x, y }, true);
             }
         }
     }
@@ -2926,13 +2908,14 @@ template<> void S4Importer::ImportEntity<Staff>(const RCT12SpriteBase& srcBase)
     dst->AssignedStaffType = StaffType(src->staff_type);
     dst->MechanicTimeSinceCall = src->mechanic_time_since_call;
     dst->HireDate = src->park_entry_time;
-    dst->StaffId = src->staff_id;
     dst->StaffOrders = src->staff_orders;
     dst->StaffMowingTimeout = src->staff_mowing_timeout;
     dst->StaffLawnsMown = src->paid_to_enter;
     dst->StaffGardensWatered = src->paid_on_rides;
     dst->StaffLitterSwept = src->paid_on_food;
     dst->StaffBinsEmptied = src->paid_on_souvenirs;
+
+    ImportStaffPatrolArea(dst, src->staff_id);
 }
 
 template<> void S4Importer::ImportEntity<Litter>(const RCT12SpriteBase& srcBase)

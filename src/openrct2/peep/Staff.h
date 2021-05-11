@@ -13,18 +13,6 @@
 #include "../common.h"
 #include "Peep.h"
 
-#define STAFF_MAX_COUNT 200
-// The number of elements in the gStaffPatrolAreas array per staff member. Every bit in the array represents a 4x4 square.
-// Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
-#define STAFF_PATROL_AREA_SIZE 128
-
-enum class StaffMode : uint8_t
-{
-    None,
-    Walk,
-    Patrol = 3
-};
-
 enum STAFF_ORDERS
 {
     STAFF_ORDERS_SWEEPING = (1 << 0),
@@ -54,8 +42,6 @@ enum class EntertainerCostume : uint8_t
 
 extern const rct_string_id StaffCostumeNames[static_cast<uint8_t>(EntertainerCostume::Count)];
 
-extern uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
-extern StaffMode gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
 extern uint16_t gStaffDrawPatrolAreas;
 extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;
@@ -66,8 +52,6 @@ void staff_set_name(uint16_t spriteIndex, const char* name);
 bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerType);
 void staff_update_greyed_patrol_areas();
 bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords);
-void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value);
-void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords);
 colour_t staff_get_colour(StaffType staffType);
 bool staff_set_colour(StaffType staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();

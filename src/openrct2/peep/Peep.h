@@ -653,7 +653,6 @@ struct Peep : SpriteBase
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     union
     {
-        uint8_t StaffId;
         ride_id_t GuestHeadingToRideId;
     };
     union
@@ -865,11 +864,23 @@ private:
     void GoToRideEntrance(Ride* ride);
 };
 
+// The number of elements in the PatrolArea.Data array per staff member. Every bit in the array represents a 4x4 square.
+// Right now, it's a 32-bit array like in RCT2. 32 * 2048 = 65536 bits, which is also the number of 4x4 squares on a 1024x1024 map.
+constexpr size_t STAFF_PATROL_AREA_BLOCKS_PER_LINE = 1024 / 4;
+constexpr size_t STAFF_PATROL_AREA_SIZE = (STAFF_PATROL_AREA_BLOCKS_PER_LINE * STAFF_PATROL_AREA_BLOCKS_PER_LINE) / 32;
+
+struct PatrolArea
+{
+    uint32_t Data[STAFF_PATROL_AREA_SIZE];
+};
+
 struct Staff : Peep
 {
     static constexpr auto cEntityType = EntityType::Staff;
 
 public:
+    PatrolArea* PatrolInfo;
+
     void UpdateStaff(uint32_t stepsToTake);
     void Tick128UpdateStaff();
     bool IsMechanic() const;
@@ -885,6 +896,11 @@ public:
     bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
 
     static void ResetStats();
+
+    void ClearPatrolArea();
+    void TogglePatrolArea(const CoordsXY& coords);
+    void SetPatrolArea(const CoordsXY& coords, bool value);
+    bool HasPatrolArea() const;
 
 private:
     void UpdatePatrolling();

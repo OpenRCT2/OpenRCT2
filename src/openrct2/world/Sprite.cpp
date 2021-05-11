@@ -224,12 +224,40 @@ const std::list<uint16_t>& GetEntityList(const EntityType id)
 }
 
 /**
+ * Frees any dynamically attached memory to the entity, such as peep name.
+ */
+static void FreeEntity(SpriteBase& entity)
+{
+    auto peep = entity.As<Peep>();
+    if (peep != nullptr)
+    {
+        peep->SetName({});
+
+        auto staff = peep->As<Staff>();
+        if (staff != nullptr)
+        {
+            staff->ClearPatrolArea();
+        }
+    }
+}
+
+/**
  *
  *  rct2: 0x0069EB13
  */
 void reset_sprite_list()
 {
     gSavedAge = 0;
+
+    for (int32_t i = 0; i < MAX_ENTITIES; ++i)
+    {
+        auto* entity = GetEntity(i);
+        if (entity != nullptr)
+        {
+            FreeEntity(*entity);
+        }
+    }
+
     std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)
     {
@@ -687,11 +715,7 @@ void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite)
  */
 void sprite_remove(SpriteBase* sprite)
 {
-    auto peep = sprite->As<Peep>();
-    if (peep != nullptr)
-    {
-        peep->SetName({});
-    }
+    FreeEntity(*sprite);
 
     EntityTweener::Get().RemoveEntity(sprite);
     RemoveFromEntityList(sprite); // remove from existing list

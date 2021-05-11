@@ -1248,15 +1248,12 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
         spriteCount += GetEntityListCount(EntityType(i));
     }
 
-    int32_t staffCount = GetEntityListCount(EntityType::Staff);
-
     auto bannerCount = GetNumBanners();
 
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
     console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, MAX_RIDES);
-    console.WriteFormatLine("Staff: %d/%d", staffCount, STAFF_MAX_COUNT);
     console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());
     return 0;
 }
