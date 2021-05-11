@@ -59,7 +59,6 @@ class SignWindow final : public Window
 private:
     bool _isSmall = false;
     Banner* _banner = nullptr;
-    TileElement* _tileElement = nullptr;
 
     void ShowTextInput()
     {
@@ -94,24 +93,24 @@ public:
             return false;
 
         auto signViewPosition = _banner->position.ToCoordsXY().ToTileCentre();
-        _tileElement = banner_get_tile_element(number);
-        if (_tileElement == nullptr)
+        auto* tileElement = banner_get_tile_element(number);
+        if (tileElement == nullptr)
             return false;
 
-        int32_t viewZ = _tileElement->GetBaseZ();
+        int32_t viewZ = tileElement->GetBaseZ();
         frame_no = viewZ;
 
         if (_isSmall)
         {
-            list_information_type = _tileElement->AsWall()->GetPrimaryColour();
-            var_492 = _tileElement->AsWall()->GetSecondaryColour();
-            SceneryEntry = _tileElement->AsWall()->GetEntryIndex();
+            list_information_type = tileElement->AsWall()->GetPrimaryColour();
+            var_492 = tileElement->AsWall()->GetSecondaryColour();
+            SceneryEntry = tileElement->AsWall()->GetEntryIndex();
         }
         else
         {
-            list_information_type = _tileElement->AsLargeScenery()->GetPrimaryColour();
-            var_492 = _tileElement->AsLargeScenery()->GetSecondaryColour();
-            SceneryEntry = _tileElement->AsLargeScenery()->GetEntryIndex();
+            list_information_type = tileElement->AsLargeScenery()->GetPrimaryColour();
+            var_492 = tileElement->AsLargeScenery()->GetSecondaryColour();
+            SceneryEntry = tileElement->AsLargeScenery()->GetEntryIndex();
         }
 
         // Create viewport
@@ -136,19 +135,24 @@ public:
                 break;
             case WIDX_SIGN_DEMOLISH:
             {
+                auto* tileElement = banner_get_tile_element(number);
+                if (tileElement == nullptr)
+                {
+                    Close();
+                }
                 auto bannerCoords = _banner->position.ToCoordsXY();
 
                 if (_isSmall)
                 {
-                    CoordsXYZD wallLocation = { bannerCoords, _tileElement->GetBaseZ(), _tileElement->GetDirection() };
+                    CoordsXYZD wallLocation = { bannerCoords, tileElement->GetBaseZ(), tileElement->GetDirection() };
                     auto wallRemoveAction = WallRemoveAction(wallLocation);
                     GameActions::Execute(&wallRemoveAction);
                 }
                 else
                 {
                     auto sceneryRemoveAction = LargeSceneryRemoveAction(
-                        { bannerCoords, _tileElement->GetBaseZ(), _tileElement->GetDirection() },
-                        _tileElement->AsLargeScenery()->GetSequenceIndex());
+                        { bannerCoords, tileElement->GetBaseZ(), tileElement->GetDirection() },
+                        tileElement->AsLargeScenery()->GetSequenceIndex());
                     GameActions::Execute(&sceneryRemoveAction);
                 }
                 break;
