@@ -1037,7 +1037,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
             save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
-            safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
+            gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
             if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2))
             {
                 gCurrentLoadedPath = pathBuffer;
@@ -1058,7 +1058,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             int32_t parkFlagsBackup = gParkFlags;
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
             gEditorStep = EditorStep::Invalid;
-            safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
+            gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
             int32_t success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
             gParkFlags = parkFlagsBackup;
 

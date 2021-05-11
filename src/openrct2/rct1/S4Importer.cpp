@@ -348,7 +348,7 @@ private:
 
         uint16_t mapSize = _s4.map_size == 0 ? RCT1_MAX_MAP_SIZE : _s4.map_size;
 
-        String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
+        gScenarioFileName = GetRCT1ScenarioName();
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
         auto context = OpenRCT2::GetContext();

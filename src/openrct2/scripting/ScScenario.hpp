@@ -224,7 +224,7 @@ namespace OpenRCT2::Scripting
         void filename_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
-            String::Set(gScenarioFileName, std::size(gScenarioFileName), value.c_str());
+            gScenarioFileName = value;
         }
 
         std::shared_ptr<ScScenarioObjective> objective_get() const

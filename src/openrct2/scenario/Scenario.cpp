@@ -77,7 +77,7 @@ uint16_t gScenarioParkRatingWarningDays;
 money64 gScenarioCompletedCompanyValue;
 money64 gScenarioCompanyValueRecord;
 
-char gScenarioFileName[MAX_PATH];
+std::string gScenarioFileName;
 
 static void scenario_objective_check();
 
@@ -206,7 +206,7 @@ void scenario_success()
     gScenarioCompletedCompanyValue = companyValue;
     peep_applause();
 
-    if (scenario_repository_try_record_highscore(gScenarioFileName, companyValue, nullptr))
+    if (scenario_repository_try_record_highscore(gScenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
@@ -221,7 +221,7 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char* name)
 {
-    if (scenario_repository_try_record_highscore(gScenarioFileName, gScenarioCompanyValueRecord, name))
+    if (scenario_repository_try_record_highscore(gScenarioFileName.c_str(), gScenarioCompanyValueRecord, name))
     {
         gScenarioCompletedBy = name;
     }

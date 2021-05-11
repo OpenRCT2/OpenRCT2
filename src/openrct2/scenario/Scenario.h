@@ -444,7 +444,7 @@ extern bool gFirstTimeSaving;
 extern uint16_t gSavedAge;
 extern uint32_t gLastAutoSaveUpdate;
 
-extern char gScenarioFileName[260];
+extern std::string gScenarioFileName;
 
 void load_from_sc6(const char* path);
 void scenario_begin();

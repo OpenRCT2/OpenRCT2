@@ -304,7 +304,7 @@ namespace OpenRCT2
 
         void ReadWriteScenarioChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&os](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gScenarioCategory);
                 ReadWriteStringTable(cs, gScenarioName, "en-GB");
 
@@ -342,6 +342,11 @@ namespace OpenRCT2
                 else
                 {
                     cs.Write(AllowEarlyCompletion());
+                }
+
+                if (os.GetHeader().TargetVersion >= 1)
+                {
+                    cs.ReadWrite(gScenarioFileName);
                 }
             });
         }
