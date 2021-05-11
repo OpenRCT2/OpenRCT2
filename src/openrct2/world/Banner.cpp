@@ -270,7 +270,7 @@ void fix_duplicated_banners()
                         if (bannerIndex == BANNER_INDEX_NULL)
                             continue;
 
-                        if (activeBanners.size() < bannerIndex)
+                        if (activeBanners.size() <= bannerIndex)
                         {
                             activeBanners.resize(bannerIndex + 1);
                         }
