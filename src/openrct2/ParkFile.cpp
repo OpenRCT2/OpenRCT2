@@ -850,8 +850,7 @@ namespace OpenRCT2
                         auto banner = GetBanner(i);
                         if (banner != nullptr)
                         {
-                            cs.Write(i);
-                            ReadWriteBanner(cs, *banner);
+                            ReadWriteBanner(version, cs, *banner);
                             numWritten++;
                         }
                     }
@@ -862,10 +861,16 @@ namespace OpenRCT2
                 {
                     if (version == 0)
                     {
-                        for (BannerIndex i = 0; i < MAX_BANNERS; i++)
+                        std::vector<Banner> banners;
+                        cs.ReadWriteVector(banners, [version, &cs](Banner& banner) { ReadWriteBanner(version, cs, banner); });
+                        for (size_t i = 0; i < banners.size(); i++)
                         {
                             auto banner = GetOrCreateBanner(i);
-                            ReadWriteBanner(cs, *banner);
+                            if (banner != nullptr)
+                            {
+                                *banner = std::move(banners[i]);
+                                banner->id = static_cast<BannerIndex>(i);
+                            }
                         }
                     }
                     else
@@ -873,15 +878,17 @@ namespace OpenRCT2
                         auto numBanners = cs.Read<uint32_t>();
                         for (size_t i = 0; i < numBanners; i++)
                         {
-                            auto bannerIndex = cs.Read<BannerIndex>();
-                            auto banner = GetOrCreateBanner(bannerIndex);
+                            Banner readBanner;
+                            ReadWriteBanner(version, cs, readBanner);
+
+                            auto banner = GetOrCreateBanner(readBanner.id);
                             if (banner == nullptr)
                             {
                                 throw std::runtime_error("Invalid banner index");
                             }
                             else
                             {
-                                ReadWriteBanner(cs, *banner);
+                                *banner = std::move(readBanner);
                             }
                         }
                     }
@@ -889,8 +896,12 @@ namespace OpenRCT2
             });
         }
 
-        void ReadWriteBanner(OrcaStream::ChunkStream& cs, Banner& banner)
+        static void ReadWriteBanner(uint32_t version, OrcaStream::ChunkStream& cs, Banner& banner)
         {
+            if (version >= 1)
+            {
+                cs.ReadWrite(banner.id);
+            }
             cs.ReadWrite(banner.type);
             cs.ReadWrite(banner.flags);
             cs.ReadWrite(banner.text);
