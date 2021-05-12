@@ -29,6 +29,9 @@ struct Duck : MiscEntity
     int16_t target_y;
     DuckState state;
 
+    static void Create(const CoordsXY& pos);
+    static void RemoveAll();
+    void Press();
     void Update();
     uint32_t GetFrameImage(int32_t direction) const;
     bool IsFlying();
@@ -42,7 +45,3 @@ private:
     void UpdateDoubleDrink();
     void UpdateFlyAway();
 };
-
-void create_duck(const CoordsXY& pos);
-void duck_press(Duck* duck);
-void duck_remove_all();
