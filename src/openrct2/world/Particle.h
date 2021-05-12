@@ -27,7 +27,7 @@ struct VehicleCrashParticle : MiscEntity
     int32_t acceleration_x;
     int32_t acceleration_y;
     int32_t acceleration_z;
-
+    static void Create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos);
     void Update();
     void Serialise(DataSerialiser& stream);
 };
@@ -35,9 +35,7 @@ struct VehicleCrashParticle : MiscEntity
 struct CrashSplashParticle : MiscEntity
 {
     static constexpr auto cEntityType = EntityType::CrashSplash;
+    static void Create(const CoordsXYZ& splashPos);
     void Update();
     void Serialise(DataSerialiser& stream);
 };
-
-void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos);
-void crash_splash_create(const CoordsXYZ& splashPos);
