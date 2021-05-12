@@ -37,6 +37,8 @@ declare global {
     var park: Park;
     /** APIs for the current scenario. */
     var scenario: Scenario;
+    /** APIs for the climate and weather. */
+    var climate: Climate;
     /**
      * APIs for creating and editing title sequences.
      * These will only be available to clients that are not running headless mode.
@@ -1601,23 +1603,6 @@ declare global {
         "scenarioCompleteNameInput" |
         "unlockAllPrices";
 
-    type ClimateType =
-        "coolAndWet" |
-        "warm" |
-        "hotAndDry" |
-        "cold";
-
-    type WeatherType =
-        "sunny" |
-        "partiallyCloudy" |
-        "cloudy" |
-        "rain" |
-        "heavyRain" |
-        "thunder" |
-        "snow" |
-        "heavySnow" |
-        "blizzard";
-
     interface Park {
         cash: number;
         rating: number;
@@ -1712,26 +1697,6 @@ declare global {
          * Updated every 4096 ticks.
          */
         readonly parkSize: number;
-
-        /**
-         * The climate of the park.
-         */
-        readonly climate: ClimateType;
-
-        /**
-         * The current weather in the park.
-         */
-        readonly currentWeather: WeatherType;
-
-        /**
-         * The current temperature in the park.
-         */
-        readonly currentTemperature: number;
-
-        /**
-         * The next weather the park will experience.
-         */
-        readonly futureWeather: WeatherType;
 
         name: string;
         messages: ParkMessage[];
@@ -1854,6 +1819,50 @@ declare global {
          * The current highest recorded company value.
          */
         companyValueRecord: number;
+    }
+
+    type ClimateType =
+        "coolAndWet" |
+        "warm" |
+        "hotAndDry" |
+        "cold";
+
+    type WeatherType =
+        "sunny" |
+        "partiallyCloudy" |
+        "cloudy" |
+        "rain" |
+        "heavyRain" |
+        "thunder" |
+        "snow" |
+        "heavySnow" |
+        "blizzard";
+
+    interface Climate {
+        /**
+         * The climate of the park.
+         */
+        readonly climate: ClimateType;
+
+        /**
+         * The current weather in the park.
+         */
+        readonly currentWeather: WeatherType;
+
+        /**
+         * The current temperature in the park.
+         */
+        readonly currentTemperature: number;
+
+        /**
+         * The next weather the park will experience.
+         */
+        readonly futureWeather: WeatherType;
+
+        /**
+         * The next temperature the park will experience.
+         */
+        readonly futureTemperature: number;
     }
 
     interface Cheats {

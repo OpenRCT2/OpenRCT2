@@ -87,6 +87,3 @@ bool climate_is_snowing();
 bool WeatherIsDry(WeatherType);
 FilterPaletteID climate_get_weather_gloom_palette_id(const ClimateState& state);
 uint32_t climate_get_weather_sprite_id(const ClimateState& state);
-
-std::string ClimateTypeToString(ClimateType token);
-std::string WeatherTypeToString(WeatherType token);

@@ -19,7 +19,6 @@
 #    include "../management/NewsItem.h"
 #    include "../peep/Peep.h"
 #    include "../windows/Intent.h"
-#    include "../world/Climate.h"
 #    include "../world/Park.h"
 #    include "Duktape.hpp"
 #    include "ScriptEngine.h"
@@ -455,26 +454,6 @@ namespace OpenRCT2::Scripting
             return gParkSize;
         }
 
-        std::string climate_get() const
-        {
-            return ClimateTypeToString(gClimate);
-        }
-
-        std::string currentWeather_get() const
-        {
-            return WeatherTypeToString(gClimateCurrent.Weather);
-        }
-
-        int8_t currentTemperature_get() const
-        {
-            return gClimateCurrent.Temperature;
-        }
-
-        std::string futureWeather_get() const
-        {
-            return WeatherTypeToString(gClimateNext.Weather);
-        }
-
         std::string name_get() const
         {
             return GetContext()->GetGameState()->GetPark().Name;
@@ -619,10 +598,6 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(
                 ctx, &ScPark::constructionRightsPrice_get, &ScPark::constructionRightsPrice_set, "constructionRightsPrice");
             dukglue_register_property(ctx, &ScPark::parkSize_get, nullptr, "parkSize");
-            dukglue_register_property(ctx, &ScPark::climate_get, nullptr, "climate");
-            dukglue_register_property(ctx, &ScPark::currentWeather_get, nullptr, "currentWeather");
-            dukglue_register_property(ctx, &ScPark::currentTemperature_get, nullptr, "currentTemperature");
-            dukglue_register_property(ctx, &ScPark::futureWeather_get, nullptr, "futureWeather");
             dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
             dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
             dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");
