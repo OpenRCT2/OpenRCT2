@@ -1,5 +1,6 @@
 function(download_openrct2_zip)
     set(oneValueArgs ZIP_VERSION DOWNLOAD_DIR ZIP_URL SHA1)
+    set(multiValueArgs SKIP_IF_EXISTS)
     cmake_parse_arguments(DOWNLOAD_OPENRCT2 "${options}" "${oneValueArgs}"
                         "${multiValueArgs}" ${ARGN} )
 
@@ -15,9 +16,18 @@ function(download_openrct2_zip)
                 set(DOWNLOAD_ZIP 1)
             endif ()
         else ()
-        set(DOWNLOAD_ZIP 1)
+            set(DOWNLOAD_ZIP 1)
         endif ()
     endif ()
+
+    foreach(check_exist_dir ${DOWNLOAD_OPENRCT2_SKIP_IF_EXISTS})
+        if (EXISTS ${check_exist_dir})
+            message("${check_exist_dir} exists, skipping download")
+            set(DOWNLOAD_ZIP 0)
+            break()
+        endif ()
+    endforeach(check_exist_dir)
+
     if (DOWNLOAD_ZIP)
         message("Downloading ${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}")
         file(DOWNLOAD
