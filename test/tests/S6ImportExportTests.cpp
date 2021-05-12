@@ -286,7 +286,7 @@ static void CompareSpriteDataStaff(const Staff& left, const Staff& right)
 static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 {
     COMPARE_FIELD(SubType);
-    COMPARE_FIELD(vehicle_sprite_type);
+    COMPARE_FIELD(Pitch);
     COMPARE_FIELD(bank_rotation);
     COMPARE_FIELD(remaining_distance);
     COMPARE_FIELD(velocity);

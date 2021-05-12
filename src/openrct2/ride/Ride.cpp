@@ -4138,7 +4138,7 @@ static Vehicle* vehicle_create_car(
     vehicle->animation_frame = 0;
     vehicle->var_C8 = 0;
     vehicle->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    vehicle->vehicle_sprite_type = 0;
+    vehicle->Pitch = 0;
     vehicle->bank_rotation = 0;
     vehicle->target_seat_rotation = 4;
     vehicle->seat_rotation = 4;

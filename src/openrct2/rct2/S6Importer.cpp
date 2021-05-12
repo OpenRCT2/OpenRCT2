@@ -1500,7 +1500,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
 
     ImportEntityCommonProperties(dst, src);
     dst->SubType = Vehicle::Type(src->type);
-    dst->vehicle_sprite_type = src->vehicle_sprite_type;
+    dst->Pitch = src->Pitch;
     dst->bank_rotation = src->bank_rotation;
     dst->remaining_distance = src->remaining_distance;
     dst->velocity = src->velocity;

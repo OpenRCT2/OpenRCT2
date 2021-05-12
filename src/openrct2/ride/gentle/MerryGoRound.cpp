@@ -55,7 +55,7 @@ static void paint_merry_go_round_structure(
     if (vehicle != nullptr)
     {
         uint32_t rotation = ((vehicle->sprite_direction >> 3) + session->CurrentRotation) << 5;
-        rotationOffset = (vehicle->vehicle_sprite_type + rotation) % 128;
+        rotationOffset = (vehicle->Pitch + rotation) % 128;
     }
 
     uint32_t imageOffset = rotationOffset & 0x1F;
