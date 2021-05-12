@@ -6677,7 +6677,7 @@ void Guest::UpdateSpriteType()
                 isBalloonPopped = true;
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
             }
-            create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
+            Balloon::Create({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
         RemoveItem(ShopItem::Balloon);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;

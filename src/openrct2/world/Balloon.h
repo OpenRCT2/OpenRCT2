@@ -20,11 +20,9 @@ struct Balloon : MiscEntity
     uint16_t popped;
     uint8_t time_to_move;
     uint8_t colour;
-
+    static void Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
     void Update();
     void Pop();
     void Press();
     void Serialise(DataSerialiser& stream);
 };
-
-void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
