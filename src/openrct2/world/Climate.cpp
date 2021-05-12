@@ -434,6 +434,48 @@ static void climate_play_thunder(int32_t instanceIndex, OpenRCT2::Audio::SoundId
     }
 }
 
+std::string ClimateTypeToString(ClimateType token)
+{
+    switch (token)
+    {
+        case ClimateType::CoolAndWet:
+            return "coolAndWet";
+        case ClimateType::Warm:
+            return "warm";
+        case ClimateType::HotAndDry:
+            return "hotAndDry";
+        case ClimateType::Cold:
+            return "cold";
+    }
+    return "";
+}
+
+std::string WeatherTypeToString(WeatherType token)
+{
+    switch (token)
+    {
+        case WeatherType::Sunny:
+            return "sunny";
+        case WeatherType::PartiallyCloudy:
+            return "partiallyCloudy";
+        case WeatherType::Cloudy:
+            return "cloudy";
+        case WeatherType::Rain:
+            return "rain";
+        case WeatherType::HeavyRain:
+            return "heavyRain";
+        case WeatherType::Thunder:
+            return "thunder";
+        case WeatherType::Snow:
+            return "snow";
+        case WeatherType::HeavySnow:
+            return "heavySnow";
+        case WeatherType::Blizzard:
+            return "blizzard";
+    }
+    return "";
+}
+
 #pragma region Climate / Weather data tables
 
 const FilterPaletteID ClimateWeatherGloomColours[4] = {

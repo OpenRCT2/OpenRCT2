@@ -1601,6 +1601,23 @@ declare global {
         "scenarioCompleteNameInput" |
         "unlockAllPrices";
 
+    type ClimateType =
+        "coolAndWet" |
+        "warm" |
+        "hotAndDry" |
+        "cold";
+
+    type WeatherType =
+        "sunny" |
+        "partiallyCloudy" |
+        "cloudy" |
+        "rain" |
+        "heavyRain" |
+        "thunder" |
+        "snow" |
+        "heavySnow" |
+        "blizzard";
+
     interface Park {
         cash: number;
         rating: number;
@@ -1695,6 +1712,26 @@ declare global {
          * Updated every 4096 ticks.
          */
         readonly parkSize: number;
+
+        /**
+         * The climate of the park.
+         */
+        readonly climate: ClimateType;
+
+        /**
+         * The current weather in the park.
+         */
+        readonly currentWeather: WeatherType;
+
+        /**
+         * The current temperature in the park.
+         */
+        readonly currentTemperature: number;
+
+        /**
+         * The next weather the park will experience.
+         */
+        readonly futureWeather: WeatherType;
 
         name: string;
         messages: ParkMessage[];
