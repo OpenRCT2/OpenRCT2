@@ -12,7 +12,7 @@
 #include "SpriteBase.h"
 
 class DataSerialiser;
-class CoordsXYZ;
+struct CoordsXYZ;
 
 struct MoneyEffect : MiscEntity
 {

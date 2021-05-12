@@ -96,8 +96,3 @@ void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
     balloon->colour = colour;
     balloon->popped = (isPopped ? 1 : 0);
 }
-
-void balloon_update(Balloon* balloon)
-{
-    balloon->Update();
-}

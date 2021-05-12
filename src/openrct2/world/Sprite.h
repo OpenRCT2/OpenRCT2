@@ -19,8 +19,8 @@
 #include "Fountain.h"
 #include "Litter.h"
 #include "MoneyEffect.h"
-#include "SpriteBase.h"
 #include "Particle.h"
+#include "SpriteBase.h"
 
 class DataSerialiser;
 

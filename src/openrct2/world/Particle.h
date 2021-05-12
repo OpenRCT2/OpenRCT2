@@ -13,7 +13,7 @@
 #include "SpriteBase.h"
 
 class DataSerialiser;
-class CoordsXYZ;
+struct CoordsXYZ;
 
 struct VehicleCrashParticle : MiscEntity
 {

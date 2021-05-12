@@ -12,6 +12,7 @@
 #include "SpriteBase.h"
 
 class DataSerialiser;
+struct CoordsXYZ;
 
 struct Balloon : MiscEntity
 {
@@ -27,4 +28,3 @@ struct Balloon : MiscEntity
 };
 
 void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
-void balloon_update(Balloon* balloon);
