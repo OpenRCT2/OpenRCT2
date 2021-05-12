@@ -29,7 +29,7 @@ template<> bool SpriteBase::Is<MoneyEffect>() const
  */
 void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool vertical)
 {
-    if (value == MONEY(0, 00))
+    if (value == 0.00_GBP)
         return;
 
     MoneyEffect* moneyEffect = CreateEntity<MoneyEffect>();

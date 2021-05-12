@@ -6278,7 +6278,7 @@ static void window_ride_income_increase_primary_price(rct_window* w)
         return;
 
     money16 price = ride->price[0];
-    if (price < MONEY(20, 00))
+    if (price < 20.00_GBP)
         price++;
 
     window_ride_income_set_primary_price(w, price);
@@ -6298,7 +6298,7 @@ static void window_ride_income_decrease_primary_price(rct_window* w)
         return;
 
     money16 price = ride->price[0];
-    if (price > MONEY(0, 00))
+    if (price > 0.00_GBP)
         price--;
 
     window_ride_income_set_primary_price(w, price);
@@ -6339,7 +6339,7 @@ static void window_ride_income_increase_secondary_price(rct_window* w)
 {
     money16 price = window_ride_income_get_secondary_price(w);
 
-    if (price < MONEY(20, 00))
+    if (price < 20.00_GBP)
         price++;
 
     window_ride_income_set_secondary_price(w, price);
@@ -6353,7 +6353,7 @@ static void window_ride_income_decrease_secondary_price(rct_window* w)
 {
     money16 price = window_ride_income_get_secondary_price(w);
 
-    if (price > MONEY(0, 00))
+    if (price > 0.00_GBP)
         price--;
 
     window_ride_income_set_secondary_price(w, price);
@@ -6475,7 +6475,7 @@ static void window_ride_income_textinput(rct_window* w, rct_widgetindex widgetIn
         return;
     }
 
-    price = std::clamp(price, MONEY(0, 00), MONEY(20, 00));
+    price = std::clamp(price, 0.00_GBP, 20.00_GBP);
     money16 price16 = static_cast<money16>(price);
 
     if (widgetIndex == WIDX_PRIMARY_PRICE)
