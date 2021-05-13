@@ -158,14 +158,18 @@ public:
                              window_water_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
             if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
             {
-                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, &gWaterToolRaiseCost, { TextAlignment::CENTRE });
+                auto ft = Formatter();
+                ft.Add<money64>(gWaterToolRaiseCost);
+                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
             screenCoords.y += 10;
 
             // Draw lower cost amount
             if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
             {
-                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, &gWaterToolLowerCost, { TextAlignment::CENTRE });
+                auto ft = Formatter();
+                ft.Add<money64>(gWaterToolLowerCost);
+                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
     }
