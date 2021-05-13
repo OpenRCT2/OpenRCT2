@@ -967,11 +967,11 @@ static void vehicle_sprite_paint_6D51EB(
     paint_session* session, const Vehicle* vehicle, int32_t ebx, int32_t z, const rct_ride_entry_vehicle* vehicleEntry)
 {
     int32_t ecx = ebx / 2;
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
     {
         ebx = ebx / 2;
     }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15)
+    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
     {
         ebx = ebx / 8;
     }

@@ -375,24 +375,27 @@ struct train_ref
 enum : uint32_t
 {
     VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1
-        << 0, // Set on powered vehicles that do not slow down when going down a hill
+        << 0, // Set on powered vehicles that do not slow down when going down a hill.
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS = 1 << 1,
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH = 1 << 2,
     VEHICLE_ENTRY_FLAG_MINI_GOLF = 1 << 3,
-    VEHICLE_ENTRY_FLAG_4 = 1 << 4,
-    VEHICLE_ENTRY_FLAG_5 = 1 << 5,
+    VEHICLE_ENTRY_FLAG_REVERSER_BOGIE = 1 << 4,
+    VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR = 1 << 5,
     VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET = 1 << 6, // Set on vehicles that support running inverted for extended periods
                                                          // of time, i.e. the Flying, Lay-down and Multi-dimension RCs.
     VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS = 1
         << 7, // When set the vehicle has an additional frame for when in use. Used only by dodgems.
-    VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8, // Not used any more - every vehicle will now work with doors
+    VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8, // Not used any more - every vehicle will now work with doors.
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
-    VEHICLE_ENTRY_FLAG_10 = 1 << 10,
-    VEHICLE_ENTRY_FLAG_11 = 1 << 11,
+    VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS = 1 << 10, // Only used during loading of the objects.
+    VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES = 1
+        << 11, // Instead of the default 32 rotation frames. Only used for boat hire and works only for non sloped sprites.
     VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1
         << 12, // Setting this will cause the game to set vehicleEntry->num_vertical_frames to
                // vehicleEntry->num_vertical_frames_override, rather than determining it itself.
-    VEHICLE_ENTRY_FLAG_13 = 1 << 13,
+    VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET = 1
+        << 13, // Used together with HAS_INVERTED_SPRITE_SET and RECALCULATE_SPRITE_BOUNDS and includes the inverted sprites
+               // into the function that recalculates the sprite bounds.
     VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES = 1
         << 14, // 16x additional frames for vehicle. A spinning item with additional frames must always face forward to
                // load/unload. Spinning without can load/unload at 4 rotations.
@@ -402,18 +405,19 @@ enum : uint32_t
     VEHICLE_ENTRY_FLAG_SPINNING = 1 << 18,
     VEHICLE_ENTRY_FLAG_POWERED = 1 << 19,
     VEHICLE_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,
-    VEHICLE_ENTRY_FLAG_21 = 1 << 21, // Swinging coaster??
+    VEHICLE_ENTRY_FLAG_SUSPENDED_SWING = 1 << 21, // Suspended swinging coaster, or bobsleigh if SLIDE_SWING is also enabled.
     VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION = 1 << 22,
     VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23, // Set on animated vehicles like the Multi-dimension coaster trains,
                                                     // Miniature Railway locomotives and Helicycles.
-    VEHICLE_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,   // Set when the animation updates rider sprite positions
-    VEHICLE_ENTRY_FLAG_25 = 1 << 25,
+    VEHICLE_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,   // Set when the animation updates rider sprite positions.
+    VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING = 1 << 25,
     VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS = 1
-        << 26, // Peep loading positions have x and y coordinates. Normal rides just have offsets
+        << 26, // Peep loading positions have x and y coordinates. Normal rides just have offsets.
     VEHICLE_ENTRY_FLAG_SLIDE_SWING = 1
         << 27, // Set on dingy slides. They have there own swing value calculations and have a different amount of images.
+               // Also set on bobsleighs together with the SUSPENDED_SWING flag.
     VEHICLE_ENTRY_FLAG_CHAIRLIFT = 1 << 28,
-    VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29, // Set on rides where water would provide continuous propulsion
+    VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29, // Set on rides where water would provide continuous propulsion.
     VEHICLE_ENTRY_FLAG_GO_KART = 1 << 30,
     VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1u << 31,
 };
@@ -470,7 +474,8 @@ enum : uint32_t
     VEHICLE_SPRITE_FLAG_CORKSCREWS = (1 << 12),
     VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION = (1 << 13),
     VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL = (1 << 14),
-    VEHICLE_SPRITE_FLAG_15 = (1 << 15),
+    // Used only on lifts (the transport ride), to only use 4 rotation sprites instead of 32.
+    VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES = (1 << 15),
 };
 
 enum

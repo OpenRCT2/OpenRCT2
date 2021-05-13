@@ -4199,14 +4199,14 @@ static Vehicle* vehicle_create_car(
             vehicle->mini_golf_current_animation = 0;
             vehicle->mini_golf_flags = 0;
         }
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_4)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_REVERSER_BOGIE)
         {
             if (vehicle->IsHead())
             {
                 subposition = VehicleTrackSubposition::ReverserRCFrontBogie;
             }
         }
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_5)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
         {
             subposition = VehicleTrackSubposition::ReverserRCRearBogie;
         }
@@ -5705,7 +5705,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int3
 
     // Moved from object paint
 
-    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_13)
+    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
     {
         bl += 16;
     }
