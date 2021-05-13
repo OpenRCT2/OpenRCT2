@@ -5244,7 +5244,7 @@ void Guest::UpdateWalking()
             && ((0xFFFF & scenario_rand()) <= 4096))
         {
             int32_t container = bitscanforward(GetEmptyContainerFlags());
-            auto litterType = Litter::Type::Sick;
+            auto litterType = Litter::Type::Vomit;
 
             if (container != -1)
             {

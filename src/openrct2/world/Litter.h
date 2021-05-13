@@ -19,8 +19,8 @@ struct Litter : SpriteBase
 {
     enum class Type : uint8_t
     {
-        Sick,
-        SickAlt,
+        Vomit,
+        VomitAlt,
         EmptyCan,
         Rubbish,
         BurgerBox,
