@@ -128,9 +128,6 @@ rct_window* window_about_open()
     window_about_set_page(window, WINDOW_ABOUT_PAGE_OPENRCT2);
 
     WindowInitScrollWidgets(window);
-    window->colours[0] = COLOUR_GREY;
-    window->colours[1] = COLOUR_LIGHT_BLUE;
-    window->colours[2] = COLOUR_LIGHT_BLUE;
 
     return window;
 }
@@ -196,7 +193,7 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t width = w->width - 20;
 
     aboutCoords.y += DrawTextWrapped(
-                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, {}, { w->colours[2], TextAlignment::CENTRE })
+                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, {}, { w->colours[1], TextAlignment::CENTRE })
         + lineHeight;
 
     rct_size16 logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
@@ -206,7 +203,7 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // About OpenRCT2 text
     aboutCoords.y += DrawTextWrapped(
                          dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, {},
-                         { w->colours[2], TextAlignment::CENTRE })
+                         { w->colours[1], TextAlignment::CENTRE })
         + lineHeight + 5;
 
     // Copyright disclaimer; hidden when using truetype fonts to prevent
@@ -214,7 +211,7 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!LocalisationService_UseTrueTypeFont())
     {
         DrawTextWrapped(
-            dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, {}, { w->colours[2], TextAlignment::CENTRE });
+            dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, {}, { w->colours[1], TextAlignment::CENTRE });
     }
 
     // Version info
@@ -225,7 +222,7 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<const char*>(buffer);
 
     aboutCoords.y = w->windowPos.y + WH - 25;
-    DrawTextWrapped(dpi, aboutCoords, width, STR_STRING, ft, { w->colours[2], TextAlignment::CENTRE });
+    DrawTextWrapped(dpi, aboutCoords, width, STR_STRING, ft, { w->colours[1], TextAlignment::CENTRE });
 }
 
 static void window_about_openrct2_invalidate(rct_window* w)
