@@ -378,5 +378,5 @@ constexpr const GamePalette StandardPalette = { {
     { 75, 207, 255, 255 },
 
     // 255 (Used in a small number of cases for pure white)
-    { 0, 0, 0, 255 },
+    { 255, 255, 255, 255 },
 } };
