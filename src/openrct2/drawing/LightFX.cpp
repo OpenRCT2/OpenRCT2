@@ -19,10 +19,11 @@
 #    include "../interface/Window_internal.h"
 #    include "../paint/Paint.h"
 #    include "../ride/Ride.h"
+#    include "../ride/Vehicle.h"
 #    include "../util/Util.h"
 #    include "../world/Climate.h"
+#    include "../world/Entity.h"
 #    include "../world/Map.h"
-#    include "../world/Sprite.h"
 #    include "Drawing.h"
 
 #    include <algorithm>

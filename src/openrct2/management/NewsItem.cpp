@@ -18,11 +18,13 @@
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
+#include "../peep/Peep.h"
 #include "../ride/Ride.h"
+#include "../ride/Vehicle.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../world/Entity.h"
 #include "../world/Location.hpp"
-#include "../world/Sprite.h"
 
 News::ItemQueues gNewsItems;
 

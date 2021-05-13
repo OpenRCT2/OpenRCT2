@@ -22,6 +22,7 @@
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Sprite.h>
+#include <openrct2/ride/Vehicle.h>
 
 using namespace OpenRCT2::Ui;
 

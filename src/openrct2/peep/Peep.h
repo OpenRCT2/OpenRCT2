@@ -921,7 +921,8 @@ private:
     bool UpdatePatrollingFindGrass();
 };
 
-static_assert(sizeof(Peep) <= 512);
+static_assert(sizeof(Guest) <= 512);
+static_assert(sizeof(Staff) <= 512);
 
 struct rct_sprite_bounds
 {

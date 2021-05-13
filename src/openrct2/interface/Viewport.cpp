@@ -22,6 +22,7 @@
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
+#include "../ride/Vehicle.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Climate.h"

@@ -11,15 +11,6 @@
 #define _SPRITE_H_
 
 #include "../common.h"
-#include "../peep/Peep.h"
-#include "../ride/Vehicle.h"
-#include "Balloon.h"
-#include "Duck.h"
-#include "Entity.h"
-#include "Fountain.h"
-#include "Litter.h"
-#include "MoneyEffect.h"
-#include "Particle.h"
 #include "SpriteBase.h"
 
 class DataSerialiser;
@@ -55,23 +46,7 @@ struct SteamParticle : MiscEntity
 union rct_sprite
 {
     uint8_t pad_00[0x200];
-    MiscEntity misc;
-    Peep peep;
-    Litter litter;
-    Vehicle vehicle;
-    Balloon balloon;
-    Duck duck;
-    JumpingFountain jumping_fountain;
-    MoneyEffect money_effect;
-    VehicleCrashParticle crashed_vehicle_particle;
-    CrashSplashParticle crash_splash;
-    SteamParticle steam_particle;
-
-    // Default constructor to prevent non trivial construction issues
-    rct_sprite()
-        : pad_00()
-    {
-    }
+    SpriteBase base;
 };
 assert_struct_size(rct_sprite, 0x200);
 
@@ -90,9 +65,6 @@ enum
     SPRITE_FLAGS_PEEP_VISIBLE = 1 << 8,  // Peep is eligible to show in summarized guest list window (is inside park?)
     SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Deprecated: Use sprite_set_flashing/sprite_get_flashing instead.
 };
-
-constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
-constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
 rct_sprite* create_sprite(EntityType type);
 template<typename T> T* CreateEntity()

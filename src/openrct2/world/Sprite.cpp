@@ -36,6 +36,9 @@ static std::vector<uint16_t> _freeIdList;
 
 static bool _spriteFlashingList[MAX_ENTITIES];
 
+constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
+constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
+
 static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
 constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)

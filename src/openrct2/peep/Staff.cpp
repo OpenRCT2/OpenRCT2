@@ -29,6 +29,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"

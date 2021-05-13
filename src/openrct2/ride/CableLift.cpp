@@ -18,6 +18,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "VehicleData.h"
+#include "Vehicle.h"
 
 #include <algorithm>
 
