@@ -379,6 +379,7 @@ void ScriptEngine::Initialise()
     auto ctx = static_cast<duk_context*>(_context);
     ScCheats::Register(ctx);
     ScClimate::Register(ctx);
+    ScClimateState::Register(ctx);
     ScConfiguration::Register(ctx);
     ScConsole::Register(ctx);
     ScContext::Register(ctx);

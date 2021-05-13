@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,36 @@
 
 namespace OpenRCT2::Scripting
 {
+    class ScClimateState
+    {
+    private:
+        std::string _weather;
+        int8_t _temperature;
+
+    public:
+        ScClimateState(std::string weather, int8_t temperature)
+            : _weather(weather)
+            , _temperature(temperature)
+        {
+        }
+
+        std::string weather_get() const
+        {
+            return _weather;
+        }
+
+        int8_t temperature_get() const
+        {
+            return _temperature;
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_register_property(ctx, &ScClimateState::weather_get, nullptr, "weather");
+            dukglue_register_property(ctx, &ScClimateState::temperature_get, nullptr, "temperature");
+        }
+    };
+
     class ScClimate
     {
     public:
@@ -74,33 +104,23 @@ namespace OpenRCT2::Scripting
             return ClimateTypeToString(gClimate);
         }
 
-        std::string currentWeather_get() const
+        std::shared_ptr<ScClimateState> currentWeather_get() const
         {
-            return WeatherTypeToString(gClimateCurrent.Weather);
+            std::string weatherType = WeatherTypeToString(gClimateCurrent.Weather);
+            return std::make_shared<ScClimateState>(weatherType, gClimateCurrent.Temperature);
         }
 
-        int8_t currentTemperature_get() const
+        std::shared_ptr<ScClimateState> futureWeather_get() const
         {
-            return gClimateCurrent.Temperature;
-        }
-
-        std::string futureWeather_get() const
-        {
-            return WeatherTypeToString(gClimateNext.Weather);
-        }
-
-        int8_t futureTemperature_get() const
-        {
-            return gClimateNext.Temperature;
+            std::string weatherType = WeatherTypeToString(gClimateNext.Weather);
+            return std::make_shared<ScClimateState>(weatherType, gClimateNext.Temperature);
         }
 
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScClimate::climate_get, nullptr, "climate");
             dukglue_register_property(ctx, &ScClimate::currentWeather_get, nullptr, "currentWeather");
-            dukglue_register_property(ctx, &ScClimate::currentTemperature_get, nullptr, "currentTemperature");
             dukglue_register_property(ctx, &ScClimate::futureWeather_get, nullptr, "futureWeather");
-            dukglue_register_property(ctx, &ScClimate::futureTemperature_get, nullptr, "futureTemperature");
         }
     };
 
