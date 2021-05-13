@@ -312,11 +312,11 @@ bool ImageImporter::IsChangablePixel(int32_t paletteIndex)
         return true;
     if (paletteIndex == 0)
         return false;
-    if (paletteIndex >= 203 && paletteIndex < 214)
+    if (paletteIndex >= 202 && paletteIndex <= 213)
         return false;
     if (paletteIndex == 226)
         return false;
-    if (paletteIndex >= 227 && paletteIndex < 229)
+    if (paletteIndex >= 227 && paletteIndex <= 229)
         return false;
     if (paletteIndex >= 243)
         return false;
