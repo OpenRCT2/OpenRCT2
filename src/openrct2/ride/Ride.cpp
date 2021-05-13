@@ -182,7 +182,7 @@ ride_id_t GetNextFreeRideId()
             break;
         }
     }
-    if (result >= RIDE_ID_NULL)
+    if (result >= MAX_RIDES)
     {
         return RIDE_ID_NULL;
     }
