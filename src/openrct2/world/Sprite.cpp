@@ -750,18 +750,20 @@ void Litter::RemoveAt(const CoordsXYZ& litterPos)
     }
 }
 
-const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
-                                        STR_LITTER_VOMIT,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
-                                        STR_SHOP_ITEM_SINGULAR_RUBBISH,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE };
+static const rct_string_id litterNames[12] = {
+    STR_LITTER_VOMIT,
+    STR_LITTER_VOMIT,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
+    STR_SHOP_ITEM_SINGULAR_RUBBISH,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
+};
 
 rct_string_id Litter::GetName() const
 {
