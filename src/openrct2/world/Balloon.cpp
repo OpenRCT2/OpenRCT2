@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Balloon.h"
+
 #include "../Game.h"
 #include "../audio/audio.h"
 #include "../network/network.h"
@@ -93,9 +95,4 @@ void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
     balloon->frame = 0;
     balloon->colour = colour;
     balloon->popped = (isPopped ? 1 : 0);
-}
-
-void balloon_update(Balloon* balloon)
-{
-    balloon->Update();
 }

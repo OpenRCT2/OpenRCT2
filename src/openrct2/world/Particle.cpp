@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+#include "Particle.h"
 
 #include "../audio/audio.h"
 #include "../paint/sprite/Paint.Sprite.h"
