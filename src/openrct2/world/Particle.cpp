@@ -28,7 +28,7 @@ template<> bool SpriteBase::Is<CrashSplashParticle>() const
  *
  *  rct2: 0x006735A1
  */
-void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos)
+void VehicleCrashParticle::Create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos)
 {
     VehicleCrashParticle* sprite = CreateEntity<VehicleCrashParticle>();
     if (sprite != nullptr)
@@ -93,7 +93,7 @@ void VehicleCrashParticle::Update()
     {
         // Splash
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water2, { x, y, waterZ });
-        crash_splash_create({ x, y, waterZ });
+        CrashSplashParticle::Create({ x, y, waterZ });
         sprite_remove(this);
         return;
     }
@@ -117,7 +117,7 @@ void VehicleCrashParticle::Update()
  *
  *  rct2: 0x00673699
  */
-void crash_splash_create(const CoordsXYZ& splashPos)
+void CrashSplashParticle::Create(const CoordsXYZ& splashPos)
 {
     auto* sprite = CreateEntity<CrashSplashParticle>();
     if (sprite != nullptr)

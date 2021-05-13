@@ -1343,7 +1343,7 @@ void Staff::UpdateSweeping()
     if (Action == PeepActionType::StaffSweep && ActionFrame == 8)
     {
         // Remove sick at this location
-        litter_remove_at({ x, y, z });
+        Litter::RemoveAt({ x, y, z });
         StaffLitterSwept++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }

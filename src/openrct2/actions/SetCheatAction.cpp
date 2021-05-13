@@ -232,7 +232,7 @@ GameActions::Result::Ptr SetCheatAction::Execute() const
             CreateDucks(_param1);
             break;
         case CheatType::RemoveDucks:
-            duck_remove_all();
+            Duck::RemoveAll();
             break;
         case CheatType::AllowTrackPlaceInvalidHeights:
             gCheatsAllowTrackPlaceInvalidHeights = _param1 != 0;

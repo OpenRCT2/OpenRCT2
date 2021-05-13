@@ -2886,7 +2886,7 @@ template<> void S4Importer::ImportEntity<Litter>(const RCT12SpriteBase& srcBase)
     auto* src = static_cast<const RCT12SpriteLitter*>(&srcBase);
     ImportEntityCommonProperties(dst, src);
 
-    dst->SubType = LitterType(src->type);
+    dst->SubType = Litter::Type(src->type);
 }
 
 template<> void S4Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& srcBase)

@@ -3603,7 +3603,7 @@ void Vehicle::UpdateCollisionSetup()
 
         for (int32_t i = 0; i < 10; i++)
         {
-            crashed_vehicle_particle_create(train->colours, { train->x, train->y, train->z });
+            VehicleCrashParticle::Create(train->colours, { train->x, train->y, train->z });
         }
 
         train->IsCrashedVehicle = true;
@@ -5363,7 +5363,7 @@ void Vehicle::CrashOnLand()
     uint8_t numParticles = std::min(sprite_width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
-        crashed_vehicle_particle_create(colours, { x, y, z });
+        VehicleCrashParticle::Create(colours, { x, y, z });
 
     IsCrashedVehicle = true;
     animation_frame = 0;
@@ -5419,14 +5419,14 @@ void Vehicle::CrashOnWater()
     sub_state = 2;
     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water1, { x, y, z });
 
-    crash_splash_create({ x, y, z });
-    crash_splash_create({ x - 8, y - 9, z });
-    crash_splash_create({ x + 11, y - 9, z });
-    crash_splash_create({ x + 11, y + 8, z });
-    crash_splash_create({ x - 4, y + 8, z });
+    CrashSplashParticle::Create({ x, y, z });
+    CrashSplashParticle::Create({ x - 8, y - 9, z });
+    CrashSplashParticle::Create({ x + 11, y - 9, z });
+    CrashSplashParticle::Create({ x + 11, y + 8, z });
+    CrashSplashParticle::Create({ x - 4, y + 8, z });
 
     for (int32_t i = 0; i < 10; ++i)
-        crashed_vehicle_particle_create(colours, { x - 4, y + 8, z });
+        VehicleCrashParticle::Create(colours, { x - 4, y + 8, z });
 
     IsCrashedVehicle = true;
     animation_frame = 0;

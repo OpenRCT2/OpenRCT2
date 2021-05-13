@@ -81,7 +81,7 @@ void Balloon::Pop()
     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
 }
 
-void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
+void Balloon::Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
 {
     auto* balloon = CreateEntity<Balloon>();
     if (balloon == nullptr)
