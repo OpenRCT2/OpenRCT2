@@ -166,6 +166,7 @@ The following people are not part of the development team, but have been contrib
 * Adam Bloom (adam-bloom)
 * Geoff B. (geoff-B)
 * Ryan D. (rctdude2)
+* (zrowny)
 
 ## Toolchain
 * (Balletie) - macOS
