@@ -199,7 +199,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
                         continue;
                     if (peep->z != loc.z)
                         continue;
-                    if (peep->Action < PeepActionType::None1)
+                    if (peep->Action < PeepActionType::Idle)
                         continue;
 
                     peep->Action = PeepActionType::CheckTime;

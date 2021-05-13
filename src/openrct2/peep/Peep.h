@@ -314,8 +314,8 @@ enum class PeepActionType : uint8_t
     BeingWatched = 29,
     WithdrawMoney = 30,
 
-    None1 = 254,
-    None2 = 255,
+    Idle = 254,
+    Walking = 255,
 };
 
 enum class PeepActionSpriteType : uint8_t
@@ -639,6 +639,9 @@ public: // Peep
     void FormatNameTo(Formatter&) const;
     std::string GetName() const;
     bool SetName(std::string_view value);
+    bool IsActionWalking() const;
+    bool IsActionIdle() const;
+    bool IsActionInterruptable() const;
 
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.
