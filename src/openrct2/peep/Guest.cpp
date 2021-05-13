@@ -47,6 +47,7 @@
 #include "Staff.h"
 
 #include <algorithm>
+#include <functional>
 #include <iterator>
 
 using namespace OpenRCT2;
@@ -431,11 +432,11 @@ template<> bool SpriteBase::Is<Guest>() const
     return Type == EntityType::Guest;
 }
 
-bool Guest::GuestHasValidXY() const
+static bool IsValidLocation(const CoordsXYZ& coords)
 {
-    if (x != LOCATION_NULL)
+    if (coords.x != LOCATION_NULL)
     {
-        if (map_is_location_valid({ x, y }))
+        if (map_is_location_valid(coords))
         {
             return true;
         }
@@ -444,17 +445,23 @@ bool Guest::GuestHasValidXY() const
     return false;
 }
 
-void Guest::ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg)
+template<void (Guest::*EasterEggFunc)(Guest*)> static void ApplyEasterEggToNearbyGuests(Guest* guest)
 {
-    if (!GuestHasValidXY())
+    const auto guestLoc = guest->GetLocation();
+    if (!IsValidLocation(guestLoc))
         return;
 
-    for (auto* otherGuest : EntityTileList<Guest>({ x, y }))
+    for (auto* otherGuest : EntityTileList<Guest>(guestLoc))
     {
-        auto zDiff = std::abs(otherGuest->z - z);
+        if (otherGuest == guest)
+        {
+            // Can not apply effect on self.
+            continue;
+        }
+        auto zDiff = std::abs(otherGuest->z - guestLoc.z);
         if (zDiff <= 32)
         {
-            (*this.*easter_egg)(otherGuest);
+            std::invoke(EasterEggFunc, *guest, otherGuest);
         }
     }
 }
@@ -489,8 +496,6 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 
 void Guest::MakePassingPeepsSick(Guest* passingPeep)
 {
-    if (this == passingPeep)
-        return;
     if (passingPeep->State != PeepState::Walking)
         return;
 
@@ -505,8 +510,6 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
 
 void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
 {
-    if (this == passingPeep)
-        return;
     if (passingPeep->HasItem(ShopItem::IceCream))
         return;
 
@@ -522,17 +525,22 @@ void Guest::UpdateEasterEggInteractions()
 {
     if (PeepFlags & PEEP_FLAGS_PURPLE)
     {
-        ApplyEasterEggToNearbyGuests(&Guest::GivePassingPeepsPurpleClothes);
+        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsPurpleClothes>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_PIZZA)
     {
-        ApplyEasterEggToNearbyGuests(&Guest::GivePassingPeepsPizza);
+        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsPizza>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_CONTAGIOUS)
     {
-        ApplyEasterEggToNearbyGuests(&Guest::MakePassingPeepsSick);
+        ApplyEasterEggToNearbyGuests<&Guest::MakePassingPeepsSick>(this);
+    }
+
+    if (PeepFlags & PEEP_FLAGS_ICE_CREAM)
+    {
+        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsIceCream>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_JOY)
@@ -547,11 +555,6 @@ void Guest::UpdateEasterEggInteractions()
                 UpdateCurrentActionSpriteType();
             }
         }
-    }
-
-    if (PeepFlags & PEEP_FLAGS_ICE_CREAM)
-    {
-        ApplyEasterEggToNearbyGuests(&Guest::GivePassingPeepsIceCream);
     }
 }
 
