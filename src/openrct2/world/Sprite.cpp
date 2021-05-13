@@ -38,19 +38,6 @@ static bool _spriteFlashingList[MAX_ENTITIES];
 
 static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
-const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
-                                        STR_LITTER_VOMIT,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
-                                        STR_SHOP_ITEM_SINGULAR_RUBBISH,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE };
-
 constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 {
     size_t index = SPATIAL_INDEX_LOCATION_NULL;
@@ -694,7 +681,7 @@ static bool litter_can_be_at(const CoordsXYZ& mapPos)
  *
  *  rct2: 0x0067375D
  */
-void litter_create(const CoordsXYZD& litterPos, LitterType type)
+void Litter::Create(const CoordsXYZD& litterPos, Type type)
 {
     if (gCheatsDisableLittering)
         return;
@@ -743,7 +730,7 @@ void litter_create(const CoordsXYZD& litterPos, LitterType type)
  *
  *  rct2: 0x006738E1
  */
-void litter_remove_at(const CoordsXYZ& litterPos)
+void Litter::RemoveAt(const CoordsXYZ& litterPos)
 {
     std::vector<Litter*> removals;
     for (auto litter : EntityTileList<Litter>(litterPos))
@@ -763,6 +750,25 @@ void litter_remove_at(const CoordsXYZ& litterPos)
     }
 }
 
+const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
+                                        STR_LITTER_VOMIT,
+                                        STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
+                                        STR_SHOP_ITEM_SINGULAR_RUBBISH,
+                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
+                                        STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
+                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
+                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
+                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
+                                        STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
+                                        STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
+                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE };
+
+rct_string_id Litter::GetName() const
+{
+    if (EnumValue(SubType) >= sizeof(litterNames))
+        return STR_NONE;
+    return litterNames[EnumValue(SubType)];
+}
 /**
  * Loops through all sprites, finds floating objects and removes them.
  * Returns the amount of removed objects as feedback.

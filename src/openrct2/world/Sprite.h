@@ -94,8 +94,6 @@ enum
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
-extern const rct_string_id litterNames[12];
-
 rct_sprite* create_sprite(EntityType type);
 template<typename T> T* CreateEntity()
 {

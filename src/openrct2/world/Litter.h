@@ -15,31 +15,29 @@ class DataSerialiser;
 struct CoordsXYZ;
 struct CoordsXYZD;
 
-enum LitterType : uint8_t
-{
-    LITTER_TYPE_SICK,
-    LITTER_TYPE_SICK_ALT,
-    LITTER_TYPE_EMPTY_CAN,
-    LITTER_TYPE_RUBBISH,
-    LITTER_TYPE_EMPTY_BURGER_BOX,
-    LITTER_TYPE_EMPTY_CUP,
-    LITTER_TYPE_EMPTY_BOX,
-    LITTER_TYPE_EMPTY_BOTTLE,
-    LITTER_TYPE_EMPTY_BOWL_RED,
-    LITTER_TYPE_EMPTY_DRINK_CARTON,
-    LITTER_TYPE_EMPTY_JUICE_CUP,
-    LITTER_TYPE_EMPTY_BOWL_BLUE,
-};
-
 struct Litter : SpriteBase
 {
+    enum class Type : uint8_t
+    {
+        Sick,
+        SickAlt,
+        EmptyCan,
+        Rubbish,
+        BurgerBox,
+        EmptyCup,
+        EmptyBox,
+        EmptyBottle,
+        EmptyBowlRed,
+        EmptyDrinkCarton,
+        EmptyJuiceCup,
+        EmptyBowlBlue,
+    };
+
     static constexpr auto cEntityType = EntityType::Litter;
-    LitterType SubType;
+    Type SubType;
     uint32_t creationTick;
+    static void Create(const CoordsXYZD& litterPos, Type type);
+    static void RemoveAt(const CoordsXYZ& litterPos);
     void Serialise(DataSerialiser& stream);
+    rct_string_id GetName() const;
 };
-
-extern const rct_string_id litterNames[12];
-
-void litter_create(const CoordsXYZD& litterPos, LitterType type);
-void litter_remove_at(const CoordsXYZ& litterPos);

@@ -474,7 +474,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     // Create sick at location
-    litter_create({ x, y, z, sprite_direction }, (sprite_index & 1) ? LITTER_TYPE_SICK_ALT : LITTER_TYPE_SICK);
+    Litter::Create({ x, y, z, sprite_direction }, (sprite_index & 1) ? Litter::Type::SickAlt : Litter::Type::Sick);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = { OpenRCT2::Audio::SoundId::Cough1, OpenRCT2::Audio::SoundId::Cough2,
                                                             OpenRCT2::Audio::SoundId::Cough3,
@@ -1954,7 +1954,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
                 continue;
 
             litter_count++;
-            if (litter->SubType != LITTER_TYPE_SICK && litter->SubType != LITTER_TYPE_SICK_ALT)
+            if (litter->SubType != Litter::Type::Sick && litter->SubType != Litter::Type::SickAlt)
                 continue;
 
             litter_count--;

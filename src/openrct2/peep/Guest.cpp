@@ -5223,18 +5223,18 @@ void Guest::UpdateWalking()
         {
             if ((0xFFFF & scenario_rand()) <= 4096)
             {
-                static constexpr const LitterType litter_types[] = {
-                    LITTER_TYPE_EMPTY_CAN,
-                    LITTER_TYPE_RUBBISH,
-                    LITTER_TYPE_EMPTY_BURGER_BOX,
-                    LITTER_TYPE_EMPTY_CUP,
+                static constexpr const Litter::Type litter_types[] = {
+                    Litter::Type::EmptyCan,
+                    Litter::Type::Rubbish,
+                    Litter::Type::BurgerBox,
+                    Litter::Type::EmptyCup,
                 };
                 auto litterType = litter_types[scenario_rand() & 0x3];
                 int32_t litterX = x + (scenario_rand() & 0x7) - 3;
                 int32_t litterY = y + (scenario_rand() & 0x7) - 3;
                 Direction litterDirection = (scenario_rand() & 0x3);
 
-                litter_create({ litterX, litterY, z, litterDirection }, litterType);
+                Litter::Create({ litterX, litterY, z, litterDirection }, litterType);
             }
         }
     }
@@ -5244,13 +5244,13 @@ void Guest::UpdateWalking()
             && ((0xFFFF & scenario_rand()) <= 4096))
         {
             int32_t container = bitscanforward(GetEmptyContainerFlags());
-            LitterType litterType = LITTER_TYPE_SICK;
+            auto litterType = Litter::Type::Sick;
 
             if (container != -1)
             {
                 auto item = static_cast<ShopItem>(container);
                 RemoveItem(item);
-                litterType = LitterType(GetShopItemDescriptor(item).LitterType);
+                litterType = Litter::Type(GetShopItemDescriptor(item).Type);
             }
 
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -5260,7 +5260,7 @@ void Guest::UpdateWalking()
             int32_t litterY = y + (scenario_rand() & 0x7) - 3;
             Direction litterDirection = (scenario_rand() & 0x3);
 
-            litter_create({ litterX, litterY, z, litterDirection }, litterType);
+            Litter::Create({ litterX, litterY, z, litterDirection }, litterType);
         }
     }
 
@@ -5798,12 +5798,12 @@ void Guest::UpdateUsingBin()
                     continue;
                 }
 
-                LitterType litterType = LitterType(GetShopItemDescriptor(item).LitterType);
+                auto litterType = Litter::Type(GetShopItemDescriptor(item).Type);
 
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
+                Litter::Create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
                 RemoveItem(item);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
