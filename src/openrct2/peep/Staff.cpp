@@ -359,8 +359,8 @@ static std::pair<int32_t, int32_t> getPatrolAreaOffsetIndex(const CoordsXY& coor
     auto x = tilePos.x / 4;
     auto y = tilePos.y / 4;
     auto bitIndex = (y * STAFF_PATROL_AREA_BLOCKS_PER_LINE) + x;
-    auto byteIndex = bitIndex / 32;
-    auto byteBitIndex = bitIndex % 32;
+    auto byteIndex = int32_t(bitIndex / 32);
+    auto byteBitIndex = int32_t(bitIndex % 32);
     return { byteIndex, byteBitIndex };
 }
 
