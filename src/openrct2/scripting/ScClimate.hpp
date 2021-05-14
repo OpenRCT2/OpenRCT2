@@ -99,18 +99,18 @@ namespace OpenRCT2::Scripting
             return "";
         }
 
-        std::string climate_get() const
+        std::string type_get() const
         {
             return ClimateTypeToString(gClimate);
         }
 
-        std::shared_ptr<ScClimateState> currentWeather_get() const
+        std::shared_ptr<ScClimateState> current_get() const
         {
             std::string weatherType = WeatherTypeToString(gClimateCurrent.Weather);
             return std::make_shared<ScClimateState>(weatherType, gClimateCurrent.Temperature);
         }
 
-        std::shared_ptr<ScClimateState> futureWeather_get() const
+        std::shared_ptr<ScClimateState> future_get() const
         {
             std::string weatherType = WeatherTypeToString(gClimateNext.Weather);
             return std::make_shared<ScClimateState>(weatherType, gClimateNext.Temperature);
@@ -118,9 +118,9 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScClimate::climate_get, nullptr, "climate");
-            dukglue_register_property(ctx, &ScClimate::currentWeather_get, nullptr, "currentWeather");
-            dukglue_register_property(ctx, &ScClimate::futureWeather_get, nullptr, "futureWeather");
+            dukglue_register_property(ctx, &ScClimate::type_get, nullptr, "type");
+            dukglue_register_property(ctx, &ScClimate::current_get, nullptr, "current");
+            dukglue_register_property(ctx, &ScClimate::future_get, nullptr, "future");
         }
     };
 

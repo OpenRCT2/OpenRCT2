@@ -1847,17 +1847,17 @@ declare global {
         /**
          * The climate of the park.
          */
-        readonly climate: ClimateType;
+        readonly type: ClimateType;
 
         /**
          * The current weather in the park.
          */
-        readonly currentWeather: ClimateState;
+        readonly current: ClimateState;
 
         /**
          * The next weather the park will experience.
          */
-        readonly futureWeather: ClimateState;
+        readonly future: ClimateState;
     }
 
     interface Cheats {
