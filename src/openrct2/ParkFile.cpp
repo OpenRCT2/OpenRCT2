@@ -865,11 +865,12 @@ namespace OpenRCT2
                         cs.ReadWriteVector(banners, [version, &cs](Banner& banner) { ReadWriteBanner(version, cs, banner); });
                         for (size_t i = 0; i < banners.size(); i++)
                         {
-                            auto banner = GetOrCreateBanner(i);
+                            auto bannerIndex = static_cast<BannerIndex>(i);
+                            auto banner = GetOrCreateBanner(bannerIndex);
                             if (banner != nullptr)
                             {
                                 *banner = std::move(banners[i]);
-                                banner->id = static_cast<BannerIndex>(i);
+                                banner->id = bannerIndex;
                             }
                         }
                     }
