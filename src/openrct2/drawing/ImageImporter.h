@@ -50,6 +50,15 @@ namespace OpenRCT2::Drawing
             IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
 
     private:
+        enum class PaletteIndexType : uint8_t
+        {
+            Normal,
+            PrimaryRemap,
+            SecondaryRemap,
+            TertiaryRemap,
+            Special,
+        };
+
         static std::vector<int32_t> GetPixels(
             const uint8_t* pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode);
         static std::vector<uint8_t> EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height);
@@ -59,7 +68,9 @@ namespace OpenRCT2::Drawing
             IMPORT_MODE mode, int16_t* rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height);
         static int32_t GetPaletteIndex(const GamePalette& palette, int16_t* colour);
         static bool IsTransparentPixel(const int16_t* colour);
+        static bool IsInPalette(const GamePalette& palette, int16_t* colour);
         static bool IsChangablePixel(int32_t paletteIndex);
+        static PaletteIndexType GetPaletteIndexType(int32_t paletteIndex);
         static int32_t GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour);
     };
 } // namespace OpenRCT2::Drawing
@@ -176,7 +187,7 @@ constexpr const GamePalette StandardPalette = { {
     { 147, 219, 195, 255 },
     { 167, 231, 207, 255 },
     { 191, 247, 223, 255 },
-    
+
     // 94 - 105 (Green)
     { 0, 63, 15, 255 },
     { 0, 83, 19, 255 },
@@ -353,7 +364,7 @@ constexpr const GamePalette StandardPalette = { {
     { 203, 203, 115, 255 },
     { 151, 155, 55, 255 },
 
-    // 240 - 242 (Exra grey)
+    // 240 - 242 (Extra grey)
     { 91, 91, 67, 255 },
     { 107, 107, 83, 255 },
     { 123, 123, 99, 255 },
