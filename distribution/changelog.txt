@@ -14,6 +14,7 @@
 - Fix: [#14315] Crash when trying to rename Air Powered Vertical Coaster in Korean.
 - Fix: [#14330] join_server uses default_port from config.
 - Fix: [#14449] Surface smoothing at extra zoom levels not working.
+- Fix: [#14468] Cannot close Options window on Android.
 - Fix: [#14493] [Plugin] isHidden only works for tile elements up to the first element with a base height of over 32.
 - Fix: [#14587] Confusing message when joining server with mismatched network version.
 - Fix: [#14604] American-style Steam Trains are not imported correctly from RCT1 saves.
