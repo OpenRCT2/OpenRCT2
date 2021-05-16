@@ -183,6 +183,8 @@ void GameState::Update()
         }
     }
 
+    network_flush();
+
     if (!gOpenRCT2Headless)
     {
         input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
