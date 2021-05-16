@@ -2282,7 +2282,7 @@ STR_3185    :Small Scenery
 STR_3186    :Large Scenery
 STR_3187    :Walls/Fences
 STR_3188    :Path Signs
-STR_3189    :Footpaths
+STR_3189    :Legacy footpaths
 STR_3190    :Path Extras
 STR_3191    :Scenery Groups
 STR_3192    :Park Entrance
@@ -3679,8 +3679,8 @@ STR_6436    :Toggle invisibility
 STR_6437    :Invisible
 STR_6438    :I
 STR_6439    :Tile Inspector: Toggle invisibility
-STR_6440    :At least one footpath non-queue surface object must be selected.
-STR_6441    :At least one footpath queue surface object must be selected.
+STR_6440    :At least one non-queue footpath surface object must be selected.
+STR_6441    :At least one queue footpath surface object must be selected.
 STR_6442    :At least one footpath railing object must be selected.
 STR_6443    :Footpath Surfaces
 STR_6444    :Footpath Railings

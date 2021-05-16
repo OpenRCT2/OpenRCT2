@@ -112,7 +112,7 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               true  },
     { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
     { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,           SPR_TAB_SCENERY_PATHS,      false },
-    { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,           SPR_TAB_SCENERY_PATHS,      false },
+    { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,           SPR_G2_PATH_RAILINGS_TAB,   false },
 };
 
 #pragma region Widgets
