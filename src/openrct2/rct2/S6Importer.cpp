@@ -1019,7 +1019,10 @@ public:
                     auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
                     if (tileElementType == RCT12TileElementType::Corrupt)
                     {
-                        nextElementInvisible = true;
+                        // One property of corrupt elements was to hide tops of tower tracks, and to avoid the next element from
+                        // being hidden, multiple consecutive corrupt elements were sometimes used. This would essentially
+                        // toggle the flag, so we inverse nextElementInvisible here instead of always setting it to true.
+                        nextElementInvisible = !nextElementInvisible;
                         continue;
                     }
                     if (tileElementType == RCT12TileElementType::EightCarsCorrupt14
