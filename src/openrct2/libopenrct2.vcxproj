@@ -408,6 +408,7 @@
     <ClInclude Include="scripting\HookEngine.h" />
     <ClInclude Include="scripting\Plugin.h" />
     <ClInclude Include="scripting\ScCheats.hpp" />
+    <ClInclude Include="scripting\ScClimate.hpp" />
     <ClInclude Include="scripting\ScConfiguration.hpp" />
     <ClInclude Include="scripting\ScConsole.hpp" />
     <ClInclude Include="scripting\ScContext.hpp" />

@@ -37,6 +37,8 @@ declare global {
     var park: Park;
     /** APIs for the current scenario. */
     var scenario: Scenario;
+    /** APIs for the climate and weather. */
+    var climate: Climate;
     /**
      * APIs for creating and editing title sequences.
      * These will only be available to clients that are not running headless mode.
@@ -1817,6 +1819,45 @@ declare global {
          * The current highest recorded company value.
          */
         companyValueRecord: number;
+    }
+
+    type ClimateType =
+        "coolAndWet" |
+        "warm" |
+        "hotAndDry" |
+        "cold";
+
+    type WeatherType =
+        "sunny" |
+        "partiallyCloudy" |
+        "cloudy" |
+        "rain" |
+        "heavyRain" |
+        "thunder" |
+        "snow" |
+        "heavySnow" |
+        "blizzard";
+
+    interface ClimateState {
+        readonly weather: WeatherType;
+        readonly temperature: number;
+    }
+
+    interface Climate {
+        /**
+         * The climate of the park.
+         */
+        readonly type: ClimateType;
+
+        /**
+         * The current weather in the park.
+         */
+        readonly current: ClimateState;
+
+        /**
+         * The next weather the park will experience.
+         */
+        readonly future: ClimateState;
     }
 
     interface Cheats {
