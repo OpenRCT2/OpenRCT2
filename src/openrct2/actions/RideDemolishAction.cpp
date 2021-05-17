@@ -210,12 +210,13 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
             if (peep->Thoughts[i].type == PeepThoughtType::None)
                 break;
 
-            if (peep->Thoughts[i].type != PeepThoughtType::None && peep->Thoughts[i].item == _rideIndex)
+            // TODO actually verify the thought is a ride specific thought...
+            if (peep->Thoughts[i].type != PeepThoughtType::None && peep->Thoughts[i].ride == static_cast<ride_id_t>(_rideIndex))
             {
                 // Clear top thought, push others up
                 memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
                 peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
-                peep->Thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
+                peep->Thoughts[PEEP_MAX_THOUGHTS - 1].argument = std::numeric_limits<uint32_t>::max();
                 // Next iteration, check the new thought at this index
                 i--;
             }

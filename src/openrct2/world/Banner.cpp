@@ -406,6 +406,7 @@ Banner* GetOrCreateBanner(BannerIndex id)
         {
             _banners.resize(id + 1);
         }
+        _banners[id].id = id;
         return &_banners[id];
     }
     return nullptr;

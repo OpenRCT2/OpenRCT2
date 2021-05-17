@@ -25,7 +25,6 @@
 #include <optional>
 
 #define PEEP_MAX_THOUGHTS 5
-#define PEEP_THOUGHT_ITEM_NONE 255
 
 #define PEEP_HUNGER_WARNING_THRESHOLD 25
 #define PEEP_THIRST_WARNING_THRESHOLD 25
@@ -488,10 +487,15 @@ enum PeepRideDecision
 
 struct rct_peep_thought
 {
-    PeepThoughtType type;  // 0
-    uint8_t item;          // 1
-    uint8_t freshness;     // 2 larger is less fresh
-    uint8_t fresh_timeout; // 3 updates every tick
+    PeepThoughtType type;
+    union
+    {
+        uint32_t argument;
+        ride_id_t ride;
+        ShopItem item;
+    };
+    uint8_t freshness;
+    uint8_t fresh_timeout;
 };
 
 struct Guest;
@@ -771,7 +775,10 @@ public:
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
     void UpdateEasterEggInteractions();
-    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
+    void InsertNewThought(PeepThoughtType thoughtType);
+    void InsertNewThought(PeepThoughtType thoughtType, uint32_t arg);
+    void InsertNewThought(PeepThoughtType thoughtType, ride_id_t ride);
+    void InsertNewThought(PeepThoughtType thoughtType, ShopItem shopItem);
     static Guest* Generate(const CoordsXYZ& coords);
     bool UpdateQueuePosition(PeepActionType previous_action);
     void RemoveFromQueue();

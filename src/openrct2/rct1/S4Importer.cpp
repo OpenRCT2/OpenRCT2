@@ -2368,7 +2368,10 @@ private:
 
     void ImportBanner(Banner* dst, const RCT12Banner* src)
     {
+        auto id = dst->id;
+
         *dst = {};
+        dst->id = id;
         dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->type);
 
         dst->flags = 0;
@@ -2865,7 +2868,14 @@ template<> void S4Importer::ImportEntity<Guest>(const RCT12SpriteBase& srcBase)
         auto srcThought = &src->thoughts[i];
         auto dstThought = &dst->Thoughts[i];
         dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-        dstThought->item = srcThought->item;
+        if (srcThought->item == 255)
+        {
+            dstThought->argument = std::numeric_limits<uint32_t>::max();
+        }
+        else
+        {
+            dstThought->argument = srcThought->item;
+        }
         dstThought->freshness = srcThought->freshness;
         dstThought->fresh_timeout = srcThought->fresh_timeout;
     }
