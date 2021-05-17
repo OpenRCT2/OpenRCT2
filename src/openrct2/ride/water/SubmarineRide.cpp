@@ -45,11 +45,11 @@ void vehicle_visual_submarine(
     }
     else
     {
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
         {
             baseImage_id /= 2;
         }
-        if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15)
+        if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
         {
             baseImage_id /= 8;
         }

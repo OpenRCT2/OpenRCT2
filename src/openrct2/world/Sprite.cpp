@@ -13,8 +13,11 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
+#include "../core/ChecksumStream.h"
 #include "../core/Crypt.h"
+#include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"
+#include "../core/MemoryStream.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -34,19 +37,6 @@ static std::vector<uint16_t> _freeIdList;
 static bool _spriteFlashingList[MAX_ENTITIES];
 
 static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
-
-const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
-                                        STR_LITTER_VOMIT,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
-                                        STR_SHOP_ITEM_SINGULAR_RUBBISH,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
-                                        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE };
 
 constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 {
@@ -136,7 +126,7 @@ std::string rct_sprite_checksum::ToString() const
     for (auto b : raw)
     {
         char buf[3];
-        snprintf(buf, 3, "%02x", b);
+        snprintf(buf, 3, "%02x", static_cast<int32_t>(b));
         result.append(buf);
     }
 
@@ -303,64 +293,26 @@ void reset_sprite_spatial_index()
 
 #ifndef DISABLE_NETWORK
 
-template<typename T> void ComputeChecksumForEntityType(Crypt::HashAlgorithm<20>* _entityHashAlg)
+template<typename T> void NetworkSerialseEntityType(DataSerialiser& ds)
 {
     for (auto* ent : EntityList<T>())
     {
-        T copy = *ent;
-
-        // Only required for rendering/invalidation, has no meaning to the game state.
-        copy.sprite_left = copy.sprite_right = copy.sprite_top = copy.sprite_bottom = 0;
-        copy.sprite_width = copy.sprite_height_negative = copy.sprite_height_positive = 0;
-
-        if constexpr (std::is_base_of_v<Peep, T>)
-        {
-            // Name is pointer and will not be the same across clients
-            copy.Name = {};
-
-            // We set this to 0 because as soon the client selects a guest the window will remove the
-            // invalidation flags causing the sprite checksum to be different than on server, the flag does not
-            // affect game state.
-            copy.WindowInvalidateFlags = 0;
-        }
-
-        _entityHashAlg->Update(&copy, sizeof(copy));
+        ent->Serialise(ds);
     }
 }
 
-template<typename... T> void ComputeChecksumForEntityTypes(Crypt::HashAlgorithm<20>* _entityHashAlg)
+template<typename... T> void NetworkSerialiseEntityTypes(DataSerialiser& ds)
 {
-    (ComputeChecksumForEntityType<T>(_entityHashAlg), ...);
+    (NetworkSerialseEntityType<T>(ds), ...);
 }
 
 rct_sprite_checksum sprite_checksum()
 {
-    using namespace Crypt;
+    rct_sprite_checksum checksum{};
 
-    // TODO Remove statics, should be one of these per sprite manager / OpenRCT2 context.
-    //      Alternatively, make a new class for this functionality.
-    static std::unique_ptr<HashAlgorithm<20>> _spriteHashAlg;
-
-    rct_sprite_checksum checksum;
-
-    try
-    {
-        if (_spriteHashAlg == nullptr)
-        {
-            _spriteHashAlg = CreateSHA1();
-        }
-
-        _spriteHashAlg->Clear();
-
-        ComputeChecksumForEntityTypes<Guest, Staff, Vehicle, Litter>(_spriteHashAlg.get());
-
-        checksum.raw = _spriteHashAlg->Finish();
-    }
-    catch (std::exception& e)
-    {
-        log_error("sprite_checksum failed: %s", e.what());
-        throw;
-    }
+    OpenRCT2::ChecksumStream ms(checksum.raw);
+    DataSerialiser ds(true, ms);
+    NetworkSerialiseEntityTypes<Guest, Staff, Vehicle, Litter>(ds);
 
     return checksum;
 }
@@ -753,7 +705,7 @@ static bool litter_can_be_at(const CoordsXYZ& mapPos)
  *
  *  rct2: 0x0067375D
  */
-void litter_create(const CoordsXYZD& litterPos, LitterType type)
+void Litter::Create(const CoordsXYZD& litterPos, Type type)
 {
     if (gCheatsDisableLittering)
         return;
@@ -802,7 +754,7 @@ void litter_create(const CoordsXYZD& litterPos, LitterType type)
  *
  *  rct2: 0x006738E1
  */
-void litter_remove_at(const CoordsXYZ& litterPos)
+void Litter::RemoveAt(const CoordsXYZ& litterPos)
 {
     std::vector<Litter*> removals;
     for (auto litter : EntityTileList<Litter>(litterPos))
@@ -822,6 +774,27 @@ void litter_remove_at(const CoordsXYZ& litterPos)
     }
 }
 
+static const rct_string_id litterNames[12] = {
+    STR_LITTER_VOMIT,
+    STR_LITTER_VOMIT,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
+    STR_SHOP_ITEM_SINGULAR_RUBBISH,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
+    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
+};
+
+rct_string_id Litter::GetName() const
+{
+    if (EnumValue(SubType) >= sizeof(litterNames))
+        return STR_NONE;
+    return litterNames[EnumValue(SubType)];
+}
 /**
  * Loops through all sprites, finds floating objects and removes them.
  * Returns the amount of removed objects as feedback.

@@ -50,6 +50,8 @@ constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 class Formatter;
 struct TileElement;
 struct Ride;
+class DataSerialiser;
+
 namespace GameActions
 {
     class Result;
@@ -312,8 +314,8 @@ enum class PeepActionType : uint8_t
     BeingWatched = 29,
     WithdrawMoney = 30,
 
-    None1 = 254,
-    None2 = 255,
+    Idle = 254,
+    Walking = 255,
 };
 
 enum class PeepActionSpriteType : uint8_t
@@ -552,7 +554,6 @@ struct Peep : SpriteBase
     char* Name;
     CoordsXYZ NextLoc;
     uint8_t NextFlags;
-    bool OutsideOfPark;
     PeepState State;
     union
     {
@@ -562,11 +563,6 @@ struct Peep : SpriteBase
         PeepUsingBinSubState UsingBinSubState;
     };
     PeepSpriteType SpriteType;
-    union
-    {
-        StaffType AssignedStaffType;
-        uint8_t GuestNumRides;
-    };
     uint8_t TshirtColour;
     uint8_t TrousersColour;
     uint16_t DestinationX; // Location that the peep is trying to get to
@@ -575,23 +571,8 @@ struct Peep : SpriteBase
     uint8_t Var37;
     uint8_t Energy;
     uint8_t EnergyTarget;
-    uint8_t Happiness;
-    uint8_t HappinessTarget;
-    uint8_t Nausea;
-    uint8_t NauseaTarget;
-    uint8_t Hunger;
-    uint8_t Thirst;
-    uint8_t Toilet;
     uint8_t Mass;
-    uint8_t TimeToConsume;
-    IntensityRange Intensity{ 0 };
-    PeepNauseaTolerance NauseaTolerance;
     uint8_t WindowInvalidateFlags;
-    money16 PaidOnDrink;
-    uint8_t RideTypesBeenOn[16];
-    ride_id_t Photo2RideRef;
-    ride_id_t Photo3RideRef;
-    ride_id_t Photo4RideRef;
     union
     {
         ride_id_t CurrentRide;
@@ -625,98 +606,16 @@ struct Peep : SpriteBase
     uint8_t StepProgress;
     union
     {
-        uint16_t MechanicTimeSinceCall; // time getting to ride to fix
-        uint16_t GuestNextInQueue;
-    };
-    union
-    {
         uint8_t MazeLastEdge;
         Direction PeepDirection; // Direction ?
     };
     ride_id_t InteractionRideIndex;
-    uint16_t TimeInQueue;
-    ride_id_t RidesBeenOn[32];
-    // 255 bit bitmap of every ride the peep has been on see
-    // window_peep_rides_update for how to use.
     uint32_t Id;
-    money32 CashInPocket;
-    money32 CashSpent;
-    union
-    {
-        int32_t ParkEntryTime;
-        int32_t HireDate;
-    };
-    int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
-    ride_id_t PreviousRide;
-    uint16_t PreviousRideTimeOut;
-    rct_peep_thought Thoughts[PEEP_MAX_THOUGHTS];
     uint8_t PathCheckOptimisation; // see peep.checkForPath
-    union
-    {
-        ride_id_t GuestHeadingToRideId;
-    };
-    union
-    {
-        uint8_t StaffOrders;
-        uint8_t GuestIsLostCountdown;
-    };
-    ride_id_t Photo1RideRef;
-    uint32_t PeepFlags;
     rct12_xyzd8 PathfindGoal;
-    rct12_xyzd8 PathfindHistory[4];
+    std::array<rct12_xyzd8, 4> PathfindHistory;
     uint8_t WalkingFrameNum;
-    // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t LitterCount;
-    union
-    {
-        uint8_t GuestTimeOnRide;
-        uint8_t StaffMowingTimeout;
-    };
-    // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t DisgustingCount;
-    union
-    {
-        money16 PaidToEnter;
-        uint16_t StaffLawnsMown;
-        uint16_t StaffRidesFixed;
-    };
-    union
-    {
-        money16 PaidOnRides;
-        uint16_t StaffGardensWatered;
-        uint16_t StaffRidesInspected;
-    };
-    union
-    {
-        money16 PaidOnFood;
-        uint16_t StaffLitterSwept;
-        uint16_t StaffVandalsStopped;
-    };
-    union
-    {
-        money16 PaidOnSouvenirs;
-        uint16_t StaffBinsEmptied;
-    };
-    uint8_t AmountOfFood;
-    uint8_t AmountOfDrinks;
-    uint8_t AmountOfSouvenirs;
-    uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
-    uint8_t VoucherType;
-    union
-    {
-        ride_id_t VoucherRideId;
-        ShopItemIndex VoucherShopItem;
-    };
-    uint8_t SurroundingsThoughtTimeout;
-    uint8_t Angriness;
-    uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
-    uint8_t DaysInQueue;
-    uint8_t BalloonColour;
-    uint8_t UmbrellaColour;
-    uint8_t HatColour;
-    ride_id_t FavouriteRide;
-    uint8_t FavouriteRideRating;
-    uint64_t ItemFlags;
+    uint32_t PeepFlags;
 
 public: // Peep
     void Update();
@@ -740,6 +639,9 @@ public: // Peep
     void FormatNameTo(Formatter&) const;
     std::string GetName() const;
     bool SetName(std::string_view value);
+    bool IsActionWalking() const;
+    bool IsActionIdle() const;
+    bool IsActionInterruptable() const;
 
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.
@@ -769,6 +671,69 @@ struct Guest : Peep
     static constexpr auto cEntityType = EntityType::Guest;
 
 public:
+    uint8_t GuestNumRides;
+    uint16_t GuestNextInQueue;
+    int32_t ParkEntryTime;
+    ride_id_t GuestHeadingToRideId;
+    uint8_t GuestIsLostCountdown;
+    uint8_t GuestTimeOnRide;
+    money16 PaidToEnter;
+    money16 PaidOnRides;
+    money16 PaidOnFood;
+    money16 PaidOnDrink;
+    money16 PaidOnSouvenirs;
+    bool OutsideOfPark;
+    uint8_t Happiness;
+    uint8_t HappinessTarget;
+    uint8_t Nausea;
+    uint8_t NauseaTarget;
+    uint8_t Hunger;
+    uint8_t Thirst;
+    uint8_t Toilet;
+    uint8_t TimeToConsume;
+    IntensityRange Intensity{ 0 };
+    PeepNauseaTolerance NauseaTolerance;
+    uint8_t RideTypesBeenOn[16];
+    uint16_t TimeInQueue;
+    // 255 bit bitmap of every ride the peep has been on see
+    // window_peep_rides_update for how to use.
+    ride_id_t RidesBeenOn[32];
+    money32 CashInPocket;
+    money32 CashSpent;
+    ride_id_t Photo1RideRef;
+    ride_id_t Photo2RideRef;
+    ride_id_t Photo3RideRef;
+    ride_id_t Photo4RideRef;
+
+    int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
+    ride_id_t PreviousRide;
+    uint16_t PreviousRideTimeOut;
+    std::array<rct_peep_thought, PEEP_MAX_THOUGHTS> Thoughts;
+    // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
+    uint8_t LitterCount;
+    // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
+    uint8_t DisgustingCount;
+    uint8_t AmountOfFood;
+    uint8_t AmountOfDrinks;
+    uint8_t AmountOfSouvenirs;
+    uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
+    uint8_t VoucherType;
+    union
+    {
+        ride_id_t VoucherRideId;
+        ShopItemIndex VoucherShopItem;
+    };
+    uint8_t SurroundingsThoughtTimeout;
+    uint8_t Angriness;
+    uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
+    uint8_t DaysInQueue;
+    uint8_t BalloonColour;
+    uint8_t UmbrellaColour;
+    uint8_t HatColour;
+    ride_id_t FavouriteRide;
+    uint8_t FavouriteRideRating;
+    uint64_t ItemFlags;
+
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
     int64_t GetFoodOrDrinkFlags() const;
@@ -817,6 +782,7 @@ public:
     void RemoveItem(ShopItem item);
     void GiveItem(ShopItem item);
     bool HasItem(ShopItem peepItem) const;
+    void Serialise(DataSerialiser& stream);
 
 private:
     void UpdateRide();
@@ -881,6 +847,28 @@ struct Staff : Peep
 
 public:
     PatrolArea* PatrolInfo;
+    StaffType AssignedStaffType;
+    uint16_t MechanicTimeSinceCall; // time getting to ride to fix
+    int32_t HireDate;
+    uint8_t StaffId;
+    uint8_t StaffOrders;
+    uint8_t StaffMowingTimeout;
+    union
+    {
+        uint16_t StaffLawnsMown;
+        uint16_t StaffRidesFixed;
+    };
+    union
+    {
+        uint16_t StaffGardensWatered;
+        uint16_t StaffRidesInspected;
+    };
+    union
+    {
+        uint16_t StaffLitterSwept;
+        uint16_t StaffVandalsStopped;
+    };
+    uint16_t StaffBinsEmptied;
 
     void UpdateStaff(uint32_t stepsToTake);
     void Tick128UpdateStaff();
@@ -897,6 +885,7 @@ public:
     bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
 
     static void ResetStats();
+    void Serialise(DataSerialiser& stream);
 
     void ClearPatrolArea();
     void TogglePatrolArea(const CoordsXY& coords);

@@ -307,7 +307,7 @@ bool Peep::CheckForPath()
 
 PeepActionSpriteType Peep::GetActionSpriteType()
 {
-    if (Action >= PeepActionType::None1)
+    if (IsActionInterruptable())
     { // PeepActionType::None1 or PeepActionType::None2
         return PeepSpecialSpriteToSpriteTypeMap[SpecialSprite];
     }
@@ -318,7 +318,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
     else
     {
         openrct2_assert(
-            EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::None1,
+            EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle,
             "Invalid peep action %u", EnumValue(Action));
         return PeepActionSpriteType::None;
     }
@@ -358,8 +358,7 @@ void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
 
     SpecialSprite = special_sprite_id;
 
-    // If NONE_1 or NONE_2
-    if (Action >= PeepActionType::None1)
+    if (IsActionInterruptable())
     {
         ActionSpriteImageOffset = 0;
     }
@@ -392,9 +391,9 @@ std::optional<CoordsXY> Peep::UpdateAction()
 std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 {
     _unk_F1AEF0 = ActionSpriteImageOffset;
-    if (Action == PeepActionType::None1)
+    if (Action == PeepActionType::Idle)
     {
-        Action = PeepActionType::None2;
+        Action = PeepActionType::Walking;
     }
 
     CoordsXY differenceLoc = GetLocation();
@@ -405,7 +404,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     xy_distance = x_delta + y_delta;
 
-    if (Action == PeepActionType::None1 || Action == PeepActionType::None2)
+    if (IsActionWalking())
     {
         if (xy_distance <= DestinationTolerance)
         {
@@ -449,7 +448,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     if (ActionFrame >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
     {
         ActionSpriteImageOffset = 0;
-        Action = PeepActionType::None2;
+        Action = PeepActionType::Walking;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
@@ -474,7 +473,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     // Create sick at location
-    litter_create({ x, y, z, sprite_direction }, (sprite_index & 1) ? LITTER_TYPE_SICK_ALT : LITTER_TYPE_SICK);
+    Litter::Create({ x, y, z, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = { OpenRCT2::Audio::SoundId::Cough1, OpenRCT2::Audio::SoundId::Cough2,
                                                             OpenRCT2::Audio::SoundId::Cough3,
@@ -557,7 +556,7 @@ void Peep::PickupAbort(int32_t old_x)
     if (x != LOCATION_NULL)
     {
         SetState(PeepState::Falling);
-        Action = PeepActionType::None2;
+        Action = PeepActionType::Walking;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
         ActionSpriteType = PeepActionSpriteType::None;
@@ -608,7 +607,7 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
     {
         MoveTo(destination);
         SetState(PeepState::Falling);
-        Action = PeepActionType::None2;
+        Action = PeepActionType::Walking;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
         ActionSpriteType = PeepActionSpriteType::None;
@@ -929,7 +928,7 @@ void Peep::Update()
         stepsToTake = 95;
     if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::Queuing)
         stepsToTake /= 2;
-    if (Action == PeepActionType::None2 && (GetNextIsSloped()))
+    if (IsActionWalking() && GetNextIsSloped())
     {
         stepsToTake /= 2;
         if (State == PeepState::Queuing)
@@ -1247,7 +1246,7 @@ void peep_applause()
         peep_release_balloon(peep, peep->z + 9);
 
         // Clap
-        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->Action >= PeepActionType::None1)
+        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->IsActionInterruptable())
         {
             peep->Action = PeepActionType::Clap;
             peep->ActionFrame = 0;
@@ -1525,6 +1524,21 @@ bool Peep::SetName(std::string_view value)
         }
     }
     return false;
+}
+
+bool Peep::IsActionWalking() const
+{
+    return Action == PeepActionType::Walking;
+}
+
+bool Peep::IsActionIdle() const
+{
+    return Action == PeepActionType::Idle;
+}
+
+bool Peep::IsActionInterruptable() const
+{
+    return IsActionIdle() || IsActionWalking();
 }
 
 void peep_set_map_tooltip(Peep* peep)
@@ -1953,7 +1967,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
                 continue;
 
             litter_count++;
-            if (litter->SubType != LITTER_TYPE_SICK && litter->SubType != LITTER_TYPE_SICK_ALT)
+            if (litter->SubType != Litter::Type::Vomit && litter->SubType != Litter::Type::VomitAlt)
                 continue;
 
             litter_count--;
@@ -2270,8 +2284,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     pathing_result = 0;
     PeepActionType previousAction = Action;
 
-    if (Action == PeepActionType::None1)
-        Action = PeepActionType::None2;
+    if (Action == PeepActionType::Idle)
+        Action = PeepActionType::Walking;
 
     auto* guest = As<Guest>();
     if (State == PeepState::Queuing && guest != nullptr)
@@ -2578,7 +2592,7 @@ static void peep_release_balloon(Guest* peep, int16_t spawn_height)
 
         if (peep->SpriteType == PeepSpriteType::Balloon && peep->x != LOCATION_NULL)
         {
-            create_balloon({ peep->x, peep->y, spawn_height }, peep->BalloonColour, false);
+            Balloon::Create({ peep->x, peep->y, spawn_height }, peep->BalloonColour, false);
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             peep->UpdateSpriteType();
         }

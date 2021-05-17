@@ -149,7 +149,7 @@ void scenario_begin()
     award_reset();
     reset_all_ride_build_dates();
     date_reset();
-    duck_remove_all();
+    Duck::RemoveAll();
     park_calculate_size();
     map_count_remaining_land_rights();
     Staff::ResetStats();
@@ -482,7 +482,7 @@ bool scenario_create_ducks()
         CoordsXY targetPos{ centrePos.x + innerPos.x - SquareRadiusSize, centrePos.y + innerPos.y - SquareRadiusSize };
 
         Guard::Assert(map_is_location_valid(targetPos));
-        create_duck(targetPos);
+        Duck::Create(targetPos);
     }
 
     return true;

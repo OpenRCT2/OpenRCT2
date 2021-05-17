@@ -302,7 +302,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraitsPODArray
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
 
-        DataSerializerTraits<uint8_t> s;
+        DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.encode(stream, sub);
@@ -584,6 +584,34 @@ template<> struct DataSerializerTraits_t<CoordsXYZD>
         stream->Write(msg, strlen(msg));
     }
 };
+template<> struct DataSerializerTraits_t<rct12_xyzd8>
+{
+    static void encode(OpenRCT2::IStream* stream, const rct12_xyzd8& coord)
+    {
+        stream->WriteValue(ByteSwapBE(coord.x));
+        stream->WriteValue(ByteSwapBE(coord.y));
+        stream->WriteValue(ByteSwapBE(coord.z));
+        stream->WriteValue(ByteSwapBE(coord.direction));
+    }
+
+    static void decode(OpenRCT2::IStream* stream, rct12_xyzd8& coord)
+    {
+        auto x = ByteSwapBE(stream->ReadValue<uint8_t>());
+        auto y = ByteSwapBE(stream->ReadValue<uint8_t>());
+        auto z = ByteSwapBE(stream->ReadValue<uint8_t>());
+        auto d = ByteSwapBE(stream->ReadValue<uint8_t>());
+        coord = rct12_xyzd8{ x, y, z, d };
+    }
+
+    static void log(OpenRCT2::IStream* stream, const rct12_xyzd8& coord)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "rct12_xyzd8(x = %d, y = %d, z = %d, direction = %d)", coord.x, coord.y, coord.z,
+            coord.direction);
+        stream->Write(msg, strlen(msg));
+    }
+};
 
 template<> struct DataSerializerTraits_t<NetworkCheatType_t>
 {
@@ -793,6 +821,52 @@ template<> struct DataSerializerTraits_t<rct_vehicle_colour>
     {
         char msg[128] = {};
         snprintf(msg, sizeof(msg), "rct_vehicle_colour(body_colour = %d, trim_colour = %d)", val.body_colour, val.trim_colour);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits_t<IntensityRange>
+{
+    static void encode(OpenRCT2::IStream* stream, const IntensityRange& val)
+    {
+        uint8_t temp = uint8_t(val);
+        stream->Write(&temp);
+    }
+    static void decode(OpenRCT2::IStream* stream, IntensityRange& val)
+    {
+        auto temp = stream->ReadValue<uint8_t>();
+        val = IntensityRange(temp);
+    }
+    static void log(OpenRCT2::IStream* stream, const IntensityRange& val)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "IntensityRange(min = %d, max = %d)", val.GetMinimum(), val.GetMaximum());
+        stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits_t<rct_peep_thought>
+{
+    static void encode(OpenRCT2::IStream* stream, const rct_peep_thought& val)
+    {
+        stream->Write(&val.type);
+        stream->Write(&val.item);
+        stream->Write(&val.freshness);
+        stream->Write(&val.fresh_timeout);
+    }
+    static void decode(OpenRCT2::IStream* stream, rct_peep_thought& val)
+    {
+        stream->Read(&val.type);
+        stream->Read(&val.item);
+        stream->Read(&val.freshness);
+        stream->Read(&val.fresh_timeout);
+    }
+    static void log(OpenRCT2::IStream* stream, const rct_peep_thought& val)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "rct_peep_thought(type = %d, item = %d, freshness = %d, freshtimeout = %d)",
+            static_cast<int32_t>(val.type), val.item, val.freshness, val.fresh_timeout);
         stream->Write(msg, strlen(msg));
     }
 };

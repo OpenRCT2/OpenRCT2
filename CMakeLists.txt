@@ -50,9 +50,9 @@ set(OBJECTS_VERSION "1.2")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
 set(OBJECTS_SHA1 "eaa963029ee5721f0a057b5f33f8e0d2a6f98613")
 
-set(REPLAYS_VERSION "0.0.39")
+set(REPLAYS_VERSION "0.0.43")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "8AF797661D87394FBE1A059375D82632094290FB")
+set(REPLAYS_SHA1 "269E4FC432A73AE9A5D601EC2A1C882F3D9BDF3C")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -401,22 +401,28 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
     install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
     if (DOWNLOAD_TITLE_SEQUENCES)
         # Checks if this version of the title sequences are already installed, updates if necessary
+        # if /data/sequence exists, it will overwrite this anyways (see `install(DIRECTORY "data/" ...)` below)
+        # therefore, the existence of that directory will skip this download
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
                 ZIP_VERSION ${TITLE_SEQUENCE_VERSION}
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/sequence/
+                SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/sequence/
                 ZIP_URL ${TITLE_SEQUENCE_URL}
                 SHA1 ${TITLE_SEQUENCE_SHA1}
             )")
     endif ()
     if (DOWNLOAD_OBJECTS)
         # Checks if this version of the objects are already installed, updates if necessary
+        # if /data/object exists, it will overwrite this anyways (see `install(DIRECTORY "data/" ...)` below)
+        # therefore, the existence of that directory will skip this download
         install(CODE "
             include(${ROOT_DIR}/cmake/download.cmake)
             download_openrct2_zip(
                 ZIP_VERSION ${OBJECTS_VERSION}
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/object/
+                SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/object/
                 ZIP_URL ${OBJECTS_URL}
                 SHA1 ${OBJECTS_SHA1}
             )")

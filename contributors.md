@@ -91,6 +91,7 @@ The following people are not part of the development team, but have been contrib
 * Jim Verheijde (Jimver) - Make handymen less likely to get stuck in queue lines, misc.
 * Helio Batimarqui (batimarqui) - Misc.
 * Keith Stellyes (keithstellyes) - Misc.
+* Bas Cantrijn (Basssiiie) - Misc.
 
 ## Bug fixes
 * (halfbro)
@@ -164,6 +165,8 @@ The following people are not part of the development team, but have been contrib
 * (evilclownattack)
 * Adam Bloom (adam-bloom)
 * Geoff B. (geoff-B)
+* Ryan D. (rctdude2)
+* (zrowny)
 
 ## Toolchain
 * (Balletie) - macOS

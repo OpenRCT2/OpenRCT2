@@ -182,7 +182,7 @@ ride_id_t GetNextFreeRideId()
             break;
         }
     }
-    if (result >= RIDE_ID_NULL)
+    if (result >= MAX_RIDES)
     {
         return RIDE_ID_NULL;
     }
@@ -4138,7 +4138,7 @@ static Vehicle* vehicle_create_car(
     vehicle->animation_frame = 0;
     vehicle->var_C8 = 0;
     vehicle->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    vehicle->vehicle_sprite_type = 0;
+    vehicle->Pitch = 0;
     vehicle->bank_rotation = 0;
     vehicle->target_seat_rotation = 4;
     vehicle->seat_rotation = 4;
@@ -4199,14 +4199,14 @@ static Vehicle* vehicle_create_car(
             vehicle->mini_golf_current_animation = 0;
             vehicle->mini_golf_flags = 0;
         }
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_4)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_REVERSER_BOGIE)
         {
             if (vehicle->IsHead())
             {
                 subposition = VehicleTrackSubposition::ReverserRCFrontBogie;
             }
         }
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_5)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
         {
             subposition = VehicleTrackSubposition::ReverserRCRearBogie;
         }
@@ -5705,7 +5705,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int3
 
     // Moved from object paint
 
-    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_13)
+    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
     {
         bl += 16;
     }

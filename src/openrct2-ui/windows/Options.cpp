@@ -583,8 +583,8 @@ static void window_options_common_invalidate_before(rct_window* w)
     auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
     if (!hasFilePicker)
     {
-        w->enabled_widgets &= ~WIDX_ALWAYS_NATIVE_LOADSAVE;
-        w->disabled_widgets |= WIDX_ALWAYS_NATIVE_LOADSAVE;
+        w->enabled_widgets &= ~(1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE);
+        w->disabled_widgets |= (1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE);
         w->widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;
     }
 }

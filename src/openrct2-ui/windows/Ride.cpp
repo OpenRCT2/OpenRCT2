@@ -1046,7 +1046,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         int32_t spriteIndex = 32;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             spriteIndex += w->frame_no;
-        spriteIndex /= (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_11) ? 4 : 2;
+        spriteIndex /= (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? 4 : 2;
         spriteIndex &= rideVehicleEntry->rotation_frame_mask;
         spriteIndex *= rideVehicleEntry->base_num_frames;
         spriteIndex += rideVehicleEntry->base_image_id;
@@ -3021,7 +3021,7 @@ static void window_ride_vehicle_scrollpaint(rct_window* w, rct_drawpixelinfo* dp
             vehicle_colour vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
 
             int32_t spriteIndex = 16;
-            if (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_11)
+            if (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
                 spriteIndex /= 2;
 
             spriteIndex &= rideVehicleEntry->rotation_frame_mask;
@@ -4885,7 +4885,8 @@ static void window_ride_colour_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     screenCoords.y += rideVehicleEntry->tab_height;
 
     // Draw the coloured spinning vehicle
-    uint32_t spriteIndex = (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_11) ? w->frame_no / 4 : w->frame_no / 2;
+    uint32_t spriteIndex = (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? w->frame_no / 4
+                                                                                                 : w->frame_no / 2;
     spriteIndex &= rideVehicleEntry->rotation_frame_mask;
     spriteIndex *= rideVehicleEntry->base_num_frames;
     spriteIndex += rideVehicleEntry->base_image_id;

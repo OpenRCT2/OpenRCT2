@@ -139,9 +139,6 @@ static paint_struct* CreateNormalPaintStruct(
     paint_session* session, const uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset)
 {
-    if (session->NoPaintStructsAvailable())
-        return nullptr;
-
     auto* const g1 = gfx_get_g1_element(image_id & 0x7FFFF);
     if (g1 == nullptr)
     {
@@ -162,7 +159,12 @@ static paint_struct* CreateNormalPaintStruct(
     const auto rotBoundBoxOffset = CoordsXYZ{ boundBoxOffset.Rotate(swappedRotation), boundBoxOffset.z };
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session->CurrentRotation);
 
-    paint_struct* ps = session->AllocateNormalPaintEntry();
+    auto* ps = session->AllocateNormalPaintEntry();
+    if (ps == nullptr)
+    {
+        return nullptr;
+    }
+
     ps->image_id = image_id;
     ps->x = imagePos.x;
     ps->y = imagePos.y;
@@ -382,7 +384,7 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
     }
 }
 
-template<int TRotation> static void PaintSessionArrange(paint_session* session, bool)
+template<int TRotation> static void PaintSessionArrange(PaintSessionCore* session, bool)
 {
     paint_struct* psHead = &session->PaintHead;
 
@@ -422,7 +424,7 @@ template<int TRotation> static void PaintSessionArrange(paint_session* session, 
  *
  *  rct2: 0x00688217
  */
-void PaintSessionArrange(paint_session* session)
+void PaintSessionArrange(PaintSessionCore* session)
 {
     switch (session->CurrentRotation)
     {
@@ -846,18 +848,18 @@ paint_struct* PaintAddImageAsChild(
  */
 bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int32_t x, int32_t y)
 {
-    if (session->NoPaintStructsAvailable())
-    {
-        return false;
-    }
-
-    attached_paint_struct* previousAttachedPS = session->LastAttachedPS;
+    auto* previousAttachedPS = session->LastAttachedPS;
     if (previousAttachedPS == nullptr)
     {
         return PaintAttachToPreviousPS(session, image_id, x, y);
     }
 
-    attached_paint_struct* ps = session->AllocateAttachedPaintEntry();
+    auto* ps = session->AllocateAttachedPaintEntry();
+    if (ps == nullptr)
+    {
+        return false;
+    }
+
     ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
@@ -879,18 +881,18 @@ bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int3
  */
 bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int32_t x, int32_t y)
 {
-    if (session->NoPaintStructsAvailable())
-    {
-        return false;
-    }
-
-    paint_struct* masterPs = session->LastPS;
+    auto* masterPs = session->LastPS;
     if (masterPs == nullptr)
     {
         return false;
     }
 
-    attached_paint_struct* ps = session->AllocateAttachedPaintEntry();
+    auto* ps = session->AllocateAttachedPaintEntry();
+    if (ps == nullptr)
+    {
+        return false;
+    }
+
     ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
@@ -917,7 +919,8 @@ void PaintFloatingMoneyEffect(
     paint_session* session, money64 amount, rct_string_id string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation)
 {
-    if (session->NoPaintStructsAvailable())
+    auto* ps = session->AllocateStringPaintEntry();
+    if (ps == nullptr)
     {
         return;
     }
@@ -929,7 +932,6 @@ void PaintFloatingMoneyEffect(
     };
     const auto coord = translate_3d_to_2d_with_z(rotation, position);
 
-    paint_string_struct* ps = session->AllocateStringPaintEntry();
     ps->string_id = string_id;
     ps->next = nullptr;
     std::memcpy(ps->args, &amount, sizeof(amount));
@@ -963,4 +965,134 @@ void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
             dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontSpriteBase::MEDIUM);
     } while ((ps = ps->next) != nullptr);
+}
+
+PaintEntryPool::Chain::Chain(PaintEntryPool* pool)
+    : Pool(pool)
+{
+}
+
+PaintEntryPool::Chain::Chain(Chain&& chain)
+{
+    *this = std::move(chain);
+}
+
+PaintEntryPool::Chain::~Chain()
+{
+    Clear();
+}
+
+PaintEntryPool::Chain& PaintEntryPool::Chain::operator=(Chain&& chain) noexcept
+{
+    Pool = chain.Pool;
+    Head = chain.Head;
+    Current = chain.Current;
+    chain.Pool = nullptr;
+    chain.Head = nullptr;
+    chain.Current = nullptr;
+    return *this;
+}
+
+paint_entry* PaintEntryPool::Chain::Allocate()
+{
+    if (Pool == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (Current == nullptr)
+    {
+        assert(Head == nullptr);
+        Head = Pool->AllocateNode();
+        if (Head == nullptr)
+        {
+            // Unable to allocate any more nodes
+            return nullptr;
+        }
+        Current = Head;
+    }
+    else if (Current->Count >= NodeSize)
+    {
+        // We need another node
+        Current->Next = Pool->AllocateNode();
+        if (Current->Next == nullptr)
+        {
+            // Unable to allocate any more nodes
+            return nullptr;
+        }
+        Current = Current->Next;
+    }
+
+    assert(Current->Count < NodeSize);
+    return &Current->PaintStructs[Current->Count++];
+}
+
+void PaintEntryPool::Chain::Clear()
+{
+    if (Pool != nullptr)
+    {
+        Pool->FreeNodes(Head);
+        Head = nullptr;
+        Current = nullptr;
+    }
+    assert(Head == nullptr);
+    assert(Current == nullptr);
+}
+
+size_t PaintEntryPool::Chain::GetCount() const
+{
+    size_t count = 0;
+    auto current = Head;
+    while (current != nullptr)
+    {
+        count += current->Count;
+        current = current->Next;
+    }
+    return count;
+}
+
+PaintEntryPool::~PaintEntryPool()
+{
+    for (auto node : _available)
+    {
+        delete node;
+    }
+    _available.clear();
+}
+
+PaintEntryPool::Node* PaintEntryPool::AllocateNode()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    PaintEntryPool::Node* result;
+    if (_available.size() > 0)
+    {
+        result = _available.back();
+        _available.pop_back();
+    }
+    else
+    {
+        result = new (std::nothrow) PaintEntryPool::Node();
+    }
+    return result;
+}
+
+PaintEntryPool::Chain PaintEntryPool::Create()
+{
+    return PaintEntryPool::Chain(this);
+}
+
+void PaintEntryPool::FreeNodes(PaintEntryPool::Node* head)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    auto node = head;
+    while (node != nullptr)
+    {
+        auto next = node->Next;
+        node->Next = nullptr;
+        node->Count = 0;
+        _available.push_back(node);
+        node = next;
+    }
 }

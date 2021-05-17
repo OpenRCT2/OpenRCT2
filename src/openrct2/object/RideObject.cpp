@@ -216,9 +216,9 @@ void RideObject::Load()
             {
                 int32_t b = vehicleEntry->base_num_frames * 32;
 
-                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11)
+                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
                     b /= 2;
-                if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15)
+                if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
                     b /= 8;
 
                 image_index += b;
@@ -338,10 +338,10 @@ void RideObject::Load()
             cur_vehicle_images_offset = image_index + vehicleEntry->no_seating_rows * vehicleEntry->no_vehicle_images;
             // 0x6DEB0D
 
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_10))
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS))
             {
                 int32_t num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
-                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_13)
+                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
                 {
                     num_images *= 2;
                 }
@@ -497,9 +497,10 @@ uint8_t RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle* v
     uint8_t numHorizontalFrames;
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
     {
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING))
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SUSPENDED_SWING)
+            && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING))
         {
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
             {
                 numHorizontalFrames = 3;
             }
@@ -508,7 +509,9 @@ uint8_t RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle* v
                 numHorizontalFrames = 5;
             }
         }
-        else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING))
+        else if (
+            !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SUSPENDED_SWING)
+            || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SLIDE_SWING))
         {
             numHorizontalFrames = 7;
         }
@@ -805,27 +808,58 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
                 { "corkscrews", VEHICLE_SPRITE_FLAG_CORKSCREWS },
                 { "restraintAnimation", VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION },
                 { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
-                { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_15 },
+                { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES },
             });
     }
 
     car.flags |= Json::GetFlags<uint32_t>(
         jCar,
         {
+            { "isPoweredRideWithUnrestrictedGravity", VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY },
+            { "hasNoUpstopWheels", VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS },
+            { "hasNoUpstopWheelsBobsleigh", VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH },
+            { "isMiniGolf", VEHICLE_ENTRY_FLAG_MINI_GOLF },
+            { "isReverserBogie", VEHICLE_ENTRY_FLAG_REVERSER_BOGIE },
+            { "isReverserPassengerCar", VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR },
+            { "hasInvertedSpriteSet", VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET },
+            { "hasDodgemInUseLights", VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
+            { "hasAdditionalColour2", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 },
+            { "recalculateSpriteBounds", VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS },
+            { "VEHICLE_ENTRY_FLAG_11", VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES },
+            { "overrideNumberOfVerticalFrames", VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
+            { "spriteBoundsIncludeInvertedSet", VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET },
+            { "hasAdditionalSpinningFrames", VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES },
+            { "isLift", VEHICLE_ENTRY_FLAG_LIFT },
+            { "hasAdditionalColour1", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 },
+            { "hasSwinging", VEHICLE_ENTRY_FLAG_SWINGING },
+            { "hasSpinning", VEHICLE_ENTRY_FLAG_SPINNING },
+            { "isPowered", VEHICLE_ENTRY_FLAG_POWERED },
+            { "hasScreamingRiders", VEHICLE_ENTRY_FLAG_RIDERS_SCREAM },
+            { "useSuspendedSwing", VEHICLE_ENTRY_FLAG_SUSPENDED_SWING },
+            { "useBoatHireCollisionDetection", VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION },
+            { "hasVehicleAnimation", VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION },
+            { "hasRiderAnimation", VEHICLE_ENTRY_FLAG_RIDER_ANIMATION },
+            { "useWoodenWildMouseSwing", VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING },
+            { "useSlideSwing", VEHICLE_ENTRY_FLAG_SLIDE_SWING },
+            { "isChairlift", VEHICLE_ENTRY_FLAG_CHAIRLIFT },
+            { "isWaterRide", VEHICLE_ENTRY_FLAG_WATER_RIDE },
+            { "isGoKart", VEHICLE_ENTRY_FLAG_GO_KART },
+            { "useDodgemCarPlacement", VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT },
+
+            // Obsolete flags that have been replaced with named and camelCased values, but kept for now for backward
+            // compatibility.
             { "VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY", VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY },
             { "VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS", VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS },
             { "VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH", VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH },
             { "VEHICLE_ENTRY_FLAG_MINI_GOLF", VEHICLE_ENTRY_FLAG_MINI_GOLF },
-            { "VEHICLE_ENTRY_FLAG_4", VEHICLE_ENTRY_FLAG_4 },
-            { "VEHICLE_ENTRY_FLAG_5", VEHICLE_ENTRY_FLAG_5 },
+            { "VEHICLE_ENTRY_FLAG_4", VEHICLE_ENTRY_FLAG_REVERSER_BOGIE },
+            { "VEHICLE_ENTRY_FLAG_5", VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR },
             { "VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET", VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET },
             { "VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS", VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
-            { "VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED", VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED },
             { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 },
-            { "VEHICLE_ENTRY_FLAG_10", VEHICLE_ENTRY_FLAG_10 },
-            { "VEHICLE_ENTRY_FLAG_11", VEHICLE_ENTRY_FLAG_11 },
+            { "VEHICLE_ENTRY_FLAG_10", VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS },
             { "VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES", VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
-            { "VEHICLE_ENTRY_FLAG_13", VEHICLE_ENTRY_FLAG_13 },
+            { "VEHICLE_ENTRY_FLAG_13", VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET },
             { "VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES", VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES },
             { "VEHICLE_ENTRY_FLAG_LIFT", VEHICLE_ENTRY_FLAG_LIFT },
             { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 },
@@ -833,11 +867,11 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
             { "VEHICLE_ENTRY_FLAG_SPINNING", VEHICLE_ENTRY_FLAG_SPINNING },
             { "VEHICLE_ENTRY_FLAG_POWERED", VEHICLE_ENTRY_FLAG_POWERED },
             { "VEHICLE_ENTRY_FLAG_RIDERS_SCREAM", VEHICLE_ENTRY_FLAG_RIDERS_SCREAM },
-            { "VEHICLE_ENTRY_FLAG_21", VEHICLE_ENTRY_FLAG_21 },
+            { "VEHICLE_ENTRY_FLAG_21", VEHICLE_ENTRY_FLAG_SUSPENDED_SWING },
             { "VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION", VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION },
             { "VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION", VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION },
             { "VEHICLE_ENTRY_FLAG_RIDER_ANIMATION", VEHICLE_ENTRY_FLAG_RIDER_ANIMATION },
-            { "VEHICLE_ENTRY_FLAG_25", VEHICLE_ENTRY_FLAG_25 },
+            { "VEHICLE_ENTRY_FLAG_25", VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING },
             { "VEHICLE_ENTRY_FLAG_SLIDE_SWING", VEHICLE_ENTRY_FLAG_SLIDE_SWING },
             { "VEHICLE_ENTRY_FLAG_CHAIRLIFT", VEHICLE_ENTRY_FLAG_CHAIRLIFT },
             { "VEHICLE_ENTRY_FLAG_WATER_RIDE", VEHICLE_ENTRY_FLAG_WATER_RIDE },

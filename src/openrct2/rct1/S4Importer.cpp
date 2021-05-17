@@ -2736,7 +2736,7 @@ template<> void S4Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& srcBase
     dst->var_CE = src->var_CE;
     dst->var_D3 = src->var_D3;
     dst->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    dst->vehicle_sprite_type = src->vehicle_sprite_type;
+    dst->Pitch = src->Pitch;
     dst->bank_rotation = src->bank_rotation;
 
     // Seat rotation was not in RCT1
@@ -2924,7 +2924,7 @@ template<> void S4Importer::ImportEntity<Litter>(const RCT12SpriteBase& srcBase)
     auto* src = static_cast<const RCT12SpriteLitter*>(&srcBase);
     ImportEntityCommonProperties(dst, src);
 
-    dst->SubType = LitterType(src->type);
+    dst->SubType = Litter::Type(src->type);
 }
 
 template<> void S4Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& srcBase)

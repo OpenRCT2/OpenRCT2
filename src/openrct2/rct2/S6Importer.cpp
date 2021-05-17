@@ -1595,7 +1595,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
 
     ImportEntityCommonProperties(dst, src);
     dst->SubType = Vehicle::Type(src->type);
-    dst->vehicle_sprite_type = src->vehicle_sprite_type;
+    dst->Pitch = src->Pitch;
     dst->bank_rotation = src->bank_rotation;
     dst->remaining_distance = src->remaining_distance;
     dst->velocity = src->velocity;
@@ -1902,7 +1902,7 @@ template<> void S6Importer::ImportEntity<Litter>(const RCT12SpriteBase& baseSrc)
     auto dst = CreateEntityAt<Litter>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteLitter*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
-    dst->SubType = LitterType(src->type);
+    dst->SubType = Litter::Type(src->type);
     dst->creationTick = src->creationTick;
 }
 

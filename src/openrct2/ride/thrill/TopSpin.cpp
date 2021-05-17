@@ -66,7 +66,7 @@ static void top_spin_paint_vehicle(
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
 
-        armRotation = vehicle->vehicle_sprite_type;
+        armRotation = vehicle->Pitch;
         seatRotation = vehicle->bank_rotation;
     }
 

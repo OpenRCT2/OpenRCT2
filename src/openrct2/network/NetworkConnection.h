@@ -35,7 +35,7 @@ public:
     NetworkKey Key;
     std::vector<uint8_t> Challenge;
     std::vector<const ObjectRepositoryItem*> RequestedObjects;
-    bool IsDisconnected = false;
+    bool ShouldDisconnect = false;
 
     NetworkConnection();
     ~NetworkConnection();
@@ -48,6 +48,11 @@ public:
         return QueuePacket(std::move(copy), front);
     }
 
+    // This will not immediately disconnect the client. The disconnect
+    // will happen post-tick.
+    void Disconnect();
+
+    bool IsValid() const;
     void SendQueuedPackets();
     void ResetLastPacketTime();
     bool ReceivedPacketRecently();

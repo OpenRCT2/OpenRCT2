@@ -1793,18 +1793,18 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
 
     screenCoords.y += 10;
-    for (rct_peep_thought* thought = peep->Thoughts; thought < &peep->Thoughts[PEEP_MAX_THOUGHTS]; ++thought)
+    for (const auto& thought : peep->Thoughts)
     {
-        if (thought->type == PeepThoughtType::None)
+        if (thought.type == PeepThoughtType::None)
             return;
-        if (thought->freshness == 0)
+        if (thought.freshness == 0)
             continue;
 
         int32_t width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
             - window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left - 8;
 
         auto ft = Formatter();
-        peep_thought_set_format_args(thought, ft);
+        peep_thought_set_format_args(&thought, ft);
         screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft, { FontSpriteBase::SMALL });
 
         // If this is the last visible line end drawing.

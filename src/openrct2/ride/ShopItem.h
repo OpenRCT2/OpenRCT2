@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../util/Util.h"
+#include "../world/Litter.h"
 
 struct Ride;
 enum class PeepThoughtType : uint8_t;
@@ -87,15 +88,15 @@ struct ShopItemStrings
 
 struct ShopItemDescriptor
 {
-    uint16_t Cost;
-    uint16_t BaseValue;
-    uint16_t HotValue;
-    uint16_t ColdValue;
+    money16 Cost;
+    money16 BaseValue;
+    money16 HotValue;
+    money16 ColdValue;
     money8 DefaultPrice;
     uint32_t Image;
     ShopItemStrings Naming;
     uint16_t Flags;
-    uint8_t LitterType;
+    Litter::Type Type;
     uint8_t ConsumptionTime;
     ShopItem DiscardContainer;
     PeepThoughtType TooMuchThought;

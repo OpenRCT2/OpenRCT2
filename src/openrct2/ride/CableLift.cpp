@@ -57,7 +57,7 @@ Vehicle* cable_lift_segment_create(
     current->var_C8 = 0;
     current->var_CA = 0;
     current->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    current->vehicle_sprite_type = 0;
+    current->Pitch = 0;
     current->bank_rotation = 0;
     for (auto& peep : current->peep)
     {
@@ -285,11 +285,11 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
-        vehicle_sprite_type = moveInfo->vehicle_sprite_type;
+        Pitch = moveInfo->Pitch;
 
         if (remaining_distance >= 13962)
         {
-            acceleration += dword_9A2970[vehicle_sprite_type];
+            acceleration += dword_9A2970[Pitch];
         }
     }
     return true;
@@ -351,11 +351,11 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
-        vehicle_sprite_type = moveInfo->vehicle_sprite_type;
+        Pitch = moveInfo->Pitch;
 
         if (remaining_distance < 0)
         {
-            acceleration += dword_9A2970[vehicle_sprite_type];
+            acceleration += dword_9A2970[Pitch];
         }
     }
     return true;
@@ -386,7 +386,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
     for (Vehicle* vehicle = frontVehicle; vehicle != nullptr;)
     {
-        vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
+        vehicle->acceleration = dword_9A2970[vehicle->Pitch];
         _vehicleUnkF64E10 = 1;
         vehicle->remaining_distance += _vehicleVelocityF64E0C;
 
@@ -410,7 +410,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                         _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
                         vehicle->remaining_distance = 13962;
-                        vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
+                        vehicle->acceleration += dword_9A2970[vehicle->Pitch];
                         _vehicleUnkF64E10++;
                         continue;
                     }
@@ -426,7 +426,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                         _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
                         vehicle->remaining_distance = -1;
-                        vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
+                        vehicle->acceleration += dword_9A2970[vehicle->Pitch];
                         _vehicleUnkF64E10++;
                     }
                 }

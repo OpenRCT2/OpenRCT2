@@ -311,7 +311,7 @@ namespace OpenRCT2::Scripting
         uint8_t spriteType_get() const
         {
             auto vehicle = GetVehicle();
-            return vehicle != nullptr ? vehicle->vehicle_sprite_type : 0;
+            return vehicle != nullptr ? vehicle->Pitch : 0;
         }
         void spriteType_set(uint8_t value)
         {
@@ -319,7 +319,7 @@ namespace OpenRCT2::Scripting
             auto vehicle = GetVehicle();
             if (vehicle != nullptr)
             {
-                vehicle->vehicle_sprite_type = value;
+                vehicle->Pitch = value;
             }
         }
 

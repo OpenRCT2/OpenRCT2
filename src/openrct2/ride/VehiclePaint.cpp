@@ -967,11 +967,11 @@ static void vehicle_sprite_paint_6D51EB(
     paint_session* session, const Vehicle* vehicle, int32_t ebx, int32_t z, const rct_ride_entry_vehicle* vehicleEntry)
 {
     int32_t ecx = ebx / 2;
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
     {
         ebx = ebx / 2;
     }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15)
+    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
     {
         ebx = ebx / 8;
     }
@@ -2499,7 +2499,7 @@ static void vehicle_sprite_24(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS)
     {
-        int32_t eax = ((vehicle->vehicle_sprite_type - 24) * 4);
+        int32_t eax = ((vehicle->Pitch - 24) * 4);
         int32_t ecx = (imageDirection / 8) + eax + 144;
         int32_t ebx = (((imageDirection / 8) + eax) * vehicleEntry->base_num_frames) + vehicleEntry->corkscrew_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
@@ -2995,7 +2995,7 @@ static void vehicle_visual_splash2_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3018,7 +3018,7 @@ static void vehicle_visual_splash3_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3050,7 +3050,7 @@ static void vehicle_visual_splash4_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3078,7 +3078,7 @@ static void vehicle_visual_splash5_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3122,9 +3122,9 @@ void vehicle_visual_default(
     paint_session* session, int32_t imageDirection, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->vehicle_sprite_type < std::size(vehicle_sprite_funcs))
+    if (vehicle->Pitch < std::size(vehicle_sprite_funcs))
     {
-        vehicle_sprite_funcs[vehicle->vehicle_sprite_type](session, vehicle, imageDirection, z, vehicleEntry);
+        vehicle_sprite_funcs[vehicle->Pitch](session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 

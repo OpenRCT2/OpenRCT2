@@ -1195,6 +1195,9 @@ namespace OpenRCT2
         static void ReadWritePeep(OrcaStream::ChunkStream& cs, Peep& entity)
         {
             ReadWriteEntityCommon(cs, entity);
+
+            auto guest = entity.As<Guest>();
+
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
                 auto name = cs.Read<std::string>();
@@ -1206,11 +1209,25 @@ namespace OpenRCT2
             }
             cs.ReadWrite(entity.NextLoc);
             cs.ReadWrite(entity.NextFlags);
-            cs.ReadWrite(entity.OutsideOfPark);
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->OutsideOfPark);
+            }
+            else
+            {
+                cs.Ignore<uint8_t>();
+            }
             cs.ReadWrite(entity.State);
             cs.ReadWrite(entity.SubState);
             cs.ReadWrite(entity.SpriteType);
-            cs.ReadWrite(entity.GuestNumRides);
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->GuestNumRides);
+            }
+            else
+            {
+                cs.Ignore<uint8_t>();
+            }
             cs.ReadWrite(entity.TshirtColour);
             cs.ReadWrite(entity.TrousersColour);
             cs.ReadWrite(entity.DestinationX);
@@ -1219,36 +1236,106 @@ namespace OpenRCT2
             cs.ReadWrite(entity.Var37);
             cs.ReadWrite(entity.Energy);
             cs.ReadWrite(entity.EnergyTarget);
-            cs.ReadWrite(entity.Happiness);
-            cs.ReadWrite(entity.HappinessTarget);
-            cs.ReadWrite(entity.Nausea);
-            cs.ReadWrite(entity.NauseaTarget);
-            cs.ReadWrite(entity.Hunger);
-            cs.ReadWrite(entity.Thirst);
-            cs.ReadWrite(entity.Toilet);
-            cs.ReadWrite(entity.Mass);
-            cs.ReadWrite(entity.TimeToConsume);
-
-            if (cs.GetMode() == OrcaStream::Mode::READING)
+            if (guest != nullptr)
             {
-                entity.Intensity = IntensityRange(cs.Read<uint8_t>());
+                cs.ReadWrite(guest->Happiness);
+                cs.ReadWrite(guest->HappinessTarget);
+                cs.ReadWrite(guest->Nausea);
+                cs.ReadWrite(guest->NauseaTarget);
+                cs.ReadWrite(guest->Hunger);
+                cs.ReadWrite(guest->Thirst);
+                cs.ReadWrite(guest->Toilet);
             }
             else
             {
-                cs.Write(static_cast<uint8_t>(entity.Intensity));
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+            }
+            cs.ReadWrite(entity.Mass);
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->TimeToConsume);
+            }
+            else
+            {
+                uint8_t temp{};
+                cs.ReadWrite(temp);
             }
 
-            cs.ReadWrite(entity.NauseaTolerance);
+            if (guest != nullptr)
+            {
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    guest->Intensity = IntensityRange(cs.Read<uint8_t>());
+                }
+                else
+                {
+                    cs.Write(static_cast<uint8_t>(guest->Intensity));
+                }
+            }
+            else
+            {
+                cs.Ignore<uint8_t>();
+            }
+
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->NauseaTolerance);
+            }
+            else
+            {
+                cs.Ignore<uint8_t>();
+            }
+
             cs.ReadWrite(entity.WindowInvalidateFlags);
-            cs.ReadWrite(entity.PaidOnDrink);
-            cs.ReadWriteArray(entity.RideTypesBeenOn, [&cs](uint8_t& rideType) {
-                cs.ReadWrite(rideType);
-                return true;
-            });
-            cs.ReadWrite(entity.ItemFlags);
-            cs.ReadWrite(entity.Photo2RideRef);
-            cs.ReadWrite(entity.Photo3RideRef);
-            cs.ReadWrite(entity.Photo4RideRef);
+
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->PaidOnDrink);
+            }
+            else
+            {
+                cs.Ignore<money16>();
+            }
+
+            if (guest != nullptr)
+            {
+                cs.ReadWriteArray(guest->RideTypesBeenOn, [&cs](uint8_t& rideType) {
+                    cs.ReadWrite(rideType);
+                    return true;
+                });
+            }
+            else
+            {
+                std::vector<uint8_t> temp;
+                cs.ReadWriteVector(temp, [&cs](uint8_t& rideType) {
+                    cs.ReadWrite(rideType);
+                    return true;
+                });
+            }
+
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->ItemFlags);
+                cs.ReadWrite(guest->Photo2RideRef);
+                cs.ReadWrite(guest->Photo3RideRef);
+                cs.ReadWrite(guest->Photo4RideRef);
+            }
+            else
+            {
+                uint64_t temp{};
+                ride_id_t temp2{};
+                cs.ReadWrite(temp);
+                cs.ReadWrite(temp2);
+                cs.ReadWrite(temp2);
+                cs.ReadWrite(temp2);
+            }
+
             cs.ReadWrite(entity.CurrentRide);
             cs.ReadWrite(entity.CurrentRideStation);
             cs.ReadWrite(entity.CurrentTrain);
@@ -1260,33 +1347,110 @@ namespace OpenRCT2
             cs.ReadWrite(entity.Action);
             cs.ReadWrite(entity.ActionFrame);
             cs.ReadWrite(entity.StepProgress);
-            cs.ReadWrite(entity.GuestNextInQueue);
+
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->GuestNextInQueue);
+            }
+            else
+            {
+                cs.Ignore<uint16_t>();
+            }
+
             cs.ReadWrite(entity.PeepDirection);
             cs.ReadWrite(entity.InteractionRideIndex);
-            cs.ReadWrite(entity.TimeInQueue);
-            cs.ReadWriteArray(entity.RidesBeenOn, [&cs](ride_id_t& rideId) {
-                cs.ReadWrite(rideId);
-                return true;
-            });
+
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->TimeInQueue);
+            }
+            else
+            {
+                cs.Ignore<uint16_t>();
+            }
+
+            if (guest != nullptr)
+            {
+                cs.ReadWriteArray(guest->RidesBeenOn, [&cs](ride_id_t& rideId) {
+                    cs.ReadWrite(rideId);
+                    return true;
+                });
+            }
+            else
+            {
+                std::vector<uint8_t> ridesBeenOn;
+                cs.ReadWriteArray(guest->RidesBeenOn, [&cs](ride_id_t& rideId) {
+                    cs.ReadWrite(rideId);
+                    return true;
+                });
+            }
+
             cs.ReadWrite(entity.Id);
-            cs.ReadWrite(entity.CashInPocket);
-            cs.ReadWrite(entity.CashSpent);
+
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->CashInPocket);
+                cs.ReadWrite(guest->CashSpent);
+            }
+            else
+            {
+                cs.Ignore<money32>();
+                cs.Ignore<money32>();
+            }
+
             // Includes HireDate
-            cs.ReadWrite(entity.ParkEntryTime);
-            cs.ReadWrite(entity.RejoinQueueTimeout);
-            cs.ReadWrite(entity.PreviousRide);
-            cs.ReadWrite(entity.PreviousRideTimeOut);
-            cs.ReadWriteArray(entity.Thoughts, [&cs](rct_peep_thought& thought) {
-                cs.ReadWrite(thought.type);
-                cs.ReadWrite(thought.item);
-                cs.ReadWrite(thought.freshness);
-                cs.ReadWrite(thought.fresh_timeout);
-                return true;
-            });
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->ParkEntryTime);
+                cs.ReadWrite(guest->RejoinQueueTimeout);
+                cs.ReadWrite(guest->PreviousRide);
+                cs.ReadWrite(guest->PreviousRideTimeOut);
+            }
+            else
+            {
+                cs.Ignore<int32_t>();
+                cs.Ignore<int8_t>();
+                cs.Ignore<ride_id_t>();
+                cs.Ignore<uint16_t>();
+            }
+
+            if (guest != nullptr)
+            {
+                cs.ReadWriteArray(guest->Thoughts, [&cs](rct_peep_thought& thought) {
+                    cs.ReadWrite(thought.type);
+                    cs.ReadWrite(thought.item);
+                    cs.ReadWrite(thought.freshness);
+                    cs.ReadWrite(thought.fresh_timeout);
+                    return true;
+                });
+            }
+            else
+            {
+                std::vector<rct_peep_thought> temp;
+                cs.ReadWriteVector(temp, [&cs](rct_peep_thought& thought) {
+                    cs.ReadWrite(thought.type);
+                    cs.ReadWrite(thought.item);
+                    cs.ReadWrite(thought.freshness);
+                    cs.ReadWrite(thought.fresh_timeout);
+                    return true;
+                });
+            }
+
             cs.ReadWrite(entity.PathCheckOptimisation);
-            cs.ReadWrite(entity.GuestHeadingToRideId);
-            cs.ReadWrite(entity.GuestIsLostCountdown);
-            cs.ReadWrite(entity.Photo1RideRef);
+
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->GuestHeadingToRideId);
+                cs.ReadWrite(guest->GuestIsLostCountdown);
+                cs.ReadWrite(guest->Photo1RideRef);
+            }
+            else
+            {
+                cs.Ignore<ride_id_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<ride_id_t>();
+            }
+
             cs.ReadWrite(entity.PeepFlags);
             cs.ReadWrite(entity.PathfindGoal.x);
             cs.ReadWrite(entity.PathfindGoal.y);
@@ -1300,28 +1464,57 @@ namespace OpenRCT2
                 cs.ReadWrite(entity.PathfindHistory[i].direction);
             }
             cs.ReadWrite(entity.WalkingFrameNum);
-            cs.ReadWrite(entity.LitterCount);
-            cs.ReadWrite(entity.GuestTimeOnRide);
-            cs.ReadWrite(entity.DisgustingCount);
-            cs.ReadWrite(entity.PaidToEnter);
-            cs.ReadWrite(entity.PaidOnRides);
-            cs.ReadWrite(entity.PaidOnFood);
-            cs.ReadWrite(entity.PaidOnSouvenirs);
-            cs.ReadWrite(entity.AmountOfFood);
-            cs.ReadWrite(entity.AmountOfDrinks);
-            cs.ReadWrite(entity.AmountOfSouvenirs);
-            cs.ReadWrite(entity.VandalismSeen);
-            cs.ReadWrite(entity.VoucherType);
-            cs.ReadWrite(entity.VoucherRideId);
-            cs.ReadWrite(entity.SurroundingsThoughtTimeout);
-            cs.ReadWrite(entity.Angriness);
-            cs.ReadWrite(entity.TimeLost);
-            cs.ReadWrite(entity.DaysInQueue);
-            cs.ReadWrite(entity.BalloonColour);
-            cs.ReadWrite(entity.UmbrellaColour);
-            cs.ReadWrite(entity.HatColour);
-            cs.ReadWrite(entity.FavouriteRide);
-            cs.ReadWrite(entity.FavouriteRideRating);
+
+            if (guest != nullptr)
+            {
+                cs.ReadWrite(guest->LitterCount);
+                cs.ReadWrite(guest->GuestTimeOnRide);
+                cs.ReadWrite(guest->DisgustingCount);
+                cs.ReadWrite(guest->PaidToEnter);
+                cs.ReadWrite(guest->PaidOnRides);
+                cs.ReadWrite(guest->PaidOnFood);
+                cs.ReadWrite(guest->PaidOnSouvenirs);
+                cs.ReadWrite(guest->AmountOfFood);
+                cs.ReadWrite(guest->AmountOfDrinks);
+                cs.ReadWrite(guest->AmountOfSouvenirs);
+                cs.ReadWrite(guest->VandalismSeen);
+                cs.ReadWrite(guest->VoucherType);
+                cs.ReadWrite(guest->VoucherRideId);
+                cs.ReadWrite(guest->SurroundingsThoughtTimeout);
+                cs.ReadWrite(guest->Angriness);
+                cs.ReadWrite(guest->TimeLost);
+                cs.ReadWrite(guest->DaysInQueue);
+                cs.ReadWrite(guest->BalloonColour);
+                cs.ReadWrite(guest->UmbrellaColour);
+                cs.ReadWrite(guest->HatColour);
+                cs.ReadWrite(guest->FavouriteRide);
+                cs.ReadWrite(guest->FavouriteRideRating);
+            }
+            else
+            {
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<money16>();
+                cs.Ignore<money16>();
+                cs.Ignore<money16>();
+                cs.Ignore<money16>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<ride_id_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<uint8_t>();
+                cs.Ignore<ride_id_t>();
+                cs.Ignore<uint8_t>();
+            }
         }
 
         template<typename T> void WriteEntitiesOfType(OrcaStream::ChunkStream& cs);
@@ -1369,7 +1562,7 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.SubType);
-        cs.ReadWrite(entity.vehicle_sprite_type);
+        cs.ReadWrite(entity.Pitch);
         cs.ReadWrite(entity.bank_rotation);
         cs.ReadWrite(entity.remaining_distance);
         cs.ReadWrite(entity.velocity);

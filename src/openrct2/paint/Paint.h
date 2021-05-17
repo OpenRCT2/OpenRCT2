@@ -15,6 +15,9 @@
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 
+#include <mutex>
+#include <thread>
+
 struct TileElement;
 enum class RailingEntrySupportType : uint8_t;
 enum class ViewportInteractionItem : uint8_t;
@@ -124,10 +127,58 @@ struct tunnel_entry
 #define MAX_PAINT_QUADRANTS 512
 #define TUNNEL_MAX_COUNT 65
 
-struct paint_session
+/**
+ * A pool of paint_entry instances that can be rented out.
+ * The internal implementation uses an unrolled linked list so that each
+ * paint session can quickly allocate a new paint entry until it requires
+ * another node / block of paint entries. Only the node allocation needs to
+ * be thread safe.
+ */
+class PaintEntryPool
 {
-    rct_drawpixelinfo DPI;
-    FixedVector<paint_entry, 4000> PaintStructs;
+    static constexpr size_t NodeSize = 512;
+
+public:
+    struct Node
+    {
+        Node* Next{};
+        size_t Count{};
+        paint_entry PaintStructs[NodeSize]{};
+    };
+
+    struct Chain
+    {
+        PaintEntryPool* Pool{};
+        Node* Head{};
+        Node* Current{};
+
+        Chain() = default;
+        Chain(PaintEntryPool* pool);
+        Chain(Chain&& chain);
+        ~Chain();
+
+        Chain& operator=(Chain&& chain) noexcept;
+
+        paint_entry* Allocate();
+        void Clear();
+        size_t GetCount() const;
+    };
+
+private:
+    std::vector<Node*> _available;
+    std::mutex _mutex;
+
+    Node* AllocateNode();
+
+public:
+    ~PaintEntryPool();
+
+    Chain Create();
+    void FreeNodes(Node* head);
+};
+
+struct PaintSessionCore
+{
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     paint_struct* LastPS;
     paint_string_struct* PSStringHead;
@@ -157,37 +208,53 @@ struct paint_session
     uint8_t Unk141E9DB;
     uint16_t WaterHeight;
     uint32_t TrackColours[4];
+};
 
-    constexpr bool NoPaintStructsAvailable() noexcept
-    {
-        return PaintStructs.size() >= PaintStructs.capacity();
-    }
+struct paint_session : public PaintSessionCore
+{
+    rct_drawpixelinfo DPI;
+    PaintEntryPool::Chain PaintEntryChain;
 
-    constexpr paint_struct* AllocateNormalPaintEntry() noexcept
+    paint_struct* AllocateNormalPaintEntry() noexcept
     {
-        LastPS = &PaintStructs.emplace_back().basic;
-        return LastPS;
-    }
-
-    constexpr attached_paint_struct* AllocateAttachedPaintEntry() noexcept
-    {
-        LastAttachedPS = &PaintStructs.emplace_back().attached;
-        return LastAttachedPS;
-    }
-
-    constexpr paint_string_struct* AllocateStringPaintEntry() noexcept
-    {
-        auto* string = &PaintStructs.emplace_back().string;
-        if (LastPSString == nullptr)
+        auto* entry = PaintEntryChain.Allocate();
+        if (entry != nullptr)
         {
-            PSStringHead = string;
+            LastPS = &entry->basic;
+            return LastPS;
         }
-        else
+        return nullptr;
+    }
+
+    attached_paint_struct* AllocateAttachedPaintEntry() noexcept
+    {
+        auto* entry = PaintEntryChain.Allocate();
+        if (entry != nullptr)
         {
-            LastPSString->next = string;
+            LastAttachedPS = &entry->attached;
+            return LastAttachedPS;
         }
-        LastPSString = string;
-        return LastPSString;
+        return nullptr;
+    }
+
+    paint_string_struct* AllocateStringPaintEntry() noexcept
+    {
+        auto* entry = PaintEntryChain.Allocate();
+        if (entry != nullptr)
+        {
+            auto* string = &entry->string;
+            if (LastPSString == nullptr)
+            {
+                PSStringHead = string;
+            }
+            else
+            {
+                LastPSString->next = string;
+            }
+            LastPSString = string;
+            return LastPSString;
+        }
+        return nullptr;
     }
 };
 
@@ -201,6 +268,12 @@ struct FootpathPaintInfo
     uint8_t ScrollingMode{};
     RailingEntrySupportType SupportType{};
     colour_t SupportColour = 255;
+};
+
+struct RecordedPaintSession
+{
+    PaintSessionCore Session;
+    std::vector<paint_entry> Entries;
 };
 
 extern paint_session gPaintSession;
@@ -261,7 +334,7 @@ void PaintFloatingMoneyEffect(
 paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
 void PaintSessionFree(paint_session* session);
 void PaintSessionGenerate(paint_session* session);
-void PaintSessionArrange(paint_session* session);
+void PaintSessionArrange(PaintSessionCore* session);
 void PaintDrawStructs(paint_session* session);
 void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
 

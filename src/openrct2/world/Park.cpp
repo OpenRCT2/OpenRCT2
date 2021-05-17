@@ -37,8 +37,8 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
+#include "Litter.h"
 #include "Map.h"
-#include "Sprite.h"
 #include "Surface.h"
 
 #include <algorithm>

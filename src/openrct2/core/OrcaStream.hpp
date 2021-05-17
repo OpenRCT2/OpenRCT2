@@ -454,6 +454,13 @@ namespace OpenRCT2
 
             template<typename TArr, size_t TArrSize, typename TFunc> void ReadWriteArray(TArr (&arr)[TArrSize], TFunc f)
             {
+                auto& arr2 = *(reinterpret_cast<std::array<TArr, TArrSize>*>(arr));
+                ReadWriteArray(arr2, f);
+            }
+
+            template<typename TArr, size_t TArrSize, typename TFunc>
+            void ReadWriteArray(std::array<TArr, TArrSize>& arr, TFunc f)
+            {
                 if (_mode == Mode::READING)
                 {
                     auto count = BeginArray();
@@ -483,6 +490,12 @@ namespace OpenRCT2
                     }
                     EndArray();
                 }
+            }
+
+            template<typename T> void Ignore()
+            {
+                T value{};
+                ReadWrite(value);
             }
 
         private:

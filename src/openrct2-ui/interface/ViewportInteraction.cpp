@@ -208,7 +208,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                         auto duck = entity->As<Duck>();
                         if (duck != nullptr)
                         {
-                            duck_press(duck);
+                            duck->Press();
                         }
                     }
                 }

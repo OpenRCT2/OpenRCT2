@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+#include "Duck.h"
 
 #include "../Game.h"
 #include "../audio/audio.h"
@@ -278,7 +279,7 @@ uint32_t Duck::GetFrameImage(int32_t direction) const
     return imageId;
 }
 
-void create_duck(const CoordsXY& pos)
+void Duck::Create(const CoordsXY& pos)
 {
     auto* duck = CreateEntity<Duck>();
     if (duck == nullptr)
@@ -339,12 +340,12 @@ void Duck::Update()
     }
 }
 
-void duck_press(Duck* duck)
+void Duck::Press()
 {
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Quack, { duck->x, duck->y, duck->z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Quack, { x, y, z });
 }
 
-void duck_remove_all()
+void Duck::RemoveAll()
 {
     for (auto duck : EntityList<Duck>())
     {

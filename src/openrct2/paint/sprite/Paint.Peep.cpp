@@ -69,7 +69,7 @@ template<> void PaintEntity(paint_session* session, const Peep* peep, int32_t im
     PeepActionSpriteType actionSpriteType = peep->ActionSpriteType;
     uint8_t imageOffset = peep->ActionSpriteImageOffset;
 
-    if (peep->Action == PeepActionType::None1)
+    if (peep->Action == PeepActionType::Idle)
     {
         actionSpriteType = peep->NextActionSpriteType;
         imageOffset = 0;

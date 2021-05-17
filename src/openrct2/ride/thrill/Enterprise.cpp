@@ -42,7 +42,7 @@ static void paint_enterprise_structure(
     uint32_t imageOffset = tileElement->GetDirectionWithOffset(session->CurrentRotation);
     if (vehicle != nullptr)
     {
-        imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + session->CurrentRotation) % 4);
+        imageOffset = (vehicle->Pitch << 2) + (((vehicle->sprite_direction >> 3) + session->CurrentRotation) % 4);
     }
 
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
@@ -56,7 +56,7 @@ static void paint_enterprise_structure(
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    if (dpi->zoom_level == 0 && imageOffset < 12 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (dpi->zoom_level <= 0 && imageOffset < 12 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t i = 0; i < 15; i++)
         {

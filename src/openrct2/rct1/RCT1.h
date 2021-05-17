@@ -224,8 +224,8 @@ struct rct1_unk_sprite : RCT12SpriteBase
 
 struct rct1_vehicle : RCT12SpriteBase
 {
-    uint8_t vehicle_sprite_type; // 0x1F
-    uint8_t bank_rotation;       // 0x20
+    uint8_t Pitch;         // 0x1F
+    uint8_t bank_rotation; // 0x20
     uint8_t pad_21[3];
     int32_t remaining_distance; // 0x24
     int32_t velocity;           // 0x28
@@ -1240,6 +1240,8 @@ enum
     WATER_COASTER_BOAT = 99,
     WATER_COASTER_INVISIBLE = 101,
     RIVER_RAFT = 103,
+    MINIATURE_RAILWAY_AMERICAN_TENDER = 104,
+    MINIATURE_RAILWAY_AMERICAN_LOCOMOTIVE = 105,
 };
 
 enum

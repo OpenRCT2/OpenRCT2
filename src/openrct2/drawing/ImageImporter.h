@@ -273,7 +273,7 @@ constexpr const GamePalette StandardPalette = { {
     { 231, 231, 171, 255 },
     { 255, 255, 207, 255 },
 
-    // 203 - 214 (Secondary remap)
+    // 202 - 213 (Secondary remap)
     { 27, 0, 63, 255 },
     { 51, 0, 103, 255 },
     { 63, 11, 123, 255 },
