@@ -753,8 +753,10 @@ void Peep::UpdateFalling()
                             guest->InsertNewThought(PeepThoughtType::Drowning, PEEP_THOUGHT_ITEM_NONE);
                         }
 
+                        // Determine start frame for drowning based on peep energy.
+                        // The minimum peep energy starts the animation on frame 48 causing very quick death.
+                        ActionFrame = (PEEP_MAX_ENERGY - Energy) / 2;
                         Action = PeepActionType::Drowning;
-                        ActionFrame = 0;
                         ActionSpriteImageOffset = 0;
 
                         UpdateCurrentActionSpriteType();
@@ -935,6 +937,9 @@ void Peep::Update()
         if (State == PeepState::Queuing)
             stepsToTake += stepsToTake / 2;
     }
+    // Falling should be at maximum speed.
+    if (State == PeepState::Falling)
+        stepsToTake = PEEP_MAX_ENERGY;
 
     uint32_t carryCheck = StepProgress + stepsToTake;
     StepProgress = carryCheck;
