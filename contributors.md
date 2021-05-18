@@ -92,6 +92,7 @@ The following people are not part of the development team, but have been contrib
 * Helio Batimarqui (batimarqui) - Misc.
 * Keith Stellyes (keithstellyes) - Misc.
 * Bas Cantrijn (Basssiiie) - Misc.
+* Hiram Anderson (hjk321) - Misc.
 
 ## Bug fixes
 * (halfbro)
