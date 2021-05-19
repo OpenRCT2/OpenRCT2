@@ -4,7 +4,6 @@
 !define APPNAMEANDVERSION   "${APPNAME} ${APPVERSION}"
 !define APPURLLINK          "https://github.com/OpenRCT2/OpenRCT2"
 !define OPENRCT2_EXE        "openrct2.exe"
-!define OPENRCT2_COM        "openrct2.com"
 
 !if "${PLATFORM}" == "Win32"
     !define APPBITS         32
@@ -179,7 +178,6 @@ Section "!OpenRCT2" Section1
 
     ; Copy executable
     File /oname=${OPENRCT2_EXE} ${BINARY_DIR}\${OPENRCT2_EXE}
-    File /oname=${OPENRCT2_COM} ${BINARY_DIR}\${OPENRCT2_COM}
 
     ; Create the Registry Entries
     WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Comments" "Visit ${APPURLLINK}"
@@ -199,7 +197,7 @@ Section "!OpenRCT2" Section1
     CreateShortCut "$DESKTOP\OpenRCT2.lnk" "$INSTDIR\${OPENRCT2_EXE}"
     CreateDirectory "$SMPROGRAMS\$SHORTCUTS"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\OpenRCT2.lnk" "$INSTDIR\${OPENRCT2_EXE}"
-    CreateShortCut "$SMPROGRAMS\$SHORTCUTS\OpenRCT2-verbose.lnk" "%WINDIR%\System32\cmd.exe" '/C "$INSTDIR\${OPENRCT2_COM}" --verbose'
+    CreateShortCut "$SMPROGRAMS\$SHORTCUTS\OpenRCT2-verbose.lnk" "%WINDIR%\System32\cmd.exe" '/C "$INSTDIR\${OPENRCT2_EXE}" --console --verbose'
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Uninstall.lnk" "$INSTDIR\uninstall.exe"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Readme.lnk" "$INSTDIR\Readme.txt"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Changelog.lnk" "$INSTDIR\Changelog.txt"
@@ -249,7 +247,6 @@ Section "Uninstall"
     Delete "$INSTDIR\scripting.md"
     Delete "$INSTDIR\openrct2.d.ts"
     Delete "$INSTDIR\${OPENRCT2_EXE}"
-    Delete "$INSTDIR\${OPENRCT2_COM}"
     Delete "$INSTDIR\INSTALL.LOG"
 
     ; Data files

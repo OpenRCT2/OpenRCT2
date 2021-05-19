@@ -46,7 +46,7 @@ registerPlugin({
 });
 ```
 
-This will log a message to the terminal screen (`stdout`) when you open any park. If you are on Windows, make sure to run `openrct2.com` instead of `openrct2.exe` so you can interact with the `stdin` / `stdout` console. The console is a JavaScript interpreter (REPL), this means you can write and test expressions similar to the console found in web browsers when you press `F12`. When you make changes to your script, you must exit your current game and open it again for the script to reload... unless you use the hot reload feature.
+This will log a message to the terminal screen (`stdout`) when you open any park. If you are on Windows, make sure to run `openrct2.exe` with a `--console` argument so you can interact with the `stdin` / `stdout` console. The console is a JavaScript interpreter (REPL), this means you can write and test expressions similar to the console found in web browsers when you press `F12`. When you make changes to your script, you must exit your current game and open it again for the script to reload... unless you use the hot reload feature.
 
 The hot reload feature can be enabled by editing your `config.ini` file and setting `enable_hot_reloading` to `true` under `[plugin]`. When this is enabled, the game will auto-reload the script in real-time whenever you save your JavaScript file. This allows rapid development of plug-ins as you can write code and quickly preview your changes, such as closing and opening a specific custom window on startup. A demonstration of this can be found on YouTube: [OpenRCT2 plugin hot-reload demo](https://www.youtube.com/watch?v=jmjWzEhmDjk)
 

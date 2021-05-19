@@ -133,6 +133,8 @@ Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#re
 
 Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`. Make sure to select the correct target platform for which you ran the build in point #3 (`Win32` for the 32-bit version, `x64` for the 64-bit version), otherwise the build will fail in Visual Studio.
 
+`Debug` configurations always display a debug console, for `Release` configurations it can be shown with a `--console` command line argument.
+
 Other examples:
 ```
 set platform=x64
