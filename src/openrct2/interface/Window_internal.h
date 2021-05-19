@@ -59,7 +59,6 @@ struct rct_window
         new_ride_variables new_ride;
         news_variables news;
         map_variables map;
-        ride_variables ride;
         track_list_variables track_list;
         error_variables error;
         void* custom_info;

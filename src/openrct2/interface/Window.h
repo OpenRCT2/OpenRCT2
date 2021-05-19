@@ -317,13 +317,6 @@ struct map_variables
     uint16_t var_488;
 };
 
-struct ride_variables
-{
-    int16_t view;
-    int32_t var_482;
-    int32_t var_486;
-};
-
 struct track_list_variables
 {
     bool track_list_being_updated;

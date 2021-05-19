@@ -401,7 +401,7 @@ public:
                     return;
 
                 auto ride = vehicle->GetRide();
-                auto viewVehicleIndex = w->ride.view - 1;
+                auto viewVehicleIndex = w->viewport_focus_coordinates.var_480 - 1;
                 if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
                     return;
 
