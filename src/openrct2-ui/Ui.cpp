@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,11 +33,7 @@ template<typename T> static std::shared_ptr<T> to_shared(std::unique_ptr<T>&& sr
 /**
  * Main entry point for non-Windows systems. Windows instead uses its own DLL proxy.
  */
-#if defined(_MSC_VER) && !defined(__DISABLE_DLL_PROXY__)
-int NormalisedMain(int argc, const char** argv)
-#else
 int main(int argc, const char** argv)
-#endif
 {
     std::unique_ptr<IContext> context;
     int32_t rc = EXIT_SUCCESS;

@@ -20,7 +20,7 @@ echo -e "\033[0;36mCreating symbols archive for OpenRCT2...\033[0m"
 if [[ -f $destination ]]; then
     rm $destination
 fi
-$archiver $destination openrct2.exe openrct2.com openrct2-win.pdb
+$archiver $destination openrct2.exe openrct2-win.pdb
 
 destination=$(cygpath -w $(readlink -f $destination))
 printf '\033[0;32m%s\033[0m\n' "${destination} created successfully"
