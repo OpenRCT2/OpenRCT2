@@ -135,12 +135,8 @@
 #undef interface
 #include <windows.h>
 #include <io.h>
-#ifndef STDIN_FILENO
 #define STDIN_FILENO (_fileno(stdin))
-#endif
-#ifndef STDOUT_FILENO
-#define STDOUT_FILENO 1
-#endif
+#define STDOUT_FILENO (_fileno(stdout))
 #define isatty _isatty
 #define write win32_write
 #define read _read
