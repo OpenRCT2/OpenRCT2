@@ -471,6 +471,11 @@ template<typename T> constexpr static T window_scenery_count_rows(rct_window* w,
 static size_t window_scenery_count_rows(rct_window* w)
 {
     auto tabIndex = gWindowSceneryActiveTabIndex;
+    if (tabIndex >= _tabEntries.size())
+    {
+        return 0;
+    }
+
     auto totalItems = _tabEntries[tabIndex].Entries.size();
     auto numColumns = window_scenery_get_num_columns(w);
     auto rows = window_scenery_count_rows(w, totalItems + numColumns - 1);
@@ -568,6 +573,11 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 void window_scenery_update_scroll(rct_window* w)
 {
     auto tabIndex = gWindowSceneryActiveTabIndex;
+    if (tabIndex >= _tabEntries.size())
+    {
+        return;
+    }
+
     int32_t listHeight = w->height - 14 - w->widgets[WIDX_SCENERY_LIST].top - 1;
 
     scenery_item sceneryItem = window_scenery_count_rows_with_selected_item(w, tabIndex);
@@ -1129,12 +1139,15 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
 
     auto tabIndex = gWindowSceneryActiveTabIndex;
-    auto selectedWidgetId = static_cast<rct_widgetindex>(WIDX_SCENERY_TAB_1 + tabIndex);
-    uint32_t imageId = ((w->colours[1] << 19) | w->widgets[selectedWidgetId].image) + 1ul;
+    if (tabIndex < _tabEntries.size())
+    {
+        auto selectedWidgetId = static_cast<rct_widgetindex>(WIDX_SCENERY_TAB_1 + tabIndex);
+        uint32_t imageId = ((w->colours[1] << 19) | w->widgets[selectedWidgetId].image) + 1ul;
 
-    gfx_draw_sprite(
-        dpi, imageId, w->windowPos + ScreenCoordsXY{ w->widgets[selectedWidgetId].left, w->widgets[selectedWidgetId].top },
-        selectedWidgetId);
+        gfx_draw_sprite(
+            dpi, imageId, w->windowPos + ScreenCoordsXY{ w->widgets[selectedWidgetId].left, w->widgets[selectedWidgetId].top },
+            selectedWidgetId);
+    }
 
     auto selectedSceneryEntry = _selectedScenery;
     if (selectedSceneryEntry.IsUndefined())
@@ -1282,6 +1295,10 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
 
     auto numColumns = window_scenery_get_num_columns(w);
     auto tabIndex = gWindowSceneryActiveTabIndex;
+    if (tabIndex > _tabEntries.size())
+    {
+        return;
+    }
 
     ScreenCoordsXY topLeft{ 0, 0 };
 
@@ -1333,11 +1350,11 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
 
 static std::optional<size_t> window_scenery_find_tab_with_scenery(const ScenerySelection& scenery)
 {
-    for (const auto& tabInfo : _tabEntries)
+    for (size_t i = 0; i < _tabEntries.size(); i++)
     {
-        for (size_t i = 0; i < tabInfo.Entries.size(); i++)
+        const auto& tabInfo = _tabEntries[i];
+        for (const auto& entry : tabInfo.Entries)
         {
-            const auto& entry = tabInfo.Entries[i];
             if (entry == scenery)
             {
                 return i;
