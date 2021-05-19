@@ -210,17 +210,17 @@ void SmallSceneryObject::PerformFixes()
 
 ObjectEntryDescriptor SmallSceneryObject::GetScgPiratHeader() const
 {
-    return ObjectEntryDescriptor("rct2.scgpirat");
+    return ObjectEntryDescriptor("rct2.scenery_group.scgpirat");
 }
 
 ObjectEntryDescriptor SmallSceneryObject::GetScgMineHeader() const
 {
-    return ObjectEntryDescriptor("rct2.scgpirat");
+    return ObjectEntryDescriptor("rct2.scenery_group.scgpirat");
 }
 
 ObjectEntryDescriptor SmallSceneryObject::GetScgAbstrHeader() const
 {
-    return ObjectEntryDescriptor("rct2.scgabstr");
+    return ObjectEntryDescriptor("rct2.scenery_group.scgabstr");
 }
 
 void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)

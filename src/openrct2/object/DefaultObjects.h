@@ -13,4 +13,4 @@
 
 extern const std::string_view MinimumRequiredObjects[2];
 extern const std::string_view DefaultSelectedObjects[103];
-extern const std::string_view DesignerSelectedObjects[27];
+extern const std::string_view DesignerSelectedObjects[38];

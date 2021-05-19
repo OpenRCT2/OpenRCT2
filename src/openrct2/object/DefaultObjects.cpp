@@ -12,69 +12,68 @@
 #include "Object.h"
 
 // clang-format off
-const std::string_view MinimumRequiredObjects[] = { "rct2.surface.grass", "rct2.edge.rock" };
+const std::string_view MinimumRequiredObjects[] = { "rct2.terrain_surface.grass", "rct2.terrain_edge.rock" };
 
 const std::string_view DefaultSelectedObjects[] = {
     // An initial default selection
-    "rct2.scgtrees", // Scenery: Trees
-    "rct2.scgshrub", // Scenery: Shrubs and Ornaments
-    "rct2.scggardn", // Scenery: Gardens
-    "rct2.scgfence", // Scenery: Fences and Walls
-    "rct2.scgwalls", // Scenery: Walls and Roofs
-    "rct2.scgpathx", // Scenery: Signs and Items for Footpaths
-    "rct2.tarmac",   // Footpath: Tarmac
-    "rct2.twist1",   // Ride: Twist
-    "rct2.ptct1",    // Ride: Wooden Roller Coaster (Wooden Roller Coaster Trains)
-    "rct2.zldb",     // Ride: Junior Roller Coaster (Ladybird Trains)
-    "rct2.lfb1",     // Ride: Log Flume
-    "rct2.vcr",      // Ride: Vintage Cars
-    "rct2.mgr1",     // Ride: Merry-Go-Round
-    "rct2.tlt1",     // Ride: Restroom
-    "rct2.atm1",     // Ride: Cash Machine
-    "rct2.faid1",    // Ride: First Aid Room
-    "rct2.infok",    // Ride: Information Kiosk
-    "rct2.drnks",    // Ride: Drinks Stall
-    "rct2.cndyf",    // Ride: Candyfloss Stall
-    "rct2.burgb",    // Ride: Burger Bar
-    "rct2.balln",    // Ride: Balloon Stall
-    "rct2.arrt1",    // Ride: Corkscrew Roller Coaster
-    "rct2.rboat",    // Ride: Rowing Boats
-    "rct2.pkent1",   // Park Entrance: Traditional Park Entrance
-    "rct2.wtrcyan",  // Water: Natural Water
+    "rct2.scenery_group.scgtrees", // Scenery: Trees
+    "rct2.scenery_group.scgshrub", // Scenery: Shrubs and Ornaments
+    "rct2.scenery_group.scggardn", // Scenery: Gardens
+    "rct2.scenery_group.scgfence", // Scenery: Fences and Walls
+    "rct2.scenery_group.scgwalls", // Scenery: Walls and Roofs
+    "rct2.scenery_group.scgpathx", // Scenery: Signs and Items for Footpaths
+    "rct2.ride.twist1",   // Ride: Twist
+    "rct2.ride.ptct1",    // Ride: Wooden Roller Coaster (Wooden Roller Coaster Trains)
+    "rct2.ride.zldb",     // Ride: Junior Roller Coaster (Ladybird Trains)
+    "rct2.ride.lfb1",     // Ride: Log Flume
+    "rct2.ride.vcr",      // Ride: Vintage Cars
+    "rct2.ride.mgr1",     // Ride: Merry-Go-Round
+    "rct2.ride.tlt1",     // Ride: Restroom
+    "rct2.ride.atm1",     // Ride: Cash Machine
+    "rct2.ride.faid1",    // Ride: First Aid Room
+    "rct2.ride.infok",    // Ride: Information Kiosk
+    "rct2.ride.drnks",    // Ride: Drinks Stall
+    "rct2.ride.cndyf",    // Ride: Candyfloss Stall
+    "rct2.ride.burgb",    // Ride: Burger Bar
+    "rct2.ride.balln",    // Ride: Balloon Stall
+    "rct2.ride.arrt1",    // Ride: Corkscrew Roller Coaster
+    "rct2.ride.rboat",    // Ride: Rowing Boats
+    "rct2.park_entrance.pkent1",   // Park Entrance: Traditional Park Entrance
+    "rct2.water.wtrcyan",  // Water: Natural Water
 
     // The following are for all random map generation features to work out the box
-    "rct2.scgjungl", // Jungle Theming
-    "rct2.scgsnow",  // Snow and Ice Theming
-    "rct2.scgwater", // Water Feature Theming
+    "rct2.scenery_group.scgjungl", // Jungle Theming
+    "rct2.scenery_group.scgsnow",  // Snow and Ice Theming
+    "rct2.scenery_group.scgwater", // Water Feature Theming
 
     // Surfaces
-    "rct2.surface.grass",
-    "rct2.surface.sand",
-    "rct2.surface.dirt",
-    "rct2.surface.rock",
-    "rct2.surface.martian",
-    "rct2.surface.chequerboard",
-    "rct2.surface.grassclumps",
-    "rct2.surface.ice",
-    "rct2.surface.gridred",
-    "rct2.surface.gridyellow",
-    "rct2.surface.gridpurple",
-    "rct2.surface.gridgreen",
-    "rct2.surface.sandred",
-    "rct2.surface.sandbrown",
+    "rct2.terrain_surface.grass",
+    "rct2.terrain_surface.sand",
+    "rct2.terrain_surface.dirt",
+    "rct2.terrain_surface.rock",
+    "rct2.terrain_surface.martian",
+    "rct2.terrain_surface.chequerboard",
+    "rct2.terrain_surface.grass_clumps",
+    "rct2.terrain_surface.ice",
+    "rct2.terrain_surface.grid_red",
+    "rct2.terrain_surface.grid_yellow",
+    "rct2.terrain_surface.grid_purple",
+    "rct2.terrain_surface.grid_green",
+    "rct2.terrain_surface.sand_red",
+    "rct2.terrain_surface.sand_brown",
 
     // Edges
-    "rct2.edge.rock",
-    "rct2.edge.woodred",
-    "rct2.edge.woodblack",
-    "rct2.edge.ice",
+    "rct2.terrain_edge.rock",
+    "rct2.terrain_edge.wood_red",
+    "rct2.terrain_edge.wood_black",
+    "rct2.terrain_edge.ice",
 
     // Stations
     "rct2.station.plain",
     "rct2.station.wooden",
-    "rct2.station.canvastent",
-    "rct2.station.castlegrey",
-    "rct2.station.castlebrown",
+    "rct2.station.canvas_tent",
+    "rct2.station.castle_grey",
+    "rct2.station.castle_brown",
     "rct2.station.jungle",
     "rct2.station.log",
     "rct2.station.classical",
@@ -116,47 +115,65 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.music.candy",
 
     // Footpath surfaces
-    "rct2.pathsurface.tarmac.brown",
-    "rct2.pathsurface.space",
-    "rct2.pathsurface.dirt",
-    "rct2.pathsurface.crazy",
-    "rct2.pathsurface.ash",
-    "rct2.pathsurface.queue.blue",
-    "rct2.pathsurface.queue.green",
-    "rct2.pathsurface.queue.red",
-    "rct2.pathsurface.queue.yellow",
+    "rct2.footpath_surface.tarmac",
+    "rct2.footpath_surface.tarmac_brown",
+    "rct2.footpath_surface.tarmac_red",
+    "rct2.footpath_surface.dirt",
+    "rct2.footpath_surface.crazy_paving",
+    "rct2.footpath_surface.ash",
+    "rct2.footpath_surface.queue_blue",
+    "rct2.footpath_surface.queue_green",
+    "rct2.footpath_surface.queue_red",
+    "rct2.footpath_surface.queue_yellow",
 
     // Footpath railings
-    "rct2.railings.bambooblack",
-    "rct2.railings.bamboobrown",
-    "rct2.railings.concrete",
-    "rct2.railings.concretegreen",
-    "rct2.railings.space",
-    "rct2.railings.wood"
+    "rct2.footpath_railings.bamboo_black",
+    "rct2.footpath_railings.bamboo_brown",
+    "rct2.footpath_railings.concrete",
+    "rct2.footpath_railings.concrete_green",
+    "rct2.footpath_railings.space",
+    "rct2.footpath_railings.wood",
 };
 
 const std::string_view DesignerSelectedObjects[] = {
     // An initial default selection + all standard footpaths + all standard stations
-    "rct2.scgtrees", // Scenery: Trees
-    "rct2.scgshrub", // Scenery: Shrubs and Ornaments
-    "rct2.scggardn", // Scenery: Gardens
-    "rct2.scgfence", // Scenery: Fences and Walls
-    "rct2.scgwalls", // Scenery: Walls and Roofs
-    "rct2.scgpathx", // Scenery: Signs and Items for Footpaths
-    "rct2.wtrcyan",  // Water: Natural Water
-    "rct2.pkent1",   // Park Entrance: Traditional Park Entrance
-    "rct2.tarmac",   // Footpath: Tarmac
-    "rct2.tarmacg",  // Footpath: Green Tarmac Footpath
-    "rct2.tarmacb",  // Footpath: Brown Tarmac Footpath
-    "rct2.pathspce", // Footpath: Space Style Footpath
-    "rct2.pathcrzy", // Footpath: Crazy Paving Footpath
-    "rct2.pathdirt", // Footpath: Dirt Footpath
-    "rct2.pathash",  // Footpath: Ash Footpath
+    "rct2.scenery_group.scgtrees", // Scenery: Trees
+    "rct2.scenery_group.scgshrub", // Scenery: Shrubs and Ornaments
+    "rct2.scenery_group.scggardn", // Scenery: Gardens
+    "rct2.scenery_group.scgfence", // Scenery: Fences and Walls
+    "rct2.scenery_group.scgwalls", // Scenery: Walls and Roofs
+    "rct2.scenery_group.scgpathx", // Scenery: Signs and Items for Footpaths
+    "rct2.water.wtrcyan",          // Water: Natural Water
+    "rct2.park_entrance.pkent1",   // Park Entrance: Traditional Park Entrance
+    "rct2.terrain_surface.grass",
+    "rct2.terrain_edge.rock",
+
+    // Footpath surfaces
+    "rct2.footpath_surface.tarmac",
+    "rct2.footpath_surface.tarmac_brown",
+    "rct2.footpath_surface.tarmac_red",
+    "rct2.footpath_surface.dirt",
+    "rct2.footpath_surface.crazy_paving",
+    "rct2.footpath_surface.ash",
+    "rct2.footpath_surface.queue_blue",
+    "rct2.footpath_surface.queue_green",
+    "rct2.footpath_surface.queue_red",
+    "rct2.footpath_surface.queue_yellow",
+
+    // Footpath railings
+    "rct2.footpath_railings.bamboo_black",
+    "rct2.footpath_railings.bamboo_brown",
+    "rct2.footpath_railings.concrete",
+    "rct2.footpath_railings.concrete_green",
+    "rct2.footpath_railings.space",
+    "rct2.footpath_railings.wood",
+
+    // Stations
     "rct2.station.plain",
     "rct2.station.wooden",
-    "rct2.station.canvastent",
-    "rct2.station.castlegrey",
-    "rct2.station.castlebrown",
+    "rct2.station.canvas_tent",
+    "rct2.station.castle_grey",
+    "rct2.station.castle_brown",
     "rct2.station.jungle",
     "rct2.station.log",
     "rct2.station.classical",

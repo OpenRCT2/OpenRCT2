@@ -407,39 +407,42 @@ private:
     {
         // Add default scenery groups
         _sceneryGroupEntries.AddRange({
-            "rct2.scgtrees",
-            "rct2.scgshrub",
-            "rct2.scggardn",
-            "rct2.scgfence",
-            "rct2.scgwalls",
-            "rct2.scgpathx",
+            "rct2.scenery_group.scgtrees",
+            "rct2.scenery_group.scgshrub",
+            "rct2.scenery_group.scggardn",
+            "rct2.scenery_group.scgfence",
+            "rct2.scenery_group.scgwalls",
+            "rct2.scenery_group.scgpathx",
         });
 
         // Add default footpaths
         _footpathSurfaceEntries.AddRange(
-            { "rct1.pathsurface.tarmac", "rct1.pathsurface.dirt", "rct1.pathsurface.crazy", "rct1.pathsurface.tile.brown",
-              "rct1.aa.pathsurface.ash", "rct1.aa.pathsurface.tarmac.green", "rct1.aa.pathsurface.tarmac.brown",
-              "rct1.aa.pathsurface.tile.grey", "rct1.aa.pathsurface.space", "rct1.ll.pathsurface.tile.green",
-              "rct1.ll.pathsurface.tile.red", "rct1.pathsurface.queue.blue", "rct1.aa.pathsurface.queue.red",
-              "rct1.aa.pathsurface.queue.yellow", "rct1.aa.pathsurface.queue.green" });
+            { "rct1.footpath_surface.tarmac", "rct1.footpath_surface.dirt", "rct1.footpath_surface.crazy_paving",
+              "rct1.footpath_surface.tiles_brown", "rct1aa.footpath_surface.ash", "rct1aa.footpath_surface.tarmac_green",
+              "rct1aa.footpath_surface.tarmac_brown", "rct1aa.footpath_surface.tiles_grey",
+              "rct1aa.footpath_surface.tarmac_red", "rct1ll.footpath_surface.tiles_green", "rct1ll.footpath_surface.tiles_red",
+              "rct1.footpath_surface.queue_blue", "rct1aa.footpath_surface.queue_red", "rct1aa.footpath_surface.queue_yellow",
+              "rct1aa.footpath_surface.queue_green" });
 
-        _footpathRailingsEntries.AddRange(
-            { "rct2.railings.wood", "rct1.ll.railings.space", "rct1.ll.railings.bamboo", "rct2.railings.concrete" });
+        _footpathRailingsEntries.AddRange({ "rct2.footpath_railings.wood", "rct1ll.footpath_railings.space",
+                                            "rct1ll.footpath_railings.bamboo", "rct2.footpath_railings.concrete" });
 
         // Add default surfaces
-        _terrainSurfaceEntries.AddRange({ "rct2.surface.grass", "rct2.surface.sand", "rct2.surface.dirt", "rct2.surface.rock",
-                                          "rct2.surface.martian", "rct2.surface.chequerboard", "rct2.surface.grassclumps",
-                                          "rct2.surface.ice", "rct2.surface.gridred", "rct2.surface.gridyellow",
-                                          "rct2.surface.gridpurple", "rct2.surface.gridgreen", "rct2.surface.sandred",
-                                          "rct2.surface.sandbrown", "rct1.aa.surface.roofred", "rct1.ll.surface.roofgrey",
-                                          "rct1.ll.surface.rust", "rct1.ll.surface.wood" });
+        _terrainSurfaceEntries.AddRange(
+            { "rct2.terrain_surface.grass", "rct2.terrain_surface.sand", "rct2.terrain_surface.dirt",
+              "rct2.terrain_surface.rock", "rct2.terrain_surface.martian", "rct2.terrain_surface.chequerboard",
+              "rct2.terrain_surface.grass_clumps", "rct2.terrain_surface.ice", "rct2.terrain_surface.grid_red",
+              "rct2.terrain_surface.grid_yellow", "rct2.terrain_surface.grid_purple", "rct2.terrain_surface.grid_green",
+              "rct2.terrain_surface.sand_red", "rct2.terrain_surface.sand_brown", "rct1aa.terrain_surface.roof_red",
+              "rct1ll.terrain_surface.roof_grey", "rct1ll.terrain_surface.rust", "rct1ll.terrain_surface.wood" });
 
         // Add default edges
-        _terrainEdgeEntries.AddRange({ "rct2.edge.rock", "rct2.edge.woodred", "rct2.edge.woodblack", "rct2.edge.ice",
-                                       "rct1.edge.brick", "rct1.edge.iron", "rct1.aa.edge.grey", "rct1.aa.edge.yellow",
-                                       "rct1.aa.edge.red", "rct1.ll.edge.purple", "rct1.ll.edge.green",
-                                       "rct1.ll.edge.stonebrown", "rct1.ll.edge.stonegrey", "rct1.ll.edge.skyscrapera",
-                                       "rct1.ll.edge.skyscraperb" });
+        _terrainEdgeEntries.AddRange({ "rct2.terrain_edge.rock", "rct2.terrain_edge.wood_red", "rct2.terrain_edge.wood_black",
+                                       "rct2.terrain_edge.ice", "rct1.terrain_edge.brick", "rct1.terrain_edge.iron",
+                                       "rct1aa.terrain_edge.grey", "rct1aa.terrain_edge.yellow", "rct1aa.terrain_edge.red",
+                                       "rct1ll.terrain_edge.purple", "rct1ll.terrain_edge.green",
+                                       "rct1ll.terrain_edge.stone_brown", "rct1ll.terrain_edge.stone_grey",
+                                       "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b" });
     }
 
     void AddAvailableEntriesFromResearchList()
@@ -598,6 +601,10 @@ private:
                             // This switch processes only ObjectTypes valid for scenery
                             break;
                     }
+                }
+                else
+                {
+                    log_error("Cannot find object %s", objectName);
                 }
             }
         }
@@ -1483,17 +1490,17 @@ private:
         AppendRequiredObjects(
             result, ObjectType::Banners,
             std::vector<std::string>({
-                "rct2.bn1",
-                "rct2.bn2",
-                "rct2.bn3",
-                "rct2.bn4",
-                "rct2.bn5",
-                "rct2.bn6",
-                "rct2.bn7",
-                "rct2.bn8",
-                "rct2.bn9",
+                "rct2.footpath_banner.bn1",
+                "rct2.footpath_banner.bn2",
+                "rct2.footpath_banner.bn3",
+                "rct2.footpath_banner.bn4",
+                "rct2.footpath_banner.bn5",
+                "rct2.footpath_banner.bn6",
+                "rct2.footpath_banner.bn7",
+                "rct2.footpath_banner.bn8",
+                "rct2.footpath_banner.bn9",
             }));
-        AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.pkent1" }));
+        AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.park_entrance.pkent1" }));
         AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
         AppendRequiredObjects(result, ObjectType::TerrainSurface, _terrainSurfaceEntries);
         AppendRequiredObjects(result, ObjectType::TerrainEdge, _terrainEdgeEntries);

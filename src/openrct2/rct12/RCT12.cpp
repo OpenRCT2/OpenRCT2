@@ -1350,9 +1350,9 @@ RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
 }
 
 static constexpr std::string_view _stationStyles[] = {
-    "rct2.station.plain",         "rct2.station.wooden", "rct2.station.canvastent", "rct2.station.castlegrey",
-    "rct2.station.castlebrown",   "rct2.station.jungle", "rct2.station.log",        "rct2.station.classical",
-    "rct2.station.abstract",      "rct2.station.snow",   "rct2.station.pagoda",     "rct2.station.space",
+    "rct2.station.plain",         "rct2.station.wooden", "rct2.station.canvas_tent", "rct2.station.castle_grey",
+    "rct2.station.castle_brown",  "rct2.station.jungle", "rct2.station.log",         "rct2.station.classical",
+    "rct2.station.abstract",      "rct2.station.snow",   "rct2.station.pagoda",      "rct2.station.space",
     "openrct2.station.noentrance"
 };
 
@@ -1390,41 +1390,41 @@ std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
 void SetDefaultRCT2TerrainObjects(ObjectList& objectList)
 {
     // Surfaces
-    objectList.SetObject(ObjectType::TerrainSurface, 0, "rct2.surface.grass");
-    objectList.SetObject(ObjectType::TerrainSurface, 1, "rct2.surface.sand");
-    objectList.SetObject(ObjectType::TerrainSurface, 2, "rct2.surface.dirt");
-    objectList.SetObject(ObjectType::TerrainSurface, 3, "rct2.surface.rock");
-    objectList.SetObject(ObjectType::TerrainSurface, 4, "rct2.surface.martian");
-    objectList.SetObject(ObjectType::TerrainSurface, 5, "rct2.surface.chequerboard");
-    objectList.SetObject(ObjectType::TerrainSurface, 6, "rct2.surface.grassclumps");
-    objectList.SetObject(ObjectType::TerrainSurface, 7, "rct2.surface.ice");
-    objectList.SetObject(ObjectType::TerrainSurface, 8, "rct2.surface.gridred");
-    objectList.SetObject(ObjectType::TerrainSurface, 9, "rct2.surface.gridyellow");
-    objectList.SetObject(ObjectType::TerrainSurface, 10, "rct2.surface.gridpurple");
-    objectList.SetObject(ObjectType::TerrainSurface, 11, "rct2.surface.gridgreen");
-    objectList.SetObject(ObjectType::TerrainSurface, 12, "rct2.surface.sandred");
-    objectList.SetObject(ObjectType::TerrainSurface, 13, "rct2.surface.sandbrown");
-    objectList.SetObject(ObjectType::TerrainSurface, 14, "rct1.aa.surface.roofred");
-    objectList.SetObject(ObjectType::TerrainSurface, 15, "rct1.ll.surface.roofgrey");
-    objectList.SetObject(ObjectType::TerrainSurface, 16, "rct1.ll.surface.rust");
-    objectList.SetObject(ObjectType::TerrainSurface, 17, "rct1.ll.surface.wood");
+    objectList.SetObject(ObjectType::TerrainSurface, 0, "rct2.terrain_surface.grass");
+    objectList.SetObject(ObjectType::TerrainSurface, 1, "rct2.terrain_surface.sand");
+    objectList.SetObject(ObjectType::TerrainSurface, 2, "rct2.terrain_surface.dirt");
+    objectList.SetObject(ObjectType::TerrainSurface, 3, "rct2.terrain_surface.rock");
+    objectList.SetObject(ObjectType::TerrainSurface, 4, "rct2.terrain_surface.martian");
+    objectList.SetObject(ObjectType::TerrainSurface, 5, "rct2.terrain_surface.chequerboard");
+    objectList.SetObject(ObjectType::TerrainSurface, 6, "rct2.terrain_surface.grass_clumps");
+    objectList.SetObject(ObjectType::TerrainSurface, 7, "rct2.terrain_surface.ice");
+    objectList.SetObject(ObjectType::TerrainSurface, 8, "rct2.terrain_surface.grid_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 9, "rct2.terrain_surface.grid_yellow");
+    objectList.SetObject(ObjectType::TerrainSurface, 10, "rct2.terrain_surface.grid_purple");
+    objectList.SetObject(ObjectType::TerrainSurface, 11, "rct2.terrain_surface.grid_green");
+    objectList.SetObject(ObjectType::TerrainSurface, 12, "rct2.terrain_surface.sand_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 13, "rct2.terrain_surface.sand_brown");
+    objectList.SetObject(ObjectType::TerrainSurface, 14, "rct1aa.terrain_surface.roof_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 15, "rct1ll.terrain_surface.roof_grey");
+    objectList.SetObject(ObjectType::TerrainSurface, 16, "rct1ll.terrain_surface.rust");
+    objectList.SetObject(ObjectType::TerrainSurface, 17, "rct1ll.terrain_surface.wood");
 
     // Edges
-    objectList.SetObject(ObjectType::TerrainEdge, 0, "rct2.edge.rock");
-    objectList.SetObject(ObjectType::TerrainEdge, 1, "rct2.edge.woodred");
-    objectList.SetObject(ObjectType::TerrainEdge, 2, "rct2.edge.woodblack");
-    objectList.SetObject(ObjectType::TerrainEdge, 3, "rct2.edge.ice");
-    objectList.SetObject(ObjectType::TerrainEdge, 4, "rct1.edge.brick");
-    objectList.SetObject(ObjectType::TerrainEdge, 5, "rct1.edge.iron");
-    objectList.SetObject(ObjectType::TerrainEdge, 6, "rct1.aa.edge.grey");
-    objectList.SetObject(ObjectType::TerrainEdge, 7, "rct1.aa.edge.yellow");
-    objectList.SetObject(ObjectType::TerrainEdge, 8, "rct1.aa.edge.red");
-    objectList.SetObject(ObjectType::TerrainEdge, 9, "rct1.ll.edge.purple");
-    objectList.SetObject(ObjectType::TerrainEdge, 10, "rct1.ll.edge.green");
-    objectList.SetObject(ObjectType::TerrainEdge, 11, "rct1.ll.edge.stonebrown");
-    objectList.SetObject(ObjectType::TerrainEdge, 12, "rct1.ll.edge.stonegrey");
-    objectList.SetObject(ObjectType::TerrainEdge, 13, "rct1.ll.edge.skyscrapera");
-    objectList.SetObject(ObjectType::TerrainEdge, 14, "rct1.ll.edge.skyscraperb");
+    objectList.SetObject(ObjectType::TerrainEdge, 0, "rct2.terrain_edge.rock");
+    objectList.SetObject(ObjectType::TerrainEdge, 1, "rct2.terrain_edge.wood_red");
+    objectList.SetObject(ObjectType::TerrainEdge, 2, "rct2.terrain_edge.wood_black");
+    objectList.SetObject(ObjectType::TerrainEdge, 3, "rct2.terrain_edge.ice");
+    objectList.SetObject(ObjectType::TerrainEdge, 4, "rct1.terrain_edge.brick");
+    objectList.SetObject(ObjectType::TerrainEdge, 5, "rct1.terrain_edge.iron");
+    objectList.SetObject(ObjectType::TerrainEdge, 6, "rct1aa.terrain_edge.grey");
+    objectList.SetObject(ObjectType::TerrainEdge, 7, "rct1aa.terrain_edge.yellow");
+    objectList.SetObject(ObjectType::TerrainEdge, 8, "rct1aa.terrain_edge.red");
+    objectList.SetObject(ObjectType::TerrainEdge, 9, "rct1ll.terrain_edge.purple");
+    objectList.SetObject(ObjectType::TerrainEdge, 10, "rct1ll.terrain_edge.green");
+    objectList.SetObject(ObjectType::TerrainEdge, 11, "rct1ll.terrain_edge.stone_brown");
+    objectList.SetObject(ObjectType::TerrainEdge, 12, "rct1ll.terrain_edge.stone_grey");
+    objectList.SetObject(ObjectType::TerrainEdge, 13, "rct1ll.terrain_edge.skyscraper_a");
+    objectList.SetObject(ObjectType::TerrainEdge, 14, "rct1ll.terrain_edge.skyscraper_b");
 }
 
 void RCT12AddDefaultObjects(ObjectList& objectList)
