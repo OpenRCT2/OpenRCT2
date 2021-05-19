@@ -1199,6 +1199,7 @@ namespace OpenRCT2
             ReadWriteEntityCommon(cs, entity);
 
             auto guest = entity.As<Guest>();
+            auto staff = entity.As<Staff>();
 
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
@@ -1237,7 +1238,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    cs.Ignore<uint8_t>();
+                    cs.ReadWrite(staff->AssignedStaffType);
                 }
             }
 
@@ -1362,7 +1363,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    cs.Ignore<uint16_t>();
+                    cs.ReadWrite(staff->MechanicTimeSinceCall);
                 }
             }
 
@@ -1426,7 +1427,7 @@ namespace OpenRCT2
                 {
                     cs.Ignore<money32>();
                     cs.Ignore<money32>();
-                    cs.Ignore<int32_t>();
+                    cs.ReadWrite(staff->HireDate);
                     cs.Ignore<int8_t>();
                     cs.Ignore<ride_id_t>();
                     cs.Ignore<uint16_t>();
@@ -1455,7 +1456,7 @@ namespace OpenRCT2
                 else
                 {
                     cs.Ignore<ride_id_t>();
-                    cs.Ignore<uint8_t>();
+                    cs.ReadWrite(staff->StaffOrders);
                     cs.Ignore<ride_id_t>();
                 }
             }
@@ -1504,12 +1505,12 @@ namespace OpenRCT2
                 else
                 {
                     cs.Ignore<uint8_t>();
+                    cs.ReadWrite(staff->StaffMowingTimeout);
                     cs.Ignore<uint8_t>();
-                    cs.Ignore<uint8_t>();
-                    cs.Ignore<money16>();
-                    cs.Ignore<money16>();
-                    cs.Ignore<money16>();
-                    cs.Ignore<money16>();
+                    cs.ReadWrite(staff->StaffLawnsMown);
+                    cs.ReadWrite(staff->StaffGardensWatered);
+                    cs.ReadWrite(staff->StaffLitterSwept);
+                    cs.ReadWrite(staff->StaffBinsEmptied);
                     cs.Ignore<uint8_t>();
                     cs.Ignore<uint8_t>();
                     cs.Ignore<uint8_t>();
@@ -1645,6 +1646,11 @@ namespace OpenRCT2
     {
         ReadWritePeep(os, cs, guest);
 
+        if (os.GetHeader().TargetVersion <= 1)
+        {
+            return;
+        }
+
         cs.ReadWrite(guest.GuestNumRides);
         cs.ReadWrite(guest.GuestNextInQueue);
         cs.ReadWrite(guest.ParkEntryTime);
@@ -1778,6 +1784,22 @@ namespace OpenRCT2
         {
             SetPatrolArea(entity, patrolArea);
         }
+
+        if (os.GetHeader().TargetVersion <= 1)
+        {
+            return;
+        }
+
+        cs.ReadWrite(entity.AssignedStaffType);
+        cs.ReadWrite(entity.MechanicTimeSinceCall);
+        cs.ReadWrite(entity.HireDate);
+        cs.ReadWrite(entity.StaffId);
+        cs.ReadWrite(entity.StaffOrders);
+        cs.ReadWrite(entity.StaffMowingTimeout);
+        cs.ReadWrite(entity.StaffLawnsMown);
+        cs.ReadWrite(entity.StaffGardensWatered);
+        cs.ReadWrite(entity.StaffLitterSwept);
+        cs.ReadWrite(entity.StaffBinsEmptied);
     }
 
     template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, SteamParticle& steamParticle)
