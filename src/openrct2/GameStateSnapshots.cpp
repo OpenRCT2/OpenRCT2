@@ -309,7 +309,10 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, PreviousRideTimeOut);
         for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
         {
-            COMPARE_FIELD(Guest, Thoughts[i]);
+            COMPARE_FIELD(Guest, Thoughts[i].type);
+            COMPARE_FIELD(Guest, Thoughts[i].argument);
+            COMPARE_FIELD(Guest, Thoughts[i].freshness);
+            COMPARE_FIELD(Guest, Thoughts[i].fresh_timeout);
         }
         COMPARE_FIELD(Guest, GuestHeadingToRideId);
         COMPARE_FIELD(Guest, GuestIsLostCountdown);
