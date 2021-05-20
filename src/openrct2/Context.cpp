@@ -1189,7 +1189,6 @@ namespace OpenRCT2
                     }
                 }
             }
-            delete scanner;
         }
 
 #ifndef DISABLE_HTTP
