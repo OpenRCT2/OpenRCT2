@@ -443,7 +443,7 @@ void ScriptEngine::LoadPlugins()
     if (Path::DirectoryExists(base))
     {
         auto pattern = Path::Combine(base, "*.js");
-        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(pattern, true));
+        auto scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {
             auto path = std::string(scanner->GetPath());

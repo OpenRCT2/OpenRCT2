@@ -536,7 +536,7 @@ namespace ThemeManager
         }
 
         auto themesPattern = Path::Combine(GetThemePath(), "*.json");
-        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(themesPattern, true));
+        auto scanner = Path::ScanDirectory(themesPattern, true);
         while (scanner->Next())
         {
             auto fileInfo = scanner->GetFileInfo();

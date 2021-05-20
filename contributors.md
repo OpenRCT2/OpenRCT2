@@ -92,6 +92,7 @@ The following people are not part of the development team, but have been contrib
 * Helio Batimarqui (batimarqui) - Misc.
 * Keith Stellyes (keithstellyes) - Misc.
 * Bas Cantrijn (Basssiiie) - Misc.
+* Adrian Zdanowicz (CookiePLMonster) - Misc.
 
 ## Bug fixes
 * (halfbro)
