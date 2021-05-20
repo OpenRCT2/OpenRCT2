@@ -837,7 +837,7 @@ namespace OpenRCT2
 
         void ReadWriteBannersChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::BANNERS, [this, &os](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::BANNERS, [&os](OrcaStream::ChunkStream& cs) {
                 auto version = os.GetHeader().TargetVersion;
                 if (cs.GetMode() == OrcaStream::Mode::WRITING)
                 {
