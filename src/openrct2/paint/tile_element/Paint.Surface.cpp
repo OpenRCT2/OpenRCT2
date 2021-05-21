@@ -657,8 +657,7 @@ static void viewport_surface_draw_tile_side_bottom(
         if (curHeight != cornerHeight1 && curHeight != cornerHeight2)
         {
             uint32_t image_id = base_image_id + image_offset;
-            PaintAddImageAsParent(
-                session, image_id, { offset.x, offset.y, curHeight * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
+            PaintAddImageAsParent(session, image_id, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
             curHeight++;
         }
     }
@@ -682,8 +681,7 @@ static void viewport_surface_draw_tile_side_bottom(
             }
 
             const uint32_t image_id = base_image_id + image_offset;
-            PaintAddImageAsParent(
-                session, image_id, { offset.x, offset.y, curHeight * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
+            PaintAddImageAsParent(session, image_id, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
 
             return;
         }
@@ -698,9 +696,7 @@ static void viewport_surface_draw_tile_side_bottom(
 
             if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
-                PaintAddImageAsParent(
-                    session, base_image_id, { offset.x, offset.y, curHeight * COORDS_Z_PER_TINY_Z },
-                    { bounds.x, bounds.y, 15 });
+                PaintAddImageAsParent(session, base_image_id, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
 
                 curHeight++;
                 continue;
@@ -729,8 +725,8 @@ static void viewport_surface_draw_tile_side_bottom(
 
         uint32_t image_id = get_tunnel_image(edgeStyle, tunnelType) + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
         PaintAddImageAsParent(
-            session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0,
-            boundBoxOffsetZ);
+            session, image_id, { offset, zOffset }, { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 },
+            { 0, 0, boundBoxOffsetZ });
 
         boundBoxOffsetZ = curHeight * COORDS_Z_PER_TINY_Z;
         boundBoxLength = _tunnelHeights[tunnelType][1] * 16;
@@ -743,8 +739,9 @@ static void viewport_surface_draw_tile_side_bottom(
 
         image_id = get_tunnel_image(edgeStyle, tunnelType) + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
         PaintAddImageAsParent(
-            session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1,
-            curHeight * COORDS_Z_PER_TINY_Z, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ);
+            session, image_id, { offset, curHeight * COORDS_Z_PER_TINY_Z },
+            { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 },
+            { tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ });
 
         curHeight += _tunnelHeights[tunnelType][0];
         tunnelIndex++;
@@ -893,8 +890,7 @@ static void viewport_surface_draw_tile_side_top(
 
     while (cur_height < cornerHeight1 && cur_height < neighbourCornerHeight1)
     {
-        PaintAddImageAsParent(
-            session, base_image_id, { offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
+        PaintAddImageAsParent(session, base_image_id, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
         cur_height++;
     }
 
@@ -910,8 +906,7 @@ static void viewport_surface_draw_tile_side_top(
     }
 
     const uint32_t image_id = base_image_id + image_offset;
-    PaintAddImageAsParent(
-        session, image_id, { offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
+    PaintAddImageAsParent(session, image_id, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
 }
 
 /**
@@ -1395,9 +1390,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             }
 
             PaintAddImageAsParent(
-                session, image_id, { fenceData.offset.x, fenceData.offset.y, local_height },
-                { fenceData.box_size.x, fenceData.box_size.y, 9 },
-                { fenceData.box_offset.x, fenceData.box_offset.y, local_height + 1 });
+                session, image_id, { fenceData.offset, local_height }, { fenceData.box_size, 9 },
+                { fenceData.box_offset, local_height + 1 });
         }
     }
 
