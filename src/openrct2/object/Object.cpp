@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -252,18 +252,11 @@ bool ObjectAsset::IsAvailable() const
     }
 }
 
-size_t ObjectAsset::GetSize() const
+uint64_t ObjectAsset::GetSize() const
 {
     if (_zipPath.empty())
     {
-        try
-        {
-            return File::ReadAllBytes(_path).size();
-        }
-        catch (...)
-        {
-            return 0;
-        }
+        return File::GetSize(_path);
     }
     else
     {
