@@ -165,13 +165,9 @@ namespace OpenRCT2
 
     void FileStream::Read(void* buffer, uint64_t length)
     {
-        uint64_t remainingBytes = GetLength() - GetPosition();
-        if (length <= remainingBytes)
+        if (fread(buffer, 1, static_cast<size_t>(length), _file) == length)
         {
-            if (fread(buffer, static_cast<size_t>(length), 1, _file) == 1)
-            {
-                return;
-            }
+            return;
         }
         throw IOException("Attempted to read past end of file.");
     }
