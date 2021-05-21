@@ -20,6 +20,7 @@
 - Fix: [#14587] Confusing message when joining server with mismatched network version.
 - Fix: [#14604] American-style Steam Trains are not imported correctly from RCT1 saves.
 - Fix: [#14638] The “About OpenRCT2” window cannot be themed.
+- Fix: [#14710] Ride/Track Design preview does not show if it costs more money than available.
 - Improved: [#14712]: Improve startup times.
 
 0.3.3 (2021-03-13)
