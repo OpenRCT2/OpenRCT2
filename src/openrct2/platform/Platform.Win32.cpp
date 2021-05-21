@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -552,6 +552,21 @@ namespace Platform
             CloseHandle(hFile);
         }
         return lastModified;
+    }
+
+    uint64_t GetFileSize(std::string_view path)
+    {
+        uint64_t size = 0;
+        auto pathW = String::ToWideChar(path);
+        WIN32_FILE_ATTRIBUTE_DATA attributes;
+        if (GetFileAttributesExW(pathW.c_str(), GetFileExInfoStandard, &attributes) != FALSE)
+        {
+            ULARGE_INTEGER fileSize;
+            fileSize.LowPart = attributes.nFileSizeLow;
+            fileSize.HighPart = attributes.nFileSizeHigh;
+            size = fileSize.QuadPart;
+        }
+        return size;
     }
 
     bool ShouldIgnoreCase()

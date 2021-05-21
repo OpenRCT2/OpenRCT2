@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -175,6 +175,19 @@ namespace Platform
             lastModified = statInfo.st_mtime;
         }
         return lastModified;
+    }
+
+    uint64_t GetFileSize(std::string_view path)
+    {
+        uint64_t size = 0;
+        struct stat statInfo
+        {
+        };
+        if (stat(std::string(path).c_str(), &statInfo) == 0)
+        {
+            size = statInfo.st_size;
+        }
+        return size;
     }
 
     bool ShouldIgnoreCase()
