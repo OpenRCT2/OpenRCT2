@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,8 @@
 
 #ifndef _WIN32
 #    include <sys/stat.h>
+#else
+#    include <io.h>
 #endif
 
 #if defined(__linux__) && !defined(__ANDROID__)
@@ -98,9 +100,12 @@ namespace OpenRCT2
             throw IOException(String::StdFormat("Unable to open '%s'", path));
         }
 
-        Seek(0, STREAM_SEEK_END);
-        _fileSize = GetPosition();
-        Seek(0, STREAM_SEEK_BEGIN);
+#ifdef _WIN32
+        _fileSize = _filelengthi64(_fileno(_file));
+#else
+        std::error_code ec;
+        _fileSize = fs::file_size(fs::u8path(path), ec);
+#endif
 
         _ownsFilePtr = true;
     }

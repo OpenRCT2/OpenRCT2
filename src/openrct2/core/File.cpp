@@ -57,8 +57,7 @@ namespace File
         }
 
         std::vector<uint8_t> result;
-        fs.seekg(0, std::ios::end);
-        auto fsize = static_cast<size_t>(fs.tellg());
+        auto fsize = Platform::GetFileSize(path);
         if (fsize > SIZE_MAX)
         {
             std::string message = String::StdFormat(
@@ -68,7 +67,6 @@ namespace File
         else
         {
             result.resize(fsize);
-            fs.seekg(0);
             fs.read(reinterpret_cast<char*>(result.data()), result.size());
             fs.exceptions(fs.failbit);
         }
