@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -83,6 +83,11 @@ public:
         ReadChunk(&result, sizeof(result));
         return result;
     }
+
+    /**
+     * Frees the chunk data, to be used when destructing SawyerChunks
+     */
+    static void FreeChunk(void* data);
 
 private:
     static size_t DecodeChunk(void* dst, size_t dstCapacity, const void* src, const sawyercoding_chunk_header& header);

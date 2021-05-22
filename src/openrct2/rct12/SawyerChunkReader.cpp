@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -156,6 +156,11 @@ void SawyerChunkReader::ReadChunk(void* dst, size_t length)
             std::fill_n(offset, remainingLength, 0x00);
         }
     }
+}
+
+void SawyerChunkReader::FreeChunk(void* data)
+{
+    FreeLargeTempBuffer(data);
 }
 
 size_t SawyerChunkReader::DecodeChunk(void* dst, size_t dstCapacity, const void* src, const sawyercoding_chunk_header& header)
@@ -315,9 +320,7 @@ void* SawyerChunkReader::AllocateLargeTempBuffer()
 void* SawyerChunkReader::FinaliseLargeTempBuffer(void* buffer, size_t len)
 {
 #ifdef __USE_HEAP_ALLOC__
-    auto finalBuffer = std::malloc(len);
-    std::memcpy(finalBuffer, buffer, len);
-    HeapFree(GetProcessHeap(), 0, buffer);
+    auto finalBuffer = HeapReAlloc(GetProcessHeap(), 0, buffer, len);
 #else
     auto finalBuffer = static_cast<uint8_t*>(std::realloc(buffer, len));
 #endif
