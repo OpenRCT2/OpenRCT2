@@ -27,8 +27,9 @@ constexpr const char* EXCEPTION_MSG_DESTINATION_TOO_SMALL = "Chunk data larger t
 constexpr const char* EXCEPTION_MSG_INVALID_CHUNK_ENCODING = "Invalid chunk encoding.";
 constexpr const char* EXCEPTION_MSG_ZERO_SIZED_CHUNK = "Encountered zero-sized chunk.";
 
-SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream)
+SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream, bool persistentChunks)
     : _stream(stream)
+    , _createsPersistentChunks(persistentChunks)
 {
 }
 
@@ -78,7 +79,10 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
                     {
                         throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
                     }
-                    buffer = static_cast<uint8_t*>(FinaliseLargeTempBuffer(buffer, uncompressedLength));
+                    if (_createsPersistentChunks)
+                    {
+                        buffer = static_cast<uint8_t*>(FinaliseLargeTempBuffer(buffer, uncompressedLength));
+                    }
                     return std::make_shared<SawyerChunk>(
                         static_cast<SAWYER_ENCODING>(header.encoding), buffer, uncompressedLength);
                 }
@@ -126,7 +130,10 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
         {
             throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
         }
-        buffer = static_cast<uint8_t*>(FinaliseLargeTempBuffer(buffer, uncompressedLength));
+        if (_createsPersistentChunks)
+        {
+            buffer = static_cast<uint8_t*>(FinaliseLargeTempBuffer(buffer, uncompressedLength));
+        }
         return std::make_shared<SawyerChunk>(SAWYER_ENCODING::RLE, buffer, uncompressedLength);
     }
     catch (const std::exception&)
