@@ -310,8 +310,7 @@ namespace GameActions
 
         if (result->Error == GameActions::Status::Ok)
         {
-            if ((action->GetFlags() & GAME_COMMAND_FLAG_APPLY)
-                && !finance_check_affordability(result->Cost, action->GetFlags()))
+            if (!finance_check_affordability(result->Cost, action->GetFlags()))
             {
                 result->Error = GameActions::Status::InsufficientFunds;
                 result->ErrorTitle = STR_CANT_DO_THIS;

@@ -75,7 +75,7 @@ bool finance_check_money_required(uint32_t flags)
  */
 bool finance_check_affordability(money32 cost, uint32_t flags)
 {
-    return cost <= 0 || !finance_check_money_required(flags) || cost <= gCash;
+    return !finance_check_money_required(flags) || cost <= 0 || cost <= gCash;
 }
 
 /**
