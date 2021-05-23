@@ -63,6 +63,11 @@ static void paint_swinging_ship_structure(
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
     Vehicle* vehicle = nullptr;
 
     int8_t xOffset = !(direction & 1) ? axisOffset : 0;
