@@ -408,6 +408,9 @@ void window_text_input_open(
 
 void window_text_input_key(rct_window* w, char keychar)
 {
+    const auto wndNumber = w->number;
+    const auto wndClass = w->classification;
+
     // If the return button is pressed stop text input
     if (keychar == '\r')
     {
@@ -417,5 +420,9 @@ void window_text_input_key(rct_window* w, char keychar)
             textInputWindow->OnReturnPressed();
         }
     }
-    w->Invalidate();
+
+    // The window can be potentially closed within a callback, we need to check if its still alive.
+    w = window_find_by_number(wndClass, wndNumber);
+    if (w != nullptr)
+        w->Invalidate();
 }
