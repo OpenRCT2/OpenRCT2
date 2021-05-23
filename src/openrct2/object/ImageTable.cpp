@@ -315,7 +315,7 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
         uint64_t remainingBytes = stream->GetLength() - stream->GetPosition() - headerTableSize;
         if (remainingBytes > imageDataSize)
         {
-            context->LogWarning(ObjectError::BadImageTable, "Image table size longer than expected.");
+            context->LogVerbose(ObjectError::BadImageTable, "Image table size longer than expected.");
             imageDataSize = static_cast<uint32_t>(remainingBytes);
         }
 

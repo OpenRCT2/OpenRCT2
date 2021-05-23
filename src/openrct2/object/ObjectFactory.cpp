@@ -105,10 +105,15 @@ private:
     std::string _identifier;
     bool _loadImages;
     std::string _basePath;
+    bool _wasVerbose = false;
     bool _wasWarning = false;
     bool _wasError = false;
 
 public:
+    bool WasVerbose() const
+    {
+        return _wasVerbose;
+    }
     bool WasWarning() const
     {
         return _wasWarning;
@@ -159,6 +164,16 @@ public:
             return _fileDataRetriever->GetAsset(path);
         }
         return {};
+    }
+
+    void LogVerbose(ObjectError code, const utf8* text) override
+    {
+        _wasVerbose = true;
+
+        if (!String::IsNullOrEmpty(text))
+        {
+            log_verbose("[%s] Info (%d): %s", _identifier.c_str(), code, text);
+        }
     }
 
     void LogWarning(ObjectError code, const utf8* text) override
