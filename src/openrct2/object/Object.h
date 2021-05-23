@@ -237,6 +237,7 @@ struct IReadObjectContext
     virtual std::vector<uint8_t> GetData(std::string_view path) abstract;
     virtual ObjectAsset GetAsset(std::string_view path) abstract;
 
+    virtual void LogVerbose(ObjectError code, const utf8* text) abstract;
     virtual void LogWarning(ObjectError code, const utf8* text) abstract;
     virtual void LogError(ObjectError code, const utf8* text) abstract;
 };
