@@ -1586,7 +1586,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                 {
-                    flags = 0;
+                    flags = GAME_COMMAND_FLAG_NO_SPEND;
                 }
                 if (_trackDesignPlaceIsReplay)
                 {
