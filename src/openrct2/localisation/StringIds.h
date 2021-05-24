@@ -3941,7 +3941,7 @@ enum
     STR_TILE_INSPECTOR_INVISIBLE_SHORT = 6438,
     STR_SHORTCUT_TOGGLE_INVISIBILITY = 6439,
 
-    STR_VIEWPORT_OPAQUE_WATER = 6440,
+    STR_VIEWPORT_TRANSPARENT_WATER = 6440,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

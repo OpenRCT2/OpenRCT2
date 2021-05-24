@@ -58,7 +58,7 @@ struct GeneralConfiguration
     bool disable_lightning_effect;
     bool show_guest_purchases;
     bool transparent_screenshot;
-    bool opaque_water;
+    bool transparent_water;
 
     // Localisation
     int32_t language;

@@ -1315,8 +1315,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             | EnumValue(FilterPaletteID::PaletteWater) << 19;
         PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, -1, waterHeight);
 
-        const bool opaque = (gConfigGeneral.opaque_water) && !(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-        const uint32_t overlayStart = opaque ? SPR_RCT1_WATER_OVERLAY : SPR_WATER_OVERLAY;
+        const bool transparent = gConfigGeneral.transparent_water || (session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+        const uint32_t overlayStart = transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY;
         PaintAttachToPreviousPS(session, overlayStart + image_offset, 0, 0);
 
         if (!(session->ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))

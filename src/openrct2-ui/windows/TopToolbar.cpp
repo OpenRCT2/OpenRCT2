@@ -127,7 +127,7 @@ enum FILE_MENU_DDIDX {
 
 enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
     DDIDX_UNDERGROUND_INSIDE = 0,
-    DDIDX_OPAQUE_WATER = 1,
+    DDIDX_TRANSPARENT_WATER = 1,
     DDIDX_HIDE_BASE = 2,
     DDIDX_HIDE_VERTICAL = 3,
     // separator
@@ -3612,7 +3612,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
     using namespace Dropdown;
     constexpr Item items[] = {
         ToggleOption(DDIDX_UNDERGROUND_INSIDE, STR_UNDERGROUND_VIEW),
-        ToggleOption(DDIDX_OPAQUE_WATER, STR_VIEWPORT_OPAQUE_WATER),
+        ToggleOption(DDIDX_TRANSPARENT_WATER, STR_VIEWPORT_TRANSPARENT_WATER),
         ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
         ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
         Separator(),
@@ -3642,8 +3642,8 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
     rct_viewport* mainViewport = window_get_main()->viewport;
     if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         Dropdown::SetChecked(DDIDX_UNDERGROUND_INSIDE, true);
-    if (gConfigGeneral.opaque_water)
-        Dropdown::SetChecked(DDIDX_OPAQUE_WATER, true);
+    if (gConfigGeneral.transparent_water)
+        Dropdown::SetChecked(DDIDX_TRANSPARENT_WATER, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
         Dropdown::SetChecked(DDIDX_HIDE_BASE, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
@@ -3674,7 +3674,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
     // Opaque water relies on RCT1 sprites.
     if (!is_csg_loaded())
     {
-        Dropdown::SetDisabled(DDIDX_OPAQUE_WATER, true);
+        Dropdown::SetDisabled(DDIDX_TRANSPARENT_WATER, true);
     }
 }
 
@@ -3692,8 +3692,8 @@ static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex)
             case DDIDX_UNDERGROUND_INSIDE:
                 w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 break;
-            case DDIDX_OPAQUE_WATER:
-                gConfigGeneral.opaque_water ^= 1;
+            case DDIDX_TRANSPARENT_WATER:
+                gConfigGeneral.transparent_water ^= 1;
                 config_save_default();
                 break;
             case DDIDX_HIDE_BASE:

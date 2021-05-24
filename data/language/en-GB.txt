@@ -3682,7 +3682,7 @@ STR_6436    :Toggle invisibility
 STR_6437    :Invisible
 STR_6438    :I
 STR_6439    :Tile Inspector: Toggle invisibility
-STR_6440    :Opaque water
+STR_6440    :Transparent water
 
 #############
 # Scenarios #
