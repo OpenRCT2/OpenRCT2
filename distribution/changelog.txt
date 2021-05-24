@@ -6,6 +6,7 @@
 - Feature: [#14538] [Plugin] Add property for getting current plugin api version.
 - Feature: [#14620] [Plugin] Add properties related to guest generation.
 - Feature: [#14636] [Plugin] Add properties related to climate and weather.
+- Feature: [#14731] Opaque water (like in RCT1).
 - Change: [#14496] [Plugin] Rename Object to LoadedObject to fix conflicts with Typescript's Object interface.
 - Change: [#14536] [Plugin] Rename ListView to ListViewWidget to make it consistent with names of other widgets.
 - Fix: [#11829] Visual glitches and crashes when using RCT1 assets from mismatched or corrupt CSG1.DAT and CSG1i.DAT files.

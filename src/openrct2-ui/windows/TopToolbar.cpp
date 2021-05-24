@@ -127,19 +127,22 @@ enum FILE_MENU_DDIDX {
 
 enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
     DDIDX_UNDERGROUND_INSIDE = 0,
-    DDIDX_HIDE_BASE = 1,
-    DDIDX_HIDE_VERTICAL = 2,
-    DDIDX_SEETHROUGH_RIDES = 4,
-    DDIDX_SEETHROUGH_SCENARY = 5,
-    DDIDX_SEETHROUGH_PATHS = 6,
-    DDIDX_INVISIBLE_SUPPORTS = 7,
-    DDIDX_INVISIBLE_PEEPS = 8,
-    DDIDX_LAND_HEIGHTS = 10,
-    DDIDX_TRACK_HEIGHTS = 11,
-    DDIDX_PATH_HEIGHTS = 12,
-    // 13 is a separator
-    DDIDX_VIEW_CLIPPING = 14,
-    DDIDX_HIGHLIGHT_PATH_ISSUES = 15,
+    DDIDX_TRANSPARENT_WATER = 1,
+    DDIDX_HIDE_BASE = 2,
+    DDIDX_HIDE_VERTICAL = 3,
+    // separator
+    DDIDX_SEETHROUGH_RIDES = 5,
+    DDIDX_SEETHROUGH_SCENERY = 6,
+    DDIDX_SEETHROUGH_PATHS = 7,
+    DDIDX_INVISIBLE_SUPPORTS = 8,
+    DDIDX_INVISIBLE_PEEPS = 9,
+    // separator
+    DDIDX_LAND_HEIGHTS = 11,
+    DDIDX_TRACK_HEIGHTS = 12,
+    DDIDX_PATH_HEIGHTS = 13,
+    // separator
+    DDIDX_VIEW_CLIPPING = 15,
+    DDIDX_HIGHLIGHT_PATH_ISSUES = 16,
 
     TOP_TOOLBAR_VIEW_MENU_COUNT
 };
@@ -3607,14 +3610,14 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
 static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
 {
     using namespace Dropdown;
-
     constexpr Item items[] = {
         ToggleOption(DDIDX_UNDERGROUND_INSIDE, STR_UNDERGROUND_VIEW),
+        ToggleOption(DDIDX_TRANSPARENT_WATER, STR_VIEWPORT_TRANSPARENT_WATER),
         ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
         ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
         Separator(),
         ToggleOption(DDIDX_SEETHROUGH_RIDES, STR_SEE_THROUGH_RIDES),
-        ToggleOption(DDIDX_SEETHROUGH_SCENARY, STR_SEE_THROUGH_SCENERY),
+        ToggleOption(DDIDX_SEETHROUGH_SCENERY, STR_SEE_THROUGH_SCENERY),
         ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
         ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
         ToggleOption(DDIDX_INVISIBLE_PEEPS, STR_INVISIBLE_PEOPLE),
@@ -3626,6 +3629,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
         ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
         ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
     };
+
     static_assert(ItemIDsMatchIndices(items));
 
     SetItems(items);
@@ -3637,33 +3641,41 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
     // Set checkmarks
     rct_viewport* mainViewport = window_get_main()->viewport;
     if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        Dropdown::SetChecked(0, true);
+        Dropdown::SetChecked(DDIDX_UNDERGROUND_INSIDE, true);
+    if (gConfigGeneral.transparent_water)
+        Dropdown::SetChecked(DDIDX_TRANSPARENT_WATER, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
-        Dropdown::SetChecked(1, true);
+        Dropdown::SetChecked(DDIDX_HIDE_BASE, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
-        Dropdown::SetChecked(2, true);
+        Dropdown::SetChecked(DDIDX_HIDE_VERTICAL, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-        Dropdown::SetChecked(4, true);
+        Dropdown::SetChecked(DDIDX_SEETHROUGH_RIDES, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-        Dropdown::SetChecked(5, true);
+        Dropdown::SetChecked(DDIDX_SEETHROUGH_SCENERY, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
-        Dropdown::SetChecked(6, true);
+        Dropdown::SetChecked(DDIDX_SEETHROUGH_PATHS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-        Dropdown::SetChecked(7, true);
+        Dropdown::SetChecked(DDIDX_INVISIBLE_SUPPORTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-        Dropdown::SetChecked(8, true);
+        Dropdown::SetChecked(DDIDX_INVISIBLE_PEEPS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
-        Dropdown::SetChecked(10, true);
+        Dropdown::SetChecked(DDIDX_LAND_HEIGHTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
-        Dropdown::SetChecked(11, true);
+        Dropdown::SetChecked(DDIDX_TRACK_HEIGHTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
-        Dropdown::SetChecked(12, true);
+        Dropdown::SetChecked(DDIDX_PATH_HEIGHTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_CLIP_VIEW)
         Dropdown::SetChecked(DDIDX_VIEW_CLIPPING, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
         Dropdown::SetChecked(DDIDX_HIGHLIGHT_PATH_ISSUES, true);
 
     gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
+
+    // Opaque water relies on RCT1 sprites.
+    if (!is_csg_loaded())
+    {
+        Dropdown::SetDisabled(DDIDX_TRANSPARENT_WATER, true);
+    }
 }
 
 /**
@@ -3680,6 +3692,10 @@ static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex)
             case DDIDX_UNDERGROUND_INSIDE:
                 w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 break;
+            case DDIDX_TRANSPARENT_WATER:
+                gConfigGeneral.transparent_water ^= 1;
+                config_save_default();
+                break;
             case DDIDX_HIDE_BASE:
                 w->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
                 break;
@@ -3689,7 +3705,7 @@ static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex)
             case DDIDX_SEETHROUGH_RIDES:
                 w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
                 break;
-            case DDIDX_SEETHROUGH_SCENARY:
+            case DDIDX_SEETHROUGH_SCENERY:
                 w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
                 break;
             case DDIDX_SEETHROUGH_PATHS:
