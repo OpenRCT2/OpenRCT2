@@ -182,6 +182,22 @@ static SceneryTabInfo* GetSceneryTabInfoForGroup(ObjectEntryIndex sceneryGroupIn
     }
 }
 
+static std::optional<size_t> window_scenery_find_tab_with_scenery(const ScenerySelection& scenery)
+{
+    for (size_t i = 0; i < _tabEntries.size(); i++)
+    {
+        const auto& tabInfo = _tabEntries[i];
+        for (const auto& entry : tabInfo.Entries)
+        {
+            if (entry == scenery)
+            {
+                return i;
+            }
+        }
+    }
+    return {};
+}
+
 static void init_scenery_entry(
     const rct_scenery_entry* sceneryEntry, const ScenerySelection& selection, ObjectEntryIndex sceneryGroupIndex)
 {
@@ -189,24 +205,28 @@ static void init_scenery_entry(
 
     if (IsSceneryAvailableToBuild(selection))
     {
-        // Check if in any other groups
-        for (const auto& otherTab : _tabEntries)
+        // Get current tab
+        auto tabIndex = window_scenery_find_tab_with_scenery(selection);
+
+        // Add scenery to primary group (usually trees or path additions)
+        if (sceneryGroupIndex != OBJECT_ENTRY_INDEX_NULL)
         {
-            if (otherTab.Contains(selection))
+            auto tabInfo = GetSceneryTabInfoForGroup(sceneryGroupIndex);
+            if (tabInfo != nullptr)
             {
+                tabInfo->AddEntry(selection);
                 return;
             }
         }
 
-        auto tabInfo = GetSceneryTabInfoForGroup(sceneryGroupIndex);
-        if (tabInfo == nullptr)
+        // If scenery is no tab, add it to misc
+        if (!tabIndex)
         {
-            // Misc tab
-            tabInfo = GetSceneryTabInfoForGroup(OBJECT_ENTRY_INDEX_NULL);
-        }
-        if (tabInfo != nullptr)
-        {
-            tabInfo->AddEntry(selection);
+            auto tabInfo = GetSceneryTabInfoForGroup(OBJECT_ENTRY_INDEX_NULL);
+            if (tabInfo != nullptr)
+            {
+                tabInfo->AddEntry(selection);
+            }
         }
     }
 }
@@ -1346,22 +1366,6 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             topLeft.x = 0;
         }
     }
-}
-
-static std::optional<size_t> window_scenery_find_tab_with_scenery(const ScenerySelection& scenery)
-{
-    for (size_t i = 0; i < _tabEntries.size(); i++)
-    {
-        const auto& tabInfo = _tabEntries[i];
-        for (const auto& entry : tabInfo.Entries)
-        {
-            if (entry == scenery)
-            {
-                return i;
-            }
-        }
-    }
-    return {};
 }
 
 bool window_scenery_set_selected_item(const ScenerySelection& scenery)
