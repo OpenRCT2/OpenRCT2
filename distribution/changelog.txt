@@ -24,7 +24,7 @@
 - Fix: [#14682] Crash when painting Swinging Ships with invalid subtype.
 - Fix: [#14707] Crash when window is closed during text input.
 - Fix: [#14710] Ride/Track Design preview does not show if it costs more money than available.
-- Improved: [#14712]: Improve startup times.
+- Improved: [#14712, #14716]: Improve startup times.
 
 0.3.3 (2021-03-13)
 ------------------------------------------------------------------------
