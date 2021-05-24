@@ -274,7 +274,7 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
     {
         // Search recursively for any file with the target name (case insensitive)
         auto filter = Path::Combine(objectsPath, "*.dat");
-        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, true));
+        auto scanner = Path::ScanDirectory(filter, true);
         while (scanner->Next())
         {
             auto currentName = Path::GetFileName(scanner->GetPathRelative());
@@ -315,7 +315,7 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
         uint64_t remainingBytes = stream->GetLength() - stream->GetPosition() - headerTableSize;
         if (remainingBytes > imageDataSize)
         {
-            context->LogWarning(ObjectError::BadImageTable, "Image table size longer than expected.");
+            context->LogVerbose(ObjectError::BadImageTable, "Image table size longer than expected.");
             imageDataSize = static_cast<uint32_t>(remainingBytes);
         }
 

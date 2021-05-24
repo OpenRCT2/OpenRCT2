@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "SawyerChunk.h"
 
 #include "../core/Memory.hpp"
+#include "SawyerChunkReader.h"
 
 SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, void* data, size_t length)
 {
@@ -20,5 +21,5 @@ SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, void* data, size_t length)
 
 SawyerChunk::~SawyerChunk()
 {
-    Memory::Free(_data);
+    SawyerChunkReader::FreeChunk(_data);
 }

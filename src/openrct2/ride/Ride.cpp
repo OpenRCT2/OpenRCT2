@@ -6671,6 +6671,8 @@ void sub_6CB945(Ride* ride)
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
+            if (tileElement->base_height != locationCoords.z)
+                continue;
             if (tileElement->AsEntrance()->GetRideIndex() != ride->id)
                 continue;
             if (tileElement->AsEntrance()->GetEntranceType() > ENTRANCE_TYPE_RIDE_EXIT)

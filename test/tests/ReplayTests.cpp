@@ -53,7 +53,7 @@ static std::vector<ReplayTestData> GetReplayFiles()
     std::string replayPathPattern = Path::Combine(replayPath, "*.parkrep");
     std::vector<std::string> files;
 
-    std::unique_ptr<IFileScanner> scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(replayPathPattern, true));
+    auto scanner = Path::ScanDirectory(replayPathPattern, true);
     while (scanner->Next())
     {
         ReplayTestData test;

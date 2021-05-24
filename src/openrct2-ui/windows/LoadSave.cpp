@@ -913,7 +913,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
             safe_strcat_path(filter, "*", std::size(filter));
             path_append_extension(filter, extToken, std::size(filter));
 
-            auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+            auto scanner = Path::ScanDirectory(filter, false);
             while (scanner->Next())
             {
                 LoadSaveListItem newListItem;

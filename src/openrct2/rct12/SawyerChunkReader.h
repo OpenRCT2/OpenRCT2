@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,15 +36,17 @@ namespace OpenRCT2
 
 /**
  * Reads sawyer encoding chunks from a data stream. This can be used to read
- * SC6, SV6 and RCT2 objects.
+ * SC6, SV6 and RCT2 objects. persistentChunks is a hint to the reader that the chunk will be preserved,
+ * and thus the chunk memory should be shrunk.
  */
 class SawyerChunkReader final
 {
 private:
     OpenRCT2::IStream* const _stream = nullptr;
+    const bool _createsPersistentChunks = false;
 
 public:
-    explicit SawyerChunkReader(OpenRCT2::IStream* stream);
+    explicit SawyerChunkReader(OpenRCT2::IStream* stream, bool persistentChunks = false);
 
     /**
      * Skips the next chunk in the stream without decoding or reading its data
@@ -83,6 +85,11 @@ public:
         ReadChunk(&result, sizeof(result));
         return result;
     }
+
+    /**
+     * Frees the chunk data, to be used when destructing SawyerChunks
+     */
+    static void FreeChunk(void* data);
 
 private:
     static size_t DecodeChunk(void* dst, size_t dstCapacity, const void* src, const sawyercoding_chunk_header& header);
