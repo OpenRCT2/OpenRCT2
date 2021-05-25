@@ -3681,6 +3681,7 @@ STR_6436    :Onzichtbaarheid in/uitschakelen
 STR_6437    :Onzichtbaar
 STR_6438    :O
 STR_6439    :Vakinspecteur: Onzichtbaarheid in/uitschakelen
+STR_6440    :Doorzichtig water
 
 #############
 # Scenarios #
