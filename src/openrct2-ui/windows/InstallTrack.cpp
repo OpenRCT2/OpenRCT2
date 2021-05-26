@@ -399,7 +399,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (td6->cost != 0)
     {
         auto ft = Formatter();
-        ft.Add<uint32_t>(td6->cost);
+        ft.Add<money64>(td6->cost);
         DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
     }
 }
