@@ -195,3 +195,9 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(json_t& j
     }
     return entries;
 }
+
+uint16_t SceneryGroupObject::GetNumIncludedObjects() const
+{
+    log_error("%d objects", _items.size());
+    return _items.size();
+}

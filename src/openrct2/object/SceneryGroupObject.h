@@ -40,6 +40,8 @@ public:
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
+    uint16_t GetNumIncludedObjects() const;
+
 private:
     static std::vector<ObjectEntryDescriptor> ReadItems(OpenRCT2::IStream* stream);
     static uint32_t ReadJsonEntertainerCostumes(json_t& jCostumes);
