@@ -106,6 +106,7 @@ void MusicObject::ParseTracks(IReadObjectContext& context, json_t& jTracks)
         {
             MusicObjectTrack track;
             track.Name = Json::GetString(jTrack["name"]);
+            track.Composer = Json::GetString(jTrack["composer"]);
             auto source = Json::GetString(jTrack["source"]);
             if (source.empty())
             {

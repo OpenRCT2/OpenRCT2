@@ -23,6 +23,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
@@ -1059,7 +1060,9 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         DrawTextEllipsised(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
     }
 
-    // Draw description of object
+    auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget->bottom + 23 };
+    width = w->windowPos.x + w->width - screenPos.x - 4;
+
     auto description = object_get_description(_loadedObject.get());
     if (!description.empty())
     {
@@ -1067,14 +1070,29 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(description.c_str());
 
-        auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget->bottom + 18 };
-        width = w->windowPos.x + w->width - screenPos.x - 4;
-
-        DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, ft);
+        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 
-    auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
+    if (get_selected_object_type(w) == ObjectType::Music)
+    {
+        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
+        const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
+        for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
+        {
+            const auto* track = musicObject->GetTrack(i);
+            if (track->Name.empty())
+                continue;
 
+            auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
+                                                    : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
+            auto ft = Formatter();
+            ft.Add<const char*>(track->Name.c_str());
+            ft.Add<const char*>(track->Composer.c_str());
+            screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, width, stringId, ft);
+        }
+    }
+
+    screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
     // Draw ride type.
     if (get_selected_object_type(w) == ObjectType::Ride)
     {
