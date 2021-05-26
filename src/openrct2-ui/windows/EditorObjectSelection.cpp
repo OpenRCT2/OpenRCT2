@@ -28,6 +28,7 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/RideObject.h>
+#include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
@@ -1072,8 +1073,14 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
         screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
-
-    if (get_selected_object_type(w) == ObjectType::Music)
+    if (get_selected_object_type(w) == ObjectType::SceneryGroup)
+    {
+        const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
+        auto ft = Formatter();
+        ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
+        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_INCLUDES_X_OBJECTS, ft) + 2;
+    }
+    else if (get_selected_object_type(w) == ObjectType::Music)
     {
         screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
         const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
