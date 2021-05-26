@@ -3694,6 +3694,7 @@ STR_6448    :Unsupported object format
 STR_6449    :{WINDOW_COLOUR_2}Tracks:
 STR_6450    :{BLACK}“{STRING}”
 STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Sells: {BLACK}{STRING}
 
 #############
 # Scenarios #
