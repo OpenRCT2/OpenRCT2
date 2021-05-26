@@ -5029,7 +5029,7 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
                 }
             }
 
-            if (musicObj->SupportsRideType(ride->type))
+            if (gCheatsFastLiftHill || musicObj->SupportsRideType(ride->type))
             {
                 musicOrder.push_back(i);
             }
