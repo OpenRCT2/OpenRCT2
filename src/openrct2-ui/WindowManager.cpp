@@ -78,8 +78,6 @@ public:
                 return window_mapgen_open();
             case WC_MULTIPLAYER:
                 return window_multiplayer_open();
-            case WC_MUSIC_CREDITS:
-                return window_music_credits_open();
             case WC_CONSTRUCT_RIDE:
                 return window_new_ride_open();
             case WC_PARK_INFORMATION:

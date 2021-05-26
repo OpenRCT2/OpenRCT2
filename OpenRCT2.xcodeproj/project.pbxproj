@@ -435,7 +435,6 @@
 		C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5A1F37ACB10061AA04 /* LandRights.cpp */; };
 		C666EE711F37ACB10061AA04 /* MapGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5B1F37ACB10061AA04 /* MapGen.cpp */; };
 		C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */; };
-		C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */; };
 		C666EE741F37ACB10061AA04 /* News.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5E1F37ACB10061AA04 /* News.cpp */; };
 		C666EE751F37ACB10061AA04 /* NewsOptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5F1F37ACB10061AA04 /* NewsOptions.cpp */; };
 		C666EE761F37ACB10061AA04 /* Options.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE601F37ACB10061AA04 /* Options.cpp */; };
@@ -1558,7 +1557,6 @@
 		C666EE5A1F37ACB10061AA04 /* LandRights.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandRights.cpp; sourceTree = "<group>"; };
 		C666EE5B1F37ACB10061AA04 /* MapGen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapGen.cpp; sourceTree = "<group>"; };
 		C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Multiplayer.cpp; sourceTree = "<group>"; };
-		C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicCredits.cpp; sourceTree = "<group>"; };
 		C666EE5E1F37ACB10061AA04 /* News.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = News.cpp; sourceTree = "<group>"; };
 		C666EE5F1F37ACB10061AA04 /* NewsOptions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NewsOptions.cpp; sourceTree = "<group>"; };
 		C666EE601F37ACB10061AA04 /* Options.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Options.cpp; sourceTree = "<group>"; };
@@ -3272,7 +3270,6 @@
 				C6D2BEE41F9BAACD008B557C /* MapTooltip.cpp */,
 				C6D2BEE51F9BAACD008B557C /* MazeConstruction.cpp */,
 				C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */,
-				C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */,
 				C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */,
 				C654DF231F69C0430040F43D /* NewCampaign.cpp */,
 				C685E5141F8907840090598F /* NewRide.cpp */,
@@ -3852,7 +3849,6 @@
 				4CB991CD25CEE54500C692B4 /* ShortcutInput.cpp in Sources */,
 				C68878C820289B710084B384 /* SwapFramebuffer.cpp in Sources */,
 				C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */,
-				C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */,
 				C654DF351F69C0430040F43D /* Park.cpp in Sources */,
 				4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */,
 				C654DF3A1F69C0430040F43D /* TitleEditor.cpp in Sources */,
