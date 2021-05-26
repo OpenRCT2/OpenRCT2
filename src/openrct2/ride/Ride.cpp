@@ -2078,8 +2078,12 @@ void Ride::Update()
 
     // Various things include news messages
     if (lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
-        if (((gCurrentTicks >> 1) & 255) == static_cast<uint32_t>(id))
+    {
+        // Breakdown updates are distributed, only one ride can update the breakdown status per tick.
+        const auto updatingRideId = (gCurrentTicks / 2) % MAX_RIDES;
+        if (updatingRideId == id)
             ride_breakdown_status_update(this);
+    }
 
     ride_inspection_update(this);
 
@@ -2326,6 +2330,7 @@ static void ride_breakdown_update(Ride* ride)
 {
     if (gCurrentTicks & 255)
         return;
+
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         return;
 
