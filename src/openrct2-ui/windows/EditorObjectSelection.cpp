@@ -937,6 +937,120 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     }
 }
 
+static void window_editor_object_selection_paint_descriptions(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    auto widget = &w->widgets[WIDX_PREVIEW];
+    auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget->bottom + 23 };
+    auto width = w->windowPos.x + w->width - screenPos.x - 4;
+
+    auto description = object_get_description(_loadedObject.get());
+    if (!description.empty())
+    {
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(description.c_str());
+
+        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
+    }
+    if (get_selected_object_type(w) == ObjectType::Ride)
+    {
+        auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
+        const auto* rideEntry = reinterpret_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+        if (rideEntry->shop_item[0] != ShopItem::None)
+        {
+            std::string sells = "";
+            for (size_t i = 0; i < std::size(rideEntry->shop_item); i++)
+            {
+                if (rideEntry->shop_item[i] == ShopItem::None)
+                    continue;
+
+                if (!sells.empty())
+                    sells += ", ";
+
+                sells += language_get_string(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
+            }
+            auto ft = Formatter();
+            ft.Add<const char*>(sells.c_str());
+            screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
+        }
+    }
+    else if (get_selected_object_type(w) == ObjectType::SceneryGroup)
+    {
+        const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
+        auto ft = Formatter();
+        ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
+        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_INCLUDES_X_OBJECTS, ft) + 2;
+    }
+    else if (get_selected_object_type(w) == ObjectType::Music)
+    {
+        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
+        const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
+        for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
+        {
+            const auto* track = musicObject->GetTrack(i);
+            if (track->Name.empty())
+                continue;
+
+            auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
+                                                    : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
+            auto ft = Formatter();
+            ft.Add<const char*>(track->Name.c_str());
+            ft.Add<const char*>(track->Composer.c_str());
+            screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, width, stringId, ft);
+        }
+    }
+}
+
+static void window_editor_object_selection_paint_debug_data(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    list_item* listItem = &_listItems[w->selected_list_item];
+    auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
+    // Draw ride type.
+    if (get_selected_object_type(w) == ObjectType::Ride)
+    {
+        auto stringId = get_ride_type_string_id(listItem->repositoryItem);
+        DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+    }
+
+    screenPos.y += LIST_ROW_HEIGHT;
+
+    // Draw object source
+    auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
+    DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+    screenPos.y += LIST_ROW_HEIGHT;
+
+    // Draw object dat name
+    {
+        const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(path);
+        DrawTextBasic(
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
+            { COLOUR_BLACK, TextAlignment::RIGHT });
+        screenPos.y += LIST_ROW_HEIGHT;
+    }
+
+    // Draw object author (will be blank space if no author in file or a non JSON object)
+    {
+        auto ft = Formatter();
+        std::string authorsString;
+        for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
+        {
+            if (i > 0)
+            {
+                authorsString.append(", ");
+            }
+            authorsString.append(listItem->repositoryItem->Authors[i]);
+        }
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(authorsString.c_str());
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, w->width - w->widgets[WIDX_LIST].right - 4,
+            STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
+    }
+}
+
 /**
  *
  *  rct2: 0x006AAB56
@@ -1060,89 +1174,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         DrawTextEllipsised(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
     }
 
-    auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget->bottom + 23 };
-    width = w->windowPos.x + w->width - screenPos.x - 4;
-
-    auto description = object_get_description(_loadedObject.get());
-    if (!description.empty())
-    {
-        auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<const char*>(description.c_str());
-
-        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft);
-    }
-    if (get_selected_object_type(w) == ObjectType::SceneryGroup)
-    {
-        const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
-        auto ft = Formatter();
-        ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
-        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_INCLUDES_X_OBJECTS, ft) + 2;
-    }
-    else if (get_selected_object_type(w) == ObjectType::Music)
-    {
-        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
-        const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
-        for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
-        {
-            const auto* track = musicObject->GetTrack(i);
-            if (track->Name.empty())
-                continue;
-
-            auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
-                                                    : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
-            auto ft = Formatter();
-            ft.Add<const char*>(track->Name.c_str());
-            ft.Add<const char*>(track->Composer.c_str());
-            screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, width, stringId, ft);
-        }
-    }
-
-    screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
-    // Draw ride type.
-    if (get_selected_object_type(w) == ObjectType::Ride)
-    {
-        auto stringId = get_ride_type_string_id(listItem->repositoryItem);
-        DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
-    }
-
-    screenPos.y += LIST_ROW_HEIGHT;
-
-    // Draw object source
-    auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
-    DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
-    screenPos.y += LIST_ROW_HEIGHT;
-
-    // Draw object dat name
-    {
-        const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
-        auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<const char*>(path);
-        DrawTextBasic(
-            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
-            { COLOUR_BLACK, TextAlignment::RIGHT });
-        screenPos.y += LIST_ROW_HEIGHT;
-    }
-
-    // Draw object author (will be blank space if no author in file or a non JSON object)
-    {
-        auto ft = Formatter();
-        std::string authorsString;
-        for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
-        {
-            if (i > 0)
-            {
-                authorsString.append(", ");
-            }
-            authorsString.append(listItem->repositoryItem->Authors[i]);
-        }
-        ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<const char*>(authorsString.c_str());
-        DrawTextEllipsised(
-            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, w->width - w->widgets[WIDX_LIST].right - 4,
-            STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
-    }
+    window_editor_object_selection_paint_descriptions(w, dpi);
+    window_editor_object_selection_paint_debug_data(w, dpi);
 }
 /**
  *
