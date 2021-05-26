@@ -18,6 +18,7 @@ class MusicObjectTrack
 {
 public:
     std::string Name;
+    std::string Composer;
     ObjectAsset Asset;
 
     /**
