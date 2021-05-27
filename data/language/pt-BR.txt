@@ -3682,6 +3682,7 @@ STR_6436    :Liga/desliga invisibilidade
 STR_6437    :Invisível
 STR_6438    :I
 STR_6439    :Inspetor de Azulejo: Liga/desliga invisibilidade
+STR_6440    :Água transparente
 
 #############
 # Scenarios #

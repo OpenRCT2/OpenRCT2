@@ -3682,6 +3682,7 @@ STR_6436    :Baskuligi nevideblecon
 STR_6437    :Nevidebla
 STR_6438    :N
 STR_6439    :Inspektilo de Bloko: Baskuligi nevideblecon
+STR_6440    :Travidebla akvo
 
 #############
 # Scenarios #
