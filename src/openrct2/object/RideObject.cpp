@@ -789,7 +789,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
     auto jFrames = jCar["frames"];
     if (jFrames.is_object())
     {
-        car.sprite_flags = Json::GetFlags<uint16_t>(
+        car.sprite_flags = Json::GetFlags<uint32_t>(
             jFrames,
             {
                 { "flat", VEHICLE_SPRITE_FLAG_FLAT },
