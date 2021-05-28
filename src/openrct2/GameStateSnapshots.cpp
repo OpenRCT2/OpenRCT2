@@ -249,7 +249,10 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, PathfindGoal);
         for (int i = 0; i < 4; i++)
         {
-            COMPARE_FIELD(Peep, PathfindHistory[i]);
+            COMPARE_FIELD(Peep, PathfindHistory[i].x);
+            COMPARE_FIELD(Peep, PathfindHistory[i].y);
+            COMPARE_FIELD(Peep, PathfindHistory[i].z);
+            COMPARE_FIELD(Peep, PathfindHistory[i].direction);
         }
         COMPARE_FIELD(Peep, WalkingFrameNum);
     }
