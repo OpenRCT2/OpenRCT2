@@ -26,6 +26,7 @@
 #include "network/network.h"
 #include "peep/Staff.h"
 #include "platform/Platform2.h"
+#include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
