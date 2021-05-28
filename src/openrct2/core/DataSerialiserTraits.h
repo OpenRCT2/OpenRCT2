@@ -850,14 +850,14 @@ template<> struct DataSerializerTraits_t<rct_peep_thought>
     static void encode(OpenRCT2::IStream* stream, const rct_peep_thought& val)
     {
         stream->Write(&val.type);
-        stream->Write(&val.item);
+        stream->Write(&val.argument);
         stream->Write(&val.freshness);
         stream->Write(&val.fresh_timeout);
     }
     static void decode(OpenRCT2::IStream* stream, rct_peep_thought& val)
     {
         stream->Read(&val.type);
-        stream->Read(&val.item);
+        stream->Read(&val.argument);
         stream->Read(&val.freshness);
         stream->Read(&val.fresh_timeout);
     }

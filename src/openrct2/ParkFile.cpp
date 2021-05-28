@@ -1700,7 +1700,7 @@ namespace OpenRCT2
         cs.ReadWrite(guest.PreviousRideTimeOut);
         cs.ReadWriteArray(guest.Thoughts, [&cs](rct_peep_thought& thought) {
             cs.ReadWrite(thought.type);
-            cs.ReadWrite(thought.item);
+            cs.ReadWrite(thought.argument);
             cs.ReadWrite(thought.freshness);
             cs.ReadWrite(thought.fresh_timeout);
             return true;
