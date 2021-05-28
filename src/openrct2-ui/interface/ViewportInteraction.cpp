@@ -31,7 +31,9 @@
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/Balloon.h>
 #include <openrct2/world/Banner.h>
+#include <openrct2/world/Duck.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Map.h>

@@ -41,6 +41,7 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
+#include "../world/Duck.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"

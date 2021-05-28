@@ -25,10 +25,17 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/peep/Peep.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/rct2/S6Exporter.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/Vehicle.h>
+#include <openrct2/world/Balloon.h>
+#include <openrct2/world/Duck.h>
+#include <openrct2/world/Fountain.h>
+#include <openrct2/world/MoneyEffect.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Particle.h>
 #include <openrct2/world/Sprite.h>
 #include <stdio.h>
 #include <string>
@@ -475,8 +482,7 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
             case EntityType::ExplosionCloud:
             case EntityType::CrashSplash:
             case EntityType::ExplosionFlare:
-                CompareSpriteDataMisc(
-                    static_cast<const MiscEntity&>(left.base), static_cast<const MiscEntity&>(right.base));
+                CompareSpriteDataMisc(static_cast<const MiscEntity&>(left.base), static_cast<const MiscEntity&>(right.base));
                 break;
             case EntityType::Null:
                 break;

@@ -25,7 +25,7 @@
 #include "../../peep/Staff.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../../world/Surface.h"
 #include "Paint.TileElement.h"
 

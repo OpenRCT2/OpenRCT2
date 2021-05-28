@@ -13,6 +13,9 @@
 #include "../common.h"
 #include "SpriteBase.h"
 
+#include <array>
+#include <vector>
+
 class DataSerialiser;
 
 struct ExplosionFlare : MiscEntity

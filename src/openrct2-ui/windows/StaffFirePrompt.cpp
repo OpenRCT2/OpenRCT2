@@ -14,7 +14,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/world/Sprite.h>
+#include <openrct2/world/Entity.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
 static constexpr const int32_t WW = 200;

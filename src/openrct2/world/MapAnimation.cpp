@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../interface/Viewport.h"
 #include "../object/StationObject.h"
+#include "../peep/Peep.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
