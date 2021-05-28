@@ -657,7 +657,7 @@ void set_all_scenery_items_not_invented()
 {
     for (auto sceneryType = 0; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
     {
-        std::fill(std::begin(_researchedSceneryItems[sceneryType]), std::end(_researchedSceneryItems[sceneryType]), true);
+        std::fill(std::begin(_researchedSceneryItems[sceneryType]), std::end(_researchedSceneryItems[sceneryType]), false);
     }
 }
 
