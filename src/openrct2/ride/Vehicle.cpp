@@ -3600,7 +3600,7 @@ void Vehicle::UpdateCollisionSetup()
 
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { train->x, train->y, train->z });
 
-        sprite_misc_explosion_cloud_create({ train->x, train->y, train->z });
+        ExplosionCloud::Create({ train->x, train->y, train->z });
 
         for (int32_t i = 0; i < 10; i++)
         {
@@ -5358,8 +5358,8 @@ void Vehicle::CrashOnLand()
     sub_state = 2;
     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { x, y, z });
 
-    sprite_misc_explosion_cloud_create({ x, y, z });
-    sprite_misc_explosion_flare_create({ x, y, z });
+    ExplosionCloud::Create({ x, y, z });
+    ExplosionFlare::Create({ x, y, z });
 
     uint8_t numParticles = std::min(sprite_width, static_cast<uint8_t>(7));
 
@@ -5459,7 +5459,7 @@ void Vehicle::UpdateCrash()
                 {
                     int32_t xOffset = (scenario_rand() & 2) - 1;
                     int32_t yOffset = (scenario_rand() & 2) - 1;
-                    sprite_misc_explosion_cloud_create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
+                    ExplosionCloud::Create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
                 }
             }
             if (curVehicle->var_C8 + 7281 > 0xFFFF)
@@ -7227,28 +7227,6 @@ void Vehicle::UpdateSpinningCar()
 
 /**
  *
- *  rct2: 0x006734B2
- */
-static void steam_particle_create(const CoordsXYZ& coords)
-{
-    auto surfaceElement = map_get_surface_element_at(coords);
-    if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
-    {
-        SteamParticle* steam = CreateEntity<SteamParticle>();
-        if (steam == nullptr)
-            return;
-
-        steam->sprite_width = 20;
-        steam->sprite_height_negative = 18;
-        steam->sprite_height_positive = 16;
-        steam->frame = 256;
-        steam->time_to_move = 0;
-        steam->MoveTo(coords);
-    }
-}
-
-/**
- *
  *  rct2: 0x006D63D4
  */
 void Vehicle::UpdateAdditionalAnimation()
@@ -7298,7 +7276,7 @@ void Vehicle::UpdateAdditionalAnimation()
                             }();
                             int32_t directionIndex = sprite_direction >> 1;
                             auto offset = SteamParticleOffsets[typeIndex][directionIndex];
-                            steam_particle_create({ x + offset.x, y + offset.y, z + offset.z });
+                            SteamParticle::Create({ x + offset.x, y + offset.y, z + offset.z });
                         }
                     }
                 }

@@ -15,31 +15,6 @@
 
 #include <array>
 
-class DataSerialiser;
-
-struct ExplosionFlare : MiscEntity
-{
-    static constexpr auto cEntityType = EntityType::ExplosionFlare;
-    void Update();
-    void Serialise(DataSerialiser& stream);
-};
-
-struct ExplosionCloud : MiscEntity
-{
-    static constexpr auto cEntityType = EntityType::ExplosionCloud;
-    void Update();
-    void Serialise(DataSerialiser& stream);
-};
-
-struct SteamParticle : MiscEntity
-{
-    static constexpr auto cEntityType = EntityType::SteamParticle;
-    uint16_t time_to_move;
-
-    void Update();
-    void Serialise(DataSerialiser& stream);
-};
-
 #pragma pack(push, 1)
 /**
  * Sprite structure.
@@ -88,8 +63,6 @@ void sprite_misc_update_all();
 void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
 uint16_t remove_floating_sprites();
-void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);
-void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos);
 
 rct_sprite_checksum sprite_checksum();
 
