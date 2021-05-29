@@ -163,6 +163,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     auto srcHeight = Json::GetNumber<int16_t>(el["srcHeight"]);
     auto raw = Json::GetString(el["format"]) == "raw";
     auto keepPalette = Json::GetString(el["palette"]) == "keep";
+    auto zoomOffset = Json::GetNumber<int32_t>(el["zoom"]);
 
     std::vector<std::unique_ptr<RequiredImage>> result;
     try
@@ -194,7 +195,9 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
 
         ImageImporter importer;
         auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, flags);
-        result.push_back(std::make_unique<RequiredImage>(importResult.Element));
+        auto g1element = importResult.Element;
+        g1element.zoomed_offset = zoomOffset;
+        result.push_back(std::make_unique<RequiredImage>(g1element));
     }
     catch (const std::exception& e)
     {

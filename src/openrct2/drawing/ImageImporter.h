@@ -54,7 +54,8 @@ namespace OpenRCT2::Drawing
 
     private:
         static std::vector<int32_t> GetPixels(
-            const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode);
+            const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height,
+            IMPORT_FLAGS flags, IMPORT_MODE mode);
         static std::vector<uint8_t> EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height);
         static std::vector<uint8_t> EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height);
 
