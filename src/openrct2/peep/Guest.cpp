@@ -1695,6 +1695,7 @@ void Guest::OnEnterRide(Ride* ride)
 {
     if (ride == nullptr)
         return;
+
     // Calculate how satisfying the ride is for the peep. Can range from -140 to +105.
     int16_t satisfaction = peep_calculate_ride_satisfaction(this, ride);
 
