@@ -394,7 +394,7 @@ static void PrepareNewEntity(SpriteBase* base, const EntityType type)
     SpriteSpatialInsert(base, { LOCATION_NULL, 0 });
 }
 
-rct_sprite* create_sprite(EntityType type)
+SpriteBase* CreateEntity(EntityType type)
 {
     if (_freeIdList.size() == 0)
     {
@@ -414,16 +414,16 @@ rct_sprite* create_sprite(EntityType type)
         }
     }
 
-    auto* sprite = GetEntity(_freeIdList.back());
-    if (sprite == nullptr)
+    auto* entity = GetEntity(_freeIdList.back());
+    if (entity == nullptr)
     {
         return nullptr;
     }
     _freeIdList.pop_back();
 
-    PrepareNewEntity(sprite, type);
+    PrepareNewEntity(entity, type);
 
-    return reinterpret_cast<rct_sprite*>(sprite);
+    return entity;
 }
 
 SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type)
