@@ -1691,12 +1691,10 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
  * ride's satisfaction value.
  *  rct2: 0x0069545B
  */
-void Guest::OnEnterRide(ride_id_t rideIndex)
+void Guest::OnEnterRide(Ride* ride)
 {
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
-
     // Calculate how satisfying the ride is for the peep. Can range from -140 to +105.
     int16_t satisfaction = peep_calculate_ride_satisfaction(this, ride);
 
@@ -1725,13 +1723,12 @@ void Guest::OnEnterRide(ride_id_t rideIndex)
  *
  *  rct2: 0x0069576E
  */
-void Guest::OnExitRide(ride_id_t rideIndex)
+void Guest::OnExitRide(Ride* ride)
 {
-    auto ride = get_ride(rideIndex);
     if (PeepFlags & PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE)
     {
         PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-        FavouriteRide = rideIndex;
+        FavouriteRide = ride->id;
         // TODO fix this flag name or add another one
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
@@ -1744,7 +1741,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 
     if (ride != nullptr && peep_should_go_on_ride_again(this, ride))
     {
-        GuestHeadingToRideId = rideIndex;
+        GuestHeadingToRideId = ride->id;
         GuestIsLostCountdown = 200;
         ResetPathfindGoal();
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
@@ -1760,7 +1757,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 
     if (ride != nullptr && peep_really_liked_ride(this, ride))
     {
-        InsertNewThought(PeepThoughtType::WasGreat, rideIndex);
+        InsertNewThought(PeepThoughtType::WasGreat, ride->id);
 
         static constexpr OpenRCT2::Audio::SoundId laughs[3] = { OpenRCT2::Audio::SoundId::Laugh1,
                                                                 OpenRCT2::Audio::SoundId::Laugh2,
@@ -3492,7 +3489,7 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
     peep->SetDestination(entrance_loc, 3);
 
     ride->cur_num_customers++;
-    peep->OnEnterRide(peep->CurrentRide);
+    peep->OnEnterRide(ride);
     peep->RideSubState = PeepRideSubState::MazePathfinding;
 }
 
@@ -3512,7 +3509,7 @@ static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride
     peep->CurrentCar = 0;
 
     ride->cur_num_customers++;
-    peep->OnEnterRide(peep->CurrentRide);
+    peep->OnEnterRide(ride);
     peep->RideSubState = PeepRideSubState::ApproachSpiralSlide;
 }
 
@@ -4015,7 +4012,7 @@ void Guest::UpdateRideEnterVehicle()
                     seatedGuest->SetState(PeepState::OnRide);
                     seatedGuest->GuestTimeOnRide = 0;
                     seatedGuest->RideSubState = PeepRideSubState::OnRide;
-                    seatedGuest->OnEnterRide(CurrentRide);
+                    seatedGuest->OnEnterRide(ride);
                 }
             }
 
@@ -4031,7 +4028,7 @@ void Guest::UpdateRideEnterVehicle()
 
             GuestTimeOnRide = 0;
             RideSubState = PeepRideSubState::OnRide;
-            OnEnterRide(CurrentRide);
+            OnEnterRide(ride);
         }
     }
 }
@@ -4914,7 +4911,7 @@ void Guest::UpdateRideLeaveExit()
         return;
     }
 
-    OnExitRide(CurrentRide);
+    OnExitRide(ride);
 
     if (ride != nullptr && (PeepFlags & PEEP_FLAGS_TRACKING))
     {

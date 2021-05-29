@@ -741,8 +741,8 @@ public:
     bool HasDrink() const;
     bool HasFoodOrDrink() const;
     bool HasEmptyContainer() const;
-    void OnEnterRide(ride_id_t rideIndex);
-    void OnExitRide(ride_id_t rideIndex);
+    void OnEnterRide(Ride* ride);
+    void OnExitRide(Ride* ride);
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
     void StopPurchaseThought(uint8_t ride_type);
