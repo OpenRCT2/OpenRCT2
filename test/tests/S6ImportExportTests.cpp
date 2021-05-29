@@ -32,6 +32,7 @@
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/world/Balloon.h>
 #include <openrct2/world/Duck.h>
+#include <openrct2/world/EntityTweener.h>
 #include <openrct2/world/Fountain.h>
 #include <openrct2/world/MoneyEffect.h>
 #include <openrct2/world/Park.h>

@@ -14,7 +14,6 @@
 #include "SpriteBase.h"
 
 #include <array>
-#include <vector>
 
 class DataSerialiser;
 
@@ -96,25 +95,5 @@ rct_sprite_checksum sprite_checksum();
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
-
-class EntityTweener
-{
-    std::vector<SpriteBase*> Entities;
-    std::vector<CoordsXYZ> PrePos;
-    std::vector<CoordsXYZ> PostPos;
-
-private:
-    void PopulateEntities();
-
-public:
-    static EntityTweener& Get();
-
-    void PreTick();
-    void PostTick();
-    void RemoveEntity(SpriteBase* entity);
-    void Tween(float alpha);
-    void Restore();
-    void Reset();
-};
 
 #endif
