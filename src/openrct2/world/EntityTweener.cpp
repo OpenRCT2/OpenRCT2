@@ -13,6 +13,8 @@
 #include "EntityList.h"
 #include "Sprite.h"
 
+#include <cmath>
+
 void EntityTweener::PopulateEntities()
 {
     for (auto ent : EntityList<Guest>())
