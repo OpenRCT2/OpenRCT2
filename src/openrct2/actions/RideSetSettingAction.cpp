@@ -244,15 +244,15 @@ bool RideSetSettingAction::ride_is_mode_valid(Ride* ride) const
 
 bool RideSetSettingAction::ride_is_valid_lift_hill_speed(Ride* ride) const
 {
-    int32_t minSpeed = gCheatsFastLiftHill ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
-    int32_t maxSpeed = gCheatsFastLiftHill ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
+    int32_t minSpeed = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
+    int32_t maxSpeed = gCheatsUnlockOperatingLimits ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
     return _value >= minSpeed && _value <= maxSpeed;
 }
 
 bool RideSetSettingAction::ride_is_valid_num_circuits() const
 {
     int32_t minNumCircuits = 1;
-    int32_t maxNumCircuits = gCheatsFastLiftHill ? 255 : 20;
+    int32_t maxNumCircuits = gCheatsUnlockOperatingLimits ? 255 : 20;
     return _value >= minNumCircuits && _value <= maxNumCircuits;
 }
 
@@ -261,7 +261,7 @@ bool RideSetSettingAction::ride_is_valid_operation_option(Ride* ride) const
     const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
     uint8_t minValue = operatingSettings.MinValue;
     uint8_t maxValue = operatingSettings.MaxValue;
-    if (gCheatsFastLiftHill)
+    if (gCheatsUnlockOperatingLimits)
     {
         minValue = 0;
         maxValue = 255;

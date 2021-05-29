@@ -2741,7 +2741,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         gCheatsEnableChainLiftOnAllTrack = stream->ReadValue<uint8_t>() != 0;
         gCheatsShowAllOperatingModes = stream->ReadValue<uint8_t>() != 0;
         gCheatsShowVehiclesFromOtherTrackTypes = stream->ReadValue<uint8_t>() != 0;
-        gCheatsFastLiftHill = stream->ReadValue<uint8_t>() != 0;
+        gCheatsUnlockOperatingLimits = stream->ReadValue<uint8_t>() != 0;
         gCheatsDisableBrakesFailure = stream->ReadValue<uint8_t>() != 0;
         gCheatsDisableAllBreakdowns = stream->ReadValue<uint8_t>() != 0;
         gCheatsBuildInPauseMode = stream->ReadValue<uint8_t>() != 0;
@@ -2791,7 +2791,7 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
         stream->WriteValue<uint8_t>(gCheatsEnableChainLiftOnAllTrack);
         stream->WriteValue<uint8_t>(gCheatsShowAllOperatingModes);
         stream->WriteValue<uint8_t>(gCheatsShowVehiclesFromOtherTrackTypes);
-        stream->WriteValue<uint8_t>(gCheatsFastLiftHill);
+        stream->WriteValue<uint8_t>(gCheatsUnlockOperatingLimits);
         stream->WriteValue<uint8_t>(gCheatsDisableBrakesFailure);
         stream->WriteValue<uint8_t>(gCheatsDisableAllBreakdowns);
         stream->WriteValue<uint8_t>(gCheatsBuildInPauseMode);

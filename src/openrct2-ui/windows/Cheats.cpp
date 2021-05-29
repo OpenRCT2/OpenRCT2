@@ -161,7 +161,7 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,
     WIDX_OPERATION_MODES_GROUP,
     WIDX_SHOW_ALL_OPERATING_MODES,
-    WIDX_FAST_LIFT_HILL,
+    WIDX_UNLOCK_OPERATING_LIMITS,
     WIDX_DISABLE_BRAKES_FAILURE,
     WIDX_DISABLE_ALL_BREAKDOWNS,
     WIDX_DISABLE_RIDE_VALUE_AGING,
@@ -399,7 +399,7 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_RENEW_RIDES) |
     (1ULL << WIDX_MAKE_DESTRUCTIBLE) |
     (1ULL << WIDX_FIX_ALL) |
-    (1ULL << WIDX_FAST_LIFT_HILL) |
+    (1ULL << WIDX_UNLOCK_OPERATING_LIMITS) |
     (1ULL << WIDX_DISABLE_BRAKES_FAILURE) |
     (1ULL << WIDX_DISABLE_ALL_BREAKDOWNS) |
     (1ULL << WIDX_BUILD_IN_PAUSE_MODE) |
@@ -574,7 +574,7 @@ public:
                 SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
                 break;
             case WINDOW_CHEATS_PAGE_RIDES:
-                SetCheckboxValue(WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
+                SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gCheatsUnlockOperatingLimits);
                 SetCheckboxValue(WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
                 SetCheckboxValue(WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
                 SetCheckboxValue(WIDX_BUILD_IN_PAUSE_MODE, gCheatsBuildInPauseMode);
@@ -689,7 +689,7 @@ public:
 
     OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback) override
     {
-        if (page == WINDOW_CHEATS_PAGE_RIDES && widgetIndex == WIDX_FAST_LIFT_HILL)
+        if (page == WINDOW_CHEATS_PAGE_RIDES && widgetIndex == WIDX_UNLOCK_OPERATING_LIMITS)
         {
             auto ft = Formatter{};
             ft.Add<uint16_t>(255);
@@ -1119,8 +1119,8 @@ private:
             case WIDX_FIX_ALL:
                 CheatsSet(CheatType::FixRides);
                 break;
-            case WIDX_FAST_LIFT_HILL:
-                CheatsSet(CheatType::FastLiftHill, !gCheatsFastLiftHill);
+            case WIDX_UNLOCK_OPERATING_LIMITS:
+                CheatsSet(CheatType::FastLiftHill, !gCheatsUnlockOperatingLimits);
                 break;
             case WIDX_DISABLE_BRAKES_FAILURE:
                 CheatsSet(CheatType::DisableBrakesFailure, !gCheatsDisableBrakesFailure);

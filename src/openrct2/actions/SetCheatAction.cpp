@@ -109,7 +109,7 @@ GameActions::Result::Ptr SetCheatAction::Execute() const
             gCheatsShowVehiclesFromOtherTrackTypes = _param1 != 0;
             break;
         case CheatType::FastLiftHill:
-            gCheatsFastLiftHill = _param1 != 0;
+            gCheatsUnlockOperatingLimits = _param1 != 0;
             break;
         case CheatType::DisableBrakesFailure:
             gCheatsDisableBrakesFailure = _param1 != 0;
