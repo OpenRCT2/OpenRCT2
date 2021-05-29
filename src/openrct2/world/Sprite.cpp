@@ -21,8 +21,14 @@
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../peep/Peep.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
+#include "Balloon.h"
+#include "Duck.h"
 #include "Fountain.h"
+#include "MoneyEffect.h"
+#include "Particle.h"
 
 #include <algorithm>
 #include <cmath>
@@ -35,6 +41,9 @@ static std::array<std::list<uint16_t>, EnumValue(EntityType::Count)> gEntityList
 static std::vector<uint16_t> _freeIdList;
 
 static bool _spriteFlashingList[MAX_ENTITIES];
+
+constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
+constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
 static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
@@ -135,7 +144,7 @@ std::string rct_sprite_checksum::ToString() const
 
 SpriteBase* try_get_sprite(size_t spriteIndex)
 {
-    return spriteIndex >= MAX_ENTITIES ? nullptr : &_spriteList[spriteIndex].misc;
+    return spriteIndex >= MAX_ENTITIES ? nullptr : &_spriteList[spriteIndex].base;
 }
 
 SpriteBase* get_sprite(size_t spriteIndex)

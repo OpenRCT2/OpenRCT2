@@ -365,6 +365,7 @@ private:
     void UpdateLandscapeDoor() const;
     void UpdateLandscapeDoorBackwards() const;
 };
+static_assert(sizeof(Vehicle) <= 512);
 
 struct train_ref
 {

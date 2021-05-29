@@ -11,10 +11,11 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../peep/Peep.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
-
+#include "../Vehicle.h"
 enum
 {
     SPR_SPACE_RINGS_FENCE_NE = 22146,

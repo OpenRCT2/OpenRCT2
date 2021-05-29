@@ -10,9 +10,11 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../peep/Peep.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 static constexpr const uint8_t edges_1x4_ne_sw[] = {
     EDGE_NW | EDGE_SE,

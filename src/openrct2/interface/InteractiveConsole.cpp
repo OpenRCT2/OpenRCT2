@@ -44,6 +44,7 @@
 #include "../platform/platform.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/Vehicle.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
