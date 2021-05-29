@@ -38,7 +38,6 @@ struct rct_sprite_checksum
 
 void reset_sprite_list();
 void reset_sprite_spatial_index();
-void sprite_clear_all_unused();
 void sprite_misc_update_all();
 void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);

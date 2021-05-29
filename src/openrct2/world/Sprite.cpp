@@ -319,25 +319,6 @@ static void sprite_reset(SpriteBase* sprite)
     sprite->Type = EntityType::Null;
 }
 
-/**
- * Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
- *  rct2: 0x0069EBA4
- */
-void sprite_clear_all_unused()
-{
-    for (auto index : _freeIdList)
-    {
-        auto* entity = GetEntity(index);
-        if (entity == nullptr)
-        {
-            continue;
-        }
-        sprite_reset(entity);
-
-        _spriteFlashingList[entity->sprite_index] = false;
-    }
-}
-
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 static void AddToEntityList(SpriteBase* entity)
 {

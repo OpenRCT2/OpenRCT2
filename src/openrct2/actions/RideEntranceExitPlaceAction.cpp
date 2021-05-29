@@ -14,7 +14,6 @@
 #include "../ride/Ride.h"
 #include "../ride/Station.h"
 #include "../world/MapAnimation.h"
-#include "../world/Sprite.h"
 
 RideEntranceExitPlaceAction::RideEntranceExitPlaceAction(
     const CoordsXY& loc, Direction direction, ride_id_t rideIndex, StationIndex stationNum, bool isExit)

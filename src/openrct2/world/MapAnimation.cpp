@@ -25,7 +25,6 @@
 #include "Map.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
-#include "Sprite.h"
 
 using map_animation_invalidate_event_handler = bool (*)(const CoordsXYZ& loc);
 

@@ -20,7 +20,6 @@
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 RideSetPriceAction::RideSetPriceAction(ride_id_t rideIndex, money16 price, bool primaryPrice)
     : _rideIndex(rideIndex)

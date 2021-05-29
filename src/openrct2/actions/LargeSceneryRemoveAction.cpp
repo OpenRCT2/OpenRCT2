@@ -20,7 +20,6 @@
 #include "../ride/Ride.h"
 #include "../world/Park.h"
 #include "../world/SmallScenery.h"
-#include "../world/Sprite.h"
 #include "../world/TileElementsView.h"
 
 using namespace OpenRCT2;

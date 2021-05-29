@@ -13,7 +13,6 @@
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
 #include "../world/EntityList.h"
-#include "../world/Sprite.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"

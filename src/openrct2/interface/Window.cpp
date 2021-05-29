@@ -28,7 +28,6 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Map.h"
-#include "../world/Sprite.h"
 #include "Viewport.h"
 #include "Widget.h"
 #include "Window_internal.h"
