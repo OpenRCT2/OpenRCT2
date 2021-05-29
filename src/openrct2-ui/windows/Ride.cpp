@@ -3074,9 +3074,9 @@ static void window_ride_mode_tweak_increase(rct_window* w)
 
     const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
     uint8_t maxValue = operatingSettings.MaxValue;
-    uint8_t minValue = gCheatsFastLiftHill ? 0 : operatingSettings.MinValue;
+    uint8_t minValue = gCheatsUnlockOperatingLimits ? 0 : operatingSettings.MinValue;
 
-    if (gCheatsFastLiftHill)
+    if (gCheatsUnlockOperatingLimits)
     {
         maxValue = 255;
     }
@@ -3099,8 +3099,8 @@ static void window_ride_mode_tweak_decrease(rct_window* w)
 
     const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
     uint8_t maxValue = operatingSettings.MaxValue;
-    uint8_t minValue = gCheatsFastLiftHill ? 0 : operatingSettings.MinValue;
-    if (gCheatsFastLiftHill)
+    uint8_t minValue = gCheatsUnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+    if (gCheatsUnlockOperatingLimits)
     {
         maxValue = 255;
     }
@@ -3254,15 +3254,15 @@ static void window_ride_operating_mousedown(rct_window* w, rct_widgetindex widge
             window_ride_mode_tweak_decrease(w);
             break;
         case WIDX_LIFT_HILL_SPEED_INCREASE:
-            upper_bound = gCheatsFastLiftHill ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
-            lower_bound = gCheatsFastLiftHill ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
+            upper_bound = gCheatsUnlockOperatingLimits ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
+            lower_bound = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
             set_operating_setting(
                 w->number, RideSetSetting::LiftHillSpeed,
                 std::clamp<int16_t>(ride->lift_hill_speed + 1, lower_bound, upper_bound));
             break;
         case WIDX_LIFT_HILL_SPEED_DECREASE:
-            upper_bound = gCheatsFastLiftHill ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
-            lower_bound = gCheatsFastLiftHill ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
+            upper_bound = gCheatsUnlockOperatingLimits ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
+            lower_bound = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
             set_operating_setting(
                 w->number, RideSetSetting::LiftHillSpeed,
                 std::clamp<int16_t>(ride->lift_hill_speed - 1, lower_bound, upper_bound));
@@ -3302,13 +3302,13 @@ static void window_ride_operating_mousedown(rct_window* w, rct_widgetindex widge
             window_ride_load_dropdown(w, widget);
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-            upper_bound = gCheatsFastLiftHill ? 255 : 20;
+            upper_bound = gCheatsUnlockOperatingLimits ? 255 : 20;
             lower_bound = 1;
             set_operating_setting(
                 w->number, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits + 1, lower_bound, upper_bound));
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
-            upper_bound = gCheatsFastLiftHill ? 255 : 20;
+            upper_bound = gCheatsUnlockOperatingLimits ? 255 : 20;
             lower_bound = 1;
             set_operating_setting(
                 w->number, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits - 1, lower_bound, upper_bound));
@@ -5032,7 +5032,7 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
                 }
             }
 
-            if (gCheatsFastLiftHill || musicObj->SupportsRideType(ride->type))
+            if (gCheatsUnlockOperatingLimits || musicObj->SupportsRideType(ride->type))
             {
                 musicOrder.push_back(i);
             }

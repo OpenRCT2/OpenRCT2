@@ -36,7 +36,7 @@ bool gCheatsDisableClearanceChecks = false;
 bool gCheatsDisableSupportLimits = false;
 bool gCheatsShowAllOperatingModes = false;
 bool gCheatsShowVehiclesFromOtherTrackTypes = false;
-bool gCheatsFastLiftHill = false;
+bool gCheatsUnlockOperatingLimits = false;
 bool gCheatsDisableBrakesFailure = false;
 bool gCheatsDisableAllBreakdowns = false;
 bool gCheatsBuildInPauseMode = false;
@@ -63,7 +63,7 @@ void CheatsReset()
     gCheatsShowVehiclesFromOtherTrackTypes = false;
     gCheatsDisableTrainLengthLimit = false;
     gCheatsEnableChainLiftOnAllTrack = false;
-    gCheatsFastLiftHill = false;
+    gCheatsUnlockOperatingLimits = false;
     gCheatsDisableBrakesFailure = false;
     gCheatsDisableAllBreakdowns = false;
     gCheatsBuildInPauseMode = false;
@@ -109,7 +109,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::DisableSupportLimits, gCheatsDisableSupportLimits, count);
         CheatEntrySerialise(ds, CheatType::ShowAllOperatingModes, gCheatsShowAllOperatingModes, count);
         CheatEntrySerialise(ds, CheatType::ShowVehiclesFromOtherTrackTypes, gCheatsShowVehiclesFromOtherTrackTypes, count);
-        CheatEntrySerialise(ds, CheatType::FastLiftHill, gCheatsFastLiftHill, count);
+        CheatEntrySerialise(ds, CheatType::FastLiftHill, gCheatsUnlockOperatingLimits, count);
         CheatEntrySerialise(ds, CheatType::DisableBrakesFailure, gCheatsDisableBrakesFailure, count);
         CheatEntrySerialise(ds, CheatType::DisableAllBreakdowns, gCheatsDisableAllBreakdowns, count);
         CheatEntrySerialise(ds, CheatType::BuildInPauseMode, gCheatsBuildInPauseMode, count);
@@ -163,7 +163,7 @@ void CheatsSerialise(DataSerialiser& ds)
                     ds << gCheatsShowVehiclesFromOtherTrackTypes;
                     break;
                 case CheatType::FastLiftHill:
-                    ds << gCheatsFastLiftHill;
+                    ds << gCheatsUnlockOperatingLimits;
                     break;
                 case CheatType::DisableBrakesFailure:
                     ds << gCheatsDisableBrakesFailure;
