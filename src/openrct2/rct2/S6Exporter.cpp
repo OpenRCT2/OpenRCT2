@@ -1518,7 +1518,14 @@ void S6Exporter::ExportBanners()
     {
         auto src = GetBanner(i);
         auto dst = &_s6.banners[i];
-        ExportBanner(*dst, *src);
+        if (src != nullptr)
+        {
+            ExportBanner(*dst, *src);
+        }
+        else
+        {
+            ExportBanner(*dst, {});
+        }
     }
 }
 
