@@ -89,7 +89,7 @@ namespace OpenRCT2
         // clang-format on
     }; // namespace ParkFileChunkType
 
-    std::map<std::string_view, std::string_view> oldObjectIds = {
+    static std::map<std::string_view, std::string_view> oldObjectIds = {
         { "official.scgpanda", "rct2dlc.scenery_group.scgpanda" },
         { "official.wtrpink", "rct2dlc.water.wtrpink" },
         { "official.ttrftl07", "toontowner.scenery_small.ttrftl07" },
