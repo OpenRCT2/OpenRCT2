@@ -766,6 +766,7 @@
 		F7D774AE1EC6741D00BE6EBC /* sequence in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* sequence */; };
 		E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */; };
 		F42186C5840D4196981ADD16 /* EntityTweener.h in Headers */ = {isa = PBXBuildFile; fileRef = 091352A950004312BAB18717 /* EntityTweener.h */; };
+		0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D3DD6CD73F5421880280D9D /* Litter.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1834,6 +1835,7 @@
 		F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenRCT2-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntityTweener.cpp; path = src/openrct2/world/EntityTweener.cpp; sourceTree = SOURCE_ROOT; };
 		091352A950004312BAB18717 /* EntityTweener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EntityTweener.h; path = src/openrct2/world/EntityTweener.h; sourceTree = SOURCE_ROOT; };
+		9D3DD6CD73F5421880280D9D /* Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Litter.cpp; path = src/openrct2/world/Litter.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3122,6 +3124,7 @@
 				4C7B54422007646A00A52E21 /* Water.h */,
 				0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */,
 				091352A950004312BAB18717 /* EntityTweener.h */,
+				9D3DD6CD73F5421880280D9D /* Litter.cpp */,
 			);
 			path = world;
 			sourceTree = "<group>";
@@ -4269,6 +4272,7 @@
 				66A10FD1257F1E3000DD651A /* WaterRaiseAction.cpp in Sources */,
 				C688791820289B9B0084B384 /* MonorailCycles.cpp in Sources */,
 				E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */,
+				0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
