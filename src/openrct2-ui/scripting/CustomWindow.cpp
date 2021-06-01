@@ -26,7 +26,6 @@
 #    include <openrct2/localisation/StringIds.h>
 #    include <openrct2/scripting/Plugin.h>
 #    include <openrct2/sprites.h>
-#    include <openrct2/world/Sprite.h>
 #    include <optional>
 #    include <string>
 #    include <vector>

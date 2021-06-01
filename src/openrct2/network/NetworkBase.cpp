@@ -25,6 +25,7 @@
 #include "../ui/WindowManager.h"
 #include "../util/SawyerCoding.h"
 #include "../world/EntityList.h"
+#include "../world/EntityTweener.h"
 #include "../world/Location.hpp"
 #include "../world/Sprite.h"
 #include "network.h"

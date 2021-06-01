@@ -54,6 +54,7 @@
 #include "../world/Climate.h"
 #include "../world/Duck.h"
 #include "../world/EntityList.h"
+#include "../world/EntityTweener.h"
 #include "../world/Entrance.h"
 #include "../world/Fountain.h"
 #include "../world/Litter.h"

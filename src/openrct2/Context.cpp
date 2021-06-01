@@ -63,6 +63,7 @@
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/Util.h"
+#include "world/EntityTweener.h"
 #include "world/Park.h"
 #include "world/Sprite.h"
 

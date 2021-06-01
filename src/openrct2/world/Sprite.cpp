@@ -26,6 +26,7 @@
 #include "../scenario/Scenario.h"
 #include "Balloon.h"
 #include "Duck.h"
+#include "EntityTweener.h"
 #include "Fountain.h"
 #include "MoneyEffect.h"
 #include "Particle.h"
@@ -318,25 +319,6 @@ static void sprite_reset(SpriteBase* sprite)
     sprite->Type = EntityType::Null;
 }
 
-/**
- * Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
- *  rct2: 0x0069EBA4
- */
-void sprite_clear_all_unused()
-{
-    for (auto index : _freeIdList)
-    {
-        auto* entity = GetEntity(index);
-        if (entity == nullptr)
-        {
-            continue;
-        }
-        sprite_reset(entity);
-
-        _spriteFlashingList[entity->sprite_index] = false;
-    }
-}
-
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 static void AddToEntityList(SpriteBase* entity)
 {
@@ -393,7 +375,7 @@ static void PrepareNewEntity(SpriteBase* base, const EntityType type)
     SpriteSpatialInsert(base, { LOCATION_NULL, 0 });
 }
 
-rct_sprite* create_sprite(EntityType type)
+SpriteBase* CreateEntity(EntityType type)
 {
     if (_freeIdList.size() == 0)
     {
@@ -413,16 +395,16 @@ rct_sprite* create_sprite(EntityType type)
         }
     }
 
-    auto* sprite = GetEntity(_freeIdList.back());
-    if (sprite == nullptr)
+    auto* entity = GetEntity(_freeIdList.back());
+    if (entity == nullptr)
     {
         return nullptr;
     }
     _freeIdList.pop_back();
 
-    PrepareNewEntity(sprite, type);
+    PrepareNewEntity(entity, type);
 
-    return reinterpret_cast<rct_sprite*>(sprite);
+    return entity;
 }
 
 SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type)
@@ -443,88 +425,6 @@ SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type)
 
     PrepareNewEntity(entity, type);
     return entity;
-}
-/**
- *
- *  rct2: 0x00673200
- */
-void SteamParticle::Update()
-{
-    // Move up 1 z every 3 ticks (Starts after 4 ticks)
-    Invalidate();
-    time_to_move++;
-    if (time_to_move >= 4)
-    {
-        time_to_move = 1;
-        MoveTo({ x, y, z + 1 });
-    }
-    frame += 64;
-    if (frame >= (56 * 64))
-    {
-        sprite_remove(this);
-    }
-}
-
-/**
- *
- *  rct2: 0x0067363D
- */
-void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
-{
-    auto* sprite = CreateEntity<ExplosionCloud>();
-    if (sprite != nullptr)
-    {
-        sprite->sprite_width = 44;
-        sprite->sprite_height_negative = 32;
-        sprite->sprite_height_positive = 34;
-        sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
-        sprite->frame = 0;
-    }
-}
-
-/**
- *
- *  rct2: 0x00673385
- */
-void ExplosionCloud::Update()
-{
-    Invalidate();
-    frame += 128;
-    if (frame >= (36 * 128))
-    {
-        sprite_remove(this);
-    }
-}
-
-/**
- *
- *  rct2: 0x0067366B
- */
-void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
-{
-    MiscEntity* sprite = CreateEntity<ExplosionFlare>();
-    if (sprite != nullptr)
-    {
-        sprite->sprite_width = 25;
-        sprite->sprite_height_negative = 85;
-        sprite->sprite_height_positive = 8;
-        sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
-        sprite->frame = 0;
-    }
-}
-
-/**
- *
- *  rct2: 0x006733B4
- */
-void ExplosionFlare::Update()
-{
-    Invalidate();
-    frame += 64;
-    if (frame >= (124 * 64))
-    {
-        sprite_remove(this);
-    }
 }
 
 template<typename T> void MiscUpdateAllType()
@@ -806,112 +706,6 @@ uint16_t remove_floating_sprites()
         removed++;
     }
     return removed;
-}
-
-void EntityTweener::PopulateEntities()
-{
-    for (auto ent : EntityList<Guest>())
-    {
-        Entities.push_back(ent);
-        PrePos.emplace_back(ent->x, ent->y, ent->z);
-    }
-    for (auto ent : EntityList<Staff>())
-    {
-        Entities.push_back(ent);
-        PrePos.emplace_back(ent->x, ent->y, ent->z);
-    }
-    for (auto ent : EntityList<Vehicle>())
-    {
-        Entities.push_back(ent);
-        PrePos.emplace_back(ent->x, ent->y, ent->z);
-    }
-}
-
-void EntityTweener::PreTick()
-{
-    Restore();
-    Reset();
-    PopulateEntities();
-}
-
-void EntityTweener::PostTick()
-{
-    for (auto* ent : Entities)
-    {
-        if (ent == nullptr)
-        {
-            // Sprite was removed, add a dummy position to keep the index aligned.
-            PostPos.emplace_back(0, 0, 0);
-        }
-        else
-        {
-            PostPos.emplace_back(ent->x, ent->y, ent->z);
-        }
-    }
-}
-
-void EntityTweener::RemoveEntity(SpriteBase* entity)
-{
-    if (!entity->Is<Peep>() && !entity->Is<Vehicle>())
-    {
-        // Only peeps and vehicles are tweened, bail if type is incorrect.
-        return;
-    }
-
-    auto it = std::find(Entities.begin(), Entities.end(), entity);
-    if (it != Entities.end())
-        *it = nullptr;
-}
-
-void EntityTweener::Tween(float alpha)
-{
-    const float inv = (1.0f - alpha);
-    for (size_t i = 0; i < Entities.size(); ++i)
-    {
-        auto* ent = Entities[i];
-        if (ent == nullptr)
-            continue;
-
-        auto& posA = PrePos[i];
-        auto& posB = PostPos[i];
-
-        if (posA == posB)
-            continue;
-
-        sprite_set_coordinates(
-            { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
-              static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
-              static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
-            ent);
-        ent->Invalidate();
-    }
-}
-
-void EntityTweener::Restore()
-{
-    for (size_t i = 0; i < Entities.size(); ++i)
-    {
-        auto* ent = Entities[i];
-        if (ent == nullptr)
-            continue;
-
-        sprite_set_coordinates(PostPos[i], ent);
-        ent->Invalidate();
-    }
-}
-
-void EntityTweener::Reset()
-{
-    Entities.clear();
-    PrePos.clear();
-    PostPos.clear();
-}
-
-static EntityTweener tweener;
-
-EntityTweener& EntityTweener::Get()
-{
-    return tweener;
 }
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing)

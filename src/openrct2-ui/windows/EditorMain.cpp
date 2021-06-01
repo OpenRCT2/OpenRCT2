@@ -13,7 +13,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/world/Footpath.h>
-#include <openrct2/world/Sprite.h>
 
 static void window_editor_main_paint(rct_window* w, rct_drawpixelinfo* dpi);
 

@@ -45,7 +45,6 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 #include "../world/Water.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"

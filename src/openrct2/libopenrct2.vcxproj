@@ -443,6 +443,7 @@
     <ClInclude Include="world\Duck.h" />
     <ClInclude Include="world\Entity.h" />
     <ClInclude Include="world\EntityList.h" />
+    <ClInclude Include="world\EntityTweener.h" />
     <ClInclude Include="world\Entrance.h" />
     <ClInclude Include="world\Footpath.h" />
     <ClInclude Include="world\Fountain.h" />
@@ -865,6 +866,7 @@
     <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\Duck.cpp" />
     <ClCompile Include="world\Entity.cpp" />
+    <ClCompile Include="world\EntityTweener.cpp" />
     <ClCompile Include="world\Entrance.cpp" />
     <ClCompile Include="world\Footpath.cpp" />
     <ClCompile Include="world\Fountain.cpp" />

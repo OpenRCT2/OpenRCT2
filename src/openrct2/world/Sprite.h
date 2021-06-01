@@ -14,32 +14,6 @@
 #include "SpriteBase.h"
 
 #include <array>
-#include <vector>
-
-class DataSerialiser;
-
-struct ExplosionFlare : MiscEntity
-{
-    static constexpr auto cEntityType = EntityType::ExplosionFlare;
-    void Update();
-    void Serialise(DataSerialiser& stream);
-};
-
-struct ExplosionCloud : MiscEntity
-{
-    static constexpr auto cEntityType = EntityType::ExplosionCloud;
-    void Update();
-    void Serialise(DataSerialiser& stream);
-};
-
-struct SteamParticle : MiscEntity
-{
-    static constexpr auto cEntityType = EntityType::SteamParticle;
-    uint16_t time_to_move;
-
-    void Update();
-    void Serialise(DataSerialiser& stream);
-};
 
 #pragma pack(push, 1)
 /**
@@ -62,59 +36,16 @@ struct rct_sprite_checksum
 
 #pragma pack(pop)
 
-enum
-{
-    SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE = 1 << 7,
-    SPRITE_FLAGS_PEEP_VISIBLE = 1 << 8,  // Peep is eligible to show in summarized guest list window (is inside park?)
-    SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Deprecated: Use sprite_set_flashing/sprite_get_flashing instead.
-};
-
-rct_sprite* create_sprite(EntityType type);
-template<typename T> T* CreateEntity()
-{
-    return reinterpret_cast<T*>(create_sprite(T::cEntityType));
-}
-
-// Use only with imports that must happen at a specified index
-SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type);
-// Use only with imports that must happen at a specified index
-template<typename T> T* CreateEntityAt(const uint16_t index)
-{
-    return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
-}
 void reset_sprite_list();
 void reset_sprite_spatial_index();
-void sprite_clear_all_unused();
 void sprite_misc_update_all();
 void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
 uint16_t remove_floating_sprites();
-void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);
-void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos);
 
 rct_sprite_checksum sprite_checksum();
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
-
-class EntityTweener
-{
-    std::vector<SpriteBase*> Entities;
-    std::vector<CoordsXYZ> PrePos;
-    std::vector<CoordsXYZ> PostPos;
-
-private:
-    void PopulateEntities();
-
-public:
-    static EntityTweener& Get();
-
-    void PreTick();
-    void PostTick();
-    void RemoveEntity(SpriteBase* entity);
-    void Tween(float alpha);
-    void Restore();
-    void Reset();
-};
 
 #endif

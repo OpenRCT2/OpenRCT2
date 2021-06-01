@@ -26,7 +26,6 @@
 #include "../../world/MoneyEffect.h"
 #include "../../world/Park.h"
 #include "../../world/Particle.h"
-#include "../../world/Sprite.h"
 #include "../Paint.h"
 
 /**

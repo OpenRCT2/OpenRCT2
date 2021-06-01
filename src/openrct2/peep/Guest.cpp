@@ -38,6 +38,7 @@
 #include "../world/Map.h"
 #include "../world/MoneyEffect.h"
 #include "../world/Park.h"
+#include "../world/Particle.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
@@ -897,8 +898,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
             {
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { x, y, z });
 
-                sprite_misc_explosion_cloud_create({ x, y, z + 16 });
-                sprite_misc_explosion_flare_create({ x, y, z + 16 });
+                ExplosionCloud::Create({ x, y, z + 16 });
+                ExplosionFlare::Create({ x, y, z + 16 });
 
                 Remove();
                 return;

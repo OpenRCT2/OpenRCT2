@@ -17,7 +17,6 @@
 #include "Fountain.h"
 #include "MoneyEffect.h"
 #include "Particle.h"
-#include "Sprite.h"
 
 static void EntityBaseSerialise(SpriteBase& base, DataSerialiser& stream)
 {

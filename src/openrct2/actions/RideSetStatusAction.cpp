@@ -20,7 +20,6 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 static rct_string_id _StatusErrorTitles[] = {
     STR_CANT_CLOSE,

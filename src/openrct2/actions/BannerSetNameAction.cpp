@@ -17,7 +17,6 @@
 #include "../ui/UiContext.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
-#include "../world/Sprite.h"
 #include "GameAction.h"
 
 BannerSetNameAction::BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)

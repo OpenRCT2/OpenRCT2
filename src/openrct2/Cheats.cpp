@@ -24,7 +24,6 @@
 #include "world/Map.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "world/Sprite.h"
 #include "world/Surface.h"
 
 using namespace OpenRCT2;

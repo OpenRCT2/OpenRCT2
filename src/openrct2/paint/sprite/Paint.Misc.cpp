@@ -15,7 +15,6 @@
 #include "../../world/Fountain.h"
 #include "../../world/MoneyEffect.h"
 #include "../../world/Particle.h"
-#include "../../world/Sprite.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
 

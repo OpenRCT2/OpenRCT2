@@ -18,7 +18,6 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/EntityList.h"
-#include "../world/Sprite.h"
 
 StaffSetColourAction::StaffSetColourAction(StaffType staffType, uint8_t colour)
     : _staffType(static_cast<uint8_t>(staffType))

@@ -39,3 +39,29 @@ struct CrashSplashParticle : MiscEntity
     void Update();
     void Serialise(DataSerialiser& stream);
 };
+
+struct ExplosionFlare : MiscEntity
+{
+    static constexpr auto cEntityType = EntityType::ExplosionFlare;
+    static void Create(const CoordsXYZ& flarePos);
+    void Update();
+    void Serialise(DataSerialiser& stream);
+};
+
+struct ExplosionCloud : MiscEntity
+{
+    static constexpr auto cEntityType = EntityType::ExplosionCloud;
+    static void Create(const CoordsXYZ& cloudPos);
+    void Update();
+    void Serialise(DataSerialiser& stream);
+};
+
+struct SteamParticle : MiscEntity
+{
+    static constexpr auto cEntityType = EntityType::SteamParticle;
+    uint16_t time_to_move;
+
+    static void Create(const CoordsXYZ& coords);
+    void Update();
+    void Serialise(DataSerialiser& stream);
+};
