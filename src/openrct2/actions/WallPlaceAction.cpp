@@ -71,7 +71,7 @@ void WallPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     rct_scenery_entry* sceneryEntry = get_wall_entry(_wallType);
     if (sceneryEntry != nullptr)
     {
-        if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+        if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
         {
             _bannerId = create_new_banner(0);
         }
