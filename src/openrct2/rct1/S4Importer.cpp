@@ -1345,11 +1345,11 @@ private:
         //                                          index in the array ----^     ^--- bit position in the 8-bit value
         // We do the opposite in this function to recover the x and y values.
 
+        staffmember->ClearPatrolArea();
+
         int32_t peepOffset = static_cast<int32_t>(staffId) * RCT12_PATROL_AREA_SIZE;
         for (int32_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
         {
-            staffmember->ClearPatrolArea();
-
             if (_s4.patrol_areas[peepOffset + i] == 0)
             {
                 // No patrol for this area
