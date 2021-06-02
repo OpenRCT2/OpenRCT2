@@ -26,6 +26,7 @@
 - Fix: [#14707] Crash when window is closed during text input.
 - Fix: [#14710] Ride/Track Design preview does not show if it costs more money than available.
 - Fix: [#14774] Incorrect import of scenery research caused all scenery to be unlocked.
+- Fix: [#14806] Incorrect function call in WallPlaceAction plugin code.
 - Improved: [#14511] “Unlock operating limits” cheat now also unlocks all music.
 - Improved: [#14712, #14716]: Improve startup times.
 
