@@ -2094,7 +2094,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 int16_t wallType = tileElement->AsWall()->GetEntryIndex();
                 DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, { COLOUR_WHITE });
 
-                auto banner = tileElement->AsWall->GetBanner();
+                auto banner = tileElement->AsWall()->GetBanner();
                 if (banner != nullptr && !banner->IsNull())
                 {
                     Formatter ft;
