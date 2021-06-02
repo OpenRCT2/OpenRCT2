@@ -91,7 +91,7 @@ void path_paint_pole_support(
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(
-    paint_session* session, rct_scenery_entry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
+    paint_session* session, PathBitEntry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
     if (tileElement->AsPath()->IsSloped())
@@ -149,7 +149,7 @@ static void path_bit_lights_paint(
 
 /* rct2: 0x006A5C94 */
 static void path_bit_bins_paint(
-    paint_session* session, rct_scenery_entry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
+    paint_session* session, PathBitEntry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
     if (tileElement->AsPath()->IsSloped())
@@ -248,7 +248,7 @@ static void path_bit_bins_paint(
 
 /* rct2: 0x006A5E81 */
 static void path_bit_benches_paint(
-    paint_session* session, rct_scenery_entry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
+    paint_session* session, PathBitEntry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
     uint32_t imageId;
@@ -303,7 +303,7 @@ static void path_bit_benches_paint(
 
 /* rct2: 0x006A6008 */
 static void path_bit_jumping_fountains_paint(
-    paint_session* session, rct_scenery_entry* pathBitEntry, int32_t height, uint32_t pathBitImageFlags, rct_drawpixelinfo* dpi)
+    paint_session* session, PathBitEntry* pathBitEntry, int32_t height, uint32_t pathBitImageFlags, rct_drawpixelinfo* dpi)
 {
     if (dpi->zoom_level > 0)
         return;
@@ -700,40 +700,40 @@ static void sub_6A3F61(
                 }
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
-                rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
+                auto* pathAddEntry = tile_element->AsPath()->GetAdditionEntry();
 
                 // Can be null if the object is not loaded.
-                if (sceneryEntry == nullptr)
+                if (pathAddEntry == nullptr)
                 {
                     paintScenery = false;
                 }
                 else if (
                     (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(tile_element->AsPath()->IsBroken())
-                    && !(sceneryEntry->path_bit.draw_type == PATH_BIT_DRAW_TYPE_BINS))
+                    && !(pathAddEntry->draw_type == PATH_BIT_DRAW_TYPE_BINS))
                 {
                     paintScenery = false;
                 }
                 else
                 {
-                    switch (sceneryEntry->path_bit.draw_type)
+                    switch (pathAddEntry->draw_type)
                     {
                         case PATH_BIT_DRAW_TYPE_LIGHTS:
                             path_bit_lights_paint(
-                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                session, pathAddEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
                                 sceneryImageFlags);
                             break;
                         case PATH_BIT_DRAW_TYPE_BINS:
                             path_bit_bins_paint(
-                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                session, pathAddEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
                                 sceneryImageFlags);
                             break;
                         case PATH_BIT_DRAW_TYPE_BENCHES:
                             path_bit_benches_paint(
-                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                session, pathAddEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
                                 sceneryImageFlags);
                             break;
                         case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
-                            path_bit_jumping_fountains_paint(session, sceneryEntry, height, sceneryImageFlags, dpi);
+                            path_bit_jumping_fountains_paint(session, pathAddEntry, height, sceneryImageFlags, dpi);
                             break;
                     }
 
@@ -962,8 +962,8 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     {
         if (tile_element->AsPath()->HasAddition() && !(tile_element->AsPath()->IsBroken()))
         {
-            rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
-            if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP)
+            auto* pathAddEntry = tile_element->AsPath()->GetAdditionEntry();
+            if (pathAddEntry != nullptr && pathAddEntry->flags & PATH_BIT_FLAG_LAMP)
             {
                 if (!(tile_element->AsPath()->GetEdges() & EDGE_NE))
                 {

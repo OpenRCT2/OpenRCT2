@@ -1869,9 +1869,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (tileElement->AsPath()->HasAddition())
                 {
                     const auto pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
-                    const auto* sceneryElement = get_footpath_item_entry(pathAdditionType);
-                    rct_string_id additionNameId = sceneryElement != nullptr
-                        ? sceneryElement->name
+                    const auto* pathBitEntry = get_footpath_item_entry(pathAdditionType);
+                    rct_string_id additionNameId = pathBitEntry != nullptr
+                        ? pathBitEntry->name
                         : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE);
                     DrawTextBasic(
                         dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId,

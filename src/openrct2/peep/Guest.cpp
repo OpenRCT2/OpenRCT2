@@ -1151,9 +1151,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         // Check if the footpath has a queue line TV monitor on it
                         if (pathElement->HasAddition() && !pathElement->AdditionIsGhost())
                         {
-                            auto pathSceneryIndex = pathElement->GetAdditionEntryIndex();
-                            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
-                            if (sceneryEntry != nullptr && (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN))
+                            auto* pathAddEntry = pathElement->GetAdditionEntry();
+                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN))
                             {
                                 found = true;
                             }
@@ -2888,24 +2887,23 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
             for (auto* tileElement : TileElementsView({ x, y }))
             {
                 Ride* ride;
-                rct_scenery_entry* scenery;
 
                 switch (tileElement->GetType())
                 {
                     case TILE_ELEMENT_TYPE_PATH:
+                    {
                         if (!tileElement->AsPath()->HasAddition())
                             break;
 
-                        scenery = tileElement->AsPath()->GetAdditionEntry();
-                        if (scenery == nullptr)
+                        auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+                        if (pathAddEntry == nullptr)
                         {
                             return PeepThoughtType::None;
                         }
                         if (tileElement->AsPath()->AdditionIsGhost())
                             break;
 
-                        if (scenery->path_bit.flags
-                            & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
+                        if (pathAddEntry->flags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
                         {
                             num_fountains++;
                             break;
@@ -2915,6 +2913,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                             num_rubbish++;
                         }
                         break;
+                    }
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                         num_scenery++;
@@ -5360,13 +5359,13 @@ void Guest::UpdateWalking()
     {
         if (!tileElement->AsPath()->AdditionIsGhost())
         {
-            rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-            if (sceneryEntry == nullptr)
+            auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+            if (pathAddEntry == nullptr)
             {
                 return;
             }
 
-            if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
+            if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
                 positions_free = 9;
         }
     }
@@ -5757,8 +5756,8 @@ void Guest::UpdateUsingBin()
                 if (!pathElement->HasAddition())
                     break;
 
-                rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
-                if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
+                auto* pathAddEntry = pathElement->GetAdditionEntry();
+                if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
                     break;
 
                 if (pathElement->IsBroken())
@@ -5869,8 +5868,8 @@ static PathElement* FindBench(const CoordsXYZ& loc)
         if (!pathElement->HasAddition())
             continue;
 
-        rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
-        if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
+        auto* pathAddEntry = pathElement->GetAdditionEntry();
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
             continue;
 
         if (pathElement->IsBroken())
@@ -5958,8 +5957,8 @@ static PathElement* FindBin(const CoordsXYZ& loc)
         if (!pathElement->HasAddition())
             continue;
 
-        rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
-        if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
+        auto* pathAddEntry = pathElement->GetAdditionEntry();
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
             continue;
 
         if (pathElement->IsBroken())
@@ -6036,8 +6035,8 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
         if (!pathElement->HasAddition())
             continue;
 
-        rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
-        if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE))
+        auto* pathAddEntry = pathElement->GetAdditionEntry();
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_BREAKABLE))
             continue;
 
         if (pathElement->IsBroken())

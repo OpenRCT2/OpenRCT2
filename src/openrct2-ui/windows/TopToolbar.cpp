@@ -1138,8 +1138,8 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         case ViewportInteractionItem::FootpathItem:
         {
             auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(entryIndex);
-            if (sceneryEntry != nullptr)
+            auto* pathBitEntry = get_footpath_item_entry(entryIndex);
+            if (pathBitEntry != nullptr)
             {
                 if (window_scenery_set_selected_item({ SCENERY_TYPE_PATH_ITEM, entryIndex }))
                 {

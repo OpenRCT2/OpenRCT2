@@ -465,16 +465,17 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             return info;
 
         case ViewportInteractionItem::FootpathItem:
-            sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
+        {
+            auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             if (tileElement->AsPath()->IsBroken())
             {
                 ft.Add<rct_string_id>(STR_BROKEN);
             }
-            ft.Add<rct_string_id>(sceneryEntry->name);
+            ft.Add<rct_string_id>(pathAddEntry->name);
             SetMapTooltip(ft);
             return info;
-
+        }
         case ViewportInteractionItem::ParkEntrance:
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 break;

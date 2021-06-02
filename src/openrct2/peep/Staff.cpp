@@ -1314,8 +1314,8 @@ void Staff::UpdateEmptyingBin()
             return;
         }
 
-        rct_scenery_entry* scenery_entry = tile_element->AsPath()->GetAdditionEntry();
-        if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
+        auto* pathAddEntry = tile_element->AsPath()->GetAdditionEntry();
+        if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
             || tile_element->AsPath()->AdditionIsGhost())
         {
             StateReset();
@@ -1682,11 +1682,11 @@ bool Staff::UpdatePatrollingFindBin()
 
     if (!tileElement->AsPath()->HasAddition())
         return false;
-    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-    if (sceneryEntry == nullptr)
+    auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+    if (pathAddEntry == nullptr)
         return false;
 
-    if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
+    if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
         return false;
 
     if (tileElement->AsPath()->IsBroken())

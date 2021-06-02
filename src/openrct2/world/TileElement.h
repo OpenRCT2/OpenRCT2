@@ -19,6 +19,7 @@ struct Banner;
 struct CoordsXY;
 struct rct_scenery_entry;
 struct WallSceneryEntry;
+struct PathBitEntry;
 struct rct_footpath_entry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
@@ -325,7 +326,7 @@ public:
     bool HasAddition() const;
     uint8_t GetAddition() const;
     ObjectEntryIndex GetAdditionEntryIndex() const;
-    rct_scenery_entry* GetAdditionEntry() const;
+    PathBitEntry* GetAdditionEntry() const;
     void SetAddition(uint8_t newAddition);
 
     bool AdditionIsGhost() const;
