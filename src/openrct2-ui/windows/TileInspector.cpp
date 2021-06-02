@@ -2094,26 +2094,6 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 int16_t wallType = tileElement->AsWall()->GetEntryIndex();
                 DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, { COLOUR_WHITE });
 
-                // Banner info
-                const auto wallEntry = tileElement->AsWall()->GetEntry();
-                if (wallEntry != nullptr && wallEntry->wall.flags & WALL_SCENERY_IS_BANNER)
-                {
-                    auto banner = tileElement->AsWall()->GetBanner();
-                    if (banner != nullptr && !banner->IsNull())
-                    {
-                        Formatter ft;
-                        banner->FormatTextTo(ft);
-                        DrawTextBasic(
-                            dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft,
-                            { COLOUR_WHITE });
-                    }
-                }
-                else
-                {
-                    DrawTextBasic(
-                        dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, {},
-                        { COLOUR_WHITE });
-                }
 
                 // Properties
                 // Raise / lower label
