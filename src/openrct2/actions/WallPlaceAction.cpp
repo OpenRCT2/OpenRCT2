@@ -68,10 +68,10 @@ void WallPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit("primaryColour", _primaryColour);
     visitor.Visit("secondaryColour", _secondaryColour);
     visitor.Visit("tertiaryColour", _tertiaryColour);
-    rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_wallType);
+    rct_scenery_entry* sceneryEntry = get_wall_entry(_wallType);
     if (sceneryEntry != nullptr)
     {
-        if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+        if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
         {
             _bannerId = create_new_banner(0);
         }
