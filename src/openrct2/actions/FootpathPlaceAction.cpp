@@ -56,7 +56,8 @@ void FootpathPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_direction) << DS_TAG(_constructFlags);
+    stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_railingsType) << DS_TAG(_direction)
+           << DS_TAG(_constructFlags);
 }
 
 GameActions::Result::Ptr FootpathPlaceAction::Query() const
