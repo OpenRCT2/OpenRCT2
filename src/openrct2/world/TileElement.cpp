@@ -42,11 +42,13 @@ BannerIndex TileElement::GetBannerIndex() const
 
             return AsLargeScenery()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_WALL:
-            sceneryEntry = AsWall()->GetEntry();
-            if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+        {
+            auto* wallEntry = AsWall()->GetEntry();
+            if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
                 return BANNER_INDEX_NULL;
 
             return AsWall()->GetBannerIndex();
+        }
         case TILE_ELEMENT_TYPE_BANNER:
             return AsBanner()->GetIndex();
         default:

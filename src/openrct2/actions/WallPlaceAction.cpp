@@ -50,10 +50,10 @@ WallPlaceAction::WallPlaceAction(
     , _secondaryColour(secondaryColour)
     , _tertiaryColour(tertiaryColour)
 {
-    rct_scenery_entry* sceneryEntry = get_wall_entry(_wallType);
+    auto* sceneryEntry = get_wall_entry(_wallType);
     if (sceneryEntry != nullptr)
     {
-        if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+        if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
         {
             _bannerId = create_new_banner(0);
         }
@@ -68,10 +68,10 @@ void WallPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit("primaryColour", _primaryColour);
     visitor.Visit("secondaryColour", _secondaryColour);
     visitor.Visit("tertiaryColour", _tertiaryColour);
-    rct_scenery_entry* sceneryEntry = get_wall_entry(_wallType);
+    auto* sceneryEntry = get_wall_entry(_wallType);
     if (sceneryEntry != nullptr)
     {
-        if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+        if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
         {
             _bannerId = create_new_banner(0);
         }
@@ -243,7 +243,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         }
     }
 
-    rct_scenery_entry* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = get_wall_entry(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -251,7 +251,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
-    if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         if (_bannerId == BANNER_INDEX_NULL)
         {
@@ -271,14 +271,14 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
     uint8_t clearanceHeight = targetHeight / 8;
     if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
     {
-        if (wallEntry->wall.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
+        if (wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
         {
             return std::make_unique<WallPlaceActionResult>(
                 GameActions::Status::Disallowed, STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
         }
         clearanceHeight += 2;
     }
-    clearanceHeight += wallEntry->wall.height;
+    clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
     if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
@@ -295,7 +295,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         return MakeResult(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    res->Cost = wallEntry->wall.price;
+    res->Cost = wallEntry->price;
     return res;
 }
 
@@ -336,7 +336,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     }
     auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
-    rct_scenery_entry* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = get_wall_entry(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -349,7 +349,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     {
         clearanceHeight += 2;
     }
-    clearanceHeight += wallEntry->wall.height;
+    clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
     if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
@@ -366,7 +366,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         return MakeResult(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         if (_bannerId == BANNER_INDEX_NULL)
         {
@@ -414,7 +414,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         wallElement->SetBannerIndex(_bannerId);
     }
 
-    if (wallEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {
         wallElement->SetTertiaryColour(_tertiaryColour);
     }
@@ -426,7 +426,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);
     map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
-    res->Cost = wallEntry->wall.price;
+    res->Cost = wallEntry->price;
     return res;
 }
 
@@ -435,7 +435,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
  *  rct2: 0x006E5CBA
  */
 bool WallPlaceAction::WallCheckObstructionWithTrack(
-    rct_scenery_entry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
+    WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
 {
     track_type_t trackType = trackElement->GetTrackType();
     int32_t sequence = trackElement->GetSequenceIndex();
@@ -451,7 +451,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return true;
     }
 
-    if (!(wall->wall.flags & WALL_SCENERY_IS_DOOR))
+    if (!(wall->flags & WALL_SCENERY_IS_DOOR))
     {
         return false;
     }
@@ -528,7 +528,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
  *  rct2: 0x006E5C1A
  */
 GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
-    rct_scenery_entry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
+    WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
 {
     int32_t entryType, sequence;
     rct_scenery_entry* entry;

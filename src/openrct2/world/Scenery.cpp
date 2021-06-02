@@ -229,14 +229,14 @@ void scenery_remove_ghost_tool_placement()
     }
 }
 
-rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex)
+WallSceneryEntry* get_wall_entry(ObjectEntryIndex entryIndex)
 {
-    rct_scenery_entry* result = nullptr;
+    WallSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr)
     {
-        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+        result = static_cast<WallSceneryEntry*>(obj->GetLegacyData());
     }
     return result;
 }
@@ -277,7 +277,7 @@ rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex)
     return result;
 }
 
-int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry)
+int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry)
 {
-    return (wallEntry->wall.flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
+    return (wallEntry->flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
 }

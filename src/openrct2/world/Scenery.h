@@ -100,17 +100,6 @@ enum LARGE_SCENERY_FLAGS
     LARGE_SCENERY_FLAG_PHOTOGENIC = (1 << 4),           // 0x10
 };
 
-struct rct_wall_scenery_entry
-{
-    CursorID tool_id;
-    uint8_t flags;
-    uint8_t height;
-    uint8_t flags2;
-    int16_t price;
-    ObjectEntryIndex scenery_tab_id;
-    uint8_t scrolling_mode;
-};
-
 enum WALL_SCENERY_FLAGS
 {
     WALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 0),   // 0x1
@@ -149,6 +138,12 @@ struct rct_banner_scenery_entry
     ObjectEntryIndex scenery_tab_id; // 0x0A
 };
 
+struct SceneryEntryBase
+{
+    rct_string_id name;
+    uint32_t image;
+};
+
 struct rct_scenery_entry
 {
     rct_string_id name; // 0x00
@@ -157,10 +152,20 @@ struct rct_scenery_entry
     {
         rct_small_scenery_entry small_scenery;
         rct_large_scenery_entry large_scenery;
-        rct_wall_scenery_entry wall;
         rct_path_bit_scenery_entry path_bit;
         rct_banner_scenery_entry banner;
     };
+};
+
+struct WallSceneryEntry : SceneryEntryBase
+{
+    CursorID tool_id;
+    uint8_t flags;
+    uint8_t height;
+    uint8_t flags2;
+    int16_t price;
+    ObjectEntryIndex scenery_tab_id;
+    uint8_t scrolling_mode;
 };
 
 #pragma pack(pop)
@@ -257,11 +262,11 @@ void scenery_update_tile(const CoordsXY& sceneryPos);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 
-rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex);
+WallSceneryEntry* get_wall_entry(ObjectEntryIndex entryIndex);
 rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex);
 rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex);
 rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex);
 
-int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry);
+int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry);
 
 #endif

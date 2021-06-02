@@ -383,8 +383,9 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             return info;
         }
         case ViewportInteractionItem::Wall:
-            sceneryEntry = tileElement->AsWall()->GetEntry();
-            if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+        {
+            auto* wallEntry = tileElement->AsWall()->GetEntry();
+            if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
             {
                 auto banner = tileElement->AsWall()->GetBanner();
                 if (banner != nullptr)
@@ -393,13 +394,13 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                     ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
                     banner->FormatTextTo(ft);
                     ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                    ft.Add<rct_string_id>(sceneryEntry->name);
+                    ft.Add<rct_string_id>(wallEntry->name);
                     SetMapTooltip(ft);
                     return info;
                 }
             }
             break;
-
+        }
         case ViewportInteractionItem::LargeScenery:
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
@@ -487,12 +488,13 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             return info;
 
         case ViewportInteractionItem::Wall:
-            sceneryEntry = tileElement->AsWall()->GetEntry();
+        {
+            auto* wallEntry = tileElement->AsWall()->GetEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-            ft.Add<rct_string_id>(sceneryEntry->name);
+            ft.Add<rct_string_id>(wallEntry->name);
             SetMapTooltip(ft);
             return info;
-
+        }
         case ViewportInteractionItem::LargeScenery:
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -656,8 +658,8 @@ void ViewportInteractionRemoveParkEntrance(TileElement* tileElement, CoordsXY ma
  */
 static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const CoordsXY& mapCoords)
 {
-    rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
-    if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+    auto* wallEntry = tileElement->AsWall()->GetEntry();
+    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         context_open_detail_window(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex());
     }

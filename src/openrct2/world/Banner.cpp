@@ -202,8 +202,8 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
         if (wallElement == nullptr)
             continue;
 
-        rct_scenery_entry* scenery_entry = wallElement->GetEntry();
-        if (scenery_entry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+        auto* wallEntry = wallElement->GetEntry();
+        if (wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
             continue;
         if (wallElement->GetBannerIndex() != bannerIndex)
             continue;

@@ -1012,10 +1012,10 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
         }
         case ViewportInteractionItem::Wall:
         {
-            rct_scenery_entry* scenery_entry = info.Element->AsWall()->GetEntry();
+            auto* scenery_entry = info.Element->AsWall()->GetEntry();
 
             // If can't repaint
-            if (!(scenery_entry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
+            if (!(scenery_entry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
                 return;
 
             auto repaintScenery = WallSetColourAction(
@@ -1090,7 +1090,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         case ViewportInteractionItem::Wall:
         {
             auto entryIndex = info.Element->AsWall()->GetEntryIndex();
-            rct_scenery_entry* sceneryEntry = get_wall_entry(entryIndex);
+            auto* sceneryEntry = get_wall_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 if (window_scenery_set_selected_item({ SCENERY_TYPE_WALL, entryIndex }))
@@ -1463,10 +1463,10 @@ static void sub_6E1F34_wall(
     auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
 
-    rct_scenery_entry* scenery_entry = get_wall_entry(sceneryIndex);
-    if (scenery_entry)
+    auto* wallEntry = get_wall_entry(sceneryIndex);
+    if (wallEntry != nullptr)
     {
-        maxPossibleHeight -= scenery_entry->wall.height;
+        maxPossibleHeight -= wallEntry->height;
     }
 
     sub_6E1F34_update_screen_coords_and_buttons_pressed(true, screenPos);
