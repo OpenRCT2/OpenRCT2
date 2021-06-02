@@ -37,6 +37,7 @@ struct Vehicle;
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
 #define MAX_VEHICLES_PER_RIDE_ENTRY 4
 constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 31;
+constexpr const uint8_t MAX_CIRCUITS_PER_RIDE = 20;
 constexpr const uint8_t MAX_CARS_PER_TRAIN = 255;
 constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_VEHICLES_PER_RIDE);
 #define NUM_COLOUR_SCHEMES 4
