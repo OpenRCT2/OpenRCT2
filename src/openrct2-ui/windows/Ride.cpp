@@ -3301,13 +3301,13 @@ static void window_ride_operating_mousedown(rct_window* w, rct_widgetindex widge
             window_ride_load_dropdown(w, widget);
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-            upper_bound = gCheatsUnlockOperatingLimits ? 255 : 20;
+            upper_bound = gCheatsUnlockOperatingLimits ? 255 : MAX_CIRCUITS_PER_RIDE;
             lower_bound = 1;
             set_operating_setting(
                 w->number, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits + 1, lower_bound, upper_bound));
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
-            upper_bound = gCheatsUnlockOperatingLimits ? 255 : 20;
+            upper_bound = gCheatsUnlockOperatingLimits ? 255 : MAX_CIRCUITS_PER_RIDE;
             lower_bound = 1;
             set_operating_setting(
                 w->number, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits - 1, lower_bound, upper_bound));
