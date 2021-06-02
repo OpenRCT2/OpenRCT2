@@ -23,7 +23,7 @@ static bool isLocationLitterable(const CoordsXYZ& mapPos)
             continue;
 
         int32_t pathZ = tileElement->GetBaseZ();
-        if (pathZ < mapPos.z || pathZ >= mapPos.z + 32)
+        if (pathZ < mapPos.z || pathZ >= mapPos.z + PATH_CLEARANCE)
             continue;
 
         return !tile_element_is_underground(tileElement);
