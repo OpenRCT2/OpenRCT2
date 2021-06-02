@@ -557,7 +557,7 @@ static bool map_animation_invalidate_wall(const CoordsXYZ& loc)
 
         auto* wallEntry = tileElement->AsWall()->GetEntry();
 
-        if (wallEntry != nullptr
+        if (wallEntry == nullptr
             || (!(wallEntry->flags2 & WALL_SCENERY_2_ANIMATED) && wallEntry->scrolling_mode == SCROLLING_MODE_NONE))
             continue;
 
