@@ -81,10 +81,6 @@ void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, s
     std::memcpy(&_data[dstIndex], &src._data[srcIndex], copyLength);
 }
 
-// HACK These were originally passed back through registers
-thread_local int32_t gLastDrawStringX;
-thread_local int32_t gLastDrawStringY;
-
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;
 
