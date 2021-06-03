@@ -53,7 +53,6 @@ static rct_widget s_wndChangelogWidgets[] = {
 
 class ChangelogWindow final : public Window
 {
-private:
     const NewVersionInfo* _newVersionInfo;
     std::vector<std::string> _changelogLines;
     int32_t _changelogLongestLineWidth = 0;
