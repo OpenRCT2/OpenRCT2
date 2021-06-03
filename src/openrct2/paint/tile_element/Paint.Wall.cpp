@@ -54,7 +54,7 @@ static void fence_paint_door(
         imageId = (imageId & 0x7FFFF) | dword_141F710;
     }
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER)
+    if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
     {
         paint_struct* ps;
 
@@ -335,14 +335,14 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
             if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS)
             {
-                if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER)
+                if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
                 {
                     imageOffset += 12;
                 }
             }
             else
             {
-                if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER)
+                if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
                 {
                     imageOffset += 6;
                 }
@@ -367,7 +367,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
                 imageOffset = 1;
             }
 
-            if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER)
+            if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
             {
                 imageOffset += 6;
             }

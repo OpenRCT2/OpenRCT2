@@ -119,7 +119,8 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "hasSecondaryColour",     WALL_SCENERY_HAS_SECONDARY_COLOUR,  Json::FlagType::Normal },
                 { "hasTernaryColour",       WALL_SCENERY_HAS_TERNARY_COLOUR,    Json::FlagType::Normal },
                 { "hasGlass",               WALL_SCENERY_HAS_GLASS,             Json::FlagType::Normal },
-                { "isBanner",               WALL_SCENERY_IS_BANNER,             Json::FlagType::Normal },
+                { "isBanner",               WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::Normal },
+                { "isDoubleSided",          WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::Normal },
                 { "isDoor",                 WALL_SCENERY_IS_DOOR,               Json::FlagType::Normal },
                 { "isLongDoorAnimation",    WALL_SCENERY_LONG_DOOR_ANIMATION,   Json::FlagType::Normal },
             });
