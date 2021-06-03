@@ -1616,7 +1616,7 @@ ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
     return GetAddition() - 1;
 }
 
-rct_scenery_entry* PathElement::GetAdditionEntry() const
+PathBitEntry* PathElement::GetAdditionEntry() const
 {
     if (!HasAddition())
         return nullptr;

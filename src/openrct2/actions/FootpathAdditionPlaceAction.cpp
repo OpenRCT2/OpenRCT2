@@ -93,12 +93,12 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
 
     if (_pathItemType != 0)
     {
-        rct_scenery_entry* sceneryEntry = get_footpath_item_entry(_pathItemType - 1);
-        if (sceneryEntry == nullptr)
+        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        if (pathBitEntry == nullptr)
         {
             return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
-        uint16_t sceneryFlags = sceneryEntry->path_bit.flags;
+        uint16_t sceneryFlags = pathBitEntry->flags;
 
         if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
         {
@@ -124,7 +124,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
         }
 
-        res->Cost = sceneryEntry->path_bit.price;
+        res->Cost = pathBitEntry->price;
     }
 
     // Should place a ghost?
@@ -163,13 +163,13 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
 
     if (_pathItemType != 0)
     {
-        rct_scenery_entry* sceneryEntry = get_footpath_item_entry(_pathItemType - 1);
-        if (sceneryEntry == nullptr)
+        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        if (pathBitEntry == nullptr)
         {
             return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
-        res->Cost = sceneryEntry->path_bit.price;
+        res->Cost = pathBitEntry->price;
     }
 
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
@@ -191,8 +191,8 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
     pathElement->SetIsBroken(false);
     if (_pathItemType != 0)
     {
-        rct_scenery_entry* scenery_entry = get_footpath_item_entry(_pathItemType - 1);
-        if (scenery_entry != nullptr && scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
+        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        if (pathBitEntry != nullptr && pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
         {
             pathElement->SetAdditionStatus(255);
         }

@@ -306,11 +306,11 @@ void window_scenery_init()
     // path bits
     for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS; sceneryId++)
     {
-        rct_scenery_entry* sceneryEntry = get_footpath_item_entry(sceneryId);
-        if (sceneryEntry == nullptr)
+        auto* pathBitEntry = get_footpath_item_entry(sceneryId);
+        if (pathBitEntry == nullptr)
             continue;
 
-        init_scenery_entry({ SCENERY_TYPE_PATH_ITEM, sceneryId }, sceneryEntry->path_bit.scenery_tab_id);
+        init_scenery_entry({ SCENERY_TYPE_PATH_ITEM, sceneryId }, pathBitEntry->scenery_tab_id);
     }
 
     for (rct_widgetindex widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
@@ -828,7 +828,7 @@ static void window_scenery_update(rct_window* w)
             }
             else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_PATH_ITEM)
             { // path bit
-                gCurrentToolId = static_cast<Tool>(get_footpath_item_entry(tabSelectedScenery.EntryIndex)->path_bit.tool_id);
+                gCurrentToolId = static_cast<Tool>(get_footpath_item_entry(tabSelectedScenery.EntryIndex)->tool_id);
             }
             else
             { // small scenery
@@ -1143,10 +1143,12 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
             name = sceneryEntry->name;
             break;
         case SCENERY_TYPE_PATH_ITEM:
-            sceneryEntry = get_footpath_item_entry(selectedSceneryEntry.EntryIndex);
-            price = sceneryEntry->path_bit.price;
-            name = sceneryEntry->name;
+        {
+            auto* pathBitEntry = get_footpath_item_entry(selectedSceneryEntry.EntryIndex);
+            price = pathBitEntry->price;
+            name = pathBitEntry->name;
             break;
+        }
         case SCENERY_TYPE_WALL:
         {
             auto* wallEntry = get_wall_entry(selectedSceneryEntry.EntryIndex);
@@ -1299,8 +1301,8 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             }
             else if (currentSceneryGlobal.SceneryType == SCENERY_TYPE_PATH_ITEM)
             {
-                sceneryEntry = get_footpath_item_entry(currentSceneryGlobal.EntryIndex);
-                uint32_t imageId = sceneryEntry->image;
+                auto* pathBitEntry = get_footpath_item_entry(currentSceneryGlobal.EntryIndex);
+                uint32_t imageId = pathBitEntry->image;
 
                 gfx_draw_sprite(&clipdpi, imageId, { 0x0B, 0x10 }, w->colours[1]);
             }

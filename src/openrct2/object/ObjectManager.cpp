@@ -509,8 +509,8 @@ private:
                     }
                     case ObjectType::PathBits:
                     {
-                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
-                        sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
+                        auto* pathBitEntry = static_cast<PathBitEntry*>(loadedObject->GetLegacyData());
+                        pathBitEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
                     }
                     case ObjectType::SceneryGroup:

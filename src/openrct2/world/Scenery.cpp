@@ -80,14 +80,14 @@ void scenery_update_tile(const CoordsXY& sceneryPos)
         {
             if (tileElement->AsPath()->HasAddition() && !tileElement->AsPath()->AdditionIsGhost())
             {
-                rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-                if (sceneryEntry != nullptr)
+                auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+                if (pathAddEntry != nullptr)
                 {
-                    if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER)
+                    if (pathAddEntry->flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER)
                     {
                         JumpingFountain::StartAnimation(JumpingFountainType::Water, sceneryPos, tileElement);
                     }
-                    else if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)
+                    else if (pathAddEntry->flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)
                     {
                         JumpingFountain::StartAnimation(JumpingFountainType::Snow, sceneryPos, tileElement);
                     }
@@ -253,14 +253,14 @@ rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex)
     return result;
 }
 
-rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
+PathBitEntry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
 {
-    rct_scenery_entry* result = nullptr;
+    PathBitEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::PathBits, entryIndex);
     if (obj != nullptr)
     {
-        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+        result = static_cast<PathBitEntry*>(obj->GetLegacyData());
     }
     return result;
 }

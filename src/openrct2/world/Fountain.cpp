@@ -257,9 +257,8 @@ bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const
         if (!tileElement->AsPath()->HasAddition())
             continue;
 
-        const auto additionIndex = tileElement->AsPath()->GetAdditionEntryIndex();
-        rct_scenery_entry* sceneryEntry = get_footpath_item_entry(additionIndex);
-        if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & pathBitFlagMask)
+        auto* pathBitEntry = tileElement->AsPath()->GetAdditionEntry();
+        if (pathBitEntry != nullptr && pathBitEntry->flags & pathBitFlagMask)
         {
             return true;
         }

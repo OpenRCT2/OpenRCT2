@@ -418,7 +418,6 @@ void SetCheatAction::RemoveLitter() const
     }
 
     tile_element_iterator it;
-    rct_scenery_entry* sceneryEntry;
 
     tile_element_iterator_begin(&it);
     do
@@ -429,8 +428,8 @@ void SetCheatAction::RemoveLitter() const
         if (!(it.element)->AsPath()->HasAddition())
             continue;
 
-        sceneryEntry = it.element->AsPath()->GetAdditionEntry();
-        if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
+        auto* pathBitEntry = it.element->AsPath()->GetAdditionEntry();
+        if (pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
             it.element->AsPath()->SetAdditionStatus(0xFF);
 
     } while (tile_element_iterator_next(&it));
