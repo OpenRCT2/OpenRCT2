@@ -276,8 +276,6 @@ private:
     /**
      * @brief Attempts to read the changelog file, returns true on success
      *
-     * @return true
-     * @return false
      */
     bool ReadChangelogFile()
     {
