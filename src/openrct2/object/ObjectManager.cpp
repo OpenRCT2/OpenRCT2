@@ -490,8 +490,8 @@ private:
                     }
                     case ObjectType::LargeScenery:
                     {
-                        auto* sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
-                        sceneryEntry->large_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
+                        auto* sceneryEntry = static_cast<LargeSceneryEntry*>(loadedObject->GetLegacyData());
+                        sceneryEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
                     }
                     case ObjectType::Walls:

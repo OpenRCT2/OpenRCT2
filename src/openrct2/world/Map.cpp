@@ -1926,15 +1926,14 @@ SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCo
 std::optional<CoordsXYZ> map_large_scenery_get_origin(
     const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement)
 {
-    rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile* tile;
 
     auto tileElement = map_get_large_scenery_segment(sceneryPos, sequence);
     if (tileElement == nullptr)
         return std::nullopt;
 
-    sceneryEntry = tileElement->GetEntry();
-    tile = &sceneryEntry->large_scenery.tiles[sequence];
+    auto* sceneryEntry = tileElement->GetEntry();
+    tile = &sceneryEntry->tiles[sequence];
 
     CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
     auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
@@ -1953,7 +1952,6 @@ std::optional<CoordsXYZ> map_large_scenery_get_origin(
 bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile *sceneryTiles, *tile;
 
     auto sceneryOrigin = map_large_scenery_get_origin(signPos, sequence, &tileElement);
@@ -1962,8 +1960,8 @@ bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequen
         return false;
     }
 
-    sceneryEntry = tileElement->GetEntry();
-    sceneryTiles = sceneryEntry->large_scenery.tiles;
+    auto* sceneryEntry = tileElement->GetEntry();
+    sceneryTiles = sceneryEntry->tiles;
 
     // Iterate through each tile of the large scenery element
     sequence = 0;

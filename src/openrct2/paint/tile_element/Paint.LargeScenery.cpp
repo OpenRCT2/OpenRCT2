@@ -232,11 +232,11 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     if (object == nullptr)
         return;
 
-    const rct_scenery_entry* entry = tileElement->AsLargeScenery()->GetEntry();
-    if (entry == nullptr)
+    const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+    if (sceneryEntry == nullptr)
         return;
 
-    uint32_t image_id = (sequenceNum << 2) + entry->image + 4 + direction;
+    uint32_t image_id = (sequenceNum << 2) + sceneryEntry->image + 4 + direction;
     const rct_large_scenery_tile* tile = object->GetTileForSequence(sequenceNum);
     if (tile == nullptr)
         return;
@@ -285,14 +285,14 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     boxlength.y = s98E3C4[esi].length.y;
     boxlength.z = ah;
     PaintAddImageAsParent(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z);
-    if (entry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE || direction == 1 || direction == 2)
+    if (sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE || direction == 1 || direction == 2)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
-    if (entry->large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
+    if (sceneryEntry->flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
-        if (entry->large_scenery.tiles[1].x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)))
+        if (sceneryEntry->tiles[1].x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)))
         {
             int32_t sequenceDirection = (tileElement->AsLargeScenery()->GetSequenceIndex() - 1) & 3;
             if (sequenceDirection != direction)
@@ -322,7 +322,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
             banner->FormatTextTo(ft);
             utf8 signString[256];
             format_string(signString, sizeof(signString), STR_STRINGID, ft.Data());
-            rct_large_scenery_text* text = entry->large_scenery.text;
+            rct_large_scenery_text* text = sceneryEntry->text;
             int32_t y_offset = (text->offset[(direction & 1)].y * 2);
             if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
             {
@@ -339,8 +339,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
                     utf8 str[5] = { 0 };
                     utf8_write_codepoint(str, codepoint);
                     large_scenery_sign_paint_line(
-                        session, str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
-                        y_offset - height2);
+                        session, str, sceneryEntry->text, sceneryEntry->text_image, textColour, direction, y_offset - height2);
                     y_offset += large_scenery_sign_get_glyph(text, codepoint)->height * 2;
                 }
             }
@@ -382,24 +381,21 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
                                 src = spacesrc;
                             }
                             large_scenery_sign_paint_line(
-                                session, str1, entry->large_scenery.text, entry->large_scenery.text_image, textColour,
-                                direction, y_offset);
+                                session, str1, sceneryEntry->text, sceneryEntry->text_image, textColour, direction, y_offset);
                             y_offset += (large_scenery_sign_get_glyph(text, 'A')->height + 1) * 2;
                         }
                     }
                     else
                     {
                         large_scenery_sign_paint_line(
-                            session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour,
-                            direction, y_offset);
+                            session, signString, sceneryEntry->text, sceneryEntry->text_image, textColour, direction, y_offset);
                     }
                 }
                 else
                 {
                     // Draw one-line sign:
                     large_scenery_sign_paint_line(
-                        session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
-                        y_offset);
+                        session, signString, sceneryEntry->text, sceneryEntry->text_image, textColour, direction, y_offset);
                 }
             }
         }
@@ -432,7 +428,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         textColour = ColourMapA[textColour].light;
     }
     // 6B809A:
-    uint16_t scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
+    uint16_t scrollMode = sceneryEntry->scrolling_mode + ((direction + 1) & 0x3);
     auto banner = tileElement->AsLargeScenery()->GetBanner();
     if (banner != nullptr)
     {

@@ -17,7 +17,7 @@
 
 struct Banner;
 struct CoordsXY;
-struct rct_scenery_entry;
+struct LargeSceneryEntry;
 struct SmallSceneryEntry;
 struct WallSceneryEntry;
 struct PathBitEntry;
@@ -496,7 +496,7 @@ private:
 public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
-    rct_scenery_entry* GetEntry() const;
+    LargeSceneryEntry* GetEntry() const;
     const LargeSceneryObject* GetObject() const;
 
     uint8_t GetSequenceIndex() const;

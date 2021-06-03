@@ -238,16 +238,16 @@ public:
         }
         else
         {
-            rct_scenery_entry* scenery_entry = get_large_scenery_entry(SceneryEntry);
+            auto* sceneryEntry = get_large_scenery_entry(SceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
 
-            if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+            if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
             {
                 main_colour_btn->type = WindowWidgetType::ColourBtn;
             }
-            if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+            if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
             {
                 text_colour_btn->type = WindowWidgetType::ColourBtn;
             }

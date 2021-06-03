@@ -1027,10 +1027,10 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
         }
         case ViewportInteractionItem::LargeScenery:
         {
-            rct_scenery_entry* scenery_entry = info.Element->AsLargeScenery()->GetEntry();
+            auto* sceneryEntry = info.Element->AsLargeScenery()->GetEntry();
 
             // If can't repaint
-            if (!(scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+            if (!(sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 return;
 
             auto repaintScenery = LargeScenerySetColourAction(
@@ -1106,7 +1106,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         case ViewportInteractionItem::LargeScenery:
         {
             auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
-            rct_scenery_entry* sceneryEntry = get_large_scenery_entry(entryIndex);
+            auto* sceneryEntry = get_large_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 if (window_scenery_set_selected_item({ SCENERY_TYPE_LARGE, entryIndex }))
@@ -1552,13 +1552,13 @@ static void sub_6E1F34_large_scenery(
     auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
 
-    rct_scenery_entry* scenery_entry = get_large_scenery_entry(sceneryIndex);
-    if (scenery_entry)
+    auto* sceneryEntry = get_large_scenery_entry(sceneryIndex);
+    if (sceneryEntry)
     {
         int16_t maxClearZ = 0;
-        for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; ++i)
+        for (int32_t i = 0; sceneryEntry->tiles[i].x_offset != -1; ++i)
         {
-            maxClearZ = std::max<int16_t>(maxClearZ, scenery_entry->large_scenery.tiles[i].z_clearance);
+            maxClearZ = std::max<int16_t>(maxClearZ, sceneryEntry->tiles[i].z_clearance);
         }
         maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
     }
@@ -2808,10 +2808,10 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
                 return;
             }
 
-            rct_scenery_entry* scenery = get_large_scenery_entry(selection.EntryIndex);
+            auto* sceneryEntry = get_large_scenery_entry(selection.EntryIndex);
             gMapSelectionTiles.clear();
 
-            for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles;
+            for (rct_large_scenery_tile* tile = sceneryEntry->tiles;
                  tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)); tile++)
             {
                 CoordsXY tileLocation = { tile->x_offset, tile->y_offset };

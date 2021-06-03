@@ -6333,7 +6333,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (sceneryEntry == nullptr || !(sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
@@ -6449,8 +6449,8 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            auto sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (!(sceneryEntry == nullptr || sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            if (!(sceneryEntry == nullptr || sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
@@ -6565,8 +6565,8 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            const auto* entry = tileElement->AsLargeScenery()->GetEntry();
-            if (entry == nullptr || !(entry->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }

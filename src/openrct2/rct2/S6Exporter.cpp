@@ -1770,7 +1770,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetSecondaryColour(src2->GetSecondaryColour());
 
             auto entry = src2->GetEntry();
-            if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+            if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
             {
                 auto bannerIndex = src2->GetBannerIndex();
                 if (bannerIndex != BANNER_INDEX_NULL)
