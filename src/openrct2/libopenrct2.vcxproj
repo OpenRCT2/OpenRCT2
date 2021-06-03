@@ -871,6 +871,7 @@
     <ClCompile Include="world\Footpath.cpp" />
     <ClCompile Include="world\Fountain.cpp" />
     <ClCompile Include="world\LargeScenery.cpp" />
+    <ClCompile Include="world\Litter.cpp" />
     <ClCompile Include="world\Map.cpp" />
     <ClCompile Include="world\MapAnimation.cpp" />
     <ClCompile Include="world\MapGen.cpp" />
