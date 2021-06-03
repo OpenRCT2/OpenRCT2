@@ -333,7 +333,7 @@ Banner* BannerElement::GetBanner() const
     return ::GetBanner(GetIndex());
 }
 
-rct_scenery_entry* BannerElement::GetEntry() const
+BannerSceneryEntry* BannerElement::GetEntry() const
 {
     auto banner = GetBanner();
     if (banner != nullptr)

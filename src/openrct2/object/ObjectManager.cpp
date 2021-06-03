@@ -503,8 +503,8 @@ private:
                     }
                     case ObjectType::Banners:
                     {
-                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
-                        sceneryEntry->banner.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
+                        auto* bannerEntry = static_cast<BannerSceneryEntry*>(loadedObject->GetLegacyData());
+                        bannerEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
                     }
                     case ObjectType::PathBits:

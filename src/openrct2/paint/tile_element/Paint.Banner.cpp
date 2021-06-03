@@ -55,8 +55,8 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
         return;
     }
 
-    auto banner_scenery = get_banner_entry(banner->type);
-    if (banner_scenery == nullptr)
+    auto* bannerEntry = get_banner_entry(banner->type);
+    if (bannerEntry == nullptr)
     {
         return;
     }
@@ -66,7 +66,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     CoordsXYZ boundBoxOffset = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
 
-    uint32_t base_id = (direction << 1) + banner_scenery->image;
+    uint32_t base_id = (direction << 1) + bannerEntry->image;
     uint32_t image_id = base_id;
 
     if (tile_element->IsGhost()) // if being placed
@@ -93,7 +93,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     if (direction >= 2 || (tile_element->IsGhost()))
         return;
 
-    uint16_t scrollingMode = banner_scenery->banner.scrolling_mode;
+    uint16_t scrollingMode = bannerEntry->scrolling_mode;
     if (scrollingMode >= MAX_SCROLLING_TEXT_MODES)
     {
         return;

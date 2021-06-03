@@ -241,14 +241,14 @@ WallSceneryEntry* get_wall_entry(ObjectEntryIndex entryIndex)
     return result;
 }
 
-rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex)
+BannerSceneryEntry* get_banner_entry(ObjectEntryIndex entryIndex)
 {
-    rct_scenery_entry* result = nullptr;
+    BannerSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::Banners, entryIndex);
     if (obj != nullptr)
     {
-        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+        result = static_cast<BannerSceneryEntry*>(obj->GetLegacyData());
     }
     return result;
 }

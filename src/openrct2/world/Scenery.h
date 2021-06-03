@@ -121,14 +121,6 @@ enum WALL_SCENERY_2_FLAGS
     WALL_SCENERY_2_ANIMATED = (1 << 4),  // 0x10
 };
 
-struct rct_banner_scenery_entry
-{
-    uint8_t scrolling_mode;          // 0x06
-    uint8_t flags;                   // 0x07
-    int16_t price;                   // 0x08
-    ObjectEntryIndex scenery_tab_id; // 0x0A
-};
-
 struct SceneryEntryBase
 {
     rct_string_id name;
@@ -143,7 +135,6 @@ struct rct_scenery_entry
     {
         rct_small_scenery_entry small_scenery;
         rct_large_scenery_entry large_scenery;
-        rct_banner_scenery_entry banner;
     };
 };
 
@@ -163,6 +154,14 @@ struct PathBitEntry : SceneryEntryBase
     uint16_t flags;
     uint8_t draw_type;
     CursorID tool_id;
+    int16_t price;
+    ObjectEntryIndex scenery_tab_id;
+};
+
+struct BannerSceneryEntry : SceneryEntryBase
+{
+    uint8_t scrolling_mode;
+    uint8_t flags;
     int16_t price;
     ObjectEntryIndex scenery_tab_id;
 };
@@ -262,7 +261,7 @@ void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 
 WallSceneryEntry* get_wall_entry(ObjectEntryIndex entryIndex);
-rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex);
+BannerSceneryEntry* get_banner_entry(ObjectEntryIndex entryIndex);
 PathBitEntry* get_footpath_item_entry(ObjectEntryIndex entryIndex);
 rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex);
 

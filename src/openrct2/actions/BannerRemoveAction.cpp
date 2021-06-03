@@ -74,10 +74,10 @@ GameActions::Result::Ptr BannerRemoveAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
-    rct_scenery_entry* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = get_banner_entry(banner->type);
     if (bannerEntry != nullptr)
     {
-        res->Cost = -((bannerEntry->banner.price * 3) / 4);
+        res->Cost = -((bannerEntry->price * 3) / 4);
     }
 
     return res;
@@ -112,10 +112,10 @@ GameActions::Result::Ptr BannerRemoveAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
-    rct_scenery_entry* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = get_banner_entry(banner->type);
     if (bannerEntry != nullptr)
     {
-        res->Cost = -((bannerEntry->banner.price * 3) / 4);
+        res->Cost = -((bannerEntry->price * 3) / 4);
     }
 
     reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();
