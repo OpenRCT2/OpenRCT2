@@ -124,11 +124,6 @@ public:
         max_height = MIN_WH;
     }
 
-    void OnClose() override
-    {
-        DisposeChangelogData();
-    }
-
     void OnResize() override
     {
         int32_t screenWidth = context_get_width();
@@ -250,16 +245,6 @@ private:
         {
             log_error("ChangelogWindow: Could not process NewVersionInfo, result was undefined");
         }
-    }
-
-    /**
-     * @brief Clears out stored changelog line-data and shrinks store capacity
-     *
-     */
-    void DisposeChangelogData()
-    {
-        _changelogLines.clear();
-        _changelogLines.shrink_to_fit();
     }
 
     /**
