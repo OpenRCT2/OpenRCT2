@@ -138,7 +138,7 @@ uint16_t WallElement::GetEntryIndex() const
     return entryIndex;
 }
 
-rct_scenery_entry* WallElement::GetEntry() const
+WallSceneryEntry* WallElement::GetEntry() const
 {
     return get_wall_entry(entryIndex);
 }

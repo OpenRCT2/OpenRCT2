@@ -1239,7 +1239,7 @@ public:
                 // Import banner information
                 dst2->SetBannerIndex(BANNER_INDEX_NULL);
                 auto entry = dst2->GetEntry();
-                if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+                if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))

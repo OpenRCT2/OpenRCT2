@@ -1235,10 +1235,10 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             break;
         case TILE_ELEMENT_TYPE_WALL:
         {
-            sceneryEntry = tileElement->AsWall()->GetEntry();
+            auto* wallEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
+            rct_string_id stringId = wallEntry != nullptr ? wallEntry->name : static_cast<rct_string_id>(STR_EMPTY);
             ft.Add<rct_string_id>(stringId);
             break;
         }

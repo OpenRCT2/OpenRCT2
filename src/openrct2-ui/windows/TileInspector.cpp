@@ -1635,12 +1635,11 @@ static void window_tile_inspector_invalidate(rct_window* w)
         {
             bool canBeSloped = false;
             bool hasAnimation = false;
-            const auto sceneryEntry = tileElement->AsWall()->GetEntry();
-            if (sceneryEntry != nullptr)
+            const auto wallEntry = tileElement->AsWall()->GetEntry();
+            if (wallEntry != nullptr)
             {
-                const rct_wall_scenery_entry wallEntry = sceneryEntry->wall;
-                canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
-                hasAnimation = wallEntry.flags & WALL_SCENERY_IS_DOOR;
+                canBeSloped = !(wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
+                hasAnimation = wallEntry->flags & WALL_SCENERY_IS_DOOR;
             }
 
             w->widgets[WIDX_WALL_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
@@ -2094,6 +2093,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 int16_t wallType = tileElement->AsWall()->GetEntryIndex();
                 DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, { COLOUR_WHITE });
 
+                // Banner info
                 auto banner = tileElement->AsWall()->GetBanner();
                 if (banner != nullptr && !banner->IsNull())
                 {

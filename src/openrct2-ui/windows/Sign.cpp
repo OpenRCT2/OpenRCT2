@@ -222,16 +222,16 @@ public:
 
         if (_isSmall)
         {
-            rct_scenery_entry* scenery_entry = get_wall_entry(SceneryEntry);
+            auto* wallEntry = get_wall_entry(SceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
 
-            if (scenery_entry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+            if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
             {
                 main_colour_btn->type = WindowWidgetType::ColourBtn;
             }
-            if (scenery_entry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+            if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
             {
                 text_colour_btn->type = WindowWidgetType::ColourBtn;
             }

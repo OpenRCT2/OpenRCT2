@@ -18,6 +18,7 @@
 struct Banner;
 struct CoordsXY;
 struct rct_scenery_entry;
+struct WallSceneryEntry;
 struct rct_footpath_entry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
@@ -531,7 +532,7 @@ private:
 public:
     uint16_t GetEntryIndex() const;
     void SetEntryIndex(uint16_t newIndex);
-    rct_scenery_entry* GetEntry() const;
+    WallSceneryEntry* GetEntry() const;
 
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newslope);

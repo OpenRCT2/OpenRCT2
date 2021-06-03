@@ -497,8 +497,8 @@ private:
                     }
                     case ObjectType::Walls:
                     {
-                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
-                        sceneryEntry->wall.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
+                        auto* wallEntry = static_cast<WallSceneryEntry*>(loadedObject->GetLegacyData());
+                        wallEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
                     }
                     case ObjectType::Banners:

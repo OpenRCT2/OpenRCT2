@@ -40,11 +40,11 @@ static constexpr const uint8_t byte_9A40CC[] = {
 };
 
 static void fence_paint_door(
-    paint_session* session, uint32_t imageId, rct_scenery_entry* sceneryEntry, uint32_t imageColourFlags,
-    uint32_t tertiaryColour, uint32_t dword_141F710, LocationXYZ16 offset, LocationXYZ16 boundsR1, LocationXYZ16 boundsR1_,
-    LocationXYZ16 boundsR2, LocationXYZ16 boundsR2_, LocationXYZ16 boundsL1, LocationXYZ16 boundsL1_)
+    paint_session* session, uint32_t imageId, WallSceneryEntry* wallEntry, uint32_t imageColourFlags, uint32_t tertiaryColour,
+    uint32_t dword_141F710, LocationXYZ16 offset, LocationXYZ16 boundsR1, LocationXYZ16 boundsR1_, LocationXYZ16 boundsR2,
+    LocationXYZ16 boundsR2_, LocationXYZ16 boundsL1, LocationXYZ16 boundsL1_)
 {
-    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
     {
         imageId |= imageColourFlags;
     }
@@ -54,7 +54,7 @@ static void fence_paint_door(
         imageId = (imageId & 0x7FFFF) | dword_141F710;
     }
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+    if (wallEntry->flags & WALL_SCENERY_IS_DOUBLE_SIDED)
     {
         paint_struct* ps;
 
@@ -97,16 +97,16 @@ static void fence_paint_door(
 }
 
 static void fence_paint_wall(
-    paint_session* session, uint32_t frameNum, const rct_scenery_entry* sceneryEntry, uint32_t dword_141F710,
+    paint_session* session, uint32_t frameNum, const WallSceneryEntry* wallEntry, uint32_t dword_141F710,
     uint32_t imageColourFlags, uint32_t dword_141F718, uint32_t tertiaryColour, uint32_t imageOffset, LocationXYZ16 offset,
     LocationXYZ16 bounds, LocationXYZ16 boundsOffset)
 {
-    uint32_t baseImageId = sceneryEntry->image + imageOffset + frameNum;
+    uint32_t baseImageId = wallEntry->image + imageOffset + frameNum;
     uint32_t imageId = baseImageId;
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS)
+    if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
     {
-        if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+        if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
         {
             imageId |= imageColourFlags;
         }
@@ -129,7 +129,7 @@ static void fence_paint_wall(
     }
     else
     {
-        if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+        if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
         {
             imageId |= imageColourFlags;
         }
@@ -158,14 +158,14 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 {
     session->InteractionType = ViewportInteractionItem::Wall;
 
-    rct_scenery_entry* sceneryEntry = tile_element->AsWall()->GetEntry();
-    if (sceneryEntry == nullptr)
+    auto* wallEntry = tile_element->AsWall()->GetEntry();
+    if (wallEntry == nullptr)
     {
         return;
     }
     uint32_t frameNum = 0;
 
-    if (sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED)
+    if (wallEntry->flags2 & WALL_SCENERY_2_ANIMATED)
     {
         frameNum = (gCurrentTicks & 7) * 2;
     }
@@ -174,14 +174,14 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     uint32_t imageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(primaryColour);
     uint32_t dword_141F718 = imageColourFlags + 0x23800006;
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
     {
         uint8_t secondaryColour = tile_element->AsWall()->GetSecondaryColour();
         imageColourFlags |= secondaryColour << 24 | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32_t tertiaryColour = 0;
-    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {
         tertiaryColour = tile_element->AsWall()->GetTertiaryColour();
         imageColourFlags &= 0x0DFFFFFFF;
@@ -206,9 +206,9 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
     // Save tile_element
 
-    uint8_t ah = sceneryEntry->wall.height * 8 - 2;
+    uint8_t ah = wallEntry->height * 8 - 2;
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR)
+    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
     {
         LocationXYZ16 offset;
         LocationXYZ16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
@@ -220,7 +220,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         switch (direction)
         {
             case 0:
-                imageId = sceneryEntry->image + byte_9A406C[animationFrame];
+                imageId = wallEntry->image + byte_9A406C[animationFrame];
 
                 boundsR1 = { 1, 3, static_cast<int16_t>(ah - 5) };
                 boundsR1_ = { 1, 1, static_cast<int16_t>(height + 1) };
@@ -233,12 +233,12 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
                 offset = { 0, 0, static_cast<int16_t>(height) };
 
                 fence_paint_door(
-                    session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1,
-                    boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                    session, imageId, wallEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_,
+                    boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 1:
-                imageId = sceneryEntry->image + byte_9A408C[animationFrame];
+                imageId = wallEntry->image + byte_9A408C[animationFrame];
 
                 boundsR1 = { 3, 3, static_cast<int16_t>(ah - 5) };
                 boundsR1_ = { 1, 30, static_cast<int16_t>(height + 1) };
@@ -251,12 +251,12 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
                 offset = { 1, 31, static_cast<int16_t>(height) };
 
                 fence_paint_door(
-                    session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1,
-                    boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                    session, imageId, wallEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_,
+                    boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 2:
-                imageId = sceneryEntry->image + byte_9A40AC[animationFrame];
+                imageId = wallEntry->image + byte_9A40AC[animationFrame];
 
                 boundsR1 = { 3, 3, static_cast<int16_t>(ah - 5) };
                 boundsR1_ = { 30, 1, static_cast<int16_t>(height + 1) };
@@ -269,12 +269,12 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
                 offset = { 31, 0, static_cast<int16_t>(height) };
 
                 fence_paint_door(
-                    session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1,
-                    boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                    session, imageId, wallEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_,
+                    boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 3:
-                imageId = sceneryEntry->image + byte_9A40CC[animationFrame];
+                imageId = wallEntry->image + byte_9A40CC[animationFrame];
 
                 boundsR1 = { 3, 1, static_cast<int16_t>(ah - 5) };
                 boundsR1_ = { 1, 1, static_cast<int16_t>(height + 1) };
@@ -287,8 +287,8 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
                 offset = { 2, 1, static_cast<int16_t>(height) };
 
                 fence_paint_door(
-                    session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1,
-                    boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                    session, imageId, wallEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_,
+                    boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
         }
 
@@ -333,16 +333,16 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
                 imageOffset = 0;
             }
 
-            if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_GLASS)
+            if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
             {
-                if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+                if (wallEntry->flags & WALL_SCENERY_IS_DOUBLE_SIDED)
                 {
                     imageOffset += 12;
                 }
             }
             else
             {
-                if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+                if (wallEntry->flags & WALL_SCENERY_IS_DOUBLE_SIDED)
                 {
                     imageOffset += 6;
                 }
@@ -367,7 +367,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
                 imageOffset = 1;
             }
 
-            if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
+            if (wallEntry->flags & WALL_SCENERY_IS_DOUBLE_SIDED)
             {
                 imageOffset += 6;
             }
@@ -398,10 +398,10 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     }
 
     fence_paint_wall(
-        session, frameNum, sceneryEntry, dword_141F710, imageColourFlags, dword_141F718, tertiaryColour, imageOffset, offset,
+        session, frameNum, wallEntry, dword_141F710, imageColourFlags, dword_141F718, tertiaryColour, imageOffset, offset,
         bounds, boundsOffset);
 
-    if (sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+    if (wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
     {
         return;
     }
@@ -425,7 +425,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         secondaryColour = ColourMapA[secondaryColour].light;
     }
 
-    uint16_t scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
+    uint16_t scrollingMode = wallEntry->scrolling_mode + ((direction + 1) & 0x3);
     if (scrollingMode >= MAX_SCROLLING_TEXT_MODES)
     {
         return;
