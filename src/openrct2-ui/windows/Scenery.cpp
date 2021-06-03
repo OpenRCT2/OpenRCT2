@@ -296,11 +296,11 @@ void window_scenery_init()
     // banners
     for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS; sceneryId++)
     {
-        rct_scenery_entry* sceneryEntry = get_banner_entry(sceneryId);
-        if (sceneryEntry == nullptr)
+        auto* bannerEntry = get_banner_entry(sceneryId);
+        if (bannerEntry == nullptr)
             continue;
 
-        init_scenery_entry({ SCENERY_TYPE_BANNER, sceneryId }, sceneryEntry->banner.scenery_tab_id);
+        init_scenery_entry({ SCENERY_TYPE_BANNER, sceneryId }, bannerEntry->scenery_tab_id);
     }
 
     // path bits
@@ -1025,8 +1025,8 @@ void window_scenery_invalidate(rct_window* w)
 
         if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
         {
-            sceneryEntry = get_banner_entry(tabSelectedScenery.EntryIndex);
-            if (sceneryEntry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+            auto* bannerEntry = get_banner_entry(tabSelectedScenery.EntryIndex);
+            if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
             {
                 window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
             }
@@ -1162,10 +1162,12 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
             name = sceneryEntry->name;
             break;
         case SCENERY_TYPE_BANNER:
-            sceneryEntry = get_banner_entry(selectedSceneryEntry.EntryIndex);
-            price = sceneryEntry->banner.price;
-            name = sceneryEntry->name;
+        {
+            auto* bannerEntry = get_banner_entry(selectedSceneryEntry.EntryIndex);
+            price = bannerEntry->price;
+            name = bannerEntry->name;
             break;
+        }
     }
 
     if (w->scenery.SelectedScenery.IsUndefined() && gSceneryPlaceCost != MONEY32_UNDEFINED)
@@ -1241,8 +1243,8 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
         {
             if (currentSceneryGlobal.SceneryType == SCENERY_TYPE_BANNER)
             {
-                sceneryEntry = get_banner_entry(currentSceneryGlobal.EntryIndex);
-                uint32_t imageId = sceneryEntry->image + gWindowSceneryRotation * 2;
+                auto* bannerEntry = get_banner_entry(currentSceneryGlobal.EntryIndex);
+                uint32_t imageId = bannerEntry->image + gWindowSceneryRotation * 2;
                 imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
                 gfx_draw_sprite(&clipdpi, imageId, { 0x21, 0x28 }, w->colours[1]);

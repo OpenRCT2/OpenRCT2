@@ -20,6 +20,7 @@ struct CoordsXY;
 struct rct_scenery_entry;
 struct WallSceneryEntry;
 struct PathBitEntry;
+struct BannerSceneryEntry;
 struct rct_footpath_entry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
@@ -606,7 +607,7 @@ private:
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;
-    rct_scenery_entry* GetEntry() const;
+    BannerSceneryEntry* GetEntry() const;
 
     BannerIndex GetIndex() const;
     void SetIndex(BannerIndex newIndex);

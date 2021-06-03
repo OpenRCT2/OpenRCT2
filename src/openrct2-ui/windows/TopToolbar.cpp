@@ -1045,8 +1045,8 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto scenery_entry = get_banner_entry(banner->type);
-                if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+                auto* bannerEntry = get_banner_entry(banner->type);
+                if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                 {
                     auto repaintScenery = BannerSetColourAction(
                         { info.Loc, info.Element->GetBaseZ(), info.Element->AsBanner()->GetPosition() },
