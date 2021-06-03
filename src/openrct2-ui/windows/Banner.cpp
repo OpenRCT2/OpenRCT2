@@ -248,7 +248,7 @@ public:
     {
         rct_widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
         colourBtn->type = WindowWidgetType::Empty;
-        // Scenery item not sure why we use this instead of banner?
+
         auto* bannerEntry = get_banner_entry(_banner->type);
         if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
         {
