@@ -60,7 +60,7 @@ class ChangelogWindow final : public Window
 
 public:
     /**
-     * @brief Retrieves a std::string from the changelog file
+     * @brief Retrieves the changelog contents.
      */
     const std::string GetChangelogText()
     {
@@ -212,7 +212,7 @@ public:
             _changelogLongestLineWidth + 4, (int32_t)_changelogLines.size() * font_get_line_height(FontSpriteBase::MEDIUM));
     }
 
-    // TODO(NBurley93): This probably should be a utility function defined elsewhere for reusability
+    // TODO: This probably should be a utility function defined elsewhere for reusability
     /**
      * @brief Reimplementation of Window's GetCentrePositionForNewWindow for ChangelogWindow.
      *
@@ -263,7 +263,7 @@ private:
     }
 
     /**
-     * @brief Get the absolute path for the changelog file as a std::string
+     * @brief Get the absolute path for the changelog file
      *
      * @return std::string
      */
@@ -300,7 +300,7 @@ private:
     }
 
     /**
-     * @brief Pushes a line of text to the changelog
+     * @brief Ingests a string of text and splits it into lines for the changelog and updates the longest line width for scrolling purposes
      *
      * @param text
      */
