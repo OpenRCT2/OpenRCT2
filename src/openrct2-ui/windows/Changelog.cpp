@@ -285,7 +285,8 @@ private:
     }
 
     /**
-     * @brief Ingests a string of text and splits it into lines for the changelog and updates the longest line width for scrolling purposes
+     * @brief Ingests a string of text and splits it into lines for the changelog and updates the longest line width for
+     * scrolling purposes
      *
      * @param text
      */
