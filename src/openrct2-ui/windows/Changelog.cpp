@@ -204,7 +204,8 @@ public:
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
         return ScreenSize(
-            _changelogLongestLineWidth + 4, (int32_t)_changelogLines.size() * font_get_line_height(FontSpriteBase::MEDIUM));
+            _changelogLongestLineWidth + 4,
+            static_cast<int32_t>(_changelogLines.size()) * font_get_line_height(FontSpriteBase::MEDIUM));
     }
 
     // TODO: This probably should be a utility function defined elsewhere for reusability
