@@ -18,6 +18,7 @@
 struct Banner;
 struct CoordsXY;
 struct rct_scenery_entry;
+struct SmallSceneryEntry;
 struct WallSceneryEntry;
 struct PathBitEntry;
 struct BannerSceneryEntry;
@@ -461,7 +462,7 @@ private:
 public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
-    rct_scenery_entry* GetEntry() const;
+    SmallSceneryEntry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
     void IncreaseAge(const CoordsXY& sceneryPos);

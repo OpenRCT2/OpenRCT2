@@ -21,19 +21,6 @@
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
 
 #pragma pack(push, 1)
-struct rct_small_scenery_entry
-{
-    uint32_t flags;                  // 0x06
-    uint8_t height;                  // 0x0A
-    CursorID tool_id;                // 0x0B
-    int16_t price;                   // 0x0C
-    int16_t removal_price;           // 0x0E
-    uint8_t* frame_offsets;          // 0x10
-    uint16_t animation_delay;        // 0x14
-    uint16_t animation_mask;         // 0x16
-    uint16_t num_frames;             // 0x18
-    ObjectEntryIndex scenery_tab_id; // 0x1A
-};
 
 struct rct_large_scenery_tile
 {
@@ -131,11 +118,21 @@ struct rct_scenery_entry
 {
     rct_string_id name; // 0x00
     uint32_t image;     // 0x02
-    union
-    {
-        rct_small_scenery_entry small_scenery;
-        rct_large_scenery_entry large_scenery;
-    };
+    rct_large_scenery_entry large_scenery;
+};
+
+struct SmallSceneryEntry : SceneryEntryBase
+{
+    uint32_t flags;
+    uint8_t height;
+    CursorID tool_id;
+    int16_t price;
+    int16_t removal_price;
+    uint8_t* frame_offsets;
+    uint16_t animation_delay;
+    uint16_t animation_mask;
+    uint16_t num_frames;
+    ObjectEntryIndex scenery_tab_id;
 };
 
 struct WallSceneryEntry : SceneryEntryBase

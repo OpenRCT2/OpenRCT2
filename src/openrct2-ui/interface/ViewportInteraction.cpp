@@ -242,7 +242,6 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
  */
 InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
 {
-    rct_scenery_entry* sceneryEntry;
     Ride* ride;
     int32_t i, stationIndex;
     InteractionInfo info{};
@@ -402,7 +401,8 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             break;
         }
         case ViewportInteractionItem::LargeScenery:
-            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+        {
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
                 auto banner = tileElement->AsLargeScenery()->GetBanner();
@@ -418,7 +418,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 }
             }
             break;
-
+        }
         case ViewportInteractionItem::Banner:
         {
             auto banner = tileElement->AsBanner()->GetBanner();
@@ -449,12 +449,13 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
     switch (info.SpriteType)
     {
         case ViewportInteractionItem::Scenery:
-            sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        {
+            auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             ft.Add<rct_string_id>(sceneryEntry->name);
             SetMapTooltip(ft);
             return info;
-
+        }
         case ViewportInteractionItem::Footpath:
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             if (tileElement->AsPath()->IsQueue())
@@ -497,11 +498,13 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             return info;
         }
         case ViewportInteractionItem::LargeScenery:
-            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+        {
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             ft.Add<rct_string_id>(sceneryEntry->name);
             SetMapTooltip(ft);
             return info;
+        }
         default:
             break;
     }

@@ -266,11 +266,11 @@ void window_scenery_init()
     // small scenery
     for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
     {
-        rct_scenery_entry* sceneryEntry = get_small_scenery_entry(sceneryId);
+        auto* sceneryEntry = get_small_scenery_entry(sceneryId);
         if (sceneryEntry == nullptr)
             continue;
 
-        init_scenery_entry({ SCENERY_TYPE_SMALL, sceneryId }, sceneryEntry->small_scenery.scenery_tab_id);
+        init_scenery_entry({ SCENERY_TYPE_SMALL, sceneryId }, sceneryEntry->scenery_tab_id);
     }
 
     // large scenery
@@ -832,8 +832,7 @@ static void window_scenery_update(rct_window* w)
             }
             else
             { // small scenery
-                gCurrentToolId = static_cast<Tool>(
-                    get_small_scenery_entry(tabSelectedScenery.EntryIndex)->small_scenery.tool_id);
+                gCurrentToolId = static_cast<Tool>(get_small_scenery_entry(tabSelectedScenery.EntryIndex)->tool_id);
             }
         }
     }
@@ -988,7 +987,7 @@ void window_scenery_invalidate(rct_window* w)
                 window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::FlatBtn;
             }
 
-            rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tabSelectedScenery.EntryIndex);
+            auto* sceneryEntry = get_small_scenery_entry(tabSelectedScenery.EntryIndex);
             if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE))
             {
                 window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
@@ -1021,8 +1020,6 @@ void window_scenery_invalidate(rct_window* w)
     }
     else if (!tabSelectedScenery.IsUndefined())
     {
-        rct_scenery_entry* sceneryEntry = nullptr;
-
         if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
         {
             auto* bannerEntry = get_banner_entry(tabSelectedScenery.EntryIndex);
@@ -1033,7 +1030,7 @@ void window_scenery_invalidate(rct_window* w)
         }
         else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
         {
-            sceneryEntry = get_large_scenery_entry(tabSelectedScenery.EntryIndex);
+            auto* sceneryEntry = get_large_scenery_entry(tabSelectedScenery.EntryIndex);
 
             if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
                 window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
@@ -1060,7 +1057,7 @@ void window_scenery_invalidate(rct_window* w)
         }
         else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_SMALL)
         {
-            sceneryEntry = get_small_scenery_entry(tabSelectedScenery.EntryIndex);
+            auto* sceneryEntry = get_small_scenery_entry(tabSelectedScenery.EntryIndex);
 
             if (scenery_small_entry_has_flag(
                     sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
@@ -1134,14 +1131,15 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     uint32_t price = 0;
     rct_string_id name = STR_UNKNOWN_OBJECT_TYPE;
-    rct_scenery_entry* sceneryEntry = nullptr;
     switch (selectedSceneryEntry.SceneryType)
     {
         case SCENERY_TYPE_SMALL:
-            sceneryEntry = get_small_scenery_entry(selectedSceneryEntry.EntryIndex);
-            price = sceneryEntry->small_scenery.price * 10;
+        {
+            auto* sceneryEntry = get_small_scenery_entry(selectedSceneryEntry.EntryIndex);
+            price = sceneryEntry->price * 10;
             name = sceneryEntry->name;
             break;
+        }
         case SCENERY_TYPE_PATH_ITEM:
         {
             auto* pathBitEntry = get_footpath_item_entry(selectedSceneryEntry.EntryIndex);
@@ -1157,10 +1155,12 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
             break;
         }
         case SCENERY_TYPE_LARGE:
-            sceneryEntry = get_large_scenery_entry(selectedSceneryEntry.EntryIndex);
+        {
+            auto* sceneryEntry = get_large_scenery_entry(selectedSceneryEntry.EntryIndex);
             price = sceneryEntry->large_scenery.price * 10;
             name = sceneryEntry->name;
             break;
+        }
         case SCENERY_TYPE_BANNER:
         {
             auto* bannerEntry = get_banner_entry(selectedSceneryEntry.EntryIndex);
@@ -1236,7 +1236,6 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             }
         }
 
-        rct_scenery_entry* sceneryEntry;
         rct_drawpixelinfo clipdpi;
         if (clip_drawpixelinfo(
                 &clipdpi, dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
@@ -1252,7 +1251,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             }
             else if (currentSceneryGlobal.SceneryType == SCENERY_TYPE_LARGE)
             {
-                sceneryEntry = get_large_scenery_entry(currentSceneryGlobal.EntryIndex);
+                auto* sceneryEntry = get_large_scenery_entry(currentSceneryGlobal.EntryIndex);
                 uint32_t imageId = sceneryEntry->image + gWindowSceneryRotation;
                 imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
                 imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
@@ -1310,7 +1309,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             }
             else
             {
-                sceneryEntry = get_small_scenery_entry(currentSceneryGlobal.EntryIndex);
+                auto* sceneryEntry = get_small_scenery_entry(currentSceneryGlobal.EntryIndex);
                 uint32_t imageId = sceneryEntry->image + gWindowSceneryRotation;
 
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
@@ -1323,7 +1322,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                     }
                 }
 
-                uint16_t spriteTop = (sceneryEntry->small_scenery.height / 4) + 0x2B;
+                uint16_t spriteTop = (sceneryEntry->height / 4) + 0x2B;
 
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)
                     && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))

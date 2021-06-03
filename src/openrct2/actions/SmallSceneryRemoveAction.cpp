@@ -61,13 +61,13 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    rct_scenery_entry* entry = get_small_scenery_entry(_sceneryType);
+    auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res->Cost = entry->small_scenery.removal_price * 10;
+    res->Cost = entry->removal_price * 10;
     res->Expenditure = ExpenditureType::Landscaping;
     res->Position = _loc;
 
@@ -108,13 +108,13 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Execute() const
 {
     GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
 
-    rct_scenery_entry* entry = get_small_scenery_entry(_sceneryType);
+    auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res->Cost = entry->small_scenery.removal_price * 10;
+    res->Cost = entry->removal_price * 10;
     res->Expenditure = ExpenditureType::Landscaping;
     res->Position = _loc;
 

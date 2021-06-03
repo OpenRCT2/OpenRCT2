@@ -1189,7 +1189,6 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
 void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Result& res)
 {
     Ride* ride;
-    rct_scenery_entry* sceneryEntry;
 
     res.ErrorMessage = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->GetType())
@@ -1212,7 +1211,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
         {
-            sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
             rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
@@ -1244,7 +1243,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
         }
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
-            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
             rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
@@ -2133,12 +2132,12 @@ bool map_surface_is_blocked(const CoordsXY& mapCoords)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             return true;
 
-        rct_scenery_entry* scenery = tileElement->AsSmallScenery()->GetEntry();
-        if (scenery == nullptr)
+        auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        if (sceneryEntry == nullptr)
         {
             return false;
         }
-        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
             return true;
     }
     return false;

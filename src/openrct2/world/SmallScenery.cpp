@@ -33,7 +33,7 @@ static int32_t map_place_clear_func(
     if (is_scenery && !(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
         return 1;
 
-    rct_scenery_entry* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
+    auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
@@ -42,7 +42,7 @@ static int32_t map_place_clear_func(
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        *price += scenery->small_scenery.removal_price * 10;
+        *price += scenery->removal_price * 10;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
         return 0;
@@ -76,9 +76,9 @@ int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const Coord
     return map_place_clear_func(tile_element, coords, flags, price, /*is_scenery=*/false);
 }
 
-bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags)
+bool scenery_small_entry_has_flag(const SmallSceneryEntry* sceneryEntry, uint32_t flags)
 {
-    return static_cast<bool>(sceneryEntry->small_scenery.flags & flags);
+    return static_cast<bool>(sceneryEntry->flags & flags);
 }
 
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
@@ -124,9 +124,9 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
         // Only invalidate tiles when scenery crosses the withering thresholds, and can be withered.
         if (newAge == SCENERY_WITHER_AGE_THRESHOLD_1 || newAge == SCENERY_WITHER_AGE_THRESHOLD_2)
         {
-            rct_scenery_entry* entry = GetEntry();
+            auto* sceneryEntry = GetEntry();
 
-            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_WITHER))
             {
                 map_invalidate_tile_zoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
             }
@@ -168,19 +168,19 @@ void SmallSceneryElement::SetNeedsSupports()
     colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }
 
-rct_scenery_entry* SmallSceneryElement::GetEntry() const
+SmallSceneryEntry* SmallSceneryElement::GetEntry() const
 {
     return get_small_scenery_entry(entryIndex);
 }
 
-rct_scenery_entry* get_small_scenery_entry(ObjectEntryIndex entryIndex)
+SmallSceneryEntry* get_small_scenery_entry(ObjectEntryIndex entryIndex)
 {
-    rct_scenery_entry* result = nullptr;
+    SmallSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr)
     {
-        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+        result = static_cast<SmallSceneryEntry*>(obj->GetLegacyData());
     }
     return result;
 }

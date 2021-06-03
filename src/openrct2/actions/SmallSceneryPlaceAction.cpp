@@ -126,7 +126,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
         return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
-    rct_scenery_entry* sceneryEntry = get_small_scenery_entry(_sceneryType);
+    auto* sceneryEntry = get_small_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
@@ -239,7 +239,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, COORDS_Z_STEP);
+    int32_t zHigh = zLow + ceil2(sceneryEntry->height, COORDS_Z_STEP);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
@@ -289,7 +289,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
     res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
+    res->Cost = (sceneryEntry->price * 10) + clearCost;
 
     return res;
 }
@@ -321,7 +321,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
         res->Position.z = surfaceHeight;
     }
 
-    rct_scenery_entry* sceneryEntry = get_small_scenery_entry(_sceneryType);
+    auto* sceneryEntry = get_small_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
@@ -372,12 +372,12 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
         footpath_remove_litter({ _loc, targetHeight });
         if (!gCheatsDisableClearanceChecks && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS)))
         {
-            wall_remove_at({ _loc, targetHeight, targetHeight + sceneryEntry->small_scenery.height });
+            wall_remove_at({ _loc, targetHeight, targetHeight + sceneryEntry->height });
         }
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8);
+    int32_t zHigh = zLow + ceil2(sceneryEntry->height, 8);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
@@ -427,7 +427,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
     res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
+    res->Cost = (sceneryEntry->price * 10) + clearCost;
 
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>(
         CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
@@ -439,7 +439,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(_primaryColour);
     sceneryElement->SetSecondaryColour(_secondaryColour);
-    sceneryElement->SetClearanceZ(sceneryElement->GetBaseZ() + sceneryEntry->small_scenery.height + 7);
+    sceneryElement->SetClearanceZ(sceneryElement->GetBaseZ() + sceneryEntry->height + 7);
     sceneryElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
     if (supportsRequired)
     {

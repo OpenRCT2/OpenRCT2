@@ -173,7 +173,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
         if (tileElement->IsGhost())
             continue;
 
-        auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
         if (sceneryEntry == nullptr)
             continue;
 
@@ -640,8 +640,8 @@ void AutoCreateMapAnimations()
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             {
                 auto sceneryEl = el->AsSmallScenery();
-                auto entry = sceneryEl->GetEntry();
-                if (entry != nullptr && scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_ANIMATED))
+                auto* sceneryEntry = sceneryEl->GetEntry();
+                if (sceneryEntry != nullptr && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
                 {
                     map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, loc);
                 }
