@@ -54,20 +54,14 @@ static rct_widget s_wndChangelogWidgets[] = {
 class ChangelogWindow final : public Window
 {
 private:
-    // Data
-
     const NewVersionInfo* _newVersionInfo;
     std::vector<std::string> _changelogLines;
     int32_t _changelogLongestLineWidth = 0;
-    int _persnality = 0;
+    int _personality = 0;
 
 public:
-    // Public funcs
-
     /**
-     * @brief Retrieves a const std::string from the changelog file via a fstream
-     *
-     * @return const std::string
+     * @brief Retrieves a std::string from the changelog file
      */
     const std::string GetChangelogText()
     {
@@ -85,6 +79,11 @@ public:
         return std::string((std::istreambuf_iterator<char>(fs)), std::istreambuf_iterator<char>());
     }
 
+    /**
+     * @brief Set the Changelog Window's Personality, should be called just after creation. Returns true on success
+     *
+     * @param personality
+     */
     bool SetPersonality(int personality)
     {
         switch (personality)
@@ -94,7 +93,7 @@ public:
                 {
                     return false;
                 }
-                _persnality = WV_NEW_VERSION_INFO;
+                _personality = WV_NEW_VERSION_INFO;
                 NewVersionProcessInfo();
                 enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OPEN_URL);
                 widgets[WIDX_OPEN_URL].type = WindowWidgetType::Button;
@@ -106,7 +105,7 @@ public:
                     return false;
                 }
                 enabled_widgets = (1 << WIDX_CLOSE);
-                _persnality = WV_CHANGELOG;
+                _personality = WV_CHANGELOG;
                 return true;
 
             default:
@@ -181,7 +180,14 @@ public:
                 Close();
                 break;
             case WIDX_OPEN_URL:
-                GetContext()->GetUiContext()->OpenURL(_newVersionInfo->url);
+                if (_newVersionInfo)
+                {
+                    GetContext()->GetUiContext()->OpenURL(_newVersionInfo->url);
+                }
+                else
+                {
+                    log_error("Cannot open URL: NewVersionInfo for ChangelogWindow is undefined!");
+                }
                 break;
         }
     }
@@ -207,16 +213,14 @@ public:
             _changelogLongestLineWidth + 4, (int32_t)_changelogLines.size() * font_get_line_height(FontSpriteBase::MEDIUM));
     }
 
+    // TODO(NBurley93): This probably should be a utility function defined elsewhere for reusability
     /**
-     * @brief Get the Centre Position For New Window object
+     * @brief Reimplementation of Window's GetCentrePositionForNewWindow for ChangelogWindow.
      *
-     * @param width
-     * @param height
      * @return ScreenCoordsXY
      */
     static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
     {
-        // This really should be moved to a better API instead of here, in the event another window needs to use this code
         auto uiContext = GetContext()->GetUiContext();
         auto screenWidth = uiContext->GetWidth();
         auto screenHeight = uiContext->GetHeight();
@@ -224,8 +228,6 @@ public:
     }
 
 private:
-    // Private funcs
-
     /**
      * @brief Converts NewVersionInfo into changelog lines
      *
@@ -233,16 +235,22 @@ private:
     void NewVersionProcessInfo()
     {
         _newVersionInfo = GetContext()->GetNewVersionInfo();
+        if (_newVersionInfo != nullptr)
+        {
+            char version_info[256];
 
-        char version_info[256];
+            const char* version_info_ptr = _newVersionInfo->name.c_str();
+            format_string(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
 
-        const char* version_info_ptr = _newVersionInfo->name.c_str();
-        format_string(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
+            _changelogLines.emplace_back(version_info);
+            _changelogLines.emplace_back("");
 
-        _changelogLines.emplace_back(version_info);
-        _changelogLines.emplace_back("");
-
-        ProcessChangelogText(_newVersionInfo->changelog);
+            ProcessChangelogText(_newVersionInfo->changelog);
+        }
+        else
+        {
+            log_error("ChangelogWindow: Could not process NewVersionInfo, result was undefined");
+        }
     }
 
     /**
@@ -333,8 +341,9 @@ rct_window* window_changelog_open(int personality)
         int32_t height = (screenHeight * 4) / 5;
 
         auto pos = ChangelogWindow::GetCentrePositionForNewWindow(width, height);
-        window = WindowCreate<ChangelogWindow>(WC_CHANGELOG, pos, width, height, WF_RESIZABLE);
-        static_cast<ChangelogWindow*>(window)->SetPersonality(personality);
+        auto* newWindow = WindowCreate<ChangelogWindow>(WC_CHANGELOG, pos, width, height, WF_RESIZABLE);
+        newWindow->SetPersonality(personality);
+        return newWindow;
     }
     return window;
 }
