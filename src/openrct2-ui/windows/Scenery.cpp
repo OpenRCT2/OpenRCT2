@@ -1165,7 +1165,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             auto* bannerEntry = get_banner_entry(selectedSceneryEntry.EntryIndex);
             price = bannerEntry->price;
-            name = sceneryEntry->name;
+            name = bannerEntry->name;
             break;
         }
     }
