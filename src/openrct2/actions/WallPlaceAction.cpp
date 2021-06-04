@@ -596,13 +596,15 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
                 }
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                entry = tileElement->AsSmallScenery()->GetEntry();
-                if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_WALLS))
+            {
+                auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS))
                 {
                     map_obstruction_set_error_text(tileElement, *res);
                     return res;
                 }
                 break;
+            }
             case TILE_ELEMENT_TYPE_TRACK:
                 if (!WallCheckObstructionWithTrack(wall, z0, tileElement->AsTrack(), wallAcrossTrack))
                 {

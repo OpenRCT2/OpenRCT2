@@ -1887,11 +1887,11 @@ void Vehicle::UpdateMeasurements()
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
-            rct_scenery_entry* scenery = tileElement->AsSmallScenery()->GetEntry();
-            if (scenery == nullptr)
+            auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+            if (sceneryEntry == nullptr)
                 continue;
 
-            if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
             {
                 coverFound = true;
                 break;

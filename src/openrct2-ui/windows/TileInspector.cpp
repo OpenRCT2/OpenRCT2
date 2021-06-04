@@ -1974,7 +1974,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_SCENERY_AGE, &age, { COLOUR_WHITE });
 
                 // Quadrant value
-                const rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 if (sceneryEntry != nullptr && !(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
                 {
                     int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
@@ -2294,10 +2294,10 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             {
-                const auto* entry = tileElement->AsSmallScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_OBJECT_SELECTION_SMALL_SCENERY),
-                    entry != nullptr ? language_get_string(entry->name) : "");
+                    sceneryEntry != nullptr ? language_get_string(sceneryEntry->name) : "");
                 typeName = buffer;
                 break;
             }

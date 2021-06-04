@@ -480,18 +480,17 @@ private:
         {
             if (loadedObject != nullptr)
             {
-                rct_scenery_entry* sceneryEntry;
                 switch (loadedObject->GetObjectType())
                 {
                     case ObjectType::SmallScenery:
                     {
-                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
-                        sceneryEntry->small_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
+                        auto* sceneryEntry = static_cast<SmallSceneryEntry*>(loadedObject->GetLegacyData());
+                        sceneryEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
                     }
                     case ObjectType::LargeScenery:
                     {
-                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
+                        auto* sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->large_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
                     }
