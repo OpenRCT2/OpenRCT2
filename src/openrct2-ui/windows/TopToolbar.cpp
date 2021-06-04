@@ -995,11 +995,11 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
     {
         case ViewportInteractionItem::Scenery:
         {
-            rct_scenery_entry* scenery_entry = info.Element->AsSmallScenery()->GetEntry();
+            auto* sceneryEntry = info.Element->AsSmallScenery()->GetEntry();
 
             // If can't repaint
             if (!scenery_small_entry_has_flag(
-                    scenery_entry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
+                    sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
                 return;
 
             uint8_t quadrant = info.Element->AsSmallScenery()->GetSceneryQuadrant();
@@ -1012,10 +1012,10 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
         }
         case ViewportInteractionItem::Wall:
         {
-            rct_scenery_entry* scenery_entry = info.Element->AsWall()->GetEntry();
+            auto* scenery_entry = info.Element->AsWall()->GetEntry();
 
             // If can't repaint
-            if (!(scenery_entry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
+            if (!(scenery_entry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
                 return;
 
             auto repaintScenery = WallSetColourAction(
@@ -1027,10 +1027,10 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
         }
         case ViewportInteractionItem::LargeScenery:
         {
-            rct_scenery_entry* scenery_entry = info.Element->AsLargeScenery()->GetEntry();
+            auto* sceneryEntry = info.Element->AsLargeScenery()->GetEntry();
 
             // If can't repaint
-            if (!(scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+            if (!(sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 return;
 
             auto repaintScenery = LargeScenerySetColourAction(
@@ -1045,8 +1045,8 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
-                auto scenery_entry = get_banner_entry(banner->type);
-                if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+                auto* bannerEntry = get_banner_entry(banner->type);
+                if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                 {
                     auto repaintScenery = BannerSetColourAction(
                         { info.Loc, info.Element->GetBaseZ(), info.Element->AsBanner()->GetPosition() },
@@ -1074,7 +1074,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         {
             SmallSceneryElement* sceneryElement = info.Element->AsSmallScenery();
             auto entryIndex = sceneryElement->GetEntryIndex();
-            rct_scenery_entry* sceneryEntry = get_small_scenery_entry(entryIndex);
+            auto* sceneryEntry = get_small_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 if (window_scenery_set_selected_item({ SCENERY_TYPE_SMALL, entryIndex }))
@@ -1090,7 +1090,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         case ViewportInteractionItem::Wall:
         {
             auto entryIndex = info.Element->AsWall()->GetEntryIndex();
-            rct_scenery_entry* sceneryEntry = get_wall_entry(entryIndex);
+            auto* sceneryEntry = get_wall_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 if (window_scenery_set_selected_item({ SCENERY_TYPE_WALL, entryIndex }))
@@ -1106,7 +1106,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         case ViewportInteractionItem::LargeScenery:
         {
             auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
-            rct_scenery_entry* sceneryEntry = get_large_scenery_entry(entryIndex);
+            auto* sceneryEntry = get_large_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 if (window_scenery_set_selected_item({ SCENERY_TYPE_LARGE, entryIndex }))
@@ -1138,8 +1138,8 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         case ViewportInteractionItem::FootpathItem:
         {
             auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(entryIndex);
-            if (sceneryEntry != nullptr)
+            auto* pathBitEntry = get_footpath_item_entry(entryIndex);
+            if (pathBitEntry != nullptr)
             {
                 if (window_scenery_set_selected_item({ SCENERY_TYPE_PATH_ITEM, entryIndex }))
                 {
@@ -1241,9 +1241,9 @@ static void sub_6E1F34_small_scenery(
     uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
     bool can_raise_item = false;
 
-    rct_scenery_entry* scenery = get_small_scenery_entry(sceneryIndex);
-    maxPossibleHeight -= scenery->small_scenery.height;
-    if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_STACKABLE))
+    auto* sceneryEntry = get_small_scenery_entry(sceneryIndex);
+    maxPossibleHeight -= sceneryEntry->height;
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_STACKABLE))
     {
         can_raise_item = true;
     }
@@ -1251,7 +1251,7 @@ static void sub_6E1F34_small_scenery(
     sub_6E1F34_update_screen_coords_and_buttons_pressed(can_raise_item, screenPos);
 
     // Small scenery
-    if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
     {
         uint8_t quadrant = 0;
 
@@ -1315,7 +1315,7 @@ static void sub_6E1F34_small_scenery(
 
         uint8_t rotation = gWindowSceneryRotation;
 
-        if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
+        if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE))
         {
             rotation = util_rand() & 0xFF;
         }
@@ -1399,7 +1399,7 @@ static void sub_6E1F34_small_scenery(
     gridPos = gridPos.ToTileStart();
     uint8_t rotation = gWindowSceneryRotation;
 
-    if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
+    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE))
     {
         rotation = util_rand() & 0xFF;
     }
@@ -1463,10 +1463,10 @@ static void sub_6E1F34_wall(
     auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
 
-    rct_scenery_entry* scenery_entry = get_wall_entry(sceneryIndex);
-    if (scenery_entry)
+    auto* wallEntry = get_wall_entry(sceneryIndex);
+    if (wallEntry != nullptr)
     {
-        maxPossibleHeight -= scenery_entry->wall.height;
+        maxPossibleHeight -= wallEntry->height;
     }
 
     sub_6E1F34_update_screen_coords_and_buttons_pressed(true, screenPos);
@@ -1552,13 +1552,13 @@ static void sub_6E1F34_large_scenery(
     auto screenPos = sourceScreenPos;
     uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
 
-    rct_scenery_entry* scenery_entry = get_large_scenery_entry(sceneryIndex);
-    if (scenery_entry)
+    auto* sceneryEntry = get_large_scenery_entry(sceneryIndex);
+    if (sceneryEntry)
     {
         int16_t maxClearZ = 0;
-        for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; ++i)
+        for (int32_t i = 0; sceneryEntry->tiles[i].x_offset != -1; ++i)
         {
-            maxClearZ = std::max<int16_t>(maxClearZ, scenery_entry->large_scenery.tiles[i].z_clearance);
+            maxClearZ = std::max<int16_t>(maxClearZ, sceneryEntry->tiles[i].z_clearance);
         }
         maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
     }
@@ -1748,14 +1748,14 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             for (int32_t q = 0; q < quantity; q++)
             {
                 int32_t zCoordinate = gSceneryPlaceZ;
-                rct_scenery_entry* scenery = get_small_scenery_entry(selectedScenery);
+                auto* sceneryEntry = get_small_scenery_entry(selectedScenery);
 
                 int16_t cur_grid_x = gridPos.x;
                 int16_t cur_grid_y = gridPos.y;
 
                 if (isCluster)
                 {
-                    if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
                     {
                         quadrant = util_rand() & 3;
                     }
@@ -1770,7 +1770,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                     cur_grid_x += grid_x_offset * COORDS_XY_STEP;
                     cur_grid_y += grid_y_offset * COORDS_XY_STEP;
 
-                    if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
+                    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE))
                     {
                         gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
                     }
@@ -2653,10 +2653,10 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
                 gMapSelectPositionB.y = mapTile.y;
             }
 
-            rct_scenery_entry* scenery = get_small_scenery_entry(selection.EntryIndex);
+            auto* sceneryEntry = get_small_scenery_entry(selection.EntryIndex);
 
             gMapSelectType = MAP_SELECT_TYPE_FULL;
-            if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
+            if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
             {
                 gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + (quadrant ^ 2);
             }
@@ -2799,10 +2799,10 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
                 return;
             }
 
-            rct_scenery_entry* scenery = get_large_scenery_entry(selection.EntryIndex);
+            auto* sceneryEntry = get_large_scenery_entry(selection.EntryIndex);
             gMapSelectionTiles.clear();
 
-            for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles;
+            for (rct_large_scenery_tile* tile = sceneryEntry->tiles;
                  tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)); tile++)
             {
                 CoordsXY tileLocation = { tile->x_offset, tile->y_offset };

@@ -21,10 +21,11 @@
 #include "../../object/TerrainEdgeObject.h"
 #include "../../object/TerrainSurfaceObject.h"
 #include "../../paint/Paint.h"
+#include "../../peep/Peep.h"
 #include "../../peep/Staff.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../../world/Surface.h"
 #include "Paint.TileElement.h"
 

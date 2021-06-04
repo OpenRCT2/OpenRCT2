@@ -1241,7 +1241,6 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
 void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Result& res)
 {
     Ride* ride;
-    rct_scenery_entry* sceneryEntry;
 
     res.ErrorMessage = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->GetType())
@@ -1264,7 +1263,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
         {
-            sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
             rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
@@ -1287,16 +1286,16 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             break;
         case TILE_ELEMENT_TYPE_WALL:
         {
-            sceneryEntry = tileElement->AsWall()->GetEntry();
+            auto* wallEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
+            rct_string_id stringId = wallEntry != nullptr ? wallEntry->name : static_cast<rct_string_id>(STR_EMPTY);
             ft.Add<rct_string_id>(stringId);
             break;
         }
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
-            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
             rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
@@ -1988,15 +1987,14 @@ SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCo
 std::optional<CoordsXYZ> map_large_scenery_get_origin(
     const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement)
 {
-    rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile* tile;
 
     auto tileElement = map_get_large_scenery_segment(sceneryPos, sequence);
     if (tileElement == nullptr)
         return std::nullopt;
 
-    sceneryEntry = tileElement->GetEntry();
-    tile = &sceneryEntry->large_scenery.tiles[sequence];
+    auto* sceneryEntry = tileElement->GetEntry();
+    tile = &sceneryEntry->tiles[sequence];
 
     CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
     auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
@@ -2015,7 +2013,6 @@ std::optional<CoordsXYZ> map_large_scenery_get_origin(
 bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile *sceneryTiles, *tile;
 
     auto sceneryOrigin = map_large_scenery_get_origin(signPos, sequence, &tileElement);
@@ -2024,8 +2021,8 @@ bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequen
         return false;
     }
 
-    sceneryEntry = tileElement->GetEntry();
-    sceneryTiles = sceneryEntry->large_scenery.tiles;
+    auto* sceneryEntry = tileElement->GetEntry();
+    sceneryTiles = sceneryEntry->tiles;
 
     // Iterate through each tile of the large scenery element
     sequence = 0;
@@ -2194,12 +2191,12 @@ bool map_surface_is_blocked(const CoordsXY& mapCoords)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             return true;
 
-        rct_scenery_entry* scenery = tileElement->AsSmallScenery()->GetEntry();
-        if (scenery == nullptr)
+        auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        if (sceneryEntry == nullptr)
         {
             return false;
         }
-        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
             return true;
     }
     return false;

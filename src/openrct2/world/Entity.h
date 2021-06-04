@@ -27,3 +27,17 @@ template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
     auto spr = try_get_sprite(sprite_idx);
     return spr != nullptr ? spr->As<T>() : nullptr;
 }
+
+SpriteBase* CreateEntity(EntityType type);
+template<typename T> T* CreateEntity()
+{
+    return static_cast<T*>(CreateEntity(T::cEntityType));
+}
+
+// Use only with imports that must happen at a specified index
+SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type);
+// Use only with imports that must happen at a specified index
+template<typename T> T* CreateEntityAt(const uint16_t index)
+{
+    return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
+}

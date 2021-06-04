@@ -3682,6 +3682,18 @@ STR_6437    :Onzichtbaar
 STR_6438    :O
 STR_6439    :Vakinspecteur: Onzichtbaarheid in/uitschakelen
 STR_6440    :Doorzichtig water
+STR_6441    :Er moet minstens één reguliere bestrating zijn geselecteerd.
+STR_6442    :Er moet minstens één wachtrijtype zijn geselecteerd.
+STR_6443    :Er moet minstens één type padondersteuningen zijn geselecteerd.
+STR_6444    :Bestratingen
+STR_6445    :Padondersteuningen
+STR_6446    :{WINDOW_COLOUR_2}Naam bestrating: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Naam ondersteuningen: {BLACK}{STRINGID}
+STR_6448    :Niet-ondersteunde objectindeling
+STR_6449    :{WINDOW_COLOUR_2}Tracks:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Verkoopt: {BLACK}{STRING}
 
 #############
 # Scenarios #

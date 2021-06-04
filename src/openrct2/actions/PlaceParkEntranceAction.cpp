@@ -18,7 +18,6 @@
 #include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 #include "../world/Surface.h"
 
 PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType)

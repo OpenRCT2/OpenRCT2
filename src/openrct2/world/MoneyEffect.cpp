@@ -14,6 +14,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
+#include "Entity.h"
 #include "Map.h"
 #include "Sprite.h"
 

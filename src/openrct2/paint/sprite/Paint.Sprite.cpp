@@ -16,8 +16,16 @@
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
 #include "../../ride/VehiclePaint.h"
+#include "../../world/Balloon.h"
+#include "../../world/Climate.h"
+#include "../../world/Duck.h"
 #include "../../world/EntityList.h"
-#include "../../world/Sprite.h"
+#include "../../world/Fountain.h"
+#include "../../world/Litter.h"
+#include "../../world/MapAnimation.h"
+#include "../../world/MoneyEffect.h"
+#include "../../world/Park.h"
+#include "../../world/Particle.h"
 #include "../Paint.h"
 
 /**

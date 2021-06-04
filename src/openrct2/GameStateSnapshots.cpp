@@ -11,7 +11,14 @@
 
 #include "core/CircularBuffer.h"
 #include "peep/Peep.h"
+#include "ride/Vehicle.h"
+#include "world/Balloon.h"
+#include "world/Duck.h"
 #include "world/EntityList.h"
+#include "world/Fountain.h"
+#include "world/Litter.h"
+#include "world/MoneyEffect.h"
+#include "world/Particle.h"
 #include "world/Sprite.h"
 
 static constexpr size_t MaximumGameStateSnapshots = 32;
@@ -50,7 +57,7 @@ struct GameStateSnapshot_t
             for (size_t i = 0; i < numSprites; i++)
             {
                 auto entity = getEntity(i);
-                if (entity == nullptr || entity->misc.Type == EntityType::Null)
+                if (entity == nullptr || entity->base.Type == EntityType::Null)
                     continue;
                 indexTable.push_back(static_cast<uint32_t>(i));
             }
@@ -77,9 +84,9 @@ struct GameStateSnapshot_t
             }
             auto& sprite = *entity;
 
-            ds << sprite.misc.Type;
+            ds << sprite.base.Type;
 
-            switch (sprite.misc.Type)
+            switch (sprite.base.Type)
             {
                 case EntityType::Vehicle:
                     reinterpret_cast<Vehicle&>(sprite).Serialise(ds);
@@ -172,7 +179,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         for (auto& sprite : spriteList)
         {
             // By default they don't exist.
-            sprite.misc.Type = EntityType::Null;
+            sprite.base.Type = EntityType::Null;
         }
 
         snapshot.SerialiseSprites([&spriteList](const size_t index) { return &spriteList[index]; }, MAX_ENTITIES, false);
@@ -502,48 +509,61 @@ struct GameStateSnapshots final : public IGameStateSnapshots
 
     void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        CompareSpriteDataCommon(spriteBase.misc, spriteCmp.misc, changeData);
-        if (spriteBase.misc.Type == spriteCmp.misc.Type)
+        CompareSpriteDataCommon(spriteBase.base, spriteCmp.base, changeData);
+        if (spriteBase.base.Type == spriteCmp.base.Type)
         {
-            switch (spriteBase.misc.Type)
+            switch (spriteBase.base.Type)
             {
                 case EntityType::Guest:
                     CompareSpriteDataGuest(
-                        static_cast<const Guest&>(spriteBase.peep), static_cast<const Guest&>(spriteCmp.peep), changeData);
+                        static_cast<const Guest&>(spriteBase.base), static_cast<const Guest&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::Staff:
                     CompareSpriteDataStaff(
-                        static_cast<const Staff&>(spriteBase.peep), static_cast<const Staff&>(spriteCmp.peep), changeData);
+                        static_cast<const Staff&>(spriteBase.base), static_cast<const Staff&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::Vehicle:
-                    CompareSpriteDataVehicle(spriteBase.vehicle, spriteCmp.vehicle, changeData);
+                    CompareSpriteDataVehicle(
+                        static_cast<const Vehicle&>(spriteBase.base), static_cast<const Vehicle&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::Litter:
-                    CompareSpriteDataLitter(spriteBase.litter, spriteCmp.litter, changeData);
+                    CompareSpriteDataLitter(
+                        static_cast<const Litter&>(spriteBase.base), static_cast<const Litter&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::SteamParticle:
-                    CompareSpriteDataSteamParticle(spriteBase.steam_particle, spriteCmp.steam_particle, changeData);
+                    CompareSpriteDataSteamParticle(
+                        static_cast<const SteamParticle&>(spriteBase.base), static_cast<const SteamParticle&>(spriteCmp.base),
+                        changeData);
                     break;
                 case EntityType::MoneyEffect:
-                    CompareSpriteDataMoneyEffect(spriteBase.money_effect, spriteCmp.money_effect, changeData);
+                    CompareSpriteDataMoneyEffect(
+                        static_cast<const MoneyEffect&>(spriteBase.base), static_cast<const MoneyEffect&>(spriteCmp.base),
+                        changeData);
                     break;
                 case EntityType::CrashedVehicleParticle:
                     CompareSpriteDataVehicleCrashParticle(
-                        spriteBase.crashed_vehicle_particle, spriteCmp.crashed_vehicle_particle, changeData);
+                        static_cast<const VehicleCrashParticle&>(spriteBase.base),
+                        static_cast<const VehicleCrashParticle&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::ExplosionCloud:
                 case EntityType::CrashSplash:
                 case EntityType::ExplosionFlare:
-                    CompareSpriteDataMisc(spriteBase.misc, spriteCmp.misc, changeData);
+                    CompareSpriteDataMisc(
+                        static_cast<const MiscEntity&>(spriteBase.base), static_cast<const MiscEntity&>(spriteCmp.base),
+                        changeData);
                     break;
                 case EntityType::JumpingFountain:
-                    CompareSpriteDataJumpingFountain(spriteBase.jumping_fountain, spriteCmp.jumping_fountain, changeData);
+                    CompareSpriteDataJumpingFountain(
+                        static_cast<const JumpingFountain&>(spriteBase.base),
+                        static_cast<const JumpingFountain&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::Balloon:
-                    CompareSpriteDataBalloon(spriteBase.balloon, spriteCmp.balloon, changeData);
+                    CompareSpriteDataBalloon(
+                        static_cast<const Balloon&>(spriteBase.base), static_cast<const Balloon&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::Duck:
-                    CompareSpriteDataDuck(spriteBase.duck, spriteCmp.duck, changeData);
+                    CompareSpriteDataDuck(
+                        static_cast<const Duck&>(spriteBase.base), static_cast<const Duck&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::Null:
                     break;
@@ -572,21 +592,21 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             const rct_sprite& spriteBase = spritesBase[i];
             const rct_sprite& spriteCmp = spritesCmp[i];
 
-            changeData.entityType = spriteBase.misc.Type;
+            changeData.entityType = spriteBase.base.Type;
 
-            if (spriteBase.misc.Type == EntityType::Null && spriteCmp.misc.Type != EntityType::Null)
+            if (spriteBase.base.Type == EntityType::Null && spriteCmp.base.Type != EntityType::Null)
             {
                 // Sprite was added.
                 changeData.changeType = GameStateSpriteChange_t::ADDED;
-                changeData.entityType = spriteCmp.misc.Type;
+                changeData.entityType = spriteCmp.base.Type;
             }
-            else if (spriteBase.misc.Type != EntityType::Null && spriteCmp.misc.Type == EntityType::Null)
+            else if (spriteBase.base.Type != EntityType::Null && spriteCmp.base.Type == EntityType::Null)
             {
                 // Sprite was removed.
                 changeData.changeType = GameStateSpriteChange_t::REMOVED;
-                changeData.entityType = spriteBase.misc.Type;
+                changeData.entityType = spriteBase.base.Type;
             }
-            else if (spriteBase.misc.Type == EntityType::Null && spriteCmp.misc.Type == EntityType::Null)
+            else if (spriteBase.base.Type == EntityType::Null && spriteCmp.base.Type == EntityType::Null)
             {
                 // Do nothing.
                 changeData.changeType = GameStateSpriteChange_t::EQUAL;

@@ -23,7 +23,6 @@
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Scenery.h"
-#include "../../world/Sprite.h"
 #include "../../world/Surface.h"
 #include "../Paint.h"
 #include "../Supports.h"

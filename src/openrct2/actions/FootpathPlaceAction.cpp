@@ -227,13 +227,13 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* 
 
     pathElement->SetIsQueue((_constructFlags & PathConstructFlag::IsQueue) != 0);
 
-    rct_scenery_entry* elem = pathElement->GetAdditionEntry();
+    auto* elem = pathElement->GetAdditionEntry();
     if (elem != nullptr)
     {
         if (_constructFlags & PathConstructFlag::IsQueue)
         {
             // remove any addition that isn't a TV or a lamp
-            if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0 && (elem->path_bit.flags & PATH_BIT_FLAG_LAMP) == 0)
+            if ((elem->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0 && (elem->flags & PATH_BIT_FLAG_LAMP) == 0)
             {
                 pathElement->SetIsBroken(false);
                 pathElement->SetAddition(0);
@@ -242,7 +242,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* 
         else
         {
             // remove all TVs
-            if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
+            if ((elem->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
             {
                 pathElement->SetIsBroken(false);
                 pathElement->SetAddition(0);

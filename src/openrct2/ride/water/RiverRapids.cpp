@@ -14,9 +14,9 @@
 #include "../../paint/Supports.h"
 #include "../../scenario/Scenario.h"
 #include "../../world/Map.h"
-#include "../../world/Sprite.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
 #ifndef NO_VEHICLES

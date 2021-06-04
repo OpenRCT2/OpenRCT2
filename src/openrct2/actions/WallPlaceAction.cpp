@@ -227,7 +227,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         }
     }
 
-    rct_scenery_entry* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = get_wall_entry(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -235,7 +235,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
-    if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         if (HasReachedBannerLimit())
         {
@@ -247,14 +247,14 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
     uint8_t clearanceHeight = targetHeight / 8;
     if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
     {
-        if (wallEntry->wall.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
+        if (wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
         {
             return std::make_unique<WallPlaceActionResult>(
                 GameActions::Status::Disallowed, STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
         }
         clearanceHeight += 2;
     }
-    clearanceHeight += wallEntry->wall.height;
+    clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
     if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
@@ -271,7 +271,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         return MakeResult(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    res->Cost = wallEntry->wall.price;
+    res->Cost = wallEntry->price;
     return res;
 }
 
@@ -312,7 +312,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     }
     auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
-    rct_scenery_entry* wallEntry = get_wall_entry(_wallType);
+    auto* wallEntry = get_wall_entry(_wallType);
 
     if (wallEntry == nullptr)
     {
@@ -325,7 +325,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     {
         clearanceHeight += 2;
     }
-    clearanceHeight += wallEntry->wall.height;
+    clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
     if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
@@ -343,7 +343,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     }
 
     Banner* banner = nullptr;
-    if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         banner = CreateBanner();
         if (banner == nullptr)
@@ -386,7 +386,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         wallElement->SetBannerIndex(banner->id);
     }
 
-    if (wallEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {
         wallElement->SetTertiaryColour(_tertiaryColour);
     }
@@ -398,7 +398,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);
     map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
-    res->Cost = wallEntry->wall.price;
+    res->Cost = wallEntry->price;
     return res;
 }
 
@@ -407,7 +407,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
  *  rct2: 0x006E5CBA
  */
 bool WallPlaceAction::WallCheckObstructionWithTrack(
-    rct_scenery_entry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
+    WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
 {
     track_type_t trackType = trackElement->GetTrackType();
     int32_t sequence = trackElement->GetSequenceIndex();
@@ -423,7 +423,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return true;
     }
 
-    if (!(wall->wall.flags & WALL_SCENERY_IS_DOOR))
+    if (!(wall->flags & WALL_SCENERY_IS_DOOR))
     {
         return false;
     }
@@ -500,10 +500,9 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
  *  rct2: 0x006E5C1A
  */
 GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
-    rct_scenery_entry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
+    WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
 {
     int32_t entryType, sequence;
-    rct_scenery_entry* entry;
     rct_large_scenery_tile* tile;
 
     *wallAcrossTrack = false;
@@ -554,10 +553,11 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
                 }
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            {
                 entryType = tileElement->AsLargeScenery()->GetEntryIndex();
                 sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
-                entry = get_large_scenery_entry(entryType);
-                tile = &entry->large_scenery.tiles[sequence];
+                auto* sceneryEntry = get_large_scenery_entry(entryType);
+                tile = &sceneryEntry->tiles[sequence];
                 {
                     int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                     if (!(tile->flags & (1 << direction)))
@@ -567,14 +567,17 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
                     }
                 }
                 break;
+            }
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                entry = tileElement->AsSmallScenery()->GetEntry();
-                if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_WALLS))
+            {
+                auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS))
                 {
                     map_obstruction_set_error_text(tileElement, *res);
                     return res;
                 }
                 break;
+            }
             case TILE_ELEMENT_TYPE_TRACK:
                 if (!WallCheckObstructionWithTrack(wall, z0, tileElement->AsTrack(), wallAcrossTrack))
                 {

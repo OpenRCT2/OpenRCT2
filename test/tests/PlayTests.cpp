@@ -21,6 +21,7 @@
 #include <openrct2/peep/Peep.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/world/EntityTweener.h>
 #include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>

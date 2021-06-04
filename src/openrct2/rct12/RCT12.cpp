@@ -499,22 +499,24 @@ bool is_user_string_id(rct_string_id stringId)
 
 uint8_t RCT12TileElement::GetBannerIndex()
 {
-    rct_scenery_entry* sceneryEntry;
-
     switch (GetType())
     {
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            sceneryEntry = get_large_scenery_entry(AsLargeScenery()->GetEntryIndex());
-            if (sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
+        {
+            auto* sceneryEntry = get_large_scenery_entry(AsLargeScenery()->GetEntryIndex());
+            if (sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
                 return RCT12_BANNER_INDEX_NULL;
 
             return AsLargeScenery()->GetBannerIndex();
+        }
         case TILE_ELEMENT_TYPE_WALL:
-            sceneryEntry = get_wall_entry(AsWall()->GetEntryIndex());
-            if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+        {
+            auto* wallEntry = get_wall_entry(AsWall()->GetEntryIndex());
+            if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
                 return RCT12_BANNER_INDEX_NULL;
 
             return AsWall()->GetBannerIndex();
+        }
         case TILE_ELEMENT_TYPE_BANNER:
             return AsBanner()->GetIndex();
         default:

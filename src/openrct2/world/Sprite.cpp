@@ -9,20 +9,22 @@
 
 #include "Sprite.h"
 
-#include "../Cheats.h"
 #include "../Game.h"
-#include "../OpenRCT2.h"
-#include "../audio/audio.h"
 #include "../core/ChecksumStream.h"
 #include "../core/Crypt.h"
 #include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
+#include "../peep/Peep.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
+#include "Balloon.h"
+#include "Duck.h"
+#include "EntityTweener.h"
 #include "Fountain.h"
+#include "MoneyEffect.h"
+#include "Particle.h"
 
 #include <algorithm>
 #include <cmath>
@@ -35,6 +37,9 @@ static std::array<std::list<uint16_t>, EnumValue(EntityType::Count)> gEntityList
 static std::vector<uint16_t> _freeIdList;
 
 static bool _spriteFlashingList[MAX_ENTITIES];
+
+constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
+constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
 static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
@@ -135,7 +140,7 @@ std::string rct_sprite_checksum::ToString() const
 
 SpriteBase* try_get_sprite(size_t spriteIndex)
 {
-    return spriteIndex >= MAX_ENTITIES ? nullptr : &_spriteList[spriteIndex].misc;
+    return spriteIndex >= MAX_ENTITIES ? nullptr : &_spriteList[spriteIndex].base;
 }
 
 SpriteBase* get_sprite(size_t spriteIndex)
@@ -337,25 +342,6 @@ static void sprite_reset(SpriteBase* sprite)
     sprite->Type = EntityType::Null;
 }
 
-/**
- * Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
- *  rct2: 0x0069EBA4
- */
-void sprite_clear_all_unused()
-{
-    for (auto index : _freeIdList)
-    {
-        auto* entity = GetEntity(index);
-        if (entity == nullptr)
-        {
-            continue;
-        }
-        sprite_reset(entity);
-
-        _spriteFlashingList[entity->sprite_index] = false;
-    }
-}
-
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 static void AddToEntityList(SpriteBase* entity)
 {
@@ -412,7 +398,7 @@ static void PrepareNewEntity(SpriteBase* base, const EntityType type)
     SpriteSpatialInsert(base, { LOCATION_NULL, 0 });
 }
 
-rct_sprite* create_sprite(EntityType type)
+SpriteBase* CreateEntity(EntityType type)
 {
     if (_freeIdList.size() == 0)
     {
@@ -432,16 +418,16 @@ rct_sprite* create_sprite(EntityType type)
         }
     }
 
-    auto* sprite = GetEntity(_freeIdList.back());
-    if (sprite == nullptr)
+    auto* entity = GetEntity(_freeIdList.back());
+    if (entity == nullptr)
     {
         return nullptr;
     }
     _freeIdList.pop_back();
 
-    PrepareNewEntity(sprite, type);
+    PrepareNewEntity(entity, type);
 
-    return reinterpret_cast<rct_sprite*>(sprite);
+    return entity;
 }
 
 SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type)
@@ -462,88 +448,6 @@ SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type)
 
     PrepareNewEntity(entity, type);
     return entity;
-}
-/**
- *
- *  rct2: 0x00673200
- */
-void SteamParticle::Update()
-{
-    // Move up 1 z every 3 ticks (Starts after 4 ticks)
-    Invalidate();
-    time_to_move++;
-    if (time_to_move >= 4)
-    {
-        time_to_move = 1;
-        MoveTo({ x, y, z + 1 });
-    }
-    frame += 64;
-    if (frame >= (56 * 64))
-    {
-        sprite_remove(this);
-    }
-}
-
-/**
- *
- *  rct2: 0x0067363D
- */
-void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
-{
-    auto* sprite = CreateEntity<ExplosionCloud>();
-    if (sprite != nullptr)
-    {
-        sprite->sprite_width = 44;
-        sprite->sprite_height_negative = 32;
-        sprite->sprite_height_positive = 34;
-        sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
-        sprite->frame = 0;
-    }
-}
-
-/**
- *
- *  rct2: 0x00673385
- */
-void ExplosionCloud::Update()
-{
-    Invalidate();
-    frame += 128;
-    if (frame >= (36 * 128))
-    {
-        sprite_remove(this);
-    }
-}
-
-/**
- *
- *  rct2: 0x0067366B
- */
-void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
-{
-    MiscEntity* sprite = CreateEntity<ExplosionFlare>();
-    if (sprite != nullptr)
-    {
-        sprite->sprite_width = 25;
-        sprite->sprite_height_negative = 85;
-        sprite->sprite_height_positive = 8;
-        sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
-        sprite->frame = 0;
-    }
-}
-
-/**
- *
- *  rct2: 0x006733B4
- */
-void ExplosionFlare::Update()
-{
-    Invalidate();
-    frame += 64;
-    if (frame >= (124 * 64))
-    {
-        sprite_remove(this);
-    }
 }
 
 template<typename T> void MiscUpdateAllType()
@@ -677,124 +581,6 @@ void sprite_remove(SpriteBase* sprite)
     sprite_reset(sprite);
 }
 
-static bool litter_can_be_at(const CoordsXYZ& mapPos)
-{
-    TileElement* tileElement;
-
-    if (!map_is_location_owned(mapPos))
-        return false;
-
-    tileElement = map_get_first_element_at(mapPos);
-    if (tileElement == nullptr)
-        return false;
-    do
-    {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-            continue;
-
-        int32_t pathZ = tileElement->GetBaseZ();
-        if (pathZ < mapPos.z || pathZ >= mapPos.z + 32)
-            continue;
-
-        return !tile_element_is_underground(tileElement);
-    } while (!(tileElement++)->IsLastForTile());
-    return false;
-}
-
-/**
- *
- *  rct2: 0x0067375D
- */
-void Litter::Create(const CoordsXYZD& litterPos, Type type)
-{
-    if (gCheatsDisableLittering)
-        return;
-
-    auto offsetLitterPos = litterPos
-        + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
-                    CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
-
-    if (!litter_can_be_at(offsetLitterPos))
-        return;
-
-    if (GetEntityListCount(EntityType::Litter) >= 500)
-    {
-        Litter* newestLitter = nullptr;
-        uint32_t newestLitterCreationTick = 0;
-        for (auto litter : EntityList<Litter>())
-        {
-            if (newestLitterCreationTick <= litter->creationTick)
-            {
-                newestLitterCreationTick = litter->creationTick;
-                newestLitter = litter;
-            }
-        }
-
-        if (newestLitter != nullptr)
-        {
-            newestLitter->Invalidate();
-            sprite_remove(newestLitter);
-        }
-    }
-
-    Litter* litter = CreateEntity<Litter>();
-    if (litter == nullptr)
-        return;
-
-    litter->sprite_direction = offsetLitterPos.direction;
-    litter->sprite_width = 6;
-    litter->sprite_height_negative = 6;
-    litter->sprite_height_positive = 3;
-    litter->SubType = type;
-    litter->MoveTo(offsetLitterPos);
-    litter->creationTick = gCurrentTicks;
-}
-
-/**
- *
- *  rct2: 0x006738E1
- */
-void Litter::RemoveAt(const CoordsXYZ& litterPos)
-{
-    std::vector<Litter*> removals;
-    for (auto litter : EntityTileList<Litter>(litterPos))
-    {
-        if (abs(litter->z - litterPos.z) <= 16)
-        {
-            if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
-            {
-                removals.push_back(litter);
-            }
-        }
-    }
-    for (auto* litter : removals)
-    {
-        litter->Invalidate();
-        sprite_remove(litter);
-    }
-}
-
-static const rct_string_id litterNames[12] = {
-    STR_LITTER_VOMIT,
-    STR_LITTER_VOMIT,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,
-    STR_SHOP_ITEM_SINGULAR_RUBBISH,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
-    STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,
-};
-
-rct_string_id Litter::GetName() const
-{
-    if (EnumValue(SubType) >= sizeof(litterNames))
-        return STR_NONE;
-    return litterNames[EnumValue(SubType)];
-}
 /**
  * Loops through all sprites, finds floating objects and removes them.
  * Returns the amount of removed objects as feedback.
@@ -821,112 +607,6 @@ uint16_t remove_floating_sprites()
         removed++;
     }
     return removed;
-}
-
-void EntityTweener::PopulateEntities()
-{
-    for (auto ent : EntityList<Guest>())
-    {
-        Entities.push_back(ent);
-        PrePos.emplace_back(ent->x, ent->y, ent->z);
-    }
-    for (auto ent : EntityList<Staff>())
-    {
-        Entities.push_back(ent);
-        PrePos.emplace_back(ent->x, ent->y, ent->z);
-    }
-    for (auto ent : EntityList<Vehicle>())
-    {
-        Entities.push_back(ent);
-        PrePos.emplace_back(ent->x, ent->y, ent->z);
-    }
-}
-
-void EntityTweener::PreTick()
-{
-    Restore();
-    Reset();
-    PopulateEntities();
-}
-
-void EntityTweener::PostTick()
-{
-    for (auto* ent : Entities)
-    {
-        if (ent == nullptr)
-        {
-            // Sprite was removed, add a dummy position to keep the index aligned.
-            PostPos.emplace_back(0, 0, 0);
-        }
-        else
-        {
-            PostPos.emplace_back(ent->x, ent->y, ent->z);
-        }
-    }
-}
-
-void EntityTweener::RemoveEntity(SpriteBase* entity)
-{
-    if (!entity->Is<Peep>() && !entity->Is<Vehicle>())
-    {
-        // Only peeps and vehicles are tweened, bail if type is incorrect.
-        return;
-    }
-
-    auto it = std::find(Entities.begin(), Entities.end(), entity);
-    if (it != Entities.end())
-        *it = nullptr;
-}
-
-void EntityTweener::Tween(float alpha)
-{
-    const float inv = (1.0f - alpha);
-    for (size_t i = 0; i < Entities.size(); ++i)
-    {
-        auto* ent = Entities[i];
-        if (ent == nullptr)
-            continue;
-
-        auto& posA = PrePos[i];
-        auto& posB = PostPos[i];
-
-        if (posA == posB)
-            continue;
-
-        sprite_set_coordinates(
-            { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
-              static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
-              static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
-            ent);
-        ent->Invalidate();
-    }
-}
-
-void EntityTweener::Restore()
-{
-    for (size_t i = 0; i < Entities.size(); ++i)
-    {
-        auto* ent = Entities[i];
-        if (ent == nullptr)
-            continue;
-
-        sprite_set_coordinates(PostPos[i], ent);
-        ent->Invalidate();
-    }
-}
-
-void EntityTweener::Reset()
-{
-    Entities.clear();
-    PrePos.clear();
-    PostPos.clear();
-}
-
-static EntityTweener tweener;
-
-EntityTweener& EntityTweener::Get()
-{
-    return tweener;
 }
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing)

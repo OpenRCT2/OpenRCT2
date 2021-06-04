@@ -21,18 +21,11 @@
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
 
 #pragma pack(push, 1)
-struct rct_small_scenery_entry
+
+struct SceneryEntryBase
 {
-    uint32_t flags;                  // 0x06
-    uint8_t height;                  // 0x0A
-    CursorID tool_id;                // 0x0B
-    int16_t price;                   // 0x0C
-    int16_t removal_price;           // 0x0E
-    uint8_t* frame_offsets;          // 0x10
-    uint16_t animation_delay;        // 0x14
-    uint16_t animation_mask;         // 0x16
-    uint16_t num_frames;             // 0x18
-    ObjectEntryIndex scenery_tab_id; // 0x1A
+    rct_string_id name;
+    uint32_t image;
 };
 
 struct rct_large_scenery_tile
@@ -78,7 +71,7 @@ enum LARGE_SCENERY_TEXT_FLAGS
     LARGE_SCENERY_TEXT_FLAG_TWO_LINE = (1 << 1), // 0x2
 };
 
-struct rct_large_scenery_entry
+struct LargeSceneryEntry : SceneryEntryBase
 {
     CursorID tool_id;
     uint8_t flags;
@@ -100,23 +93,12 @@ enum LARGE_SCENERY_FLAGS
     LARGE_SCENERY_FLAG_PHOTOGENIC = (1 << 4),           // 0x10
 };
 
-struct rct_wall_scenery_entry
-{
-    CursorID tool_id;
-    uint8_t flags;
-    uint8_t height;
-    uint8_t flags2;
-    int16_t price;
-    ObjectEntryIndex scenery_tab_id;
-    uint8_t scrolling_mode;
-};
-
 enum WALL_SCENERY_FLAGS
 {
     WALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 0),   // 0x1
     WALL_SCENERY_HAS_GLASS = (1 << 1),            // 0x2
     WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),  // 0x4
-    WALL_SCENERY_IS_BANNER = (1 << 3),            // 0x8  // Probably indicates translucency
+    WALL_SCENERY_IS_DOUBLE_SIDED = (1 << 3),      // 0x8
     WALL_SCENERY_IS_DOOR = (1 << 4),              // 0x10
     WALL_SCENERY_LONG_DOOR_ANIMATION = (1 << 5),  // 0x20
     WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6), // 0x40
@@ -132,35 +114,46 @@ enum WALL_SCENERY_2_FLAGS
     WALL_SCENERY_2_ANIMATED = (1 << 4),  // 0x10
 };
 
-struct rct_path_bit_scenery_entry
+struct SmallSceneryEntry : SceneryEntryBase
 {
-    uint16_t flags;                  // 0x06
-    uint8_t draw_type;               // 0x08
-    CursorID tool_id;                // 0x09
-    int16_t price;                   // 0x0A
-    ObjectEntryIndex scenery_tab_id; // 0x0C
+    uint32_t flags;
+    uint8_t height;
+    CursorID tool_id;
+    int16_t price;
+    int16_t removal_price;
+    uint8_t* frame_offsets;
+    uint16_t animation_delay;
+    uint16_t animation_mask;
+    uint16_t num_frames;
+    ObjectEntryIndex scenery_tab_id;
 };
 
-struct rct_banner_scenery_entry
+struct WallSceneryEntry : SceneryEntryBase
 {
-    uint8_t scrolling_mode;          // 0x06
-    uint8_t flags;                   // 0x07
-    int16_t price;                   // 0x08
-    ObjectEntryIndex scenery_tab_id; // 0x0A
+    CursorID tool_id;
+    uint8_t flags;
+    uint8_t height;
+    uint8_t flags2;
+    int16_t price;
+    ObjectEntryIndex scenery_tab_id;
+    uint8_t scrolling_mode;
 };
 
-struct rct_scenery_entry
+struct PathBitEntry : SceneryEntryBase
 {
-    rct_string_id name; // 0x00
-    uint32_t image;     // 0x02
-    union
-    {
-        rct_small_scenery_entry small_scenery;
-        rct_large_scenery_entry large_scenery;
-        rct_wall_scenery_entry wall;
-        rct_path_bit_scenery_entry path_bit;
-        rct_banner_scenery_entry banner;
-    };
+    uint16_t flags;
+    uint8_t draw_type;
+    CursorID tool_id;
+    int16_t price;
+    ObjectEntryIndex scenery_tab_id;
+};
+
+struct BannerSceneryEntry : SceneryEntryBase
+{
+    uint8_t scrolling_mode;
+    uint8_t flags;
+    int16_t price;
+    ObjectEntryIndex scenery_tab_id;
 };
 
 #pragma pack(pop)
@@ -257,12 +250,12 @@ void scenery_update_tile(const CoordsXY& sceneryPos);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 
-rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex);
-rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex);
-rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex);
+WallSceneryEntry* get_wall_entry(ObjectEntryIndex entryIndex);
+BannerSceneryEntry* get_banner_entry(ObjectEntryIndex entryIndex);
+PathBitEntry* get_footpath_item_entry(ObjectEntryIndex entryIndex);
 rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex);
 
-int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry);
+int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry);
 
 bool IsSceneryAvailableToBuild(ScenerySelection item);
 

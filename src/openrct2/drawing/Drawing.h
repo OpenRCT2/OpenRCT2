@@ -120,6 +120,9 @@ struct rct_drawpixelinfo
     uint8_t remX{};
     uint8_t remY{};
 
+    // Last position of drawn text.
+    ScreenCoordsXY lastStringPos{};
+
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 
     size_t GetBytesPerRow() const;
@@ -661,9 +664,6 @@ extern uint8_t gPeepPalette[256];
 extern uint8_t gOtherPalette[256];
 extern uint8_t text_palette[];
 extern const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT];
-
-extern thread_local int32_t gLastDrawStringX;
-extern thread_local int32_t gLastDrawStringY;
 
 extern uint32_t gPickupPeepImage;
 extern int32_t gPickupPeepX;

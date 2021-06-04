@@ -34,6 +34,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../peep/Peep.h"
 #include "../peep/Staff.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
@@ -46,14 +47,23 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrainManager.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
+#include "../world/Balloon.h"
 #include "../world/Climate.h"
+#include "../world/Duck.h"
+#include "../world/EntityList.h"
+#include "../world/EntityTweener.h"
 #include "../world/Entrance.h"
+#include "../world/Fountain.h"
+#include "../world/Litter.h"
 #include "../world/MapAnimation.h"
+#include "../world/MoneyEffect.h"
 #include "../world/Park.h"
+#include "../world/Particle.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
@@ -1231,7 +1241,7 @@ public:
                 // Import banner information
                 dst2->SetBannerIndex(BANNER_INDEX_NULL);
                 auto entry = dst2->GetEntry();
-                if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+                if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))
@@ -1264,7 +1274,7 @@ public:
                 // Import banner information
                 dst2->SetBannerIndex(BANNER_INDEX_NULL);
                 auto entry = dst2->GetEntry();
-                if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+                if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))

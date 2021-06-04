@@ -3679,6 +3679,7 @@ STR_6436    :Unsichtbarkeit umschalten
 STR_6437    :Unsichtbar
 STR_6438    :U
 STR_6439    :Kachelinspektor: Unsichtbarkeit umschalten
+STR_6440    :Transparentes Wasser
 
 #############
 # Scenarios #

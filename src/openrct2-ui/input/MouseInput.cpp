@@ -31,7 +31,6 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Sprite.h>
 
 struct RCTMouseData
 {

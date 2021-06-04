@@ -38,11 +38,17 @@
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
+#include "world/Balloon.h"
 #include "world/Climate.h"
+#include "world/Duck.h"
 #include "world/EntityList.h"
 #include "world/Entrance.h"
+#include "world/Fountain.h"
+#include "world/Litter.h"
 #include "world/Map.h"
+#include "world/MoneyEffect.h"
 #include "world/Park.h"
+#include "world/Particle.h"
 #include "world/Sprite.h"
 
 #include <cstdint>

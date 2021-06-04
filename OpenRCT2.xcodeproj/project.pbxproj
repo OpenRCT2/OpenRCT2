@@ -766,6 +766,9 @@
 		F7D774AC1EC6741D00BE6EBC /* language in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		F7D774AD1EC6741D00BE6EBC /* shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = D43407E11D0E14CE00C2B3D4 /* shaders */; };
 		F7D774AE1EC6741D00BE6EBC /* sequence in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* sequence */; };
+		E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */; };
+		F42186C5840D4196981ADD16 /* EntityTweener.h in Headers */ = {isa = PBXBuildFile; fileRef = 091352A950004312BAB18717 /* EntityTweener.h */; };
+		0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D3DD6CD73F5421880280D9D /* Litter.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1836,6 +1839,9 @@
 		F7CB864C1EEDA1A80030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; usesTabs = 0; };
 		F7D774841EC66CD700BE6EBC /* OpenRCT2-cli */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenRCT2-cli"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntityTweener.cpp; path = src/openrct2/world/EntityTweener.cpp; sourceTree = SOURCE_ROOT; };
+		091352A950004312BAB18717 /* EntityTweener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EntityTweener.h; path = src/openrct2/world/EntityTweener.h; sourceTree = SOURCE_ROOT; };
+		9D3DD6CD73F5421880280D9D /* Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Litter.cpp; path = src/openrct2/world/Litter.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3127,6 +3133,9 @@
 				4C7B54402007646A00A52E21 /* Wall.cpp */,
 				4C7B54412007646A00A52E21 /* Wall.h */,
 				4C7B54422007646A00A52E21 /* Water.h */,
+				0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */,
+				091352A950004312BAB18717 /* EntityTweener.h */,
+				9D3DD6CD73F5421880280D9D /* Litter.cpp */,
 			);
 			path = world;
 			sourceTree = "<group>";
@@ -3468,6 +3477,7 @@
 				66A10ECE257F1DF800DD651A /* BannerSetNameAction.h in Headers */,
 				2ADE2F342244191E002598AF /* VirtualFloor.h in Headers */,
 				66A10F8B257F1E1800DD651A /* LandSmoothAction.h in Headers */,
+				F42186C5840D4196981ADD16 /* EntityTweener.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4273,6 +4283,8 @@
 				C68878F020289B9B0084B384 /* CorkscrewRollerCoaster.cpp in Sources */,
 				66A10FD1257F1E3000DD651A /* WaterRaiseAction.cpp in Sources */,
 				C688791820289B9B0084B384 /* MonorailCycles.cpp in Sources */,
+				E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */,
+				0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

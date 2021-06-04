@@ -17,7 +17,6 @@
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 
 SignSetStyleAction::SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge)
     : _bannerIndex(bannerIndex)

@@ -17,8 +17,8 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
+#include "../world/Entity.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 GuestSetNameAction::GuestSetNameAction(uint16_t spriteIndex, const std::string& name)
     : _spriteIndex(spriteIndex)

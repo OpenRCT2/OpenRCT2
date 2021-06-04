@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../interface/Viewport.h"
 #include "../object/StationObject.h"
+#include "../peep/Peep.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -24,7 +25,6 @@
 #include "Map.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
-#include "Sprite.h"
 
 using map_animation_invalidate_event_handler = bool (*)(const CoordsXYZ& loc);
 
@@ -173,7 +173,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
         if (tileElement->IsGhost())
             continue;
 
-        auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
         if (sceneryEntry == nullptr)
             continue;
 
@@ -447,7 +447,6 @@ static bool map_animation_invalidate_large_scenery(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
 
     bool wasInvalidated = false;
     tileElement = map_get_first_element_at(loc);
@@ -460,8 +459,8 @@ static bool map_animation_invalidate_large_scenery(const CoordsXYZ& loc)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
-        sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-        if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED)
+        auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_ANIMATED)
         {
             map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
             wasInvalidated = true;
@@ -479,7 +478,6 @@ static bool map_animation_invalidate_wall_door(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
 
     if (gCurrentTicks & 1)
         return false;
@@ -495,8 +493,8 @@ static bool map_animation_invalidate_wall_door(const CoordsXYZ& loc)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        sceneryEntry = tileElement->AsWall()->GetEntry();
-        if (sceneryEntry == nullptr || !(sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR))
+        auto* wallEntry = tileElement->AsWall()->GetEntry();
+        if (wallEntry == nullptr || !(wallEntry->flags & WALL_SCENERY_IS_DOOR))
             continue;
 
         if (game_is_paused())
@@ -519,7 +517,7 @@ static bool map_animation_invalidate_wall_door(const CoordsXYZ& loc)
                 if (currentFrame != 5)
                 {
                     currentFrame++;
-                    if (currentFrame == 13 && !(sceneryEntry->wall.flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
+                    if (currentFrame == 13 && !(wallEntry->flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
                         currentFrame = 15;
 
                     invalidate = true;
@@ -544,7 +542,6 @@ static bool map_animation_invalidate_wall(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
 
     bool wasInvalidated = false;
     tileElement = map_get_first_element_at(loc);
@@ -557,11 +554,10 @@ static bool map_animation_invalidate_wall(const CoordsXYZ& loc)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        sceneryEntry = tileElement->AsWall()->GetEntry();
+        auto* wallEntry = tileElement->AsWall()->GetEntry();
 
-        if (!sceneryEntry
-            || (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED)
-                && sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE))
+        if (wallEntry == nullptr
+            || (!(wallEntry->flags2 & WALL_SCENERY_2_ANIMATED) && wallEntry->scrolling_mode == SCROLLING_MODE_NONE))
             continue;
 
         map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
@@ -632,9 +628,9 @@ void AutoCreateMapAnimations()
             case TILE_ELEMENT_TYPE_WALL:
             {
                 auto wallEl = el->AsWall();
-                auto entry = wallEl->GetEntry();
+                auto* entry = wallEl->GetEntry();
                 if (entry != nullptr
-                    && ((entry->wall.flags2 & WALL_SCENERY_2_ANIMATED) || entry->wall.scrolling_mode != SCROLLING_MODE_NONE))
+                    && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE))
                 {
                     map_animation_create(MAP_ANIMATION_TYPE_WALL, loc);
                 }
@@ -643,8 +639,8 @@ void AutoCreateMapAnimations()
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             {
                 auto sceneryEl = el->AsSmallScenery();
-                auto entry = sceneryEl->GetEntry();
-                if (entry != nullptr && scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_ANIMATED))
+                auto* sceneryEntry = sceneryEl->GetEntry();
+                if (sceneryEntry != nullptr && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
                 {
                     map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, loc);
                 }
@@ -654,7 +650,7 @@ void AutoCreateMapAnimations()
             {
                 auto sceneryEl = el->AsLargeScenery();
                 auto entry = sceneryEl->GetEntry();
-                if (entry != nullptr && (entry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED))
+                if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
                 {
                     map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, loc);
                 }

@@ -24,7 +24,6 @@
 #include "../world/Banner.h"
 #include "../world/EntityList.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 #include "MazeSetTrackAction.h"
 #include "TrackRemoveAction.h"
 

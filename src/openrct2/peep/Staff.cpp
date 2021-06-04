@@ -29,6 +29,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -1260,9 +1261,9 @@ void Staff::UpdateWatering()
             if (abs(NextLoc.z - tile_element->GetBaseZ()) > 4 * COORDS_Z_STEP)
                 continue;
 
-            rct_scenery_entry* scenery_entry = tile_element->AsSmallScenery()->GetEntry();
+            auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
-            if (!scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
                 continue;
 
             tile_element->AsSmallScenery()->SetAge(0);
@@ -1339,8 +1340,8 @@ void Staff::UpdateEmptyingBin()
             return;
         }
 
-        rct_scenery_entry* scenery_entry = tile_element->AsPath()->GetAdditionEntry();
-        if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
+        auto* pathAddEntry = tile_element->AsPath()->GetAdditionEntry();
+        if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
             || tile_element->AsPath()->AdditionIsGhost())
         {
             StateReset();
@@ -1647,7 +1648,7 @@ bool Staff::UpdatePatrollingFindWatering()
                 continue;
             }
 
-            rct_scenery_entry* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
+            auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
             if (sceneryEntry == nullptr || !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
             {
@@ -1707,11 +1708,11 @@ bool Staff::UpdatePatrollingFindBin()
 
     if (!tileElement->AsPath()->HasAddition())
         return false;
-    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-    if (sceneryEntry == nullptr)
+    auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+    if (pathAddEntry == nullptr)
         return false;
 
-    if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
+    if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
         return false;
 
     if (tileElement->AsPath()->IsBroken())

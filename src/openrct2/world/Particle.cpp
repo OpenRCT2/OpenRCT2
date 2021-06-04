@@ -143,3 +143,108 @@ void CrashSplashParticle::Update()
         sprite_remove(this);
     }
 }
+
+/**
+ *
+ *  rct2: 0x006734B2
+ */
+void SteamParticle::Create(const CoordsXYZ& coords)
+{
+    auto surfaceElement = map_get_surface_element_at(coords);
+    if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
+    {
+        SteamParticle* steam = CreateEntity<SteamParticle>();
+        if (steam == nullptr)
+            return;
+
+        steam->sprite_width = 20;
+        steam->sprite_height_negative = 18;
+        steam->sprite_height_positive = 16;
+        steam->frame = 256;
+        steam->time_to_move = 0;
+        steam->MoveTo(coords);
+    }
+}
+
+/**
+ *
+ *  rct2: 0x00673200
+ */
+void SteamParticle::Update()
+{
+    // Move up 1 z every 3 ticks (Starts after 4 ticks)
+    Invalidate();
+    time_to_move++;
+    if (time_to_move >= 4)
+    {
+        time_to_move = 1;
+        MoveTo({ x, y, z + 1 });
+    }
+    frame += 64;
+    if (frame >= (56 * 64))
+    {
+        sprite_remove(this);
+    }
+}
+
+/**
+ *
+ *  rct2: 0x0067363D
+ */
+void ExplosionCloud::Create(const CoordsXYZ& cloudPos)
+{
+    auto* entity = CreateEntity<ExplosionCloud>();
+    if (entity != nullptr)
+    {
+        entity->sprite_width = 44;
+        entity->sprite_height_negative = 32;
+        entity->sprite_height_positive = 34;
+        entity->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
+        entity->frame = 0;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x00673385
+ */
+void ExplosionCloud::Update()
+{
+    Invalidate();
+    frame += 128;
+    if (frame >= (36 * 128))
+    {
+        sprite_remove(this);
+    }
+}
+
+/**
+ *
+ *  rct2: 0x0067366B
+ */
+void ExplosionFlare::Create(const CoordsXYZ& flarePos)
+{
+    auto* entity = CreateEntity<ExplosionFlare>();
+    if (entity != nullptr)
+    {
+        entity->sprite_width = 25;
+        entity->sprite_height_negative = 85;
+        entity->sprite_height_positive = 8;
+        entity->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
+        entity->frame = 0;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006733B4
+ */
+void ExplosionFlare::Update()
+{
+    Invalidate();
+    frame += 64;
+    if (frame >= (124 * 64))
+    {
+        sprite_remove(this);
+    }
+}

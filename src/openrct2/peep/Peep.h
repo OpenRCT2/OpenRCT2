@@ -745,8 +745,8 @@ public:
     bool HasDrink() const;
     bool HasFoodOrDrink() const;
     bool HasEmptyContainer() const;
-    void OnEnterRide(ride_id_t rideIndex);
-    void OnExitRide(ride_id_t rideIndex);
+    void OnEnterRide(Ride* ride);
+    void OnExitRide(Ride* ride);
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
     void StopPurchaseThought(uint8_t ride_type);
@@ -823,9 +823,7 @@ private:
     void UpdateRideShopLeave();
     void loc_68F9F3();
     void loc_68FA89();
-    using easter_egg_function = void (Guest::*)(Guest* otherGuest);
     int32_t CheckEasterEggName(int32_t index) const;
-    void ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg);
     bool GuestHasValidXY() const;
     void GivePassingPeepsPurpleClothes(Guest* passingPeep);
     void GivePassingPeepsPizza(Guest* passingPeep);
@@ -945,7 +943,8 @@ private:
     bool UpdatePatrollingFindGrass();
 };
 
-static_assert(sizeof(Peep) <= 512);
+static_assert(sizeof(Guest) <= 512);
+static_assert(sizeof(Staff) <= 512);
 
 struct rct_sprite_bounds
 {

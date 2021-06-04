@@ -30,6 +30,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "scenario/Scenario.h"
+#include "world/EntityTweener.h"
 #include "world/Park.h"
 #include "world/Sprite.h"
 #include "zlib.h"

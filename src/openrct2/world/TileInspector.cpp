@@ -86,10 +86,10 @@ namespace OpenRCT2::TileInspector
 
     static int32_t numLargeScenerySequences(const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
     {
-        const rct_scenery_entry* const largeEntry = largeScenery->GetEntry();
+        const auto* const largeEntry = largeScenery->GetEntry();
         const auto direction = largeScenery->GetDirection();
         const auto sequenceIndex = largeScenery->GetSequenceIndex();
-        const auto* tiles = largeEntry->large_scenery.tiles;
+        const auto* tiles = largeEntry->tiles;
         const auto& tile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
             CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(direction),

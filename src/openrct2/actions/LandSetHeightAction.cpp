@@ -20,7 +20,6 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
-#include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "../world/TileElementsView.h"
 
@@ -221,7 +220,7 @@ TileElement* LandSetHeightAction::CheckTreeObstructions() const
         if (_height + 4 < sceneryElement->base_height)
             continue;
 
-        rct_scenery_entry* sceneryEntry = sceneryElement->GetEntry();
+        auto* sceneryEntry = sceneryElement->GetEntry();
         if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE))
             continue;
 
@@ -241,11 +240,11 @@ money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
         if (_height + 4 < sceneryElement->base_height)
             continue;
 
-        rct_scenery_entry* sceneryEntry = sceneryElement->GetEntry();
+        auto* sceneryEntry = sceneryElement->GetEntry();
         if (sceneryEntry == nullptr)
             continue;
 
-        cost += MONEY(sceneryEntry->small_scenery.removal_price, 0);
+        cost += MONEY(sceneryEntry->removal_price, 0);
     }
 
     return cost;

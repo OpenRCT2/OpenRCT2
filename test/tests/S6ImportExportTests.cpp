@@ -26,10 +26,19 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/peep/Peep.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/Vehicle.h>
+#include <openrct2/world/Balloon.h>
+#include <openrct2/world/Duck.h>
+#include <openrct2/world/Entity.h>
+#include <openrct2/world/EntityTweener.h>
+#include <openrct2/world/Fountain.h>
 #include <openrct2/world/MapAnimation.h>
+#include <openrct2/world/MoneyEffect.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Particle.h>
 #include <openrct2/world/Sprite.h>
 #include <stdio.h>
 #include <string>
@@ -125,7 +134,7 @@ static std::unique_ptr<GameState_t> GetGameState(std::unique_ptr<IContext>& cont
     {
         rct_sprite* sprite = reinterpret_cast<rct_sprite*>(GetEntity(spriteIdx));
         if (sprite == nullptr)
-            res->sprites[spriteIdx].misc.Type = EntityType::Null;
+            res->sprites[spriteIdx].base.Type = EntityType::Null;
         else
             res->sprites[spriteIdx] = *sprite;
     }
@@ -441,47 +450,56 @@ static void CompareSpriteDataDuck(const Duck& left, const Duck& right)
     COMPARE_FIELD(state);
 }
 
+static void CompareSpriteDataMisc(const MiscEntity& left, const MiscEntity& right)
+{
+    COMPARE_FIELD(frame);
+}
+
 static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
 {
-    CompareSpriteDataCommon(left.misc, right.misc);
-    if (left.misc.Type == right.misc.Type)
+    CompareSpriteDataCommon(left.base, right.base);
+    if (left.base.Type == right.base.Type)
     {
-        switch (left.misc.Type)
+        switch (left.base.Type)
         {
             case EntityType::Guest:
-                CompareSpriteDataGuest(static_cast<const Guest&>(left.peep), static_cast<const Guest&>(right.peep));
+                CompareSpriteDataGuest(static_cast<const Guest&>(left.base), static_cast<const Guest&>(right.base));
                 break;
             case EntityType::Staff:
-                CompareSpriteDataStaff(static_cast<const Staff&>(left.peep), static_cast<const Staff&>(right.peep));
+                CompareSpriteDataStaff(static_cast<const Staff&>(left.base), static_cast<const Staff&>(right.base));
                 break;
             case EntityType::Vehicle:
-                CompareSpriteDataVehicle(left.vehicle, right.vehicle);
+                CompareSpriteDataVehicle(static_cast<const Vehicle&>(left.base), static_cast<const Vehicle&>(right.base));
                 break;
             case EntityType::Litter:
-                CompareSpriteDataLitter(left.litter, right.litter);
+                CompareSpriteDataLitter(static_cast<const Litter&>(left.base), static_cast<const Litter&>(right.base));
                 break;
             case EntityType::SteamParticle:
-                CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);
+                CompareSpriteDataSteamParticle(
+                    static_cast<const SteamParticle&>(left.base), static_cast<const SteamParticle&>(right.base));
                 break;
             case EntityType::MoneyEffect:
-                CompareSpriteDataMoneyEffect(left.money_effect, right.money_effect);
+                CompareSpriteDataMoneyEffect(
+                    static_cast<const MoneyEffect&>(left.base), static_cast<const MoneyEffect&>(right.base));
                 break;
             case EntityType::CrashedVehicleParticle:
-                CompareSpriteDataCrashedVehicleParticle(left.crashed_vehicle_particle, right.crashed_vehicle_particle);
+                CompareSpriteDataCrashedVehicleParticle(
+                    static_cast<const VehicleCrashParticle&>(left.base), static_cast<const VehicleCrashParticle&>(right.base));
                 break;
             case EntityType::JumpingFountain:
-                CompareSpriteDataJumpingFountain(left.jumping_fountain, right.jumping_fountain);
+                CompareSpriteDataJumpingFountain(
+                    static_cast<const JumpingFountain&>(left.base), static_cast<const JumpingFountain&>(right.base));
                 break;
             case EntityType::Balloon:
-                CompareSpriteDataBalloon(left.balloon, right.balloon);
+                CompareSpriteDataBalloon(static_cast<const Balloon&>(left.base), static_cast<const Balloon&>(right.base));
                 break;
             case EntityType::Duck:
-                CompareSpriteDataDuck(left.duck, right.duck);
+                CompareSpriteDataDuck(static_cast<const Duck&>(left.base), static_cast<const Duck&>(right.base));
                 break;
             case EntityType::ExplosionCloud:
             case EntityType::CrashSplash:
             case EntityType::ExplosionFlare:
-                COMPARE_FIELD(misc.frame);
+                CompareSpriteDataMisc(static_cast<const MiscEntity&>(left.base), static_cast<const MiscEntity&>(right.base));
                 break;
             case EntityType::Null:
                 break;
@@ -505,8 +523,8 @@ static void CompareStates(
 
     for (size_t spriteIdx = 0; spriteIdx < MAX_ENTITIES; ++spriteIdx)
     {
-        if (importedState->sprites[spriteIdx].misc.Type == EntityType::Null
-            && exportedState->sprites[spriteIdx].misc.Type == EntityType::Null)
+        if (importedState->sprites[spriteIdx].base.Type == EntityType::Null
+            && exportedState->sprites[spriteIdx].base.Type == EntityType::Null)
         {
             continue;
         }

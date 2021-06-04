@@ -28,7 +28,6 @@
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
-#include "Sprite.h"
 
 #include <algorithm>
 

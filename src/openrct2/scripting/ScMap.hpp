@@ -14,6 +14,8 @@
 #    include "../common.h"
 #    include "../ride/Ride.h"
 #    include "../ride/TrainManager.h"
+#    include "../world/Balloon.h"
+#    include "../world/Duck.h"
 #    include "../world/EntityList.h"
 #    include "../world/Map.h"
 #    include "Duktape.hpp"

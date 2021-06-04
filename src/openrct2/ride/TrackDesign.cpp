@@ -773,9 +773,9 @@ static void track_design_mirror_scenery(TrackDesign* td6)
         {
             case ObjectType::LargeScenery:
             {
-                auto sceneryEntry = reinterpret_cast<const rct_scenery_entry*>(obj->GetLegacyData());
+                auto* sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-                for (rct_large_scenery_tile* tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; tile++)
+                for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++)
                 {
                     if (x1 > tile->x_offset)
                     {
@@ -818,7 +818,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
             }
             case ObjectType::SmallScenery:
             {
-                auto sceneryEntry = reinterpret_cast<const rct_scenery_entry*>(obj->GetLegacyData());
+                auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
                 scenery.y = -scenery.y;
 
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
@@ -985,11 +985,11 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             uint8_t quadrant = (scenery.flags >> 2) + _currentTrackPieceDirection;
             quadrant &= 3;
 
-            rct_scenery_entry* small_scenery = get_small_scenery_entry(entryInfo->Index);
-            if (!(!scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_FULL_TILE)
-                  && scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_DIAGONAL))
+            auto* sceneryEntry = get_small_scenery_entry(entryInfo->Index);
+            if (!(!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)
+                  && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
                 && scenery_small_entry_has_flag(
-                    small_scenery,
+                    sceneryEntry,
                     SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
             {
                 quadrant = 0;

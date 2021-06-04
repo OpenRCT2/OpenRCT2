@@ -3683,6 +3683,18 @@ STR_6437    :Invisível
 STR_6438    :I
 STR_6439    :Inspetor de Azulejo: Liga/desliga invisibilidade
 STR_6440    :Água transparente
+STR_6441    :Pelo menos um objeto de superfície de calçada que não seja fila deve ser selecionado.
+STR_6442    :Pelo menos um objeto de superfície de calçada de fila deve ser selecionado.
+STR_6443    :Pelo menos um objeto de corrimão de calçada deve ser selecionado.
+STR_6444    :Superfícies de Calçada
+STR_6445    :Corrimões de Calçada
+STR_6446    :{WINDOW_COLOUR_2}Nome da superfície: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Nome do corrimão: {BLACK}{STRINGID}
+STR_6448    :Formato de objeto não suportado
+STR_6449    :{WINDOW_COLOUR_2}Trilhos:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Vende: {BLACK}{STRING}
 
 #############
 # Scenarios #

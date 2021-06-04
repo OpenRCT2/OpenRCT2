@@ -83,14 +83,14 @@ void scenery_update_tile(const CoordsXY& sceneryPos)
         {
             if (tileElement->AsPath()->HasAddition() && !tileElement->AsPath()->AdditionIsGhost())
             {
-                rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-                if (sceneryEntry != nullptr)
+                auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+                if (pathAddEntry != nullptr)
                 {
-                    if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER)
+                    if (pathAddEntry->flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER)
                     {
                         JumpingFountain::StartAnimation(JumpingFountainType::Water, sceneryPos, tileElement);
                     }
-                    else if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)
+                    else if (pathAddEntry->flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)
                     {
                         JumpingFountain::StartAnimation(JumpingFountainType::Snow, sceneryPos, tileElement);
                     }
@@ -232,38 +232,38 @@ void scenery_remove_ghost_tool_placement()
     }
 }
 
-rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex)
+WallSceneryEntry* get_wall_entry(ObjectEntryIndex entryIndex)
 {
-    rct_scenery_entry* result = nullptr;
+    WallSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr)
     {
-        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+        result = static_cast<WallSceneryEntry*>(obj->GetLegacyData());
     }
     return result;
 }
 
-rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex)
+BannerSceneryEntry* get_banner_entry(ObjectEntryIndex entryIndex)
 {
-    rct_scenery_entry* result = nullptr;
+    BannerSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::Banners, entryIndex);
     if (obj != nullptr)
     {
-        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+        result = static_cast<BannerSceneryEntry*>(obj->GetLegacyData());
     }
     return result;
 }
 
-rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
+PathBitEntry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
 {
-    rct_scenery_entry* result = nullptr;
+    PathBitEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::PathBits, entryIndex);
     if (obj != nullptr)
     {
-        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+        result = static_cast<PathBitEntry*>(obj->GetLegacyData());
     }
     return result;
 }
@@ -280,9 +280,9 @@ rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex)
     return result;
 }
 
-int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry)
+int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry)
 {
-    return (wallEntry->wall.flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
+    return (wallEntry->flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
 }
 
 bool IsSceneryAvailableToBuild(ScenerySelection item)
@@ -325,7 +325,7 @@ static ObjectEntryIndex GetMaxObjectsForSceneryType(uint8_t sceneryType)
     }
 }
 
-static rct_scenery_entry* GetSceneryEntry(ScenerySelection item)
+static SceneryEntryBase* GetSceneryEntry(ScenerySelection item)
 {
     switch (item.SceneryType)
     {

@@ -12,7 +12,11 @@
 #include "../core/DataSerialiser.h"
 #include "../peep/Peep.h"
 #include "../ride/Vehicle.h"
-#include "Sprite.h"
+#include "Balloon.h"
+#include "Duck.h"
+#include "Fountain.h"
+#include "MoneyEffect.h"
+#include "Particle.h"
 
 static void EntityBaseSerialise(SpriteBase& base, DataSerialiser& stream)
 {

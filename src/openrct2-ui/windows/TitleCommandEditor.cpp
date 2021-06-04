@@ -20,12 +20,15 @@
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/sprites.h>
 #include <openrct2/title/TitleSequence.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/world/Sprite.h>
+#include <openrct2/world/Balloon.h>
+#include <openrct2/world/Duck.h>
+#include <openrct2/world/Entity.h>
 
 // clang-format off
 struct TITLE_COMMAND_ORDER {

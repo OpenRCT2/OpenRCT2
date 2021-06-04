@@ -146,7 +146,6 @@ bool track_design_save_contains_tile_element(const TileElement* tileElement)
 static int32_t tile_element_get_total_element_count(TileElement* tileElement)
 {
     int32_t elementCount;
-    rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile* tile;
 
     switch (tileElement->GetType())
@@ -157,8 +156,9 @@ static int32_t tile_element_get_total_element_count(TileElement* tileElement)
             return 1;
 
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            tile = sceneryEntry->large_scenery.tiles;
+        {
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            tile = sceneryEntry->tiles;
             elementCount = 0;
             do
             {
@@ -166,7 +166,7 @@ static int32_t tile_element_get_total_element_count(TileElement* tileElement)
                 elementCount++;
             } while (tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)));
             return elementCount;
-
+        }
         default:
             return 0;
     }
@@ -274,8 +274,8 @@ static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& 
     auto obj = objectMgr.GetLoadedObject(ObjectType::LargeScenery, entryIndex);
     if (obj != nullptr && track_design_is_supported_object(obj))
     {
-        auto legacyData = reinterpret_cast<const rct_scenery_entry*>(obj->GetLegacyData());
-        auto sceneryTiles = legacyData->large_scenery.tiles;
+        auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
+        auto sceneryTiles = sceneryEntry->tiles;
 
         int32_t z = tileElement->base_height;
         auto direction = tileElement->GetDirection();
@@ -500,8 +500,8 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
     auto obj = objectMgr.GetLoadedObject(ObjectType::LargeScenery, entryIndex);
     if (obj != nullptr)
     {
-        auto legacyData = reinterpret_cast<const rct_scenery_entry*>(obj->GetLegacyData());
-        auto sceneryTiles = legacyData->large_scenery.tiles;
+        auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
+        auto sceneryTiles = sceneryEntry->tiles;
 
         int32_t z = tileElement->base_height;
         auto direction = tileElement->GetDirection();

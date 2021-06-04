@@ -282,7 +282,7 @@ public:
 
         if (!cur_drawn)
         {
-            cursorX = gLastDrawStringX;
+            cursorX = dpi.lastStringPos.x;
             cursorY = screenCoords.y - 10;
         }
 

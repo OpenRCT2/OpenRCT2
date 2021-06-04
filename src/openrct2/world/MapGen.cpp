@@ -236,7 +236,7 @@ void mapgen_generate(mapgen_settings* settings)
 
 static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
 {
-    rct_scenery_entry* sceneryEntry = get_small_scenery_entry(type);
+    auto* sceneryEntry = get_small_scenery_entry(type);
     if (sceneryEntry == nullptr)
     {
         return;
@@ -247,7 +247,7 @@ static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>({ loc, surfaceZ }, 0b1111);
     Guard::Assert(sceneryElement != nullptr);
 
-    sceneryElement->SetClearanceZ(surfaceZ + sceneryEntry->small_scenery.height);
+    sceneryElement->SetClearanceZ(surfaceZ + sceneryEntry->height);
     sceneryElement->SetDirection(util_rand() & 3);
     sceneryElement->SetEntryIndex(type);
     sceneryElement->SetAge(0);
@@ -284,7 +284,7 @@ static void mapgen_place_trees()
 
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
-        auto sceneryEntry = get_small_scenery_entry(i);
+        auto* sceneryEntry = get_small_scenery_entry(i);
         auto entry = object_entry_get_object(ObjectType::SmallScenery, i);
 
         if (sceneryEntry == nullptr)

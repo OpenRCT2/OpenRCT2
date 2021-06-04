@@ -956,7 +956,7 @@ namespace OpenRCT2::Scripting
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
-                return sceneryEntry->small_scenery.flags;
+                return sceneryEntry->flags;
             }
             return 0;
         }
@@ -966,7 +966,7 @@ namespace OpenRCT2::Scripting
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
-                return sceneryEntry->small_scenery.height;
+                return sceneryEntry->height;
             }
             return 0;
         }
@@ -976,7 +976,7 @@ namespace OpenRCT2::Scripting
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
-                return sceneryEntry->small_scenery.price;
+                return sceneryEntry->price;
             }
             return 0;
         }
@@ -986,18 +986,18 @@ namespace OpenRCT2::Scripting
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
-                return sceneryEntry->small_scenery.removal_price;
+                return sceneryEntry->removal_price;
             }
             return 0;
         }
 
     protected:
-        rct_scenery_entry* GetLegacyData() const
+        SmallSceneryEntry* GetLegacyData() const
         {
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                return static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+                return static_cast<SmallSceneryEntry*>(obj->GetLegacyData());
             }
             return nullptr;
         }

@@ -10,10 +10,11 @@
 #include "Station.h"
 
 #include "../Game.h"
+#include "../peep/Peep.h"
 #include "../scenario/Scenario.h"
 #include "../world/Location.hpp"
-#include "../world/Sprite.h"
 #include "Track.h"
+#include "Vehicle.h"
 
 static void ride_update_station_blocksection(Ride* ride, StationIndex stationIndex);
 static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex);

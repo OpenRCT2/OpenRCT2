@@ -93,15 +93,15 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
-    rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
+    auto* sceneryEntry = get_large_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
-    uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->large_scenery.tiles);
-    int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->large_scenery.tiles);
+    uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->tiles);
+    int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
 
     if (_loc.z != 0)
     {
@@ -110,7 +110,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
 
     res->Position.z = maxHeight;
 
-    if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         if (HasReachedBannerLimit())
         {
@@ -126,7 +126,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
     }
 
     uint8_t tileNum = 0;
-    for (rct_large_scenery_tile* tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; tile++, tileNum++)
+    for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 
@@ -176,7 +176,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
-    res->Cost = (sceneryEntry->large_scenery.price * 10) + supportsCost;
+    res->Cost = (sceneryEntry->price * 10) + supportsCost;
     return res;
 }
 
@@ -194,21 +194,21 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
 
     money32 supportsCost = 0;
 
-    rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
+    auto* sceneryEntry = get_large_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
-    if (sceneryEntry->large_scenery.tiles == nullptr)
+    if (sceneryEntry->tiles == nullptr)
     {
         log_error("Invalid large scenery object, sceneryType = %u", _sceneryType);
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
-    uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->large_scenery.tiles);
-    int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->large_scenery.tiles);
+    uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->tiles);
+    int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
 
     if (_loc.z != 0)
     {
@@ -225,7 +225,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
 
     // Allocate banner
     Banner* banner = nullptr;
-    if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         banner = CreateBanner();
         if (banner == nullptr)
@@ -252,7 +252,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
     }
 
     uint8_t tileNum = 0;
-    for (rct_large_scenery_tile* tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; tile++, tileNum++)
+    for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
     {
         auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
 
@@ -305,7 +305,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
-    res->Cost = (sceneryEntry->large_scenery.price * 10) + supportsCost;
+    res->Cost = (sceneryEntry->price * 10) + supportsCost;
     return res;
 }
 

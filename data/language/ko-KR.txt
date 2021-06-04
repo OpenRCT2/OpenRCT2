@@ -3686,6 +3686,18 @@ STR_6437    :감춤
 STR_6438    :I
 STR_6439    :칸 조사 창: 감춤 여부
 STR_6440    :물 투명하게 보기
+STR_6441    :최소 하나 이상의 일반 보도 바닥 오브젝트를 선택해야 합니다.
+STR_6442    :최소 하나 이상의 대기 줄 보도 바닥 오브젝트를 선택해야 합니다.
+STR_6443    :최소 하나 이상의 보도 난간 오브젝트를 선택해야 합니다.
+STR_6444    :보도 바닥
+STR_6445    :보도 난간
+STR_6446    :{WINDOW_COLOUR_2}바닥 이름: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}난간 이름: {BLACK}{STRINGID}
+STR_6448    :지원하지 않는 오브젝트 포맷
+STR_6449    :{WINDOW_COLOUR_2}트랙:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}판매: {BLACK}{STRING}
 
 #############
 # Scenarios #

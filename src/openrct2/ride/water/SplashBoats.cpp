@@ -12,9 +12,10 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../paint/sprite/Paint.Sprite.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
 enum

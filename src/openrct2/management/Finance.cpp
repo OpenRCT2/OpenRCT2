@@ -22,7 +22,6 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 // Monthly research funding costs
 const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {

@@ -20,6 +20,7 @@
 #include <openrct2/core/Console.hpp>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/rct2/T6Exporter.h>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Sprite.h>
 

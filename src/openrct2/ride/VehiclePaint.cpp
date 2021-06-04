@@ -16,7 +16,8 @@
 #include "../paint/Paint.h"
 #include "../paint/sprite/Paint.Sprite.h"
 #include "../ride/RideData.h"
-#include "../world/Sprite.h"
+#include "../ride/Vehicle.h"
+#include "../world/Entity.h"
 #include "Track.h"
 
 #include <iterator>

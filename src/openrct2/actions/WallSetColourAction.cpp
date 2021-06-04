@@ -74,8 +74,8 @@ GameActions::Result::Ptr WallSetColourAction::Query() const
         return res;
     }
 
-    rct_scenery_entry* sceneryEntry = wallElement->GetEntry();
-    if (sceneryEntry == nullptr)
+    auto* wallEntry = wallElement->GetEntry();
+    if (wallEntry == nullptr)
     {
         log_error("Could not find wall object");
         return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS);
@@ -93,7 +93,7 @@ GameActions::Result::Ptr WallSetColourAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
     }
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {
         if (_tertiaryColour > 31)
         {
@@ -126,8 +126,8 @@ GameActions::Result::Ptr WallSetColourAction::Execute() const
         return res;
     }
 
-    rct_scenery_entry* sceneryEntry = wallElement->GetEntry();
-    if (sceneryEntry == nullptr)
+    auto* wallEntry = wallElement->GetEntry();
+    if (wallEntry == nullptr)
     {
         log_error("Could not find wall object");
         return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS);
@@ -136,7 +136,7 @@ GameActions::Result::Ptr WallSetColourAction::Execute() const
     wallElement->SetPrimaryColour(_primaryColour);
     wallElement->SetSecondaryColour(_secondaryColour);
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {
         wallElement->SetTertiaryColour(_tertiaryColour);
     }
