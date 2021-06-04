@@ -403,7 +403,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         case ViewportInteractionItem::LargeScenery:
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+            if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
             {
                 auto banner = tileElement->AsLargeScenery()->GetBanner();
                 if (banner != nullptr)
@@ -681,9 +681,9 @@ static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const Co
  */
 static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, const CoordsXY& mapCoords)
 {
-    rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+    auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
 
-    if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         auto bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
         context_open_detail_window(WD_SIGN, bannerIndex);

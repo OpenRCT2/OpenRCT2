@@ -447,7 +447,6 @@ static bool map_animation_invalidate_large_scenery(const CoordsXYZ& loc)
 {
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
 
     bool wasInvalidated = false;
     tileElement = map_get_first_element_at(loc);
@@ -460,8 +459,8 @@ static bool map_animation_invalidate_large_scenery(const CoordsXYZ& loc)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
-        sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-        if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED)
+        auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_ANIMATED)
         {
             map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
             wasInvalidated = true;
@@ -651,7 +650,7 @@ void AutoCreateMapAnimations()
             {
                 auto sceneryEl = el->AsLargeScenery();
                 auto entry = sceneryEl->GetEntry();
-                if (entry != nullptr && (entry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED))
+                if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
                 {
                     map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, loc);
                 }

@@ -26,13 +26,13 @@
 void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.large_scenery.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-    _legacyType.large_scenery.flags = stream->ReadValue<uint8_t>();
-    _legacyType.large_scenery.price = stream->ReadValue<int16_t>();
-    _legacyType.large_scenery.removal_price = stream->ReadValue<int16_t>();
+    _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
+    _legacyType.flags = stream->ReadValue<uint8_t>();
+    _legacyType.price = stream->ReadValue<int16_t>();
+    _legacyType.removal_price = stream->ReadValue<int16_t>();
     stream->Seek(5, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.large_scenery.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
-    _legacyType.large_scenery.scrolling_mode = stream->ReadValue<uint8_t>();
+    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
@@ -40,11 +40,11 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
-    if (_legacyType.large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
+    if (_legacyType.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
         _3dFont = std::make_unique<rct_large_scenery_text>();
         stream->Read(_3dFont.get());
-        _legacyType.large_scenery.text = _3dFont.get();
+        _legacyType.text = _3dFont.get();
     }
 
     _tiles = ReadTiles(stream);
@@ -52,15 +52,15 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     GetImageTable().Read(context, stream);
 
     // Validate properties
-    if (_legacyType.large_scenery.price <= 0)
+    if (_legacyType.price <= 0)
     {
         context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
-    if (_legacyType.large_scenery.removal_price <= 0)
+    if (_legacyType.removal_price <= 0)
     {
         // Make sure you don't make a profit when placing then removing.
-        money16 reimbursement = _legacyType.large_scenery.removal_price;
-        if (reimbursement > _legacyType.large_scenery.price)
+        money16 reimbursement = _legacyType.removal_price;
+        if (reimbursement > _legacyType.price)
         {
             context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
         }
@@ -74,11 +74,11 @@ void LargeSceneryObject::Load()
     _baseImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.image = _baseImageId;
 
-    _legacyType.large_scenery.tiles = _tiles.data();
+    _legacyType.tiles = _tiles.data();
 
-    if (_legacyType.large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
+    if (_legacyType.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
-        _legacyType.large_scenery.text_image = _legacyType.image;
+        _legacyType.text_image = _legacyType.image;
         if (_3dFont->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
         {
             _legacyType.image += _3dFont->num_images * 2;
@@ -87,7 +87,7 @@ void LargeSceneryObject::Load()
         {
             _legacyType.image += _3dFont->num_images * 4;
         }
-        _legacyType.large_scenery.text = _3dFont.get();
+        _legacyType.text = _3dFont.get();
     }
 }
 
@@ -129,14 +129,14 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
 
     if (properties.is_object())
     {
-        _legacyType.large_scenery.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
+        _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
 
-        _legacyType.large_scenery.price = Json::GetNumber<int16_t>(properties["price"]);
-        _legacyType.large_scenery.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]);
+        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]);
+        _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]);
 
-        _legacyType.large_scenery.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
 
-        _legacyType.large_scenery.flags = Json::GetFlags<uint8_t>(
+        _legacyType.flags = Json::GetFlags<uint8_t>(
             properties,
             {
                 { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
@@ -157,7 +157,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
         if (j3dFont.is_object())
         {
             _3dFont = ReadJson3dFont(j3dFont);
-            _legacyType.large_scenery.flags |= LARGE_SCENERY_FLAG_3D_TEXT;
+            _legacyType.flags |= LARGE_SCENERY_FLAG_3D_TEXT;
         }
 
         SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));

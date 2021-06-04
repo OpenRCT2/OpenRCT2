@@ -681,10 +681,9 @@ static void track_design_mirror_scenery(TrackDesign* td6)
         {
             case ObjectType::LargeScenery:
             {
-                rct_scenery_entry* scenery_entry = static_cast<rct_scenery_entry*>(
-                    object_entry_get_chunk(entry_type, entryIndex));
+                auto* sceneryEntry = static_cast<LargeSceneryEntry*>(object_entry_get_chunk(entry_type, entryIndex));
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-                for (rct_large_scenery_tile* tile = scenery_entry->large_scenery.tiles; tile->x_offset != -1; tile++)
+                for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++)
                 {
                     if (x1 > tile->x_offset)
                     {

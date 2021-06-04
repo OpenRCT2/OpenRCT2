@@ -276,11 +276,11 @@ void window_scenery_init()
     // large scenery
     for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS; sceneryId++)
     {
-        rct_scenery_entry* sceneryEntry = get_large_scenery_entry(sceneryId);
+        auto* sceneryEntry = get_large_scenery_entry(sceneryId);
         if (sceneryEntry == nullptr)
             continue;
 
-        init_scenery_entry({ SCENERY_TYPE_LARGE, sceneryId }, sceneryEntry->large_scenery.scenery_tab_id);
+        init_scenery_entry({ SCENERY_TYPE_LARGE, sceneryId }, sceneryEntry->scenery_tab_id);
     }
 
     // walls
@@ -819,8 +819,7 @@ static void window_scenery_update(rct_window* w)
             }
             else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
             {
-                gCurrentToolId = static_cast<Tool>(
-                    get_large_scenery_entry(tabSelectedScenery.EntryIndex)->large_scenery.tool_id);
+                gCurrentToolId = static_cast<Tool>(get_large_scenery_entry(tabSelectedScenery.EntryIndex)->tool_id);
             }
             else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
             {
@@ -1032,9 +1031,9 @@ void window_scenery_invalidate(rct_window* w)
         {
             auto* sceneryEntry = get_large_scenery_entry(tabSelectedScenery.EntryIndex);
 
-            if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+            if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
                 window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
-            if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+            if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
                 window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
         }
         else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
@@ -1157,7 +1156,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
         case SCENERY_TYPE_LARGE:
         {
             auto* sceneryEntry = get_large_scenery_entry(selectedSceneryEntry.EntryIndex);
-            price = sceneryEntry->large_scenery.price * 10;
+            price = sceneryEntry->price * 10;
             name = sceneryEntry->name;
             break;
         }

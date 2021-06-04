@@ -22,6 +22,12 @@
 
 #pragma pack(push, 1)
 
+struct SceneryEntryBase
+{
+    rct_string_id name;
+    uint32_t image;
+};
+
 struct rct_large_scenery_tile
 {
     int16_t x_offset;
@@ -65,7 +71,7 @@ enum LARGE_SCENERY_TEXT_FLAGS
     LARGE_SCENERY_TEXT_FLAG_TWO_LINE = (1 << 1), // 0x2
 };
 
-struct rct_large_scenery_entry
+struct LargeSceneryEntry : SceneryEntryBase
 {
     CursorID tool_id;
     uint8_t flags;
@@ -106,19 +112,6 @@ enum WALL_SCENERY_2_FLAGS
     WALL_SCENERY_2_DOOR_SOUND_SHIFT = 1,
     WALL_SCENERY_2_IS_OPAQUE = (1 << 3), // 0x8
     WALL_SCENERY_2_ANIMATED = (1 << 4),  // 0x10
-};
-
-struct SceneryEntryBase
-{
-    rct_string_id name;
-    uint32_t image;
-};
-
-struct rct_scenery_entry
-{
-    rct_string_id name; // 0x00
-    uint32_t image;     // 0x02
-    rct_large_scenery_entry large_scenery;
 };
 
 struct SmallSceneryEntry : SceneryEntryBase

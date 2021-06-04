@@ -2156,8 +2156,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     { COLOUR_WHITE });
 
                 // Banner info
-                rct_scenery_entry* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
-                if (largeSceneryEntry != nullptr && largeSceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+                auto* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
+                if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto banner = sceneryElement->GetBanner();
                     if (banner != nullptr && !banner->IsNull())

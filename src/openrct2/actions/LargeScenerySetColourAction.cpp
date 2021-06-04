@@ -86,7 +86,7 @@ GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecut
         return res;
     }
 
-    rct_scenery_entry* sceneryEntry = largeElement->GetEntry();
+    auto* sceneryEntry = largeElement->GetEntry();
 
     if (sceneryEntry == nullptr)
     {
@@ -94,15 +94,15 @@ GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecut
         return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS);
     }
     // Work out the base tile coordinates (Tile with index 0)
-    auto rotatedBaseCoordsOffset = CoordsXYZ{ CoordsXY{ sceneryEntry->large_scenery.tiles[_tileIndex].x_offset,
-                                                        sceneryEntry->large_scenery.tiles[_tileIndex].y_offset }
-                                                  .Rotate(_loc.direction),
-                                              sceneryEntry->large_scenery.tiles[_tileIndex].z_offset };
+    auto rotatedBaseCoordsOffset = CoordsXYZ{
+        CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
+        sceneryEntry->tiles[_tileIndex].z_offset
+    };
 
     auto baseTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedBaseCoordsOffset;
 
     auto i = 0;
-    for (auto tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; ++tile, ++i)
+    for (auto tile = sceneryEntry->tiles; tile->x_offset != -1; ++tile, ++i)
     {
         // Work out the current tile coordinates
         auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction), tile->z_offset };

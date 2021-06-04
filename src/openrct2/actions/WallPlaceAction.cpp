@@ -531,7 +531,6 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
     WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
 {
     int32_t entryType, sequence;
-    rct_scenery_entry* entry;
     rct_large_scenery_tile* tile;
 
     *wallAcrossTrack = false;
@@ -582,10 +581,11 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
                 }
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            {
                 entryType = tileElement->AsLargeScenery()->GetEntryIndex();
                 sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
-                entry = get_large_scenery_entry(entryType);
-                tile = &entry->large_scenery.tiles[sequence];
+                auto* sceneryEntry = get_large_scenery_entry(entryType);
+                tile = &sceneryEntry->tiles[sequence];
                 {
                     int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                     if (!(tile->flags & (1 << direction)))
@@ -595,6 +595,7 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
                     }
                 }
                 break;
+            }
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             {
                 auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
