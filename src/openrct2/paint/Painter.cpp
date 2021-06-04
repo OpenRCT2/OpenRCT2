@@ -112,7 +112,7 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
     gfx_draw_string(dpi, screenCoords, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { gLastDrawStringX + 16, 16 } });
+    gfx_set_dirty_blocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi->lastStringPos.x + 16, 16 } });
 }
 
 void Painter::MeasureFPS()
