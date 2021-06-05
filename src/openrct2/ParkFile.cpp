@@ -1230,7 +1230,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    cs.Ignore<uint8_t>();
+                    cs.Ignore<bool>();
                 }
             }
 
@@ -1393,7 +1393,7 @@ namespace OpenRCT2
                     cs.Ignore<uint16_t>();
 
                     std::vector<uint8_t> ridesBeenOn;
-                    cs.ReadWriteArray(guest->RidesBeenOn, [&cs](ride_id_t& rideId) {
+                    cs.ReadWriteVector(ridesBeenOn, [&cs](uint8_t& rideId) {
                         cs.ReadWrite(rideId);
                         return true;
                     });
