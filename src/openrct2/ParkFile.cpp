@@ -1690,12 +1690,12 @@ namespace OpenRCT2
         cs.ReadWrite(guest.NauseaTolerance);
         cs.ReadWriteArray(guest.RideTypesBeenOn, [&cs](uint8_t& rideType) {
             cs.ReadWrite(rideType);
-            return rideType != RIDE_TYPE_NULL;
+            return true;
         });
         cs.ReadWrite(guest.TimeInQueue);
         cs.ReadWriteArray(guest.RidesBeenOn, [&cs](ride_id_t& rideId) {
             cs.ReadWrite(rideId);
-            return rideId != RIDE_ID_NULL;
+            return true;
         });
         cs.ReadWrite(guest.CashInPocket);
         cs.ReadWrite(guest.CashSpent);
