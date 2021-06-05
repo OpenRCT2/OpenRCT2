@@ -1140,7 +1140,11 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
             originalTileElement->base_height = MAX_ELEMENT_HEIGHT;
             originalTileElement++;
             newTileElement++;
-
+            if (newTileElement == &gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 1])
+            {
+                log_error("Cannot insert new element");
+                return nullptr;
+            }
             if ((newTileElement - 1)->IsLastForTile())
             {
                 // No more elements above the insert element
@@ -1175,9 +1179,16 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
             originalTileElement->base_height = MAX_ELEMENT_HEIGHT;
             originalTileElement++;
             newTileElement++;
+            if (newTileElement == &gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 1])
+            {
+                log_error("Cannot insert new element");
+                return nullptr;
+            }
         } while (!((newTileElement - 1)->IsLastForTile()));
     }
 
+    // Set tile index pointer to point to new element block
+    gTileElementTilePointers[tileLoc.y * MAXIMUM_MAP_SIZE_TECHNICAL + tileLoc.x] = gNextFreeTileElement;
     gNextFreeTileElement = newTileElement;
     return insertedElement;
 }
