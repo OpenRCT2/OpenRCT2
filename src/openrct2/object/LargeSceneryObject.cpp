@@ -144,6 +144,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
                 { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
                 { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC },
+                { "isTree", LARGE_SCENERY_FLAG_IS_TREE },
             });
 
         // Tiles

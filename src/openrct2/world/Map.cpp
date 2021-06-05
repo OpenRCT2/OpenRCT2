@@ -1298,7 +1298,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
  *  bl = bl
  */
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode)
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
 {
     int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
     northZ = eastZ = baseHeight = southZ = westZ = water_height = 0;
@@ -1350,7 +1350,7 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             }
         }
     loc_68B9B7:
-        if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
+        if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 
@@ -1477,9 +1477,9 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
 
 bool map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
-    uint8_t crossingMode)
+    uint8_t crossingMode, bool isTree)
 {
-    auto res = MapCanConstructWithClearAt(pos, clearFunc, quarterTile, flags, crossingMode);
+    auto res = MapCanConstructWithClearAt(pos, clearFunc, quarterTile, flags, crossingMode, isTree);
     if (auto message = res->ErrorMessage.AsStringId())
         gGameCommandErrorText = *message;
     else

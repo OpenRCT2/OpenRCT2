@@ -162,7 +162,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
         if (!map_can_construct_with_clear_at(
                 { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
-                CREATE_CROSSING_MODE_NONE))
+                CREATE_CROSSING_MODE_NONE, (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0))
         {
             return std::make_unique<LargeSceneryPlaceActionResult>(
                 GameActions::Status::NoClearance, gGameCommandErrorText, gCommonFormatArgs);
@@ -260,7 +260,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
         if (!map_can_construct_with_clear_at(
                 { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
-                CREATE_CROSSING_MODE_NONE))
+                CREATE_CROSSING_MODE_NONE, (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0))
         {
             return std::make_unique<LargeSceneryPlaceActionResult>(
                 GameActions::Status::NoClearance, gGameCommandErrorText, gCommonFormatArgs);
