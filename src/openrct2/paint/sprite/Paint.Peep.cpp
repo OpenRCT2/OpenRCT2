@@ -87,21 +87,21 @@ template<> void PaintEntity(paint_session* session, const Peep* peep, int32_t im
         if (baseImageId >= 10717 && baseImageId < 10749)
         {
             imageId = (baseImageId + 32) | guest->HatColour << 19 | IMAGE_TYPE_REMAP;
-            PaintAddImageAsChild(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
+            PaintAddImageAsChild(session, imageId, { 0, 0, peep->z }, { 1, 1, 11 }, { 0, 0, peep->z + 5 });
             return;
         }
 
         if (baseImageId >= 10781 && baseImageId < 10813)
         {
             imageId = (baseImageId + 32) | guest->BalloonColour << 19 | IMAGE_TYPE_REMAP;
-            PaintAddImageAsChild(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
+            PaintAddImageAsChild(session, imageId, { 0, 0, peep->z }, { 1, 1, 11 }, { 0, 0, peep->z + 5 });
             return;
         }
 
         if (baseImageId >= 11197 && baseImageId < 11229)
         {
             imageId = (baseImageId + 32) | guest->UmbrellaColour << 19 | IMAGE_TYPE_REMAP;
-            PaintAddImageAsChild(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
+            PaintAddImageAsChild(session, imageId, { 0, 0, peep->z }, { 1, 1, 11 }, { 0, 0, peep->z + 5 });
             return;
         }
     }

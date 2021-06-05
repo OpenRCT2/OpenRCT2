@@ -1651,7 +1651,7 @@ void junior_rc_paint_station(
     {
         // height -= 2 (height - 2)
         imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
 
         // height += 2 (height)
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
@@ -1673,7 +1673,7 @@ void junior_rc_paint_station(
     {
         // height -= 2 (height - 2)
         imageId = SPR_STATION_BASE_B_NW_SE | session->TrackColours[SCHEME_MISC];
-        PaintAddImageAsParent(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
 
         // height += 2 (height)
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
@@ -1897,13 +1897,13 @@ static void junior_rc_flat_to_left_bank_paint_setup(
     image_id = junior_rc_track_pieces_flat_to_left_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
 
         paint_util_push_tunnel_right(session, height, 0);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
 
         paint_util_push_tunnel_left(session, height, 0);
     }
@@ -1914,11 +1914,11 @@ static void junior_rc_flat_to_left_bank_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 1, 32, 26, height, 27, 0, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 32, 1, 26, height, 0, 27, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
         }
     }
 
@@ -1945,13 +1945,13 @@ static void junior_rc_flat_to_right_bank_paint_setup(
     image_id = junior_rc_track_pieces_flat_to_right_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
 
         paint_util_push_tunnel_right(session, height, 0);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
 
         paint_util_push_tunnel_left(session, height, 0);
     }
@@ -1962,11 +1962,11 @@ static void junior_rc_flat_to_right_bank_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 1, 32, 26, height, 27, 0, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 32, 1, 26, height, 0, 27, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
         }
     }
 
@@ -2075,12 +2075,12 @@ static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(
     if (direction == 1 && trackSequence == 6)
     {
         uint32_t imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_NW_SW_PART_4_2 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
     }
     else if (direction == 3 && trackSequence == 0)
     {
         uint32_t imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_SE_NE_PART_0_2 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
     }
 
     int32_t supportHeight = height;
@@ -2173,11 +2173,11 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
     image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
     }
 
     if (junior_rc_track_pieces_left_banked_to_25_deg_up[direction][1] != 0)
@@ -2186,11 +2186,11 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 1, 32, 34, height, 27, 0, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 32, 1, 34, height, 0, 27, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
         }
     }
 
@@ -2233,11 +2233,11 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
     image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
     }
 
     if (junior_rc_track_pieces_right_banked_to_25_deg_up[direction][1] != 0)
@@ -2246,11 +2246,11 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 1, 32, 34, height, 27, 0, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 32, 1, 34, height, 0, 27, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
         }
     }
 
@@ -2306,13 +2306,13 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
     image_id = junior_rc_track_pieces_25_deg_up_to_left_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
 
         paint_util_push_tunnel_right(session, tunnelHeight, tunnelType);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
 
         paint_util_push_tunnel_left(session, tunnelHeight, tunnelType);
     }
@@ -2323,11 +2323,11 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 1, 32, 34, height, 27, 0, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 32, 1, 34, height, 0, 27, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
         }
     }
 
@@ -2367,13 +2367,13 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
     image_id = junior_rc_track_pieces_25_deg_up_to_right_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
 
         paint_util_push_tunnel_right(session, tunnelHeight, tunnelType);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
 
         paint_util_push_tunnel_left(session, tunnelHeight, tunnelType);
     }
@@ -2384,11 +2384,11 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
 
         if (direction & 1)
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 1, 32, 34, height, 27, 0, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height });
         }
         else
         {
-            PaintAddImageAsParent(session, image_id, 0, 0, 32, 1, 34, height, 0, 27, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height });
         }
     }
 
@@ -3027,12 +3027,12 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
     if (direction == 1 && trackSequence == 3)
     {
         uint32_t imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_NW_SW_PART_2_2 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
     }
     else if (direction == 3 && trackSequence == 0)
     {
         uint32_t imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_SE_NE_PART_0_2 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
     }
 
     uint8_t supportType[2][4] = { { 1, 0, 0, 2 }, { 2, 0, 0, 1 } };
@@ -3659,13 +3659,13 @@ static void junior_rc_brake_paint_setup(
     image_id = junior_rc_track_pieces_brake[direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, 6, 0, 20, 32, 1, height);
+        PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, 0, 6, 32, 20, 1, height);
+        PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
@@ -3695,13 +3695,13 @@ static void junior_rc_block_brake_paint_setup(
     image_id = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, image_id, 6, 0, 20, 32, 1, height);
+        PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
-        PaintAddImageAsParent(session, image_id, 0, 6, 32, 20, 1, height);
+        PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
@@ -4562,7 +4562,7 @@ static void junior_rc_diag_flat_to_left_bank_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 27);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
     }
     if (trackSequence == 3)
     {
@@ -4589,7 +4589,7 @@ static void junior_rc_diag_flat_to_right_bank_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 27);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
     }
     if (trackSequence == 3)
     {
@@ -4616,7 +4616,7 @@ static void junior_rc_diag_left_bank_to_flat_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 27);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
     }
     if (trackSequence == 3)
     {
@@ -4643,7 +4643,7 @@ static void junior_rc_diag_right_bank_to_flat_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 27);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 27 });
     }
     if (trackSequence == 3)
     {
@@ -4670,7 +4670,7 @@ static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
     if (trackSequence == 3)
     {
@@ -4697,7 +4697,7 @@ static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
     if (trackSequence == 3)
     {
@@ -4724,7 +4724,7 @@ static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
     if (trackSequence == 3)
     {
@@ -4751,7 +4751,7 @@ static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
     if (trackSequence == 3)
     {
@@ -4778,7 +4778,7 @@ static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
     if (trackSequence == 3)
     {
@@ -4805,7 +4805,7 @@ static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
     if (trackSequence == 3)
     {
@@ -4832,7 +4832,7 @@ static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
     if (trackSequence == 3)
     {
@@ -4859,7 +4859,7 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(
     {
         uint32_t imageId = SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
-        PaintAddImageAsParent(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35);
+        PaintAddImageAsParent(session, imageId, { -16, -16, height }, { 32, 32, 0 }, { -16, -16, height + 35 });
     }
     if (trackSequence == 3)
     {

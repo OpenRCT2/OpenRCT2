@@ -492,13 +492,13 @@ static void paint_mini_golf_track_flat(
     if (direction & 1)
     {
         imageId = SPR_MINI_GOLF_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
         paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else
     {
         imageId = SPR_MINI_GOLF_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
         paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
@@ -511,18 +511,18 @@ static void paint_mini_golf_track_flat(
         if (direction & 1)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 7, height, 10, 0, height + 2);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 10, 0, height + 2 });
 
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 7, height, 22, 0, height + 2);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 22, 0, height + 2 });
         }
         else
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, 0, 0, 32, 1, 7, height, 0, 10, height + 2);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 10, height + 2 });
 
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, 0, 0, 32, 1, 7, height, 0, 22, height + 2);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 22, height + 2 });
         }
     }
 
@@ -700,7 +700,7 @@ static void paint_mini_golf_station(
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, 10, 0, 1, 32, 7, height, 31, 0, height + 2);
+            PaintAddImageAsParent(session, imageId, { 10, 0, height }, { 1, 32, 7 }, { 31, 0, height + 2 });
         }
 
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
@@ -723,7 +723,7 @@ static void paint_mini_golf_station(
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, 0, 10, 32, 1, 7, height, 0, 31, height + 2);
+            PaintAddImageAsParent(session, imageId, { 0, 10, height }, { 32, 1, 7 }, { 0, 31, height + 2 });
         }
 
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
@@ -806,11 +806,11 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
         {
             case 0:
                 imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_INSIDE_SW_NW | session->TrackColours[SCHEME_MISC];
-                PaintAddImageAsParent(session, imageId, 0, 0, 5, 5, 5, height, 24, 0, height + 2);
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 5, 5, 5 }, { 24, 0, height + 2 });
                 break;
             case 2:
                 imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_INSIDE_NE_SE | session->TrackColours[SCHEME_MISC];
-                PaintAddImageAsParent(session, imageId, 0, 0, 5, 5, 5, height, 0, 24, height + 2);
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 5, 5, 5 }, { 0, 24, height + 2 });
                 break;
         }
     }
@@ -936,11 +936,11 @@ static void paint_mini_golf_hole_c(
     {
         case 0x01:
         case 0x20:
-            PaintAddImageAsParent(session, imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 26, 3 }, { 30, 3, height + 4 });
             break;
         case 0x10:
         case 0x31:
-            PaintAddImageAsParent(session, imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 2, 3 }, { 3, 30, height + 4 });
             break;
         default:
             PaintAddImageAsParent(
@@ -1013,17 +1013,17 @@ static void paint_mini_golf_hole_d(
     {
         case 0x01:
         case 0x32:
-            PaintAddImageAsParent(session, imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 26, 3 }, { 30, 3, height + 4 });
             break;
         case 0x02:
-            PaintAddImageAsParent(session, imageId, 0, 0, 23, 2, 3, height, 3, 30, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 23, 2, 3 }, { 3, 30, height + 4 });
             break;
         case 0x10:
-            PaintAddImageAsParent(session, imageId, 0, 0, 2, 24, 3, height, 30, 3, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 24, 3 }, { 30, 3, height + 4 });
             break;
         case 0x20:
         case 0x31:
-            PaintAddImageAsParent(session, imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 2, 3 }, { 3, 30, height + 4 });
             break;
         default:
             PaintAddImageAsParent(
@@ -1105,18 +1105,18 @@ static void paint_mini_golf_hole_e(
     switch ((direction << 4) | trackSequence)
     {
         case 0x01:
-            PaintAddImageAsParent(session, imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 26, 3 }, { 30, 3, height + 4 });
             break;
         case 0x02:
         case 0x20:
         case 0x31:
-            PaintAddImageAsParent(session, imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 2, 3 }, { 3, 30, height + 4 });
             break;
         case 0x10:
-            PaintAddImageAsParent(session, imageId, 0, 0, 2, 24, 3, height, 30, 3, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 24, 3 }, { 30, 3, height + 4 });
             break;
         case 0x32:
-            PaintAddImageAsParent(session, imageId, 0, 0, 2, 23, 3, height, 30, 3, height + 4);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 23, 3 }, { 30, 3, height + 4 });
             break;
         default:
             PaintAddImageAsParent(
@@ -1274,5 +1274,5 @@ void vehicle_visual_mini_golf_ball(
         return;
 
     uint32_t image_id = rideEntry->vehicles[0].base_image_id;
-    PaintAddImageAsParent(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z + 3);
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 3 });
 }
