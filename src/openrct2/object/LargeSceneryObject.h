@@ -21,7 +21,7 @@ private:
     LargeSceneryEntry _legacyType = {};
     uint32_t _baseImageId = 0;
     std::vector<rct_large_scenery_tile> _tiles;
-    std::unique_ptr<rct_large_scenery_text> _3dFont;
+    std::unique_ptr<LargeSceneryText> _3dFont;
 
 public:
     explicit LargeSceneryObject(const rct_object_entry& entry)
@@ -45,7 +45,7 @@ public:
 private:
     static std::vector<rct_large_scenery_tile> ReadTiles(OpenRCT2::IStream* stream);
     static std::vector<rct_large_scenery_tile> ReadJsonTiles(json_t& jTiles);
-    static std::unique_ptr<rct_large_scenery_text> ReadJson3dFont(json_t& j3dFont);
-    static std::vector<LocationXY16> ReadJsonOffsets(json_t& jOffsets);
+    static std::unique_ptr<LargeSceneryText> ReadJson3dFont(json_t& j3dFont);
+    static std::vector<CoordsXY> ReadJsonOffsets(json_t& jOffsets);
     static std::vector<rct_large_scenery_text_glyph> ReadJsonGlyphs(json_t& jGlyphs);
 };

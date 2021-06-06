@@ -1002,8 +1002,8 @@ void path_paint_box_support(
     uint8_t corners = (((tileElement->AsPath()->GetCorners()) << session->CurrentRotation) & 0xF)
         | (((tileElement->AsPath()->GetCorners()) << session->CurrentRotation) >> 4);
 
-    LocationXY16 boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
-    LocationXY16 boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
+    CoordsXY boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
+    CoordsXY boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
 
     uint16_t edi = edges | (corners << 4);
 
@@ -1149,9 +1149,9 @@ void path_paint_pole_support(
     uint8_t edges = ((tileElement->AsPath()->GetEdges() << session->CurrentRotation) & 0xF)
         | (((tileElement->AsPath()->GetEdges()) << session->CurrentRotation) >> 4);
 
-    LocationXY16 boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
+    CoordsXY boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
 
-    LocationXY16 boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
+    CoordsXY boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
 
     uint8_t corners = (((tileElement->AsPath()->GetCorners()) << session->CurrentRotation) & 0xF)
         | (((tileElement->AsPath()->GetCorners()) << session->CurrentRotation) >> 4);

@@ -42,8 +42,9 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 
     if (_legacyType.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
-        _3dFont = std::make_unique<rct_large_scenery_text>();
-        stream->Read(_3dFont.get());
+        rct_large_scenery_text _3dFontLegacy = {};
+        stream->Read(&_3dFontLegacy);
+        _3dFont = std::make_unique<LargeSceneryText>(_3dFontLegacy);
         _legacyType.text = _3dFont.get();
     }
 
@@ -207,11 +208,11 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(json_t& jT
     return tiles;
 }
 
-std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(json_t& j3dFont)
+std::unique_ptr<LargeSceneryText> LargeSceneryObject::ReadJson3dFont(json_t& j3dFont)
 {
     Guard::Assert(j3dFont.is_object(), "LargeSceneryObject::ReadJson3dFont expects parameter j3dFont to be object");
 
-    auto font = std::make_unique<rct_large_scenery_text>();
+    auto font = std::make_unique<LargeSceneryText>();
 
     auto jOffsets = j3dFont["offsets"];
     if (jOffsets.is_array())
@@ -222,7 +223,7 @@ std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(json_
     }
 
     font->max_width = Json::GetNumber<uint16_t>(j3dFont["maxWidth"]);
-    font->num_images = Json::GetNumber<uint8_t>(j3dFont["numImages"]);
+    font->num_images = Json::GetNumber<uint16_t>(j3dFont["numImages"]);
 
     font->flags = Json::GetFlags<uint8_t>(
         j3dFont,
@@ -242,14 +243,14 @@ std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(json_
     return font;
 }
 
-std::vector<LocationXY16> LargeSceneryObject::ReadJsonOffsets(json_t& jOffsets)
+std::vector<CoordsXY> LargeSceneryObject::ReadJsonOffsets(json_t& jOffsets)
 {
-    std::vector<LocationXY16> offsets;
+    std::vector<CoordsXY> offsets;
     for (auto& jOffset : jOffsets)
     {
         if (jOffset.is_object())
         {
-            LocationXY16 offset = {};
+            CoordsXY offset = {};
             offset.x = Json::GetNumber<int16_t>(jOffset["x"]);
             offset.y = Json::GetNumber<int16_t>(jOffset["y"]);
             offsets.push_back(offset);

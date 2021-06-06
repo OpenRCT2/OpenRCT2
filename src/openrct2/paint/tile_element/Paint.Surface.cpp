@@ -43,7 +43,7 @@ static constexpr const uint8_t byte_97B444[] =
 };
 
 // rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
-static constexpr const LocationXY16 viewport_surface_paint_data[][4] = {
+static constexpr const CoordsXY viewport_surface_paint_data[][4] = {
     {
         { 32, 0 },
         { -32, 32 },
@@ -561,8 +561,8 @@ static void viewport_surface_draw_tile_side_bottom(
 
     CoordsXY offset = { 0, 0 };
     CoordsXY bounds = { 0, 0 };
-    LocationXY16 tunnelBounds = { 1, 1 };
-    LocationXY16 tunnelTopBoundBoxOffset = { 0, 0 };
+    CoordsXY tunnelBounds = { 1, 1 };
+    CoordsXY tunnelTopBoundBoxOffset = { 0, 0 };
 
     const tunnel_entry* tunnelArray;
     switch (edge)
@@ -992,11 +992,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
     for (int32_t i = 0; i < 4; i++)
     {
-        const LocationXY16& offset = viewport_surface_paint_data[i][rotation];
-        const CoordsXY position = {
-            static_cast<int32_t>(base.x + offset.x),
-            static_cast<int32_t>(base.y + offset.y),
-        };
+        const CoordsXY& offset = viewport_surface_paint_data[i][rotation];
+        const CoordsXY position = base + offset;
 
         tile_descriptor& descriptor = tileDescriptors[i + 1];
 
