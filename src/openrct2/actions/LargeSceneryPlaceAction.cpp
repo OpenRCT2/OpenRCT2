@@ -142,7 +142,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         }
     }
 
-    if (!map_check_free_elements_and_reorganise(totalNumTiles))
+    if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
     {
         log_error("No free map elements available");
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
@@ -240,7 +240,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
 
     res->Position.z = maxHeight;
 
-    if (!map_check_free_elements_and_reorganise(totalNumTiles))
+    if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
     {
         log_error("No free map elements available");
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
@@ -338,6 +338,22 @@ int16_t LargeSceneryPlaceAction::GetTotalNumTiles(rct_large_scenery_tile* tiles)
         totalNumTiles++;
     }
     return totalNumTiles;
+}
+
+bool LargeSceneryPlaceAction::CheckMapCapacity(rct_large_scenery_tile* tiles, int16_t numTiles) const
+{
+    for (rct_large_scenery_tile* tile = tiles; tile->x_offset != -1; tile++)
+    {
+        auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
+
+        curTile.x += _loc.x;
+        curTile.y += _loc.y;
+        if (!MapCheckCapacityAndReorganise(curTile, numTiles))
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(rct_large_scenery_tile* tiles) const

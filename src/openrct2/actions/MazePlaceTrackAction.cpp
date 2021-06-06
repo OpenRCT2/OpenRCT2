@@ -39,7 +39,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
     res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
     res->Expenditure = ExpenditureType::RideConstruction;
     res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         res->Error = GameActions::Status::NoFreeElements;
         res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
@@ -137,7 +137,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
         return res;
     }
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         res->Error = GameActions::Status::NoFreeElements;
         res->ErrorMessage = STR_NONE;

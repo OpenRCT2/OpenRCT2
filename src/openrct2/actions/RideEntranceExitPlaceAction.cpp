@@ -50,7 +50,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
 {
     auto errorTitle = _isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                               : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
     }
@@ -217,7 +217,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::TrackPlaceQuery(const Coor
 {
     auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                              : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(loc))
     {
         return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
     }

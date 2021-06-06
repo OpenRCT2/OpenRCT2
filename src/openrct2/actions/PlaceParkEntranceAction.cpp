@@ -51,7 +51,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
     res->Expenditure = ExpenditureType::LandPurchase;
     res->Position = { _loc.x, _loc.y, _loc.z };
 
-    if (!map_check_free_elements_and_reorganise(3))
+    if (!CheckMapCapacity(3))
     {
         return std::make_unique<GameActions::Result>(
             GameActions::Status::NoFreeElements, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
@@ -169,4 +169,26 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
     }
 
     return res;
+}
+
+bool PlaceParkEntranceAction::CheckMapCapacity(int16_t numTiles) const
+{
+    CoordsXYZ entranceLoc = _loc;
+    for (uint8_t index = 0; index < 3; index++)
+    {
+        if (index == 1)
+        {
+            entranceLoc += CoordsDirectionDelta[(_loc.direction - 1) & 0x3];
+        }
+        else if (index == 2)
+        {
+            entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
+            entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
+        }
+        if (!MapCheckCapacityAndReorganise(entranceLoc, numTiles))
+        {
+            return false;
+        }
+    }
+    return true;
 }

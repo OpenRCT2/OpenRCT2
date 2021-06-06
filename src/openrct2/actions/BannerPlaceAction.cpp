@@ -55,7 +55,7 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
     res->Expenditure = ExpenditureType::Landscaping;
     res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         log_error("No free map elements.");
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
@@ -118,7 +118,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     res->Expenditure = ExpenditureType::Landscaping;
     res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         log_error("No free map elements.");
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
