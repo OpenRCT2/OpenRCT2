@@ -423,6 +423,17 @@ public:
         Scan(language);
 
         scenario_index_entry* scenario = GetByFilename(scenarioFileName);
+
+        // Check if this is an RCTC scenario that corresponds to a known RCT1/2 scenario, see #12626
+        if (scenario == nullptr && String::Equals(Path::GetExtension(scenarioFileName), ".sea", true))
+        {
+            // Get base scenario name (without file extension)
+            std::string scenarioBaseName = String::ToStd(Path::GetFileNameWithoutExtension(scenarioFileName));
+
+            // Get scenario using RCT2 style name of RCTC scenario
+            scenario = GetByFilename((scenarioBaseName + ".sc6").c_str());
+        }
+
         if (scenario != nullptr)
         {
             // Check if record company value has been broken or the highscore is the same but no name is registered
@@ -705,10 +716,10 @@ private:
     {
         for (auto& highscore : _highscores)
         {
-            scenario_index_entry* scenerio = GetByFilename(highscore->fileName);
-            if (scenerio != nullptr)
+            scenario_index_entry* scenario = GetByFilename(highscore->fileName);
+            if (scenario != nullptr)
             {
-                scenerio->highscore = highscore;
+                scenario->highscore = highscore;
             }
         }
     }
