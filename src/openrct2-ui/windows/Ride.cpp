@@ -1763,16 +1763,16 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 {
                     default:
                     case WIDX_CLOSE_LIGHT:
-                        status = RIDE_STATUS_CLOSED;
+                        status = RideStatus::Closed;
                         break;
                     case WIDX_SIMULATE_LIGHT:
-                        status = RIDE_STATUS_SIMULATING;
+                        status = RideStatus::Simulating;
                         break;
                     case WIDX_TEST_LIGHT:
-                        status = RIDE_STATUS_TESTING;
+                        status = RideStatus::Testing;
                         break;
                     case WIDX_OPEN_LIGHT:
-                        status = RIDE_STATUS_OPEN;
+                        status = RideStatus::Open;
                         break;
                 }
                 ride_set_status(ride, status);
@@ -1797,12 +1797,12 @@ static void window_ride_main_resize(rct_window* w)
         if (ride != nullptr)
         {
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
-            if (ride->SupportsStatus(RIDE_STATUS_SIMULATING))
+            if (ride->SupportsStatus(RideStatus::Simulating))
             {
                 minHeight += 14;
             }
 #endif
-            if (ride->SupportsStatus(RIDE_STATUS_TESTING))
+            if (ride->SupportsStatus(RideStatus::Testing))
             {
                 minHeight += 14;
             }
@@ -1885,26 +1885,26 @@ static uint8_t window_ride_get_next_default_status(const Ride* ride)
     switch (ride->status)
     {
         default:
-        case RIDE_STATUS_CLOSED:
+        case RideStatus::Closed:
             if ((ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
                 || (ride->lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE))
             {
-                return RIDE_STATUS_CLOSED;
+                return RideStatus::Closed;
             }
-            else if (ride->SupportsStatus(RIDE_STATUS_TESTING) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+            else if (ride->SupportsStatus(RideStatus::Testing) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
             {
-                return RIDE_STATUS_TESTING;
+                return RideStatus::Testing;
             }
             else
             {
-                return RIDE_STATUS_OPEN;
+                return RideStatus::Open;
             }
-        case RIDE_STATUS_SIMULATING:
-            return RIDE_STATUS_TESTING;
-        case RIDE_STATUS_TESTING:
-            return (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) ? RIDE_STATUS_OPEN : RIDE_STATUS_CLOSED;
-        case RIDE_STATUS_OPEN:
-            return RIDE_STATUS_CLOSED;
+        case RideStatus::Simulating:
+            return RideStatus::Testing;
+        case RideStatus::Testing:
+            return (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) ? RideStatus::Open : RideStatus::Closed;
+        case RideStatus::Open:
+            return RideStatus::Closed;
     }
 }
 
@@ -1947,12 +1947,12 @@ static void window_ride_show_open_dropdown(rct_window* w, rct_widget* widget)
 
     info.CurrentStatus = info.Ride->status;
     info.DefaultStatus = window_ride_get_next_default_status(info.Ride);
-    window_ride_set_dropdown(info, RIDE_STATUS_CLOSED, STR_CLOSE_RIDE);
+    window_ride_set_dropdown(info, RideStatus::Closed, STR_CLOSE_RIDE);
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
-    window_ride_set_dropdown(info, RIDE_STATUS_SIMULATING, STR_SIMULATE_RIDE);
+    window_ride_set_dropdown(info, RideStatus::Simulating, STR_SIMULATE_RIDE);
 #endif
-    window_ride_set_dropdown(info, RIDE_STATUS_TESTING, STR_TEST_RIDE);
-    window_ride_set_dropdown(info, RIDE_STATUS_OPEN, STR_OPEN_RIDE);
+    window_ride_set_dropdown(info, RideStatus::Testing, STR_TEST_RIDE);
+    window_ride_set_dropdown(info, RideStatus::Open, STR_OPEN_RIDE);
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, info.NumItems);
     Dropdown::SetChecked(info.CheckedIndex, true);
@@ -2196,7 +2196,7 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
             auto ride = get_ride(w->number);
             if (ride != nullptr)
             {
-                auto status = RIDE_STATUS_CLOSED;
+                auto status = RideStatus::Closed;
                 if (dropdownIndex < 0)
                 {
                     dropdownIndex = gDropdownHighlightedIndex;
@@ -2206,16 +2206,16 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                     switch (gDropdownItemsArgs[dropdownIndex])
                     {
                         case STR_CLOSE_RIDE:
-                            status = RIDE_STATUS_CLOSED;
+                            status = RideStatus::Closed;
                             break;
                         case STR_SIMULATE_RIDE:
-                            status = RIDE_STATUS_SIMULATING;
+                            status = RideStatus::Simulating;
                             break;
                         case STR_TEST_RIDE:
-                            status = RIDE_STATUS_TESTING;
+                            status = RideStatus::Testing;
                             break;
                         case STR_OPEN_RIDE:
-                            status = RIDE_STATUS_OPEN;
+                            status = RideStatus::Open;
                             break;
                     }
                 }
@@ -2345,22 +2345,22 @@ static void window_ride_main_invalidate(rct_window* w)
     window_ride_main_widgets[WIDX_OPEN].image = spriteIds[ride->status];
 
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
-    window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RIDE_STATUS_CLOSED) * 2
+    window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
         + WidgetIsPressed(w, WIDX_CLOSE_LIGHT);
     window_ride_main_widgets[WIDX_SIMULATE_LIGHT].image = SPR_G2_RCT1_SIMULATE_BUTTON_0
-        + (ride->status == RIDE_STATUS_SIMULATING) * 2 + WidgetIsPressed(w, WIDX_SIMULATE_LIGHT);
-    window_ride_main_widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RIDE_STATUS_TESTING) * 2
+        + (ride->status == RideStatus::Simulating) * 2 + WidgetIsPressed(w, WIDX_SIMULATE_LIGHT);
+    window_ride_main_widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RideStatus::Testing) * 2
         + WidgetIsPressed(w, WIDX_TEST_LIGHT);
 #else
-    window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RIDE_STATUS_CLOSED) * 2
+    window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
         + WidgetIsPressed(w, WIDX_CLOSE_LIGHT);
 
-    auto baseSprite = ride->status == RIDE_STATUS_SIMULATING ? SPR_G2_RCT1_SIMULATE_BUTTON_0 : SPR_G2_RCT1_TEST_BUTTON_0;
+    auto baseSprite = ride->status == RideStatus::Simulating ? SPR_G2_RCT1_SIMULATE_BUTTON_0 : SPR_G2_RCT1_TEST_BUTTON_0;
     window_ride_main_widgets[WIDX_TEST_LIGHT].image = baseSprite
-        + (ride->status == RIDE_STATUS_TESTING || ride->status == RIDE_STATUS_SIMULATING) * 2
+        + (ride->status == RideStatus::Testing || ride->status == RideStatus::Simulating) * 2
         + WidgetIsPressed(w, WIDX_TEST_LIGHT);
 #endif
-    window_ride_main_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RIDE_STATUS_OPEN) * 2
+    window_ride_main_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RideStatus::Open) * 2
         + WidgetIsPressed(w, WIDX_OPEN_LIGHT);
 
     window_ride_anchor_border_widgets(w);
@@ -2403,10 +2403,10 @@ static void window_ride_main_invalidate(rct_window* w)
         window_ride_main_widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
         window_ride_main_widgets[WIDX_SIMULATE_LIGHT].type = WindowWidgetType::Empty;
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
-        if (ride->SupportsStatus(RIDE_STATUS_SIMULATING))
+        if (ride->SupportsStatus(RideStatus::Simulating))
             window_ride_main_widgets[WIDX_SIMULATE_LIGHT].type = WindowWidgetType::ImgBtn;
 #endif
-        window_ride_main_widgets[WIDX_TEST_LIGHT].type = ride->SupportsStatus(RIDE_STATUS_TESTING) ? WindowWidgetType::ImgBtn
+        window_ride_main_widgets[WIDX_TEST_LIGHT].type = ride->SupportsStatus(RideStatus::Testing) ? WindowWidgetType::ImgBtn
                                                                                                    : WindowWidgetType::Empty;
         window_ride_main_widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
 
@@ -2540,7 +2540,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     } while (count >= 0);
 
     // Entrance / exit
-    if (ride->status == RIDE_STATUS_CLOSED)
+    if (ride->status == RideStatus::Closed)
     {
         if (ride_get_entrance_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
             stringId = STR_NO_ENTRANCE;
@@ -3921,7 +3921,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
             {
                 context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_ALREADY_BROKEN, {});
             }
-            else if (ride->status == RIDE_STATUS_CLOSED)
+            else if (ride->status == RideStatus::Closed)
             {
                 context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_IS_CLOSED, {});
             }

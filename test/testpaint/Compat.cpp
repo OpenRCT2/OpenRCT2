@@ -472,7 +472,7 @@ Ride* Vehicle::GetRide() const
 bool Vehicle::IsGhost() const
 {
     auto r = GetRide();
-    return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
+    return r != nullptr && r->status == RideStatus::Simulating;
 }
 
 uint8_t TileElementBase::GetOccupiedQuadrants() const
