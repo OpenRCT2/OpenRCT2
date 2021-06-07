@@ -112,9 +112,9 @@ union paint_entry
 struct sprite_bb
 {
     uint32_t sprite_id;
-    LocationXYZ16 offset;
-    LocationXYZ16 bb_offset;
-    LocationXYZ16 bb_size;
+    CoordsXYZ offset;
+    CoordsXYZ bb_offset;
+    CoordsXYZ bb_size;
 };
 
 enum PAINT_STRUCT_FLAGS

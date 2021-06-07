@@ -20,6 +20,8 @@
 #define SCENERY_WITHER_AGE_THRESHOLD_1 0x28
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
 
+struct LargeSceneryText;
+
 #pragma pack(push, 1)
 
 struct SceneryEntryBase
@@ -56,7 +58,10 @@ assert_struct_size(rct_large_scenery_text_glyph, 4);
 
 struct rct_large_scenery_text
 {
-    LocationXY16 offset[2];                   // 0x0
+    struct
+    {
+        int16_t x, y;
+    } offset[2];                              // 0x0
     uint16_t max_width;                       // 0x8
     uint16_t pad_A;                           // 0xA
     uint8_t flags;                            // 0xC
@@ -80,7 +85,7 @@ struct LargeSceneryEntry : SceneryEntryBase
     rct_large_scenery_tile* tiles;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
-    rct_large_scenery_text* text;
+    LargeSceneryText* text;
     uint32_t text_image;
 };
 
@@ -158,6 +163,33 @@ struct BannerSceneryEntry : SceneryEntryBase
 };
 
 #pragma pack(pop)
+
+struct LargeSceneryText
+{
+    CoordsXY offset[2];
+    uint16_t max_width;
+    uint8_t flags;
+    uint16_t num_images;
+    rct_large_scenery_text_glyph glyphs[256];
+
+    LargeSceneryText() = default;
+
+    explicit LargeSceneryText(const rct_large_scenery_text& original)
+    {
+        for (size_t i = 0; i < std::size(original.offset); i++)
+        {
+            offset[i].x = original.offset[i].x;
+            offset[i].y = original.offset[i].y;
+        }
+        max_width = original.max_width;
+        flags = original.flags;
+        num_images = original.num_images;
+        for (size_t i = 0; i < std::size(original.glyphs); i++)
+        {
+            glyphs[i] = original.glyphs[i];
+        }
+    }
+};
 
 struct rct_scenery_group_entry
 {
