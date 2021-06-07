@@ -910,6 +910,8 @@ bool Ride::SupportsStatus(RideStatus s) const
         case RideStatus::Testing:
             return !rtd.HasFlag(RIDE_TYPE_FLAG_NO_TEST_MODE);
     }
+    // Unreachable
+    return false;
 }
 
 #pragma region Initialisation functions

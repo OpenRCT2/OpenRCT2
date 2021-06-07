@@ -66,6 +66,15 @@ GameActions::Result::Ptr RideSetStatusAction::Query() const
         return res;
     }
 
+    if (static_cast<uint8_t>(_status) >= RideStatusMax)
+    {
+        log_warning("Invalid ride status %u for ride %u", uint32_t(_status), uint32_t(_rideIndex));
+        res->Error = GameActions::Status::InvalidParameters;
+        res->ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
+        res->ErrorMessage = STR_NONE;
+        return res;
+    }
+
     res->ErrorTitle = _StatusErrorTitles[static_cast<uint8_t>(_status)];
 
     Formatter ft(res->ErrorMessageArgs.data());
