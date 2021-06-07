@@ -14,6 +14,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/GameStateSnapshots.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/AudioContext.h>
@@ -25,28 +26,15 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/peep/Peep.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/rct2/S6Exporter.h>
 #include <openrct2/ride/Ride.h>
-#include <openrct2/ride/Vehicle.h>
-#include <openrct2/world/Balloon.h>
-#include <openrct2/world/Duck.h>
 #include <openrct2/world/EntityTweener.h>
-#include <openrct2/world/Fountain.h>
-#include <openrct2/world/MoneyEffect.h>
-#include <openrct2/world/Park.h>
-#include <openrct2/world/Particle.h>
 #include <openrct2/world/Sprite.h>
 #include <stdio.h>
 #include <string>
 
 using namespace OpenRCT2;
-
-struct GameState_t
-{
-    rct_sprite sprites[MAX_ENTITIES];
-};
 
 static bool LoadFileToBuffer(MemoryStream& stream, const std::string& filePath)
 {
@@ -110,18 +98,15 @@ static bool ExportSave(MemoryStream& stream, std::unique_ptr<IContext>& context)
     return true;
 }
 
-static std::unique_ptr<GameState_t> GetGameState(std::unique_ptr<IContext>& context)
+static void RecordGameStateSnapshot(std::unique_ptr<IContext>& context, MemoryStream& snapshotStream)
 {
-    std::unique_ptr<GameState_t> res = std::make_unique<GameState_t>();
-    for (size_t spriteIdx = 0; spriteIdx < MAX_ENTITIES; spriteIdx++)
-    {
-        rct_sprite* sprite = reinterpret_cast<rct_sprite*>(GetEntity(spriteIdx));
-        if (sprite == nullptr)
-            res->sprites[spriteIdx].base.Type = EntityType::Null;
-        else
-            res->sprites[spriteIdx] = *sprite;
-    }
-    return res;
+    auto* snapshots = context->GetGameStateSnapshots();
+
+    auto& snapshot = snapshots->CreateSnapshot();
+    snapshots->Capture(snapshot);
+    snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
+    DataSerialiser snapShotDs(true, snapshotStream);
+    snapshots->SerialiseSnapshot(snapshot, snapShotDs);
 }
 
 static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
@@ -133,369 +118,7 @@ static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
     }
 }
 
-#define COMPARE_FIELD(field) EXPECT_EQ(left.field, right.field)
-
-static void CompareSpriteDataCommon(const SpriteBase& left, const SpriteBase& right)
-{
-    COMPARE_FIELD(Type);
-    COMPARE_FIELD(sprite_index);
-    COMPARE_FIELD(x);
-    COMPARE_FIELD(y);
-    COMPARE_FIELD(z);
-    // INVESTIGATE: These fields never match but are also not important to the game state.
-    /*
-    COMPARE_FIELD(sprite_width);
-    COMPARE_FIELD(sprite_height_negative);
-    COMPARE_FIELD(sprite_height_positive);
-    COMPARE_FIELD(sprite_left);
-    COMPARE_FIELD(sprite_top);
-    COMPARE_FIELD(sprite_right);
-    COMPARE_FIELD(sprite_bottom);
-    */
-    COMPARE_FIELD(sprite_direction);
-}
-
-static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
-{
-    COMPARE_FIELD(NextLoc.x);
-    COMPARE_FIELD(NextLoc.y);
-    COMPARE_FIELD(NextLoc.z);
-    COMPARE_FIELD(NextFlags);
-    COMPARE_FIELD(State);
-    COMPARE_FIELD(SubState);
-    COMPARE_FIELD(SpriteType);
-    COMPARE_FIELD(TshirtColour);
-    COMPARE_FIELD(TrousersColour);
-    COMPARE_FIELD(DestinationX);
-    COMPARE_FIELD(DestinationY);
-    COMPARE_FIELD(DestinationTolerance);
-    COMPARE_FIELD(Var37);
-    COMPARE_FIELD(Energy);
-    COMPARE_FIELD(EnergyTarget);
-    COMPARE_FIELD(Mass);
-    COMPARE_FIELD(WindowInvalidateFlags);
-    COMPARE_FIELD(CurrentRide);
-    COMPARE_FIELD(CurrentRideStation);
-    COMPARE_FIELD(CurrentTrain);
-    COMPARE_FIELD(TimeToSitdown);
-    COMPARE_FIELD(SpecialSprite);
-    COMPARE_FIELD(ActionSpriteType);
-    COMPARE_FIELD(NextActionSpriteType);
-    COMPARE_FIELD(ActionSpriteImageOffset);
-    COMPARE_FIELD(Action);
-    COMPARE_FIELD(ActionFrame);
-    COMPARE_FIELD(StepProgress);
-    COMPARE_FIELD(MazeLastEdge);
-    COMPARE_FIELD(InteractionRideIndex);
-    COMPARE_FIELD(Id);
-    COMPARE_FIELD(PathCheckOptimisation);
-    COMPARE_FIELD(PeepFlags);
-    COMPARE_FIELD(PathfindGoal.x);
-    COMPARE_FIELD(PathfindGoal.y);
-    COMPARE_FIELD(PathfindGoal.z);
-    COMPARE_FIELD(PathfindGoal.direction);
-    for (int i = 0; i < 4; i++)
-    {
-        COMPARE_FIELD(PathfindHistory[i].x);
-        COMPARE_FIELD(PathfindHistory[i].y);
-        COMPARE_FIELD(PathfindHistory[i].z);
-        COMPARE_FIELD(PathfindHistory[i].direction);
-    }
-    COMPARE_FIELD(WalkingFrameNum);
-}
-
-static void CompareSpriteDataGuest(const Guest& left, const Guest& right)
-{
-    CompareSpriteDataPeep(left, right);
-    COMPARE_FIELD(OutsideOfPark);
-    COMPARE_FIELD(GuestNumRides);
-    COMPARE_FIELD(Happiness);
-    COMPARE_FIELD(HappinessTarget);
-    COMPARE_FIELD(Nausea);
-    COMPARE_FIELD(NauseaTarget);
-    COMPARE_FIELD(Hunger);
-    COMPARE_FIELD(Thirst);
-    COMPARE_FIELD(Toilet);
-    COMPARE_FIELD(TimeToConsume);
-    COMPARE_FIELD(Intensity);
-    COMPARE_FIELD(NauseaTolerance);
-    COMPARE_FIELD(PaidOnDrink);
-    for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
-    {
-        COMPARE_FIELD(RideTypesBeenOn[i]);
-    }
-    COMPARE_FIELD(ItemFlags);
-    COMPARE_FIELD(Photo2RideRef);
-    COMPARE_FIELD(Photo3RideRef);
-    COMPARE_FIELD(Photo4RideRef);
-    COMPARE_FIELD(GuestNextInQueue);
-    COMPARE_FIELD(TimeInQueue);
-    for (int i = 0; i < 32; i++)
-    {
-        COMPARE_FIELD(RidesBeenOn[i]);
-    }
-    COMPARE_FIELD(CashInPocket);
-    COMPARE_FIELD(CashSpent);
-    COMPARE_FIELD(ParkEntryTime);
-    COMPARE_FIELD(RejoinQueueTimeout);
-    COMPARE_FIELD(PreviousRide);
-    COMPARE_FIELD(PreviousRideTimeOut);
-    for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
-    {
-        COMPARE_FIELD(Thoughts[i].type);
-        COMPARE_FIELD(Thoughts[i].item);
-        COMPARE_FIELD(Thoughts[i].freshness);
-        COMPARE_FIELD(Thoughts[i].fresh_timeout);
-    }
-    COMPARE_FIELD(GuestHeadingToRideId);
-    COMPARE_FIELD(GuestIsLostCountdown);
-    COMPARE_FIELD(Photo1RideRef);
-    COMPARE_FIELD(LitterCount);
-    COMPARE_FIELD(GuestTimeOnRide);
-    COMPARE_FIELD(DisgustingCount);
-    COMPARE_FIELD(PaidToEnter);
-    COMPARE_FIELD(PaidOnRides);
-    COMPARE_FIELD(PaidOnFood);
-    COMPARE_FIELD(PaidOnSouvenirs);
-    COMPARE_FIELD(AmountOfFood);
-    COMPARE_FIELD(AmountOfDrinks);
-    COMPARE_FIELD(AmountOfSouvenirs);
-    COMPARE_FIELD(VandalismSeen);
-    COMPARE_FIELD(VoucherType);
-    COMPARE_FIELD(VoucherRideId);
-    COMPARE_FIELD(SurroundingsThoughtTimeout);
-    COMPARE_FIELD(Angriness);
-    COMPARE_FIELD(TimeLost);
-    COMPARE_FIELD(DaysInQueue);
-    COMPARE_FIELD(BalloonColour);
-    COMPARE_FIELD(UmbrellaColour);
-    COMPARE_FIELD(HatColour);
-    COMPARE_FIELD(FavouriteRide);
-    COMPARE_FIELD(FavouriteRideRating);
-}
-
-static void CompareSpriteDataStaff(const Staff& left, const Staff& right)
-{
-    CompareSpriteDataPeep(left, right);
-
-    COMPARE_FIELD(AssignedStaffType);
-    COMPARE_FIELD(MechanicTimeSinceCall);
-    COMPARE_FIELD(HireDate);
-    COMPARE_FIELD(StaffId);
-    COMPARE_FIELD(StaffOrders);
-    COMPARE_FIELD(StaffMowingTimeout);
-    COMPARE_FIELD(StaffRidesFixed);
-    COMPARE_FIELD(StaffRidesInspected);
-    COMPARE_FIELD(StaffLitterSwept);
-    COMPARE_FIELD(StaffBinsEmptied);
-}
-
-static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
-{
-    COMPARE_FIELD(SubType);
-    COMPARE_FIELD(Pitch);
-    COMPARE_FIELD(bank_rotation);
-    COMPARE_FIELD(remaining_distance);
-    COMPARE_FIELD(velocity);
-    COMPARE_FIELD(acceleration);
-    COMPARE_FIELD(ride);
-    COMPARE_FIELD(vehicle_type);
-    COMPARE_FIELD(colours.body_colour);
-    COMPARE_FIELD(colours.trim_colour);
-    COMPARE_FIELD(track_progress);
-    COMPARE_FIELD(TrackTypeAndDirection);
-    COMPARE_FIELD(TrackLocation.x);
-    COMPARE_FIELD(TrackLocation.y);
-    COMPARE_FIELD(TrackLocation.z);
-    COMPARE_FIELD(next_vehicle_on_train);
-    COMPARE_FIELD(prev_vehicle_on_ride);
-    COMPARE_FIELD(next_vehicle_on_ride);
-    COMPARE_FIELD(var_44);
-    COMPARE_FIELD(mass);
-    COMPARE_FIELD(update_flags);
-    COMPARE_FIELD(SwingSprite);
-    COMPARE_FIELD(current_station);
-    COMPARE_FIELD(SwingPosition);
-    COMPARE_FIELD(SwingSpeed);
-    COMPARE_FIELD(status);
-    COMPARE_FIELD(sub_state);
-    for (int i = 0; i < 32; i++)
-    {
-        COMPARE_FIELD(peep[i]);
-    }
-    for (int i = 0; i < 32; i++)
-    {
-        COMPARE_FIELD(peep_tshirt_colours[i]);
-    }
-    COMPARE_FIELD(num_seats);
-    COMPARE_FIELD(num_peeps);
-    COMPARE_FIELD(next_free_seat);
-    COMPARE_FIELD(restraints_position);
-    COMPARE_FIELD(spin_speed);
-    COMPARE_FIELD(sound2_flags);
-    COMPARE_FIELD(spin_sprite);
-    COMPARE_FIELD(sound1_id);
-    COMPARE_FIELD(sound1_volume);
-    COMPARE_FIELD(sound2_id);
-    COMPARE_FIELD(sound2_volume);
-    COMPARE_FIELD(sound_vector_factor);
-    COMPARE_FIELD(cable_lift_target);
-    COMPARE_FIELD(speed);
-    COMPARE_FIELD(powered_acceleration);
-    COMPARE_FIELD(var_C4);
-    COMPARE_FIELD(animation_frame);
-    for (int i = 0; i < 2; i++)
-    {
-        COMPARE_FIELD(pad_C6[i]);
-    }
-    COMPARE_FIELD(var_C8);
-    COMPARE_FIELD(var_CA);
-    COMPARE_FIELD(scream_sound_id);
-    COMPARE_FIELD(TrackSubposition);
-    COMPARE_FIELD(num_laps);
-    COMPARE_FIELD(brake_speed);
-    COMPARE_FIELD(lost_time_out);
-    COMPARE_FIELD(vertical_drop_countdown);
-    COMPARE_FIELD(var_D3);
-    COMPARE_FIELD(mini_golf_current_animation);
-    COMPARE_FIELD(mini_golf_flags);
-    COMPARE_FIELD(ride_subtype);
-    COMPARE_FIELD(colours_extended);
-    COMPARE_FIELD(seat_rotation);
-    COMPARE_FIELD(target_seat_rotation);
-    COMPARE_FIELD(BoatLocation);
-    COMPARE_FIELD(IsCrashedVehicle);
-}
-
-static void CompareSpriteDataLitter(const Litter& left, const Litter& right)
-{
-    COMPARE_FIELD(SubType);
-    COMPARE_FIELD(creationTick);
-}
-
-static void CompareSpriteDataSteamParticle(const SteamParticle& left, const SteamParticle& right)
-{
-    COMPARE_FIELD(frame);
-    COMPARE_FIELD(time_to_move);
-}
-
-static void CompareSpriteDataMoneyEffect(const MoneyEffect& left, const MoneyEffect& right)
-{
-    COMPARE_FIELD(frame);
-    COMPARE_FIELD(MoveDelay);
-    COMPARE_FIELD(NumMovements);
-    COMPARE_FIELD(Vertical);
-    COMPARE_FIELD(Value);
-    COMPARE_FIELD(OffsetX);
-    COMPARE_FIELD(Wiggle);
-}
-
-static void CompareSpriteDataCrashedVehicleParticle(const VehicleCrashParticle& left, const VehicleCrashParticle& right)
-{
-    COMPARE_FIELD(frame);
-    COMPARE_FIELD(time_to_live);
-    for (size_t i = 0; i < std::size(left.colour); i++)
-    {
-        COMPARE_FIELD(colour[i]);
-    }
-    COMPARE_FIELD(crashed_sprite_base);
-    COMPARE_FIELD(velocity_x);
-    COMPARE_FIELD(velocity_y);
-    COMPARE_FIELD(velocity_z);
-    COMPARE_FIELD(acceleration_x);
-    COMPARE_FIELD(acceleration_y);
-    COMPARE_FIELD(acceleration_z);
-}
-
-static void CompareSpriteDataJumpingFountain(const JumpingFountain& left, const JumpingFountain& right)
-{
-    COMPARE_FIELD(frame);
-    COMPARE_FIELD(NumTicksAlive);
-    COMPARE_FIELD(FountainFlags);
-    COMPARE_FIELD(TargetX);
-    COMPARE_FIELD(TargetY);
-    COMPARE_FIELD(Iteration);
-    COMPARE_FIELD(FountainType);
-}
-
-static void CompareSpriteDataBalloon(const Balloon& left, const Balloon& right)
-{
-    COMPARE_FIELD(frame);
-    COMPARE_FIELD(popped);
-    COMPARE_FIELD(time_to_move);
-    COMPARE_FIELD(colour);
-}
-
-static void CompareSpriteDataDuck(const Duck& left, const Duck& right)
-{
-    COMPARE_FIELD(frame);
-    COMPARE_FIELD(target_x);
-    COMPARE_FIELD(target_y);
-    COMPARE_FIELD(state);
-}
-
-static void CompareSpriteDataMisc(const MiscEntity& left, const MiscEntity& right)
-{
-    COMPARE_FIELD(frame);
-}
-
-static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
-{
-    CompareSpriteDataCommon(left.base, right.base);
-    if (left.base.Type == right.base.Type)
-    {
-        switch (left.base.Type)
-        {
-            case EntityType::Guest:
-                CompareSpriteDataGuest(static_cast<const Guest&>(left.base), static_cast<const Guest&>(right.base));
-                break;
-            case EntityType::Staff:
-                CompareSpriteDataStaff(static_cast<const Staff&>(left.base), static_cast<const Staff&>(right.base));
-                break;
-            case EntityType::Vehicle:
-                CompareSpriteDataVehicle(static_cast<const Vehicle&>(left.base), static_cast<const Vehicle&>(right.base));
-                break;
-            case EntityType::Litter:
-                CompareSpriteDataLitter(static_cast<const Litter&>(left.base), static_cast<const Litter&>(right.base));
-                break;
-            case EntityType::SteamParticle:
-                CompareSpriteDataSteamParticle(
-                    static_cast<const SteamParticle&>(left.base), static_cast<const SteamParticle&>(right.base));
-                break;
-            case EntityType::MoneyEffect:
-                CompareSpriteDataMoneyEffect(
-                    static_cast<const MoneyEffect&>(left.base), static_cast<const MoneyEffect&>(right.base));
-                break;
-            case EntityType::CrashedVehicleParticle:
-                CompareSpriteDataCrashedVehicleParticle(
-                    static_cast<const VehicleCrashParticle&>(left.base), static_cast<const VehicleCrashParticle&>(right.base));
-                break;
-            case EntityType::JumpingFountain:
-                CompareSpriteDataJumpingFountain(
-                    static_cast<const JumpingFountain&>(left.base), static_cast<const JumpingFountain&>(right.base));
-                break;
-            case EntityType::Balloon:
-                CompareSpriteDataBalloon(static_cast<const Balloon&>(left.base), static_cast<const Balloon&>(right.base));
-                break;
-            case EntityType::Duck:
-                CompareSpriteDataDuck(static_cast<const Duck&>(left.base), static_cast<const Duck&>(right.base));
-                break;
-            case EntityType::ExplosionCloud:
-            case EntityType::CrashSplash:
-            case EntityType::ExplosionFlare:
-                CompareSpriteDataMisc(static_cast<const MiscEntity&>(left.base), static_cast<const MiscEntity&>(right.base));
-                break;
-            case EntityType::Null:
-                break;
-            default:
-                break;
-        }
-    }
-}
-
-static void CompareStates(
-    MemoryStream& importBuffer, MemoryStream& exportBuffer, std::unique_ptr<GameState_t>& importedState,
-    std::unique_ptr<GameState_t>& exportedState)
+static void CompareStates(MemoryStream& importBuffer, MemoryStream& exportBuffer, MemoryStream& snapshotStream)
 {
     if (importBuffer.GetLength() != exportBuffer.GetLength())
     {
@@ -505,14 +128,39 @@ static void CompareStates(
             static_cast<unsigned long long>(exportBuffer.GetLength()));
     }
 
-    for (size_t spriteIdx = 0; spriteIdx < MAX_ENTITIES; ++spriteIdx)
+    std::unique_ptr<IContext> context = CreateContext();
+    EXPECT_NE(context, nullptr);
+    bool initialised = context->Initialise();
+    ASSERT_TRUE(initialised);
+
+    DataSerialiser ds(false, snapshotStream);
+    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+    GameStateSnapshot_t& importSnapshot = snapshots->CreateSnapshot();
+    snapshots->SerialiseSnapshot(importSnapshot, ds);
+
+    GameStateSnapshot_t& exportSnapshot = snapshots->CreateSnapshot();
+    snapshots->SerialiseSnapshot(exportSnapshot, ds);
+
+    try
     {
-        if (importedState->sprites[spriteIdx].base.Type == EntityType::Null
-            && exportedState->sprites[spriteIdx].base.Type == EntityType::Null)
+        GameStateCompareData_t cmpData = snapshots->Compare(importSnapshot, exportSnapshot);
+
+        // Find out if there are any differences between the two states
+        auto res = std::find_if(
+            cmpData.spriteChanges.begin(), cmpData.spriteChanges.end(),
+            [](const GameStateSpriteChange_t& diff) { return diff.changeType != GameStateSpriteChange_t::EQUAL; });
+
+        if (res != cmpData.spriteChanges.end())
         {
-            continue;
+            log_warning("Snapshot data differences. %s", snapshots->GetCompareDataText(cmpData).c_str());
+            FAIL();
         }
-        CompareSpriteData(importedState->sprites[spriteIdx], exportedState->sprites[spriteIdx]);
+    }
+    catch (const std::runtime_error& err)
+    {
+        log_warning("Snapshot data failed to be read. Snapshot not compared. %s", err.what());
+        FAIL();
     }
 }
 
@@ -525,9 +173,7 @@ TEST(S6ImportExportBasic, all)
 
     MemoryStream importBuffer;
     MemoryStream exportBuffer;
-
-    std::unique_ptr<GameState_t> importedState;
-    std::unique_ptr<GameState_t> exportedState;
+    MemoryStream snapshotStream;
 
     // Load initial park data.
     {
@@ -540,8 +186,7 @@ TEST(S6ImportExportBasic, all)
         std::string testParkPath = TestData::GetParkPath("BigMapTest.sv6");
         ASSERT_TRUE(LoadFileToBuffer(importBuffer, testParkPath));
         ASSERT_TRUE(ImportSave(importBuffer, context, false));
-        importedState = GetGameState(context);
-        ASSERT_NE(importedState, nullptr);
+        RecordGameStateSnapshot(context, snapshotStream);
 
         ASSERT_TRUE(ExportSave(exportBuffer, context));
     }
@@ -556,11 +201,11 @@ TEST(S6ImportExportBasic, all)
 
         ASSERT_TRUE(ImportSave(exportBuffer, context, true));
 
-        exportedState = GetGameState(context);
-        ASSERT_NE(exportedState, nullptr);
+        RecordGameStateSnapshot(context, snapshotStream);
     }
 
-    CompareStates(importBuffer, exportBuffer, importedState, exportedState);
+    snapshotStream.SetPosition(0);
+    CompareStates(importBuffer, exportBuffer, snapshotStream);
 
     SUCCEED();
 }
@@ -574,9 +219,7 @@ TEST(S6ImportExportAdvanceTicks, all)
 
     MemoryStream importBuffer;
     MemoryStream exportBuffer;
-
-    std::unique_ptr<GameState_t> importedState;
-    std::unique_ptr<GameState_t> exportedState;
+    MemoryStream snapshotStream;
 
     // Load initial park data.
     {
@@ -592,8 +235,7 @@ TEST(S6ImportExportAdvanceTicks, all)
         AdvanceGameTicks(1000, context);
         ASSERT_TRUE(ExportSave(exportBuffer, context));
 
-        importedState = GetGameState(context);
-        ASSERT_NE(importedState, nullptr);
+        RecordGameStateSnapshot(context, snapshotStream);
     }
 
     // Import the exported version.
@@ -606,11 +248,11 @@ TEST(S6ImportExportAdvanceTicks, all)
 
         ASSERT_TRUE(ImportSave(exportBuffer, context, true));
 
-        exportedState = GetGameState(context);
-        ASSERT_NE(exportedState, nullptr);
+        RecordGameStateSnapshot(context, snapshotStream);
     }
 
-    CompareStates(importBuffer, exportBuffer, importedState, exportedState);
+    snapshotStream.SetPosition(0);
+    CompareStates(importBuffer, exportBuffer, snapshotStream);
 
     SUCCEED();
 }
