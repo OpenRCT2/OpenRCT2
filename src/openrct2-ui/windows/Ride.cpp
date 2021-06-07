@@ -1758,7 +1758,7 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             auto ride = get_ride(w->number);
             if (ride != nullptr)
             {
-                int32_t status;
+                RideStatus status;
                 switch (widgetIndex)
                 {
                     default:
@@ -1880,7 +1880,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     Dropdown::SetChecked(w->ride.view, true);
 }
 
-static uint8_t window_ride_get_next_default_status(const Ride* ride)
+static RideStatus window_ride_get_next_default_status(const Ride* ride)
 {
     switch (ride->status)
     {
@@ -1911,15 +1911,15 @@ static uint8_t window_ride_get_next_default_status(const Ride* ride)
 struct RideStatusDropdownInfo
 {
     struct Ride* Ride{};
-    uint8_t CurrentStatus{};
-    uint8_t DefaultStatus{};
+    RideStatus CurrentStatus{};
+    RideStatus DefaultStatus{};
 
     int32_t NumItems{};
     int32_t CheckedIndex = -1;
     int32_t DefaultIndex = -1;
 };
 
-static void window_ride_set_dropdown(RideStatusDropdownInfo& info, uint8_t status, rct_string_id text)
+static void window_ride_set_dropdown(RideStatusDropdownInfo& info, RideStatus status, rct_string_id text)
 {
     if (info.Ride->SupportsStatus(status))
     {
@@ -2342,7 +2342,7 @@ static void window_ride_main_invalidate(rct_window* w)
         SPR_TESTING,
         SPR_G2_SIMULATE,
     };
-    window_ride_main_widgets[WIDX_OPEN].image = spriteIds[ride->status];
+    window_ride_main_widgets[WIDX_OPEN].image = spriteIds[static_cast<uint8_t>(ride->status)];
 
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
     window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
