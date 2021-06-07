@@ -1665,6 +1665,8 @@ static void window_ride_init_viewport(rct_window* w)
     w->viewport_focus_coordinates.zoom = focus.coordinate.zoom;
     w->viewport_focus_coordinates.width = w->width;
     w->viewport_focus_coordinates.height = w->height;
+    w->viewport_focus_sprite.sprite_id = focus.sprite.sprite_id;
+    w->viewport_focus_sprite.type = focus.sprite.type;
 
     // rct2: 0x006aec9c only used here so brought it into the function
     if (!w->viewport && !ride->overall_view.isNull())
