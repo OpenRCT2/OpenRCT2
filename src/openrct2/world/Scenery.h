@@ -187,8 +187,7 @@ enum class PathBitDrawType : uint8_t
     Light,
     Bin,
     Bench,
-    JumpingFountain
-
+    JumpingFountain,
 };
 
 enum
