@@ -4656,7 +4656,7 @@ void Vehicle::UpdateBoatLocation()
     if (location.ToTileStart() == returnPosition.ToCoordsXY())
     {
         sub_state = 1;
-        BoatLocation = location;
+        BoatLocation = location.ToTileStart();
         return;
     }
 
@@ -4700,13 +4700,13 @@ void Vehicle::UpdateBoatLocation()
             continue;
         }
 
-        BoatLocation = trackLocation;
+        BoatLocation = trackLocation.ToTileStart();
         return;
     }
 
     CoordsXY trackLocation = TrackLocation;
     trackLocation += CoordsDirectionDelta[curDirection & 3];
-    BoatLocation = trackLocation;
+    BoatLocation = trackLocation.ToTileStart();
 }
 
 /**
