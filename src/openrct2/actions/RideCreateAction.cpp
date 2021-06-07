@@ -155,7 +155,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
         vehicle = SPRITE_INDEX_NULL;
     }
 
-    ride->status = RIDE_STATUS_CLOSED;
+    ride->status = RideStatus::Closed;
     ride->lifecycle_flags = 0;
     ride->vehicle_change_timeout = 0;
     ride->num_stations = 0;

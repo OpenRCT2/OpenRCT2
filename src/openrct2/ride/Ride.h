@@ -201,6 +201,7 @@ namespace ShelteredSectionsBits
 
 struct TrackDesign;
 enum class RideMode : uint8_t;
+enum class RideStatus : uint8_t;
 
 /**
  * Ride structure.
@@ -219,7 +220,7 @@ struct Ride
     uint8_t colour_scheme_type;
     VehicleColour vehicle_colours[MAX_VEHICLE_COLOURS];
     // 0 = closed, 1 = open, 2 = test
-    uint8_t status;
+    RideStatus status;
     std::string custom_name;
     uint16_t default_name_number;
     CoordsXY overall_view;
@@ -421,12 +422,12 @@ public:
     bool IsPoweredLaunched() const;
     bool IsBlockSectioned() const;
     bool CanHaveMultipleCircuits() const;
-    bool SupportsStatus(int32_t s) const;
+    bool SupportsStatus(RideStatus s) const;
 
     void StopGuestsQueuing();
 
     bool Open(bool isApplying);
-    bool Test(int32_t newStatus, bool isApplying);
+    bool Test(RideStatus newStatus, bool isApplying);
 
     RideMode GetDefaultMode() const;
 
@@ -664,13 +665,12 @@ enum
     RIDE_TYPE_COUNT
 };
 
-enum
+enum class RideStatus : uint8_t
 {
-    RIDE_STATUS_CLOSED,
-    RIDE_STATUS_OPEN,
-    RIDE_STATUS_TESTING,
-    RIDE_STATUS_SIMULATING,
-    RIDE_STATUS_COUNT,
+    Closed,
+    Open,
+    Testing,
+    Simulating,
 };
 
 enum class RideMode : uint8_t
@@ -1151,7 +1151,7 @@ void ride_set_map_tooltip(TileElement* tileElement);
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
 TileElement* ride_get_station_start_track_element(Ride* ride, StationIndex stationIndex);
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);
-void ride_set_status(Ride* ride, int32_t status);
+void ride_set_status(Ride* ride, RideStatus status);
 void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);

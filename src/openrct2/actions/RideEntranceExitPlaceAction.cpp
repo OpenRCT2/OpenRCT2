@@ -68,7 +68,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, errorTitle);
     }
 
-    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
         return MakeResult(GameActions::Status::NotClosed, errorTitle, STR_MUST_BE_CLOSED_FIRST);
     }

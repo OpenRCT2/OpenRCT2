@@ -28,7 +28,7 @@ static rct_string_id _StatusErrorTitles[] = {
     STR_CANT_SIMULATE,
 };
 
-RideSetStatusAction::RideSetStatusAction(ride_id_t rideIndex, uint8_t status)
+RideSetStatusAction::RideSetStatusAction(ride_id_t rideIndex, RideStatus status)
     : _rideIndex(rideIndex)
     , _status(status)
 {
@@ -66,30 +66,21 @@ GameActions::Result::Ptr RideSetStatusAction::Query() const
         return res;
     }
 
-    if (_status >= RIDE_STATUS_COUNT)
-    {
-        log_warning("Invalid ride status %u for ride %u", uint32_t(_status), uint32_t(_rideIndex));
-        res->Error = GameActions::Status::InvalidParameters;
-        res->ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
-        res->ErrorMessage = STR_NONE;
-        return res;
-    }
-
-    res->ErrorTitle = _StatusErrorTitles[_status];
+    res->ErrorTitle = _StatusErrorTitles[static_cast<uint8_t>(_status)];
 
     Formatter ft(res->ErrorMessageArgs.data());
     ft.Increment(6);
     ride->FormatNameTo(ft);
     if (_status != ride->status)
     {
-        if (_status == RIDE_STATUS_SIMULATING && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (_status == RideStatus::Simulating && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             // Simulating will force clear the track, so make sure player can't cheat around a break down
             res->Error = GameActions::Status::Disallowed;
             res->ErrorMessage = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
             return res;
         }
-        else if (_status == RIDE_STATUS_TESTING || _status == RIDE_STATUS_SIMULATING)
+        else if (_status == RideStatus::Testing || _status == RideStatus::Simulating)
         {
             if (!ride->Test(_status, false))
             {
@@ -98,7 +89,7 @@ GameActions::Result::Ptr RideSetStatusAction::Query() const
                 return res;
             }
         }
-        else if (_status == RIDE_STATUS_OPEN)
+        else if (_status == RideStatus::Open)
         {
             if (!ride->Open(false))
             {
@@ -126,7 +117,7 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
         return res;
     }
 
-    res->ErrorTitle = _StatusErrorTitles[_status];
+    res->ErrorTitle = _StatusErrorTitles[static_cast<uint8_t>(_status)];
 
     Formatter ft(res->ErrorMessageArgs.data());
     ft.Increment(6);
@@ -139,8 +130,8 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
 
     switch (_status)
     {
-        case RIDE_STATUS_CLOSED:
-            if (ride->status == _status || ride->status == RIDE_STATUS_SIMULATING)
+        case RideStatus::Closed:
+            if (ride->status == _status || ride->status == RideStatus::Simulating)
             {
                 if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
                 {
@@ -150,13 +141,13 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
                 }
             }
 
-            ride->status = RIDE_STATUS_CLOSED;
+            ride->status = RideStatus::Closed;
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
             ride->race_winner = SPRITE_INDEX_NULL;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
             window_invalidate_by_number(WC_RIDE, _rideIndex);
             break;
-        case RIDE_STATUS_SIMULATING:
+        case RideStatus::Simulating:
         {
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
             ride_clear_for_construction(ride);
@@ -179,15 +170,15 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
             window_invalidate_by_number(WC_RIDE, _rideIndex);
             break;
         }
-        case RIDE_STATUS_TESTING:
-        case RIDE_STATUS_OPEN:
+        case RideStatus::Testing:
+        case RideStatus::Open:
         {
             if (ride->status == _status)
             {
                 return res;
             }
 
-            if (ride->status == RIDE_STATUS_SIMULATING)
+            if (ride->status == RideStatus::Simulating)
             {
                 ride_clear_for_construction(ride);
                 ride_remove_peeps(ride);
@@ -201,7 +192,7 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
                 window_close(constructionWindow);
             }
 
-            if (_status == RIDE_STATUS_TESTING)
+            if (_status == RideStatus::Testing)
             {
                 if (!ride->Test(_status, true))
                 {

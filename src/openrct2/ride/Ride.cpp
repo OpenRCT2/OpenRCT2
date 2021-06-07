@@ -807,7 +807,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
     {
         ft.Add<rct_string_id>(STR_BROKEN_DOWN);
     }
-    else if (status == RIDE_STATUS_CLOSED)
+    else if (status == RideStatus::Closed)
     {
         if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
         {
@@ -826,11 +826,11 @@ void Ride::FormatStatusTo(Formatter& ft) const
             ft.Add<rct_string_id>(STR_CLOSED);
         }
     }
-    else if (status == RIDE_STATUS_SIMULATING)
+    else if (status == RideStatus::Simulating)
     {
         ft.Add<rct_string_id>(STR_SIMULATING);
     }
-    else if (status == RIDE_STATUS_TESTING)
+    else if (status == RideStatus::Testing)
     {
         ft.Add<rct_string_id>(STR_TEST_RUN);
     }
@@ -896,21 +896,19 @@ bool Ride::CanHaveMultipleCircuits() const
     return true;
 }
 
-bool Ride::SupportsStatus(int32_t s) const
+bool Ride::SupportsStatus(RideStatus s) const
 {
     const auto& rtd = GetRideTypeDescriptor();
 
     switch (s)
     {
-        case RIDE_STATUS_CLOSED:
-        case RIDE_STATUS_OPEN:
+        case RideStatus::Closed:
+        case RideStatus::Open:
             return true;
-        case RIDE_STATUS_SIMULATING:
+        case RideStatus::Simulating:
             return (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_TEST_MODE) && rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK));
-        case RIDE_STATUS_TESTING:
+        case RideStatus::Testing:
             return !rtd.HasFlag(RIDE_TYPE_FLAG_NO_TEST_MODE);
-        default:
-            return false;
     }
 }
 
@@ -959,7 +957,7 @@ static int32_t ride_check_if_construction_allowed(Ride* ride)
         return 0;
     }
 
-    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
         ft.Increment(6);
         ride->FormatNameTo(ft);
@@ -1840,9 +1838,9 @@ bool ride_modify(CoordsXYE* input)
     }
 
     // Stop the ride again to clear all vehicles and peeps (compatible with network games)
-    if (ride->status != RIDE_STATUS_SIMULATING)
+    if (ride->status != RideStatus::Simulating)
     {
-        ride_set_status(ride, RIDE_STATUS_CLOSED);
+        ride_set_status(ride, RideStatus::Closed);
     }
 
     // Check if element is a station entrance or exit
@@ -2084,18 +2082,18 @@ void Ride::Update()
     ride_inspection_update(this);
 
     // If ride is simulating but crashed, reset the vehicles
-    if (status == RIDE_STATUS_SIMULATING && (lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+    if (status == RideStatus::Simulating && (lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         if (mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            RideSetStatusAction gameAction = RideSetStatusAction(id, RIDE_STATUS_CLOSED);
+            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::Closed);
             GameActions::ExecuteNested(&gameAction);
         }
         else
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            RideSetStatusAction gameAction = RideSetStatusAction(id, RIDE_STATUS_SIMULATING);
+            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::Simulating);
             GameActions::ExecuteNested(&gameAction);
         }
     }
@@ -2354,7 +2352,7 @@ static void ride_breakdown_update(Ride* ride)
 
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
-    if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_SIMULATING)
+    if (ride->status == RideStatus::Closed || ride->status == RideStatus::Simulating)
         return;
 
     if (!ride->CanBreakDown())
@@ -2816,7 +2814,7 @@ static void ride_music_update(Ride* ride)
         return;
     }
 
-    if (ride->status != RIDE_STATUS_OPEN || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
+    if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
     {
         ride->music_tune_id = 255;
         return;
@@ -2980,7 +2978,7 @@ void ride_measurements_update()
     for (auto& ride : GetRideManager())
     {
         auto measurement = ride.measurement.get();
-        if (measurement != nullptr && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) && ride.status != RIDE_STATUS_SIMULATING)
+        if (measurement != nullptr && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) && ride.status != RideStatus::Simulating)
         {
             if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
             {
@@ -3194,7 +3192,7 @@ void ride_check_all_reachable()
     {
         if (ride.connected_message_throttle != 0)
             ride.connected_message_throttle--;
-        if (ride.status != RIDE_STATUS_OPEN || ride.connected_message_throttle != 0)
+        if (ride.status != RideStatus::Open || ride.connected_message_throttle != 0)
             continue;
 
         if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
@@ -4830,7 +4828,7 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
     return nullptr;
 }
 
-bool Ride::Test(int32_t newStatus, bool isApplying)
+bool Ride::Test(RideStatus newStatus, bool isApplying)
 {
     CoordsXYE trackElement, problematicTrackElement = {};
 
@@ -4840,7 +4838,7 @@ bool Ride::Test(int32_t newStatus, bool isApplying)
         return false;
     }
 
-    if (newStatus != RIDE_STATUS_SIMULATING)
+    if (newStatus != RideStatus::Simulating)
     {
         window_close_by_number(WC_RIDE_CONSTRUCTION, id);
     }
@@ -4852,7 +4850,7 @@ bool Ride::Test(int32_t newStatus, bool isApplying)
     if (!ride_mode_check_valid_station_numbers(this))
         return false;
 
-    if (newStatus != RIDE_STATUS_SIMULATING && !ride_check_for_entrance_exit(id))
+    if (newStatus != RideStatus::Simulating && !ride_check_for_entrance_exit(id))
     {
         ConstructMissingEntranceOrExit();
         return false;
@@ -4873,7 +4871,7 @@ bool Ride::Test(int32_t newStatus, bool isApplying)
     if (mode == RideMode::ContinuousCircuit || IsBlockSectioned())
     {
         if (ride_find_track_gap(this, &trackElement, &problematicTrackElement)
-            && (newStatus != RIDE_STATUS_SIMULATING || IsBlockSectioned()))
+            && (newStatus != RideStatus::Simulating || IsBlockSectioned()))
         {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);

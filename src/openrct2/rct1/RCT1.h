@@ -64,7 +64,7 @@ struct rct1_ride
     colour_t track_primary_colour;                            // 0x01E
     colour_t track_secondary_colour;                          // 0x01F
     colour_t track_support_colour;                            // 0x020
-    uint8_t status;                                           // 0x021
+    RideStatus status;                                        // 0x021
     uint16_t name;                                            // 0x022
     uint16_t name_argument_ride;                              // 0x024
     uint16_t name_argument_number;                            // 0x026

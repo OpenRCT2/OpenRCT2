@@ -2166,7 +2166,7 @@ int32_t guest_path_finding(Guest* peep)
     // Peep is heading for a ride.
     ride_id_t rideIndex = peep->GuestHeadingToRideId;
     auto ride = get_ride(rideIndex);
-    if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
+    if (ride == nullptr || ride->status != RideStatus::Open)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)

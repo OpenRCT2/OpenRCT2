@@ -74,7 +74,7 @@ GameActions::Result::Ptr RideDemolishAction::Query() const
 
     if (_modifyType == RIDE_MODIFY_RENEW)
     {
-        if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+        if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
