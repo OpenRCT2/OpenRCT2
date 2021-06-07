@@ -88,14 +88,14 @@ void FootpathItemObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
 static PathBitDrawType ParseDrawType(const std::string& s)
 {
     if (s == "lamp")
-        return PathBitDrawType::Lights;
+        return PathBitDrawType::Light;
     if (s == "bin")
-        return PathBitDrawType::Bins;
+        return PathBitDrawType::Bin;
     if (s == "bench")
-        return PathBitDrawType::Benches;
+        return PathBitDrawType::Bench;
     if (s == "fountain")
-        return PathBitDrawType::JumpingFountains;
-    return PathBitDrawType::Lights;
+        return PathBitDrawType::JumpingFountain;
+    return PathBitDrawType::Light;
 }
 
 void FootpathItemObject::ReadJson(IReadObjectContext* context, json_t& root)

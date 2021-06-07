@@ -709,7 +709,7 @@ static void sub_6A3F61(
                 }
                 else if (
                     (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(tile_element->AsPath()->IsBroken())
-                    && pathAddEntry->draw_type != PathBitDrawType::Bins)
+                    && pathAddEntry->draw_type != PathBitDrawType::Bin)
                 {
                     paintScenery = false;
                 }
@@ -717,22 +717,22 @@ static void sub_6A3F61(
                 {
                     switch (pathAddEntry->draw_type)
                     {
-                        case PathBitDrawType::Lights:
+                        case PathBitDrawType::Light:
                             path_bit_lights_paint(
                                 session, pathAddEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
                                 sceneryImageFlags);
                             break;
-                        case PathBitDrawType::Bins:
+                        case PathBitDrawType::Bin:
                             path_bit_bins_paint(
                                 session, pathAddEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
                                 sceneryImageFlags);
                             break;
-                        case PathBitDrawType::Benches:
+                        case PathBitDrawType::Bench:
                             path_bit_benches_paint(
                                 session, pathAddEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
                                 sceneryImageFlags);
                             break;
-                        case PathBitDrawType::JumpingFountains:
+                        case PathBitDrawType::JumpingFountain:
                             path_bit_jumping_fountains_paint(session, pathAddEntry, height, sceneryImageFlags, dpi);
                             break;
                     }
