@@ -318,7 +318,7 @@ rct_window* window_changelog_open(int personality)
     auto* window = window_bring_to_front_by_class(WC_CHANGELOG);
     if (window == nullptr)
     {
-        // Create a new centered window
+        // Create a new centred window
         int32_t screenWidth = context_get_width();
         int32_t screenHeight = context_get_height();
         int32_t width = (screenWidth * 4) / 5;
