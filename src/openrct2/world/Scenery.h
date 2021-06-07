@@ -138,11 +138,12 @@ struct WallSceneryEntry : SceneryEntryBase
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
 };
+enum class PathBitDrawType : uint8_t;
 
 struct PathBitEntry : SceneryEntryBase
 {
     uint16_t flags;
-    uint8_t draw_type;
+    PathBitDrawType draw_type;
     CursorID tool_id;
     int16_t price;
     ObjectEntryIndex scenery_tab_id;
@@ -181,12 +182,13 @@ enum
     PATH_BIT_FLAG_IS_QUEUE_SCREEN = 1 << 8
 };
 
-enum
+enum class PathBitDrawType : uint8_t
 {
-    PATH_BIT_DRAW_TYPE_LIGHTS,
-    PATH_BIT_DRAW_TYPE_BINS,
-    PATH_BIT_DRAW_TYPE_BENCHES,
-    PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS
+    Lights,
+    Bins,
+    Benches,
+    JumpingFountains
+
 };
 
 enum
