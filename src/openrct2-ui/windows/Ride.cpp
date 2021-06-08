@@ -2342,7 +2342,7 @@ static void window_ride_main_invalidate(rct_window* w)
         SPR_TESTING,
         SPR_G2_SIMULATE,
     };
-    window_ride_main_widgets[WIDX_OPEN].image = spriteIds[static_cast<uint8_t>(ride->status)];
+    window_ride_main_widgets[WIDX_OPEN].image = spriteIds[EnumValue(ride->status)];
 
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
     window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
