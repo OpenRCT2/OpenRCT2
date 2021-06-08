@@ -538,7 +538,7 @@ public:
         }
 
         // pad_046;
-        dst->status = src->status;
+        dst->status = static_cast<RideStatus>(src->status);
 
         dst->default_name_number = src->name_arguments_number;
         if (is_user_string_id(src->name))

@@ -91,7 +91,6 @@ constexpr const int32_t rct2_object_entry_group_counts[] = {
 #pragma pack(push, 1)
 
 struct rct_ride_entry;
-enum class RideStatus : uint8_t;
 
 /**
  * Ride structure.
@@ -109,7 +108,7 @@ struct rct2_ride
     rct_vehicle_colour vehicle_colours[RCT2_MAX_CARS_PER_TRAIN]; // 0x006
     uint8_t pad_046[0x03];                                       // 0x046, Used to be track colours in RCT1 without expansions
     // 0 = closed, 1 = open, 2 = test
-    RideStatus status;  // 0x049
+    uint8_t status;  // 0x049
     rct_string_id name; // 0x04A
     union
     {
