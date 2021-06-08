@@ -208,6 +208,15 @@ static bool map_check_free_elements_and_reorganise(size_t numElements)
     }
     else
     {
+        // First try reorganising the elements (as it removes fragmentation) and then recheck capacity.
+        ReorganiseTileElements();
+        freeElements = _tileElements.capacity() - _tileElements.size();
+        if (freeElements >= numElements)
+        {
+            return true;
+        }
+
+        // Capacity must be increased to support the new numElements
         auto newCapacity = std::min<size_t>(MAX_TILE_ELEMENTS, _tileElements.capacity() * 2);
         if (newCapacity - _tileElements.size() < numElements)
         {
