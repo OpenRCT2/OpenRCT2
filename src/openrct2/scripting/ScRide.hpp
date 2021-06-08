@@ -259,6 +259,8 @@ namespace OpenRCT2::Scripting
                         return "testing";
                     case RideStatus::Simulating:
                         return "simulating";
+                    case RideStatus::Count: // Meaningless but necessary to satisfy -Wswitch
+                        return "count";
                 }
             }
             return "";

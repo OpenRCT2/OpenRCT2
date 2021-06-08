@@ -66,7 +66,7 @@ GameActions::Result::Ptr RideSetStatusAction::Query() const
         return res;
     }
 
-    if (EnumValue(_status) >= RideStatusMax)
+    if (_status >= RideStatus::Count)
     {
         log_warning("Invalid ride status %u for ride %u", uint32_t(_status), uint32_t(_rideIndex));
         res->Error = GameActions::Status::InvalidParameters;

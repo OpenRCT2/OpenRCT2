@@ -909,6 +909,8 @@ bool Ride::SupportsStatus(RideStatus s) const
             return (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_TEST_MODE) && rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK));
         case RideStatus::Testing:
             return !rtd.HasFlag(RIDE_TYPE_FLAG_NO_TEST_MODE);
+        case RideStatus::Count: // Meaningless but necessary to satisfy -Wswitch
+            return false;
     }
     // Unreachable
     return false;

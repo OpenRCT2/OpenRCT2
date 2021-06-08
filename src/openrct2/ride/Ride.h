@@ -671,9 +671,10 @@ enum class RideStatus : uint8_t
     Open,
     Testing,
     Simulating,
+    Count,
 };
 
-constexpr uint8_t RideStatusMax = 3;
+//constexpr uint8_t RideStatusMax = 3;
 
 enum class RideMode : uint8_t
 {
