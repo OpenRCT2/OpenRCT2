@@ -100,7 +100,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
 {
     bool entrancePath = false, entranceIsSamePath = false;
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         return MakeResult(GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
     }

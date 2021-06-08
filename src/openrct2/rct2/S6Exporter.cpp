@@ -195,7 +195,7 @@ void S6Exporter::Export()
     _s6.scenario_srand_1 = state.s1;
 
     // Map elements must be reorganised prior to saving otherwise save may be invalid
-    map_reorganise_elements();
+    ReorganiseTileElements();
     ExportTileElements();
     ExportEntities();
     ExportParkName();
@@ -419,8 +419,8 @@ void S6Exporter::Export()
 
     // pad_13CE730
     // rct1_scenario_flags
-    _s6.wide_path_tile_loop_x = gWidePathTileLoopX;
-    _s6.wide_path_tile_loop_y = gWidePathTileLoopY;
+    _s6.wide_path_tile_loop_x = gWidePathTileLoopPosition.x;
+    _s6.wide_path_tile_loop_y = gWidePathTileLoopPosition.y;
     // pad_13CE778
 
     String::Set(_s6.scenario_filename, sizeof(_s6.scenario_filename), gScenarioFileName);
@@ -1580,10 +1580,16 @@ void S6Exporter::ExportMapAnimations()
 
 void S6Exporter::ExportTileElements()
 {
+    const auto& tileElements = GetTileElements();
     for (uint32_t index = 0; index < RCT2_MAX_TILE_ELEMENTS; index++)
     {
-        auto src = &gTileElements[index];
         auto dst = &_s6.tile_elements[index];
+        if (index >= tileElements.size())
+        {
+            dst = {};
+            continue;
+        }
+        auto src = &tileElements[index];
         if (src->base_height == MAX_ELEMENT_HEIGHT)
         {
             std::memcpy(dst, src, sizeof(*dst));
@@ -1598,10 +1604,10 @@ void S6Exporter::ExportTileElements()
                 ExportTileElement(dst, src);
         }
     }
-    _s6.next_free_tile_element_pointer_index = gNextFreeTileElementPointerIndex;
+    _s6.next_free_tile_element_pointer_index = static_cast<uint32_t>(tileElements.size());
 }
 
-void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
+void S6Exporter::ExportTileElement(RCT12TileElement* dst, const TileElement* src)
 {
     // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
     uint8_t tileElementType = src->GetType();
@@ -1852,7 +1858,6 @@ int32_t scenario_save(const utf8* path, int32_t flags)
         window_close_construction_windows();
     }
 
-    map_reorganise_elements();
     viewport_set_saved_view();
 
     bool result = false;

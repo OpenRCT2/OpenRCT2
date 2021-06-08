@@ -73,7 +73,7 @@ private:
     void ExportMapAnimations();
 
     void ExportTileElements();
-    void ExportTileElement(RCT12TileElement* dst, TileElement* src);
+    void ExportTileElement(RCT12TileElement* dst, const TileElement* src);
 
     std::optional<uint16_t> AllocateUserString(std::string_view value);
     void ExportUserStrings();

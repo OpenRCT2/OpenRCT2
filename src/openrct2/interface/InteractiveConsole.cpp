@@ -1247,8 +1247,8 @@ static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused
 
 static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    map_reorganise_elements();
-    int32_t tileElementCount = gNextFreeTileElement - gTileElements - 1;
+    const auto& tileElements = GetTileElements();
+    const auto tileElementCount = tileElements.size();
 
     int32_t rideCount = ride_get_count();
     int32_t spriteCount = 0;
@@ -1270,7 +1270,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     }
 
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
-    console.WriteFormatLine("Map Elements: %d/%d", tileElementCount, MAX_TILE_ELEMENTS);
+    console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, MAX_RIDES);
     console.WriteFormatLine("Staff: %d/%d", staffCount, STAFF_MAX_COUNT);
