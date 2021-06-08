@@ -237,9 +237,10 @@ int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const Coord
 int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 bool map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
-    uint8_t crossingMode);
+    uint8_t crossingMode, bool isTree = false);
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode);
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode,
+    bool isTree = false);
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl);
 
