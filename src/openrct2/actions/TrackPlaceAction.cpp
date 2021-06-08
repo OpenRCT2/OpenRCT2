@@ -169,7 +169,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         numElements++;
     }
 
-    if (!map_check_free_elements_and_reorganise(numElements))
+    if (!CheckMapCapacity(numElements))
     {
         log_warning("Not enough free map elements to place track.");
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
@@ -649,4 +649,19 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     price >>= 16;
     res->Cost = cost + ((price / 2) * 10);
     return res;
+}
+
+bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
+{
+    for (const rct_preview_track* trackBlock = TrackBlocks[_trackType]; trackBlock->index != 0xFF; trackBlock++)
+    {
+        auto rotatedTrack = CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction);
+
+        auto tileCoords = CoordsXY{ _origin.x, _origin.y } + rotatedTrack;
+        if (!MapCheckCapacityAndReorganise(tileCoords, numTiles))
+        {
+            return false;
+        }
+    }
+    return true;
 }

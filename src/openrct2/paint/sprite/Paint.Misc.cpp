@@ -32,7 +32,7 @@ const uint32_t vehicle_particle_base_sprites[] = {
 template<> void PaintEntity(paint_session* session, const SteamParticle* particle, int32_t imageDirection)
 {
     uint32_t imageId = 22637 + (particle->frame / 256);
-    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, particle->z);
+    PaintAddImageAsParent(session, imageId, { 0, 0, particle->z }, { 1, 1, 0 });
 }
 
 template<> void PaintEntity(paint_session* session, const MoneyEffect* moneyEffect, int32_t imageDirection)
@@ -63,7 +63,7 @@ template<> void PaintEntity(paint_session* session, const VehicleCrashParticle* 
         return;
     uint32_t imageId = vehicle_particle_base_sprites[particle->crashed_sprite_base] + particle->frame / 256;
     imageId = imageId | (particle->colour[0] << 19) | (particle->colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
-    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, particle->z);
+    PaintAddImageAsParent(session, imageId, { 0, 0, particle->z }, { 1, 1, 0 });
 }
 
 template<> void PaintEntity(paint_session* session, const ExplosionCloud* particle, int32_t imageDirection)
@@ -71,7 +71,7 @@ template<> void PaintEntity(paint_session* session, const ExplosionCloud* partic
     if (particle == nullptr)
         return;
     uint32_t imageId = 22878 + (particle->frame / 256);
-    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, particle->z);
+    PaintAddImageAsParent(session, imageId, { 0, 0, particle->z }, { 1, 1, 0 });
 }
 
 template<> void PaintEntity(paint_session* session, const CrashSplashParticle* crashSplash, int32_t imageDirection)
@@ -79,7 +79,7 @@ template<> void PaintEntity(paint_session* session, const CrashSplashParticle* c
     if (crashSplash == nullptr)
         return;
     uint32_t imageId = 22927 + (crashSplash->frame / 256);
-    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, crashSplash->z);
+    PaintAddImageAsParent(session, imageId, { 0, 0, crashSplash->z }, { 1, 1, 0 });
 }
 
 template<> void PaintEntity(paint_session* session, const ExplosionFlare* flare, int32_t imageDirection)
@@ -88,7 +88,7 @@ template<> void PaintEntity(paint_session* session, const ExplosionFlare* flare,
     if (flare == nullptr)
         return;
     uint32_t imageId = 22896 + (flare->frame / 256);
-    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, flare->z);
+    PaintAddImageAsParent(session, imageId, { 0, 0, flare->z }, { 1, 1, 0 });
 }
 
 constexpr uint32_t JumpingFountainSnowBaseImage = 23037;
@@ -141,7 +141,7 @@ template<> void PaintEntity(paint_session* session, const Balloon* balloon, int3
     }
 
     imageId = imageId | (balloon->colour << 19) | IMAGE_TYPE_REMAP;
-    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, balloon->z);
+    PaintAddImageAsParent(session, imageId, { 0, 0, balloon->z }, { 1, 1, 0 });
 }
 
 template<> void PaintEntity(paint_session* session, const Duck* duck, int32_t imageDirection)
@@ -154,7 +154,7 @@ template<> void PaintEntity(paint_session* session, const Duck* duck, int32_t im
         uint32_t imageId = duck->GetFrameImage(imageDirection);
         if (imageId != 0)
         {
-            PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, duck->z);
+            PaintAddImageAsParent(session, imageId, { 0, 0, duck->z }, { 1, 1, 0 });
         }
     }
 }

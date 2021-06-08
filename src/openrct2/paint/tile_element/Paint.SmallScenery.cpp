@@ -20,7 +20,7 @@
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
-static constexpr const LocationXY16 lengths[] = {
+static constexpr const CoordsXY lengths[] = {
     { 12, 26 },
     { 26, 12 },
     { 12, 26 },
@@ -39,8 +39,8 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     }
     const SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
     session->InteractionType = ViewportInteractionItem::Scenery;
-    LocationXYZ16 boxlength;
-    LocationXYZ16 boxoffset;
+    CoordsXYZ boxlength;
+    CoordsXYZ boxoffset;
     boxoffset.x = 0;
     boxoffset.y = 0;
     boxoffset.z = height;
@@ -76,7 +76,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HALF_SPACE))
         {
             // 6DFFE3:
-            static constexpr const LocationXY16 scenery_half_tile_offsets[] = {
+            static constexpr const CoordsXY scenery_half_tile_offsets[] = {
                 { 3, 3 },
                 { 3, 17 },
                 { 17, 3 },

@@ -316,7 +316,7 @@ namespace OpenRCT2::TileInspector
     GameActionResultPtr PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting)
     {
         // Make sure there is enough space for the new element
-        if (!map_check_free_elements_and_reorganise(1))
+        if (!!MapCheckCapacityAndReorganise(loc))
         {
             return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_NONE);
         }

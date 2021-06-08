@@ -266,7 +266,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         }
     }
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         return MakeResult(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
@@ -337,7 +337,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         }
     }
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         return MakeResult(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
     }

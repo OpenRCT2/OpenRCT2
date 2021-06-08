@@ -103,6 +103,11 @@ struct IGameStateSnapshots
      * Writes the GameStateCompareData_t into the specified file as readable text.
      */
     virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData_t& cmpData) const = 0;
+
+    /*
+     * Generates a string of readable text from GameStateCompareData_t
+     */
+    virtual std::string GetCompareDataText(const GameStateCompareData_t& cmpData) const = 0;
 };
 
 std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots();

@@ -668,7 +668,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         return "Unknown";
     }
 
-    virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData_t& cmpData) const override
+    virtual std::string GetCompareDataText(const GameStateCompareData_t& cmpData) const override
     {
         std::string outputBuffer;
         char tempBuffer[1024] = {};
@@ -720,6 +720,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                 }
             }
         }
+        return outputBuffer;
+    }
+
+    virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData_t& cmpData) const override
+    {
+        auto outputBuffer = GetCompareDataText(cmpData);
 
         FILE* fp = fopen(fileName.c_str(), "wt");
         if (!fp)

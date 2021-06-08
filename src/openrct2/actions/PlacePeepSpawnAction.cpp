@@ -47,12 +47,6 @@ GameActions::Result::Ptr PlacePeepSpawnAction::Query() const
     res->Expenditure = ExpenditureType::LandPurchase;
     res->Position = _location;
 
-    if (!map_check_free_elements_and_reorganise(3))
-    {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::NoFreeElements, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
-    }
-
     if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= (GetMapSizeUnits() - 16)
         || _location.y >= (GetMapSizeUnits() - 16))
     {

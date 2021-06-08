@@ -41,8 +41,8 @@ static constexpr const uint8_t byte_9A40CC[] = {
 
 static void fence_paint_door(
     paint_session* session, uint32_t imageId, WallSceneryEntry* wallEntry, uint32_t imageColourFlags, uint32_t tertiaryColour,
-    uint32_t dword_141F710, LocationXYZ16 offset, LocationXYZ16 boundsR1, LocationXYZ16 boundsR1_, LocationXYZ16 boundsR2,
-    LocationXYZ16 boundsR2_, LocationXYZ16 boundsL1, LocationXYZ16 boundsL1_)
+    uint32_t dword_141F710, CoordsXYZ offset, CoordsXYZ boundsR1, CoordsXYZ boundsR1_, CoordsXYZ boundsR2, CoordsXYZ boundsR2_,
+    CoordsXYZ boundsL1, CoordsXYZ boundsL1_)
 {
     if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
     {
@@ -98,8 +98,8 @@ static void fence_paint_door(
 
 static void fence_paint_wall(
     paint_session* session, uint32_t frameNum, const WallSceneryEntry* wallEntry, uint32_t dword_141F710,
-    uint32_t imageColourFlags, uint32_t dword_141F718, uint32_t tertiaryColour, uint32_t imageOffset, LocationXYZ16 offset,
-    LocationXYZ16 bounds, LocationXYZ16 boundsOffset)
+    uint32_t imageColourFlags, uint32_t dword_141F718, uint32_t tertiaryColour, uint32_t imageOffset, CoordsXYZ offset,
+    CoordsXYZ bounds, CoordsXYZ boundsOffset)
 {
     uint32_t baseImageId = wallEntry->image + imageOffset + frameNum;
     uint32_t imageId = baseImageId;
@@ -210,8 +210,8 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
     if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
     {
-        LocationXYZ16 offset;
-        LocationXYZ16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
+        CoordsXYZ offset;
+        CoordsXYZ boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
         uint8_t animationFrame = tile_element->AsWall()->GetAnimationFrame();
         // Add the direction as well
         if (tile_element->AsWall()->AnimationIsBackwards())
@@ -296,7 +296,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     }
 
     uint32_t imageOffset = 0;
-    LocationXYZ16 offset = { 0, 0, 0 }, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
+    CoordsXYZ offset = { 0, 0, 0 }, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
 
     switch (direction)
     {

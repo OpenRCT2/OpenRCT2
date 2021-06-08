@@ -1248,7 +1248,7 @@ static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused
 static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     const auto& tileElements = GetTileElements();
-    auto tileElementCount = tileElements.size();
+    const auto tileElementCount = tileElements.size();
 
     int32_t rideCount = ride_get_count();
     int32_t spriteCount = 0;

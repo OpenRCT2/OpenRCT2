@@ -111,7 +111,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
         res->Position.z = surfaceHeight;
     }
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
     }

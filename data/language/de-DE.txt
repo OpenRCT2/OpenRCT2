@@ -3680,6 +3680,18 @@ STR_6437    :Unsichtbar
 STR_6438    :U
 STR_6439    :Kachelinspektor: Unsichtbarkeit umschalten
 STR_6440    :Transparentes Wasser
+STR_6441    :Mindestens ein Nicht-Warteschlangenfußwegbelagsobjekt muss ausgewählt sein.
+STR_6442    :Mindestens ein Warteschlangenfußwegbelagsobjekt muss ausgewählt sein.
+STR_6443    :Mindestens ein Fußweggeländerobjekt muss ausgewählt sein.
+STR_6444    :Fußwegbelage
+STR_6445    :Fußweggeländer
+STR_6446    :{WINDOW_COLOUR_2}Belagsname: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Geländername: {BLACK}{STRINGID}
+STR_6448    :Nicht unterstütztes Objektformat
+STR_6449    :{WINDOW_COLOUR_2}Titel:
+STR_6450    :{BLACK}„{STRING}“
+STR_6451    :{BLACK}„{STRING}“ - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Verkauft: {BLACK}{STRING}
 
 #############
 # Scenarios #

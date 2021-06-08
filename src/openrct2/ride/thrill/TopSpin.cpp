@@ -89,7 +89,7 @@ static void top_spin_paint_vehicle(
     // Left back bottom support
     image_id += 572;
     PaintAddImageAsParent(
-        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+        session, image_id, { al, cl, height }, { lengthX, lengthY, 90 }, { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ });
 
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)

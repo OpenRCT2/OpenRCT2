@@ -124,7 +124,7 @@ static void blank_tiles_paint(paint_session* session, int32_t x, int32_t y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->InteractionType = ViewportInteractionItem::None;
-    PaintAddImageAsParent(session, SPR_BLANK_TILE, 0, 0, 32, 32, -1, 16);
+    PaintAddImageAsParent(session, SPR_BLANK_TILE, { 0, 0, 16 }, { 32, 32, -1 });
 }
 
 bool gShowSupportSegmentHeights = false;
@@ -200,7 +200,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         session->SpritePosition.y = y;
         session->InteractionType = ViewportInteractionItem::None;
 
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, -1, arrowZ, 0, 0, arrowZ + 18);
+        PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { 32, 32, -1 }, { 0, 0, arrowZ + 18 });
     }
     int32_t bx = dx + 52;
 
@@ -362,8 +362,8 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             int32_t xOffset = sy * 10;
             int32_t yOffset = -22 + sx * 10;
             paint_struct* ps = PaintAddImageAsParent(
-                session, 5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16,
-                segmentHeight);
+                session, 5504 | imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
+                { xOffset + 1, yOffset + 16, segmentHeight });
             if (ps != nullptr)
             {
                 ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;

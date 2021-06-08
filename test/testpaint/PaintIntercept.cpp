@@ -369,6 +369,15 @@ paint_struct* PaintAddImageAsParent(
         bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, session->CurrentRotation);
 }
 
+paint_struct* PaintAddImageAsParent(
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    const CoordsXYZ& boundBoxOffset)
+{
+    return PaintAddImageAsParent(
+        session, image_id, offset.x, offset.y, boundBoxSize.x, boundBoxSize.y, boundBoxSize.z, offset.z, boundBoxOffset.x,
+        boundBoxOffset.y, boundBoxOffset.z);
+}
+
 paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset)

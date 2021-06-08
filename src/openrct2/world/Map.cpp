@@ -234,7 +234,7 @@ void ReorganiseTileElements()
     ReorganiseTileElements(_tileElements.size());
 }
 
-bool map_check_free_elements_and_reorganise(size_t numElements)
+static bool map_check_free_elements_and_reorganise(size_t numElements)
 {
     auto freeElements = _tileElements.capacity() - _tileElements.size();
     if (freeElements >= numElements)
@@ -256,6 +256,14 @@ bool map_check_free_elements_and_reorganise(size_t numElements)
             return true;
         }
     }
+}
+
+static size_t CountElementsOnTile(const CoordsXY& loc);
+
+bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements)
+{
+    auto numElementsOnTile = CountElementsOnTile(loc);
+    return map_check_free_elements_and_reorganise(numElementsOnTile + numElements);
 }
 
 static void clear_elements_at(const CoordsXY& loc);
@@ -1174,6 +1182,10 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     auto numElementsOnTileNew = numElementsOnTileOld + 1;
     auto* newTileElement = AllocateTileElements(numElementsOnTileNew);
     auto* originalTileElement = _tileIndex.GetFirstElementAt(tileLoc);
+    if (newTileElement == nullptr)
+    {
+        return nullptr;
+    }
 
     // Set tile index pointer to point to new element block
     _tileIndex.SetTile(tileLoc, newTileElement);
