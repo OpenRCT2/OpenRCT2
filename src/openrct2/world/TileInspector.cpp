@@ -94,7 +94,7 @@ namespace OpenRCT2::TileInspector
     GameActionResultPtr InsertCorruptElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting)
     {
         // Make sure there is enough space for the new element
-        if (!!MapCheckCapacityAndReorganise(loc))
+        if (!MapCheckCapacityAndReorganise(loc))
             return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_NONE);
 
         if (isExecuting)
@@ -359,7 +359,7 @@ namespace OpenRCT2::TileInspector
     GameActionResultPtr PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting)
     {
         // Make sure there is enough space for the new element
-        if (!!MapCheckCapacityAndReorganise(loc))
+        if (!MapCheckCapacityAndReorganise(loc))
         {
             return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_NONE);
         }
