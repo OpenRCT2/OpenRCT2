@@ -424,14 +424,22 @@ public:
 
         scenario_index_entry* scenario = GetByFilename(scenarioFileName);
 
-        // Check if this is an RCTC scenario that corresponds to a known RCT1/2 scenario, see #12626
-        if (scenario == nullptr && String::Equals(Path::GetExtension(scenarioFileName), ".sea", true))
+        // Check if this is an RCTC scenario that corresponds to a known RCT1/2 scenario or vice versa, see #12626
+        if (scenario == nullptr)
         {
-            // Get base scenario name (without file extension)
-            std::string scenarioBaseName = String::ToStd(Path::GetFileNameWithoutExtension(scenarioFileName));
+            const std::string scenarioBaseName = String::ToStd(Path::GetFileNameWithoutExtension(scenarioFileName));
+            const std::string scenarioExtension = String::ToStd(Path::GetExtension(scenarioFileName));
 
-            // Get scenario using RCT2 style name of RCTC scenario
-            scenario = GetByFilename((scenarioBaseName + ".sc6").c_str());
+            if (String::Equals(scenarioExtension, ".sea", true))
+            {
+                // Get scenario using RCT2 style name of RCTC scenario
+                scenario = GetByFilename((scenarioBaseName + ".sc6").c_str());
+            }
+            else if (String::Equals(scenarioExtension, ".sc6", true))
+            {
+                // Get scenario using RCTC style name of RCT2 scenario
+                scenario = GetByFilename((scenarioBaseName + ".sea").c_str());
+            }
         }
 
         if (scenario != nullptr)
