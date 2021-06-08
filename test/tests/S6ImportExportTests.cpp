@@ -363,6 +363,7 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
     COMPARE_FIELD(colours_extended);
     COMPARE_FIELD(seat_rotation);
     COMPARE_FIELD(target_seat_rotation);
+    COMPARE_FIELD(BoatLocation);
     COMPARE_FIELD(IsCrashedVehicle);
 }
 
