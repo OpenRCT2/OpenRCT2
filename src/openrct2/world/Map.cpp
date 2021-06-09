@@ -1028,7 +1028,7 @@ void tile_element_remove(TileElement* tileElement)
     // Mark the latest element with the last element flag.
     (tileElement - 1)->SetLastForTile(true);
     tileElement->base_height = MAX_ELEMENT_HEIGHT;
-
+    _tileElementsInUse--;
     if (tileElement == &_tileElements.back())
     {
         _tileElements.pop_back();
