@@ -1090,6 +1090,8 @@ public:
             }
         }
         SetTileElements(std::move(tileElements));
+        // Reorganise immediately to reduce the tileElement capacity to within MAX_TILE_ELEMENTS
+        ReorganiseTileElements();
     }
 
     void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
