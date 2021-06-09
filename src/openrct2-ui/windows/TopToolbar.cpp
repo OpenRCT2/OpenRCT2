@@ -1974,7 +1974,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
 
             CoordsXYZD loc{ gridPos, z, direction };
             auto primaryColour = gWindowSceneryPrimaryColour;
-            auto bannerIndex = create_new_banner(0);
+            auto bannerIndex = BannerGetNewIndex();
             if (bannerIndex == BANNER_INDEX_NULL)
             {
                 context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME, {});
@@ -2573,7 +2573,7 @@ static money32 try_place_ghost_banner(CoordsXYZD loc, ObjectEntryIndex entryInde
 
     // 6e2612
     auto primaryColour = gWindowSceneryPrimaryColour;
-    auto bannerIndex = create_new_banner(0);
+    auto bannerIndex = BannerGetNewIndex();
     if (bannerIndex == BANNER_INDEX_NULL)
     {
         // Silently fail as this is just for the ghost

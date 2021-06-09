@@ -110,7 +110,7 @@ static ride_id_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
     return resultRideIndex;
 }
 
-static BannerIndex BannerGetNewIndex()
+BannerIndex BannerGetNewIndex()
 {
     for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
@@ -135,33 +135,28 @@ void banner_init()
 }
 
 /**
- * Creates a new banner and returns the index of the banner
- * If the flag GAME_COMMAND_FLAG_APPLY is NOT set then returns
- * the first unused index but does NOT mark the banner as created.
- * returns 0xFF on failure.
+ * Creates a new banner and returns the index of the banner,
+ * or BANNER_INDEX_NULL on failure.
  *
  *  rct2: 0x006BA278
  */
-BannerIndex create_new_banner(uint8_t flags)
+BannerIndex create_new_banner()
 {
     BannerIndex bannerIndex = BannerGetNewIndex();
 
     if (bannerIndex == BANNER_INDEX_NULL)
     {
-        gGameCommandErrorText = STR_TOO_MANY_BANNERS_IN_GAME;
         return bannerIndex;
     }
 
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        auto banner = &_banners[bannerIndex];
+    auto banner = &_banners[bannerIndex];
 
-        banner->flags = 0;
-        banner->type = 0;
-        banner->text = {};
-        banner->colour = 2;
-        banner->text_colour = 2;
-    }
+    banner->flags = 0;
+    banner->type = 0;
+    banner->text = {};
+    banner->colour = 2;
+    banner->text_colour = 2;
+
     return bannerIndex;
 }
 
@@ -299,7 +294,7 @@ void fix_duplicated_banners()
                                 tileElement->base_height);
 
                             // Banner index is already in use by another banner, so duplicate it
-                            auto newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
+                            auto newBannerIndex = create_new_banner();
                             if (newBannerIndex == BANNER_INDEX_NULL)
                             {
                                 log_error("Failed to create new banner.");

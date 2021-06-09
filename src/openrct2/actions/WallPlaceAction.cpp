@@ -55,7 +55,7 @@ WallPlaceAction::WallPlaceAction(
     {
         if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
         {
-            _bannerId = create_new_banner(0);
+            _bannerId = BannerGetNewIndex();
         }
     }
 }
@@ -73,7 +73,7 @@ void WallPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
         if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
         {
-            _bannerId = create_new_banner(0);
+            _bannerId = BannerGetNewIndex();
         }
     }
 }

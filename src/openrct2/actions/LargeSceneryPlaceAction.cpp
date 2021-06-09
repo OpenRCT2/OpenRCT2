@@ -49,7 +49,7 @@ LargeSceneryPlaceAction::LargeSceneryPlaceAction(
     {
         if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
         {
-            _bannerId = create_new_banner(0);
+            _bannerId = BannerGetNewIndex();
         }
     }
 }
@@ -65,7 +65,7 @@ void LargeSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visit
     {
         if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
         {
-            _bannerId = create_new_banner(0);
+            _bannerId = BannerGetNewIndex();
         }
     }
 }

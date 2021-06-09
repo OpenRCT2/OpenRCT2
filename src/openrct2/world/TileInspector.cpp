@@ -373,10 +373,11 @@ namespace OpenRCT2::TileInspector
             if (bannerIndex != BANNER_INDEX_NULL)
             {
                 // The element to be pasted refers to a banner index - make a copy of it
-                auto newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
+                auto newBannerIndex = create_new_banner();
                 if (newBannerIndex == BANNER_INDEX_NULL)
                 {
-                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                    return std::make_unique<GameActions::Result>(
+                        GameActions::Status::Unknown, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
                 }
                 auto& newBanner = *GetBanner(newBannerIndex);
                 newBanner = *GetBanner(bannerIndex);

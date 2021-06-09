@@ -31,7 +31,7 @@ void BannerPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit(_loc);
     visitor.Visit("object", _bannerType);
     visitor.Visit("primaryColour", _primaryColour);
-    _bannerIndex = create_new_banner(0);
+    _bannerIndex = BannerGetNewIndex();
 }
 
 uint16_t BannerPlaceAction::GetActionFlags() const
