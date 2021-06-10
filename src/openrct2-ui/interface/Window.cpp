@@ -86,11 +86,8 @@ static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t
     return WindowFitsBetweenOthers(loc, width, height);
 }
 
-static ScreenCoordsXY ClampWindowToScreen(const ScreenCoordsXY& pos,
-                                          const int32_t screenWidth,
-                                          const int32_t screenHeight,
-                                          const int32_t width,
-                                          const int32_t height)
+static ScreenCoordsXY ClampWindowToScreen(
+    const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t screenHeight, const int32_t width, const int32_t height)
 {
     auto screenPos = pos;
     if (screenPos.x < 0)
