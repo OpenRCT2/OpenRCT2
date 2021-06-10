@@ -77,7 +77,7 @@ GameActions::Result::Ptr RideSetVehicleAction::Query() const
             GameActions::Status::Broken, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
     }
 
-    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::NotClosed, errTitle, STR_MUST_BE_CLOSED_FIRST);
     }

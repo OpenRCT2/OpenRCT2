@@ -521,7 +521,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     }
 
     // pad_046;
-    dst->status = src->status;
+    dst->status = EnumValue(src->status);
 
     bool useDefaultName = true;
     if (!src->custom_name.empty())

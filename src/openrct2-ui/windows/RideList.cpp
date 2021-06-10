@@ -525,10 +525,10 @@ static void window_ride_list_invalidate(rct_window* w)
         {
             auto c = static_cast<RideClassification>(w->page);
             allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
-                return ride.GetClassification() == c && ride.status == RIDE_STATUS_OPEN;
+                return ride.GetClassification() == c && ride.status == RideStatus::Open;
             });
             allOpen = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
-                return ride.GetClassification() == c && ride.status != RIDE_STATUS_OPEN;
+                return ride.GetClassification() == c && ride.status != RideStatus::Open;
             });
         }
 
@@ -792,7 +792,7 @@ void window_ride_list_refresh_list(rct_window* w)
     {
         auto ride = &ridec;
         if (ride->GetClassification() != static_cast<RideClassification>(w->page)
-            || (ride->status == RIDE_STATUS_CLOSED && !ride_has_any_track_elements(ride)))
+            || (ride->status == RideStatus::Closed && !ride_has_any_track_elements(ride)))
             continue;
 
         if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST)
@@ -1017,9 +1017,9 @@ static void window_ride_list_close_all(rct_window* w)
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_CLOSED && ride.GetClassification() == static_cast<RideClassification>(w->page))
+        if (ride.status != RideStatus::Closed && ride.GetClassification() == static_cast<RideClassification>(w->page))
         {
-            ride_set_status(&ride, RIDE_STATUS_CLOSED);
+            ride_set_status(&ride, RideStatus::Closed);
         }
     }
 }
@@ -1028,9 +1028,9 @@ static void window_ride_list_open_all(rct_window* w)
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_OPEN && ride.GetClassification() == static_cast<RideClassification>(w->page))
+        if (ride.status != RideStatus::Open && ride.GetClassification() == static_cast<RideClassification>(w->page))
         {
-            ride_set_status(&ride, RIDE_STATUS_OPEN);
+            ride_set_status(&ride, RideStatus::Open);
         }
     }
 }

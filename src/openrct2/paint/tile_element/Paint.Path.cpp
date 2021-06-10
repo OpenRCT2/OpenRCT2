@@ -452,7 +452,7 @@ static void sub_6A4101(
 
             auto ft = Formatter();
 
-            if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
                 ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
                 ride->FormatNameTo(ft);

@@ -146,7 +146,7 @@ static bool award_is_deserved_best_rollercoasters([[maybe_unused]] int32_t activ
             continue;
         }
 
-        if (ride.status != RIDE_STATUS_OPEN || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        if (ride.status != RideStatus::Open || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
         {
             continue;
         }
@@ -280,7 +280,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
     uint64_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_OPEN)
+        if (ride.status != RideStatus::Open)
             continue;
         if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
             continue;
@@ -324,7 +324,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
     uint64_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_OPEN)
+        if (ride.status != RideStatus::Open)
             continue;
         if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
             continue;
@@ -363,7 +363,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
     // Count open restrooms
     const auto& rideManager = GetRideManager();
     auto numRestrooms = static_cast<size_t>(std::count_if(rideManager.begin(), rideManager.end(), [](const Ride& ride) {
-        return ride.type == RIDE_TYPE_TOILETS && ride.status == RIDE_STATUS_OPEN;
+        return ride.type == RIDE_TYPE_TOILETS && ride.status == RideStatus::Open;
     }));
 
     // At least 4 open restrooms
@@ -426,7 +426,7 @@ static bool award_is_deserved_best_water_rides([[maybe_unused]] int32_t activeAw
             continue;
         }
 
-        if (ride.status != RIDE_STATUS_OPEN || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        if (ride.status != RideStatus::Open || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
         {
             continue;
         }
@@ -457,7 +457,7 @@ static bool award_is_deserved_best_custom_designed_rides(int32_t activeAwardType
             continue;
         if (ride.excitement < RIDE_RATING(5, 50))
             continue;
-        if (ride.status != RIDE_STATUS_OPEN || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        if (ride.status != RideStatus::Open || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
             continue;
 
         customDesignedRides++;
@@ -529,7 +529,7 @@ static bool award_is_deserved_best_gentle_rides([[maybe_unused]] int32_t activeA
             continue;
         }
 
-        if (ride.status != RIDE_STATUS_OPEN || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+        if (ride.status != RideStatus::Open || (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
         {
             continue;
         }

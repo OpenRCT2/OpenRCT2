@@ -164,7 +164,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
 
-        if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             ride->FormatNameTo(ft);
         }
