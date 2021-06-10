@@ -453,7 +453,7 @@ namespace Editor
      *
      *  rct2: 0x006AB9B8
      */
-    ObjectType CheckObjectSelection()
+    std::pair<ObjectType, rct_string_id> CheckObjectSelection()
     {
         bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
 
@@ -461,52 +461,46 @@ namespace Editor
         {
             if (!editor_check_object_group_at_least_one_selected(ObjectType::Paths))
             {
-                gGameCommandErrorText = STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED;
-                return ObjectType::Paths;
+                return { ObjectType::Paths, STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED };
             }
         }
 
         if (!editor_check_object_group_at_least_one_selected(ObjectType::Ride))
         {
-            gGameCommandErrorText = STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED;
-            return ObjectType::Ride;
+            return { ObjectType::Ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED };
         }
 
         if (!isTrackDesignerManager)
         {
             if (!editor_check_object_group_at_least_one_selected(ObjectType::ParkEntrance))
             {
-                gGameCommandErrorText = STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED;
-                return ObjectType::ParkEntrance;
+                return { ObjectType::ParkEntrance, STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED };
             }
 
             if (!editor_check_object_group_at_least_one_selected(ObjectType::Water))
             {
-                gGameCommandErrorText = STR_WATER_TYPE_MUST_BE_SELECTED;
-                return ObjectType::Water;
+                return { ObjectType::Water, STR_WATER_TYPE_MUST_BE_SELECTED };
             }
         }
 
-        return ObjectType::None;
+        return { ObjectType::None, STR_NONE };
     }
 
     /**
      *
      *  rct2: 0x0066FEAC
      */
-    bool CheckPark()
+    std::pair<bool, rct_string_id> CheckPark()
     {
         int32_t parkSize = park_calculate_size();
         if (parkSize == 0)
         {
-            gGameCommandErrorText = STR_PARK_MUST_OWN_SOME_LAND;
-            return false;
+            return { false, STR_PARK_MUST_OWN_SOME_LAND };
         }
 
         if (gParkEntrances.empty())
         {
-            gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
-            return false;
+            return { false, STR_NO_PARK_ENTRANCES };
         }
 
         for (const auto& parkEntrance : gParkEntrances)
@@ -516,12 +510,10 @@ namespace Editor
             switch (footpath_is_connected_to_map_edge(parkEntrance, direction, 0))
             {
                 case FOOTPATH_SEARCH_NOT_FOUND:
-                    gGameCommandErrorText = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
-                    return false;
+                    return { false, STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH };
                 case FOOTPATH_SEARCH_INCOMPLETE:
                 case FOOTPATH_SEARCH_TOO_COMPLEX:
-                    gGameCommandErrorText = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
-                    return false;
+                    return { false, STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX };
                 case FOOTPATH_SEARCH_SUCCESS:
                     // Run the search again and unown the path
                     footpath_is_connected_to_map_edge(parkEntrance, direction, (1 << 5));
@@ -531,11 +523,10 @@ namespace Editor
 
         if (gPeepSpawns.empty())
         {
-            gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
-            return false;
+            return { false, STR_PEEP_SPAWNS_NOT_SET };
         }
 
-        return true;
+        return { true, STR_NONE };
     }
 
     uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index)

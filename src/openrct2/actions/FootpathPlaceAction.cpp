@@ -313,14 +313,14 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
     uint8_t crossingMode = (_type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (_slope != TILE_ELEMENT_SLOPE_FLAT)
         ? CREATE_CROSSING_MODE_NONE
         : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath
-        && !map_can_construct_with_clear_at(
-            { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
-            &res->Cost, crossingMode))
+    auto canBuild = MapCanConstructWithClearAt(
+        { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
+        crossingMode);
+    if (!entrancePath && canBuild->Error != GameActions::Status::Ok)
     {
-        return MakeResult(
-            GameActions::Status::NoClearance, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
+        return canBuild;
     }
+    res->Cost += canBuild->Cost;
 
     gFootpathGroundFlags = gMapGroundFlags;
 

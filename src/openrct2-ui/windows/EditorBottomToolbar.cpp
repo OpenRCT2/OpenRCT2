@@ -176,14 +176,14 @@ static bool window_editor_bottom_toolbar_check_object_selection()
 {
     rct_window* w;
 
-    ObjectType missingObjectType = Editor::CheckObjectSelection();
+    auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
     if (missingObjectType == ObjectType::None)
     {
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         return true;
     }
 
-    context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, gGameCommandErrorText, {});
+    context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
     w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
     if (w != nullptr)
     {
@@ -219,7 +219,8 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
  */
 void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up()
 {
-    if (Editor::CheckPark())
+    auto [checksPassed, errorString] = Editor::CheckPark();
+    if (checksPassed)
     {
         window_close_all();
         context_open_window(WC_EDITOR_INVENTION_LIST);
@@ -227,7 +228,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up()
     }
     else
     {
-        context_show_error(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText, {});
+        context_show_error(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, errorString, {});
     }
 
     gfx_invalidate_screen();
