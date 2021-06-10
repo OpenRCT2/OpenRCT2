@@ -11,17 +11,27 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerPlaceAction, GameCommand::PlaceBanner, GameActions::Result)
+class BannerPlaceActionResult final : public GameActions::Result
+{
+public:
+    BannerPlaceActionResult();
+    BannerPlaceActionResult(GameActions::Status err);
+    BannerPlaceActionResult(GameActions::Status err, rct_string_id msg);
+    BannerPlaceActionResult(GameActions::Status err, rct_string_id title, rct_string_id message);
+
+    BannerIndex bannerId = BANNER_INDEX_NULL;
+};
+
+DEFINE_GAME_ACTION(BannerPlaceAction, GameCommand::PlaceBanner, BannerPlaceActionResult)
 {
 private:
     CoordsXYZD _loc;
     ObjectEntryIndex _bannerType{ BANNER_NULL };
-    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
     uint8_t _primaryColour{};
 
 public:
     BannerPlaceAction() = default;
-    BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour);
+    BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, uint8_t primaryColour);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
