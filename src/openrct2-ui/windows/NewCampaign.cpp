@@ -126,7 +126,7 @@ public:
         RideList.clear();
         for (const auto& curRide : GetRideManager())
         {
-            if (curRide.status == RIDE_STATUS_OPEN)
+            if (curRide.status == RideStatus::Open)
             {
                 if (!curRide.GetRideTypeDescriptor().HasFlag(
                         RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS

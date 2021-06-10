@@ -610,7 +610,7 @@ static void window_ride_construction_close(rct_window* w)
             if (!_autoOpeningShop)
             {
                 _autoOpeningShop = true;
-                ride_set_status(ride, RIDE_STATUS_OPEN);
+                ride_set_status(ride, RideStatus::Open);
                 _autoOpeningShop = false;
             }
         }
@@ -669,7 +669,7 @@ static void window_ride_construction_mouseup(rct_window* w, rct_widgetindex widg
             auto ride = get_ride(_currentRideIndex);
             if (ride != nullptr)
             {
-                auto status = ride->status == RIDE_STATUS_SIMULATING ? RIDE_STATUS_CLOSED : RIDE_STATUS_SIMULATING;
+                auto status = ride->status == RideStatus::Simulating ? RideStatus::Closed : RideStatus::Simulating;
                 ride_set_status(ride, status);
             }
             break;
@@ -2036,7 +2036,7 @@ static void window_ride_construction_update(rct_window* w)
 
     // Close construction window if ride is not closed,
     // editing ride while open will cause many issues until properly handled
-    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
         window_close(w);
         return;
@@ -2269,10 +2269,10 @@ static void window_ride_construction_invalidate(rct_window* w)
     // Simulate button
     auto& simulateWidget = w->widgets[WIDX_SIMULATE];
     simulateWidget.type = WindowWidgetType::Empty;
-    if (ride->SupportsStatus(RIDE_STATUS_SIMULATING))
+    if (ride->SupportsStatus(RideStatus::Simulating))
     {
         simulateWidget.type = WindowWidgetType::FlatBtn;
-        if (ride->status == RIDE_STATUS_SIMULATING)
+        if (ride->status == RideStatus::Simulating)
         {
             w->pressed_widgets |= (1ULL << WIDX_SIMULATE);
         }

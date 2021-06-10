@@ -116,6 +116,8 @@ static TilePointerIndex<TileElement> _tileIndex;
 static std::vector<TileElement> _tileElements;
 static TilePointerIndex<TileElement> _tileIndexStash;
 static std::vector<TileElement> _tileElementsStash;
+static size_t _tileElementsInUse;
+static size_t _tileElementsInUseStash;
 static int32_t _mapSizeStash;
 static int32_t _currentRotationStash;
 
@@ -125,6 +127,7 @@ void StashMap()
     _tileElementsStash = std::move(_tileElements);
     _mapSizeStash = gMapSize;
     _currentRotationStash = gCurrentRotation;
+    _tileElementsInUseStash = _tileElementsInUse;
 }
 
 void UnstashMap()
@@ -133,6 +136,7 @@ void UnstashMap()
     _tileElements = std::move(_tileElementsStash);
     gMapSize = _mapSizeStash;
     gCurrentRotation = _currentRotationStash;
+    _tileElementsInUse = _tileElementsInUseStash;
 }
 
 const std::vector<TileElement>& GetTileElements()
@@ -144,6 +148,7 @@ void SetTileElements(std::vector<TileElement>&& tileElements)
 {
     _tileElements = std::move(tileElements);
     _tileIndex = TilePointerIndex<TileElement>(MAXIMUM_MAP_SIZE_TECHNICAL, _tileElements.data());
+    _tileElementsInUse = _tileElements.size();
 }
 
 static TileElement GetDefaultSurfaceElement()
@@ -234,27 +239,39 @@ void ReorganiseTileElements()
     ReorganiseTileElements(_tileElements.size());
 }
 
-static bool map_check_free_elements_and_reorganise(size_t numElements)
+static bool map_check_free_elements_and_reorganise(size_t numElementsOnTile, size_t numNewElements)
 {
+    // Check hard cap on num in use tiles (this would be the size of _tileElements immediately after a reorg)
+    if (_tileElementsInUse + numNewElements > MAX_TILE_ELEMENTS)
+    {
+        gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
+        return false;
+    }
+
+    auto totalElementsRequired = numElementsOnTile + numNewElements;
     auto freeElements = _tileElements.capacity() - _tileElements.size();
-    if (freeElements >= numElements)
+    if (freeElements >= totalElementsRequired)
     {
         return true;
     }
     else
     {
-        auto newCapacity = std::min<size_t>(MAX_TILE_ELEMENTS, _tileElements.capacity() * 2);
-        if (newCapacity - _tileElements.size() < numElements)
+        // if space issue is due to fragmentation then Reorg Tiles without increasing capacity
+        if (_tileElements.size() > totalElementsRequired + _tileElementsInUse)
         {
-            // Limit reached
-            gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
-            return false;
+            ReorganiseTileElements();
+            // This check is not expected to fail
+            freeElements = _tileElements.capacity() - _tileElements.size();
+            if (freeElements >= totalElementsRequired)
+            {
+                return true;
+            }
         }
-        else
-        {
-            ReorganiseTileElements(newCapacity);
-            return true;
-        }
+
+        // Capacity must increase to handle the space (Note capacity can go above MAX_TILE_ELEMENTS)
+        auto newCapacity = _tileElements.capacity() * 2;
+        ReorganiseTileElements(newCapacity);
+        return true;
     }
 }
 
@@ -263,7 +280,7 @@ static size_t CountElementsOnTile(const CoordsXY& loc);
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements)
 {
     auto numElementsOnTile = CountElementsOnTile(loc);
-    return map_check_free_elements_and_reorganise(numElementsOnTile + numElements);
+    return map_check_free_elements_and_reorganise(numElementsOnTile, numElements);
 }
 
 static void clear_elements_at(const CoordsXY& loc);
@@ -1041,7 +1058,7 @@ void tile_element_remove(TileElement* tileElement)
     // Mark the latest element with the last element flag.
     (tileElement - 1)->SetLastForTile(true);
     tileElement->base_height = MAX_ELEMENT_HEIGHT;
-
+    _tileElementsInUse--;
     if (tileElement == &_tileElements.back())
     {
         _tileElements.pop_back();
@@ -1157,16 +1174,17 @@ static size_t CountElementsOnTile(const CoordsXY& loc)
     return count;
 }
 
-static TileElement* AllocateTileElements(size_t count)
+static TileElement* AllocateTileElements(size_t numElementsOnTile, size_t numNewElements)
 {
-    if (!map_check_free_elements_and_reorganise(count))
+    if (!map_check_free_elements_and_reorganise(numElementsOnTile, numNewElements))
     {
         log_error("Cannot insert new element");
         return nullptr;
     }
 
     auto oldSize = _tileElements.size();
-    _tileElements.resize(_tileElements.size() + count);
+    _tileElements.resize(_tileElements.size() + numElementsOnTile + numNewElements);
+    _tileElementsInUse += numNewElements;
     return &_tileElements[oldSize];
 }
 
@@ -1179,8 +1197,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     const auto& tileLoc = TileCoordsXYZ(loc);
 
     auto numElementsOnTileOld = CountElementsOnTile(loc);
-    auto numElementsOnTileNew = numElementsOnTileOld + 1;
-    auto* newTileElement = AllocateTileElements(numElementsOnTileNew);
+    auto* newTileElement = AllocateTileElements(numElementsOnTileOld, 1);
     auto* originalTileElement = _tileIndex.GetFirstElementAt(tileLoc);
     if (newTileElement == nullptr)
     {
@@ -1328,7 +1345,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
  *  bl = bl
  */
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode)
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
 {
     int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
     northZ = eastZ = baseHeight = southZ = westZ = water_height = 0;
@@ -1380,7 +1397,7 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             }
         }
     loc_68B9B7:
-        if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
+        if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 
@@ -1507,9 +1524,9 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
 
 bool map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
-    uint8_t crossingMode)
+    uint8_t crossingMode, bool isTree)
 {
-    auto res = MapCanConstructWithClearAt(pos, clearFunc, quarterTile, flags, crossingMode);
+    auto res = MapCanConstructWithClearAt(pos, clearFunc, quarterTile, flags, crossingMode, isTree);
     if (auto message = res->ErrorMessage.AsStringId())
         gGameCommandErrorText = *message;
     else

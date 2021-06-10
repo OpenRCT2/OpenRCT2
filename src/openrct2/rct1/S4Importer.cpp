@@ -848,7 +848,7 @@ private:
             dst->custom_name = GetUserString(src->name);
         }
 
-        dst->status = src->status;
+        dst->status = static_cast<RideStatus>(src->status);
 
         // Flags
         dst->lifecycle_flags = src->lifecycle_flags;

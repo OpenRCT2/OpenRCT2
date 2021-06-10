@@ -96,6 +96,7 @@ enum LARGE_SCENERY_FLAGS
     LARGE_SCENERY_FLAG_3D_TEXT = (1 << 2),              // 0x4
     LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),             // 0x8
     LARGE_SCENERY_FLAG_PHOTOGENIC = (1 << 4),           // 0x10
+    LARGE_SCENERY_FLAG_IS_TREE = (1 << 5),              // 0x20
 };
 
 enum WALL_SCENERY_FLAGS

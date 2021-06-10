@@ -15,11 +15,11 @@ DEFINE_GAME_ACTION(RideSetStatusAction, GameCommand::SetRideStatus, GameActions:
 {
 private:
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
-    uint8_t _status{ RIDE_STATUS_CLOSED };
+    RideStatus _status{ RideStatus::Closed };
 
 public:
     RideSetStatusAction() = default;
-    RideSetStatusAction(ride_id_t rideIndex, uint8_t status);
+    RideSetStatusAction(ride_id_t rideIndex, RideStatus status);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 

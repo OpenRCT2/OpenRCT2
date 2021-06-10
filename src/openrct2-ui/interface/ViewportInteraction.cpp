@@ -275,7 +275,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 return info;
             }
             ride = get_ride(vehicle->ride);
-            if (ride != nullptr && ride->status == RIDE_STATUS_CLOSED)
+            if (ride != nullptr && ride->status == RideStatus::Closed)
             {
                 auto ft = Formatter();
                 ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -304,7 +304,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 return info;
             }
 
-            if (ride->status != RIDE_STATUS_CLOSED)
+            if (ride->status != RideStatus::Closed)
                 return info;
 
             auto ft = Formatter();

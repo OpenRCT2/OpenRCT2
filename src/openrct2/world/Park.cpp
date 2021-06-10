@@ -525,7 +525,7 @@ money16 Park::CalculateTotalRideValueForMoney() const
     bool ridePricesUnlocked = park_ride_prices_unlocked() && !(gParkFlags & PARK_FLAGS_NO_MONEY);
     for (auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_OPEN)
+        if (ride.status != RideStatus::Open)
             continue;
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             continue;
@@ -556,7 +556,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
     // TODO combine the two ride loops
     for (auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_OPEN)
+        if (ride.status != RideStatus::Open)
             continue;
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             continue;

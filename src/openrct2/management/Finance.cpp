@@ -164,7 +164,7 @@ void finance_pay_ride_upkeep()
             ride.Renew();
         }
 
-        if (ride.status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RideStatus::Closed && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             int16_t upkeep = ride.upkeep_cost;
             if (upkeep != -1)
@@ -257,7 +257,7 @@ void finance_update_daily_profit()
         // Ride costs
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RIDE_STATUS_CLOSED && ride.upkeep_cost != MONEY16_UNDEFINED)
+            if (ride.status != RideStatus::Closed && ride.upkeep_cost != MONEY16_UNDEFINED)
             {
                 current_profit -= 2 * ride.upkeep_cost;
             }

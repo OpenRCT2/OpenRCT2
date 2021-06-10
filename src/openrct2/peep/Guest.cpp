@@ -1902,7 +1902,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
     // Indicates whether a peep is physically at the ride, or is just thinking about going on the ride.
     bool peepAtRide = !thinking;
 
-    if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
         assert(ride->type < std::size(RideTypeDescriptors));
@@ -2918,7 +2918,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                         if (ride != nullptr)
                         {
-                            if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RIDE_STATUS_CLOSED
+                            if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RideStatus::Closed
                                 && !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
                             {
                                 if (ride->type == RIDE_TYPE_MERRY_GO_ROUND)
@@ -3282,7 +3282,7 @@ void Guest::UpdateBuying()
         return;
 
     auto ride = get_ride(CurrentRide);
-    if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
+    if (ride == nullptr || ride->status != RideStatus::Open)
     {
         SetState(PeepState::Falling);
         return;
@@ -3432,7 +3432,7 @@ void Guest::UpdateRideAtEntrance()
             return;
     }
 
-    if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0)
+    if (ride->status != RideStatus::Open || ride->vehicle_change_timeout != 0)
     {
         peep_update_ride_at_entrance_try_leave(this);
         return;
@@ -3869,7 +3869,7 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
+        if (ride->status != RideStatus::Open || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
         {
             peep_update_ride_no_free_vehicle_rejoin_queue(this, ride);
             return;
@@ -3948,7 +3948,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     {
         return;
     }
-    if (ride->status == RIDE_STATUS_OPEN && ++RejoinQueueTimeout != 0
+    if (ride->status == RideStatus::Open && ++RejoinQueueTimeout != 0
         && !currentTrain->HasUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
         return;
@@ -4552,7 +4552,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     else if (waypoint == 2)
     {
         bool lastRide = false;
-        if (ride->status != RIDE_STATUS_OPEN)
+        if (ride->status != RideStatus::Open)
             lastRide = true;
         else if (CurrentCar++ != 0)
         {
@@ -5437,7 +5437,7 @@ void Guest::UpdateQueuing()
         return;
     }
     auto ride = get_ride(CurrentRide);
-    if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
+    if (ride == nullptr || ride->status != RideStatus::Open)
     {
         RemoveFromQueue();
         SetState(PeepState::One);
@@ -6188,7 +6188,7 @@ bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, Tile
     if (ride->excitement == RIDE_RATING_UNDEFINED)
     {
         *rideSeatToView = 1;
-        if (ride->status != RIDE_STATUS_OPEN)
+        if (ride->status != RideStatus::Open)
         {
             if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * COORDS_Z_STEP))
             {
@@ -6201,7 +6201,7 @@ bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, Tile
     else
     {
         *rideSeatToView = 0;
-        if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * COORDS_Z_STEP))
             {

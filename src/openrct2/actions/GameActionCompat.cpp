@@ -82,7 +82,7 @@ void ride_construct_new(RideSelection listItem)
 
 #pragma region RideSetStatusAction
 
-void ride_set_status(Ride* ride, int32_t status)
+void ride_set_status(Ride* ride, RideStatus status)
 {
     auto gameAction = RideSetStatusAction(ride->id, status);
     GameActions::Execute(&gameAction);

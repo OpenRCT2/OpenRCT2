@@ -100,7 +100,7 @@ static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t in
  */
 void ride_ratings_update_ride(const Ride& ride)
 {
-    if (ride.status != RIDE_STATUS_CLOSED)
+    if (ride.status != RideStatus::Closed)
     {
         gRideRatingsCalcData.CurrentRide = ride.id;
         gRideRatingsCalcData.State = RIDE_RATINGS_STATE_INITIALISE;
@@ -163,7 +163,7 @@ static void ride_ratings_update_state_0()
     }
 
     auto ride = get_ride(currentRide);
-    if (ride != nullptr && ride->status != RIDE_STATUS_CLOSED && !(ride->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
+    if (ride != nullptr && ride->status != RideStatus::Closed && !(ride->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
         gRideRatingsCalcData.State = RIDE_RATINGS_STATE_INITIALISE;
     }
@@ -196,7 +196,7 @@ static void ride_ratings_update_state_2()
 {
     const ride_id_t rideIndex = gRideRatingsCalcData.CurrentRide;
     auto ride = get_ride(rideIndex);
-    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED || ride->type >= RIDE_TYPE_COUNT)
+    if (ride == nullptr || ride->status == RideStatus::Closed || ride->type >= RIDE_TYPE_COUNT)
     {
         gRideRatingsCalcData.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -273,7 +273,7 @@ static void ride_ratings_update_state_2()
 static void ride_ratings_update_state_3()
 {
     auto ride = get_ride(gRideRatingsCalcData.CurrentRide);
-    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
+    if (ride == nullptr || ride->status == RideStatus::Closed)
     {
         gRideRatingsCalcData.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -303,7 +303,7 @@ static void ride_ratings_update_state_4()
 static void ride_ratings_update_state_5()
 {
     auto ride = get_ride(gRideRatingsCalcData.CurrentRide);
-    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
+    if (ride == nullptr || ride->status == RideStatus::Closed)
     {
         gRideRatingsCalcData.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -369,7 +369,7 @@ static void ride_ratings_update_state_5()
 static void ride_ratings_begin_proximity_loop()
 {
     auto ride = get_ride(gRideRatingsCalcData.CurrentRide);
-    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
+    if (ride == nullptr || ride->status == RideStatus::Closed)
     {
         gRideRatingsCalcData.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -853,7 +853,7 @@ static void ride_ratings_calculate_value(Ride* ride)
     // Other ride of same type penalty
     const auto& rideManager = GetRideManager();
     auto otherRidesOfSameType = std::count_if(rideManager.begin(), rideManager.end(), [ride](const Ride& r) {
-        return r.status == RIDE_STATUS_OPEN && r.type == ride->type;
+        return r.status == RideStatus::Open && r.type == ride->type;
     });
     if (otherRidesOfSameType > 1)
         value -= value / 4;

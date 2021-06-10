@@ -292,7 +292,7 @@ static void window_maze_construction_mousedown(rct_window* w, rct_widgetindex wi
 static void window_maze_construction_update(rct_window* w)
 {
     auto ride = get_ride(_currentRideIndex);
-    if (ride == nullptr || ride->status != RIDE_STATUS_CLOSED)
+    if (ride == nullptr || ride->status != RideStatus::Closed)
     {
         window_close(w);
         return;

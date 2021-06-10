@@ -2198,7 +2198,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
 
     guest->TimeLost = 0;
 
-    if (ride->status != RIDE_STATUS_OPEN)
+    if (ride->status != RideStatus::Open)
     {
         peep_return_to_centre_of_tile(guest);
         return true;

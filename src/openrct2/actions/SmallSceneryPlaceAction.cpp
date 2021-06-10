@@ -280,7 +280,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
 
     if (!map_can_construct_with_clear_at(
             { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
-            CREATE_CROSSING_MODE_NONE))
+            CREATE_CROSSING_MODE_NONE, scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)))
     {
         return std::make_unique<SmallSceneryPlaceActionResult>(
             GameActions::Status::Disallowed, gGameCommandErrorText, gCommonFormatArgs);
@@ -418,7 +418,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
 
     if (!map_can_construct_with_clear_at(
             { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY, &clearCost,
-            CREATE_CROSSING_MODE_NONE))
+            CREATE_CROSSING_MODE_NONE, scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)))
     {
         return std::make_unique<SmallSceneryPlaceActionResult>(
             GameActions::Status::Disallowed, gGameCommandErrorText, gCommonFormatArgs);

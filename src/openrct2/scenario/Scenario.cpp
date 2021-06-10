@@ -657,7 +657,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
     std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::Open && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
@@ -757,7 +757,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::Open && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
@@ -788,7 +788,7 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_CLOSED && ride.excitement >= MinimumExcitement)
+        if (ride.status != RideStatus::Closed && ride.excitement >= MinimumExcitement)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
