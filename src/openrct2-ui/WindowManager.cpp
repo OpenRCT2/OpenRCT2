@@ -79,8 +79,6 @@ public:
                 return window_mapgen_open();
             case WC_MULTIPLAYER:
                 return window_multiplayer_open();
-            case WC_MUSIC_CREDITS:
-                return window_music_credits_open();
             case WC_CONSTRUCT_RIDE:
                 return window_new_ride_open();
             case WC_PARK_INFORMATION:
@@ -258,7 +256,7 @@ public:
             case WC_OBJECT_LOAD_ERROR:
             {
                 std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
-                const rct_object_entry* objects = static_cast<rct_object_entry*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
+                auto objects = static_cast<const ObjectEntryDescriptor*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
                 size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
                 window_object_load_error_open(const_cast<utf8*>(path.c_str()), count, objects);
 
@@ -402,7 +400,7 @@ public:
                     return;
 
                 auto ride = vehicle->GetRide();
-                auto viewVehicleIndex = w->ride.view - 1;
+                auto viewVehicleIndex = w->viewport_focus_coordinates.var_480 - 1;
                 if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
                     return;
 

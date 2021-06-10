@@ -38,6 +38,8 @@ int32_t object_entry_group_counts[] = {
     MAX_TERRAIN_EDGE_OBJECTS,
     MAX_STATION_OBJECTS,
     MAX_MUSIC_OBJECTS,
+    MAX_FOOTPATH_SURFACE_OBJECTS,
+    MAX_FOOTPATH_RAILINGS_OBJECTS,
 };
 
 // 98DA2C
@@ -56,17 +58,134 @@ int32_t object_entry_group_encoding[] = {
 };
 // clang-format on
 
-bool object_entry_is_empty(const rct_object_entry* entry)
+ObjectList::const_iterator::const_iterator(const ObjectList* parent, bool end)
 {
-    uint64_t a, b;
-    std::memcpy(&a, reinterpret_cast<const uint8_t*>(entry), 8);
-    std::memcpy(&b, reinterpret_cast<const uint8_t*>(entry) + 8, 8);
+    _parent = parent;
+    _subList = _parent->_subLists.size();
+    _index = 0;
+}
 
-    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF)
-        return true;
-    if (a == 0 && b == 0)
-        return true;
-    return false;
+void ObjectList::const_iterator::MoveToNextEntry()
+{
+    do
+    {
+        if (_subList < _parent->_subLists.size())
+        {
+            auto subListSize = _parent->_subLists[_subList].size();
+            if (_index < subListSize)
+            {
+                _index++;
+                if (_index == subListSize)
+                {
+                    _subList++;
+                    _index = 0;
+                }
+            }
+        }
+        else
+        {
+            break;
+        }
+    } while (!_parent->_subLists[_subList][_index].HasValue());
+}
+
+ObjectList::const_iterator& ObjectList::const_iterator::operator++()
+{
+    MoveToNextEntry();
+    return *this;
+}
+
+ObjectList::const_iterator ObjectList::const_iterator::operator++(int)
+{
+    return *this;
+}
+
+const ObjectEntryDescriptor& ObjectList::const_iterator::operator*()
+{
+    return _parent->_subLists[_subList][_index];
+}
+
+bool ObjectList::const_iterator::operator==(const_iterator& rhs)
+{
+    return _parent == rhs._parent && _subList == rhs._subList && _index == rhs._index;
+}
+
+bool ObjectList::const_iterator::operator!=(const_iterator& rhs)
+{
+    return !(*this == rhs);
+}
+
+ObjectList::const_iterator ObjectList::begin() const
+{
+    return const_iterator(this, false);
+}
+
+ObjectList::const_iterator ObjectList::end() const
+{
+    return const_iterator(this, true);
+}
+
+std::vector<ObjectEntryDescriptor>& ObjectList::GetList(ObjectType type)
+{
+    auto index = static_cast<size_t>(type);
+    while (_subLists.size() <= index)
+    {
+        _subLists.resize(static_cast<size_t>(index) + 1);
+    }
+    return _subLists[index];
+}
+
+std::vector<ObjectEntryDescriptor>& ObjectList::GetList(ObjectType type) const
+{
+    return const_cast<ObjectList*>(this)->GetList(type);
+}
+
+const ObjectEntryDescriptor& ObjectList::GetObject(ObjectType type, ObjectEntryIndex index) const
+{
+    const auto& subList = GetList(type);
+    if (subList.size() > index)
+    {
+        return subList[index];
+    }
+
+    static ObjectEntryDescriptor placeholder;
+    return placeholder;
+}
+
+void ObjectList::Add(const ObjectEntryDescriptor& entry)
+{
+    auto& subList = GetList(entry.GetType());
+    subList.push_back(entry);
+}
+
+void ObjectList::SetObject(ObjectEntryIndex index, const ObjectEntryDescriptor& entry)
+{
+    auto& subList = GetList(entry.GetType());
+    if (subList.size() <= index)
+    {
+        subList.resize(static_cast<size_t>(index) + 1);
+    }
+    subList[index] = entry;
+}
+
+void ObjectList::SetObject(ObjectType type, ObjectEntryIndex index, std::string_view identifier)
+{
+    auto entry = ObjectEntryDescriptor(identifier);
+    entry.Type = type;
+    SetObject(index, entry);
+}
+
+ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier)
+{
+    auto& subList = GetList(type);
+    for (size_t i = 0; i < subList.size(); i++)
+    {
+        if (subList[i].Identifier == identifier)
+        {
+            return static_cast<ObjectEntryIndex>(i);
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
 }
 
 /**
@@ -76,39 +195,6 @@ bool object_entry_is_empty(const rct_object_entry* entry)
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object)
 {
     snprintf(string_buffer, size, "%.8s/%4X%4X", object->name, object->flags, object->checksum);
-}
-
-/**
- *
- *  rct2: 0x006A9DA2
- * bl = entry_index
- * ecx = entry_type
- */
-bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry_type, ObjectEntryIndex* entryIndex)
-{
-    ObjectType objectType = entry->GetType();
-    if (objectType >= ObjectType::Count)
-    {
-        return false;
-    }
-
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto maxObjects = object_entry_group_counts[EnumValue(objectType)];
-    for (int32_t i = 0; i < maxObjects; i++)
-    {
-        auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
-        if (loadedObj != nullptr)
-        {
-            auto thisEntry = object_entry_get_object(objectType, i)->GetObjectEntry();
-            if (object_entry_compare(thisEntry, entry))
-            {
-                *entry_type = objectType;
-                *entryIndex = i;
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex)
@@ -131,20 +217,6 @@ void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIn
         *outObjectType = static_cast<ObjectType>(objectType);
     if (outEntryIndex != nullptr)
         *outEntryIndex = static_cast<ObjectEntryIndex>(index);
-}
-
-const rct_object_entry* get_loaded_object_entry(size_t index)
-{
-    ObjectType objectType;
-    ObjectEntryIndex entryIndex;
-    get_type_entry_index(index, &objectType, &entryIndex);
-    auto obj = object_entry_get_object(objectType, entryIndex);
-    if (obj == nullptr)
-    {
-        return nullptr;
-    }
-
-    return obj->GetObjectEntry();
 }
 
 void* get_loaded_object_chunk(size_t index)

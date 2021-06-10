@@ -67,10 +67,10 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::SwapElementsAt(_loc, firstIndex, secondIndex, isExecuting);
             break;
         }
-        case TileModifyType::AnyInsertCorrupt:
+        case TileModifyType::AnyToggleInvisilibity:
         {
             const auto elementIndex = _value1;
-            res = TileInspector::InsertCorruptElementAt(_loc, elementIndex, isExecuting);
+            res = TileInspector::ToggleInvisibilityOfElementAt(_loc, elementIndex, isExecuting);
             break;
         }
         case TileModifyType::AnyRotate:
@@ -208,12 +208,6 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
             const auto elementIndex = _value1;
             const auto edgeIndex = _value2;
             res = TileInspector::BannerToggleBlockingEdge(_loc, elementIndex, edgeIndex, isExecuting);
-            break;
-        }
-        case TileModifyType::CorruptClamp:
-        {
-            const auto elementIndex = _value1;
-            res = TileInspector::CorruptClamp(_loc, elementIndex, isExecuting);
             break;
         }
         default:

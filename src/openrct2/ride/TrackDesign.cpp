@@ -39,6 +39,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
@@ -66,17 +67,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-struct map_backup
-{
-    TileElement tile_elements[MAX_TILE_ELEMENTS];
-    TileElement* tile_pointers[MAX_TILE_TILE_ELEMENT_POINTERS];
-    TileElement* next_free_tile_element;
-    uint16_t map_size_units;
-    uint16_t map_size_units_minus_2;
-    uint16_t map_size;
-    uint8_t current_rotation;
-};
-
 TrackDesign* gActiveTrackDesign;
 bool gTrackDesignSceneryToggle;
 static CoordsXYZ _trackPreviewMin;
@@ -101,11 +91,18 @@ static void track_design_preview_clear_map();
 rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
 {
     type = ride.type;
-    auto object = object_entry_get_object(ObjectType::Ride, ride.subtype);
 
-    // Note we are only copying rct_object_entry in size and
-    // not the extended as we don't need the chunk size.
-    std::memcpy(&vehicle_object, object->GetObjectEntry(), sizeof(rct_object_entry));
+    auto object = object_entry_get_object(ObjectType::Ride, ride.subtype);
+    if (object != nullptr)
+    {
+        auto entry = object->GetObjectEntry();
+        if (entry.IsEmpty())
+        {
+            // TODO create a new error message for `JSON objects are unsupported`
+            return STR_UNKNOWN_OBJECT_TYPE;
+        }
+        vehicle_object = ObjectEntryDescriptor(entry);
+    }
 
     ride_mode = ride.mode;
     colour_scheme = ride.colour_scheme_type & 3;
@@ -601,7 +598,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(track_rail_colour);
     stream << DS_TAG(track_support_colour);
     stream << DS_TAG(flags2);
-    stream << DS_TAG(vehicle_object);
+    stream << DS_TAG(vehicle_object.Entry);
     stream << DS_TAG(space_required_x);
     stream << DS_TAG(space_required_y);
     stream << DS_TAG(vehicle_additional_colour);
@@ -638,18 +635,124 @@ std::unique_ptr<TrackDesign> track_design_open(const utf8* path)
  */
 static void track_design_load_scenery_objects(TrackDesign* td6)
 {
-    object_manager_unload_all_objects();
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    objectManager.UnloadAll();
 
     // Load ride object
-    rct_object_entry* rideEntry = &td6->vehicle_object;
-    object_manager_load_object(rideEntry);
+    if (td6->vehicle_object.HasValue())
+    {
+        objectManager.LoadObject(td6->vehicle_object);
+    }
 
     // Load scenery objects
     for (const auto& scenery : td6->scenery_elements)
     {
-        const rct_object_entry* sceneryEntry = &scenery.scenery_object;
-        object_manager_load_object(sceneryEntry);
+        if (scenery.scenery_object.HasValue())
+        {
+            objectManager.LoadObject(td6->vehicle_object);
+        }
     }
+}
+
+struct TrackSceneryEntry
+{
+    ObjectType Type = ObjectType::None;
+    ObjectEntryIndex Index = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex SecondaryIndex = OBJECT_ENTRY_INDEX_NULL; // For footpath railing
+};
+
+static ObjectEntryIndex TrackDesignGetDefaultSurfaceIndex(bool isQueue)
+{
+    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
+    {
+        auto footpathSurfaceObj = get_path_surface_entry(i);
+        if (footpathSurfaceObj != nullptr)
+        {
+            if (footpathSurfaceObj->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+            {
+                continue;
+            }
+
+            if (isQueue != ((footpathSurfaceObj->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            {
+                continue;
+            }
+
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+static ObjectEntryIndex TrackDesignGetDefaultRailingIndex()
+{
+    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
+    {
+        auto footpathRailingsObj = get_path_railings_entry(i);
+        if (footpathRailingsObj != nullptr)
+        {
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(const TrackDesignSceneryElement& scenery)
+{
+    TrackSceneryEntry result;
+
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    if (scenery.scenery_object.GetType() == ObjectType::Paths)
+    {
+        auto footpathMapping = GetFootpathSurfaceId(scenery.scenery_object, true, scenery.IsQueue());
+        if (footpathMapping == nullptr)
+        {
+            // Check if legacy path object is loaded
+            auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+            if (obj != nullptr)
+            {
+                result.Type = obj->GetObjectType();
+                result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+            }
+            else
+            {
+                result.Type = ObjectType::FootpathSurface;
+            }
+        }
+        else
+        {
+            result.Type = ObjectType::FootpathSurface;
+            result.Index = objectMgr.GetLoadedObjectEntryIndex(
+                ObjectEntryDescriptor(scenery.IsQueue() ? footpathMapping->QueueSurface : footpathMapping->NormalSurface));
+            result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
+        }
+
+        if (result.Index == OBJECT_ENTRY_INDEX_NULL)
+            result.Index = TrackDesignGetDefaultSurfaceIndex(scenery.IsQueue());
+        if (result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
+            result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
+
+        if (result.Index == OBJECT_ENTRY_INDEX_NULL || result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return {};
+        }
+    }
+    else
+    {
+        auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+        if (obj != nullptr)
+        {
+            result.Type = obj->GetObjectType();
+            result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+        }
+        else
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return {};
+        }
+    }
+    return result;
 }
 
 /**
@@ -658,26 +761,19 @@ static void track_design_load_scenery_objects(TrackDesign* td6)
  */
 static void track_design_mirror_scenery(TrackDesign* td6)
 {
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     for (auto& scenery : td6->scenery_elements)
     {
-        ObjectType entry_type{ 0 };
-        ObjectEntryIndex entryIndex{ 0 };
-        if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entryIndex))
-        {
-            entry_type = scenery.scenery_object.GetType();
-            if (entry_type != ObjectType::Paths)
-            {
-                continue;
-            }
+        auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
+        if (!entryInfo)
+            continue;
 
-            entryIndex = 0;
-        }
-
-        switch (entry_type)
+        auto obj = objectMgr.GetLoadedObject(entryInfo->Type, entryInfo->Index);
+        switch (obj->GetObjectType())
         {
             case ObjectType::LargeScenery:
             {
-                auto* sceneryEntry = static_cast<LargeSceneryEntry*>(object_entry_get_chunk(entry_type, entryIndex));
+                auto* sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
                 for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++)
                 {
@@ -722,7 +818,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
             }
             case ObjectType::SmallScenery:
             {
-                auto* sceneryEntry = static_cast<SmallSceneryEntry*>(object_entry_get_chunk(entry_type, entryIndex));
+                auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
                 scenery.y = -scenery.y;
 
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
@@ -752,6 +848,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 break;
             }
             case ObjectType::Paths:
+            case ObjectType::FootpathSurface:
             {
                 scenery.y = -scenery.y;
 
@@ -767,7 +864,6 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 break;
             }
             default:
-                // This switch processes only ObjectType for Scenery items.
                 break;
         }
     }
@@ -863,54 +959,11 @@ static void track_design_update_max_min_coordinates(const CoordsXYZ& coords)
                          std::max(_trackPreviewMax.z, coords.z) };
 }
 
-static bool TrackDesignPlaceSceneryElementGetEntry(
-    ObjectType& entry_type, ObjectEntryIndex& entry_index, const TrackDesignSceneryElement& scenery)
-{
-    if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
-    {
-        entry_type = scenery.scenery_object.GetType();
-        if (entry_type != ObjectType::Paths)
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return true;
-        }
-
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return true;
-        }
-
-        entry_index = 0;
-        for (PathSurfaceEntry* path = get_path_surface_entry(0);
-             entry_index < object_entry_group_counts[EnumValue(ObjectType::Paths)];
-             path = get_path_surface_entry(entry_index), entry_index++)
-        {
-            if (path == nullptr)
-            {
-                return true;
-            }
-            if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
-            {
-                return true;
-            }
-        }
-
-        if (entry_index == object_entry_group_counts[EnumValue(ObjectType::Paths)])
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return true;
-        }
-    }
-    return false;
-}
-
 static bool TrackDesignPlaceSceneryElementRemoveGhost(
     CoordsXY mapCoord, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
-    ObjectType entry_type;
-    ObjectEntryIndex entry_index;
-    if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
+    auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
+    if (!entryInfo)
     {
         return true;
     }
@@ -925,14 +978,14 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
     std::unique_ptr<GameAction> ga;
-    switch (entry_type)
+    switch (entryInfo->Type)
     {
         case ObjectType::SmallScenery:
         {
             uint8_t quadrant = (scenery.flags >> 2) + _currentTrackPieceDirection;
             quadrant &= 3;
 
-            auto* sceneryEntry = get_small_scenery_entry(entry_index);
+            auto* sceneryEntry = get_small_scenery_entry(entryInfo->Index);
             if (!(!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)
                   && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
                 && scenery_small_entry_has_flag(
@@ -942,7 +995,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
                 quadrant = 0;
             }
 
-            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entry_index);
+            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entryInfo->Index);
             break;
         }
         case ObjectType::LargeScenery:
@@ -952,6 +1005,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
             break;
         case ObjectType::Paths:
+        case ObjectType::FootpathSurface:
             ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
@@ -970,10 +1024,7 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(const TrackDesignSceneryElem
         _trackDesignPlaceSceneryZ = z;
     }
 
-    ObjectType entry_type;
-    ObjectEntryIndex entry_index;
-    TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery);
-
+    TrackDesignPlaceSceneryElementGetEntry(scenery);
     return true;
 }
 
@@ -1000,9 +1051,8 @@ static bool TrackDesignPlaceSceneryElement(
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
     {
-        ObjectType entry_type;
-        ObjectEntryIndex entry_index;
-        if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
+        auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
+        if (!entryInfo)
         {
             return true;
         }
@@ -1012,7 +1062,7 @@ static bool TrackDesignPlaceSceneryElement(
         uint8_t flags;
         uint8_t quadrant;
 
-        switch (entry_type)
+        switch (entryInfo->Type)
         {
             case ObjectType::SmallScenery:
             {
@@ -1052,7 +1102,7 @@ static bool TrackDesignPlaceSceneryElement(
                 gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
                 auto smallSceneryPlace = SmallSceneryPlaceAction(
-                    { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entry_index, scenery.primary_colour,
+                    { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primary_colour,
                     scenery.secondary_colour);
 
                 smallSceneryPlace.SetFlags(flags);
@@ -1098,7 +1148,8 @@ static bool TrackDesignPlaceSceneryElement(
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
                 auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                    { mapCoord.x, mapCoord.y, z, rotation }, entry_index, scenery.primary_colour, scenery.secondary_colour);
+                    { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primary_colour,
+                    scenery.secondary_colour);
                 sceneryPlaceAction.SetFlags(flags);
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&sceneryPlaceAction)
                                                            : GameActions::QueryNested(&sceneryPlaceAction);
@@ -1141,7 +1192,7 @@ static bool TrackDesignPlaceSceneryElement(
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
                 auto wallPlaceAction = WallPlaceAction(
-                    entry_index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primary_colour, scenery.secondary_colour,
+                    entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primary_colour, scenery.secondary_colour,
                     (scenery.flags & 0xFC) >> 2);
                 wallPlaceAction.SetFlags(flags);
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&wallPlaceAction)
@@ -1151,6 +1202,7 @@ static bool TrackDesignPlaceSceneryElement(
                 break;
             }
             case ObjectType::Paths:
+            case ObjectType::FootpathSurface:
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
                     return true;
@@ -1159,12 +1211,7 @@ static bool TrackDesignPlaceSceneryElement(
                 z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
                 if (mode == 0)
                 {
-                    if (scenery.flags & (1 << 7))
-                    {
-                        // dh
-                        entry_index |= (1 << 7);
-                    }
-
+                    auto isQueue = (scenery.flags & (1 << 7)) != 0;
                     uint8_t bh = ((scenery.flags & 0xF) << rotation);
                     flags = bh >> 4;
                     bh = (bh | flags) & 0xF;
@@ -1193,8 +1240,14 @@ static bool TrackDesignPlaceSceneryElement(
                     }
                     uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
                     uint8_t edges = bh & 0xF;
+                    PathConstructFlags constructFlags = 0;
+                    if (isQueue)
+                        constructFlags |= PathConstructFlag::IsQueue;
+                    if (entryInfo->Type == ObjectType::Paths)
+                        constructFlags |= PathConstructFlag::IsPathObject;
                     auto footpathPlaceAction = FootpathPlaceFromTrackAction(
-                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entry_index, edges);
+                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entryInfo->Index, entryInfo->SecondaryIndex,
+                        edges, constructFlags);
                     footpathPlaceAction.SetFlags(flags);
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
                                                                : GameActions::QueryNested(&footpathPlaceAction);
@@ -1880,12 +1933,8 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     *outRide = nullptr;
     *flags = 0;
 
-    ObjectType entry_type;
-    ObjectEntryIndex entry_index;
-    if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
-    {
-        entry_index = OBJECT_ENTRY_INDEX_NULL;
-    }
+    auto& objManager = GetContext()->GetObjectManager();
+    auto entry_index = objManager.GetLoadedObjectEntryIndex(td6->vehicle_object);
 
     ride_id_t rideIndex;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
@@ -1899,7 +1948,13 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         return false;
 
     ride->custom_name = {};
-    ride->entrance_style = td6->entrance_style;
+
+    auto stationIdentifier = GetStationIdentifierFromStyle(td6->entrance_style);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
+    {
+        ride->entrance_style = gLastEntranceStyle;
+    }
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
@@ -1949,7 +2004,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 
     if (resultCost != MONEY32_UNDEFINED)
     {
-        if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
+        if (entry_index == OBJECT_ENTRY_INDEX_NULL)
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
@@ -2089,8 +2144,6 @@ static void track_design_preview_clear_map()
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    gMapSizeUnits = 255 * COORDS_XY_STEP;
-    gMapSizeMinus2 = (264 * 32) - 2;
     gMapSize = 256;
 
     // Reserve ~8 elements per tile

@@ -82,7 +82,7 @@ public:
             item.Name = GetNameFromTrackPath(path);
             item.Path = path;
             item.RideType = td6->type;
-            item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
+            item.ObjectEntry = std::string(td6->vehicle_object.Entry.name, 8);
             item.Flags = 0;
             if (IsTrackReadOnly(path))
             {

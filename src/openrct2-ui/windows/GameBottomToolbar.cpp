@@ -198,8 +198,8 @@ static OpenRCT2String window_game_bottom_toolbar_tooltip(
     switch (widgetIndex)
     {
         case WIDX_MONEY:
-            ft.Add<int32_t>(gCurrentProfit);
-            ft.Add<int32_t>(gParkValue);
+            ft.Add<money64>(gCurrentProfit);
+            ft.Add<money64>(gParkValue);
             break;
         case WIDX_PARK_RATING:
             ft.Add<int16_t>(gParkRating);
@@ -414,7 +414,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
                    : NOT_TRANSLUCENT(w->colours[0]));
         rct_string_id stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
         auto ft = Formatter();
-        ft.Add<money32>(gCash);
+        ft.Add<money64>(gCash);
         DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 

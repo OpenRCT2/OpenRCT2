@@ -23,7 +23,6 @@ enum class TileInspectorPage : int16_t
     Wall,
     LargeScenery,
     Banner,
-    Corrupt
 };
 
 extern TileCoordsXY windowTileInspectorTile;

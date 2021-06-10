@@ -286,7 +286,7 @@ public:
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
-            ft.Add<money32>(GetStaffWage(GetSelectedStaffType()));
+            ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));
             DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ width - 155, 32 }, STR_COST_PER_MONTH, ft);
         }
 
@@ -414,7 +414,7 @@ public:
                 DrawTextEllipsised(&dpi, { actionOffset, y }, actionColumnSize, format, ft);
 
                 // True if a patrol path is set for the worker
-                if (gStaffModes[peep->StaffId] == StaffMode::Patrol)
+                if (peep->HasPatrolArea())
                 {
                     gfx_draw_sprite(&dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                 }
@@ -566,11 +566,7 @@ private:
 
             if (isPatrolAreaSet)
             {
-                if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
-                {
-                    continue;
-                }
-                if (!peep->IsLocationInPatrol(footpathCoords))
+                if (!peep->HasPatrolArea() || peep->IsLocationInPatrol(footpathCoords))
                 {
                     continue;
                 }

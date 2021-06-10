@@ -14,6 +14,7 @@
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../rct12/RCT12.h"
 #include "../ride/TrackDesign.h"
 #include "RideCreateAction.h"
 #include "RideDemolishAction.h"
@@ -86,18 +87,16 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters);
     }
 
-    const rct_object_entry* rideEntryObject = &_td.vehicle_object;
-
-    ObjectType entryType;
-    ObjectEntryIndex entryIndex;
-    if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
+    if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
     {
-        entryIndex = OBJECT_ENTRY_INDEX_NULL;
-    }
-    // Force a fallback if the entry is not invented yet a td6 of it is selected, which can happen in select-by-track-type mode.
-    else if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
-    {
-        entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        // Force a fallback if the entry is not invented yet a td6 of it is selected,
+        // which can happen in select-by-track-type mode
+        if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
+        {
+            entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        }
     }
 
     // Colours do not matter as will be overwritten
@@ -149,18 +148,16 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
     res->Position.z = _loc.z;
     res->Expenditure = ExpenditureType::RideConstruction;
 
-    const rct_object_entry* rideEntryObject = &_td.vehicle_object;
-
-    ObjectType entryType;
-    ObjectEntryIndex entryIndex;
-    if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
+    if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
     {
-        entryIndex = OBJECT_ENTRY_INDEX_NULL;
-    }
-    // Force a fallback if the entry is not invented yet a td6 of it is selected, which can happen in select-by-track-type mode.
-    else if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
-    {
-        entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        // Force a fallback if the entry is not invented yet a td6 of it is selected,
+        // which can happen in select-by-track-type mode
+        if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
+        {
+            entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        }
     }
 
     // Colours do not matter as will be overwritten
@@ -250,7 +247,12 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = _td.colour_scheme;
 
-    ride->entrance_style = _td.entrance_style;
+    auto stationIdentifier = GetStationIdentifierFromStyle(_td.entrance_style);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
+    {
+        ride->entrance_style = gLastEntranceStyle;
+    }
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {

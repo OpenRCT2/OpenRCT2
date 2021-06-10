@@ -25,7 +25,7 @@ constexpr const RideTypeDescriptor FoodStallRTD =
     SET_FIELD(TrackPaintFunction, get_track_paint_function_shop),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
                      RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-                     RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
+                     RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ShopStall)),
     SET_FIELD(DefaultMode, RideMode::ShopStall),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor FoodStallRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 600, 0, 1, }),
     SET_FIELD(DefaultPrices, { 0, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 15),
     SET_FIELD(ColourPresets, DEFAULT_STALL_COLOUR_PRESET),

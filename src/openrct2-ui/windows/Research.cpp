@@ -561,7 +561,7 @@ void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, r
         return;
 
     int32_t currentResearchLevel = gResearchFundingLevel;
-    money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
+    money64 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
     DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 10, 77 }, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek);
 }
 

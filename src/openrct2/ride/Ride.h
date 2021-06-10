@@ -36,7 +36,7 @@ struct Vehicle;
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
 #define MAX_VEHICLES_PER_RIDE_ENTRY 4
-constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 31;
+constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 255; // Note: that 255 represents No Train (null) hence why this is not 256
 constexpr const uint8_t MAX_CIRCUITS_PER_RIDE = 20;
 constexpr const uint8_t MAX_CARS_PER_TRAIN = 255;
 constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_VEHICLES_PER_RIDE);
@@ -44,8 +44,9 @@ constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_V
 #define MAX_CATEGORIES_PER_RIDE 2
 #define DOWNTIME_HISTORY_SIZE 8
 #define CUSTOMER_HISTORY_SIZE 10
-#define MAX_STATIONS 4
-#define MAX_RIDES 255
+#define MAX_CARS_PER_TRAIN 255
+#define MAX_STATIONS 255
+constexpr const uint16_t MAX_RIDES = 1000;
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
@@ -218,7 +219,7 @@ struct Ride
     ObjectEntryIndex subtype;
     RideMode mode;
     uint8_t colour_scheme_type;
-    VehicleColour vehicle_colours[MAX_VEHICLE_COLOURS];
+    VehicleColour vehicle_colours[MAX_VEHICLES_PER_RIDE + 1];
     // 0 = closed, 1 = open, 2 = test
     RideStatus status;
     std::string custom_name;
@@ -233,7 +234,7 @@ struct Ride
     uint8_t proposed_num_cars_per_train;
     uint8_t max_trains;
 
-private:
+public: // private:
     uint8_t min_max_cars_per_train;
 
 public:
@@ -309,7 +310,7 @@ public:
     // Various flags stating whether a window needs to be refreshed
     uint8_t window_invalidate_flags;
     uint32_t total_customers;
-    money32 total_profit;
+    money64 total_profit;
     uint8_t popularity;
     uint8_t popularity_time_out; // Updated every purchase and ?possibly by time?
     uint8_t popularity_next;     // When timeout reached this will be the next popularity
@@ -359,11 +360,11 @@ public:
     uint8_t not_fixed_timeout;
     uint8_t last_crash_type;
     uint8_t connected_message_throttle;
-    money32 income_per_hour;
-    money32 profit;
+    money64 income_per_hour;
+    money64 profit;
     TrackColour track_colour[NUM_COLOUR_SCHEMES];
-    uint8_t music;
-    uint8_t entrance_style;
+    ObjectEntryIndex music;
+    ObjectEntryIndex entrance_style;
     uint16_t vehicle_change_timeout;
     uint8_t num_block_brakes;
     uint8_t lift_hill_speed;
@@ -393,7 +394,7 @@ private:
     void UpdateQueueLength(StationIndex stationIndex);
     bool CreateVehicles(const CoordsXYE& element, bool isApplying);
     void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
-    money32 CalculateIncomePerHour() const;
+    money64 CalculateIncomePerHour() const;
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;
 
@@ -516,8 +517,9 @@ enum
     RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
     RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED = 1 << 16,
     RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
-    RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18,   // Used for the Award for Best Custom-designed Rides
-    RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19 // Not used anymore
+    RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18,    // Used for the Award for Best Custom-designed Rides
+    RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19, // Not used anymore
+    RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
 };
 
 // Constants used by the ride_type->flags property at 0x008
@@ -1117,7 +1119,7 @@ extern uint8_t gRideEntranceExitPlaceDirection;
 
 extern bool gGotoStartPlacementMode;
 
-extern uint8_t gLastEntranceStyle;
+extern ObjectEntryIndex gLastEntranceStyle;
 
 int32_t ride_get_count();
 void ride_init_all();
@@ -1252,5 +1254,7 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
+
+std::vector<ride_id_t> GetTracklessRides();
 
 #endif

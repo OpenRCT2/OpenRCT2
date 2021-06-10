@@ -23,8 +23,8 @@ struct Vehicle;
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
-extern ScenerySelection gWindowSceneryTabSelections[];
-extern uint8_t gWindowSceneryActiveTabIndex;
+extern std::vector<ScenerySelection> gWindowSceneryTabSelections;
+extern size_t gWindowSceneryActiveTabIndex;
 extern bool gWindowSceneryScatterEnabled;
 extern uint16_t gWindowSceneryScatterSize;
 extern ScatterToolDensity gWindowSceneryScatterDensity;
@@ -54,7 +54,6 @@ rct_window* window_land_rights_open();
 rct_window* window_main_open();
 rct_window* window_mapgen_open();
 rct_window* window_multiplayer_open();
-rct_window* window_music_credits_open();
 rct_window* window_news_open();
 rct_window* window_news_options_open();
 rct_window* window_options_open();
@@ -164,7 +163,7 @@ void window_text_input_open(
     std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
     std::function<void(std::string_view)> okCallback, std::function<void()> cancelCallback);
 
-rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects);
+rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects);
 
 rct_window* window_ride_construction_open();
 void window_ride_construction_update_active_elements_impl();

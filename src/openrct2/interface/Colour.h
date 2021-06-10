@@ -52,7 +52,9 @@ enum : colour_t
     COLOUR_BRIGHT_PINK,
     COLOUR_LIGHT_PINK,
 
-    COLOUR_COUNT
+    COLOUR_COUNT,
+
+    COLOUR_NULL = 255,
 };
 
 /**

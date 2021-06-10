@@ -25,11 +25,6 @@ private:
     std::vector<ObjectEntryDescriptor> _items;
 
 public:
-    explicit SceneryGroupObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;

@@ -100,6 +100,7 @@ void FootpathObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "hasSupportImages", RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
                 { "hasElevatedPathImages", RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS },
                 { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR },
+                { "noSlopeRailings", FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS },
             });
     }
 

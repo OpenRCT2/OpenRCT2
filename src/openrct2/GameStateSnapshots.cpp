@@ -256,7 +256,10 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, PathfindGoal);
         for (int i = 0; i < 4; i++)
         {
-            COMPARE_FIELD(Peep, PathfindHistory[i]);
+            COMPARE_FIELD(Peep, PathfindHistory[i].x);
+            COMPARE_FIELD(Peep, PathfindHistory[i].y);
+            COMPARE_FIELD(Peep, PathfindHistory[i].z);
+            COMPARE_FIELD(Peep, PathfindHistory[i].direction);
         }
         COMPARE_FIELD(Peep, WalkingFrameNum);
     }
@@ -268,7 +271,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Staff, AssignedStaffType);
         COMPARE_FIELD(Staff, MechanicTimeSinceCall);
         COMPARE_FIELD(Staff, HireDate);
-        COMPARE_FIELD(Staff, StaffId);
         COMPARE_FIELD(Staff, StaffOrders);
         COMPARE_FIELD(Staff, StaffMowingTimeout);
         COMPARE_FIELD(Staff, StaffRidesFixed);
@@ -317,7 +319,10 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, PreviousRideTimeOut);
         for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
         {
-            COMPARE_FIELD(Guest, Thoughts[i]);
+            COMPARE_FIELD(Guest, Thoughts[i].type);
+            COMPARE_FIELD(Guest, Thoughts[i].argument);
+            COMPARE_FIELD(Guest, Thoughts[i].freshness);
+            COMPARE_FIELD(Guest, Thoughts[i].fresh_timeout);
         }
         COMPARE_FIELD(Guest, GuestHeadingToRideId);
         COMPARE_FIELD(Guest, GuestIsLostCountdown);

@@ -122,6 +122,13 @@ namespace OpenRCT2::Scripting
             duk_put_prop_string(_ctx, _idx, name);
         }
 
+        void Set(const char* name, int64_t value)
+        {
+            EnsureObjectPushed();
+            duk_push_number(_ctx, value);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
         void Set(const char* name, uint64_t value)
         {
             EnsureObjectPushed();
@@ -314,6 +321,12 @@ namespace OpenRCT2::Scripting
         return DukValue::take_from_stack(ctx);
     }
 
+    template<> inline DukValue ToDuk(duk_context* ctx, const int64_t& value)
+    {
+        duk_push_number(ctx, value);
+        return DukValue::take_from_stack(ctx);
+    }
+
     template<> inline DukValue ToDuk(duk_context* ctx, const std::string_view& value)
     {
         duk_push_lstring(ctx, value.data(), value.size());
@@ -440,6 +453,19 @@ namespace OpenRCT2::Scripting
         dukCoords.Set("width", value.width);
         dukCoords.Set("height", value.height);
         return dukCoords.Take();
+    }
+
+    template<> ObjectEntryIndex inline FromDuk(const DukValue& d)
+    {
+        if (d.type() == DukValue::Type::NUMBER)
+        {
+            auto value = d.as_int();
+            if (value >= 0 && value <= std::numeric_limits<ObjectEntryIndex>::max())
+            {
+                return static_cast<ObjectEntryIndex>(value);
+            }
+        }
+        return OBJECT_ENTRY_INDEX_NULL;
     }
 
 } // namespace OpenRCT2::Scripting

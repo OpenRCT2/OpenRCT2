@@ -510,7 +510,7 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
 static void window_top_toolbar_scenarioselect_callback(const utf8* path)
 {
     window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
-    context_load_park_from_file(path);
+    GetContext()->LoadParkFromFile(path, false, true);
 }
 
 /**
@@ -561,7 +561,7 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     {
                         auto intent = Intent(WC_LOADSAVE);
                         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                        intent.putExtra(INTENT_EXTRA_PATH, std::string{ gS6Info.name });
+                        intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
                         context_open_intent(&intent);
                     }
                     else
@@ -685,20 +685,20 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
 
-        if (gS6Info.editor_step != EditorStep::LandscapeEditor)
+        if (gEditorStep != EditorStep::LandscapeEditor)
         {
             window_top_toolbar_widgets[WIDX_LAND].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_WATER].type = WindowWidgetType::Empty;
         }
 
-        if (gS6Info.editor_step != EditorStep::RollercoasterDesigner)
+        if (gEditorStep != EditorStep::RollercoasterDesigner)
         {
             window_top_toolbar_widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
         }
 
-        if (gS6Info.editor_step != EditorStep::LandscapeEditor && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
+        if (gEditorStep != EditorStep::LandscapeEditor && gEditorStep != EditorStep::RollercoasterDesigner)
         {
             window_top_toolbar_widgets[WIDX_MAP].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
@@ -1704,13 +1704,11 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         return;
     }
 
-    ScenerySelection selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    auto selectedTab = gWindowSceneryTabSelections.size() > gWindowSceneryActiveTabIndex
+        ? gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex]
+        : ScenerySelection{};
     uint8_t sceneryType = selectedTab.SceneryType;
     uint16_t selectedScenery = selectedTab.EntryIndex;
-
-    if (selectedTab.IsUndefined())
-        return;
-
     CoordsXY gridPos;
 
     switch (sceneryType)
@@ -1974,18 +1972,12 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
 
             CoordsXYZD loc{ gridPos, z, direction };
             auto primaryColour = gWindowSceneryPrimaryColour;
-            auto bannerIndex = create_new_banner(0);
-            if (bannerIndex == BANNER_INDEX_NULL)
-            {
-                context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME, {});
-                break;
-            }
-            auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, bannerIndex, primaryColour);
-            bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, primaryColour);
+            bannerPlaceAction.SetCallback([=](const GameAction* ga, const BannerPlaceActionResult* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                    context_open_detail_window(WD_BANNER, bannerIndex);
+                    context_open_detail_window(WD_BANNER, result->bannerId);
                 }
             });
             GameActions::Execute(&bannerPlaceAction);
@@ -2573,13 +2565,7 @@ static money32 try_place_ghost_banner(CoordsXYZD loc, ObjectEntryIndex entryInde
 
     // 6e2612
     auto primaryColour = gWindowSceneryPrimaryColour;
-    auto bannerIndex = create_new_banner(0);
-    if (bannerIndex == BANNER_INDEX_NULL)
-    {
-        // Silently fail as this is just for the ghost
-        return 0;
-    }
-    auto bannerPlaceAction = BannerPlaceAction(loc, entryIndex, bannerIndex, primaryColour);
+    auto bannerPlaceAction = BannerPlaceAction(loc, entryIndex, primaryColour);
     bannerPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
     auto res = GameActions::Execute(&bannerPlaceAction);
     if (res->Error != GameActions::Status::Ok)
@@ -2614,8 +2600,13 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
     if (gWindowSceneryEyedropperEnabled)
         return;
 
-    ScenerySelection selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    if (gWindowSceneryActiveTabIndex >= gWindowSceneryTabSelections.size())
+    {
+        scenery_remove_ghost_tool_placement();
+        return;
+    }
 
+    const auto selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
     if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();
@@ -3287,7 +3278,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
     auto i = 0;
     gDropdownItemsFormat[i++] = STR_SHORTCUT_SHOW_MAP;
     gDropdownItemsFormat[i++] = STR_EXTRA_VIEWPORT;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == EditorStep::LandscapeEditor)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep == EditorStep::LandscapeEditor)
     {
         gDropdownItemsFormat[i++] = STR_MAPGEN_WINDOW_TITLE;
     }
@@ -3315,7 +3306,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
 static void top_toolbar_map_menu_dropdown(int16_t dropdownIndex)
 {
     int32_t customStartIndex = 3;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == EditorStep::LandscapeEditor)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep == EditorStep::LandscapeEditor)
     {
         customStartIndex++;
     }

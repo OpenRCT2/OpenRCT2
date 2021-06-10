@@ -530,7 +530,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     }
 
     // Disable clear patrol area if no area is set.
-    if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
+    if (!peep->HasPatrolArea())
     {
         Dropdown::SetDisabled(1, true);
     }
@@ -550,20 +550,13 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     // Clear patrol
     if (dropdownIndex == 1)
     {
-        const auto peep = GetStaff(w);
-        if (peep == nullptr)
+        const auto staff = GetStaff(w);
+        if (staff != nullptr)
         {
-            return;
+            staff->ClearPatrolArea();
+            gfx_invalidate_screen();
+            staff_update_greyed_patrol_areas();
         }
-        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-        {
-            gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
-        }
-        assert(gStaffModes[peep->StaffId] == StaffMode::Patrol);
-        gStaffModes[peep->StaffId] = StaffMode::Walk;
-
-        gfx_invalidate_screen();
-        staff_update_greyed_patrol_areas();
     }
     else
     {
@@ -1071,7 +1064,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         auto ft = Formatter();
-        ft.Add<money32>(GetStaffWage(peep->AssignedStaffType));
+        ft.Add<money64>(GetStaffWage(peep->AssignedStaffType));
         DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1369,8 +1362,7 @@ void window_staff_viewport_init(rct_window* w)
             int32_t width = view_widget->width() - 1;
             int32_t height = view_widget->height() - 1;
 
-            viewport_create(
-                w, screenPos, width, height, 0, { 0, 0, 0 }, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
+            viewport_create(w, screenPos, width, height, 0, { 0, 0, 0 }, focus.type, focus.sprite_id);
             w->flags |= WF_NO_SCROLLING;
             w->Invalidate();
         }

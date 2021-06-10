@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(UpkeepCosts, { 60, 20, 0, 4, 3, 10 }),
     SET_FIELD(BuildCosts, { 65, 1, 30, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 55),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

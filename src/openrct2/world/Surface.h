@@ -36,6 +36,7 @@ enum
     TERRAIN_ROOF_IRON,
     TERRAIN_ROOF_LOG,
     TERRAIN_COUNT_REGULAR, // The amount of surface types the user can actually select - what follows are technical types
+    // Technical types (not selectable)
     TERRAIN_CHECKERBOARD_INVERTED = TERRAIN_COUNT_REGULAR,
     TERRAIN_UNDERGROUND_VIEW,
 };

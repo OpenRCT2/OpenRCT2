@@ -212,7 +212,7 @@ static void custom_currency_window_text_input([[maybe_unused]] struct rct_window
 static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto ft = Formatter::Common();
-    ft.Add<int32_t>(100);
+    ft.Add<money64>(100);
 
     WindowDrawWidgets(w, dpi);
 

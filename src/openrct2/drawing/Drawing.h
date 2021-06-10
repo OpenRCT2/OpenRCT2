@@ -105,11 +105,11 @@ struct rct_gx
 struct rct_drawpixelinfo
 {
     uint8_t* bits{};
-    int16_t x{};
-    int16_t y{};
-    int16_t width{};
-    int16_t height{};
-    int16_t pitch{}; // note: this is actually (pitch - width)
+    int32_t x{};
+    int32_t y{};
+    int32_t width{};
+    int32_t height{};
+    int32_t pitch{}; // note: this is actually (pitch - width)
     ZoomLevel zoom_level{};
 
     /**

@@ -104,7 +104,7 @@ namespace Graph
 struct FinancialTooltipInfo
 {
     const ScreenCoordsXY coords;
-    const money32 money{};
+    const money64 money{};
 };
 
 static constexpr auto ChartMaxDataCount = 64;
@@ -122,21 +122,22 @@ static int32_t IndexForCursorAndHistory(const int32_t historyCount, const int32_
 }
 
 static const ScreenCoordsXY ScreenCoordsForHistoryIndex(
-    const int32_t index, const money32* history, const int32_t chartX, const int32_t chartY, const int32_t modifier,
+    const int32_t index, const money64* history, const int32_t chartX, const int32_t chartY, const int32_t modifier,
     const int32_t offset)
 {
     auto coords = ScreenCoordsXY{ chartX + ChartDataWidth * (ChartMaxIndex - index),
-                                  chartY + ChartMaxHeight - ((((history[index] >> modifier) + offset) * 170) / 256) };
+                                  chartY + ChartMaxHeight
+                                      - (((static_cast<int32_t>(history[index] >> modifier) + offset) * 170) / 256) };
     return coords;
 }
 
 static const FinancialTooltipInfo finance_tooltip_info_from_money(
-    const money32* history, const int32_t historyCount, const int32_t modifier, const int32_t offset,
+    const money64* history, const int32_t historyCount, const int32_t modifier, const int32_t offset,
     const ScreenRect& chartFrame, const ScreenCoordsXY& cursorPosition)
 {
     if (!chartFrame.Contains(cursorPosition))
     {
-        return { {}, MONEY32_UNDEFINED };
+        return { {}, MONEY64_UNDEFINED };
     }
 
     const auto historyIndex = IndexForCursorAndHistory(historyCount, cursorPosition.x, chartFrame.GetLeft());
@@ -148,7 +149,7 @@ static const FinancialTooltipInfo finance_tooltip_info_from_money(
 
 namespace Graph
 {
-    static void DrawMonths(rct_drawpixelinfo* dpi, const money32* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawMonths(rct_drawpixelinfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         int32_t i, yearOver32, currentMonth, currentDay;
 
@@ -158,7 +159,7 @@ namespace Graph
         auto screenCoords = origCoords;
         for (i = count - 1; i >= 0; i--)
         {
-            if (history[i] != MONEY32_UNDEFINED && yearOver32 % 4 == 0)
+            if (history[i] != MONEY64_UNDEFINED && yearOver32 % 4 == 0)
             {
                 // Draw month text
                 int32_t monthFormat = DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)];
@@ -176,14 +177,14 @@ namespace Graph
     }
 
     static void DrawLineA(
-        rct_drawpixelinfo* dpi, const money32* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
+        rct_drawpixelinfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
         auto coords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
         {
-            if (history[i] != MONEY32_UNDEFINED)
+            if (history[i] != MONEY64_UNDEFINED)
             {
                 coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
@@ -206,14 +207,14 @@ namespace Graph
     }
 
     static void DrawLineB(
-        rct_drawpixelinfo* dpi, const money32* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
+        rct_drawpixelinfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
         auto coords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
         {
-            if (history[i] != MONEY32_UNDEFINED)
+            if (history[i] != MONEY64_UNDEFINED)
             {
                 coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
@@ -233,7 +234,7 @@ namespace Graph
     }
 
     static void DrawHoveredValue(
-        rct_drawpixelinfo* dpi, const money32* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
+        rct_drawpixelinfo* dpi, const money64* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
         const auto cursorPosition = context_get_cursor_position_scaled();
@@ -247,7 +248,7 @@ namespace Graph
         const auto info = finance_tooltip_info_from_money(
             history, ChartMaxDataCount, modifier, offset, chartFrame, cursorPosition);
 
-        if (info.money == MONEY32_UNDEFINED)
+        if (info.money == MONEY64_UNDEFINED)
         {
             return;
         }
@@ -270,7 +271,7 @@ namespace Graph
     }
 
     void Draw(
-        rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const ScreenCoordsXY& screenCoords,
+        rct_drawpixelinfo* dpi, const money64* history, const int32_t count, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
         DrawMonths(dpi, history, count, screenCoords);

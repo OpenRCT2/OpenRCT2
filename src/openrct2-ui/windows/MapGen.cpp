@@ -45,7 +45,6 @@ enum {
     WIDX_TAB_3,
     WIDX_TAB_4,
 
-
     TAB_BEGIN,
 
     WIDX_MAP_GENERATE = TAB_BEGIN,
@@ -816,7 +815,7 @@ static void window_mapgen_simplex_mouseup(rct_window* w, rct_widgetindex widgetI
             mapgenSettings.mapSize = _mapSize;
 
             mapgenSettings.height = _baseHeight;
-            mapgenSettings.water_level = _waterLevel + 2;
+            mapgenSettings.water_level = _waterLevel + MINIMUM_WATER_HEIGHT;
             mapgenSettings.floor = _randomTerrain ? -1 : _floorTexture;
             mapgenSettings.wall = _randomTerrain ? -1 : _wallTexture;
             mapgenSettings.trees = _placeTrees;
@@ -877,11 +876,11 @@ static void window_mapgen_simplex_mousedown(rct_window* w, rct_widgetindex widge
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_WATER_LEVEL_UP:
-            _waterLevel = std::min(_waterLevel + 2, 54);
+            _waterLevel = std::min(_waterLevel + MINIMUM_WATER_HEIGHT, MINIMUM_WATER_HEIGHT + MAXIMUM_WATER_HEIGHT);
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_WATER_LEVEL_DOWN:
-            _waterLevel = std::max(_waterLevel - 2, 0);
+            _waterLevel = std::max(_waterLevel - MINIMUM_WATER_HEIGHT, 0);
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX:
@@ -1101,11 +1100,11 @@ static void window_mapgen_heightmap_mousedown(rct_window* w, rct_widgetindex wid
             widget_invalidate(w, WIDX_HEIGHTMAP_HIGH);
             break;
         case WIDX_HEIGHTMAP_WATER_LEVEL_UP:
-            _waterLevel = std::min(_waterLevel + 2, 54);
+            _waterLevel = std::min(_waterLevel + MINIMUM_WATER_HEIGHT, MINIMUM_WATER_HEIGHT + MAXIMUM_WATER_HEIGHT);
             widget_invalidate(w, WIDX_HEIGHTMAP_WATER_LEVEL);
             break;
         case WIDX_HEIGHTMAP_WATER_LEVEL_DOWN:
-            _waterLevel = std::max(_waterLevel - 2, 0);
+            _waterLevel = std::max(_waterLevel - MINIMUM_WATER_HEIGHT, 0);
             widget_invalidate(w, WIDX_HEIGHTMAP_WATER_LEVEL);
             break;
     }

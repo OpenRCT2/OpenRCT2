@@ -676,7 +676,7 @@ static void paint_river_rapids_track_waterfall(
 {
     uint32_t imageId;
 
-    uint16_t frameNum = (gScenarioTicks / 2) & 7;
+    uint16_t frameNum = (gCurrentTicks / 2) & 7;
 
     if (direction & 1)
     {
@@ -739,7 +739,7 @@ static void paint_river_rapids_track_rapids(
 {
     uint32_t imageId;
 
-    uint16_t frameNum = (gScenarioTicks / 2) & 7;
+    uint16_t frameNum = (gCurrentTicks / 2) & 7;
 
     if (direction & 1)
     {
@@ -790,7 +790,7 @@ static void paint_river_rapids_track_whirlpool(
 {
     uint32_t imageId;
 
-    uint8_t frameNum = (gScenarioTicks / 4) % 16;
+    uint8_t frameNum = (gCurrentTicks / 4) % 16;
 
     if (direction & 1)
     {

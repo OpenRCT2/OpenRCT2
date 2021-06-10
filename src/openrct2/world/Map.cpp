@@ -95,11 +95,8 @@ uint8_t gMapGroundFlags;
 TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
-int16_t gMapSizeUnits;
-int16_t gMapSizeMinus2;
-int16_t gMapSize;
-int16_t gMapSizeMaxXY;
-int16_t gMapBaseZ;
+int32_t gMapSize;
+int32_t gMapBaseZ;
 
 std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
@@ -110,8 +107,8 @@ bool gClearSmallScenery;
 bool gClearLargeScenery;
 bool gClearFootpath;
 
-uint16_t gLandRemainingOwnershipSales;
-uint16_t gLandRemainingConstructionSales;
+uint32_t gLandRemainingOwnershipSales;
+uint32_t gLandRemainingConstructionSales;
 
 bool gMapLandRightsUpdateSuccess;
 
@@ -121,8 +118,6 @@ static TilePointerIndex<TileElement> _tileIndexStash;
 static std::vector<TileElement> _tileElementsStash;
 static size_t _tileElementsInUse;
 static size_t _tileElementsInUseStash;
-static int32_t _mapSizeUnitsStash;
-static int32_t _mapSizeMinus2Stash;
 static int32_t _mapSizeStash;
 static int32_t _currentRotationStash;
 
@@ -130,8 +125,6 @@ void StashMap()
 {
     _tileIndexStash = std::move(_tileIndex);
     _tileElementsStash = std::move(_tileElements);
-    _mapSizeUnitsStash = gMapSizeUnits;
-    _mapSizeMinus2Stash = gMapSizeMinus2;
     _mapSizeStash = gMapSize;
     _currentRotationStash = gCurrentRotation;
     _tileElementsInUseStash = _tileElementsInUse;
@@ -141,8 +134,6 @@ void UnstashMap()
 {
     _tileIndex = std::move(_tileIndexStash);
     _tileElements = std::move(_tileElementsStash);
-    gMapSizeUnits = _mapSizeUnitsStash;
-    gMapSizeMinus2 = _mapSizeMinus2Stash;
     gMapSize = _mapSizeStash;
     gCurrentRotation = _currentRotationStash;
     _tileElementsInUse = _tileElementsInUseStash;
@@ -160,6 +151,61 @@ void SetTileElements(std::vector<TileElement>&& tileElements)
     _tileElementsInUse = _tileElements.size();
 }
 
+static TileElement GetDefaultSurfaceElement()
+{
+    TileElement el;
+    el.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+    el.SetLastForTile(true);
+    el.base_height = 14;
+    el.clearance_height = 14;
+    el.AsSurface()->SetWaterHeight(0);
+    el.AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+    el.AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+    el.AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+    el.AsSurface()->SetParkFences(0);
+    el.AsSurface()->SetSurfaceStyle(0);
+    el.AsSurface()->SetEdgeStyle(0);
+    return el;
+}
+
+std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
+{
+    std::vector<TileElement> newElements;
+    newElements.reserve(std::max(MIN_TILE_ELEMENTS, _tileElements.size()));
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            auto oldSize = newElements.size();
+
+            // Add all non-ghost elements
+            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            if (element != nullptr)
+            {
+                do
+                {
+                    if (!element->IsGhost())
+                    {
+                        newElements.push_back(*element);
+                    }
+                } while (!(element++)->IsLastForTile());
+            }
+
+            // Insert default surface element if no elements were added
+            auto newSize = newElements.size();
+            if (oldSize == newSize)
+            {
+                newElements.push_back(GetDefaultSurfaceElement());
+            }
+
+            // Ensure last element of tile has last flag set
+            auto& lastEl = newElements.back();
+            lastEl.SetLastForTile(true);
+        }
+    }
+    return newElements;
+}
+
 static void ReorganiseTileElements(size_t capacity)
 {
     context_setcurrentcursor(CursorID::ZZZ);
@@ -173,18 +219,7 @@ static void ReorganiseTileElements(size_t capacity)
             const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (element == nullptr)
             {
-                auto& newElement = newElements.emplace_back();
-                newElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                newElement.SetLastForTile(true);
-                newElement.base_height = 14;
-                newElement.clearance_height = 14;
-                newElement.AsSurface()->SetWaterHeight(0);
-                newElement.AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-                newElement.AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                newElement.AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-                newElement.AsSurface()->SetParkFences(0);
-                newElement.AsSurface()->SetSurfaceStyle(0);
-                newElement.AsSurface()->SetEdgeStyle(0);
+                newElements.push_back(GetDefaultSurfaceElement());
             }
             else
             {
@@ -406,10 +441,7 @@ void map_init(int32_t size)
 
     gGrassSceneryTileLoopPosition = 0;
     gWidePathTileLoopPosition = {};
-    gMapSizeUnits = size * 32 - 32;
-    gMapSizeMinus2 = size * 32 - 2;
     gMapSize = size;
-    gMapSizeMaxXY = size * 32 - 33;
     gMapBaseZ = 7;
     map_remove_out_of_range_elements();
     AutoCreateMapAnimations();
@@ -755,7 +787,7 @@ bool map_is_location_valid(const CoordsXY& coords)
 
 bool map_is_edge(const CoordsXY& coords)
 {
-    return (coords.x < 32 || coords.y < 32 || coords.x >= gMapSizeUnits || coords.y >= gMapSizeUnits);
+    return (coords.x < 32 || coords.y < 32 || coords.x >= GetMapSizeUnits() || coords.y >= GetMapSizeUnits());
 }
 
 bool map_can_build_at(const CoordsXYZ& loc)
@@ -941,8 +973,7 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
 uint8_t map_get_lowest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY)),
-                            std::min(range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY)) };
+                            std::min(range.GetRight(), GetMapSizeMaxXY()), std::min(range.GetBottom(), GetMapSizeMaxXY()) };
 
     uint8_t min_height = 0xFF;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -971,8 +1002,7 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
 uint8_t map_get_highest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY)),
-                            std::min(range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY)) };
+                            std::min(range.GetRight(), GetMapSizeMaxXY()), std::min(range.GetBottom(), GetMapSizeMaxXY()) };
 
     uint8_t max_height = 0;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -1324,7 +1354,7 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
 
     res->GroundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
-    if (pos.x >= gMapSizeUnits || pos.y >= gMapSizeUnits || pos.x < 32 || pos.y < 32)
+    if (pos.x >= GetMapSizeUnits() || pos.y >= GetMapSizeUnits() || pos.x < 32 || pos.y < 32)
     {
         res->Error = GameActions::Status::InvalidParameters;
         res->ErrorMessage = STR_OFF_EDGE_OF_MAP;
@@ -1596,7 +1626,9 @@ void map_restore_provisional_elements()
     if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
         gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
-        footpath_provisional_set(gProvisionalFootpath.Type, gProvisionalFootpath.Position, gProvisionalFootpath.Slope);
+        footpath_provisional_set(
+            gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
+            gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
     }
     if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
     {
@@ -1618,7 +1650,7 @@ void map_restore_provisional_elements()
  */
 void map_remove_out_of_range_elements()
 {
-    int32_t mapMaxXY = gMapSizeMaxXY;
+    int32_t mapMaxXY = GetMapSizeMaxXY();
 
     // Ensure that we can remove elements
     //

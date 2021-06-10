@@ -128,7 +128,7 @@ public:
             td->track_support_colour[i] = td6.track_support_colour[i];
         }
         td->flags2 = td6.flags2;
-        td->vehicle_object = td6.vehicle_object;
+        td->vehicle_object = ObjectEntryDescriptor(td6.vehicle_object);
         td->space_required_x = td6.space_required_x;
         td->space_required_y = td6.space_required_y;
         td->lift_hill_speed = td6.lift_hill_speed_num_circuits & 0b00011111;
@@ -202,7 +202,7 @@ public:
             rct_td6_scenery_element t6SceneryElement{};
             _stream.Read(&t6SceneryElement, sizeof(rct_td6_scenery_element));
             TrackDesignSceneryElement sceneryElement{};
-            sceneryElement.scenery_object = t6SceneryElement.scenery_object;
+            sceneryElement.scenery_object = ObjectEntryDescriptor(t6SceneryElement.scenery_object);
             sceneryElement.x = t6SceneryElement.x;
             sceneryElement.y = t6SceneryElement.y;
             sceneryElement.z = t6SceneryElement.z;
@@ -224,7 +224,7 @@ public:
         if (RCT2RideTypeNeedsConversion(td->type))
         {
             std::scoped_lock<std::mutex> lock(_objectLookupMutex);
-            auto rawObject = object_repository_load_object(&td->vehicle_object);
+            auto rawObject = object_repository_load_object(&td->vehicle_object.Entry);
             if (rawObject != nullptr)
             {
                 const auto* rideEntry = static_cast<const rct_ride_entry*>(

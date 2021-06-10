@@ -13,13 +13,16 @@
 #include "../Game.h"
 #include "../GameStateSnapshots.h"
 #include "../OpenRCT2.h"
+#include "../ParkFile.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/LoadOrQuitAction.h"
 #include "../actions/NetworkModifyGroupAction.h"
 #include "../actions/PeepPickupAction.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
+#include "../localisation/Formatting.h"
 #include "../platform/Platform2.h"
+#include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
@@ -37,7 +40,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "18"
+#define NETWORK_STREAM_VERSION "33"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -66,7 +69,6 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include "../localisation/Localisation.h"
 #    include "../object/ObjectManager.h"
 #    include "../object/ObjectRepository.h"
-#    include "../rct2/S6Exporter.h"
 #    include "../scenario/Scenario.h"
 #    include "../util/Util.h"
 #    include "../world/Park.h"
@@ -1069,7 +1071,7 @@ std::string NetworkBase::BeginLog(const std::string& directory, const std::strin
     return Path::Combine(directory, midName, filename);
 }
 
-void NetworkBase::AppendLog(std::ostream& fs, const std::string& s)
+void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
 {
     if (fs.fail())
     {
@@ -1084,7 +1086,7 @@ void NetworkBase::AppendLog(std::ostream& fs, const std::string& s)
         auto tmInfo = localtime(&timer);
         if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0)
         {
-            String::Append(buffer, sizeof(buffer), s.c_str());
+            String::Append(buffer, sizeof(buffer), std::string(s).c_str());
             String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
             fs.write(buffer, strlen(buffer));
@@ -1109,7 +1111,7 @@ void NetworkBase::BeginChatLog()
 #    endif
 }
 
-void NetworkBase::AppendChatLog(const std::string& s)
+void NetworkBase::AppendChatLog(std::string_view s)
 {
     if (gConfigNetwork.log_chat && _chat_log_fs.is_open())
     {
@@ -1219,15 +1221,25 @@ void NetworkBase::Client_Send_AUTH(
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-void NetworkBase::Client_Send_MAPREQUEST(const std::vector<std::string>& objects)
+void NetworkBase::Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor>& objects)
 {
     log_verbose("client requests %u objects", uint32_t(objects.size()));
     NetworkPacket packet(NetworkCommand::MapRequest);
     packet << static_cast<uint32_t>(objects.size());
     for (const auto& object : objects)
     {
-        log_verbose("client requests object %s", object.c_str());
-        packet.Write(reinterpret_cast<const uint8_t*>(object.c_str()), 8);
+        std::string name(object.GetName());
+        log_verbose("client requests object %s", name.c_str());
+        if (object.Generation == ObjectGeneration::DAT)
+        {
+            packet << static_cast<uint8_t>(0);
+            packet.Write(&object.Entry, sizeof(rct_object_entry));
+        }
+        else
+        {
+            packet << static_cast<uint8_t>(1);
+            packet.WriteString(name);
+        }
     }
     _serverConnection->QueuePacket(std::move(packet));
 }
@@ -1261,9 +1273,20 @@ void NetworkBase::Server_Send_OBJECTS_LIST(
             NetworkPacket packet(NetworkCommand::ObjectsList);
             packet << static_cast<uint32_t>(i) << static_cast<uint32_t>(objects.size());
 
-            log_verbose("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
-            packet.Write(reinterpret_cast<const uint8_t*>(object->ObjectEntry.name), 8);
-            packet << object->ObjectEntry.checksum << object->ObjectEntry.flags;
+            if (object->Identifier.empty())
+            {
+                // DAT
+                log_verbose("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
+                packet << static_cast<uint8_t>(0);
+                packet.Write(&object->ObjectEntry, sizeof(rct_object_entry));
+            }
+            else
+            {
+                // JSON
+                log_verbose("Object %s", object->Identifier.c_str());
+                packet << static_cast<uint8_t>(1);
+                packet.WriteString(object->Identifier);
+            }
 
             connection.QueuePacket(std::move(packet));
         }
@@ -1401,37 +1424,18 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
 
 std::vector<uint8_t> NetworkBase::save_for_network(const std::vector<const ObjectRepositoryItem*>& objects) const
 {
-    std::vector<uint8_t> header;
-    bool RLEState = gUseRLE;
-    gUseRLE = false;
-
+    std::vector<uint8_t> result;
     auto ms = OpenRCT2::MemoryStream();
-    if (!SaveMap(&ms, objects))
+    if (SaveMap(&ms, objects))
     {
-        log_warning("Failed to export map.");
-        return header;
-    }
-    gUseRLE = RLEState;
-
-    const void* data = ms.GetData();
-    int32_t size = ms.GetLength();
-
-    auto compressed = util_zlib_deflate(static_cast<const uint8_t*>(data), size);
-    if (compressed != std::nullopt)
-    {
-        std::string headerString = "open2_sv6_zlib";
-        header.resize(headerString.size() + 1 + compressed->size());
-        std::memcpy(&header[0], headerString.c_str(), headerString.size() + 1);
-        std::memcpy(&header[headerString.size() + 1], compressed->data(), compressed->size());
-        log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, headerString.size() + 1 + compressed->size());
+        result.resize(ms.GetLength());
+        std::memcpy(result.data(), ms.GetData(), result.size());
     }
     else
     {
-        log_warning("Failed to compress the data, falling back to non-compressed sv6.");
-        header.resize(size);
-        std::memcpy(header.data(), data, size);
+        log_warning("Failed to export map.");
     }
-    return header;
+    return result;
 }
 
 void NetworkBase::Client_Send_CHAT(const char* text)
@@ -2222,8 +2226,9 @@ void NetworkBase::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             break;
         case NetworkAuth::BadVersion:
         {
-            const char* version = packet.ReadString();
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &version);
+            auto version = std::string(packet.ReadString());
+            auto versionp = version.c_str();
+            connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &versionp);
             connection.Disconnect();
             break;
         }
@@ -2253,9 +2258,9 @@ void NetworkBase::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacke
     }
 }
 
-void NetworkBase::Server_Client_Joined(const char* name, const std::string& keyhash, NetworkConnection& connection)
+void NetworkBase::Server_Client_Joined(std::string_view name, const std::string& keyhash, NetworkConnection& connection)
 {
-    auto player = AddPlayer(name, keyhash);
+    auto player = AddPlayer(std::string(name), keyhash);
     connection.Player = player;
     if (player != nullptr)
     {
@@ -2327,26 +2332,45 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
         context_open_intent(&intent);
 
-        char objectName[12]{};
-        std::memcpy(objectName, packet.Read(8), 8);
+        uint8_t objectType{};
+        packet >> objectType;
 
-        uint32_t checksum = 0;
-        uint32_t flags = 0;
-        packet >> checksum >> flags;
-
-        const auto* object = repo.FindObjectLegacy(objectName);
-        // This could potentially request the object if checksums don't match, but since client
-        // won't replace its version with server-provided one, we don't do that.
-        if (object == nullptr)
+        if (objectType == 0)
         {
-            log_verbose("Requesting object %s with checksum %x from server", objectName, checksum);
-            _missingObjects.emplace_back(objectName);
+            // DAT
+            auto entry = reinterpret_cast<const rct_object_entry*>(packet.Read(sizeof(rct_object_entry)));
+            if (entry != nullptr)
+            {
+                const auto* object = repo.FindObject(entry);
+                if (object == nullptr)
+                {
+                    auto objectName = std::string(entry->GetName());
+                    log_verbose("Requesting object %s with checksum %x from server", objectName.c_str(), entry->checksum);
+                    _missingObjects.push_back(ObjectEntryDescriptor(*entry));
+                }
+                else if (object->ObjectEntry.checksum != entry->checksum || object->ObjectEntry.flags != entry->flags)
+                {
+                    auto objectName = std::string(entry->GetName());
+                    log_warning(
+                        "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", objectName.c_str(),
+                        object->ObjectEntry.checksum, object->ObjectEntry.flags, entry->checksum, entry->flags);
+                }
+            }
         }
-        else if (object->ObjectEntry.checksum != checksum || object->ObjectEntry.flags != flags)
+        else
         {
-            log_warning(
-                "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", objectName, object->ObjectEntry.checksum,
-                object->ObjectEntry.flags, checksum, flags);
+            // JSON
+            auto identifier = packet.ReadString();
+            if (!identifier.empty())
+            {
+                const auto* object = repo.FindObject(identifier);
+                if (object == nullptr)
+                {
+                    auto objectName = std::string(identifier);
+                    log_verbose("Requesting object %s from server", objectName.c_str());
+                    _missingObjects.push_back(ObjectEntryDescriptor(objectName));
+                }
+            }
         }
     }
 
@@ -2472,14 +2496,28 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
     auto& repo = GetContext()->GetObjectRepository();
     for (uint32_t i = 0; i < size; i++)
     {
-        const char* name = reinterpret_cast<const char*>(packet.Read(8));
-        // This is required, as packet does not have null terminator
-        std::string s(name, name + 8);
-        log_verbose("Client requested object %s", s.c_str());
-        const ObjectRepositoryItem* item = repo.FindObjectLegacy(s.c_str());
+        uint8_t generation{};
+        packet >> generation;
+
+        std::string objectName;
+        const ObjectRepositoryItem* item{};
+        if (generation == static_cast<uint8_t>(ObjectGeneration::DAT))
+        {
+            const auto* entry = reinterpret_cast<const rct_object_entry*>(packet.Read(sizeof(rct_object_entry)));
+            objectName = std::string(entry->GetName());
+            log_verbose("Client requested object %s", objectName.c_str());
+            item = repo.FindObject(entry);
+        }
+        else
+        {
+            objectName = std::string(packet.ReadString());
+            log_verbose("Client requested object %s", objectName.c_str());
+            item = repo.FindObject(objectName);
+        }
+
         if (item == nullptr)
         {
-            log_warning("Client tried getting non-existent object %s from us.", s.c_str());
+            log_warning("Client tried getting non-existent object %s from us.", objectName.c_str());
         }
         else
         {
@@ -2487,7 +2525,7 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
         }
     }
 
-    const char* player_name = static_cast<const char*>(connection.Player->Name.c_str());
+    auto player_name = connection.Player->Name.c_str();
     Server_Send_MAP(&connection);
     Server_Send_EVENT_PLAYER_JOINED(player_name);
     Server_Send_GROUPLIST(connection);
@@ -2497,15 +2535,14 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
 {
     if (connection.AuthStatus != NetworkAuth::Ok)
     {
-        const char* hostName = connection.Socket->GetHostName();
-
-        const char* gameversion = packet.ReadString();
-        const char* name = packet.ReadString();
-        const char* password = packet.ReadString();
-        const char* pubkey = packet.ReadString();
+        auto* hostName = connection.Socket->GetHostName();
+        auto gameversion = packet.ReadString();
+        auto name = packet.ReadString();
+        auto password = packet.ReadString();
+        auto pubkey = packet.ReadString();
         uint32_t sigsize;
         packet >> sigsize;
-        if (pubkey == nullptr)
+        if (pubkey.empty())
         {
             connection.AuthStatus = NetworkAuth::VerificationFailure;
         }
@@ -2524,7 +2561,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
 
                 std::memcpy(signature.data(), signatureData, sigsize);
 
-                auto ms = MemoryStream(pubkey, strlen(pubkey));
+                auto ms = MemoryStream(pubkey.data(), pubkey.size());
                 if (!connection.Key.LoadPublic(&ms))
                 {
                     throw std::runtime_error("Failed to load public key.");
@@ -2564,24 +2601,24 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
             passwordless = group->CanPerformCommand(GameCommand::PasswordlessLogin);
         }
-        if (!gameversion || network_get_version() != gameversion)
+        if (gameversion != network_get_version())
         {
             connection.AuthStatus = NetworkAuth::BadVersion;
             log_info("Connection %s: Bad version.", hostName);
         }
-        else if (!name)
+        else if (name.empty())
         {
             connection.AuthStatus = NetworkAuth::BadName;
             log_info("Connection %s: Bad name.", connection.Socket->GetHostName());
         }
         else if (!passwordless)
         {
-            if ((!password || strlen(password) == 0) && !_password.empty())
+            if (password.empty() && !_password.empty())
             {
                 connection.AuthStatus = NetworkAuth::RequirePassword;
                 log_info("Connection %s: Requires password.", hostName);
             }
-            else if (password && _password != password)
+            else if (!password.empty() && _password != password)
             {
                 connection.AuthStatus = NetworkAuth::BadPassword;
                 log_info("Connection %s: Bad password.", hostName);
@@ -2657,25 +2694,6 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         bool has_to_free = false;
         uint8_t* data = &chunk_buffer[0];
         size_t data_size = size;
-        // zlib-compressed
-        if (strcmp("open2_sv6_zlib", reinterpret_cast<char*>(&chunk_buffer[0])) == 0)
-        {
-            log_verbose("Received zlib-compressed sv6 map");
-            has_to_free = true;
-            size_t header_len = strlen("open2_sv6_zlib") + 1;
-            data = util_zlib_inflate(&chunk_buffer[header_len], size - header_len, &data_size);
-            if (data == nullptr)
-            {
-                log_warning("Failed to decompress data sent from server.");
-                Close();
-                return;
-            }
-        }
-        else
-        {
-            log_verbose("Assuming received map is in plain sv6 format");
-        }
-
         auto ms = MemoryStream(data, data_size);
         if (LoadMap(&ms))
         {
@@ -2718,51 +2736,20 @@ bool NetworkBase::LoadMap(IStream* stream)
     {
         auto context = GetContext();
         auto& objManager = context->GetObjectManager();
-        auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
+        auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
         auto loadResult = importer->LoadFromStream(stream, false);
-        objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
+        objManager.LoadObjects(loadResult.RequiredObjects);
         importer->Import();
 
         EntityTweener::Get().Reset();
         AutoCreateMapAnimations();
 
-        // Read checksum
-        [[maybe_unused]] uint32_t checksum = stream->ReadValue<uint32_t>();
-
-        // Read other data not in normal save files
-        gGamePaused = stream->ReadValue<uint32_t>();
-        _guestGenerationProbability = stream->ReadValue<uint32_t>();
-        _suggestedGuestMaximum = stream->ReadValue<uint32_t>();
-        gCheatsAllowTrackPlaceInvalidHeights = stream->ReadValue<uint8_t>() != 0;
-        gCheatsEnableAllDrawableTrackPieces = stream->ReadValue<uint8_t>() != 0;
-        gCheatsSandboxMode = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableClearanceChecks = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableSupportLimits = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableTrainLengthLimit = stream->ReadValue<uint8_t>() != 0;
-        gCheatsEnableChainLiftOnAllTrack = stream->ReadValue<uint8_t>() != 0;
-        gCheatsShowAllOperatingModes = stream->ReadValue<uint8_t>() != 0;
-        gCheatsShowVehiclesFromOtherTrackTypes = stream->ReadValue<uint8_t>() != 0;
-        gCheatsUnlockOperatingLimits = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableBrakesFailure = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableAllBreakdowns = stream->ReadValue<uint8_t>() != 0;
-        gCheatsBuildInPauseMode = stream->ReadValue<uint8_t>() != 0;
-        gCheatsIgnoreRideIntensity = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableVandalism = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableLittering = stream->ReadValue<uint8_t>() != 0;
-        gCheatsNeverendingMarketing = stream->ReadValue<uint8_t>() != 0;
-        gCheatsFreezeWeather = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisablePlantAging = stream->ReadValue<uint8_t>() != 0;
-        gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableRideValueAging = stream->ReadValue<uint8_t>() != 0;
-        gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8_t>() != 0;
-        gCheatsIgnoreResearchStatus = stream->ReadValue<uint8_t>() != 0;
-        gAllowEarlyCompletionInNetworkPlay = stream->ReadValue<uint8_t>() != 0;
-
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
+        Console::Error::WriteLine("Unable to read map from server: %s", e.what());
     }
     return result;
 }
@@ -2773,54 +2760,24 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
     viewport_set_saved_view();
     try
     {
-        auto s6exporter = std::make_unique<S6Exporter>();
-        s6exporter->ExportObjectsList = objects;
-        s6exporter->Export();
-        s6exporter->SaveGame(stream);
-
-        // Write other data not in normal save files
-        stream->WriteValue<uint32_t>(gGamePaused);
-        stream->WriteValue<uint32_t>(_guestGenerationProbability);
-        stream->WriteValue<uint32_t>(_suggestedGuestMaximum);
-        stream->WriteValue<uint8_t>(gCheatsAllowTrackPlaceInvalidHeights);
-        stream->WriteValue<uint8_t>(gCheatsEnableAllDrawableTrackPieces);
-        stream->WriteValue<uint8_t>(gCheatsSandboxMode);
-        stream->WriteValue<uint8_t>(gCheatsDisableClearanceChecks);
-        stream->WriteValue<uint8_t>(gCheatsDisableSupportLimits);
-        stream->WriteValue<uint8_t>(gCheatsDisableTrainLengthLimit);
-        stream->WriteValue<uint8_t>(gCheatsEnableChainLiftOnAllTrack);
-        stream->WriteValue<uint8_t>(gCheatsShowAllOperatingModes);
-        stream->WriteValue<uint8_t>(gCheatsShowVehiclesFromOtherTrackTypes);
-        stream->WriteValue<uint8_t>(gCheatsUnlockOperatingLimits);
-        stream->WriteValue<uint8_t>(gCheatsDisableBrakesFailure);
-        stream->WriteValue<uint8_t>(gCheatsDisableAllBreakdowns);
-        stream->WriteValue<uint8_t>(gCheatsBuildInPauseMode);
-        stream->WriteValue<uint8_t>(gCheatsIgnoreRideIntensity);
-        stream->WriteValue<uint8_t>(gCheatsDisableVandalism);
-        stream->WriteValue<uint8_t>(gCheatsDisableLittering);
-        stream->WriteValue<uint8_t>(gCheatsNeverendingMarketing);
-        stream->WriteValue<uint8_t>(gCheatsFreezeWeather);
-        stream->WriteValue<uint8_t>(gCheatsDisablePlantAging);
-        stream->WriteValue<uint8_t>(gCheatsAllowArbitraryRideTypeChanges);
-        stream->WriteValue<uint8_t>(gCheatsDisableRideValueAging);
-        stream->WriteValue<uint8_t>(gConfigGeneral.show_real_names_of_guests);
-        stream->WriteValue<uint8_t>(gCheatsIgnoreResearchStatus);
-        stream->WriteValue<uint8_t>(gConfigGeneral.allow_early_completion);
-
+        auto exporter = std::make_unique<ParkFileExporter>();
+        exporter->ExportObjectsList = objects;
+        exporter->Export(*stream);
         result = true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
+        Console::Error::WriteLine("Unable to serialise map: %s", e.what());
     }
     return result;
 }
 
 void NetworkBase::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
-    const char* text = packet.ReadString();
-    if (text)
+    auto text = packet.ReadString();
+    if (!text.empty())
     {
-        chat_history_add(text);
+        chat_history_add(std::string(text));
     }
 }
 
@@ -2863,7 +2820,7 @@ static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
     auto szText = packet.ReadString();
-    if (szText == nullptr || szText[0] == '\0')
+    if (szText.empty())
         return;
 
     if (connection.Player)
@@ -2875,7 +2832,7 @@ void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacke
         }
     }
 
-    std::string text = szText;
+    std::string text(szText);
     if (connection.Player != nullptr)
     {
         if (!ProcessChatMessagePluginHooks(connection.Player->Id, text))
@@ -3012,8 +2969,8 @@ void NetworkBase::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connect
 
     if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
     {
-        const char* text = packet.ReadString();
-        if (text != nullptr)
+        auto text = packet.ReadString();
+        if (!text.empty())
         {
             tickData.spriteHash = text;
         }
@@ -3097,12 +3054,10 @@ void NetworkBase::Client_Handle_PINGLIST([[maybe_unused]] NetworkConnection& con
 
 void NetworkBase::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet)
 {
-    static std::string msg;
-    const char* disconnectmsg = packet.ReadString();
-    if (disconnectmsg)
+    auto disconnectmsg = packet.ReadString();
+    if (!disconnectmsg.empty())
     {
-        msg = disconnectmsg;
-        connection.SetLastDisconnectReason(msg.c_str());
+        connection.SetLastDisconnectReason(disconnectmsg);
     }
 }
 
@@ -3134,32 +3089,31 @@ void NetworkBase::Client_Handle_GROUPLIST([[maybe_unused]] NetworkConnection& co
 
 void NetworkBase::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
-    char text[256];
     uint16_t eventType;
     packet >> eventType;
     switch (eventType)
     {
         case SERVER_EVENT_PLAYER_JOINED:
         {
-            const char* playerName = packet.ReadString();
-            format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &playerName);
-            chat_history_add(text);
+            auto playerName = packet.ReadString();
+            auto message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, playerName);
+            chat_history_add(message.c_str());
             break;
         }
         case SERVER_EVENT_PLAYER_DISCONNECTED:
         {
-            const char* playerName = packet.ReadString();
-            const char* reason = packet.ReadString();
-            const char* args[] = { playerName, reason };
-            if (str_is_null_or_empty(reason))
+            auto playerName = packet.ReadString();
+            auto reason = packet.ReadString();
+            std::string message;
+            if (reason.empty())
             {
-                format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, args);
+                message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, playerName);
             }
             else
             {
-                format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, args);
+                message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, playerName, reason);
             }
-            chat_history_add(text);
+            chat_history_add(message.c_str());
             break;
         }
     }
@@ -3174,7 +3128,7 @@ void NetworkBase::Client_Send_GAMEINFO()
 
 void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
-    const char* jsonString = packet.ReadString();
+    auto jsonString = packet.ReadString();
     packet >> _serverState.gamestateSnapshotsEnabled;
 
     json_t jsonData = Json::FromString(jsonString);
@@ -3888,7 +3842,7 @@ void network_set_password(const char* password)
     gNetwork.SetPassword(password);
 }
 
-void network_append_chat_log(const utf8* text)
+void network_append_chat_log(std::string_view text)
 {
     gNetwork.AppendChatLog(text);
 }
@@ -4187,7 +4141,7 @@ int32_t network_get_current_player_group_index()
 {
     return 0;
 }
-void network_append_chat_log(const utf8* text)
+void network_append_chat_log(std::string_view text)
 {
 }
 void network_append_server_log(const utf8* text)

@@ -194,7 +194,7 @@ struct rct_s6_data
     // SC6[11]
     money32 current_expenditure;
     money32 current_profit;
-    uint32_t weekly_profit_average_dividend;
+    money32 weekly_profit_average_dividend;
     uint16_t weekly_profit_average_divisor;
     uint8_t pad_0135833A[2];
 
@@ -373,7 +373,7 @@ struct Objective
     };
     union
     {
-        money32 Currency;
+        money64 Currency;
         uint16_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
     };
 
@@ -423,30 +423,28 @@ enum
 #define AUTOSAVE_PAUSE 0
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
-static constexpr money32 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
+static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
-extern uint32_t gScenarioTicks;
 extern random_engine_t gScenarioRand;
 
 extern Objective gScenarioObjective;
 extern bool gAllowEarlyCompletionInNetworkPlay;
 extern uint16_t gScenarioParkRatingWarningDays;
-extern money32 gScenarioCompletedCompanyValue;
-extern money32 gScenarioCompanyValueRecord;
+extern money64 gScenarioCompletedCompanyValue;
+extern money64 gScenarioCompanyValueRecord;
 
-extern rct_s6_info gS6Info;
+extern SCENARIO_CATEGORY gScenarioCategory;
 extern std::string gScenarioName;
 extern std::string gScenarioDetails;
 extern std::string gScenarioCompletedBy;
 extern std::string gScenarioSavePath;
-extern char gScenarioExpansionPacks[3256];
 extern bool gFirstTimeSaving;
 extern uint16_t gSavedAge;
 extern uint32_t gLastAutoSaveUpdate;
 
-extern char gScenarioFileName[260];
+extern std::string gScenarioFileName;
 
 void load_from_sc6(const char* path);
 void scenario_begin();
@@ -461,8 +459,6 @@ uint32_t scenario_rand_max(uint32_t max);
 
 bool scenario_prepare_for_save();
 int32_t scenario_save(const utf8* path, int32_t flags);
-void scenario_remove_trackless_rides(rct_s6_data* s6);
-void scenario_fix_ghosts(rct_s6_data* s6);
 void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char* name);

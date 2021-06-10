@@ -147,20 +147,17 @@ private:
         }
 
         // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
-        rct_object_entry vehicleObject = { 0x80, "        " };
+        std::string_view vehicleObject;
         if (td4Base.type == RIDE_TYPE_MAZE)
         {
-            const char* vehObjName = RCT1::GetRideTypeObject(td4Base.type);
-            assert(vehObjName != nullptr);
-            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
+            vehicleObject = RCT1::GetRideTypeObject(td4Base.type);
         }
         else
         {
-            const char* vehObjName = RCT1::GetVehicleObject(td4Base.vehicle_type);
-            assert(vehObjName != nullptr);
-            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
+            vehicleObject = RCT1::GetVehicleObject(td4Base.vehicle_type);
         }
-        std::memcpy(&td->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
+        assert(!vehicleObject.empty());
+        td->vehicle_object = ObjectEntryDescriptor(vehicleObject);
         td->vehicle_type = td4Base.vehicle_type;
 
         td->flags = td4Base.flags;

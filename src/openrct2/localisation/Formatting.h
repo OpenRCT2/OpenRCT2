@@ -145,7 +145,7 @@ namespace OpenRCT2
 
     using FormatBuffer = FormatBufferBase<char>;
 
-    using FormatArg_t = std::variant<uint16_t, int32_t, const char*, std::string>;
+    using FormatArg_t = std::variant<uint16_t, int32_t, int64_t, const char*, std::string>;
 
     class FmtString
     {

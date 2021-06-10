@@ -783,8 +783,8 @@ static void window_park_init_viewport(rct_window* w)
             rct_widget* viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
             viewport_create(
                 w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                viewportWidget->width() - 1, viewportWidget->height() - 1, 0, { x, y, z },
-                w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, SPRITE_INDEX_NULL);
+                viewportWidget->width() - 1, viewportWidget->height() - 1, 0, { x, y, z }, w->viewport_focus_sprite.type,
+                SPRITE_INDEX_NULL);
             w->flags |= (1 << 2);
             w->Invalidate();
         }
@@ -1062,7 +1062,20 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Graph
     screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-    Graph::Draw(dpi, gGuestsInParkHistory, 32, screenPos);
+    uint8_t cappedHistory[32];
+    for (size_t i = 0; i < std::size(cappedHistory); i++)
+    {
+        auto value = gGuestsInParkHistory[i];
+        if (value != std::numeric_limits<uint32_t>::max())
+        {
+            cappedHistory[i] = static_cast<uint8_t>(std::min<uint32_t>(value, 5000) / 20);
+        }
+        else
+        {
+            cappedHistory[i] = std::numeric_limits<uint8_t>::max();
+        }
+    }
+    Graph::Draw(dpi, cappedHistory, static_cast<int32_t>(std::size(cappedHistory)), screenPos);
 }
 
 #pragma endregion
@@ -1183,7 +1196,7 @@ static void window_park_price_paint(rct_window* w, rct_drawpixelinfo* dpi)
         + ScreenCoordsXY{ w->widgets[WIDX_PAGE_BACKGROUND].left + 4, w->widgets[WIDX_PAGE_BACKGROUND].top + 30 };
     DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions);
 
-    money32 parkEntranceFee = park_get_entrance_fee();
+    money64 parkEntranceFee = park_get_entrance_fee();
     auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PRICE].left + 1, w->widgets[WIDX_PRICE].top + 1 };
     DrawTextBasic(dpi, screenCoords, stringId, &parkEntranceFee, { w->colours[1] });
@@ -1489,14 +1502,14 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
         else
-            ft.Add<money32>(gScenarioObjective.Currency);
+            ft.Add<money64>(gScenarioObjective.Currency);
     }
 
     screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
     screenCoords.y += 5;
 
     // Objective outcome
-    if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
+    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
     {
         if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
         {
@@ -1507,7 +1520,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Objective completed
             ft = Formatter();
-            ft.Add<money32>(gScenarioCompletedCompanyValue);
+            ft.Add<money64>(gScenarioCompletedCompanyValue);
             DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
         }
     }

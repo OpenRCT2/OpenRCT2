@@ -12,6 +12,7 @@
 #include "../core/String.hpp"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
+#include "../object/ObjectList.h"
 #include "../ride/Track.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
@@ -1348,4 +1349,100 @@ RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
     }
 
     return origTrackType;
+}
+
+static constexpr std::string_view _stationStyles[] = {
+    "rct2.station.plain",         "rct2.station.wooden", "rct2.station.canvas_tent", "rct2.station.castle_grey",
+    "rct2.station.castle_brown",  "rct2.station.jungle", "rct2.station.log",         "rct2.station.classical",
+    "rct2.station.abstract",      "rct2.station.snow",   "rct2.station.pagoda",      "rct2.station.space",
+    "openrct2.station.noentrance"
+};
+
+static constexpr std::string_view _musicStyles[] = { "rct2.music.dodgems",  "rct2.music.fairground", "rct2.music.roman",
+                                                     "rct2.music.oriental", "rct2.music.martian",    "rct2.music.jungle",
+                                                     "rct2.music.egyptian", "rct2.music.toyland",    "", // CIRCUS
+                                                     "rct2.music.space",    "rct2.music.horror",     "rct2.music.techno",
+                                                     "rct2.music.gentle",   "rct2.music.summer",     "rct2.music.water",
+                                                     "rct2.music.wildwest", "rct2.music.jurassic",   "rct2.music.rock1",
+                                                     "rct2.music.ragtime",  "rct2.music.fantasy",    "rct2.music.rock2",
+                                                     "rct2.music.ice",      "rct2.music.snow",       "rct2.music.custom1",
+                                                     "rct2.music.custom2",  "rct2.music.medieval",   "rct2.music.urban",
+                                                     "rct2.music.organ",    "rct2.music.mechanical", "rct2.music.modern",
+                                                     "rct2.music.pirate",   "rct2.music.rock3",      "rct2.music.candy" };
+
+std::string_view GetStationIdentifierFromStyle(uint8_t style)
+{
+    if (style < std::size(_stationStyles))
+    {
+        return _stationStyles[style];
+    }
+    return {};
+}
+
+std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
+{
+    auto it = std::find(std::begin(_musicStyles), std::end(_musicStyles), identifier);
+    if (it != std::end(_musicStyles))
+    {
+        return std::distance(std::begin(_musicStyles), it);
+    }
+    return {};
+}
+
+void SetDefaultRCT2TerrainObjects(ObjectList& objectList)
+{
+    // Surfaces
+    objectList.SetObject(ObjectType::TerrainSurface, 0, "rct2.terrain_surface.grass");
+    objectList.SetObject(ObjectType::TerrainSurface, 1, "rct2.terrain_surface.sand");
+    objectList.SetObject(ObjectType::TerrainSurface, 2, "rct2.terrain_surface.dirt");
+    objectList.SetObject(ObjectType::TerrainSurface, 3, "rct2.terrain_surface.rock");
+    objectList.SetObject(ObjectType::TerrainSurface, 4, "rct2.terrain_surface.martian");
+    objectList.SetObject(ObjectType::TerrainSurface, 5, "rct2.terrain_surface.chequerboard");
+    objectList.SetObject(ObjectType::TerrainSurface, 6, "rct2.terrain_surface.grass_clumps");
+    objectList.SetObject(ObjectType::TerrainSurface, 7, "rct2.terrain_surface.ice");
+    objectList.SetObject(ObjectType::TerrainSurface, 8, "rct2.terrain_surface.grid_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 9, "rct2.terrain_surface.grid_yellow");
+    objectList.SetObject(ObjectType::TerrainSurface, 10, "rct2.terrain_surface.grid_purple");
+    objectList.SetObject(ObjectType::TerrainSurface, 11, "rct2.terrain_surface.grid_green");
+    objectList.SetObject(ObjectType::TerrainSurface, 12, "rct2.terrain_surface.sand_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 13, "rct2.terrain_surface.sand_brown");
+    objectList.SetObject(ObjectType::TerrainSurface, 14, "rct1aa.terrain_surface.roof_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 15, "rct1ll.terrain_surface.roof_grey");
+    objectList.SetObject(ObjectType::TerrainSurface, 16, "rct1ll.terrain_surface.rust");
+    objectList.SetObject(ObjectType::TerrainSurface, 17, "rct1ll.terrain_surface.wood");
+
+    // Edges
+    objectList.SetObject(ObjectType::TerrainEdge, 0, "rct2.terrain_edge.rock");
+    objectList.SetObject(ObjectType::TerrainEdge, 1, "rct2.terrain_edge.wood_red");
+    objectList.SetObject(ObjectType::TerrainEdge, 2, "rct2.terrain_edge.wood_black");
+    objectList.SetObject(ObjectType::TerrainEdge, 3, "rct2.terrain_edge.ice");
+    objectList.SetObject(ObjectType::TerrainEdge, 4, "rct1.terrain_edge.brick");
+    objectList.SetObject(ObjectType::TerrainEdge, 5, "rct1.terrain_edge.iron");
+    objectList.SetObject(ObjectType::TerrainEdge, 6, "rct1aa.terrain_edge.grey");
+    objectList.SetObject(ObjectType::TerrainEdge, 7, "rct1aa.terrain_edge.yellow");
+    objectList.SetObject(ObjectType::TerrainEdge, 8, "rct1aa.terrain_edge.red");
+    objectList.SetObject(ObjectType::TerrainEdge, 9, "rct1ll.terrain_edge.purple");
+    objectList.SetObject(ObjectType::TerrainEdge, 10, "rct1ll.terrain_edge.green");
+    objectList.SetObject(ObjectType::TerrainEdge, 11, "rct1ll.terrain_edge.stone_brown");
+    objectList.SetObject(ObjectType::TerrainEdge, 12, "rct1ll.terrain_edge.stone_grey");
+    objectList.SetObject(ObjectType::TerrainEdge, 13, "rct1ll.terrain_edge.skyscraper_a");
+    objectList.SetObject(ObjectType::TerrainEdge, 14, "rct1ll.terrain_edge.skyscraper_b");
+}
+
+void RCT12AddDefaultObjects(ObjectList& objectList)
+{
+    // Stations
+    for (size_t i = 0; i < std::size(_stationStyles); i++)
+    {
+        objectList.SetObject(ObjectType::Station, static_cast<ObjectEntryIndex>(i), _stationStyles[i]);
+    }
+
+    // Music
+    for (size_t i = 0; i < std::size(_musicStyles); i++)
+    {
+        if (!_musicStyles[i].empty())
+        {
+            objectList.SetObject(ObjectType::Music, static_cast<ObjectEntryIndex>(i), _musicStyles[i]);
+        }
+    }
 }

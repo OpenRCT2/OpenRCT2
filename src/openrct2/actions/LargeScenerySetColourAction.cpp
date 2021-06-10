@@ -53,7 +53,7 @@ GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecut
     res->Position.z = tile_element_height(_loc);
     res->ErrorTitle = STR_CANT_REPAINT_THIS;
 
-    if (_loc.x < 0 || _loc.y < 0 || _loc.x > gMapSizeMaxXY || _loc.y > gMapSizeMaxXY)
+    if (_loc.x < 0 || _loc.y < 0 || _loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY())
     {
         log_error("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);

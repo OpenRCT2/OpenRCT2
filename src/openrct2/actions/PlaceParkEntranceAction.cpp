@@ -57,8 +57,8 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
             GameActions::Status::NoFreeElements, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
     }
 
-    if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32)
-        || _loc.y >= (gMapSizeUnits - 32))
+    if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (GetMapSizeUnits() - 32)
+        || _loc.y >= (GetMapSizeUnits() - 32))
     {
         return std::make_unique<GameActions::Result>(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
@@ -147,7 +147,14 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
         entranceElement->SetDirection(_loc.direction);
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
-        entranceElement->SetPathType(_pathType);
+        if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+        {
+            entranceElement->SetSurfaceEntryIndex(gFootpathSelection.NormalSurface);
+        }
+        else
+        {
+            entranceElement->SetPathEntryIndex(gFootpathSelection.LegacyPath);
+        }
 
         if (!entranceElement->IsGhost())
         {

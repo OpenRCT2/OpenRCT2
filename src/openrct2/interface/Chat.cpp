@@ -206,7 +206,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     }
 }
 
-void chat_history_add(const char* src)
+void chat_history_add(std::string_view s)
 {
     // Format a timestamp
     time_t timer{};
@@ -216,7 +216,7 @@ void chat_history_add(const char* src)
     strcatftime(timeBuffer, sizeof(timeBuffer), "[%H:%M] ", tmInfo);
 
     std::string buffer = timeBuffer;
-    buffer += src;
+    buffer += s;
 
     // Add to history list
     int32_t index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
@@ -226,7 +226,7 @@ void chat_history_add(const char* src)
     _chatHistoryIndex++;
 
     // Log to file (src only as logging does its own timestamp)
-    network_append_chat_log(src);
+    network_append_chat_log(s);
 
     Mixer_Play_Effect(OpenRCT2::Audio::SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }

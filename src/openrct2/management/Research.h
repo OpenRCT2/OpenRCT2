@@ -62,7 +62,6 @@ struct ResearchItem
 
     bool IsNull() const;
     void SetNull();
-    bool Equals(const ResearchItem* otherItem) const;
     bool Exists() const;
     bool IsAlwaysResearched() const;
     rct_string_id GetName() const;
@@ -127,6 +126,8 @@ struct ResearchItem
             category = static_cast<ResearchCategory>(oldResearchItem.category);
         }
     }
+
+    bool operator==(const ResearchItem& rhs) const;
 };
 
 // Only used to mark as null nowadays. Deprecated. TODO: remove.

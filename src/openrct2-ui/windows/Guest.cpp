@@ -686,8 +686,7 @@ void window_guest_viewport_init(rct_window* w)
     if (w->viewport != nullptr)
     {
         // Check all combos, for now skipping y and rot
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x
-            && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
+        if (focus.coordinate.x == w->viewport_focus_coordinates.x && focus.coordinate.y == w->viewport_focus_coordinates.y
             && focus.coordinate.z == w->viewport_focus_coordinates.z
             && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation)
             return;
@@ -713,9 +712,8 @@ void window_guest_viewport_init(rct_window* w)
         int32_t height = view_widget->height() - 1;
 
         viewport_create(
-            w, screenPos, width, height, 0,
-            { focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, focus.coordinate.z },
-            focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
+            w, screenPos, width, height, 0, { focus.coordinate.x, focus.coordinate.y, focus.coordinate.z }, focus.sprite.type,
+            focus.sprite.sprite_id);
         if (w->viewport != nullptr && reCreateViewport)
         {
             w->viewport->flags = origViewportFlags;
@@ -1099,7 +1097,7 @@ void window_guest_overview_update(rct_window* w)
                 int32_t random = util_rand() & 0xFFFF;
                 if (random <= 0x2AAA)
                 {
-                    peep->InsertNewThought(PeepThoughtType::Watched, PEEP_THOUGHT_ITEM_NONE);
+                    peep->InsertNewThought(PeepThoughtType::Watched);
                 }
             }
         }
@@ -1376,7 +1374,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t guestEntryTime = peep->GetParkEntryTime();
     if (guestEntryTime != -1)
     {
-        int32_t timeInPark = (gScenarioTicks - guestEntryTime) >> 11;
+        int32_t timeInPark = (gCurrentTicks - guestEntryTime) >> 11;
         auto ft = Formatter();
         ft.Add<uint16_t>(timeInPark & 0xFFFF);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
@@ -1446,7 +1444,7 @@ void window_guest_rides_update(rct_window* w)
     }
 
     // Every 2048 ticks do a full window_invalidate
-    int32_t number_of_ticks = gScenarioTicks - guest->GetParkEntryTime();
+    int32_t number_of_ticks = gCurrentTicks - guest->GetParkEntryTime();
     if (!(number_of_ticks & 0x7FF))
         w->Invalidate();
 
@@ -1657,7 +1655,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Cash in pocket
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->CashInPocket);
+        ft.Add<money64>(peep->CashInPocket);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_IN_POCKET, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1665,7 +1663,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Cash spent
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->CashSpent);
+        ft.Add<money64>(peep->CashSpent);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_SPENT, ft);
         screenCoords.y += LIST_ROW_HEIGHT * 2;
     }
@@ -1677,14 +1675,14 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid to enter
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidToEnter);
+        ft.Add<money64>(peep->PaidToEnter);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     // Paid on rides
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnRides);
+        ft.Add<money64>(peep->PaidOnRides);
         ft.Add<uint16_t>(peep->GuestNumRides);
         if (peep->GuestNumRides != 1)
         {
@@ -1699,7 +1697,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on food
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnFood);
+        ft.Add<money64>(peep->PaidOnFood);
         ft.Add<uint16_t>(peep->AmountOfFood);
         if (peep->AmountOfFood != 1)
         {
@@ -1715,7 +1713,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on drinks
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnDrink);
+        ft.Add<money64>(peep->PaidOnDrink);
         ft.Add<uint16_t>(peep->AmountOfDrinks);
         if (peep->AmountOfDrinks != 1)
         {
@@ -1730,7 +1728,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on souvenirs
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnSouvenirs);
+        ft.Add<money64>(peep->PaidOnSouvenirs);
         ft.Add<uint16_t>(peep->AmountOfSouvenirs);
         if (peep->AmountOfSouvenirs != 1)
         {

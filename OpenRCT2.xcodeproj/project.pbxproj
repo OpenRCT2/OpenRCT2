@@ -58,8 +58,12 @@
 		4C8BB68125533D65005C8830 /* StringBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67D25533D64005C8830 /* StringBuilder.cpp */; };
 		4C8BB68225533D65005C8830 /* StringReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67E25533D64005C8830 /* StringReader.cpp */; };
 		4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */; };
+		4C8BF07723EDD145002D1F7F /* ParkFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BF07623EDD145002D1F7F /* ParkFile.cpp */; };
 		4C91FD5F25AE476700CA5DA4 /* MusicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */; };
 		4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD6025AE483600CA5DA4 /* RideAudio.cpp */; };
+		4C976BC0263976D2002DEBD5 /* Crypt.OpenRCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C976BBF263976D2002DEBD5 /* Crypt.OpenRCT2.cpp */; };
+		4C976BC5263976F0002DEBD5 /* FootpathSurfaceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C976BC1263976F0002DEBD5 /* FootpathSurfaceObject.cpp */; };
+		4C976BC6263976F0002DEBD5 /* FootpathRailingsObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C976BC2263976F0002DEBD5 /* FootpathRailingsObject.cpp */; };
 		4CA23D64263C91D800077AA1 /* ChecksumStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA23D62263C91D700077AA1 /* ChecksumStream.cpp */; };
 		4CA23DB2263C920900077AA1 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA23DB1263C920900077AA1 /* Entity.cpp */; };
 		4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */; };
@@ -431,7 +435,6 @@
 		C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5A1F37ACB10061AA04 /* LandRights.cpp */; };
 		C666EE711F37ACB10061AA04 /* MapGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5B1F37ACB10061AA04 /* MapGen.cpp */; };
 		C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */; };
-		C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */; };
 		C666EE741F37ACB10061AA04 /* News.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5E1F37ACB10061AA04 /* News.cpp */; };
 		C666EE751F37ACB10061AA04 /* NewsOptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE5F1F37ACB10061AA04 /* NewsOptions.cpp */; };
 		C666EE761F37ACB10061AA04 /* Options.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE601F37ACB10061AA04 /* Options.cpp */; };
@@ -727,7 +730,6 @@
 		F76C86B61EC4E88400FA49E2 /* SawyerChunkReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C846F1EC4E7CC00FA49E2 /* SawyerChunkReader.cpp */; };
 		F76C86B81EC4E88400FA49E2 /* SawyerChunkWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84711EC4E7CC00FA49E2 /* SawyerChunkWriter.cpp */; };
 		F76C86BA1EC4E88400FA49E2 /* SawyerEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84731EC4E7CC00FA49E2 /* SawyerEncoding.cpp */; };
-		F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */; };
 		F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */; };
 		F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */; };
 		F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F61EC4E7CD00FA49E2 /* ScenarioRepository.cpp */; };
@@ -1067,6 +1069,8 @@
 		4C8BB68025533D64005C8830 /* StringBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringBuilder.h; sourceTree = "<group>"; };
 		4C8BB68325533DB9005C8830 /* ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZoomLevel.h; sourceTree = "<group>"; };
 		4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZoomLevel.cpp; sourceTree = "<group>"; };
+		4C8BF07523EDD108002D1F7F /* OrcaStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OrcaStream.hpp; sourceTree = "<group>"; };
+		4C8BF07623EDD145002D1F7F /* ParkFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkFile.cpp; sourceTree = "<group>"; };
 		4C9196ED204FF3E000869A24 /* Location.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Location.hpp; sourceTree = "<group>"; };
 		4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicObject.cpp; sourceTree = "<group>"; };
 		4C91FD5E25AE476700CA5DA4 /* MusicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicObject.h; sourceTree = "<group>"; };
@@ -1157,6 +1161,11 @@
 		4C93F1B71F8E185600A9330D /* NewsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsItem.h; sourceTree = "<group>"; };
 		4C93F1B81F8E185600A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1B91F8E185600A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
+		4C976BBF263976D2002DEBD5 /* Crypt.OpenRCT2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Crypt.OpenRCT2.cpp; sourceTree = "<group>"; };
+		4C976BC1263976F0002DEBD5 /* FootpathSurfaceObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathSurfaceObject.cpp; sourceTree = "<group>"; };
+		4C976BC2263976F0002DEBD5 /* FootpathRailingsObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathRailingsObject.cpp; sourceTree = "<group>"; };
+		4C976BC3263976F0002DEBD5 /* FootpathRailingsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathRailingsObject.h; sourceTree = "<group>"; };
+		4C976BC4263976F0002DEBD5 /* FootpathSurfaceObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathSurfaceObject.h; sourceTree = "<group>"; };
 		4CA23D62263C91D700077AA1 /* ChecksumStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChecksumStream.cpp; sourceTree = "<group>"; };
 		4CA23D63263C91D700077AA1 /* ChecksumStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecksumStream.h; sourceTree = "<group>"; };
 		4CA23DAF263C920900077AA1 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
@@ -1551,7 +1560,6 @@
 		C666EE5A1F37ACB10061AA04 /* LandRights.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandRights.cpp; sourceTree = "<group>"; };
 		C666EE5B1F37ACB10061AA04 /* MapGen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapGen.cpp; sourceTree = "<group>"; };
 		C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Multiplayer.cpp; sourceTree = "<group>"; };
-		C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicCredits.cpp; sourceTree = "<group>"; };
 		C666EE5E1F37ACB10061AA04 /* News.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = News.cpp; sourceTree = "<group>"; };
 		C666EE5F1F37ACB10061AA04 /* NewsOptions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NewsOptions.cpp; sourceTree = "<group>"; };
 		C666EE601F37ACB10061AA04 /* Options.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Options.cpp; sourceTree = "<group>"; };
@@ -1756,8 +1764,6 @@
 		F76C84721EC4E7CC00FA49E2 /* SawyerChunkWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SawyerChunkWriter.h; sourceTree = "<group>"; };
 		F76C84731EC4E7CC00FA49E2 /* SawyerEncoding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SawyerEncoding.cpp; sourceTree = "<group>"; };
 		F76C84741EC4E7CC00FA49E2 /* SawyerEncoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SawyerEncoding.h; sourceTree = "<group>"; };
-		F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Exporter.cpp; sourceTree = "<group>"; };
-		F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = S6Exporter.h; sourceTree = "<group>"; };
 		F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
 		F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignRepository.cpp; sourceTree = "<group>"; };
 		F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackDesignRepository.h; sourceTree = "<group>"; };
@@ -2380,6 +2386,7 @@
 				4CC4B8EB1FE00C5D00660D62 /* Intro.h */,
 				F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */,
 				F76C84391EC4E7CC00FA49E2 /* OpenRCT2.h */,
+				4C8BF07623EDD145002D1F7F /* ParkFile.cpp */,
 				F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */,
 				F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */,
 				F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */,
@@ -2453,6 +2460,7 @@
 				F76C837A1EC4E7CC00FA49E2 /* Console.cpp */,
 				F76C837B1EC4E7CC00FA49E2 /* Console.hpp */,
 				9344BEF720C1E6180047D165 /* Crypt.h */,
+				4C976BBF263976D2002DEBD5 /* Crypt.OpenRCT2.cpp */,
 				9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */,
 				C6352B811F477022006CCEE3 /* DataSerialiser.h */,
 				2ADE2F22224418B1002598AF /* DataSerialiserTag.h */,
@@ -2489,6 +2497,7 @@
 				2ADE2F24224418B2002598AF /* Meta.hpp */,
 				F76C838E1EC4E7CC00FA49E2 /* Nullable.hpp */,
 				2ADE2F23224418B1002598AF /* Numerics.hpp */,
+				4C8BF07523EDD108002D1F7F /* OrcaStream.hpp */,
 				F76C838F1EC4E7CC00FA49E2 /* Path.cpp */,
 				F76C83901EC4E7CC00FA49E2 /* Path.hpp */,
 				2ADE2F21224418B1002598AF /* Random.hpp */,
@@ -2672,6 +2681,10 @@
 				F76C84171EC4E7CC00FA49E2 /* FootpathItemObject.h */,
 				F76C84181EC4E7CC00FA49E2 /* FootpathObject.cpp */,
 				F76C84191EC4E7CC00FA49E2 /* FootpathObject.h */,
+				4C976BC2263976F0002DEBD5 /* FootpathRailingsObject.cpp */,
+				4C976BC3263976F0002DEBD5 /* FootpathRailingsObject.h */,
+				4C976BC1263976F0002DEBD5 /* FootpathSurfaceObject.cpp */,
+				4C976BC4263976F0002DEBD5 /* FootpathSurfaceObject.h */,
 				F76C841A1EC4E7CC00FA49E2 /* ImageTable.cpp */,
 				F76C841B1EC4E7CC00FA49E2 /* ImageTable.h */,
 				F76C841C1EC4E7CC00FA49E2 /* LargeSceneryObject.cpp */,
@@ -2831,8 +2844,6 @@
 			children = (
 				4CB30178249E382B0034A7F6 /* RCT2.cpp */,
 				4C7B54042004C58200A52E21 /* RCT2.h */,
-				F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */,
-				F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */,
 				F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */,
 				933C55B424B858490057E64B /* SeaDecrypt.cpp */,
 				01C6F0C522FD51FC0057E2F7 /* T6Exporter.cpp */,
@@ -3268,7 +3279,6 @@
 				C6D2BEE41F9BAACD008B557C /* MapTooltip.cpp */,
 				C6D2BEE51F9BAACD008B557C /* MazeConstruction.cpp */,
 				C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */,
-				C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */,
 				C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */,
 				C654DF231F69C0430040F43D /* NewCampaign.cpp */,
 				C685E5141F8907840090598F /* NewRide.cpp */,
@@ -3627,7 +3637,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"1.0.20\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -fLo \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi\n";
+			shellScript = "version=\"1.2.1\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi\n";
 		};
 		C68B2D471EC790710020651C /* Download Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3734,6 +3744,7 @@
 				C68313CB1FDB4EEC006DB3D8 /* Tooltip.cpp in Sources */,
 				4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */,
 				C654DF2F1F69C0430040F43D /* Error.cpp in Sources */,
+				4C976BC0263976D2002DEBD5 /* Crypt.OpenRCT2.cpp in Sources */,
 				4CB2716A24195B45000CF9EE /* VehicleSubpositionData.cpp in Sources */,
 				C64644F81F3FA4120026AC2D /* ClearScenery.cpp in Sources */,
 				C654DF2E1F69C0430040F43D /* DemolishRidePrompt.cpp in Sources */,
@@ -3757,6 +3768,7 @@
 				4C2BF6C4258FF2FB005CD9A0 /* SingleRailRollerCoaster.cpp in Sources */,
 				930EEA6A24FC00950070314E /* ScenarioSelect.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
+				4C8BF07723EDD145002D1F7F /* ParkFile.cpp in Sources */,
 				C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */,
 				4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */,
 				C68878C020289B710084B384 /* ApplyPaletteShader.cpp in Sources */,
@@ -3799,6 +3811,7 @@
 				4CA23DB2263C920900077AA1 /* Entity.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
 				C68878C720289B710084B384 /* OpenGLShaderProgram.cpp in Sources */,
+				4C976BC5263976F0002DEBD5 /* FootpathSurfaceObject.cpp in Sources */,
 				4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */,
 				93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
@@ -3812,6 +3825,7 @@
 				C68878C520289B710084B384 /* OpenGLDrawingEngine.cpp in Sources */,
 				C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */,
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
+				4C976BC6263976F0002DEBD5 /* FootpathRailingsObject.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
@@ -3845,7 +3859,6 @@
 				4CB991CD25CEE54500C692B4 /* ShortcutInput.cpp in Sources */,
 				C68878C820289B710084B384 /* SwapFramebuffer.cpp in Sources */,
 				C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */,
-				C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */,
 				C654DF351F69C0430040F43D /* Park.cpp in Sources */,
 				4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */,
 				C654DF3A1F69C0430040F43D /* TitleEditor.cpp in Sources */,
@@ -4183,7 +4196,6 @@
 				C688784E202899CB0084B384 /* Date.cpp in Sources */,
 				66A10F9B257F1E1800DD651A /* ParkSetResearchFundingAction.cpp in Sources */,
 				F76C86BA1EC4E88400FA49E2 /* SawyerEncoding.cpp in Sources */,
-				F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */,
 				C68878E820289B9B0084B384 /* Platform.Win32.cpp in Sources */,
 				C688791A20289B9B0084B384 /* SpaceRings.cpp in Sources */,
 				C688790420289B9B0084B384 /* Steeplechase.cpp in Sources */,

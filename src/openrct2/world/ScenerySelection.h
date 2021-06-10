@@ -18,26 +18,16 @@ constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint
 
 struct ScenerySelection
 {
-    uint8_t SceneryType;
-    ObjectEntryIndex EntryIndex;
+    uint8_t SceneryType{};
+    ObjectEntryIndex EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 
-    inline bool operator==(const ScenerySelection& rhs)
+    inline bool operator==(const ScenerySelection& rhs) const
     {
         return SceneryType == rhs.SceneryType && EntryIndex == rhs.EntryIndex;
     }
 
     bool IsUndefined() const
     {
-        return EntryIndex == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
-    }
-
-    void SetUndefined()
-    {
-        EntryIndex = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
-    }
-
-    static ScenerySelection CreateUndefined()
-    {
-        return ScenerySelection{ 0, WINDOW_SCENERY_TAB_SELECTION_UNDEFINED };
+        return EntryIndex == OBJECT_ENTRY_INDEX_NULL;
     }
 };

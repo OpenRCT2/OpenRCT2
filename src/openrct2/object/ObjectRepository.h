@@ -37,6 +37,8 @@ struct rct_drawpixelinfo;
 struct ObjectRepositoryItem
 {
     size_t Id;
+    ObjectType Type;
+    ObjectGeneration Generation;
     std::string Identifier; // e.g. rct2.c3d
     rct_object_entry ObjectEntry;
     std::string Path;
@@ -54,6 +56,10 @@ struct ObjectRepositoryItem
     {
         std::vector<ObjectEntryDescriptor> Entries;
     } SceneryGroupInfo;
+    struct
+    {
+        uint8_t Flags{};
+    } FootpathSurfaceInfo;
 
     ObjectSourceGame GetFirstSourceGame() const
     {
@@ -82,7 +88,8 @@ struct IObjectRepository
     virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
 
     virtual void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) abstract;
-    virtual void AddObjectFromFile(std::string_view objectName, const void* data, size_t dataSize) abstract;
+    virtual void AddObjectFromFile(
+        ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) abstract;
 
     virtual void ExportPackedObject(OpenRCT2::IStream* stream) abstract;
     virtual void WritePackedObjects(OpenRCT2::IStream* stream, std::vector<const ObjectRepositoryItem*>& objects) abstract;

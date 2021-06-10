@@ -229,8 +229,9 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw cost amount
     if (gClearSceneryCost != MONEY32_UNDEFINED && gClearSceneryCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
+        money64 value = gClearSceneryCost;
         screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + w->windowPos.x;
         screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5 + 27;
-        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &gClearSceneryCost, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &value, { TextAlignment::CENTRE });
     }
 }

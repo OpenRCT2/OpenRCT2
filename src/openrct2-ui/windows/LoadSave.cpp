@@ -201,13 +201,13 @@ static const char* getFilterPatternByType(const int32_t type, const bool isSave)
     switch (type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
-            return isSave ? "*.sv6" : "*.sv6;*.sc6;*.sc4;*.sv4;*.sv7;*.sea;";
+            return isSave ? "*.park" : "*.park;*.sv6;*.sc6;*.sc4;*.sv4;*.sv7;*.sea";
 
         case LOADSAVETYPE_LANDSCAPE:
-            return isSave ? "*.sc6" : "*.sc6;*.sv6;*.sc4;*.sv4;*.sv7;*.sea;";
+            return isSave ? "*.park" : "*.park;*.sc6;*.sv6;*.sc4;*.sv4;*.sv7;*.sea";
 
         case LOADSAVETYPE_SCENARIO:
-            return "*.sc6";
+            return isSave ? "*.park" : "*.park;*.sc6;*.sc4";
 
         case LOADSAVETYPE_TRACK:
             return isSave ? "*.td6" : "*.td6;*.td4";
@@ -1037,7 +1037,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
             save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
-            safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
+            gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
             if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2))
             {
                 gCurrentLoadedPath = pathBuffer;
@@ -1057,8 +1057,8 @@ static void window_loadsave_select(rct_window* w, const char* path)
             save_path(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
             int32_t parkFlagsBackup = gParkFlags;
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-            gS6Info.editor_step = EditorStep::Invalid;
-            safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
+            gEditorStep = EditorStep::Invalid;
+            gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
             int32_t success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
             gParkFlags = parkFlagsBackup;
 
@@ -1071,7 +1071,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             else
             {
                 context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
-                gS6Info.editor_step = EditorStep::ObjectiveSelection;
+                gEditorStep = EditorStep::ObjectiveSelection;
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;

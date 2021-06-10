@@ -24,11 +24,6 @@ private:
     std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[MAX_VEHICLES_PER_RIDE_ENTRY];
 
 public:
-    explicit RideObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;

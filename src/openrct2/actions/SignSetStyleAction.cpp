@@ -39,9 +39,10 @@ void SignSetStyleAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr SignSetStyleAction::Query() const
 {
-    if (_bannerIndex >= MAX_BANNERS)
+    auto banner = GetBanner(_bannerIndex);
+    if (banner == nullptr)
     {
-        log_warning("Invalid game command for setting sign style, banner id '%d' out of range", _bannerIndex);
+        log_error("Invalid banner id. id = ", _bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
@@ -76,6 +77,11 @@ GameActions::Result::Ptr SignSetStyleAction::Query() const
 GameActions::Result::Ptr SignSetStyleAction::Execute() const
 {
     auto banner = GetBanner(_bannerIndex);
+    if (banner == nullptr)
+    {
+        log_error("Invalid banner id. id = ", _bannerIndex);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+    }
 
     CoordsXY coords = banner->position.ToCoordsXY();
 

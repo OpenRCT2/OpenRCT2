@@ -479,6 +479,10 @@
         "path": "icons/view.png"
     },
     {
+        "path": "icons/path_railings_tab.png",
+        "x_offset": 1
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",

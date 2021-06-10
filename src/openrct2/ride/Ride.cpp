@@ -128,7 +128,7 @@ StationIndex gRideEntranceExitPlaceStationIndex;
 uint8_t gRideEntranceExitPlacePreviousRideConstructionState;
 Direction gRideEntranceExitPlaceDirection;
 
-uint8_t gLastEntranceStyle;
+ObjectEntryIndex gLastEntranceStyle;
 
 // Static function declarations
 Staff* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection);
@@ -382,7 +382,7 @@ void ride_update_favourited_stat()
  *
  *  rct2: 0x006AC3AB
  */
-money32 Ride::CalculateIncomePerHour() const
+money64 Ride::CalculateIncomePerHour() const
 {
     // Get entry by ride to provide better reporting
     rct_ride_entry* entry = GetRideEntry();
@@ -390,8 +390,8 @@ money32 Ride::CalculateIncomePerHour() const
     {
         return 0;
     }
-    money32 customersPerHour = ride_customers_per_hour(this);
-    money32 priceMinusCost = ride_get_price(this);
+    auto customersPerHour = ride_customers_per_hour(this);
+    money64 priceMinusCost = ride_get_price(this);
 
     ShopItem currentShopItem = entry->shop_item[0];
     if (currentShopItem != ShopItem::None)
@@ -1976,7 +1976,7 @@ void Ride::UpdateAll()
     // Remove all rides if scenario editor
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        switch (gS6Info.editor_step)
+        switch (gEditorStep)
         {
             case EditorStep::ObjectSelection:
             case EditorStep::LandscapeEditor:
@@ -2080,8 +2080,12 @@ void Ride::Update()
 
     // Various things include news messages
     if (lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
-        if (((gCurrentTicks >> 1) & 255) == static_cast<uint32_t>(id))
+    {
+        // Breakdown updates are distributed, only one ride can update the breakdown status per tick.
+        const auto updatingRideId = (gCurrentTicks / 2) % MAX_RIDES;
+        if (updatingRideId == id)
             ride_breakdown_status_update(this);
+    }
 
     ride_inspection_update(this);
 
@@ -2328,6 +2332,7 @@ static void ride_breakdown_update(Ride* ride)
 {
     if (gCurrentTicks & 255)
         return;
+
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         return;
 
@@ -2940,7 +2945,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
         gForces.VerticalG = std::clamp(gForces.VerticalG / 8, -127, 127);
         gForces.LateralG = std::clamp(gForces.LateralG / 8, -127, 127);
 
-        if (gScenarioTicks & 1)
+        if (gCurrentTicks & 1)
         {
             gForces.VerticalG = (gForces.VerticalG + measurement.vertical[measurement.current_item]) / 2;
             gForces.LateralG = (gForces.LateralG + measurement.lateral[measurement.current_item]) / 2;
@@ -2953,7 +2958,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
     auto velocity = std::min(std::abs((vehicle->velocity * 5) >> 16), 255);
     auto altitude = std::min(vehicle->z / 8, 255);
 
-    if (gScenarioTicks & 1)
+    if (gCurrentTicks & 1)
     {
         velocity = (velocity + measurement.velocity[measurement.current_item]) / 2;
         altitude = (altitude + measurement.altitude[measurement.current_item]) / 2;
@@ -2962,7 +2967,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
     measurement.velocity[measurement.current_item] = velocity & 0xFF;
     measurement.altitude[measurement.current_item] = altitude & 0xFF;
 
-    if (gScenarioTicks & 1)
+    if (gCurrentTicks & 1)
     {
         measurement.current_item++;
         measurement.num_items = std::max(measurement.num_items, measurement.current_item);
@@ -3065,7 +3070,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
         assert(measurement != nullptr);
     }
 
-    measurement->last_use_tick = gScenarioTicks;
+    measurement->last_use_tick = gCurrentTicks;
     if (measurement->flags & 1)
     {
         return { measurement.get(), { STR_EMPTY, {} } };
@@ -7180,9 +7185,9 @@ void determine_ride_entrance_and_exit_locations()
             // Search the map to find it. Skip the outer ring of invisible tiles.
             bool alreadyFoundEntrance = false;
             bool alreadyFoundExit = false;
-            for (uint8_t x = 1; x < MAXIMUM_MAP_SIZE_TECHNICAL - 1; x++)
+            for (int32_t x = 1; x < MAXIMUM_MAP_SIZE_TECHNICAL - 1; x++)
             {
-                for (uint8_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
+                for (int32_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
                 {
                     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
@@ -7365,4 +7370,38 @@ void Ride::IncreaseNumShelteredSections()
         newNumShelteredSections++;
     num_sheltered_sections &= ~ShelteredSectionsBits::NumShelteredSectionsMask;
     num_sheltered_sections |= newNumShelteredSections;
+}
+
+std::vector<ride_id_t> GetTracklessRides()
+{
+    // Iterate map and build list of seen ride IDs
+    std::vector<bool> seen;
+    seen.resize(256);
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        auto trackEl = it.element->AsTrack();
+        if (trackEl != nullptr && !trackEl->IsGhost())
+        {
+            auto rideId = trackEl->GetRideIndex();
+            if (rideId >= seen.size())
+            {
+                seen.resize(rideId + 1);
+            }
+            seen[rideId] = true;
+        }
+    }
+
+    // Get all rides that did not get seen during map iteration
+    const auto& rideManager = GetRideManager();
+    std::vector<ride_id_t> result;
+    for (const auto& ride : rideManager)
+    {
+        if (seen.size() <= ride.id || !seen[ride.id])
+        {
+            result.push_back(ride.id);
+        }
+    }
+    return result;
 }

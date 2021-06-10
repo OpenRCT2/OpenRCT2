@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor StandUpRollerCoasterRTD =
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 100, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 90),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

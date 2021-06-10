@@ -262,6 +262,12 @@ namespace OpenRCT2
         Write<16>(buffer);
     }
 
+    void MemoryStream::Clear()
+    {
+        _dataSize = 0;
+        SetPosition(0);
+    }
+
     void MemoryStream::EnsureCapacity(size_t capacity)
     {
         if (_dataCapacity < capacity)

@@ -18,6 +18,8 @@
 #include <string>
 #include <string_view>
 
+class ObjectList;
+
 using track_type_t = uint16_t;
 using RCT12TrackType = uint8_t;
 
@@ -932,3 +934,7 @@ std::string ConvertFormattedStringToRCT2(std::string_view buffer, size_t maxLeng
 std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength);
 track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType);
 RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType);
+std::string_view GetStationIdentifierFromStyle(uint8_t style);
+std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
+void SetDefaultRCT2TerrainObjects(ObjectList& objectList);
+void RCT12AddDefaultObjects(ObjectList& objectList);

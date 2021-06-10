@@ -30,16 +30,20 @@ struct TrackDesignEntranceElement
     bool isExit;
 };
 
-/* Track Scenery entry  size: 0x16 */
 struct TrackDesignSceneryElement
 {
-    rct_object_entry scenery_object; // 0x00
-    int8_t x;                        // 0x10
-    int8_t y;                        // 0x11
-    int8_t z;                        // 0x12
-    uint8_t flags;                   // 0x13 direction quadrant tertiary colour
-    uint8_t primary_colour;          // 0x14
-    uint8_t secondary_colour;        // 0x15
+    ObjectEntryDescriptor scenery_object;
+    int8_t x;
+    int8_t y;
+    int8_t z;
+    uint8_t flags;
+    uint8_t primary_colour;
+    uint8_t secondary_colour;
+
+    bool IsQueue() const
+    {
+        return (flags & (1 << 7)) != 0;
+    }
 };
 
 /**
@@ -115,7 +119,7 @@ struct TrackDesign
     uint8_t track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];
     uint8_t track_support_colour[RCT12_NUM_COLOUR_SCHEMES];
     uint32_t flags2;
-    rct_object_entry vehicle_object;
+    ObjectEntryDescriptor vehicle_object;
     uint8_t space_required_x;
     uint8_t space_required_y;
     uint8_t vehicle_additional_colour[RCT2_MAX_CARS_PER_TRAIN];

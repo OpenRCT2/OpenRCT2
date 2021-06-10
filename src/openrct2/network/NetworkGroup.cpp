@@ -69,7 +69,7 @@ const std::string& NetworkGroup::GetName() const
     return _name;
 }
 
-void NetworkGroup::SetName(std::string name)
+void NetworkGroup::SetName(std::string_view name)
 {
     _name = name;
 }

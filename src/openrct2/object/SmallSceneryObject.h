@@ -21,11 +21,6 @@ private:
     std::vector<uint8_t> _frameOffsets;
 
 public:
-    explicit SmallSceneryObject(const rct_object_entry& entry)
-        : SceneryObject(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;

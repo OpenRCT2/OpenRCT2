@@ -374,7 +374,7 @@ private:
                 auto result = parkImporter->Load(path);
 
                 auto& objectManager = GetContext()->GetObjectManager();
-                objectManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                objectManager.LoadObjects(result.RequiredObjects);
 
                 parkImporter->Import();
             }
@@ -413,7 +413,7 @@ private:
                 auto result = parkImporter->LoadFromStream(stream, isScenario);
 
                 auto& objectManager = GetContext()->GetObjectManager();
-                objectManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                objectManager.LoadObjects(result.RequiredObjects);
 
                 parkImporter->Import();
             }

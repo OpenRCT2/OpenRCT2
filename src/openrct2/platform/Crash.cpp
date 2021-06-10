@@ -27,6 +27,7 @@
 #    include "../Context.h"
 #    include "../Game.h"
 #    include "../OpenRCT2.h"
+#    include "../ParkFile.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
@@ -35,7 +36,6 @@
 #    include "../interface/Screenshot.h"
 #    include "../localisation/Language.h"
 #    include "../object/ObjectManager.h"
-#    include "../rct2/S6Exporter.h"
 #    include "../scenario/Scenario.h"
 #    include "../util/SawyerCoding.h"
 #    include "../util/Util.h"
@@ -114,13 +114,11 @@ static bool OnCrash(
     wchar_t dumpFilePath[MAX_PATH];
     wchar_t saveFilePath[MAX_PATH];
     wchar_t configFilePath[MAX_PATH];
-    wchar_t saveFilePathGZIP[MAX_PATH];
     wchar_t recordFilePathNew[MAX_PATH];
     swprintf_s(dumpFilePath, std::size(dumpFilePath), L"%s\\%s.dmp", dumpPath, miniDumpId);
-    swprintf_s(saveFilePath, std::size(saveFilePath), L"%s\\%s.sv6", dumpPath, miniDumpId);
+    swprintf_s(saveFilePath, std::size(saveFilePath), L"%s\\%s.park", dumpPath, miniDumpId);
     swprintf_s(configFilePath, std::size(configFilePath), L"%s\\%s.ini", dumpPath, miniDumpId);
-    swprintf_s(saveFilePathGZIP, std::size(saveFilePathGZIP), L"%s\\%s.sv6.gz", dumpPath, miniDumpId);
-    swprintf_s(recordFilePathNew, std::size(recordFilePathNew), L"%s\\%s.sv6r", dumpPath, miniDumpId);
+    swprintf_s(recordFilePathNew, std::size(recordFilePathNew), L"%s\\%s.parkrep", dumpPath, miniDumpId);
 
     wchar_t dumpFilePathNew[MAX_PATH];
     swprintf_s(
@@ -172,7 +170,7 @@ static bool OnCrash(
     auto saveFilePathUTF8 = String::ToUtf8(saveFilePath);
     try
     {
-        auto exporter = std::make_unique<S6Exporter>();
+        auto exporter = std::make_unique<ParkFileExporter>();
 
         // Make sure the save is using the current viewport settings.
         viewport_set_saved_view();
@@ -185,8 +183,7 @@ static bool OnCrash(
         auto& objManager = ctx->GetObjectManager();
         exporter->ExportObjectsList = objManager.GetPackableObjects();
 
-        exporter->Export();
-        exporter->SaveGame(saveFilePathUTF8.c_str());
+        exporter->Export(saveFilePathUTF8.c_str());
         savedGameDumped = true;
     }
     catch (const std::exception&)
@@ -196,19 +193,7 @@ static bool OnCrash(
     // Compress the save
     if (savedGameDumped)
     {
-        FILE* input = _wfopen(saveFilePath, L"rb");
-        FILE* dest = _wfopen(saveFilePathGZIP, L"wb");
-
-        if (util_gzip_compress(input, dest))
-        {
-            uploadFiles[L"attachment_park.sv6.gz"] = saveFilePathGZIP;
-        }
-        else
-        {
-            uploadFiles[L"attachment_park.sv6"] = saveFilePath;
-        }
-        fclose(input);
-        fclose(dest);
+        uploadFiles[L"attachment_park.park"] = saveFilePath;
     }
 
     auto configFilePathUTF8 = String::ToUtf8(configFilePath);
@@ -226,11 +211,11 @@ static bool OnCrash(
 
     if (with_record)
     {
-        auto sv6rPathW = String::ToWideChar(gSilentRecordingName);
-        bool record_copied = CopyFileW(sv6rPathW.c_str(), recordFilePathNew, true);
+        auto parkReplayPathW = String::ToWideChar(gSilentRecordingName);
+        bool record_copied = CopyFileW(parkReplayPathW.c_str(), recordFilePathNew, true);
         if (record_copied)
         {
-            uploadFiles[L"attachment_replay.sv6r"] = recordFilePathNew;
+            uploadFiles[L"attachment_replay.parkrep"] = recordFilePathNew;
         }
         else
         {
@@ -294,7 +279,6 @@ static bool OnCrash(
         if (savedGameDumped)
         {
             files[numFiles++] = ILCreateFromPathW(saveFilePath);
-            files[numFiles++] = ILCreateFromPathW(saveFilePathGZIP);
         }
         if (with_record)
         {

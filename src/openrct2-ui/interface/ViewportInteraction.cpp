@@ -63,7 +63,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
     info = get_map_coordinates_from_pos(
@@ -250,7 +250,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
     auto flags = static_cast<int32_t>(~EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
@@ -422,15 +422,19 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         case ViewportInteractionItem::Banner:
         {
             auto banner = tileElement->AsBanner()->GetBanner();
-            auto* bannerEntry = get_banner_entry(banner->type);
+            if (banner != nullptr)
+            {
+                auto* bannerEntry = get_banner_entry(banner->type);
 
-            auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-            banner->FormatTextTo(ft, /*addColour*/ true);
-            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-            ft.Add<rct_string_id>(bannerEntry->name);
-            SetMapTooltip(ft);
-            return info;
+                auto ft = Formatter();
+                ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                banner->FormatTextTo(ft, /*addColour*/ true);
+                ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                ft.Add<rct_string_id>(bannerEntry->name);
+                SetMapTooltip(ft);
+                return info;
+            }
+            break;
         }
         default:
             break;

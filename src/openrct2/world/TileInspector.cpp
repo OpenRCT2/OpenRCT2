@@ -84,69 +84,6 @@ namespace OpenRCT2::TileInspector
         return nullptr;
     }
 
-    /**
-     * Inserts a corrupt element under a given element on a given tile
-     * @param x The x coordinate of the tile
-     * @param y The y coordinate of the tile
-     * @param elementIndex The nth element on this tile
-     * Returns 0 on success, MONEY_UNDEFINED otherwise.
-     */
-    GameActionResultPtr InsertCorruptElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting)
-    {
-        // Make sure there is enough space for the new element
-        if (!MapCheckCapacityAndReorganise(loc))
-            return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_NONE);
-
-        if (isExecuting)
-        {
-            // Create new corrupt element
-            TileElement* corruptElement = tile_element_insert(
-                { loc, (-1 * COORDS_Z_STEP) }, 0b0000,
-                TileElementType::Corrupt); // Ugly hack: -1 guarantees this to be placed first
-            if (corruptElement == nullptr)
-            {
-                log_warning("Failed to insert corrupt element.");
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
-            }
-
-            // Set the base height to be the same as the selected element
-            TileElement* const selectedElement = map_get_nth_element_at(loc, elementIndex + 1);
-            if (selectedElement == nullptr)
-            {
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
-            }
-            corruptElement->base_height = corruptElement->clearance_height = selectedElement->base_height;
-
-            // Move the corrupt element up until the selected list item is reached
-            // this way it's placed under the selected element, even when there are multiple elements with the same base height
-            for (int16_t i = 0; i < elementIndex; i++)
-            {
-                if (!SwapTileElements(loc, i, i + 1))
-                {
-                    // don't return error here, we've already inserted an element
-                    // and moved it as far as we could, the only sensible thing left
-                    // to do is to invalidate the window.
-                    break;
-                }
-            }
-
-            map_invalidate_tile_full(loc);
-
-            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
-            {
-                windowTileInspectorElementCount++;
-                if (windowTileInspectorSelectedIndex > elementIndex)
-                {
-                    windowTileInspectorSelectedIndex++;
-                }
-                inspector->Invalidate();
-            }
-        }
-
-        // Nothing went wrong
-        return std::make_unique<GameActions::Result>();
-    }
-
     static int32_t numLargeScenerySequences(const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
     {
         const auto* const largeEntry = largeScenery->GetEntry();
@@ -356,6 +293,26 @@ namespace OpenRCT2::TileInspector
         return std::make_unique<GameActions::Result>();
     }
 
+    GameActionResultPtr ToggleInvisibilityOfElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting)
+    {
+        if (!isExecuting)
+        {
+            return std::make_unique<GameActions::Result>();
+        }
+
+        TileElement* tileElement = map_get_nth_element_at(loc, elementIndex);
+        bool currentlyInvisible = tileElement->IsInvisible();
+        tileElement->SetInvisible(!currentlyInvisible);
+
+        map_invalidate_tile_full(loc);
+        if (loc == windowTileInspectorTile.ToCoordsXY())
+        {
+            window_invalidate_by_class(WC_TILE_INSPECTOR);
+        }
+
+        return std::make_unique<GameActions::Result>();
+    }
+
     GameActionResultPtr PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting)
     {
         // Make sure there is enough space for the new element
@@ -373,17 +330,17 @@ namespace OpenRCT2::TileInspector
             if (bannerIndex != BANNER_INDEX_NULL)
             {
                 // The element to be pasted refers to a banner index - make a copy of it
-                auto newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
-                if (newBannerIndex == BANNER_INDEX_NULL)
+                auto newBanner = CreateBanner();
+                if (newBanner == nullptr)
                 {
-                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                    log_error("No free banners available");
+                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME);
                 }
-                auto& newBanner = *GetBanner(newBannerIndex);
-                newBanner = *GetBanner(bannerIndex);
-                newBanner.position = tileLoc;
+
+                newBanner->position = tileLoc;
 
                 // Use the new banner index
-                element.SetBannerIndex(newBannerIndex);
+                element.SetBannerIndex(newBanner->id);
             }
 
             // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set
@@ -1106,29 +1063,4 @@ namespace OpenRCT2::TileInspector
 
         return std::make_unique<GameActions::Result>();
     }
-
-    GameActionResultPtr CorruptClamp(const CoordsXY& loc, int32_t elementIndex, bool isExecuting)
-    {
-        TileElement* const corruptElement = map_get_nth_element_at(loc, elementIndex);
-
-        if (corruptElement == nullptr || corruptElement->GetType() != TILE_ELEMENT_TYPE_CORRUPT)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
-
-        if (corruptElement->IsLastForTile())
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
-
-        if (isExecuting)
-        {
-            TileElement* const nextElement = corruptElement + 1;
-            corruptElement->base_height = corruptElement->clearance_height = nextElement->base_height;
-
-            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
-            {
-                inspector->Invalidate();
-            }
-        }
-
-        return std::make_unique<GameActions::Result>();
-    }
-
 } // namespace OpenRCT2::TileInspector

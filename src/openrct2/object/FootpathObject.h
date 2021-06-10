@@ -21,11 +21,6 @@ private:
     PathRailingsEntry _pathRailingsEntry = {};
 
 public:
-    explicit FootpathObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;

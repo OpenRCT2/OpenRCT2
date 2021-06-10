@@ -683,7 +683,7 @@ void SetCheatAction::SetStaffSpeed(uint8_t value) const
 void SetCheatAction::OwnAllLand() const
 {
     const int32_t min = 32;
-    const int32_t max = gMapSizeUnits - 32;
+    const int32_t max = GetMapSizeUnits() - 32;
 
     for (CoordsXY coords = { min, min }; coords.y <= max; coords.y += COORDS_XY_STEP)
     {
