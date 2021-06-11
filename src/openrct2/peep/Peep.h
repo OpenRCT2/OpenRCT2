@@ -666,6 +666,20 @@ private:
     void UpdatePicked();
 };
 
+struct RideUseMemory
+{
+    std::vector<uint16_t> TypesBeenOn;
+    std::vector<ride_id_t> RidesBeenOn;
+};
+
+struct RideUseMemoryHandle
+{
+    bool HasMemory;
+    RideUseMemory& Get(uint16_t entityId) const;
+    RideUseMemory& Create(uint16_t entityId);
+    void Remove(uint16_t entityId);
+};
+
 struct Guest : Peep
 {
     static constexpr auto cEntityType = EntityType::Guest;
@@ -733,6 +747,7 @@ public:
     ride_id_t FavouriteRide;
     uint8_t FavouriteRideRating;
     uint64_t ItemFlags;
+    RideUseMemoryHandle RideUseMemory;
 
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
