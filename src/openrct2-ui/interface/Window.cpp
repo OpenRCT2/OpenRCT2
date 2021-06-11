@@ -90,14 +90,14 @@ static ScreenCoordsXY ClampWindowToScreen(
     const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t screenHeight, const int32_t width, const int32_t height)
 {
     auto screenPos = pos;
-    if (screenPos.x < 0)
+    if (width > screenWidth || screenPos.x < 0)
         screenPos.x = 0;
-    if (screenPos.x + width > screenWidth)
+    else if (screenPos.x + width > screenWidth)
         screenPos.x = screenWidth - width;
 
-    if (screenPos.y < 0)
+    if (height > screenHeight || screenPos.y)
         screenPos.y = 0;
-    if (screenPos.y + height > screenHeight)
+    else if (screenPos.y + height > screenHeight)
         screenPos.y = screenHeight - height;
 
     return screenPos;
