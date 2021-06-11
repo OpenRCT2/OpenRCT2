@@ -95,10 +95,11 @@ static ScreenCoordsXY ClampWindowToScreen(
     else if (screenPos.x + width > screenWidth)
         screenPos.x = screenWidth - width;
 
-    if (height > screenHeight || screenPos.y)
-        screenPos.y = 0;
-    else if (screenPos.y + height > screenHeight)
-        screenPos.y = screenHeight - height;
+    auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (TOP_TOOLBAR_HEIGHT + 1);
+    if (height - toolbarAllowance > screenHeight || screenPos.y < toolbarAllowance)
+        screenPos.y = toolbarAllowance;
+    else if (screenPos.y + height - toolbarAllowance > screenHeight)
+        screenPos.y = screenHeight + toolbarAllowance - height;
 
     return screenPos;
 }
