@@ -50,10 +50,6 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
 {
     auto errorTitle = _isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                               : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
-    if (!MapCheckCapacityAndReorganise(_loc))
-    {
-        return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
-    }
 
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -98,6 +94,10 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
         return MakeResult(GameActions::Status::NotOwned, errorTitle);
     }
 
+    if (!MapCheckCapacityAndReorganise(_loc))
+    {
+        return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
+    }
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
     auto cost = MONEY32_UNDEFINED;
     if (!map_can_construct_with_clear_at(
@@ -217,16 +217,16 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::TrackPlaceQuery(const Coor
 {
     auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                              : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
-    if (!MapCheckCapacityAndReorganise(loc))
-    {
-        return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
-    }
 
     if (!gCheatsSandboxMode && !map_is_location_owned(loc))
     {
         return MakeResult(GameActions::Status::NotOwned, errorTitle);
     }
 
+    if (!MapCheckCapacityAndReorganise(loc))
+    {
+        return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
+    }
     int16_t baseZ = loc.z;
     int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
     auto cost = MONEY32_UNDEFINED;

@@ -111,14 +111,14 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
         res->Position.z = surfaceHeight;
     }
 
-    if (!MapCheckCapacityAndReorganise(_loc))
-    {
-        return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
-    }
-
     if (!LocationValid(_loc))
     {
         return MakeResult(GameActions::Status::InvalidParameters);
+    }
+
+    if (!MapCheckCapacityAndReorganise(_loc))
+    {
+        return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
     }
 
     if (!byte_9D8150 && (_loc.x > gMapSizeMaxXY || _loc.y > gMapSizeMaxXY))
