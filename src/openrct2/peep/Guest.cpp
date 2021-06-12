@@ -45,6 +45,7 @@
 #include "../world/TileElementsView.h"
 #include "GuestPathfinding.h"
 #include "Peep.h"
+#include "RideUseSystem.h"
 #include "Staff.h"
 
 #include <algorithm>
@@ -2296,13 +2297,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
 void Guest::SetHasRidden(const Ride* ride)
 {
-    if (HasRidden(ride))
-    {
-        return;
-    }
-    auto& memory = RideUseMemory.Get(sprite_index);
-    auto res = std::lower_bound(std::begin(memory.RidesBeenOn), std::end(memory.RidesBeenOn), ride->id);
-    memory.RidesBeenOn.insert(res, ride->id);
+    OpenRCT2::RideUse::GetHistory().Add(sprite_index, ride->id);
 
     RidesBeenOn[ride->id / 8] |= 1 << (ride->id % 8);
 
@@ -2311,20 +2306,12 @@ void Guest::SetHasRidden(const Ride* ride)
 
 bool Guest::HasRidden(const Ride* ride) const
 {
-    auto& memory = RideUseMemory.Get(sprite_index);
-    auto res = std::lower_bound(std::begin(memory.RidesBeenOn), std::end(memory.RidesBeenOn), ride->id);
-    return res != std::end(memory.RidesBeenOn);
+    return OpenRCT2::RideUse::GetHistory().Contains(sprite_index, ride->id);
 }
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
 {
-    if (HasRiddenRideType(rideType))
-    {
-        return;
-    }
-    auto& memory = RideUseMemory.Get(sprite_index);
-    auto res = std::lower_bound(std::begin(memory.TypesBeenOn), std::end(memory.TypesBeenOn), rideType);
-    memory.TypesBeenOn.insert(res, rideType);
+    OpenRCT2::RideUse::GetTypeHistory().Add(sprite_index, rideType);
 
     // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
     rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
@@ -2333,9 +2320,7 @@ void Guest::SetHasRiddenRideType(int32_t rideType)
 
 bool Guest::HasRiddenRideType(int32_t rideType) const
 {
-    auto& memory = RideUseMemory.Get(sprite_index);
-    auto res = std::lower_bound(std::begin(memory.TypesBeenOn), std::end(memory.TypesBeenOn), rideType);
-    return res != std::end(memory.TypesBeenOn);
+    return OpenRCT2::RideUse::GetTypeHistory().Contains(sprite_index, rideType);
 }
 
 void Guest::SetParkEntryTime(int32_t entryTime)
@@ -7107,7 +7092,6 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     uint8_t energy = (scenario_rand() % 64) + 65;
     peep->Energy = energy;
     peep->EnergyTarget = energy;
-    peep->RideUseMemory.Create(peep->sprite_index);
 
     increment_guests_heading_for_park();
 
@@ -7375,29 +7359,4 @@ void Guest::GiveItem(ShopItem item)
 bool Guest::HasItem(ShopItem peepItem) const
 {
     return GetItemFlags() & EnumToFlag(peepItem);
-}
-
-std::unordered_map<uint16_t, RideUseMemory> _rideUseMemory;
-
-RideUseMemory& RideUseMemoryHandle::Get(uint16_t entityId) const
-{
-    if (HasMemory == false)
-    {
-        throw std::runtime_error("Tried to get when memory didn't exist");
-    }
-
-    return _rideUseMemory.at(entityId);
-}
-
-RideUseMemory& RideUseMemoryHandle::Create(uint16_t entityId)
-{
-    _rideUseMemory.insert(std::make_pair(entityId, RideUseMemory{}));
-    HasMemory = true;
-    return Get(entityId);
-}
-
-void RideUseMemoryHandle::Remove(uint16_t entityId)
-{
-    _rideUseMemory.erase(entityId);
-    HasMemory = false;
 }

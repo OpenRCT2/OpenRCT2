@@ -17,6 +17,7 @@
 #include "../core/MemoryStream.h"
 #include "../interface/Viewport.h"
 #include "../peep/Peep.h"
+#include "../peep/RideUseSystem.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "Balloon.h"
@@ -228,6 +229,8 @@ void reset_sprite_list()
 {
     gSavedAge = 0;
     std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
+    OpenRCT2::RideUse::GetHistory().Clear();
+    OpenRCT2::RideUse::GetTypeHistory().Clear();
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)
     {
         auto* spr = GetEntity(i);
@@ -550,10 +553,8 @@ static void DestroyEntity(SpriteBase* entity)
     else if (guest != nullptr)
     {
         guest->SetName({});
-        if (guest->RideUseMemory.HasMemory)
-        {
-            guest->RideUseMemory.Remove(guest->sprite_index);
-        }
+        OpenRCT2::RideUse::GetHistory().RemoveKey(guest->sprite_index);
+        OpenRCT2::RideUse::GetTypeHistory().RemoveKey(guest->sprite_index);
     }
 }
 
