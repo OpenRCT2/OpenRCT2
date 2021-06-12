@@ -534,7 +534,6 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
     rct_large_scenery_tile* tile;
 
     *wallAcrossTrack = false;
-    gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
     if (map_is_location_at_edge(_loc))
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_OFF_EDGE_OF_MAP);
