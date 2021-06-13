@@ -90,8 +90,6 @@ CoordsXY gMapSelectPositionB;
 CoordsXYZ gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
-uint8_t gMapGroundFlags;
-
 TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
@@ -1492,37 +1490,9 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
     return res;
 }
 
-bool map_can_construct_with_clear_at(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
-    uint8_t crossingMode, bool isTree)
-{
-    auto res = MapCanConstructWithClearAt(pos, clearFunc, quarterTile, flags, crossingMode, isTree);
-    if (auto message = res->ErrorMessage.AsStringId())
-        gGameCommandErrorText = *message;
-    else
-        gGameCommandErrorText = STR_NONE;
-    std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
-    if (price != nullptr)
-    {
-        *price += res->Cost;
-    }
-
-    gMapGroundFlags = res->GroundFlags;
-    return res->Error == GameActions::Status::Ok;
-}
-
-/**
- *
- *  rct2: 0x0068B93A
- */
-int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl)
-{
-    return map_can_construct_with_clear_at(pos, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
-}
-
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
 {
-    return MapCanConstructWithClearAt(pos, nullptr, bl, 0, CREATE_CROSSING_MODE_NONE);
+    return MapCanConstructWithClearAt(pos, nullptr, bl, 0);
 }
 /**
  * Updates grass length, scenery age and jumping fountains.
