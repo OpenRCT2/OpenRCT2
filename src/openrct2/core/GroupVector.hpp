@@ -8,27 +8,30 @@
  *****************************************************************************/
 
 #pragma once
-#include <unordered_map>
+#include <algorithm>
 #include <vector>
 
-template<typename K, typename V> class GroupVector
+template<typename Handle, typename V> class GroupVector
 {
-    std::unordered_map<K, std::vector<V>> _history;
+    std::vector<std::vector<V>> _data;
 
 public:
-    bool Contains(K key, V value)
+    bool Contains(Handle handle, V value)
     {
-        auto it = _history.find(key);
-        if (it == _history.end())
+        if (handle >= _data.size())
             return false;
 
-        const auto& rides = it->second;
-        return std::find(rides.begin(), rides.end(), value) != rides.end();
+        const auto& values = _data[handle];
+        return std::find(values.begin(), values.end(), value) != values.end();
     }
 
-    void Add(K key, V value)
+    void Add(Handle handle, V value)
     {
-        auto& values = _history[key];
+        if (handle >= _data.size())
+        {
+            _data.resize(handle + 1);
+        }
+        auto& values = _data[handle];
 
         auto it = std::find(values.begin(), values.end(), value);
         if (it != values.end())
@@ -37,26 +40,37 @@ public:
         values.push_back(value);
     }
 
-    void Set(K key, std::vector<V>&& values)
+    void Set(Handle handle, std::vector<V>&& values)
     {
-        _history[key] = values;
+        if (handle >= _data.size())
+        {
+            _data.resize(handle + 1);
+        }
+        _data[handle] = values;
     }
 
     void Clear()
     {
-        _history.clear();
+        _data.clear();
     }
 
-    void RemoveKey(K key)
+    void RemoveHandle(Handle handle)
     {
-        _history.erase(key);
+        if (handle < _data.size())
+        {
+            _data[handle].clear();
+        }
     }
 
     void RemoveValue(V value)
     {
-        for (auto& [_, values] : _history)
+        for (auto& values : _data)
         {
-            values.erase(std::remove_if(values.begin(), values.end(), [value](auto v) { return v == value; }), values.end());
+            if (values.has_value())
+            {
+                values->erase(
+                    std::remove_if(values->begin(), values->end(), [value](auto v) { return v == value; }), values->end());
+            }
         }
     }
 };

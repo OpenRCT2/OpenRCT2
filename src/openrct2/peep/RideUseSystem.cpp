@@ -11,8 +11,8 @@
 
 namespace OpenRCT2::RideUse
 {
-    RideHistory _history;
-    RideTypeHistory _typeHistory;
+    static RideHistory _history;
+    static RideTypeHistory _typeHistory;
 
     RideHistory& GetHistory()
     {

@@ -553,8 +553,8 @@ static void DestroyEntity(SpriteBase* entity)
     else if (guest != nullptr)
     {
         guest->SetName({});
-        OpenRCT2::RideUse::GetHistory().RemoveKey(guest->sprite_index);
-        OpenRCT2::RideUse::GetTypeHistory().RemoveKey(guest->sprite_index);
+        OpenRCT2::RideUse::GetHistory().RemoveHandle(guest->sprite_index);
+        OpenRCT2::RideUse::GetTypeHistory().RemoveHandle(guest->sprite_index);
     }
 }
 
