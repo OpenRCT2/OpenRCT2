@@ -142,12 +142,6 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         }
     }
 
-    if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
-    {
-        log_error("No free map elements available");
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
-    }
-
     uint8_t tileNum = 0;
     for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
     {
@@ -200,6 +194,12 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         }
     }
 
+    if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
+    {
+        log_error("No free map elements available");
+        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
+    }
+
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
@@ -234,7 +234,6 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
-    uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->tiles);
     int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
 
     if (_loc.z != 0)
@@ -243,12 +242,6 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
     }
 
     res->Position.z = maxHeight;
-
-    if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
-    {
-        log_error("No free map elements available");
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
-    }
 
     uint8_t tileNum = 0;
     for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)

@@ -361,11 +361,6 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         }
     }
 
-    if (!MapCheckCapacityAndReorganise(_loc))
-    {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
-    }
-
     if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         if (_bannerId == BANNER_INDEX_NULL)

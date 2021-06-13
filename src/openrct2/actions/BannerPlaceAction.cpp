@@ -55,15 +55,15 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
     res->Expenditure = ExpenditureType::Landscaping;
     res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
+    if (!LocationValid(_loc))
+    {
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+    }
+
     if (!MapCheckCapacityAndReorganise(_loc))
     {
         log_error("No free map elements.");
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
-    }
-
-    if (!LocationValid(_loc))
-    {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
     }
 
     auto pathElement = GetValidPathElement();

@@ -51,17 +51,17 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
     res->Expenditure = ExpenditureType::LandPurchase;
     res->Position = { _loc.x, _loc.y, _loc.z };
 
-    if (!CheckMapCapacity(3))
-    {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::NoFreeElements, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
-    }
-
     if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32)
         || _loc.y >= (gMapSizeUnits - 32))
     {
         return std::make_unique<GameActions::Result>(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
+    }
+
+    if (!CheckMapCapacity(3))
+    {
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::NoFreeElements, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
     }
 
     if (gParkEntrances.size() >= MAX_PARK_ENTRANCES)
