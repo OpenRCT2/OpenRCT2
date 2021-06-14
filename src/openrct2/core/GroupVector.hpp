@@ -49,6 +49,15 @@ public:
         _data[handle] = values;
     }
 
+    std::vector<V>* GetAll(Handle handle)
+    {
+        if (handle < _data.size())
+        {
+            return &_data[handle];
+        }
+        return nullptr;
+    }
+
     void Clear()
     {
         _data.clear();
@@ -66,11 +75,7 @@ public:
     {
         for (auto& values : _data)
         {
-            if (values.has_value())
-            {
-                values->erase(
-                    std::remove_if(values->begin(), values->end(), [value](auto v) { return v == value; }), values->end());
-            }
+            values.erase(std::remove_if(values.begin(), values.end(), [value](auto v) { return v == value; }), values.end());
         }
     }
 };
