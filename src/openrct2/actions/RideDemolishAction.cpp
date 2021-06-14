@@ -17,6 +17,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
+#include "../peep/RideUseSystem.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ui/UiContext.h"
@@ -142,13 +143,9 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
         }
     }
 
+    RideUse::GetHistory().RemoveValue(_rideIndex);
     for (auto peep : EntityList<Guest>())
     {
-        uint8_t ride_id_bit = _rideIndex % 8;
-        uint8_t ride_id_offset = _rideIndex / 8;
-
-        // clear ride from potentially being in RidesBeenOn
-        peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
         if (peep->State == PeepState::Watching)
         {
             if (peep->CurrentRide == _rideIndex)
