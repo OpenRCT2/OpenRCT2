@@ -156,6 +156,7 @@ struct rct_viewport
     ZoomLevel zoom;
     uint8_t var_11;
     VisibilityCache visibility;
+    std::vector<paint_session*> sessions;
 
     // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
     // from its x, y, z

@@ -12,6 +12,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/paint/Paint.h>
 #include <openrct2/world/Footpath.h>
 
 // clang-format off
@@ -20,10 +21,12 @@ static rct_widget window_main_widgets[] = {
     { WIDGETS_END },
 };
 
-void window_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_main_update(rct_window* w);
+static void window_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_main_events([](auto& events)
 {
+    events.update = &window_main_update;
     events.paint = &window_main_paint;
 });
 // clang-format on
@@ -50,6 +53,19 @@ rct_window* window_main_open()
     window_footpath_reset_selected_path();
 
     return window;
+}
+
+void window_main_update(rct_window* w)
+{
+    if (!w->viewport)
+        return;
+
+    for (auto* session : w->viewport->sessions)
+    {
+        PaintSessionFree(session);
+    }
+
+    w->viewport->sessions.clear();
 }
 
 /**
