@@ -50,8 +50,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
     res->Expenditure = ExpenditureType::LandPurchase;
     res->Position = { _loc.x, _loc.y, _loc.z };
 
-    if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32)
-        || _loc.y >= (gMapSizeUnits - 32))
+    if (!LocationValid(_loc) || map_is_edge(_loc))
     {
         return std::make_unique<GameActions::Result>(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);

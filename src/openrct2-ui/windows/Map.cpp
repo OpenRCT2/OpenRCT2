@@ -1579,7 +1579,7 @@ static void map_window_set_pixels(rct_window* w)
 
     for (int32_t i = 0; i < MAXIMUM_MAP_SIZE_TECHNICAL; i++)
     {
-        if (x > 0 && y > 0 && x < gMapSizeUnits && y < gMapSizeUnits)
+        if (!map_is_edge({ x, y }))
         {
             switch (w->selected_tab)
             {
