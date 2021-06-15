@@ -183,7 +183,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
 
         res->GroundFlags = tempSceneryGroundFlags;
 
-        if (!LocationValid(curTile) || curTile.x >= gMapSizeUnits || curTile.y >= gMapSizeUnits)
+        if (!LocationValid(curTile) || map_is_edge(curTile))
         {
             return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::Disallowed, STR_OFF_EDGE_OF_MAP);
         }
