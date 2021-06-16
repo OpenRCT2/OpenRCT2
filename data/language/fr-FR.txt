@@ -95,6 +95,7 @@ STR_0090    :Mineur
 STR_0091    :Manège Inconnu (59)
 STR_0092    :Moteur à induction linéaire
 STR_0093    :Montagnes russes hybrides
+STR_0094    :Montagnes russes à rail unique
 STR_0512    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0513    :Grand huit que les passagers parcourent debout
 STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
@@ -175,6 +176,7 @@ STR_0599    :Des voitures individuelles descendent des pentes régulières en vi
 STR_0600    :Train de mine à propulsion franchissant une voie régulière et alambiquée
 STR_0602    :Train de montagnes russes propulsé hors de la station par des moteurs à induction linéaire et fonçant dans des inversions renversantes
 STR_0603    :Train de montagnes russes en bois avec des rails en acier, permettant des grandes chutes et des inversions.
+STR_0604    :Les passagers parcourent une voie à rail unique dans des voitures mono-places, à travers des inversions et des virages serrés
 STR_0767    :Visiteur {INT32}
 STR_0768    :Agent d’entretien {INT32}
 STR_0769    :Mécanicien {INT32}
@@ -3296,18 +3298,18 @@ STR_6014    :Les visiteurs ne paieront que les tickets pour entrer dans les attr
 STR_6015    :Incliné
 STR_6016    :Modifier case
 STR_6017    :Merci de ralentir un peu
-STR_6018    :Construction d’attraction - Tourner à gauche
-STR_6019    :Construction d’attraction - Tourner à droite
-STR_6020    :Construction d’attraction - Utiliser la voie par défaut
-STR_6021    :Construction d’attraction - Pente descendante
-STR_6022    :Construction d’attraction - Pente ascendante
-STR_6023    :Construction d’attraction - Activer/désactiver la remontée à chaîne
-STR_6024    :Construction d’attraction - Incliner à gauche
-STR_6025    :Construction d’attraction - Incliner à droite
-STR_6026    :Construction d’attraction - Morceau précédent
-STR_6027    :Construction d’attraction - Morceau suivante
-STR_6028    :Construction d’attraction - Construire l’actuel
-STR_6029    :Construction d’attraction - Démolir l’actuel
+STR_6018    :Construction - Tourner à gauche
+STR_6019    :Construction - Tourner à droite
+STR_6020    :Construction - Utiliser la voie par défaut
+STR_6021    :Construction - Pente descendante
+STR_6022    :Construction - Pente ascendante
+STR_6023    :Construction - Activer/désactiver la remontée à chaîne
+STR_6024    :Construction - Incliner à gauche
+STR_6025    :Construction - Incliner à droite
+STR_6026    :Construction - Morceau précédent
+STR_6027    :Construction - Morceau suivante
+STR_6028    :Construction - Construire l’actuel
+STR_6029    :Construction - Démolir l’actuel
 STR_6030    :Pipette de décor. Cliquez sur un décor sur la carte afin de sélectionner la même pièce et la construire.
 STR_6031    :Description du serveur :
 STR_6032    :Message de bienvenue du serveur :
@@ -3643,20 +3645,63 @@ STR_6392    :Impossible de trouver {STRING} à cet emplacement.
 STR_6393    :Choix des objectifs
 STR_6394    :Objectif
 STR_6395    :Maintenance
-STR_6396    :Désactiver écran de veille et économie d’énergie pour moniteur
-STR_6397    :Si coché, l’écran de veille et autres paramètres d’économie d’énergie pour moniteur seront désactivés pendant qu’OpenRCT2 tourne
-STR_6398    :Le fichier contient des types d'attractions non-supportés. Veuillez mettre à jour OpenRCT2.
-STR_6399    :OpenRCT2 a besoin des fichiers originaux de RollerCoaster Tycoon 2 pour fonctionner. Veuillez indiquez le chemin où vous avez installé RollerCoaster Tycoon 2 dans la variable "game_path" dans le fichier config.ini, puis redémarrez OpenRCT2.
-STR_6400    :J'ai téléchargé l'installeur GOG hors-ligne de RollerCoaster Tycoon 2, mais je ne l'ai pas encoré installé
-STR_6401    :J'ai déjà installé RollerCoaster Tycoon 2
+STR_6396    :Désactiver écr. de veille et éco. d’énergie du moniteur
+STR_6397    :Si coché, l’écran de veille et d’autres fonctionnalités d’économie d’énergie du moniteur seront désactivés pendant qu’OpenRCT2 est lancé.
+STR_6398    :Le fichier contient des types d’attractions non supportés. Veuillez mettre à jour OpenRCT2 vers une version plus récente.
+STR_6399    :OpenRCT2 a besoin des fichiers originaux de RollerCoaster Tycoon 2 pour fonctionner. Veuillez indiquer le chemin où vous avez installé RollerCoaster Tycoon 2 dans la variable “game_path” dans le fichier config.ini, puis redémarrez OpenRCT2.
+STR_6400    :J’ai téléchargé l’installeur GOG hors-ligne de RollerCoaster Tycoon 2, mais je ne l’ai pas encore installé
+STR_6401    :J’ai déjà installé RollerCoaster Tycoon 2
 STR_6402    :Configuration des données OpenRCT2
-STR_6403    :Sélectionnez la situation qui s'applique dans votre cas
-STR_6404    :Veuillez sélectionnez l'installeur GOG de RollerCoaster Tycoon 2.
-STR_6405    :Selection installeur GOG
+STR_6403    :Sélectionnez la situation qui s’applique à votre cas
+STR_6404    :Veuillez sélectionnez l’installeur GOG de RollerCoaster Tycoon 2.
+STR_6405    :Sélectionner l’installeur GOG
 STR_6406    :Installeur GOG RollerCoaster Tycoon 2
 STR_6407    :Ceci peut prendre quelques minutes.
-STR_6408    :Veuillez installer "innoextract" pour extraire l'installeur GOG, et redémarrez OpenRCT2.
-STR_6409    :Le fichier sélectionné n'est pas l'installeur GOG hors-ligne de RollerCoaster Tycoon 2. Soit vous avez téléchargé l'installeur de GOG Galaxy ou vous avez sélectionné le mauvais fichier.
+STR_6408    :Veuillez installer “innoextract” pour extraire l’installeur GOG, et redémarrez OpenRCT2.
+STR_6409    :Le fichier sélectionné n’est pas l’installeur GOG hors-ligne de RollerCoaster Tycoon 2. Vous avez peut-être téléchargé l’installeur de GOG Galaxy ou sélectionné le mauvais fichier.
+STR_6410    :Zoom avant/arrière
+STR_6411    :Afficher les boutons de zoom dans la barre d’outils
+STR_6412    :Entrée pavé numérique
+STR_6413    :Maj
+STR_6414    :Maj gauche
+STR_6415    :Maj droite
+STR_6416    :Ctrl
+STR_6417    :Ctrl gauche
+STR_6418    :Ctrl droite
+STR_6419    :Alt
+STR_6420    :Alt gauche
+STR_6421    :Alt droite
+STR_6422    :Cmd
+STR_6423    :Cmd gauche
+STR_6424    :Cmd droite
+STR_6425    :Joystick gauche
+STR_6426    :Joystick droite
+STR_6427    :Joystick haut
+STR_6428    :Joystick bas
+STR_6429    :Joystick {INT32}
+STR_6430    :Bouton gauche souris
+STR_6431    :Bouton droite souris
+STR_6432    :Bouton souris {INT32}
+STR_6433    :Supprimer
+STR_6434    :Supprimer toutes les combinaisons pour ce raccourci.
+STR_6435    :{WINDOW_COLOUR_2}Vandales arrêtés : {BLACK}{COMMA16}
+STR_6436    :Permuter la visibilité
+STR_6437    :Invisible
+STR_6438    :I
+STR_6439    :Inspecteur de cases - Permuter la visibilité
+STR_6440    :Eau transparente
+STR_6441    :Au moins un objet de surface d’allée (hors file d’attente) doit être sélectionné.
+STR_6442    :Au moins un objet de surface de file d’attente doit être sélectionné.
+STR_6443    :Au moins un object de rambarde doit être sélectionné.
+STR_6444    :Surfaces d’allée
+STR_6445    :Rambardes
+STR_6446    :{WINDOW_COLOUR_2}Nom de la surface : {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Nom de la rambarde : {BLACK}{STRINGID}
+STR_6448    :Format d’objet non supporté
+STR_6449    :{WINDOW_COLOUR_2}Pistes :
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Vend : {BLACK}{STRING}
 
 #############
 # Scenarios #
