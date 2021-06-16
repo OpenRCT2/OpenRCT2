@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Addresses.h"
-
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Colour.h>
@@ -25,10 +23,6 @@
 #include <openrct2/world/Surface.h>
 
 class StationObject;
-
-#define gRideEntries RCT2_ADDRESS(0x009ACFA4, rct_ride_entry*)
-#define gTileElementTilePointers RCT2_ADDRESS(0x013CE9A4, TileElement*)
-rct_sprite* sprite_list = RCT2_ADDRESS(0x010E63BC, rct_sprite);
 
 bool gCheatsEnableAllDrawableTrackPieces = false;
 
@@ -126,9 +120,16 @@ Ride* get_ride(ride_id_t index)
     return &gRideList[index];
 }
 
+static rct_ride_entry* gRideEntries[1];
+
+void set_ride_entry(rct_ride_entry* entry)
+{
+    gRideEntries[0] = entry;
+}
+
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 {
-    if (index >= object_entry_group_counts[static_cast<int>(ObjectType::Ride)])
+    if (index >= 1)
     {
         log_error("invalid index %d for ride type", index);
         return nullptr;
@@ -167,10 +168,12 @@ template<> bool SpriteBase::Is<Vehicle>() const
     return Type == EntityType::Vehicle;
 }
 
+static rct_sprite _spriteList[MAX_ENTITIES];
+
 SpriteBase* get_sprite(size_t sprite_idx)
 {
     assert(sprite_idx < MAX_ENTITIES);
-    return reinterpret_cast<SpriteBase*>(&sprite_list[sprite_idx]);
+    return reinterpret_cast<SpriteBase*>(&_spriteList[sprite_idx]);
 }
 
 bool TileElementBase::IsLastForTile() const
@@ -200,6 +203,8 @@ bool TrackElement::BlockBrakeClosed() const
 {
     return (Flags2 & TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED) != 0;
 }
+
+TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 TileElement* map_get_first_element_at(const CoordsXY& elementPos)
 {

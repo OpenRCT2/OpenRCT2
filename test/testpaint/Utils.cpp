@@ -18,11 +18,11 @@
 
 namespace Utils
 {
-    int getTrackSequenceCount(uint8_t rideType, uint8_t trackType)
+    int getTrackSequenceCount(uint8_t rideType, track_type_t trackType)
     {
         int sequenceCount = 0;
 
-        for (int i = 0; i < 256; i++)
+        for (int i = 0; i < TrackElemType::Count; i++)
         {
             if (TrackBlocks[trackType][i].index == 0xFF)
             {
@@ -35,7 +35,7 @@ namespace Utils
         return sequenceCount;
     }
 
-    bool rideSupportsTrackType(uint8_t rideType, uint8_t trackType)
+    bool rideSupportsTrackType(uint8_t rideType, track_type_t trackType)
     {
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = GetRideTypeDescriptor(rideType).TrackPaintFunction;
 
@@ -49,17 +49,6 @@ namespace Utils
             return false;
         }
 
-        if (RideTypeTrackPaintFunctionsOld[rideType][trackType] == 0)
-        {
-            return false;
-        }
-
         return true;
-    }
-
-    bool rideIsImplemented(uint8_t rideType)
-    {
-        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = GetRideTypeDescriptor(rideType).TrackPaintFunction;
-        return (newPaintGetter != 0);
     }
 } // namespace Utils
