@@ -1,0 +1,128 @@
+{
+    "id": "rct2.ride.tram1",
+    "authors": ["TheClaudeQC", "", Originals: "Chris Sawyer", "Simon Foster"],
+    "version": "0.1",
+    "originalId": "0A188B80|TRAM1   |B16BC043",
+    "sourceGame": "rct2",
+    "objectType": "ride",
+    "properties": {
+        "type": "Malgev",
+        "category": "transport",
+        "tabScale": 0.5,
+        "hasShelter": true,
+        "playDepartSound": true,
+        "noCollisionCrashes": true,
+        "minCarsPerTrain": 3,
+        "maxCarsPerTrain": 6,
+        "numEmptyCars": 2,
+        "tabCar": 1,
+        "headCars": 1,
+        "tailCars": 1,
+        "carColours": [
+            [
+                ["bright_red", "yellow", "black"]
+            ],
+            [
+                ["yellow", "white", "black"]
+            ],
+            [
+                ["light_blue", "white", "black"]
+            ]
+        ],
+        "cars": [
+            {
+                "rotationFrameMask": 31,
+                "spacing": 357356,
+                "mass": 1000,
+                "numSeats": 10,
+                "numSeatRows": 5,
+                "frictionSoundId": 31,
+                "soundRange": 4,
+                "poweredAcceleration": 250,
+                "poweredMaxSpeed": 119,
+                "drawOrder": 10,
+                "frames": {
+                    "flat": true,
+                    "gentleSlopes": true,
+                    "diagonalSlopes": true
+                },
+                "hasAdditionalColour1": true,
+                "isPowered": true,
+                "loadingPositions": [12, -12, 12, -12, 12, -12, 13, 11, -13, -11]
+            },
+            {
+                "rotationFrameMask": 31,
+                "spacing": 34864,
+                "frictionSoundId": 31,
+                "soundRange": 4,
+                "poweredAcceleration": 250,
+                "poweredMaxSpeed": 119,
+                "carVisual": 1,
+                "drawOrder": 8,
+                "frames": {
+                    "flat": true
+                },
+                "hasAdditionalColour1": true,
+                "isPowered": true
+            }
+        ],
+        "buildMenuPriority": 1
+    },
+    "images": ["$RCT2:OBJDATA/TRAM1.DAT[0..802]"],
+    "strings": {
+        "name": {
+            "en-GB": "Trams-Malgev",
+            "fr-FR": "Tramway à Malgev",
+            "de-DE": "Trams-Malgev",
+            "es-ES": "Trams-Malgev",
+            "it-IT": "Trams-Malgev",
+            "sv-SE": "Trams-Malgev",
+            "ko-KR": "Trams-Malgev",
+            "zh-CN": "Trams-Malgev",
+            "zh-TW": "Trams-Malgev",
+            "pt-BR": "Trams-Malgev",
+            "cs-CZ": "Trams-Malgev",
+            "ja-JP": "Trams-Malgev",
+            "nl-NL": "Trams-Malgev",
+            "pl-PL": "Trams-Malgev",
+            "ru-RU": "Trams-Malgev",
+            "eo-ZZ": "Trams-Malgev"
+        },
+        "description": {
+            "en-GB": "Replica of the TTD Malgev's train type",
+            "fr-FR": "Réplique des trains de type Malgev de TTD",
+            "de-DE": "Replica of the TTD Malgev's train type",
+            "es-ES": "Replica of the TTD Malgev's train type",
+            "it-IT": "Replica of the TTD Malgev's train type",
+            "nl-NL": "Replica of the TTD Malgev's train type",
+            "sv-SE": "Replica of the TTD Malgev's train type",
+            "ko-KR": "Replica of the TTD Malgev's train type",
+            "zh-CN": "Replica of the TTD Malgev's train type",
+            "zh-TW": "Replica of the TTD Malgev's train type",
+            "pt-BR": "Replica of the TTD Malgev's train type",
+            "cs-CZ": "Replica of the TTD Malgev's train type",
+            "ja-JP": "Replica of the TTD Malgev's train type",
+            "pl-PL": "Replica of the TTD Malgev's train type",
+            "ru-RU": "Replica of the TTD Malgev's train type",
+            "eo-ZZ": "Replica of the TTD Malgev's train type"
+        },
+        "capacity": {
+            "en-GB": "10 passengers per car",
+            "fr-FR": "10 passagers par voiture",
+            "de-DE": "10 Fahrgäste pro Wagen",
+            "es-ES": "10 pasajeros por tranvía",
+            "it-IT": "10 passeggeri a carrozza",
+            "nl-NL": "10 passagiers per tram",
+            "sv-SE": "10 passagerare per vagn",
+            "ko-KR": "차량당 10명의 승객",
+            "zh-CN": "10 位乘客/每个车厢",
+            "zh-TW": "每車卡10位乘客",
+            "pt-BR": "10 passageiros por vagão",
+            "cs-CZ": "10 míst v každém vozu",
+            "ja-JP": "各車両10名",
+            "pl-PL": "10 pasażerów na wagonik",
+            "ru-RU": "10 пасс. на вагон",
+            "eo-ZZ": "Po 10 pasaĝeroj por ĉaro"
+        }
+    }
+}
