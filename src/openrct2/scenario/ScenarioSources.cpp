@@ -112,6 +112,28 @@ namespace ScenarioSources
         { "Rock 'n' Roll - Flower Power",               "Rock 'n' Roll - dzieci kwiaty"             },
         // Skipping Rock 'n' Roll - Rock 'n' Roll as that name matches exactly.
 
+        // maian_sos’ scenarios contain numbers and one trailing whitespace
+        { "Hurricane Hills",     "01. Hurricane Hills"      },
+        { "Parabola Park",       "02. Parabola Park"        },
+        { "Ruthless Ridge",      "03. Ruthless Ridge"       },
+        { "Future Funzone",      "04. Future Funzone"       },
+        { "Bashful Beach",       "05. Bashful Beach"        },
+        { "Trains & Thrills",    "06. Trains & Thrills "    },
+        { "La La Land",          "07. La La Land"           },
+        { "Dragon Desert",       "08. Dragon Desert",       },
+        { "Wishful Woods",       "09. Wishful Woods",       },
+        { "Frosty Frolics",      "10. Frosty Frolics",      },
+        { "Stormy Seas",         "11. Stormy Seas",         },
+        { "Gyro Gardens",        "12. Gyro Gardens",        },
+        { "Murky Marsh",         "13. Murky Marsh",         },
+        { "Electric Everglades", "14. Electric Everglades", },
+        { "Wild Water World",    "15. Wild Water World",    },
+        { "Velocity Valley",     "16. Velocity Valley",     },
+        { "Power Park",          "17. Power Park",          },
+        { "Glitter Grove",       "18. Glitter Grove",       },
+        { "Lunar Lake",          "19. Lunar Lake",          },
+        { "Final Frontiers",     "20. Final Frontiers",     },
+        { "Bonus - Power Park",  "21. Bonus - Power Park",  },
     };
 
     // RCT
@@ -272,6 +294,31 @@ namespace ScenarioSources
         { SC_UNIDENTIFIED,              "Rock 'n' Roll - Rock 'n' Roll",                    SCENARIO_CATEGORY_EXPERT        },
     };
 
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesOpenRCT2[] =
+    {
+        { SC_UNIDENTIFIED,              "Hurricane Hills",         SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Parabola Park",           SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Ruthless Ridge",          SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Future Funzone",          SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Bashful Beach",           SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Trains & Thrills",        SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "La La Land",              SCENARIO_CATEGORY_BEGINNER      },
+        { SC_UNIDENTIFIED,              "Dragon Desert",           SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Wishful Woods",           SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Frosty Frolics",          SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Stormy Seas",             SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Gyro Gardens",            SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Murky Marsh",             SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Electric Everglades",     SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UNIDENTIFIED,              "Wild Water World",        SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Velocity Valley",         SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Power Park",              SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Glitter Grove",           SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Lunar Lake",              SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Final Frontiers",         SCENARIO_CATEGORY_EXPERT        },
+        { SC_UNIDENTIFIED,              "Bonus - Power Park",      SCENARIO_CATEGORY_OTHER         },
+    };
+
     // Real parks
     static constexpr const ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
     {
@@ -325,6 +372,7 @@ namespace ScenarioSources
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2WW),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2TT),
+        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesOpenRCT2),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRealParks),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesOtherParks),
     };
