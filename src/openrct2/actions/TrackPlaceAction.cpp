@@ -547,7 +547,11 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         }
 
         auto* trackElement = TileElementInsert<TrackElement>(mapLoc, quarterTile.GetBaseQuarterOccupied());
-        Guard::Assert(trackElement != nullptr);
+        if (trackElement == nullptr)
+        {
+            log_warning("Cannot create track element for ride = %d", static_cast<int32_t>(_rideIndex));
+            return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements);
+        }
 
         trackElement->SetClearanceZ(clearanceZ);
         trackElement->SetDirection(_origin.direction);
