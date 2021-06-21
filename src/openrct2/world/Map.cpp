@@ -1322,7 +1322,7 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
 
     res->GroundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
-    if (pos.x >= gMapSizeUnits || pos.y >= gMapSizeUnits || pos.x < 32 || pos.y < 32)
+    if (map_is_edge(pos))
     {
         res->Error = GameActions::Status::InvalidParameters;
         res->ErrorMessage = STR_OFF_EDGE_OF_MAP;
