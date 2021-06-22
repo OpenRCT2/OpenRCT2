@@ -1393,7 +1393,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     }
 
     session->InteractionType = ViewportInteractionItem::Terrain;
-    session->Unk141E9DB |= G141E9DB_FLAG_1;
+    session->Unk141E9DB |= PaintSessionFlags::IsPassedSurface;
 
     switch (surfaceShape)
     {

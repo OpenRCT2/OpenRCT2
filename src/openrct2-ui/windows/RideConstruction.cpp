@@ -25,6 +25,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
@@ -2446,7 +2447,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
         // Draw this map tile
-        sub_68B2B7(session, coords);
+        tile_element_paint_setup(session, coords, true);
 
         // Restore map elements
         map_set_tile_element(centreTileCoords, _backupTileElementArrays[0]);

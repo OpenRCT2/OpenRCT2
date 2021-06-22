@@ -45,35 +45,14 @@ const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 |
  *
  *  rct2: 0x0068B35F
  */
-void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y)
-{
-    if (x < gMapSizeUnits && y < gMapSizeUnits && x >= 32 && y >= 32)
-    {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_force_set_general_support_height(session, -1, 0);
-        session->Unk141E9DB = 0;
-        session->WaterHeight = 0xFFFF;
-
-        sub_68B3FB(session, x, y);
-    }
-    else if (!(session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
-    {
-        blank_tiles_paint(session, x, y);
-    }
-}
-
-/**
- *
- *  rct2: 0x0068B2B7
- */
-void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords)
+void tile_element_paint_setup(paint_session* session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
 {
     if (mapCoords.x < gMapSizeUnits && mapCoords.y < gMapSizeUnits && mapCoords.x >= 32 && mapCoords.y >= 32)
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(session, -1, 0);
+        session->Unk141E9DB = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
         session->WaterHeight = 0xFFFF;
-        session->Unk141E9DB = G141E9DB_FLAG_2;
 
         sub_68B3FB(session, mapCoords.x, mapCoords.y);
     }

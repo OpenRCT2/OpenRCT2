@@ -72,11 +72,12 @@ enum
     TUNNEL_TYPE_COUNT
 };
 
-enum
+namespace PaintSessionFlags
 {
-    G141E9DB_FLAG_1 = 1,
-    G141E9DB_FLAG_2 = 2,
-};
+    // Unsure as to why this exists and DidPassSurface
+    constexpr uint8_t IsPassedSurface = 1;
+    constexpr uint8_t IsTrackPiecePreview = 2;
+} // namespace PaintSessionFlags
 
 #ifdef __TESTPAINT__
 extern uint16_t testPaintVerticalTunnelHeight;
@@ -100,7 +101,7 @@ void paint_util_force_set_general_support_height(paint_session* session, int16_t
 void paint_util_set_segment_support_height(paint_session* session, int32_t segments, uint16_t height, uint8_t slope);
 uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation);
 
-void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y);
+void tile_element_paint_setup(paint_session* session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
 
 void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element);
 void banner_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element);
