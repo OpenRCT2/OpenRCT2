@@ -218,10 +218,10 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto const& versionPlaceholder = w->widgets[WIDX_VERSION];
     auto width = versionPlaceholder.right - versionPlaceholder.left;
-    auto centerX = versionPlaceholder.left + width / 2;
-    auto centerY = (versionPlaceholder.top + versionPlaceholder.bottom - font_get_line_height(FontSpriteBase::MEDIUM)) / 2;
-    auto centerPos = w->windowPos + ScreenCoordsXY(centerX, centerY);
-    DrawTextWrapped(dpi, centerPos, width, STR_STRING, ft, { w->colours[1], TextAlignment::CENTRE });
+    auto centreX = versionPlaceholder.left + width / 2;
+    auto centreY = (versionPlaceholder.top + versionPlaceholder.bottom - font_get_line_height(FontSpriteBase::MEDIUM)) / 2;
+    auto centrePos = w->windowPos + ScreenCoordsXY(centreX, centreY);
+    DrawTextWrapped(dpi, centrePos, width, STR_STRING, ft, { w->colours[1], TextAlignment::CENTRE });
 }
 
 static void window_about_openrct2_invalidate(rct_window* w)
