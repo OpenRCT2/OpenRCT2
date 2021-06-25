@@ -446,7 +446,7 @@ static rct_string_id window_cheats_page_titles[] = {
 class CheatsWindow final : public Window
 {
 private:
-    char _moneySpinnerText[MONEY_STRING_MAXLENGTH];
+    char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
     money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
     int32_t _selectedStaffSpeed = 1;
     int32_t _parkRatingSpinnerValue{};
