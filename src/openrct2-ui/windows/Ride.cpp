@@ -5414,7 +5414,7 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
     _lastSceneryY = screenCoords.y;
     _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
-    auto flags = EnumsToFlags(
+    constexpr auto flags = EnumsToFlags(
         ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
         ViewportInteractionItem::LargeScenery);
     auto info = get_map_coordinates_from_pos(screenCoords, flags);
