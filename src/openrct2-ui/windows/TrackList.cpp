@@ -241,7 +241,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
     // Displays a message if the ride can't load, fix #4080
     if (_loadedTrackDesign == nullptr)
     {
-        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
+        context_show_error(STR_CANT_BUILD_THIS_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
         return;
     }
 
