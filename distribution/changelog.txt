@@ -30,6 +30,7 @@
 - Fix: [#14774] Incorrect import of scenery research caused all scenery to be unlocked.
 - Fix: [#14806] Incorrect function call in WallPlaceAction plugin code.
 - Fix: [#14871] Crash when trying to place track when there are no free tile elements.
+- Fix: [#14880] Unable to close changelog window when its content fails to load.
 - Improved: [#14511] “Unlock operating limits” cheat now also unlocks all music.
 - Improved: [#14712, #14716]: Improve startup times.
 
