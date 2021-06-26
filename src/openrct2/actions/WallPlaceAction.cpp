@@ -21,22 +21,22 @@
 #include "../world/Wall.h"
 
 WallPlaceActionResult::WallPlaceActionResult()
-    : GameActions::Result(GameActions::Status::Ok, STR_CANT_BUILD_PARK_ENTRANCE_HERE)
+    : GameActions::Result(GameActions::Status::Ok, STR_CANT_BUILD_THIS_HERE)
 {
 }
 
 WallPlaceActionResult::WallPlaceActionResult(GameActions::Status err)
-    : GameActions::Result(err, STR_CANT_BUILD_PARK_ENTRANCE_HERE)
+    : GameActions::Result(err, STR_CANT_BUILD_THIS_HERE)
 {
 }
 
 WallPlaceActionResult::WallPlaceActionResult(GameActions::Status err, rct_string_id msg)
-    : GameActions::Result(err, STR_CANT_BUILD_PARK_ENTRANCE_HERE, msg)
+    : GameActions::Result(err, STR_CANT_BUILD_THIS_HERE, msg)
 {
 }
 
 WallPlaceActionResult::WallPlaceActionResult(GameActions::Status error, rct_string_id msg, uint8_t* args)
-    : GameActions::Result(error, STR_CANT_BUILD_PARK_ENTRANCE_HERE, msg, args)
+    : GameActions::Result(error, STR_CANT_BUILD_THIS_HERE, msg, args)
 {
 }
 
@@ -94,7 +94,7 @@ void WallPlaceAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr WallPlaceAction::Query() const
 {
     auto res = std::make_unique<WallPlaceActionResult>();
-    res->ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+    res->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
     res->Position = _loc;
 
     res->Expenditure = ExpenditureType::Landscaping;
@@ -302,7 +302,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
 GameActions::Result::Ptr WallPlaceAction::Execute() const
 {
     auto res = std::make_unique<WallPlaceActionResult>();
-    res->ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+    res->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
     res->Position = _loc;
 
     res->Expenditure = ExpenditureType::Landscaping;
