@@ -44,7 +44,7 @@ static rct_widget window_news_widgets[] = {
 class NewsWindow final : public Window
 {
 private:
-    int32_t _pressedNewsItemIndex, _pressedButtonIndex, _suspendUpdateTicks;
+    int32_t _pressedNewsItemIndex{}, _pressedButtonIndex{}, _suspendUpdateTicks{};
     static int32_t CalculateItemHeight()
     {
         return 4 * font_get_line_height(FontSpriteBase::SMALL) + 2;

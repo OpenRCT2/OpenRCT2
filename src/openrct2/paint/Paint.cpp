@@ -649,6 +649,7 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem 
             case ViewportInteractionItem::Banner:
                 imageId &= 0x7FFFF;
                 imageId |= seeThoughFlags;
+                break;
             default:
                 break;
         }
@@ -662,6 +663,7 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem 
             case ViewportInteractionItem::Wall:
                 imageId &= 0x7FFFF;
                 imageId |= seeThoughFlags;
+                break;
             default:
                 break;
         }

@@ -1128,7 +1128,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
             break;
         case WIDX_CURRENCY_DROPDOWN:
         {
-            uint32_t num_items = EnumValue(CurrencyType::Count) + 1;             // All the currencies plus the separator
+            constexpr auto num_items = EnumValue(CurrencyType::Count) + 1;       // All the currencies plus the separator
             size_t num_ordinary_currencies = EnumValue(CurrencyType::Count) - 1; // All the currencies except custom currency
 
             for (size_t i = 0; i < num_ordinary_currencies; i++)
