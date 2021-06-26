@@ -238,15 +238,16 @@ rct_window* window_map_open()
 
     w = WindowCreateAutoPos(245, 259, &window_map_events, WC_MAP, WF_10);
     w->widgets = window_map_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_PEOPLE_TAB) | (1 << WIDX_RIDES_TAB) | (1 << WIDX_MAP_SIZE_SPINNER)
-        | (1 << WIDX_MAP_SIZE_SPINNER_UP) | (1 << WIDX_MAP_SIZE_SPINNER_DOWN) | (1 << WIDX_LAND_TOOL)
-        | (1 << WIDX_LAND_TOOL_SMALLER) | (1 << WIDX_LAND_TOOL_LARGER) | (1 << WIDX_SET_LAND_RIGHTS)
-        | (1 << WIDX_LAND_OWNED_CHECKBOX) | (1 << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX) | (1 << WIDX_LAND_SALE_CHECKBOX)
-        | (1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX) | (1 << WIDX_BUILD_PARK_ENTRANCE) | (1 << WIDX_ROTATE_90)
-        | (1 << WIDX_PEOPLE_STARTING_POSITION) | (1 << WIDX_MAP_GENERATOR);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_PEOPLE_TAB) | (1ULL << WIDX_RIDES_TAB)
+        | (1ULL << WIDX_MAP_SIZE_SPINNER) | (1ULL << WIDX_MAP_SIZE_SPINNER_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_DOWN)
+        | (1ULL << WIDX_LAND_TOOL) | (1ULL << WIDX_LAND_TOOL_SMALLER) | (1ULL << WIDX_LAND_TOOL_LARGER)
+        | (1ULL << WIDX_SET_LAND_RIGHTS) | (1ULL << WIDX_LAND_OWNED_CHECKBOX)
+        | (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX) | (1ULL << WIDX_LAND_SALE_CHECKBOX)
+        | (1ULL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX) | (1ULL << WIDX_BUILD_PARK_ENTRANCE) | (1ULL << WIDX_ROTATE_90)
+        | (1ULL << WIDX_PEOPLE_STARTING_POSITION) | (1ULL << WIDX_MAP_GENERATOR);
 
-    w->hold_down_widgets = (1 << WIDX_MAP_SIZE_SPINNER_UP) | (1 << WIDX_MAP_SIZE_SPINNER_DOWN) | (1 << WIDX_LAND_TOOL_LARGER)
-        | (1 << WIDX_LAND_TOOL_SMALLER);
+    w->hold_down_widgets = (1ULL << WIDX_MAP_SIZE_SPINNER_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_DOWN)
+        | (1ULL << WIDX_LAND_TOOL_LARGER) | (1ULL << WIDX_LAND_TOOL_SMALLER);
 
     WindowInitScrollWidgets(w);
 
@@ -694,16 +695,16 @@ static void window_map_invalidate(rct_window* w)
     pressedWidgets |= (1ULL << WIDX_LAND_TOOL);
 
     if (_activeTool & (1 << 3))
-        pressedWidgets |= (1 << WIDX_LAND_SALE_CHECKBOX);
+        pressedWidgets |= (1ULL << WIDX_LAND_SALE_CHECKBOX);
 
     if (_activeTool & (1 << 2))
-        pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
+        pressedWidgets |= (1ULL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
 
     if (_activeTool & (1 << 1))
-        pressedWidgets |= (1 << WIDX_LAND_OWNED_CHECKBOX);
+        pressedWidgets |= (1ULL << WIDX_LAND_OWNED_CHECKBOX);
 
     if (_activeTool & (1 << 0))
-        pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
+        pressedWidgets |= (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
     w->pressed_widgets = pressedWidgets;
 

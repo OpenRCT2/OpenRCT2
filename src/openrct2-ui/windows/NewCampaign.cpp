@@ -150,9 +150,9 @@ public:
     void OnOpen() override
     {
         widgets = window_new_campaign_widgets;
-        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RIDE_DROPDOWN) | (1 << WIDX_RIDE_DROPDOWN_BUTTON)
-            | (1 << WIDX_WEEKS_INCREASE_BUTTON) | (1 << WIDX_WEEKS_DECREASE_BUTTON) | (1 << WIDX_START_BUTTON);
-        hold_down_widgets = (1 << WIDX_WEEKS_INCREASE_BUTTON) | (1 << WIDX_WEEKS_DECREASE_BUTTON);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RIDE_DROPDOWN) | (1ULL << WIDX_RIDE_DROPDOWN_BUTTON)
+            | (1ULL << WIDX_WEEKS_INCREASE_BUTTON) | (1ULL << WIDX_WEEKS_DECREASE_BUTTON) | (1ULL << WIDX_START_BUTTON);
+        hold_down_widgets = (1ULL << WIDX_WEEKS_INCREASE_BUTTON) | (1ULL << WIDX_WEEKS_DECREASE_BUTTON);
         WindowInitScrollWidgets(this);
     }
 

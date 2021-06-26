@@ -109,7 +109,7 @@ rct_window* window_music_credits_open()
     window = WindowCreateCentred(510, 314, &window_music_credits_events, WC_MUSIC_CREDITS, 0);
 
     window->widgets = window_music_credits_widgets;
-    window->enabled_widgets = 1 << WIDX_CLOSE;
+    window->enabled_widgets = 1ULL << WIDX_CLOSE;
 
     WindowInitScrollWidgets(window);
     window->colours[0] = COLOUR_LIGHT_BLUE;

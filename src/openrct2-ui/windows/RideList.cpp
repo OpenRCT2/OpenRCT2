@@ -189,12 +189,12 @@ rct_window* window_ride_list_open()
     {
         window = WindowCreateAutoPos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
         window->widgets = window_ride_list_widgets;
-        window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OPEN_CLOSE_ALL) | (1 << WIDX_CURRENT_INFORMATION_TYPE)
-            | (1 << WIDX_INFORMATION_TYPE_DROPDOWN) | (1 << WIDX_SORT) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2)
-            | (1 << WIDX_TAB_3) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
+        window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OPEN_CLOSE_ALL) | (1ULL << WIDX_CURRENT_INFORMATION_TYPE)
+            | (1ULL << WIDX_INFORMATION_TYPE_DROPDOWN) | (1ULL << WIDX_SORT) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2)
+            | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
         if (network_get_mode() != NETWORK_MODE_CLIENT)
         {
-            window->enabled_widgets |= (1 << WIDX_QUICK_DEMOLISH);
+            window->enabled_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
         }
         WindowInitScrollWidgets(window);
         window->page = PAGE_RIDES;

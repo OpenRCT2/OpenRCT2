@@ -392,7 +392,7 @@ namespace OpenRCT2::Ui::Windows
         {
             number = GetNewWindowNumber();
             custom_info = new CustomWindowInfo(owner, desc);
-            enabled_widgets = (1 << WIDX_CLOSE);
+            enabled_widgets = (1ULL << WIDX_CLOSE);
 
             // Set window tab
             page = desc.TabIndex.value_or(0);

@@ -136,7 +136,7 @@ rct_window* window_save_prompt_open()
     else
     {
         widgets = window_save_prompt_widgets;
-        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SAVE) | (1 << WIDX_DONT_SAVE) | (1 << WIDX_CANCEL);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SAVE) | (1ULL << WIDX_DONT_SAVE) | (1ULL << WIDX_CANCEL);
         width = WW_SAVE;
         height = WH_SAVE;
     }

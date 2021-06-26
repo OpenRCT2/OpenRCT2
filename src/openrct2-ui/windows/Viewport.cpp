@@ -66,7 +66,7 @@ rct_window* window_viewport_open()
 {
     rct_window* w = WindowCreateAutoPos(WW, WH, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
     w->widgets = window_viewport_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT) | (1 << WIDX_LOCATE);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE);
     w->number = _viewportNumber++;
 
     // Create viewport
@@ -180,9 +180,9 @@ static void window_viewport_invalidate(rct_window* w)
     // Set disabled widgets
     w->disabled_widgets = 0;
     if (viewport->zoom == ZoomLevel::min())
-        w->disabled_widgets |= 1 << WIDX_ZOOM_IN;
+        w->disabled_widgets |= 1ULL << WIDX_ZOOM_IN;
     if (viewport->zoom >= ZoomLevel::max())
-        w->disabled_widgets |= 1 << WIDX_ZOOM_OUT;
+        w->disabled_widgets |= 1ULL << WIDX_ZOOM_OUT;
 
     viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
     viewport->width = viewportWidget->width();

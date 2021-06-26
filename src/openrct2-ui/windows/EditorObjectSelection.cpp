@@ -381,9 +381,9 @@ rct_window* window_editor_object_selection_open()
     window->widgets = _window_editor_object_selection_widgets.data();
     window->widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
-    window->enabled_widgets = (1 << WIDX_ADVANCED) | (1 << WIDX_INSTALL_TRACK) | (1 << WIDX_FILTER_DROPDOWN)
-        | (1 << WIDX_FILTER_TEXT_BOX) | (1 << WIDX_FILTER_CLEAR_BUTTON) | (1 << WIDX_CLOSE) | (1 << WIDX_LIST_SORT_TYPE)
-        | (1UL << WIDX_LIST_SORT_RIDE);
+    window->enabled_widgets = (1ULL << WIDX_ADVANCED) | (1ULL << WIDX_INSTALL_TRACK) | (1ULL << WIDX_FILTER_DROPDOWN)
+        | (1ULL << WIDX_FILTER_TEXT_BOX) | (1ULL << WIDX_FILTER_CLEAR_BUTTON) | (1ULL << WIDX_CLOSE)
+        | (1ULL << WIDX_LIST_SORT_TYPE) | (1UL << WIDX_LIST_SORT_RIDE);
 
     _filter_flags = gConfigInterface.object_selection_filter_flags;
     std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
@@ -808,12 +808,12 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     w->widgets[WIDX_FILTER_DROPDOWN].right = w->width - 137;
 
     // Set pressed widgets
-    w->pressed_widgets |= 1 << WIDX_PREVIEW;
+    w->pressed_widgets |= 1ULL << WIDX_PREVIEW;
     window_editor_object_selection_set_pressed_tab(w);
     if (w->list_information_type & 1)
-        w->pressed_widgets |= (1 << WIDX_ADVANCED);
+        w->pressed_widgets |= (1ULL << WIDX_ADVANCED);
     else
-        w->pressed_widgets &= ~(1 << WIDX_ADVANCED);
+        w->pressed_widgets &= ~(1ULL << WIDX_ADVANCED);
 
     // Set window title and buttons
     auto ft = Formatter::Common();
@@ -886,15 +886,16 @@ static void window_editor_object_selection_invalidate(rct_window* w)
 
     if (ridePage)
     {
-        w->enabled_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL) | (1 << WIDX_FILTER_RIDE_TAB_TRANSPORT)
-            | (1 << WIDX_FILTER_RIDE_TAB_GENTLE) | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL)
-            | (1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL);
+        w->enabled_widgets |= (1ULL << WIDX_FILTER_RIDE_TAB_ALL) | (1ULL << WIDX_FILTER_RIDE_TAB_TRANSPORT)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_GENTLE) | (1ULL << WIDX_FILTER_RIDE_TAB_COASTER)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_THRILL) | (1ULL << WIDX_FILTER_RIDE_TAB_WATER)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_STALL);
 
         for (int32_t i = 0; i < 7; i++)
             w->pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
 
         if ((_filter_flags & FILTER_RIDES) == FILTER_RIDES)
-            w->pressed_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL);
+            w->pressed_widgets |= (1ULL << WIDX_FILTER_RIDE_TAB_ALL);
         else
         {
             for (int32_t i = 0; i < 6; i++)
@@ -927,9 +928,10 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     else
     {
         w->enabled_widgets &= ~(
-            (1 << WIDX_FILTER_RIDE_TAB_ALL) | (1 << WIDX_FILTER_RIDE_TAB_TRANSPORT) | (1 << WIDX_FILTER_RIDE_TAB_GENTLE)
-            | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL) | (1 << WIDX_FILTER_RIDE_TAB_WATER)
-            | (1 << WIDX_FILTER_RIDE_TAB_STALL));
+            (1ULL << WIDX_FILTER_RIDE_TAB_ALL) | (1ULL << WIDX_FILTER_RIDE_TAB_TRANSPORT)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_GENTLE) | (1ULL << WIDX_FILTER_RIDE_TAB_COASTER)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_THRILL) | (1ULL << WIDX_FILTER_RIDE_TAB_WATER)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_STALL));
         for (int32_t i = WIDX_FILTER_RIDE_TAB_FRAME; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
             w->widgets[i].type = WindowWidgetType::Empty;
 
