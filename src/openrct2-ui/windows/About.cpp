@@ -7,10 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <SDL_clipboard.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/Version.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -18,9 +20,9 @@
 #include <openrct2/ui/UiContext.h>
 
 static constexpr const int32_t WW = 400;
-static constexpr const int32_t WH = 385;
+static constexpr const int32_t WH = 352;
 static constexpr const rct_string_id WINDOW_TITLE = STR_ABOUT;
-constexpr int32_t TABHEIGHT = 50;
+static constexpr const int32_t TABHEIGHT = 50;
 
 // clang-format off
 enum
@@ -40,9 +42,15 @@ enum WINDOW_ABOUT_WIDGET_IDX {
     WIDX_PAGE_START,
 
     // About OpenRCT2
-    WIDX_CHANGELOG = WIDX_PAGE_START,
-    WIDX_JOIN_DISCORD,
+    WIDX_INTRO = WIDX_PAGE_START,
+    WIDX_OPENRCT2_LOGO,
+    WIDX_VERSION,
+    WIDX_COPY_BUILD_INFO,
     WIDX_NEW_VERSION,
+    WIDX_CHANGELOG,
+    WIDX_JOIN_DISCORD,
+    WIDX_CONTRIBUTORS,
+    WIDX_COPYRIGHT,
 
     // About RCT2
     WIDX_MUSIC_CREDITS = WIDX_PAGE_START,
@@ -56,9 +64,15 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 
 static rct_widget window_about_openrct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 2}, {200, 14}, WindowWidgetType::Button,      WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 1}, {200, 14}, WindowWidgetType::Button,      WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 0}, {200, 14}, WindowWidgetType::Placeholder, WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
+    MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
+    MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
+    MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // Build version
+    MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, SPR_G2_COPY, STR_COPY_BUILD_HASH   ), // "Copy build info" button
+    MakeWidget({168, 115 + 24}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
+    MakeWidget({168, 115 + 48}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
+    MakeWidget({168, 115 + 72}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
+    MakeWidget({10, 250},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_2), // Contributors
+    MakeWidget({10, 300},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_3), // Copyright
     { WIDGETS_END }
 };
 
@@ -77,7 +91,7 @@ static rct_widget *window_about_page_widgets[] = {
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_ABOUT_OPENRCT2) | (1ULL << WIDX_TAB_ABOUT_RCT2)
 
 static uint64_t window_about_page_enabled_widgets[] = {
-    DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_CHANGELOG) | (1 << WIDX_JOIN_DISCORD),
+    DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_COPY_BUILD_INFO) | (1ULL << WIDX_CHANGELOG) | (1ULL << WIDX_JOIN_DISCORD),
     DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_MUSIC_CREDITS),
 };
 
@@ -154,6 +168,9 @@ static void window_about_openrct2_mouseup(rct_window* w, rct_widgetindex widgetI
         case WIDX_NEW_VERSION:
             context_open_window_view(WV_NEW_VERSION_INFO);
             break;
+        case WIDX_COPY_BUILD_INFO:
+            SDL_SetClipboardText(gVersionInfoFull);
+            break;
     }
 }
 
@@ -168,6 +185,7 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
     ScreenCoordsXY aboutOpenRCT2Coords(w->windowPos.x + aboutOpenRCT2.left + 45, y);
     ScreenCoordsXY aboutRCT2Coords(w->windowPos.x + aboutRCT2.left + 45, y);
 
+    // Draw tab names
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
@@ -186,33 +204,10 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_about_openrct2_common_paint(w, dpi);
 
-    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
-
-    ScreenCoordsXY aboutCoords(
-        w->windowPos.x + (w->width / 2), w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight);
-    int32_t width = w->width - 20;
-
-    aboutCoords.y += DrawTextWrapped(
-                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, {}, { w->colours[1], TextAlignment::CENTRE })
-        + lineHeight;
-
-    rct_size16 logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
-    gfx_draw_sprite(dpi, ImageId(SPR_G2_LOGO), aboutCoords - ScreenCoordsXY{ logoSize.width / 2, 0 });
-    aboutCoords.y += logoSize.height + lineHeight * 2;
-
-    // About OpenRCT2 text
-    aboutCoords.y += DrawTextWrapped(
-                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, {},
-                         { w->colours[1], TextAlignment::CENTRE })
-        + lineHeight + 5;
-
-    // Copyright disclaimer; hidden when using truetype fonts to prevent
-    // the text from overlapping the changelog button.
-    if (!LocalisationService_UseTrueTypeFont())
-    {
-        DrawTextWrapped(
-            dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, {}, { w->colours[1], TextAlignment::CENTRE });
-    }
+    // Draw logo on placeholder widget
+    ScreenCoordsXY logoCoords = w->windowPos
+        + ScreenCoordsXY(w->widgets[WIDX_OPENRCT2_LOGO].left, w->widgets[WIDX_OPENRCT2_LOGO].top);
+    gfx_draw_sprite(dpi, ImageId(SPR_G2_LOGO), logoCoords);
 
     // Version info
     utf8 buffer[256];
@@ -221,8 +216,12 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter();
     ft.Add<const char*>(buffer);
 
-    aboutCoords.y = w->windowPos.y + WH - 25;
-    DrawTextWrapped(dpi, aboutCoords, width, STR_STRING, ft, { w->colours[1], TextAlignment::CENTRE });
+    auto const& versionPlaceholder = w->widgets[WIDX_VERSION];
+    auto width = versionPlaceholder.right - versionPlaceholder.left;
+    auto centreX = versionPlaceholder.left + width / 2;
+    auto centreY = (versionPlaceholder.top + versionPlaceholder.bottom - font_get_line_height(FontSpriteBase::MEDIUM)) / 2;
+    auto centrePos = w->windowPos + ScreenCoordsXY(centreX, centreY);
+    DrawTextWrapped(dpi, centrePos, width, STR_STRING, ft, { w->colours[1], TextAlignment::CENTRE });
 }
 
 static void window_about_openrct2_invalidate(rct_window* w)
