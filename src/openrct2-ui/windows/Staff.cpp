@@ -203,30 +203,30 @@ static rct_window_event_list *window_staff_page_events[] = {
 };
 
 static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_PICKUP) |
-    (1 << WIDX_PATROL) |
-    (1 << WIDX_RENAME) |
-    (1 << WIDX_LOCATE) |
-    (1 << WIDX_FIRE),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_PICKUP) |
+    (1ULL << WIDX_PATROL) |
+    (1ULL << WIDX_RENAME) |
+    (1ULL << WIDX_LOCATE) |
+    (1ULL << WIDX_FIRE),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_CHECKBOX_1) |
-    (1 << WIDX_CHECKBOX_2) |
-    (1 << WIDX_CHECKBOX_3) |
-    (1 << WIDX_CHECKBOX_4) |
-    (1 << WIDX_COSTUME_BTN),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_CHECKBOX_1) |
+    (1ULL << WIDX_CHECKBOX_2) |
+    (1ULL << WIDX_CHECKBOX_3) |
+    (1ULL << WIDX_CHECKBOX_4) |
+    (1ULL << WIDX_COSTUME_BTN),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3)
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3)
 };
 // clang-format on
 
@@ -309,20 +309,20 @@ void window_staff_disable_widgets(rct_window* w)
 
     if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
     {
-        disabled_widgets |= (1 << WIDX_TAB_2);
+        disabled_widgets |= (1ULL << WIDX_TAB_2);
     }
 
     if (w->page == WINDOW_STAFF_OVERVIEW)
     {
         if (peep->CanBePickedUp())
         {
-            if (w->disabled_widgets & (1 << WIDX_PICKUP))
+            if (w->disabled_widgets & (1ULL << WIDX_PICKUP))
                 w->Invalidate();
         }
         else
         {
-            disabled_widgets |= (1 << WIDX_PICKUP);
-            if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
+            disabled_widgets |= (1ULL << WIDX_PICKUP);
+            if (!(w->disabled_widgets & (1ULL << WIDX_PICKUP)))
                 w->Invalidate();
         }
     }
@@ -815,7 +815,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
             w->pressed_widgets &= ~(
-                (1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2) | (1 << WIDX_CHECKBOX_3) | (1 << WIDX_CHECKBOX_4));
+                (1ULL << WIDX_CHECKBOX_1) | (1ULL << WIDX_CHECKBOX_2) | (1ULL << WIDX_CHECKBOX_3) | (1ULL << WIDX_CHECKBOX_4));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
         case StaffType::Mechanic:
@@ -827,7 +827,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
             window_staff_options_widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
-            w->pressed_widgets &= ~((1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2));
+            w->pressed_widgets &= ~((1ULL << WIDX_CHECKBOX_1) | (1ULL << WIDX_CHECKBOX_2));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
         case StaffType::Security:
@@ -952,7 +952,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_2))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
@@ -974,7 +974,7 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_3))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
@@ -995,7 +995,7 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_1))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_1];

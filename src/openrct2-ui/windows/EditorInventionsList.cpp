@@ -256,8 +256,8 @@ rct_window* window_editor_inventions_list_open()
     w = WindowCreateCentred(
         WW, WH, &window_editor_inventions_list_events, WC_EDITOR_INVENTION_LIST, WF_NO_SCROLLING | WF_RESIZABLE);
     w->widgets = window_editor_inventions_list_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESIZE) | (1 << WIDX_TAB_1) | (1 << WIDX_RANDOM_SHUFFLE)
-        | (1 << WIDX_MOVE_ITEMS_TO_BOTTOM) | (1 << WIDX_MOVE_ITEMS_TO_TOP);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RESIZE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_RANDOM_SHUFFLE)
+        | (1ULL << WIDX_MOVE_ITEMS_TO_BOTTOM) | (1ULL << WIDX_MOVE_ITEMS_TO_TOP);
     WindowInitScrollWidgets(w);
     w->selected_tab = 0;
     w->research_item = nullptr;
@@ -447,8 +447,8 @@ static void window_editor_inventions_list_cursor(
  */
 static void window_editor_inventions_list_invalidate(rct_window* w)
 {
-    w->pressed_widgets |= 1 << WIDX_PREVIEW;
-    w->pressed_widgets |= 1 << WIDX_TAB_1;
+    w->pressed_widgets |= 1ULL << WIDX_PREVIEW;
+    w->pressed_widgets |= 1ULL << WIDX_TAB_1;
 
     w->widgets[WIDX_CLOSE].type = gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WindowWidgetType::Empty
                                                                               : WindowWidgetType::CloseBox;

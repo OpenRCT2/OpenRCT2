@@ -130,17 +130,17 @@ static void window_player_update_viewport(rct_window *w, bool scroll);
 static void window_player_update_title(rct_window* w);
 
 static uint32_t window_player_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_GROUP) |
-    (1 << WIDX_GROUP_DROPDOWN) |
-    (1 << WIDX_LOCATE) |
-    (1 << WIDX_KICK),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_GROUP) |
+    (1ULL << WIDX_GROUP_DROPDOWN) |
+    (1ULL << WIDX_LOCATE) |
+    (1ULL << WIDX_KICK),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2)
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2)
 };
 // clang-format on
 

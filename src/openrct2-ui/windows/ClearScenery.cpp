@@ -81,9 +81,9 @@ rct_window* window_clear_scenery_open()
     window = WindowCreate(
         ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;
-    window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
-        | (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
-    window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
+    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT)
+        | (1ULL << WIDX_PREVIEW) | (1ULL << WIDX_SMALL_SCENERY) | (1ULL << WIDX_LARGE_SCENERY) | (1ULL << WIDX_FOOTPATH);
+    window->hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
     WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
@@ -202,8 +202,8 @@ static void window_clear_scenery_update(rct_window* w)
 static void window_clear_scenery_invalidate(rct_window* w)
 {
     // Set the preview image button to be pressed down
-    w->pressed_widgets = (1 << WIDX_PREVIEW) | (gClearSmallScenery ? (1 << WIDX_SMALL_SCENERY) : 0)
-        | (gClearLargeScenery ? (1 << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1 << WIDX_FOOTPATH) : 0);
+    w->pressed_widgets = (1ULL << WIDX_PREVIEW) | (gClearSmallScenery ? (1ULL << WIDX_SMALL_SCENERY) : 0)
+        | (gClearLargeScenery ? (1ULL << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1ULL << WIDX_FOOTPATH) : 0);
 
     // Update the preview image (for tool sizes up to 7)
     window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);

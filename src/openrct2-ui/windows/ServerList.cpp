@@ -129,8 +129,8 @@ rct_window* window_server_list_open()
     window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
     window->widgets = window_server_list_widgets;
     window->enabled_widgets
-        = ((1 << WIDX_CLOSE) | (1 << WIDX_PLAYER_NAME_INPUT) | (1 << WIDX_FETCH_SERVERS) | (1 << WIDX_ADD_SERVER)
-           | (1 << WIDX_START_SERVER));
+        = ((1ULL << WIDX_CLOSE) | (1ULL << WIDX_PLAYER_NAME_INPUT) | (1ULL << WIDX_FETCH_SERVERS) | (1ULL << WIDX_ADD_SERVER)
+           | (1ULL << WIDX_START_SERVER));
     WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;

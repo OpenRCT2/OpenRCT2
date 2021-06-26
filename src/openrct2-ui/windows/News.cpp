@@ -54,7 +54,7 @@ public:
     void OnOpen() override
     {
         widgets = window_news_widgets;
-        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SETTINGS);
         WindowInitScrollWidgets(this);
         _pressedNewsItemIndex = -1;
 

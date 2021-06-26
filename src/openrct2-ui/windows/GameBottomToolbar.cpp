@@ -116,9 +116,9 @@ rct_window* window_game_bottom_toolbar_open()
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
-    window->enabled_widgets |= (1 << WIDX_LEFT_OUTSET) | (1 << WIDX_MONEY) | (1 << WIDX_GUESTS) | (1 << WIDX_PARK_RATING)
-        | (1 << WIDX_MIDDLE_OUTSET) | (1 << WIDX_MIDDLE_INSET) | (1 << WIDX_NEWS_SUBJECT) | (1 << WIDX_NEWS_LOCATE)
-        | (1 << WIDX_RIGHT_OUTSET) | (1 << WIDX_DATE);
+    window->enabled_widgets |= (1ULL << WIDX_LEFT_OUTSET) | (1ULL << WIDX_MONEY) | (1ULL << WIDX_GUESTS)
+        | (1ULL << WIDX_PARK_RATING) | (1ULL << WIDX_MIDDLE_OUTSET) | (1ULL << WIDX_MIDDLE_INSET) | (1ULL << WIDX_NEWS_SUBJECT)
+        | (1ULL << WIDX_NEWS_LOCATE) | (1ULL << WIDX_RIGHT_OUTSET) | (1ULL << WIDX_DATE);
 
     window->frame_no = 0;
     WindowInitScrollWidgets(window);
@@ -309,25 +309,25 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
         window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 2;
-        w->disabled_widgets &= ~(1 << WIDX_NEWS_SUBJECT);
-        w->disabled_widgets &= ~(1 << WIDX_NEWS_LOCATE);
+        w->disabled_widgets &= ~(1ULL << WIDX_NEWS_SUBJECT);
+        w->disabled_widgets &= ~(1ULL << WIDX_NEWS_LOCATE);
 
         // Find out if the news item is no longer valid
         auto subjectLoc = News::GetSubjectLocation(newsItem->Type, newsItem->Assoc);
 
         if (subjectLoc == std::nullopt)
-            w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
+            w->disabled_widgets |= (1ULL << WIDX_NEWS_LOCATE);
 
         if (!(newsItem->TypeHasSubject()))
         {
-            w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
+            w->disabled_widgets |= (1ULL << WIDX_NEWS_SUBJECT);
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
         }
 
         if (newsItem->HasButton())
         {
-            w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
-            w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
+            w->disabled_widgets |= (1ULL << WIDX_NEWS_SUBJECT);
+            w->disabled_widgets |= (1ULL << WIDX_NEWS_LOCATE);
         }
     }
 }

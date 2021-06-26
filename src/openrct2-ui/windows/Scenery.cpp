@@ -440,15 +440,17 @@ rct_window* window_scenery_open()
         &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
     window->widgets = window_scenery_widgets;
 
-    window->enabled_widgets = (1 << WIDX_SCENERY_CLOSE) | (1 << WIDX_SCENERY_ROTATE_OBJECTS_BUTTON) | (1 << WIDX_SCENERY_TAB_1)
-        | (1 << WIDX_SCENERY_TAB_2) | (1 << WIDX_SCENERY_TAB_3) | (1 << WIDX_SCENERY_TAB_4) | (1 << WIDX_SCENERY_TAB_5)
-        | (1 << WIDX_SCENERY_TAB_6) | (1 << WIDX_SCENERY_TAB_7) | (1 << WIDX_SCENERY_TAB_8) | (1 << WIDX_SCENERY_TAB_9)
-        | (1 << WIDX_SCENERY_TAB_10) | (1 << WIDX_SCENERY_TAB_11) | (1 << WIDX_SCENERY_TAB_12) | (1 << WIDX_SCENERY_TAB_13)
-        | (1 << WIDX_SCENERY_TAB_14) | (1 << WIDX_SCENERY_TAB_15) | (1 << WIDX_SCENERY_TAB_16) | (1 << WIDX_SCENERY_TAB_17)
-        | (1 << WIDX_SCENERY_TAB_18) | (1 << WIDX_SCENERY_TAB_19) | (1 << WIDX_SCENERY_TAB_20)
-        | (1 << WIDX_SCENERY_PRIMARY_COLOUR_BUTTON) | (1 << WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
-        | (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON) | (1 << WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
-        | (1 << WIDX_SCENERY_EYEDROPPER_BUTTON) | (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
+    window->enabled_widgets = (1ULL << WIDX_SCENERY_CLOSE) | (1ULL << WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
+        | (1ULL << WIDX_SCENERY_TAB_1) | (1ULL << WIDX_SCENERY_TAB_2) | (1ULL << WIDX_SCENERY_TAB_3)
+        | (1ULL << WIDX_SCENERY_TAB_4) | (1ULL << WIDX_SCENERY_TAB_5) | (1ULL << WIDX_SCENERY_TAB_6)
+        | (1ULL << WIDX_SCENERY_TAB_7) | (1ULL << WIDX_SCENERY_TAB_8) | (1ULL << WIDX_SCENERY_TAB_9)
+        | (1ULL << WIDX_SCENERY_TAB_10) | (1ULL << WIDX_SCENERY_TAB_11) | (1ULL << WIDX_SCENERY_TAB_12)
+        | (1ULL << WIDX_SCENERY_TAB_13) | (1ULL << WIDX_SCENERY_TAB_14) | (1ULL << WIDX_SCENERY_TAB_15)
+        | (1ULL << WIDX_SCENERY_TAB_16) | (1ULL << WIDX_SCENERY_TAB_17) | (1ULL << WIDX_SCENERY_TAB_18)
+        | (1ULL << WIDX_SCENERY_TAB_19) | (1ULL << WIDX_SCENERY_TAB_20) | (1ULL << WIDX_SCENERY_PRIMARY_COLOUR_BUTTON)
+        | (1ULL << WIDX_SCENERY_SECONDARY_COLOUR_BUTTON) | (1ULL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON)
+        | (1ULL << WIDX_SCENERY_TERTIARY_COLOUR_BUTTON) | (1ULL << WIDX_SCENERY_EYEDROPPER_BUTTON)
+        | (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
     WindowInitScrollWidgets(window);
     window_scenery_update_scroll(window);
@@ -961,9 +963,9 @@ void window_scenery_invalidate(rct_window* w)
     w->pressed_widgets = 0;
     w->pressed_widgets |= 1ULL << (tabIndex + WIDX_SCENERY_TAB_1);
     if (gWindowSceneryPaintEnabled == 1)
-        w->pressed_widgets |= (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
+        w->pressed_widgets |= (1ULL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
     if (gWindowSceneryEyedropperEnabled)
-        w->pressed_widgets |= (1 << WIDX_SCENERY_EYEDROPPER_BUTTON);
+        w->pressed_widgets |= (1ULL << WIDX_SCENERY_EYEDROPPER_BUTTON);
     if (gWindowSceneryScatterEnabled)
         w->pressed_widgets |= (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 

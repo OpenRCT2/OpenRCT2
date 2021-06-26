@@ -270,73 +270,73 @@ void window_guest_set_colours();
 
 // 0x981D3C
 static constexpr const uint32_t window_guest_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7) |
-    (1 << WIDX_RENAME)|
-    (1 << WIDX_PICKUP)|
-    (1 << WIDX_LOCATE)|
-    (1 << WIDX_TRACK),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7) |
+    (1ULL << WIDX_RENAME)|
+    (1ULL << WIDX_PICKUP)|
+    (1ULL << WIDX_LOCATE)|
+    (1ULL << WIDX_TRACK),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7) |
-    (1 << WIDX_RIDE_SCROLL),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7) |
+    (1ULL << WIDX_RIDE_SCROLL),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7)
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7)
 };
 
 static constexpr const rct_size16 window_guest_page_sizes[][2] = {
@@ -489,22 +489,22 @@ void window_guest_disable_widgets(rct_window* w)
 
     if (peep->CanBePickedUp())
     {
-        if (w->disabled_widgets & (1 << WIDX_PICKUP))
+        if (w->disabled_widgets & (1ULL << WIDX_PICKUP))
             w->Invalidate();
     }
     else
     {
-        disabled_widgets = (1 << WIDX_PICKUP);
-        if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
+        disabled_widgets = (1ULL << WIDX_PICKUP);
+        if (!(w->disabled_widgets & (1ULL << WIDX_PICKUP)))
             w->Invalidate();
     }
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
-        disabled_widgets |= (1 << WIDX_TAB_4); // Disable finance tab if no money
+        disabled_widgets |= (1ULL << WIDX_TAB_4); // Disable finance tab if no money
     }
     if (!gConfigGeneral.debugging_tools)
     {
-        disabled_widgets |= (1 << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
+        disabled_widgets |= (1ULL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
     }
     w->disabled_widgets = disabled_widgets;
 }
@@ -733,7 +733,7 @@ void window_guest_viewport_init(rct_window* w)
  */
 static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_1))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
@@ -805,7 +805,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
  */
 static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_2))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
@@ -843,7 +843,7 @@ static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_3))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
@@ -865,7 +865,7 @@ static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_4))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_4))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_4];
@@ -887,7 +887,7 @@ static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi
  */
 static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_5))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_5))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_5];
@@ -909,7 +909,7 @@ static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dp
  */
 static void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_6))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_6))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_6];
@@ -920,7 +920,7 @@ static void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* d
 
 static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_7))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_7))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_7];
@@ -1030,10 +1030,10 @@ void window_guest_overview_invalidate(rct_window* w)
     {
         return;
     }
-    w->pressed_widgets &= ~(1 << WIDX_TRACK);
+    w->pressed_widgets &= ~(1ULL << WIDX_TRACK);
     if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
     {
-        w->pressed_widgets |= (1 << WIDX_TRACK);
+        w->pressed_widgets |= (1ULL << WIDX_TRACK);
     }
 
     window_guest_overview_widgets[WIDX_VIEWPORT].right = w->width - 26;

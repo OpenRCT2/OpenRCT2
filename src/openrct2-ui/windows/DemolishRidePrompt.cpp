@@ -82,7 +82,7 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     }
 
     w->widgets = window_ride_demolish_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_DEMOLISH);
     WindowInitScrollWidgets(w);
     w->number = ride->id;
     _demolishRideCost = -ride_get_refund_price(ride);
@@ -107,7 +107,7 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
     }
 
     w->widgets = window_ride_refurbish_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_REFURBISH);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_REFURBISH);
     WindowInitScrollWidgets(w);
     w->number = ride->id;
     _demolishRideCost = -ride_get_refund_price(ride);

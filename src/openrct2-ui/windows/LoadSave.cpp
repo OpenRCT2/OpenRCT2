@@ -265,8 +265,8 @@ rct_window* window_loadsave_open(
     {
         w = WindowCreateCentred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
         w->widgets = window_loadsave_widgets;
-        w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE)
-            | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
+        w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_UP) | (1ULL << WIDX_NEW_FOLDER) | (1ULL << WIDX_NEW_FILE)
+            | (1ULL << WIDX_SORT_NAME) | (1ULL << WIDX_SORT_DATE) | (1ULL << WIDX_BROWSE) | (1ULL << WIDX_DEFAULT);
 
         w->min_width = WW;
         w->min_height = WH / 2;
@@ -275,8 +275,8 @@ rct_window* window_loadsave_open(
 
         if (!hasFilePicker)
         {
-            w->enabled_widgets &= ~(1 << WIDX_BROWSE);
-            w->disabled_widgets |= (1 << WIDX_BROWSE);
+            w->enabled_widgets &= ~(1ULL << WIDX_BROWSE);
+            w->disabled_widgets |= (1ULL << WIDX_BROWSE);
             window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
         }
     }
@@ -834,7 +834,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
     if (str_is_null_or_empty(directory) && drives)
     {
         // List Windows drives
-        w->disabled_widgets |= (1 << WIDX_NEW_FILE) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_UP);
+        w->disabled_widgets |= (1ULL << WIDX_NEW_FILE) | (1ULL << WIDX_NEW_FOLDER) | (1ULL << WIDX_UP);
         for (int32_t x = 0; x < 26; x++)
         {
             if (drives & (1 << x))
@@ -878,13 +878,13 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
 
         // Disable the Up button if the current directory is the root directory
         if (str_is_null_or_empty(_parentDirectory) && !drives)
-            w->disabled_widgets |= (1 << WIDX_UP);
+            w->disabled_widgets |= (1ULL << WIDX_UP);
         else
-            w->disabled_widgets &= ~(1 << WIDX_UP);
+            w->disabled_widgets &= ~(1ULL << WIDX_UP);
 
         // Re-enable the "new" buttons if these were disabled
-        w->disabled_widgets &= ~(1 << WIDX_NEW_FILE);
-        w->disabled_widgets &= ~(1 << WIDX_NEW_FOLDER);
+        w->disabled_widgets &= ~(1ULL << WIDX_NEW_FILE);
+        w->disabled_widgets &= ~(1ULL << WIDX_NEW_FOLDER);
 
         // List all directories
         auto subDirectories = Path::GetDirectories(absoluteDirectory);
@@ -1161,7 +1161,7 @@ static rct_window* window_overwrite_prompt_open(const char* name, const char* pa
     w = WindowCreateCentred(
         OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_overwrite_prompt_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OVERWRITE_CANCEL) | (1 << WIDX_OVERWRITE_OVERWRITE);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OVERWRITE_CANCEL) | (1ULL << WIDX_OVERWRITE_OVERWRITE);
 
     WindowInitScrollWidgets(w);
 

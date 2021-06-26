@@ -1113,45 +1113,45 @@ static void window_ride_disable_tabs(rct_window* w)
     const auto& rtd = ride->GetRideTypeDescriptor();
 
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
-        disabled_tabs |= (1 << WIDX_TAB_8); // 0x800
+        disabled_tabs |= (1ULL << WIDX_TAB_8); // 0x800
 
     if (ride->type == RIDE_TYPE_MINI_GOLF)
-        disabled_tabs |= (1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4); // 0xE0
+        disabled_tabs |= (1ULL << WIDX_TAB_2 | 1ULL << WIDX_TAB_3 | 1ULL << WIDX_TAB_4); // 0xE0
 
     if (rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
-        disabled_tabs |= (1 << WIDX_TAB_2); // 0x20
+        disabled_tabs |= (1ULL << WIDX_TAB_2); // 0x20
 
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN) && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL)
         && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS) && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)
         && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
     {
-        disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
+        disabled_tabs |= (1ULL << WIDX_TAB_5); // 0x100
     }
 
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
-        disabled_tabs |= (1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_7); // 0x4C0
+        disabled_tabs |= (1ULL << WIDX_TAB_3 | 1ULL << WIDX_TAB_4 | 1ULL << WIDX_TAB_7); // 0x4C0
 
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
     {
-        disabled_tabs |= (1 << WIDX_TAB_6); // 0x200
+        disabled_tabs |= (1ULL << WIDX_TAB_6); // 0x200
     }
 
     if (ride->type == RIDE_TYPE_CASH_MACHINE || ride->type == RIDE_TYPE_FIRST_AID || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
-        disabled_tabs |= (1 << WIDX_TAB_9); // 0x1000
+        disabled_tabs |= (1ULL << WIDX_TAB_9); // 0x1000
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
-        disabled_tabs |= (1 << WIDX_TAB_4 | 1 << WIDX_TAB_6 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10); // 0x3280
+        disabled_tabs |= (1ULL << WIDX_TAB_4 | 1ULL << WIDX_TAB_6 | 1ULL << WIDX_TAB_9 | 1ULL << WIDX_TAB_10); // 0x3280
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
 
     if (rideEntry == nullptr)
     {
-        disabled_tabs |= 1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_5 | 1 << WIDX_TAB_6
-            | 1 << WIDX_TAB_7 | 1 << WIDX_TAB_8 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10;
+        disabled_tabs |= 1ULL << WIDX_TAB_2 | 1ULL << WIDX_TAB_3 | 1ULL << WIDX_TAB_4 | 1ULL << WIDX_TAB_5 | 1ULL << WIDX_TAB_6
+            | 1ULL << WIDX_TAB_7 | 1ULL << WIDX_TAB_8 | 1ULL << WIDX_TAB_9 | 1ULL << WIDX_TAB_10;
     }
     else if ((rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB) != 0)
     {
-        disabled_tabs |= (1 << WIDX_TAB_5);
+        disabled_tabs |= (1ULL << WIDX_TAB_5);
     }
 
     w->disabled_widgets = disabled_tabs;
@@ -2329,9 +2329,9 @@ static void window_ride_main_invalidate(rct_window* w)
     if (ride == nullptr)
         return;
 
-    w->disabled_widgets &= ~((1 << WIDX_DEMOLISH) | (1 << WIDX_CONSTRUCTION));
+    w->disabled_widgets &= ~((1ULL << WIDX_DEMOLISH) | (1ULL << WIDX_CONSTRUCTION));
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
-        w->disabled_widgets |= (1 << WIDX_DEMOLISH);
+        w->disabled_widgets |= (1ULL << WIDX_DEMOLISH);
 
     auto ft = Formatter::Common();
     ride->FormatNameTo(ft);
@@ -3509,7 +3509,7 @@ static void window_ride_operating_invalidate(rct_window* w)
         ft.Add<uint16_t>(ride->max_waiting_time);
 
         if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
-            w->pressed_widgets |= (1 << WIDX_LOAD_CHECKBOX);
+            w->pressed_widgets |= (1ULL << WIDX_LOAD_CHECKBOX);
     }
     else
     {
@@ -3529,13 +3529,13 @@ static void window_ride_operating_invalidate(rct_window* w)
     }
 
     if (ride->depart_flags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
-        w->pressed_widgets |= (1 << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
+        w->pressed_widgets |= (1ULL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
     if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
-        w->pressed_widgets |= (1 << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX);
+        w->pressed_widgets |= (1ULL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX);
     if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
-        w->pressed_widgets |= (1 << WIDX_MINIMUM_LENGTH_CHECKBOX);
+        w->pressed_widgets |= (1ULL << WIDX_MINIMUM_LENGTH_CHECKBOX);
     if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
-        w->pressed_widgets |= (1 << WIDX_MAXIMUM_LENGTH_CHECKBOX);
+        w->pressed_widgets |= (1ULL << WIDX_MAXIMUM_LENGTH_CHECKBOX);
 
     // Mode specific functionality
     ft.Rewind();
@@ -3612,7 +3612,7 @@ static void window_ride_operating_invalidate(rct_window* w)
         window_ride_operating_widgets[WIDX_MODE_TWEAK].text = format;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_INCREASE].type = WindowWidgetType::Button;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_DECREASE].type = WindowWidgetType::Button;
-        w->pressed_widgets &= ~(1 << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
+        w->pressed_widgets &= ~(1ULL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX);
     }
     else
     {
@@ -4012,12 +4012,12 @@ static void window_ride_maintenance_invalidate(rct_window* w)
 
     if (ride->GetRideTypeDescriptor().AvailableBreakdowns == 0 || !(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
     {
-        w->disabled_widgets |= (1 << WIDX_REFURBISH_RIDE);
+        w->disabled_widgets |= (1ULL << WIDX_REFURBISH_RIDE);
         window_ride_maintenance_widgets[WIDX_REFURBISH_RIDE].tooltip = STR_CANT_REFURBISH_NOT_NEEDED;
     }
     else
     {
-        w->disabled_widgets &= ~(1 << WIDX_REFURBISH_RIDE);
+        w->disabled_widgets &= ~(1ULL << WIDX_REFURBISH_RIDE);
         window_ride_maintenance_widgets[WIDX_REFURBISH_RIDE].tooltip = STR_REFURBISH_RIDE_TIP;
     }
 }
@@ -5129,15 +5129,15 @@ static void window_ride_music_invalidate(rct_window* w)
     auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
     if (isMusicActivated)
     {
-        w->pressed_widgets |= (1 << WIDX_PLAY_MUSIC);
-        w->disabled_widgets &= ~(1 << WIDX_MUSIC);
-        w->disabled_widgets &= ~(1 << WIDX_MUSIC_DROPDOWN);
+        w->pressed_widgets |= (1ULL << WIDX_PLAY_MUSIC);
+        w->disabled_widgets &= ~(1ULL << WIDX_MUSIC);
+        w->disabled_widgets &= ~(1ULL << WIDX_MUSIC_DROPDOWN);
     }
     else
     {
-        w->pressed_widgets &= ~(1 << WIDX_PLAY_MUSIC);
-        w->disabled_widgets |= (1 << WIDX_MUSIC);
-        w->disabled_widgets |= (1 << WIDX_MUSIC_DROPDOWN);
+        w->pressed_widgets &= ~(1ULL << WIDX_PLAY_MUSIC);
+        w->disabled_widgets |= (1ULL << WIDX_MUSIC);
+        w->disabled_widgets |= (1ULL << WIDX_MUSIC_DROPDOWN);
     }
 
     window_ride_anchor_border_widgets(w);
@@ -5504,12 +5504,12 @@ static void window_ride_measurements_invalidate(rct_window* w)
         window_ride_measurements_widgets[WIDX_CANCEL_DESIGN].type = WindowWidgetType::Empty;
 
         window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WindowWidgetType::FlatBtn;
-        w->disabled_widgets |= (1 << WIDX_SAVE_TRACK_DESIGN);
+        w->disabled_widgets |= (1ULL << WIDX_SAVE_TRACK_DESIGN);
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
         {
             if (ride->excitement != RIDE_RATING_UNDEFINED)
             {
-                w->disabled_widgets &= ~(1 << WIDX_SAVE_TRACK_DESIGN);
+                w->disabled_widgets &= ~(1ULL << WIDX_SAVE_TRACK_DESIGN);
                 window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN;
             }
         }
@@ -5959,10 +5959,10 @@ static void window_ride_graphs_invalidate(rct_window* w)
     ride->FormatNameTo(ft);
 
     // Set pressed graph button type
-    w->pressed_widgets &= ~(1 << WIDX_GRAPH_VELOCITY);
-    w->pressed_widgets &= ~(1 << WIDX_GRAPH_ALTITUDE);
-    w->pressed_widgets &= ~(1 << WIDX_GRAPH_VERTICAL);
-    w->pressed_widgets &= ~(1 << WIDX_GRAPH_LATERAL);
+    w->pressed_widgets &= ~(1ULL << WIDX_GRAPH_VELOCITY);
+    w->pressed_widgets &= ~(1ULL << WIDX_GRAPH_ALTITUDE);
+    w->pressed_widgets &= ~(1ULL << WIDX_GRAPH_VERTICAL);
+    w->pressed_widgets &= ~(1ULL << WIDX_GRAPH_LATERAL);
     w->pressed_widgets |= (1LL << (WIDX_GRAPH_VELOCITY + (w->list_information_type & 0xFF)));
 
     // Hide graph buttons that are not applicable
@@ -6519,8 +6519,8 @@ static void window_ride_income_invalidate(rct_window* w)
         return;
 
     // Primary item
-    w->pressed_widgets &= ~(1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
-    w->disabled_widgets &= ~(1 << WIDX_PRIMARY_PRICE);
+    w->pressed_widgets &= ~(1ULL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+    w->disabled_widgets &= ~(1ULL << WIDX_PRIMARY_PRICE);
 
     window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_NONE;
     window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_NONE;
@@ -6528,7 +6528,7 @@ static void window_ride_income_invalidate(rct_window* w)
     // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
     if (!park_ride_prices_unlocked() && rideEntry->shop_item[0] == ShopItem::None && ride->type != RIDE_TYPE_TOILETS)
     {
-        w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
+        w->disabled_widgets |= (1ULL << WIDX_PRIMARY_PRICE);
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
         window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
     }
@@ -6551,7 +6551,7 @@ static void window_ride_income_invalidate(rct_window* w)
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Checkbox;
 
         if (shop_item_has_common_price(primaryItem))
-            w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+            w->pressed_widgets |= (1ULL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = GetShopItemDescriptor(primaryItem).Naming.PriceLabel;
     }
@@ -6579,9 +6579,9 @@ static void window_ride_income_invalidate(rct_window* w)
     else
     {
         // Set same price throughout park checkbox
-        w->pressed_widgets &= ~(1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
+        w->pressed_widgets &= ~(1ULL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
         if (shop_item_has_common_price(secondaryItem))
-            w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
+            w->pressed_widgets |= (1ULL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 
         // Show widgets
         window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].type = WindowWidgetType::Label;
