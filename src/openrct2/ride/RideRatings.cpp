@@ -2625,7 +2625,7 @@ void ride_ratings_calculate_log_flume(Ride* ride)
     ride_ratings_apply_sheltered_ratings(&ratings, ride, 16705, 30583, 35108);
     ride_ratings_apply_proximity(&ratings, 22367);
     ride_ratings_apply_scenery(&ratings, ride, 11155);
-    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 2, 2, 2, 2);
+    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 6, 2, 2, 2);
 
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
