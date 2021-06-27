@@ -31,6 +31,7 @@
 - Fix: [#14806] Incorrect function call in WallPlaceAction plugin code.
 - Fix: [#14871] Crash when trying to place track when there are no free tile elements.
 - Fix: [#14880] Unable to close changelog window when its content fails to load.
+- Fix: [#14945] Incorrect drop height penalty on log flume ride.
 - Improved: [#14511] “Unlock operating limits” cheat now also unlocks all music.
 - Improved: [#14712, #14716]: Improve startup times.
 
