@@ -807,7 +807,7 @@ public:
     void ImportRideRatingsCalcData()
     {
         const auto& src = _s6.ride_ratings_calc_data;
-        auto& dst = gRideRatingsCalcData;
+        auto& dst = gRideRatingUpdateState;
         dst = {};
         dst.Proximity = { src.proximity_x, src.proximity_y, src.proximity_z };
         dst.ProximityStart = { src.proximity_start_x, src.proximity_start_y, src.proximity_start_z };
