@@ -135,18 +135,18 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
     if (peep->State != PeepState::Queuing)
     {
         // When peeps are walking along a path, we would like them to be spread out across the width of the path,
-        // instead of all walking along the exact center line of the path.
+        // instead of all walking along the exact centre line of the path.
         //
         // Setting a random DestinationTolerance does not work very well for this. It means that peeps will make
         // their new pathfinding decision at a random time, and so will distribute a bit when they are turning
         // corners (which is good); but, as they walk along a straight path, they will - eventually - have had a
-        // low tolerance value which forced them back to the center of the path, where they stay until they turn
+        // low tolerance value which forced them back to the centre of the path, where they stay until they turn
         // a corner.
         //
         // What we want instead is to apply that randomness in the direction they are walking ONLY, and keep their
         // other coordinate constant.
         //
-        // However, we have also seen some situations where guests end up too far from the center of paths. We've
+        // However, we have also seen some situations where guests end up too far from the centre of paths. We've
         // not identified exactly what causes this yet, but to limit the impact of it, we don't just keep the other
         // coordinate constant, but instead clamp it to an acceptable range. This brings in 'outlier' guests from
         // the edges of the path, while allowing guests who are already in an acceptable position to stay there.

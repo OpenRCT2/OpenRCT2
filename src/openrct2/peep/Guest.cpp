@@ -4974,15 +4974,15 @@ void Guest::UpdateRideShopInteract()
     if (ride == nullptr)
         return;
 
-    const int16_t tileCenterX = NextLoc.x + 16;
-    const int16_t tileCenterY = NextLoc.y + 16;
+    const int16_t tileCentreX = NextLoc.x + 16;
+    const int16_t tileCentreY = NextLoc.y + 16;
     if (ride->type == RIDE_TYPE_FIRST_AID)
     {
         if (Nausea <= 35)
         {
             RideSubState = PeepRideSubState::LeaveShop;
 
-            SetDestination({ tileCenterX, tileCenterY }, 3);
+            SetDestination({ tileCentreX, tileCentreY }, 3);
             HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
             Happiness = HappinessTarget;
         }
@@ -5008,7 +5008,7 @@ void Guest::UpdateRideShopInteract()
 
     RideSubState = PeepRideSubState::LeaveShop;
 
-    SetDestination({ tileCenterX, tileCenterY }, 3);
+    SetDestination({ tileCentreX, tileCentreY }, 3);
 
     HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
     Happiness = HappinessTarget;
