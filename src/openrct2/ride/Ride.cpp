@@ -171,6 +171,11 @@ RideManager::Iterator RideManager::end()
     return RideManager::Iterator(*this, _rides.size(), _rides.size());
 }
 
+RideManager::Iterator RideManager::get(ride_id_t rideId)
+{
+    return RideManager::Iterator(*this, rideId, _rides.size());
+}
+
 ride_id_t GetNextFreeRideId()
 {
     size_t result = _rides.size();

@@ -1058,6 +1058,7 @@ struct RideManager
     size_t size() const;
     Iterator begin();
     Iterator end();
+    Iterator get(ride_id_t rideId);
     Iterator begin() const
     {
         return (const_cast<RideManager*>(this))->begin();

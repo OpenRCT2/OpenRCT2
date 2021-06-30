@@ -155,12 +155,27 @@ static void ride_ratings_update_state()
 static void ride_ratings_update_state_0()
 {
     ride_id_t currentRide = gRideRatingsCalcData.CurrentRide;
-
-    currentRide++;
-    if (currentRide >= MAX_RIDES)
+    // It is possible that the existing ride being calculated has
+    // been removed or due to import is invalid. For both reset
+    // ratings check at the start
+    if (get_ride(currentRide) == nullptr)
     {
         currentRide = 0;
     }
+
+    auto rm = GetRideManager();
+    if (rm.size() == 0)
+    {
+        return;
+    }
+    // Skip all empty ride ids
+    auto nextRide = std::next(rm.get(currentRide));
+    // If at end, loop around
+    if (nextRide == rm.end())
+    {
+        nextRide = rm.begin();
+    }
+    currentRide = (*nextRide).id;
 
     auto ride = get_ride(currentRide);
     if (ride != nullptr && ride->status != RideStatus::Closed)
