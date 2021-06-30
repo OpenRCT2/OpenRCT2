@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#13967] Track List window now displays the path to the design when debugging tools are on.
 - Feature: [#14071] “Vandals stopped” statistic for security guards.
+- Feature: [#14169] Lighting effects for shops and stalls.
 - Feature: [#14296] Allow using early scenario completion in multiplayer.
 - Feature: [#14538] [Plugin] Add property for getting current plugin api version.
 - Feature: [#14620] [Plugin] Add properties related to guest generation.
