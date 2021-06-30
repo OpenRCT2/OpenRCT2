@@ -779,7 +779,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
 void S6Exporter::ExportRideRatingsCalcData()
 {
-    const auto& src = gRideRatingsCalcData;
+    const auto& src = gRideRatingUpdateState;
     auto& dst = _s6.ride_ratings_calc_data;
     dst.proximity_x = src.Proximity.x;
     dst.proximity_y = src.Proximity.y;
