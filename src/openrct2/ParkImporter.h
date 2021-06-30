@@ -37,6 +37,14 @@ public:
     }
 };
 
+struct Guest;
+struct Vehicle;
+struct Ride;
+namespace News
+{
+    struct Item;
+}
+
 /**
  * Interface to import scenarios and saved games.
  */
@@ -53,6 +61,15 @@ public:
 
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry* dst) abstract;
+
+protected:
+    void ValidateEntityIndexes();
+
+private:
+    void ValidateGuestEntityIndexes(Guest& guest);
+    void ValidateVehicleEntityIndexes(Vehicle& vehicle);
+    void ValidateRideEntityIndexes(Ride& ride);
+    void ValidateNewsEntityIndexes(News::Item& item);
 };
 
 namespace ParkImporter

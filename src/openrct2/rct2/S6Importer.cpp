@@ -464,6 +464,7 @@ public:
         // pad_13CE778
 
         // Fix and set dynamic variables
+        ValidateEntityIndexes();
         map_strip_ghost_flag_from_elements();
         game_convert_strings_to_utf8();
         map_count_remaining_land_rights();

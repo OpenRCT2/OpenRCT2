@@ -212,6 +212,7 @@ public:
         ImportScenarioNameDetails();
         ImportScenarioObjective();
         ImportSavedView();
+        ValidateEntityIndexes();
         FixLandOwnership();
         FixUrbanPark();
         CountBlockSections();
