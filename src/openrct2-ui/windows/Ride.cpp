@@ -4243,11 +4243,9 @@ static void window_ride_colour_mouseup(rct_window* w, rct_widgetindex widgetInde
             tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
             break;
         case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
-            auto ride = get_ride(w->number);
-            if (ride != nullptr)
-            {
-                ride->selling_item_color_is_random = !ride->selling_item_color_is_random;
-            }
+            auto rideSetAppearanceAction = RideSetAppearanceAction(
+                w->number, RideSetAppearanceType::ToggleSellingItemColourToRandom, 0, 0);
+            GameActions::Execute(&rideSetAppearanceAction);
             break;
     }
 }
@@ -4616,7 +4614,7 @@ static void window_ride_colour_invalidate(rct_window* w)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && window_ride_has_track_colour(ride, 0))
     {
         window_ride_colour_widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Checkbox;
-        if (ride->selling_item_color_is_random)
+        if (ride->SellingItemColourIsRandom)
         {
             w->pressed_widgets |= (1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
         }
@@ -4841,7 +4839,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
 
         ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
-        uint8_t spriteColor = ride->selling_item_color_is_random ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
+        uint8_t spriteColor = ride->SellingItemColourIsRandom ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
         gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColor), screenCoords);
     }
 
