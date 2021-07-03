@@ -72,6 +72,12 @@ TTFFontSetDescriptor TTFFontGulim = { {
     { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
+TTFFontSetDescriptor TTFFontMalgun = { {
+    { "malgun.ttf", "Malgun Gothic", 10, 1, -3, 10, HINTING_THRESHOLD_LOW, nullptr },
+    { "malgun.ttf", "Malgun Gothic", 12, 1, -3, 15, HINTING_THRESHOLD_LOW, nullptr },
+    { "malgun.ttf", "Malgun Gothic", 12, 1, -3, 15, HINTING_THRESHOLD_LOW, nullptr },
+} };
+
 TTFFontSetDescriptor TTFFontNanum = { {
     { "NanumGothic.ttc", "Nanum Gothic", 10, 1, 0, 10, HINTING_DISABLED,      nullptr },
     { "NanumGothic.ttc", "Nanum Gothic", 12, 1, 0, 15, HINTING_THRESHOLD_LOW, nullptr },
