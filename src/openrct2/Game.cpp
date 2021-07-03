@@ -22,6 +22,7 @@
 #include "actions/LoadOrQuitAction.h"
 #include "audio/audio.h"
 #include "config/Config.h"
+#include "core/Console.hpp"
 #include "core/FileScanner.h"
 #include "core/Path.hpp"
 #include "interface/Colour.h"
@@ -366,7 +367,7 @@ void rct2_to_utf8_self(char* buffer, size_t length)
 {
     if (length > 0)
     {
-        auto temp = rct2_to_utf8(buffer, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto temp = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
         safe_strcpy(buffer, temp.data(), length);
     }
 }
@@ -377,25 +378,9 @@ void rct2_to_utf8_self(char* buffer, size_t length)
 void game_convert_strings_to_utf8()
 {
     // Scenario details
-    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
-    gScenarioName = rct2_to_utf8(gScenarioName, RCT2_LANGUAGE_ID_ENGLISH_UK);
-    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2_LANGUAGE_ID_ENGLISH_UK);
-
-    // News items
-    game_convert_news_items_to_utf8();
-}
-
-void game_convert_news_items_to_utf8()
-{
-    for (int32_t i = 0; i < News::MaxItems; i++)
-    {
-        News::Item* newsItem = News::GetItem(i);
-
-        if (!str_is_null_or_empty(newsItem->Text))
-        {
-            rct2_to_utf8_self(newsItem->Text, sizeof(newsItem->Text));
-        }
-    }
+    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
+    gScenarioName = rct2_to_utf8(gScenarioName, RCT2LanguageId::EnglishUK);
+    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2LanguageId::EnglishUK);
 }
 
 /**
@@ -416,15 +401,6 @@ void game_convert_strings_to_rct2(rct_s6_data* s6)
             utf8_to_rct2_self(userString, RCT12_USER_STRING_MAX_LENGTH);
         }
     }
-
-    // News items
-    for (auto& newsItem : s6->news_items)
-    {
-        if (!str_is_null_or_empty(newsItem.Text))
-        {
-            utf8_to_rct2_self(newsItem.Text, sizeof(newsItem.Text));
-        }
-    }
 }
 
 // OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
@@ -434,7 +410,7 @@ void game_fix_save_vars()
     // Recalculates peep count after loading a save to fix corrupted files
     uint32_t guestCount = 0;
     {
-        for (auto guest : EntityList<Guest>(EntityListId::Peep))
+        for (auto guest : EntityList<Guest>())
         {
             if (!guest->OutsideOfPark)
             {
@@ -449,7 +425,7 @@ void game_fix_save_vars()
     std::vector<Peep*> peepsToRemove;
 
     // Fix possibly invalid field values
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->CurrentRideStation >= MAX_STATIONS)
         {
@@ -506,13 +482,12 @@ void game_fix_save_vars()
             if (surfaceElement == nullptr)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                auto tileElement = tile_element_insert(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
-                if (tileElement == nullptr)
+                surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
+                if (surfaceElement == nullptr)
                 {
                     log_error("Unable to fix: Map element limit reached.");
                     return;
                 }
-                surfaceElement = tileElement->AsSurface();
             }
 
             // Fix the invisible border tiles.
@@ -540,6 +515,8 @@ void game_fix_save_vars()
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
     fix_park_entrance_locations();
+
+    staff_update_greyed_patrol_areas();
 }
 
 void game_load_init()
@@ -613,10 +590,10 @@ void game_unload_scripts()
  */
 void reset_all_sprite_quadrant_placements()
 {
-    for (size_t i = 0; i < MAX_SPRITES; i++)
+    for (size_t i = 0; i < MAX_ENTITIES; i++)
     {
         auto* spr = GetEntity(i);
-        if (spr != nullptr && spr->sprite_identifier != SpriteIdentifier::Null)
+        if (spr != nullptr && spr->Type != EntityType::Null)
         {
             spr->MoveTo({ spr->x, spr->y, spr->z });
         }
@@ -703,7 +680,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     // At first, count how many autosaves there are
     {
-        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+        auto scanner = Path::ScanDirectory(filter, false);
         while (scanner->Next())
         {
             autosavesCount++;
@@ -718,7 +695,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     auto autosaveFiles = std::vector<std::string>(autosavesCount);
     {
-        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+        auto scanner = Path::ScanDirectory(filter, false);
         for (size_t i = 0; i < autosavesCount; i++)
         {
             autosaveFiles[i].resize(MAX_PATH, 0);
@@ -788,7 +765,7 @@ void game_autosave()
     }
 
     if (!scenario_save(path, saveFlags))
-        std::fprintf(stderr, "Could not autosave the scenario. Is the save folder writeable?\n");
+        Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 
 static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8* path)
@@ -853,7 +830,7 @@ void game_load_or_quit_no_save_prompt()
 void start_silent_record()
 {
     std::string name = Path::Combine(
-        OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DIRBASE::USER), "debug_replay.sv6r");
+        OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DIRBASE::USER), "debug_replay.parkrep");
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (replayManager->StartRecording(name, OpenRCT2::k_MaxReplayTicks, OpenRCT2::IReplayManager::RecordType::SILENT))
     {
@@ -862,7 +839,7 @@ void start_silent_record()
         safe_strcpy(gSilentRecordingName, info.FilePath.c_str(), MAX_PATH);
 
         const char* logFmt = "Silent replay recording started: (%s) %s\n";
-        printf(logFmt, info.Name.c_str(), info.FilePath.c_str());
+        Console::WriteLine(logFmt, info.Name.c_str(), info.FilePath.c_str());
     }
 }
 
@@ -884,7 +861,7 @@ bool stop_silent_record()
                              "  Commands: %u\n"
                              "  Checksums: %u";
 
-        printf(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+        Console::WriteLine(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
 
         return true;
     }

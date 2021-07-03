@@ -10,9 +10,10 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 // 1 2 0 3 4
 static constexpr const uint8_t track_map_1x5[][5] = {
@@ -63,6 +64,11 @@ static void paint_swinging_ship_structure(
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
     Vehicle* vehicle = nullptr;
 
     int8_t xOffset = !(direction & 1) ? axisOffset : 0;
@@ -74,14 +80,14 @@ static void paint_swinging_ship_structure(
     {
         vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
 
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 
     baseImageId = rideEntry->vehicles[0].base_image_id + swinging_ship_base_sprite_offset[direction];
     if (vehicle != nullptr)
     {
-        int32_t rotation = static_cast<int8_t>(vehicle->vehicle_sprite_type);
+        int32_t rotation = static_cast<int8_t>(vehicle->Pitch);
         if (rotation != 0)
         {
             if (direction & 2)
@@ -162,7 +168,7 @@ static void paint_swinging_ship_structure(
         height);
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x008A85C4 */
@@ -320,7 +326,7 @@ static void paint_swinging_ship(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_swinging_ship(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_1_X_5)
+    if (trackType != TrackElemType::FlatTrack1x5)
     {
         return nullptr;
     }

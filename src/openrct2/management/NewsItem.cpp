@@ -18,11 +18,13 @@
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
+#include "../peep/Peep.h"
 #include "../ride/Ride.h"
+#include "../ride/Vehicle.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../world/Entity.h"
 #include "../world/Location.hpp"
-#include "../world/Sprite.h"
 
 News::ItemQueues gNewsItems;
 
@@ -319,7 +321,7 @@ News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t
     newsItem->Ticks = 0;
     newsItem->MonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
     newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
-    safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
+    newsItem->Text = text;
 
     return newsItem;
 }
@@ -395,7 +397,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
                 if (window != nullptr)
                 {
                     window->Invalidate();
-                    if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_SCENERY, TOOL_ARROW))
+                    if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
                     {
                         input_set_flag(INPUT_FLAG_6, true);
                         context_open_window(WC_SCENERY);

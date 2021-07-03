@@ -12,11 +12,12 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
+#include "../../world/Entity.h"
 #include "../../world/Map.h"
-#include "../../world/Sprite.h"
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 #include <iterator>
 
@@ -42,14 +43,14 @@ static int8_t TopSpinSeatPositionOffset[] = {
  *  rct2: 0x0076750D
  */
 static void top_spin_paint_vehicle(
-    paint_session* session, int8_t al, int8_t cl, ride_id_t rideIndex, uint8_t direction, int32_t height,
+    paint_session* session, int32_t al, int32_t cl, ride_id_t rideIndex, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
-    uint16_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
+    int32_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     // As we will be drawing a vehicle we need to backup the tileElement that
     // is assigned to the drawings.
     const TileElement* curTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
@@ -63,10 +64,10 @@ static void top_spin_paint_vehicle(
     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
 
-        armRotation = vehicle->vehicle_sprite_type;
+        armRotation = vehicle->Pitch;
         seatRotation = vehicle->bank_rotation;
     }
 
@@ -74,10 +75,8 @@ static void top_spin_paint_vehicle(
     boundBoxOffsetY = cl + 16;
     boundBoxOffsetZ = height;
 
-    // di
-    uint8_t lengthX = 24;
-    // si
-    uint8_t lengthY = 24;
+    auto lengthX = 24;
+    auto lengthY = 24;
 
     uint32_t image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
@@ -90,7 +89,7 @@ static void top_spin_paint_vehicle(
     // Left back bottom support
     image_id += 572;
     PaintAddImageAsParent(
-        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+        session, image_id, { al, cl, height }, { lengthX, lengthY, 90 }, { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ });
 
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
@@ -240,7 +239,7 @@ static void top_spin_paint_vehicle(
         session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     session->CurrentlyDrawnItem = curTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /**
@@ -317,7 +316,7 @@ static void paint_top_spin(
 /* 0x0076659C */
 TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_3_X_3)
+    if (trackType != TrackElemType::FlatTrack3x3)
     {
         return nullptr;
     }

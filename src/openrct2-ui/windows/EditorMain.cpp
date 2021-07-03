@@ -13,7 +13,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/world/Footpath.h>
-#include <openrct2/world/Sprite.h>
 
 static void window_editor_main_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
@@ -48,7 +47,7 @@ rct_window* window_editor_main_open()
     gShowGridLinesRefCount = 0;
     gShowLandRightsRefCount = 0;
     gShowConstuctionRightsRefCount = 0;
-    gFootpathSelectedType = 0;
+    window_footpath_reset_selected_path();
 
     context_open_window(WC_TOP_TOOLBAR);
     context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);

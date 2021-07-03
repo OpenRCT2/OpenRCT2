@@ -22,8 +22,8 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Banner.h"
+#include "../world/EntityList.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 #include "MazeSetTrackAction.h"
 #include "TrackRemoveAction.h"
 
@@ -74,7 +74,7 @@ GameActions::Result::Ptr RideDemolishAction::Query() const
 
     if (_modifyType == RIDE_MODIFY_RENEW)
     {
-        if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+        if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
@@ -87,7 +87,7 @@ GameActions::Result::Ptr RideDemolishAction::Query() const
         }
 
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
-            || RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
+            || ride->GetRideTypeDescriptor().AvailableBreakdowns == 0)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
@@ -132,17 +132,9 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     ride_clear_leftover_entrances(ride);
     News::DisableNewsItems(News::ItemType::Ride, _rideIndex);
 
-    for (BannerIndex i = 0; i < MAX_BANNERS; i++)
-    {
-        auto banner = GetBanner(i);
-        if (!banner->IsNull() && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
-        {
-            banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner->text = {};
-        }
-    }
+    UnlinkAllBannersForRide(_rideIndex);
 
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         uint8_t ride_id_bit = _rideIndex % 8;
         uint8_t ride_id_offset = _rideIndex / 8;
@@ -217,12 +209,13 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
             if (peep->Thoughts[i].type == PeepThoughtType::None)
                 break;
 
-            if (peep->Thoughts[i].type != PeepThoughtType::None && peep->Thoughts[i].item == _rideIndex)
+            // TODO actually verify the thought is a ride specific thought...
+            if (peep->Thoughts[i].type != PeepThoughtType::None && peep->Thoughts[i].ride == static_cast<ride_id_t>(_rideIndex))
             {
                 // Clear top thought, push others up
                 memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
                 peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
-                peep->Thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
+                peep->Thoughts[PEEP_MAX_THOUGHTS - 1].argument = std::numeric_limits<uint32_t>::max();
                 // Next iteration, check the new thought at this index
                 i--;
             }

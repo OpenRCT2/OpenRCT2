@@ -26,6 +26,12 @@ SignSetNameAction::SignSetNameAction(BannerIndex bannerIndex, const std::string&
 {
 }
 
+void SignSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("id", _bannerIndex);
+    visitor.Visit("name", _name);
+}
+
 uint16_t SignSetNameAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
@@ -39,7 +45,8 @@ void SignSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr SignSetNameAction::Query() const
 {
-    if (_bannerIndex >= MAX_BANNERS)
+    auto banner = GetBanner(_bannerIndex);
+    if (banner == nullptr)
     {
         log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
@@ -50,6 +57,11 @@ GameActions::Result::Ptr SignSetNameAction::Query() const
 GameActions::Result::Ptr SignSetNameAction::Execute() const
 {
     auto banner = GetBanner(_bannerIndex);
+    if (banner == nullptr)
+    {
+        log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+    }
 
     if (!_name.empty())
     {

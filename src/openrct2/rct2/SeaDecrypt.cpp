@@ -25,7 +25,7 @@ struct EncryptionKey
     uint32_t Seed1{};
 };
 
-static EncryptionKey GetEncryptionKey(const std::string_view& fileName)
+static EncryptionKey GetEncryptionKey(std::string_view fileName)
 {
     auto fileNameLen = static_cast<int32_t>(fileName.size());
     uint32_t s0 = 0;

@@ -52,6 +52,7 @@
 #include "Scenery.h"
 #include "SmallScenery.h"
 #include "Surface.h"
+#include "TileElementsView.h"
 #include "TileInspector.h"
 #include "Wall.h"
 
@@ -80,6 +81,8 @@ const std::array<CoordsXY, 8> CoordsDirectionDelta = {
 const TileCoordsXY TileDirectionDelta[] = { { -1, 0 },  { 0, +1 },  { +1, 0 },  { 0, -1 },
                                             { -1, +1 }, { +1, +1 }, { +1, -1 }, { -1, -1 } };
 
+constexpr size_t MIN_TILE_ELEMENTS = 1024;
+
 uint16_t gMapSelectFlags;
 uint16_t gMapSelectType;
 CoordsXY gMapSelectPositionA;
@@ -89,23 +92,14 @@ uint8_t gMapSelectArrowDirection;
 
 uint8_t gMapGroundFlags;
 
-uint16_t gWidePathTileLoopX;
-uint16_t gWidePathTileLoopY;
+TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
-int16_t gMapSizeUnits;
-int16_t gMapSizeMinus2;
-int16_t gMapSize;
-int16_t gMapSizeMaxXY;
-int16_t gMapBaseZ;
+int32_t gMapSize;
+int32_t gMapBaseZ;
 
-TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
-TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
-
-TileElement* gNextFreeTileElement;
-uint32_t gNextFreeTileElementPointerIndex;
 
 bool gLandMountainMode;
 bool gLandPaintMode;
@@ -113,10 +107,181 @@ bool gClearSmallScenery;
 bool gClearLargeScenery;
 bool gClearFootpath;
 
-uint16_t gLandRemainingOwnershipSales;
-uint16_t gLandRemainingConstructionSales;
+uint32_t gLandRemainingOwnershipSales;
+uint32_t gLandRemainingConstructionSales;
 
 bool gMapLandRightsUpdateSuccess;
+
+static TilePointerIndex<TileElement> _tileIndex;
+static std::vector<TileElement> _tileElements;
+static TilePointerIndex<TileElement> _tileIndexStash;
+static std::vector<TileElement> _tileElementsStash;
+static size_t _tileElementsInUse;
+static size_t _tileElementsInUseStash;
+static int32_t _mapSizeStash;
+static int32_t _currentRotationStash;
+
+void StashMap()
+{
+    _tileIndexStash = std::move(_tileIndex);
+    _tileElementsStash = std::move(_tileElements);
+    _mapSizeStash = gMapSize;
+    _currentRotationStash = gCurrentRotation;
+    _tileElementsInUseStash = _tileElementsInUse;
+}
+
+void UnstashMap()
+{
+    _tileIndex = std::move(_tileIndexStash);
+    _tileElements = std::move(_tileElementsStash);
+    gMapSize = _mapSizeStash;
+    gCurrentRotation = _currentRotationStash;
+    _tileElementsInUse = _tileElementsInUseStash;
+}
+
+const std::vector<TileElement>& GetTileElements()
+{
+    return _tileElements;
+}
+
+void SetTileElements(std::vector<TileElement>&& tileElements)
+{
+    _tileElements = std::move(tileElements);
+    _tileIndex = TilePointerIndex<TileElement>(MAXIMUM_MAP_SIZE_TECHNICAL, _tileElements.data());
+    _tileElementsInUse = _tileElements.size();
+}
+
+static TileElement GetDefaultSurfaceElement()
+{
+    TileElement el;
+    el.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+    el.SetLastForTile(true);
+    el.base_height = 14;
+    el.clearance_height = 14;
+    el.AsSurface()->SetWaterHeight(0);
+    el.AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+    el.AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+    el.AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+    el.AsSurface()->SetParkFences(0);
+    el.AsSurface()->SetSurfaceStyle(0);
+    el.AsSurface()->SetEdgeStyle(0);
+    return el;
+}
+
+std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
+{
+    std::vector<TileElement> newElements;
+    newElements.reserve(std::max(MIN_TILE_ELEMENTS, _tileElements.size()));
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            auto oldSize = newElements.size();
+
+            // Add all non-ghost elements
+            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            if (element != nullptr)
+            {
+                do
+                {
+                    if (!element->IsGhost())
+                    {
+                        newElements.push_back(*element);
+                    }
+                } while (!(element++)->IsLastForTile());
+            }
+
+            // Insert default surface element if no elements were added
+            auto newSize = newElements.size();
+            if (oldSize == newSize)
+            {
+                newElements.push_back(GetDefaultSurfaceElement());
+            }
+
+            // Ensure last element of tile has last flag set
+            auto& lastEl = newElements.back();
+            lastEl.SetLastForTile(true);
+        }
+    }
+    return newElements;
+}
+
+static void ReorganiseTileElements(size_t capacity)
+{
+    context_setcurrentcursor(CursorID::ZZZ);
+
+    std::vector<TileElement> newElements;
+    newElements.reserve(std::max(MIN_TILE_ELEMENTS, capacity));
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            if (element == nullptr)
+            {
+                newElements.push_back(GetDefaultSurfaceElement());
+            }
+            else
+            {
+                do
+                {
+                    newElements.push_back(*element);
+                } while (!(element++)->IsLastForTile());
+            }
+        }
+    }
+
+    SetTileElements(std::move(newElements));
+}
+
+void ReorganiseTileElements()
+{
+    ReorganiseTileElements(_tileElements.size());
+}
+
+static bool map_check_free_elements_and_reorganise(size_t numElementsOnTile, size_t numNewElements)
+{
+    // Check hard cap on num in use tiles (this would be the size of _tileElements immediately after a reorg)
+    if (_tileElementsInUse + numNewElements > MAX_TILE_ELEMENTS)
+    {
+        gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
+        return false;
+    }
+
+    auto totalElementsRequired = numElementsOnTile + numNewElements;
+    auto freeElements = _tileElements.capacity() - _tileElements.size();
+    if (freeElements >= totalElementsRequired)
+    {
+        return true;
+    }
+    else
+    {
+        // if space issue is due to fragmentation then Reorg Tiles without increasing capacity
+        if (_tileElements.size() > totalElementsRequired + _tileElementsInUse)
+        {
+            ReorganiseTileElements();
+            // This check is not expected to fail
+            freeElements = _tileElements.capacity() - _tileElements.size();
+            if (freeElements >= totalElementsRequired)
+            {
+                return true;
+            }
+        }
+
+        // Capacity must increase to handle the space (Note capacity can go above MAX_TILE_ELEMENTS)
+        auto newCapacity = _tileElements.capacity() * 2;
+        ReorganiseTileElements(newCapacity);
+        return true;
+    }
+}
+
+static size_t CountElementsOnTile(const CoordsXY& loc);
+
+bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements)
+{
+    auto numElementsOnTile = CountElementsOnTile(loc);
+    return map_check_free_elements_and_reorganise(numElementsOnTile, numElements);
+}
 
 static void clear_elements_at(const CoordsXY& loc);
 static ScreenCoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos);
@@ -173,7 +338,7 @@ TileElement* map_get_first_element_at(const CoordsXY& elementPos)
         return nullptr;
     }
     auto tileElementPos = TileCoordsXY{ elementPos };
-    return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * MAXIMUM_MAP_SIZE_TECHNICAL];
+    return _tileIndex.GetFirstElementAt(tileElementPos);
 }
 
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
@@ -210,72 +375,40 @@ void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
         log_error("Trying to access element outside of range");
         return;
     }
-    gTileElementTilePointers[tilePos.x + tilePos.y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
+    _tileIndex.SetTile(tilePos, elements);
 }
 
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
 {
-    TileElement* tileElement = map_get_first_element_at(coords);
+    auto view = TileElementsView<SurfaceElement>(coords);
 
-    if (tileElement == nullptr)
-        return nullptr;
-
-    // Find the first surface element
-    while (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
-    {
-        if (tileElement->IsLastForTile())
-            return nullptr;
-
-        tileElement++;
-    }
-
-    return tileElement->AsSurface();
+    return *view.begin();
 }
 
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
 {
-    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
-
-    if (tileElement == nullptr)
-        return nullptr;
-
-    // Find the path element at known z
-    do
+    for (auto* element : TileElementsView<PathElement>(loc.ToCoordsXY()))
     {
-        if (tileElement->IsGhost())
+        if (element->IsGhost())
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+        if (element->base_height != loc.z)
             continue;
-        if (tileElement->base_height != loc.z)
-            continue;
-
-        return tileElement->AsPath();
-    } while (!(tileElement++)->IsLastForTile());
-
+        return element;
+    }
     return nullptr;
 }
 
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t position)
 {
-    auto bannerTilePos = TileCoordsXYZ{ bannerPos };
-    TileElement* tileElement = map_get_first_element_at(bannerPos);
-
-    if (tileElement == nullptr)
-        return nullptr;
-
-    // Find the banner element at known z and position
-    do
+    const auto bannerTilePos = TileCoordsXYZ{ bannerPos };
+    for (auto* element : TileElementsView<BannerElement>(bannerPos))
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
+        if (element->base_height != bannerTilePos.z)
             continue;
-        if (tileElement->base_height != bannerTilePos.z)
+        if (element->GetPosition() != position)
             continue;
-        if (tileElement->AsBanner()->GetPosition() != position)
-            continue;
-
-        return tileElement->AsBanner();
-    } while (!(tileElement++)->IsLastForTile());
-
+        return element;
+    }
     return nullptr;
 }
 
@@ -285,33 +418,31 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t pos
  */
 void map_init(int32_t size)
 {
-    gNextFreeTileElementPointerIndex = 0;
+    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    std::vector<TileElement> tileElements;
+    tileElements.resize(numTiles);
+    for (int32_t i = 0; i < numTiles; i++)
     {
-        TileElement* tile_element = &gTileElements[i];
-        tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-        tile_element->SetLastForTile(true);
-        tile_element->base_height = 14;
-        tile_element->clearance_height = 14;
-        tile_element->AsSurface()->SetWaterHeight(0);
-        tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-        tile_element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        tile_element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-        tile_element->AsSurface()->SetParkFences(0);
-        tile_element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
-        tile_element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
+        auto* element = &tileElements[i];
+        element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+        element->SetLastForTile(true);
+        element->base_height = 14;
+        element->clearance_height = 14;
+        element->AsSurface()->SetWaterHeight(0);
+        element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+        element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+        element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+        element->AsSurface()->SetParkFences(0);
+        element->AsSurface()->SetSurfaceStyle(0);
+        element->AsSurface()->SetEdgeStyle(0);
     }
+    SetTileElements(std::move(tileElements));
 
     gGrassSceneryTileLoopPosition = 0;
-    gWidePathTileLoopX = 0;
-    gWidePathTileLoopY = 0;
-    gMapSizeUnits = size * 32 - 32;
-    gMapSizeMinus2 = size * 32 - 2;
+    gWidePathTileLoopPosition = {};
     gMapSize = size;
-    gMapSizeMaxXY = size * 32 - 33;
     gMapBaseZ = 7;
-    map_update_tile_pointers();
     map_remove_out_of_range_elements();
     AutoCreateMapAnimations();
 
@@ -371,38 +502,10 @@ void map_count_remaining_land_rights()
  */
 void map_strip_ghost_flag_from_elements()
 {
-    for (auto& element : gTileElements)
+    for (auto& element : _tileElements)
     {
         element.SetGhost(false);
     }
-}
-
-/**
- *
- *  rct2: 0x0068AFFD
- */
-void map_update_tile_pointers()
-{
-    int32_t i, x, y;
-
-    for (i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
-    {
-        gTileElementTilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
-    }
-
-    TileElement* tileElement = gTileElements;
-    TileElement** tile = gTileElementTilePointers;
-    for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
-    {
-        for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
-        {
-            *tile++ = tileElement;
-            while (!(tileElement++)->IsLastForTile())
-                ;
-        }
-    }
-
-    gNextFreeTileElement = tileElement;
 }
 
 /**
@@ -630,8 +733,8 @@ void map_update_path_wide_flags()
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
-    uint16_t x = gWidePathTileLoopX;
-    uint16_t y = gWidePathTileLoopY;
+    auto x = gWidePathTileLoopPosition.x;
+    auto y = gWidePathTileLoopPosition.y;
     for (int32_t i = 0; i < 128; i++)
     {
         footpath_update_path_wide_flags({ x, y });
@@ -648,8 +751,8 @@ void map_update_path_wide_flags()
             }
         }
     }
-    gWidePathTileLoopX = x;
-    gWidePathTileLoopY = y;
+    gWidePathTileLoopPosition.x = x;
+    gWidePathTileLoopPosition.y = y;
 }
 
 /**
@@ -684,7 +787,7 @@ bool map_is_location_valid(const CoordsXY& coords)
 
 bool map_is_edge(const CoordsXY& coords)
 {
-    return (coords.x < 32 || coords.y < 32 || coords.x >= gMapSizeUnits || coords.y >= gMapSizeUnits);
+    return (coords.x < 32 || coords.y < 32 || coords.x >= GetMapSizeUnits() || coords.y >= GetMapSizeUnits());
 }
 
 bool map_can_build_at(const CoordsXYZ& loc)
@@ -870,8 +973,7 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
 uint8_t map_get_lowest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY)),
-                            std::min(range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY)) };
+                            std::min(range.GetRight(), GetMapSizeMaxXY()), std::min(range.GetBottom(), GetMapSizeMaxXY()) };
 
     uint8_t min_height = 0xFF;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -900,8 +1002,7 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
 uint8_t map_get_highest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY)),
-                            std::min(range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY)) };
+                            std::min(range.GetRight(), GetMapSizeMaxXY()), std::min(range.GetBottom(), GetMapSizeMaxXY()) };
 
     uint8_t max_height = 0;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -957,10 +1058,10 @@ void tile_element_remove(TileElement* tileElement)
     // Mark the latest element with the last element flag.
     (tileElement - 1)->SetLastForTile(true);
     tileElement->base_height = MAX_ELEMENT_HEIGHT;
-
-    if ((tileElement + 1) == gNextFreeTileElement)
+    _tileElementsInUse--;
+    if (tileElement == &_tileElements.back())
     {
-        gNextFreeTileElement--;
+        _tileElements.pop_back();
     }
 }
 
@@ -1059,111 +1160,54 @@ void map_invalidate_selection_rect()
     bottom += 32;
     top -= 32 + 2080;
 
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        rct_viewport* viewport = &g_viewport_list[i];
-        if (viewport->width != 0)
-        {
-            viewport_invalidate(viewport, left, top, right, bottom);
-        }
-    }
+    viewports_invalidate(left, top, right, bottom);
 }
 
-/**
- *
- *  rct2: 0x0068B111
- */
-void map_reorganise_elements()
+static size_t CountElementsOnTile(const CoordsXY& loc)
 {
-    context_setcurrentcursor(CursorID::ZZZ);
-
-    auto newTileElements = std::make_unique<TileElement[]>(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM);
-    TileElement* newElementsPtr = newTileElements.get();
-
-    if (newTileElements == nullptr)
+    size_t count = 0;
+    auto* element = _tileIndex.GetFirstElementAt(TileCoordsXY(loc));
+    do
     {
-        log_fatal("Unable to allocate memory for map elements.");
-        return;
-    }
-
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
-    {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
-        {
-            TileElement* startElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
-            if (startElement == nullptr)
-                continue;
-            TileElement* endElement = startElement;
-            while (!(endElement++)->IsLastForTile())
-                ;
-
-            const auto numElements = static_cast<uint32_t>(endElement - startElement);
-            std::memcpy(newElementsPtr, startElement, numElements * sizeof(TileElement));
-            newElementsPtr += numElements;
-        }
-    }
-
-    const auto numElements = static_cast<uint32_t>(newElementsPtr - newTileElements.get());
-    std::memcpy(gTileElements, newTileElements.get(), numElements * sizeof(TileElement));
-    std::memset(gTileElements + numElements, 0, (MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - numElements) * sizeof(TileElement));
-
-    map_update_tile_pointers();
+        count++;
+    } while (!(element++)->IsLastForTile());
+    return count;
 }
 
-/**
- *
- *  rct2: 0x0068B044
- *  Returns true on space available for more elements
- *  Reorganises the map elements to check for space
- */
-bool map_check_free_elements_and_reorganise(int32_t numElements)
+static TileElement* AllocateTileElements(size_t numElementsOnTile, size_t numNewElements)
 {
-    if (numElements != 0)
+    if (!map_check_free_elements_and_reorganise(numElementsOnTile, numNewElements))
     {
-        auto tileElementEnd = &gTileElements[MAX_TILE_ELEMENTS];
-
-        // Check if is there is room for the required number of elements
-        auto newTileElementEnd = gNextFreeTileElement + numElements;
-        if (newTileElementEnd > tileElementEnd)
-        {
-            // Defragment the map element list
-            map_reorganise_elements();
-
-            // Check if there is any room again
-            newTileElementEnd = gNextFreeTileElement + numElements;
-            if (newTileElementEnd > tileElementEnd)
-            {
-                // Not enough spare elements left :'(
-                gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
-                return false;
-            }
-        }
+        log_error("Cannot insert new element");
+        return nullptr;
     }
-    return true;
+
+    auto oldSize = _tileElements.size();
+    _tileElements.resize(_tileElements.size() + numElementsOnTile + numNewElements);
+    _tileElementsInUse += numNewElements;
+    return &_tileElements[oldSize];
 }
 
 /**
  *
  *  rct2: 0x0068B1F6
  */
-TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
+TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type)
 {
     const auto& tileLoc = TileCoordsXYZ(loc);
-    TileElement *originalTileElement, *newTileElement, *insertedElement;
-    bool isLastForTile = false;
 
-    if (!map_check_free_elements_and_reorganise(1))
+    auto numElementsOnTileOld = CountElementsOnTile(loc);
+    auto* newTileElement = AllocateTileElements(numElementsOnTileOld, 1);
+    auto* originalTileElement = _tileIndex.GetFirstElementAt(tileLoc);
+    if (newTileElement == nullptr)
     {
-        log_error("Cannot insert new element");
         return nullptr;
     }
 
-    newTileElement = gNextFreeTileElement;
-    originalTileElement = gTileElementTilePointers[tileLoc.y * MAXIMUM_MAP_SIZE_TECHNICAL + tileLoc.x];
-
     // Set tile index pointer to point to new element block
-    gTileElementTilePointers[tileLoc.y * MAXIMUM_MAP_SIZE_TECHNICAL + tileLoc.x] = newTileElement;
+    _tileIndex.SetTile(tileLoc, newTileElement);
 
+    bool isLastForTile = false;
     if (originalTileElement == nullptr)
     {
         isLastForTile = true;
@@ -1190,14 +1234,16 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     }
 
     // Insert new map element
-    insertedElement = newTileElement;
+    auto* insertedElement = newTileElement;
     newTileElement->type = 0;
+    newTileElement->SetType(static_cast<uint8_t>(type));
     newTileElement->SetBaseZ(loc.z);
     newTileElement->Flags = 0;
     newTileElement->SetLastForTile(isLastForTile);
     newTileElement->SetOccupiedQuadrants(occupiedQuadrants);
     newTileElement->SetClearanceZ(loc.z);
-    std::memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
+    newTileElement->owner = 0;
+    std::memset(&newTileElement->pad_05, 0, sizeof(newTileElement->pad_05));
     std::memset(&newTileElement->pad_08, 0, sizeof(newTileElement->pad_08));
     newTileElement++;
 
@@ -1214,7 +1260,6 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
         } while (!((newTileElement - 1)->IsLastForTile()));
     }
 
-    gNextFreeTileElement = newTileElement;
     return insertedElement;
 }
 
@@ -1225,7 +1270,6 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
 void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Result& res)
 {
     Ride* ride;
-    rct_scenery_entry* sceneryEntry;
 
     res.ErrorMessage = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->GetType())
@@ -1248,10 +1292,11 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
         {
-            sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            ft.Add<rct_string_id>(sceneryEntry->name);
+            rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
+            ft.Add<rct_string_id>(stringId);
             break;
         }
         case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -1270,18 +1315,20 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             break;
         case TILE_ELEMENT_TYPE_WALL:
         {
-            sceneryEntry = tileElement->AsWall()->GetEntry();
+            auto* wallEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            ft.Add<rct_string_id>(sceneryEntry->name);
+            rct_string_id stringId = wallEntry != nullptr ? wallEntry->name : static_cast<rct_string_id>(STR_EMPTY);
+            ft.Add<rct_string_id>(stringId);
             break;
         }
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
-            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            ft.Add<rct_string_id>(sceneryEntry->name);
+            rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
+            ft.Add<rct_string_id>(stringId);
             break;
         }
     }
@@ -1298,7 +1345,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
  *  bl = bl
  */
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode)
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
 {
     int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
     northZ = eastZ = baseHeight = southZ = westZ = water_height = 0;
@@ -1307,7 +1354,7 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
 
     res->GroundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
-    if (pos.x >= gMapSizeUnits || pos.y >= gMapSizeUnits || pos.x < 32 || pos.y < 32)
+    if (pos.x >= GetMapSizeUnits() || pos.y >= GetMapSizeUnits() || pos.x < 32 || pos.y < 32)
     {
         res->Error = GameActions::Status::InvalidParameters;
         res->ErrorMessage = STR_OFF_EDGE_OF_MAP;
@@ -1350,7 +1397,7 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             }
         }
     loc_68B9B7:
-        if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
+        if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 
@@ -1477,9 +1524,9 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
 
 bool map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
-    uint8_t crossingMode)
+    uint8_t crossingMode, bool isTree)
 {
-    auto res = MapCanConstructWithClearAt(pos, clearFunc, quarterTile, flags, crossingMode);
+    auto res = MapCanConstructWithClearAt(pos, clearFunc, quarterTile, flags, crossingMode, isTree);
     if (auto message = res->ErrorMessage.AsStringId())
         gGameCommandErrorText = *message;
     else
@@ -1518,7 +1565,7 @@ void map_update_tiles()
     if (gScreenFlags & ignoreScreenFlags)
         return;
 
-    // Update 43 more tiles
+    // Update 43 more tiles (for each 256x256 block)
     for (int32_t j = 0; j < 43; j++)
     {
         int32_t x = 0;
@@ -1533,12 +1580,19 @@ void map_update_tiles()
             interleaved_xy >>= 1;
         }
 
-        auto mapPos = TileCoordsXY{ x, y }.ToCoordsXY();
-        auto* surfaceElement = map_get_surface_element_at(mapPos);
-        if (surfaceElement != nullptr)
+        // Repeat for each 256x256 block on the map
+        for (int32_t blockY = 0; blockY < gMapSize; blockY += 256)
         {
-            surfaceElement->UpdateGrassLength(mapPos);
-            scenery_update_tile(mapPos);
+            for (int32_t blockX = 0; blockX < gMapSize; blockX += 256)
+            {
+                auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
+                auto* surfaceElement = map_get_surface_element_at(mapPos);
+                if (surfaceElement != nullptr)
+                {
+                    surfaceElement->UpdateGrassLength(mapPos);
+                    scenery_update_tile(mapPos);
+                }
+            }
         }
 
         gGrassSceneryTileLoopPosition++;
@@ -1548,10 +1602,10 @@ void map_update_tiles()
 
 void map_remove_provisional_elements()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
         footpath_provisional_remove();
-        gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
+        gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
     }
     if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
     {
@@ -1569,10 +1623,12 @@ void map_remove_provisional_elements()
 
 void map_restore_provisional_elements()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
-        gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
-        footpath_provisional_set(gFootpathProvisionalType, gFootpathProvisionalPosition, gFootpathProvisionalSlope);
+        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
+        footpath_provisional_set(
+            gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
+            gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
     }
     if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
     {
@@ -1594,7 +1650,7 @@ void map_restore_provisional_elements()
  */
 void map_remove_out_of_range_elements()
 {
-    int32_t mapMaxXY = gMapSizeMaxXY;
+    int32_t mapMaxXY = GetMapSizeMaxXY();
 
     // Ensure that we can remove elements
     //
@@ -1713,9 +1769,10 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
         case TILE_ELEMENT_TYPE_SURFACE:
             element->base_height = MINIMUM_LAND_HEIGHT;
             element->clearance_height = MINIMUM_LAND_HEIGHT;
+            element->owner = 0;
             element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-            element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
-            element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
+            element->AsSurface()->SetSurfaceStyle(0);
+            element->AsSurface()->SetEdgeStyle(0);
             element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
             element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
             element->AsSurface()->SetParkFences(0);
@@ -1738,28 +1795,48 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
                     break;
             }
             auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
-            GameActions::Execute(&parkEntranceRemoveAction);
+            auto result = GameActions::Execute(&parkEntranceRemoveAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
             break;
         }
         case TILE_ELEMENT_TYPE_WALL:
         {
             CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
-            GameActions::Execute(&wallRemoveAction);
+            auto result = GameActions::Execute(&wallRemoveAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
         }
         break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
             auto removeSceneryAction = LargeSceneryRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
-            GameActions::Execute(&removeSceneryAction);
+            auto result = GameActions::Execute(&removeSceneryAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
         }
         break;
         case TILE_ELEMENT_TYPE_BANNER:
         {
             auto bannerRemoveAction = BannerRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
-            GameActions::Execute(&bannerRemoveAction);
+            auto result = GameActions::Execute(&bannerRemoveAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
             break;
         }
         default:
@@ -1939,15 +2016,14 @@ SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCo
 std::optional<CoordsXYZ> map_large_scenery_get_origin(
     const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement)
 {
-    rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile* tile;
 
     auto tileElement = map_get_large_scenery_segment(sceneryPos, sequence);
     if (tileElement == nullptr)
         return std::nullopt;
 
-    sceneryEntry = tileElement->GetEntry();
-    tile = &sceneryEntry->large_scenery.tiles[sequence];
+    auto* sceneryEntry = tileElement->GetEntry();
+    tile = &sceneryEntry->tiles[sequence];
 
     CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
     auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
@@ -1966,7 +2042,6 @@ std::optional<CoordsXYZ> map_large_scenery_get_origin(
 bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile *sceneryTiles, *tile;
 
     auto sceneryOrigin = map_large_scenery_get_origin(signPos, sequence, &tileElement);
@@ -1975,8 +2050,8 @@ bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequen
         return false;
     }
 
-    sceneryEntry = tileElement->GetEntry();
-    sceneryTiles = sceneryEntry->large_scenery.tiles;
+    auto* sceneryEntry = tileElement->GetEntry();
+    sceneryTiles = sceneryEntry->tiles;
 
     // Iterate through each tile of the large scenery element
     sequence = 0;
@@ -2028,14 +2103,7 @@ static void map_invalidate_tile_under_zoom(int32_t x, int32_t y, int32_t z0, int
     x2 = screenCoord.x + 32;
     y2 = screenCoord.y + 32 - z0;
 
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        rct_viewport* viewport = &g_viewport_list[i];
-        if (viewport->width != 0 && (maxZoom == -1 || viewport->zoom <= maxZoom))
-        {
-            viewport_invalidate(viewport, x1, y1, x2, y2);
-        }
-    }
+    viewports_invalidate(x1, y1, x2, y2, maxZoom);
 }
 
 /**
@@ -2096,14 +2164,7 @@ void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs)
     bottom += 32;
     top -= 32 + 2080;
 
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        rct_viewport* viewport = &g_viewport_list[i];
-        if (viewport->width != 0)
-        {
-            viewport_invalidate(viewport, left, top, right, bottom);
-        }
-    }
+    viewports_invalidate(left, top, right, bottom);
 }
 
 int32_t map_get_tile_side(const CoordsXY& mapPos)
@@ -2159,12 +2220,12 @@ bool map_surface_is_blocked(const CoordsXY& mapCoords)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             return true;
 
-        rct_scenery_entry* scenery = tileElement->AsSmallScenery()->GetEntry();
-        if (scenery == nullptr)
+        auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        if (sceneryEntry == nullptr)
         {
             return false;
         }
-        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
             return true;
     }
     return false;
@@ -2212,7 +2273,7 @@ TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos)
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, int32_t trackType)
+TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, track_type_t trackType)
 {
     TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
@@ -2239,7 +2300,7 @@ TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, int32_t
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, int32_t trackType, int32_t sequence)
+TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence)
 {
     TileElement* tileElement = map_get_first_element_at(trackPos);
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -2262,7 +2323,7 @@ TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, int
     return nullptr;
 }
 
-TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, int32_t trackType)
+TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, track_type_t trackType)
 {
     auto tileElement = map_get_first_element_at(location);
     if (tileElement != nullptr)
@@ -2285,7 +2346,7 @@ TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, int32
     return nullptr;
 }
 
-TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, int32_t trackType, int32_t sequence)
+TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence)
 {
     auto tileElement = map_get_first_element_at(location);
     if (tileElement != nullptr)
@@ -2316,7 +2377,7 @@ TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, i
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, int32_t trackType, ride_id_t rideIndex)
+TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)

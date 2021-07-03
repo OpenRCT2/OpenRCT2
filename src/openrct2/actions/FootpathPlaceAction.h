@@ -12,17 +12,21 @@
 #include "../world/Footpath.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathPlaceAction, GAME_COMMAND_PLACE_PATH, GameActions::Result)
+DEFINE_GAME_ACTION(FootpathPlaceAction, GameCommand::PlacePath, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
     uint8_t _slope{};
     ObjectEntryIndex _type{};
+    ObjectEntryIndex _railingsType{};
     Direction _direction{ INVALID_DIRECTION };
+    PathConstructFlags _constructFlags{};
 
 public:
     FootpathPlaceAction() = default;
-    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction = INVALID_DIRECTION);
+    FootpathPlaceAction(
+        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
+        Direction direction = INVALID_DIRECTION, PathConstructFlags constructFlags = 0);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
@@ -40,4 +44,5 @@ private:
     void AutomaticallySetPeepSpawn() const;
     void RemoveIntersectingWalls(PathElement * pathElement) const;
     PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const;
+    bool IsSameAsPathElement(const PathElement* pathElement) const;
 };

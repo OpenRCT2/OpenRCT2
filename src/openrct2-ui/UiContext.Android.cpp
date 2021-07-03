@@ -40,6 +40,17 @@ namespace OpenRCT2::Ui
             return false;
         }
 
+        bool HasMenuSupport() override
+        {
+            return false;
+        }
+
+        int32_t ShowMenuDialog(
+            const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+        {
+            return -1;
+        }
+
         void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
             log_verbose(message.c_str());

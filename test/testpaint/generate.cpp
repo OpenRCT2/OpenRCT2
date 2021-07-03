@@ -1163,7 +1163,7 @@ private:
 
 int generatePaintCode(uint8_t rideType)
 {
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
     {
         fprintf(stderr, "Flat rides not supported.\n");
     }

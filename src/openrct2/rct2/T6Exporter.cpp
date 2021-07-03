@@ -80,7 +80,7 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     tempStream.WriteArray(_trackDesign->track_rail_colour, RCT12_NUM_COLOUR_SCHEMES);
     tempStream.WriteArray(_trackDesign->track_support_colour, RCT12_NUM_COLOUR_SCHEMES);
     tempStream.WriteValue<uint32_t>(_trackDesign->flags2);
-    tempStream.Write(&_trackDesign->vehicle_object, sizeof(rct_object_entry));
+    tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(rct_object_entry));
     tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
     tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
     tempStream.WriteArray(_trackDesign->vehicle_additional_colour, RCT2_MAX_CARS_PER_TRAIN);
@@ -99,7 +99,12 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     {
         for (const auto& trackElement : _trackDesign->track_elements)
         {
-            tempStream.WriteValue<uint8_t>(trackElement.type);
+            auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
+            if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
+            {
+                trackType = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
+            }
+            tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
             tempStream.WriteValue<uint8_t>(trackElement.flags);
         }
 
@@ -118,7 +123,7 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
 
     for (const auto& sceneryElement : _trackDesign->scenery_elements)
     {
-        tempStream.Write(&sceneryElement.scenery_object, sizeof(rct_object_entry));
+        tempStream.Write(&sceneryElement.scenery_object.Entry, sizeof(rct_object_entry));
         tempStream.WriteValue<int8_t>(sceneryElement.x);
         tempStream.WriteValue<int8_t>(sceneryElement.y);
         tempStream.WriteValue<int8_t>(sceneryElement.z);

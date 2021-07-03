@@ -28,8 +28,6 @@ struct vehicle_boundbox
 
 extern const vehicle_boundbox VehicleBoundboxes[16][224];
 
-void vehicle_paint(paint_session* session, const Vehicle* vehicle, int32_t imageDirection);
-
 void vehicle_visual_default(
     paint_session* session, int32_t imageDirection, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry);

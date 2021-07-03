@@ -77,7 +77,7 @@ GameActions::Result::Ptr RideSetVehicleAction::Query() const
             GameActions::Status::Broken, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
     }
 
-    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::NotClosed, errTitle, STR_MUST_BE_CLOSED_FIRST);
     }
@@ -213,7 +213,7 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
 
     if (gCheatsShowVehiclesFromOtherTrackTypes
         && !(
-            ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
+            ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
             || ride->type == RIDE_TYPE_MINI_GOLF))
     {
         selectionShouldBeExpanded = true;
@@ -231,7 +231,7 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
     {
         if (selectionShouldBeExpanded)
         {
-            if (ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
+            if (GetRideTypeDescriptor(rideTypeIterator).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                 continue;
             if (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF)
                 continue;

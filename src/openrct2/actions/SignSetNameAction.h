@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SignSetNameAction, GAME_COMMAND_SET_SIGN_NAME, GameActions::Result)
+DEFINE_GAME_ACTION(SignSetNameAction, GameCommand::SetSignName, GameActions::Result)
 {
 private:
     BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
@@ -20,6 +20,8 @@ private:
 public:
     SignSetNameAction() = default;
     SignSetNameAction(BannerIndex bannerIndex, const std::string& name);
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
     uint16_t GetActionFlags() const override;
 

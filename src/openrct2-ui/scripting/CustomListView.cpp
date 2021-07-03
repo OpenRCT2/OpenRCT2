@@ -278,7 +278,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
 
 void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialising)
 {
-    Items = items;
+    Items = std::move(items);
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
@@ -497,7 +497,7 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
     auto hitResult = GetItemIndexAt(pos);
     if (hitResult)
     {
-        if (hitResult->Row != HEADER_ROW && OnClick.context() != nullptr && OnClick.is_function())
+        if (hitResult->Row != HEADER_ROW)
         {
             if (CanSelect)
             {
@@ -506,12 +506,15 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
             }
 
             auto ctx = OnClick.context();
-            duk_push_int(ctx, static_cast<int32_t>(hitResult->Row));
-            auto dukRow = DukValue::take_from_stack(ctx, -1);
-            duk_push_int(ctx, static_cast<int32_t>(hitResult->Column));
-            auto dukColumn = DukValue::take_from_stack(ctx, -1);
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.ExecutePluginCall(Owner, OnClick, { dukRow, dukColumn }, false);
+            if (ctx != nullptr && OnClick.is_function())
+            {
+                duk_push_int(ctx, static_cast<int32_t>(hitResult->Row));
+                auto dukRow = DukValue::take_from_stack(ctx, -1);
+                duk_push_int(ctx, static_cast<int32_t>(hitResult->Column));
+                auto dukColumn = DukValue::take_from_stack(ctx, -1);
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.ExecutePluginCall(Owner, OnClick, { dukRow, dukColumn }, false);
+            }
         }
     }
     if (hitResult && hitResult->Row == HEADER_ROW)
@@ -597,11 +600,14 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
                 // Columns
                 if (Columns.size() == 0)
                 {
-                    const auto& text = item.Cells[0];
-                    if (!text.empty())
+                    if (item.Cells.size() != 0)
                     {
-                        ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), LIST_ROW_HEIGHT };
-                        PaintCell(dpi, { 0, y }, cellSize, text.c_str(), isHighlighted);
+                        const auto& text = item.Cells[0];
+                        if (!text.empty())
+                        {
+                            ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), LIST_ROW_HEIGHT };
+                            PaintCell(dpi, { 0, y }, cellSize, text.c_str(), isHighlighted);
+                        }
                     }
                 }
                 else
@@ -665,7 +671,7 @@ void CustomListView::PaintHeading(
     {
         boxFlags = INSET_RECT_FLAG_BORDER_INSET;
     }
-    gfx_fill_rect_inset(dpi, pos.x, pos.y, pos.x + size.width - 1, pos.y + size.height - 1, w->colours[1], boxFlags);
+    gfx_fill_rect_inset(dpi, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
     if (!text.empty())
     {
         PaintCell(dpi, pos, size, text.c_str(), false);
@@ -675,13 +681,13 @@ void CustomListView::PaintHeading(
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_UP);
-        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_DOWN);
-        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
 }
 
@@ -704,11 +710,11 @@ void CustomListView::PaintSeperator(
         // Draw string
         Formatter ft;
         ft.Add<const char*>(text);
-        gfx_draw_string_centred(dpi, STR_STRING, { centreX, pos.y }, baseColour, ft.Data());
+        DrawTextBasic(dpi, { centreX, pos.y }, STR_STRING, ft.Data(), { baseColour, TextAlignment::CENTRE });
 
         // Get string dimensions
         format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
-        int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer) / 2) + 4;
+        int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer, FontSpriteBase::MEDIUM) / 2) + 4;
         int32_t strLeft = centreX - categoryStringHalfWidth;
         int32_t strRight = centreX + categoryStringHalfWidth;
 
@@ -752,7 +758,7 @@ void CustomListView::PaintCell(
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(text);
-    DrawTextEllipsised(dpi, pos, size.width, stringId, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, pos, size.width, stringId, ft, {});
 }
 
 std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& pos)

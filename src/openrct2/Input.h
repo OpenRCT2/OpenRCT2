@@ -85,7 +85,7 @@ extern uint16_t gTooltipTimeout;
 extern widget_ref gTooltipWidget;
 extern ScreenCoordsXY gTooltipCursor;
 
-extern TOOL_IDX gCurrentToolId;
+extern Tool gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 
 // TODO: Move to openrct2-ui and make static again

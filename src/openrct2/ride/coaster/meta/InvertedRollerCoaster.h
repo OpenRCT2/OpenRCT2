@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor InvertedRollerCoasterRTD =
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 13, 3, 10 }),
     SET_FIELD(BuildCosts, { 110, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 100),
     SET_FIELD(ColourPresets,TRACK_COLOUR_PRESETS(

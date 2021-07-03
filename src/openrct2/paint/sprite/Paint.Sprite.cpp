@@ -16,20 +16,24 @@
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
 #include "../../ride/VehiclePaint.h"
-#include "../../world/Sprite.h"
+#include "../../world/Balloon.h"
+#include "../../world/Climate.h"
+#include "../../world/Duck.h"
+#include "../../world/EntityList.h"
+#include "../../world/Fountain.h"
+#include "../../world/Litter.h"
+#include "../../world/MapAnimation.h"
+#include "../../world/MoneyEffect.h"
+#include "../../world/Park.h"
+#include "../../world/Particle.h"
 #include "../Paint.h"
 
 /**
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t y)
+void sprite_paint_setup(paint_session* session, int32_t x, int32_t y)
 {
-    if ((x & 0xe000) | (y & 0xe000))
-    {
-        return;
-    }
-
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
     {
         return;
@@ -47,15 +51,15 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
     {
         if (highlightPathIssues)
         {
-            const auto peep = spr->As<Peep>();
-            if (peep != nullptr)
+            const auto staff = spr->As<Staff>();
+            if (staff != nullptr)
             {
-                if (!(peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Handyman))
+                if (staff->AssignedStaffType != StaffType::Handyman)
                 {
                     continue;
                 }
             }
-            else if (spr->sprite_identifier != SpriteIdentifier::Litter)
+            else if (spr->Type != EntityType::Litter)
             {
                 continue;
             }
@@ -97,12 +101,12 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         session->CurrentlyDrawnItem = spr;
         session->SpritePosition.x = spr->x;
         session->SpritePosition.y = spr->y;
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
 
-        switch (spr->sprite_identifier)
+        switch (spr->Type)
         {
-            case SpriteIdentifier::Vehicle:
-                vehicle_paint(session, spr->As<Vehicle>(), image_direction);
+            case EntityType::Vehicle:
+                PaintEntity(session, spr->As<Vehicle>(), image_direction);
 #ifdef __ENABLE_LIGHTFX__
                 if (lightfx_for_vehicles_is_available())
                 {
@@ -110,15 +114,39 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                 }
 #endif
                 break;
-            case SpriteIdentifier::Peep:
-                peep_paint(session, spr->As<Peep>(), image_direction);
+            case EntityType::Guest:
+            case EntityType::Staff:
+                PaintEntity(session, spr->As<Peep>(), image_direction);
                 break;
-            case SpriteIdentifier::Misc:
-                // TODO: Update misc_paint to take a specific sprite type
-                misc_paint(session, spr, image_direction);
+            case EntityType::SteamParticle:
+                PaintEntity(session, spr->As<SteamParticle>(), image_direction);
                 break;
-            case SpriteIdentifier::Litter:
-                litter_paint(session, spr->As<Litter>(), image_direction);
+            case EntityType::MoneyEffect:
+                PaintEntity(session, spr->As<MoneyEffect>(), image_direction);
+                break;
+            case EntityType::CrashedVehicleParticle:
+                PaintEntity(session, spr->As<VehicleCrashParticle>(), image_direction);
+                break;
+            case EntityType::ExplosionCloud:
+                PaintEntity(session, spr->As<ExplosionCloud>(), image_direction);
+                break;
+            case EntityType::CrashSplash:
+                PaintEntity(session, spr->As<CrashSplashParticle>(), image_direction);
+                break;
+            case EntityType::ExplosionFlare:
+                PaintEntity(session, spr->As<ExplosionFlare>(), image_direction);
+                break;
+            case EntityType::JumpingFountain:
+                PaintEntity(session, spr->As<JumpingFountain>(), image_direction);
+                break;
+            case EntityType::Balloon:
+                PaintEntity(session, spr->As<Balloon>(), image_direction);
+                break;
+            case EntityType::Duck:
+                PaintEntity(session, spr->As<Duck>(), image_direction);
+                break;
+            case EntityType::Litter:
+                PaintEntity(session, spr->As<Litter>(), image_direction);
                 break;
             default:
                 assert(false);

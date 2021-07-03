@@ -9,10 +9,9 @@
 
 #pragma once
 
-#include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffFireAction, GAME_COMMAND_FIRE_STAFF_MEMBER, GameActions::Result)
+DEFINE_GAME_ACTION(StaffFireAction, GameCommand::FireStaffMember, GameActions::Result)
 {
 private:
     uint16_t _spriteId{ SPRITE_INDEX_NULL };

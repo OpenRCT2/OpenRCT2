@@ -14,6 +14,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/localisation/Localisation.h>
@@ -27,6 +28,9 @@
 static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_DESIGN;
 static constexpr const int32_t WH = 431;
 static constexpr const int32_t WW = 600;
+static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
+static constexpr const int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
+static constexpr const int32_t WINDOW_PADDING = 5;
 
 // clang-format off
 enum {
@@ -51,8 +55,8 @@ static rct_widget window_track_list_widgets[] = {
     MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary  , STR_OBJECT_SEARCH_CLEAR                                     ),
     MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
     MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                                ),
-    MakeWidget({574, 405}, { 24,  24}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
-    MakeWidget({574, 381}, { 24,  24}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
+    MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
+    MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
     { WIDGETS_END },
 };
 
@@ -120,7 +124,7 @@ rct_window* window_track_list_open(RideSelection item)
         screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
 
-    rct_window* w = WindowCreate(screenPos, 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
+    rct_window* w = WindowCreate(screenPos, 600, WH, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
 
     window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
     w->widgets = window_track_list_widgets;
@@ -470,6 +474,15 @@ static void window_track_list_invalidate(rct_window* w)
         window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
         window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
     }
+
+    // When debugging tools are on, shift everything up a bit to make room for displaying the path.
+    const int32_t bottomMargin = gConfigGeneral.debugging_tools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
+    window_track_list_widgets[WIDX_TRACK_LIST].bottom = w->height - bottomMargin;
+    window_track_list_widgets[WIDX_ROTATE].bottom = w->height - bottomMargin;
+    window_track_list_widgets[WIDX_ROTATE].top = window_track_list_widgets[WIDX_ROTATE].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
+    window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom = window_track_list_widgets[WIDX_ROTATE].top;
+    window_track_list_widgets[WIDX_TOGGLE_SCENERY].top = window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom
+        - ROTATE_AND_SCENERY_BUTTON_SIZE;
 }
 
 /**
@@ -500,13 +513,26 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Track preview
     int32_t colour;
     rct_widget* widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
-    auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     colour = ColourMapA[w->colours[0]].darkest;
+    utf8* path = _trackDesigns[trackIndex].path;
+
+    // Show track file path (in debug mode)
+    if (gConfigGeneral.debugging_tools)
+    {
+        utf8 pathBuffer[MAX_PATH];
+        const utf8* pathPtr = pathBuffer;
+        shorten_path(pathBuffer, sizeof(pathBuffer), path, w->width, FontSpriteBase::MEDIUM);
+        auto ft = Formatter();
+        ft.Add<utf8*>(pathPtr);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 0, w->height - DEBUG_PATH_HEIGHT - 3 }, STR_STRING, ft, { w->colours[1] });
+    }
+
+    auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     gfx_fill_rect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
     if (_loadedTrackDesignIndex != trackIndex)
     {
-        utf8* path = _trackDesigns[trackIndex].path;
         if (track_list_load_design_for_preview(path))
         {
             _loadedTrackDesignIndex = trackIndex;
@@ -532,7 +558,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     g1temp.flags = G1_FLAG_BMP;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
-    gfx_draw_sprite(dpi, SPR_TEMP, trackPreview, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TEMP), trackPreview);
 
     screenPos.y = w->windowPos.y + widget->bottom - 12;
 
@@ -541,7 +567,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         // Vehicle design not available
-        DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
+        DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::CENTRE });
         screenPos.y -= SCROLLABLE_ROW_HEIGHT;
     }
 
@@ -551,7 +577,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Scenery not available
             DrawTextEllipsised(
-                dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
+                dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
             screenPos.y -= SCROLLABLE_ROW_HEIGHT;
         }
     }
@@ -559,26 +585,26 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Track design name
     auto ft = Formatter();
     ft.Add<utf8*>(_trackDesigns[trackIndex].name);
-    DrawTextEllipsised(dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, { TextAlignment::CENTRE });
 
     // Information
     screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->bottom + 2 };
 
     // Stats
     fixed32_2dp rating = _loadedTrackDesign->excitement * 10;
-    gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, &rating, COLOUR_BLACK, screenPos);
+    DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, &rating);
     screenPos.y += LIST_ROW_HEIGHT;
 
     rating = _loadedTrackDesign->intensity * 10;
-    gfx_draw_string_left(dpi, STR_TRACK_LIST_INTENSITY_RATING, &rating, COLOUR_BLACK, screenPos);
+    DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, &rating);
     screenPos.y += LIST_ROW_HEIGHT;
 
     rating = _loadedTrackDesign->nausea * 10;
-    gfx_draw_string_left(dpi, STR_TRACK_LIST_NAUSEA_RATING, &rating, COLOUR_BLACK, screenPos);
+    DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, &rating);
     screenPos.y += LIST_ROW_HEIGHT + 4;
 
     // Information for tracked rides.
-    if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         if (_loadedTrackDesign->type != RIDE_TYPE_MAZE)
         {
@@ -586,19 +612,19 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Holes
                 uint16_t holes = _loadedTrackDesign->holes & 0x1F;
-                gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, screenPos);
+                DrawTextBasic(dpi, screenPos, STR_HOLES, &holes);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
             else
             {
                 // Maximum speed
                 uint16_t speed = ((_loadedTrackDesign->max_speed << 16) * 9) >> 18;
-                gfx_draw_string_left(dpi, STR_MAX_SPEED, &speed, COLOUR_BLACK, screenPos);
+                DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, &speed);
                 screenPos.y += LIST_ROW_HEIGHT;
 
                 // Average speed
                 speed = ((_loadedTrackDesign->average_speed << 16) * 9) >> 18;
-                gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &speed, COLOUR_BLACK, screenPos);
+                DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, &speed);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
 
@@ -606,46 +632,46 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             ft = Formatter();
             ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
             ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
-            DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft, COLOUR_BLACK);
+            DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
-        if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
             // Maximum positive vertical Gs
             int32_t gForces = _loadedTrackDesign->max_positive_vertical_g * 32;
-            gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, &gForces);
             screenPos.y += LIST_ROW_HEIGHT;
 
             // Maximum negative vertical Gs
             gForces = _loadedTrackDesign->max_negative_vertical_g * 32;
-            gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, &gForces, COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, &gForces);
             screenPos.y += LIST_ROW_HEIGHT;
 
             // Maximum lateral Gs
             gForces = _loadedTrackDesign->max_lateral_g * 32;
-            gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, &gForces);
             screenPos.y += LIST_ROW_HEIGHT;
 
             if (_loadedTrackDesign->total_air_time != 0)
             {
                 // Total air time
                 int32_t airTime = _loadedTrackDesign->total_air_time * 25;
-                gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, screenPos);
+                DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, &airTime);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
         }
 
-        if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_DROPS))
+        if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
         {
             // Drops
             uint16_t drops = _loadedTrackDesign->drops & 0x3F;
-            gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_DROPS, &drops);
             screenPos.y += LIST_ROW_HEIGHT;
 
             // Drop height is multiplied by 0.75
             uint16_t highestDropHeight = (_loadedTrackDesign->highest_drop_height * 3) / 4;
-            gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight);
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
@@ -655,7 +681,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (inversions != 0)
             {
                 // Inversions
-                gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, COLOUR_BLACK, screenPos);
+                DrawTextBasic(dpi, screenPos, STR_INVERSIONS, &inversions);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
         }
@@ -668,7 +694,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft = Formatter();
         ft.Add<uint16_t>(_loadedTrackDesign->space_required_x);
         ft.Add<uint16_t>(_loadedTrackDesign->space_required_y);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
@@ -676,7 +702,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ft = Formatter();
         ft.Add<uint32_t>(_loadedTrackDesign->cost);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
     }
 }
 
@@ -696,8 +722,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
         if (_trackDesigns.empty())
         {
             // No track designs
-            gfx_draw_string_left(
-                dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, nullptr, COLOUR_BLACK, screenCoords - ScreenCoordsXY{ 0, 1 });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE);
             return;
         }
     }
@@ -719,7 +744,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
         }
 
         rct_string_id stringId2 = STR_BUILD_CUSTOM_DESIGN;
-        gfx_draw_string_left(dpi, stringId, &stringId2, COLOUR_BLACK, screenCoords - ScreenCoordsXY{ 0, 1 });
+        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, &stringId2);
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
         listIndex++;
     }
@@ -746,7 +771,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
             auto ft = Formatter();
             ft.Add<rct_string_id>(STR_TRACK_LIST_NAME_FORMAT);
             ft.Add<utf8*>(_trackDesigns[i].name);
-            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, screenCoords - ScreenCoordsXY{ 0, 1 });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
         }
 
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
@@ -760,7 +785,7 @@ static void track_list_load_designs(RideSelection item)
     std::string entryName;
     if (item.Type < 0x80)
     {
-        if (RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             entryName = get_ride_entry_name(item.EntryIndex);
         }

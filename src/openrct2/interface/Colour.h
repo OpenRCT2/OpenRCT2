@@ -17,7 +17,7 @@
 /**
  * Colour IDs as used by the colour dropdown, NOT palette indices.
  */
-enum
+enum : colour_t
 {
     COLOUR_BLACK,
     COLOUR_GREY,
@@ -52,7 +52,9 @@ enum
     COLOUR_BRIGHT_PINK,
     COLOUR_LIGHT_PINK,
 
-    COLOUR_COUNT
+    COLOUR_COUNT,
+
+    COLOUR_NULL = 255,
 };
 
 /**
@@ -211,7 +213,7 @@ void colours_init_maps();
 
 namespace Colour
 {
-    colour_t FromString(const std::string_view& s, colour_t defaultValue = COLOUR_BLACK);
+    colour_t FromString(std::string_view s, colour_t defaultValue = COLOUR_BLACK);
 }
 
 #ifndef NO_TTF

@@ -42,6 +42,12 @@ namespace Json
         return json;
     }
 
+    json_t ReadFromFile(const fs::path& path, size_t maxSize)
+    {
+        auto path8 = path.u8string();
+        return ReadFromFile(path8.c_str(), maxSize);
+    }
+
     void WriteToFile(const utf8* path, const json_t& jsonData, int indentSize)
     {
         // Serialise JSON
@@ -50,6 +56,12 @@ namespace Json
         // Write to file
         auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
         fs.Write(jsonOutput.data(), jsonOutput.size());
+    }
+
+    void WriteToFile(const fs::path& path, const json_t& jsonData, int indentSize)
+    {
+        auto path8 = path.u8string();
+        WriteToFile(path8.c_str(), jsonData, indentSize);
     }
 
     json_t FromString(std::string_view raw)

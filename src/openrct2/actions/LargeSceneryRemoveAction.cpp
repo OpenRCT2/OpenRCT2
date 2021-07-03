@@ -20,7 +20,9 @@
 #include "../ride/Ride.h"
 #include "../world/Park.h"
 #include "../world/SmallScenery.h"
-#include "../world/Sprite.h"
+#include "../world/TileElementsView.h"
+
+using namespace OpenRCT2;
 
 LargeSceneryRemoveAction::LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex)
     : _loc(location)
@@ -59,29 +61,31 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
     res->Expenditure = ExpenditureType::Landscaping;
     res->Cost = 0;
 
-    TileElement* tileElement = FindLargeSceneryElement();
+    TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
     {
         log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
+    auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+    // If we have a bugged scenery entry, do not touch the tile element.
+    if (sceneryEntry == nullptr)
+        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS);
 
-    auto rotatedOffsets = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
-                                               scenery_entry->large_scenery.tiles[_tileIndex].y_offset }
-                                         .Rotate(_loc.direction),
-                                     scenery_entry->large_scenery.tiles[_tileIndex].z_offset };
+    auto rotatedOffsets = CoordsXYZ{
+        CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
+        sceneryEntry->tiles[_tileIndex].z_offset
+    };
 
     auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedOffsets;
 
     bool calculate_cost = true;
-    for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
+    for (int32_t i = 0; sceneryEntry->tiles[i].x_offset != -1; i++)
     {
         auto currentTileRotatedOffset = CoordsXYZ{
-            CoordsXY{ scenery_entry->large_scenery.tiles[i].x_offset, scenery_entry->large_scenery.tiles[i].y_offset }.Rotate(
-                _loc.direction),
-            scenery_entry->large_scenery.tiles[i].z_offset
+            CoordsXY{ sceneryEntry->tiles[i].x_offset, sceneryEntry->tiles[i].y_offset }.Rotate(_loc.direction),
+            sceneryEntry->tiles[i].z_offset
         };
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
@@ -111,7 +115,7 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
     }
 
     if (calculate_cost)
-        res->Cost = scenery_entry->large_scenery.removal_price * 10;
+        res->Cost = sceneryEntry->removal_price * 10;
 
     return res;
 }
@@ -120,8 +124,6 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
 {
     GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
 
-    const uint32_t flags = GetFlags();
-
     int32_t z = tile_element_height(_loc);
     res->Position.x = _loc.x + 16;
     res->Position.y = _loc.y + 16;
@@ -129,30 +131,32 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
     res->Expenditure = ExpenditureType::Landscaping;
     res->Cost = 0;
 
-    TileElement* tileElement = FindLargeSceneryElement();
+    TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
     {
         log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    tile_element_remove_banner_entry(tileElement);
+    auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+    // If we have a bugged scenery entry, do not touch the tile element.
+    if (sceneryEntry == nullptr)
+        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS);
 
-    rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
+    tileElement->RemoveBannerEntry();
 
-    auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
-                                                 scenery_entry->large_scenery.tiles[_tileIndex].y_offset }
-                                           .Rotate(_loc.direction),
-                                       scenery_entry->large_scenery.tiles[_tileIndex].z_offset };
+    auto rotatedFirstTile = CoordsXYZ{
+        CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
+        sceneryEntry->tiles[_tileIndex].z_offset
+    };
 
     auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedFirstTile;
 
-    for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
+    for (int32_t i = 0; sceneryEntry->tiles[i].x_offset != -1; i++)
     {
         auto rotatedCurrentTile = CoordsXYZ{
-            CoordsXY{ scenery_entry->large_scenery.tiles[i].x_offset, scenery_entry->large_scenery.tiles[i].y_offset }.Rotate(
-                _loc.direction),
-            scenery_entry->large_scenery.tiles[i].z_offset
+            CoordsXY{ sceneryEntry->tiles[i].x_offset, sceneryEntry->tiles[i].y_offset }.Rotate(_loc.direction),
+            sceneryEntry->tiles[i].z_offset
         };
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
@@ -165,74 +169,43 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
             }
         }
 
-        TileElement* sceneryElement = map_get_first_element_at(currentTile);
-        bool element_found = false;
+        auto* sceneryElement = FindLargeSceneryElement(currentTile, i);
         if (sceneryElement != nullptr)
         {
-            do
-            {
-                if (sceneryElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
-                    continue;
-
-                if (sceneryElement->GetDirection() != _loc.direction)
-                    continue;
-
-                if (sceneryElement->AsLargeScenery()->GetSequenceIndex() != i)
-                    continue;
-
-                if (sceneryElement->GetBaseZ() != currentTile.z)
-                    continue;
-
-                // If we are removing ghost elements
-                if ((flags & GAME_COMMAND_FLAG_GHOST) && sceneryElement->IsGhost() == false)
-                    continue;
-
-                map_invalidate_tile_full(currentTile);
-                tile_element_remove(sceneryElement);
-
-                element_found = true;
-                break;
-            } while (!(sceneryElement++)->IsLastForTile());
+            map_invalidate_tile_full(currentTile);
+            tile_element_remove(sceneryElement);
         }
-
-        if (element_found == false)
+        else
         {
             log_error("Tile not found when trying to remove element!");
         }
     }
 
-    res->Cost = scenery_entry->large_scenery.removal_price * 10;
+    res->Cost = sceneryEntry->removal_price * 10;
 
     return res;
 }
 
-TileElement* LargeSceneryRemoveAction::FindLargeSceneryElement() const
+TileElement* LargeSceneryRemoveAction::FindLargeSceneryElement(const CoordsXYZ& pos, int32_t sequenceIndex) const
 {
-    TileElement* tileElement = map_get_first_element_at(_loc);
-    if (tileElement == nullptr)
-        return nullptr;
-
-    do
+    const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
+    for (auto* sceneryElement : TileElementsView<LargeSceneryElement>(pos))
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
-            continue;
-
-        if (tileElement->GetBaseZ() != _loc.z)
-            continue;
-
-        if (tileElement->AsLargeScenery()->GetSequenceIndex() != _tileIndex)
-            continue;
-
-        if (tileElement->GetDirection() != _loc.direction)
-            continue;
-
         // If we are removing ghost elements
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && tileElement->IsGhost() == false)
+        if (isGhost && sceneryElement->IsGhost() == false)
             continue;
 
-        return tileElement;
+        if (sceneryElement->GetDirection() != _loc.direction)
+            continue;
 
-    } while (!(tileElement++)->IsLastForTile());
+        if (sceneryElement->GetSequenceIndex() != sequenceIndex)
+            continue;
+
+        if (sceneryElement->GetBaseZ() != pos.z)
+            continue;
+
+        return sceneryElement->as<TileElement>();
+    }
 
     return nullptr;
 }

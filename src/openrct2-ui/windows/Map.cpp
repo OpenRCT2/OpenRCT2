@@ -26,6 +26,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/ride/TrainManager.h>
+#include <openrct2/ride/Vehicle.h>
+#include <openrct2/world/EntityList.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
@@ -33,15 +36,30 @@
 #include <openrct2/world/Surface.h>
 #include <vector>
 
-#define MAP_COLOUR_2(colourA, colourB) (((colourA) << 8) | (colourB))
-#define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
-#define MAP_COLOUR_UNOWNED(colour) (PALETTE_INDEX_10 | ((colour)&0xFF00))
+static constexpr uint16_t MapColour2(uint8_t colourA, uint8_t colourB)
+{
+    return (colourA << 8) | colourB;
+}
+static constexpr uint16_t MapColour(uint8_t colour)
+{
+    return MapColour2(colour, colour);
+}
+static constexpr uint16_t MapColourUnowned(uint16_t colour)
+{
+    return MapColour2((colour & 0xFF00) >> 8, PALETTE_INDEX_10);
+}
 
 constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_MAP_LABEL;
 static constexpr const int32_t WH = 259;
 static constexpr const int32_t WW = 245;
+
+constexpr uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
+constexpr uint8_t GuestMapColour = PALETTE_INDEX_172;
+constexpr uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
+constexpr uint8_t StaffMapColour = PALETTE_INDEX_138;
+constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
 
 // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
@@ -113,14 +131,14 @@ static constexpr const ScreenCoordsXY MiniMapOffsets[] = {
 
 /** rct2: 0x00981BCC */
 static constexpr const uint16_t RideKeyColours[] = {
-    MAP_COLOUR(PALETTE_INDEX_61),   // COLOUR_KEY_RIDE
-    MAP_COLOUR(PALETTE_INDEX_42),   // COLOUR_KEY_FOOD
-    MAP_COLOUR(PALETTE_INDEX_20),   // COLOUR_KEY_DRINK
-    MAP_COLOUR(PALETTE_INDEX_209),  // COLOUR_KEY_SOUVENIR
-    MAP_COLOUR(PALETTE_INDEX_136),  // COLOUR_KEY_KIOSK
-    MAP_COLOUR(PALETTE_INDEX_102),  // COLOUR_KEY_FIRST_AID
-    MAP_COLOUR(PALETTE_INDEX_55),   // COLOUR_KEY_CASH_MACHINE
-    MAP_COLOUR(PALETTE_INDEX_161),  // COLOUR_KEY_TOILETS
+    MapColour(PALETTE_INDEX_61),   // COLOUR_KEY_RIDE
+    MapColour(PALETTE_INDEX_42),   // COLOUR_KEY_FOOD
+    MapColour(PALETTE_INDEX_20),   // COLOUR_KEY_DRINK
+    MapColour(PALETTE_INDEX_209),  // COLOUR_KEY_SOUVENIR
+    MapColour(PALETTE_INDEX_136),  // COLOUR_KEY_KIOSK
+    MapColour(PALETTE_INDEX_102),  // COLOUR_KEY_FIRST_AID
+    MapColour(PALETTE_INDEX_55),   // COLOUR_KEY_CASH_MACHINE
+    MapColour(PALETTE_INDEX_161),  // COLOUR_KEY_TOILETS
 };
 
 static void window_map_close(rct_window *w);
@@ -287,7 +305,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_SET_LAND_RIGHTS:
             w->Invalidate();
-            if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
+            if (tool_set(w, widgetIndex, Tool::UpArrow))
                 break;
             _activeTool = 2;
             // Prevent mountain tool size.
@@ -330,7 +348,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
             w->Invalidate();
-            if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
+            if (tool_set(w, widgetIndex, Tool::UpArrow))
                 break;
 
             gParkEntranceGhostExists = false;
@@ -344,7 +362,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
-            if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
+            if (tool_set(w, widgetIndex, Tool::UpArrow))
                 break;
 
             show_gridlines();
@@ -803,8 +821,9 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw land tool size
     if (WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &_landRightsToolSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &_landRightsToolSize,
+            { TextAlignment::CENTRE });
     }
     screenCoords.y = w->windowPos.y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
@@ -814,9 +833,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
                               w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-        gfx_draw_sprite(
-            dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
-            screenCoords, 0);
+        gfx_draw_sprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -835,7 +852,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 gfx_fill_rect(
                     dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } }, RideKeyColours[i]);
-                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 });
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, mapLabels[i], w);
                 screenCoords.y += LIST_ROW_HEIGHT;
                 if (i == 3)
                 {
@@ -846,9 +863,9 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     else if (!WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS))
     {
-        gfx_draw_string_left(
-            dpi, STR_MAP_SIZE, nullptr, w->colours[1],
-            w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 });
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 }, STR_MAP_SIZE, {},
+            { w->colours[1] });
     }
 }
 
@@ -868,7 +885,7 @@ static void window_map_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     g1temp.y_offset = -8;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
-    gfx_draw_sprite(dpi, SPR_TEMP, { 0, 0 }, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TEMP), { 0, 0 });
 
     if (w->selected_tab == PAGE_PEEPS)
     {
@@ -989,7 +1006,8 @@ static void window_map_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
         image += w->list_information_type / 4;
 
     gfx_draw_sprite(
-        dpi, image, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_TAB].left, w->widgets[WIDX_PEOPLE_TAB].top }, 0);
+        dpi, ImageId(image),
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_TAB].left, w->widgets[WIDX_PEOPLE_TAB].top });
 
     // Ride/stall tab image (animated)
     image = SPR_TAB_RIDE_0;
@@ -997,7 +1015,7 @@ static void window_map_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
         image += w->list_information_type / 4;
 
     gfx_draw_sprite(
-        dpi, image, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_RIDES_TAB].left, w->widgets[WIDX_RIDES_TAB].top }, 0);
+        dpi, ImageId(image), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_RIDES_TAB].left, w->widgets[WIDX_RIDES_TAB].top });
 }
 
 /**
@@ -1031,47 +1049,67 @@ static MapCoordsXY window_map_transform_to_map_coords(CoordsXY c)
     return { -x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8, x + y - 8 };
 }
 
+static void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, rct_drawpixelinfo* dpi)
+{
+    if (peep->x == LOCATION_NULL)
+        return;
+
+    MapCoordsXY c = window_map_transform_to_map_coords({ peep->x, peep->y });
+    auto leftTop = ScreenCoordsXY{ c.x, c.y };
+    auto rightBottom = leftTop;
+    uint8_t colour = DefaultPeepMapColour;
+    if (sprite_get_flashing(peep))
+    {
+        colour = flashColour;
+        // If flashing then map peep pixel size is increased (by moving left top downwards)
+        if (flashColour != DefaultPeepMapColour)
+        {
+            leftTop.x--;
+        }
+    }
+
+    gfx_fill_rect(dpi, { leftTop, rightBottom }, colour);
+}
+
+static uint8_t MapGetGuestFlashColour()
+{
+    uint8_t colour = DefaultPeepMapColour;
+    if ((gWindowMapFlashingFlags & MapFlashingFlags::FlashGuests) != 0)
+    {
+        colour = GuestMapColour;
+        if ((gWindowMapFlashingFlags & MapFlashingFlags::SwitchColour) == 0)
+            colour = GuestMapColourAlternate;
+    }
+    return colour;
+}
+
+static uint8_t MapGetStaffFlashColour()
+{
+    uint8_t colour = DefaultPeepMapColour;
+    if ((gWindowMapFlashingFlags & MapFlashingFlags::FlashStaff) != 0)
+    {
+        colour = StaffMapColour;
+        if ((gWindowMapFlashingFlags & MapFlashingFlags::SwitchColour) == 0)
+            colour = StaffMapColourAlternate;
+    }
+    return colour;
+}
+
 /**
  *
  *  rct2: 0x0068DADA
  */
 static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 {
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
+    auto flashColour = MapGetGuestFlashColour();
+    for (auto guest : EntityList<Guest>())
     {
-        if (peep->x == LOCATION_NULL)
-            continue;
-
-        MapCoordsXY c = window_map_transform_to_map_coords({ peep->x, peep->y });
-        auto leftTop = ScreenCoordsXY{ c.x, c.y };
-        auto rightBottom = leftTop;
-
-        int16_t colour = PALETTE_INDEX_20;
-
-        if (sprite_get_flashing(peep))
-        {
-            if (peep->AssignedPeepType == PeepType::Staff)
-            {
-                if ((gWindowMapFlashingFlags & (1 << 3)) != 0)
-                {
-                    colour = PALETTE_INDEX_138;
-                    leftTop.x--;
-                    if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
-                        colour = PALETTE_INDEX_10;
-                }
-            }
-            else
-            {
-                if ((gWindowMapFlashingFlags & (1 << 1)) != 0)
-                {
-                    colour = PALETTE_INDEX_172;
-                    leftTop.x--;
-                    if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
-                        colour = PALETTE_INDEX_21;
-                }
-            }
-        }
-        gfx_fill_rect(dpi, { leftTop, rightBottom }, colour);
+        DrawMapPeepPixel(guest, flashColour, dpi);
+    }
+    flashColour = MapGetStaffFlashColour();
+    for (auto staff : EntityList<Staff>())
+    {
+        DrawMapPeepPixel(staff, flashColour, dpi);
     }
 }
 
@@ -1081,7 +1119,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
  */
 static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
 {
-    for (auto train : EntityList<Vehicle>(EntityListId::TrainHead))
+    for (auto train : TrainManager::View())
     {
         for (Vehicle* vehicle = train; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
@@ -1290,7 +1328,7 @@ static void window_map_place_park_entrance_tool_down(const ScreenCoordsXY& scree
     CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
     if (!parkEntrancePosition.isNull())
     {
-        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition);
+        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
         auto result = GameActions::Execute(&gameAction);
         if (result->Error == GameActions::Status::Ok)
         {
@@ -1336,9 +1374,6 @@ static void map_window_increase_map_size()
     }
 
     gMapSize++;
-    gMapSizeUnits = (gMapSize - 1) * 32;
-    gMapSizeMinus2 = (gMapSize * 32) + MAXIMUM_MAP_SIZE_PRACTICAL;
-    gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
     map_extend_boundary_surface();
     window_map_init_map();
     window_map_centre_on_view_point();
@@ -1358,31 +1393,28 @@ static void map_window_decrease_map_size()
     }
 
     gMapSize--;
-    gMapSizeUnits = (gMapSize - 1) * 32;
-    gMapSizeMinus2 = (gMapSize * 32) + MAXIMUM_MAP_SIZE_PRACTICAL;
-    gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
     map_remove_out_of_range_elements();
     window_map_init_map();
     window_map_centre_on_view_point();
     gfx_invalidate_screen();
 }
 
-static constexpr const uint16_t WaterColour = MAP_COLOUR(PALETTE_INDEX_195);
+static constexpr const uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
 static constexpr const uint16_t TerrainColour[] = {
-    MAP_COLOUR(PALETTE_INDEX_73),                      // TERRAIN_GRASS
-    MAP_COLOUR(PALETTE_INDEX_40),                      // TERRAIN_SAND
-    MAP_COLOUR(PALETTE_INDEX_108),                     // TERRAIN_DIRT
-    MAP_COLOUR(PALETTE_INDEX_12),                      // TERRAIN_ROCK
-    MAP_COLOUR(PALETTE_INDEX_62),                      // TERRAIN_MARTIAN
-    MAP_COLOUR_2(PALETTE_INDEX_10, PALETTE_INDEX_16),  // TERRAIN_CHECKERBOARD
-    MAP_COLOUR_2(PALETTE_INDEX_73, PALETTE_INDEX_108), // TERRAIN_GRASS_CLUMPS
-    MAP_COLOUR(PALETTE_INDEX_141),                     // TERRAIN_ICE
-    MAP_COLOUR_2(PALETTE_INDEX_172, PALETTE_INDEX_10), // TERRAIN_GRID_RED
-    MAP_COLOUR_2(PALETTE_INDEX_54, PALETTE_INDEX_10),  // TERRAIN_GRID_YELLOW
-    MAP_COLOUR_2(PALETTE_INDEX_162, PALETTE_INDEX_10), // TERRAIN_GRID_BLUE
-    MAP_COLOUR_2(PALETTE_INDEX_102, PALETTE_INDEX_10), // TERRAIN_GRID_GREEN
-    MAP_COLOUR(PALETTE_INDEX_111),                     // TERRAIN_SAND_DARK
-    MAP_COLOUR(PALETTE_INDEX_222),                     // TERRAIN_SAND_LIGHT
+    MapColour(PALETTE_INDEX_73),                     // TERRAIN_GRASS
+    MapColour(PALETTE_INDEX_40),                     // TERRAIN_SAND
+    MapColour(PALETTE_INDEX_108),                    // TERRAIN_DIRT
+    MapColour(PALETTE_INDEX_12),                     // TERRAIN_ROCK
+    MapColour(PALETTE_INDEX_62),                     // TERRAIN_MARTIAN
+    MapColour2(PALETTE_INDEX_10, PALETTE_INDEX_16),  // TERRAIN_CHECKERBOARD
+    MapColour2(PALETTE_INDEX_73, PALETTE_INDEX_108), // TERRAIN_GRASS_CLUMPS
+    MapColour(PALETTE_INDEX_141),                    // TERRAIN_ICE
+    MapColour2(PALETTE_INDEX_172, PALETTE_INDEX_10), // TERRAIN_GRID_RED
+    MapColour2(PALETTE_INDEX_54, PALETTE_INDEX_10),  // TERRAIN_GRID_YELLOW
+    MapColour2(PALETTE_INDEX_162, PALETTE_INDEX_10), // TERRAIN_GRID_BLUE
+    MapColour2(PALETTE_INDEX_102, PALETTE_INDEX_10), // TERRAIN_GRID_GREEN
+    MapColour(PALETTE_INDEX_111),                    // TERRAIN_SAND_DARK
+    MapColour(PALETTE_INDEX_222),                    // TERRAIN_SAND_LIGHT
 };
 
 static constexpr const uint16_t ElementTypeMaskColour[] = {
@@ -1394,19 +1426,17 @@ static constexpr const uint16_t ElementTypeMaskColour[] = {
     0xFFFF, // TILE_ELEMENT_TYPE_WALL
     0x0000, // TILE_ELEMENT_TYPE_LARGE_SCENERY
     0xFFFF, // TILE_ELEMENT_TYPE_BANNER
-    0x0000, // TILE_ELEMENT_TYPE_CORRUPT
 };
 
 static constexpr const uint16_t ElementTypeAddColour[] = {
-    MAP_COLOUR(PALETTE_INDEX_0),                      // TILE_ELEMENT_TYPE_SURFACE
-    MAP_COLOUR(PALETTE_INDEX_17),                     // TILE_ELEMENT_TYPE_PATH
-    MAP_COLOUR_2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
-    MAP_COLOUR_2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
-    MAP_COLOUR(PALETTE_INDEX_186),                    // TILE_ELEMENT_TYPE_ENTRANCE
-    MAP_COLOUR(PALETTE_INDEX_0),                      // TILE_ELEMENT_TYPE_WALL
-    MAP_COLOUR(PALETTE_INDEX_99),                     // TILE_ELEMENT_TYPE_LARGE_SCENERY
-    MAP_COLOUR(PALETTE_INDEX_0),                      // TILE_ELEMENT_TYPE_BANNER
-    MAP_COLOUR(PALETTE_INDEX_68),                     // TILE_ELEMENT_TYPE_CORRUPT
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_SURFACE
+    MapColour(PALETTE_INDEX_17),                    // TILE_ELEMENT_TYPE_PATH
+    MapColour2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
+    MapColour2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
+    MapColour(PALETTE_INDEX_186),                   // TILE_ELEMENT_TYPE_ENTRANCE
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_WALL
+    MapColour(PALETTE_INDEX_99),                    // TILE_ELEMENT_TYPE_LARGE_SCENERY
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_BANNER
 };
 
 static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
@@ -1419,7 +1449,7 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
         colour = WaterColour;
 
     if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
-        colour = MAP_COLOUR_UNOWNED(colour);
+        colour = MapColourUnowned(colour);
 
     const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(ElementTypeAddColour));
     auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -1427,14 +1457,14 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
     {
         if (tileElement->IsGhost())
         {
-            colour = MAP_COLOUR(PALETTE_INDEX_21);
+            colour = MapColour(PALETTE_INDEX_21);
             break;
         }
 
         int32_t tileElementType = tileElement->GetType() >> 2;
         if (tileElementType >= maxSupportedTileElementType)
         {
-            tileElementType = TILE_ELEMENT_TYPE_CORRUPT >> 2;
+            tileElementType = TILE_ELEMENT_TYPE_SURFACE >> 2;
         }
         colour &= ElementTypeMaskColour[tileElementType];
         colour |= ElementTypeAddColour[tileElementType];
@@ -1446,8 +1476,8 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
 static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
 {
     Ride* ride;
-    uint16_t colourA = 0;                            // highlight colour
-    uint16_t colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
+    uint16_t colourA = 0;                           // highlight colour
+    uint16_t colourB = MapColour(PALETTE_INDEX_13); // surface colour (dark grey)
 
     // as an improvement we could use first_element to show underground stuff?
     TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
@@ -1458,7 +1488,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
 
         if (tileElement->IsGhost())
         {
-            colourA = MAP_COLOUR(PALETTE_INDEX_21);
+            colourA = MapColour(PALETTE_INDEX_21);
             break;
         }
 
@@ -1467,12 +1497,12 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
             case TILE_ELEMENT_TYPE_SURFACE:
                 if (tileElement->AsSurface()->GetWaterHeight() > 0)
                     // Why is this a different water colour as above (195)?
-                    colourB = MAP_COLOUR(PALETTE_INDEX_194);
+                    colourB = MapColour(PALETTE_INDEX_194);
                 if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
-                    colourB = MAP_COLOUR_UNOWNED(colourB);
+                    colourB = MapColourUnowned(colourB);
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                colourA = MAP_COLOUR(PALETTE_INDEX_14); // lighter grey
+                colourA = MapColour(PALETTE_INDEX_14); // lighter grey
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -1480,7 +1510,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
                 ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
                 if (ride != nullptr)
                 {
-                    const auto& colourKey = RideTypeDescriptors[ride->type].ColourKey;
+                    const auto& colourKey = ride->GetRideTypeDescriptor().ColourKey;
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
                 break;
@@ -1488,7 +1518,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                 if (ride != nullptr)
                 {
-                    const auto& colourKey = RideTypeDescriptors[ride->type].ColourKey;
+                    const auto& colourKey = ride->GetRideTypeDescriptor().ColourKey;
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
 
@@ -1540,7 +1570,7 @@ static void map_window_set_pixels(rct_window* w)
 
     for (int32_t i = 0; i < MAXIMUM_MAP_SIZE_TECHNICAL; i++)
     {
-        if (x > 0 && y > 0 && x < gMapSizeUnits && y < gMapSizeUnits)
+        if (x > 0 && y > 0 && x < GetMapSizeUnits() && y < GetMapSizeUnits())
         {
             switch (w->selected_tab)
             {

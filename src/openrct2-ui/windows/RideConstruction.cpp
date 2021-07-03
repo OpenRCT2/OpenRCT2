@@ -269,7 +269,7 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     0,                                      // 97
     0,                                      // 98
     STR_BRAKES,                             // 99
-    STR_SPINNING_CONTROL_TOGGLE_TRACK,      // 100
+    STR_BOOSTER,                            // 100
     0,                                      // 101
     STR_HELIX_UP_LARGE,                     // 102
     STR_HELIX_UP_LARGE,                     // 103
@@ -424,7 +424,8 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     0,                                      // 252
     STR_QUARTER_LOOP,                       // 253
     STR_QUARTER_LOOP,                       // 254
-    STR_QUARTER_LOOP                        // 255
+    STR_QUARTER_LOOP,                       // 255
+    STR_SPINNING_CONTROL_TOGGLE_TRACK,      // 256
 };
 // clang-format on
 
@@ -440,7 +441,6 @@ static money32 _trackPlaceCost;
 static bool _autoOpeningShop;
 static bool _autoRotatingShop;
 static uint8_t _currentlyShowingBrakeOrBoosterSpeed;
-static bool _boosterTrackSelected;
 
 static uint32_t _currentDisabledSpecialTrackPieces;
 
@@ -467,7 +467,7 @@ static void loc_6C7502(int32_t al);
 static void ride_construction_set_brakes_speed(int32_t brakesSpeed);
 static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& screenCoords);
 
-static uint8_t _currentPossibleRideConfigurations[32];
+static track_type_t _currentPossibleRideConfigurations[32];
 
 static constexpr const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
@@ -487,7 +487,7 @@ static bool is_track_enabled(int32_t trackFlagIndex)
 
 static int32_t ride_get_alternative_type(Ride* ride)
 {
-    return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideTypeDescriptors[ride->type].AlternateType
+    return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride->GetRideTypeDescriptor().AlternateType
                                                                          : ride->type;
 }
 
@@ -549,13 +549,13 @@ rct_window* window_ride_construction_open()
     _currentBrakeSpeed2 = 8;
     _currentSeatRotationAngle = 4;
 
-    _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | RideConstructionSpecialPieceSelected;
+    _currentTrackCurve = ride->GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
     _currentTrackSlopeEnd = 0;
     _currentTrackBankEnd = 0;
     _currentTrackLiftHill = 0;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
-    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED)
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
         _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
     _previousTrackBankEnd = 0;
@@ -610,7 +610,7 @@ static void window_ride_construction_close(rct_window* w)
             if (!_autoOpeningShop)
             {
                 _autoOpeningShop = true;
-                ride_set_status(ride, RIDE_STATUS_OPEN);
+                ride_set_status(ride, RideStatus::Open);
                 _autoOpeningShop = false;
             }
         }
@@ -650,7 +650,7 @@ static void window_ride_construction_mouseup(rct_window* w, rct_widgetindex widg
         case WIDX_CONSTRUCT:
             window_ride_construction_construct(w);
             // Force any footpath construction to recheck the area.
-            gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_2;
+            gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
             break;
         case WIDX_DEMOLISH:
             window_ride_construction_mouseup_demolish(w);
@@ -669,7 +669,7 @@ static void window_ride_construction_mouseup(rct_window* w, rct_widgetindex widg
             auto ride = get_ride(_currentRideIndex);
             if (ride != nullptr)
             {
-                auto status = ride->status == RIDE_STATUS_SIMULATING ? RIDE_STATUS_CLOSED : RIDE_STATUS_SIMULATING;
+                auto status = ride->status == RideStatus::Simulating ? RideStatus::Closed : RideStatus::Simulating;
                 ride_set_status(ride, status);
             }
             break;
@@ -759,7 +759,7 @@ static void window_ride_construction_resize(rct_window* w)
     }
     if (!is_track_enabled(TRACK_SLOPE) && !is_track_enabled(TRACK_SLOPE_STEEP))
     {
-        if (!RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+        if (!ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
         {
             // Disable all slopes
             disabledWidgets |= (1ULL << WIDX_SLOPE_GROUPBOX) | (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN)
@@ -1096,7 +1096,7 @@ static void window_ride_construction_resize(rct_window* w)
             disabledWidgets |= (1ULL << WIDX_SLOPE_UP_STEEP);
         }
         disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_LARGE) | (1ULL << WIDX_RIGHT_CURVE_LARGE);
-        if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+        if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
         {
             disabledWidgets |= (1ULL << WIDX_STRAIGHT) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
                 | (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE);
@@ -1109,7 +1109,7 @@ static void window_ride_construction_resize(rct_window* w)
             disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP);
         }
         disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_LARGE) | (1ULL << WIDX_RIGHT_CURVE_LARGE);
-        if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+        if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
         {
             disabledWidgets |= (1ULL << WIDX_STRAIGHT) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
                 | (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE);
@@ -1188,7 +1188,7 @@ static void window_ride_construction_resize(rct_window* w)
             disabledWidgets |= (1ULL << WIDX_CONSTRUCT);
         }
     }
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
     {
         disabledWidgets &= ~(1ULL << WIDX_BANKING_GROUPBOX);
     }
@@ -1420,7 +1420,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             {
                 _currentTrackBankEnd = TRACK_BANK_NONE;
             }
-            if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+            if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
             {
                 if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT && _currentTrackCurve == TRACK_CURVE_NONE)
                 {
@@ -1644,7 +1644,7 @@ static void window_ride_construction_dropdown(rct_window* w, rct_widgetindex wid
 
     ride_construction_invalidate_current_track();
     _currentTrackPrice = MONEY32_UNDEFINED;
-    int32_t trackPiece = _currentPossibleRideConfigurations[dropdownIndex];
+    track_type_t trackPiece = _currentPossibleRideConfigurations[dropdownIndex];
     switch (trackPiece)
     {
         case TrackElemType::EndStation:
@@ -1852,7 +1852,7 @@ static void window_ride_construction_construct(rct_window* w)
  */
 static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
-    int32_t direction, type;
+    int32_t direction;
     TileElement* tileElement;
     CoordsXYE inputElement, outputElement;
     track_begin_end trackBeginEnd;
@@ -1884,7 +1884,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 
     // Invalidate the selected track element or make sure it's at origin???
     direction = _currentTrackPieceDirection;
-    type = _currentTrackPieceType;
+    track_type_t type = _currentTrackPieceType;
     auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
     if (newCoords == std::nullopt)
     {
@@ -1923,8 +1923,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
             return;
         }
 
-        const rct_preview_track* trackBlock = get_track_def_from_ride_index(
-            _currentRideIndex, tileElement->AsTrack()->GetTrackType());
+        const rct_preview_track* trackBlock = TrackBlocks[tileElement->AsTrack()->GetTrackType()];
         newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
         gGotoStartPlacementMode = true;
     }
@@ -1971,7 +1970,7 @@ static void window_ride_construction_rotate(rct_window* w)
  */
 static void window_ride_construction_entrance_click(rct_window* w)
 {
-    if (tool_set(w, WIDX_ENTRANCE, TOOL_CROSSHAIR))
+    if (tool_set(w, WIDX_ENTRANCE, Tool::Crosshair))
     {
         auto ride = get_ride(_currentRideIndex);
         if (ride != nullptr && !ride_try_get_origin_element(ride, nullptr))
@@ -1982,7 +1981,7 @@ static void window_ride_construction_entrance_click(rct_window* w)
     else
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
-        gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
+        gRideEntranceExitPlaceRideIndex = static_cast<ride_id_t>(w->number);
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();
@@ -2001,7 +2000,7 @@ static void window_ride_construction_entrance_click(rct_window* w)
  */
 static void window_ride_construction_exit_click(rct_window* w)
 {
-    if (tool_set(w, WIDX_EXIT, TOOL_CROSSHAIR))
+    if (tool_set(w, WIDX_EXIT, Tool::Crosshair))
     {
         auto ride = get_ride(_currentRideIndex);
         if (!ride_try_get_origin_element(ride, nullptr))
@@ -2037,7 +2036,7 @@ static void window_ride_construction_update(rct_window* w)
 
     // Close construction window if ride is not closed,
     // editing ride while open will cause many issues until properly handled
-    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
         window_close(w);
         return;
@@ -2099,7 +2098,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
         {
             auto info = get_map_coordinates_from_pos(screenCoords, 0xFCCA);
-            if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_NONE)
+            if (info.SpriteType != ViewportInteractionItem::None)
             {
                 _trackPlaceCtrlZ = info.Element->GetBaseZ();
                 _trackPlaceCtrlState = true;
@@ -2249,12 +2248,6 @@ static void window_ride_construction_invalidate(rct_window* w)
         {
             stringId = STR_LOG_BUMPS;
         }
-        else if (
-            stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE
-            && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
-        {
-            stringId = STR_BOOSTER;
-        }
     }
     auto ft = Formatter::Common();
     ft.Add<uint16_t>(stringId);
@@ -2262,7 +2255,8 @@ static void window_ride_construction_invalidate(rct_window* w)
     if (_currentlyShowingBrakeOrBoosterSpeed)
     {
         uint16_t brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
-        if (_boosterTrackSelected)
+        if (_selectedTrackType == TrackElemType::Booster
+            || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster))
         {
             brakeSpeed2 = get_booster_speed(ride->type, brakeSpeed2);
         }
@@ -2275,10 +2269,10 @@ static void window_ride_construction_invalidate(rct_window* w)
     // Simulate button
     auto& simulateWidget = w->widgets[WIDX_SIMULATE];
     simulateWidget.type = WindowWidgetType::Empty;
-    if (ride->SupportsStatus(RIDE_STATUS_SIMULATING))
+    if (ride->SupportsStatus(RideStatus::Simulating))
     {
         simulateWidget.type = WindowWidgetType::FlatBtn;
-        if (ride->status == RIDE_STATUS_SIMULATING)
+        if (ride->status == RideStatus::Simulating)
         {
             w->pressed_widgets |= (1ULL << WIDX_SIMULATE);
         }
@@ -2329,12 +2323,13 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     // Draw cost
     screenCoords = { w->windowPos.x + widget->midX(), w->windowPos.y + widget->bottom - 23 };
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
-        gfx_draw_string_centred(dpi, STR_BUILD_THIS, screenCoords, COLOUR_BLACK, w);
+        DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, w, { TextAlignment::CENTRE });
 
     screenCoords.y += 11;
     if (_currentTrackPrice != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        gfx_draw_string_centred(dpi, STR_COST_LABEL, screenCoords, COLOUR_BLACK, static_cast<void*>(&_currentTrackPrice));
+        money64 value = _currentTrackPrice;
+        DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, &value, { TextAlignment::CENTRE });
     }
 }
 
@@ -2346,7 +2341,7 @@ static void window_ride_construction_draw_track_piece(
     if (ride == nullptr)
         return;
 
-    auto trackBlock = get_track_def_from_ride(ride, trackType);
+    auto trackBlock = TrackBlocks[trackType];
     while ((trackBlock + 1)->index != 0xFF)
         trackBlock++;
 
@@ -2363,9 +2358,7 @@ static void window_ride_construction_draw_track_piece(
     mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
     mapCoords.z = 1024 + mapCoords.z;
 
-    int16_t previewZOffset = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)
-        ? FlatRideTrackDefinitions[trackType].preview_z_offset
-        : TrackDefinitions[trackType].preview_z_offset;
+    int16_t previewZOffset = TrackDefinitions[trackType].preview_z_offset;
     mapCoords.z -= previewZOffset;
 
     const ScreenCoordsXY rotatedScreenCoords = translate_3d_to_2d_with_z(get_current_rotation(), mapCoords);
@@ -2398,17 +2391,11 @@ static void sub_6CBCE2(
     if (ride == nullptr)
         return;
 
-    int16_t preserveMapSizeUnits = gMapSizeUnits;
-    int16_t preserveMapSizeMinus2 = gMapSizeMinus2;
-    int16_t preserveMapSize = gMapSize;
-    int16_t preserveMapSizeMaxXY = gMapSizeMaxXY;
+    int32_t preserveMapSize = gMapSize;
 
-    gMapSizeUnits = MAXIMUM_TILE_START_XY;
-    gMapSizeMinus2 = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32) + 286;
     gMapSize = MAXIMUM_MAP_SIZE_TECHNICAL;
-    gMapSizeMaxXY = MAXIMUM_MAP_SIZE_BIG - 1;
 
-    auto trackBlock = get_track_def_from_ride(ride, trackType);
+    auto trackBlock = TrackBlocks[trackType];
     while (trackBlock->index != 255)
     {
         auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
@@ -2416,7 +2403,7 @@ static void sub_6CBCE2(
         CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
         int32_t baseZ = originZ + trackBlock->z;
-        int32_t clearanceZ = trackBlock->var_07 + RideTypeDescriptors[ride->type].Heights.ClearanceHeight + baseZ
+        int32_t clearanceZ = trackBlock->var_07 + ride->GetRideTypeDescriptor().Heights.ClearanceHeight + baseZ
             + (4 * COORDS_Z_STEP);
 
         auto centreTileCoords = TileCoordsXY{ coords };
@@ -2466,10 +2453,7 @@ static void sub_6CBCE2(
         trackBlock++;
     }
 
-    gMapSizeUnits = preserveMapSizeUnits;
-    gMapSizeMinus2 = preserveMapSizeMinus2;
     gMapSize = preserveMapSize;
-    gMapSizeMaxXY = preserveMapSizeMaxXY;
 
     PaintSessionArrange(session);
     PaintDrawStructs(session);
@@ -2492,7 +2476,7 @@ void window_ride_construction_update_active_elements_impl()
 
     window_ride_construction_update_map_selection();
 
-    _selectedTrackType = 255;
+    _selectedTrackType = TrackElemType::None;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
     {
         if (sub_6C683D(
@@ -2526,7 +2510,7 @@ void window_ride_construction_update_enabled_track_pieces()
         return;
 
     int32_t rideType = ride_get_alternative_type(ride);
-    _enabledRidePieces = RideTypeDescriptors[rideType].GetAvailableTrackPieces();
+    _enabledRidePieces = GetRideTypeDescriptor(rideType).GetAvailableTrackPieces();
 }
 
 /**
@@ -2709,9 +2693,7 @@ static void window_ride_construction_update_possible_ride_configurations()
     _numCurrentPossibleSpecialTrackPieces = 0;
     for (trackType = 0; trackType < TrackElemType::Count; trackType++)
     {
-        int32_t trackTypeCategory = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)
-            ? FlatRideTrackDefinitions[trackType].type
-            : TrackDefinitions[trackType].type;
+        int32_t trackTypeCategory = TrackDefinitions[trackType].type;
 
         if (trackTypeCategory == TRACK_NONE)
             continue;
@@ -2724,36 +2706,20 @@ static void window_ride_construction_update_possible_ride_configurations()
         int32_t slope, bank;
         if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT || _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE)
         {
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-            {
-                slope = FlatRideTrackDefinitions[trackType].vangle_start;
-                bank = FlatRideTrackDefinitions[trackType].bank_start;
-            }
-            else
-            {
-                slope = TrackDefinitions[trackType].vangle_start;
-                bank = TrackDefinitions[trackType].bank_start;
-            }
+            slope = TrackDefinitions[trackType].vangle_start;
+            bank = TrackDefinitions[trackType].bank_start;
         }
         else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
         {
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-            {
-                slope = FlatRideTrackDefinitions[trackType].vangle_end;
-                bank = FlatRideTrackDefinitions[trackType].bank_end;
-            }
-            else
-            {
-                slope = TrackDefinitions[trackType].vangle_end;
-                bank = TrackDefinitions[trackType].bank_end;
-            }
+            slope = TrackDefinitions[trackType].vangle_end;
+            bank = TrackDefinitions[trackType].bank_end;
         }
         else
         {
             continue;
         }
 
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             if (TrackDefinitions[trackType].type == TRACK_HELIX_SMALL || TrackDefinitions[trackType].type == TRACK_HELIX_LARGE)
             {
@@ -2775,7 +2741,7 @@ static void window_ride_construction_update_possible_ride_configurations()
         _currentDisabledSpecialTrackPieces |= (1 << currentPossibleRideConfigurationIndex);
         if (_currentTrackPieceDirection < 4 && slope == _previousTrackSlopeEnd && bank == _previousTrackBankEnd
             && (trackType != TrackElemType::TowerBase
-                || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
+                || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
         {
             _currentDisabledSpecialTrackPieces &= ~(1 << currentPossibleRideConfigurationIndex);
             _numCurrentPossibleSpecialTrackPieces++;
@@ -2798,7 +2764,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     int32_t rideType = ride_get_alternative_type(ride);
 
     w->hold_down_widgets = 0;
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_IS_SHOP) || !_stationConstructed)
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP) || !_stationConstructed)
     {
         window_ride_construction_widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
         window_ride_construction_widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
@@ -2829,7 +2795,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
         window_ride_construction_widgets[WIDX_STRAIGHT].type = WindowWidgetType::Empty;
     }
 
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_LARGE_CURVES))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_LARGE_CURVES))
     {
         window_ride_construction_widgets[WIDX_LEFT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
         window_ride_construction_widgets[WIDX_RIGHT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
@@ -2894,7 +2860,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
     window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP;
     window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
-    if (RideTypeDescriptors[rideType].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+    if (GetRideTypeDescriptor(rideType).SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
     {
         window_ride_construction_widgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
         window_ride_construction_widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
@@ -2929,7 +2895,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
 
     int32_t x;
     if ((is_track_enabled(TRACK_LIFT_HILL) && (_currentTrackCurve & RideConstructionSpecialPieceSelected) == 0)
-        || (gCheatsEnableChainLiftOnAllTrack && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)))
+        || (gCheatsEnableChainLiftOnAllTrack && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK)))
     {
         window_ride_construction_widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
         x = 9;
@@ -3062,11 +3028,10 @@ static void window_ride_construction_update_widgets(rct_window* w)
 
     bool brakesSelected = _selectedTrackType == TrackElemType::Brakes
         || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Brakes);
-    _boosterTrackSelected = TrackTypeIsBooster(ride->type, _selectedTrackType)
-        || (ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE
-            && _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster));
+    bool boosterTrackSelected = _selectedTrackType == TrackElemType::Booster
+        || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster);
 
-    if (!brakesSelected && !_boosterTrackSelected)
+    if (!brakesSelected && !boosterTrackSelected)
     {
         if (is_track_enabled(TRACK_FLAT_ROLL_BANKING))
         {
@@ -3074,7 +3039,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
             window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::FlatBtn;
             window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::FlatBtn;
         }
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
         {
             if (rideType == RIDE_TYPE_WATER_COASTER)
             {
@@ -3177,7 +3142,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_DEMOLISH].type = WindowWidgetType::FlatBtn;
     window_ride_construction_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
     {
         window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
         window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
@@ -3276,7 +3241,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
 
     if (!_currentlyShowingBrakeOrBoosterSpeed)
     {
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
         {
             if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
             {
@@ -3321,7 +3286,7 @@ static void window_ride_construction_select_map_tiles(
 
     const rct_preview_track* trackBlock;
 
-    trackBlock = get_track_def_from_ride(ride, trackType);
+    trackBlock = TrackBlocks[trackType];
     trackDirection &= 3;
     gMapSelectionTiles.clear();
     while (trackBlock->index != 255)
@@ -3343,19 +3308,13 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
     int32_t defaultIndex = -1;
     for (int32_t i = 0; i < _numCurrentPossibleRideConfigurations; i++)
     {
-        uint8_t trackPiece = _currentPossibleRideConfigurations[i];
+        track_type_t trackPiece = _currentPossibleRideConfigurations[i];
         rct_string_id trackPieceStringId = RideConfigurationStringIds[trackPiece];
         if (trackPieceStringId == STR_RAPIDS)
         {
             auto ride = get_ride(_currentRideIndex);
             if (ride != nullptr && (ride->type == RIDE_TYPE_MONSTER_TRUCKS || ride->type == RIDE_TYPE_CAR_RIDE))
                 trackPieceStringId = STR_LOG_BUMPS;
-        }
-        if (trackPieceStringId == STR_SPINNING_CONTROL_TOGGLE_TRACK)
-        {
-            auto ride = get_ride(_currentRideIndex);
-            if (ride != nullptr && ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
-                trackPieceStringId = STR_BOOSTER;
         }
         gDropdownItemsFormat[i] = trackPieceStringId;
         if ((trackPiece | RideConstructionSpecialPieceSelected) == _currentTrackCurve)
@@ -3504,7 +3463,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         // z = map_get_highest_z(x >> 5, y >> 5);
     }
     // loc_6CC91B:
-    trackBlock = get_track_def_from_ride(ride, trackType);
+    trackBlock = TrackBlocks[trackType];
     int32_t bx = 0;
     do
     {
@@ -3573,7 +3532,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     }
 
     if (_autoRotatingShop && _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE
-        && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+        && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
     {
         TileElement* pathsByDir[NumOrthogonalDirections];
 
@@ -3734,7 +3693,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
     if (_trackPlaceZ == 0)
     {
-        const rct_preview_track* trackBlock = get_track_def_from_ride(ride, _currentTrackPieceType);
+        const rct_preview_track* trackBlock = TrackBlocks[_currentTrackPieceType];
         int32_t bx = 0;
         do
         {
@@ -3794,7 +3753,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
                     if (w != nullptr)
                     {
-                        tool_set(w, WIDX_CONSTRUCT, TOOL_CROSSHAIR);
+                        tool_set(w, WIDX_CONSTRUCT, Tool::Crosshair);
                         input_set_flag(INPUT_FLAG_6, true);
                         _trackPlaceCtrlState = false;
                         _trackPlaceShiftState = false;
@@ -3842,7 +3801,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                 || z < 0)
             {
                 int32_t saveTrackDirection = _currentTrackPieceDirection;
-                int32_t saveCurrentTrackCurve = _currentTrackCurve;
+                auto saveCurrentTrackCurve = _currentTrackCurve;
                 int32_t savePreviousTrackSlopeEnd = _previousTrackSlopeEnd;
                 int32_t saveCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
                 int32_t savePreviousTrackBankEnd = _previousTrackBankEnd;
@@ -3903,7 +3862,7 @@ static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& scree
         if (ride != nullptr && ride_are_all_possible_entrances_and_exits_built(ride))
         {
             tool_cancel();
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
+            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
             {
                 window_close_by_class(WC_RIDE_CONSTRUCTION);
             }
@@ -4452,6 +4411,14 @@ void window_ride_construction_keyboard_shortcut_slope_down()
 
     switch (_currentTrackSlopeEnd)
     {
+        case TRACK_SLOPE_DOWN_60:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
+                && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+            }
+            break;
         case TRACK_SLOPE_DOWN_25:
             if (!WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
@@ -4463,6 +4430,12 @@ void window_ride_construction_keyboard_shortcut_slope_down()
             if (!WidgetIsDisabled(w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+            }
+            else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+            {
+                return;
             }
             else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
@@ -4509,6 +4482,12 @@ void window_ride_construction_keyboard_shortcut_slope_down()
                 window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
             }
             else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+            {
+                return;
+            }
+            else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
@@ -4517,6 +4496,14 @@ void window_ride_construction_keyboard_shortcut_slope_down()
             else
             {
                 return;
+            }
+            break;
+        case TRACK_SLOPE_UP_90:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
+                && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
             }
             break;
         default:
@@ -4534,6 +4521,14 @@ void window_ride_construction_keyboard_shortcut_slope_up()
 
     switch (_currentTrackSlopeEnd)
     {
+        case TRACK_SLOPE_UP_60:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
+                && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+            }
+            break;
         case TRACK_SLOPE_UP_25:
             if (!WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
@@ -4544,6 +4539,12 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             if (!WidgetIsDisabled(w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+            }
+            else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+            {
+                return;
             }
             else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
@@ -4588,6 +4589,12 @@ void window_ride_construction_keyboard_shortcut_slope_up()
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP);
             }
             else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+            {
+                return;
+            }
+            else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
@@ -4595,6 +4602,14 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             else
             {
                 return;
+            }
+            break;
+        case TRACK_SLOPE_DOWN_90:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
+                && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
             }
             break;
         default:

@@ -21,8 +21,8 @@ namespace Editor
     void LoadTrackManager();
     bool LoadLandscape(const utf8* path);
 
-    bool CheckPark();
-    ObjectType CheckObjectSelection();
+    std::pair<bool, rct_string_id> CheckPark();
+    std::pair<ObjectType, rct_string_id> CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();
 
@@ -31,17 +31,20 @@ namespace Editor
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
 } // namespace Editor
 
-enum RCT2_EDITOR_STEP
+enum class EditorStep : uint8_t
 {
-    EDITOR_STEP_OBJECT_SELECTION,       // 0
-    EDITOR_STEP_LANDSCAPE_EDITOR,       // 1
-    EDITOR_STEP_INVENTIONS_LIST_SET_UP, // 2
-    EDITOR_STEP_OPTIONS_SELECTION,      // 3
-    EDITOR_STEP_OBJECTIVE_SELECTION,    // 4
-    EDITOR_STEP_SAVE_SCENARIO,          // 5
-    EDITOR_STEP_ROLLERCOASTER_DESIGNER, // 6
-    EDITOR_STEP_TRACK_DESIGNS_MANAGER   // 7
+    ObjectSelection,       // 0
+    LandscapeEditor,       // 1
+    InventionsListSetUp,   // 2
+    OptionsSelection,      // 3
+    ObjectiveSelection,    // 4
+    SaveScenario,          // 5
+    RollercoasterDesigner, // 6
+    DesignsManager,        // 7
+    Invalid = 255,         // 255
 };
+
+extern EditorStep gEditorStep;
 
 void editor_open_windows_for_current_step();
 

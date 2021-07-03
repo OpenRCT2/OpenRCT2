@@ -29,7 +29,7 @@ constexpr bool NT_SUCCESS(NTSTATUS status) {return status >= 0;}
 
 using namespace Crypt;
 
-static void CngThrowOnBadStatus(const std::string_view& name, NTSTATUS status)
+static void CngThrowOnBadStatus(std::string_view name, NTSTATUS status)
 {
     if (!NT_SUCCESS(status))
     {
@@ -409,7 +409,7 @@ public:
         _hAlg = {};
     }
 
-    void SetPrivate(const std::string_view& pem) override
+    void SetPrivate(std::string_view pem) override
     {
         auto der = ReadPEM(pem, SZ_PRIVATE_BEGIN_TOKEN, SZ_PRIVATE_END_TOKEN);
         DerReader derReader(der);
@@ -427,7 +427,7 @@ public:
         ImportKey(params);
     }
 
-    void SetPublic(const std::string_view& pem) override
+    void SetPublic(std::string_view pem) override
     {
         auto der = ReadPEM(pem, SZ_PUBLIC_BEGIN_TOKEN, SZ_PUBLIC_END_TOKEN);
         DerReader derReader(der);
@@ -531,8 +531,7 @@ private:
         return RsaKeyParams::FromBlob(blob);
     }
 
-    static std::vector<uint8_t> ReadPEM(
-        const std::string_view& pem, const std::string_view& beginToken, const std::string_view& endToken)
+    static std::vector<uint8_t> ReadPEM(std::string_view pem, std::string_view beginToken, std::string_view endToken)
     {
         auto beginPos = pem.find(beginToken);
         auto endPos = pem.find(endToken);
@@ -586,7 +585,7 @@ private:
         return result;
     }
 
-    static std::vector<uint8_t> DecodeBase64(const std::string_view& input)
+    static std::vector<uint8_t> DecodeBase64(std::string_view input)
     {
         DWORD cbBinary{};
         if (!CryptStringToBinaryA(

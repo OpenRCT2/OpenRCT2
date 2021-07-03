@@ -9,6 +9,8 @@
 
 #include "RideSetSettingAction.h"
 
+#include "../Context.h"
+#include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 
@@ -56,7 +58,7 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
                     GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
             }
 
-            if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+            if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
             {
                 return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
             }
@@ -100,12 +102,16 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
         case RideSetSetting::Music:
             break;
         case RideSetSetting::MusicType:
-            if (_value >= MUSIC_STYLE_COUNT)
+        {
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto musicObj = objManager.GetLoadedObject(ObjectType::Music, _value);
+            if (musicObj == nullptr)
             {
                 log_warning("Invalid music style: %u", _value);
                 return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
             }
             break;
+        }
         case RideSetSetting::LiftHillSpeed:
             if (!ride_is_valid_lift_hill_speed(ride))
             {
@@ -130,7 +136,7 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
         case RideSetSetting::RideType:
             if (!gCheatsAllowArbitraryRideTypeChanges)
             {
-                log_warning("Arbitary ride type changes not allowed.");
+                log_warning("Arbitrary ride type changes not allowed.");
                 return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE);
             }
             break;
@@ -233,29 +239,29 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
 
 bool RideSetSettingAction::ride_is_mode_valid(Ride* ride) const
 {
-    return RideTypeDescriptors[ride->type].RideModes & (1ULL << _value);
+    return ride->GetRideTypeDescriptor().RideModes & (1ULL << _value);
 }
 
 bool RideSetSettingAction::ride_is_valid_lift_hill_speed(Ride* ride) const
 {
-    int32_t minSpeed = gCheatsFastLiftHill ? 0 : RideTypeDescriptors[ride->type].LiftData.minimum_speed;
-    int32_t maxSpeed = gCheatsFastLiftHill ? 255 : RideTypeDescriptors[ride->type].LiftData.maximum_speed;
+    int32_t minSpeed = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
+    int32_t maxSpeed = gCheatsUnlockOperatingLimits ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
     return _value >= minSpeed && _value <= maxSpeed;
 }
 
 bool RideSetSettingAction::ride_is_valid_num_circuits() const
 {
     int32_t minNumCircuits = 1;
-    int32_t maxNumCircuits = gCheatsFastLiftHill ? 255 : 20;
+    int32_t maxNumCircuits = gCheatsUnlockOperatingLimits ? 255 : MAX_CIRCUITS_PER_RIDE;
     return _value >= minNumCircuits && _value <= maxNumCircuits;
 }
 
 bool RideSetSettingAction::ride_is_valid_operation_option(Ride* ride) const
 {
-    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
     uint8_t minValue = operatingSettings.MinValue;
     uint8_t maxValue = operatingSettings.MaxValue;
-    if (gCheatsFastLiftHill)
+    if (gCheatsUnlockOperatingLimits)
     {
         minValue = 0;
         maxValue = 255;
@@ -281,7 +287,7 @@ rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
         case RideMode::BackwardRotation:
             return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
         default:
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
+            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
             {
                 return STR_CANT_CHANGE_THIS;
             }

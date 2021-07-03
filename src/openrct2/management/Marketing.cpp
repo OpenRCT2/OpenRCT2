@@ -127,7 +127,7 @@ void marketing_update()
     window_invalidate_by_class(WC_FINANCES);
 }
 
-void marketing_set_guest_campaign(Peep* peep, int32_t campaignType)
+void marketing_set_guest_campaign(Guest* peep, int32_t campaignType)
 {
     auto campaign = marketing_get_campaign(campaignType);
     if (campaign == nullptr)

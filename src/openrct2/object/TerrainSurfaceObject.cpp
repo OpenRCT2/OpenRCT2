@@ -11,12 +11,14 @@
 
 #include "TerrainSurfaceObject.h"
 
+#include "../Context.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
 #include "../world/Location.hpp"
+#include "ObjectManager.h"
 
 void TerrainSurfaceObject::Load()
 {
@@ -144,4 +146,11 @@ uint32_t TerrainSurfaceObject::GetImageId(
         }
     }
     return EntryBaseImageId + (result * NUM_IMAGES_IN_ENTRY) + offset;
+}
+
+TerrainSurfaceObject* TerrainSurfaceObject::GetById(ObjectEntryIndex entryIndex)
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, entryIndex);
+    return obj != nullptr ? static_cast<TerrainSurfaceObject*>(obj) : nullptr;
 }

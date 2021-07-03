@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetResearchFundingAction, GAME_COMMAND_SET_RESEARCH_FUNDING, GameActions::Result)
+DEFINE_GAME_ACTION(ParkSetResearchFundingAction, GameCommand::SetResearchFunding, GameActions::Result)
 {
 private:
     // TODO change to std::optional when C++17

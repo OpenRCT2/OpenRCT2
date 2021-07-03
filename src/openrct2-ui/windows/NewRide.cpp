@@ -95,6 +95,7 @@ static constexpr const char RideTypeViewOrder[] = {
     RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER,
     RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER,
     RIDE_TYPE_HYBRID_COASTER,
+    RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER,
 
     // Gentle rides
     RIDE_TYPE_MONORAIL_CYCLES,
@@ -304,14 +305,14 @@ static void window_new_ride_populate_list()
         if (rideType == RIDE_TYPE_NULL)
             continue;
 
-        if (RideTypeDescriptors[rideType].Category != currentCategory)
+        if (GetRideTypeDescriptor(rideType).Category != currentCategory)
             continue;
 
         nextListItem = window_new_ride_iterate_over_ride_type(rideType, nextListItem);
     }
 
     nextListItem->Type = RIDE_TYPE_NULL;
-    nextListItem->EntryIndex = RIDE_ENTRY_INDEX_NULL;
+    nextListItem->EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 }
 
 static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, RideSelection* nextListItem)
@@ -334,7 +335,7 @@ static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, R
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
-        if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+        if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
             && highestVehiclePriority > rideEntry->BuildMenuPriority)
         {
             continue;
@@ -342,7 +343,7 @@ static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, R
         highestVehiclePriority = rideEntry->BuildMenuPriority;
 
         // Determines how and where to draw a button for this ride type/vehicle.
-        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             // Separate, draw apart
             allowDrawingOverLastButton = false;
@@ -391,7 +392,7 @@ static void window_new_ride_scroll_to_focused_ride(rct_window* w)
     auto focusRideType = _windowNewRideHighlightedItem[_windowNewRideCurrentTab];
     int32_t count = 0, row = 0;
     RideSelection* listItem = _windowNewRideListItems;
-    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
+    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         if (listItem->Type == focusRideType.Type)
         {
@@ -435,9 +436,9 @@ rct_window* window_new_ride_open()
     WindowInitScrollWidgets(w);
 
     w->frame_no = 0;
-    w->new_ride.SelectedRide = { RIDE_TYPE_NULL, RIDE_ENTRY_INDEX_NULL };
+    w->new_ride.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
     _lastTrackDesignCountRideType.Type = RIDE_TYPE_NULL;
-    _lastTrackDesignCountRideType.EntryIndex = RIDE_ENTRY_INDEX_NULL;
+    _lastTrackDesignCountRideType.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
     w->new_ride.HighlightedRide = _windowNewRideHighlightedItem[_windowNewRideCurrentTab];
     if (w->new_ride.HighlightedRide.Type == RIDE_TYPE_NULL)
         w->new_ride.HighlightedRide = _windowNewRideListItems[0];
@@ -480,7 +481,7 @@ void window_new_ride_focus(RideSelection rideItem)
     rideEntry = get_ride_entry(rideItem.EntryIndex);
     uint8_t rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
 
-    window_new_ride_set_page(w, RideTypeDescriptors[rideTypeIndex].Category);
+    window_new_ride_set_page(w, GetRideTypeDescriptor(rideTypeIndex).Category);
 
     for (RideSelection* listItem = _windowNewRideListItems; listItem->Type != RIDE_TYPE_NULL; listItem++)
     {
@@ -515,7 +516,7 @@ static void window_new_ride_set_page(rct_window* w, int32_t page)
 {
     _windowNewRideCurrentTab = page;
     w->frame_no = 0;
-    w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, RIDE_ENTRY_INDEX_NULL };
+    w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
     w->new_ride.selected_ride_countdown = std::numeric_limits<uint16_t>::max();
     window_new_ride_populate_list();
     if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH)
@@ -612,10 +613,9 @@ static void window_new_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w
 
         spriteIndex += page == WINDOW_NEW_RIDE_PAGE_THRILL ? ThrillRidesTabAnimationSequence[frame] : frame;
 
-        spriteIndex |= w->colours[1] << 19;
-
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
+            dpi, ImageId(spriteIndex, w->colours[1]),
+            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
 }
 
@@ -689,7 +689,7 @@ static void window_new_ride_scrollgetsize(rct_window* w, int32_t scrollIndex, in
     RideSelection* listItem = _windowNewRideListItems;
 
     int32_t count = 0;
-    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
+    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         count++;
         listItem++;
@@ -706,7 +706,7 @@ static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     RideSelection item;
 
     item = window_new_ride_scroll_get_ride_list_item_at(w, screenCoords);
-    if (item.Type == RIDE_TYPE_NULL && item.EntryIndex == RIDE_ENTRY_INDEX_NULL)
+    if (item.Type == RIDE_TYPE_NULL && item.EntryIndex == OBJECT_ENTRY_INDEX_NULL)
         return;
 
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
@@ -777,7 +777,7 @@ static void window_new_ride_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         RideSelection item;
         item = w->new_ride.HighlightedRide;
-        if (item.Type != RIDE_TYPE_NULL || item.EntryIndex != RIDE_ENTRY_INDEX_NULL)
+        if (item.Type != RIDE_TYPE_NULL || item.EntryIndex != OBJECT_ENTRY_INDEX_NULL)
             window_new_ride_paint_ride_information(
                 w, dpi, item, w->windowPos + ScreenCoordsXY{ 3, w->height - 64 }, w->width - 6);
     }
@@ -800,7 +800,7 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 
     ScreenCoordsXY coords{ 1, 1 };
     RideSelection* listItem = _windowNewRideListItems;
-    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
+    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         rct_ride_entry* rideEntry;
         // Draw flat button rectangle
@@ -846,7 +846,7 @@ static RideSelection window_new_ride_scroll_get_ride_list_item_at(rct_window* w,
 {
     RideSelection result;
     result.Type = RIDE_TYPE_NULL;
-    result.EntryIndex = RIDE_ENTRY_INDEX_NULL;
+    result.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 
     if (screenCoords.x <= 0 || screenCoords.y <= 0)
         return result;
@@ -859,7 +859,7 @@ static RideSelection window_new_ride_scroll_get_ride_list_item_at(rct_window* w,
     int32_t index = column + (row * 5);
 
     RideSelection* listItem = _windowNewRideListItems;
-    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
+    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         if (index-- == 0)
             return *listItem;
@@ -875,7 +875,7 @@ static int32_t get_num_track_designs(RideSelection item)
 
     if (item.Type < 0x80)
     {
-        if (RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             entryName = get_ride_entry_name(item.EntryIndex);
         }
@@ -900,7 +900,7 @@ static void window_new_ride_paint_ride_information(
     auto ft = Formatter();
     ft.Add<rct_string_id>(rideNaming.Name);
     ft.Add<rct_string_id>(rideNaming.Description);
-    gfx_draw_string_left_wrapped(dpi, ft.Data(), screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
+    DrawTextWrapped(dpi, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
 
     char availabilityString[AVAILABILITY_STRING_SIZE];
     window_new_ride_list_vehicles_for(item.Type, rideEntry, availabilityString, sizeof(availabilityString));
@@ -910,7 +910,7 @@ static void window_new_ride_paint_ride_information(
         const char* drawString = availabilityString;
         ft = Formatter();
         ft.Add<const char*>(drawString);
-        DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft);
     }
 
     ft = Formatter();
@@ -935,32 +935,25 @@ static void window_new_ride_paint_ride_information(
             break;
     }
 
-    gfx_draw_string_left(dpi, designCountStringId, ft.Data(), COLOUR_BLACK, screenPos + ScreenCoordsXY{ 0, 51 });
+    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
     // Price
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Get price of ride
-        int32_t unk2 = RideTypeDescriptors[item.Type].StartTrackPiece;
-        money32 price = RideTypeDescriptors[item.Type].BuildCosts.TrackPrice;
-        if (ride_type_has_flag(item.Type, RIDE_TYPE_FLAG_FLAT_RIDE))
-        {
-            price *= FlatRideTrackPricing[unk2];
-        }
-        else
-        {
-            price *= TrackPricing[unk2];
-        }
-        price = (price >> 17) * 10 * RideTypeDescriptors[item.Type].BuildCosts.PriceEstimateMultiplier;
+        int32_t unk2 = GetRideTypeDescriptor(item.Type).StartTrackPiece;
+        money64 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
+        price *= TrackPricing[unk2];
+        price = (price >> 17) * 10 * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
         //
         rct_string_id stringId = STR_NEW_RIDE_COST;
-        if (!ride_type_has_flag(item.Type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (!GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
             stringId = STR_NEW_RIDE_COST_FROM;
 
         ft = Formatter();
-        ft.Add<money32>(price);
-        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        ft.Add<money64>(price);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, { TextAlignment::RIGHT });
     }
 }
 
@@ -992,7 +985,7 @@ static void window_new_ride_select(rct_window* w)
 static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen)
 {
     std::fill_n(buffer, bufferLen, 0);
-    if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         return;
     }

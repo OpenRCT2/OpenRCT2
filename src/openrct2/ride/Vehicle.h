@@ -16,125 +16,19 @@
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
 #include "Station.h"
+#include "VehicleColour.h"
+#include "VehicleEntry.h"
+#include "VehicleSubpositionData.h"
 
 #include <array>
 #include <cstddef>
 #include <vector>
 
-struct rct_vehicle_colour
-{
-    uint8_t body_colour;
-    uint8_t trim_colour;
-};
-
-struct VehicleColour
-{
-    uint8_t Body;
-    uint8_t Trim;
-    uint8_t Ternary;
-};
-
-#ifdef __TESTPAINT__
-#    pragma pack(push, 1)
-#endif // __TESTPAINT__
-/**
- * Ride type vehicle structure.
- * size: 0x65
- */
-struct rct_ride_entry_vehicle
-{
-    uint16_t rotation_frame_mask;   // 0x00 , 0x1A
-    uint8_t num_vertical_frames;    // 0x02 , 0x1C, Appears to be unused, except as a temporary variable in RCT2 (not needed for
-                                    // OpenRCT2)
-    uint8_t num_horizontal_frames;  // 0x03 , 0x1D, Appears to be unused, except as a temporary variable in RCT2 (not needed for
-                                    // OpenRCT2)
-    uint32_t spacing;               // 0x04 , 0x1E
-    uint16_t car_mass;              // 0x08 , 0x22
-    int8_t tab_height;              // 0x0A , 0x24
-    uint8_t num_seats;              // 0x0B , 0x25
-    uint16_t sprite_flags;          // 0x0C , 0x26
-    uint8_t sprite_width;           // 0x0E , 0x28
-    uint8_t sprite_height_negative; // 0x0F , 0x29
-    uint8_t sprite_height_positive; // 0x10 , 0x2A
-    uint8_t animation;              // 0x11 , 0x2B
-    uint32_t flags;                 // 0x12 , 0x2C
-    uint16_t base_num_frames;       // 0x16 , 0x30, The number of sprites for a flat non-banked track piece.
-    uint32_t base_image_id;         // 0x18 , 0x32, Following image_id's populated during loading
-    uint32_t restraint_image_id;    // 0x1C , 0x36
-    uint32_t gentle_slope_image_id; // 0x20 , 0x3A
-    uint32_t steep_slope_image_id;  // 0x24 , 0x3E
-    uint32_t vertical_slope_image_id;                // 0x28 , 0x42
-    uint32_t diagonal_slope_image_id;                // 0x2C , 0x46
-    uint32_t banked_image_id;                        // 0x30 , 0x4A
-    uint32_t inline_twist_image_id;                  // 0x34 , 0x4E
-    uint32_t flat_to_gentle_bank_image_id;           // 0x38 , 0x52
-    uint32_t diagonal_to_gentle_slope_bank_image_id; // 0x3C , 0x56
-    uint32_t gentle_slope_to_bank_image_id;          // 0x40 , 0x5A
-    uint32_t gentle_slope_bank_turn_image_id;        // 0x44 , 0x5E
-    uint32_t flat_bank_to_gentle_slope_image_id;     // 0x48 , 0x62
-    union
-    {
-        uint32_t curved_lift_hill_image_id; // 0x4C , 0x66
-        uint32_t corkscrew_image_id;        // 0x4C , 0x66
-    };
-    uint32_t no_vehicle_images;                 // 0x50 , 0x6A
-    uint8_t no_seating_rows;                    // 0x54 , 0x6E
-    uint8_t spinning_inertia;                   // 0x55 , 0x6F
-    uint8_t spinning_friction;                  // 0x56 , 0x70
-    OpenRCT2::Audio::SoundId friction_sound_id; // 0x57 , 0x71
-    uint8_t log_flume_reverser_vehicle_type;    // 0x58 , 0x72
-    uint8_t sound_range;                        // 0x59 , 0x73
-    uint8_t
-        double_sound_frequency;   // 0x5A , 0x74 (Doubles the velocity when working out the sound frequency {used on go karts})
-    uint8_t powered_acceleration; // 0x5B , 0x75
-    uint8_t powered_max_speed;    // 0x5C , 0x76
-    uint8_t car_visual;           // 0x5D , 0x77
-    uint8_t effect_visual;
-    uint8_t draw_order;
-    uint8_t num_vertical_frames_override;   // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine
-                                            // it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
-    uint8_t peep_loading_waypoint_segments; // 0x61 new
-    uint8_t pad_62[6] = {};                 // 0x62 , 0x7B
-    std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
-    std::vector<int8_t> peep_loading_positions = {}; // previously 0x61 , 0x7B
-};
-#ifdef __TESTPAINT__
-#    pragma pack(pop)
-#endif // __TESTPAINT__
-#ifdef PLATFORM_32BIT
-static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
-#else
-static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
-#endif
-
-enum class VehicleTrackSubposition : uint8_t
-{
-    Default,
-    // Going out means "moving away from the start". Viewed from Station 1, this is the left hand side of the track.
-    ChairliftGoingOut,
-    ChairliftGoingBack,
-    // End and start bullwheel as viewed from Station 1.
-    ChairliftEndBullwheel,
-    ChairliftStartBullwheel,
-    GoKartsLeftLane,
-    GoKartsRightLane,
-    GoKartsMovingToRightLane,
-    GoKartsMovingToLeftLane,
-    MiniGolfStart9 = 9,
-    MiniGolfPathA9 = 9,
-    MiniGolfBallPathA10,
-    MiniGolfPathB11,
-    MiniGolfBallPathB12,
-    MiniGolfPathC13,
-    MiniGolfBallPathC14,
-    ReverserRCFrontBogie,
-    ReverserRCRearBogie,
-
-    Count,
-};
+using track_type_t = uint16_t;
 
 struct Ride;
 struct rct_ride_entry;
+class DataSerialiser;
 
 struct GForces
 {
@@ -145,18 +39,23 @@ struct GForces
 // Size: 0x09
 struct rct_vehicle_info
 {
-    int16_t x;                   // 0x00
-    int16_t y;                   // 0x02
-    int16_t z;                   // 0x04
-    uint8_t direction;           // 0x06
-    uint8_t vehicle_sprite_type; // 0x07
-    uint8_t bank_rotation;       // 0x08
+    int16_t x;             // 0x00
+    int16_t y;             // 0x02
+    int16_t z;             // 0x04
+    uint8_t direction;     // 0x06
+    uint8_t Pitch;         // 0x07
+    uint8_t bank_rotation; // 0x08
 };
 
 struct SoundIdVolume;
 
+constexpr const uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
+constexpr const uint16_t VehicleTrackTypeMask = 0b1111111111111100;
+
 struct Vehicle : SpriteBase
 {
+    static constexpr auto cEntityType = EntityType::Vehicle;
+
     enum class Type : uint8_t
     {
         Head,
@@ -198,7 +97,8 @@ struct Vehicle : SpriteBase
         StoppedByBlockBrakes
     };
 
-    uint8_t vehicle_sprite_type;
+    Type SubType;
+    uint8_t Pitch;
     uint8_t bank_rotation;
     int32_t remaining_distance;
     int32_t velocity;
@@ -215,11 +115,7 @@ struct Vehicle : SpriteBase
             uint8_t var_35;
         };
     };
-    union
-    {
-        int16_t track_direction; // (0000 0000 0000 0011)
-        int16_t track_type;      // (0000 0011 1111 1100)
-    };
+    uint16_t TrackTypeAndDirection;
     CoordsXYZ TrackLocation;
     uint16_t next_vehicle_on_train;
 
@@ -309,16 +205,16 @@ struct Vehicle : SpriteBase
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
     CoordsXY BoatLocation;
+    bool IsCrashedVehicle;
 
     constexpr bool IsHead() const
     {
-        return type == static_cast<uint8_t>(Vehicle::Type::Head);
+        return SubType == Vehicle::Type::Head;
     }
     void Update();
     Vehicle* GetHead();
     const Vehicle* GetHead() const;
     Vehicle* GetCar(size_t carIndex) const;
-    void Invalidate();
     void SetState(Vehicle::Status vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
     void UpdateSoundParams(std::vector<OpenRCT2::Audio::VehicleSoundParams>& vehicleSoundParamsList) const;
@@ -334,12 +230,30 @@ struct Vehicle : SpriteBase
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
     void EnableCollisionsForTrain();
-
-    uint16_t GetTrackType() const
+    /**
+     * Instantly moves the specific car forward or backwards along the track.
+     */
+    void MoveRelativeDistance(int32_t distance);
+    track_type_t GetTrackType() const
     {
-        return track_type >> 2;
+        return TrackTypeAndDirection >> 2;
     }
-
+    uint8_t GetTrackDirection() const
+    {
+        return TrackTypeAndDirection & VehicleTrackDirectionMask;
+    }
+    void SetTrackType(track_type_t trackType)
+    {
+        // set the upper 14 bits to 0, then set track type
+        TrackTypeAndDirection &= ~VehicleTrackTypeMask;
+        TrackTypeAndDirection |= trackType << 2;
+    }
+    void SetTrackDirection(uint8_t trackDirection)
+    {
+        // set the lower 2 bits only
+        TrackTypeAndDirection &= ~VehicleTrackDirectionMask;
+        TrackTypeAndDirection |= trackDirection & VehicleTrackDirectionMask;
+    }
     bool HasUpdateFlag(uint32_t flag) const
     {
         return (update_flags & flag) != 0;
@@ -352,6 +266,8 @@ struct Vehicle : SpriteBase
     {
         update_flags |= flag;
     }
+    void ApplyMass(int16_t appliedMass);
+    void Serialise(DataSerialiser& stream);
 
 private:
     bool SoundCanPlay() const;
@@ -446,7 +362,10 @@ private:
     void UpdateGoKartAttemptSwitchLanes();
     void UpdateSceneryDoor() const;
     void UpdateSceneryDoorBackwards() const;
+    void UpdateLandscapeDoor() const;
+    void UpdateLandscapeDoorBackwards() const;
 };
+static_assert(sizeof(Vehicle) <= 512);
 
 struct train_ref
 {
@@ -457,24 +376,27 @@ struct train_ref
 enum : uint32_t
 {
     VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1
-        << 0, // Set on powered vehicles that do not slow down when going down a hill
+        << 0, // Set on powered vehicles that do not slow down when going down a hill.
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS = 1 << 1,
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH = 1 << 2,
     VEHICLE_ENTRY_FLAG_MINI_GOLF = 1 << 3,
-    VEHICLE_ENTRY_FLAG_4 = 1 << 4,
-    VEHICLE_ENTRY_FLAG_5 = 1 << 5,
+    VEHICLE_ENTRY_FLAG_REVERSER_BOGIE = 1 << 4,
+    VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR = 1 << 5,
     VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET = 1 << 6, // Set on vehicles that support running inverted for extended periods
                                                          // of time, i.e. the Flying, Lay-down and Multi-dimension RCs.
     VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS = 1
         << 7, // When set the vehicle has an additional frame for when in use. Used only by dodgems.
-    VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8, // Not used any more - every vehicle will now work with doors
+    VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8, // Not used any more - every vehicle will now work with doors.
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
-    VEHICLE_ENTRY_FLAG_10 = 1 << 10,
-    VEHICLE_ENTRY_FLAG_11 = 1 << 11,
+    VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS = 1 << 10, // Only used during loading of the objects.
+    VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES = 1
+        << 11, // Instead of the default 32 rotation frames. Only used for boat hire and works only for non sloped sprites.
     VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1
         << 12, // Setting this will cause the game to set vehicleEntry->num_vertical_frames to
                // vehicleEntry->num_vertical_frames_override, rather than determining it itself.
-    VEHICLE_ENTRY_FLAG_13 = 1 << 13,
+    VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET = 1
+        << 13, // Used together with HAS_INVERTED_SPRITE_SET and RECALCULATE_SPRITE_BOUNDS and includes the inverted sprites
+               // into the function that recalculates the sprite bounds.
     VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES = 1
         << 14, // 16x additional frames for vehicle. A spinning item with additional frames must always face forward to
                // load/unload. Spinning without can load/unload at 4 rotations.
@@ -484,18 +406,19 @@ enum : uint32_t
     VEHICLE_ENTRY_FLAG_SPINNING = 1 << 18,
     VEHICLE_ENTRY_FLAG_POWERED = 1 << 19,
     VEHICLE_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,
-    VEHICLE_ENTRY_FLAG_21 = 1 << 21, // Swinging coaster??
+    VEHICLE_ENTRY_FLAG_SUSPENDED_SWING = 1 << 21, // Suspended swinging coaster, or bobsleigh if SLIDE_SWING is also enabled.
     VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION = 1 << 22,
     VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23, // Set on animated vehicles like the Multi-dimension coaster trains,
                                                     // Miniature Railway locomotives and Helicycles.
-    VEHICLE_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,   // Set when the animation updates rider sprite positions
-    VEHICLE_ENTRY_FLAG_25 = 1 << 25,
+    VEHICLE_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,   // Set when the animation updates rider sprite positions.
+    VEHICLE_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING = 1 << 25,
     VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS = 1
-        << 26, // Peep loading positions have x and y coordinates. Normal rides just have offsets
+        << 26, // Peep loading positions have x and y coordinates. Normal rides just have offsets.
     VEHICLE_ENTRY_FLAG_SLIDE_SWING = 1
         << 27, // Set on dingy slides. They have there own swing value calculations and have a different amount of images.
+               // Also set on bobsleighs together with the SUSPENDED_SWING flag.
     VEHICLE_ENTRY_FLAG_CHAIRLIFT = 1 << 28,
-    VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29, // Set on rides where water would provide continuous propulsion
+    VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29, // Set on rides where water would provide continuous propulsion.
     VEHICLE_ENTRY_FLAG_GO_KART = 1 << 30,
     VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1u << 31,
 };
@@ -552,7 +475,8 @@ enum : uint32_t
     VEHICLE_SPRITE_FLAG_CORKSCREWS = (1 << 12),
     VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION = (1 << 13),
     VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL = (1 << 14),
-    VEHICLE_SPRITE_FLAG_15 = (1 << 15),
+    // Used only on lifts (the transport ride), to only use 4 rotation sprites instead of 32.
+    VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES = (1 << 15),
 };
 
 enum

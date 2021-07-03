@@ -11,10 +11,10 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideSetNameAction, GAME_COMMAND_SET_RIDE_NAME, GameActions::Result)
+DEFINE_GAME_ACTION(RideSetNameAction, GameCommand::SetRideName, GameActions::Result)
 {
 private:
-    NetworkRideId_t _rideIndex{ RideIdNewNull };
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
     std::string _name;
 
 public:

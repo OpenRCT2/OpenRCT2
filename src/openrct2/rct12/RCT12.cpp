@@ -10,7 +10,9 @@
 #include "RCT12.h"
 
 #include "../core/String.hpp"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
+#include "../object/ObjectList.h"
 #include "../ride/Track.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
@@ -19,6 +21,8 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "../world/Wall.h"
+
+using namespace OpenRCT2;
 
 uint8_t RCT12TileElementBase::GetType() const
 {
@@ -290,6 +294,18 @@ uint8_t RCT12TrackElement::GetDoorBState() const
     return (colour & RCT12_TRACK_ELEMENT_DOOR_B_MASK) >> 5;
 }
 
+void RCT12TrackElement::SetDoorAState(uint8_t newState)
+{
+    colour &= ~RCT12_TRACK_ELEMENT_DOOR_B_MASK;
+    colour |= ((newState << 2) & RCT12_TRACK_ELEMENT_DOOR_B_MASK);
+}
+
+void RCT12TrackElement::SetDoorBState(uint8_t newState)
+{
+    colour &= ~RCT12_TRACK_ELEMENT_DOOR_B_MASK;
+    colour |= ((newState << 5) & RCT12_TRACK_ELEMENT_DOOR_B_MASK);
+}
+
 bool RCT12TrackElement::IsIndestructible() const
 {
     return (flags & RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;
@@ -408,11 +424,6 @@ bool RCT12WallElement::AnimationIsBackwards() const
     return (animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
 }
 
-uint32_t RCT12WallElement::GetRawRCT1WallTypeData() const
-{
-    return entryIndex | (colour_3 << 8) | (colour_1 << 16) | (animation << 24);
-}
-
 int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 {
     uint8_t var_05 = colour_3;
@@ -434,6 +445,11 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 colour_t RCT12WallElement::GetRCT1WallColour() const
 {
     return ((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5);
+}
+
+uint8_t RCT12WallElement::GetRCT1Slope() const
+{
+    return entryIndex & 0b00011111;
 }
 
 uint8_t RCT12EntranceElement::GetEntranceType() const
@@ -483,22 +499,24 @@ bool is_user_string_id(rct_string_id stringId)
 
 uint8_t RCT12TileElement::GetBannerIndex()
 {
-    rct_scenery_entry* sceneryEntry;
-
     switch (GetType())
     {
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            sceneryEntry = get_large_scenery_entry(AsLargeScenery()->GetEntryIndex());
-            if (sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
+        {
+            auto* sceneryEntry = get_large_scenery_entry(AsLargeScenery()->GetEntryIndex());
+            if (sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
                 return RCT12_BANNER_INDEX_NULL;
 
             return AsLargeScenery()->GetBannerIndex();
+        }
         case TILE_ELEMENT_TYPE_WALL:
-            sceneryEntry = get_wall_entry(AsWall()->GetEntryIndex());
-            if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+        {
+            auto* wallEntry = get_wall_entry(AsWall()->GetEntryIndex());
+            if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
                 return RCT12_BANNER_INDEX_NULL;
 
             return AsWall()->GetBannerIndex();
+        }
         case TILE_ELEMENT_TYPE_BANNER:
             return AsBanner()->GetIndex();
         default:
@@ -1088,4 +1106,343 @@ std::string RCT12RemoveFormattingUTF8(std::string_view s)
 
     result.shrink_to_fit();
     return result;
+}
+
+namespace RCT12FormatCode
+{
+    constexpr codepoint_t Newline = 5;
+    constexpr codepoint_t NewlineSmall = 6;
+    constexpr codepoint_t ColourBlack = 142;
+    constexpr codepoint_t ColourGrey = 143;
+    constexpr codepoint_t ColourWhite = 144;
+    constexpr codepoint_t ColourRed = 145;
+    constexpr codepoint_t ColourGreen = 146;
+    constexpr codepoint_t ColourYellow = 147;
+    constexpr codepoint_t ColourTopaz = 148;
+    constexpr codepoint_t ColourCeladon = 149;
+    constexpr codepoint_t ColourBabyBlue = 150;
+    constexpr codepoint_t ColourPaleLavender = 151;
+    constexpr codepoint_t ColourPaleGold = 152;
+    constexpr codepoint_t ColourLightPink = 153;
+    constexpr codepoint_t ColourPearlAqua = 154;
+    constexpr codepoint_t ColourPaleSilver = 155;
+} // namespace RCT12FormatCode
+
+static FormatToken GetFormatTokenFromRCT12Code(codepoint_t codepoint)
+{
+    switch (codepoint)
+    {
+        case RCT12FormatCode::Newline:
+            return FormatToken::Newline;
+        case RCT12FormatCode::NewlineSmall:
+            return FormatToken::NewlineSmall;
+        case RCT12FormatCode::ColourBlack:
+            return FormatToken::ColourBlack;
+        case RCT12FormatCode::ColourGrey:
+            return FormatToken::ColourGrey;
+        case RCT12FormatCode::ColourWhite:
+            return FormatToken::ColourWhite;
+        case RCT12FormatCode::ColourRed:
+            return FormatToken::ColourRed;
+        case RCT12FormatCode::ColourGreen:
+            return FormatToken::ColourGreen;
+        case RCT12FormatCode::ColourYellow:
+            return FormatToken::ColourYellow;
+        case RCT12FormatCode::ColourTopaz:
+            return FormatToken::ColourTopaz;
+        case RCT12FormatCode::ColourCeladon:
+            return FormatToken::ColourCeladon;
+        case RCT12FormatCode::ColourBabyBlue:
+            return FormatToken::ColourBabyBlue;
+        case RCT12FormatCode::ColourPaleLavender:
+            return FormatToken::ColourPaleLavender;
+        case RCT12FormatCode::ColourPaleGold:
+            return FormatToken::ColourPaleGold;
+        case RCT12FormatCode::ColourLightPink:
+            return FormatToken::ColourLightPink;
+        case RCT12FormatCode::ColourPearlAqua:
+            return FormatToken::ColourPearlAqua;
+        case RCT12FormatCode::ColourPaleSilver:
+            return FormatToken::ColourPaleSilver;
+        default:
+            return FormatToken::Unknown;
+    }
+}
+
+static codepoint_t GetRCT12CodeFromFormatToken(FormatToken token)
+{
+    switch (token)
+    {
+        case FormatToken::Newline:
+            return RCT12FormatCode::Newline;
+        case FormatToken::NewlineSmall:
+            return RCT12FormatCode::NewlineSmall;
+        case FormatToken::ColourBlack:
+            return RCT12FormatCode::ColourBlack;
+        case FormatToken::ColourGrey:
+            return RCT12FormatCode::ColourGrey;
+        case FormatToken::ColourWhite:
+            return RCT12FormatCode::ColourWhite;
+        case FormatToken::ColourRed:
+            return RCT12FormatCode::ColourRed;
+        case FormatToken::ColourGreen:
+            return RCT12FormatCode::ColourGreen;
+        case FormatToken::ColourYellow:
+            return RCT12FormatCode::ColourYellow;
+        case FormatToken::ColourTopaz:
+            return RCT12FormatCode::ColourTopaz;
+        case FormatToken::ColourCeladon:
+            return RCT12FormatCode::ColourCeladon;
+        case FormatToken::ColourBabyBlue:
+            return RCT12FormatCode::ColourBabyBlue;
+        case FormatToken::ColourPaleLavender:
+            return RCT12FormatCode::ColourPaleLavender;
+        case FormatToken::ColourPaleGold:
+            return RCT12FormatCode::ColourPaleGold;
+        case FormatToken::ColourLightPink:
+            return RCT12FormatCode::ColourLightPink;
+        case FormatToken::ColourPearlAqua:
+            return RCT12FormatCode::ColourPearlAqua;
+        case FormatToken::ColourPaleSilver:
+            return RCT12FormatCode::ColourPaleSilver;
+        default:
+            return 0;
+    }
+}
+
+std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
+{
+    auto nullTerminator = buffer.find('\0');
+    if (nullTerminator != std::string::npos)
+    {
+        buffer = buffer.substr(0, nullTerminator);
+    }
+    auto asUtf8 = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
+
+    std::string result;
+    CodepointView codepoints(asUtf8);
+    for (auto codepoint : codepoints)
+    {
+        auto token = GetFormatTokenFromRCT12Code(codepoint);
+        if (token != FormatToken::Unknown)
+        {
+            result += GetFormatTokenStringWithBraces(token);
+        }
+        else
+        {
+            String::AppendCodepoint(result, codepoint);
+        }
+    }
+    return result;
+}
+
+std::string ConvertFormattedStringToRCT2(std::string_view buffer, size_t maxLength)
+{
+    std::string result;
+    FmtString fmt(buffer);
+    for (const auto& token : fmt)
+    {
+        if (token.IsLiteral())
+        {
+            result += token.text;
+        }
+        else
+        {
+            auto codepoint = GetRCT12CodeFromFormatToken(token.kind);
+            if (codepoint == 0)
+            {
+                result += token.text;
+            }
+            else
+            {
+                String::AppendCodepoint(result, codepoint);
+            }
+        }
+    }
+    return GetTruncatedRCT2String(result, maxLength);
+}
+
+std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength)
+{
+    auto rct2encoded = utf8_to_rct2(src);
+    if (rct2encoded.size() > maxLength - 1)
+    {
+        log_warning(
+            "The user string '%s' is too long for the S6 file format and has therefore been truncated.",
+            std::string(src).c_str());
+
+        rct2encoded.resize(maxLength - 1);
+        for (size_t i = 0; i < rct2encoded.size(); i++)
+        {
+            if (rct2encoded[i] == static_cast<char>(static_cast<uint8_t>(0xFF)))
+            {
+                if (i > maxLength - 4)
+                {
+                    // This codepoint was truncated, remove codepoint altogether
+                    rct2encoded.resize(i);
+                    break;
+                }
+                else
+                {
+                    // Skip the next two bytes which represent the unicode character
+                    i += 2;
+                }
+            }
+        }
+    }
+    return rct2encoded;
+}
+
+track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType)
+{
+    switch (origTrackType)
+    {
+        case TrackElemType::FlatTrack1x4A_Alias:
+            return TrackElemType::FlatTrack1x4A;
+        case TrackElemType::FlatTrack2x2_Alias:
+            return TrackElemType::FlatTrack2x2;
+        case TrackElemType::FlatTrack4x4_Alias:
+            return TrackElemType::FlatTrack4x4;
+        case TrackElemType::FlatTrack2x4_Alias:
+            return TrackElemType::FlatTrack2x4;
+        case TrackElemType::FlatTrack1x5_Alias:
+            return TrackElemType::FlatTrack1x5;
+        case TrackElemType::FlatTrack1x1A_Alias:
+            return TrackElemType::FlatTrack1x1A;
+        case TrackElemType::FlatTrack1x4B_Alias:
+            return TrackElemType::FlatTrack1x4B;
+        case TrackElemType::FlatTrack1x1B_Alias:
+            return TrackElemType::FlatTrack1x1B;
+        case TrackElemType::FlatTrack1x4C_Alias:
+            return TrackElemType::FlatTrack1x4C;
+        case TrackElemType::FlatTrack3x3_Alias:
+            return TrackElemType::FlatTrack3x3;
+    }
+
+    return origTrackType;
+}
+
+RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
+{
+    switch (origTrackType)
+    {
+        case TrackElemType::FlatTrack1x4A:
+            return TrackElemType::FlatTrack1x4A_Alias;
+        case TrackElemType::FlatTrack2x2:
+            return TrackElemType::FlatTrack2x2_Alias;
+        case TrackElemType::FlatTrack4x4:
+            return TrackElemType::FlatTrack4x4_Alias;
+        case TrackElemType::FlatTrack2x4:
+            return TrackElemType::FlatTrack2x4_Alias;
+        case TrackElemType::FlatTrack1x5:
+            return TrackElemType::FlatTrack1x5_Alias;
+        case TrackElemType::FlatTrack1x1A:
+            return TrackElemType::FlatTrack1x1A_Alias;
+        case TrackElemType::FlatTrack1x4B:
+            return TrackElemType::FlatTrack1x4B_Alias;
+        case TrackElemType::FlatTrack1x1B:
+            return TrackElemType::FlatTrack1x1B_Alias;
+        case TrackElemType::FlatTrack1x4C:
+            return TrackElemType::FlatTrack1x4C_Alias;
+        case TrackElemType::FlatTrack3x3:
+            return TrackElemType::FlatTrack3x3_Alias;
+    }
+
+    return origTrackType;
+}
+
+static constexpr std::string_view _stationStyles[] = {
+    "rct2.station.plain",         "rct2.station.wooden", "rct2.station.canvas_tent", "rct2.station.castle_grey",
+    "rct2.station.castle_brown",  "rct2.station.jungle", "rct2.station.log",         "rct2.station.classical",
+    "rct2.station.abstract",      "rct2.station.snow",   "rct2.station.pagoda",      "rct2.station.space",
+    "openrct2.station.noentrance"
+};
+
+static constexpr std::string_view _musicStyles[] = { "rct2.music.dodgems",  "rct2.music.fairground", "rct2.music.roman",
+                                                     "rct2.music.oriental", "rct2.music.martian",    "rct2.music.jungle",
+                                                     "rct2.music.egyptian", "rct2.music.toyland",    "", // CIRCUS
+                                                     "rct2.music.space",    "rct2.music.horror",     "rct2.music.techno",
+                                                     "rct2.music.gentle",   "rct2.music.summer",     "rct2.music.water",
+                                                     "rct2.music.wildwest", "rct2.music.jurassic",   "rct2.music.rock1",
+                                                     "rct2.music.ragtime",  "rct2.music.fantasy",    "rct2.music.rock2",
+                                                     "rct2.music.ice",      "rct2.music.snow",       "rct2.music.custom1",
+                                                     "rct2.music.custom2",  "rct2.music.medieval",   "rct2.music.urban",
+                                                     "rct2.music.organ",    "rct2.music.mechanical", "rct2.music.modern",
+                                                     "rct2.music.pirate",   "rct2.music.rock3",      "rct2.music.candy" };
+
+std::string_view GetStationIdentifierFromStyle(uint8_t style)
+{
+    if (style < std::size(_stationStyles))
+    {
+        return _stationStyles[style];
+    }
+    return {};
+}
+
+std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
+{
+    auto it = std::find(std::begin(_musicStyles), std::end(_musicStyles), identifier);
+    if (it != std::end(_musicStyles))
+    {
+        return std::distance(std::begin(_musicStyles), it);
+    }
+    return {};
+}
+
+void SetDefaultRCT2TerrainObjects(ObjectList& objectList)
+{
+    // Surfaces
+    objectList.SetObject(ObjectType::TerrainSurface, 0, "rct2.terrain_surface.grass");
+    objectList.SetObject(ObjectType::TerrainSurface, 1, "rct2.terrain_surface.sand");
+    objectList.SetObject(ObjectType::TerrainSurface, 2, "rct2.terrain_surface.dirt");
+    objectList.SetObject(ObjectType::TerrainSurface, 3, "rct2.terrain_surface.rock");
+    objectList.SetObject(ObjectType::TerrainSurface, 4, "rct2.terrain_surface.martian");
+    objectList.SetObject(ObjectType::TerrainSurface, 5, "rct2.terrain_surface.chequerboard");
+    objectList.SetObject(ObjectType::TerrainSurface, 6, "rct2.terrain_surface.grass_clumps");
+    objectList.SetObject(ObjectType::TerrainSurface, 7, "rct2.terrain_surface.ice");
+    objectList.SetObject(ObjectType::TerrainSurface, 8, "rct2.terrain_surface.grid_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 9, "rct2.terrain_surface.grid_yellow");
+    objectList.SetObject(ObjectType::TerrainSurface, 10, "rct2.terrain_surface.grid_purple");
+    objectList.SetObject(ObjectType::TerrainSurface, 11, "rct2.terrain_surface.grid_green");
+    objectList.SetObject(ObjectType::TerrainSurface, 12, "rct2.terrain_surface.sand_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 13, "rct2.terrain_surface.sand_brown");
+    objectList.SetObject(ObjectType::TerrainSurface, 14, "rct1aa.terrain_surface.roof_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 15, "rct1ll.terrain_surface.roof_grey");
+    objectList.SetObject(ObjectType::TerrainSurface, 16, "rct1ll.terrain_surface.rust");
+    objectList.SetObject(ObjectType::TerrainSurface, 17, "rct1ll.terrain_surface.wood");
+
+    // Edges
+    objectList.SetObject(ObjectType::TerrainEdge, 0, "rct2.terrain_edge.rock");
+    objectList.SetObject(ObjectType::TerrainEdge, 1, "rct2.terrain_edge.wood_red");
+    objectList.SetObject(ObjectType::TerrainEdge, 2, "rct2.terrain_edge.wood_black");
+    objectList.SetObject(ObjectType::TerrainEdge, 3, "rct2.terrain_edge.ice");
+    objectList.SetObject(ObjectType::TerrainEdge, 4, "rct1.terrain_edge.brick");
+    objectList.SetObject(ObjectType::TerrainEdge, 5, "rct1.terrain_edge.iron");
+    objectList.SetObject(ObjectType::TerrainEdge, 6, "rct1aa.terrain_edge.grey");
+    objectList.SetObject(ObjectType::TerrainEdge, 7, "rct1aa.terrain_edge.yellow");
+    objectList.SetObject(ObjectType::TerrainEdge, 8, "rct1aa.terrain_edge.red");
+    objectList.SetObject(ObjectType::TerrainEdge, 9, "rct1ll.terrain_edge.purple");
+    objectList.SetObject(ObjectType::TerrainEdge, 10, "rct1ll.terrain_edge.green");
+    objectList.SetObject(ObjectType::TerrainEdge, 11, "rct1ll.terrain_edge.stone_brown");
+    objectList.SetObject(ObjectType::TerrainEdge, 12, "rct1ll.terrain_edge.stone_grey");
+    objectList.SetObject(ObjectType::TerrainEdge, 13, "rct1ll.terrain_edge.skyscraper_a");
+    objectList.SetObject(ObjectType::TerrainEdge, 14, "rct1ll.terrain_edge.skyscraper_b");
+}
+
+void RCT12AddDefaultObjects(ObjectList& objectList)
+{
+    // Stations
+    for (size_t i = 0; i < std::size(_stationStyles); i++)
+    {
+        objectList.SetObject(ObjectType::Station, static_cast<ObjectEntryIndex>(i), _stationStyles[i]);
+    }
+
+    // Music
+    for (size_t i = 0; i < std::size(_musicStyles); i++)
+    {
+        if (!_musicStyles[i].empty())
+        {
+            objectList.SetObject(ObjectType::Music, static_cast<ObjectEntryIndex>(i), _musicStyles[i]);
+        }
+    }
 }

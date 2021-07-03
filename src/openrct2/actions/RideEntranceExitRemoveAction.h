@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideEntranceExitRemoveAction, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, GameActions::Result)
+DEFINE_GAME_ACTION(RideEntranceExitRemoveAction, GameCommand::RemoveRideEntranceOrExit, GameActions::Result)
 {
 private:
     CoordsXY _loc;

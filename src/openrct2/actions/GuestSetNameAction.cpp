@@ -17,8 +17,8 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
+#include "../world/Entity.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 GuestSetNameAction::GuestSetNameAction(uint16_t spriteIndex, const std::string& name)
     : _spriteIndex(spriteIndex)
@@ -56,7 +56,7 @@ void GuestSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr GuestSetNameAction::Query() const
 {
-    if (_spriteIndex >= MAX_SPRITES)
+    if (_spriteIndex >= MAX_ENTITIES)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
     }

@@ -14,7 +14,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/world/Sprite.h>
+#include <openrct2/world/Entity.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
 static constexpr const int32_t WW = 200;
@@ -99,10 +99,10 @@ static void window_staff_fire_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    Peep* peep = GetEntity<Peep>(w->number);
+    Peep* peep = GetEntity<Staff>(w->number);
     auto ft = Formatter();
     peep->FormatNameTo(ft);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
-    gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, WW - 4, STR_FIRE_STAFF_ID, COLOUR_BLACK);
+    DrawTextWrapped(dpi, stringCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
 }

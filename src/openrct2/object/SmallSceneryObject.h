@@ -17,15 +17,10 @@
 class SmallSceneryObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry _legacyType = {};
+    SmallSceneryEntry _legacyType = {};
     std::vector<uint8_t> _frameOffsets;
 
 public:
-    explicit SmallSceneryObject(const rct_object_entry& entry)
-        : SceneryObject(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;
@@ -42,7 +37,7 @@ private:
     static std::vector<uint8_t> ReadFrameOffsets(OpenRCT2::IStream* stream);
     static std::vector<uint8_t> ReadJsonFrameOffsets(json_t& jFrameOffsets);
     void PerformFixes();
-    rct_object_entry GetScgPiratHeader();
-    rct_object_entry GetScgMineHeader();
-    rct_object_entry GetScgAbstrHeader();
+    ObjectEntryDescriptor GetScgPiratHeader() const;
+    ObjectEntryDescriptor GetScgMineHeader() const;
+    ObjectEntryDescriptor GetScgAbstrHeader() const;
 };

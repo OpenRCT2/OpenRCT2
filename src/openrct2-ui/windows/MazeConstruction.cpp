@@ -177,7 +177,7 @@ static void window_maze_construction_close(rct_window* w)
 
 static void window_maze_construction_entrance_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (tool_set(w, widgetIndex, TOOL_CROSSHAIR))
+    if (tool_set(w, widgetIndex, Tool::Crosshair))
         return;
 
     gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
@@ -292,7 +292,7 @@ static void window_maze_construction_mousedown(rct_window* w, rct_widgetindex wi
 static void window_maze_construction_update(rct_window* w)
 {
     auto ride = get_ride(_currentRideIndex);
-    if (ride == nullptr || ride->status != RIDE_STATUS_CLOSED)
+    if (ride == nullptr || ride->status != RideStatus::Closed)
     {
         window_close(w);
         return;
@@ -384,7 +384,7 @@ static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& scr
         if (ride != nullptr && ride_are_all_possible_entrances_and_exits_built(ride))
         {
             tool_cancel();
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
+            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
                 window_close_by_class(WC_RIDE_CONSTRUCTION);
         }
         else

@@ -8,12 +8,3 @@
  *****************************************************************************/
 
 #include "SceneryObject.h"
-
-void SceneryObject::SetPrimarySceneryGroup(const std::string& s)
-{
-    if (!s.empty())
-    {
-        auto sgEntry = ParseObjectEntry(s);
-        SetPrimarySceneryGroup(&sgEntry);
-    }
-}

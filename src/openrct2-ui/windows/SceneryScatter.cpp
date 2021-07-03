@@ -15,7 +15,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Scenery.h>
 
-enum WINDOW_CLEAR_SCENERY_WIDGET_IDX
+enum WINDOW_SCENERY_SCATTER_WIDGET_IDX
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -216,7 +216,8 @@ static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto preview = window_scenery_scatter_widgets[WIDX_PREVIEW];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + preview.midX(), w->windowPos.y + preview.midY() };
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gWindowSceneryScatterSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gWindowSceneryScatterSize,
+            { TextAlignment::CENTRE });
     }
 }

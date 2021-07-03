@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../peep/Staff.h"
-#include "../world/Sprite.h"
 #include "GameAction.h"
 
 /* rct2: 0x009929FC */
@@ -30,7 +29,7 @@ public:
     uint32_t peepSriteIndex = SPRITE_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(StaffHireNewAction, GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, StaffHireNewActionResult)
+DEFINE_GAME_ACTION(StaffHireNewAction, GameCommand::HireNewStaffMember, StaffHireNewActionResult)
 {
 private:
     bool _autoPosition{};

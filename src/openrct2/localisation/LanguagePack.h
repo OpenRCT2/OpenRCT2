@@ -24,7 +24,7 @@ struct ILanguagePack
     virtual void RemoveString(rct_string_id stringId) abstract;
     virtual void SetString(rct_string_id stringId, const std::string& str) abstract;
     virtual const utf8* GetString(rct_string_id stringId) const abstract;
-    virtual rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) abstract;
+    virtual rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) abstract;
     virtual rct_string_id GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) abstract;
 };
 

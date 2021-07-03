@@ -10,11 +10,13 @@
 #include "RideCreateAction.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/StringIds.h"
+#include "../object/ObjectManager.h"
 #include "../rct1/RCT1.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -93,7 +95,7 @@ GameActions::Result::Ptr RideCreateAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_RIDE_TYPE);
     }
 
-    const auto& colourPresets = RideTypeDescriptors[_rideType].ColourPresets;
+    const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;
     if (_colour1 >= colourPresets.count)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
@@ -155,28 +157,37 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
         vehicle = SPRITE_INDEX_NULL;
     }
 
-    ride->status = RIDE_STATUS_CLOSED;
+    ride->status = RideStatus::Closed;
     ride->lifecycle_flags = 0;
     ride->vehicle_change_timeout = 0;
     ride->num_stations = 0;
     ride->num_vehicles = 1;
     ride->proposed_num_vehicles = 32;
-    ride->max_trains = 32;
+    ride->max_trains = MAX_VEHICLES_PER_RIDE;
     ride->num_cars_per_train = 1;
     ride->proposed_num_cars_per_train = 12;
     ride->min_waiting_time = 10;
     ride->max_waiting_time = 60;
     ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
-    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT)
-    {
-        ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
-    }
-    ride->music = RideTypeDescriptors[ride->type].DefaultMusic;
 
-    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+    {
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        ride->music = objManager.GetLoadedObjectEntryIndex(rtd.DefaultMusic);
+        if (ride->music != OBJECT_ENTRY_INDEX_NULL)
+        {
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT))
+            {
+                ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+            }
+        }
+    }
+
+    const auto& operatingSettings = rtd.OperatingSettings;
     ride->operation_option = (operatingSettings.MinValue * 3 + operatingSettings.MaxValue) / 4;
 
-    ride->lift_hill_speed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
+    ride->lift_hill_speed = rtd.LiftData.minimum_speed;
 
     ride->measurement = {};
     ride->excitement = RIDE_RATING_UNDEFINED;
@@ -193,7 +204,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     {
         for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
         {
-            ride->price[i] = RideTypeDescriptors[ride->type].DefaultPrices[i];
+            ride->price[i] = rtd.DefaultPrices[i];
         }
 
         if (rideEntry->shop_item[0] == ShopItem::None)
@@ -245,7 +256,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
         }
 
         // Set the on-ride photo price, whether the ride has one or not (except shops).
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
         {
             money32 price = shop_item_get_common_price(ride, ShopItem::Photo);
             if (price != MONEY32_UNDEFINED)
@@ -283,10 +294,16 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     ride->no_primary_items_sold = 0;
     ride->no_secondary_items_sold = 0;
     ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
-    ride->income_per_hour = MONEY32_UNDEFINED;
-    ride->profit = MONEY32_UNDEFINED;
+    ride->income_per_hour = MONEY64_UNDEFINED;
+    ride->profit = MONEY64_UNDEFINED;
     ride->connected_message_throttle = 0;
-    ride->entrance_style = 0;
+
+    ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+    {
+        ride->entrance_style = gLastEntranceStyle;
+    }
+
     ride->num_block_brakes = 0;
     ride->guests_favourite = 0;
 

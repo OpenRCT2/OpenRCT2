@@ -24,8 +24,8 @@
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
+#include <openrct2/world/Entity.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Sprite.h>
 
 // clang-format off
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX
@@ -76,7 +76,7 @@ static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex wid
 static void window_game_bottom_toolbar_unknown05(rct_window *w);
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int32_t colour, int32_t x, int32_t y, uint8_t factor);
+static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor);
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi, rct_window *w);
@@ -109,7 +109,7 @@ rct_window* window_game_bottom_toolbar_open()
     int32_t screenHeight = context_get_height();
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
     uint32_t toolbar_height = line_height * 2 + 12;
 
     rct_window* window = WindowCreate(
@@ -198,8 +198,8 @@ static OpenRCT2String window_game_bottom_toolbar_tooltip(
     switch (widgetIndex)
     {
         case WIDX_MONEY:
-            ft.Add<int32_t>(gCurrentProfit);
-            ft.Add<int32_t>(gParkValue);
+            ft.Add<money64>(gCurrentProfit);
+            ft.Add<money64>(gParkValue);
             break;
         case WIDX_PARK_RATING:
             ft.Add<int16_t>(gParkRating);
@@ -222,7 +222,7 @@ static OpenRCT2String window_game_bottom_toolbar_tooltip(
 static void window_game_bottom_toolbar_invalidate(rct_window* w)
 {
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 2 + 12;
@@ -389,15 +389,17 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, rct_window* w)
 {
+    const auto topLeft = w->windowPos
+        + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
+                          window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + 1 };
+    const auto bottomRight = w->windowPos
+        + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
+                          window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1 };
     // Draw green inset rectangle on panel
-    gfx_fill_rect_inset(
-        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + 1,
-        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -406,14 +408,14 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(),
                                             w->windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
+        colour_t colour
+            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
+                   ? COLOUR_WHITE
+                   : NOT_TRANSLUCENT(w->colours[0]));
+        rct_string_id stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
         auto ft = Formatter();
-        ft.Add<money32>(gCash);
-        gfx_draw_string_centred(
-            dpi, (gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH), screenCoords,
-            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
-                 ? COLOUR_WHITE
-                 : NOT_TRANSLUCENT(w->colours[0])),
-            ft.Data());
+        ft.Add<money64>(gCash);
+        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     static constexpr const rct_string_id guestCountFormats[] = {
@@ -433,23 +435,24 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(), w->windowPos.y + widget.midY() - 6 };
 
-        gfx_draw_string_centred(
-            dpi,
-            gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier] : guestCountFormats[gGuestChangeModifier],
-            screenCoords,
-            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
-                 ? COLOUR_WHITE
-                 : NOT_TRANSLUCENT(w->colours[0])),
-            &gNumGuestsInPark);
+        rct_string_id stringId = gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier]
+                                                       : guestCountFormats[gGuestChangeModifier];
+        colour_t colour
+            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
+                   ? COLOUR_WHITE
+                   : NOT_TRANSLUCENT(w->colours[0]));
+        auto ft = Formatter();
+        ft.Add<uint32_t>(gNumGuestsInPark);
+        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     // Draw park rating
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
-        int32_t x = w->windowPos.x + widget.left + 11;
-        int32_t y = w->windowPos.y + widget.midY() - 5;
+        auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
-        window_game_bottom_toolbar_draw_park_rating(dpi, w, w->colours[3], x, y, std::max(10, ((gParkRating / 4) * 263) / 256));
+        window_game_bottom_toolbar_draw_park_rating(
+            dpi, w, w->colours[3], screenCoords, std::max(10, ((gParkRating / 4) * 263) / 256));
     }
 }
 
@@ -458,31 +461,37 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
  *  rct2: 0x0066C76C
  */
 static void window_game_bottom_toolbar_draw_park_rating(
-    rct_drawpixelinfo* dpi, rct_window* w, int32_t colour, int32_t x, int32_t y, uint8_t factor)
+    rct_drawpixelinfo* dpi, rct_window* w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
 {
     int16_t bar_width;
 
     bar_width = (factor * 114) / 255;
-    gfx_fill_rect_inset(dpi, x + 1, y + 1, x + 114, y + 9, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(
+        dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, w->colours[1], INSET_RECT_F_30);
     if (!(colour & IMAGE_TYPE_REMAP_2_PLUS) || game_is_paused() || (gCurrentRealTimeTicks & 8))
     {
         if (bar_width > 2)
-            gfx_fill_rect_inset(dpi, x + 2, y + 2, x + bar_width - 1, y + 8, colour & 0x7FFFFFFF, 0);
+        {
+            gfx_fill_rect_inset(
+                dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour & 0x7FFFFFFF, 0);
+        }
     }
 
     // Draw thumbs on the sides
-    gfx_draw_sprite(dpi, SPR_RATING_LOW, { x - 14, y }, 0);
-    gfx_draw_sprite(dpi, SPR_RATING_HIGH, { x + 114, y }, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_RATING_LOW), coords - ScreenCoordsXY{ 14, 0 });
+    gfx_draw_sprite(dpi, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
 }
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, rct_window* w)
 {
+    const auto topLeft = w->windowPos
+        + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
+                          window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + 1 };
+    const auto bottomRight = w->windowPos
+        + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
+                          window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1 };
     // Draw green inset rectangle on panel
-    gfx_fill_rect_inset(
-        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + 1,
-        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
 
     auto screenCoords = ScreenCoordsXY{ (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left
                                          + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
@@ -495,20 +504,19 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     int32_t month = date_get_month(gDateMonthsElapsed);
     int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
+    colour_t colour
+        = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
+               ? COLOUR_WHITE
+               : NOT_TRANSLUCENT(w->colours[0]));
     rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
     auto ft = Formatter();
     ft.Add<rct_string_id>(DateDayNames[day]);
     ft.Add<int16_t>(month);
     ft.Add<int16_t>(year);
-    gfx_draw_string_centred(
-        dpi, stringId, screenCoords,
-        (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
-             ? COLOUR_WHITE
-             : NOT_TRANSLUCENT(w->colours[0])),
-        ft.Data());
+    DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Temperature
     screenCoords = { w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
@@ -523,12 +531,12 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     }
     ft = Formatter();
     ft.Add<int16_t>(temperature);
-    gfx_draw_string_left(dpi, format, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 0, 6 });
+    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 0, 6 }, format, ft);
     screenCoords.x += 30;
 
     // Current weather
     auto currentWeatherSpriteId = climate_get_weather_sprite_id(gClimateCurrent);
-    gfx_draw_sprite(dpi, currentWeatherSpriteId, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
     // Next weather
     auto nextWeatherSpriteId = climate_get_weather_sprite_id(gClimateNext);
@@ -536,8 +544,8 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     {
         if (gClimateUpdateTimer < 960)
         {
-            gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, screenCoords + ScreenCoordsXY{ 27, 5 }, 0);
-            gfx_draw_sprite(dpi, nextWeatherSpriteId, screenCoords + ScreenCoordsXY{ 40, 0 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
+            gfx_draw_sprite(dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
         }
     }
 }
@@ -557,16 +565,16 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
 
     // Current news item
     gfx_fill_rect_inset(
-        dpi, w->windowPos.x + middleOutsetWidget->left + 1, w->windowPos.y + middleOutsetWidget->top + 1,
-        w->windowPos.x + middleOutsetWidget->right - 1, w->windowPos.y + middleOutsetWidget->bottom - 1, w->colours[2],
-        INSET_RECT_F_30);
+        dpi,
+        { w->windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
+          w->windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
+        w->colours[2], INSET_RECT_F_30);
 
     // Text
-    utf8* newsItemText = newsItem->Text;
+    const auto* newsItemText = newsItem->Text.c_str();
     auto screenCoords = w->windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
     width = middleOutsetWidget->width() - 62;
-    gfx_draw_string_centred_wrapped_partial(
-        dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->Ticks);
+    DrawNewsTicker(dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->Ticks);
 
     screenCoords = w->windowPos
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left,
@@ -574,7 +582,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
     switch (newsItem->Type)
     {
         case News::ItemType::Ride:
-            gfx_draw_sprite(dpi, SPR_RIDE, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_RIDE), screenCoords);
             break;
         case News::ItemType::PeepOnRide:
         case News::ItemType::Peep:
@@ -593,8 +601,8 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
                 return;
 
             auto clipCoords = ScreenCoordsXY{ 10, 19 };
-
-            if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
+            auto* staff = peep->As<Staff>();
+            if (staff != nullptr && staff->AssignedStaffType == StaffType::Entertainer)
             {
                 clipCoords.y += 3;
             }
@@ -603,48 +611,41 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             image_id_base += w->frame_no & 0xFFFFFFFC;
             image_id_base++;
 
-            uint32_t image_id = image_id_base;
-            image_id |= SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
+            auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
+            gfx_draw_sprite(&cliped_dpi, image_id, clipCoords);
 
-            gfx_draw_sprite(&cliped_dpi, image_id, clipCoords, 0);
-
-            if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
+            auto* guest = peep->As<Guest>();
+            if (guest != nullptr)
             {
-                image_id_base += 32;
-                image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
-
-                gfx_draw_sprite(&cliped_dpi, image_id_base, clipCoords, 0);
-            }
-            else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
-            {
-                image_id_base += 32;
-                image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
-
-                gfx_draw_sprite(&cliped_dpi, image_id_base, clipCoords, 0);
-            }
-            else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
-            {
-                image_id_base += 32;
-                image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
-
-                gfx_draw_sprite(&cliped_dpi, image_id_base, clipCoords, 0);
+                if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
+                {
+                    gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
+                }
+                else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
+                {
+                    gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
+                }
+                else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
+                {
+                    gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, guest->HatColour), clipCoords);
+                }
             }
             break;
         }
         case News::ItemType::Money:
-            gfx_draw_sprite(dpi, SPR_FINANCE, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenCoords);
             break;
         case News::ItemType::Research:
-            gfx_draw_sprite(dpi, (newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
             break;
         case News::ItemType::Peeps:
-            gfx_draw_sprite(dpi, SPR_GUESTS, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_GUESTS), screenCoords);
             break;
         case News::ItemType::Award:
-            gfx_draw_sprite(dpi, SPR_AWARD, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_AWARD), screenCoords);
             break;
         case News::ItemType::Graph:
-            gfx_draw_sprite(dpi, SPR_GRAPH, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_GRAPH), screenCoords);
             break;
         case News::ItemType::Null:
         case News::ItemType::Blank:
@@ -658,12 +659,13 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     rct_widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 
     gfx_fill_rect_inset(
-        dpi, w->windowPos.x + middleOutsetWidget->left + 1, w->windowPos.y + middleOutsetWidget->top + 1,
-        w->windowPos.x + middleOutsetWidget->right - 1, w->windowPos.y + middleOutsetWidget->bottom - 1, w->colours[1],
-        INSET_RECT_F_30);
+        dpi,
+        { w->windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
+          w->windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
+        w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     ScreenCoordsXY middleWidgetCoords(
         w->windowPos.x + middleOutsetWidget->midX(), w->windowPos.y + middleOutsetWidget->top + line_height + 1);
@@ -675,12 +677,13 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     std::memcpy(&stringId, ft.Data(), sizeof(rct_string_id));
     if (stringId == STR_NONE)
     {
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, w->colours[0]);
+        DrawTextWrapped(
+            dpi, middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, ft, { w->colours[0], TextAlignment::CENTRE });
     }
     else
     {
         // Show tooltip in bottom toolbar
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), middleWidgetCoords, width, STR_STRINGID, w->colours[0]);
+        DrawTextWrapped(dpi, middleWidgetCoords, width, STR_STRINGID, ft, { w->colours[0], TextAlignment::CENTRE });
     }
 }
 

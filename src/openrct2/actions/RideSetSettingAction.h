@@ -26,10 +26,10 @@ enum class RideSetSetting : uint8_t
     RideType,
 };
 
-DEFINE_GAME_ACTION(RideSetSettingAction, GAME_COMMAND_SET_RIDE_SETTING, GameActions::Result)
+DEFINE_GAME_ACTION(RideSetSettingAction, GameCommand::SetRideSetting, GameActions::Result)
 {
 private:
-    NetworkRideId_t _rideIndex{ RideIdNewNull };
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
     RideSetSetting _setting{};
     uint8_t _value{};
 

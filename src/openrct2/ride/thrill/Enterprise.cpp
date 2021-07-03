@@ -11,9 +11,10 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 /** rct2: 0x008A2ABC */
 static void paint_enterprise_structure(
@@ -34,7 +35,7 @@ static void paint_enterprise_structure(
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
         session->CurrentlyDrawnItem = vehicle;
     }
@@ -42,7 +43,7 @@ static void paint_enterprise_structure(
     uint32_t imageOffset = tileElement->GetDirectionWithOffset(session->CurrentRotation);
     if (vehicle != nullptr)
     {
-        imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + session->CurrentRotation) % 4);
+        imageOffset = (vehicle->Pitch << 2) + (((vehicle->sprite_direction >> 3) + session->CurrentRotation) % 4);
     }
 
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
@@ -56,7 +57,7 @@ static void paint_enterprise_structure(
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    if (dpi->zoom_level == 0 && imageOffset < 12 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (dpi->zoom_level <= 0 && imageOffset < 12 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t i = 0; i < 15; i++)
         {
@@ -73,7 +74,7 @@ static void paint_enterprise_structure(
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x008A1584 */
@@ -165,7 +166,7 @@ static void paint_enterprise(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_4_X_4)
+    if (trackType != TrackElemType::FlatTrack4x4)
     {
         return nullptr;
     }

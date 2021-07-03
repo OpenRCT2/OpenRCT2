@@ -10,9 +10,10 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 struct haunted_house_bound_box
 {
@@ -51,9 +52,9 @@ static void paint_haunted_house_structure(
     auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
-        frameNum = vehicle->vehicle_sprite_type;
+        frameNum = vehicle->Pitch;
     }
 
     uint32_t imageId = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];
@@ -87,7 +88,7 @@ static void paint_haunted_house_structure(
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /**
@@ -157,7 +158,7 @@ static void paint_haunted_house(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_3_X_3)
+    if (trackType != TrackElemType::FlatTrack3x3)
     {
         return nullptr;
     }

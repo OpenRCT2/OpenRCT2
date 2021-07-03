@@ -53,10 +53,11 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, O
     try
     {
         RCT2LanguageId rct2LanguageId;
-        while ((rct2LanguageId = static_cast<RCT2LanguageId>(stream->ReadValue<uint8_t>())) != RCT2_LANGUAGE_ID_END)
+        while ((rct2LanguageId = static_cast<RCT2LanguageId>(stream->ReadValue<uint8_t>())) != RCT2LanguageId::End)
         {
-            uint8_t languageId = (rct2LanguageId <= RCT2_LANGUAGE_ID_PORTUGUESE) ? RCT2ToOpenRCT2LanguageId[rct2LanguageId]
-                                                                                 : static_cast<uint8_t>(LANGUAGE_UNDEFINED);
+            uint8_t languageId = (EnumValue(rct2LanguageId) <= EnumValue(RCT2LanguageId::Portuguese))
+                ? RCT2ToOpenRCT2LanguageId[EnumValue(rct2LanguageId)]
+                : static_cast<uint8_t>(LANGUAGE_UNDEFINED);
             std::string stringAsWin1252 = stream->ReadStdString();
             auto stringAsUtf8 = rct2_to_utf8(stringAsWin1252, rct2LanguageId);
 
@@ -67,7 +68,7 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, O
                 entry.Id = id;
                 entry.LanguageId = languageId;
                 entry.Text = stringAsUtf8;
-                _strings.push_back(entry);
+                _strings.push_back(std::move(entry));
             }
         }
     }
@@ -148,7 +149,7 @@ void StringTable::SetString(ObjectStringID id, uint8_t language, const std::stri
     entry.Id = id;
     entry.LanguageId = language;
     entry.Text = text;
-    _strings.push_back(entry);
+    _strings.push_back(std::move(entry));
 }
 
 void StringTable::Sort()

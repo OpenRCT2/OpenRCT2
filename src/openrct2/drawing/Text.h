@@ -10,6 +10,9 @@
 #pragma once
 
 #include "../common.h"
+#include "../interface/Colour.h"
+#include "../localisation/Formatter.h"
+#include "Font.h"
 
 struct ScreenCoordsXY;
 struct rct_drawpixelinfo;
@@ -22,12 +25,103 @@ enum class TextAlignment
     RIGHT
 };
 
+enum class TextUnderline
+{
+    Off,
+    On,
+};
+
 struct TextPaint
 {
-    uint8_t Colour = 0;
-    int16_t SpriteBase = 0;
-    bool UnderlineText = false;
+    colour_t Colour = COLOUR_BLACK;
+    FontSpriteBase SpriteBase = FontSpriteBase::MEDIUM;
+    TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;
+
+    TextPaint()
+    {
+    }
+    TextPaint(colour_t colour)
+        : Colour(colour)
+    {
+    }
+    TextPaint(FontSpriteBase spriteBase)
+        : SpriteBase(spriteBase)
+    {
+    }
+    TextPaint(TextUnderline underlineText)
+        : UnderlineText(underlineText)
+    {
+    }
+    TextPaint(TextAlignment alignment)
+        : Alignment(alignment)
+    {
+    }
+
+    TextPaint(colour_t colour, FontSpriteBase spriteBase)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+    {
+    }
+    TextPaint(colour_t colour, TextUnderline underlineText)
+        : Colour(colour)
+        , UnderlineText(underlineText)
+    {
+    }
+    TextPaint(colour_t colour, TextAlignment alignment)
+        : Colour(colour)
+        , Alignment(alignment)
+    {
+    }
+
+    TextPaint(FontSpriteBase spriteBase, TextUnderline underlineText)
+        : SpriteBase(spriteBase)
+        , UnderlineText(underlineText)
+    {
+    }
+    TextPaint(FontSpriteBase spriteBase, TextAlignment alignment)
+        : SpriteBase(spriteBase)
+        , Alignment(alignment)
+    {
+    }
+    TextPaint(TextUnderline underlineText, TextAlignment alignment)
+        : UnderlineText(underlineText)
+        , Alignment(alignment)
+    {
+    }
+
+    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextUnderline underlineText)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+        , UnderlineText(underlineText)
+    {
+    }
+    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextAlignment alignment)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+        , Alignment(alignment)
+    {
+    }
+    TextPaint(colour_t colour, TextUnderline underlineText, TextAlignment alignment)
+        : Colour(colour)
+        , UnderlineText(underlineText)
+        , Alignment(alignment)
+    {
+    }
+    TextPaint(FontSpriteBase spriteBase, TextUnderline underlineText, TextAlignment alignment)
+        : SpriteBase(spriteBase)
+        , UnderlineText(underlineText)
+        , Alignment(alignment)
+    {
+    }
+
+    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextUnderline underlineText, TextAlignment alignment)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+        , UnderlineText(underlineText)
+        , Alignment(alignment)
+    {
+    }
 };
 
 class StaticLayout
@@ -51,11 +145,16 @@ public:
 };
 
 void DrawTextBasic(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, colour_t colour,
-    TextAlignment alignment = TextAlignment::LEFT, bool underline = false);
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft = {},
+    TextPaint textPaint = {});
 void DrawTextBasic(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, colour_t colour,
-    TextAlignment alignment = TextAlignment::LEFT, bool underline = false);
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, TextPaint textPaint = {});
 void DrawTextEllipsised(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
-    colour_t colour, TextAlignment alignment = TextAlignment::LEFT, bool underline = false);
+    TextPaint textPaint = {});
+int32_t DrawTextWrapped(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft = {},
+    TextPaint textPaint = {});
+int32_t DrawTextWrapped(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const void* args,
+    TextPaint textPaint = {});

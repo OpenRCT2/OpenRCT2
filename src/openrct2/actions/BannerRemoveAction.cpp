@@ -13,7 +13,10 @@
 #include "../world/Banner.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
+#include "../world/TileElementsView.h"
 #include "GameAction.h"
+
+using namespace OpenRCT2;
 
 BannerRemoveAction::BannerRemoveAction(const CoordsXYZD& loc)
     : _loc(loc)
@@ -58,23 +61,24 @@ GameActions::Result::Ptr BannerRemoveAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
-    if (bannerElement->GetIndex() >= MAX_BANNERS || bannerElement->GetIndex() == BANNER_INDEX_NULL)
+    auto bannerIndex = bannerElement->GetIndex();
+    if (bannerIndex == BANNER_INDEX_NULL)
     {
-        log_error("Invalid banner index. index = ", bannerElement->GetIndex());
+        log_error("Invalid banner index. index = ", bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
     auto banner = bannerElement->GetBanner();
     if (banner == nullptr)
     {
-        log_error("Invalid banner index. index = ", bannerElement->GetIndex());
+        log_error("Invalid banner index. index = ", bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
-    rct_scenery_entry* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = get_banner_entry(banner->type);
     if (bannerEntry != nullptr)
     {
-        res->Cost = -((bannerEntry->banner.price * 3) / 4);
+        res->Cost = -((bannerEntry->price * 3) / 4);
     }
 
     return res;
@@ -96,26 +100,27 @@ GameActions::Result::Ptr BannerRemoveAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
-    if (bannerElement->GetIndex() >= MAX_BANNERS || bannerElement->GetIndex() == BANNER_INDEX_NULL)
+    auto bannerIndex = bannerElement->GetIndex();
+    if (bannerIndex == BANNER_INDEX_NULL)
     {
-        log_error("Invalid banner index. index = ", bannerElement->GetIndex());
+        log_error("Invalid banner index. index = ", bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
     auto banner = bannerElement->GetBanner();
     if (banner == nullptr)
     {
-        log_error("Invalid banner index. index = ", bannerElement->GetIndex());
+        log_error("Invalid banner index. index = ", bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
     }
 
-    rct_scenery_entry* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = get_banner_entry(banner->type);
     if (bannerEntry != nullptr)
     {
-        res->Cost = -((bannerEntry->banner.price * 3) / 4);
+        res->Cost = -((bannerEntry->price * 3) / 4);
     }
 
-    tile_element_remove_banner_entry(reinterpret_cast<TileElement*>(bannerElement));
+    reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();
     map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
     bannerElement->Remove();
 
@@ -124,24 +129,18 @@ GameActions::Result::Ptr BannerRemoveAction::Execute() const
 
 BannerElement* BannerRemoveAction::GetBannerElementAt() const
 {
-    TileElement* tileElement = map_get_first_element_at(_loc);
-
     // Find the banner element at known z and position
-    do
+    for (auto* bannerElement : TileElementsView<BannerElement>(_loc))
     {
-        if (tileElement == nullptr)
-            break;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
+        if (bannerElement->GetBaseZ() != _loc.z)
             continue;
-        if (tileElement->GetBaseZ() != _loc.z)
+        if (bannerElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             continue;
-        if (tileElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
-            continue;
-        if (tileElement->AsBanner()->GetPosition() != _loc.direction)
+        if (bannerElement->GetPosition() != _loc.direction)
             continue;
 
-        return tileElement->AsBanner();
-    } while (!(tileElement++)->IsLastForTile());
+        return bannerElement;
+    }
 
     return nullptr;
 }

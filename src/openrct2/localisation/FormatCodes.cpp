@@ -20,7 +20,6 @@ static const std::unordered_map<std::string_view, FormatToken> FormatTokenMap = 
     { "NEWLINE",              FormatToken::Newline,             },
     { "NEWLINE_SMALLER",      FormatToken::NewlineSmall,        },
     { "TINYFONT",             FormatToken::FontTiny,            },
-    { "BIGFONT",              FormatToken::FontBig,             },
     { "MEDIUMFONT",           FormatToken::FontMedium,          },
     { "SMALLFONT",            FormatToken::FontSmall,           },
     { "OUTLINE",              FormatToken::OutlineEnable,       },
@@ -65,7 +64,7 @@ static const std::unordered_map<std::string_view, FormatToken> FormatTokenMap = 
 };
 // clang-format on
 
-static std::string_view GetFormatTokenStringWithBraces(FormatToken token)
+std::string_view GetFormatTokenStringWithBraces(FormatToken token)
 {
     // Ensure cache is thread safe
     static std::mutex mutex;

@@ -27,6 +27,7 @@
 #    include "../Context.h"
 #    include "../Game.h"
 #    include "../OpenRCT2.h"
+#    include "../ParkFile.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
@@ -35,7 +36,6 @@
 #    include "../interface/Screenshot.h"
 #    include "../localisation/Language.h"
 #    include "../object/ObjectManager.h"
-#    include "../rct2/S6Exporter.h"
 #    include "../scenario/Scenario.h"
 #    include "../util/SawyerCoding.h"
 #    include "../util/Util.h"
@@ -52,19 +52,21 @@ const wchar_t* _wszCommitSha1Short = WSZ("");
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
+#    define BACKTRACE_TOKEN L"e650b4d649dc93a37d98b8611fa47b8732c6c08386979c22b5c3a545fea65f76"
+
 // Note: uploading gzipped crash dumps manually requires specifying
 // 'Content-Encoding: gzip' header in HTTP request, but we cannot do that,
 // so just hope the file name with '.gz' suffix is enough.
-// For docs on uplading to backtrace.io check
+// For docs on uploading to backtrace.io check
 // https://documentation.backtrace.io/product_integration_minidump_breakpad/
 static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, int& error, std::wstring& response)
 {
-    for (auto file : files)
+    for (const auto& file : files)
     {
         wprintf(L"files[%s] = %s\n", file.first.c_str(), file.second.c_str());
     }
     std::wstring url(L"https://openrct2.sp.backtrace.io:6098/"
-                     L"post?format=minidump&token=98675313b384d2fb1d3d3ce8ad9cab3ed61b9e08186ae47b0e3342adc3ff0714");
+                     L"post?format=minidump&token=" BACKTRACE_TOKEN);
     std::map<std::wstring, std::wstring> parameters;
     parameters[L"product_name"] = L"openrct2";
     // In case of releases this can be empty
@@ -112,13 +114,11 @@ static bool OnCrash(
     wchar_t dumpFilePath[MAX_PATH];
     wchar_t saveFilePath[MAX_PATH];
     wchar_t configFilePath[MAX_PATH];
-    wchar_t saveFilePathGZIP[MAX_PATH];
     wchar_t recordFilePathNew[MAX_PATH];
     swprintf_s(dumpFilePath, std::size(dumpFilePath), L"%s\\%s.dmp", dumpPath, miniDumpId);
-    swprintf_s(saveFilePath, std::size(saveFilePath), L"%s\\%s.sv6", dumpPath, miniDumpId);
+    swprintf_s(saveFilePath, std::size(saveFilePath), L"%s\\%s.park", dumpPath, miniDumpId);
     swprintf_s(configFilePath, std::size(configFilePath), L"%s\\%s.ini", dumpPath, miniDumpId);
-    swprintf_s(saveFilePathGZIP, std::size(saveFilePathGZIP), L"%s\\%s.sv6.gz", dumpPath, miniDumpId);
-    swprintf_s(recordFilePathNew, std::size(recordFilePathNew), L"%s\\%s.sv6r", dumpPath, miniDumpId);
+    swprintf_s(recordFilePathNew, std::size(recordFilePathNew), L"%s\\%s.parkrep", dumpPath, miniDumpId);
 
     wchar_t dumpFilePathNew[MAX_PATH];
     swprintf_s(
@@ -170,7 +170,7 @@ static bool OnCrash(
     auto saveFilePathUTF8 = String::ToUtf8(saveFilePath);
     try
     {
-        auto exporter = std::make_unique<S6Exporter>();
+        auto exporter = std::make_unique<ParkFileExporter>();
 
         // Make sure the save is using the current viewport settings.
         viewport_set_saved_view();
@@ -183,8 +183,7 @@ static bool OnCrash(
         auto& objManager = ctx->GetObjectManager();
         exporter->ExportObjectsList = objManager.GetPackableObjects();
 
-        exporter->Export();
-        exporter->SaveGame(saveFilePathUTF8.c_str());
+        exporter->Export(saveFilePathUTF8.c_str());
         savedGameDumped = true;
     }
     catch (const std::exception&)
@@ -194,19 +193,7 @@ static bool OnCrash(
     // Compress the save
     if (savedGameDumped)
     {
-        FILE* input = _wfopen(saveFilePath, L"rb");
-        FILE* dest = _wfopen(saveFilePathGZIP, L"wb");
-
-        if (util_gzip_compress(input, dest))
-        {
-            uploadFiles[L"attachment_park.sv6.gz"] = saveFilePathGZIP;
-        }
-        else
-        {
-            uploadFiles[L"attachment_park.sv6"] = saveFilePath;
-        }
-        fclose(input);
-        fclose(dest);
+        uploadFiles[L"attachment_park.park"] = saveFilePath;
     }
 
     auto configFilePathUTF8 = String::ToUtf8(configFilePath);
@@ -224,11 +211,11 @@ static bool OnCrash(
 
     if (with_record)
     {
-        auto sv6rPathW = String::ToWideChar(gSilentRecordingName);
-        bool record_copied = CopyFileW(sv6rPathW.c_str(), recordFilePathNew, true);
+        auto parkReplayPathW = String::ToWideChar(gSilentRecordingName);
+        bool record_copied = CopyFileW(parkReplayPathW.c_str(), recordFilePathNew, true);
         if (record_copied)
         {
-            uploadFiles[L"attachment_replay.sv6r"] = recordFilePathNew;
+            uploadFiles[L"attachment_replay.parkrep"] = recordFilePathNew;
         }
         else
         {
@@ -274,7 +261,7 @@ static bool OnCrash(
         }
         else
         {
-            MessageBoxW(nullptr, L"Dump uploaded succesfully.", WSZ(OPENRCT2_NAME), MB_OK | MB_ICONINFORMATION);
+            MessageBoxW(nullptr, L"Dump uploaded successfully.", WSZ(OPENRCT2_NAME), MB_OK | MB_ICONINFORMATION);
         }
     }
     HRESULT coInitializeResult = CoInitialize(nullptr);
@@ -292,7 +279,6 @@ static bool OnCrash(
         if (savedGameDumped)
         {
             files[numFiles++] = ILCreateFromPathW(saveFilePath);
-            files[numFiles++] = ILCreateFromPathW(saveFilePathGZIP);
         }
         if (with_record)
         {

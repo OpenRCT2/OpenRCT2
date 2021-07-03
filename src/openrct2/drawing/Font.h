@@ -12,6 +12,8 @@
 
 #include "../common.h"
 
+constexpr const uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
+
 enum
 {
     FONT_SIZE_TINY = 2,
@@ -20,15 +22,14 @@ enum
     FONT_SIZE_COUNT = 3
 };
 
-enum
+enum class FontSpriteBase : int16_t
 {
-    FONT_SPRITE_GLYPH_COUNT = 224,
-    FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK = -2,
-    FONT_SPRITE_BASE_MEDIUM_DARK = -1,
+    MEDIUM_EXTRA_DARK = -2,
+    MEDIUM_DARK = -1,
 
-    FONT_SPRITE_BASE_TINY = FONT_SIZE_TINY * FONT_SPRITE_GLYPH_COUNT,
-    FONT_SPRITE_BASE_SMALL = FONT_SIZE_SMALL * FONT_SPRITE_GLYPH_COUNT,
-    FONT_SPRITE_BASE_MEDIUM = FONT_SIZE_MEDIUM * FONT_SPRITE_GLYPH_COUNT,
+    TINY = FONT_SIZE_TINY * FONT_SPRITE_GLYPH_COUNT,
+    SMALL = FONT_SIZE_SMALL * FONT_SPRITE_GLYPH_COUNT,
+    MEDIUM = FONT_SIZE_MEDIUM * FONT_SPRITE_GLYPH_COUNT,
 };
 
 #ifndef NO_TTF
@@ -58,12 +59,12 @@ extern TTFFontSetDescriptor* gCurrentTTFFontSet;
 
 void font_sprite_initialise_characters();
 int32_t font_sprite_get_codepoint_offset(int32_t codepoint);
-int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoint);
-int32_t font_sprite_get_codepoint_sprite(int32_t fontSpriteBase, int32_t codepoint);
-int32_t font_get_font_index_from_sprite_base(uint16_t spriteBase);
-int32_t font_get_size_from_sprite_base(uint16_t spriteBase);
-int32_t font_get_line_height(int32_t fontSpriteBase);
-int32_t font_get_line_height_small(int32_t fontSpriteBase);
+int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t codepoint);
+int32_t font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint);
+int32_t font_get_font_index_from_sprite_base(FontSpriteBase spriteBase);
+int32_t font_get_size_from_sprite_base(FontSpriteBase spriteBase);
+int32_t font_get_line_height(FontSpriteBase fontSpriteBase);
+int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase);
 bool font_supports_string_sprite(const utf8* text);
 bool font_supports_string_ttf(const utf8* text, int32_t fontSize);
 bool font_supports_string(const utf8* text, int32_t fontSize);

@@ -19,7 +19,7 @@
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
-TrackRemoveAction::TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin)
+TrackRemoveAction::TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin)
     : _trackType(trackType)
     , _sequence(sequence)
     , _origin(origin)
@@ -134,7 +134,7 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
         log_warning("Ride type not found. ride type = %d.", ride->type);
         return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
     }
-    const rct_preview_track* trackBlock = get_track_def_from_ride(ride, trackType);
+    const rct_preview_track* trackBlock = TrackBlocks[trackType];
     trackBlock += tileElement->AsTrack()->GetSequenceIndex();
 
     auto startLoc = _origin;
@@ -150,7 +150,7 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
 
     money32 cost = 0;
 
-    trackBlock = get_track_def_from_ride(ride, trackType);
+    trackBlock = TrackBlocks[trackType];
     for (; trackBlock->index != 255; trackBlock++)
     {
         rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
@@ -200,16 +200,7 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
             return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
-        int32_t entranceDirections;
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-        {
-            entranceDirections = FlatRideTrackSequenceProperties[trackType][0];
-        }
-        else
-        {
-            entranceDirections = TrackSequenceProperties[trackType][0];
-        }
-
+        int32_t entranceDirections = TrackSequenceProperties[trackType][0];
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
@@ -231,18 +222,11 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
             _support_height = 10;
         }
 
-        cost += (_support_height / 2) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice;
+        cost += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
     }
 
-    money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-    {
-        price *= FlatRideTrackPricing[trackType];
-    }
-    else
-    {
-        price *= TrackPricing[trackType];
-    }
+    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    price *= TrackPricing[trackType];
     price >>= 16;
     price = (price + cost) / 2;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
@@ -330,7 +314,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
         log_warning("Ride not found. ride index = %d.", rideIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
     }
-    const rct_preview_track* trackBlock = get_track_def_from_ride(ride, trackType);
+    const rct_preview_track* trackBlock = TrackBlocks[trackType];
     trackBlock += tileElement->AsTrack()->GetSequenceIndex();
 
     auto startLoc = _origin;
@@ -345,7 +329,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
     res->Position.z = startLoc.z;
     money32 cost = 0;
 
-    trackBlock = get_track_def_from_ride(ride, trackType);
+    trackBlock = TrackBlocks[trackType];
     for (; trackBlock->index != 255; trackBlock++)
     {
         rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
@@ -390,16 +374,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
             return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
-        int32_t entranceDirections;
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-        {
-            entranceDirections = FlatRideTrackSequenceProperties[trackType][0];
-        }
-        else
-        {
-            entranceDirections = TrackSequenceProperties[trackType][0];
-        }
-
+        int32_t entranceDirections = TrackSequenceProperties[trackType][0];
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
@@ -421,12 +396,12 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
             _support_height = 10;
         }
 
-        cost += (_support_height / 2) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice;
+        cost += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
 
         // If the removed tile is a station modify station properties.
         // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
-            && !(ride->status == RIDE_STATUS_SIMULATING && tileElement->Flags & TILE_ELEMENT_FLAG_GHOST)
+            && !(ride->status == RideStatus::Simulating && tileElement->Flags & TILE_ELEMENT_FLAG_GHOST)
             && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, GAME_COMMAND_FLAG_APPLY))
@@ -435,7 +410,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
             }
         }
 
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER))
         {
             surfaceElement->SetHasTrackThatNeedsWater(false);
         }
@@ -497,15 +472,8 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
         }
     }
 
-    money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-    {
-        price *= FlatRideTrackPricing[trackType];
-    }
-    else
-    {
-        price *= TrackPricing[trackType];
-    }
+    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    price *= TrackPricing[trackType];
     price >>= 16;
     price = (price + cost) / 2;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)

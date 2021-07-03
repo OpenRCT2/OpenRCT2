@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(WaterSetHeightAction, GAME_COMMAND_SET_WATER_HEIGHT, GameActions::Result)
+DEFINE_GAME_ACTION(WaterSetHeightAction, GameCommand::SetWaterHeight, GameActions::Result)
 {
 private:
     CoordsXY _coords;

@@ -9,6 +9,7 @@
 
 #include "Console.hpp"
 
+#include "../Context.h"
 #include "../platform/platform.h"
 
 #include <cstdio>
@@ -49,10 +50,16 @@ namespace Console
     void WriteLine(const utf8* format, ...)
     {
         va_list args;
-
         va_start(args, format);
-        auto formatLn = std::string(format) + "\n";
-        vfprintf(stdout, formatLn.c_str(), args);
+
+        char buffer[4096];
+        std::vsnprintf(buffer, sizeof(buffer), format, args);
+        auto ctx = OpenRCT2::GetContext();
+        if (ctx != nullptr)
+            ctx->WriteLine(buffer);
+        else
+            std::printf("%s\n", buffer);
+
         va_end(args);
     }
 
@@ -92,8 +99,13 @@ namespace Console
 
         void WriteLine_VA(const utf8* format, va_list args)
         {
-            auto formatLn = std::string(format) + "\n";
-            vfprintf(stdout, formatLn.c_str(), args);
+            char buffer[4096];
+            std::vsnprintf(buffer, sizeof(buffer), format, args);
+            auto ctx = OpenRCT2::GetContext();
+            if (ctx != nullptr)
+                ctx->WriteErrorLine(buffer);
+            else
+                std::printf("%s\n", buffer);
         }
     } // namespace Error
 } // namespace Console

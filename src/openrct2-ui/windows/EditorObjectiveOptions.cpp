@@ -267,7 +267,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
     if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
         spriteIndex += (w->frame_no / 4) % 16;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
+    gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
     if (!(w->disabled_widgets & (1 << WIDX_TAB_2)))
@@ -277,7 +277,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
         if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
             spriteIndex += (w->frame_no / 4) % 16;
 
-        gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
+        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 }
 
@@ -375,11 +375,12 @@ static void window_editor_objective_options_main_mouseup(rct_window* w, rct_widg
             break;
         }
         case WIDX_SCENARIO_NAME:
-            window_text_input_raw_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gS6Info.name, 64);
+            window_text_input_raw_open(
+                w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gScenarioName.c_str(), 64);
             break;
         case WIDX_DETAILS:
             window_text_input_raw_open(
-                w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, gS6Info.details, 256);
+                w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, gScenarioDetails.c_str(), 256);
             break;
     }
 }
@@ -448,7 +449,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
         w->colours[1], 0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 3);
-    Dropdown::SetChecked(gS6Info.category, true);
+    Dropdown::SetChecked(gScenarioCategory, true);
 }
 
 static void window_editor_objective_options_arg_1_increase(rct_window* w)
@@ -654,9 +655,9 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
                 window_editor_objective_options_set_objective(w, newObjectiveType);
             break;
         case WIDX_CATEGORY_DROPDOWN:
-            if (gS6Info.category != static_cast<uint8_t>(dropdownIndex))
+            if (gScenarioCategory != static_cast<uint8_t>(dropdownIndex))
             {
-                gS6Info.category = static_cast<uint8_t>(dropdownIndex);
+                gScenarioCategory = static_cast<SCENARIO_CATEGORY>(dropdownIndex);
                 w->Invalidate();
             }
             break;
@@ -708,19 +709,19 @@ static void window_editor_objective_options_main_textinput(rct_window* w, rct_wi
             auto action = ParkSetNameAction(text);
             GameActions::Execute(&action);
 
-            if (gS6Info.name[0] == '\0')
+            if (gScenarioName.empty())
             {
                 auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                String::Set(gS6Info.name, sizeof(gS6Info.name), park.Name.c_str());
+                gScenarioName = park.Name;
             }
             break;
         }
         case WIDX_SCENARIO_NAME:
-            safe_strcpy(gS6Info.name, text, std::size(gS6Info.name));
+            gScenarioName = text;
             w->Invalidate();
             break;
         case WIDX_DETAILS:
-            safe_strcpy(gS6Info.details, text, std::size(gS6Info.details));
+            gScenarioDetails = text;
             w->Invalidate();
             break;
     }
@@ -790,19 +791,19 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 {
     int32_t width;
     rct_string_id stringId;
-    uint32_t arg;
+    uint64_t arg;
 
     WindowDrawWidgets(w, dpi);
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     // Objective label
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_OBJECTIVE].top };
-    gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_WINDOW);
 
     // Objective value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE].left + 1, w->widgets[WIDX_OBJECTIVE].top };
     stringId = ObjectiveDropdownOptionNames[gScenarioObjective.Type];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WindowWidgetType::Empty)
     {
@@ -831,7 +832,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 stringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
                 break;
         }
-        gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, stringId);
 
         // Objective argument 1 value
         screenCoords = w->windowPos
@@ -863,20 +864,20 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 arg = gScenarioObjective.Currency;
                 break;
         }
-        gfx_draw_string_left(dpi, stringId, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, stringId, &arg, COLOUR_BLACK);
     }
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_2].type != WindowWidgetType::Empty)
     {
         // Objective argument 2 label
         screenCoords = w->windowPos + ScreenCoordsXY{ 28, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
-        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_DATE);
 
         // Objective argument 2 value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
         arg = (gScenarioObjective.Year * MONTH_COUNT) - 1;
-        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg);
     }
 
     // Park name
@@ -890,7 +891,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(parkName);
-        DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft);
     }
 
     // Scenario name
@@ -899,12 +900,12 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
-    ft.Add<const char*>(gS6Info.name);
-    DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft, COLOUR_BLACK);
+    ft.Add<const char*>(gScenarioName.c_str());
+    DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft);
 
     // Scenario details label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_DETAILS].top };
-    gfx_draw_string_left(dpi, STR_WINDOW_PARK_DETAILS, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_PARK_DETAILS);
 
     // Scenario details value
     screenCoords = w->windowPos + ScreenCoordsXY{ 16, w->widgets[WIDX_DETAILS].top + 10 };
@@ -912,17 +913,17 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 
     ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
-    ft.Add<const char*>(gS6Info.details);
-    gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
+    ft.Add<const char*>(gScenarioDetails.c_str());
+    DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft);
 
     // Scenario category label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CATEGORY].top };
-    gfx_draw_string_left(dpi, STR_WINDOW_SCENARIO_GROUP, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_SCENARIO_GROUP);
 
     // Scenario category value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CATEGORY].left + 1, w->widgets[WIDX_CATEGORY].top };
-    stringId = ScenarioCategoryStringIds[gS6Info.category];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
+    stringId = ScenarioCategoryStringIds[gScenarioCategory];
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
 }
 
 /**
@@ -1062,9 +1063,8 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
     WindowDrawWidgets(w, dpi);
     window_editor_objective_options_draw_tab_images(w, dpi);
 
-    gfx_draw_string_left(
-        dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK,
-        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PAGE_BACKGROUND].top + 3 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PAGE_BACKGROUND].top + 3 }, STR_WINDOW_PRESERVATION_ORDER);
 }
 
 /**
@@ -1084,7 +1084,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             continue;
 
         // Checkbox
-        gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], INSET_RECT_F_E0);
+        gfx_fill_rect_inset(dpi, { { 2, y }, { 11, y + 10 } }, w->colours[1], INSET_RECT_F_E0);
 
         // Highlighted
         auto stringId = STR_BLACK_STRING;
@@ -1100,16 +1100,18 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
             {
-                gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
-                                                                                  : FONT_SPRITE_BASE_MEDIUM_DARK;
-                gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, { 2, y });
+                FontSpriteBase fontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FontSpriteBase::MEDIUM_EXTRA_DARK
+                                                                                         : FontSpriteBase::MEDIUM_DARK;
+                gfx_draw_string(
+                    dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
+                    { static_cast<colour_t>(w->colours[1] & 0x7F), fontSpriteBase });
             }
 
             // Ride name
 
             Formatter ft;
             ride->FormatNameTo(ft);
-            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, { 15, y });
+            DrawTextBasic(dpi, { 15, y }, stringId, ft);
         }
     }
 }

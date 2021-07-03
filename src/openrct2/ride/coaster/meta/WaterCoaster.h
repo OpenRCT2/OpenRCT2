@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
     SET_FIELD(UpkeepCosts, { 60, 20, 80, 8, 3, 10 }),
     SET_FIELD(BuildCosts, { 55, 4, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo4),
     SET_FIELD(BonusValue, 60),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

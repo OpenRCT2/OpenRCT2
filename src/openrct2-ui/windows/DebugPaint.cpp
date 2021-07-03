@@ -130,7 +130,7 @@ static void window_debug_paint_invalidate(rct_window* w)
             auto stringIdx = w->widgets[widgetIndex].text;
             auto string = ls.GetString(stringIdx);
             Guard::ArgumentNotNull(string);
-            auto width = gfx_get_string_width(string);
+            auto width = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
             newWidth = std::max<int16_t>(width, newWidth);
         }
 

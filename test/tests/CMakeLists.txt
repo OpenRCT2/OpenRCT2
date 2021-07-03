@@ -105,34 +105,22 @@ endif ()
 
 set(SAWYERCODING_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/sawyercoding_test.cpp"
-        "${ROOT_DIR}/src/openrct2/core/IStream.cpp"
-        "${ROOT_DIR}/src/openrct2/core/MemoryStream.cpp"
-        "${ROOT_DIR}/src/openrct2/rct12/SawyerChunk.cpp"
-        "${ROOT_DIR}/src/openrct2/rct12/SawyerChunkReader.cpp"
-        "${ROOT_DIR}/src/openrct2/util/SawyerCoding.cpp"
         )
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
-target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_sawyercoding)
 add_test(NAME sawyercoding COMMAND test_sawyercoding)
 
 # LanguagePack test
 set(LANGUAGEPACK_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/LanguagePackTest.cpp"
-        "${ROOT_DIR}/src/openrct2/localisation/LanguagePack.cpp"
-        "${ROOT_DIR}/src/openrct2/core/FileStream.cpp"
-        "${ROOT_DIR}/src/openrct2/core/Path.cpp"
-        "${ROOT_DIR}/src/openrct2/core/RTL.FriBidi.cpp"
-        "${ROOT_DIR}/src/openrct2/core/RTL.ICU.cpp"
-        "${ROOT_DIR}/src/openrct2/core/StringBuilder.cpp"
-        "${ROOT_DIR}/src/openrct2/core/StringReader.cpp"
         )
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
     # Include libdl for dlopen
     set(LDL dl)
 endif ()
-target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_libraries(test_languagepack ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_languagepack)
 add_test(NAME languagepack COMMAND test_languagepack)
 
@@ -140,16 +128,10 @@ add_test(NAME languagepack COMMAND test_languagepack)
 set(INI_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/IniWriterTest.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/IniReaderTest.cpp"
-        "${ROOT_DIR}/src/openrct2/config/IniReader.cpp"
-        "${ROOT_DIR}/src/openrct2/config/IniWriter.cpp"
-        "${ROOT_DIR}/src/openrct2/core/IStream.cpp"
-        "${ROOT_DIR}/src/openrct2/core/MemoryStream.cpp"
-        "${ROOT_DIR}/src/openrct2/core/StringBuilder.cpp"
-        "${ROOT_DIR}/src/openrct2/core/StringReader.cpp"
         )
 add_executable(test_ini ${INI_TEST_SOURCES})
 SET_CHECK_CXX_FLAGS(test_ini)
-target_link_libraries(test_ini ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_libraries(test_ini ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_ini)
 add_test(NAME ini COMMAND test_ini)
 
@@ -166,7 +148,7 @@ set(STRING_TEST_SOURCES
         )
 add_executable(test_string ${STRING_TEST_SOURCES})
 SET_CHECK_CXX_FLAGS(test_string)
-target_link_libraries(test_string ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_libraries(test_string ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_string)
 add_test(NAME string COMMAND test_string)
 
@@ -182,7 +164,7 @@ add_test(NAME formatting COMMAND test_formatting)
 set(STRING_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/Localisation.cpp")
 add_executable(test_localisation ${STRING_TEST_SOURCES})
 SET_CHECK_CXX_FLAGS(test_localisation)
-target_link_libraries(test_localisation ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_libraries(test_localisation ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_localisation)
 add_test(NAME localisation COMMAND test_localisation)
 

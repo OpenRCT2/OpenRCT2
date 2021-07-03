@@ -14,6 +14,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
+#include "../world/Entity.h"
 
 /** rct2: 0x00982134 */
 constexpr const bool peep_slow_walking_types[] = {
@@ -55,7 +56,7 @@ void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr StaffSetCostumeAction::Query() const
 {
-    if (_spriteIndex >= MAX_SPRITES)
+    if (_spriteIndex >= MAX_ENTITIES)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }

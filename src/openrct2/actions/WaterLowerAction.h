@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(WaterLowerAction, GAME_COMMAND_LOWER_WATER, GameActions::Result)
+DEFINE_GAME_ACTION(WaterLowerAction, GameCommand::LowerWater, GameActions::Result)
 {
 private:
     MapRange _range;

@@ -17,7 +17,7 @@ extern bool gCheatsDisableClearanceChecks;
 extern bool gCheatsDisableSupportLimits;
 extern bool gCheatsShowAllOperatingModes;
 extern bool gCheatsShowVehiclesFromOtherTrackTypes;
-extern bool gCheatsFastLiftHill;
+extern bool gCheatsUnlockOperatingLimits;
 extern bool gCheatsDisableBrakesFailure;
 extern bool gCheatsDisableAllBreakdowns;
 extern bool gCheatsBuildInPauseMode;

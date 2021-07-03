@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 4, 0, 0 }),
     SET_FIELD(BuildCosts, { 70, 0, 5, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 40),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

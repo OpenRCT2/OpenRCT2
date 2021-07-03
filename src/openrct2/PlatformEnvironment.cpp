@@ -81,7 +81,8 @@ private:
         switch (pathid)
         {
             case PATHID::CONFIG:
-            case PATHID::CONFIG_KEYBOARD:
+            case PATHID::CONFIG_SHORTCUTS_LEGACY:
+            case PATHID::CONFIG_SHORTCUTS:
                 return DIRBASE::CONFIG;
             case PATHID::CACHE_OBJECTS:
             case PATHID::CACHE_TRACKS:
@@ -232,7 +233,8 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
 const char * PlatformEnvironment::FileNames[] =
 {
     "config.ini",           // CONFIG
-    "hotkeys.dat",          // CONFIG_KEYBOARD
+    "hotkeys.dat",          // CONFIG_SHORTCUTS_LEGACY
+    "shortcuts.json",       // CONFIG_SHORTCUTS
     "objects.idx",          // CACHE_OBJECTS
     "tracks.idx",           // CACHE_TRACKS
     "scenarios.idx",        // CACHE_SCENARIOS

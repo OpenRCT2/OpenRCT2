@@ -126,7 +126,7 @@ rct_window* window_editor_bottom_toolbar_open()
 void window_editor_bottom_toolbar_jump_back_to_object_selection()
 {
     window_close_all();
-    gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
+    gEditorStep = EditorStep::ObjectSelection;
     gfx_invalidate_screen();
 }
 
@@ -139,7 +139,7 @@ void window_editor_bottom_toolbar_jump_back_to_landscape_editor()
     window_close_all();
     set_all_scenery_items_invented();
     scenery_set_default_placement_configuration();
-    gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+    gEditorStep = EditorStep::LandscapeEditor;
     context_open_window(WC_MAP);
     gfx_invalidate_screen();
 }
@@ -152,7 +152,7 @@ static void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up()
 {
     window_close_all();
     context_open_window(WC_EDITOR_INVENTION_LIST);
-    gS6Info.editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
+    gEditorStep = EditorStep::InventionsListSetUp;
     gfx_invalidate_screen();
 }
 
@@ -164,7 +164,7 @@ void window_editor_bottom_toolbar_jump_back_to_options_selection()
 {
     window_close_all();
     context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
-    gS6Info.editor_step = EDITOR_STEP_OPTIONS_SELECTION;
+    gEditorStep = EditorStep::OptionsSelection;
     gfx_invalidate_screen();
 }
 
@@ -176,14 +176,14 @@ static bool window_editor_bottom_toolbar_check_object_selection()
 {
     rct_window* w;
 
-    ObjectType missingObjectType = Editor::CheckObjectSelection();
+    auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
     if (missingObjectType == ObjectType::None)
     {
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         return true;
     }
 
-    context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, gGameCommandErrorText, {});
+    context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
     w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
     if (w != nullptr)
     {
@@ -219,15 +219,16 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
  */
 void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up()
 {
-    if (Editor::CheckPark())
+    auto [checksPassed, errorString] = Editor::CheckPark();
+    if (checksPassed)
     {
         window_close_all();
         context_open_window(WC_EDITOR_INVENTION_LIST);
-        gS6Info.editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
+        gEditorStep = EditorStep::InventionsListSetUp;
     }
     else
     {
-        context_show_error(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText, {});
+        context_show_error(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, errorString, {});
     }
 
     gfx_invalidate_screen();
@@ -241,7 +242,7 @@ void window_editor_bottom_toolbar_jump_forward_to_options_selection()
 {
     window_close_all();
     context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
-    gS6Info.editor_step = EDITOR_STEP_OPTIONS_SELECTION;
+    gEditorStep = EditorStep::OptionsSelection;
     gfx_invalidate_screen();
 }
 
@@ -253,7 +254,7 @@ void window_editor_bottom_toolbar_jump_forward_to_objective_selection()
 {
     window_close_all();
     context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
-    gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+    gEditorStep = EditorStep::ObjectiveSelection;
     gfx_invalidate_screen();
 }
 
@@ -273,7 +274,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
     window_close_all();
     auto intent = Intent(WC_LOADSAVE);
     intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
-    intent.putExtra(INTENT_EXTRA_PATH, std::string{ gS6Info.name });
+    intent.putExtra(INTENT_EXTRA_PATH, gScenarioName);
     context_open_intent(&intent);
 }
 
@@ -286,14 +287,14 @@ static void window_editor_bottom_toolbar_mouseup([[maybe_unused]] rct_window* w,
     if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
     {
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-            || (GetEntityListCount(EntityListId::Free) == MAX_SPRITES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
+            || (GetNumFreeEntities() == MAX_ENTITIES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
         {
-            previous_button_mouseup_events[gS6Info.editor_step]();
+            previous_button_mouseup_events[EnumValue(gEditorStep)]();
         }
     }
     else if (widgetIndex == WIDX_NEXT_STEP_BUTTON)
     {
-        next_button_mouseup_events[gS6Info.editor_step]();
+        next_button_mouseup_events[EnumValue(gEditorStep)]();
     }
 }
 
@@ -336,17 +337,17 @@ void window_editor_bottom_toolbar_invalidate(rct_window* w)
     }
     else
     {
-        if (gS6Info.editor_step == EDITOR_STEP_OBJECT_SELECTION)
+        if (gEditorStep == EditorStep::ObjectSelection)
         {
             hide_previous_step_button();
         }
-        else if (gS6Info.editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+        else if (gEditorStep == EditorStep::RollercoasterDesigner)
         {
             hide_next_step_button();
         }
         else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
         {
-            if (GetEntityListCount(EntityListId::Free) != MAX_SPRITES || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
+            if (GetNumFreeEntities() != MAX_ENTITIES || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
             {
                 hide_previous_step_button();
             }
@@ -363,7 +364,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     bool drawPreviousButton = false;
     bool drawNextButton = false;
 
-    if (gS6Info.editor_step == EDITOR_STEP_OBJECT_SELECTION)
+    if (gEditorStep == EditorStep::ObjectSelection)
     {
         drawNextButton = true;
     }
@@ -371,7 +372,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         drawPreviousButton = true;
     }
-    else if (GetEntityListCount(EntityListId::Free) != MAX_SPRITES)
+    else if (GetNumFreeEntities() != MAX_ENTITIES)
     {
         drawNextButton = true;
     }
@@ -395,7 +396,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom + w->windowPos.y, FilterPaletteID::Palette51);
         }
 
-        if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+        if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
         {
             gfx_filter_rect(
                 dpi, window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + w->windowPos.x,
@@ -409,24 +410,20 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
+        const auto topLeft = w->windowPos
+            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 1,
+                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
+        const auto bottomRight = w->windowPos
+            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right - 1,
+                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
         if (drawPreviousButton)
         {
-            gfx_fill_rect_inset(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 1 + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 1 + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right - 1 + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 + w->windowPos.y, w->colours[1],
-                INSET_RECT_F_30);
+            gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
         }
 
-        if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+        if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
         {
-            gfx_fill_rect_inset(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + 1 + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 1 + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 1 + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom - 1 + w->windowPos.y, w->colours[1],
-                INSET_RECT_F_30);
+            gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
         }
 
         int16_t stateX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right
@@ -434,20 +431,19 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 / 2
             + w->windowPos.x;
         int16_t stateY = w->height - 0x0C + w->windowPos.y;
-        gfx_draw_string_centred(
-            dpi, EditorStepNames[gS6Info.editor_step], { stateX, stateY }, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE,
-            nullptr);
+        DrawTextBasic(
+            dpi, { stateX, stateY }, EditorStepNames[EnumValue(gEditorStep)], {},
+            { static_cast<colour_t>(NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
 
         if (drawPreviousButton)
         {
             gfx_draw_sprite(
-                dpi, SPR_PREVIOUS,
+                dpi, ImageId(SPR_PREVIOUS),
                 w->windowPos
                     + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6,
-                                      window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 },
-                0);
+                                      window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
-            int32_t textColour = NOT_TRANSLUCENT(w->colours[1]);
+            colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
             if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR
                 && gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON)
             {
@@ -460,24 +456,23 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 + w->windowPos.x;
             int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->windowPos.y;
 
-            rct_string_id stringId = EditorStepNames[gS6Info.editor_step - 1];
+            rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) - 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
-            gfx_draw_string_centred(dpi, STR_BACK_TO_PREVIOUS_STEP, { textX, textY }, textColour, nullptr);
-            gfx_draw_string_centred(dpi, stringId, { textX, textY + 10 }, textColour, nullptr);
+            DrawTextBasic(dpi, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::CENTRE });
+            DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
         }
 
-        if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+        if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
         {
             gfx_draw_sprite(
-                dpi, SPR_NEXT,
+                dpi, ImageId(SPR_NEXT),
                 w->windowPos
                     + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29,
-                                      window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 },
-                0);
+                                      window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 });
 
-            int32_t textColour = NOT_TRANSLUCENT(w->colours[1]);
+            colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
 
             if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON)
             {
@@ -490,12 +485,12 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 + w->windowPos.x;
             int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->windowPos.y;
 
-            rct_string_id stringId = EditorStepNames[gS6Info.editor_step + 1];
+            rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) + 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
-            gfx_draw_string_centred(dpi, STR_FORWARD_TO_NEXT_STEP, { textX, textY }, textColour, nullptr);
-            gfx_draw_string_centred(dpi, stringId, { textX, textY + 10 }, textColour, nullptr);
+            DrawTextBasic(dpi, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::CENTRE });
+            DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
         }
     }
 }

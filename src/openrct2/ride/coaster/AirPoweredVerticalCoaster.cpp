@@ -14,7 +14,6 @@
 #include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
-#include "../../world/Sprite.h"
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
@@ -438,13 +437,13 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
     {
         uint32_t imageId = SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_NW_SW_PART_4
             | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height });
     }
     else if (direction == 3 && trackSequence == 0)
     {
         uint32_t imageId = SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0
             | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height });
     }
 
     track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
@@ -730,7 +729,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
                 {
                     floorImageId = SPR_FLOOR_PLANKS | session->TrackColours[SCHEME_SUPPORTS];
                 }
-                PaintAddImageAsParent(session, floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
+                PaintAddImageAsParent(session, floorImageId, { 0, 0, height }, { 26, 26, 126 }, { 3, 3, height });
                 PaintAddImageAsChildRotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
             }
             else
@@ -914,17 +913,40 @@ static void air_powered_vertical_rc_track_booster(
     if (direction & 1)
     {
         uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | colour;
-        PaintAddImageAsParent(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
         uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | colour;
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
+}
+
+static void air_powered_vertical_rc_track_onride_photo(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    static constexpr const uint32_t imageIds[4] = {
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
+    };
+
+    uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+
+    track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -973,6 +995,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t tr
             return air_powered_vertical_rc_track_vertical_slope_down;
         case TrackElemType::Booster:
             return air_powered_vertical_rc_track_booster;
+        case TrackElemType::OnRidePhoto:
+            return air_powered_vertical_rc_track_onride_photo;
     }
     return nullptr;
 }

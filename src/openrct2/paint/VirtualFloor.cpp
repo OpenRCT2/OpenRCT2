@@ -17,12 +17,15 @@
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
+#include "../world/TileElementsView.h"
 #include "Paint.h"
 #include "VirtualFloor.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <algorithm>
 #include <limits>
+
+using namespace OpenRCT2;
 
 static uint16_t _virtualFloorBaseSize = 5 * 32;
 static uint16_t _virtualFloorHeight = 0;
@@ -241,10 +244,7 @@ static void virtual_floor_get_tile_properties(
     //  * Surfaces, which may put us underground
     //  * Walls / banners, which are displayed as occupied edges
     //  * Ghost objects, which are displayed as lit squares
-    TileElement* tileElement = map_get_first_element_at(loc);
-    if (tileElement == nullptr)
-        return;
-    do
+    for (auto* tileElement : TileElementsView(loc))
     {
         int32_t elementType = tileElement->GetType();
 
@@ -285,7 +285,7 @@ static void virtual_floor_get_tile_properties(
         }
 
         *outOccupied = true;
-    } while (!(tileElement++)->IsLastForTile());
+    }
 }
 
 void virtual_floor_paint(paint_session* session)
@@ -303,7 +303,7 @@ void virtual_floor_paint(paint_session* session)
     uint8_t direction = session->CurrentRotation;
 
     // This is a virtual floor, so no interactions
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+    session->InteractionType = ViewportInteractionItem::None;
 
     int16_t virtualFloorClipHeight = _virtualFloorHeight;
 
@@ -366,13 +366,14 @@ void virtual_floor_paint(paint_session* session)
     uint8_t dullEdges = 0xF & ~occupiedEdges & ~litEdges;
     uint8_t paintEdges = ((weAreOccupied || weAreLit) && weAreOwned) ? ~dullEdges : 0xF;
 
+    const auto virtualFloorOffset = CoordsXYZ{ 0, 0, _virtualFloorHeight };
     if (paintEdges & EDGE_NE)
     {
         PaintAddImageAsParent(
             session,
             SPR_G2_SELECTION_EDGE_NE
                 | (!(occupiedEdges & EDGE_NE) ? ((litEdges & EDGE_NE) ? remap_lit : remap_base) : remap_edge),
-            0, 0, 0, 0, 1, _virtualFloorHeight, 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NE) ? -2 : 0));
+            virtualFloorOffset, { 0, 0, 1 }, { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NE) ? -2 : 0) });
     }
     if (paintEdges & EDGE_SE)
     {
@@ -380,7 +381,7 @@ void virtual_floor_paint(paint_session* session)
             session,
             SPR_G2_SELECTION_EDGE_SE
                 | (!(occupiedEdges & EDGE_SE) ? ((litEdges & EDGE_SE) ? remap_lit : remap_base) : remap_edge),
-            0, 0, 1, 1, 1, _virtualFloorHeight, 16, 27, _virtualFloorHeight + ((dullEdges & EDGE_SE) ? -2 : 0));
+            virtualFloorOffset, { 1, 1, 1 }, { 16, 27, _virtualFloorHeight + ((dullEdges & EDGE_SE) ? -2 : 0) });
     }
     if (paintEdges & EDGE_SW)
     {
@@ -388,7 +389,7 @@ void virtual_floor_paint(paint_session* session)
             session,
             SPR_G2_SELECTION_EDGE_SW
                 | (!(occupiedEdges & EDGE_SW) ? ((litEdges & EDGE_SW) ? remap_lit : remap_base) : remap_edge),
-            0, 0, 1, 1, 1, _virtualFloorHeight, 27, 16, _virtualFloorHeight + ((dullEdges & EDGE_SW) ? -2 : 0));
+            virtualFloorOffset, { 1, 1, 1 }, { 27, 16, _virtualFloorHeight + ((dullEdges & EDGE_SW) ? -2 : 0) });
     }
     if (paintEdges & EDGE_NW)
     {
@@ -396,7 +397,7 @@ void virtual_floor_paint(paint_session* session)
             session,
             SPR_G2_SELECTION_EDGE_NW
                 | (!(occupiedEdges & EDGE_NW) ? ((litEdges & EDGE_NW) ? remap_lit : remap_base) : remap_edge),
-            0, 0, 0, 0, 1, _virtualFloorHeight, 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0));
+            virtualFloorOffset, { 0, 0, 1 }, { 5, 5, _virtualFloorHeight + ((dullEdges & EDGE_NW) ? -2 : 0) });
     }
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Glassy)
@@ -406,7 +407,7 @@ void virtual_floor_paint(paint_session* session)
     {
         int32_t imageColourFlats = SPR_G2_SURFACE_GLASSY_RECOLOURABLE | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
             | EnumValue(FilterPaletteID::PaletteWater) << 19;
-        PaintAddImageAsParent(session, imageColourFlats, 0, 0, 30, 30, 0, _virtualFloorHeight, 2, 2, _virtualFloorHeight - 3);
+        PaintAddImageAsParent(session, imageColourFlats, virtualFloorOffset, { 30, 30, 0 }, { 2, 2, _virtualFloorHeight - 3 });
     }
 }
 

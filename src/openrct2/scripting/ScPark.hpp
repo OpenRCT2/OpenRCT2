@@ -63,9 +63,7 @@ namespace OpenRCT2::Scripting
         result.Ticks = value["tickCount"].as_int();
         result.MonthYear = value["month"].as_int();
         result.Day = value["day"].as_int();
-
-        auto text = value["text"].as_string();
-        String::Set(result.Text, sizeof(result.Text), text.c_str());
+        result.Text = value["text"].as_string();
         return result;
     }
 
@@ -219,7 +217,7 @@ namespace OpenRCT2::Scripting
             auto msg = GetMessage();
             if (msg != nullptr)
             {
-                String::Set(msg->Text, sizeof(msg->Text), value.c_str());
+                msg->Text = value;
             }
         }
 
@@ -229,7 +227,7 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    static const DukEnumMap<uint32_t> ParkFlagMap({
+    static const DukEnumMap<uint64_t> ParkFlagMap({
         { "open", PARK_FLAGS_PARK_OPEN },
         { "scenarioCompleteNameInput", PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT },
         { "forbidLandscapeChanges", PARK_FLAGS_FORBID_LANDSCAPE_CHANGES },
@@ -249,11 +247,11 @@ namespace OpenRCT2::Scripting
     class ScPark
     {
     public:
-        money32 cash_get() const
+        money64 cash_get() const
         {
             return gCash;
         }
-        void cash_set(money32 value)
+        void cash_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -282,11 +280,11 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 bankLoan_get() const
+        money64 bankLoan_get() const
         {
             return gBankLoan;
         }
-        void bankLoan_set(money32 value)
+        void bankLoan_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -298,11 +296,11 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 maxBankLoan_get() const
+        money64 maxBankLoan_get() const
         {
             return gMaxBankLoan;
         }
-        void maxBankLoan_set(money32 value)
+        void maxBankLoan_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -334,11 +332,41 @@ namespace OpenRCT2::Scripting
             return gNumGuestsInPark;
         }
 
-        money32 value_get() const
+        uint32_t suggestedGuestMaximum_get() const
+        {
+            return _suggestedGuestMaximum;
+        }
+
+        int32_t guestGenerationProbability_get() const
+        {
+            return _guestGenerationProbability;
+        }
+
+        money16 guestInitialCash_get() const
+        {
+            return gGuestInitialCash;
+        }
+
+        uint8_t guestInitialHappiness_get() const
+        {
+            return gGuestInitialHappiness;
+        }
+
+        uint8_t guestInitialHunger_get() const
+        {
+            return gGuestInitialHunger;
+        }
+
+        uint8_t guestInitialThirst_get() const
+        {
+            return gGuestInitialThirst;
+        }
+
+        money64 value_get() const
         {
             return gParkValue;
         }
-        void value_set(money32 value)
+        void value_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -350,11 +378,11 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 companyValue_get() const
+        money64 companyValue_get() const
         {
             return gCompanyValue;
         }
-        void companyValue_set(money32 value)
+        void companyValue_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -364,6 +392,11 @@ namespace OpenRCT2::Scripting
                 auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
                 context_broadcast_intent(&intent);
             }
+        }
+
+        money16 totalRideValueForMoney_get() const
+        {
+            return gTotalRideValueForMoney;
         }
 
         uint32_t totalAdmissions_get() const
@@ -381,11 +414,11 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 totalIncomeFromAdmissions_get() const
+        money64 totalIncomeFromAdmissions_get() const
         {
             return gTotalIncomeFromAdmissions;
         }
-        void totalIncomeFromAdmissions_set(money32 value)
+        void totalIncomeFromAdmissions_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -548,8 +581,15 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::maxBankLoan_get, &ScPark::maxBankLoan_set, "maxBankLoan");
             dukglue_register_property(ctx, &ScPark::entranceFee_get, &ScPark::entranceFee_set, "entranceFee");
             dukglue_register_property(ctx, &ScPark::guests_get, nullptr, "guests");
+            dukglue_register_property(ctx, &ScPark::suggestedGuestMaximum_get, nullptr, "suggestedGuestMaximum");
+            dukglue_register_property(ctx, &ScPark::guestGenerationProbability_get, nullptr, "guestGenerationProbability");
+            dukglue_register_property(ctx, &ScPark::guestInitialCash_get, nullptr, "guestInitialCash");
+            dukglue_register_property(ctx, &ScPark::guestInitialHappiness_get, nullptr, "guestInitialHappiness");
+            dukglue_register_property(ctx, &ScPark::guestInitialHunger_get, nullptr, "guestInitialHunger");
+            dukglue_register_property(ctx, &ScPark::guestInitialThirst_get, nullptr, "guestInitialThirst");
             dukglue_register_property(ctx, &ScPark::value_get, &ScPark::value_set, "value");
             dukglue_register_property(ctx, &ScPark::companyValue_get, &ScPark::companyValue_set, "companyValue");
+            dukglue_register_property(ctx, &ScPark::totalRideValueForMoney_get, nullptr, "totalRideValueForMoney");
             dukglue_register_property(ctx, &ScPark::totalAdmissions_get, &ScPark::totalAdmissions_set, "totalAdmissions");
             dukglue_register_property(
                 ctx, &ScPark::totalIncomeFromAdmissions_get, &ScPark::totalIncomeFromAdmissions_set,

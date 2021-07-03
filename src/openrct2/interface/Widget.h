@@ -36,6 +36,7 @@ enum class WindowWidgetType : uint8_t
     Scroll = 22,
     Checkbox = 23,
     Placeholder = 25,
+    Custom = 28,
     TextBox = 27,
     Last = 26,
 };
@@ -137,6 +138,8 @@ void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetInd
 
 bool WidgetIsEnabled(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsHoldable(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsActiveTool(rct_window* w, rct_widgetindex widgetIndex);
@@ -146,6 +149,8 @@ void WidgetScrollGetPart(
 
 void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
 void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value);
+void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value);
+void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value);
 void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
 
 #endif

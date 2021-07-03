@@ -13,7 +13,9 @@
 
 #include <cstdarg>
 #include <cstddef>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace CODE_PAGE
@@ -36,8 +38,8 @@ namespace String
     std::string ToStd(const utf8* str);
     std::string StdFormat_VA(const utf8* format, va_list args);
     std::string StdFormat(const utf8* format, ...);
-    std::string ToUtf8(const std::wstring_view& src);
-    std::wstring ToWideChar(const std::string_view& src);
+    std::string ToUtf8(std::wstring_view src);
+    std::wstring ToWideChar(std::string_view src);
 
     /**
      * Creates a string_view from a char pointer with a length up to either the
@@ -48,12 +50,11 @@ namespace String
     bool IsNullOrEmpty(const utf8* str);
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase = false);
     int32_t Compare(const utf8* a, const utf8* b, bool ignoreCase = false);
-    bool Equals(const std::string_view a, const std::string_view b, bool ignoreCase = false);
+    bool Equals(std::string_view a, std::string_view b, bool ignoreCase = false);
     bool Equals(const std::string& a, const std::string& b, bool ignoreCase = false);
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase = false);
-    bool StartsWith(const utf8* str, const utf8* match, bool ignoreCase = false);
-    bool StartsWith(const std::string& str, const std::string& match, bool ignoreCase = false);
-    bool EndsWith(const std::string_view& str, const std::string_view& match, bool ignoreCase = false);
+    bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
+    bool EndsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     size_t IndexOf(const utf8* str, utf8 match, size_t startIndex = 0);
     ptrdiff_t LastIndexOf(const utf8* str, utf8 match);
 
@@ -91,7 +92,7 @@ namespace String
      * Splits the given string by a delimiter and returns the values as a new string array.
      * @returns the number of values.
      */
-    std::vector<std::string> Split(const std::string& s, const std::string& delimiter);
+    std::vector<std::string> Split(std::string_view s, std::string_view delimiter);
 
     utf8* SkipBOM(utf8* buffer);
     const utf8* SkipBOM(const utf8* buffer);
@@ -112,12 +113,72 @@ namespace String
     /**
      * Converts a multi-byte string from one code page to another.
      */
-    std::string Convert(const std::string_view& src, int32_t srcCodePage, int32_t dstCodePage);
+    std::string Convert(std::string_view src, int32_t srcCodePage, int32_t dstCodePage);
 
     /**
      * Returns an uppercased version of a UTF-8 string.
      */
-    std::string ToUpper(const std::string_view& src);
+    std::string ToUpper(std::string_view src);
+
+    template<typename T> std::optional<T> Parse(std::string_view input)
+    {
+        if (input.size() == 0)
+            return std::nullopt;
+
+        T result = 0;
+        for (size_t i = 0; i < input.size(); i++)
+        {
+            auto chr = input[i];
+            if (chr >= '0' && chr <= '9')
+            {
+                auto digit = chr - '0';
+                auto last = result;
+                result = static_cast<T>((result * 10) + digit);
+                if (result <= last)
+                {
+                    // Overflow, number too large for type
+                    return std::nullopt;
+                }
+            }
+            else
+            {
+                // Bad character
+                return std::nullopt;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns codepoint size or no value if not valid
+     */
+    constexpr std::optional<int> UTF8GetCodePointSize(std::string_view v)
+    {
+        if (v.size() >= 1 && !(v[0] & 0x80))
+        {
+            return { 1 };
+        }
+        else if (v.size() >= 2 && ((v[0] & 0xE0) == 0xC0))
+        {
+            return { 2 };
+        }
+        else if (v.size() >= 3 && ((v[0] & 0xF0) == 0xE0))
+        {
+            return { 3 };
+        }
+        else if (v.size() >= 4 && ((v[0] & 0xF8) == 0xF0))
+        {
+            return { 4 };
+        }
+        return {};
+    }
+
+    /**
+     * Truncates a string to at most `size` bytes,
+     * making sure not to cut in the middle of a sequence.
+     */
+    std::string_view UTF8Truncate(std::string_view v, size_t size);
+
 } // namespace String
 
 class CodepointView

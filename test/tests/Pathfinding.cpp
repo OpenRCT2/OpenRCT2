@@ -69,7 +69,7 @@ protected:
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
         // Add 16 so the peep spawns in the center of the tile.
-        Peep* peep = Peep::Generate(pos->ToCoordsXYZ().ToTileCentre());
+        auto* peep = Guest::Generate(pos->ToCoordsXYZ().ToTileCentre());
 
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
@@ -96,9 +96,8 @@ protected:
         // tile away. Stepping the peep will move them towards their destination, and once they reach it, a new
         // destination will be picked, to try and get the peep towards the overall pathfinding goal.
         peep->PeepDirection = moveDir;
-        peep->DestinationX = peep->x + CoordsDirectionDelta[moveDir].x;
-        peep->DestinationY = peep->y + CoordsDirectionDelta[moveDir].y;
-        peep->DestinationTolerance = 2;
+        auto destination = CoordsDirectionDelta[moveDir] + peep->GetLocation();
+        peep->SetDestination(destination, 2);
 
         // Repeatedly step the peep, until they reach the target position or until the expected number of steps have
         // elapsed. Each step, check that the tile they are standing on is not marked as forbidden in the test data

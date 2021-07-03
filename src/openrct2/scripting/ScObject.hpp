@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScObject::name_get, nullptr, "name");
         }
 
-        static std::optional<ObjectType> StringToObjectType(const std::string_view& type)
+        static std::optional<ObjectType> StringToObjectType(std::string_view type)
         {
             for (uint8_t i = 0; i < EnumValue(ObjectType::Count); i++)
             {
@@ -60,9 +60,23 @@ namespace OpenRCT2::Scripting
 
         static std::string_view ObjectTypeToString(uint8_t type)
         {
-            static const char* Types[] = { "ride",     "small_scenery",     "large_scenery", "wall",          "banner",
-                                           "footpath", "footpath_addition", "scenery_group", "park_entrance", "water",
-                                           "stex",     "terrain_surface",   "terrain_edge",  "station",       "music" };
+            static const char* Types[] = { "ride",
+                                           "small_scenery",
+                                           "large_scenery",
+                                           "wall",
+                                           "banner",
+                                           "footpath",
+                                           "footpath_addition",
+                                           "scenery_group",
+                                           "park_entrance",
+                                           "water",
+                                           "stex",
+                                           "terrain_surface",
+                                           "terrain_edge",
+                                           "station",
+                                           "music",
+                                           "footpath_surface",
+                                           "footpath_railings" };
             if (type >= std::size(Types))
                 return "unknown";
             return Types[type];
@@ -942,7 +956,7 @@ namespace OpenRCT2::Scripting
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
-                return sceneryEntry->small_scenery.flags;
+                return sceneryEntry->flags;
             }
             return 0;
         }
@@ -952,7 +966,7 @@ namespace OpenRCT2::Scripting
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
-                return sceneryEntry->small_scenery.height;
+                return sceneryEntry->height;
             }
             return 0;
         }
@@ -962,7 +976,7 @@ namespace OpenRCT2::Scripting
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
-                return sceneryEntry->small_scenery.price;
+                return sceneryEntry->price;
             }
             return 0;
         }
@@ -972,18 +986,18 @@ namespace OpenRCT2::Scripting
             auto sceneryEntry = GetLegacyData();
             if (sceneryEntry != nullptr)
             {
-                return sceneryEntry->small_scenery.removal_price;
+                return sceneryEntry->removal_price;
             }
             return 0;
         }
 
     protected:
-        rct_scenery_entry* GetLegacyData() const
+        SmallSceneryEntry* GetLegacyData() const
         {
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                return static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+                return static_cast<SmallSceneryEntry*>(obj->GetLegacyData());
             }
             return nullptr;
         }

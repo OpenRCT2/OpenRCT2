@@ -39,7 +39,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
     res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
     res->Expenditure = ExpenditureType::RideConstruction;
     res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         res->Error = GameActions::Status::NoFreeElements;
         res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
@@ -75,7 +75,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        if (heightDifference > RideTypeDescriptors[RIDE_TYPE_MAZE].Heights.MaxHeight)
+        if (heightDifference > GetRideTypeDescriptor(RIDE_TYPE_MAZE).Heights.MaxHeight)
         {
             res->Error = GameActions::Status::TooHigh;
             res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
@@ -115,7 +115,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
         return res;
     }
 
-    money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
     res->Cost = clearCost + price / 2 * 10;
 
     return res;
@@ -137,7 +137,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
         return res;
     }
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         res->Error = GameActions::Status::NoFreeElements;
         res->ErrorMessage = STR_NONE;
@@ -163,30 +163,24 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
             GameActions::Status::NoClearance, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
     }
 
-    money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
     res->Cost = clearCost + price / 2 * 10;
 
     auto startLoc = _loc.ToTileStart();
 
-    auto tileElement = tile_element_insert(_loc, 0b1111);
-    assert(tileElement != nullptr);
+    auto* trackElement = TileElementInsert<TrackElement>(_loc, 0b1111);
+    Guard::Assert(trackElement != nullptr);
 
-    tileElement->SetClearanceZ(clearanceHeight);
-    tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
-
-    tileElement->AsTrack()->SetTrackType(TrackElemType::Maze);
-    tileElement->AsTrack()->SetRideIndex(_rideIndex);
-    tileElement->AsTrack()->SetMazeEntry(_mazeEntry);
-
-    if (flags & GAME_COMMAND_FLAG_GHOST)
-    {
-        tileElement->SetGhost(true);
-    }
+    trackElement->SetClearanceZ(clearanceHeight);
+    trackElement->SetTrackType(TrackElemType::Maze);
+    trackElement->SetRideIndex(_rideIndex);
+    trackElement->SetMazeEntry(_mazeEntry);
+    trackElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
 
     map_invalidate_tile_full(startLoc);
 
     ride->maze_tiles++;
-    ride->stations[0].SetBaseZ(tileElement->GetBaseZ());
+    ride->stations[0].SetBaseZ(trackElement->GetBaseZ());
     ride->stations[0].Start = { 0, 0 };
 
     if (ride->maze_tiles == 1)

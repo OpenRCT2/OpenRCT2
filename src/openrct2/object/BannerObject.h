@@ -16,14 +16,9 @@
 class BannerObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry _legacyType = {};
+    BannerSceneryEntry _legacyType = {};
 
 public:
-    explicit BannerObject(const rct_object_entry& entry)
-        : SceneryObject(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;

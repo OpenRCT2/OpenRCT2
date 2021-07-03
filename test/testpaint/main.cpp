@@ -520,9 +520,9 @@ int main(int argc, char* argv[])
         TestCase testCase = {};
         testCase.rideType = rideType;
 
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
         {
-            testCase.trackTypes.push_back(RideTypeDescriptors[rideType].StartTrackPiece);
+            testCase.trackTypes.push_back(GetRideTypeDescriptor(rideType).StartTrackPiece);
         }
         else
         {
@@ -564,7 +564,7 @@ int main(int argc, char* argv[])
         for (auto&& trackType : tc.trackTypes)
         {
             utf8string trackTypeName;
-            if (ride_type_has_flag(tc.rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+            if (GetRideTypeDescriptor(tc.rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             {
                 trackTypeName = FlatTrackNames[trackType];
             }

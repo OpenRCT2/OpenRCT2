@@ -9,11 +9,13 @@
 
 #include "TerrainEdgeObject.h"
 
+#include "../Context.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
+#include "ObjectManager.h"
 
 void TerrainEdgeObject::Load()
 {
@@ -57,4 +59,11 @@ void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
 
     PopulateTablesFromJson(context, root);
     NumImagesLoaded = GetImageTable().GetCount();
+}
+
+TerrainEdgeObject* TerrainEdgeObject::GetById(ObjectEntryIndex entryIndex)
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, entryIndex);
+    return obj != nullptr ? static_cast<TerrainEdgeObject*>(obj) : nullptr;
 }

@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 8, 0, 0 }),
     SET_FIELD(BuildCosts, { 62, 4, 20, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 55),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

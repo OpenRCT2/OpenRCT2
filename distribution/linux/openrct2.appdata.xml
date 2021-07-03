@@ -40,7 +40,9 @@
   </screenshots>
   <url type="homepage">https://openrct2.io/</url>
   <url type="bugtracker">https://github.com/OpenRCT2/OpenRCT2/issues</url>
-  <url type="help">https://github.com/OpenRCT2/OpenRCT2/wiki</url>
+  <url type="faq">https://github.com/OpenRCT2/OpenRCT2/wiki/FAQ-&amp;-Common-Issues</url>
+  <url type="help">https://docs.openrct2.io</url>
+  <url type="translate">https://github.com/OpenRCT2/Localisation</url>
   <content_rating type="oars-1.0">
     <content_attribute id="violence-cartoon">mild</content_attribute>
     <content_attribute id="violence-fantasy">none</content_attribute>
@@ -64,6 +66,9 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+      <release version="0.3.3" date="2021-03-13">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.3.3</url>
+      </release>
       <release version="0.3.2" date="2020-11-01">
         <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.3.2</url>
       </release>

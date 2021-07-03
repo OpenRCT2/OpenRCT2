@@ -17,7 +17,7 @@ enum class LoadOrQuitModes : uint8_t
     CloseSavePrompt
 };
 
-DEFINE_GAME_ACTION(LoadOrQuitAction, GAME_COMMAND_LOAD_OR_QUIT, GameActions::Result)
+DEFINE_GAME_ACTION(LoadOrQuitAction, GameCommand::LoadOrQuit, GameActions::Result)
 {
 private:
     LoadOrQuitModes _mode{};

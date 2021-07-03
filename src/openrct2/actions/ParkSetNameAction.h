@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetNameAction, GAME_COMMAND_SET_PARK_NAME, GameActions::Result)
+DEFINE_GAME_ACTION(ParkSetNameAction, GameCommand::SetParkName, GameActions::Result)
 {
 private:
     std::string _name;

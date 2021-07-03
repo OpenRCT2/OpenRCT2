@@ -292,7 +292,7 @@ static std::vector<std::string> GetSaves(const std::string& directory)
     std::vector<std::string> saves;
 
     auto pattern = Path::Combine(directory, "*.sc6;*.sv6");
-    IFileScanner* scanner = Path::ScanDirectory(pattern, true);
+    auto scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
     {
         const utf8* path = scanner->GetPathRelative();
@@ -311,7 +311,7 @@ static std::vector<std::string> GetSaves(IZipArchive* zip)
         auto ext = Path::GetExtension(name);
         if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true))
         {
-            saves.push_back(name);
+            saves.push_back(std::move(name));
         }
     }
     return saves;
@@ -395,7 +395,7 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
         }
         if (command.Type != TitleScript::Undefined)
         {
-            commands.push_back(command);
+            commands.push_back(std::move(command));
         }
     } while (fs.GetPosition() < fs.GetLength());
     return commands;
@@ -498,14 +498,14 @@ static std::string LegacyScriptWrite(const TitleSequence& seq)
         switch (command.Type)
         {
             case TitleScript::Load:
-                if (command.SaveIndex == 0xFF)
-                {
-                    sb.Append("LOAD <No save file>");
-                }
-                else
+                if (command.SaveIndex < seq.Saves.size())
                 {
                     sb.Append("LOAD ");
                     sb.Append(seq.Saves[command.SaveIndex].c_str());
+                }
+                else
+                {
+                    sb.Append("LOAD <No save file>");
                 }
                 break;
             case TitleScript::LoadSc:

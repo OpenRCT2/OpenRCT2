@@ -19,6 +19,11 @@ if (CCache_FOUND)
     endif (OPENRCT2_USE_CCACHE)
 endif (CCache_FOUND)
 
+if (APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
+endif ()
+
 project(openrct2 CXX)
 
 include(cmake/platform.cmake)
@@ -36,16 +41,18 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
-set(CMAKE_MACOSX_RPATH 1)
 
-set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip")
+set(TITLE_SEQUENCE_VERSION "0.1.2c")
+set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "304d13a126c15bf2c86ff13b81a2f2cc1856ac8d")
 
-set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.20/objects.zip")
-set(OBJECTS_SHA1 "151424d24b1d49a167932b58319bedaa6ec368e9")
+set(OBJECTS_VERSION "1.2.1")
+set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
+set(OBJECTS_SHA1 "540e004abc683b3fe22211f5234e3d78ab023c5f")
 
-set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.23/replays.zip")
-set(REPLAYS_SHA1 "AC67B93731B6246A31D9A8B01A6CA12AE98AE0D1")
+set(REPLAYS_VERSION "0.0.43")
+set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
+set(REPLAYS_SHA1 "269E4FC432A73AE9A5D601EC2A1C882F3D9BDF3C")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -55,6 +62,10 @@ option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." 
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
     "WITH_TESTS" OFF)
+CMAKE_DEPENDENT_OPTION(MACOS_USE_DEPENDENCIES "Use OpenRCT2 dependencies instead of system libraries" ON
+    "APPLE" OFF)
+CMAKE_DEPENDENT_OPTION(MACOS_BUNDLE "Build macOS application bundle (OpenRCT2.app)" ON
+     "MACOS_USE_DEPENDENCIES; NOT DISABLE_GUI" OFF)
 
 # Options
 option(STATIC "Create a static build.")
@@ -93,6 +104,43 @@ endif ()
 
 if (APPIMAGE)
     set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib")
+endif ()
+
+if (MACOS_USE_DEPENDENCIES)
+    # if we're building on macOS, then we need the dependencies
+    include(cmake/download.cmake)
+    
+    set(MACOS_DYLIBS_VERSION "28")
+    set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-x64-macos-dylibs.zip")
+    set(MACOS_DYLIBS_SHA1 "29e5480376cf4ac5943f114387e32685204c8b78")
+    set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
+    set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
+
+    download_openrct2_zip(
+        ZIP_VERSION ${MACOS_DYLIBS_VERSION}
+        DOWNLOAD_DIR ${MACOS_DYLIBS_DIR}
+        ZIP_URL ${MACOS_DYLIBS_URL}
+        SHA1 ${MACOS_DYLIBS_SHA1}
+    )
+
+    set(CMAKE_MACOSX_RPATH 1)
+    list(APPEND CMAKE_PREFIX_PATH "${MACOS_DYLIBS_DIR}")
+
+    # if we're making the OpenRCT2.app bundle, rpath will be handled by fixup_bundle
+    # if we're building the CLI executable, we need to do it ourselves
+    if (NOT MACOS_BUNDLE)
+        # the RPATH to be used when installing, but only if it's not a system directory
+        list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+        if("${isSystemDir}" STREQUAL "-1")
+            set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+        endif("${isSystemDir}" STREQUAL "-1")
+
+        # if the DESTDIR env var is defined, use it in the install RPATH
+        if(DEFINED ENV{DESTDIR})
+            get_filename_component(destdirRealPath "$ENV{DESTDIR}" REALPATH BASE_DIR "${CMAKE_BINARY_DIR}")
+            set(CMAKE_INSTALL_RPATH "${destdirRealPath}${CMAKE_INSTALL_PREFIX}/lib")
+        endif()
+    endif ()
 endif ()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
@@ -153,7 +201,21 @@ if (ENABLE_SCRIPTING)
 endif ()
 
 if (NOT DISABLE_DISCORD_RPC)
-    if(EXISTS "${ROOT_DIR}/discord-rpc")
+    if (UNIX AND NOT APPLE)
+        find_package(DiscordRPC)
+        if(${DISCORDRPC_FOUND})
+            set(HAVE_DISCORD_RPC TRUE)
+            add_definitions(-D__ENABLE_DISCORD__)
+            include_directories(DISCORDRPC_PROCESS_INCLUDES)
+        endif()
+    elseif (MACOS_USE_DEPENDENCIES)
+        find_package(discordrpc CONFIG REQUIRED)
+        if(${DISCORDRPC_FOUND})
+            add_definitions(-D__ENABLE_DISCORD__)
+            set(HAVE_DISCORD_RPC TRUE)
+            message("Building with libdiscord-rpc.dylib")
+        endif()
+    elseif(NOT HAVE_DISCORD_RPC AND EXISTS "${ROOT_DIR}/discord-rpc")
         # Don't build discord's examples, some of which are in C and do not honour
         # the flags we set for C++. Also we don't use the provided examples.
         set(BUILD_EXAMPLES OFF CACHE BOOL "Build example apps")
@@ -233,6 +295,9 @@ else ()
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_RANGE_LOOP_ANALYSIS -Wrange-loop-analysis)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_TAUTOLOGICAL_ZERO_COMPARE -Wtautological-unsigned-zero-compare)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_OLD_STYLE_CAST -Wold-style-cast)
+    # unused-const-variable=1 only checks main compilation unit
+    # unused-const-variable[=2] would check for unused values from headers as well
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_UNUSED_CONST_VARIABLE -Wunused-const-variable=1)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CLOBBERED -Wno-clobbered)
     # Disabled due to problems compiling OpenSSL on macOS.
     # ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DOCUMENTATION -Wdocumentation)
@@ -307,7 +372,9 @@ add_custom_command(
     COMMAND ./openrct2-cli sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
-add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
+add_custom_target(g2 DEPENDS ${PROJECT_NAME} g2.dat)
+
+project(openrct2 CXX)
 
 # Include tests
 if (WITH_TESTS)
@@ -318,73 +385,95 @@ if (WITH_TESTS)
     include("${ROOT_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
 endif ()
 
-# Install
-# Don't recurse, grab all *.txt and *.md files
-file(GLOB DOC_FILES "${ROOT_DIR}/distribution/*.txt")
-list(APPEND DOC_FILES "${ROOT_DIR}/contributors.md"
-                      "${ROOT_DIR}/licence.txt"
-                      "${ROOT_DIR}/distribution/scripting.md"
-                      "${ROOT_DIR}/distribution/openrct2.d.ts")
+# macOS bundle "install" is handled in src/openrct2-ui/CMakeLists.txt
+# This is because the openrct2 target is modified (and that is where that target is defined)
+if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
+    # Install
+    # Don't recurse, grab all *.txt and *.md files
+    file(GLOB DOC_FILES "${ROOT_DIR}/distribution/*.txt")
+    list(APPEND DOC_FILES "${ROOT_DIR}/contributors.md"
+                        "${ROOT_DIR}/licence.txt"
+                        "${ROOT_DIR}/distribution/scripting.md"
+                        "${ROOT_DIR}/distribution/openrct2.d.ts")
 
-# CMake does not allow specifying a dependency chain which includes built-in
-# targets, like `install`, so we have to trick it and execute dependency ourselves.
-install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
-if (DOWNLOAD_TITLE_SEQUENCES)
-    # If openrct2.parkseq or data/sequence/ exists, assume all the title sequences are already present
-    install(CODE
-        "if (EXISTS \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/sequence/openrct2.parkseq\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/sequence/)\n\
-            message(\"Using cached title sequences\")\n\
-        else () \n\
-            file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/sequence/title-sequences.zip EXPECTED_HASH SHA1=${TITLE_SEQUENCE_SHA1} SHOW_PROGRESS)\n\
-            execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/sequence/ \"${CMAKE_COMMAND}\" -E tar xf title-sequences.zip)\n\
-            file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/sequence/title-sequences.zip)\n\
-        endif ()")
-endif ()
-if (DOWNLOAD_OBJECTS)
-    # If rct2.wtrcyan.json or data/object/ exists, assume all the objects are already present
-    install(CODE
-        "if (EXISTS \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/rct2/water/rct2.wtrcyan.json\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/object/)\n\
-            message(\"Using cached objects\")\n\
-        else () \n\
-            file(DOWNLOAD ${OBJECTS_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/objects.zip EXPECTED_HASH SHA1=${OBJECTS_SHA1} SHOW_PROGRESS)\n\
-            execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/ \"${CMAKE_COMMAND}\" -E tar xf objects.zip)\n\
-            file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/objects.zip)\n\
-        endif ()")
-endif ()
-if (DOWNLOAD_REPLAYS)
-    install(CODE
-        "if (EXISTS \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/)\n\
-            message(\"Using cached replays\")\n\
-        else () \n\
-	    file(DOWNLOAD ${REPLAYS_URL} \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/replays.zip EXPECTED_HASH SHA1=${REPLAYS_SHA1} SHOW_PROGRESS)\n\
-            execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/ \"${CMAKE_COMMAND}\" -E tar xf replays.zip)\n\
-            file(REMOVE \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/replays.zip)\n\
-        endif ()")
-endif ()
-install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-                              ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-if(NOT DISABLE_GUI)
-    install(TARGETS "openrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    # CMake does not allow specifying a dependency chain which includes built-in
+    # targets, like `install`, so we have to trick it and execute dependency ourselves.
+    install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
+    if (DOWNLOAD_TITLE_SEQUENCES)
+        # Checks if this version of the title sequences are already installed, updates if necessary
+        # if /data/sequence exists, it will overwrite this anyways (see `install(DIRECTORY "data/" ...)` below)
+        # therefore, the existence of that directory will skip this download
+        install(CODE "
+            include(${ROOT_DIR}/cmake/download.cmake)
+            download_openrct2_zip(
+                ZIP_VERSION ${TITLE_SEQUENCE_VERSION}
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/sequence/
+                SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/sequence/
+                ZIP_URL ${TITLE_SEQUENCE_URL}
+                SHA1 ${TITLE_SEQUENCE_SHA1}
+            )")
+    endif ()
+    if (DOWNLOAD_OBJECTS)
+        # Checks if this version of the objects are already installed, updates if necessary
+        # if /data/object exists, it will overwrite this anyways (see `install(DIRECTORY "data/" ...)` below)
+        # therefore, the existence of that directory will skip this download
+        install(CODE "
+            include(${ROOT_DIR}/cmake/download.cmake)
+            download_openrct2_zip(
+                ZIP_VERSION ${OBJECTS_VERSION}
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/object/
+                SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/object/
+                ZIP_URL ${OBJECTS_URL}
+                SHA1 ${OBJECTS_SHA1}
+            )")
+    endif ()
+    if (DOWNLOAD_REPLAYS)
+        # Checks if this version of the replays are already installed, updates if necessary
+        install(CODE "
+            include(${ROOT_DIR}/cmake/download.cmake)
+            download_openrct2_zip(
+                ZIP_VERSION ${REPLAYS_VERSION}
+                DOWNLOAD_DIR \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/
+                ZIP_URL ${REPLAYS_URL}
+                SHA1 ${REPLAYS_SHA1}
+            )")
+    endif ()
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
+    install(DIRECTORY "data/" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
+
+    # even when building WITH_TESTS, none of the below install steps are required for OpenRCT2.app
+    if (NOT MACOS_BUNDLE)
+        install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                                    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+        if(NOT DISABLE_GUI)
+            install(TARGETS "openrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+        endif()
+        install(TARGETS "openrct2-cli" OPTIONAL RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+        install(FILES ${DOC_FILES} DESTINATION "${CMAKE_INSTALL_DOCDIR}")
+        install(FILES "distribution/linux/openrct2.appdata.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo")
+        if (NOT DISABLE_GUI)
+            install(FILES "resources/logo/icon_x16.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps" RENAME "openrct2.png")
+            install(FILES "resources/logo/icon_x24.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/24x24/apps" RENAME "openrct2.png")
+            install(FILES "resources/logo/icon_x32.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps" RENAME "openrct2.png")
+            install(FILES "resources/logo/icon_x48.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps" RENAME "openrct2.png")
+            install(FILES "resources/logo/icon_x64.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps" RENAME "openrct2.png")
+            install(FILES "resources/logo/icon_x96.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/96x96/apps" RENAME "openrct2.png")
+            install(FILES "resources/logo/icon_x128.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/128x128/apps" RENAME "openrct2.png")
+            install(FILES "resources/logo/icon_x256.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps" RENAME "openrct2.png")
+            install(FILES "resources/logo/icon_flag.svg" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps" RENAME "openrct2.svg")
+            install(FILES "distribution/linux/openrct2.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
+            install(FILES "distribution/linux/openrct2-savegame.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
+            install(FILES "distribution/linux/openrct2-scenario.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
+            install(FILES "distribution/linux/openrct2-uri.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
+        endif()
+        install(FILES "distribution/linux/openrct2-mimeinfo.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages/" RENAME "openrct2.xml")
+        install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")
+
+        if (MACOS_USE_DEPENDENCIES)
+            # Note: dependencies may have the same names as system installed libraries
+            # (via homebrew). A local CMAKE_INSTALL_PREFIX is recommended to avoid issues
+            file(GLOB DYLIB_FILES "${MACOS_DYLIBS_DIR}/lib/*.dylib")
+            install(FILES ${DYLIB_FILES} DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+        endif()
+    endif()
 endif()
-install(TARGETS "openrct2-cli" OPTIONAL RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
-install(DIRECTORY "data/" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
-install(FILES ${DOC_FILES} DESTINATION "${CMAKE_INSTALL_DOCDIR}")
-install(FILES "distribution/linux/openrct2.appdata.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo")
-if (NOT DISABLE_GUI)
-	install(FILES "resources/logo/icon_x16.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps" RENAME "openrct2.png")
-	install(FILES "resources/logo/icon_x24.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/24x24/apps" RENAME "openrct2.png")
-	install(FILES "resources/logo/icon_x32.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps" RENAME "openrct2.png")
-	install(FILES "resources/logo/icon_x48.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps" RENAME "openrct2.png")
-	install(FILES "resources/logo/icon_x64.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps" RENAME "openrct2.png")
-	install(FILES "resources/logo/icon_x96.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/96x96/apps" RENAME "openrct2.png")
-	install(FILES "resources/logo/icon_x128.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/128x128/apps" RENAME "openrct2.png")
-	install(FILES "resources/logo/icon_x256.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps" RENAME "openrct2.png")
-	install(FILES "resources/logo/icon_flag.svg" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps" RENAME "openrct2.svg")
-	install(FILES "distribution/linux/openrct2.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
-	install(FILES "distribution/linux/openrct2-savegame.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
-	install(FILES "distribution/linux/openrct2-scenario.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
-	install(FILES "distribution/linux/openrct2-uri.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
-endif()
-install(FILES "distribution/linux/openrct2-mimeinfo.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages/" RENAME "openrct2.xml")
-install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")

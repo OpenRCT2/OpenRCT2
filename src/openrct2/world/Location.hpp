@@ -22,21 +22,6 @@ constexpr const int32_t COORDS_Z_PER_TINY_Z = 16;
 
 constexpr const auto NumOrthogonalDirections = 4;
 
-#pragma pack(push, 1)
-
-struct LocationXY16
-{
-    int16_t x, y;
-};
-assert_struct_size(LocationXY16, 4);
-
-struct LocationXYZ16
-{
-    int16_t x, y, z;
-};
-assert_struct_size(LocationXYZ16, 6);
-#pragma pack(pop)
-
 constexpr int32_t COORDS_NULL = 0xFFFF8000;
 
 struct ScreenCoordsXY
@@ -139,6 +124,20 @@ struct CoordsXY
         return *this;
     }
 
+    constexpr CoordsXY& operator*=(const int32_t rhs)
+    {
+        x *= rhs;
+        y *= rhs;
+        return *this;
+    }
+
+    constexpr CoordsXY& operator/=(const int32_t rhs)
+    {
+        x /= rhs;
+        y /= rhs;
+        return *this;
+    }
+
     constexpr bool operator>=(const CoordsXY& rhs) const
     {
         return x >= rhs.x && y >= rhs.y;
@@ -157,6 +156,16 @@ struct CoordsXY
     constexpr const CoordsXY operator-(const CoordsXY& rhs) const
     {
         return { x - rhs.x, y - rhs.y };
+    }
+
+    constexpr const CoordsXY operator*(const int32_t rhs) const
+    {
+        return { x * rhs, y * rhs };
+    }
+
+    constexpr const CoordsXY operator/(const int32_t rhs) const
+    {
+        return { x / rhs, y / rhs };
     }
 
     constexpr CoordsXY Rotate(int32_t direction) const

@@ -130,7 +130,7 @@ class ScenarioFileIndex final : public FileIndex<scenario_index_entry>
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
     static constexpr uint16_t VERSION = 5;
-    static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea";
+    static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
@@ -203,7 +203,28 @@ private:
         try
         {
             std::string extension = Path::GetExtension(path);
-            if (String::Equals(extension, ".sc4", true))
+            if (String::Equals(extension, ".park", true))
+            {
+                // OpenRCT2 park
+                bool result = false;
+                try
+                {
+                    auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+                    auto importer = ParkImporter::CreateParkFile(objRepository);
+                    importer->LoadScenario(path.c_str(), true);
+                    if (importer->GetDetails(entry))
+                    {
+                        String::Set(entry->path, sizeof(entry->path), path.c_str());
+                        entry->timestamp = timestamp;
+                        result = true;
+                    }
+                }
+                catch (const std::exception&)
+                {
+                }
+                return result;
+            }
+            else if (String::Equals(extension, ".sc4", true))
             {
                 // RCT1 scenario
                 bool result = false;
@@ -318,7 +339,7 @@ private:
 class ScenarioRepository final : public IScenarioRepository
 {
 private:
-    static constexpr uint32_t HighscoreFileVersion = 1;
+    static constexpr uint32_t HighscoreFileVersion = 2;
 
     std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
@@ -344,7 +365,7 @@ public:
         // Reload scenarios from index
         _scenarios.clear();
         auto scenarios = _fileIndex.LoadOrBuild(language);
-        for (auto scenario : scenarios)
+        for (const auto& scenario : scenarios)
         {
             AddScenario(scenario);
         }
@@ -416,7 +437,7 @@ public:
         return nullptr;
     }
 
-    bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money32 companyValue, const utf8* name) override
+    bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money64 companyValue, const utf8* name) override
     {
         // Scan the scenarios so we have a fresh list to query. This is to prevent the issue of scenario completions
         // not getting recorded, see #4951.
@@ -579,7 +600,7 @@ private:
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             uint32_t fileVersion = fs.ReadValue<uint32_t>();
-            if (fileVersion != 1)
+            if (fileVersion != 1 && fileVersion != 2)
             {
                 Console::Error::WriteLine("Invalid or incompatible highscores file.");
                 return;
@@ -593,7 +614,7 @@ private:
                 scenario_highscore_entry* highscore = InsertHighscore();
                 highscore->fileName = fs.ReadString();
                 highscore->name = fs.ReadString();
-                highscore->company_value = fs.ReadValue<money32>();
+                highscore->company_value = fileVersion == 1 ? fs.ReadValue<money32>() : fs.ReadValue<money64>();
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }
         }
@@ -653,7 +674,7 @@ private:
                             if (scBasic.CompanyValue > highscore->company_value)
                             {
                                 SafeFree(highscore->name);
-                                std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
+                                std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                                 highscore->name = String::Duplicate(name.c_str());
                                 highscore->company_value = scBasic.CompanyValue;
                                 highscore->timestamp = DATETIME64_MIN;
@@ -665,7 +686,7 @@ private:
                     {
                         scenario_highscore_entry* highscore = InsertHighscore();
                         highscore->fileName = String::Duplicate(scBasic.Path);
-                        std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
+                        std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                         highscore->name = String::Duplicate(name.c_str());
                         highscore->company_value = scBasic.CompanyValue;
                         highscore->timestamp = DATETIME64_MIN;
@@ -765,7 +786,7 @@ const scenario_index_entry* scenario_repository_get_by_index(size_t index)
     return repo->GetByIndex(index);
 }
 
-bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money32 companyValue, const utf8* name)
+bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name)
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);

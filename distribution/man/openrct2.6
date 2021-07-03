@@ -4,7 +4,7 @@
 .Sh NAME
 .Nm openrct2
 .Nd An open source re-implementation of \(lqRollerCoaster Tycoon 2\(rq.
-
+.sp
 .Sh DESCRIPTION
 OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2).
 The gameplay revolves around building and maintaining an amusement park
@@ -14,7 +14,7 @@ OpenRCT2 allows for both scenario and sandbox play. Scenarios require the
 player to complete a certain objective in a set time limit whilst sandbox
 allows the player to build a more flexible park with optionally no
 restrictions or finance.
-
+.sp
 .Sh SYNOPSIS
 .Nm
 .Op Fl h | -help
@@ -51,7 +51,7 @@ destination
 .Nm
 .Ar handle-uri
 openrct2://.../
-
+.sp
 .Nm
 .Ar screenshot
 file output_image width height
@@ -61,7 +61,7 @@ file output_image width height
 file output_image
 .Ar giant
 zoom rotation
-
+.sp
 .Nm
 .Ar sprite append
 spritefile input
@@ -84,56 +84,56 @@ spritefile idx output
 .Nm
 .Ar sprite exportall
 spritefile output_directory
-
+.sp
 .Sh OPTIONS
 .Bl -tag -width "-openrct2-data-path path "
-
+.sp
 .It Fl h | -help
 Print a summary of all options to stdout and exit.
-
+.sp
 .It Fl v | -version
 Show version information and exit.
-
+.sp
 .It Fl a | -all
 Show help for all commands.
-
+.sp
 .It Fl -about
 Show information about
 .Nm .
-
+.sp
 .It Fl -verbose
 Print diagnostic information to stdout.
-
+.sp
 .It Fl -headless
 run
 .Nm
 without a graphical window.
-
+.sp
 .It Fl -port Ar port
 Port to use for hosting or joining a server.
-
+.sp
 .It Fl -address Ar address
 Address to bind to when hosting a server.
-
+.sp
 .It Fl -password Ar password
 Password needed to join the server.
-
+.sp
 .It Fl -user-data-path Ar path
 Path to the user data directory (containing
 .Pa config.ini )
-
+.sp
 .It Fl -openrct2-data-path Ar path
 Path to the OpenRCT2 data directory (containing
 .Pa languages )
-
+.sp
 .It Fl -rct1-data-path Ar path
 path to the RollerCoaster Tycoon 1 data directory (containing
 .Pa data/csg1.dat )
-
+.sp
 .It Fl -rct2-data-path Ar path
 Path to the RollerCoaster Tycoon 2 data directory (containing
 .Pa data/g1.dat )
-
+.El
 .Sh EXAMPLES
 .Bl -tag -width "openrct2 https://openrct2.io/files/SnowyPark.sv6 "
 .It openrct2 ./my_park.sv6
@@ -142,10 +142,10 @@ Open a saved park.
 Download and open a saved park.
 .It openrct2 host ./my_park.sv6 --port 11753 --headless
 Run a headless server for a saved park.
-
+.El
 .Sh SEE ALSO
-.Lk https://openrct2.io "Offical site"
-
+.Lk https://openrct2.io "Official site"
+.sp
 .Lk https://github.com/OpenRCT2/OpenRCT2 "GitHub"
 .Sh HISTORY
 RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly

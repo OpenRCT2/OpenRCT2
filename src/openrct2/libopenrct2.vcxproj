@@ -147,6 +147,7 @@
     <ClInclude Include="config\IniReader.hpp" />
     <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="Context.h" />
+    <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
     <ClInclude Include="core\Collections.hpp" />
     <ClInclude Include="core\Console.hpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
     <ClInclude Include="core\RTL.h" />
+    <ClInclude Include="core\FixedVector.h" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
@@ -190,6 +192,7 @@
     <ClInclude Include="drawing\ImageImporter.h" />
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
+    <ClInclude Include="drawing\ScrollingText.h" />
     <ClInclude Include="drawing\Weather.h" />
     <ClInclude Include="drawing\Text.h" />
     <ClInclude Include="drawing\TTF.h" />
@@ -251,8 +254,11 @@
     <ClInclude Include="object\EntranceObject.h" />
     <ClInclude Include="object\FootpathItemObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
+    <ClInclude Include="object\FootpathRailingsObject.h" />
+    <ClInclude Include="object\FootpathSurfaceObject.h" />
     <ClInclude Include="object\ImageTable.h" />
     <ClInclude Include="object\LargeSceneryObject.h" />
+    <ClInclude Include="object\MusicObject.h" />
     <ClInclude Include="object\Object.h" />
     <ClInclude Include="object\ObjectFactory.h" />
     <ClInclude Include="object\ObjectLimits.h" />
@@ -277,6 +283,7 @@
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
+    <ClInclude Include="ParkFile.h" />
     <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="peep\GuestPathfinding.h" />
     <ClInclude Include="peep\Peep.h" />
@@ -293,7 +300,6 @@
     <ClInclude Include="rct1\RCT1.h" />
     <ClInclude Include="rct1\Tables.h" />
     <ClInclude Include="rct2\RCT2.h" />
-    <ClInclude Include="rct2\S6Exporter.h" />
     <ClInclude Include="rct2\T6Exporter.h" />
     <ClInclude Include="ReplayManager.h" />
     <ClInclude Include="ride\CableLift.h" />
@@ -322,6 +328,7 @@
     <ClInclude Include="ride\coaster\meta\ReverseFreefallCoaster.h" />
     <ClInclude Include="ride\coaster\meta\ReverserRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\SideFrictionRollerCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\SingleRailRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\SpiralRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\StandUpRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\SteelWildMouse.h" />
@@ -349,8 +356,8 @@
     <ClInclude Include="ride\gentle\meta\ObservationTower.h" />
     <ClInclude Include="ride\gentle\meta\SpaceRings.h" />
     <ClInclude Include="ride\gentle\meta\SpiralSlide.h" />
-    <ClInclude Include="ride\MusicList.h" />
     <ClInclude Include="ride\Ride.h" />
+    <ClInclude Include="ride\RideAudio.h" />
     <ClInclude Include="ride\RideData.h" />
     <ClInclude Include="ride\RideRatings.h" />
     <ClInclude Include="ride\RideTypes.h" />
@@ -379,6 +386,7 @@
     <ClInclude Include="ride\TrackDesign.h" />
     <ClInclude Include="ride\TrackDesignRepository.h" />
     <ClInclude Include="ride\TrackPaint.h" />
+    <ClInclude Include="ride\TrainManager.h" />
     <ClInclude Include="ride\transport\meta\Chairlift.h" />
     <ClInclude Include="ride\transport\meta\Lift.h" />
     <ClInclude Include="ride\transport\meta\MiniatureRailway.h" />
@@ -402,6 +410,7 @@
     <ClInclude Include="scripting\HookEngine.h" />
     <ClInclude Include="scripting\Plugin.h" />
     <ClInclude Include="scripting\ScCheats.hpp" />
+    <ClInclude Include="scripting\ScClimate.hpp" />
     <ClInclude Include="scripting\ScConfiguration.hpp" />
     <ClInclude Include="scripting\ScConsole.hpp" />
     <ClInclude Include="scripting\ScContext.hpp" />
@@ -430,18 +439,26 @@
     <ClInclude Include="Version.h" />
     <ClInclude Include="windows\Intent.h" />
     <ClInclude Include="windows\tile_inspector.h" />
+    <ClInclude Include="world\Balloon.h" />
     <ClInclude Include="world\Banner.h" />
     <ClInclude Include="world\Climate.h" />
+    <ClInclude Include="world\Duck.h" />
+    <ClInclude Include="world\Entity.h" />
+    <ClInclude Include="world\EntityList.h" />
+    <ClInclude Include="world\EntityTweener.h" />
     <ClInclude Include="world\Entrance.h" />
     <ClInclude Include="world\Footpath.h" />
     <ClInclude Include="world\Fountain.h" />
     <ClInclude Include="world\LargeScenery.h" />
+    <ClInclude Include="world\Litter.h" />
     <ClInclude Include="world\Location.hpp" />
     <ClInclude Include="world\Map.h" />
     <ClInclude Include="world\MapAnimation.h" />
     <ClInclude Include="world\MapGen.h" />
     <ClInclude Include="world\MapHelpers.h" />
+    <ClInclude Include="world\MoneyEffect.h" />
     <ClInclude Include="world\Park.h" />
+    <ClInclude Include="world\Particle.h" />
     <ClInclude Include="world\Scenery.h" />
     <ClInclude Include="world\ScenerySelection.h" />
     <ClInclude Include="world\SmallScenery.h" />
@@ -449,6 +466,7 @@
     <ClInclude Include="world\SpriteBase.h" />
     <ClInclude Include="world\Surface.h" />
     <ClInclude Include="world\TileElement.h" />
+    <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\Wall.h" />
     <ClInclude Include="world\Water.h" />
@@ -551,6 +569,7 @@
     <ClCompile Include="CmdlineSprite.cpp" />
     <ClCompile Include="cmdline\BenchGfxCommmands.cpp" />
     <ClCompile Include="cmdline\BenchSpriteSort.cpp" />
+    <ClCompile Include="cmdline/BenchUpdate.cpp" />
     <ClCompile Include="cmdline\CommandLine.cpp" />
     <ClCompile Include="cmdline\ConvertCommand.cpp" />
     <ClCompile Include="cmdline\RootCommands.cpp" />
@@ -562,8 +581,10 @@
     <ClCompile Include="config\IniReader.cpp" />
     <ClCompile Include="config\IniWriter.cpp" />
     <ClCompile Include="Context.cpp" />
+    <ClCompile Include="core\ChecksumStream.cpp" />
     <ClCompile Include="core\Console.cpp" />
     <ClCompile Include="core\Crypt.CNG.cpp" />
+    <ClCompile Include="core\Crypt.OpenRCT2.cpp" />
     <ClCompile Include="core\Crypt.OpenSSL.cpp" />
     <ClCompile Include="core\Diagnostics.cpp" />
     <ClCompile Include="core\File.cpp" />
@@ -665,8 +686,11 @@
     <ClCompile Include="object\EntranceObject.cpp" />
     <ClCompile Include="object\FootpathItemObject.cpp" />
     <ClCompile Include="object\FootpathObject.cpp" />
+    <ClCompile Include="object\FootpathRailingsObject.cpp" />
+    <ClCompile Include="object\FootpathSurfaceObject.cpp" />
     <ClCompile Include="object\ImageTable.cpp" />
     <ClCompile Include="object\LargeSceneryObject.cpp" />
+    <ClCompile Include="object\MusicObject.cpp" />
     <ClCompile Include="object\Object.cpp" />
     <ClCompile Include="object\ObjectFactory.cpp" />
     <ClCompile Include="object\ObjectList.cpp" />
@@ -700,6 +724,7 @@
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Wall.cpp" />
     <ClCompile Include="paint\VirtualFloor.cpp" />
+    <ClCompile Include="ParkFile.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="peep\Guest.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />
@@ -726,7 +751,6 @@
     <ClCompile Include="rct1\T4Importer.cpp" />
     <ClCompile Include="rct1\Tables.cpp" />
     <ClCompile Include="rct2\RCT2.cpp" />
-    <ClCompile Include="rct2\S6Exporter.cpp" />
     <ClCompile Include="rct2\S6Importer.cpp" />
     <ClCompile Include="rct2\SeaDecrypt.cpp" />
     <ClCompile Include="rct2\T6Exporter.cpp" />
@@ -757,6 +781,7 @@
     <ClCompile Include="ride\coaster\ReverseFreefallCoaster.cpp" />
     <ClCompile Include="ride\coaster\ReverserRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\SideFrictionRollerCoaster.cpp" />
+    <ClCompile Include="ride\coaster\SingleRailRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\StandUpRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\Steeplechase.cpp" />
     <ClCompile Include="ride\coaster\SuspendedSwingingCoaster.cpp" />
@@ -782,8 +807,8 @@
     <ClCompile Include="ride\gentle\ObservationTower.cpp" />
     <ClCompile Include="ride\gentle\SpaceRings.cpp" />
     <ClCompile Include="ride\gentle\SpiralSlide.cpp" />
-    <ClCompile Include="ride\MusicList.cpp" />
     <ClCompile Include="ride\Ride.cpp" />
+    <ClCompile Include="ride\RideAudio.cpp" />
     <ClCompile Include="ride\RideData.cpp" />
     <ClCompile Include="ride\RideRatings.cpp" />
     <ClCompile Include="ride\ShopItem.cpp" />
@@ -807,6 +832,7 @@
     <ClCompile Include="ride\TrackDesignRepository.cpp" />
     <ClCompile Include="ride\TrackDesignSave.cpp" />
     <ClCompile Include="ride\TrackPaint.cpp" />
+    <ClCompile Include="ride\TrainManager.cpp" />
     <ClCompile Include="ride\transport\Chairlift.cpp" />
     <ClCompile Include="ride\transport\Lift.cpp" />
     <ClCompile Include="ride\transport\MiniatureRailway.cpp" />
@@ -844,10 +870,13 @@
     <ClCompile Include="world\Banner.cpp" />
     <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\Duck.cpp" />
+    <ClCompile Include="world\Entity.cpp" />
+    <ClCompile Include="world\EntityTweener.cpp" />
     <ClCompile Include="world\Entrance.cpp" />
     <ClCompile Include="world\Footpath.cpp" />
     <ClCompile Include="world\Fountain.cpp" />
     <ClCompile Include="world\LargeScenery.cpp" />
+    <ClCompile Include="world\Litter.cpp" />
     <ClCompile Include="world\Map.cpp" />
     <ClCompile Include="world\MapAnimation.cpp" />
     <ClCompile Include="world\MapGen.cpp" />
@@ -860,6 +889,7 @@
     <ClCompile Include="world\Sprite.cpp" />
     <ClCompile Include="world\Surface.cpp" />
     <ClCompile Include="world\TileElement.cpp" />
+    <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
     <ClCompile Include="world\Wall.cpp" />
   </ItemGroup>

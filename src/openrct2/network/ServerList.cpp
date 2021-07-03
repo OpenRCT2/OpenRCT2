@@ -279,7 +279,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
                         if (entry.has_value())
                         {
                             (*entry).Local = true;
-                            entries.push_back(*entry);
+                            entries.push_back(std::move(*entry));
                         }
                     }
                 }
@@ -383,7 +383,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
                         auto entry = ServerListEntry::FromJson(jServer);
                         if (entry.has_value())
                         {
-                            entries.push_back(*entry);
+                            entries.push_back(std::move(*entry));
                         }
                     }
                 }

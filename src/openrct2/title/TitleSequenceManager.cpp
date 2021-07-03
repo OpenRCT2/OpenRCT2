@@ -209,12 +209,11 @@ namespace TitleSequenceManager
     static void Scan(const std::string& directory)
     {
         auto pattern = Path::Combine(directory, "script.txt;*.parkseq");
-        IFileScanner* fileScanner = Path::ScanDirectory(pattern, true);
+        auto fileScanner = Path::ScanDirectory(pattern, true);
         while (fileScanner->Next())
         {
             AddSequence(fileScanner->GetPath());
         }
-        delete fileScanner;
     }
 
     static void AddSequence(const std::string& scanPath)
@@ -249,7 +248,7 @@ namespace TitleSequenceManager
             return;
         }
 
-        _items.push_back(item);
+        _items.push_back(std::move(item));
     }
 
     static std::string GetNameFromSequencePath(const std::string& path)

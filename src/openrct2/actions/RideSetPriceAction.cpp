@@ -20,7 +20,6 @@
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 RideSetPriceAction::RideSetPriceAction(ride_id_t rideIndex, money16 price, bool primaryPrice)
     : _rideIndex(rideIndex)
@@ -121,7 +120,7 @@ GameActions::Result::Ptr RideSetPriceAction::Execute() const
         shopItem = rideEntry->shop_item[1];
         if (shopItem == ShopItem::None)
         {
-            shopItem = RideTypeDescriptors[ride->type].PhotoItem;
+            shopItem = ride->GetRideTypeDescriptor().PhotoItem;
             if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
             {
                 ride->price[1] = _price;

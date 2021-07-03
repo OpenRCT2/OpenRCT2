@@ -1,6 +1,8 @@
 #include "Window_internal.h"
 
-#include "../world/Sprite.h"
+#include "../world/Entity.h"
+#include "../world/EntityList.h"
+#include "Viewport.h"
 
 void rct_window::SetLocation(const CoordsXYZ& coords)
 {
@@ -29,7 +31,7 @@ void rct_window::ScrollToViewport()
     else
     {
         newCoords.x = viewport_focus_coordinates.x;
-        newCoords.y = viewport_focus_coordinates.y & VIEWPORT_FOCUS_Y_MASK;
+        newCoords.y = viewport_focus_coordinates.y;
         newCoords.z = viewport_focus_coordinates.z;
     }
 
@@ -48,6 +50,6 @@ void rct_window::RemoveViewport()
     if (viewport == nullptr)
         return;
 
-    viewport->width = 0;
+    viewport_remove(viewport);
     viewport = nullptr;
 }

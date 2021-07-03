@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+#include "Duck.h"
 
 #include "../Game.h"
 #include "../audio/audio.h"
@@ -68,12 +69,7 @@ static constexpr const uint8_t * DuckAnimations[] =
 
 template<> bool SpriteBase::Is<Duck>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && type == SPRITE_MISC_DUCK;
-}
-
-void Duck::Invalidate()
-{
-    Invalidate1();
+    return Type == EntityType::Duck;
 }
 
 bool Duck::IsFlying()
@@ -131,7 +127,6 @@ void Duck::UpdateFlyToWater()
                 destination.z = z;
             }
             MoveTo(destination);
-            Invalidate();
         }
         else
         {
@@ -264,7 +259,6 @@ void Duck::UpdateFlyAway()
         if (map_is_location_valid(destination))
         {
             MoveTo(destination);
-            Invalidate();
         }
         else
         {
@@ -285,10 +279,10 @@ uint32_t Duck::GetFrameImage(int32_t direction) const
     return imageId;
 }
 
-void create_duck(const CoordsXY& pos)
+void Duck::Create(const CoordsXY& pos)
 {
-    rct_sprite* sprite = create_sprite(SpriteIdentifier::Misc);
-    if (sprite == nullptr)
+    auto* duck = CreateEntity<Duck>();
+    if (duck == nullptr)
         return;
 
     CoordsXY targetPos = pos;
@@ -297,11 +291,6 @@ void create_duck(const CoordsXY& pos)
     targetPos.x += offsetXY;
     targetPos.y += offsetXY;
 
-    sprite->generic.sprite_identifier = SpriteIdentifier::Misc;
-    sprite->generic.type = SPRITE_MISC_DUCK;
-    auto duck = sprite->generic.As<Duck>();
-    if (duck == nullptr)
-        return; // can never happen
     duck->sprite_width = 9;
     duck->sprite_height_negative = 12;
     duck->sprite_height_positive = 9;
@@ -351,14 +340,14 @@ void Duck::Update()
     }
 }
 
-void duck_press(Duck* duck)
+void Duck::Press()
 {
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Quack, { duck->x, duck->y, duck->z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Quack, { x, y, z });
 }
 
-void duck_remove_all()
+void Duck::RemoveAll()
 {
-    for (auto duck : EntityList<Duck>(EntityListId::Misc))
+    for (auto duck : EntityList<Duck>())
     {
         duck->Remove();
     }

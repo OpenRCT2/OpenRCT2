@@ -25,11 +25,6 @@ private:
     std::vector<ObjectEntryDescriptor> _items;
 
 public:
-    explicit SceneryGroupObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;
@@ -44,6 +39,8 @@ public:
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
+
+    uint16_t GetNumIncludedObjects() const;
 
 private:
     static std::vector<ObjectEntryDescriptor> ReadItems(OpenRCT2::IStream* stream);

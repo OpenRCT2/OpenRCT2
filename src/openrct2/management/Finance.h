@@ -36,26 +36,26 @@ enum class ExpenditureType : int32_t
 
 extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
 
-extern money32 gInitialCash;
-extern money32 gCash;
-extern money32 gBankLoan;
+extern money64 gInitialCash;
+extern money64 gCash;
+extern money64 gBankLoan;
 extern uint8_t gBankLoanInterestRate;
-extern money32 gMaxBankLoan;
-extern money32 gCurrentExpenditure;
-extern money32 gCurrentProfit;
+extern money64 gMaxBankLoan;
+extern money64 gCurrentExpenditure;
+extern money64 gCurrentProfit;
 
 /**
  * The total profit for the entire scenario that precedes
  * the current financial table.
  */
-extern money32 gHistoricalProfit;
+extern money64 gHistoricalProfit;
 
-extern money32 gWeeklyProfitAverageDividend;
+extern money64 gWeeklyProfitAverageDividend;
 extern uint16_t gWeeklyProfitAverageDivisor;
-extern money32 gCashHistory[FINANCE_GRAPH_SIZE];
-extern money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
-extern money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
-extern money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
+extern money64 gCashHistory[FINANCE_GRAPH_SIZE];
+extern money64 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
+extern money64 gParkValueHistory[FINANCE_GRAPH_SIZE];
+extern money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 bool finance_check_money_required(uint32_t flags);
 bool finance_check_affordability(money32 cost, uint32_t flags);
@@ -70,9 +70,9 @@ void finance_update_daily_profit();
 void finance_shift_expenditure_table();
 void finance_reset_cash_to_initial();
 
-money32 finance_get_initial_cash();
-money32 finance_get_current_loan();
-money32 finance_get_maximum_loan();
-money32 finance_get_current_cash();
+money64 finance_get_initial_cash();
+money64 finance_get_current_loan();
+money64 finance_get_maximum_loan();
+money64 finance_get_current_cash();
 
-money32 finance_get_last_month_shop_profit();
+money64 finance_get_last_month_shop_profit();

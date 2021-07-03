@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SetCheatAction, GAME_COMMAND_CHEAT, GameActions::Result)
+DEFINE_GAME_ACTION(SetCheatAction, GameCommand::Cheat, GameActions::Result)
 {
     using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
 

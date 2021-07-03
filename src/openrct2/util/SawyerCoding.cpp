@@ -27,9 +27,8 @@ bool gUseRLE = true;
 
 uint32_t sawyercoding_calculate_checksum(const uint8_t* buffer, size_t length)
 {
-    size_t i;
     uint32_t checksum = 0;
-    for (i = 0; i < length; i++)
+    for (size_t i = 0; i < length; i++)
         checksum += buffer[i];
 
     return checksum;
@@ -125,14 +124,11 @@ size_t sawyercoding_decode_sc4(const uint8_t* src, uint8_t* dst, size_t length, 
 
 size_t sawyercoding_encode_sv4(const uint8_t* src, uint8_t* dst, size_t length)
 {
-    size_t encodedLength;
-    uint32_t checksum;
-
     // Encode
-    encodedLength = encode_chunk_rle(src, dst, length);
+    size_t encodedLength = encode_chunk_rle(src, dst, length);
 
     // Append checksum
-    checksum = sawyercoding_calculate_checksum(dst, encodedLength);
+    uint32_t checksum = sawyercoding_calculate_checksum(dst, encodedLength);
     *(reinterpret_cast<uint32_t*>(&dst[encodedLength])) = checksum;
 
     return encodedLength + 4;

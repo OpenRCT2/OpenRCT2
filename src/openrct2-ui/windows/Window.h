@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <openrct2-ui/input/KeyboardShortcuts.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
@@ -24,8 +23,8 @@ struct Vehicle;
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
-extern ScenerySelection gWindowSceneryTabSelections[];
-extern uint8_t gWindowSceneryActiveTabIndex;
+extern std::vector<ScenerySelection> gWindowSceneryTabSelections;
+extern size_t gWindowSceneryActiveTabIndex;
 extern bool gWindowSceneryScatterEnabled;
 extern uint16_t gWindowSceneryScatterSize;
 extern ScatterToolDensity gWindowSceneryScatterDensity;
@@ -48,14 +47,13 @@ rct_window* window_editor_main_open();
 rct_window* window_editor_objective_options_open();
 rct_window* window_editor_scenario_options_open();
 rct_window* window_footpath_open();
+void window_footpath_reset_selected_path();
 rct_window* window_guest_open(Peep* peep);
 rct_window* window_land_open();
 rct_window* window_land_rights_open();
 rct_window* window_main_open();
 rct_window* window_mapgen_open();
 rct_window* window_multiplayer_open();
-rct_window* window_network_open();
-rct_window* window_music_credits_open();
 rct_window* window_news_open();
 rct_window* window_news_options_open();
 rct_window* window_options_open();
@@ -64,7 +62,6 @@ rct_window* window_save_prompt_open();
 rct_window* window_server_list_open();
 rct_window* window_server_start_open();
 #endif
-rct_window* window_shortcut_change_open(OpenRCT2::Input::Shortcut shortcut, rct_string_id key_string_id);
 rct_window* window_shortcut_keys_open();
 rct_window* window_staff_list_open();
 rct_window* window_staff_open(Peep* peep);
@@ -98,7 +95,6 @@ rct_window* window_player_open(uint8_t id);
 rct_window* window_new_campaign_open(int16_t campaignType);
 
 rct_window* window_install_track_open(const utf8* path);
-void window_guest_list_init_vars();
 void window_guest_list_refresh_list();
 rct_window* window_guest_list_open();
 rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index);
@@ -106,11 +102,14 @@ rct_window* window_staff_fire_prompt_open(Peep* peep);
 void window_title_editor_open(int32_t tab);
 void window_title_command_editor_open(struct TitleSequence* sequence, int32_t command, bool insert);
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
+rct_window* window_scenarioselect_open(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking);
 
 rct_window* window_error_open(rct_string_id title, rct_string_id message, const class Formatter& formatter);
-rct_window* window_error_open(const std::string_view& title, const std::string_view& message);
+rct_window* window_error_open(std::string_view title, std::string_view message);
 struct TrackDesign;
-rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);
+rct_window* window_loadsave_open(
+    int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
+    TrackDesign* trackDesign);
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);
 rct_window* window_track_manage_open(struct track_design_file_ref* tdFileRef);
 
@@ -161,10 +160,10 @@ void window_text_input_raw_open(
     const_utf8string existing_text, int32_t maxLength);
 
 void window_text_input_open(
-    const std::string_view& title, const std::string_view& description, const std::string_view& initialValue, size_t maxLength,
-    std::function<void(const std::string_view&)> okCallback, std::function<void()> cancelCallback);
+    std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
+    std::function<void(std::string_view)> okCallback, std::function<void()> cancelCallback);
 
-rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects);
+rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects);
 
 rct_window* window_ride_construction_open();
 void window_ride_construction_update_active_elements_impl();

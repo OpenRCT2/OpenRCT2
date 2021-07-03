@@ -210,7 +210,7 @@ const NetworkUser* NetworkUserManager::GetUserByHash(const std::string& hash) co
 
 const NetworkUser* NetworkUserManager::GetUserByName(const std::string& name) const
 {
-    for (auto kvp : _usersByHash)
+    for (const auto& kvp : _usersByHash)
     {
         const NetworkUser* networkUser = kvp.second;
         if (String::Equals(name.c_str(), networkUser->Name.c_str(), true))

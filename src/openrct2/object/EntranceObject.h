@@ -18,11 +18,6 @@ private:
     rct_entrance_type _legacyType = {};
 
 public:
-    explicit EntranceObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;

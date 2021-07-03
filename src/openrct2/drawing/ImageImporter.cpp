@@ -23,20 +23,24 @@ constexpr int32_t PALETTE_TRANSPARENT = -1;
 ImportResult ImageImporter::Import(
     const Image& image, int32_t offsetX, int32_t offsetY, IMPORT_FLAGS flags, IMPORT_MODE mode) const
 {
-    if (image.Width > 256 || image.Height > 256)
+    return Import(image, 0, 0, image.Width, image.Height, offsetX, offsetY, flags, mode);
+}
+
+ImportResult ImageImporter::Import(
+    const Image& image, int32_t srcX, int32_t srcY, int32_t width, int32_t height, int32_t offsetX, int32_t offsetY,
+    IMPORT_FLAGS flags, IMPORT_MODE mode) const
+{
+    if (width > 256 || height > 256)
     {
         throw std::invalid_argument("Only images 256x256 or less are supported.");
     }
 
     if ((flags & IMPORT_FLAGS::KEEP_PALETTE) && image.Depth != 8)
     {
-        throw std::invalid_argument("Image is not palletted, it has bit depth of " + std::to_string(image.Depth));
+        throw std::invalid_argument("Image is not paletted, it has bit depth of " + std::to_string(image.Depth));
     }
 
-    const auto width = image.Width;
-    const auto height = image.Height;
-
-    auto pixels = GetPixels(image.Pixels.data(), width, height, flags, mode);
+    auto pixels = GetPixels(image.Pixels.data(), image.Stride, srcX, srcY, width, height, flags, mode);
     auto buffer = flags & IMPORT_FLAGS::RLE ? EncodeRLE(pixels.data(), width, height) : EncodeRaw(pixels.data(), width, height);
 
     rct_g1_element outElement;
@@ -55,7 +59,8 @@ ImportResult ImageImporter::Import(
 }
 
 std::vector<int32_t> ImageImporter::GetPixels(
-    const uint8_t* pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode)
+    const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height, IMPORT_FLAGS flags,
+    IMPORT_MODE mode)
 {
     std::vector<int32_t> buffer;
     buffer.reserve(width * height);
@@ -71,35 +76,48 @@ std::vector<int32_t> ImageImporter::GetPixels(
     auto rgbaSrc = rgbaSrcBuffer.get();
     if (!(flags & IMPORT_FLAGS::KEEP_PALETTE))
     {
-        for (uint32_t x = 0; x < height * width * 4; x++)
+        auto src = pixels + (srcY * pitch) + (srcX * 4);
+        auto dst = rgbaSrc;
+        for (uint32_t y = 0; y < height; y++)
         {
-            rgbaSrc[x] = static_cast<int16_t>(pixels[x]);
+            for (uint32_t x = 0; x < width * 4; x++)
+            {
+                *dst = static_cast<int16_t>(*src);
+                src++;
+                dst++;
+            }
+            src += (pitch - (width * 4));
         }
     }
 
-    for (uint32_t y = 0; y < height; y++)
+    if (flags & IMPORT_FLAGS::KEEP_PALETTE)
     {
-        for (uint32_t x = 0; x < width; x++)
+        for (uint32_t y = 0; y < height; y++)
         {
-            int32_t paletteIndex;
-            if (flags & IMPORT_FLAGS::KEEP_PALETTE)
+            for (uint32_t x = 0; x < width; x++)
             {
-                paletteIndex = *palettedSrc;
+                int32_t paletteIndex = *palettedSrc;
                 // The 1st index is always transparent
                 if (paletteIndex == 0)
                 {
                     paletteIndex = PALETTE_TRANSPARENT;
                 }
+                palettedSrc += 1;
+                buffer.push_back(paletteIndex);
             }
-            else
+            palettedSrc += (pitch - width);
+        }
+    }
+    else
+    {
+        for (uint32_t y = 0; y < height; y++)
+        {
+            for (uint32_t x = 0; x < width; x++)
             {
-                paletteIndex = CalculatePaletteIndex(mode, rgbaSrc, x, y, width, height);
+                auto paletteIndex = CalculatePaletteIndex(mode, rgbaSrc, x, y, width, height);
+                rgbaSrc += 4;
+                buffer.push_back(paletteIndex);
             }
-
-            rgbaSrc += 4;
-            palettedSrc += 1;
-
-            buffer.push_back(paletteIndex);
         }
     }
 
@@ -312,11 +330,11 @@ bool ImageImporter::IsChangablePixel(int32_t paletteIndex)
         return true;
     if (paletteIndex == 0)
         return false;
-    if (paletteIndex >= 203 && paletteIndex < 214)
+    if (paletteIndex >= 202 && paletteIndex <= 213)
         return false;
     if (paletteIndex == 226)
         return false;
-    if (paletteIndex >= 227 && paletteIndex < 229)
+    if (paletteIndex >= 227 && paletteIndex <= 229)
         return false;
     if (paletteIndex >= 243)
         return false;

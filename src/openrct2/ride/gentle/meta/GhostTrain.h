@@ -29,7 +29,8 @@ constexpr const RideTypeDescriptor GhostTrainRTD =
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS |
-                     RIDE_TYPE_FLAG_HAS_AIR_TIME | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
+                     RIDE_TYPE_FLAG_HAS_AIR_TIME | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT |
+                     RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
@@ -45,7 +46,7 @@ constexpr const RideTypeDescriptor GhostTrainRTD =
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 8, 3, 5 }),
     SET_FIELD(BuildCosts, { 26, 5, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_HORROR),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_HORROR),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 50),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

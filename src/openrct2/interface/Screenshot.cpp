@@ -42,7 +42,7 @@ using namespace OpenRCT2::Drawing;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo* dpi, const GamePalette& palette)
+static bool WriteDpiToFile(std::string_view path, const rct_drawpixelinfo* dpi, const GamePalette& palette)
 {
     auto const pixels8 = dpi->bits;
     auto const pixelsLen = (dpi->width + dpi->pitch) * dpi->height;
@@ -510,7 +510,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     }
     catch (const std::exception& e)
     {
-        std::fprintf(stderr, "%s", e.what());
+        Console::Error::WriteLine("%s", e.what());
     }
 
     for (auto& dpi : dpis)
@@ -813,6 +813,11 @@ void CaptureImage(const CaptureOptions& options)
 
     auto backupRotation = gCurrentRotation;
     gCurrentRotation = options.Rotation;
+
+    if (options.Transparent)
+    {
+        viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+    }
 
     auto outputPath = ResolveFilenameForCapture(options.Filename);
     auto dpi = CreateDPI(viewport);

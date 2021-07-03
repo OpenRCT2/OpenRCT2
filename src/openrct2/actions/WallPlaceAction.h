@@ -11,6 +11,7 @@
 
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../world/Banner.h"
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
@@ -23,9 +24,10 @@ public:
     WallPlaceActionResult(GameActions::Status error, rct_string_id msg, uint8_t* args);
 
     TileElement* tileElement = nullptr;
+    BannerIndex bannerId = BANNER_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(WallPlaceAction, GAME_COMMAND_PLACE_WALL, WallPlaceActionResult)
+DEFINE_GAME_ACTION(WallPlaceAction, GameCommand::PlaceWall, WallPlaceActionResult)
 {
 private:
     ObjectEntryIndex _wallType{ OBJECT_ENTRY_INDEX_NULL };
@@ -34,7 +36,6 @@ private:
     int32_t _primaryColour{ COLOUR_BLACK };
     int32_t _secondaryColour{ COLOUR_BLACK };
     int32_t _tertiaryColour{ COLOUR_BLACK };
-    BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
     WallPlaceAction() = default;
@@ -55,18 +56,17 @@ private:
      *
      *  rct2: 0x006E5CBA
      */
-    bool WallCheckObstructionWithTrack(rct_scenery_entry * wall, int32_t z0, TrackElement * trackElement, bool* wallAcrossTrack)
+    bool WallCheckObstructionWithTrack(WallSceneryEntry * wall, int32_t z0, TrackElement * trackElement, bool* wallAcrossTrack)
         const;
     /**
      *
      *  rct2: 0x006E5C1A
      */
-    GameActions::Result::Ptr WallCheckObstruction(rct_scenery_entry * wall, int32_t z0, int32_t z1, bool* wallAcrossTrack)
-        const;
+    GameActions::Result::Ptr WallCheckObstruction(WallSceneryEntry * wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
 
     /**
      * Gets whether the given track type can have a wall placed on the edge of the given direction.
      * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
      */
-    static bool TrackIsAllowedWallEdges(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, uint8_t direction);
+    static bool TrackIsAllowedWallEdges(uint8_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction);
 };

@@ -46,12 +46,16 @@ namespace OpenRCT2::Drawing
         };
 
         ImportResult Import(
+            const Image& image, int32_t srcX, int32_t srcY, int32_t width, int32_t height, int32_t offsetX, int32_t offsetY,
+            IMPORT_FLAGS flags = IMPORT_FLAGS::NONE, IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
+        ImportResult Import(
             const Image& image, int32_t offsetX = 0, int32_t offsetY = 0, IMPORT_FLAGS flags = IMPORT_FLAGS::NONE,
             IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
 
     private:
         static std::vector<int32_t> GetPixels(
-            const uint8_t* pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode);
+            const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height,
+            IMPORT_FLAGS flags, IMPORT_MODE mode);
         static std::vector<uint8_t> EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height);
         static std::vector<uint8_t> EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height);
 
@@ -69,15 +73,15 @@ constexpr const GamePalette StandardPalette = { {
     { 0, 0, 0, 255 },
 
     // 1 - 9 (misc. e.g. font and water)
-    { 0, 0, 0, 255 },
-    { 0, 0, 0, 255 },
-    { 0, 0, 0, 255 },
-    { 0, 0, 0, 255 },
-    { 0, 0, 0, 255 },
-    { 0, 0, 0, 255 },
-    { 0, 0, 0, 255 },
-    { 0, 0, 0, 255 },
-    { 0, 0, 0, 255 },
+    { 1, 1, 1, 255 },
+    { 2, 2, 2, 255 },
+    { 3, 3, 3, 255 },
+    { 4, 4, 4, 255 },
+    { 5, 5, 5, 255 },
+    { 6, 6, 6, 255 },
+    { 7, 7, 7, 255 },
+    { 8, 8, 8, 255 },
+    { 9, 9, 9, 255 },
 
     //
     { 35, 35, 23, 255 },
@@ -273,7 +277,7 @@ constexpr const GamePalette StandardPalette = { {
     { 231, 231, 171, 255 },
     { 255, 255, 207, 255 },
 
-    // 203 - 214 (Secondary remap)
+    // 202 - 213 (Secondary remap)
     { 27, 0, 63, 255 },
     { 51, 0, 103, 255 },
     { 63, 11, 123, 255 },

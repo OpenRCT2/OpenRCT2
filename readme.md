@@ -10,7 +10,7 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ### Download
 | Latest release | Latest development build |
 |----------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.3.2-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.3.2+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.3.3-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.3.3+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -53,13 +53,13 @@ If you want to help translate the game to your language, please stop by the Loca
 
 **OpenRCT2** is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2). The gameplay revolves around building and maintaining an amusement park containing attractions, shops and facilities. The player must try to make a profit and maintain a good park reputation whilst keeping the guests happy. OpenRCT2 allows for both scenario and sandbox play. Scenarios require the player to complete a certain objective in a set time limit whilst sandbox allows the player to build a more flexible park with optionally no restrictions or finance.
 
-RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly and is the sequel to RollerCoaster Tycoon. The engine was based on Transport Tycoon, an older game which also has an equivalent open-source project, [OpenTTD](http://openttd.org). OpenRCT2 attempts to provide everything from RCT2 as well as many improvements and additional features, some of these include support for modern platforms, an improved interface, improved guest and staff AI, more editing tools, increased limits, and cooperative multiplayer. It also re-introduces mechanics from RollerCoaster Tycoon that were not present in RollerCoaster Tycoon 2. Some of those include; mountain tool in-game, the *"have fun"* objective, launched coasters (not passing-through the station) and several buttons on the toolbar.
+RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly and is the sequel to RollerCoaster Tycoon. The engine was based on Transport Tycoon, an older game which also has an equivalent open-source project, [OpenTTD](https://openttd.org). OpenRCT2 attempts to provide everything from RCT2 as well as many improvements and additional features, some of these include support for modern platforms, an improved interface, improved guest and staff AI, more editing tools, increased limits, and cooperative multiplayer. It also re-introduces mechanics from RollerCoaster Tycoon that were not present in RollerCoaster Tycoon 2. Some of those include; mountain tool in-game, the *"have fun"* objective, launched coasters (not passing-through the station) and several buttons on the toolbar.
 
 ---
 
 # 2. Downloading the game (pre-built)
 
-OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
+OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
 
 [OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest master and the develop branch. There is also a cross platform [Launcher](https://github.com/LRFLEW/OpenRCT2Launcher/releases) available that will automatically update your build of the game so that you always have the latest version.
 
@@ -68,7 +68,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 * [Latest development build](https://flathub.org/beta-repo/appstream/io.openrct2.OpenRCT2.flatpakref)
 
 Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
-* ArchLinux AUR: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) and [openrct2](https://aur.archlinux.org/packages/openrct2)
+* ArchLinux: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR) and [openrct2](https://archlinux.org/packages/community/x86_64/openrct2/) (Community)
 * Ubuntu PPA: [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (nightly builds)
 * openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
@@ -85,7 +85,7 @@ Some \*BSD operating systems offer native packages. These packages are usually t
 
 ## 3.1 Building prerequisites
 
-OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2).
+OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2).
 
 ### Windows:
 - Visual Studio 2019 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
@@ -97,7 +97,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 The program can also be built as a command line program using CMake. This type of build requires:
 
 - Xcode Command Line Tools
-- [Homebrew](http://brew.sh)
+- [Homebrew](https://brew.sh)
 - CMake (available through Homebrew)
 
 
@@ -116,6 +116,7 @@ The program can also be built as a command line program using CMake. This type o
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
 - duktape (unless scripting is disabled)
 - cmake
+- innoextract (optional runtime dependency; used for GOG installer extraction during setup)
 
 Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#required-packages-general for more information about installing the packages.
 
@@ -146,12 +147,7 @@ msbuild openrct2.proj /t:PublishPortable
 The recommended way of building OpenRCT2 for macOS is with Xcode. The Xcode build will create a self-contained application bundles which include all the necessary game files and dependencies. Open the project file OpenRCT2.xcodeproj in Xcode and build from there. Building this way will handle the dependencies for you automatically. You can also invoke an Xcode build from the command line using `xcodebuild`.
 
 #### CMake:
-A command line version of OpenRCT2 can be built using CMake. This type of build requires you to provide the dependencies yourself. The supported method of doing this is with [Homebrew](http://brew.sh). Once you have Homebrew installed, you can download all the required libraries with this command:
-```
-brew install cmake duktape freetype icu4c libpng libzip nlohmann-json openssl pkg-config sdl2 speexdsp
-```
-
-Once you have the dependencies installed, you can build the project using CMake using the following commands:
+A command line version of OpenRCT2 can be built using CMake. CMake will retrieve the dependences from [Dependencies](https://github.com/OpenRCT2/Dependencies/) automatically. You can build the project using CMake using the following commands:
 ```
 mkdir build
 cd build
@@ -214,14 +210,14 @@ We would also like to distribute additional scenarios with the game, when the ti
 - [OpenRCT2.org](https://openrct2.org)
 - [Forums](https://openrct2.org/forums/)
 - [Facebook](https://www.facebook.com/OpenRCT2)
-- [RCT subreddit](http://www.reddit.com/r/rct/)
-- [OpenRCT2 subreddit](http://www.reddit.com/r/openrct2/)
+- [RCT subreddit](https://www.reddit.com/r/rct/)
+- [OpenRCT2 subreddit](https://www.reddit.com/r/openrct2/)
 
 ## Similar Projects
 
 | [OpenLoco](https://github.com/OpenLoco/OpenLoco) | [OpenTTD](https://github.com/OpenTTD/OpenTTD) | [openage](https://github.com/SFTtech/openage) | [OpenRA](https://github.com/OpenRA/OpenRA) |
 |:------------------------------------------------:|:----------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
-| [![icon_x128](https://user-images.githubusercontent.com/604665/53047651-2c533c00-3493-11e9-911a-1a3540fc1156.png)](https://github.com/OpenLoco/OpenLoco) | [![](https://github.com/OpenTTD/OpenTTD/raw/850d05d24d4768c81d97765204ef2a487dd4972c/media/openttd.128.png)](https://github.com/OpenTTD/OpenTTD) | [![](https://user-images.githubusercontent.com/550290/36507534-4693f354-175a-11e8-93a7-faa0481474fb.png)](https://github.com/SFTtech/openage) | [![](https://raw.githubusercontent.com/OpenRA/OpenRA/bleed/packaging/linux/icons/ra_128x128.png)](https://github.com/OpenRA/OpenRA) |
+| [![icon_x128](https://user-images.githubusercontent.com/604665/53047651-2c533c00-3493-11e9-911a-1a3540fc1156.png)](https://github.com/OpenLoco/OpenLoco) | [![](https://github.com/OpenTTD/OpenTTD/raw/850d05d24d4768c81d97765204ef2a487dd4972c/media/openttd.128.png)](https://github.com/OpenTTD/OpenTTD) | [![](https://user-images.githubusercontent.com/550290/36507534-4693f354-175a-11e8-93a7-faa0481474fb.png)](https://github.com/SFTtech/openage) | [![](https://raw.githubusercontent.com/OpenRA/OpenRA/bleed/packaging/artwork/ra_128x128.png)](https://github.com/OpenRA/OpenRA) |
 | Chris Sawyer's Locomotion | Transport Tycoon Deluxe | Age of Empires 2 | Red Alert |
 
 # 7. Sponsors

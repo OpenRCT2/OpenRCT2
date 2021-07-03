@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlacePeepSpawnAction, GAME_COMMAND_PLACE_PEEP_SPAWN, GameActions::Result)
+DEFINE_GAME_ACTION(PlacePeepSpawnAction, GameCommand::PlacePeepSpawn, GameActions::Result)
 {
 private:
     CoordsXYZD _location;

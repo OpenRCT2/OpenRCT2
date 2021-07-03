@@ -22,7 +22,6 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 #include "../world/Surface.h"
 
 LandBuyRightsAction::LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting)
@@ -66,9 +65,9 @@ GameActions::Result::Ptr LandBuyRightsAction::QueryExecute(bool isExecuting) con
     MapRange normRange = _range.Normalise();
     // Keep big coordinates within map boundaries
     auto aX = std::max<decltype(normRange.GetLeft())>(32, normRange.GetLeft());
-    auto bX = std::min<decltype(normRange.GetRight())>(gMapSizeMaxXY, normRange.GetRight());
+    auto bX = std::min<decltype(normRange.GetRight())>(GetMapSizeMaxXY(), normRange.GetRight());
     auto aY = std::max<decltype(normRange.GetTop())>(32, normRange.GetTop());
-    auto bY = std::min<decltype(normRange.GetBottom())>(gMapSizeMaxXY, normRange.GetBottom());
+    auto bY = std::min<decltype(normRange.GetBottom())>(GetMapSizeMaxXY(), normRange.GetBottom());
 
     MapRange validRange = MapRange{ aX, aY, bX, bY };
 

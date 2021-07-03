@@ -10,9 +10,10 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 enum
 {
@@ -50,7 +51,7 @@ static void paint_motionsimulator_vehicle(
         if (spriteIndex != SPRITE_INDEX_NULL)
         {
             vehicle = GetEntity<Vehicle>(spriteIndex);
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            session->InteractionType = ViewportInteractionItem::Entity;
             session->CurrentlyDrawnItem = vehicle;
         }
     }
@@ -64,7 +65,7 @@ static void paint_motionsimulator_vehicle(
         }
         else
         {
-            simulatorImageId += vehicle->vehicle_sprite_type * 4;
+            simulatorImageId += vehicle->Pitch * 4;
         }
     }
 
@@ -126,7 +127,7 @@ static void paint_motionsimulator_vehicle(
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x008A85C4 */
@@ -174,7 +175,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType)
 {
     switch (trackType)
     {
-        case FLAT_TRACK_ELEM_2_X_2:
+        case TrackElemType::FlatTrack2x2:
             return paint_motionsimulator;
     }
     return nullptr;

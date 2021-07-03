@@ -11,10 +11,10 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideDemolishAction, GAME_COMMAND_DEMOLISH_RIDE, GameActions::Result)
+DEFINE_GAME_ACTION(RideDemolishAction, GameCommand::DemolishRide, GameActions::Result)
 {
 private:
-    NetworkRideId_t _rideIndex{ RideIdNewNull };
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
     uint8_t _modifyType{ RIDE_MODIFY_DEMOLISH };
 
 public:

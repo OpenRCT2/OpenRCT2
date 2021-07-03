@@ -45,7 +45,7 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 9, 0, 10 }),
     SET_FIELD(BuildCosts, { 57, 5, 30, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo4),
     SET_FIELD(BonusValue, 65),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

@@ -81,13 +81,6 @@ void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, s
     std::memcpy(&_data[dstIndex], &src._data[srcIndex], copyLength);
 }
 
-// HACK These were originally passed back through registers
-thread_local int32_t gLastDrawStringX;
-thread_local int32_t gLastDrawStringY;
-
-thread_local int16_t gCurrentFontSpriteBase;
-thread_local uint16_t gCurrentFontFlags;
-
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;
 
@@ -576,11 +569,6 @@ void mask_init()
         log_verbose("registering scalar mask function");
         mask_fn = mask_scalar;
     }
-}
-
-void gfx_draw_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t colour)
-{
-    gfx_fill_rect(dpi, { coords, coords }, colour);
 }
 
 void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)

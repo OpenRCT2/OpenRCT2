@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/Console.hpp>
 #include <openrct2/core/Http.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
@@ -19,7 +20,9 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/platform/platform.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/windows/Intent.h>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -47,8 +50,8 @@ private:
         }
     };
 
-    std::vector<rct_object_entry> _entries;
-    std::vector<rct_object_entry> _downloadedEntries;
+    std::vector<ObjectEntryDescriptor> _entries;
+    std::vector<ObjectEntryDescriptor> _downloadedEntries;
     size_t _currentDownloadIndex{};
     std::mutex _downloadedEntriesMutex;
     std::mutex _queueMutex;
@@ -63,7 +66,7 @@ private:
     inline static bool _downloadingObjects;
 
 public:
-    void Begin(const std::vector<rct_object_entry>& entries)
+    void Begin(const std::vector<ObjectEntryDescriptor>& entries)
     {
         _lastDownloadStatusInfo = {};
         _downloadStatusInfo = {};
@@ -79,7 +82,7 @@ public:
         return _downloadingObjects;
     }
 
-    std::vector<rct_object_entry> GetDownloadedEntries()
+    std::vector<ObjectEntryDescriptor> GetDownloadedEntries()
     {
         std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
         return _downloadedEntries;
@@ -149,11 +152,11 @@ private:
         _nextDownloadQueued = true;
     }
 
-    void DownloadObject(const rct_object_entry& entry, const std::string name, const std::string url)
+    void DownloadObject(const ObjectEntryDescriptor& entry, const std::string name, const std::string url)
     {
         try
         {
-            std::printf("Downloading %s\n", url.c_str());
+            Console::WriteLine("Downloading %s", url.c_str());
             Http::Request req;
             req.method = Http::Method::GET;
             req.url = url;
@@ -167,7 +170,7 @@ private:
                         auto dataLen = response.body.size();
 
                         auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
-                        objRepo.AddObjectFromFile(name, data, dataLen);
+                        objRepo.AddObjectFromFile(ObjectGeneration::DAT, name, data, dataLen);
 
                         std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
                         _downloadedEntries.push_back(entry);
@@ -175,14 +178,14 @@ private:
                 }
                 else
                 {
-                    std::printf("  Failed to download %s\n", name.c_str());
+                    Console::Error::WriteLine("  Failed to download %s", name.c_str());
                 }
                 QueueNextDownload();
             });
         }
         catch (const std::exception&)
         {
-            std::printf("  Failed to download %s\n", name.c_str());
+            Console::Error::WriteLine("  Failed to download %s", name.c_str());
             QueueNextDownload();
         }
     }
@@ -198,7 +201,7 @@ private:
         }
 
         auto& entry = _entries[_currentDownloadIndex];
-        auto name = String::Trim(std::string(entry.name, sizeof(entry.name)));
+        auto name = String::Trim(std::string(entry.GetName()));
         log_verbose("Downloading object: [%s]:", name.c_str());
         _currentDownloadIndex++;
         UpdateProgress({ name, _lastDownloadSource, _currentDownloadIndex, _entries.size() });
@@ -226,19 +229,20 @@ private:
                 }
                 else if (response.status == Http::Status::NotFound)
                 {
-                    std::printf("  %s not found\n", name.c_str());
+                    Console::Error::WriteLine("  %s not found", name.c_str());
                     QueueNextDownload();
                 }
                 else
                 {
-                    std::printf("  %s query failed (status %d)\n", name.c_str(), static_cast<int32_t>(response.status));
+                    Console::Error::WriteLine(
+                        "  %s query failed (status %d)", name.c_str(), static_cast<int32_t>(response.status));
                     QueueNextDownload();
                 }
             });
         }
         catch (const std::exception&)
         {
-            std::printf("  Failed to query %s\n", name.c_str());
+            Console::Error::WriteLine("  Failed to query %s", name.c_str());
         }
     }
 };
@@ -281,7 +285,6 @@ static rct_widget window_object_load_error_widgets[] = {
     { WIDGETS_END },
 };
 
-static rct_string_id get_object_type_string(const rct_object_entry *entry);
 static void window_object_load_error_close(rct_window *w);
 static void window_object_load_error_update(rct_window *w);
 static void window_object_load_error_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -308,7 +311,7 @@ static rct_window_event_list window_object_load_error_events([](auto& events)
 });
 // clang-format on
 
-static std::vector<rct_object_entry> _invalid_entries;
+static std::vector<ObjectEntryDescriptor> _invalid_entries;
 static int32_t highlighted_index = -1;
 static std::string file_path;
 #ifndef DISABLE_HTTP
@@ -322,10 +325,10 @@ static bool _updatedListAfterDownload;
  *  Could possibly be moved out of the window file if other
  *  uses exist and a suitable location is found.
  */
-static rct_string_id get_object_type_string(const rct_object_entry* entry)
+static rct_string_id get_object_type_string(ObjectType type)
 {
     rct_string_id result;
-    switch (entry->GetType())
+    switch (type)
     {
         case ObjectType::Ride:
             result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
@@ -369,39 +372,21 @@ static rct_string_id get_object_type_string(const rct_object_entry* entry)
  */
 static void copy_object_names_to_clipboard(rct_window* w)
 {
-    // Something has gone wrong, this shouldn't happen.
-    // We don't want to allocate stupidly large amounts of memory for no reason
-    assert(w->no_list_items > 0 && w->no_list_items <= OBJECT_ENTRY_COUNT);
-
-    // No system has a newline over 2 characters
-    size_t line_sep_len = strnlen(PLATFORM_NEWLINE, 2);
-    size_t buffer_len = (w->no_list_items * (8 + line_sep_len)) + 1;
-    utf8* buffer = new utf8[buffer_len]{};
-
-    size_t cur_len = 0;
+    std::stringstream ss;
     for (uint16_t i = 0; i < w->no_list_items; i++)
     {
-        cur_len += (8 + line_sep_len);
-        assert(cur_len < buffer_len);
-
-        uint16_t nameLength = 8;
-        for (; nameLength > 0; nameLength--)
-        {
-            if (_invalid_entries[i].name[nameLength - 1] != ' ')
-                break;
-        }
-
-        strncat(buffer, _invalid_entries[i].name, nameLength);
-        strncat(buffer, PLATFORM_NEWLINE, buffer_len - strlen(buffer) - 1);
+        const auto& entry = _invalid_entries[i];
+        ss << entry.GetName();
+        ss << PLATFORM_NEWLINE;
     }
 
-    platform_place_string_on_clipboard(buffer);
-    delete[] buffer;
+    auto clip = ss.str();
+    OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(clip.c_str());
 }
 
-rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects)
+rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
-    _invalid_entries = std::vector<rct_object_entry>(missingObjects, missingObjects + numMissingObjects);
+    _invalid_entries = std::vector<ObjectEntryDescriptor>(missingObjects, missingObjects + numMissingObjects);
 
     // Check if window is already open
     rct_window* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
@@ -474,13 +459,8 @@ static void window_object_load_error_mouseup(rct_window* w, rct_widgetindex widg
         case WIDX_COPY_CURRENT:
             if (w->selected_list_item > -1 && w->selected_list_item < w->no_list_items)
             {
-                utf8* selected_name = strndup(_invalid_entries[w->selected_list_item].name, 8);
-                utf8* strp = strchr(selected_name, ' ');
-                if (strp != nullptr)
-                    *strp = '\0';
-
-                platform_place_string_on_clipboard(selected_name);
-                SafeFree(selected_name);
+                auto name = std::string(_invalid_entries[w->selected_list_item].GetName());
+                OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(name.c_str());
             }
             break;
         case WIDX_COPY_ALL:
@@ -539,14 +519,13 @@ static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi
     // Draw explanatory message
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-    gfx_draw_string_left_wrapped(
-        dpi, ft.Data(), w->windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, COLOUR_BLACK);
+    DrawTextWrapped(dpi, w->windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
 
     // Draw file name
     ft = Formatter();
     ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_FILE);
     ft.Add<utf8*>(file_path.c_str());
-    DrawTextEllipsised(dpi, { w->windowPos.x + 5, w->windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, { w->windowPos.x + 5, w->windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
 }
 
 static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -577,15 +556,24 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
 
         // Draw the actual object entry's name...
         screenCoords.x = NAME_COL_LEFT - 3;
-        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, screenCoords);
 
-        // ... source game ...
-        rct_string_id sourceStringId = object_manager_get_source_game_string(_invalid_entries[i].GetSourceGame());
-        gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, { SOURCE_COL_LEFT - 3, screenCoords.y });
+        const auto& entry = _invalid_entries[i];
+
+        auto name = entry.GetName();
+        char buffer[256];
+        String::Set(buffer, sizeof(buffer), name.data(), name.size());
+        gfx_draw_string(dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
+
+        if (entry.Generation == ObjectGeneration::DAT)
+        {
+            // ... source game ...
+            rct_string_id sourceStringId = object_manager_get_source_game_string(entry.Entry.GetSourceGame());
+            DrawTextBasic(dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
+        }
 
         // ... and type
-        rct_string_id type = get_object_type_string(&_invalid_entries[i]);
-        gfx_draw_string_left(dpi, type, nullptr, COLOUR_DARK_GREEN, { TYPE_COL_LEFT - 3, screenCoords.y });
+        rct_string_id type = get_object_type_string(entry.GetType());
+        DrawTextBasic(dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
     }
 }
 
@@ -608,7 +596,7 @@ static void window_object_load_error_update_list(rct_window* w)
         _invalid_entries.erase(
             std::remove_if(
                 _invalid_entries.begin(), _invalid_entries.end(),
-                [de](const rct_object_entry& e) { return std::memcmp(de.name, e.name, sizeof(e.name)) == 0; }),
+                [de](const ObjectEntryDescriptor& e) { return de.GetName() == e.GetName(); }),
             _invalid_entries.end());
         w->no_list_items = static_cast<uint16_t>(_invalid_entries.size());
     }

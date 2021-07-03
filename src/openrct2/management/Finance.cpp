@@ -22,7 +22,6 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 // Monthly research funding costs
 const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
@@ -36,20 +35,20 @@ static constexpr const int32_t dword_988E60[static_cast<int32_t>(ExpenditureType
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
-money32 gInitialCash;
-money32 gCash;
-money32 gBankLoan;
+money64 gInitialCash;
+money64 gCash;
+money64 gBankLoan;
 uint8_t gBankLoanInterestRate;
-money32 gMaxBankLoan;
-money32 gCurrentExpenditure;
-money32 gCurrentProfit;
-money32 gHistoricalProfit;
-money32 gWeeklyProfitAverageDividend;
+money64 gMaxBankLoan;
+money64 gCurrentExpenditure;
+money64 gCurrentProfit;
+money64 gHistoricalProfit;
+money64 gWeeklyProfitAverageDividend;
 uint16_t gWeeklyProfitAverageDivisor;
-money32 gCashHistory[FINANCE_GRAPH_SIZE];
-money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
-money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
-money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
+money64 gCashHistory[FINANCE_GRAPH_SIZE];
+money64 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
+money64 gParkValueHistory[FINANCE_GRAPH_SIZE];
+money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 /**
  * Checks the condition if the game is required to use money.
@@ -75,7 +74,7 @@ bool finance_check_money_required(uint32_t flags)
  */
 bool finance_check_affordability(money32 cost, uint32_t flags)
 {
-    return cost <= 0 || !finance_check_money_required(flags) || cost <= gCash;
+    return !finance_check_money_required(flags) || cost <= 0 || cost <= gCash;
 }
 
 /**
@@ -111,9 +110,9 @@ void finance_pay_wages()
         return;
     }
 
-    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto peep : EntityList<Staff>())
     {
-        finance_payment(gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)] / 4, ExpenditureType::Wages);
+        finance_payment(GetStaffWage(peep->AssignedStaffType) / 4, ExpenditureType::Wages);
     }
 }
 
@@ -123,14 +122,12 @@ void finance_pay_wages()
  **/
 void finance_pay_research()
 {
-    uint8_t level;
-
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
-    level = gResearchFundingLevel;
+    const uint8_t level = gResearchFundingLevel;
     finance_payment(research_cost_table[level] / 4, ExpenditureType::Research);
 }
 
@@ -140,18 +137,16 @@ void finance_pay_research()
  */
 void finance_pay_interest()
 {
-    // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
-    // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
-    money64 current_loan = gBankLoan;
-    uint8_t current_interest_rate = gBankLoanInterestRate;
-    money32 interest_to_pay;
-
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
-    interest_to_pay = (current_loan * 5 * current_interest_rate) >> 14;
+    // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
+    // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
+    const money64 current_loan = gBankLoan;
+    const uint8_t current_interest_rate = gBankLoanInterestRate;
+    const money32 interest_to_pay = (current_loan * 5 * current_interest_rate) >> 14;
 
     finance_payment(interest_to_pay, ExpenditureType::Interest);
 }
@@ -169,7 +164,7 @@ void finance_pay_ride_upkeep()
             ride.Renew();
         }
 
-        if (ride.status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RideStatus::Closed && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             int16_t upkeep = ride.upkeep_cost;
             if (upkeep != -1)
@@ -191,9 +186,9 @@ void finance_reset_history()
 {
     for (int32_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
     {
-        gCashHistory[i] = MONEY32_UNDEFINED;
-        gWeeklyProfitHistory[i] = MONEY32_UNDEFINED;
-        gParkValueHistory[i] = MONEY32_UNDEFINED;
+        gCashHistory[i] = MONEY64_UNDEFINED;
+        gWeeklyProfitHistory[i] = MONEY64_UNDEFINED;
+        gParkValueHistory[i] = MONEY64_UNDEFINED;
     }
 }
 
@@ -226,7 +221,7 @@ void finance_init()
     gBankLoanInterestRate = 10;
     gParkValue = 0;
     gCompanyValue = 0;
-    gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
+    gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
     gScenarioCompletedBy = "?";
@@ -246,9 +241,9 @@ void finance_update_daily_profit()
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
-            current_profit -= gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)];
+            current_profit -= GetStaffWage(peep->AssignedStaffType);
         }
 
         // Research costs
@@ -262,7 +257,7 @@ void finance_update_daily_profit()
         // Ride costs
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RIDE_STATUS_CLOSED && ride.upkeep_cost != MONEY16_UNDEFINED)
+            if (ride.status != RideStatus::Closed && ride.upkeep_cost != MONEY16_UNDEFINED)
             {
                 current_profit -= 2 * ride.upkeep_cost;
             }
@@ -281,22 +276,22 @@ void finance_update_daily_profit()
     window_invalidate_by_class(WC_FINANCES);
 }
 
-money32 finance_get_initial_cash()
+money64 finance_get_initial_cash()
 {
     return gInitialCash;
 }
 
-money32 finance_get_current_loan()
+money64 finance_get_current_loan()
 {
     return gBankLoan;
 }
 
-money32 finance_get_maximum_loan()
+money64 finance_get_maximum_loan()
 {
     return gMaxBankLoan;
 }
 
-money32 finance_get_current_cash()
+money64 finance_get_current_cash()
 {
     return gCash;
 }
@@ -311,7 +306,7 @@ void finance_shift_expenditure_table()
     // If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
     if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT)
     {
-        money32 sum = 0;
+        money64 sum = 0;
         for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
         {
             sum += gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1][i];
@@ -349,12 +344,12 @@ void finance_reset_cash_to_initial()
 /**
  * Gets the last month's profit from food, drink and merchandise.
  */
-money32 finance_get_last_month_shop_profit()
+money64 finance_get_last_month_shop_profit()
 {
-    money32 profit = 0;
+    money64 profit = 0;
     if (gDateMonthsElapsed != 0)
     {
-        money32* lastMonthExpenditure = gExpenditureTable[1];
+        const auto* lastMonthExpenditure = gExpenditureTable[1];
 
         profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)];
         profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)];

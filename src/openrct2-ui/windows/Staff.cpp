@@ -27,9 +27,9 @@
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/Entity.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Sprite.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WW = 190;
@@ -314,7 +314,7 @@ void window_staff_disable_widgets(rct_window* w)
 
     if (w->page == WINDOW_STAFF_OVERVIEW)
     {
-        if (peep_can_be_picked_up(peep))
+        if (peep->CanBePickedUp())
         {
             if (w->disabled_widgets & (1 << WIDX_PICKUP))
                 w->Invalidate();
@@ -423,7 +423,7 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
                 if (wind)
                 {
-                    tool_set(wind, WC_STAFF__WIDX_PICKUP, TOOL_PICKER);
+                    tool_set(wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
                 }
             });
             GameActions::Execute(&pickupAction);
@@ -530,7 +530,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     }
 
     // Disable clear patrol area if no area is set.
-    if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
+    if (!peep->HasPatrolArea())
     {
         Dropdown::SetDisabled(1, true);
     }
@@ -550,24 +550,17 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     // Clear patrol
     if (dropdownIndex == 1)
     {
-        const auto peep = GetStaff(w);
-        if (peep == nullptr)
+        const auto staff = GetStaff(w);
+        if (staff != nullptr)
         {
-            return;
+            staff->ClearPatrolArea();
+            gfx_invalidate_screen();
+            staff_update_greyed_patrol_areas();
         }
-        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-        {
-            gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
-        }
-        assert(gStaffModes[peep->StaffId] == StaffMode::Patrol);
-        gStaffModes[peep->StaffId] = StaffMode::Walk;
-
-        gfx_invalidate_screen();
-        staff_update_greyed_patrol_areas();
     }
     else
     {
-        if (!tool_set(w, widgetIndex, TOOL_WALK_DOWN))
+        if (!tool_set(w, widgetIndex, Tool::WalkDown))
         {
             show_gridlines();
             gStaffDrawPatrolAreas = w->number;
@@ -928,7 +921,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos + ScreenCoordsXY{ 2, 2 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_HEARING_VIEWPORT), w->windowPos + ScreenCoordsXY{ 2, 2 });
         }
     }
 
@@ -943,7 +936,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top };
     int32_t width = widget->width();
-    DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
 }
 
 /**
@@ -965,7 +958,7 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -987,7 +980,7 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -1019,7 +1012,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
+    if (peep->Is<Staff>() && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t ebx = GetPeepAnimation(peep->SpriteType).base_image + 1;
@@ -1033,32 +1026,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     ebx += eax;
 
-    int32_t sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
-    gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords, 0);
-
-    // If holding a balloon
-    if (ebx >= 0x2A1D && ebx < 0x2A3D)
-    {
-        ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
-        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
-    }
-
-    // If holding umbrella
-    if (ebx >= 0x2BBD && ebx < 0x2BDD)
-    {
-        ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
-        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
-    }
-
-    // If wearing hat
-    if (ebx >= 0x29DD && ebx < 0x29FD)
-    {
-        ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
-        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
-    }
+    gfx_draw_sprite(&clip_dpi, ImageId(ebx, peep->TshirtColour, peep->TrousersColour), screenCoords);
 }
 
 /**
@@ -1096,14 +1064,14 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         auto ft = Formatter();
-        ft.Add<money32>(gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)]);
-        gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, ft.Data(), COLOUR_BLACK, screenCoords);
+        ft.Add<money64>(GetStaffWage(peep->AssignedStaffType));
+        DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
     auto ft = Formatter();
     ft.Add<int32_t>(peep->GetHireDate());
-    gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, ft.Data(), COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     switch (peep->AssignedStaffType)
@@ -1111,34 +1079,38 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         case StaffType::Handyman:
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffLawnsMown);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_LAWNS_MOWN, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffGardensWatered);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_GARDENS_WATERED, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffLitterSwept);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_LITTER_SWEPT, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffBinsEmptied);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_BINS_EMPTIED, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
             break;
         case StaffType::Mechanic:
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffRidesInspected);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_INSPECTED, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffRidesFixed);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_FIXED, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
             break;
         case StaffType::Security:
+            ft = Formatter();
+            ft.Add<uint16_t>(peep->StaffVandalsStopped);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
+            break;
         case StaffType::Entertainer:
         case StaffType::Count:
             break;
@@ -1170,8 +1142,8 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
 
     gPickupPeepImage = UINT32_MAX;
 
-    auto info = get_map_coordinates_from_pos(screenCoords, VIEWPORT_INTERACTION_MASK_NONE);
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionItemAll);
+    if (info.SpriteType == ViewportInteractionItem::None)
         return;
 
     gPickupPeepX = screenCoords.x - 1;
@@ -1390,8 +1362,7 @@ void window_staff_viewport_init(rct_window* w)
             int32_t width = view_widget->width() - 1;
             int32_t height = view_widget->height() - 1;
 
-            viewport_create(
-                w, screenPos, width, height, 0, { 0, 0, 0 }, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
+            viewport_create(w, screenPos, width, height, 0, { 0, 0, 0 }, focus.type, focus.sprite_id);
             w->flags |= WF_NO_SCROLLING;
             w->Invalidate();
         }

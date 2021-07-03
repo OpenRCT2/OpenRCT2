@@ -282,7 +282,7 @@ static int8_t climate_step_weather_level(int8_t currentWeatherLevel, int8_t next
 
 /**
  * Calculates future weather development.
- * RCT2 implements this as discrete probability distributions dependant on month and climate
+ * RCT2 implements this as discrete probability distributions dependent on month and climate
  * for nextWeather. The other weather parameters are then looked up depending only on the
  * next weather.
  */

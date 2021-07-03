@@ -23,7 +23,7 @@ public:
     ride_id_t rideIndex = RIDE_ID_NULL;
 };
 
-DEFINE_GAME_ACTION(TrackDesignAction, GAME_COMMAND_PLACE_TRACK_DESIGN, TrackDesignActionResult)
+DEFINE_GAME_ACTION(TrackDesignAction, GameCommand::PlaceTrackDesign, TrackDesignActionResult)
 {
 private:
     CoordsXYZD _loc;

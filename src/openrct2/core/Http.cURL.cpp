@@ -47,7 +47,7 @@ namespace Http
         if (pos != std::string::npos)
         {
             std::string key = line.substr(0, pos);
-            // substract 4 chars for ": " and "\r\n"
+            // subtract 4 chars for ": " and "\r\n"
             std::string value = line.substr(pos + 2, line.size() - pos - 4);
             res->header[key] = value;
         }

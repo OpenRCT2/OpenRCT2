@@ -12,7 +12,7 @@
 #include "../world/TileElement.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameActions::Result)
+DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GameCommand::RemoveScenery, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;

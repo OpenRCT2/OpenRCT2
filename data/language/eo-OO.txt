@@ -95,6 +95,7 @@ STR_0090    :Minrajdo
 STR_0091    :Nekonata Atrakcio (59)
 STR_0092    :Onda Fervojo Lanĉita per Linearaj Induktaj Motoroj
 STR_0093    :Hibrida Onda Fervojo
+STR_0094    :Onda Fervojo kun Unuopa Relo
 STR_0512    :Onda fervojo kompakta kun helikforma lifto kaj glataj kurboplenaj malleviĝoj.
 STR_0513    :Onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
 STR_0514    :Trajnoj penditaj sub la trako de la onda fervojo svingiĝas flanken ĉe anguloj
@@ -143,8 +144,8 @@ STR_0559    :Granda konstruaĵo, kiu enhavas timigajn koridorojn kaj timigajn ĉ
 STR_0560    :Ejo por malsanaj gastoj, por ke ili bonsanas pli rapide
 STR_0561    :Cirkospektaklo de bestoj en granda cirkotendo
 STR_0562    :Ŝaltitaj veturiloj veturas laŭ multnivela trako, preter timiga pejzaĝo kaj specialaj efikoj
-STR_0563    :Rajdantoj, kiuj sidas en komfortaj seĝoj kun nur simplaj sinobridoj, ĝuas gigantajn glatajn malleviĝojn, kurboplenan trakon, kaj sufiĉe da 'en-aeraj periodoj' irante super la montetoj
-STR_0564    :Tiu onda fervojo, kiu veturas sur ligna trako, estas rapida, malglata, brua, kaj donas 'nedirekteblan' sencon, kun sufiĉe da 'en-aeraj periodoj'
+STR_0563    :Rajdantoj, kiuj sidas en komfortaj seĝoj kun nur simplaj sinobridoj, ĝuas gigantajn glatajn malleviĝojn, kurboplenan trakon, kaj sufiĉe da ‘en-aeraj periodoj’ irante super la montetoj
+STR_0564    :Tiu onda fervojo, kiu veturas sur ligna trako, estas rapida, malglata, brua, kaj donas ‘nedirekteblan’ sencon, kun sufiĉe da ‘en-aeraj periodoj’
 STR_0565    :Simpla ligna onda fervojo, kapabla je nur mildaj deklivoj kaj kurbiĝoj. Nur la radoj ambaŭflanke, kiuj donas froton, kaj la gravito, fiksas la ĉarojn sur la trako.
 STR_0566    :Unuopaj ĉaroj de onda fervojo rapidas sur kompakta zigzaga trakdesegnaĵo, konsista el subitaj anguloj kaj mallongaj subitaj malleviĝoj
 STR_0567    :Rajdantoj, kiuj sidas en seĝoj penditaj ambaŭflanke de la trako, estas renversitaj malsuprenirante krutajn malleviĝojn, kaj veturante tra diversaj inversigoj
@@ -175,6 +176,7 @@ STR_0599    :Kompakta onda fervojo kun unuopaj ĉaroj kaj glataj kurboplenaj mal
 STR_0600    :Ŝaltitaj mintrajnoj movas rapide laŭ glata kurboplena trakaranĝo
 STR_0602    :Linearaj induktaj motoroj plirapidigas la trajnojn de la onda fervojo, kiuj tiam trapasas kurboplenajn inversigojn
 STR_0603    :Ligna onda fervojo kun ŝtala trako, kiu permesas krutajn malleviĝojn kaj inversigojn.
+STR_0604    :Rajdantoj rajdas anservice sur mallarĝa monorela trako, dum ili vetkuras tra krutaj inversigoj kaj ŝanĝoj de direkto.
 STR_0767    :Gasto {INT32}
 STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
@@ -240,7 +242,7 @@ STR_0833    :Paŭzigi ludon
 STR_0834    :Agordoj de disko kaj ludo
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0847    :Pri 'OpenRCT2'
+STR_0847    :Pri ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Aŭtorrajto © 2002 Chris Sawyer, tutaj rajtoj estas rezervitaj
 STR_0851    :{WINDOW_COLOUR_2}Desegnita kaj programita de Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafikoj de Simon Foster
@@ -274,7 +276,7 @@ STR_0887    :Forlasi Scenaroredaktilon
 STR_0888    :Forlasi Trakdesegnilon
 STR_0889    :Forlasi Administrilon de Trakdesegnaĵoj
 STR_0891    :Ekrankopii
-STR_0892    :Ekrankopio estis konservita al la disko kiel '{STRINGID}'
+STR_0892    :Ekrankopio estis konservita al la disko kiel ‘{STRINGID}’
 STR_0893    :Malsukcesis konservi ekrankopion!
 STR_0894    :Zono de pejzaĝodatumoj estas plena!
 STR_0895    :Ne eblas konstrui kaj parte supertere kaj parte subtere
@@ -311,8 +313,8 @@ STR_0925    :Kreska helico
 STR_0926    :Ne eblas forigi tion…
 STR_0927    :Ne eblas konstrui tion ĉi tie…
 STR_0928    :Ĉenlifto, por tiri ĉarojn sur kreskaj deklivoj
-STR_0929    :'S' Kurbo (maldekstre)
-STR_0930    :'S' Kurbo (dekstre)
+STR_0929    :‘S’ Kurbo (maldekstre)
+STR_0930    :‘S’ Kurbo (dekstre)
 STR_0931    :Vertikala Lopo (maldekstre)
 STR_0932    :Vertikala Lopo (dekstre)
 STR_0933    :Unue altigi aŭ malaltigi teron
@@ -598,7 +600,7 @@ STR_1212    :{WINDOW_COLOUR_2}Maksimuma daŭro por atendi:
 STR_1213    :Elekti minimuma longeco de tempo por atendi antaŭ ekveturado
 STR_1214    :Elekti maksimuma longeco de tempo por atendi antaŭ ekveturado
 STR_1215    :{WINDOW_COLOUR_2}Sinkronigi kun apudaj stacioj
-STR_1216    :Elekti ĉu elveturado estas sinkronigita kun ĉiuj apudaj stacioj (por 'vetkuri')
+STR_1216    :Elekti ĉu elveturado estas sinkronigita kun ĉiuj apudaj stacioj (por ‘vetkuri’)
 STR_1217    :{COMMA16} sekundoj
 STR_1218    :{BLACK}+
 STR_1219    :{BLACK}-
@@ -740,7 +742,7 @@ STR_1354    :{WINDOW_COLOUR_2}Alteco de plej alta malleviĝo: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Malleviĝoj: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversigoj: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Truoj: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Tuta 'en-aera' daŭro: {BLACK}{COMMA2DP32} sekundoj
+STR_1358    :{WINDOW_COLOUR_2}Tuta ‘en-aera’ daŭro: {BLACK}{COMMA2DP32} sekundoj
 STR_1359    :{WINDOW_COLOUR_2}Vicatenda daŭro: {BLACK}{COMMA16} minuto
 STR_1360    :{WINDOW_COLOUR_2}Vicatenda daŭro: {BLACK}{COMMA16} minutoj
 STR_1361    :Ne eblas ŝanĝi rapidecon…
@@ -796,14 +798,14 @@ STR_1410    :Vertikala Turo
 STR_1411    :{STRINGID} obstrukcas
 STR_1412    :{WINDOW_COLOUR_3}Protokolado de datumoj ne disponeblas por ĉi tia atrakcio
 STR_1413    :{WINDOW_COLOUR_3}Protokolado de datumoj komenciĝos kiam la sekva {STRINGID} ekveturas el {STRINGID}
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Rapideco
 STR_1416    :{WINDOW_COLOUR_2}Alteco
 STR_1417    :{WINDOW_COLOUR_2}Vertikala Graviteco
 STR_1418    :{WINDOW_COLOUR_2}Flanka Graviteco
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Protokoladas datumojn de {POP16}{STRINGID}
 STR_1423    :Atendovica vojo
 STR_1424    :Trotuaro
@@ -842,8 +844,8 @@ STR_1456    :{WINDOW_COLOUR_2}Kontanto elspezita: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Kontanto en poŝo: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Daŭro en parko: {BLACK}{REALTIME}
 STR_1459    :Trakstilo
-STR_1460    :'U'-trakformo
-STR_1461    :'O'-trakformo
+STR_1460    :‘U’-trakformo
+STR_1461    :‘O’-trakformo
 STR_1462    :Tro krute por liftparto
 STR_1463    :Gastoj
 STR_1464    :Kreska Helico (malgranda)
@@ -862,131 +864,131 @@ STR_1476    :{WINDOW_COLOUR_2}Pritakso de intenseco: {BLACK}Ankoraŭ ne disponeb
 STR_1477    :{WINDOW_COLOUR_2}Pritakso de intenseco: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Pritakso de naŭzo: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Pritakso de naŭzo: {BLACK}Ankoraŭ ne disponebla
-STR_1480    :{SMALLFONT}“Mi ne havas sufiĉe da mono por rajdi sur {STRINGID}”
-STR_1481    :{SMALLFONT}“Mi elspezis mian tutan monon”
-STR_1482    :{SMALLFONT}“Mi sentas min malsana”
-STR_1483    :{SMALLFONT}“Mi sentas min tre malsana”
-STR_1484    :{SMALLFONT}“Mi volas rajdi sur io pli ekscita ol {STRINGID}”
-STR_1485    :{SMALLFONT}“{STRINGID} aspektas tro intensa por mi”
-STR_1486    :{SMALLFONT}“Mi ankoraŭ ne finis je mia {STRINGID}”
-STR_1487    :{SMALLFONT}“Simple rigardi al {STRINGID} malsanigas min”
-STR_1488    :{SMALLFONT}“Mi ne pagas tiom por rajdi sur {STRINGID}”
-STR_1489    :{SMALLFONT}“Mi volas iri hejmen”
-STR_1490    :{SMALLFONT}“{STRINGID} estas vere bona valoro”
-STR_1491    :{SMALLFONT}“Mi jam havas {STRINGID}”
-STR_1492    :{SMALLFONT}“Mi ne havas sufiĉe da mono por aĉeti {STRINGID}”
-STR_1493    :{SMALLFONT}“Mi ne estas malsata”
-STR_1494    :{SMALLFONT}“Mi ne estas soifa”
-STR_1495    :{SMALLFONT}“Helpu! Mi dronas!”
-STR_1496    :{SMALLFONT}“Mi estas perdita!”
-STR_1497    :{SMALLFONT}“{STRINGID} estis bonega”
-STR_1498    :{SMALLFONT}“Mi vicatendas por {STRINGID} por aĝoj”
-STR_1499    :{SMALLFONT}“Mi estas laca”
-STR_1500    :{SMALLFONT}“Mi estas malsata”
-STR_1501    :{SMALLFONT}“Mi estas soifa”
-STR_1502    :{SMALLFONT}“Mi bezonas iri al la necesejo”
-STR_1503    :{SMALLFONT}“Mi ne povas trovi je {STRINGID}”
-STR_1504    :{SMALLFONT}“Mi ne pagas tiom por uzi je {STRINGID}”
-STR_1505    :{SMALLFONT}“Mi ne rajdas sur {STRINGID} dum pluvas”
-STR_1506    :{SMALLFONT}“La rubo ĉi tie estas vere malbona”
-STR_1507    :{SMALLFONT}“Mi ne povas trovi la elirejon de la parko”
-STR_1508    :{SMALLFONT}“Mi volas eliri de {STRINGID}”
-STR_1509    :{SMALLFONT}“Mi volas eliri el {STRINGID}”
-STR_1510    :{SMALLFONT}“Mi ne rajdas sur {STRINGID} - ĝi ne estas sekura”
-STR_1511    :{SMALLFONT}“Ĉi tiu vojo naŭzas min”
-STR_1512    :{SMALLFONT}“Estas tro homplene ĉi tie”
-STR_1513    :{SMALLFONT}“La vandalismo ĉi tie estas vere malbona”
-STR_1514    :{SMALLFONT}“Bonegan pejzaĝon!”
-STR_1515    :{SMALLFONT}“Ĉi tiu parko estas vere pura kaj ordema”
-STR_1516    :{SMALLFONT}“La saltantaj fontanoj estas bonegaj”
-STR_1517    :{SMALLFONT}“La muziko estas agrabla ĉi tie”
-STR_1518    :{SMALLFONT}“Ĉi tiu balono de {STRINGID} estas vere bona valoro”
-STR_1519    :{SMALLFONT}“Ĉi tiu pluŝludilo de {STRINGID} estas vere bona valoro”
-STR_1520    :{SMALLFONT}“Ĉi tiu mapo de la parko de {STRINGID} estas vere bona valoro”
-STR_1521    :{SMALLFONT}“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
-STR_1522    :{SMALLFONT}“Ĉi tiu ombrelo de {STRINGID} estas vere bona valoro”
-STR_1523    :{SMALLFONT}“Ĉi tiu trinkaĵo de {STRINGID} estas vere bona valoro”
-STR_1524    :{SMALLFONT}“Ĉi tiu burgero de {STRINGID} estas vere bona valoro”
-STR_1525    :{SMALLFONT}“Ĉi tiuj fritoj de {STRINGID} estas vere bona valoro”
-STR_1526    :{SMALLFONT}“Ĉi tiu glaciaĵo de {STRINGID} estas vere bona valoro”
-STR_1527    :{SMALLFONT}“Ĉi tiu sukerŝpinaĵo de {STRINGID} estas vere bona valoro”
+STR_1480    :“Mi ne havas sufiĉe da mono por rajdi sur {STRINGID}”
+STR_1481    :“Mi elspezis mian tutan monon”
+STR_1482    :“Mi sentas min malsana”
+STR_1483    :“Mi sentas min tre malsana”
+STR_1484    :“Mi volas rajdi sur io pli ekscita ol {STRINGID}”
+STR_1485    :“{STRINGID} aspektas tro intensa por mi”
+STR_1486    :“Mi ankoraŭ ne finis je mia {STRINGID}”
+STR_1487    :“Simple rigardi al {STRINGID} malsanigas min”
+STR_1488    :“Mi ne pagas tiom por rajdi sur {STRINGID}”
+STR_1489    :“Mi volas iri hejmen”
+STR_1490    :“{STRINGID} estas vere bona valoro”
+STR_1491    :“Mi jam havas {STRINGID}”
+STR_1492    :“Mi ne havas sufiĉe da mono por aĉeti {STRINGID}”
+STR_1493    :“Mi ne estas malsata”
+STR_1494    :“Mi ne estas soifa”
+STR_1495    :“Helpu! Mi dronas!”
+STR_1496    :“Mi estas perdita!”
+STR_1497    :“{STRINGID} estis bonega”
+STR_1498    :“Mi vicatendas por {STRINGID} por aĝoj”
+STR_1499    :“Mi estas laca”
+STR_1500    :“Mi estas malsata”
+STR_1501    :“Mi estas soifa”
+STR_1502    :“Mi bezonas iri al la necesejo”
+STR_1503    :“Mi ne povas trovi je {STRINGID}”
+STR_1504    :“Mi ne pagas tiom por uzi je {STRINGID}”
+STR_1505    :“Mi ne rajdas sur {STRINGID} dum pluvas”
+STR_1506    :“La rubo ĉi tie estas vere malbona”
+STR_1507    :“Mi ne povas trovi la elirejon de la parko”
+STR_1508    :“Mi volas eliri de {STRINGID}”
+STR_1509    :“Mi volas eliri el {STRINGID}”
+STR_1510    :“Mi ne rajdas sur {STRINGID} - ĝi ne estas sekura”
+STR_1511    :“Ĉi tiu vojo naŭzas min”
+STR_1512    :“Estas tro homplene ĉi tie”
+STR_1513    :“La vandalismo ĉi tie estas vere malbona”
+STR_1514    :“Bonegan pejzaĝon!”
+STR_1515    :“Ĉi tiu parko estas vere pura kaj ordema”
+STR_1516    :“La saltantaj fontanoj estas bonegaj”
+STR_1517    :“La muziko estas agrabla ĉi tie”
+STR_1518    :“Ĉi tiu balono de {STRINGID} estas vere bona valoro”
+STR_1519    :“Ĉi tiu pluŝludilo de {STRINGID} estas vere bona valoro”
+STR_1520    :“Ĉi tiu mapo de la parko de {STRINGID} estas vere bona valoro”
+STR_1521    :“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
+STR_1522    :“Ĉi tiu ombrelo de {STRINGID} estas vere bona valoro”
+STR_1523    :“Ĉi tiu trinkaĵo de {STRINGID} estas vere bona valoro”
+STR_1524    :“Ĉi tiu burgero de {STRINGID} estas vere bona valoro”
+STR_1525    :“Ĉi tiuj fritoj de {STRINGID} estas vere bona valoro”
+STR_1526    :“Ĉi tiu glaciaĵo de {STRINGID} estas vere bona valoro”
+STR_1527    :“Ĉi tiu sukerŝpinaĵo de {STRINGID} estas vere bona valoro”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“Ĉi tiu pico de {STRINGID} estas vere bona valoro”
+STR_1531    :“Ĉi tiu pico de {STRINGID} estas vere bona valoro”
 STR_1532    :
-STR_1533    :{SMALLFONT}“Ĉi tiu krevmaizo de {STRINGID} estas vere bona valoro”
-STR_1534    :{SMALLFONT}“Ĉi tiu kolbasobulko de {STRINGID} estas vere bona valoro”
-STR_1535    :{SMALLFONT}“Ĉi tiu tentaklo de {STRINGID} estas vere bona valoro”
-STR_1536    :{SMALLFONT}“Ĉi tiu ĉapelo de {STRINGID} estas vere bona valoro”
-STR_1537    :{SMALLFONT}“Ĉi tiu sukerpomo de {STRINGID} estas vere bona valoro”
-STR_1538    :{SMALLFONT}“Ĉi tiu T-ĉemizo de {STRINGID} estas vere bona valoro”
-STR_1539    :{SMALLFONT}“Ĉi tiu benjeto de {STRINGID} estas vere bona valoro”
-STR_1540    :{SMALLFONT}“Ĉi tiu kafo de {STRINGID} estas vere bona valoro”
+STR_1533    :“Ĉi tiu krevmaizo de {STRINGID} estas vere bona valoro”
+STR_1534    :“Ĉi tiu kolbasobulko de {STRINGID} estas vere bona valoro”
+STR_1535    :“Ĉi tiu tentaklo de {STRINGID} estas vere bona valoro”
+STR_1536    :“Ĉi tiu ĉapelo de {STRINGID} estas vere bona valoro”
+STR_1537    :“Ĉi tiu sukerpomo de {STRINGID} estas vere bona valoro”
+STR_1538    :“Ĉi tiu T-ĉemizo de {STRINGID} estas vere bona valoro”
+STR_1539    :“Ĉi tiu benjeto de {STRINGID} estas vere bona valoro”
+STR_1540    :“Ĉi tiu kafo de {STRINGID} estas vere bona valoro”
 STR_1541    :
-STR_1542    :{SMALLFONT}“Ĉi tiu fritita kokaĵo de {STRINGID} estas vere bona valoro”
-STR_1543    :{SMALLFONT}“Ĉi tiu limonado de {STRINGID} estas vere bona valoro”
+STR_1542    :“Ĉi tiu fritita kokaĵo de {STRINGID} estas vere bona valoro”
+STR_1543    :“Ĉi tiu limonado de {STRINGID} estas vere bona valoro”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“Ŭaŭ!”
-STR_1551    :{SMALLFONT}“Mi havas la plej strangan senton, ke iu spektas min”
-STR_1552    :{SMALLFONT}“Mi ne pagas tiom por balono de {STRINGID}”
-STR_1553    :{SMALLFONT}“Mi ne pagas tiom por pluŝludilo de {STRINGID}”
-STR_1554    :{SMALLFONT}“Mi ne pagas tiom por mapo de la parko de {STRINGID}”
-STR_1555    :{SMALLFONT}“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
-STR_1556    :{SMALLFONT}“Mi ne pagas tiom por ombrelo de {STRINGID}”
-STR_1557    :{SMALLFONT}“Mi ne pagas tiom por trinkaĵo de {STRINGID}”
-STR_1558    :{SMALLFONT}“Mi ne pagas tiom por burgero de {STRINGID}”
-STR_1559    :{SMALLFONT}“Mi ne pagas tiom por fritoj de {STRINGID}”
-STR_1560    :{SMALLFONT}“Mi ne pagas tiom por glaciaĵo de {STRINGID}”
-STR_1561    :{SMALLFONT}“Mi ne pagas tiom por sukerŝpinaĵo de {STRINGID}”
+STR_1550    :“Ŭaŭ!”
+STR_1551    :“Mi havas la plej strangan senton, ke iu spektas min”
+STR_1552    :“Mi ne pagas tiom por balono de {STRINGID}”
+STR_1553    :“Mi ne pagas tiom por pluŝludilo de {STRINGID}”
+STR_1554    :“Mi ne pagas tiom por mapo de la parko de {STRINGID}”
+STR_1555    :“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
+STR_1556    :“Mi ne pagas tiom por ombrelo de {STRINGID}”
+STR_1557    :“Mi ne pagas tiom por trinkaĵo de {STRINGID}”
+STR_1558    :“Mi ne pagas tiom por burgero de {STRINGID}”
+STR_1559    :“Mi ne pagas tiom por fritoj de {STRINGID}”
+STR_1560    :“Mi ne pagas tiom por glaciaĵo de {STRINGID}”
+STR_1561    :“Mi ne pagas tiom por sukerŝpinaĵo de {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“Mi ne pagas tiom por pico de {STRINGID}”
+STR_1565    :“Mi ne pagas tiom por pico de {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“Mi ne pagas tiom por krevmaizo de {STRINGID}”
-STR_1568    :{SMALLFONT}“Mi ne pagas tiom por kolbasobulko de {STRINGID}”
-STR_1569    :{SMALLFONT}“Mi ne pagas tiom por tentaklo de {STRINGID}”
-STR_1570    :{SMALLFONT}“Mi ne pagas tiom por ĉapelo de {STRINGID}”
-STR_1571    :{SMALLFONT}“Mi ne pagas tiom por sukerpomo de {STRINGID}”
-STR_1572    :{SMALLFONT}“Mi ne pagas tiom por T-ĉemizo de {STRINGID}”
-STR_1573    :{SMALLFONT}“Mi ne pagas tiom por benjeto de {STRINGID}”
-STR_1574    :{SMALLFONT}“Mi ne pagas tiom por kafo de {STRINGID}”
+STR_1567    :“Mi ne pagas tiom por krevmaizo de {STRINGID}”
+STR_1568    :“Mi ne pagas tiom por kolbasobulko de {STRINGID}”
+STR_1569    :“Mi ne pagas tiom por tentaklo de {STRINGID}”
+STR_1570    :“Mi ne pagas tiom por ĉapelo de {STRINGID}”
+STR_1571    :“Mi ne pagas tiom por sukerpomo de {STRINGID}”
+STR_1572    :“Mi ne pagas tiom por T-ĉemizo de {STRINGID}”
+STR_1573    :“Mi ne pagas tiom por benjeto de {STRINGID}”
+STR_1574    :“Mi ne pagas tiom por kafo de {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“Mi ne pagas tiom por fritita kokaĵo de {STRINGID}”
-STR_1577    :{SMALLFONT}“Mi ne pagas tiom por limonado de {STRINGID}”
+STR_1576    :“Mi ne pagas tiom por fritita kokaĵo de {STRINGID}”
+STR_1577    :“Mi ne pagas tiom por limonado de {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
-STR_1585    :{SMALLFONT}“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
-STR_1586    :{SMALLFONT}“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
-STR_1587    :{SMALLFONT}“Ĉi tiu breco de {STRINGID} estas vere bona valoro”
-STR_1588    :{SMALLFONT}“Ĉi tiu varma ĉokolado de {STRINGID} estas vere bona valoro”
-STR_1589    :{SMALLFONT}“Ĉi tiu glacia teo de {STRINGID} estas vere bona valoro”
-STR_1590    :{SMALLFONT}“Ĉi tiu funelkuko de {STRINGID} estas vere bona valoro”
-STR_1591    :{SMALLFONT}“Ĉi tiuj sunokulvitroj de {STRINGID} estas vere bona valoro”
-STR_1592    :{SMALLFONT}“Ĉi tiuj bovaĵaj nudeloj de {STRINGID} estas vere bona valoro”
-STR_1593    :{SMALLFONT}“Ĉi tiuj frititaj riznudeloj de {STRINGID} estas vere bona valoro”
-STR_1594    :{SMALLFONT}“Ĉi tiu huntuna supo de {STRINGID} estas vere bona valoro”
-STR_1595    :{SMALLFONT}“Ĉi tiu knela supo de {STRINGID} estas vere bona valoro”
-STR_1596    :{SMALLFONT}“Ĉi tiu fruktosuko de {STRINGID} estas vere bona valoro”
-STR_1597    :{SMALLFONT}“Ĉi tiu sojlakto de {STRINGID} estas vere bona valoro”
-STR_1598    :{SMALLFONT}“Ĉi tiu suĝongvao de {STRINGID} estas vere bona valoro”
-STR_1599    :{SMALLFONT}“Ĉi tiu subsandviĉo de {STRINGID} estas vere bona valoro”
-STR_1600    :{SMALLFONT}“Ĉi tiu kekso de {STRINGID} estas vere bona valoro”
+STR_1584    :“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
+STR_1585    :“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
+STR_1586    :“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
+STR_1587    :“Ĉi tiu breco de {STRINGID} estas vere bona valoro”
+STR_1588    :“Ĉi tiu varma ĉokolado de {STRINGID} estas vere bona valoro”
+STR_1589    :“Ĉi tiu glacia teo de {STRINGID} estas vere bona valoro”
+STR_1590    :“Ĉi tiu funelkuko de {STRINGID} estas vere bona valoro”
+STR_1591    :“Ĉi tiuj sunokulvitroj de {STRINGID} estas vere bona valoro”
+STR_1592    :“Ĉi tiuj bovaĵaj nudeloj de {STRINGID} estas vere bona valoro”
+STR_1593    :“Ĉi tiuj frititaj riznudeloj de {STRINGID} estas vere bona valoro”
+STR_1594    :“Ĉi tiu huntuna supo de {STRINGID} estas vere bona valoro”
+STR_1595    :“Ĉi tiu knela supo de {STRINGID} estas vere bona valoro”
+STR_1596    :“Ĉi tiu fruktosuko de {STRINGID} estas vere bona valoro”
+STR_1597    :“Ĉi tiu sojlakto de {STRINGID} estas vere bona valoro”
+STR_1598    :“Ĉi tiu suĝongvao de {STRINGID} estas vere bona valoro”
+STR_1599    :“Ĉi tiu subsandviĉo de {STRINGID} estas vere bona valoro”
+STR_1600    :“Ĉi tiu kekso de {STRINGID} estas vere bona valoro”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“Ĉi tiu rostita kolbaso de {STRINGID} estas vere bona valoro”
+STR_1604    :“Ĉi tiu rostita kolbaso de {STRINGID} estas vere bona valoro”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -998,27 +1000,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
-STR_1617    :{SMALLFONT}“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
-STR_1618    :{SMALLFONT}“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
-STR_1619    :{SMALLFONT}“Mi ne pagas tiom por breco de {STRINGID}”
-STR_1620    :{SMALLFONT}“Mi ne pagas tiom por varma ĉokolado de {STRINGID}”
-STR_1621    :{SMALLFONT}“Mi ne pagas tiom por glacia teo de {STRINGID}”
-STR_1622    :{SMALLFONT}“Mi ne pagas tiom por funelkuko de {STRINGID}”
-STR_1623    :{SMALLFONT}“Mi ne pagas tiom por sunokulvitroj de {STRINGID}”
-STR_1624    :{SMALLFONT}“Mi ne pagas tiom por bovaĵaj nudeloj de {STRINGID}”
-STR_1625    :{SMALLFONT}“Mi ne pagas tiom por frititaj riznudeloj de {STRINGID}”
-STR_1626    :{SMALLFONT}“Mi ne pagas tiom por huntuna supo de {STRINGID}”
-STR_1627    :{SMALLFONT}“Mi ne pagas tiom por knela supo de {STRINGID}”
-STR_1628    :{SMALLFONT}“Mi ne pagas tiom por fruktosuko de {STRINGID}”
-STR_1629    :{SMALLFONT}“Mi ne pagas tiom por sojlakto de {STRINGID}”
-STR_1630    :{SMALLFONT}“Mi ne pagas tiom por suĝongvao de {STRINGID}”
-STR_1631    :{SMALLFONT}“Mi ne pagas tiom por subsandviĉo de {STRINGID}”
-STR_1632    :{SMALLFONT}“Mi ne pagas tiom por kekso de {STRINGID}”
+STR_1616    :“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
+STR_1617    :“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
+STR_1618    :“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
+STR_1619    :“Mi ne pagas tiom por breco de {STRINGID}”
+STR_1620    :“Mi ne pagas tiom por varma ĉokolado de {STRINGID}”
+STR_1621    :“Mi ne pagas tiom por glacia teo de {STRINGID}”
+STR_1622    :“Mi ne pagas tiom por funelkuko de {STRINGID}”
+STR_1623    :“Mi ne pagas tiom por sunokulvitroj de {STRINGID}”
+STR_1624    :“Mi ne pagas tiom por bovaĵaj nudeloj de {STRINGID}”
+STR_1625    :“Mi ne pagas tiom por frititaj riznudeloj de {STRINGID}”
+STR_1626    :“Mi ne pagas tiom por huntuna supo de {STRINGID}”
+STR_1627    :“Mi ne pagas tiom por knela supo de {STRINGID}”
+STR_1628    :“Mi ne pagas tiom por fruktosuko de {STRINGID}”
+STR_1629    :“Mi ne pagas tiom por sojlakto de {STRINGID}”
+STR_1630    :“Mi ne pagas tiom por suĝongvao de {STRINGID}”
+STR_1631    :“Mi ne pagas tiom por subsandviĉo de {STRINGID}”
+STR_1632    :“Mi ne pagas tiom por kekso de {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“Mi ne pagas tiom por rostita kolbaso de {STRINGID}”
+STR_1636    :“Mi ne pagas tiom por rostita kolbaso de {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1030,10 +1032,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“Helpu! Metu min surteren!”
-STR_1649    :{SMALLFONT}“Mi estas preskaŭ sen mono!”
-STR_1650    :{SMALLFONT}“Ŭaŭ! Nova atrakcio konstruata!”
-STR_1653    :{SMALLFONT}“…kaj jen ni estas sur {STRINGID}!”
+STR_1648    :“Helpu! Metu min surteren!”
+STR_1649    :“Mi estas preskaŭ sen mono!”
+STR_1650    :“Ŭaŭ! Nova atrakcio konstruata!”
+STR_1653    :“…kaj jen ni estas sur {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Lastaj pensoj:
 STR_1655    :Konstrui trotuaron sur la tero
 STR_1656    :Konstrui pontan aŭ tunelan trotuaron
@@ -1185,7 +1187,7 @@ STR_1808    :{WINDOW_COLOUR_2}Lasta paneo: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuna paneo: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Portas:
 STR_1811    :Ne eblas konstrui tion ĉi tie…
-STR_1812    :{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Diversaĵoj
 STR_1814    :Agadoj
 STR_1815    :Pensoj
@@ -1194,7 +1196,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Ĉiuj gastoj
 STR_1819    :{WINDOW_COLOUR_2}Ĉiuj gastoj (resumitaj)
 STR_1820    :{WINDOW_COLOUR_2}Gastoj {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Gastoj, kiuj pensas {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Gastoj, kiuj pensas {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Gastoj pensantaj pri {POP16}{STRINGID}
 STR_1823    :Montri pensojn de gastoj pri ĉi tiu atrakcio
 STR_1824    :Montri gastojn en ĉi tiu atrakcio
@@ -1295,7 +1297,6 @@ STR_1921    :Komenci novan ludon
 STR_1922    :Daŭrigi ludi konservitan ludon
 STR_1924    :Eliri
 STR_1925    :Ne eblas meti homon ĉi tie…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} paneis
 STR_1928    :{RED}{STRINGID} koliziis!
 STR_1929    :{RED}{STRINGID} ankoraŭ ne estis riparita{NEWLINE}Kontrolu kie viaj mekanikistoj troviĝas, kaj eble organizu ilin pli bone
@@ -1576,7 +1577,7 @@ STR_2218    :{RED}{STRINGID} sur {STRINGID} ne jam revenis al la {STRINGID}!{NEW
 STR_2219    :{RED}{COMMA16} homoj mortis pro akcidento sur {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Pritakso de Parko: {BLACK}{COMMA16}
 STR_2221    :Pritakso de Parko: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Gastoj en parko: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Mono: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Mono: {RED}{CURRENCY2DP}
@@ -1589,7 +1590,7 @@ STR_2231    :Bremsoj ĉe malleviĝo
 STR_2232    :Kablolifto monteto
 STR_2233    :Informoj de Parko
 STR_2234    :Lastaj Mesaĝoj
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Januaro
 STR_2237    :Februaro
 STR_2238    :Marto
@@ -1793,7 +1794,7 @@ STR_2450    :{YELLOW}Via kampanjo de reklamado por la parko finiĝis
 STR_2451    :{YELLOW}Via kampanjo de reklamado por {STRINGID} finiĝis
 STR_2452    :{WINDOW_COLOUR_2}Mono (minus prunto): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Mono (minus prunto): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Montri financajn kontojn
 STR_2458    :Montri diagramon de mono (minus prunto) kontraŭ tempo
 STR_2459    :Montri diagramon de parkvaloro kontraŭ tempo
@@ -1822,8 +1823,8 @@ STR_2481    :Montri diagramon de flanka plirapidigo kontraŭ tempo
 STR_2482    :Profito: po {CURRENCY} por semajno,  Parkvaloro: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Profito semajna: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Profito semajna: {RED}{CURRENCY2DP}
-STR_2487    :Montri 'faktajn' nomojn de gastoj
-STR_2488    :Baskuligi inter montrado de 'faktaj' nomoj de gastoj, kaj gastnumeroj
+STR_2487    :Montri ‘faktajn’ nomojn de gastoj
+STR_2488    :Baskuligi inter montrado de ‘faktaj’ nomoj de gastoj, kaj gastnumeroj
 STR_2489    :Klavarokomandojn…
 STR_2490    :Klavarokomandojn
 STR_2491    :Restartigi klavojn
@@ -1903,7 +1904,6 @@ STR_2636    :Nombra klavaro /
 STR_2669    :Nombra klavara baskulo
 STR_2670    :Ruluma baskulo
 STR_2680    :Ĉiom da esplorado estas kompleta
-STR_2681    :{MEDIUMFONT}{BLACK}Pliigi vian monon per {CURRENCY}
 STR_2684    :Granda amaso da gastoj alvenas
 STR_2685    :Parametroj de simplaĵa bruo
 STR_2686    :Malalta:
@@ -1953,7 +1953,7 @@ STR_2739    :Neniu
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat ne troviĝis
-STR_2743    :Kopiu 'data/css17.dat' de via RCT1 instalaĵo al 'data/css50.dat' en via RCT2 instalaĵo, aŭ kontrolu, ke la dosierindiko al RCT1 en la langeto Altnivela pravas.
+STR_2743    :Kopiu ‘data/css17.dat’ de via RCT1 instalaĵo al ‘data/css50.dat’ en via RCT2 instalaĵo, aŭ kontrolu, ke la dosierindiko al RCT1 en la langeto Altnivela pravas.
 STR_2749    :Mia nova scenaro
 # New strings used in the cheats window previously these were ???
 STR_2750    :Movi ĉiujn aferojn supren
@@ -1990,7 +1990,7 @@ STR_2789    :{WINDOW_COLOUR_2}Vi malsukcesigis vian celon!
 STR_2790    :Entajpu nomon en scenaroskemon
 STR_2791    :Entajpu nomon
 STR_2792    :Bonvolu entajpi vian nomon por la scenaroskemo:
-STR_2793    :{SMALLFONT}(Finita de {STRINGID})
+STR_2793    :(Finita de {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Finita de: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} kun firmvaloro de: {BLACK}{CURRENCY}
 STR_2795    :Ordigi
 STR_2796    :Ordigi la liston de atrakcioj per la informotipo vidigita
@@ -2028,23 +2028,23 @@ STR_2827    :{WINDOW_COLOUR_2}Premio por la plej bonaj propraj atrakcioj
 STR_2828    :{WINDOW_COLOUR_2}Premio por la plej blindigantaj atrakcio-kolorskemoj
 STR_2829    :{WINDOW_COLOUR_2}Premio por la plej konfuzanta parkaranĝo
 STR_2830    :{WINDOW_COLOUR_2}Premio por la plej bonaj mildaj atrakcioj
-STR_2831    :{TOPAZ}Via parko ricevis premion de 'La plej negliĝa parko en la lando'!
-STR_2832    :{TOPAZ}Via parko ricevis premion de 'La plej orda parko en la lando'!
-STR_2833    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj ondaj fervojoj'!
-STR_2834    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bona valoro en la lando'!
-STR_2835    :{TOPAZ}Via parko ricevis premion de 'La plej bela parko en la lando'!
-STR_2836    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej malbona valoro en la lando'!
-STR_2837    :{TOPAZ}Via parko ricevis premion de 'La plej sekura parko en la lando'!
-STR_2838    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bona dungitaro'!
-STR_2839    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj manĝaĵoj en la lando'!
-STR_2840    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej malbonaj manĝaĵoj en la lando'!
-STR_2841    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj necesejoj en la lando'!
-STR_2842    :{TOPAZ}Via parko ricevis premion de 'La plej seniluziiganta parko en la lando'!
-STR_2843    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj akvo-atrakcioj en la lando'!
-STR_2844    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj propraj atrakcioj'!
-STR_2845    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej blindiganta elekto de kolorskemoj'!
-STR_2846    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej konfuzanta aranĝo'!
-STR_2847    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj mildaj atrakcioj'!
+STR_2831    :{TOPAZ}Via parko ricevis premion de ‘La plej negliĝa parko en la lando’!
+STR_2832    :{TOPAZ}Via parko ricevis premion de ‘La plej orda parko en la lando’!
+STR_2833    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj ondaj fervojoj’!
+STR_2834    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bona valoro en la lando’!
+STR_2835    :{TOPAZ}Via parko ricevis premion de ‘La plej bela parko en la lando’!
+STR_2836    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej malbona valoro en la lando’!
+STR_2837    :{TOPAZ}Via parko ricevis premion de ‘La plej sekura parko en la lando’!
+STR_2838    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bona dungitaro’!
+STR_2839    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj manĝaĵoj en la lando’!
+STR_2840    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej malbonaj manĝaĵoj en la lando’!
+STR_2841    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj necesejoj en la lando’!
+STR_2842    :{TOPAZ}Via parko ricevis premion de ‘La plej seniluziiganta parko en la lando’!
+STR_2843    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj akvo-atrakcioj en la lando’!
+STR_2844    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj propraj atrakcioj’!
+STR_2845    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej blindiganta elekto de kolorskemoj’!
+STR_2846    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej konfuzanta aranĝo’!
+STR_2847    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj mildaj atrakcioj’!
 STR_2848    :{WINDOW_COLOUR_2}Neniuj lastaj premioj
 STR_2849    :Instalado de nova scenaro sukcesis
 STR_2850    :Instalado de nova trakdesegnaĵo sukcesis
@@ -2058,7 +2058,7 @@ STR_2861    :{WINDOW_COLOUR_2}Rajtigita al Infogrames Interactive Inc.
 STR_2862    :Dankesprimoj de muziko…
 STR_2863    :Dankesprimoj de muziko
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) sen aŭtorrajto
-STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2865    :{WINDOW_COLOUR_2}Heyken’s Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
 STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) sen aŭtorrajto
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Tradicia)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) sen aŭtorrajto
@@ -2069,21 +2069,21 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Franz von Suppé) 
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) sen aŭtorrajto
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Tradicia)
 STR_2875    :{WINDOW_COLOUR_2}Originalaj sonregistraĵoj (P) 1976 C.J.Mears Organization, uzitaj kun konsento
-STR_2876    :{WINDOW_COLOUR_2}La Titola Muziko de "RollerCoaster Tycoon 2":   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}La Titola Muziko de “RollerCoaster Tycoon 2”:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer’s Heat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh’s Tomb:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar’s March:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja’s Noodles:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble’s Beat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire’s Lair:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) aŭtorrajto © Chris Sawyer
@@ -2116,7 +2116,7 @@ STR_2983    :Entajpu novan tekston de rubando:
 STR_2984    :Ne eblas agordi novan tekston de rubando…
 STR_2985    :Rubando
 STR_2986    :Ŝanĝi tekston de rubando
-STR_2987    :Agordi ĉi tiun rubandon kiel 'ne-eniru' surskribaĵo por gastoj
+STR_2987    :Agordi ĉi tiun rubandon kiel ‘ne-eniru’ surskribaĵo por gastoj
 STR_2988    :Malkonstrui ĉi tiun rubandon
 STR_2989    :Elekti ĉefan koloron
 STR_2990    :Elekti koloron de teksto
@@ -2331,7 +2331,7 @@ STR_3235    :Montri financiajn agordojn
 STR_3236    :Montri agordojn de gastoj
 STR_3237    :Montri agordojn de parko
 STR_3238    :Neniu Mono
-STR_3239    :Agordi ĉi tiun parkon kiel parko de 'neniu mono', kun neniuj limoj financaj
+STR_3239    :Agordi ĉi tiun parkon kiel parko de ‘neniu mono’, kun neniuj limoj financaj
 STR_3240    :{WINDOW_COLOUR_2}Komenca mono:
 STR_3241    :{WINDOW_COLOUR_2}Komenca prunto:
 STR_3242    :{WINDOW_COLOUR_2}Maksumima prunto:
@@ -2497,7 +2497,7 @@ STR_5134    :Agordi pli grandan areon da bienorajtoj
 STR_5135    :Aĉeti bienorajtojn kaj konstruado-rajtojn
 STR_5136    :Bienorajtoj
 STR_5137    :Malŝlosi limojn de funkciado
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Malŝalti paneon de bremsoj
 STR_5141    :Malŝalti ĉiajn paneojn
@@ -2643,7 +2643,7 @@ STR_5297    :Malfermi parkon
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Rapide maldungi dungitaron
-STR_5301    :{MEDIUMFONT}{BLACK}Vakigi vian prunton
+STR_5301    :Vakigi vian prunton
 STR_5302    :Vakigi prunton
 STR_5303    :Permesi konstruadon dum paŭzoj
 STR_5304    :Titolosekvenco:
@@ -2738,8 +2738,8 @@ STR_5417    :Loko
 STR_5418    :Loko{MOVE_X}{87}{COMMA16}   {COMMA16}
 STR_5419    :Turni
 STR_5420    :Turni{MOVE_X}{87}{COMMA16}
-STR_5421    :Zomigi
-STR_5422    :Zomigi{MOVE_X}{87}{COMMA16}
+STR_5421    :Zomi
+STR_5422    :Zomi{MOVE_X}{87}{COMMA16}
 STR_5423    :Atendi
 STR_5424    :Atendi{MOVE_X}{87}{UINT16}
 STR_5425    :Rekomenci
@@ -2802,7 +2802,7 @@ STR_5481    :Temoj
 STR_5482    :{WINDOW_COLOUR_2}Daŭro de lasta inspekto: {BLACK}1 minuto
 STR_5483    :{BLACK}({COMMA16} semajnoj restantaj)
 STR_5484    :{BLACK}({COMMA16} semajno restanta)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Montri lastajn mesaĝojn
 STR_5489    :Montri nur gastojn spuratajn
@@ -2874,7 +2874,7 @@ STR_5556    :Forigi ludanton
 STR_5557    :Resti konektita post desinkronigo (Plurludanta)
 STR_5558    :Ĉi tiu agordo fariĝas valida nur post vi reŝargas OpenRCT2
 STR_5559    :Inspekti post ĉiuj 10 minutoj
-STR_5560    :Agordas la inspekton al 'Post ĉiuj 10 minutoj' por ĉiu atrakcio
+STR_5560    :Agordas la inspekton al ‘Post ĉiuj 10 minutoj’ por ĉiu atrakcio
 STR_5561    :Malsukcesis ŝargi lingvon
 STR_5562    :AVERTO!
 STR_5563    :Ĉi tiu funkcio estas nune nestabila. Estu singarda.
@@ -3058,7 +3058,7 @@ STR_5778    :Konstruita: Antaŭ {COMMA16} jaroj
 STR_5779    :Enspezo: po {CURRENCY2DP} por horo
 STR_5780    :Kosto de funkciado: po {CURRENCY2DP} por horo
 STR_5781    :Kosto de funkciado: Nekonata
-STR_5782    :Vi nun estas konektita. Premu je '{STRING}' por babili.
+STR_5782    :Vi nun estas konektita. Premu je ‘{STRING}’ por babili.
 STR_5783    :{WINDOW_COLOUR_2}Scenaro Ŝlosita
 STR_5784    :{BLACK}Finfaru antaŭajn scenarojn por malŝlosi ĉi tiun scenaron.
 STR_5785    :Ne eblas renomi grupon…
@@ -3067,7 +3067,7 @@ STR_5787    :{COMMA32} ludantoj enretaj
 STR_5788    :Defaŭlta intervalo de inspekto:
 STR_5789    :Malŝalti fulmo-efekton
 STR_5790    :Baskuligas RCT1-stilan prezon{NEWLINE}(ekz. kaj atrakcioprezo kaj eniroprezo)
-STR_5791    :Agordas la fidindon de ĉiuj atrakcioj al 100%{NEWLINE}kaj restarigas ilian konstruo-daton al "ĉi-jare"
+STR_5791    :Agordas la fidindon de ĉiuj atrakcioj al 100%{NEWLINE}kaj restarigas ilian konstruo-daton al “ĉi-jare”
 STR_5792    :Riparas ĉiujn paneintajn atrakciojn
 STR_5793    :Restarigas la kolizio-historion de atrakcio,{NEWLINE}do gastoj ne plendos, ke ĝi estas nesekura
 STR_5794    :Iuj scenaroj malŝaltas redaktadon de iuj{NEWLINE}atrakcioj jam en la parko.{NEWLINE}Ĉi tiu trompo levigas tiun limigon
@@ -3108,11 +3108,11 @@ STR_5828    :Ŝanĝas kiun mezurformaton estas uzata por distancoj, rapideco, kt
 STR_5829    :Ŝanĝas kiun valuto-formaton estas uzata. Nur vida aĵo, ne ekzistas ekzakta kurzo-efektivigo
 STR_5830    :Ŝanĝas kiun lingvon estas uzata
 STR_5831    :Ŝanĝas en kiu formato la{NEWLINE}temperaturo estas montrata
-STR_5832    :Montri altecon per komunaj unuoj anstataŭ mezurformato agordita sub "Distanco kaj Rapideco"
+STR_5832    :Montri altecon per komunaj unuoj anstataŭ mezurformato agordita sub “Distanco kaj Rapideco”
 STR_5833    :Ŝanĝas kiun datoformaton estas uzata
 STR_5834    :Elekti kiun sonludilon OpenRCT2 uzos
 STR_5835    :Silentigi la ludon se la fenestro perdas fokuson
-STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti RCT1-temon postulas, ke vi kopiu 'data/css17.dat' de via RCT1-ludodosierujo al 'data/css50.dat' en via RCT2-dosierujo, aŭ agordu la dosierindikon al RCT1 en la Diversaĵo-langeto.
+STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti RCT1-temon postulas, ke vi kopiu ‘data/css17.dat’ de via RCT1-ludodosierujo al ‘data/css50.dat’ en via RCT2-dosierujo, aŭ agordu la dosierindikon al RCT1 en la Diversaĵo-langeto.
 STR_5837    :Krei kaj administri proprajn fasado-temojn
 STR_5838    :Montri apartan butonon por la fenestro de financoj en la ilobreto
 STR_5839    :Montri apartan butonon por la fenestro de esplorado kaj disvolvado en la ilobreto
@@ -3140,7 +3140,7 @@ STR_5862    :Bari nekonatajn ludantojn.
 STR_5863    :Permesi, ke nur ludantoj kun konataj ŝlosiloj aliĝu.
 STR_5864    :Ĉi tiu servilo nur permesas blanklistajn ludantojn.
 STR_5865    :Protokoli babilejo-historion
-STR_5866    :{SMALLFONT}{BLACK}Protokolas tutan babilejo-historion al dosieroj en via uzantdosierujo.
+STR_5866    :{BLACK}Protokolas tutan babilejo-historion al dosieroj en via uzantdosierujo.
 STR_5867    :{WINDOW_COLOUR_2}Nomo de Provizanto: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Retpoŝtadreso de Provizanto: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Retejo de Provizanto: {BLACK}{STRING}
@@ -3291,23 +3291,23 @@ STR_6014    :Gastoj pagos nur enirbiletojn por atrakcioj kaj servoj.{NEWLINE}Ili
 STR_6015    :Dekliva
 STR_6016    :Modifi Blokon
 STR_6017    :Bonvolu malakceli
-STR_6018    :Konstruado de atrakcio - Turni maldekstren
-STR_6019    :Konstruado de atrakcio - Turni dekstren
-STR_6020    :Konstruado de atrakcio - Uzi defaŭltan trakon
-STR_6021    :Konstruado de atrakcio - Deklivi malsupren
-STR_6022    :Konstruado de atrakcio - Deklivi supren
-STR_6023    :Konstruado de atrakcio - Baskuligi ĉenlifton
-STR_6024    :Konstruado de atrakcio - Turnkliniĝi maldestren
-STR_6025    :Konstruado de atrakcio - Turnkliniĝi destren
-STR_6026    :Konstruado de atrakcio - Pasinta trako
-STR_6027    :Konstruado de atrakcio - Sekva trako
-STR_6028    :Konstruado de atrakcio - Konstrui nuna
-STR_6029    :Konstruado de atrakcio - Malkonstrui nuna
+STR_6018    :Konstruado - Turni maldekstren
+STR_6019    :Konstruado - Turni dekstren
+STR_6020    :Konstruado - Uzi defaŭltan trakon
+STR_6021    :Konstruado - Deklivi malsupren
+STR_6022    :Konstruado - Deklivi supren
+STR_6023    :Konstruado - Baskuligi ĉenlifton
+STR_6024    :Konstruado - Turnkliniĝi maldestren
+STR_6025    :Konstruado - Turnkliniĝi destren
+STR_6026    :Konstruado - Pasinta trako
+STR_6027    :Konstruado - Sekva trako
+STR_6028    :Konstruado - Konstrui nuna
+STR_6029    :Konstruado - Malkonstrui nuna
 STR_6030    :Pejzaĝo-elektilo. Alklaku iun ajn pejzaĝon sur la mapo por elekti la saman pecon por konstrui.
 STR_6031    :Priskribo de servilo:
 STR_6032    :Saluto de servilo:
 STR_6033    :Dosierindikon de RCT1-instalo:
-STR_6034    :{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Bonvolu elekti vian RCT1-dosierujon
 STR_6036    :Vakigi
 STR_6037    :La elektita dosierujo ne enhavas validan instalon de RollerCoaster Tycoon 1.
@@ -3343,34 +3343,34 @@ STR_6066    :Protokolas ĉiujn uzanto-agojn al dosieroj en via uzantdosierujo.
 STR_6067    :Servilo komenciĝis.
 STR_6068    :Servilo malŝaltis.
 STR_6069    :{STRING} estis forpelita de la servilo de {STRING}.
-STR_6070    :{STRING} estis aldonita al grupo '{STRING}' de {STRING}.
-STR_6071    :{STRING} kreis je nova ludantogrupo '{STRING}'.
-STR_6072    :{STRING} forigis je ludantogrupo '{String}'.
-STR_6073    :{STRING} redaktis permesojn por ludantogrupo '{String}'.
-STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de '{String}' al '{String}'.
-STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al '{String}'.
-STR_6076    :{STRING} uzis/baskuligis trompon de '{STRING}'.
+STR_6070    :{STRING} estis aldonita al grupo ‘{STRING}’ de {STRING}.
+STR_6071    :{STRING} kreis je nova ludantogrupo ‘{STRING}’.
+STR_6072    :{STRING} forigis je ludantogrupo ‘{String}’.
+STR_6073    :{STRING} redaktis permesojn por ludantogrupo ‘{String}’.
+STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de ‘{String}’ al ‘{String}’.
+STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al ‘{String}’.
+STR_6076    :{STRING} uzis/baskuligis trompon de ‘{STRING}’.
 STR_6077    :Aldoni Monon
-STR_6078    :{STRING} kreis je atrakcio '{STRING}'.
-STR_6079    :{STRING} malkonstruis je atrakcio '{STRING}'.
-STR_6080    :{STRING} ŝanĝis la aspekton de atrakcio '{STRING}'.
-STR_6081    :{STRING} ŝanĝis la staton de atrakcio '{STRING}' al fermita.
-STR_6082    :{STRING} ŝanĝis la staton de atrakcio '{STRING}' al malfermita.
-STR_6083    :{STRING} ŝanĝis la staton de atrakcio '{STRING}' al elprovata.
-STR_6084    :{STRING} ŝanĝis la veturilo-agordojn de atrakcio '{STRING}'.
-STR_6085    :{STRING} ŝanĝis la atrakcio-agordojn de atrakcio '{STRING}'.
-STR_6086    :{STRING} renomis je la atrakcio '{STRING}' al '{STRING}'.
-STR_6087    :{STRING} ŝanĝis la prezon de atrakcio '{STRING}' al {STRING}
-STR_6088    :{STRING} ŝanĝis la duarangan prezon de atrakcio '{STRING}' al {STRING}
-STR_6089    :{STRING} renomis la parkon de '{STRING}' al '{STRING}'.
+STR_6078    :{STRING} kreis je atrakcio ‘{STRING}’.
+STR_6079    :{STRING} malkonstruis je atrakcio ‘{STRING}’.
+STR_6080    :{STRING} ŝanĝis la aspekton de atrakcio ‘{STRING}’.
+STR_6081    :{STRING} ŝanĝis la staton de atrakcio ‘{STRING}’ al fermita.
+STR_6082    :{STRING} ŝanĝis la staton de atrakcio ‘{STRING}’ al malfermita.
+STR_6083    :{STRING} ŝanĝis la staton de atrakcio ‘{STRING}’ al elprovata.
+STR_6084    :{STRING} ŝanĝis la veturilo-agordojn de atrakcio ‘{STRING}’.
+STR_6085    :{STRING} ŝanĝis la atrakcio-agordojn de atrakcio ‘{STRING}’.
+STR_6086    :{STRING} renomis je la atrakcio ‘{STRING}’ al ‘{STRING}’.
+STR_6087    :{STRING} ŝanĝis la prezon de atrakcio ‘{STRING}’ al {STRING}
+STR_6088    :{STRING} ŝanĝis la duarangan prezon de atrakcio ‘{STRING}’ al {STRING}
+STR_6089    :{STRING} renomis la parkon de ‘{STRING}’ al ‘{STRING}’.
 STR_6090    :{STRING} malfermis la parkon.
 STR_6091    :{STRING} fermis la parkon.
 STR_6092    :{STRING} ŝanĝis la enirpagon al {STRING}
 STR_6093    :{STRING} metis novan pejzaĝon.
 STR_6094    :{STRING} forigis pejzaĝon.
 STR_6095    :{STRING} redaktis pejzaĝon.
-STR_6096    :{STRING} agordis nomon de surskribaĵo al '{STRING}'.
-STR_6097    :{STRING} metis trakon de atrakcio '{STRING}'.
+STR_6096    :{STRING} agordis nomon de surskribaĵo al ‘{STRING}’.
+STR_6097    :{STRING} metis trakon de atrakcio ‘{STRING}’.
 STR_6098    :{STRING} forigis trakon de atrakcio.
 STR_6099    :Vi aliĝis al la servilo.
 STR_6100    :Vi malaliĝis de la servilo.
@@ -3452,7 +3452,7 @@ STR_6183    :Sekvi{MOVE_X}{87}Neniu rastrumeto elektita
 STR_6184    :Sekvi Rastrumeton
 STR_6185    :Elekti Rastrumeton
 STR_6186    :Neniu rastrumeto elektita
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomaĵo
 STR_6189    :Anaso
 STR_6190    :Vi ne eblas elekti rastrumeton dum la ĉefa titolekrano estas aktiva.
@@ -3484,7 +3484,7 @@ STR_6226    :Ebligi fruan kompletigon de scenaro
 STR_6227    :Ekagigas kompletigon de scenaro kiam ĉiuj scenaroceloj estas atingitaj antaŭ la celodato.
 STR_6228    :Agordoj de Scenaro
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Frostigita
 STR_6233    :Tranĉita vido
@@ -3535,15 +3535,6 @@ STR_6280    :Por babili
 STR_6281    :Montri apartan butonon por la Babilejo-fenestro en la ilobreto
 STR_6282    :Babili
 STR_6283    :Babilejo ne disponeblas jam nun. Ĉu vi konektis al servilo?
-STR_6284    :Reto
-STR_6285    :Retinformaĵo
-STR_6286    :Ricevi
-STR_6287    :Sendi
-STR_6288    :Totalo ricevita
-STR_6289    :Totalo sendita
-STR_6290    :Baza protokolo
-STR_6291    :Komandoj
-STR_6292    :Mapo
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB
@@ -3611,7 +3602,7 @@ STR_6356    :Generas anasojn se parko enhavas akvon
 STR_6357    :Forigas ĉiujn anasojn de la mapo
 STR_6358    :Paĝo {UINT16}
 STR_6359    :{POP16}{POP16}Paĝo {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Ŝalti lumefektojn sur atrakcioj (eksperimenta)
 STR_6362    :Se ŝaltita, veturiloj de atrakcioj kun trakoj lumos nokte.
 STR_6363    :Teksto kopiita al tondujo
@@ -3650,7 +3641,60 @@ STR_6395    :Prizorgado
 STR_6396    :Malŝalti ekrankurtenon kaj energiŝparon de ekrano
 STR_6397    :Se elektita, ekrankurteno kaj aliaj energiŝparaj funkcioj estos malebligitaj dum OpenRCT2 funkcias.
 STR_6398    :Dosiero enhavas nesubtenatajn atrakciotipojn. Bonvolu ĝisdatigi al pli nova versio de OpenRCT2.
-STR_6399    :OpenRCT2 bezonas dosierojn de la originala RollerCoaster Tycoon 2 por funkcii. Bonvolu agordi la “game_path” variablon en "config.ini" al la dosierujon, kie vi instalis je RollerCoaster Tycoon 2, kaj tiam rekomencu je OpenRCT2.
+STR_6399    :OpenRCT2 bezonas dosierojn de la originala RollerCoaster Tycoon 2 por funkcii. Bonvolu agordi la “game_path” variablon en “config.ini” al la dosierujon, kie vi instalis je RollerCoaster Tycoon 2, kaj tiam rekomencu je OpenRCT2.
+STR_6400    :Mi elŝutis la GOG eksterretan instalilon de RollerCoaster Tycoon 2, sed mi ne jam instalis la ludon
+STR_6401    :Mi jam instalis je RollerCoaster Tycoon 2
+STR_6402    :Agordo de Datumoj de OpenRCT2
+STR_6403    :Elektu la opcion, kiu taŭgas al vi
+STR_6404    :Bonvolu elekti la GOG instalilon de RollerCoaster Tycoon 2.
+STR_6405    :Elekti GOG Instalilon
+STR_6406    :GOG Instalilo de RollerCoaster Tycoon 2
+STR_6407    :Ĉi tiu funkciado povas daŭri kelkajn minutojn.
+STR_6408    :Bonvolu instali “innoextract” por eltiri la Instalilon GOG, tiam restartigi OpenRCT2.
+STR_6409    :La elektita doserio ne estas la eksterreta GOG Instalilo de RollerCoaster Tycoon 2. Eble vi elŝutis la elŝutilon de GOG Galaxy, aŭ vi elektis malpravan doserion.
+STR_6410    :Zomi/malzomi
+STR_6411    :Montri butonojn por zomigi kaj malzomigi en la ilobreto
+STR_6412    :Enen-klavo de Nombra Klavaro
+STR_6413    :Majuskliga Klavo
+STR_6414    :Maldeks. Majuskliga Klavo
+STR_6415    :Deks. Majuskliga Klavo
+STR_6416    :Stirklavo
+STR_6417    :Maldeks. Stirklavo
+STR_6418    :Deks. Stirklavo
+STR_6419    :Alt-klavo
+STR_6420    :Maldeks. Alt-klavo
+STR_6421    :Deks. Alt-klavo
+STR_6422    :Komanda Klavo
+STR_6423    :Maldeks. Komanda Klavo
+STR_6424    :Deks. Komanda Klavo
+STR_6425    :Stirstango Maldekstren
+STR_6426    :Stirstango Dekstren
+STR_6427    :Stirstango Supren
+STR_6428    :Stirstango Malsupren
+STR_6429    :Stirstango {INT32}
+STR_6430    :Maldeks. Musbutono
+STR_6431    :Deks. Musbutono
+STR_6432    :Muso {INT32}
+STR_6433    :Forigi
+STR_6434    :Forigi ĉiujn bindaĵojn por ĉi tiu klavarokomando.
+STR_6435    :{WINDOW_COLOUR_2}Vandaloj haltigitaj: {BLACK}{COMMA16}
+STR_6436    :Baskuligi nevideblecon
+STR_6437    :Nevidebla
+STR_6438    :N
+STR_6439    :Inspektilo de Bloko: Baskuligi nevideblecon
+STR_6440    :Travidebla akvo
+STR_6441    :Almenaŭ unu surfacobjekto de ne-atendovico-trotuaro elektendas.
+STR_6442    :Almenaŭ unu surfacobjekto de atendovico-trotuaro elektendas.
+STR_6443    :Almenaŭ unu balustradobjekto de trotuaro elektendas.
+STR_6444    :Surfacoj de Trotuaro
+STR_6445    :Balustradoj de Trotuaro
+STR_6446    :{WINDOW_COLOUR_2}Nomo de surfaco: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Nomo de balustrado: {BLACK}{STRINGID}
+STR_6448    :Nesubtenata formato de objekto
+STR_6449    :{WINDOW_COLOUR_2}Kantoj:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Vendas: {BLACK}{STRING}
 
 #############
 # Scenarios #

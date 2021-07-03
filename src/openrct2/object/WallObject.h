@@ -15,14 +15,9 @@
 class WallObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry _legacyType = {};
+    WallSceneryEntry _legacyType = {};
 
 public:
-    explicit WallObject(const rct_object_entry& entry)
-        : SceneryObject(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;

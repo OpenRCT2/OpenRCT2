@@ -140,6 +140,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineSubCommand("sprite",          CommandLine::SpriteCommands           ),
     DefineSubCommand("benchgfx",        CommandLine::BenchGfxCommands         ),
     DefineSubCommand("benchspritesort", CommandLine::BenchSpriteSortCommands  ),
+    DefineSubCommand("benchsimulate",   CommandLine::BenchUpdateCommands      ),
     DefineSubCommand("simulate",        CommandLine::SimulateCommands         ),
     CommandTableEnd
 };

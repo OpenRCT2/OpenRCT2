@@ -18,7 +18,7 @@ enum class LandBuyRightSetting : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(LandBuyRightsAction, GAME_COMMAND_BUY_LAND_RIGHTS, GameActions::Result)
+DEFINE_GAME_ACTION(LandBuyRightsAction, GameCommand::BuyLandRights, GameActions::Result)
 {
 private:
     MapRange _range;

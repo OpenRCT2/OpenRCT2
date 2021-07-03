@@ -18,7 +18,6 @@
 #include "../world/Banner.h"
 #include "../world/Climate.h"
 #include "../world/MapAnimation.h"
-#include "../world/Sprite.h"
 
 constexpr const uint16_t RCT1_MAX_TILE_ELEMENTS = 0xC000;
 constexpr const uint16_t RCT1_MAX_SPRITES = 5000;
@@ -30,6 +29,9 @@ constexpr const uint16_t RCT1_MAX_ANIMATED_OBJECTS = 1000;
 constexpr const uint8_t RCT1_MAX_BANNERS = 100;
 constexpr int32_t RCT1_COORDS_Z_STEP = 4;
 constexpr const uint32_t RCT1_NUM_LL_CSG_ENTRIES = 69917;
+constexpr const uint32_t RCT1_LL_CSG1_DAT_FILE_SIZE = 41402869;
+constexpr const uint32_t RCT1_NUM_TERRAIN_SURFACES = 16;
+constexpr const uint32_t RCT1_NUM_TERRAIN_EDGES = 15;
 
 struct ParkLoadResult;
 
@@ -222,8 +224,8 @@ struct rct1_unk_sprite : RCT12SpriteBase
 
 struct rct1_vehicle : RCT12SpriteBase
 {
-    uint8_t vehicle_sprite_type; // 0x1F
-    uint8_t bank_rotation;       // 0x20
+    uint8_t Pitch;         // 0x1F
+    uint8_t bank_rotation; // 0x20
     uint8_t pad_21[3];
     int32_t remaining_distance; // 0x24
     int32_t velocity;           // 0x28
@@ -242,9 +244,8 @@ struct rct1_vehicle : RCT12SpriteBase
     };
     union
     {
-        int16_t track_direction; // 0x36 (0000 0000 0000 0011)
-        int16_t track_type;      // 0x36 (0000 0011 1111 1100)
-        RCT12xy8 boat_location;  // 0x36
+        int16_t TrackTypeAndDirection; // 0x36
+        RCT12xy8 boat_location;        // 0x36
     };
     uint16_t track_x;               // 0x38
     uint16_t track_y;               // 0x3A
@@ -321,6 +322,16 @@ struct rct1_vehicle : RCT12SpriteBase
     uint8_t mini_golf_flags;  // 0xD5
     uint8_t ride_subtype;     // 0xD6
     uint8_t colours_extended; // 0xD7
+
+    uint16_t GetTrackType() const
+    {
+        return TrackTypeAndDirection >> 2;
+    }
+
+    uint8_t GetTrackDirection() const
+    {
+        return TrackTypeAndDirection & RCT12VehicleTrackDirectionMask;
+    }
 };
 
 struct rct1_peep : RCT12SpriteBase
@@ -622,7 +633,7 @@ struct rct1_s4
     money32 weekly_profit_history[RCT12_FINANCE_GRAPH_SIZE];
     money32 park_value;
     money32 park_value_history[RCT12_FINANCE_GRAPH_SIZE];
-    uint32_t completed_company_value;
+    money32 completed_company_value;
     uint32_t num_admissions;
     money32 admission_total_income;
     money32 company_value;
@@ -1014,7 +1025,7 @@ enum
 
     RCT1_FOOTPATH_TYPE_ROADS = 16,
 
-    RCT1_FOOTPATH_TYPE_TILE_PINK = 20,
+    RCT1_FOOTPATH_TYPE_TILE_BROWN = 20,
     RCT1_FOOTPATH_TYPE_TILE_GRAY,
     RCT1_FOOTPATH_TYPE_TILE_RED,
     RCT1_FOOTPATH_TYPE_TILE_GREEN,
@@ -1229,6 +1240,8 @@ enum
     WATER_COASTER_BOAT = 99,
     WATER_COASTER_INVISIBLE = 101,
     RIVER_RAFT = 103,
+    MINIATURE_RAILWAY_AMERICAN_TENDER = 104,
+    MINIATURE_RAILWAY_AMERICAN_LOCOMOTIVE = 105,
 };
 
 enum
@@ -1274,5 +1287,7 @@ enum
 
 void load_from_sv4(const char* path);
 void load_from_sc4(const char* path);
+
+track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
 
 #endif

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,12 +15,14 @@
 #include "ImageTable.h"
 #include "StringTable.h"
 
+#include <memory>
 #include <optional>
 #include <string_view>
 #include <vector>
 
 using ObjectEntryIndex = uint16_t;
 constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
+struct ObjectRepositoryItem;
 
 // First 0xF of rct_object_entry->flags
 enum class ObjectType : uint8_t
@@ -40,6 +42,8 @@ enum class ObjectType : uint8_t
     TerrainEdge,
     Station,
     Music,
+    FootpathSurface,
+    FootpathRailings,
 
     Count,
     None = 255
@@ -101,11 +105,17 @@ struct rct_object_entry
         return std::string_view(name, std::size(name));
     }
 
-    void SetName(const std::string_view& value);
+    void SetName(std::string_view value);
 
     ObjectType GetType() const
     {
         return static_cast<ObjectType>(flags & 0x0F);
+    }
+
+    void SetType(ObjectType newType)
+    {
+        flags &= ~0x0F;
+        flags |= (static_cast<uint8_t>(newType) & 0x0F);
     }
 
     std::optional<uint8_t> GetSceneryType() const;
@@ -114,6 +124,10 @@ struct rct_object_entry
     {
         return static_cast<ObjectSourceGame>((flags & 0xF0) >> 4);
     }
+
+    bool IsEmpty() const;
+    bool operator==(const rct_object_entry& rhs) const;
+    bool operator!=(const rct_object_entry& rhs) const;
 };
 assert_struct_size(rct_object_entry, 0x10);
 
@@ -151,28 +165,27 @@ enum class ObjectGeneration : uint8_t
 
 struct ObjectEntryDescriptor
 {
-    ObjectGeneration Generation;
-    std::string Identifier; // For JSON objects
-    rct_object_entry Entry; // For DAT objects
+    ObjectGeneration Generation = ObjectGeneration::JSON;
 
-    ObjectEntryDescriptor()
-        : Generation(ObjectGeneration::JSON)
-        , Identifier()
-        , Entry()
-    {
-    }
+    // DAT
+    rct_object_entry Entry{};
 
-    explicit ObjectEntryDescriptor(const rct_object_entry& newEntry)
-    {
-        Generation = ObjectGeneration::DAT;
-        Entry = newEntry;
-    }
+    // JSON
+    ObjectType Type{};
+    std::string Identifier;
+    std::string Version;
 
-    explicit ObjectEntryDescriptor(std::string_view newIdentifier)
-    {
-        Generation = ObjectGeneration::JSON;
-        Identifier = std::string(newIdentifier);
-    }
+    ObjectEntryDescriptor() = default;
+    explicit ObjectEntryDescriptor(const rct_object_entry& newEntry);
+    explicit ObjectEntryDescriptor(std::string_view newIdentifier);
+    explicit ObjectEntryDescriptor(ObjectType type, std::string_view newIdentifier);
+    explicit ObjectEntryDescriptor(const ObjectRepositoryItem& ori);
+    bool HasValue() const;
+    ObjectType GetType() const;
+    std::string_view GetName() const;
+
+    bool operator==(const ObjectEntryDescriptor& rhs) const;
+    bool operator!=(const ObjectEntryDescriptor& rhs) const;
 };
 
 struct IObjectRepository;
@@ -194,6 +207,29 @@ enum class ObjectError : uint32_t
     UnexpectedEOF,
 };
 
+class ObjectAsset
+{
+private:
+    std::string _zipPath;
+    std::string _path;
+
+public:
+    ObjectAsset() = default;
+    ObjectAsset(std::string_view path)
+        : _path(path)
+    {
+    }
+    ObjectAsset(std::string_view zipPath, std::string_view path)
+        : _zipPath(zipPath)
+        , _path(path)
+    {
+    }
+
+    bool IsAvailable() const;
+    uint64_t GetSize() const;
+    std::unique_ptr<OpenRCT2::IStream> GetStream() const;
+};
+
 struct IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
@@ -201,8 +237,10 @@ struct IReadObjectContext
     virtual std::string_view GetObjectIdentifier() abstract;
     virtual IObjectRepository& GetObjectRepository() abstract;
     virtual bool ShouldLoadImages() abstract;
-    virtual std::vector<uint8_t> GetData(const std::string_view& path) abstract;
+    virtual std::vector<uint8_t> GetData(std::string_view path) abstract;
+    virtual ObjectAsset GetAsset(std::string_view path) abstract;
 
+    virtual void LogVerbose(ObjectError code, const utf8* text) abstract;
     virtual void LogWarning(ObjectError code, const utf8* text) abstract;
     virtual void LogError(ObjectError code, const utf8* text) abstract;
 };
@@ -216,12 +254,12 @@ class Object
 {
 private:
     std::string _identifier;
-    rct_object_entry _objectEntry{};
+    ObjectEntryDescriptor _descriptor{};
     StringTable _stringTable;
     ImageTable _imageTable;
     std::vector<ObjectSourceGame> _sourceGames;
     std::vector<std::string> _authors;
-    bool _isJsonObject{};
+    ObjectGeneration _generation{};
 
 protected:
     StringTable& GetStringTable()
@@ -252,36 +290,51 @@ protected:
     std::string GetString(int32_t language, ObjectStringID index) const;
 
 public:
-    explicit Object(const rct_object_entry& entry);
     virtual ~Object() = default;
 
     std::string_view GetIdentifier() const
     {
         return _identifier;
     }
-    void SetIdentifier(const std::string_view& identifier)
+    void SetIdentifier(std::string_view identifier)
     {
         _identifier = identifier;
     }
 
     void MarkAsJsonObject()
     {
-        _isJsonObject = true;
+        _generation = ObjectGeneration::JSON;
     }
 
-    bool IsJsonObject() const
+    ObjectGeneration GetGeneration() const
     {
-        return _isJsonObject;
+        return _generation;
     };
+
+    ObjectType GetObjectType() const
+    {
+        return _descriptor.GetType();
+    }
+
+    ObjectEntryDescriptor GetDescriptor() const
+    {
+        return _descriptor;
+    }
+    void SetDescriptor(const ObjectEntryDescriptor& value)
+    {
+        _descriptor = value;
+    }
 
     // Legacy data structures
     std::string_view GetLegacyIdentifier() const
     {
-        return _objectEntry.GetName();
+        return _descriptor.GetName();
     }
-    const rct_object_entry* GetObjectEntry() const
+
+    // TODO remove this, we should no longer assume objects have a legacy object entry
+    const rct_object_entry& GetObjectEntry() const
     {
-        return &_objectEntry;
+        return _descriptor.Entry;
     }
     virtual void* GetLegacyData();
 
@@ -299,10 +352,6 @@ public:
     {
     }
 
-    virtual ObjectType GetObjectType() const final
-    {
-        return _objectEntry.GetType();
-    }
     virtual std::string GetName() const;
     virtual std::string GetName(int32_t language) const;
 
@@ -313,15 +362,15 @@ public:
     void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
     const std::vector<std::string>& GetAuthors() const;
-    void SetAuthors(const std::vector<std::string>&& authors);
+    void SetAuthors(std::vector<std::string>&& authors);
 
     const ImageTable& GetImageTable() const
     {
         return _imageTable;
     }
 
-    rct_object_entry GetScgWallsHeader();
-    rct_object_entry GetScgPathXHeader();
+    ObjectEntryDescriptor GetScgWallsHeader() const;
+    ObjectEntryDescriptor GetScgPathXHeader() const;
     rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
 
     uint32_t GetNumImages() const
@@ -336,10 +385,7 @@ public:
 extern int32_t object_entry_group_counts[];
 extern int32_t object_entry_group_encoding[];
 
-bool object_entry_is_empty(const rct_object_entry* entry);
-bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b);
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
-bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry_type, ObjectEntryIndex* entryIndex);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
 const rct_object_entry* object_list_find(rct_object_entry* entry);
@@ -347,4 +393,4 @@ const rct_object_entry* object_list_find(rct_object_entry* entry);
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
 
 void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index);
-const rct_object_entry* object_entry_get_entry(ObjectType objectType, ObjectEntryIndex index);
+const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index);

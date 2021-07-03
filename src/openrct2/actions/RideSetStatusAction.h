@@ -11,15 +11,15 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameActions::Result)
+DEFINE_GAME_ACTION(RideSetStatusAction, GameCommand::SetRideStatus, GameActions::Result)
 {
 private:
-    NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _status{ RIDE_STATUS_CLOSED };
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    RideStatus _status{ RideStatus::Closed };
 
 public:
     RideSetStatusAction() = default;
-    RideSetStatusAction(ride_id_t rideIndex, uint8_t status);
+    RideSetStatusAction(ride_id_t rideIndex, RideStatus status);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 

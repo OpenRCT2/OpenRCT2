@@ -12,9 +12,6 @@
 #include "../object/Object.h"
 #include "Memory.hpp"
 #include "String.hpp"
-
-#include <vector>
-
 namespace OpenRCT2
 {
     utf8* IStream::ReadString()
@@ -55,6 +52,17 @@ namespace OpenRCT2
             size_t numBytes = String::SizeOf(str) + 1;
             Write(str, numBytes);
         }
+    }
+
+    void IStream::WriteString(std::string_view str)
+    {
+        for (auto c : str)
+        {
+            if (c == '\0')
+                break;
+            WriteValue<uint8_t>(c);
+        }
+        WriteValue<uint8_t>(0);
     }
 
     void IStream::WriteString(const std::string& str)

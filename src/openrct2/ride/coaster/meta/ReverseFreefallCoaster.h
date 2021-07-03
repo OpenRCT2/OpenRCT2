@@ -19,7 +19,7 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_REVERSE_FREEFALL)),
+    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_REVERSE_FREEFALL) | (1ULL << TRACK_ON_RIDE_PHOTO)),
     SET_FIELD(ExtraTrackPieces, 0),
     SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 0, 0, 10 }),
     SET_FIELD(BuildCosts, { 200, 0, 45, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 70),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

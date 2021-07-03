@@ -439,7 +439,7 @@ namespace OpenRCT2::Scripting
                     if (dukHost.type() == DukValue::Type::STRING)
                     {
                         auto host = dukHost.as_string();
-                        if (IsLocalhostAddress(host))
+                        if (IsLocalhostAddress(host) || IsOnWhiteList(host))
                         {
                             try
                             {
@@ -484,7 +484,7 @@ namespace OpenRCT2::Scripting
             return this;
         }
 
-        uint32_t GetEventType(const std::string_view& name)
+        uint32_t GetEventType(std::string_view name)
         {
             if (name == "connection")
                 return EVENT_CONNECTION;

@@ -18,6 +18,9 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/Object.h"
+#include "../object/ObjectManager.h"
+#include "../object/TerrainEdgeObject.h"
+#include "../object/TerrainSurfaceObject.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "Map.h"
@@ -36,9 +39,10 @@
 
 static struct
 {
-    uint32_t width, height;
-    uint8_t* mono_bitmap;
-} _heightMapData = { 0, 0, nullptr };
+    uint32_t width = 0;
+    uint32_t height = 0;
+    std::vector<uint8_t> mono_bitmap;
+} _heightMapData;
 
 #pragma endregion Height map struct
 
@@ -46,42 +50,44 @@ static struct
 
 static constexpr const char* GrassTrees[] = {
     // Dark
-    "TCF     ", // Caucasian Fir Tree
-    "TRF     ", // Red Fir Tree
-    "TRF2    ", // Red Fir Tree
-    "TSP     ", // Scots Pine Tree
-    "TMZP    ", // Montezuma Pine Tree
-    "TAP     ", // Aleppo Pine Tree
-    "TCRP    ", // Corsican Pine Tree
-    "TBP     ", // Black Poplar Tree
+    "rct2.tcf",  // Caucasian Fir Tree
+    "rct2.trf",  // Red Fir Tree
+    "rct2.trf2", // Red Fir Tree
+    "rct2.tsp",  // Scots Pine Tree
+    "rct2.tmzp", // Montezuma Pine Tree
+    "rct2.tap",  // Aleppo Pine Tree
+    "rct2.tcrp", // Corsican Pine Tree
+    "rct2.tbp",  // Black Poplar Tree
 
     // Light
-    "TCL     ", // Cedar of Lebanon Tree
-    "TEL     ", // European Larch Tree
+    "rct2.tcl", // Cedar of Lebanon Tree
+    "rct2.tel", // European Larch Tree
 };
 
 static constexpr const char* DesertTrees[] = {
-    "TMP     ", // Monkey-Puzzle Tree
-    "THL     ", // Honey Locust Tree
-    "TH1     ", // Canary Palm Tree
-    "TH2     ", // Palm Tree
-    "TPM     ", // Palm Tree
-    "TROPT1  ", // Tree
-    "TBC     ", // Cactus
-    "TSC     ", // Cactus
+    "rct2.tmp",    // Monkey-Puzzle Tree
+    "rct2.thl",    // Honey Locust Tree
+    "rct2.th1",    // Canary Palm Tree
+    "rct2.th2",    // Palm Tree
+    "rct2.tpm",    // Palm Tree
+    "rct2.tropt1", // Tree
+    "rct2.tbc",    // Cactus
+    "rct2.tsc",    // Cactus
 };
 
 static constexpr const char* SnowTrees[] = {
-    "TCFS    ", // Snow-covered Caucasian Fir Tree
-    "TNSS    ", // Snow-covered Norway Spruce Tree
-    "TRF3    ", // Snow-covered Red Fir Tree
-    "TRFS    ", // Snow-covered Red Fir Tree
+    "rct2.tcfs", // Snow-covered Caucasian Fir Tree
+    "rct2.tnss", // Snow-covered Norway Spruce Tree
+    "rct2.trf3", // Snow-covered Red Fir Tree
+    "rct2.trfs", // Snow-covered Red Fir Tree
 };
 
 #pragma endregion
 
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
-static constexpr const uint8_t BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE };
+static constexpr const std::string_view BaseTerrain[] = { "rct2.terrain_surface.grass", "rct2.terrain_surface.sand",
+                                                          "rct2.terrain_surface.sand_brown", "rct2.terrain_surface.dirt",
+                                                          "rct2.terrain_surface.ice" };
 
 static void mapgen_place_trees();
 static void mapgen_set_water_level(int32_t waterLevel);
@@ -133,46 +139,43 @@ void mapgen_generate_blank(mapgen_settings* settings)
 
 void mapgen_generate(mapgen_settings* settings)
 {
-    int32_t x, y, mapSize, floorTexture, wallTexture, waterLevel;
+    auto mapSize = settings->mapSize;
+    auto waterLevel = settings->water_level;
+    const auto selectedFloor = TerrainSurfaceObject::GetById(settings->floor);
+    std::string floorTexture = selectedFloor != nullptr ? std::string(selectedFloor->GetIdentifier()) : "";
+    const auto selectedEdge = TerrainEdgeObject::GetById(settings->wall);
+    std::string edgeTexture = selectedFloor != nullptr ? std::string(selectedEdge->GetIdentifier()) : "";
 
-    mapSize = settings->mapSize;
-    floorTexture = settings->floor;
-    wallTexture = settings->wall;
-    waterLevel = settings->water_level;
-
-    if (floorTexture == -1)
+    if (floorTexture.empty())
         floorTexture = BaseTerrain[util_rand() % std::size(BaseTerrain)];
 
-    if (wallTexture == -1)
+    if (edgeTexture.empty())
     {
         // Base edge type on surface type
-        switch (floorTexture)
-        {
-            case TERRAIN_DIRT:
-                wallTexture = TERRAIN_EDGE_WOOD_RED;
-                break;
-            case TERRAIN_ICE:
-                wallTexture = TERRAIN_EDGE_ICE;
-                break;
-            default:
-                wallTexture = TERRAIN_EDGE_ROCK;
-                break;
-        }
+        if (floorTexture == "rct2.terrain_surface.dirt")
+            edgeTexture = "rct2.terrain_edge.wood_red";
+        else if (floorTexture == "rct2.terrain_surface.ice")
+            edgeTexture = "rct2.terrain_edge.ice";
+        else
+            edgeTexture = "rct2.terrain_edge.rock";
     }
+
+    auto floorTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(floorTexture));
+    auto edgeTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(edgeTexture));
 
     map_clear_all_elements();
 
     // Initialise the base map
     map_init(mapSize);
-    for (y = 1; y < mapSize - 1; y++)
+    for (auto y = 1; y < mapSize - 1; y++)
     {
-        for (x = 1; x < mapSize - 1; x++)
+        for (auto x = 1; x < mapSize - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetSurfaceStyle(floorTexture);
-                surfaceElement->SetEdgeStyle(wallTexture);
+                surfaceElement->SetSurfaceStyle(floorTextureId);
+                surfaceElement->SetEdgeStyle(edgeTextureId);
                 surfaceElement->base_height = settings->height;
                 surfaceElement->clearance_height = settings->height;
             }
@@ -200,55 +203,74 @@ void mapgen_generate(mapgen_settings* settings)
     mapgen_set_water_level(waterLevel);
 
     // Add sandy beaches
-    int32_t beachTexture = floorTexture;
-    if (settings->floor == -1 && floorTexture == TERRAIN_GRASS)
+    std::string beachTexture = std::string(floorTexture);
+    if (settings->floor == -1 && floorTexture == "rct2.terrain_surface.grass")
     {
         switch (util_rand() % 4)
         {
             case 0:
-                beachTexture = TERRAIN_SAND;
+                beachTexture = "rct2.terrain_surface.sand";
                 break;
             case 1:
-                beachTexture = TERRAIN_SAND_LIGHT;
+                beachTexture = "rct2.terrain_surface.sand_brown";
                 break;
         }
     }
-    for (y = 1; y < mapSize - 1; y++)
+    auto beachTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(beachTexture));
+
+    for (auto y = 1; y < mapSize - 1; y++)
     {
-        for (x = 1; x < mapSize - 1; x++)
+        for (auto x = 1; x < mapSize - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel + 6)
-                surfaceElement->SetSurfaceStyle(beachTexture);
+                surfaceElement->SetSurfaceStyle(beachTextureId);
         }
     }
 
     // Place the trees
     if (settings->trees != 0)
         mapgen_place_trees();
-
-    map_reorganise_elements();
 }
 
 static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
 {
-    rct_scenery_entry* sceneryEntry = get_small_scenery_entry(type);
+    auto* sceneryEntry = get_small_scenery_entry(type);
     if (sceneryEntry == nullptr)
     {
         return;
     }
 
     int32_t surfaceZ = tile_element_height(loc.ToTileCentre());
-    TileElement* tileElement = tile_element_insert({ loc, surfaceZ }, 0b1111);
-    assert(tileElement != nullptr);
-    tileElement->SetClearanceZ(surfaceZ + sceneryEntry->small_scenery.height);
-    tileElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
-    tileElement->SetDirection(util_rand() & 3);
-    SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
+
+    auto* sceneryElement = TileElementInsert<SmallSceneryElement>({ loc, surfaceZ }, 0b1111);
+    Guard::Assert(sceneryElement != nullptr);
+
+    sceneryElement->SetClearanceZ(surfaceZ + sceneryEntry->height);
+    sceneryElement->SetDirection(util_rand() & 3);
     sceneryElement->SetEntryIndex(type);
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(COLOUR_YELLOW);
+}
+
+static bool MapGenSurfaceTakesGrassTrees(const TerrainSurfaceObject& surface)
+{
+    const auto& id = surface.GetIdentifier();
+    return id == "rct2.terrain_surface.grass" || id == "rct2.terrain_surface.grass_clumps" || id == "rct2.terrain_surface.dirt";
+}
+
+static bool MapGenSurfaceTakesSandTrees(const TerrainSurfaceObject& surface)
+{
+    const auto& id = surface.GetIdentifier();
+    return id == "rct2.terrain_surface.sand" || id == "rct2.terrain_surface.sand_brown"
+        || id == "rct2.terrain_surface.sand_red";
+}
+
+static bool MapGenSurfaceTakesSnowTrees(const TerrainSurfaceObject& surface)
+{
+    const auto& id = surface.GetIdentifier();
+    return id == "rct2.terrain_surface.ice";
 }
 
 /**
@@ -262,8 +284,8 @@ static void mapgen_place_trees()
 
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
-        auto sceneryEntry = get_small_scenery_entry(i);
-        auto entry = object_entry_get_entry(ObjectType::SmallScenery, i);
+        auto* sceneryEntry = get_small_scenery_entry(i);
+        auto entry = object_entry_get_object(ObjectType::SmallScenery, i);
 
         if (sceneryEntry == nullptr)
             continue;
@@ -271,7 +293,7 @@ static void mapgen_place_trees()
         uint32_t j;
         for (j = 0; j < std::size(GrassTrees); j++)
         {
-            if (strncmp(GrassTrees[j], entry->name, 8) == 0)
+            if (GrassTrees[j] == entry->GetIdentifier())
                 break;
         }
         if (j != std::size(GrassTrees))
@@ -282,7 +304,7 @@ static void mapgen_place_trees()
 
         for (j = 0; j < std::size(DesertTrees); j++)
         {
-            if (strncmp(DesertTrees[j], entry->name, 8) == 0)
+            if (DesertTrees[j] == entry->GetIdentifier())
                 break;
         }
         if (j != std::size(DesertTrees))
@@ -293,7 +315,7 @@ static void mapgen_place_trees()
 
         for (j = 0; j < std::size(SnowTrees); j++)
         {
-            if (strncmp(SnowTrees[j], entry->name, 8) == 0)
+            if (SnowTrees[j] == entry->GetIdentifier())
                 break;
         }
         if (j != std::size(SnowTrees))
@@ -352,33 +374,28 @@ static void mapgen_place_trees()
         auto* surfaceElement = map_get_surface_element_at(pos.ToCoordsXY());
         if (surfaceElement == nullptr)
             continue;
-        switch (surfaceElement->GetSurfaceStyle())
+        const auto* object = TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
+        if (MapGenSurfaceTakesGrassTrees(*object))
         {
-            case TERRAIN_GRASS:
-            case TERRAIN_DIRT:
-            case TERRAIN_GRASS_CLUMPS:
-                if (grassTreeIds.empty())
-                    break;
-
-                type = grassTreeIds[util_rand() % grassTreeIds.size()];
+            if (grassTreeIds.empty())
                 break;
 
-            case TERRAIN_SAND:
-            case TERRAIN_SAND_DARK:
-            case TERRAIN_SAND_LIGHT:
-                if (desertTreeIds.empty())
-                    break;
-
-                if (util_rand() % 4 == 0)
-                    type = desertTreeIds[util_rand() % desertTreeIds.size()];
+            type = grassTreeIds[util_rand() % grassTreeIds.size()];
+        }
+        else if (MapGenSurfaceTakesSandTrees(*object))
+        {
+            if (desertTreeIds.empty())
                 break;
 
-            case TERRAIN_ICE:
-                if (snowTreeIds.empty())
-                    break;
-
-                type = snowTreeIds[util_rand() % snowTreeIds.size()];
+            if (util_rand() % 4 == 0)
+                type = desertTreeIds[util_rand() % desertTreeIds.size()];
+        }
+        else if (MapGenSurfaceTakesSnowTrees(*object))
+        {
+            if (snowTreeIds.empty())
                 break;
+
+            type = snowTreeIds[util_rand() % snowTreeIds.size()];
         }
 
         if (type != -1)
@@ -671,8 +688,7 @@ bool mapgen_load_heightmap(const utf8* path)
         }
 
         // Allocate memory for the height map values, one byte pixel
-        delete[] _heightMapData.mono_bitmap;
-        _heightMapData.mono_bitmap = new uint8_t[size * size];
+        _heightMapData.mono_bitmap.resize(size * size);
         _heightMapData.width = size;
         _heightMapData.height = size;
 
@@ -715,7 +731,7 @@ bool mapgen_load_heightmap(const utf8* path)
  */
 void mapgen_unload_heightmap()
 {
-    SafeDeleteArray(_heightMapData.mono_bitmap);
+    _heightMapData.mono_bitmap.clear();
     _heightMapData.width = 0;
     _heightMapData.height = 0;
 }
@@ -723,10 +739,10 @@ void mapgen_unload_heightmap()
 /**
  * Applies box blur to the surface N times
  */
-static void mapgen_smooth_heightmap(uint8_t* src, int32_t strength)
+static void mapgen_smooth_heightmap(std::vector<uint8_t>& src, int32_t strength)
 {
     // Create buffer to store one channel
-    uint8_t* dest = new uint8_t[_heightMapData.width * _heightMapData.height];
+    std::vector<uint8_t> dest(src.size());
 
     for (int32_t i = 0; i < strength; i++)
     {
@@ -764,19 +780,16 @@ static void mapgen_smooth_heightmap(uint8_t* src, int32_t strength)
             }
         }
     }
-
-    delete[] dest;
 }
 
 void mapgen_generate_from_heightmap(mapgen_settings* settings)
 {
     openrct2_assert(_heightMapData.width == _heightMapData.height, "Invalid height map size");
-    openrct2_assert(_heightMapData.mono_bitmap != nullptr, "No height map loaded");
+    openrct2_assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
     openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
-    uint8_t* dest = new uint8_t[_heightMapData.width * _heightMapData.height];
-    std::memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
+    auto dest = _heightMapData.mono_bitmap;
 
     map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
 
@@ -806,7 +819,6 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         if (minValue == maxValue)
         {
             context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE, {});
-            delete[] dest;
             return;
         }
     }
@@ -864,9 +876,6 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
                 break;
         }
     }
-
-    // Clean up
-    delete[] dest;
 }
 
 #pragma endregion

@@ -243,9 +243,9 @@ static void window_track_delete_prompt_paint(rct_window* w, rct_drawpixelinfo* d
 {
     WindowDrawWidgets(w, dpi);
 
-    gfx_draw_string_centred_wrapped(
-        dpi, &_trackDesignFileReference->name, { w->windowPos.x + 125, w->windowPos.y + 28 }, 246,
-        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, COLOUR_BLACK);
+    DrawTextWrapped(
+        dpi, { w->windowPos.x + 125, w->windowPos.y + 28 }, 246, STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK,
+        &_trackDesignFileReference->name, { TextAlignment::CENTRE });
 }
 
 static void window_track_design_list_reload_tracks()

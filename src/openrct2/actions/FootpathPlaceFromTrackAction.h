@@ -11,17 +11,21 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathPlaceFromTrackAction, GAME_COMMAND_PLACE_PATH_FROM_TRACK, GameActions::Result)
+DEFINE_GAME_ACTION(FootpathPlaceFromTrackAction, GameCommand::PlacePathFromTrack, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
     uint8_t _slope{};
     ObjectEntryIndex _type{};
+    ObjectEntryIndex _railingsType{};
     uint8_t _edges{};
+    PathConstructFlags _constructFlags{};
 
 public:
     FootpathPlaceFromTrackAction() = default;
-    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges);
+    FootpathPlaceFromTrackAction(
+        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
+        PathConstructFlags constructFlags = 0);
 
     uint16_t GetActionFlags() const override;
 

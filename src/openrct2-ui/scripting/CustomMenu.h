@@ -44,11 +44,34 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class CustomShortcut
+    {
+    public:
+        std::shared_ptr<Plugin> Owner;
+        std::string Id;
+        std::string Text;
+        std::vector<std::string> Bindings;
+        DukValue Callback;
+
+        CustomShortcut(
+            std::shared_ptr<Plugin> owner, std::string_view id, std::string_view text, const std::vector<std::string>& bindings,
+            DukValue callback);
+        CustomShortcut(CustomShortcut&&) = default;
+        CustomShortcut(const CustomShortcut&) = delete;
+        ~CustomShortcut();
+
+        CustomShortcut& operator=(const CustomShortcut&) = delete;
+        CustomShortcut& operator=(CustomShortcut&& other) = default;
+
+        void Invoke() const;
+    };
+
     struct CustomTool
     {
         std::shared_ptr<Plugin> Owner;
         std::string Id;
         CursorID Cursor = CursorID::Undefined;
+        uint32_t Filter{};
         bool MouseDown{};
 
         // Event handlers
@@ -71,6 +94,7 @@ namespace OpenRCT2::Scripting
 
     extern std::optional<CustomTool> ActiveCustomTool;
     extern std::vector<CustomToolbarMenuItem> CustomMenuItems;
+    extern std::vector<std::unique_ptr<CustomShortcut>> CustomShortcuts;
 
     void InitialiseCustomMenuItems(ScriptEngine& scriptEngine);
     void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue);

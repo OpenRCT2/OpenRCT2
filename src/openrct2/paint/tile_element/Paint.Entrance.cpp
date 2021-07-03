@@ -14,6 +14,8 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/FootpathObject.h"
+#include "../../object/FootpathSurfaceObject.h"
 #include "../../object/StationObject.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
@@ -89,12 +91,12 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     colour_2 = ride->track_colour[0].additional;
     image_id = (colour_1 << 19) | (colour_2 << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
 
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
     uint32_t entranceImageId = 0;
 
     if (tile_element->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         image_id = CONSTRUCTION_MARKER;
         entranceImageId = image_id;
         if (transparant_image_id)
@@ -164,7 +166,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
 
-        if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             ride->FormatNameTo(ft);
         }
@@ -183,9 +185,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
             format_string(entrance_string, sizeof(entrance_string), STR_BANNER_TEXT_FORMAT, ft.Data());
         }
 
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
-
-        uint16_t stringWidth = gfx_get_string_width(entrance_string);
+        uint16_t stringWidth = gfx_get_string_width(entrance_string, FontSpriteBase::TINY);
         uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
         PaintAddImageAsChild(
@@ -222,23 +222,17 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     }
 #endif
 
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
+    session->InteractionType = ViewportInteractionItem::ParkEntrance;
     uint32_t image_id, ghost_id = 0;
     if (tile_element->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         ghost_id = CONSTRUCTION_MARKER;
     }
 
     // Index to which part of the entrance
     // Middle, left, right
     uint8_t part_index = tile_element->AsEntrance()->GetSequenceIndex();
-    PathSurfaceEntry* path_entry = nullptr;
-
-    // The left and right of the park entrance often have this set to 127.
-    // So only attempt to get the footpath type if we're dealing with the middle bit of the entrance.
-    if (part_index == 0)
-        path_entry = get_path_surface_entry(tile_element->AsEntrance()->GetPathType());
 
     rct_entrance_type* entrance;
     uint8_t di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;
@@ -246,10 +240,22 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     switch (part_index)
     {
         case 0:
-            if (path_entry != nullptr)
+        {
+            auto footpathObj = tile_element->AsEntrance()->GetPathEntry();
+            if (footpathObj != nullptr)
             {
-                image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
+                auto footpathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
+                image_id = (footpathEntry->image + 5 * (1 + (direction & 1))) | ghost_id;
                 PaintAddImageAsParent(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height);
+            }
+            else
+            {
+                auto footpathSurfaceObj = tile_element->AsEntrance()->GetSurfaceEntry();
+                if (footpathSurfaceObj != nullptr)
+                {
+                    image_id = (footpathSurfaceObj->BaseImageId + 5 * (1 + (direction & 1))) | ghost_id;
+                    PaintAddImageAsParent(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height);
+                }
             }
 
             entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(ObjectType::ParkEntrance, 0));
@@ -291,9 +297,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                     format_string(park_name, sizeof(park_name), STR_BANNER_TEXT_FORMAT, ft.Data());
                 }
 
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
-
-                uint16_t stringWidth = gfx_get_string_width(park_name);
+                uint16_t stringWidth = gfx_get_string_width(park_name, FontSpriteBase::TINY);
                 uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
                 if (entrance->scrolling_mode == SCROLLING_MODE_NONE)
@@ -305,6 +309,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 PaintAddImageAsChild(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height);
             }
             break;
+        }
         case 1:
         case 2:
             entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(ObjectType::ParkEntrance, 0));
@@ -334,7 +339,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
  */
 void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
+    session->InteractionType = ViewportInteractionItem::Label;
 
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {

@@ -34,12 +34,12 @@
 #    include <random>
 #    include <string>
 
-enum MASTER_SERVER_STATUS
+enum class MasterServerStatus
 {
-    MASTER_SERVER_STATUS_OK = 200,
-    MASTER_SERVER_STATUS_INVALID_TOKEN = 401,
-    MASTER_SERVER_STATUS_SERVER_NOT_FOUND = 404,
-    MASTER_SERVER_STATUS_INTERNAL_ERROR = 500
+    Ok = 200,
+    InvalidToken = 401,
+    ServerNotFound = 404,
+    InternalError = 500
 };
 
 #    ifndef DISABLE_HTTP
@@ -146,6 +146,10 @@ private:
             case ADVERTISE_STATUS::UNREGISTERED:
                 if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
                 {
+                    if (_lastAdvertiseTime == 0)
+                    {
+                        Console::WriteLine("Registering server on master server");
+                    }
                     SendRegistration(_forceIPv4);
                 }
                 break;
@@ -187,7 +191,7 @@ private:
         Http::DoAsync(request, [&](Http::Response response) -> void {
             if (response.status != Http::Status::Ok)
             {
-                Console::WriteLine("Unable to connect to master server");
+                Console::Error::WriteLine("Unable to connect to master server");
                 return;
             }
 
@@ -211,7 +215,7 @@ private:
         Http::DoAsync(request, [&](Http::Response response) -> void {
             if (response.status != Http::Status::Ok)
             {
-                Console::WriteLine("Unable to connect to master server");
+                Console::Error::WriteLine("Unable to connect to master server");
                 return;
             }
 
@@ -229,10 +233,11 @@ private:
     {
         Guard::Assert(jsonRoot.is_object(), "OnRegistrationResponse expects parameter jsonRoot to be object");
 
-        int32_t status = Json::GetNumber<int32_t>(jsonRoot["status"]);
+        auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::InternalError);
 
-        if (status == MASTER_SERVER_STATUS_OK)
+        if (status == MasterServerStatus::Ok)
         {
+            Console::WriteLine("Server successfully registered on master server");
             json_t jsonToken = jsonRoot["token"];
             if (jsonToken.is_string())
             {
@@ -247,15 +252,19 @@ private:
             {
                 message = "Invalid response from server";
             }
-            Console::Error::WriteLine("Unable to advertise (%d): %s", status, message.c_str());
+            Console::Error::WriteLine(
+                "Unable to advertise (%d): %s\n  * Check that you have port forwarded %uh\n  * Try setting "
+                "advertise_address in config.ini",
+                status, message.c_str(), _port);
+
             // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
             // Master server may not reply correctly if using IPv6, retry forcing IPv4,
             // don't wait the full timeout.
-            if (!_forceIPv4 && status == 500)
+            if (!_forceIPv4 && status == MasterServerStatus::InternalError)
             {
                 _forceIPv4 = true;
                 _lastAdvertiseTime = 0;
-                log_info("Retry with ipv4 only");
+                log_info("Forcing HTTP(S) over IPv4");
             }
         }
     }
@@ -268,15 +277,15 @@ private:
     {
         Guard::Assert(jsonRoot.is_object(), "OnHeartbeatResponse expects parameter jsonRoot to be object");
 
-        int32_t status = Json::GetNumber<int32_t>(jsonRoot["status"]);
-        if (status == MASTER_SERVER_STATUS_OK)
+        auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::InternalError);
+        if (status == MasterServerStatus::Ok)
         {
             // Master server has successfully updated our server status
         }
-        else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN)
+        else if (status == MasterServerStatus::InvalidToken)
         {
             _status = ADVERTISE_STATUS::UNREGISTERED;
-            Console::WriteLine("Master server heartbeat failed: Invalid Token");
+            Console::Error::WriteLine("Master server heartbeat failed: Invalid Token");
         }
     }
 

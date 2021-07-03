@@ -20,7 +20,7 @@
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
-static constexpr const LocationXY16 lengths[] = {
+static constexpr const CoordsXY lengths[] = {
     { 12, 26 },
     { 26, 12 },
     { 12, 26 },
@@ -38,46 +38,45 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         return;
     }
     const SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
-    LocationXYZ16 boxlength;
-    LocationXYZ16 boxoffset;
+    session->InteractionType = ViewportInteractionItem::Scenery;
+    CoordsXYZ boxlength;
+    CoordsXYZ boxoffset;
     boxoffset.x = 0;
     boxoffset.y = 0;
     boxoffset.z = height;
-    int32_t baseImageid = 0;
+    uint32_t marker = 0;
     const int32_t rotation = session->CurrentRotation;
     if (gTrackDesignSaveMode)
     {
         if (!track_design_save_contains_tile_element(tileElement))
         {
-            baseImageid = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
+            marker = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
         }
     }
     if (tileElement->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        baseImageid = CONSTRUCTION_MARKER;
+        session->InteractionType = ViewportInteractionItem::None;
+        marker = CONSTRUCTION_MARKER;
     }
-    uint32_t dword_F64EB0 = baseImageid;
 
-    rct_scenery_entry* entry = tileElement->AsSmallScenery()->GetEntry();
+    auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
 
-    if (entry == nullptr)
+    if (sceneryEntry == nullptr)
     {
         return;
     }
 
-    baseImageid = entry->image + direction;
+    int32_t baseImageid = sceneryEntry->image + direction;
     boxlength.x = 2;
     boxlength.y = 2;
     int8_t x_offset = 0;
     int8_t y_offset = 0;
-    if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_FULL_TILE))
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
     {
-        if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HALF_SPACE))
+        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HALF_SPACE))
         {
             // 6DFFE3:
-            static constexpr const LocationXY16 scenery_half_tile_offsets[] = {
+            static constexpr const CoordsXY scenery_half_tile_offsets[] = {
                 { 3, 3 },
                 { 3, 17 },
                 { 17, 3 },
@@ -94,13 +93,13 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         {
             x_offset = 15;
             y_offset = 15;
-            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
             {
                 x_offset = 3;
                 y_offset = 3;
                 boxlength.x = 26;
                 boxlength.y = 26;
-                if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_WALLS))
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS))
                 {
                     x_offset = 1;
                     y_offset = 1;
@@ -122,12 +121,12 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         boxoffset.y = y_offset;
     }
     // 6E007F:
-    boxlength.z = entry->small_scenery.height - 4;
+    boxlength.z = sceneryEntry->height - 4;
     if (boxlength.z > 128 || boxlength.z < 0)
     {
         boxlength.z = 128;
     }
-    if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_WITHER))
     {
         if (tileElement->AsSmallScenery()->GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_1)
         {
@@ -138,9 +137,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             baseImageid += 4;
         }
     }
-    if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
     {
-        if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
             baseImageid |= SPRITE_ID_PALETTE_COLOUR_2(sceneryElement->GetPrimaryColour(), sceneryElement->GetSecondaryColour());
         }
@@ -149,20 +148,20 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             baseImageid |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
         }
     }
-    if (dword_F64EB0 != 0)
+    if (marker != 0)
     {
-        baseImageid = (baseImageid & 0x7FFFF) | dword_F64EB0;
+        baseImageid = (baseImageid & 0x7FFFF) | marker;
     }
-    if (!(scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
+    if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
         PaintAddImageAsParent(
             session, baseImageid, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
             boxoffset.y, boxoffset.z);
     }
 
-    if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_GLASS))
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_GLASS))
     {
-        if (dword_F64EB0 == 0)
+        if (marker == 0)
         {
             // Draw translucent overlay:
             // TODO: Name palette entries
@@ -174,55 +173,55 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         }
     }
 
-    if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_ANIMATED))
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
     {
         rct_drawpixelinfo* dpi = &session->DPI;
-        if ((scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) || (dpi->zoom_level <= 1))
+        if ((scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) || (dpi->zoom_level <= 1))
         {
             // 6E01A9:
-            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1))
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1))
             {
                 // 6E0512:
-                int32_t image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 4;
-                if (dword_F64EB0 != 0)
+                int32_t image_id = ((gCurrentTicks / 2) & 0xF) + sceneryEntry->image + 4;
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
-            else if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4))
+            else if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4))
             {
                 // 6E043B:
-                int32_t image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 8;
-                if (dword_F64EB0 != 0)
+                int32_t image_id = ((gCurrentTicks / 2) & 0xF) + sceneryEntry->image + 8;
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
-                image_id = direction + entry->image + 4;
-                if (dword_F64EB0 != 0)
+                image_id = direction + sceneryEntry->image + 4;
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
-                image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 24;
-                if (dword_F64EB0 != 0)
+                image_id = ((gCurrentTicks / 2) & 0xF) + sceneryEntry->image + 24;
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
-            else if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_IS_CLOCK))
+            else if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_CLOCK))
             {
                 // 6E035C:
                 int32_t minuteImageOffset = ((gRealTimeOfDay.minute + 6) * 17) / 256;
@@ -242,10 +241,10 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                     image_id -= 48;
                 }
 
-                image_id = image_id + entry->image + 68;
-                if (dword_F64EB0 != 0)
+                image_id = image_id + sceneryEntry->image + 68;
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
@@ -256,57 +255,57 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id -= 60;
                 }
-                image_id = image_id + entry->image + 8;
-                if (dword_F64EB0 != 0)
+                image_id = image_id + sceneryEntry->image + 8;
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
-            else if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_SWAMP_GOO))
+            else if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_SWAMP_GOO))
             {
                 // 6E02F6:
                 int32_t image_id = gCurrentTicks;
                 image_id += session->SpritePosition.x / 4;
                 image_id += session->SpritePosition.y / 4;
                 image_id = (image_id / 4) & 15;
-                image_id += entry->image;
-                if (dword_F64EB0 != 0)
+                image_id += sceneryEntry->image;
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
-            else if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
+            else if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
             {
                 int32_t frame = gCurrentTicks;
-                if (!(scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_COG)))
+                if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_COG)))
                 {
                     // 6E01F8:
                     frame += ((session->SpritePosition.x / 4) + (session->SpritePosition.y / 4));
                     frame += tileElement->AsSmallScenery()->GetSceneryQuadrant() << 2;
                 }
                 // 6E0222:
-                uint16_t delay = entry->small_scenery.animation_delay & 0xFF;
+                uint16_t delay = sceneryEntry->animation_delay & 0xFF;
                 frame >>= delay;
-                frame &= entry->small_scenery.animation_mask;
+                frame &= sceneryEntry->animation_mask;
                 int32_t image_id = 0;
-                if (frame < entry->small_scenery.num_frames)
+                if (frame < sceneryEntry->num_frames)
                 {
-                    image_id = entry->small_scenery.frame_offsets[frame];
+                    image_id = sceneryEntry->frame_offsets[frame];
                 }
-                image_id = (image_id * 4) + direction + entry->image;
-                if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED | SMALL_SCENERY_FLAG17))
+                image_id = (image_id * 4) + direction + sceneryEntry->image;
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED | SMALL_SCENERY_FLAG17))
                 {
                     image_id += 4;
                 }
-                if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 {
-                    if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
                     {
                         image_id |= SPRITE_ID_PALETTE_COLOUR_2(
                             sceneryElement->GetPrimaryColour(), sceneryElement->GetSecondaryColour());
@@ -316,11 +315,11 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                         image_id |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
                     }
                 }
-                if (dword_F64EB0 != 0)
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
-                if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED))
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED))
                 {
                     PaintAddImageAsParent(
                         session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
@@ -338,7 +337,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     // 6E0556: Draw supports:
     if (sceneryElement->NeedsSupports())
     {
-        if (!(scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_SUPPORTS)))
+        if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_SUPPORTS)))
         {
             int32_t ax = 0;
             int32_t supportHeight = height;
@@ -348,13 +347,13 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 ax = 49;
             }
             uint32_t supportImageColourFlags = IMAGE_TYPE_REMAP;
-            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_PAINT_SUPPORTS))
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_PAINT_SUPPORTS))
             {
                 supportImageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
             }
-            if (dword_F64EB0 != 0)
+            if (marker != 0)
             {
-                supportImageColourFlags = dword_F64EB0;
+                supportImageColourFlags = marker;
             }
             if (direction & 1)
             {
@@ -367,23 +366,23 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         }
     }
     // 6E05D1:
-    height += entry->small_scenery.height;
+    height += sceneryEntry->height;
 
     paint_util_set_general_support_height(session, ceil2(height, 8), 0x20);
     // 6E05FF:
-    if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
     {
-        if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_FULL_TILE))
+        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
         {
             // 6E0825:
             paint_util_set_segment_support_height(session, SEGMENT_C4, height, 0x20);
-            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
             {
                 paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, height, 0x20);
             }
             return;
         }
-        if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
             // 6E075C:
             direction = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) % 4;
@@ -393,16 +392,16 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         }
         return;
     }
-    if (scenery_small_entry_has_flag(entry, (SMALL_SCENERY_FLAG27 | SMALL_SCENERY_FLAG_FULL_TILE)))
+    if (scenery_small_entry_has_flag(sceneryEntry, (SMALL_SCENERY_FLAG27 | SMALL_SCENERY_FLAG_FULL_TILE)))
     {
         paint_util_set_segment_support_height(session, SEGMENT_C4, 0xFFFF, 0);
-        if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
             paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
         }
         return;
     }
-    if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
     {
         direction = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) % 4;
         paint_util_set_segment_support_height(

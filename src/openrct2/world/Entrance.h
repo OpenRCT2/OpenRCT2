@@ -29,6 +29,11 @@ assert_struct_size(rct_entrance_type, 8);
 
 struct TileElement;
 
+enum
+{
+    ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY = (1 << 0),
+};
+
 constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;
 constexpr const uint8_t RideEntranceHeight = 7 * COORDS_Z_STEP;
 constexpr const uint8_t RideExitHeight = 5 * COORDS_Z_STEP;
@@ -36,7 +41,7 @@ constexpr const uint8_t RideExitHeight = 5 * COORDS_Z_STEP;
 extern bool gParkEntranceGhostExists;
 extern CoordsXYZD gParkEntranceGhostPosition;
 
-#define MAX_PARK_ENTRANCES 4
+#define MAX_PARK_ENTRANCES 256
 
 constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
 
@@ -56,5 +61,6 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance);
 void maze_entrance_hedge_removal(const CoordsXYE& entrance);
 
 void fix_park_entrance_locations();
+void UpdateParkEntranceLocations();
 
 #endif

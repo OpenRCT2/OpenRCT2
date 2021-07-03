@@ -14,7 +14,7 @@
 #include <openrct2/common.h>
 
 /*
- * Determines an aproximation of the number of depth peeling iterations needed
+ * Determines an approximation of the number of depth peeling iterations needed
  * to render the command batch. It will never underestimate the number of
  * iterations, but it can overestimate, usually by no more than +2.
  */

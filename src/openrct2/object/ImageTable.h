@@ -16,6 +16,7 @@
 #include <memory>
 #include <vector>
 
+struct Image;
 struct IReadObjectContext;
 namespace OpenRCT2
 {
@@ -32,11 +33,13 @@ private:
      * Container for a G1 image, additional information and RAII. Used by ReadJson
      */
     struct RequiredImage;
+    std::vector<std::pair<std::string, Image>> GetImageSources(IReadObjectContext* context, json_t& jsonImages);
     static std::vector<std::unique_ptr<ImageTable::RequiredImage>> ParseImages(IReadObjectContext* context, std::string s);
     /**
      * @note root is deliberately left non-const: json_t behaviour changes when const
      */
-    static std::vector<std::unique_ptr<ImageTable::RequiredImage>> ParseImages(IReadObjectContext* context, json_t& el);
+    static std::vector<std::unique_ptr<ImageTable::RequiredImage>> ParseImages(
+        IReadObjectContext* context, std::vector<std::pair<std::string, Image>>& imageSources, json_t& el);
     static std::vector<std::unique_ptr<ImageTable::RequiredImage>> LoadObjectImages(
         IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range);
     static std::vector<int32_t> ParseRange(std::string s);

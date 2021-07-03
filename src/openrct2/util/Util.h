@@ -57,13 +57,17 @@ bool str_is_null_or_empty(const char* str);
 uint32_t util_rand();
 
 std::optional<std::vector<uint8_t>> util_zlib_deflate(const uint8_t* data, size_t data_in_size);
-uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_size);
+uint8_t* util_zlib_inflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size);
 bool util_gzip_compress(FILE* source, FILE* dest);
+std::vector<uint8_t> Gzip(const void* data, size_t dataLen);
+std::vector<uint8_t> Ungzip(const void* data, size_t dataLen);
 
 int8_t add_clamp_int8_t(int8_t value, int8_t value_to_add);
 int16_t add_clamp_int16_t(int16_t value, int16_t value_to_add);
 int32_t add_clamp_int32_t(int32_t value, int32_t value_to_add);
+int64_t add_clamp_int64_t(int64_t value, int64_t value_to_add);
 money32 add_clamp_money32(money32 value, money32 value_to_add);
+money32 add_clamp_money64(money64 value, money64 value_to_add);
 
 uint8_t lerp(uint8_t a, uint8_t b, float t);
 float flerp(float a, float b, float t);

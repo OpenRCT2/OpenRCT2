@@ -22,7 +22,7 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
     SET_FIELD(CoveredTrackPieces, 0),
-    SET_FIELD(StartTrackPiece, FLAT_TRACK_ELEM_1_X_4_B),
+    SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack1x4B),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_swinging_inverter_ship),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 212, 2, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 35),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

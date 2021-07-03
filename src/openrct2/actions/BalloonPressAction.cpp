@@ -9,6 +9,8 @@
 
 #include "BalloonPressAction.h"
 
+#include "../world/Balloon.h"
+#include "../world/Entity.h"
 #include "GameAction.h"
 
 BalloonPressAction::BalloonPressAction(uint16_t spriteIndex)

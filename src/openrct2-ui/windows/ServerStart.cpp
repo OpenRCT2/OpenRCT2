@@ -319,20 +319,19 @@ static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    gfx_draw_string_left(
-        dpi, STR_PORT, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PORT_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_SERVER_NAME, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_NAME_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_DESCRIPTION_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_SERVER_GREETING, nullptr, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_GREETING_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_PASSWORD, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PASSWORD_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_MAXPLAYERS].top });
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PORT_INPUT].top }, STR_PORT, {}, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_NAME_INPUT].top }, STR_SERVER_NAME, {}, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_DESCRIPTION_INPUT].top }, STR_SERVER_DESCRIPTION, {},
+        { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_GREETING_INPUT].top }, STR_SERVER_GREETING, {},
+        { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PASSWORD_INPUT].top }, STR_PASSWORD, {}, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_MAXPLAYERS].top }, STR_MAX_PLAYERS, {}, { w->colours[1] });
 }
 
 #endif

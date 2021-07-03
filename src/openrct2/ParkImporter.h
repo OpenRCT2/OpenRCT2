@@ -12,6 +12,7 @@
 #include "common.h"
 #include "core/String.hpp"
 #include "object/Object.h"
+#include "object/ObjectList.h"
 
 #include <memory>
 #include <string>
@@ -19,6 +20,7 @@
 
 struct IObjectManager;
 struct IObjectRepository;
+
 namespace OpenRCT2
 {
     struct IStream;
@@ -29,9 +31,9 @@ struct scenario_index_entry;
 struct ParkLoadResult final
 {
 public:
-    std::vector<rct_object_entry> RequiredObjects;
+    ObjectList RequiredObjects;
 
-    explicit ParkLoadResult(std::vector<rct_object_entry>&& requiredObjects)
+    explicit ParkLoadResult(ObjectList&& requiredObjects)
         : RequiredObjects(std::move(requiredObjects))
     {
     }
@@ -60,6 +62,7 @@ namespace ParkImporter
     std::unique_ptr<IParkImporter> Create(const std::string& hintPath);
     std::unique_ptr<IParkImporter> CreateS4();
     std::unique_ptr<IParkImporter> CreateS6(IObjectRepository& objectRepository);
+    std::unique_ptr<IParkImporter> CreateParkFile(IObjectRepository& objectRepository);
 
     bool ExtensionIsRCT1(const std::string& extension);
     bool ExtensionIsScenario(const std::string& extension);
@@ -68,10 +71,10 @@ namespace ParkImporter
 class ObjectLoadException : public std::exception
 {
 public:
-    std::vector<rct_object_entry> const MissingObjects;
+    std::vector<ObjectEntryDescriptor> const MissingObjects;
 
-    explicit ObjectLoadException(std::vector<rct_object_entry>&& missingObjects)
-        : MissingObjects(missingObjects)
+    explicit ObjectLoadException(std::vector<ObjectEntryDescriptor>&& missingObjects)
+        : MissingObjects(std::move(missingObjects))
     {
     }
 };

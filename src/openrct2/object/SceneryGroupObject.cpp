@@ -66,6 +66,25 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
     gfx_draw_sprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 }, 0);
 }
 
+static std::optional<uint8_t> GetSceneryType(ObjectType type)
+{
+    switch (type)
+    {
+        case ObjectType::SmallScenery:
+            return SCENERY_TYPE_SMALL;
+        case ObjectType::LargeScenery:
+            return SCENERY_TYPE_LARGE;
+        case ObjectType::Walls:
+            return SCENERY_TYPE_WALL;
+        case ObjectType::Banners:
+            return SCENERY_TYPE_BANNER;
+        case ObjectType::PathBits:
+            return SCENERY_TYPE_PATH_ITEM;
+        default:
+            return std::nullopt;
+    }
+}
+
 void SceneryGroupObject::UpdateEntryIndexes()
 {
     auto context = GetContext();
@@ -84,7 +103,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
         auto entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
         Guard::Assert(entryIndex != OBJECT_ENTRY_INDEX_NULL, GUARD_LINE);
 
-        auto sceneryType = ori->ObjectEntry.GetSceneryType();
+        auto sceneryType = GetSceneryType(ori->Type);
         if (sceneryType != std::nullopt)
         {
             _legacyType.scenery_entries[_legacyType.entry_count] = { *sceneryType, entryIndex };
@@ -105,7 +124,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadItems(IStream* stream
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
         auto entry = stream->ReadValue<rct_object_entry>();
-        items.push_back(ObjectEntryDescriptor(entry));
+        items.emplace_back(entry);
     }
     return items;
 }
@@ -170,10 +189,14 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(json_t& j
 {
     std::vector<ObjectEntryDescriptor> entries;
 
-    for (auto& jEntry : jEntries)
+    for (const auto& jEntry : jEntries)
     {
-        auto entry = ObjectEntryDescriptor(Json::GetString(jEntry));
-        entries.push_back(entry);
+        entries.emplace_back(Json::GetString(jEntry));
     }
     return entries;
+}
+
+uint16_t SceneryGroupObject::GetNumIncludedObjects() const
+{
+    return static_cast<uint16_t>(_items.size());
 }

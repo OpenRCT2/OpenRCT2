@@ -23,7 +23,6 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 #include "../world/Surface.h"
 
 LandSmoothAction::LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
@@ -572,7 +571,7 @@ GameActions::Result::Ptr LandSmoothAction::SmoothLand(bool isExecuting) const
                 { 0, 1, 3, 2 }, // MAP_SELECT_TYPE_EDGE_2
                 { 1, 2, 0, 3 }, // MAP_SELECT_TYPE_EDGE_3
             };
-            // Big coordinate offsets for the neigbouring tile for the given edge selection
+            // Big coordinate offsets for the neighbouring tile for the given edge selection
             static constexpr CoordsXY stepOffsets[] = {
                 { -32, 0 },
                 { 0, 32 },

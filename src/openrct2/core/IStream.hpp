@@ -14,8 +14,10 @@
 #include "Memory.hpp"
 
 #include <istream>
+#include <memory>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
@@ -191,10 +193,10 @@ namespace OpenRCT2
             Write(&value);
         }
 
-        template<typename T> T* ReadArray(size_t count)
+        template<typename T> std::unique_ptr<T[]> ReadArray(size_t count)
         {
-            T* buffer = Memory::AllocateArray<T>(count);
-            Read(buffer, sizeof(T) * count);
+            auto buffer = std::make_unique<T[]>(count);
+            Read(buffer.get(), sizeof(T) * count);
             return buffer;
         }
 
@@ -206,6 +208,7 @@ namespace OpenRCT2
         utf8* ReadString();
         std::string ReadStdString();
         void WriteString(const utf8* str);
+        void WriteString(std::string_view string);
         void WriteString(const std::string& string);
     };
 

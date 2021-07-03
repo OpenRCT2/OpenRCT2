@@ -11,6 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../core/Console.hpp"
+#    include "../ride/Vehicle.h"
 #    include "../world/Map.h"
 
 #    include <cstdio>
@@ -29,7 +31,7 @@ namespace OpenRCT2::Scripting
 
     template<typename T> T AsOrDefault(const DukValue& value, const T& defaultValue = {}) = delete;
 
-    inline std::string AsOrDefault(const DukValue& value, const std::string_view& defaultValue)
+    inline std::string AsOrDefault(const DukValue& value, std::string_view defaultValue)
     {
         return value.type() == DukValue::STRING ? value.as_string() : std::string(defaultValue);
     }
@@ -48,6 +50,11 @@ namespace OpenRCT2::Scripting
     {
         return value.type() == DukValue::BOOLEAN ? value.as_bool() : defaultValue;
     }
+
+    enum class DukUndefined
+    {
+    };
+    constexpr DukUndefined undefined{};
 
     /**
      * Allows creation of an object on the duktape stack and setting properties on it before
@@ -80,6 +87,20 @@ namespace OpenRCT2::Scripting
             PopObjectIfExists();
         }
 
+        void Set(const char* name, std::nullptr_t)
+        {
+            EnsureObjectPushed();
+            duk_push_null(_ctx);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
+        void Set(const char* name, DukUndefined)
+        {
+            EnsureObjectPushed();
+            duk_push_undefined(_ctx);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
         void Set(const char* name, bool value)
         {
             EnsureObjectPushed();
@@ -101,11 +122,30 @@ namespace OpenRCT2::Scripting
             duk_put_prop_string(_ctx, _idx, name);
         }
 
-        void Set(const char* name, const std::string_view& value)
+        void Set(const char* name, int64_t value)
+        {
+            EnsureObjectPushed();
+            duk_push_number(_ctx, value);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
+        void Set(const char* name, uint64_t value)
+        {
+            EnsureObjectPushed();
+            duk_push_number(_ctx, value);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
+        void Set(const char* name, std::string_view value)
         {
             EnsureObjectPushed();
             duk_push_lstring(_ctx, value.data(), value.size());
             duk_put_prop_string(_ctx, _idx, name);
+        }
+
+        void Set(const char* name, const char* value)
+        {
+            Set(name, std::string_view(value));
         }
 
         void Set(const char* name, const DukValue& value)
@@ -176,7 +216,7 @@ namespace OpenRCT2::Scripting
             {
                 duk_set_top(_ctx, _top);
                 _ctx = {};
-                std::fprintf(stderr, "duktape stack was not returned to original state!");
+                Console::Error::WriteLine("duktape stack was not returned to original state!");
             }
             _ctx = {};
         }
@@ -214,7 +254,7 @@ namespace OpenRCT2::Scripting
             return it->second;
         }
 
-        T operator[](const std::string_view& k) const
+        T operator[](std::string_view k) const
         {
             auto it = _s2n.find(k);
             if (it == _s2n.end())
@@ -231,7 +271,7 @@ namespace OpenRCT2::Scripting
         return 1;
     }
 
-    inline std::optional<DukValue> DuktapeTryParseJson(duk_context* ctx, const std::string_view& json)
+    inline std::optional<DukValue> DuktapeTryParseJson(duk_context* ctx, std::string_view json)
     {
         duk_push_lstring(ctx, json.data(), json.size());
         if (duk_safe_call(ctx, duk_json_decode_wrapper, nullptr, 1, 1) == DUK_EXEC_SUCCESS)
@@ -257,15 +297,33 @@ namespace OpenRCT2::Scripting
         return DukValue::take_from_stack(ctx);
     }
 
+    template<> inline DukValue ToDuk(duk_context* ctx, const DukUndefined&)
+    {
+        duk_push_undefined(ctx);
+        return DukValue::take_from_stack(ctx);
+    }
+
     template<> inline DukValue ToDuk(duk_context* ctx, const bool& value)
     {
         duk_push_boolean(ctx, value);
         return DukValue::take_from_stack(ctx);
     }
 
+    template<> inline DukValue ToDuk(duk_context* ctx, const uint8_t& value)
+    {
+        duk_push_int(ctx, value);
+        return DukValue::take_from_stack(ctx);
+    }
+
     template<> inline DukValue ToDuk(duk_context* ctx, const int32_t& value)
     {
         duk_push_int(ctx, value);
+        return DukValue::take_from_stack(ctx);
+    }
+
+    template<> inline DukValue ToDuk(duk_context* ctx, const int64_t& value)
+    {
+        duk_push_number(ctx, value);
         return DukValue::take_from_stack(ctx);
     }
 
@@ -364,6 +422,14 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    template<> inline DukValue ToDuk(duk_context* ctx, const GForces& value)
+    {
+        DukObject dukGForces(ctx);
+        dukGForces.Set("lateralG", value.LateralG);
+        dukGForces.Set("verticalG", value.VerticalG);
+        return dukGForces.Take();
+    }
+
     template<> inline CoordsXYZD FromDuk(const DukValue& value)
     {
         CoordsXYZD result;
@@ -379,6 +445,27 @@ namespace OpenRCT2::Scripting
             result.setNull();
         }
         return result;
+    }
+
+    template<> inline DukValue ToDuk(duk_context* ctx, const ScreenSize& value)
+    {
+        DukObject dukCoords(ctx);
+        dukCoords.Set("width", value.width);
+        dukCoords.Set("height", value.height);
+        return dukCoords.Take();
+    }
+
+    template<> ObjectEntryIndex inline FromDuk(const DukValue& d)
+    {
+        if (d.type() == DukValue::Type::NUMBER)
+        {
+            auto value = d.as_int();
+            if (value >= 0 && value <= std::numeric_limits<ObjectEntryIndex>::max())
+            {
+                return static_cast<ObjectEntryIndex>(value);
+            }
+        }
+        return OBJECT_ENTRY_INDEX_NULL;
     }
 
 } // namespace OpenRCT2::Scripting

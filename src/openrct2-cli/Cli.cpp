@@ -15,7 +15,7 @@
 using namespace OpenRCT2;
 
 /**
- * Main entry point for non-Windows sytems. Windows instead uses its own DLL proxy.
+ * Main entry point for non-Windows systems. Windows instead uses its own DLL proxy.
  */
 int main(int argc, const char** argv)
 {

@@ -51,9 +51,27 @@ namespace OpenRCT2
     {
     }
 
-    MemoryStream::MemoryStream(MemoryStream&& mv) noexcept
+    MemoryStream::MemoryStream(std::vector<uint8_t>&& v)
     {
-        *this = std::move(mv);
+        _access = MEMORY_ACCESS::OWNER;
+        _dataCapacity = v.size();
+        _dataSize = v.size();
+        _data = Memory::Allocate<void>(v.size());
+        _position = _data;
+        std::memcpy(_data, v.data(), v.size());
+    }
+
+    MemoryStream::MemoryStream(MemoryStream&& mv) noexcept
+        : _access(mv._access)
+        , _dataCapacity(mv._dataCapacity)
+        , _dataSize(mv._dataSize)
+        , _data(mv._data)
+        , _position(mv._position)
+    {
+        mv._data = nullptr;
+        mv._position = nullptr;
+        mv._dataCapacity = 0;
+        mv._dataSize = 0;
     }
 
     MemoryStream::~MemoryStream()
@@ -69,15 +87,19 @@ namespace OpenRCT2
 
     MemoryStream& MemoryStream::operator=(MemoryStream&& mv) noexcept
     {
-        _access = mv._access;
-        _dataCapacity = mv._dataCapacity;
-        _data = mv._data;
-        _position = mv._position;
+        if (this != &mv)
+        {
+            _access = mv._access;
+            _dataCapacity = mv._dataCapacity;
+            _data = mv._data;
+            _dataSize = mv._dataSize;
+            _position = mv._position;
 
-        mv._data = nullptr;
-        mv._position = nullptr;
-        mv._dataCapacity = 0;
-        mv._dataSize = 0;
+            mv._data = nullptr;
+            mv._position = nullptr;
+            mv._dataCapacity = 0;
+            mv._dataSize = 0;
+        }
 
         return *this;
     }
@@ -238,6 +260,12 @@ namespace OpenRCT2
     void MemoryStream::Write16(const void* buffer)
     {
         Write<16>(buffer);
+    }
+
+    void MemoryStream::Clear()
+    {
+        _dataSize = 0;
+        SetPosition(0);
     }
 
     void MemoryStream::EnsureCapacity(size_t capacity)

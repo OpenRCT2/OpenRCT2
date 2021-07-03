@@ -96,7 +96,7 @@ static rct_window_event_list window_track_place_events([](auto& events)
 static std::vector<uint8_t> _window_track_place_mini_preview;
 static CoordsXY _windowTrackPlaceLast;
 
-static uint8_t _window_track_place_ride_index;
+static ride_id_t _window_track_place_ride_index;
 static bool _window_track_place_last_was_valid;
 static CoordsXYZ _windowTrackPlaceLastValid;
 static money32 _window_track_place_last_cost;
@@ -146,7 +146,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
     w->widgets = window_track_place_widgets;
     w->enabled_widgets = 1 << WIDX_CLOSE | 1 << WIDX_ROTATE | 1 << WIDX_MIRROR | 1 << WIDX_SELECT_DIFFERENT_DESIGN;
     WindowInitScrollWidgets(w);
-    tool_set(w, WIDX_PRICE, TOOL_CROSSHAIR);
+    tool_set(w, WIDX_PRICE, Tool::Crosshair);
     input_set_flag(INPUT_FLAG_6, true);
     window_push_others_right(w);
     show_gridlines();
@@ -233,7 +233,7 @@ static GameActions::Result::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, 
         tdAction.SetFlags(flags);
         res = GameActions::Query(&tdAction);
 
-        // If successful dont keep trying.
+        // If successful don't keep trying.
         // If failure due to no money then increasing height only makes problem worse
         if (res->Error == GameActions::Status::Ok || res->Error == GameActions::Status::InsufficientFunds)
         {
@@ -490,14 +490,15 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
         g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
         g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
         gfx_set_g1_element(SPR_TEMP, &g1temp);
-        gfx_draw_sprite(&clippedDpi, SPR_TEMP | SPRITE_ID_PALETTE_COLOUR_1(NOT_TRANSLUCENT(w->colours[0])), { 0, 0 }, 0);
+        drawing_engine_invalidate_image(SPR_TEMP);
+        gfx_draw_sprite(&clippedDpi, ImageId(SPR_TEMP, NOT_TRANSLUCENT(w->colours[0])), { 0, 0 });
     }
 
     // Price
     if (_window_track_place_last_cost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        gfx_draw_string_centred(
-            dpi, STR_COST_LABEL, w->windowPos + ScreenCoordsXY{ 88, 94 }, COLOUR_BLACK, &_window_track_place_last_cost);
+        money64 value = _window_track_place_last_cost;
+        DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, &value, { TextAlignment::CENTRE });
     }
 }
 
@@ -537,8 +538,6 @@ static void window_track_place_draw_mini_preview_track(
 {
     const uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 
-    const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
-                                                                                                          : FlatRideTrackBlocks;
     CoordsXY curTrackStart = origin;
     uint8_t curTrackRotation = rotation;
     for (const auto& trackElement : td6->track_elements)
@@ -550,7 +549,7 @@ static void window_track_place_draw_mini_preview_track(
         }
 
         // Follow a single track piece shape
-        const rct_preview_track* trackBlock = trackBlockArray[trackType];
+        const rct_preview_track* trackBlock = TrackBlocks[trackType];
         while (trackBlock->index != 255)
         {
             auto rotatedAndOffsetTrackBlock = curTrackStart + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(curTrackRotation);

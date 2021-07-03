@@ -18,11 +18,11 @@
 #include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 #include "../world/Surface.h"
 
-PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location)
+PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType)
     : _loc(location)
+    , _pathType(pathType)
 {
 }
 
@@ -36,6 +36,7 @@ void PlaceParkEntranceAction::Serialise(DataSerialiser& stream)
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_loc);
+    stream << DS_TAG(_pathType);
 }
 
 GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
@@ -50,14 +51,14 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
     res->Expenditure = ExpenditureType::LandPurchase;
     res->Position = { _loc.x, _loc.y, _loc.z };
 
-    if (!map_check_free_elements_and_reorganise(3))
+    if (!CheckMapCapacity(3))
     {
         return std::make_unique<GameActions::Result>(
             GameActions::Status::NoFreeElements, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
     }
 
-    if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32)
-        || _loc.y >= (gMapSizeUnits - 32))
+    if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (GetMapSizeUnits() - 32)
+        || _loc.y >= (GetMapSizeUnits() - 32))
     {
         return std::make_unique<GameActions::Result>(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
@@ -111,10 +112,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
 
     uint32_t flags = GetFlags();
 
-    CoordsXYZD parkEntrance;
-    parkEntrance = _loc;
-
-    gParkEntrances.push_back(parkEntrance);
+    gParkEntrances.push_back(_loc);
 
     auto zLow = _loc.z;
     auto zHigh = zLow + ParkEntranceHeight;
@@ -141,30 +139,26 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
             }
         }
 
-        TileElement* newElement = tile_element_insert(CoordsXYZ{ entranceLoc, zLow }, 0b1111);
-        Guard::Assert(newElement != nullptr);
-        newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
-        auto entranceElement = newElement->AsEntrance();
-        if (entranceElement == nullptr)
-        {
-            Guard::Assert(false);
-            return nullptr;
-        }
+        auto* entranceElement = TileElementInsert<EntranceElement>(CoordsXYZ{ entranceLoc, zLow }, 0b1111);
+        Guard::Assert(entranceElement != nullptr);
+
         entranceElement->SetClearanceZ(zHigh);
-
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            newElement->SetGhost(true);
-        }
-
+        entranceElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
         entranceElement->SetDirection(_loc.direction);
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
-        entranceElement->SetPathType(gFootpathSelectedId);
-
-        if (!(flags & GAME_COMMAND_FLAG_GHOST))
+        if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
         {
-            footpath_connect_edges(entranceLoc, newElement, GAME_COMMAND_FLAG_APPLY);
+            entranceElement->SetSurfaceEntryIndex(gFootpathSelection.NormalSurface);
+        }
+        else
+        {
+            entranceElement->SetPathEntryIndex(gFootpathSelection.LegacyPath);
+        }
+
+        if (!entranceElement->IsGhost())
+        {
+            footpath_connect_edges(entranceLoc, entranceElement->as<TileElement>(), GAME_COMMAND_FLAG_APPLY);
         }
 
         update_park_fences(entranceLoc);
@@ -173,7 +167,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
         update_park_fences({ entranceLoc.x, entranceLoc.y - COORDS_XY_STEP });
         update_park_fences({ entranceLoc.x, entranceLoc.y + COORDS_XY_STEP });
 
-        map_invalidate_tile({ entranceLoc, newElement->GetBaseZ(), newElement->GetClearanceZ() });
+        map_invalidate_tile({ entranceLoc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
 
         if (index == 0)
         {
@@ -182,4 +176,26 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
     }
 
     return res;
+}
+
+bool PlaceParkEntranceAction::CheckMapCapacity(int16_t numTiles) const
+{
+    CoordsXYZ entranceLoc = _loc;
+    for (uint8_t index = 0; index < 3; index++)
+    {
+        if (index == 1)
+        {
+            entranceLoc += CoordsDirectionDelta[(_loc.direction - 1) & 0x3];
+        }
+        else if (index == 2)
+        {
+            entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
+            entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
+        }
+        if (!MapCheckCapacityAndReorganise(entranceLoc, numTiles))
+        {
+            return false;
+        }
+    }
+    return true;
 }

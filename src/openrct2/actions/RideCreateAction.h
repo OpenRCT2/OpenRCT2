@@ -20,11 +20,11 @@ public:
     ride_id_t rideIndex = RIDE_ID_NULL;
 };
 
-DEFINE_GAME_ACTION(RideCreateAction, GAME_COMMAND_CREATE_RIDE, RideCreateGameActionResult)
+DEFINE_GAME_ACTION(RideCreateAction, GameCommand::CreateRide, RideCreateGameActionResult)
 {
 private:
-    int32_t _rideType{ RIDE_ID_NULL };
-    ObjectEntryIndex _subType{ RIDE_ENTRY_INDEX_NULL };
+    ObjectEntryIndex _rideType{ OBJECT_ENTRY_INDEX_NULL };
+    ObjectEntryIndex _subType{ OBJECT_ENTRY_INDEX_NULL };
     uint8_t _colour1{ 0xFF };
     uint8_t _colour2{ 0xFF };
 

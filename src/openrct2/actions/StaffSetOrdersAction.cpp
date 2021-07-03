@@ -15,6 +15,7 @@
 #include "../localisation/StringIds.h"
 #include "../peep/Staff.h"
 #include "../windows/Intent.h"
+#include "../world/Entity.h"
 
 StaffSetOrdersAction::StaffSetOrdersAction(uint16_t spriteIndex, uint8_t ordersId)
     : _spriteIndex(spriteIndex)
@@ -36,7 +37,7 @@ void StaffSetOrdersAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr StaffSetOrdersAction::Query() const
 {
-    if (_spriteIndex >= MAX_SPRITES)
+    if (_spriteIndex >= MAX_ENTITIES)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }

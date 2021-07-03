@@ -89,7 +89,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    if (GetEntityListCount(EntityListId::Free) < 400)
+    if (GetNumFreeEntities() < 400)
     {
         return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_PEOPLE_IN_GAME);
     }
@@ -114,21 +114,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         }
     }
 
-    // Look for a free slot in the staff modes.
-    int32_t staffIndex;
-    for (staffIndex = 0; staffIndex < STAFF_MAX_COUNT; ++staffIndex)
-    {
-        if (gStaffModes[staffIndex] == StaffMode::None)
-            break;
-    }
-
-    if (staffIndex == STAFF_MAX_COUNT)
-    {
-        // Too many staff members exist already.
-        return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_STAFF_IN_GAME);
-    }
-
-    Peep* newPeep = &(create_sprite(SpriteIdentifier::Peep)->peep);
+    Staff* newPeep = CreateEntity<Staff>();
     if (newPeep == nullptr)
     {
         // Too many peeps exist already.
@@ -142,22 +128,18 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
     }
     else
     {
-        newPeep->sprite_identifier = SpriteIdentifier::Peep;
         newPeep->WindowInvalidateFlags = 0;
-        newPeep->Action = PeepActionType::None2;
+        newPeep->Action = PeepActionType::Walking;
         newPeep->SpecialSprite = 0;
         newPeep->ActionSpriteImageOffset = 0;
         newPeep->WalkingFrameNum = 0;
         newPeep->ActionSpriteType = PeepActionSpriteType::None;
         newPeep->PathCheckOptimisation = 0;
-        newPeep->AssignedPeepType = PeepType::Staff;
-        newPeep->OutsideOfPark = false;
         newPeep->PeepFlags = 0;
-        newPeep->PaidToEnter = 0;
-        newPeep->PaidOnRides = 0;
-        newPeep->PaidOnFood = 0;
-        newPeep->PaidOnSouvenirs = 0;
-        newPeep->FavouriteRide = RIDE_ID_NULL;
+        newPeep->StaffLawnsMown = 0;
+        newPeep->StaffGardensWatered = 0;
+        newPeep->StaffLitterSwept = 0;
+        newPeep->StaffBinsEmptied = 0;
         newPeep->StaffOrders = _staffOrders;
 
         // We search for the first available Id for a given staff type
@@ -166,7 +148,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         {
             bool found = false;
             ++newStaffId;
-            for (auto searchPeep : EntityList<Staff>(EntityListId::Peep))
+            for (auto searchPeep : EntityList<Staff>())
             {
                 if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
                     continue;
@@ -211,7 +193,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         }
 
         // Staff uses this
-        newPeep->AsStaff()->SetHireDate(gDateMonthsElapsed);
+        newPeep->As<Staff>()->SetHireDate(gDateMonthsElapsed);
         newPeep->PathfindGoal.x = 0xFF;
         newPeep->PathfindGoal.y = 0xFF;
         newPeep->PathfindGoal.z = 0xFF;
@@ -226,14 +208,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->EnergyTarget = 0x60;
         newPeep->StaffMowingTimeout = 0;
 
-        newPeep->StaffId = staffIndex;
-
-        gStaffModes[staffIndex] = StaffMode::Walk;
-
-        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-        {
-            gStaffPatrolAreas[staffIndex * STAFF_PATROL_AREA_SIZE + i] = 0;
-        }
+        newPeep->PatrolInfo = nullptr;
 
         res->peepSriteIndex = newPeep->sprite_index;
     }
@@ -251,7 +226,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
 
     // Count number of walking guests
     {
-        for (auto guest : EntityList<Guest>(EntityListId::Peep))
+        for (auto guest : EntityList<Guest>())
         {
             if (guest->State == PeepState::Walking)
             {
@@ -270,7 +245,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
         uint32_t rand = scenario_rand_max(count);
         Guest* chosenGuest = nullptr;
 
-        for (auto guest : EntityList<Guest>(EntityListId::Peep))
+        for (auto guest : EntityList<Guest>())
         {
             if (guest->State == PeepState::Walking)
             {

@@ -46,6 +46,8 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 31;
+
 #    ifndef DISABLE_NETWORK
     class ScSocketBase;
 #    endif
@@ -117,6 +119,22 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    using IntervalHandle = int32_t;
+    struct ScriptInterval
+    {
+        std::shared_ptr<Plugin> Owner;
+        IntervalHandle Handle{};
+        uint32_t Delay{};
+        int64_t LastTimestamp{};
+        DukValue Callback;
+        bool Repeat{};
+
+        bool IsValid() const
+        {
+            return Handle != 0;
+        }
+    };
+
     class ScriptEngine
     {
     private:
@@ -132,6 +150,9 @@ namespace OpenRCT2::Scripting
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;
         DukValue _sharedStorage;
+
+        uint32_t _lastIntervalTimestamp{};
+        std::vector<ScriptInterval> _intervals;
 
         std::unique_ptr<FileWatcher> _pluginFileWatcher;
         std::unordered_set<std::string> _changedPluginFiles;
@@ -183,25 +204,30 @@ namespace OpenRCT2::Scripting
         DukValue ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args,
             bool isGameStateMutable);
+        DukValue ExecutePluginCall(
+            const std::shared_ptr<Plugin>& plugin, const DukValue& func, const DukValue& thisValue,
+            const std::vector<DukValue>& args, bool isGameStateMutable);
 
-        void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const std::string_view& message);
+        void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message);
 
         void SubscribeToPluginStoppedEvent(std::function<void(std::shared_ptr<Plugin>)> callback)
         {
             _pluginStoppedSubscriptions.push_back(callback);
         }
 
-        void AddNetworkPlugin(const std::string_view& code);
+        void AddNetworkPlugin(std::string_view code);
 
         std::unique_ptr<GameActions::Result> QueryOrExecuteCustomGameAction(
-            const std::string_view& id, const std::string_view& args, bool isExecute);
+            std::string_view id, std::string_view args, bool isExecute);
         bool RegisterCustomAction(
-            const std::shared_ptr<Plugin>& plugin, const std::string_view& action, const DukValue& query,
-            const DukValue& execute);
+            const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActions::Result>& result, bool isExecute);
         std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
 
         void SaveSharedStorage();
+
+        IntervalHandle AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback);
+        void RemoveInterval(const std::shared_ptr<Plugin>& plugin, IntervalHandle handle);
 
 #    ifndef DISABLE_NETWORK
         void AddSocket(const std::shared_ptr<ScSocketBase>& socket);
@@ -223,10 +249,14 @@ namespace OpenRCT2::Scripting
         std::unique_ptr<GameActions::Result> DukToGameActionResult(const DukValue& d);
         DukValue GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActions::Result>& result);
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
-        static ExpenditureType StringToExpenditureType(const std::string_view& expenditureType);
+        static ExpenditureType StringToExpenditureType(std::string_view expenditureType);
 
         void InitSharedStorage();
         void LoadSharedStorage();
+
+        IntervalHandle AllocateHandle();
+        void UpdateIntervals();
+        void RemoveIntervals(const std::shared_ptr<Plugin>& plugin);
 
         void UpdateSockets();
         void RemoveSockets(const std::shared_ptr<Plugin>& plugin);

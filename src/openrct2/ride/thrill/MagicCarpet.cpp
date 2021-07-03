@@ -10,9 +10,10 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 enum
 {
@@ -185,8 +186,8 @@ static void paint_magic_carpet_structure(
     uint32_t swingImageId = 0;
     if (vehicle != nullptr)
     {
-        swingImageId = vehicle->vehicle_sprite_type;
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        swingImageId = vehicle->Pitch;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 
@@ -208,7 +209,7 @@ static void paint_magic_carpet_structure(
     paint_magic_carpet_pendulum(session, PLANE_FRONT, swingImageId, direction, offset, bbOffset, bbSize);
     paint_magic_carpet_frame(session, PLANE_FRONT, direction, offset, bbOffset, bbSize);
 
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
     session->CurrentlyDrawnItem = savedTileElement;
 }
 
@@ -276,7 +277,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int32_t trackType)
 {
     switch (trackType)
     {
-        case FLAT_TRACK_ELEM_1_X_4_A:
+        case TrackElemType::FlatTrack1x4A:
             return paint_magic_carpet;
     }
     return nullptr;

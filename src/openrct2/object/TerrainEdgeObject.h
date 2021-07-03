@@ -21,14 +21,11 @@ public:
     uint32_t NumImagesLoaded{};
     bool HasDoors{};
 
-    explicit TerrainEdgeObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;
 
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+
+    static TerrainEdgeObject* GetById(ObjectEntryIndex entryIndex);
 };

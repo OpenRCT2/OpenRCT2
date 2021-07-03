@@ -220,7 +220,7 @@ static void window_save_prompt_mouseup(rct_window* w, rct_widgetindex widgetInde
                 {
                     intent = new Intent(WC_LOADSAVE);
                     intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                    intent->putExtra(INTENT_EXTRA_PATH, std::string{ gS6Info.name });
+                    intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
                 }
                 else
                 {

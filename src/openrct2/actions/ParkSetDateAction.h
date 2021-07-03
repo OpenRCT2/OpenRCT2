@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetDateAction, GAME_COMMAND_SET_DATE, GameActions::Result)
+DEFINE_GAME_ACTION(ParkSetDateAction, GameCommand::SetDate, GameActions::Result)
 {
 private:
     int32_t _year{};
@@ -21,6 +21,8 @@ private:
 public:
     ParkSetDateAction() = default;
     ParkSetDateAction(int32_t year, int32_t month, int32_t day);
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
     uint16_t GetActionFlags() const override;
 

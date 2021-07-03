@@ -82,7 +82,7 @@ public:
             item.Name = GetNameFromTrackPath(path);
             item.Path = path;
             item.RideType = td6->type;
-            item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
+            item.ObjectEntry = std::string(td6->vehicle_object.Entry.name, 8);
             item.Flags = 0;
             if (IsTrackReadOnly(path))
             {
@@ -155,7 +155,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObjectLegacy(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                     entryIsNotSeparate = true;
             }
 
@@ -189,7 +189,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObjectLegacy(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                     entryIsNotSeparate = true;
             }
 
@@ -271,7 +271,7 @@ public:
             auto td = _fileIndex.Create(language, newPath);
             if (std::get<0>(td))
             {
-                _items.push_back(std::get<1>(td));
+                _items.push_back(std::move(std::get<1>(td)));
                 SortItems();
                 result = path;
             }

@@ -14,8 +14,9 @@
 #include "../object/Object.h"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
-#include "../ride/Vehicle.h"
+#include "../ride/VehicleColour.h"
 
+#include <tuple>
 #include <vector>
 
 constexpr const uint8_t RCT2_MAX_STAFF = 200;
@@ -54,6 +55,8 @@ constexpr const uint8_t RCT2_RIDE_TYPE_COUNT = 91;
 
 constexpr const rct_string_id RCT2_RIDE_STRING_START = 2;
 
+constexpr const uint16_t RCT2_MAXIMUM_MAP_SIZE_TECHNICAL = 256;
+
 // clang-format off
 constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
     RCT2_MAX_RIDE_OBJECTS +
@@ -86,18 +89,9 @@ constexpr const int32_t rct2_object_entry_group_counts[] = {
 };
 // clang-format on
 
-struct rct2_install_info
-{
-    uint32_t installLevel;
-    char title[260];
-    char path[260];
-    uint32_t var_20C;
-    uint8_t pad_210[256];
-    char expansionPackNames[16][128];
-    uint32_t activeExpansionPacks; // 0xB10
-};
-
 #pragma pack(push, 1)
+
+struct rct_ride_entry;
 
 /**
  * Ride structure.
@@ -460,8 +454,8 @@ assert_struct_size(rct_scores_entry, 0x02B0);
 
 struct RCT2SpriteVehicle : RCT12SpriteBase
 {
-    uint8_t vehicle_sprite_type; // 0x1F
-    uint8_t bank_rotation;       // 0x20
+    uint8_t Pitch;         // 0x1F
+    uint8_t bank_rotation; // 0x20
     uint8_t pad_21[3];
     int32_t remaining_distance; // 0x24
     int32_t velocity;           // 0x28
@@ -480,9 +474,8 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     };
     union
     {
-        int16_t track_direction; // 0x36
-        int16_t track_type;      // 0x36
-        RCT12xy8 boat_location;  // 0x36
+        int16_t TrackTypeAndDirection; // 0x36
+        RCT12xy8 boat_location;        // 0x36
     };
     uint16_t track_x;               // 0x38
     uint16_t track_y;               // 0x3A
@@ -569,6 +562,27 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     uint8_t colours_extended;     // 0xD7
     uint8_t seat_rotation;        // 0xD8
     uint8_t target_seat_rotation; // 0xD9
+
+    uint16_t GetTrackType() const
+    {
+        return TrackTypeAndDirection >> 2;
+    }
+    uint8_t GetTrackDirection() const
+    {
+        return TrackTypeAndDirection & RCT12VehicleTrackDirectionMask;
+    }
+    void SetTrackType(uint16_t trackType)
+    {
+        // set the upper 14 bits to 0
+        TrackTypeAndDirection &= ~RCT12VehicleTrackTypeMask;
+        TrackTypeAndDirection |= trackType << 2;
+    }
+    void SetTrackDirection(uint8_t trackDirection)
+    {
+        // set the lower 2 bits only
+        TrackTypeAndDirection &= ~RCT12VehicleTrackDirectionMask;
+        TrackTypeAndDirection |= trackDirection & RCT12VehicleTrackDirectionMask;
+    }
 };
 assert_struct_size(RCT2SpriteVehicle, 0xDA);
 
@@ -750,6 +764,7 @@ public:
     RCT12SpriteCrashedVehicleParticle crashed_vehicle_particle;
     RCT12SpriteCrashSplash crash_splash;
     RCT12SpriteSteamParticle steam_particle;
+    RCT12SpriteParticle misc_particle;
 };
 assert_struct_size(RCT2Sprite, 0x100);
 
@@ -777,5 +792,26 @@ assert_struct_size(RCT2RideRatingCalculationData, 76);
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);
 ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
+bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType);
 bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
 uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
+track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
+RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType);
+
+/**
+ * Iterates an RCT2 string buffer and returns the length of the string in bytes.
+ * Handles single and multi-byte strings.
+ */
+size_t GetRCT2StringBufferLen(const char* buffer, size_t maxBufferLen);
+
+struct FootpathMapping
+{
+    std::string_view Original;
+    std::string_view NormalSurface;
+    std::string_view QueueSurface;
+    std::string_view Railing;
+};
+
+const FootpathMapping* GetFootpathSurfaceId(
+    const ObjectEntryDescriptor& desc, bool ideallyLoaded = false, bool isQueue = false);
+std::optional<rct_object_entry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings);

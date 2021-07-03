@@ -133,7 +133,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Execute() const
 
 rct_string_id WaterSetHeightAction::CheckParameters() const
 {
-    if (_coords.x > gMapSizeMaxXY || _coords.y > gMapSizeMaxXY)
+    if (_coords.x > GetMapSizeMaxXY() || _coords.y > GetMapSizeMaxXY())
     {
         return STR_OFF_EDGE_OF_MAP;
     }

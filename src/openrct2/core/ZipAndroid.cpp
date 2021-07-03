@@ -11,10 +11,13 @@
 
 #    include "../platform/platform.h"
 #    include "IStream.hpp"
+#    include "MemoryStream.h"
 #    include "Zip.h"
 
 #    include <SDL.h>
 #    include <jni.h>
+
+using namespace OpenRCT2;
 
 class ZipArchive final : public IZipArchive
 {
@@ -22,7 +25,7 @@ private:
     jobject _zip;
 
 public:
-    ZipArchive(const std::string_view& path, ZIP_ACCESS access)
+    ZipArchive(std::string_view path, ZIP_ACCESS access)
     {
         // retrieve the JNI environment.
         JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
@@ -94,7 +97,7 @@ public:
         return (size_t)env->CallLongMethod(_zip, fileSizeMethod, (jint)index);
     }
 
-    std::vector<uint8_t> GetFileData(const std::string_view& path) const override
+    std::vector<uint8_t> GetFileData(std::string_view path) const override
     {
         // retrieve the JNI environment.
         JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
@@ -113,17 +116,23 @@ public:
         return std::vector<uint8_t>(dataPtr, dataPtr + dataSize);
     }
 
-    void SetFileData(const std::string_view& path, std::vector<uint8_t>&& data) override
+    std::unique_ptr<IStream> GetFileStream(std::string_view path) const override
+    {
+        auto data = GetFileData(path);
+        return std::make_unique<MemoryStream>(std::move(data));
+    }
+
+    void SetFileData(std::string_view path, std::vector<uint8_t>&& data) override
     {
         STUB();
     }
 
-    void DeleteFile(const std::string_view&) override
+    void DeleteFile(std::string_view) override
     {
         STUB();
     }
 
-    void RenameFile(const std::string_view&, const std::string_view&) override
+    void RenameFile(std::string_view, std::string_view) override
     {
         STUB();
     }
@@ -131,12 +140,12 @@ public:
 
 namespace Zip
 {
-    std::unique_ptr<IZipArchive> Open(const std::string_view& path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS access)
     {
         return std::make_unique<ZipArchive>(path, access);
     }
 
-    std::unique_ptr<IZipArchive> TryOpen(const std::string_view& path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS access)
     {
         std::unique_ptr<IZipArchive> result;
         try

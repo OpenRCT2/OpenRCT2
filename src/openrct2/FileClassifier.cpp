@@ -17,6 +17,7 @@
 #include "scenario/Scenario.h"
 #include "util/SawyerCoding.h"
 
+static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
@@ -41,6 +42,12 @@ bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
     //      between them is to decode it. Decoding however is currently not protected
     //      against invalid compression data for that decoding algorithm and will crash.
 
+    // Park detection
+    if (TryClassifyAsPark(stream, result))
+    {
+        return true;
+    }
+
     // S6 detection
     if (TryClassifyAsS6(stream, result))
     {
@@ -60,6 +67,29 @@ bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
     }
 
     return false;
+}
+
+static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
+{
+    bool success = false;
+    uint64_t originalPosition = stream->GetPosition();
+    try
+    {
+        auto magic = stream->ReadValue<uint32_t>();
+        if (magic == 0x4B524150)
+        {
+            result->Type = FILE_TYPE::PARK;
+            result->Version = 0;
+            success = true;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        success = false;
+        log_verbose(e.what());
+    }
+    stream->SetPosition(originalPosition);
+    return success;
 }
 
 static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
@@ -97,8 +127,7 @@ static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
     try
     {
         size_t dataLength = static_cast<size_t>(stream->GetLength());
-        auto deleter_lambda = [dataLength](uint8_t* ptr) { Memory::FreeArray(ptr, dataLength); };
-        std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
+        auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
         int32_t fileTypeVersion = sawyercoding_detect_file_type(data.get(), dataLength);
 
@@ -134,8 +163,8 @@ static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* 
     try
     {
         size_t dataLength = static_cast<size_t>(stream->GetLength());
-        auto deleter_lambda = [dataLength](uint8_t* ptr) { Memory::FreeArray(ptr, dataLength); };
-        std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
+
+        auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
 
         if (sawyercoding_validate_track_checksum(data.get(), dataLength))
@@ -184,5 +213,7 @@ uint32_t get_file_extension_type(const utf8* path)
         return FILE_EXTENSION_SV6;
     if (String::Equals(extension, ".td6", true))
         return FILE_EXTENSION_TD6;
+    if (String::Equals(extension, ".park", true))
+        return FILE_EXTENSION_PARK;
     return FILE_EXTENSION_UNKNOWN;
 }

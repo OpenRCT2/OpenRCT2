@@ -45,7 +45,7 @@ void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader& shader, GLuint 
     glClearBufferfv(GL_DEPTH, 0, depthValueTransparent);
 
     _opaqueFramebuffer.SwapColourBuffer(_mixFramebuffer);
-    // Change binding to guaruntee no undefined behavior
+    // Change binding to guarantee no undefined behavior
     _opaqueFramebuffer.Bind();
 }
 

@@ -25,7 +25,7 @@ static constexpr const int32_t WH = 94;
 static constexpr const int32_t WW = 98;
 
 // clang-format off
-enum WINDOW_WATER_WIDGET_IDX {
+enum WINDOW_LAND_RIGHTS_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -106,7 +106,7 @@ rct_window* window_land_rights_open()
     gLandToolSize = 1;
 
     show_gridlines();
-    tool_set(window, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
+    tool_set(window, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
     input_set_flag(INPUT_FLAG_6, true);
 
     show_land_rights();
@@ -144,7 +144,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_BUY_LAND_RIGHTS:
             if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
             {
-                tool_set(w, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
+                tool_set(w, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
                 _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
                 show_land_rights();
                 w->Invalidate();
@@ -153,7 +153,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_BUY_CONSTRUCTION_RIGHTS:
             if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
             {
-                tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, TOOL_UP_ARROW);
+                tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
                 _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
                 show_construction_rights();
                 w->Invalidate();
@@ -262,8 +262,8 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize, { TextAlignment::CENTRE });
     }
 
     // Draw cost amount
@@ -271,7 +271,7 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + w->windowPos.x,
                          window_land_rights_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 32 };
-        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, &_landRightsCost);
+        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &_landRightsCost, { TextAlignment::CENTRE });
     }
 }
 

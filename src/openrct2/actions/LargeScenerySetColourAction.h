@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LargeScenerySetColourAction, GAME_COMMAND_SET_LARGE_SCENERY_COLOUR, GameActions::Result)
+DEFINE_GAME_ACTION(LargeScenerySetColourAction, GameCommand::SetLargeSceneryColour, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;

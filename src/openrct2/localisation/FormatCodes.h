@@ -70,12 +70,12 @@ enum class FormatToken
     FontTiny,
     FontSmall,
     FontMedium,
-    FontBig,
 
     OutlineEnable,
     OutlineDisable,
 };
 
+std::string_view GetFormatTokenStringWithBraces(FormatToken token);
 FormatToken FormatTokenFromString(std::string_view token);
 std::string_view FormatTokenToString(FormatToken token, bool withBraces = false);
 bool FormatTokenTakesArgument(FormatToken token);

@@ -146,21 +146,18 @@ private:
             td->ride_mode = RideMode::PoweredLaunch;
         }
 
-        // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces.
-        rct_object_entry vehicleObject = { 0x80, "        " };
+        // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
+        std::string_view vehicleObject;
         if (td4Base.type == RIDE_TYPE_MAZE)
         {
-            const char* vehObjName = RCT1::GetRideTypeObject(td4Base.type);
-            assert(vehObjName != nullptr);
-            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
+            vehicleObject = RCT1::GetRideTypeObject(td4Base.type);
         }
         else
         {
-            const char* vehObjName = RCT1::GetVehicleObject(td4Base.vehicle_type);
-            assert(vehObjName != nullptr);
-            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
+            vehicleObject = RCT1::GetVehicleObject(td4Base.vehicle_type);
         }
-        std::memcpy(&td->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
+        assert(!vehicleObject.empty());
+        td->vehicle_object = ObjectEntryDescriptor(vehicleObject);
         td->vehicle_type = td4Base.vehicle_type;
 
         td->flags = td4Base.flags;
@@ -212,7 +209,7 @@ private:
             }
         }
         // Set remaining vehicles to same colour as first vehicle
-        for (int32_t i = RCT1_MAX_TRAINS_PER_RIDE; i <= MAX_VEHICLES_PER_RIDE; i++)
+        for (size_t i = RCT1_MAX_TRAINS_PER_RIDE; i < std::size(td->vehicle_colours); i++)
         {
             td->vehicle_colours[i] = td->vehicle_colours[0];
             td->vehicle_additional_colour[i] = td->vehicle_additional_colour[0];
@@ -223,7 +220,7 @@ private:
         td->number_of_cars_per_train = td4Base.number_of_cars_per_train;
         td->min_waiting_time = td4Base.min_waiting_time;
         td->max_waiting_time = td4Base.max_waiting_time;
-        td->operation_setting = std::min(td4Base.operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
+        td->operation_setting = std::min(td4Base.operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
         td->max_speed = td4Base.max_speed;
         td->average_speed = td4Base.average_speed;
         td->ride_length = td4Base.ride_length;
@@ -250,7 +247,7 @@ private:
         td->space_required_y = 255;
         td->lift_hill_speed = 5;
         td->num_circuits = 0;
-        td->operation_setting = std::min(td->operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
+        td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
         if (td->type == RIDE_TYPE_MAZE)
         {
@@ -278,7 +275,7 @@ private:
                 _stream.SetPosition(_stream.GetPosition() - 1);
                 _stream.Read(&t4TrackElement, sizeof(rct_td46_track_element));
                 TrackDesignTrackElement trackElement{};
-                trackElement.type = t4TrackElement.type;
+                trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.type, td->type);
                 trackElement.flags = t4TrackElement.flags;
                 td->track_elements.push_back(trackElement);
             }

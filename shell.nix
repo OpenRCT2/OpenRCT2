@@ -15,8 +15,8 @@ let
   objects-src = pkgs.fetchFromGitHub {
     owner = "OpenRCT2";
     repo = "objects";
-    rev = "v1.0.20";
-    sha256 = "bc266ef589c60302105473499ac142dbf951847be15e65b692d165ce261aeae0";
+    rev = "v1.2.1";
+    sha256 = "ebd0578c20fc8aed2f4093d1d99b1857a69fc9536ebe21e56dd66bb751cca998";
   };
 
   title-sequences-src = pkgs.fetchFromGitHub {

@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -137,10 +137,13 @@ namespace OpenRCT2
         virtual bool Initialise() abstract;
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
-        virtual bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail = false) abstract;
+        virtual bool LoadParkFromFile(
+            const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
         virtual bool LoadParkFromStream(
-            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false) abstract;
+            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
+            bool asScenario = false) abstract;
         virtual void WriteLine(const std::string& s) abstract;
+        virtual void WriteErrorLine(const std::string& s) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
 
@@ -150,6 +153,9 @@ namespace OpenRCT2
          * This is deprecated, use IPlatformEnvironment.
          */
         virtual std::string GetPathLegacy(int32_t pathId) abstract;
+
+        virtual void SetTimeScale(float newScale) abstract;
+        virtual float GetTimeScale() const abstract;
     };
 
     std::unique_ptr<IContext> CreateContext();
@@ -170,6 +176,9 @@ enum
     // The maximum threshold to advance.
     GAME_UPDATE_MAX_THRESHOLD = GAME_UPDATE_TIME_MS * GAME_MAX_UPDATES,
 };
+
+constexpr float GAME_MIN_TIME_SCALE = 0.1f;
+constexpr float GAME_MAX_TIME_SCALE = 5.0f;
 
 /**
  * Legacy get_file_path IDs.

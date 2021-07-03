@@ -1,7 +1,4 @@
-#! /bin/bash
-
-set -e
-set -x
+#!/bin/bash -ex
 
 # use RAM disk if possible
 if [ "$CI" == "" ] && [ -d /dev/shm ]; then
@@ -18,7 +15,7 @@ cleanup () {
     fi
 }
 
-[ "$NO_CLEANUP" == "" ] && trap cleanup EXIT
+if [ "$NO_CLEANUP" == "" ] && trap cleanup EXIT
 
 # store repo root as variable
 REPO_ROOT=$(readlink -f $(dirname "$0")/../..)

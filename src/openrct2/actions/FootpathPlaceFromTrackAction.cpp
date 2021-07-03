@@ -22,11 +22,14 @@
 #include "../world/Wall.h"
 
 FootpathPlaceFromTrackAction::FootpathPlaceFromTrackAction(
-    const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges)
+    const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
+    PathConstructFlags constructFlags)
     : _loc(loc)
     , _slope(slope)
     , _type(type)
+    , _railingsType(railingsType)
     , _edges(edges)
+    , _constructFlags(constructFlags)
 {
 }
 
@@ -34,7 +37,8 @@ void FootpathPlaceFromTrackAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_edges);
+    stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_railingsType) << DS_TAG(_edges)
+           << DS_TAG(_constructFlags);
 }
 
 uint16_t FootpathPlaceFromTrackAction::GetActionFlags() const
@@ -100,7 +104,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
 {
     bool entrancePath = false, entranceIsSamePath = false;
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         return MakeResult(GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
     }
@@ -122,16 +126,16 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->GetPathType() == (_type & 0xF))
+        if (entranceElement->GetSurfaceEntryIndex() == _type)
             entranceIsSamePath = true;
         else
             res->Cost -= MONEY(6, 00);
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
-    uint8_t crossingMode = (_type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (_slope != TILE_ELEMENT_SLOPE_FLAT)
-        ? CREATE_CROSSING_MODE_NONE
-        : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
+    uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
+                                                                          : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath
         && !map_can_construct_with_clear_at(
             { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
@@ -189,16 +193,16 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->GetPathType() == (_type & 0xF))
+        if (entranceElement->GetSurfaceEntryIndex() == _type)
             entranceIsSamePath = true;
         else
             res->Cost -= MONEY(6, 00);
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
-    uint8_t crossingMode = (_type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (_slope != TILE_ELEMENT_SLOPE_FLAT)
-        ? CREATE_CROSSING_MODE_NONE
-        : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
+    uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
+                                                                          : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath
         && !map_can_construct_with_clear_at(
             { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
@@ -223,38 +227,43 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     {
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
         {
-            // Set the path type but make sure it's not a queue as that will not show up
-            entranceElement->SetPathType(_type & 0x7F);
+            if (_constructFlags & PathConstructFlag::IsPathObject)
+            {
+                entranceElement->SetPathEntryIndex(_type);
+            }
+            else
+            {
+                entranceElement->SetSurfaceEntryIndex(_type);
+            }
             map_invalidate_tile_full(_loc);
         }
     }
     else
     {
-        auto tileElement = tile_element_insert(_loc, 0b1111);
-        assert(tileElement != nullptr);
-        tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
-        PathElement* pathElement = tileElement->AsPath();
+        auto* pathElement = TileElementInsert<PathElement>(_loc, 0b1111);
+        Guard::Assert(pathElement != nullptr);
+
         pathElement->SetClearanceZ(zHigh);
-        pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
+        if (_constructFlags & PathConstructFlag::IsPathObject)
+        {
+            pathElement->SetPathEntryIndex(_type);
+        }
+        else
+        {
+            pathElement->SetSurfaceEntryIndex(_type);
+            pathElement->SetRailingEntryIndex(_railingsType);
+        }
         pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
-        if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
-        {
-            pathElement->SetSloped(true);
-        }
-        if (_type & FOOTPATH_ELEMENT_INSERT_QUEUE)
-        {
-            pathElement->SetIsQueue(true);
-        }
+        pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
+        pathElement->SetIsQueue(isQueue);
         pathElement->SetAddition(0);
         pathElement->SetRideIndex(RIDE_ID_NULL);
         pathElement->SetAdditionStatus(255);
         pathElement->SetIsBroken(false);
         pathElement->SetEdges(_edges);
         pathElement->SetCorners(0);
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        {
-            pathElement->SetGhost(true);
-        }
+        pathElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+
         map_invalidate_tile_full(_loc);
     }
 

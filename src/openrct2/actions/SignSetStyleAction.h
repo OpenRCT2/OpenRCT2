@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SignSetStyleAction, GAME_COMMAND_SET_SIGN_STYLE, GameActions::Result)
+DEFINE_GAME_ACTION(SignSetStyleAction, GameCommand::SetSignStyle, GameActions::Result)
 {
 private:
     BannerIndex _bannerIndex{ BANNER_INDEX_NULL };

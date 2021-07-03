@@ -53,5 +53,5 @@ enum
     MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
 };
 
-bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags);
-rct_scenery_entry* get_small_scenery_entry(ObjectEntryIndex entryIndex);
+bool scenery_small_entry_has_flag(const SmallSceneryEntry* sceneryEntry, uint32_t flags);
+SmallSceneryEntry* get_small_scenery_entry(ObjectEntryIndex entryIndex);

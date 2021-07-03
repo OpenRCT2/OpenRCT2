@@ -13,7 +13,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/world/Footpath.h>
-#include <openrct2/world/Sprite.h>
 
 // clang-format off
 static rct_widget window_main_widgets[] = {
@@ -48,7 +47,7 @@ rct_window* window_main_open()
     gShowGridLinesRefCount = 0;
     gShowLandRightsRefCount = 0;
     gShowConstuctionRightsRefCount = 0;
-    gFootpathSelectedType = 0;
+    window_footpath_reset_selected_path();
 
     return window;
 }

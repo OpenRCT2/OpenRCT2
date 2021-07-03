@@ -43,27 +43,28 @@ enum
     LANGUAGE_FINNISH,
     LANGUAGE_SWEDISH,
     LANGUAGE_TURKISH,
+    LANGUAGE_VIETNAMESE,
     LANGUAGE_COUNT
 };
 
-enum RCT2LanguageId
+enum class RCT2LanguageId
 {
-    RCT2_LANGUAGE_ID_ENGLISH_UK,
-    RCT2_LANGUAGE_ID_ENGLISH_US,
-    RCT2_LANGUAGE_ID_FRENCH,
-    RCT2_LANGUAGE_ID_GERMAN,
-    RCT2_LANGUAGE_ID_SPANISH,
-    RCT2_LANGUAGE_ID_ITALIAN,
-    RCT2_LANGUAGE_ID_DUTCH,
-    RCT2_LANGUAGE_ID_SWEDISH,
-    RCT2_LANGUAGE_ID_JAPANESE,
-    RCT2_LANGUAGE_ID_KOREAN,
-    RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED,
-    RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL,
-    RCT2_LANGUAGE_ID_12,
-    RCT2_LANGUAGE_ID_PORTUGUESE,
-    RCT2_LANGUAGE_ID_BLANK = 254,
-    RCT2_LANGUAGE_ID_END = 255
+    EnglishUK,
+    EnglishUS,
+    French,
+    German,
+    Spanish,
+    Italian,
+    Dutch,
+    Swedish,
+    Japanese,
+    Korean,
+    ChineseSimplified,
+    ChineseTraditional,
+    Undefined,
+    Portuguese,
+    Blank = 254,
+    End = 255
 };
 
 #define FONT_OPENRCT2_SPRITE NULL
@@ -101,8 +102,8 @@ bool utf8_is_codepoint_start(const utf8* text);
 int32_t utf8_get_codepoint_length(char32_t codepoint);
 int32_t utf8_length(const utf8* text);
 
-std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId);
-std::string utf8_to_rct2(const std::string_view& src);
+std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId);
+std::string utf8_to_rct2(std::string_view src);
 bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds);
 void language_free_object_string(rct_string_id stringId);
 rct_string_id language_allocate_object_string(const std::string& target);

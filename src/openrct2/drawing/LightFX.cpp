@@ -19,10 +19,11 @@
 #    include "../interface/Window_internal.h"
 #    include "../paint/Paint.h"
 #    include "../ride/Ride.h"
+#    include "../ride/Vehicle.h"
 #    include "../util/Util.h"
 #    include "../world/Climate.h"
+#    include "../world/Entity.h"
 #    include "../world/Map.h"
-#    include "../world/Sprite.h"
 #    include "Drawing.h"
 
 #    include <algorithm>
@@ -46,7 +47,7 @@ static void* _light_rendered_buffer_front = nullptr;
 static uint32_t _lightPolution_back = 0;
 static uint32_t _lightPolution_front = 0;
 
-enum LightFXQualifier : uint8_t
+enum class LightFXQualifier : uint8_t
 {
     Entity,
     Map,
@@ -299,7 +300,7 @@ void lightfx_prepare_light_list()
 
                 TileElement* tileElement = nullptr;
 
-                int32_t interactionType = 0;
+                ViewportInteractionItem interactionType = ViewportInteractionItem::None;
 
                 auto* w = window_get_main();
                 if (w != nullptr)
@@ -315,7 +316,7 @@ void lightfx_prepare_light_list()
                     paint_session* session = PaintSessionAlloc(&dpi, w->viewport->flags);
                     PaintSessionGenerate(session);
                     PaintSessionArrange(session);
-                    auto info = set_interaction_info_from_paint_session(session, VIEWPORT_INTERACTION_MASK_NONE);
+                    auto info = set_interaction_info_from_paint_session(session, ViewportInteractionItemAll);
                     PaintSessionFree(session);
 
                     //  log_warning("[%i, %i]", dpi->x, dpi->y);
@@ -330,7 +331,7 @@ void lightfx_prepare_light_list()
                 int32_t minDist = 0;
                 int32_t baseHeight = (-999) * COORDS_Z_STEP;
 
-                if (interactionType != VIEWPORT_INTERACTION_ITEM_SPRITE && tileElement)
+                if (interactionType != ViewportInteractionItem::Entity && tileElement)
                 {
                     baseHeight = tileElement->GetBaseZ();
                 }

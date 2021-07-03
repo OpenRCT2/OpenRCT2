@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+#include "MoneyEffect.h"
 
 #include "../OpenRCT2.h"
 #include "../drawing/Drawing.h"
@@ -13,6 +14,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
+#include "Entity.h"
 #include "Map.h"
 #include "Sprite.h"
 
@@ -20,7 +22,7 @@ static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }
 
 template<> bool SpriteBase::Is<MoneyEffect>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && type == SPRITE_MISC_MONEY_EFFECT;
+    return Type == EntityType::MoneyEffect;
 }
 
 /**
@@ -32,7 +34,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
     if (value == MONEY(0, 00))
         return;
 
-    MoneyEffect* moneyEffect = &create_sprite(SpriteIdentifier::Misc)->money_effect;
+    MoneyEffect* moneyEffect = CreateEntity<MoneyEffect>();
     if (moneyEffect == nullptr)
         return;
 
@@ -41,9 +43,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
     moneyEffect->sprite_width = 64;
     moneyEffect->sprite_height_negative = 20;
     moneyEffect->sprite_height_positive = 30;
-    moneyEffect->sprite_identifier = SpriteIdentifier::Misc;
     moneyEffect->MoveTo(effectPos);
-    moneyEffect->type = SPRITE_MISC_MONEY_EFFECT;
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;
 
@@ -53,8 +53,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
         auto [stringId, newValue] = moneyEffect->GetStringId();
         char buffer[128];
         format_string(buffer, 128, stringId, &newValue);
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        offsetX = -(gfx_get_string_width(buffer) / 2);
+        offsetX = -(gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2);
     }
     moneyEffect->OffsetX = offsetX;
     moneyEffect->Wiggle = 0;
@@ -99,7 +98,6 @@ void MoneyEffect::Create(money32 value, const CoordsXYZ& loc)
  */
 void MoneyEffect::Update()
 {
-    Invalidate2();
     Wiggle++;
     if (Wiggle >= 22)
     {
@@ -135,12 +133,12 @@ void MoneyEffect::Update()
     sprite_remove(this);
 }
 
-std::pair<rct_string_id, money32> MoneyEffect::GetStringId() const
+std::pair<rct_string_id, money64> MoneyEffect::GetStringId() const
 {
     rct_string_id spentStringId = Vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
     rct_string_id receiveStringId = Vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
     rct_string_id stringId = receiveStringId;
-    money32 outValue = Value;
+    money64 outValue = Value;
     if (Value < 0)
     {
         outValue *= -1;

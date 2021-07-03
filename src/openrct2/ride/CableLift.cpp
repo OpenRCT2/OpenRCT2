@@ -12,10 +12,11 @@
 #include "../audio/audio.h"
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
-#include "../world/Sprite.h"
+#include "../world/EntityList.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
+#include "Vehicle.h"
 #include "VehicleData.h"
 
 #include <algorithm>
@@ -23,16 +24,14 @@
 Vehicle* cable_lift_segment_create(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
-    Vehicle* current = &(
-        create_sprite(SpriteIdentifier::Vehicle, head ? EntityListId::TrainHead : EntityListId::Vehicle)->vehicle);
-    current->sprite_identifier = SpriteIdentifier::Vehicle;
+    Vehicle* current = CreateEntity<Vehicle>();
     current->ride = ride.id;
-    current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
+    current->ride_subtype = OBJECT_ENTRY_INDEX_NULL;
     if (head)
     {
         ride.cable_lift = current->sprite_index;
     }
-    current->type = static_cast<uint8_t>(head ? Vehicle::Type::Head : Vehicle::Type::Tail);
+    current->SubType = head ? Vehicle::Type::Head : Vehicle::Type::Tail;
     current->var_44 = var_44;
     current->remaining_distance = remaining_distance;
     current->sprite_width = 10;
@@ -58,7 +57,7 @@ Vehicle* cable_lift_segment_create(
     current->var_C8 = 0;
     current->var_CA = 0;
     current->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    current->vehicle_sprite_type = 0;
+    current->Pitch = 0;
     current->bank_rotation = 0;
     for (auto& peep : current->peep)
     {
@@ -69,16 +68,18 @@ Vehicle* cable_lift_segment_create(
 
     z = z * COORDS_Z_STEP;
     current->TrackLocation = { x, y, z };
-    z += RideTypeDescriptors[ride.type].Heights.VehicleZOffset;
+    z += ride.GetRideTypeDescriptor().Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
-    current->track_type = (TrackElemType::CableLiftHill << 2) | (current->sprite_direction >> 3);
+    current->SetTrackType(TrackElemType::CableLiftHill);
+    current->SetTrackDirection(current->sprite_direction >> 3);
     current->track_progress = 164;
     current->update_flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
     current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
     current->BoatLocation.setNull();
+    current->IsCrashedVehicle = false;
     return current;
 }
 
@@ -233,7 +234,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
     for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
-        uint8_t trackType = GetTrackType();
+        auto trackType = GetTrackType();
         if (trackType == TrackElemType::CableLiftHill && track_progress == 160)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
@@ -259,8 +260,8 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
                 return false;
 
             TrackLocation = { output, outputZ };
-            track_direction = outputDirection;
-            track_type |= output.element->AsTrack()->GetTrackType() << 2;
+            SetTrackDirection(outputDirection);
+            SetTrackType(output.element->AsTrack()->GetTrackType());
             trackProgress = 0;
         }
 
@@ -269,7 +270,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
+        unk.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)
@@ -284,11 +285,11 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
-        vehicle_sprite_type = moveInfo->vehicle_sprite_type;
+        Pitch = moveInfo->Pitch;
 
         if (remaining_distance >= 13962)
         {
-            acceleration += dword_9A2970[vehicle_sprite_type];
+            acceleration += dword_9A2970[Pitch];
         }
     }
     return true;
@@ -306,7 +307,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 
         if (static_cast<int16_t>(trackProgress) == -1)
         {
-            uint8_t trackType = GetTrackType();
+            auto trackType = GetTrackType();
             TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
@@ -319,8 +320,8 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
                 return false;
 
             TrackLocation = { output.begin_x, output.begin_y, output.begin_z };
-            track_direction = output.begin_direction;
-            track_type |= output.begin_element->AsTrack()->GetTrackType() << 2;
+            SetTrackDirection(output.begin_direction);
+            SetTrackType(output.begin_element->AsTrack()->GetTrackType());
 
             if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {
@@ -335,7 +336,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
+        unk.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)
@@ -350,11 +351,11 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
-        vehicle_sprite_type = moveInfo->vehicle_sprite_type;
+        Pitch = moveInfo->Pitch;
 
         if (remaining_distance < 0)
         {
-            acceleration += dword_9A2970[vehicle_sprite_type];
+            acceleration += dword_9A2970[Pitch];
         }
     }
     return true;
@@ -385,7 +386,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
     for (Vehicle* vehicle = frontVehicle; vehicle != nullptr;)
     {
-        vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
+        vehicle->acceleration = dword_9A2970[vehicle->Pitch];
         _vehicleUnkF64E10 = 1;
         vehicle->remaining_distance += _vehicleVelocityF64E0C;
 
@@ -409,7 +410,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                         _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
                         vehicle->remaining_distance = 13962;
-                        vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
+                        vehicle->acceleration += dword_9A2970[vehicle->Pitch];
                         _vehicleUnkF64E10++;
                         continue;
                     }
@@ -425,14 +426,12 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                         _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
                         vehicle->remaining_distance = -1;
-                        vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
+                        vehicle->acceleration += dword_9A2970[vehicle->Pitch];
                         _vehicleUnkF64E10++;
                     }
                 }
             }
             vehicle->MoveTo(unk_F64E20);
-
-            vehicle->Invalidate();
         }
         vehicle->acceleration /= _vehicleUnkF64E10;
         if (_vehicleVelocityF64E08 >= 0)

@@ -12,7 +12,7 @@
 #include "../management/Finance.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActions::Result)
+DEFINE_GAME_ACTION(FootpathRemoveAction, GameCommand::RemovePath, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;

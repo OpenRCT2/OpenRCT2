@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../common.h"
+#include "../object/LargeSceneryObject.h"
 #include "../object/ObjectManager.h"
 #include "../world/Banner.h"
 #include "TileElement.h"
@@ -74,9 +75,14 @@ ObjectEntryIndex LargeSceneryElement::GetEntryIndex() const
     return EntryIndex;
 }
 
-rct_scenery_entry* LargeSceneryElement::GetEntry() const
+LargeSceneryEntry* LargeSceneryElement::GetEntry() const
 {
     return get_large_scenery_entry(GetEntryIndex());
+}
+
+const LargeSceneryObject* LargeSceneryElement::GetObject() const
+{
+    return static_cast<const LargeSceneryObject*>(object_entry_get_object(ObjectType::LargeScenery, GetEntryIndex()));
 }
 
 uint8_t LargeSceneryElement::GetSequenceIndex() const
@@ -94,14 +100,14 @@ void LargeSceneryElement::SetSequenceIndex(uint8_t sequence)
     SequenceIndex = sequence;
 }
 
-rct_scenery_entry* get_large_scenery_entry(ObjectEntryIndex entryIndex)
+LargeSceneryEntry* get_large_scenery_entry(ObjectEntryIndex entryIndex)
 {
-    rct_scenery_entry* result = nullptr;
+    LargeSceneryEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::LargeScenery, entryIndex);
     if (obj != nullptr)
     {
-        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
+        result = static_cast<LargeSceneryEntry*>(obj->GetLegacyData());
     }
     return result;
 }

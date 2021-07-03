@@ -16,6 +16,7 @@
 #include <string>
 #include <string_view>
 #include <tuple>
+#include <vector>
 
 struct ILanguagePack;
 struct IObjectManager;
@@ -36,6 +37,7 @@ namespace OpenRCT2::Localisation
         std::unique_ptr<ILanguagePack> _languageFallback;
         std::unique_ptr<ILanguagePack> _languageCurrent;
         std::stack<rct_string_id> _availableObjectStringIds;
+        std::vector<std::string> _objectStrings;
 
     public:
         int32_t GetCurrentLanguage() const
@@ -57,7 +59,7 @@ namespace OpenRCT2::Localisation
         const char* GetString(rct_string_id id) const;
         std::tuple<rct_string_id, rct_string_id, rct_string_id> GetLocalisedScenarioStrings(
             const std::string& scenarioFilename) const;
-        rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) const;
+        rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const;
         std::string GetLanguagePath(uint32_t languageId) const;
 
         void OpenLanguage(int32_t id);

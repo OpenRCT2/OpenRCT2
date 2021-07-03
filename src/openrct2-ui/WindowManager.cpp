@@ -9,17 +9,18 @@
 
 #include "WindowManager.h"
 
-#include "input/Input.h"
-#include "input/KeyboardShortcuts.h"
 #include "interface/Theme.h"
 #include "windows/Window.h"
 
+#include <openrct2-ui/input/InputManager.h>
+#include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/rct2/T6Exporter.h>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Sprite.h>
 
@@ -31,7 +32,6 @@ public:
     void Init() override
     {
         ThemeManagerInitialise();
-        window_guest_list_init_vars();
         window_new_ride_init_vars();
     }
 
@@ -79,8 +79,6 @@ public:
                 return window_mapgen_open();
             case WC_MULTIPLAYER:
                 return window_multiplayer_open();
-            case WC_MUSIC_CREDITS:
-                return window_music_credits_open();
             case WC_CONSTRUCT_RIDE:
                 return window_new_ride_open();
             case WC_PARK_INFORMATION:
@@ -133,8 +131,6 @@ public:
                 return window_viewport_open();
             case WC_WATER:
                 return window_water_open();
-            case WC_NETWORK:
-                return window_network_open();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -211,7 +207,7 @@ public:
         return window_error_open(title, message, args);
     }
 
-    rct_window* ShowError(const std::string_view& title, const std::string_view& message) override
+    rct_window* ShowError(std::string_view title, std::string_view message) override
     {
         return window_error_open(title, message);
     }
@@ -237,8 +233,15 @@ public:
                 loadsave_callback callback = reinterpret_cast<loadsave_callback>(
                     intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
-                rct_window* w = window_loadsave_open(type, defaultName.c_str(), callback, trackDesign);
-
+                auto* w = window_loadsave_open(
+                    type, defaultName,
+                    [callback](int32_t result, std::string_view path) {
+                        if (callback != nullptr)
+                        {
+                            callback(result, std::string(path).c_str());
+                        }
+                    },
+                    trackDesign);
                 return w;
             }
             case WC_MANAGE_TRACK_DESIGN:
@@ -253,7 +256,7 @@ public:
             case WC_OBJECT_LOAD_ERROR:
             {
                 std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
-                const rct_object_entry* objects = static_cast<rct_object_entry*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
+                auto objects = static_cast<const ObjectEntryDescriptor*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
                 size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
                 window_object_load_error_open(const_cast<utf8*>(path.c_str()), count, objects);
 
@@ -397,7 +400,7 @@ public:
                     return;
 
                 auto ride = vehicle->GetRide();
-                auto viewVehicleIndex = w->ride.view - 1;
+                auto viewVehicleIndex = w->viewport_focus_coordinates.var_480 - 1;
                 if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
                     return;
 
@@ -510,14 +513,15 @@ public:
 
     void HandleKeyboard(bool isTitle) override
     {
-        InputHandleKeyboard(isTitle);
+        auto& inputManager = GetInputManager();
+        inputManager.Process();
     }
 
-    std::string GetKeyboardShortcutString(int32_t shortcut) override
+    std::string GetKeyboardShortcutString(std::string_view shortcutId) override
     {
-        utf8 buffer[256];
-        KeyboardShortcutsFormatString(buffer, sizeof(buffer), shortcut);
-        return std::string(buffer);
+        auto& shortcutManager = GetShortcutManager();
+        auto* shortcut = shortcutManager.GetShortcut(shortcutId);
+        return shortcut != nullptr ? shortcut->GetDisplayString() : std::string();
     }
 
     void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) override

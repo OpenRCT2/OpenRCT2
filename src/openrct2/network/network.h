@@ -14,6 +14,7 @@
 #define NETWORK_LAN_BROADCAST_MSG "openrct2.server.query"
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
+#include "../Game.h"
 #include "../common.h"
 #include "../core/JsonFwd.hpp"
 #include "../localisation/StringIds.h"
@@ -21,6 +22,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 struct GameAction;
@@ -70,7 +72,7 @@ std::string network_get_player_ip_address(uint32_t id);
 std::string network_get_player_public_key_hash(uint32_t id);
 void network_add_player_money_spent(uint32_t index, money32 cost);
 int32_t network_get_player_last_action(uint32_t index, int32_t time);
-void network_set_player_last_action(uint32_t index, int32_t command);
+void network_set_player_last_action(uint32_t index, GameCommand command);
 CoordsXYZ network_get_player_last_action_coord(uint32_t index);
 void network_set_player_last_action_coord(uint32_t index, const CoordsXYZ& coord);
 uint32_t network_get_player_commands_ran(uint32_t index);
@@ -107,7 +109,7 @@ void network_send_password(const std::string& password);
 void network_set_password(const char* password);
 
 void network_print_error();
-void network_append_chat_log(const utf8* text);
+void network_append_chat_log(std::string_view text);
 void network_append_server_log(const utf8* text);
 const utf8* network_get_server_name();
 const utf8* network_get_server_description();

@@ -50,16 +50,16 @@ static std::vector<ReplayTestData> GetReplayFiles()
     std::vector<ReplayTestData> res;
     std::string basePath = TestData::GetBasePath();
     std::string replayPath = Path::Combine(basePath, "replays");
-    std::string replayPathPattern = Path::Combine(replayPath, "*.sv6r");
+    std::string replayPathPattern = Path::Combine(replayPath, "*.parkrep");
     std::vector<std::string> files;
 
-    std::unique_ptr<IFileScanner> scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(replayPathPattern, true));
+    auto scanner = Path::ScanDirectory(replayPathPattern, true);
     while (scanner->Next())
     {
         ReplayTestData test;
         test.name = sanitizeTestName(scanner->GetFileInfo()->Name);
         test.filePath = scanner->GetPath();
-        res.push_back(test);
+        res.push_back(std::move(test));
     }
     return res;
 }
@@ -71,10 +71,6 @@ protected:
 
 TEST_P(ReplayTests, RunReplay)
 {
-#ifdef PLATFORM_32BIT
-    log_warning("Replay Tests have not been performed. OpenRCT2/OpenRCT2#11279.");
-    return;
-#else
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
     core_init();
@@ -98,9 +94,11 @@ TEST_P(ReplayTests, RunReplay)
     while (replayManager->IsReplaying())
     {
         gs->UpdateLogic();
-        ASSERT_TRUE(replayManager->IsPlaybackStateMismatching() == false);
+        if (replayManager->IsPlaybackStateMismatching())
+            break;
     }
-#endif
+    ASSERT_FALSE(replayManager->IsReplaying());
+    ASSERT_FALSE(replayManager->IsPlaybackStateMismatching());
 }
 
 static void PrintTo(const ReplayTestData& testData, std::ostream* os)

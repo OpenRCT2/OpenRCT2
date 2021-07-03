@@ -251,7 +251,7 @@ namespace Imaging
         }
     }
 
-    IMAGE_FORMAT GetImageFormatFromPath(const std::string_view& path)
+    IMAGE_FORMAT GetImageFormatFromPath(std::string_view path)
     {
         if (String::EndsWith(path, ".png", true))
         {
@@ -304,7 +304,7 @@ namespace Imaging
         }
     }
 
-    Image ReadFromFile(const std::string_view& path, IMAGE_FORMAT format)
+    Image ReadFromFile(std::string_view path, IMAGE_FORMAT format)
     {
         switch (format)
         {
@@ -316,7 +316,7 @@ namespace Imaging
                 auto pathW = String::ToWideChar(path);
                 std::ifstream fs(pathW, std::ios::binary);
 #else
-                std::ifstream fs(path.data(), std::ios::binary);
+                std::ifstream fs(std::string(path), std::ios::binary);
 #endif
                 return ReadFromStream(fs, format);
             }
@@ -329,7 +329,7 @@ namespace Imaging
         return ReadFromStream(istream, format);
     }
 
-    void WriteToFile(const std::string_view& path, const Image& image, IMAGE_FORMAT format)
+    void WriteToFile(std::string_view path, const Image& image, IMAGE_FORMAT format)
     {
         switch (format)
         {
@@ -342,7 +342,7 @@ namespace Imaging
                 auto pathW = String::ToWideChar(path);
                 std::ofstream fs(pathW, std::ios::binary);
 #else
-                std::ofstream fs(path.data(), std::ios::binary);
+                std::ofstream fs(std::string(path), std::ios::binary);
 #endif
                 WritePng(fs, image);
                 break;

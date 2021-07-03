@@ -20,6 +20,7 @@
 #define DEFAULT_FLAT_RIDE_COLOUR_PRESET TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_YELLOW })
 #define DEFAULT_STALL_COLOUR_PRESET TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED })
 
+#include "../audio/audio.h"
 #include "../common.h"
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
@@ -166,7 +167,7 @@ struct RideTypeDescriptor
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts;
     money16 DefaultPrices[NUM_SHOP_ITEMS_PER_RIDE];
-    uint8_t DefaultMusic;
+    std::string_view DefaultMusic;
     /** rct2: 0x0097D7CB */
     ShopItemIndex PhotoItem;
     /** rct2: 0x0097D21E */
@@ -258,6 +259,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY = (1ULL << 48),
     RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS = (1ULL << 49),
     RIDE_TYPE_FLAG_IS_SUSPENDED = (1ULL << 50),
+    RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS = (1ULL << 51),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -292,6 +294,20 @@ constexpr const RideComponentName RideComponentNames[] =
     { STR_RIDE_COMPONENT_COURSE,            STR_RIDE_COMPONENT_COURSE_PLURAL,           STR_RIDE_COMPONENT_COURSE_CAPITALISED,              STR_RIDE_COMPONENT_COURSE_CAPITALISED_PLURAL,           STR_RIDE_COMPONENT_COURSE_COUNT,            STR_RIDE_COMPONENT_COURSE_COUNT_PLURAL,             STR_RIDE_COMPONENT_COURSE_NO },
 };
 // clang-format on
+
+constexpr std::string_view MUSIC_OBJECT_DODGEMS = "rct2.music.dodgems";
+constexpr std::string_view MUSIC_OBJECT_EGYPTIAN = "rct2.music.egyptian";
+constexpr std::string_view MUSIC_OBJECT_FAIRGROUND = "rct2.music.fairground";
+constexpr std::string_view MUSIC_OBJECT_GENTLE = "rct2.music.gentle";
+constexpr std::string_view MUSIC_OBJECT_HORROR = "rct2.music.horror";
+constexpr std::string_view MUSIC_OBJECT_PIRATE = "rct2.music.pirate";
+constexpr std::string_view MUSIC_OBJECT_ROCK_1 = "rct2.music.rock1";
+constexpr std::string_view MUSIC_OBJECT_ROCK_2 = "rct2.music.rock2";
+constexpr std::string_view MUSIC_OBJECT_ROCK_3 = "rct2.music.rock3";
+constexpr std::string_view MUSIC_OBJECT_SUMMER = "rct2.music.summer";
+constexpr std::string_view MUSIC_OBJECT_TECHNO = "rct2.music.techno";
+constexpr std::string_view MUSIC_OBJECT_WATER = "rct2.music.water";
+constexpr std::string_view MUSIC_OBJECT_WILD_WEST = "rct2.music.wildwest";
 
 constexpr const RideComponentName& GetRideComponentName(const RideComponentType type)
 {
@@ -341,7 +357,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 0, 0, 1 }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
@@ -349,5 +365,18 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourKey, RideColourKey::Ride)
 };
 // clang-format on
+
+constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideType)
+{
+    if (rideType >= std::size(RideTypeDescriptors))
+        return DummyRTD;
+
+    return RideTypeDescriptors[rideType];
+}
+
+constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
+{
+    return rideType < std::size(RideTypeDescriptors);
+}
 
 #endif

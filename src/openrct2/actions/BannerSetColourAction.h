@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerSetColourAction, GAME_COMMAND_SET_BANNER_COLOUR, GameActions::Result)
+DEFINE_GAME_ACTION(BannerSetColourAction, GameCommand::SetBannerColour, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;

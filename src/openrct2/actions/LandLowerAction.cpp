@@ -21,7 +21,6 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 #include "../world/Surface.h"
 
 LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
@@ -64,9 +63,9 @@ GameActions::Result::Ptr LandLowerAction::QueryExecute(bool isExecuting) const
 
     // Keep big coordinates within map boundaries
     auto aX = std::max<decltype(_range.GetLeft())>(32, _range.GetLeft());
-    auto bX = std::min<decltype(_range.GetRight())>(gMapSizeMaxXY, _range.GetRight());
+    auto bX = std::min<decltype(_range.GetRight())>(GetMapSizeMaxXY(), _range.GetRight());
     auto aY = std::max<decltype(_range.GetTop())>(32, _range.GetTop());
-    auto bY = std::min<decltype(_range.GetBottom())>(gMapSizeMaxXY, _range.GetBottom());
+    auto bY = std::min<decltype(_range.GetBottom())>(GetMapSizeMaxXY(), _range.GetBottom());
 
     MapRange validRange = MapRange{ aX, aY, bX, bY };
 

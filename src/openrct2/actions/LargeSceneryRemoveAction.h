@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LargeSceneryRemoveAction, GAME_COMMAND_REMOVE_LARGE_SCENERY, GameActions::Result)
+DEFINE_GAME_ACTION(LargeSceneryRemoveAction, GameCommand::RemoveLargeScenery, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
@@ -30,5 +30,5 @@ public:
     GameActions::Result::Ptr Execute() const override;
 
 private:
-    TileElement* FindLargeSceneryElement() const;
+    TileElement* FindLargeSceneryElement(const CoordsXYZ& pos, int32_t sequenceIndex) const;
 };

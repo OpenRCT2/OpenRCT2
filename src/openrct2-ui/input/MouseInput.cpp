@@ -31,7 +31,6 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Sprite.h>
 
 struct RCTMouseData
 {
@@ -1442,7 +1441,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
         if (gTooltipCursor == screenCoords)
         {
             _tooltipNotShownTicks++;
-            if (_tooltipNotShownTicks > 50)
+            if (_tooltipNotShownTicks > 50 && w != nullptr && WidgetIsVisible(w, widgetIndex))
             {
                 gTooltipTimeout = 0;
                 window_tooltip_open(w, widgetIndex, screenCoords);
@@ -1457,7 +1456,8 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
         reset_tooltip_not_shown();
 
         if (w == nullptr || gTooltipWidget.window_classification != w->classification
-            || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex)
+            || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex
+            || !WidgetIsVisible(w, widgetIndex))
         {
             window_tooltip_close();
         }
@@ -1619,11 +1619,11 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
         }
 
         // Clamp to the map maximum value (scenario specific)
-        if (mapCoord.x > gMapSizeMinus2 || mapCoord.y > gMapSizeMinus2)
+        if (mapCoord.x > GetMapSizeMinus2() || mapCoord.y > GetMapSizeMinus2())
         {
             at_map_edge = 1;
         }
-        if (mapCoord_dy.x > gMapSizeMinus2 || mapCoord_dy.y > gMapSizeMinus2)
+        if (mapCoord_dy.x > GetMapSizeMinus2() || mapCoord_dy.y > GetMapSizeMinus2())
         {
             at_map_edge_dy = 1;
         }

@@ -28,9 +28,12 @@
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/Balloon.h>
 #include <openrct2/world/Banner.h>
+#include <openrct2/world/Duck.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Map.h>
@@ -60,43 +63,45 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
     info = get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK);
-    auto tileElement = info.SpriteType != VIEWPORT_INTERACTION_ITEM_SPRITE ? info.Element : nullptr;
-    // Only valid when info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE, but can't assign nullptr without compiler
+        screenCoords,
+        EnumsToFlags(ViewportInteractionItem::Entity, ViewportInteractionItem::Ride, ViewportInteractionItem::ParkEntrance));
+    auto tileElement = info.SpriteType != ViewportInteractionItem::Entity ? info.Element : nullptr;
+    // Only valid when info.SpriteType == ViewportInteractionItem::Entity, but can't assign nullptr without compiler
     // complaining
     auto sprite = info.Entity;
 
     // Allows only balloons to be popped and ducks to be quacked in title screen
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
-        if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
+        if (info.SpriteType == ViewportInteractionItem::Entity && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
             return info;
         else
         {
-            info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+            info.SpriteType = ViewportInteractionItem::None;
             return info;
         }
     }
 
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            switch (sprite->sprite_identifier)
+        case ViewportInteractionItem::Entity:
+            switch (sprite->Type)
             {
-                case SpriteIdentifier::Vehicle:
+                case EntityType::Vehicle:
                 {
                     auto vehicle = sprite->As<Vehicle>();
-                    if (vehicle != nullptr && vehicle->ride_subtype != RIDE_ENTRY_INDEX_NULL)
+                    if (vehicle != nullptr && vehicle->ride_subtype != OBJECT_ENTRY_INDEX_NULL)
                         vehicle->SetMapToolbar();
                     else
-                        info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+                        info.SpriteType = ViewportInteractionItem::None;
                 }
                 break;
-                case SpriteIdentifier::Peep:
+                case EntityType::Guest:
+                case EntityType::Staff:
                 {
                     auto peep = sprite->As<Peep>();
                     if (peep != nullptr)
@@ -105,20 +110,18 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
                     }
                     else
                     {
-                        info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+                        info.SpriteType = ViewportInteractionItem::None;
                     }
                 }
                 break;
-                case SpriteIdentifier::Misc:
-                case SpriteIdentifier::Litter:
-                case SpriteIdentifier::Null:
+                default:
                     break;
             }
             break;
-        case VIEWPORT_INTERACTION_ITEM_RIDE:
+        case ViewportInteractionItem::Ride:
             ride_set_map_tooltip(tileElement);
             break;
-        case VIEWPORT_INTERACTION_ITEM_PARK:
+        case ViewportInteractionItem::ParkEntrance:
         {
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
             auto parkName = park.Name.c_str();
@@ -130,18 +133,18 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
             break;
         }
         default:
-            info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+            info.SpriteType = ViewportInteractionItem::None;
             break;
     }
 
     // If nothing is under cursor, find a close by peep
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == ViewportInteractionItem::None)
     {
         auto peep = ViewportInteractionGetClosestPeep(screenCoords, 32);
         if (peep != nullptr)
         {
             info.Entity = peep;
-            info.SpriteType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            info.SpriteType = ViewportInteractionItem::Entity;
             info.Loc.x = peep->x;
             info.Loc.y = peep->y;
             peep_set_map_tooltip(peep);
@@ -157,9 +160,9 @@ bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords)
 
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SPRITE:
-        case VIEWPORT_INTERACTION_ITEM_RIDE:
-        case VIEWPORT_INTERACTION_ITEM_PARK:
+        case ViewportInteractionItem::Entity:
+        case ViewportInteractionItem::Ride:
+        case ViewportInteractionItem::ParkEntrance:
             return true;
         default:
             return false;
@@ -172,62 +175,60 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
 
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SPRITE:
+        case ViewportInteractionItem::Entity:
         {
             auto entity = info.Entity;
-            switch (entity->sprite_identifier)
+            switch (entity->Type)
             {
-                case SpriteIdentifier::Vehicle:
+                case EntityType::Vehicle:
                 {
                     auto intent = Intent(WD_VEHICLE);
                     intent.putExtra(INTENT_EXTRA_VEHICLE, entity);
                     context_open_intent(&intent);
                     break;
                 }
-                case SpriteIdentifier::Peep:
+                case EntityType::Guest:
+                case EntityType::Staff:
                 {
                     auto intent = Intent(WC_PEEP);
                     intent.putExtra(INTENT_EXTRA_PEEP, entity);
                     context_open_intent(&intent);
                     break;
                 }
-                case SpriteIdentifier::Misc:
+                case EntityType::Balloon:
+                {
                     if (game_is_not_paused())
                     {
-                        switch (entity->type)
+                        auto balloonPress = BalloonPressAction(entity->sprite_index);
+                        GameActions::Execute(&balloonPress);
+                    }
+                }
+                break;
+                case EntityType::Duck:
+                {
+                    if (game_is_not_paused())
+                    {
+                        auto duck = entity->As<Duck>();
+                        if (duck != nullptr)
                         {
-                            case SPRITE_MISC_BALLOON:
-                            {
-                                auto balloonPress = BalloonPressAction(entity->sprite_index);
-                                GameActions::Execute(&balloonPress);
-                            }
-                            break;
-                            case SPRITE_MISC_DUCK:
-                            {
-                                auto duck = entity->As<Duck>();
-                                if (duck != nullptr)
-                                {
-                                    duck_press(duck);
-                                }
-                            }
-                            break;
+                            duck->Press();
                         }
                     }
-                    break;
-                case SpriteIdentifier::Litter:
-                case SpriteIdentifier::Null:
+                }
+                break;
+                default:
                     break;
             }
             return true;
         }
-        case VIEWPORT_INTERACTION_ITEM_RIDE:
+        case ViewportInteractionItem::Ride:
         {
             auto intent = Intent(WD_TRACK);
             intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.Element);
             context_open_intent(&intent);
             return true;
         }
-        case VIEWPORT_INTERACTION_ITEM_PARK:
+        case ViewportInteractionItem::ParkEntrance:
             context_open_window(WC_PARK_INFORMATION);
             return true;
         default:
@@ -241,7 +242,6 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
  */
 InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
 {
-    rct_scenery_entry* sceneryEntry;
     Ride* ride;
     int32_t i, stationIndex;
     InteractionInfo info{};
@@ -250,31 +250,32 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
-    info = get_map_coordinates_from_pos(screenCoords, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER));
+    auto flags = static_cast<int32_t>(~EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
+    info = get_map_coordinates_from_pos(screenCoords, flags);
     auto tileElement = info.Element;
 
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SPRITE:
+        case ViewportInteractionItem::Entity:
         {
             auto sprite = info.Entity;
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->sprite_identifier != SpriteIdentifier::Vehicle)
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->Type != EntityType::Vehicle)
             {
-                info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+                info.SpriteType = ViewportInteractionItem::None;
                 return info;
             }
 
             auto vehicle = sprite->As<Vehicle>();
             if (vehicle == nullptr)
             {
-                info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+                info.SpriteType = ViewportInteractionItem::None;
                 return info;
             }
             ride = get_ride(vehicle->ride);
-            if (ride != nullptr && ride->status == RIDE_STATUS_CLOSED)
+            if (ride != nullptr && ride->status == RideStatus::Closed)
             {
                 auto ft = Formatter();
                 ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -283,27 +284,27 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             }
             return info;
         }
-        case VIEWPORT_INTERACTION_ITEM_RIDE:
+        case ViewportInteractionItem::Ride:
         {
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
-                info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+                info.SpriteType = ViewportInteractionItem::None;
                 return info;
             }
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
-                info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+                info.SpriteType = ViewportInteractionItem::None;
                 return info;
             }
 
             ride = get_ride(tileElement->GetRideIndex());
             if (ride == nullptr)
             {
-                info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+                info.SpriteType = ViewportInteractionItem::None;
                 return info;
             }
 
-            if (ride->status != RIDE_STATUS_CLOSED)
+            if (ride->status != RideStatus::Closed)
                 return info;
 
             auto ft = Formatter();
@@ -354,7 +355,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 // FIXME: Why does it *2 the value?
                 if (!gCheatsSandboxMode && !map_is_location_owned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                 {
-                    info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+                    info.SpriteType = ViewportInteractionItem::None;
                     return info;
                 }
 
@@ -380,9 +381,10 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             SetMapTooltip(ft);
             return info;
         }
-        case VIEWPORT_INTERACTION_ITEM_WALL:
-            sceneryEntry = tileElement->AsWall()->GetEntry();
-            if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+        case ViewportInteractionItem::Wall:
+        {
+            auto* wallEntry = tileElement->AsWall()->GetEntry();
+            if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
             {
                 auto banner = tileElement->AsWall()->GetBanner();
                 if (banner != nullptr)
@@ -391,16 +393,17 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                     ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
                     banner->FormatTextTo(ft);
                     ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                    ft.Add<rct_string_id>(sceneryEntry->name);
+                    ft.Add<rct_string_id>(wallEntry->name);
                     SetMapTooltip(ft);
                     return info;
                 }
             }
             break;
-
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+        }
+        case ViewportInteractionItem::LargeScenery:
+        {
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
             {
                 auto banner = tileElement->AsLargeScenery()->GetBanner();
                 if (banner != nullptr)
@@ -415,19 +418,23 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 }
             }
             break;
-
-        case VIEWPORT_INTERACTION_ITEM_BANNER:
+        }
+        case ViewportInteractionItem::Banner:
         {
             auto banner = tileElement->AsBanner()->GetBanner();
-            sceneryEntry = get_banner_entry(banner->type);
+            if (banner != nullptr)
+            {
+                auto* bannerEntry = get_banner_entry(banner->type);
 
-            auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-            banner->FormatTextTo(ft, /*addColour*/ true);
-            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-            ft.Add<rct_string_id>(sceneryEntry->name);
-            SetMapTooltip(ft);
-            return info;
+                auto ft = Formatter();
+                ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                banner->FormatTextTo(ft, /*addColour*/ true);
+                ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                ft.Add<rct_string_id>(bannerEntry->name);
+                SetMapTooltip(ft);
+                return info;
+            }
+            break;
         }
         default:
             break;
@@ -437,7 +444,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
     {
         if (window_find_by_class(WC_RIDE_CONSTRUCTION) == nullptr && window_find_by_class(WC_FOOTPATH) == nullptr)
         {
-            info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+            info.SpriteType = ViewportInteractionItem::None;
             return info;
         }
     }
@@ -445,14 +452,15 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
     auto ft = Formatter();
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
-            sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        case ViewportInteractionItem::Scenery:
+        {
+            auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             ft.Add<rct_string_id>(sceneryEntry->name);
             SetMapTooltip(ft);
             return info;
-
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        }
+        case ViewportInteractionItem::Footpath:
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             if (tileElement->AsPath()->IsQueue())
                 ft.Add<rct_string_id>(STR_QUEUE_LINE_MAP_TIP);
@@ -461,18 +469,19 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             SetMapTooltip(ft);
             return info;
 
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-            sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
+        case ViewportInteractionItem::FootpathItem:
+        {
+            auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             if (tileElement->AsPath()->IsBroken())
             {
                 ft.Add<rct_string_id>(STR_BROKEN);
             }
-            ft.Add<rct_string_id>(sceneryEntry->name);
+            ft.Add<rct_string_id>(pathAddEntry->name);
             SetMapTooltip(ft);
             return info;
-
-        case VIEWPORT_INTERACTION_ITEM_PARK:
+        }
+        case ViewportInteractionItem::ParkEntrance:
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 break;
 
@@ -484,24 +493,27 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             SetMapTooltip(ft);
             return info;
 
-        case VIEWPORT_INTERACTION_ITEM_WALL:
-            sceneryEntry = tileElement->AsWall()->GetEntry();
+        case ViewportInteractionItem::Wall:
+        {
+            auto* wallEntry = tileElement->AsWall()->GetEntry();
+            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
+            ft.Add<rct_string_id>(wallEntry->name);
+            SetMapTooltip(ft);
+            return info;
+        }
+        case ViewportInteractionItem::LargeScenery:
+        {
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             ft.Add<rct_string_id>(sceneryEntry->name);
             SetMapTooltip(ft);
             return info;
-
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-            ft.Add<rct_string_id>(sceneryEntry->name);
-            SetMapTooltip(ft);
-            return info;
+        }
         default:
             break;
     }
 
-    info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+    info.SpriteType = ViewportInteractionItem::None;
     return info;
 }
 
@@ -509,7 +521,7 @@ bool ViewportInteractionRightOver(const ScreenCoordsXY& screenCoords)
 {
     auto info = ViewportInteractionGetItemRight(screenCoords);
 
-    return info.SpriteType != VIEWPORT_INTERACTION_ITEM_NONE;
+    return info.SpriteType != ViewportInteractionItem::None;
 }
 
 /**
@@ -523,16 +535,16 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
 
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_NONE:
-        case VIEWPORT_INTERACTION_ITEM_TERRAIN:
-        case VIEWPORT_INTERACTION_ITEM_WATER:
-        case VIEWPORT_INTERACTION_ITEM_LABEL:
+        case ViewportInteractionItem::None:
+        case ViewportInteractionItem::Terrain:
+        case ViewportInteractionItem::Water:
+        case ViewportInteractionItem::Label:
             return false;
 
-        case VIEWPORT_INTERACTION_ITEM_SPRITE:
+        case ViewportInteractionItem::Entity:
         {
             auto entity = info.Entity;
-            if (entity->sprite_identifier == SpriteIdentifier::Vehicle)
+            if (entity->Type == EntityType::Vehicle)
             {
                 auto vehicle = entity->As<Vehicle>();
                 if (vehicle == nullptr)
@@ -547,29 +559,29 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
             }
         }
         break;
-        case VIEWPORT_INTERACTION_ITEM_RIDE:
+        case ViewportInteractionItem::Ride:
             tileElement = { info.Loc, info.Element };
             ride_modify(&tileElement);
             break;
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
+        case ViewportInteractionItem::Scenery:
             ViewportInteractionRemoveScenery(info.Element, info.Loc);
             break;
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        case ViewportInteractionItem::Footpath:
             ViewportInteractionRemoveFootpath(info.Element, info.Loc);
             break;
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
+        case ViewportInteractionItem::FootpathItem:
             ViewportInteractionRemoveFootpathItem(info.Element, info.Loc);
             break;
-        case VIEWPORT_INTERACTION_ITEM_PARK:
+        case ViewportInteractionItem::ParkEntrance:
             ViewportInteractionRemoveParkEntrance(info.Element, info.Loc);
             break;
-        case VIEWPORT_INTERACTION_ITEM_WALL:
+        case ViewportInteractionItem::Wall:
             ViewportInteractionRemoveParkWall(info.Element, info.Loc);
             break;
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+        case ViewportInteractionItem::LargeScenery:
             ViewportInteractionRemoveLargeScenery(info.Element, info.Loc);
             break;
-        case VIEWPORT_INTERACTION_ITEM_BANNER:
+        case ViewportInteractionItem::Banner:
             context_open_detail_window(WD_BANNER, info.Element->AsBanner()->GetIndex());
             break;
     }
@@ -654,8 +666,8 @@ void ViewportInteractionRemoveParkEntrance(TileElement* tileElement, CoordsXY ma
  */
 static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const CoordsXY& mapCoords)
 {
-    rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
-    if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+    auto* wallEntry = tileElement->AsWall()->GetEntry();
+    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         context_open_detail_window(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex());
     }
@@ -673,9 +685,9 @@ static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const Co
  */
 static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, const CoordsXY& mapCoords)
 {
-    rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+    auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
 
-    if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         auto bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
         context_open_detail_window(WD_SIGN, bannerIndex);
@@ -687,6 +699,34 @@ static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, cons
             tileElement->AsLargeScenery()->GetSequenceIndex());
         GameActions::Execute(&removeSceneryAction);
     }
+}
+
+struct PeepDistance
+{
+    Peep* peep = nullptr;
+    int32_t distance = std::numeric_limits<decltype(distance)>::max();
+};
+
+template<typename T>
+PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t maxDistance, PeepDistance goal)
+{
+    for (auto peep : EntityList<T>())
+    {
+        if (peep->sprite_left == LOCATION_NULL)
+            continue;
+
+        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - viewportCoords.x)
+            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - viewportCoords.y);
+        if (distance > maxDistance)
+            continue;
+
+        if (distance < goal.distance)
+        {
+            goal.peep = peep;
+            goal.distance = distance;
+        }
+    }
+    return goal;
 }
 
 static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance)
@@ -704,26 +744,10 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
 
     auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);
 
-    Peep* closestPeep = nullptr;
-    auto closestDistance = std::numeric_limits<int32_t>::max();
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
-    {
-        if (peep->sprite_left == LOCATION_NULL)
-            continue;
+    auto goal = GetClosestPeep<Guest>(viewportCoords, maxDistance, {});
+    goal = GetClosestPeep<Staff>(viewportCoords, maxDistance, goal);
 
-        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - viewportCoords.x)
-            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - viewportCoords.y);
-        if (distance > maxDistance)
-            continue;
-
-        if (distance < closestDistance)
-        {
-            closestPeep = peep;
-            closestDistance = distance;
-        }
-    }
-
-    return closestPeep;
+    return goal.peep;
 }
 
 /**
@@ -741,17 +765,17 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
     }
     auto viewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(
-        window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER);
+        window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
     auto initialPos = info.Loc;
 
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == ViewportInteractionItem::None)
     {
         initialPos.setNull();
         return initialPos;
     }
 
     int16_t waterHeight = 0;
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_WATER)
+    if (info.SpriteType == ViewportInteractionItem::Water)
     {
         waterHeight = info.Element->AsSurface()->GetWaterHeight();
     }
@@ -762,7 +786,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
     for (int32_t i = 0; i < 5; i++)
     {
         int16_t z = waterHeight;
-        if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_WATER)
+        if (info.SpriteType != ViewportInteractionItem::Water)
         {
             z = tile_element_height(mapPos);
         }

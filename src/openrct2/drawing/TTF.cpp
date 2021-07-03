@@ -181,10 +181,10 @@ static void ttf_close_font(TTF_Font* font)
     TTF_CloseFont(font);
 }
 
-static uint32_t ttf_surface_cache_hash(TTF_Font* font, const std::string_view text)
+static uint32_t ttf_surface_cache_hash(TTF_Font* font, std::string_view text)
 {
     uint32_t hash = static_cast<uint32_t>(((reinterpret_cast<uintptr_t>(font) * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
-    for (auto& c : text)
+    for (auto c : text)
     {
         hash = ror32(hash, 3) ^ (c * 13);
     }
@@ -346,7 +346,7 @@ uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, std::string_view text)
     return entry->width;
 }
 
-TTFFontDescriptor* ttf_get_font_from_sprite_base(uint16_t spriteBase)
+TTFFontDescriptor* ttf_get_font_from_sprite_base(FontSpriteBase spriteBase)
 {
     FontLockHelper<std::mutex> lock(_mutex);
     return &gCurrentTTFFontSet->size[font_get_size_from_sprite_base(spriteBase)];

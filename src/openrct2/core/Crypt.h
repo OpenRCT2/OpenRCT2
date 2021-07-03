@@ -32,8 +32,8 @@ namespace Crypt
     public:
         virtual ~RsaKey() = default;
         virtual void Generate() = 0;
-        virtual void SetPrivate(const std::string_view& pem) = 0;
-        virtual void SetPublic(const std::string_view& pem) = 0;
+        virtual void SetPrivate(std::string_view pem) = 0;
+        virtual void SetPublic(std::string_view pem) = 0;
         virtual std::string GetPrivate() = 0;
         virtual std::string GetPublic() = 0;
     };
@@ -48,12 +48,19 @@ namespace Crypt
 
     using Sha1Algorithm = HashAlgorithm<20>;
     using Sha256Algorithm = HashAlgorithm<32>;
+    using FNV1aAlgorithm = HashAlgorithm<8>;
 
     // Factories
+    std::unique_ptr<FNV1aAlgorithm> CreateFNV1a();
     std::unique_ptr<Sha1Algorithm> CreateSHA1();
     std::unique_ptr<Sha256Algorithm> CreateSHA256();
     std::unique_ptr<RsaAlgorithm> CreateRSA();
     std::unique_ptr<RsaKey> CreateRSAKey();
+
+    inline FNV1aAlgorithm::Result FNV1a(const void* data, size_t dataLen)
+    {
+        return CreateFNV1a()->Update(data, dataLen)->Finish();
+    }
 
     inline Sha1Algorithm::Result SHA1(const void* data, size_t dataLen)
     {

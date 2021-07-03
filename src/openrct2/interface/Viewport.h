@@ -13,10 +13,12 @@
 #include "../world/Location.hpp"
 #include "Window.h"
 
+#include <limits>
 #include <optional>
 #include <vector>
 
 struct paint_session;
+struct RecordedPaintSession;
 struct paint_struct;
 struct rct_drawpixelinfo;
 struct Peep;
@@ -49,39 +51,24 @@ enum
     VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
 };
 
-enum ViewportInteractionItem : uint8_t
+enum class ViewportInteractionItem : uint8_t
 {
-    VIEWPORT_INTERACTION_ITEM_NONE,
-    VIEWPORT_INTERACTION_ITEM_TERRAIN,
-    VIEWPORT_INTERACTION_ITEM_SPRITE,
-    VIEWPORT_INTERACTION_ITEM_RIDE,
-    VIEWPORT_INTERACTION_ITEM_WATER,
-    VIEWPORT_INTERACTION_ITEM_SCENERY,
-    VIEWPORT_INTERACTION_ITEM_FOOTPATH,
-    VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM,
-    VIEWPORT_INTERACTION_ITEM_PARK,
-    VIEWPORT_INTERACTION_ITEM_WALL,
-    VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY,
-    VIEWPORT_INTERACTION_ITEM_LABEL,
-    VIEWPORT_INTERACTION_ITEM_BANNER,
-
+    None,
+    Terrain,
+    Entity,
+    Ride,
+    Water,
+    Scenery,
+    Footpath,
+    FootpathItem,
+    ParkEntrance,
+    Wall,
+    LargeScenery,
+    Label,
+    Banner
 };
 
-enum
-{
-    VIEWPORT_INTERACTION_MASK_NONE = 0,
-    VIEWPORT_INTERACTION_MASK_TERRAIN = ~(1 << (VIEWPORT_INTERACTION_ITEM_TERRAIN - 1)),
-    VIEWPORT_INTERACTION_MASK_SPRITE = ~(1 << (VIEWPORT_INTERACTION_ITEM_SPRITE - 1)),
-    VIEWPORT_INTERACTION_MASK_RIDE = ~(1 << (VIEWPORT_INTERACTION_ITEM_RIDE - 1)),
-    VIEWPORT_INTERACTION_MASK_WATER = ~(1 << (VIEWPORT_INTERACTION_ITEM_WATER - 1)),
-    VIEWPORT_INTERACTION_MASK_SCENERY = ~(1 << (VIEWPORT_INTERACTION_ITEM_SCENERY - 1)),
-    VIEWPORT_INTERACTION_MASK_FOOTPATH = ~(1 << (VIEWPORT_INTERACTION_ITEM_FOOTPATH - 1)),
-    VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM = ~(1 << (VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM - 1)),
-    VIEWPORT_INTERACTION_MASK_PARK = ~(1 << (VIEWPORT_INTERACTION_ITEM_PARK - 1)),
-    VIEWPORT_INTERACTION_MASK_WALL = ~(1 << (VIEWPORT_INTERACTION_ITEM_WALL - 1)),
-    VIEWPORT_INTERACTION_MASK_LARGE_SCENERY = ~(1 << (VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY - 1)),
-    VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
-};
+constexpr uint16_t ViewportInteractionItemAll = std::numeric_limits<uint16_t>::max();
 
 struct InteractionInfo
 {
@@ -93,7 +80,7 @@ struct InteractionInfo
         TileElement* Element = nullptr;
         SpriteBase* Entity;
     };
-    ViewportInteractionItem SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+    ViewportInteractionItem SpriteType = ViewportInteractionItem::None;
 };
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
@@ -107,7 +94,6 @@ extern uint8_t gShowLandRightsRefCount;
 extern uint8_t gShowConstuctionRightsRefCount;
 
 // rct2: 0x014234BC
-extern rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 extern rct_viewport* g_music_tracking_viewport;
 extern ScreenCoordsXY gSavedView;
 extern ZoomLevel gSavedViewZoom;
@@ -121,6 +107,8 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
 void viewport_create(
     rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, int32_t zoom, CoordsXYZ centrePos,
     char flags, uint16_t sprite);
+void viewport_remove(rct_viewport* viewport);
+void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t maxZoom = -1);
 void viewport_update_position(rct_window* window);
 void viewport_update_sprite_follow(rct_window* window);
 void viewport_update_smart_sprite_follow(rct_window* window);
@@ -129,10 +117,10 @@ void viewport_update_smart_staff_follow(rct_window* window, Peep* peep);
 void viewport_update_smart_vehicle_follow(rct_window* window);
 void viewport_render(
     rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
-    std::vector<paint_session>* sessions = nullptr);
+    std::vector<RecordedPaintSession>* sessions = nullptr);
 void viewport_paint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
-    std::vector<paint_session>* sessions = nullptr);
+    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    std::vector<RecordedPaintSession>* sessions = nullptr);
 
 CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords);
 
@@ -161,17 +149,17 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
 void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);
 
-void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
+void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rct_viewport** viewport);
-std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int16_t z);
+std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int32_t z);
 std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenCoords, uint8_t* quadrant);
-std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* quadrant);
+std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* quadrant);
 std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoords, uint8_t* side);
-std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* side);
+std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* side);
 
 uint8_t get_current_rotation();
-int16_t get_height_marker_offset();
+int32_t get_height_marker_offset();
 
 void viewport_set_saved_view();
 

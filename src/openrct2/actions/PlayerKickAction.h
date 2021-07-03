@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlayerKickAction, GAME_COMMAND_KICK_PLAYER, GameActions::Result)
+DEFINE_GAME_ACTION(PlayerKickAction, GameCommand::KickPlayer, GameActions::Result)
 {
 private:
     NetworkPlayerId_t _playerId{ -1 };

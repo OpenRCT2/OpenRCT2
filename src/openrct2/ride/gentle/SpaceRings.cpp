@@ -11,10 +11,11 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../peep/Peep.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
-
+#include "../Vehicle.h"
 enum
 {
     SPR_SPACE_RINGS_FENCE_NE = 22146,
@@ -47,9 +48,9 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
         auto vehicle = GetEntity<Vehicle>(ride->vehicles[vehicleIndex]);
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            session->InteractionType = ViewportInteractionItem::Entity;
             session->CurrentlyDrawnItem = vehicle;
-            frameNum += static_cast<int8_t>(vehicle->vehicle_sprite_type) * 4;
+            frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
         }
 
         uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
@@ -80,7 +81,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x00767C40 */
@@ -181,7 +182,7 @@ static void paint_space_rings(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_3_X_3)
+    if (trackType != TrackElemType::FlatTrack3x3)
     {
         return nullptr;
     }

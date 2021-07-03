@@ -20,9 +20,11 @@
 #include "../ride/Ride.h"
 #include "../world/Park.h"
 #include "../world/SmallScenery.h"
-#include "../world/Sprite.h"
+#include "../world/TileElementsView.h"
 #include "GameAction.h"
 #include "SmallSceneryPlaceAction.h"
+
+using namespace OpenRCT2;
 
 SmallSceneryRemoveAction::SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType)
     : _loc(location)
@@ -59,13 +61,13 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    rct_scenery_entry* entry = get_small_scenery_entry(_sceneryType);
+    auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res->Cost = entry->small_scenery.removal_price * 10;
+    res->Cost = entry->removal_price * 10;
     res->Expenditure = ExpenditureType::Landscaping;
     res->Position = _loc;
 
@@ -106,13 +108,13 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Execute() const
 {
     GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
 
-    rct_scenery_entry* entry = get_small_scenery_entry(_sceneryType);
+    auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res->Cost = entry->small_scenery.removal_price * 10;
+    res->Cost = entry->removal_price * 10;
     res->Expenditure = ExpenditureType::Landscaping;
     res->Position = _loc;
 
@@ -132,26 +134,23 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Execute() const
 
 TileElement* SmallSceneryRemoveAction::FindSceneryElement() const
 {
-    TileElement* tileElement = map_get_first_element_at(_loc);
-    if (!tileElement)
-        return nullptr;
-
-    do
+    const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
+    for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_loc))
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
-            continue;
-        if ((tileElement->AsSmallScenery()->GetSceneryQuadrant()) != _quadrant)
-            continue;
-        if (tileElement->GetBaseZ() != _loc.z)
-            continue;
-        if (tileElement->AsSmallScenery()->GetEntryIndex() != _sceneryType)
-            continue;
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && tileElement->IsGhost() == false)
+        // If we are removing ghost elements
+        if (isGhost && sceneryElement->IsGhost() == false)
             continue;
 
-        return tileElement;
+        if (sceneryElement->GetSceneryQuadrant() != _quadrant)
+            continue;
 
-    } while (!(tileElement++)->IsLastForTile());
+        if (sceneryElement->GetBaseZ() != _loc.z)
+            continue;
 
+        if (sceneryElement->GetEntryIndex() != _sceneryType)
+            continue;
+
+        return sceneryElement->as<TileElement>();
+    }
     return nullptr;
 }

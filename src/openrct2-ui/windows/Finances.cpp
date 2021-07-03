@@ -515,7 +515,7 @@ static void window_finances_summary_invalidate(rct_window* w)
     window_finances_set_pressed_tab(w);
     auto ft = Formatter::Common();
     ft.Increment(6);
-    ft.Add<money32>(gBankLoan);
+    ft.Add<money64>(gBankLoan);
 }
 
 /**
@@ -530,7 +530,9 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 51 };
 
     // Expenditure / Income heading
-    DrawTextBasic(dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, TextAlignment::LEFT, true);
+    DrawTextBasic(
+        dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
+        { COLOUR_BLACK, TextUnderline::On, TextAlignment::LEFT });
     screenCoords.y += 14;
 
     // Expenditure / Income row labels
@@ -542,43 +544,39 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
                 ColourMapA[w->colours[1]].lighter | 0x1000000);
 
-        gfx_draw_string_left(
-            dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, screenCoords - ScreenCoordsXY{ 0, 1 });
+        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, window_finances_summary_row_labels[i]);
         screenCoords.y += TABLE_CELL_HEIGHT;
     }
 
     // Horizontal rule below expenditure / income table
     gfx_fill_rect_inset(
-        dpi, w->windowPos.x + 8, w->windowPos.y + 272, w->windowPos.x + 8 + 513, w->windowPos.y + 272 + 1, w->colours[1],
+        dpi, { w->windowPos + ScreenCoordsXY{ 8, 272 }, w->windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Loan and interest rate
-    gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 8, 279 });
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
     auto ft = Formatter();
     ft.Add<uint16_t>(gBankLoanInterestRate);
-    gfx_draw_string_left(
-        dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft.Data(), COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 167, 279 });
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
 
     // Current cash
     rct_string_id stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-    gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 8, 294 });
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 8, 294 }, stringId, &gCash);
 
     // Objective related financial information
     if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
     {
-        money32 lastMonthProfit = finance_get_last_month_shop_profit();
+        auto lastMonthProfit = finance_get_last_month_shop_profit();
         ft = Formatter();
-        ft.Add<money32>(lastMonthProfit);
-        gfx_draw_string_left(
-            dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, ft.Data(), COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ 280, 279 });
+        ft.Add<money64>(lastMonthProfit);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 280, 279 }, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, ft);
     }
     else
     {
         // Park value and company value
-        gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 280, 279 });
-        gfx_draw_string_left(
-            dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 280, 294 });
+        DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, &gParkValue);
+        DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 280, 294 }, STR_COMPANY_VALUE_LABEL, &gCompanyValue);
     }
 }
 
@@ -618,25 +616,24 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         ft.Add<uint16_t>(monthyear);
         DrawTextBasic(
             dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
-            monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft, COLOUR_BLACK,
-            TextAlignment::RIGHT, true);
+            monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft,
+            { TextUnderline::On, TextAlignment::RIGHT });
         screenCoords.y += 14;
 
         // Month expenditures
-        money32 profit = 0;
+        money64 profit = 0;
         for (int32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
         {
-            money32 expenditure = gExpenditureTable[i][j];
+            auto expenditure = gExpenditureTable[i][j];
             if (expenditure != 0)
             {
                 profit += expenditure;
                 const rct_string_id format = expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE
                                                               : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE;
                 ft = Formatter();
-                ft.Add<money32>(expenditure);
+                ft.Add<money64>(expenditure);
                 DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, COLOUR_BLACK,
-                    TextAlignment::RIGHT);
+                    dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
             }
             screenCoords.y += TABLE_CELL_HEIGHT;
         }
@@ -645,9 +642,8 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         // Month profit
         const rct_string_id format = profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE;
         ft = Formatter();
-        ft.Add<money32>(profit);
-        DrawTextBasic(
-            dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        ft.Add<money64>(profit);
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
 
         gfx_fill_rect(
             dpi, { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
@@ -709,39 +705,35 @@ static void window_finances_financial_graph_invalidate(rct_window* w)
  */
 static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t i, x, y, graphLeft, graphTop, graphRight, graphBottom;
-
     WindowDrawWidgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
     rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
-    graphLeft = w->windowPos.x + pageWidget->left + 4;
-    graphTop = w->windowPos.y + pageWidget->top + 15;
-    graphRight = w->windowPos.x + pageWidget->right - 4;
-    graphBottom = w->windowPos.y + pageWidget->bottom - 4;
+    auto graphTopLeft = w->windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
+    auto graphBottomRight = w->windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
     // Cash (less loan)
-    money32 cashLessLoan = gCash - gBankLoan;
+    auto cashLessLoan = gCash - gBankLoan;
 
-    gfx_draw_string_left(
-        dpi,
+    DrawTextBasic(
+        dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
         cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                           : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE,
-        &cashLessLoan, COLOUR_BLACK, { graphLeft, graphTop - 11 });
+        &cashLessLoan);
 
     // Graph
-    gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(dpi, { graphTopLeft, graphBottomRight }, w->colours[1], INSET_RECT_F_30);
 
     // Calculate the Y axis scale (log2 of highest [+/-]balance)
     int32_t yAxisScale = 0;
-    for (i = 0; i < 64; i++)
+    for (int32_t i = 0; i < 64; i++)
     {
-        money32 balance = gCashHistory[i];
-        if (balance == MONEY32_UNDEFINED)
+        auto balance = gCashHistory[i];
+        if (balance == MONEY64_UNDEFINED)
             continue;
 
         // Modifier balance then keep halving until less than 127 pixels
-        balance = abs(balance) >> yAxisScale;
+        balance = std::abs(balance) >> yAxisScale;
         while (balance > 127)
         {
             balance /= 2;
@@ -750,23 +742,25 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
     }
 
     // Y axis labels
-    x = graphLeft + 18;
-    y = graphTop + 14;
-    money32 axisBase;
+    auto coords = graphTopLeft + ScreenCoordsXY{ 18, 14 };
+    money64 axisBase;
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
-        money32 axisValue = axisBase << yAxisScale;
+        auto axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
-        ft.Add<money32>(axisValue);
-        DrawTextBasic(dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, COLOUR_BLACK, TextAlignment::RIGHT);
-        gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
-        y += 39;
+        ft.Add<money64>(axisValue);
+        DrawTextBasic(
+            dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+            { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+        gfx_fill_rect_inset(
+            dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, w->colours[2],
+            INSET_RECT_FLAG_BORDER_INSET);
+        coords.y += 39;
     }
 
     // X axis labels and values
-    x = graphLeft + 98;
-    y = graphTop + 17;
-    Graph::Draw(dpi, gCashHistory, 64, x, y, yAxisScale, 128);
+    coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
+    Graph::Draw(dpi, gCashHistory, 64, coords, yAxisScale, 128);
 }
 
 #pragma endregion
@@ -819,34 +813,30 @@ static void window_finances_park_value_graph_invalidate(rct_window* w)
  */
 static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t i, x, y, graphLeft, graphTop, graphRight, graphBottom;
-
     WindowDrawWidgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
     rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
-    graphLeft = w->windowPos.x + pageWidget->left + 4;
-    graphTop = w->windowPos.y + pageWidget->top + 15;
-    graphRight = w->windowPos.x + pageWidget->right - 4;
-    graphBottom = w->windowPos.y + pageWidget->bottom - 4;
+    auto graphTopLeft = w->windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
+    auto graphBottomRight = w->windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
     // Park value
-    money32 parkValue = gParkValue;
-    gfx_draw_string_left(dpi, STR_FINANCES_PARK_VALUE, &parkValue, COLOUR_BLACK, { graphLeft, graphTop - 11 });
+    auto parkValue = gParkValue;
+    DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, &parkValue);
 
     // Graph
-    gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(dpi, { graphTopLeft, graphBottomRight }, w->colours[1], INSET_RECT_F_30);
 
     // Calculate the Y axis scale (log2 of highest [+/-]balance)
     int32_t yAxisScale = 0;
-    for (i = 0; i < 64; i++)
+    for (int32_t i = 0; i < 64; i++)
     {
-        money32 balance = gParkValueHistory[i];
-        if (balance == MONEY32_UNDEFINED)
+        auto balance = gParkValueHistory[i];
+        if (balance == MONEY64_UNDEFINED)
             continue;
 
         // Modifier balance then keep halving until less than 255 pixels
-        balance = abs(balance) >> yAxisScale;
+        balance = std::abs(balance) >> yAxisScale;
         while (balance > 255)
         {
             balance /= 2;
@@ -855,23 +845,25 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
     }
 
     // Y axis labels
-    x = graphLeft + 18;
-    y = graphTop + 14;
-    money32 axisBase;
+    auto coords = graphTopLeft + ScreenCoordsXY{ 18, 14 };
+    money64 axisBase;
     for (axisBase = MONEY(24, 00); axisBase >= MONEY(0, 00); axisBase -= MONEY(6, 00))
     {
-        money32 axisValue = axisBase << yAxisScale;
+        auto axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
-        ft.Add<money32>(axisValue);
-        DrawTextBasic(dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, COLOUR_BLACK, TextAlignment::RIGHT);
-        gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
-        y += 39;
+        ft.Add<money64>(axisValue);
+        DrawTextBasic(
+            dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+            { FontSpriteBase::SMALL, TextAlignment::RIGHT });
+        gfx_fill_rect_inset(
+            dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, w->colours[2],
+            INSET_RECT_FLAG_BORDER_INSET);
+        coords.y += 39;
     }
 
     // X axis labels and values
-    x = graphLeft + 98;
-    y = graphTop + 17;
-    Graph::Draw(dpi, gParkValueHistory, 64, x, y, yAxisScale, 0);
+    coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
+    Graph::Draw(dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
 }
 
 #pragma endregion
@@ -923,36 +915,32 @@ static void window_finances_profit_graph_invalidate(rct_window* w)
  */
 static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t i, graphLeft, graphTop, graphRight, graphBottom;
-
     WindowDrawWidgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
     rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
-    graphLeft = w->windowPos.x + pageWidget->left + 4;
-    graphTop = w->windowPos.y + pageWidget->top + 15;
-    graphRight = w->windowPos.x + pageWidget->right - 4;
-    graphBottom = w->windowPos.y + pageWidget->bottom - 4;
+    auto graphTopLeft = w->windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
+    auto graphBottomRight = w->windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
     // Weekly profit
-    money32 weeklyPofit = gCurrentProfit;
-    gfx_draw_string_left(
-        dpi, weeklyPofit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, &weeklyPofit,
-        COLOUR_BLACK, { graphLeft, graphTop - 11 });
+    auto weeklyPofit = gCurrentProfit;
+    DrawTextBasic(
+        dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
+        weeklyPofit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, &weeklyPofit);
 
     // Graph
-    gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(dpi, { graphTopLeft, graphBottomRight }, w->colours[1], INSET_RECT_F_30);
 
     // Calculate the Y axis scale (log2 of highest [+/-]balance)
     int32_t yAxisScale = 0;
-    for (i = 0; i < 64; i++)
+    for (int32_t i = 0; i < 64; i++)
     {
-        money32 balance = gWeeklyProfitHistory[i];
-        if (balance == MONEY32_UNDEFINED)
+        auto balance = gWeeklyProfitHistory[i];
+        if (balance == MONEY64_UNDEFINED)
             continue;
 
         // Modifier balance then keep halving until less than 127 pixels
-        balance = abs(balance) >> yAxisScale;
+        balance = std::abs(balance) >> yAxisScale;
         while (balance > 127)
         {
             balance /= 2;
@@ -961,25 +949,25 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     }
 
     // Y axis labels
-    auto screenPos = ScreenCoordsXY{ graphLeft + 18, graphTop + 14 };
-    money32 axisBase;
+    auto screenPos = graphTopLeft + ScreenCoordsXY{ 18, 14 };
+    money64 axisBase;
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
-        money32 axisValue = axisBase << yAxisScale;
+        money64 axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
-        ft.Add<money32>(axisValue);
+        ft.Add<money64>(axisValue);
         DrawTextBasic(
-            dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, COLOUR_BLACK,
-            TextAlignment::RIGHT);
+            dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+            { FontSpriteBase::SMALL, TextAlignment::RIGHT });
         gfx_fill_rect_inset(
-            dpi, screenPos.x + 70, screenPos.y + 5, graphLeft + 482, screenPos.y + 5, w->colours[2],
+            dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);
         screenPos.y += 39;
     }
 
     // X axis labels and values
-    screenPos = { graphLeft + 98, graphTop + 17 };
-    Graph::Draw(dpi, gWeeklyProfitHistory, 64, screenPos.x, screenPos.y, yAxisScale, 128);
+    screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
+    Graph::Draw(dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
 }
 
 #pragma endregion
@@ -1104,20 +1092,20 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         }
 
         // Advertisement
-        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft);
 
         // Duration
         uint16_t weeksRemaining = campaign->WeeksLeft;
-        gfx_draw_string_left(
-            dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, COLOUR_BLACK,
-            screenCoords + ScreenCoordsXY{ 304, 0 });
+        DrawTextBasic(
+            dpi, screenCoords + ScreenCoordsXY{ 304, 0 }, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING,
+            &weeksRemaining);
 
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
     if (noCampaignsActive)
     {
-        gfx_draw_string_left(dpi, STR_MARKETING_CAMPAIGNS_NONE, nullptr, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 4, 0 });
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     screenCoords.y += 34;
@@ -1129,11 +1117,9 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         if (campaignButton->type != WindowWidgetType::Empty)
         {
             // Draw button text
-            money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
-            gfx_draw_string_left(
-                dpi, MarketingCampaignNames[i][0], nullptr, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 4, 0 });
-            gfx_draw_string_left(
-                dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 });
+            money64 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, &pricePerWeek);
 
             screenCoords.y += BUTTON_FACE_HEIGHT + 2;
         }
@@ -1371,7 +1357,8 @@ static void window_finances_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w
         }
 
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
+            dpi, ImageId(spriteIndex),
+            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
 }
 

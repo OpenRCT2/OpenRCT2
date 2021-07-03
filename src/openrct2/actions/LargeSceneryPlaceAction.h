@@ -23,16 +23,16 @@ public:
 
     uint8_t GroundFlags{ 0 };
     TileElement* tileElement = nullptr;
+    BannerIndex bannerId = BANNER_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GAME_COMMAND_PLACE_LARGE_SCENERY, LargeSceneryPlaceActionResult)
+DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GameCommand::PlaceLargeScenery, LargeSceneryPlaceActionResult)
 {
 private:
     CoordsXYZD _loc;
     ObjectEntryIndex _sceneryType{ OBJECT_ENTRY_INDEX_NULL };
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
-    BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
     LargeSceneryPlaceAction() = default;
@@ -50,6 +50,7 @@ public:
 
 private:
     int16_t GetTotalNumTiles(rct_large_scenery_tile * tiles) const;
+    bool CheckMapCapacity(rct_large_scenery_tile * tiles, int16_t numTiles) const;
     int16_t GetMaxSurfaceHeight(rct_large_scenery_tile * tiles) const;
     void SetNewLargeSceneryElement(LargeSceneryElement & sceneryElement, uint8_t tileNum) const;
 };

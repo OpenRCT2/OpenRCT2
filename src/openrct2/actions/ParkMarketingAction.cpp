@@ -28,6 +28,13 @@ ParkMarketingAction::ParkMarketingAction(int32_t type, int32_t item, int32_t num
 {
 }
 
+void ParkMarketingAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("type", _type);
+    visitor.Visit("item", _item);
+    visitor.Visit("duration", _numWeeks);
+}
+
 uint16_t ParkMarketingAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

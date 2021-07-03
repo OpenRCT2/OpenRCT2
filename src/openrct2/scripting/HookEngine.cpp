@@ -19,17 +19,19 @@ using namespace OpenRCT2::Scripting;
 
 HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
 {
-    static const std::unordered_map<std::string, HOOK_TYPE> LookupTable(
-        { { "action.query", HOOK_TYPE::ACTION_QUERY },
-          { "action.execute", HOOK_TYPE::ACTION_EXECUTE },
-          { "interval.tick", HOOK_TYPE::INTERVAL_TICK },
-          { "interval.day", HOOK_TYPE::INTERVAL_DAY },
-          { "network.chat", HOOK_TYPE::NETWORK_CHAT },
-          { "network.authenticate", HOOK_TYPE::NETWORK_AUTHENTICATE },
-          { "network.join", HOOK_TYPE::NETWORK_JOIN },
-          { "network.leave", HOOK_TYPE::NETWORK_LEAVE },
-          { "ride.ratings.calculate", HOOK_TYPE::RIDE_RATINGS_CALCULATE },
-          { "action.location", HOOK_TYPE::ACTION_LOCATION } });
+    static const std::unordered_map<std::string, HOOK_TYPE> LookupTable({
+        { "action.query", HOOK_TYPE::ACTION_QUERY },
+        { "action.execute", HOOK_TYPE::ACTION_EXECUTE },
+        { "interval.tick", HOOK_TYPE::INTERVAL_TICK },
+        { "interval.day", HOOK_TYPE::INTERVAL_DAY },
+        { "network.chat", HOOK_TYPE::NETWORK_CHAT },
+        { "network.authenticate", HOOK_TYPE::NETWORK_AUTHENTICATE },
+        { "network.join", HOOK_TYPE::NETWORK_JOIN },
+        { "network.leave", HOOK_TYPE::NETWORK_LEAVE },
+        { "ride.ratings.calculate", HOOK_TYPE::RIDE_RATINGS_CALCULATE },
+        { "action.location", HOOK_TYPE::ACTION_LOCATION },
+        { "guest.generation", HOOK_TYPE::GUEST_GENERATION },
+    });
     auto result = LookupTable.find(name);
     return (result != LookupTable.end()) ? result->second : HOOK_TYPE::UNDEFINED;
 }
@@ -48,8 +50,7 @@ uint32_t HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, co
 {
     auto& hookList = GetHookList(type);
     auto cookie = _nextCookie++;
-    Hook hook(cookie, owner, function);
-    hookList.Hooks.push_back(hook);
+    hookList.Hooks.emplace_back(cookie, owner, function);
     return cookie;
 }
 

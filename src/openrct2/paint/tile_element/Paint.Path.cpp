@@ -7,20 +7,26 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../Context.h"
 #include "../../Game.h"
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/FootpathObject.h"
+#include "../../object/FootpathRailingsObject.h"
+#include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectList.h"
+#include "../../object/ObjectManager.h"
+#include "../../peep/Peep.h"
 #include "../../peep/Staff.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
 #include "../../ride/TrackPaint.h"
+#include "../../world/Entity.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
-#include "../../world/Sprite.h"
 #include "../../world/Surface.h"
 #include "../Paint.h"
 #include "../Supports.h"
@@ -82,15 +88,15 @@ static constexpr const uint8_t byte_98D8A4[] = {
 // clang-format on
 
 void path_paint_box_support(
-    paint_session* session, const TileElement* tileElement, int32_t height, PathSurfaceEntry* footpathEntry,
-    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
+    paint_session* session, const TileElement* tileElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
+    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 void path_paint_pole_support(
-    paint_session* session, const TileElement* tileElement, int16_t height, PathSurfaceEntry* footpathEntry,
-    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
+    paint_session* session, const TileElement* tileElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
+    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(
-    paint_session* session, rct_scenery_entry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
+    paint_session* session, PathBitEntry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
     if (tileElement->AsPath()->IsSloped())
@@ -107,7 +113,7 @@ static void path_bit_lights_paint(
 
         imageId |= pathBitImageFlags;
 
-        PaintAddImageAsParent(session, imageId, 2, 16, 1, 1, 23, height, 3, 16, height + 2);
+        PaintAddImageAsParent(session, imageId, { 2, 16, height }, { 1, 1, 23 }, { 3, 16, height + 2 });
     }
     if (!(edges & EDGE_SE))
     {
@@ -118,7 +124,7 @@ static void path_bit_lights_paint(
 
         imageId |= pathBitImageFlags;
 
-        PaintAddImageAsParent(session, imageId, 16, 30, 1, 0, 23, height, 16, 29, height + 2);
+        PaintAddImageAsParent(session, imageId, { 16, 30, height }, { 1, 0, 23 }, { 16, 29, height + 2 });
     }
 
     if (!(edges & EDGE_SW))
@@ -130,7 +136,7 @@ static void path_bit_lights_paint(
 
         imageId |= pathBitImageFlags;
 
-        PaintAddImageAsParent(session, imageId, 30, 16, 0, 1, 23, height, 29, 16, height + 2);
+        PaintAddImageAsParent(session, imageId, { 30, 16, height }, { 0, 1, 23 }, { 29, 16, height + 2 });
     }
 
     if (!(edges & EDGE_NW))
@@ -142,13 +148,13 @@ static void path_bit_lights_paint(
 
         imageId |= pathBitImageFlags;
 
-        PaintAddImageAsParent(session, imageId, 16, 2, 1, 1, 23, height, 16, 3, height + 2);
+        PaintAddImageAsParent(session, imageId, { 16, 2, height }, { 1, 1, 23 }, { 16, 3, height + 2 });
     }
 }
 
 /* rct2: 0x006A5C94 */
 static void path_bit_bins_paint(
-    paint_session* session, rct_scenery_entry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
+    paint_session* session, PathBitEntry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
     if (tileElement->AsPath()->IsSloped())
@@ -176,7 +182,7 @@ static void path_bit_bins_paint(
         }
 
         if (!(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
-            PaintAddImageAsParent(session, imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2);
+            PaintAddImageAsParent(session, imageId, { 7, 16, height }, { 1, 1, 7 }, { 7, 16, height + 2 });
     }
     if (!(edges & EDGE_SE))
     {
@@ -197,7 +203,7 @@ static void path_bit_bins_paint(
         }
 
         if (!(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
-            PaintAddImageAsParent(session, imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2);
+            PaintAddImageAsParent(session, imageId, { 16, 25, height }, { 1, 1, 7 }, { 16, 25, height + 2 });
     }
 
     if (!(edges & EDGE_SW))
@@ -219,7 +225,7 @@ static void path_bit_bins_paint(
         }
 
         if (!(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
-            PaintAddImageAsParent(session, imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2);
+            PaintAddImageAsParent(session, imageId, { 25, 16, height }, { 1, 1, 7 }, { 25, 16, height + 2 });
     }
 
     if (!(edges & EDGE_NW))
@@ -241,13 +247,13 @@ static void path_bit_bins_paint(
         }
 
         if (!(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
-            PaintAddImageAsParent(session, imageId, 16, 7, 1, 1, 7, height, 16, 7, height + 2);
+            PaintAddImageAsParent(session, imageId, { 16, 7, height }, { 1, 1, 7 }, { 16, 7, height + 2 });
     }
 }
 
 /* rct2: 0x006A5E81 */
 static void path_bit_benches_paint(
-    paint_session* session, rct_scenery_entry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
+    paint_session* session, PathBitEntry* pathBitEntry, const TileElement* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
     uint32_t imageId;
@@ -261,7 +267,7 @@ static void path_bit_benches_paint(
 
         imageId |= pathBitImageFlags;
 
-        PaintAddImageAsParent(session, imageId, 7, 16, 0, 16, 7, height, 6, 8, height + 2);
+        PaintAddImageAsParent(session, imageId, { 7, 16, height }, { 0, 16, 7 }, { 6, 8, height + 2 });
     }
     if (!(edges & EDGE_SE))
     {
@@ -272,7 +278,7 @@ static void path_bit_benches_paint(
 
         imageId |= pathBitImageFlags;
 
-        PaintAddImageAsParent(session, imageId, 16, 25, 16, 0, 7, height, 8, 23, height + 2);
+        PaintAddImageAsParent(session, imageId, { 16, 25, height }, { 16, 0, 7 }, { 8, 23, height + 2 });
     }
 
     if (!(edges & EDGE_SW))
@@ -284,7 +290,7 @@ static void path_bit_benches_paint(
 
         imageId |= pathBitImageFlags;
 
-        PaintAddImageAsParent(session, imageId, 25, 16, 0, 16, 7, height, 23, 8, height + 2);
+        PaintAddImageAsParent(session, imageId, { 25, 16, height }, { 0, 16, 7 }, { 23, 8, height + 2 });
     }
 
     if (!(edges & EDGE_NW))
@@ -296,13 +302,13 @@ static void path_bit_benches_paint(
 
         imageId |= pathBitImageFlags;
 
-        PaintAddImageAsParent(session, imageId, 16, 7, 16, 0, 7, height, 8, 6, height + 2);
+        PaintAddImageAsParent(session, imageId, { 16, 7, height }, { 16, 0, 7 }, { 8, 6, height + 2 });
     }
 }
 
 /* rct2: 0x006A6008 */
 static void path_bit_jumping_fountains_paint(
-    paint_session* session, rct_scenery_entry* pathBitEntry, int32_t height, uint32_t pathBitImageFlags, rct_drawpixelinfo* dpi)
+    paint_session* session, PathBitEntry* pathBitEntry, int32_t height, uint32_t pathBitImageFlags, rct_drawpixelinfo* dpi)
 {
     if (dpi->zoom_level > 0)
         return;
@@ -310,10 +316,10 @@ static void path_bit_jumping_fountains_paint(
     uint32_t imageId = pathBitEntry->image;
     imageId |= pathBitImageFlags;
 
-    PaintAddImageAsParent(session, imageId + 1, 0, 0, 1, 1, 2, height, 3, 3, height + 2);
-    PaintAddImageAsParent(session, imageId + 2, 0, 0, 1, 1, 2, height, 3, 29, height + 2);
-    PaintAddImageAsParent(session, imageId + 3, 0, 0, 1, 1, 2, height, 29, 29, height + 2);
-    PaintAddImageAsParent(session, imageId + 4, 0, 0, 1, 1, 2, height, 29, 3, height + 2);
+    PaintAddImageAsParent(session, imageId + 1, { 0, 0, height }, { 1, 1, 2 }, { 3, 3, height + 2 });
+    PaintAddImageAsParent(session, imageId + 2, { 0, 0, height }, { 1, 1, 2 }, { 3, 29, height + 2 });
+    PaintAddImageAsParent(session, imageId + 3, { 0, 0, height }, { 1, 1, 2 }, { 29, 29, height + 2 });
+    PaintAddImageAsParent(session, imageId + 4, { 0, 0, height }, { 1, 1, 2 }, { 29, 3, height + 2 });
 }
 
 /**
@@ -321,10 +327,10 @@ static void path_bit_jumping_fountains_paint(
  * @param tile_element (esi)
  */
 static void sub_6A4101(
-    paint_session* session, const TileElement* tile_element, uint16_t height, uint32_t connectedEdges, bool word_F3F038,
-    PathRailingsEntry* railingEntry, uint32_t imageFlags)
+    paint_session* session, const TileElement* tile_element, uint16_t height, uint32_t connectedEdges, bool hasSupports,
+    const FootpathPaintInfo& pathPaintInfo, uint32_t imageFlags)
 {
-    uint32_t base_image_id = railingEntry->railings_image | imageFlags;
+    uint32_t base_image_id = pathPaintInfo.RailingsImageId | imageFlags;
 
     if (tile_element->AsPath()->IsQueue())
     {
@@ -335,20 +341,20 @@ static void sub_6A4101(
                     & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
             {
                 case 0:
-                    PaintAddImageAsParent(session, 22 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
-                    PaintAddImageAsParent(session, 22 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 22 + base_image_id, { 0, 4, height }, { 32, 1, 23 }, { 0, 4, height + 2 });
+                    PaintAddImageAsParent(session, 22 + base_image_id, { 0, 28, height }, { 32, 1, 23 }, { 0, 28, height + 2 });
                     break;
                 case 1:
-                    PaintAddImageAsParent(session, 21 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
-                    PaintAddImageAsParent(session, 21 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 21 + base_image_id, { 4, 0, height }, { 1, 32, 23 }, { 4, 0, height + 2 });
+                    PaintAddImageAsParent(session, 21 + base_image_id, { 28, 0, height }, { 1, 32, 23 }, { 28, 0, height + 2 });
                     break;
                 case 2:
-                    PaintAddImageAsParent(session, 23 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
-                    PaintAddImageAsParent(session, 23 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 23 + base_image_id, { 0, 4, height }, { 32, 1, 23 }, { 0, 4, height + 2 });
+                    PaintAddImageAsParent(session, 23 + base_image_id, { 0, 28, height }, { 32, 1, 23 }, { 0, 28, height + 2 });
                     break;
                 case 3:
-                    PaintAddImageAsParent(session, 20 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
-                    PaintAddImageAsParent(session, 20 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 20 + base_image_id, { 4, 0, height }, { 1, 32, 23 }, { 4, 0, height + 2 });
+                    PaintAddImageAsParent(session, 20 + base_image_id, { 28, 0, height }, { 1, 32, 23 }, { 28, 0, height + 2 });
                     break;
             }
         }
@@ -357,52 +363,52 @@ static void sub_6A4101(
             switch (local_ebp)
             {
                 case 1:
-                    PaintAddImageAsParent(session, 17 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                    PaintAddImageAsParent(session, 17 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 17 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
+                    PaintAddImageAsParent(session, 17 + base_image_id, { 0, 28, height }, { 28, 1, 7 }, { 0, 28, height + 2 });
                     break;
                 case 2:
-                    PaintAddImageAsParent(session, 18 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                    PaintAddImageAsParent(session, 18 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 18 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
+                    PaintAddImageAsParent(session, 18 + base_image_id, { 28, 0, height }, { 1, 28, 7 }, { 28, 0, height + 2 });
                     break;
                 case 3:
-                    PaintAddImageAsParent(session, 17 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                    PaintAddImageAsParent(session, 17 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
                     PaintAddImageAsParent(
                         session, 18 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
                         height + 2); // bound_box_offset_y seems to be a bug
-                    PaintAddImageAsParent(session, 25 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 25 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
                     break;
                 case 4:
-                    PaintAddImageAsParent(session, 19 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                    PaintAddImageAsParent(session, 19 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 19 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
+                    PaintAddImageAsParent(session, 19 + base_image_id, { 0, 28, height }, { 28, 1, 7 }, { 0, 28, height + 2 });
                     break;
                 case 5:
-                    PaintAddImageAsParent(session, 15 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
-                    PaintAddImageAsParent(session, 15 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 15 + base_image_id, { 0, 4, height }, { 32, 1, 7 }, { 0, 4, height + 2 });
+                    PaintAddImageAsParent(session, 15 + base_image_id, { 0, 28, height }, { 32, 1, 7 }, { 0, 28, height + 2 });
                     break;
                 case 6:
-                    PaintAddImageAsParent(session, 18 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                    PaintAddImageAsParent(session, 19 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                    PaintAddImageAsParent(session, 26 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    PaintAddImageAsParent(session, 18 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
+                    PaintAddImageAsParent(session, 19 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
+                    PaintAddImageAsParent(session, 26 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
                     break;
                 case 8:
-                    PaintAddImageAsParent(session, 16 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                    PaintAddImageAsParent(session, 16 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 16 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
+                    PaintAddImageAsParent(session, 16 + base_image_id, { 28, 0, height }, { 1, 28, 7 }, { 28, 0, height + 2 });
                     break;
                 case 9:
-                    PaintAddImageAsParent(session, 16 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
-                    PaintAddImageAsParent(session, 17 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
-                    PaintAddImageAsParent(session, 24 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    PaintAddImageAsParent(session, 16 + base_image_id, { 28, 0, height }, { 1, 28, 7 }, { 28, 0, height + 2 });
+                    PaintAddImageAsParent(session, 17 + base_image_id, { 0, 28, height }, { 28, 1, 7 }, { 0, 28, height + 2 });
+                    PaintAddImageAsParent(session, 24 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
                     break;
                 case 10:
-                    PaintAddImageAsParent(session, 14 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
-                    PaintAddImageAsParent(session, 14 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 14 + base_image_id, { 4, 0, height }, { 1, 32, 7 }, { 4, 0, height + 2 });
+                    PaintAddImageAsParent(session, 14 + base_image_id, { 28, 0, height }, { 1, 32, 7 }, { 28, 0, height + 2 });
                     break;
                 case 12:
-                    PaintAddImageAsParent(session, 16 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                    PaintAddImageAsParent(session, 16 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
                     PaintAddImageAsParent(
                         session, 19 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
                         height + 2); // bound_box_offset_x seems to be a bug
-                    PaintAddImageAsParent(session, 27 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 27 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                     break;
                 default:
                     // purposely left empty
@@ -417,7 +423,7 @@ static void sub_6A4101(
 
         uint8_t direction = tile_element->AsPath()->GetQueueBannerDirection();
         // Draw ride sign
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        session->InteractionType = ViewportInteractionItem::Ride;
         if (tile_element->AsPath()->IsSloped())
         {
             if (tile_element->AsPath()->GetSlopeDirection() == direction)
@@ -446,12 +452,12 @@ static void sub_6A4101(
         auto ride = get_ride(tile_element->AsPath()->GetRideIndex());
         if (direction < 2 && ride != nullptr && imageFlags == 0)
         {
-            uint16_t scrollingMode = railingEntry->scrolling_mode;
+            uint16_t scrollingMode = pathPaintInfo.ScrollingMode;
             scrollingMode += direction;
 
             auto ft = Formatter();
 
-            if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
                 ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
                 ride->FormatNameTo(ft);
@@ -470,9 +476,7 @@ static void sub_6A4101(
                 format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
 
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
-
-            uint16_t stringWidth = gfx_get_string_width(gCommonStringFormatBuffer);
+            uint16_t stringWidth = gfx_get_string_width(gCommonStringFormatBuffer, FontSpriteBase::TINY);
             uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
             PaintAddImageAsChild(
@@ -480,10 +484,10 @@ static void sub_6A4101(
                 1, 1, 21, height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
         }
 
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+        session->InteractionType = ViewportInteractionItem::Footpath;
         if (imageFlags != 0)
         {
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+            session->InteractionType = ViewportInteractionItem::None;
         }
         return;
     }
@@ -491,37 +495,38 @@ static void sub_6A4101(
     uint32_t drawnCorners = 0;
     // If the path is not drawn over the supports, then no corner sprites will be drawn (making double-width paths
     // look like connected series of intersections).
-    if (tile_element->AsPath()->ShouldDrawPathOverSupports())
+    if (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS)
     {
         drawnCorners = (connectedEdges & FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK) >> 4;
     }
 
-    if (tile_element->AsPath()->IsSloped())
+    auto slopeRailingsSupported = !(pathPaintInfo.SurfaceFlags & FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS);
+    if ((hasSupports || slopeRailingsSupported) && tile_element->AsPath()->IsSloped())
     {
         switch ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                 & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
         {
             case 0:
-                PaintAddImageAsParent(session, 8 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
-                PaintAddImageAsParent(session, 8 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
+                PaintAddImageAsParent(session, 8 + base_image_id, { 0, 4, height }, { 32, 1, 23 }, { 0, 4, height + 2 });
+                PaintAddImageAsParent(session, 8 + base_image_id, { 0, 28, height }, { 32, 1, 23 }, { 0, 28, height + 2 });
                 break;
             case 1:
-                PaintAddImageAsParent(session, 7 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
-                PaintAddImageAsParent(session, 7 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
+                PaintAddImageAsParent(session, 7 + base_image_id, { 4, 0, height }, { 1, 32, 23 }, { 4, 0, height + 2 });
+                PaintAddImageAsParent(session, 7 + base_image_id, { 28, 0, height }, { 1, 32, 23 }, { 28, 0, height + 2 });
                 break;
             case 2:
-                PaintAddImageAsParent(session, 9 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
-                PaintAddImageAsParent(session, 9 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
+                PaintAddImageAsParent(session, 9 + base_image_id, { 0, 4, height }, { 32, 1, 23 }, { 0, 4, height + 2 });
+                PaintAddImageAsParent(session, 9 + base_image_id, { 0, 28, height }, { 32, 1, 23 }, { 0, 28, height + 2 });
                 break;
             case 3:
-                PaintAddImageAsParent(session, 6 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
-                PaintAddImageAsParent(session, 6 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
+                PaintAddImageAsParent(session, 6 + base_image_id, { 4, 0, height }, { 1, 32, 23 }, { 4, 0, height + 2 });
+                PaintAddImageAsParent(session, 6 + base_image_id, { 28, 0, height }, { 1, 32, 23 }, { 28, 0, height + 2 });
                 break;
         }
     }
     else
     {
-        if (!word_F3F038)
+        if (!hasSupports)
         {
             return;
         }
@@ -532,128 +537,128 @@ static void sub_6A4101(
                 // purposely left empty
                 break;
             case 1:
-                PaintAddImageAsParent(session, 3 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                PaintAddImageAsParent(session, 3 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                PaintAddImageAsParent(session, 3 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
+                PaintAddImageAsParent(session, 3 + base_image_id, { 0, 28, height }, { 28, 1, 7 }, { 0, 28, height + 2 });
                 break;
             case 2:
-                PaintAddImageAsParent(session, 4 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                PaintAddImageAsParent(session, 4 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                PaintAddImageAsParent(session, 4 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
+                PaintAddImageAsParent(session, 4 + base_image_id, { 28, 0, height }, { 1, 28, 7 }, { 28, 0, height + 2 });
                 break;
             case 4:
-                PaintAddImageAsParent(session, 5 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                PaintAddImageAsParent(session, 5 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                PaintAddImageAsParent(session, 5 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
+                PaintAddImageAsParent(session, 5 + base_image_id, { 0, 28, height }, { 28, 1, 7 }, { 0, 28, height + 2 });
                 break;
             case 5:
-                PaintAddImageAsParent(session, 1 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
-                PaintAddImageAsParent(session, 1 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
+                PaintAddImageAsParent(session, 1 + base_image_id, { 0, 4, height }, { 32, 1, 7 }, { 0, 4, height + 2 });
+                PaintAddImageAsParent(session, 1 + base_image_id, { 0, 28, height }, { 32, 1, 7 }, { 0, 28, height + 2 });
                 break;
             case 8:
-                PaintAddImageAsParent(session, 2 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                PaintAddImageAsParent(session, 2 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                PaintAddImageAsParent(session, 2 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
+                PaintAddImageAsParent(session, 2 + base_image_id, { 28, 0, height }, { 1, 28, 7 }, { 28, 0, height + 2 });
                 break;
             case 10:
-                PaintAddImageAsParent(session, 0 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
-                PaintAddImageAsParent(session, 0 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
+                PaintAddImageAsParent(session, 0 + base_image_id, { 4, 0, height }, { 1, 32, 7 }, { 4, 0, height + 2 });
+                PaintAddImageAsParent(session, 0 + base_image_id, { 28, 0, height }, { 1, 32, 7 }, { 28, 0, height + 2 });
                 break;
 
             case 3:
-                PaintAddImageAsParent(session, 3 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                PaintAddImageAsParent(session, 3 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
                 PaintAddImageAsParent(
                     session, 4 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
                     height + 2); // bound_box_offset_y seems to be a bug
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
-                    PaintAddImageAsParent(session, 11 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 11 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
                 }
                 break;
             case 6:
-                PaintAddImageAsParent(session, 4 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                PaintAddImageAsParent(session, 5 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                PaintAddImageAsParent(session, 4 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
+                PaintAddImageAsParent(session, 5 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
-                    PaintAddImageAsParent(session, 12 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    PaintAddImageAsParent(session, 12 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
                 }
                 break;
             case 9:
-                PaintAddImageAsParent(session, 2 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
-                PaintAddImageAsParent(session, 3 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                PaintAddImageAsParent(session, 2 + base_image_id, { 28, 0, height }, { 1, 28, 7 }, { 28, 0, height + 2 });
+                PaintAddImageAsParent(session, 3 + base_image_id, { 0, 28, height }, { 28, 1, 7 }, { 0, 28, height + 2 });
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
-                    PaintAddImageAsParent(session, 10 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    PaintAddImageAsParent(session, 10 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
                 }
                 break;
             case 12:
-                PaintAddImageAsParent(session, 2 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                PaintAddImageAsParent(session, 2 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
                 PaintAddImageAsParent(
                     session, 5 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
                     height + 2); // bound_box_offset_x seems to be a bug
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
-                    PaintAddImageAsParent(session, 13 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 13 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                 }
                 break;
 
             case 7:
-                PaintAddImageAsParent(session, 1 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
+                PaintAddImageAsParent(session, 1 + base_image_id, { 0, 4, height }, { 32, 1, 7 }, { 0, 4, height + 2 });
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
-                    PaintAddImageAsParent(session, 11 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 11 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
-                    PaintAddImageAsParent(session, 12 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    PaintAddImageAsParent(session, 12 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
                 }
                 break;
             case 13:
-                PaintAddImageAsParent(session, 1 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
+                PaintAddImageAsParent(session, 1 + base_image_id, { 0, 28, height }, { 32, 1, 7 }, { 0, 28, height + 2 });
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
-                    PaintAddImageAsParent(session, 13 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 13 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
-                    PaintAddImageAsParent(session, 10 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    PaintAddImageAsParent(session, 10 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
                 }
                 break;
             case 14:
-                PaintAddImageAsParent(session, 0 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
+                PaintAddImageAsParent(session, 0 + base_image_id, { 4, 0, height }, { 1, 32, 7 }, { 4, 0, height + 2 });
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
-                    PaintAddImageAsParent(session, 12 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    PaintAddImageAsParent(session, 12 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
-                    PaintAddImageAsParent(session, 13 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 13 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                 }
                 break;
             case 11:
-                PaintAddImageAsParent(session, 0 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
+                PaintAddImageAsParent(session, 0 + base_image_id, { 28, 0, height }, { 1, 32, 7 }, { 28, 0, height + 2 });
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
-                    PaintAddImageAsParent(session, 11 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 11 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
-                    PaintAddImageAsParent(session, 10 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    PaintAddImageAsParent(session, 10 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
                 }
                 break;
 
             case 15:
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
-                    PaintAddImageAsParent(session, 11 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    PaintAddImageAsParent(session, 11 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
-                    PaintAddImageAsParent(session, 12 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    PaintAddImageAsParent(session, 12 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 28, height + 2 });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
-                    PaintAddImageAsParent(session, 13 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    PaintAddImageAsParent(session, 13 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
-                    PaintAddImageAsParent(session, 10 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    PaintAddImageAsParent(session, 10 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 0, height + 2 });
                 }
                 break;
         }
@@ -671,7 +676,7 @@ static void sub_6A4101(
  */
 static void sub_6A3F61(
     paint_session* session, const TileElement* tile_element, uint16_t connectedEdges, uint16_t height,
-    PathRailingsEntry* railingEntry, uint32_t imageFlags, uint32_t sceneryImageFlags, bool word_F3F038)
+    const FootpathPaintInfo& pathPaintInfo, uint32_t imageFlags, uint32_t sceneryImageFlags, bool hasSupports)
 {
     // eax --
     // ebx --
@@ -694,55 +699,55 @@ static void sub_6A3F61(
         {
             if (tile_element->AsPath()->HasAddition())
             {
-                session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
+                session->InteractionType = ViewportInteractionItem::FootpathItem;
                 if (sceneryImageFlags != 0)
                 {
-                    session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                    session->InteractionType = ViewportInteractionItem::None;
                 }
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
-                rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
+                auto* pathAddEntry = tile_element->AsPath()->GetAdditionEntry();
 
                 // Can be null if the object is not loaded.
-                if (sceneryEntry == nullptr)
+                if (pathAddEntry == nullptr)
                 {
                     paintScenery = false;
                 }
                 else if (
                     (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(tile_element->AsPath()->IsBroken())
-                    && !(sceneryEntry->path_bit.draw_type == PATH_BIT_DRAW_TYPE_BINS))
+                    && pathAddEntry->draw_type != PathBitDrawType::Bin)
                 {
                     paintScenery = false;
                 }
                 else
                 {
-                    switch (sceneryEntry->path_bit.draw_type)
+                    switch (pathAddEntry->draw_type)
                     {
-                        case PATH_BIT_DRAW_TYPE_LIGHTS:
+                        case PathBitDrawType::Light:
                             path_bit_lights_paint(
-                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                session, pathAddEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
                                 sceneryImageFlags);
                             break;
-                        case PATH_BIT_DRAW_TYPE_BINS:
+                        case PathBitDrawType::Bin:
                             path_bit_bins_paint(
-                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                session, pathAddEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
                                 sceneryImageFlags);
                             break;
-                        case PATH_BIT_DRAW_TYPE_BENCHES:
+                        case PathBitDrawType::Bench:
                             path_bit_benches_paint(
-                                session, sceneryEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
+                                session, pathAddEntry, tile_element, height, static_cast<uint8_t>(connectedEdges),
                                 sceneryImageFlags);
                             break;
-                        case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
-                            path_bit_jumping_fountains_paint(session, sceneryEntry, height, sceneryImageFlags, dpi);
+                        case PathBitDrawType::JumpingFountain:
+                            path_bit_jumping_fountains_paint(session, pathAddEntry, height, sceneryImageFlags, dpi);
                             break;
                     }
 
-                    session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+                    session->InteractionType = ViewportInteractionItem::Footpath;
 
                     if (sceneryImageFlags != 0)
                     {
-                        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                        session->InteractionType = ViewportInteractionItem::None;
                     }
                 }
             }
@@ -751,7 +756,7 @@ static void sub_6A3F61(
         // Redundant zoom-level check removed
 
         if (paintScenery)
-            sub_6A4101(session, tile_element, height, connectedEdges, word_F3F038, railingEntry, imageFlags);
+            sub_6A4101(session, tile_element, height, connectedEdges, hasSupports, pathPaintInfo, imageFlags);
     }
 
     // This is about tunnel drawing
@@ -802,23 +807,70 @@ static void sub_6A3F61(
     }
 }
 
+static FootpathPaintInfo GetFootpathPaintInfo(const PathElement* pathEl)
+{
+    FootpathPaintInfo pathPaintInfo;
+    auto footpathObj = pathEl->GetPathEntry();
+    if (footpathObj != nullptr)
+    {
+        auto footpathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
+        if (pathEl->IsQueue())
+        {
+            pathPaintInfo.SurfaceImageId = footpathEntry->GetQueueImage();
+            pathPaintInfo.SurfaceFlags = footpathEntry->flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
+        }
+        else
+        {
+            pathPaintInfo.SurfaceImageId = footpathEntry->image;
+            pathPaintInfo.SurfaceFlags = footpathEntry->flags;
+        }
+        pathPaintInfo.ScrollingMode = footpathEntry->scrolling_mode;
+        pathPaintInfo.SupportType = footpathEntry->support_type;
+        pathPaintInfo.BridgeImageId = footpathEntry->bridge_image;
+        pathPaintInfo.RailingFlags = footpathEntry->flags;
+        pathPaintInfo.RailingsImageId = footpathEntry->GetRailingsImage();
+    }
+    else
+    {
+        auto footpathSurfaceObj = pathEl->GetSurfaceEntry();
+        if (footpathSurfaceObj != nullptr)
+        {
+            pathPaintInfo.SurfaceImageId = footpathSurfaceObj->BaseImageId;
+            pathPaintInfo.SurfaceFlags = footpathSurfaceObj->Flags;
+
+            auto railingObj = pathEl->GetRailingEntry();
+            if (railingObj != nullptr)
+            {
+                pathPaintInfo.BridgeImageId = railingObj->BridgeImageId;
+                pathPaintInfo.RailingsImageId = railingObj->RailingsImageId;
+                pathPaintInfo.RailingFlags = railingObj->Flags;
+                pathPaintInfo.ScrollingMode = railingObj->ScrollingMode;
+                pathPaintInfo.SupportType = railingObj->SupportType;
+                pathPaintInfo.SupportColour = railingObj->Colour;
+            }
+        }
+    }
+    return pathPaintInfo;
+}
+
 /**
  * rct2: 0x0006A3590
  */
 void path_paint(paint_session* session, uint16_t height, const TileElement* tile_element)
 {
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+    session->InteractionType = ViewportInteractionItem::Footpath;
 
     bool hasSupports = false;
 
     uint32_t sceneryImageFlags = 0;
     uint32_t imageFlags = 0;
 
+    auto pathEl = tile_element->AsPath();
     if (gTrackDesignSaveMode)
     {
-        if (tile_element->AsPath()->IsQueue())
+        if (pathEl->IsQueue())
         {
-            if (tile_element->AsPath()->GetRideIndex() != gTrackDesignSaveRideIndex)
+            if (pathEl->GetRideIndex() != gTrackDesignSaveRideIndex)
             {
                 return;
             }
@@ -835,25 +887,25 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         imageFlags = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
     }
 
-    if (tile_element->AsPath()->AdditionIsGhost())
+    if (pathEl->AdditionIsGhost())
     {
         sceneryImageFlags = CONSTRUCTION_MARKER;
     }
 
     if (tile_element->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         imageFlags = CONSTRUCTION_MARKER;
     }
 
     // For debugging purpose, show blocked tiles with a colour
-    if (gPaintBlockedTiles && tile_element->AsPath()->IsBlockedByVehicle())
+    if (gPaintBlockedTiles && pathEl->IsBlockedByVehicle())
     {
         imageFlags = COLOUR_BRIGHT_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP;
     }
 
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
-    if (gPaintWidePathsAsGhost && tile_element->AsPath()->IsWide())
+    if (gPaintWidePathsAsGhost && pathEl->IsWide())
     {
         imageFlags &= 0x7FFFF;
         imageFlags |= CONSTRUCTION_MARKER;
@@ -867,15 +919,19 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     }
     else if (surface->GetBaseZ() != height)
     {
-        hasSupports = true;
+        const auto* surfaceEntry = pathEl->GetSurfaceEntry();
+        const bool showUndergroundRailings = surfaceEntry == nullptr
+            || !(surfaceEntry->Flags & FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS);
+        if (surface->GetBaseZ() < height || showUndergroundRailings)
+            hasSupports = true;
     }
     else
     {
-        if (tile_element->AsPath()->IsSloped())
+        if (pathEl->IsSloped())
         {
             // Diagonal path
 
-            if (surface->GetSlope() != PathSlopeToLandSlope[tile_element->AsPath()->GetSlopeDirection()])
+            if (surface->GetSlope() != PathSlopeToLandSlope[pathEl->GetSlopeDirection()])
             {
                 hasSupports = true;
             }
@@ -917,9 +973,9 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         {
             uint32_t imageId = 2618;
             int32_t patrolAreaBaseZ = tile_element->GetBaseZ();
-            if (tile_element->AsPath()->IsSloped())
+            if (pathEl->IsSloped())
             {
-                imageId = 2619 + ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 3);
+                imageId = 2619 + ((pathEl->GetSlopeDirection() + session->CurrentRotation) & 3);
                 patrolAreaBaseZ += 16;
             }
 
@@ -931,55 +987,48 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
         uint16_t heightMarkerBaseZ = tile_element->GetBaseZ() + 3;
-        if (tile_element->AsPath()->IsSloped())
+        if (pathEl->IsSloped())
         {
             heightMarkerBaseZ += 8;
         }
         uint32_t imageId = (SPR_HEIGHT_MARKER_BASE + heightMarkerBaseZ / 16) | COLOUR_GREY << 19 | IMAGE_TYPE_REMAP;
         imageId += get_height_marker_offset();
         imageId -= gMapBaseZ;
-        PaintAddImageAsParent(session, imageId, 16, 16, 1, 1, 0, heightMarkerBaseZ);
+        PaintAddImageAsParent(session, imageId, { 16, 16, heightMarkerBaseZ }, { 1, 1, 0 });
     }
 
-    PathSurfaceEntry* footpathEntry = tile_element->AsPath()->GetSurfaceEntry();
-    PathRailingsEntry* railingEntry = tile_element->AsPath()->GetRailingEntry();
-
-    if (footpathEntry != nullptr && railingEntry != nullptr)
+    auto pathPaintInfo = GetFootpathPaintInfo(pathEl);
+    if (pathPaintInfo.SupportType == RailingEntrySupportType::Pole)
     {
-        if (railingEntry->support_type == RailingEntrySupportType::Pole)
-        {
-            path_paint_pole_support(
-                session, tile_element, height, footpathEntry, railingEntry, hasSupports, imageFlags, sceneryImageFlags);
-        }
-        else
-        {
-            path_paint_box_support(
-                session, tile_element, height, footpathEntry, railingEntry, hasSupports, imageFlags, sceneryImageFlags);
-        }
+        path_paint_pole_support(session, tile_element, height, pathPaintInfo, hasSupports, imageFlags, sceneryImageFlags);
+    }
+    else
+    {
+        path_paint_box_support(session, tile_element, height, pathPaintInfo, hasSupports, imageFlags, sceneryImageFlags);
     }
 
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        if (tile_element->AsPath()->HasAddition() && !(tile_element->AsPath()->IsBroken()))
+        if (pathEl->HasAddition() && !(pathEl->IsBroken()))
         {
-            rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
-            if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP)
+            auto* pathAddEntry = pathEl->GetAdditionEntry();
+            if (pathAddEntry != nullptr && pathAddEntry->flags & PATH_BIT_FLAG_LAMP)
             {
-                if (!(tile_element->AsPath()->GetEdges() & EDGE_NE))
+                if (!(pathEl->GetEdges() & EDGE_NE))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
                         session->MapPosition, -16, 0, height + 23, LightType::Lantern3);
                 }
-                if (!(tile_element->AsPath()->GetEdges() & EDGE_SE))
+                if (!(pathEl->GetEdges() & EDGE_SE))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 16, height + 23, LightType::Lantern3);
                 }
-                if (!(tile_element->AsPath()->GetEdges() & EDGE_SW))
+                if (!(pathEl->GetEdges() & EDGE_SW))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 23, LightType::Lantern3);
                 }
-                if (!(tile_element->AsPath()->GetEdges() & EDGE_NW))
+                if (!(pathEl->GetEdges() & EDGE_NW))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
                         session->MapPosition, 0, -16, height + 23, LightType::Lantern3);
@@ -991,8 +1040,8 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 }
 
 void path_paint_box_support(
-    paint_session* session, const TileElement* tileElement, int32_t height, PathSurfaceEntry* footpathEntry,
-    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
+    paint_session* session, const TileElement* tileElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
+    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     const PathElement* pathElement = tileElement->AsPath();
 
@@ -1003,24 +1052,22 @@ void path_paint_box_support(
     uint8_t corners = (((tileElement->AsPath()->GetCorners()) << session->CurrentRotation) & 0xF)
         | (((tileElement->AsPath()->GetCorners()) << session->CurrentRotation) >> 4);
 
-    LocationXY16 boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
-    LocationXY16 boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
+    CoordsXY boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
+    CoordsXY boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
 
     uint16_t edi = edges | (corners << 4);
 
-    uint32_t imageId;
+    uint32_t imageId = pathPaintInfo.SurfaceImageId;
     if (tileElement->AsPath()->IsSloped())
     {
-        imageId = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation)
-                   & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+        imageId += ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation)
+                    & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
             + 16;
     }
     else
     {
-        imageId = byte_98D6E0[edi];
+        imageId += byte_98D6E0[edi];
     }
-
-    imageId += footpathEntry->image;
 
     if (!session->DidPassSurface)
     {
@@ -1056,11 +1103,11 @@ void path_paint_box_support(
         {
             image_id = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                         & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
-                + railingEntry->bridge_image + 51;
+                + pathPaintInfo.BridgeImageId + 51;
         }
         else
         {
-            image_id = byte_98D8A4[edges] + railingEntry->bridge_image + 49;
+            image_id = byte_98D8A4[edges] + pathPaintInfo.BridgeImageId + 49;
         }
 
         PaintAddImageAsParent(
@@ -1068,7 +1115,7 @@ void path_paint_box_support(
             height + boundingBoxZOffset);
 
         // TODO: Revert this when path import works correctly.
-        if (!pathElement->IsQueue() && !pathElement->ShouldDrawPathOverSupports())
+        if (!pathElement->IsQueue() && !(pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
             // don't draw
         }
@@ -1080,7 +1127,7 @@ void path_paint_box_support(
         }
     }
 
-    sub_6A3F61(session, tileElement, edi, height, railingEntry, imageFlags, sceneryImageFlags, hasSupports);
+    sub_6A3F61(session, tileElement, edi, height, pathPaintInfo, imageFlags, sceneryImageFlags, hasSupports);
 
     uint16_t ax = 0;
     if (tileElement->AsPath()->IsSloped())
@@ -1088,14 +1135,8 @@ void path_paint_box_support(
         ax = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 0x3) + 1;
     }
 
-    if (byte_98D8A4[edges] == 0)
-    {
-        path_a_supports_paint_setup(session, 0, ax, height, imageFlags, railingEntry, nullptr);
-    }
-    else
-    {
-        path_a_supports_paint_setup(session, 1, ax, height, imageFlags, railingEntry, nullptr);
-    }
+    auto supportType = byte_98D8A4[edges] == 0 ? 0 : 1;
+    path_a_supports_paint_setup(session, supportType, ax, height, imageFlags, pathPaintInfo, nullptr);
 
     height += 32;
     if (tileElement->AsPath()->IsSloped())
@@ -1141,8 +1182,8 @@ void path_paint_box_support(
 }
 
 void path_paint_pole_support(
-    paint_session* session, const TileElement* tileElement, int16_t height, PathSurfaceEntry* footpathEntry,
-    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
+    paint_session* session, const TileElement* tileElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
+    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     const PathElement* pathElement = tileElement->AsPath();
 
@@ -1150,26 +1191,24 @@ void path_paint_pole_support(
     uint8_t edges = ((tileElement->AsPath()->GetEdges() << session->CurrentRotation) & 0xF)
         | (((tileElement->AsPath()->GetEdges()) << session->CurrentRotation) >> 4);
 
-    LocationXY16 boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
+    CoordsXY boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
 
-    LocationXY16 boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
+    CoordsXY boundBoxSize = { stru_98D804[edges][2], stru_98D804[edges][3] };
 
     uint8_t corners = (((tileElement->AsPath()->GetCorners()) << session->CurrentRotation) & 0xF)
         | (((tileElement->AsPath()->GetCorners()) << session->CurrentRotation) >> 4);
 
     uint16_t edi = edges | (corners << 4);
 
-    uint32_t imageId;
+    uint32_t imageId = pathPaintInfo.SurfaceImageId;
     if (tileElement->AsPath()->IsSloped())
     {
-        imageId = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 3) + 16;
+        imageId += ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 3) + 16;
     }
     else
     {
-        imageId = byte_98D6E0[edi];
+        imageId += byte_98D6E0[edi];
     }
-
-    imageId += footpathEntry->image;
 
     // Below Surface
     if (!session->DidPassSurface)
@@ -1206,11 +1245,11 @@ void path_paint_pole_support(
         {
             bridgeImage = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
-                + railingEntry->bridge_image + 16;
+                + pathPaintInfo.BridgeImageId + 16;
         }
         else
         {
-            bridgeImage = edges + railingEntry->bridge_image;
+            bridgeImage = edges + pathPaintInfo.BridgeImageId;
             bridgeImage |= imageFlags;
         }
 
@@ -1219,7 +1258,7 @@ void path_paint_pole_support(
             boundBoxOffset.y, height + boundingBoxZOffset);
 
         // TODO: Revert this when path import works correctly.
-        if (pathElement->IsQueue() || pathElement->ShouldDrawPathOverSupports())
+        if (pathElement->IsQueue() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
             PaintAddImageAsChild(
                 session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
@@ -1227,7 +1266,8 @@ void path_paint_pole_support(
         }
     }
 
-    sub_6A3F61(session, tileElement, edi, height, railingEntry, imageFlags, sceneryImageFlags, hasSupports); // TODO: arguments
+    sub_6A3F61(session, tileElement, edi, height, pathPaintInfo, imageFlags, sceneryImageFlags,
+               hasSupports); // TODO: arguments
 
     uint16_t ax = 0;
     if (tileElement->AsPath()->IsSloped())
@@ -1246,7 +1286,10 @@ void path_paint_pole_support(
     {
         if (!(edges & (1 << i)))
         {
-            path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags, railingEntry);
+            const int32_t extraFlags = (pathPaintInfo.SupportColour != COLOUR_NULL && !tileElement->IsGhost())
+                ? SPRITE_ID_PALETTE_COLOUR_1(pathPaintInfo.SupportColour)
+                : 0;
+            path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags | extraFlags, pathPaintInfo);
         }
     }
 
