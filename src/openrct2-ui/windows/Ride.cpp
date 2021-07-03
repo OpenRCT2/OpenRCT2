@@ -4246,14 +4246,7 @@ static void window_ride_colour_mouseup(rct_window* w, rct_widgetindex widgetInde
             auto ride = get_ride(w->number);
             if (ride != nullptr)
             {
-                if (ride->sell_item_random_color)
-                {
-                    ride->sell_item_random_color = false;
-                }
-                else
-                {
-                    ride->sell_item_random_color = true;
-                }
+                ride->selling_item_color_is_random = !ride->selling_item_color_is_random;
             }
             break;
     }
@@ -4601,24 +4594,6 @@ static void window_ride_colour_invalidate(rct_window* w)
     {
         window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].type = WindowWidgetType::ColourBtn;
         window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].image = window_ride_get_colour_button_image(trackColour.main);
-
-        // Item random color checkbox
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
-        {
-            window_ride_colour_widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Checkbox;
-            if (ride->sell_item_random_color)
-            {
-                w->pressed_widgets |= (1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
-            }
-            else
-            {
-                w->pressed_widgets &= ~(1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
-            }
-        }
-        else
-        {
-            window_ride_colour_widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Empty;
-        }
     }
     else
     {
@@ -4635,6 +4610,24 @@ static void window_ride_colour_invalidate(rct_window* w)
     else
     {
         window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WindowWidgetType::Empty;
+    }
+
+    // Selling item random color checkbox
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && window_ride_has_track_colour(ride, 0))
+    {
+        window_ride_colour_widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Checkbox;
+        if (ride->selling_item_color_is_random)
+        {
+            w->pressed_widgets |= (1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
+        }
+        else
+        {
+            w->pressed_widgets &= ~(1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
+        }
+    }
+    else
+    {
+        window_ride_colour_widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Empty;
     }
 
     // Track supports colour
@@ -4848,7 +4841,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
 
         ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
-        uint8_t spriteColor = ride->sell_item_random_color ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
+        uint8_t spriteColor = ride->selling_item_color_is_random ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
         gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColor), screenCoords);
     }
 

@@ -1600,16 +1600,16 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
     GiveItem(shopItem);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = ride->sell_item_random_color ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
+        TshirtColour = ride->selling_item_color_is_random ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = ride->sell_item_random_color ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
+        HatColour = ride->selling_item_color_is_random ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = ride->sell_item_random_color ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
+        BalloonColour = ride->selling_item_color_is_random ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = ride->sell_item_random_color ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
+        UmbrellaColour = ride->selling_item_color_is_random ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
 
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
