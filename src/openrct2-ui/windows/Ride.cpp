@@ -4244,7 +4244,7 @@ static void window_ride_colour_mouseup(rct_window* w, rct_widgetindex widgetInde
             break;
         case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                w->number, RideSetAppearanceType::ToggleSellingItemColourToRandom, 0, 0);
+                w->number, RideSetAppearanceType::ToggleSellingItemColourRandomFlag, 0, 0);
             GameActions::Execute(&rideSetAppearanceAction);
             break;
     }

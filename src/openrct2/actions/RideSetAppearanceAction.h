@@ -22,7 +22,7 @@ enum class RideSetAppearanceType : uint8_t
     VehicleColourTernary,
     VehicleColourScheme,
     EntranceStyle,
-    ToggleSellingItemColourToRandom
+    ToggleSellingItemColourRandomFlag
 };
 
 DEFINE_GAME_ACTION(RideSetAppearanceAction, GameCommand::SetRideAppearance, GameActions::Result)
