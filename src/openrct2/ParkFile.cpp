@@ -1164,6 +1164,8 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.music);
                     cs.ReadWrite(ride.music_tune_id);
                     cs.ReadWrite(ride.music_position);
+
+                    cs.ReadWrite(ride.SellingItemColourIsRandom);
                     return true;
                 });
             });

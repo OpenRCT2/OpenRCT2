@@ -4839,7 +4839,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
 
         ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
-        uint8_t spriteColor = ride->SellingItemColourIsRandom ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
+        uint8_t spriteColor = ride->SellingItemColourIsRandom ? scenario_rand_max(COLOUR_COUNT - 1)
+                                                              : ride->track_colour[0].main;
         gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColor), screenCoords);
     }
 
