@@ -17,6 +17,7 @@
 #include "../core/MemoryStream.h"
 #include "../interface/Viewport.h"
 #include "../peep/Peep.h"
+#include "../peep/RideUseSystem.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "Balloon.h"
@@ -42,6 +43,8 @@ constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXI
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
 static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
+
+static void DestroyEntity(SpriteBase* entity);
 
 constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 {
@@ -226,6 +229,8 @@ void reset_sprite_list()
 {
     gSavedAge = 0;
     std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
+    OpenRCT2::RideUse::GetHistory().Clear();
+    OpenRCT2::RideUse::GetTypeHistory().Clear();
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)
     {
         auto* spr = GetEntity(i);
@@ -233,7 +238,7 @@ void reset_sprite_list()
         {
             continue;
         }
-
+        DestroyEntity(spr);
         spr->Type = EntityType::Null;
         spr->sprite_index = i;
 
@@ -537,17 +542,29 @@ void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite)
     sprite->z = spritePos.z;
 }
 
+static void DestroyEntity(SpriteBase* entity)
+{
+    auto* guest = entity->As<Guest>();
+    auto* staff = entity->As<Staff>();
+    if (staff != nullptr)
+    {
+        staff->SetName({});
+    }
+    else if (guest != nullptr)
+    {
+        guest->SetName({});
+        OpenRCT2::RideUse::GetHistory().RemoveHandle(guest->sprite_index);
+        OpenRCT2::RideUse::GetTypeHistory().RemoveHandle(guest->sprite_index);
+    }
+}
+
 /**
  *
  *  rct2: 0x0069EDB6
  */
 void sprite_remove(SpriteBase* sprite)
 {
-    auto peep = sprite->As<Peep>();
-    if (peep != nullptr)
-    {
-        peep->SetName({});
-    }
+    DestroyEntity(sprite);
 
     EntityTweener::Get().RemoveEntity(sprite);
     RemoveFromEntityList(sprite); // remove from existing list

@@ -767,6 +767,9 @@
 		E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */; };
 		F42186C5840D4196981ADD16 /* EntityTweener.h in Headers */ = {isa = PBXBuildFile; fileRef = 091352A950004312BAB18717 /* EntityTweener.h */; };
 		0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D3DD6CD73F5421880280D9D /* Litter.cpp */; };
+		258C212125F84FA2B4C3BCAE /* RideUseSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58DEACC694664E7C8DACB93D /* RideUseSystem.cpp */; };
+		E6C71B6165224F65AA87E65B /* RideUseSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DA720D496604387806AC168 /* RideUseSystem.h */; };
+		C8D612EB56BD4214BEC0F7FF /* GroupVector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F4D523B8782E4C458AF1490D /* GroupVector.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1836,6 +1839,9 @@
 		0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntityTweener.cpp; path = src/openrct2/world/EntityTweener.cpp; sourceTree = SOURCE_ROOT; };
 		091352A950004312BAB18717 /* EntityTweener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EntityTweener.h; path = src/openrct2/world/EntityTweener.h; sourceTree = SOURCE_ROOT; };
 		9D3DD6CD73F5421880280D9D /* Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Litter.cpp; path = src/openrct2/world/Litter.cpp; sourceTree = SOURCE_ROOT; };
+		58DEACC694664E7C8DACB93D /* RideUseSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RideUseSystem.cpp; path = src/openrct2/peep/RideUseSystem.cpp; sourceTree = SOURCE_ROOT; };
+		2DA720D496604387806AC168 /* RideUseSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RideUseSystem.h; path = src/openrct2/peep/RideUseSystem.h; sourceTree = SOURCE_ROOT; };
+		F4D523B8782E4C458AF1490D /* GroupVector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupVector.hpp; path = src/openrct2/core/GroupVector.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2503,6 +2509,7 @@
 				4C8BB67F25533D64005C8830 /* StringReader.h */,
 				F76C83991EC4E7CC00FA49E2 /* Zip.cpp */,
 				F76C839A1EC4E7CC00FA49E2 /* Zip.h */,
+				F4D523B8782E4C458AF1490D /* GroupVector.hpp */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -2771,6 +2778,8 @@
 				4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */,
 				4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */,
 				4CFE4E7F1F90A3F1005243C2 /* Staff.h */,
+				58DEACC694664E7C8DACB93D /* RideUseSystem.cpp */,
+				2DA720D496604387806AC168 /* RideUseSystem.h */,
 			);
 			path = peep;
 			sourceTree = "<group>";
@@ -3468,6 +3477,8 @@
 				2ADE2F342244191E002598AF /* VirtualFloor.h in Headers */,
 				66A10F8B257F1E1800DD651A /* LandSmoothAction.h in Headers */,
 				F42186C5840D4196981ADD16 /* EntityTweener.h in Headers */,
+				E6C71B6165224F65AA87E65B /* RideUseSystem.h in Headers */,
+				C8D612EB56BD4214BEC0F7FF /* GroupVector.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4273,6 +4284,7 @@
 				C688791820289B9B0084B384 /* MonorailCycles.cpp in Sources */,
 				E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */,
 				0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */,
+				258C212125F84FA2B4C3BCAE /* RideUseSystem.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

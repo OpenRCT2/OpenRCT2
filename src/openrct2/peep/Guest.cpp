@@ -45,6 +45,7 @@
 #include "../world/TileElementsView.h"
 #include "GuestPathfinding.h"
 #include "Peep.h"
+#include "RideUseSystem.h"
 #include "Staff.h"
 
 #include <algorithm>
@@ -2296,19 +2297,25 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
 void Guest::SetHasRidden(const Ride* ride)
 {
+    OpenRCT2::RideUse::GetHistory().Add(sprite_index, ride->id);
+
     RidesBeenOn[ride->id / 8] |= 1 << (ride->id % 8);
+
     SetHasRiddenRideType(ride->type);
 }
 
 bool Guest::HasRidden(const Ride* ride) const
 {
-    return RidesBeenOn[ride->id / 8] & (1 << (ride->id % 8));
+    return OpenRCT2::RideUse::GetHistory().Contains(sprite_index, ride->id);
 }
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
 {
     // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
     rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
+
+    OpenRCT2::RideUse::GetTypeHistory().Add(sprite_index, rideType);
+
     RideTypesBeenOn[rideType / 8] |= 1 << (rideType % 8);
 }
 
@@ -2316,7 +2323,8 @@ bool Guest::HasRiddenRideType(int32_t rideType) const
 {
     // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
     rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
-    return RideTypesBeenOn[rideType / 8] & (1 << (rideType % 8));
+
+    return OpenRCT2::RideUse::GetTypeHistory().Contains(sprite_index, rideType);
 }
 
 void Guest::SetParkEntryTime(int32_t entryTime)
