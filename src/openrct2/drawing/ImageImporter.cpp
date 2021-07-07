@@ -217,24 +217,22 @@ int32_t ImageImporter::CalculatePaletteIndex(
 {
     auto& palette = StandardPalette;
     auto paletteIndex = GetPaletteIndex(palette, rgbaSrc);
-    if (mode == IMPORT_MODE::CLOSEST || mode == IMPORT_MODE::DITHERING)
+    if ((mode == IMPORT_MODE::CLOSEST || mode == IMPORT_MODE::DITHERING) && !IsInPalette(palette, rgbaSrc))
     {
-        if (paletteIndex == PALETTE_TRANSPARENT && !IsTransparentPixel(rgbaSrc))
-        {
-            paletteIndex = GetClosestPaletteIndex(palette, rgbaSrc);
-        }
-    }
-    if (mode == IMPORT_MODE::DITHERING)
-    {
-        if (!IsTransparentPixel(rgbaSrc) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc)))
+        paletteIndex = GetClosestPaletteIndex(palette, rgbaSrc);
+        if (mode == IMPORT_MODE::DITHERING)
         {
             auto dr = rgbaSrc[0] - static_cast<int16_t>(palette[paletteIndex].Red);
             auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].Green);
             auto db = rgbaSrc[2] - static_cast<int16_t>(palette[paletteIndex].Blue);
 
+            // We don't want to dither remappable colors with nonremappable colors, etc
+            PaletteIndexType thisIndexType = GetPaletteIndexType(paletteIndex);
+
             if (x + 1 < width)
             {
-                if (!IsTransparentPixel(rgbaSrc + 4) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4)))
+                if (!IsInPalette(palette, rgbaSrc + 4)
+                    && thisIndexType == GetPaletteIndexType(GetClosestPaletteIndex(palette, rgbaSrc + 4)))
                 {
                     // Right
                     rgbaSrc[4] += dr * 7 / 16;
@@ -247,8 +245,8 @@ int32_t ImageImporter::CalculatePaletteIndex(
             {
                 if (x > 0)
                 {
-                    if (!IsTransparentPixel(rgbaSrc + 4 * (width - 1))
-                        && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4 * (width - 1))))
+                    if (!IsInPalette(palette, rgbaSrc + 4 * (width - 1))
+                        && thisIndexType == GetPaletteIndexType(GetClosestPaletteIndex(palette, rgbaSrc + 4 * (width - 1))))
                     {
                         // Bottom left
                         rgbaSrc[4 * (width - 1)] += dr * 3 / 16;
@@ -258,7 +256,8 @@ int32_t ImageImporter::CalculatePaletteIndex(
                 }
 
                 // Bottom
-                if (!IsTransparentPixel(rgbaSrc + 4 * width) && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4 * width)))
+                if (!IsInPalette(palette, rgbaSrc + 4 * width)
+                    && thisIndexType == GetPaletteIndexType(GetClosestPaletteIndex(palette, rgbaSrc + 4 * width)))
                 {
                     rgbaSrc[4 * width] += dr * 5 / 16;
                     rgbaSrc[4 * width + 1] += dg * 5 / 16;
@@ -267,8 +266,8 @@ int32_t ImageImporter::CalculatePaletteIndex(
 
                 if (x + 1 < width)
                 {
-                    if (!IsTransparentPixel(rgbaSrc + 4 * (width + 1))
-                        && IsChangablePixel(GetPaletteIndex(palette, rgbaSrc + 4 * (width + 1))))
+                    if (!IsInPalette(palette, rgbaSrc + 4 * (width + 1))
+                        && thisIndexType == GetPaletteIndexType(GetClosestPaletteIndex(palette, rgbaSrc + 4 * (width + 1))))
                     {
                         // Bottom right
                         rgbaSrc[4 * (width + 1)] += dr * 1 / 16;
@@ -279,6 +278,7 @@ int32_t ImageImporter::CalculatePaletteIndex(
             }
         }
     }
+
     return paletteIndex;
 }
 
@@ -304,23 +304,40 @@ bool ImageImporter::IsTransparentPixel(const int16_t* colour)
 }
 
 /**
- * @returns true if pixel index is an index not used for remapping.
+ * @returns true if this colour is in the standard palette.
+ */
+bool ImageImporter::IsInPalette(const GamePalette& palette, int16_t* colour)
+{
+    return !(GetPaletteIndex(palette, colour) == PALETTE_TRANSPARENT && !IsTransparentPixel(colour));
+}
+
+/**
+ * @returns true if palette index is an index not used for a special purpose.
  */
 bool ImageImporter::IsChangablePixel(int32_t paletteIndex)
 {
-    if (paletteIndex == PALETTE_TRANSPARENT)
-        return true;
-    if (paletteIndex == 0)
-        return false;
+    PaletteIndexType entryType = GetPaletteIndexType(paletteIndex);
+    return entryType != PaletteIndexType::Special && entryType != PaletteIndexType::PrimaryRemap;
+}
+
+/**
+ * @returns the type of palette entry this is.
+ */
+ImageImporter::PaletteIndexType ImageImporter::GetPaletteIndexType(int32_t paletteIndex)
+{
+    if (paletteIndex <= 9)
+        return PaletteIndexType::Special;
+    if (paletteIndex >= 230 && paletteIndex <= 239)
+        return PaletteIndexType::Special;
+    if (paletteIndex == 255)
+        return PaletteIndexType::Special;
+    if (paletteIndex >= 243 && paletteIndex <= 254)
+        return PaletteIndexType::PrimaryRemap;
     if (paletteIndex >= 202 && paletteIndex <= 213)
-        return false;
-    if (paletteIndex == 226)
-        return false;
-    if (paletteIndex >= 227 && paletteIndex <= 229)
-        return false;
-    if (paletteIndex >= 243)
-        return false;
-    return true;
+        return PaletteIndexType::SecondaryRemap;
+    if (paletteIndex >= 46 && paletteIndex <= 57)
+        return PaletteIndexType::TertiaryRemap;
+    return PaletteIndexType::Normal;
 }
 
 int32_t ImageImporter::GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour)
