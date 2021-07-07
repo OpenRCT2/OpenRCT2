@@ -36,6 +36,7 @@ bool writeentirefile(const utf8* path, const void* buffer, size_t length);
 
 bool sse41_available();
 bool avx2_available();
+bool neon_available();
 
 int32_t bitscanforward(int32_t source);
 int32_t bitscanforward(int64_t source);

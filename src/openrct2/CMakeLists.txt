@@ -250,6 +250,10 @@ if((X86 OR X86_64) AND NOT MSVC)
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/AVX2Drawing.cpp PROPERTIES COMPILE_FLAGS -mavx2)
 endif()
 
+if((ARM OR AARCH64) AND NOT MSVC)
+    set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/NEONDrawing.cpp PROPERTIES COMPILE_FLAGS -mfpu=neon)
+endif()
+
 # Add headers check to verify all headers carry their dependencies.
 # Only valid for Clang for now:
 # - GCC 8 does not support -Wno-pragma-once-outside-header

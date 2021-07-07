@@ -23,6 +23,11 @@
 #include <ctime>
 #include <random>
 
+#if defined(__linux__) && (defined(OPENRCT2_ARM) || defined(OPENRCT2_AARCH64))
+#    include <asm/hwcap.h>
+#    include <sys/auxv.h>
+#endif
+
 int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres)
 {
     // 1 metre squared = 10.7639104 feet squared
@@ -268,6 +273,16 @@ bool avx2_available()
         return avxCPUSupport;
     }
 #    endif
+#endif
+    return false;
+}
+
+bool neon_available()
+{
+#if defined(__linux__) && defined(OPENRCT2_ARM)
+    return getauxval(AT_HWCAP) & HWCAP_NEON;
+#elif defined(__linux__) && defined(OPENRCT2_AARCH64)
+    return getauxval(AT_HWCAP) & HWCAP_ASIMD;
 #endif
     return false;
 }
