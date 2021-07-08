@@ -54,6 +54,8 @@ set(REPLAYS_VERSION "0.0.43")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
 set(REPLAYS_SHA1 "269E4FC432A73AE9A5D601EC2A1C882F3D9BDF3C")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lresolv")
+
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
