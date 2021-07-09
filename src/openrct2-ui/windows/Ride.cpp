@@ -4243,9 +4243,14 @@ static void window_ride_colour_mouseup(rct_window* w, rct_widgetindex widgetInde
             tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
             break;
         case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
-            auto rideSetAppearanceAction = RideSetAppearanceAction(
-                w->number, RideSetAppearanceType::ToggleSellingItemColourRandomFlag, 0, 0);
-            GameActions::Execute(&rideSetAppearanceAction);
+            auto ride = get_ride(w->number);
+            if (ride != nullptr)
+            {
+                // Invert ride->SellingItemColourIsRandom flag
+                auto rideSetAppearanceAction = RideSetAppearanceAction(
+                    w->number, RideSetAppearanceType::SellingItemColourIsRandom, !ride->SellingItemColourIsRandom, 0);
+                GameActions::Execute(&rideSetAppearanceAction);
+            }
             break;
     }
 }
