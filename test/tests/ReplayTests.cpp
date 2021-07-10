@@ -115,4 +115,5 @@ struct PrintReplayParameter
     }
 };
 
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(ReplayTests);
 INSTANTIATE_TEST_CASE_P(Replay, ReplayTests, testing::ValuesIn(GetReplayFiles()), PrintReplayParameter());

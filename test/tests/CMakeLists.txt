@@ -13,11 +13,11 @@ else (SYSTEM_GTEST)
         # Bootstrap GoogleTest
         INCLUDE(ExternalProject)
 
-        # Use googletest with https://github.com/google/googletest/pull/1045 applied
+        # Use latest snapshot (2020-09-08) version
         ExternalProject_Add(
                 googletest-distribution
-                URL https://github.com/google/googletest/archive/ad49eaa0466b98f21449efaaaae817683daa8b99.tar.gz
-                URL_HASH SHA1=e468bfdffe7c46c14ce06bfb48a29b6201908504
+                URL https://github.com/google/googletest/archive/5f8fcf4aa8ce30dfe76f9c9db97d2da4ce3737ef.tar.gz
+                URL_HASH SHA256=ef638e441d8b8c912b10bcb71f51bc1363831f3ae5bac7e502276ff65ba1903c
                 TIMEOUT 10
                 CONFIGURE_COMMAND ""
                 BUILD_COMMAND ""
@@ -32,10 +32,9 @@ else (SYSTEM_GTEST)
                 googletest
                 DEPENDS googletest-distribution
                 DOWNLOAD_COMMAND ""
-                SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
-                CMAKE_ARGS "-DCMAKE_CXX_FLAGS=${TARGET_M}"
-                BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}"
-                BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}"
+                SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}"
+                BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}"
+                BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}"
                 # Disable install step
                 INSTALL_COMMAND ""
                 # Wrap download, configure and build steps in a script to log output
@@ -50,8 +49,8 @@ else (SYSTEM_GTEST)
         # Library
         ExternalProject_Get_Property(googletest BINARY_DIR)
         set(GOOGLETEST_BINARY_DIR "${BINARY_DIR}")
-        set(GTEST_LIBRARY_PATH ${GOOGLETEST_BINARY_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX})
-        set(GTEST_MAIN_LIBRARY_PATH ${GOOGLETEST_BINARY_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
+        set(GTEST_LIBRARY_PATH ${GOOGLETEST_BINARY_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX})
+        set(GTEST_MAIN_LIBRARY_PATH ${GOOGLETEST_BINARY_DIR}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
         set(GTEST_LIBRARY gtest)
         set(GTEST_MAIN_LIBRARY gtest_main)
         add_library(${GTEST_LIBRARY} STATIC IMPORTED)
