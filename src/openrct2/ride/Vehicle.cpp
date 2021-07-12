@@ -4337,12 +4337,13 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
         TrackLocation.x = trackCoords.x;
         TrackLocation.y = trackCoords.y;
 
-        auto trackElement = map_get_track_element_at(TrackLocation);
-
         auto curRide = GetRide();
         if (curRide != nullptr)
         {
-            SetTrackType(trackElement->GetTrackType());
+            auto trackElement = map_get_track_element_at(TrackLocation);
+            if (trackElement != nullptr)
+                SetTrackType(trackElement->GetTrackType());
+
             SetTrackDirection(curRide->boat_hire_return_direction);
             BoatLocation.setNull();
         }
