@@ -51,6 +51,7 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/ride/Vehicle.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/EntityList.h>
@@ -177,6 +178,7 @@ enum {
     WIDX_VEHICLE_MAIN_COLOUR,
     WIDX_VEHICLE_ADDITIONAL_COLOUR_1,
     WIDX_VEHICLE_ADDITIONAL_COLOUR_2,
+    WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
 
     WIDX_PLAY_MUSIC = 14,
     WIDX_MUSIC,
@@ -315,6 +317,7 @@ static rct_widget window_ride_colour_widgets[] = {
     MakeWidget({ 79, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_MAIN_COLOUR_TIP                   ),
     MakeWidget({ 99, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
     MakeWidget({119, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
+    MakeWidget({100,  74}, {239, 12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_RANDOM_COLOUR                                                 ),
     { WIDGETS_END },
 };
 
@@ -461,7 +464,8 @@ static constexpr const uint64_t window_ride_page_enabled_widgets[] = {
         (1ULL << WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN) |
         (1ULL << WIDX_VEHICLE_MAIN_COLOUR) |
         (1ULL << WIDX_VEHICLE_ADDITIONAL_COLOUR_1) |
-        (1ULL << WIDX_VEHICLE_ADDITIONAL_COLOUR_2),
+        (1ULL << WIDX_VEHICLE_ADDITIONAL_COLOUR_2) |
+        (1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX),
     MAIN_RIDE_ENABLED_WIDGETS |
         (1ULL << WIDX_PLAY_MUSIC) |
         (1ULL << WIDX_MUSIC) |
@@ -4238,6 +4242,16 @@ static void window_ride_colour_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_PAINT_INDIVIDUAL_AREA:
             tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
             break;
+        case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
+            auto ride = get_ride(w->number);
+            if (ride != nullptr)
+            {
+                // Invert ride->SellingItemColourIsRandom flag
+                auto rideSetAppearanceAction = RideSetAppearanceAction(
+                    w->number, RideSetAppearanceType::SellingItemColourIsRandom, !ride->SellingItemColourIsRandom, 0);
+                GameActions::Execute(&rideSetAppearanceAction);
+            }
+            break;
     }
 }
 
@@ -4601,6 +4615,24 @@ static void window_ride_colour_invalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WindowWidgetType::Empty;
     }
 
+    // Selling item random color checkbox
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && window_ride_has_track_colour(ride, 0))
+    {
+        window_ride_colour_widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Checkbox;
+        if (ride->SellingItemColourIsRandom)
+        {
+            w->pressed_widgets |= (1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
+        }
+        else
+        {
+            w->pressed_widgets &= ~(1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
+        }
+    }
+    else
+    {
+        window_ride_colour_widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Empty;
+    }
+
     // Track supports colour
     if (window_ride_has_track_colour(ride, 2) && ride->type != RIDE_TYPE_MAZE)
     {
@@ -4812,7 +4844,9 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
 
         ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
-        gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, ride->track_colour[0].main), screenCoords);
+        uint8_t spriteColor = ride->SellingItemColourIsRandom ? scenario_rand_max(COLOUR_COUNT - 1)
+                                                              : ride->track_colour[0].main;
+        gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColor), screenCoords);
     }
 
     // Entrance preview

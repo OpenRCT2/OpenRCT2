@@ -79,6 +79,7 @@ GameActions::Result::Ptr RideSetAppearanceAction::Query() const
             break;
         case RideSetAppearanceType::VehicleColourScheme:
         case RideSetAppearanceType::EntranceStyle:
+        case RideSetAppearanceType::SellingItemColourIsRandom:
             break;
         default:
             log_warning("Invalid game command, type %d not recognised", _type);
@@ -136,6 +137,9 @@ GameActions::Result::Ptr RideSetAppearanceAction::Execute() const
             ride->entrance_style = _value;
             gLastEntranceStyle = _value;
             gfx_invalidate_screen();
+            break;
+        case RideSetAppearanceType::SellingItemColourIsRandom:
+            ride->SellingItemColourIsRandom = _value;
             break;
     }
     window_invalidate_by_number(WC_RIDE, _rideIndex);

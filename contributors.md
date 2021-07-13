@@ -93,6 +93,7 @@ The following people are not part of the development team, but have been contrib
 * Keith Stellyes (keithstellyes) - Misc.
 * Bas Cantrijn (Basssiiie) - Misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
+* (8street) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
