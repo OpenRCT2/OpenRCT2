@@ -36,7 +36,8 @@
 - Fix: [#14945] Incorrect drop height penalty on log flume ride.
 - Fix: [#14964] Unable to build in multiplayer as client with "Build while paused" cheat enabled when the host is paused.
 - Improved: [#14511] “Unlock operating limits” cheat now also unlocks all music.
-- Improved: [#14712, #14716]: Improve startup times.
+- Improved: [#14712, #14716] Improve startup times.
+- Improved: [#14982] Add Malgun Gothic and change Nanum Gothic filename for Korean.
 
 0.3.3 (2021-03-13)
 ------------------------------------------------------------------------
