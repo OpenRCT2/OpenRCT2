@@ -3909,7 +3909,7 @@ enum
     STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER = 6451,
 
     STR_RIDE_OBJECT_SHOP_SELLS = 6452,
-
+    STR_RANDOM_COLOUR = 6453,
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
