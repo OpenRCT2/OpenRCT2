@@ -171,6 +171,7 @@ The following people are not part of the development team, but have been contrib
 * (zrowny)
 * Emre Aydin (aemreaydin)
 * Daniel Karandikar (DKarandikar)
+* Struan Clark (xtruan)
 
 ## Toolchain
 * (Balletie) - macOS
