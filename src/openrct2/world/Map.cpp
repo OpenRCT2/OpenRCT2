@@ -1361,22 +1361,26 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             res->GroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < pos.clearanceZ)
             {
+                bool returnError = true;
                 if (clearFunc != nullptr)
                 {
                     if (!clearFunc(&tileElement, pos, flags, &res->Cost))
                     {
-                        goto loc_68B9B7;
+                        returnError = false;
                     }
                 }
-                if (tileElement != nullptr)
+                if (returnError)
                 {
-                    res->Error = GameActions::Status::NoClearance;
-                    res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
+                    if (tileElement != nullptr)
+                    {
+                        res->Error = GameActions::Status::NoClearance;
+                        res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
+                    }
+                    return res;
                 }
-                return res;
             }
         }
-    loc_68B9B7:
+
         if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
