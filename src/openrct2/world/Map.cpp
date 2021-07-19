@@ -1383,7 +1383,18 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             {
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
-                    goto loc_68BABC;
+                    if (MapLoc68BABCShouldContinue(
+                            tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
+                    {
+                        continue;
+                    }
+
+                    if (tileElement != nullptr)
+                    {
+                        map_obstruction_set_error_text(tileElement, *res);
+                        res->Error = GameActions::Status::NoClearance;
+                    }
+                    return res;
                 }
             }
             continue;
@@ -1484,7 +1495,7 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
                         continue;
                     }
                 }
-            loc_68BABC:
+
                 if (MapLoc68BABCShouldContinue(tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
                 {
                     continue;
