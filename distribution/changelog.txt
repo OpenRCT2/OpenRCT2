@@ -1,4 +1,4 @@
-0.3.3+ (in development)
+0.3.4 (2021-07-19)
 ------------------------------------------------------------------------
 - Feature: [#13967] Track List window now displays the path to the design when debugging tools are on.
 - Feature: [#14071] “Vandals stopped” statistic for security guards.
