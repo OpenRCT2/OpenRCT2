@@ -1,3 +1,6 @@
+0.3.4+ (in development)
+------------------------------------------------------------------------
+
 0.3.4 (2021-07-19)
 ------------------------------------------------------------------------
 - Feature: [#13967] Track List window now displays the path to the design when debugging tools are on.
