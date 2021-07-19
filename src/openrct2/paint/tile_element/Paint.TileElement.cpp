@@ -47,7 +47,7 @@ const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 |
  */
 void tile_element_paint_setup(paint_session* session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
 {
-    if (mapCoords.x < gMapSizeUnits && mapCoords.y < gMapSizeUnits && mapCoords.x >= 32 && mapCoords.y >= 32)
+    if (!map_is_edge(mapCoords))
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(session, -1, 0);
