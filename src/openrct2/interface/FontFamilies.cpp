@@ -34,6 +34,7 @@ TTFontFamily const TTFFamilyJapanese = {
 TTFontFamily const TTFFamilyKorean = {
     &TTFFontGulim,
     &TTFFontNanum,
+    &TTFFontMalgun,
 };
 
 TTFontFamily const TTFFamilySansSerif = {

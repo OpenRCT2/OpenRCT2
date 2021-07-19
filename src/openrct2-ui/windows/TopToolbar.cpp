@@ -797,14 +797,14 @@ static void window_top_toolbar_invalidate(rct_window* w)
 
     // Footpath button pressed down
     if (window_find_by_class(WC_FOOTPATH) == nullptr)
-        w->pressed_widgets &= ~(1 << WIDX_PATH);
+        w->pressed_widgets &= ~(1ULL << WIDX_PATH);
     else
-        w->pressed_widgets |= (1 << WIDX_PATH);
+        w->pressed_widgets |= (1ULL << WIDX_PATH);
 
     if (gGamePaused & GAME_PAUSED_NORMAL)
-        w->pressed_widgets |= (1 << WIDX_PAUSE);
+        w->pressed_widgets |= (1ULL << WIDX_PAUSE);
     else
-        w->pressed_widgets &= ~(1 << WIDX_PAUSE);
+        w->pressed_widgets &= ~(1ULL << WIDX_PAUSE);
 
     if (!OpenRCT2::Audio::gGameSoundsOff)
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MUTE;
@@ -835,15 +835,15 @@ static void window_top_toolbar_invalidate(rct_window* w)
 
     if (mainWindow->viewport->zoom == ZoomLevel::min())
     {
-        w->disabled_widgets |= (1 << WIDX_ZOOM_IN);
+        w->disabled_widgets |= (1ULL << WIDX_ZOOM_IN);
     }
     else if (mainWindow->viewport->zoom >= ZoomLevel::max())
     {
-        w->disabled_widgets |= (1 << WIDX_ZOOM_OUT);
+        w->disabled_widgets |= (1ULL << WIDX_ZOOM_OUT);
     }
     else
     {
-        w->disabled_widgets &= ~((1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT));
+        w->disabled_widgets &= ~((1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT));
     }
 }
 
@@ -1167,7 +1167,7 @@ static void sub_6E1F34_update_screen_coords_and_buttons_pressed(bool canRaiseIte
             if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z))
             {
                 // CTRL pressed
-                auto flags = EnumsToFlags(
+                constexpr auto flags = EnumsToFlags(
                     ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
                     ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery);
                 auto info = get_map_coordinates_from_pos(screenPos, flags);
@@ -1337,7 +1337,7 @@ static void sub_6E1F34_small_scenery(
     // If CTRL not pressed
     if (!gSceneryCtrlPressed)
     {
-        auto flags = EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water);
+        constexpr auto flags = EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water);
 
         auto info = get_map_coordinates_from_pos(screenPos, flags);
         gridPos = info.Loc;
@@ -1431,7 +1431,7 @@ static void sub_6E1F34_path_item(
     sub_6E1F34_update_screen_coords_and_buttons_pressed(false, screenPos);
 
     // Path bits
-    auto flags = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
+    constexpr auto flags = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
     auto info = get_map_coordinates_from_pos(screenPos, flags);
     gridPos = info.Loc;
 
@@ -1653,7 +1653,7 @@ static void sub_6E1F34_banner(
     sub_6E1F34_update_screen_coords_and_buttons_pressed(false, screenPos);
 
     // Banner
-    auto flags = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
+    constexpr auto flags = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
     auto info = get_map_coordinates_from_pos(screenPos, flags);
     gridPos = info.Loc;
 

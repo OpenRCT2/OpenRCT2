@@ -3686,6 +3686,24 @@ STR_6432    :Mouse {INT32}
 STR_6433    :Rimuovi
 STR_6434    :Rimuovi tutte le associazioni per questa scorciatoia.
 STR_6435    :{WINDOW_COLOUR_2}Vandalismi fermati: {BLACK}{COMMA16}
+STR_6436    :Attiva/disattiva invisibilità
+STR_6437    :Invisibile
+STR_6438    :I
+STR_6439    :Analizzatore celle: Attiva/disattiva invisibilità
+STR_6440    :Acqua trasparente
+STR_6441    :Occorre selezionare almeno un oggetto di superficie sentiero di tipo non coda.
+STR_6442    :Occorre selezionare almeno un oggetto di superficie sentiero code.
+STR_6443    :Occorre selezionare almeno un oggetto di parapetto sentieri.
+STR_6444    :Superfici sentieri
+STR_6445    :Parapetti sentieri
+STR_6446    :{WINDOW_COLOUR_2}Nome superficie: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Nome parapetto: {BLACK}{STRINGID}
+STR_6448    :Formato oggetto non supportato
+STR_6449    :{WINDOW_COLOUR_2}Tracce:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Vende: {BLACK}{STRING}
+STR_6453    :Copia info versione
 
 
 #############

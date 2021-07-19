@@ -119,12 +119,6 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         }
     }
 
-    if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
-    {
-        log_error("No free map elements available");
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
-    }
-
     uint8_t tileNum = 0;
     for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
     {
@@ -137,18 +131,22 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         int32_t zHigh = tile->z_clearance + zLow;
 
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
-        if (!map_can_construct_with_clear_at(
-                { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
-                CREATE_CROSSING_MODE_NONE, (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0))
+        const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
+        auto canBuild = MapCanConstructWithClearAt(
+            { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE,
+            isTree);
+        if (canBuild->Error != GameActions::Status::Ok)
         {
-            return std::make_unique<LargeSceneryPlaceActionResult>(
-                GameActions::Status::NoClearance, gGameCommandErrorText, gCommonFormatArgs);
+            canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+            return canBuild;
         }
 
-        int32_t tempSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        supportsCost += canBuild->Cost;
+
+        int32_t tempSceneryGroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (!gCheatsDisableClearanceChecks)
         {
-            if ((gMapGroundFlags & ELEMENT_IS_UNDERWATER) || (gMapGroundFlags & ELEMENT_IS_UNDERGROUND))
+            if ((canBuild->GroundFlags & ELEMENT_IS_UNDERWATER) || (canBuild->GroundFlags & ELEMENT_IS_UNDERGROUND))
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_UNDERWATER);
@@ -162,7 +160,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
 
         res->GroundFlags = tempSceneryGroundFlags;
 
-        if (!LocationValid(curTile) || curTile.x >= GetMapSizeUnits() || curTile.y >= GetMapSizeUnits())
+        if (!LocationValid(curTile) || map_is_edge(curTile))
         {
             return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::Disallowed, STR_OFF_EDGE_OF_MAP);
         }
@@ -171,6 +169,12 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         {
             return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
         }
+    }
+
+    if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
+    {
+        log_error("No free map elements available");
+        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
     }
 
     // Force ride construction to recheck area
@@ -263,15 +267,18 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         int32_t zHigh = tile->z_clearance + zLow;
 
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
-        if (!map_can_construct_with_clear_at(
-                { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
-                CREATE_CROSSING_MODE_NONE, (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0))
+        const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
+        auto canBuild = MapCanConstructWithClearAt(
+            { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE,
+            isTree);
+        if (canBuild->Error != GameActions::Status::Ok)
         {
             DeleteBanner(banner->id);
             return MakeResult(GameActions::Status::NoClearance, gGameCommandErrorText, gCommonFormatArgs);
         }
 
-        res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        supportsCost += canBuild->Cost;
+        res->GroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {

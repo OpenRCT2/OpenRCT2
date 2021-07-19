@@ -4,7 +4,7 @@
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :스파이럴 롤러코스터
-STR_0003    :스탠드업 롤러코스터
+STR_0003    :스탠드 업 롤러코스터
 STR_0004    :서스펜디드 스윙잉 코스터
 STR_0005    :인버티드 롤러코스터
 STR_0006    :주니어 롤러코스터
@@ -813,7 +813,7 @@ STR_1424    :보도
 STR_1425    :보도
 STR_1426    :대기 줄
 STR_1427    :{WINDOW_COLOUR_2}손님: {BLACK}{COMMA32}명/시간
-STR_1428    :{WINDOW_COLOUR_2}입장료:
+STR_1428    :{WINDOW_COLOUR_2}탑승료:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :무료
 STR_1431    :걷는 중
@@ -3698,6 +3698,7 @@ STR_6449    :{WINDOW_COLOUR_2}트랙:
 STR_6450    :{BLACK}“{STRING}”
 STR_6451    :{BLACK}“{STRING}” - {STRING}
 STR_6452    :{WINDOW_COLOUR_2}판매: {BLACK}{STRING}
+STR_6453    :버전 정보 복사
 
 #############
 # Scenarios #

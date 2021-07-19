@@ -639,13 +639,13 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
         || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
     {
-        w->pressed_widgets |= (1 << WIDX_NO_MONEY);
+        w->pressed_widgets |= (1ULL << WIDX_NO_MONEY);
         for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
             w->widgets[i].type = WindowWidgetType::Empty;
     }
     else
     {
-        w->pressed_widgets &= ~(1 << WIDX_NO_MONEY);
+        w->pressed_widgets &= ~(1ULL << WIDX_NO_MONEY);
         w->widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
         w->widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
         w->widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
@@ -662,9 +662,9 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
     }
 
     if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
-        w->pressed_widgets |= (1 << WIDX_FORBID_MARKETING);
+        w->pressed_widgets |= (1ULL << WIDX_FORBID_MARKETING);
     else
-        w->pressed_widgets &= ~(1 << WIDX_FORBID_MARKETING);
+        w->pressed_widgets &= ~(1ULL << WIDX_FORBID_MARKETING);
 
     w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                 : WindowWidgetType::CloseBox;
@@ -933,15 +933,15 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
 
     // Guests prefer less intense rides checkbox
     if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
-        w->pressed_widgets |= (1 << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES);
+        w->pressed_widgets |= (1ULL << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES);
     else
-        w->pressed_widgets &= ~(1 << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES);
+        w->pressed_widgets &= ~(1ULL << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES);
 
     // Guests prefer more intense rides checkbox
     if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
-        w->pressed_widgets |= (1 << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
+        w->pressed_widgets |= (1ULL << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
     else
-        w->pressed_widgets &= ~(1 << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
+        w->pressed_widgets &= ~(1ULL << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
 
     w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                 : WindowWidgetType::CloseBox;
@@ -1285,22 +1285,22 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
 
     // Set checkboxes
     pressedWidgets = w->pressed_widgets;
-    pressedWidgets &= ~(1 << WIDX_FORBID_TREE_REMOVAL);
-    pressedWidgets &= ~(1 << WIDX_FORBID_LANDSCAPE_CHANGES);
-    pressedWidgets &= ~(1 << WIDX_FORBID_HIGH_CONSTRUCTION);
-    pressedWidgets &= ~(1 << WIDX_HARD_PARK_RATING);
-    pressedWidgets &= ~(1 << WIDX_HARD_GUEST_GENERATION);
+    pressedWidgets &= ~(1ULL << WIDX_FORBID_TREE_REMOVAL);
+    pressedWidgets &= ~(1ULL << WIDX_FORBID_LANDSCAPE_CHANGES);
+    pressedWidgets &= ~(1ULL << WIDX_FORBID_HIGH_CONSTRUCTION);
+    pressedWidgets &= ~(1ULL << WIDX_HARD_PARK_RATING);
+    pressedWidgets &= ~(1ULL << WIDX_HARD_GUEST_GENERATION);
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
-        pressedWidgets |= (1 << WIDX_FORBID_TREE_REMOVAL);
+        pressedWidgets |= (1ULL << WIDX_FORBID_TREE_REMOVAL);
     if (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
-        pressedWidgets |= (1 << WIDX_FORBID_LANDSCAPE_CHANGES);
+        pressedWidgets |= (1ULL << WIDX_FORBID_LANDSCAPE_CHANGES);
     if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
-        pressedWidgets |= (1 << WIDX_FORBID_HIGH_CONSTRUCTION);
+        pressedWidgets |= (1ULL << WIDX_FORBID_HIGH_CONSTRUCTION);
     if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
-        pressedWidgets |= (1 << WIDX_HARD_PARK_RATING);
+        pressedWidgets |= (1ULL << WIDX_HARD_PARK_RATING);
     if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
-        pressedWidgets |= (1 << WIDX_HARD_GUEST_GENERATION);
+        pressedWidgets |= (1ULL << WIDX_HARD_GUEST_GENERATION);
 
     w->pressed_widgets = pressedWidgets;
 

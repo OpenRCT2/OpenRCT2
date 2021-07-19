@@ -85,7 +85,7 @@ enum
     MAP_SELECT_TYPE_EDGE_3,
 };
 
-// Used when calling map_can_construct_with_clear_at();
+// Used when calling MapCanConstructWithClearAt();
 // This assumes that the caller has already done the check on the element it wants to place,
 // as this function can only check the element the player wants to build through.
 enum
@@ -123,8 +123,6 @@ extern CoordsXY gMapSelectPositionA;
 extern CoordsXY gMapSelectPositionB;
 extern CoordsXYZ gMapSelectArrowPosition;
 extern uint8_t gMapSelectArrowDirection;
-
-extern uint8_t gMapGroundFlags;
 
 extern std::vector<CoordsXY> gMapSelectionTiles;
 extern std::vector<PeepSpawn> gPeepSpawns;
@@ -246,14 +244,10 @@ using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coord
 
 int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-bool map_can_construct_with_clear_at(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
-    uint8_t crossingMode, bool isTree = false);
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode,
-    bool isTree = false);
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
+    uint8_t crossingMode = CREATE_CROSSING_MODE_NONE, bool isTree = false);
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
-int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl);
 
 struct tile_element_iterator
 {

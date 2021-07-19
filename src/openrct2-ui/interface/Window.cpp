@@ -86,13 +86,20 @@ static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t
     return WindowFitsBetweenOthers(loc, width, height);
 }
 
-static ScreenCoordsXY ClampWindowToScreen(const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t width)
+static ScreenCoordsXY ClampWindowToScreen(
+    const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t screenHeight, const int32_t width, const int32_t height)
 {
     auto screenPos = pos;
-    if (screenPos.x < 0)
+    if (width > screenWidth || screenPos.x < 0)
         screenPos.x = 0;
-    if (screenPos.x + width > screenWidth)
+    else if (screenPos.x + width > screenWidth)
         screenPos.x = screenWidth - width;
+
+    auto toolbarAllowance = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 0 : (TOP_TOOLBAR_HEIGHT + 1);
+    if (height - toolbarAllowance > screenHeight || screenPos.y < toolbarAllowance)
+        screenPos.y = toolbarAllowance;
+    else if (screenPos.y + height - toolbarAllowance > screenHeight)
+        screenPos.y = screenHeight + toolbarAllowance - height;
 
     return screenPos;
 }
@@ -115,7 +122,7 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
     {
         if (WindowFitsWithinSpace(cornerPos, width, height))
         {
-            return ClampWindowToScreen(cornerPos, screenWidth, width);
+            return ClampWindowToScreen(cornerPos, screenWidth, screenHeight, width, height);
         }
     }
 
@@ -139,7 +146,7 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
             auto screenPos = w->windowPos + offset;
             if (WindowFitsWithinSpace(screenPos, width, height))
             {
-                return ClampWindowToScreen(screenPos, screenWidth, width);
+                return ClampWindowToScreen(screenPos, screenWidth, screenHeight, width, height);
             }
         }
     }
@@ -164,7 +171,7 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
             auto screenPos = w->windowPos + offset;
             if (WindowFitsOnScreen(screenPos, width, height))
             {
-                return ClampWindowToScreen(screenPos, screenWidth, width);
+                return ClampWindowToScreen(screenPos, screenWidth, screenHeight, width, height);
             }
         }
     }
@@ -180,7 +187,7 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
         }
     }
 
-    return ClampWindowToScreen(screenPos, screenWidth, width);
+    return ClampWindowToScreen(screenPos, screenWidth, screenHeight, width, height);
 }
 
 static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)

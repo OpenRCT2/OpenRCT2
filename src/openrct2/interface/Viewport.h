@@ -147,7 +147,6 @@ bool ViewportInteractionRightOver(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
-void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);
 
 void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 

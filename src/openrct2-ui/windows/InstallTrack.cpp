@@ -113,8 +113,8 @@ rct_window* window_install_track_open(const utf8* path)
 
     rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL)
-        | (1 << WIDX_CANCEL);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_TOGGLE_SCENERY) | (1ULL << WIDX_INSTALL)
+        | (1ULL << WIDX_CANCEL);
     WindowInitScrollWidgets(w);
     w->track_list.track_list_being_updated = false;
     window_push_others_right(w);
@@ -176,14 +176,14 @@ static void window_install_track_mouseup(rct_window* w, rct_widgetindex widgetIn
  */
 static void window_install_track_invalidate(rct_window* w)
 {
-    w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
+    w->pressed_widgets |= 1ULL << WIDX_TRACK_PREVIEW;
     if (!gTrackDesignSceneryToggle)
     {
-        w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
+        w->pressed_widgets |= (1ULL << WIDX_TOGGLE_SCENERY);
     }
     else
     {
-        w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
+        w->pressed_widgets &= ~(1ULL << WIDX_TOGGLE_SCENERY);
     }
 }
 

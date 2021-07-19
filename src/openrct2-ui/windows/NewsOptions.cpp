@@ -111,7 +111,8 @@ rct_window* window_news_options_open()
     {
         window = WindowCreateCentred(400, 300, &window_news_options_events, WC_NOTIFICATION_OPTIONS, 0);
         window->widgets = window_news_options_widgets;
-        window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB_PARK) | (1 << WIDX_TAB_RIDE) | (1 << WIDX_TAB_GUEST);
+        window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_PARK) | (1ULL << WIDX_TAB_RIDE)
+            | (1ULL << WIDX_TAB_GUEST);
         WindowInitScrollWidgets(window);
         window->colours[0] = COLOUR_GREY;
         window->colours[1] = COLOUR_LIGHT_BLUE;

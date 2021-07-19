@@ -144,7 +144,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
 
     rct_window* w = WindowCreate(ScreenCoordsXY(0, 29), 200, 124, &window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
     w->widgets = window_track_place_widgets;
-    w->enabled_widgets = 1 << WIDX_CLOSE | 1 << WIDX_ROTATE | 1 << WIDX_MIRROR | 1 << WIDX_SELECT_DIFFERENT_DESIGN;
+    w->enabled_widgets = 1ULL << WIDX_CLOSE | 1ULL << WIDX_ROTATE | 1ULL << WIDX_MIRROR | 1ULL << WIDX_SELECT_DIFFERENT_DESIGN;
     WindowInitScrollWidgets(w);
     tool_set(w, WIDX_PRICE, Tool::Crosshair);
     input_set_flag(INPUT_FLAG_6, true);

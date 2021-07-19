@@ -151,9 +151,9 @@ public:
     void OnOpen() override
     {
         widgets = window_guest_list_widgets;
-        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_PAGE_DROPDOWN) | (1 << WIDX_PAGE_DROPDOWN_BUTTON)
-            | (1 << WIDX_INFO_TYPE_DROPDOWN) | (1 << WIDX_INFO_TYPE_DROPDOWN_BUTTON) | (1 << WIDX_MAP) | (1 << WIDX_TRACKING)
-            | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_FILTER_BY_NAME);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_PAGE_DROPDOWN) | (1ULL << WIDX_PAGE_DROPDOWN_BUTTON)
+            | (1ULL << WIDX_INFO_TYPE_DROPDOWN) | (1ULL << WIDX_INFO_TYPE_DROPDOWN_BUTTON) | (1ULL << WIDX_MAP)
+            | (1ULL << WIDX_TRACKING) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_FILTER_BY_NAME);
         WindowInitScrollWidgets(this);
 
         _selectedTab = TabId::Individual;

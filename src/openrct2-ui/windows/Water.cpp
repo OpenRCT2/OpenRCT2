@@ -45,8 +45,8 @@ public:
     void OnOpen() override
     {
         widgets = window_water_widgets;
-        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);
-        hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_PREVIEW);
+        hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(this);
         window_push_others_below(this);
 

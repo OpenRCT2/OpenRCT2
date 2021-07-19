@@ -395,8 +395,8 @@ rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, 
         window = WindowCreateCentred(WW, WH, &window_object_load_error_events, WC_OBJECT_LOAD_ERROR, 0);
 
         window->widgets = window_object_load_error_widgets;
-        window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_COPY_CURRENT) | (1 << WIDX_COPY_ALL)
-            | (1 << WIDX_DOWNLOAD_ALL);
+        window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_COPY_CURRENT) | (1ULL << WIDX_COPY_ALL)
+            | (1ULL << WIDX_DOWNLOAD_ALL);
 
         WindowInitScrollWidgets(window);
         window->colours[0] = COLOUR_LIGHT_BLUE;

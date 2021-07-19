@@ -39,12 +39,6 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
     res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
     res->Expenditure = ExpenditureType::RideConstruction;
     res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-    if (!MapCheckCapacityAndReorganise(_loc))
-    {
-        res->Error = GameActions::Status::NoFreeElements;
-        res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
-        return res;
-    }
     if ((_loc.z & 0xF) != 0)
     {
         res->Error = GameActions::Status::Unknown;
@@ -59,6 +53,12 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
         return res;
     }
 
+    if (!MapCheckCapacityAndReorganise(_loc))
+    {
+        res->Error = GameActions::Status::NoFreeElements;
+        res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
+        return res;
+    }
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)
     {
@@ -83,24 +83,22 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
         }
     }
 
-    money32 clearCost = 0;
-
-    if (!map_can_construct_with_clear_at(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags(),
-            &clearCost, CREATE_CROSSING_MODE_NONE))
+    auto canBuild = MapCanConstructWithClearAt(
+        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags());
+    if (canBuild->Error != GameActions::Status::Ok)
     {
-        return MakeResult(
-            GameActions::Status::NoClearance, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
+        canBuild->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        return canBuild;
     }
 
-    if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
+    if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER)
     {
         res->Error = GameActions::Status::NoClearance;
         res->ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
         return res;
     }
 
-    if (gMapGroundFlags & ELEMENT_IS_UNDERGROUND)
+    if (canBuild->GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         res->Error = GameActions::Status::NoClearance;
         res->ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
@@ -116,7 +114,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
     }
 
     money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
-    res->Cost = clearCost + price / 2 * 10;
+    res->Cost = canBuild->Cost + price / 2 * 10;
 
     return res;
 }
@@ -137,13 +135,6 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
         return res;
     }
 
-    if (!MapCheckCapacityAndReorganise(_loc))
-    {
-        res->Error = GameActions::Status::NoFreeElements;
-        res->ErrorMessage = STR_NONE;
-        return res;
-    }
-
     uint32_t flags = GetFlags();
     if (!(flags & GAME_COMMAND_FLAG_GHOST))
     {
@@ -154,17 +145,17 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
     auto baseHeight = _loc.z;
     auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
 
-    money32 clearCost = 0;
-    if (!map_can_construct_with_clear_at(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
-            GetFlags() | GAME_COMMAND_FLAG_APPLY, &clearCost, CREATE_CROSSING_MODE_NONE))
+    auto canBuild = MapCanConstructWithClearAt(
+        { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
+        GetFlags() | GAME_COMMAND_FLAG_APPLY);
+    if (canBuild->Error != GameActions::Status::Ok)
     {
-        return MakeResult(
-            GameActions::Status::NoClearance, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
+        canBuild->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        return canBuild;
     }
 
     money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
-    res->Cost = clearCost + price / 2 * 10;
+    res->Cost = canBuild->Cost + price / 2 * 10;
 
     auto startLoc = _loc.ToTileStart();
 

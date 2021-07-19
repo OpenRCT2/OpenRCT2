@@ -210,10 +210,11 @@ rct_window* window_footpath_open()
 
     window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WC_FOOTPATH, 0);
     window->widgets = window_footpath_widgets;
-    window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_FOOTPATH_TYPE) | (1 << WIDX_QUEUELINE_TYPE)
-        | (1 << WIDX_RAILINGS_TYPE) | (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW)
-        | (1 << WIDX_DIRECTION_SE) | (1 << WIDX_SLOPEDOWN) | (1 << WIDX_LEVEL) | (1 << WIDX_SLOPEUP) | (1 << WIDX_CONSTRUCT)
-        | (1 << WIDX_REMOVE) | (1 << WIDX_CONSTRUCT_ON_LAND) | (1 << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
+    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_FOOTPATH_TYPE) | (1ULL << WIDX_QUEUELINE_TYPE)
+        | (1ULL << WIDX_RAILINGS_TYPE) | (1ULL << WIDX_DIRECTION_NW) | (1ULL << WIDX_DIRECTION_NE) | (1ULL << WIDX_DIRECTION_SW)
+        | (1ULL << WIDX_DIRECTION_SE) | (1ULL << WIDX_SLOPEDOWN) | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPEUP)
+        | (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_CONSTRUCT_ON_LAND)
+        | (1ULL << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
 
     WindowInitScrollWidgets(window);
     window_push_others_right(window);
@@ -566,9 +567,9 @@ static void window_footpath_update(rct_window* w)
 static void window_footpath_invalidate(rct_window* w)
 {
     // Press / unpress footpath and queue type buttons
-    w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);
-    w->pressed_widgets &= ~(1 << WIDX_QUEUELINE_TYPE);
-    w->pressed_widgets |= gFootpathSelection.IsQueueSelected ? (1 << WIDX_QUEUELINE_TYPE) : (1 << WIDX_FOOTPATH_TYPE);
+    w->pressed_widgets &= ~(1ULL << WIDX_FOOTPATH_TYPE);
+    w->pressed_widgets &= ~(1ULL << WIDX_QUEUELINE_TYPE);
+    w->pressed_widgets |= gFootpathSelection.IsQueueSelected ? (1ULL << WIDX_QUEUELINE_TYPE) : (1ULL << WIDX_FOOTPATH_TYPE);
 
     // Enable / disable construct button
     window_footpath_widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
@@ -638,7 +639,7 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ScreenCoordsXY screenCoords;
     WindowDrawWidgets(w, dpi);
 
-    if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT)))
+    if (!(w->disabled_widgets & (1ULL << WIDX_CONSTRUCT)))
     {
         // Get construction image
         uint8_t direction = (_footpathConstructDirection + get_current_rotation()) % 4;
@@ -1325,23 +1326,23 @@ static void window_footpath_set_enabled_and_pressed_widgets()
         int32_t slope = gFootpathConstructSlope;
         if (slope == TILE_ELEMENT_SLOPE_SE_SIDE_UP)
         {
-            pressedWidgets |= (1 << WIDX_SLOPEDOWN);
+            pressedWidgets |= (1ULL << WIDX_SLOPEDOWN);
         }
         else if (slope == TILE_ELEMENT_SLOPE_FLAT)
         {
-            pressedWidgets |= (1 << WIDX_LEVEL);
+            pressedWidgets |= (1ULL << WIDX_LEVEL);
         }
         else
         {
-            pressedWidgets |= (1 << WIDX_SLOPEUP);
+            pressedWidgets |= (1ULL << WIDX_SLOPEUP);
         }
 
         // Enable / disable directional widgets
         direction = _footpathConstructValidDirections;
         if (direction != INVALID_DIRECTION)
         {
-            disabledWidgets |= (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW)
-                | (1 << WIDX_DIRECTION_SE);
+            disabledWidgets |= (1ULL << WIDX_DIRECTION_NW) | (1ULL << WIDX_DIRECTION_NE) | (1ULL << WIDX_DIRECTION_SW)
+                | (1ULL << WIDX_DIRECTION_SE);
 
             direction = (direction + currentRotation) & 3;
             disabledWidgets &= ~(1 << (WIDX_DIRECTION_NW + direction));
@@ -1350,9 +1351,9 @@ static void window_footpath_set_enabled_and_pressed_widgets()
     else
     {
         // Disable all bridge mode widgets
-        disabledWidgets |= (1 << WIDX_DIRECTION_GROUP) | (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE)
-            | (1 << WIDX_DIRECTION_SW) | (1 << WIDX_DIRECTION_SE) | (1 << WIDX_SLOPE_GROUP) | (1 << WIDX_SLOPEDOWN)
-            | (1 << WIDX_LEVEL) | (1 << WIDX_SLOPEUP) | (1 << WIDX_CONSTRUCT) | (1 << WIDX_REMOVE);
+        disabledWidgets |= (1ULL << WIDX_DIRECTION_GROUP) | (1ULL << WIDX_DIRECTION_NW) | (1ULL << WIDX_DIRECTION_NE)
+            | (1ULL << WIDX_DIRECTION_SW) | (1ULL << WIDX_DIRECTION_SE) | (1ULL << WIDX_SLOPE_GROUP) | (1ULL << WIDX_SLOPEDOWN)
+            | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPEUP) | (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_REMOVE);
     }
 
     w->pressed_widgets = pressedWidgets;

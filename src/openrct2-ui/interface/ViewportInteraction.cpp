@@ -253,7 +253,8 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
-    auto flags = static_cast<int32_t>(~EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
+    constexpr auto flags = static_cast<int32_t>(
+        ~EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
     info = get_map_coordinates_from_pos(screenCoords, flags);
     auto tileElement = info.Element;
 

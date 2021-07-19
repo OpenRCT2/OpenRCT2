@@ -954,9 +954,9 @@ void window_scenery_invalidate(rct_window* w)
     w->pressed_widgets = 0;
     w->pressed_widgets |= 1ULL << (tabIndex + WIDX_SCENERY_TAB_1);
     if (gWindowSceneryPaintEnabled == 1)
-        w->pressed_widgets |= (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
+        w->pressed_widgets |= (1ULL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
     if (gWindowSceneryEyedropperEnabled)
-        w->pressed_widgets |= (1 << WIDX_SCENERY_EYEDROPPER_BUTTON);
+        w->pressed_widgets |= (1ULL << WIDX_SCENERY_EYEDROPPER_BUTTON);
     if (gWindowSceneryScatterEnabled)
         w->pressed_widgets |= (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 

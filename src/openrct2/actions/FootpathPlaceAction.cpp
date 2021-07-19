@@ -286,20 +286,21 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
             res->Cost -= MONEY(6, 00);
     }
 
-    // Do not attempt to build a crossing with a queue or a sloped.
+    // Do not attempt to build a crossing with a queue or a sloped path.
     auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
     uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
                                                                           : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath
-        && !map_can_construct_with_clear_at(
-            { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
+    auto canBuild = MapCanConstructWithClearAt(
+        { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
+    if (!entrancePath && canBuild->Error != GameActions::Status::Ok)
     {
-        return MakeResult(
-            GameActions::Status::NoClearance, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
+        canBuild->ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
+        return canBuild;
     }
+    res->Cost += canBuild->Cost;
 
-    gFootpathGroundFlags = gMapGroundFlags;
-    if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER))
+    gFootpathGroundFlags = canBuild->GroundFlags;
+    if (!gCheatsDisableClearanceChecks && (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER))
     {
         return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
     }
@@ -360,11 +361,12 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
         crossingMode);
     if (!entrancePath && canBuild->Error != GameActions::Status::Ok)
     {
+        canBuild->ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
         return canBuild;
     }
     res->Cost += canBuild->Cost;
 
-    gFootpathGroundFlags = gMapGroundFlags;
+    gFootpathGroundFlags = canBuild->GroundFlags;
 
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)

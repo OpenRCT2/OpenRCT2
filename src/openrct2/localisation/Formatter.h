@@ -77,17 +77,17 @@ public:
 
         // clang-format off
         static_assert(
-            std::is_same_v<TSpecified, char*> ||
-            std::is_same_v<TSpecified, const char*> ||
-            std::is_same_v<TSpecified, int16_t> ||
-            std::is_same_v<TSpecified, int32_t> ||
-            std::is_same_v<TSpecified, money32> ||
-            std::is_same_v<TSpecified, money64> ||
-            std::is_same_v<TSpecified, rct_string_id> ||
-            std::is_same_v<TSpecified, uint16_t> ||
-            std::is_same_v<TSpecified, uint32_t> ||
-            std::is_same_v<TSpecified, utf8*> ||
-            std::is_same_v<TSpecified, const utf8*>
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, char*> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, const char*> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, int16_t> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, int32_t> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, money32> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, money64> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, rct_string_id> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, uint16_t> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, uint32_t> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, utf8*> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, const utf8*>
         );
         // clang-format on
 

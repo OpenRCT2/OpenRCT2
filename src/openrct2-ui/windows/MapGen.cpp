@@ -779,9 +779,9 @@ static void window_mapgen_random_invalidate(rct_window* w)
 
     w->pressed_widgets = 0;
     if (_randomTerrain)
-        w->pressed_widgets |= 1 << WIDX_RANDOM_TERRAIN;
+        w->pressed_widgets |= 1ULL << WIDX_RANDOM_TERRAIN;
     if (_placeTrees)
-        w->pressed_widgets |= 1 << WIDX_RANDOM_PLACE_TREES;
+        w->pressed_widgets |= 1ULL << WIDX_RANDOM_PLACE_TREES;
 
     window_mapgen_set_pressed_tab(w);
 }

@@ -111,10 +111,10 @@ static rct_widget *window_multiplayer_page_widgets[] = {
 };
 
 static constexpr const uint64_t window_multiplayer_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
-    (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
-    (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN),
-    (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_LOG_CHAT_CHECKBOX) | (1 << WIDX_LOG_SERVER_ACTIONS_CHECKBOX) | (1 << WIDX_KNOWN_KEYS_ONLY_CHECKBOX),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4) | (1ULL << WIDX_DEFAULT_GROUP) | (1ULL << WIDX_DEFAULT_GROUP_DROPDOWN) | (1ULL << WIDX_ADD_GROUP) | (1ULL << WIDX_REMOVE_GROUP) | (1ULL << WIDX_RENAME_GROUP) | (1ULL << WIDX_SELECTED_GROUP) | (1ULL << WIDX_SELECTED_GROUP_DROPDOWN),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4) | (1ULL << WIDX_LOG_CHAT_CHECKBOX) | (1ULL << WIDX_LOG_SERVER_ACTIONS_CHECKBOX) | (1ULL << WIDX_KNOWN_KEYS_ONLY_CHECKBOX),
 };
 
 static constexpr rct_string_id WindowMultiplayerPageTitles[] = {

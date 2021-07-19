@@ -77,11 +77,11 @@ rct_window* window_title_menu_open()
 
     window->widgets = window_title_menu_widgets;
     window->enabled_widgets
-        = ((1 << WIDX_START_NEW_GAME) | (1 << WIDX_CONTINUE_SAVED_GAME) |
+        = ((1ULL << WIDX_START_NEW_GAME) | (1ULL << WIDX_CONTINUE_SAVED_GAME) |
 #ifndef DISABLE_NETWORK
-           (1 << WIDX_MULTIPLAYER) |
+           (1ULL << WIDX_MULTIPLAYER) |
 #endif
-           (1 << WIDX_GAME_TOOLS));
+           (1ULL << WIDX_GAME_TOOLS));
 
     rct_widgetindex i = 0;
     int32_t x = 0;

@@ -1,7 +1,12 @@
-0.3.3+ (in development)
+0.3.4+ (in development)
+------------------------------------------------------------------------
+- Improved: [#12626] Allow using RCT2 saves to mark RCT Classic (.sea) parks as finished and vice versa. 
+
+0.3.4 (2021-07-19)
 ------------------------------------------------------------------------
 - Feature: [#13967] Track List window now displays the path to the design when debugging tools are on.
 - Feature: [#14071] “Vandals stopped” statistic for security guards.
+- Feature: [#14169] Lighting effects for shops and stalls.
 - Feature: [#14296] Allow using early scenario completion in multiplayer.
 - Feature: [#14538] [Plugin] Add property for getting current plugin api version.
 - Feature: [#14620] [Plugin] Add properties related to guest generation.
@@ -10,7 +15,9 @@
 - Change: [#14496] [Plugin] Rename Object to LoadedObject to fix conflicts with Typescript's Object interface.
 - Change: [#14536] [Plugin] Rename ListView to ListViewWidget to make it consistent with names of other widgets.
 - Change: [#14751] “No construction above tree height” limitation now allows placing high trees.
+- Change: [#14841] Redesign the About window, including new button to copy the current version info.
 - Fix: [#11829] Visual glitches and crashes when using RCT1 assets from mismatched or corrupt CSG1.DAT and CSG1i.DAT files.
+- Fix: [#12262] Windows can appear off screen with small screens or high scaling.
 - Fix: [#13581] Opening the Options menu causes a noticeable drop in FPS.
 - Fix: [#13894] Block brakes do not animate.
 - Fix: [#13986] OpenGL: Track preview window, flip/rotate button do not update the thumbnail.
@@ -28,8 +35,13 @@
 - Fix: [#14710] Ride/Track Design preview does not show if it costs more money than available.
 - Fix: [#14774] Incorrect import of scenery research caused all scenery to be unlocked.
 - Fix: [#14806] Incorrect function call in WallPlaceAction plugin code.
+- Fix: [#14871] Crash when trying to place track when there are no free tile elements.
+- Fix: [#14880] Unable to close changelog window when its content fails to load.
+- Fix: [#14945] Incorrect drop height penalty on log flume ride.
+- Fix: [#14964] Unable to build in multiplayer as client with "Build while paused" cheat enabled when the host is paused.
 - Improved: [#14511] “Unlock operating limits” cheat now also unlocks all music.
-- Improved: [#14712, #14716]: Improve startup times.
+- Improved: [#14712, #14716] Improve startup times.
+- Improved: [#14982] Add Malgun Gothic and change Nanum Gothic filename for Korean.
 
 0.3.3 (2021-03-13)
 ------------------------------------------------------------------------

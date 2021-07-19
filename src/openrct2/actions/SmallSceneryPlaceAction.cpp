@@ -111,14 +111,14 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
         res->Position.z = surfaceHeight;
     }
 
-    if (!MapCheckCapacityAndReorganise(_loc))
-    {
-        return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
-    }
-
     if (!LocationValid(_loc))
     {
         return MakeResult(GameActions::Status::InvalidParameters);
+    }
+
+    if (!MapCheckCapacityAndReorganise(_loc))
+    {
+        return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
     }
 
     if (!byte_9D8150 && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))
@@ -276,20 +276,19 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     }
 
     QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
-    money32 clearCost = 0;
-
-    if (!map_can_construct_with_clear_at(
-            { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
-            CREATE_CROSSING_MODE_NONE, scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)))
+    const auto isTree = scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE);
+    auto canBuild = MapCanConstructWithClearAt(
+        { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
+    if (canBuild->Error != GameActions::Status::Ok)
     {
-        return std::make_unique<SmallSceneryPlaceActionResult>(
-            GameActions::Status::Disallowed, gGameCommandErrorText, gCommonFormatArgs);
+        canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        return canBuild;
     }
 
-    res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+    res->GroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
     res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = (sceneryEntry->price * 10) + clearCost;
+    res->Cost = (sceneryEntry->price * 10) + canBuild->Cost;
 
     return res;
 }
@@ -414,20 +413,20 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     }
 
     QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
-    money32 clearCost = 0;
-
-    if (!map_can_construct_with_clear_at(
-            { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY, &clearCost,
-            CREATE_CROSSING_MODE_NONE, scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)))
+    const auto isTree = scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE);
+    auto canBuild = MapCanConstructWithClearAt(
+        { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+        CREATE_CROSSING_MODE_NONE, isTree);
+    if (canBuild->Error != GameActions::Status::Ok)
     {
-        return std::make_unique<SmallSceneryPlaceActionResult>(
-            GameActions::Status::Disallowed, gGameCommandErrorText, gCommonFormatArgs);
+        canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        return canBuild;
     }
 
-    res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+    res->GroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
     res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = (sceneryEntry->price * 10) + clearCost;
+    res->Cost = (sceneryEntry->price * 10) + canBuild->Cost;
 
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>(
         CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());

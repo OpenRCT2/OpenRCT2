@@ -220,9 +220,10 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     window_title_command_editor_widgets[WIDX_TEXTBOX_X].string = textbox1Buffer;
     window_title_command_editor_widgets[WIDX_TEXTBOX_Y].string = textbox2Buffer;
     window->widgets = window_title_command_editor_widgets;
-    window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_COMMAND) | (1 << WIDX_COMMAND_DROPDOWN) | (1 << WIDX_TEXTBOX_FULL)
-        | (1 << WIDX_TEXTBOX_X) | (1 << WIDX_TEXTBOX_Y) | (1 << WIDX_INPUT) | (1 << WIDX_INPUT_DROPDOWN) | (1 << WIDX_GET)
-        | (1 << WIDX_SELECT_SCENARIO) | (1 << WIDX_SELECT_SPRITE) | (1 << WIDX_OKAY) | (1 << WIDX_CANCEL);
+    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_COMMAND) | (1ULL << WIDX_COMMAND_DROPDOWN)
+        | (1ULL << WIDX_TEXTBOX_FULL) | (1ULL << WIDX_TEXTBOX_X) | (1ULL << WIDX_TEXTBOX_Y) | (1ULL << WIDX_INPUT)
+        | (1ULL << WIDX_INPUT_DROPDOWN) | (1ULL << WIDX_GET) | (1ULL << WIDX_SELECT_SCENARIO) | (1ULL << WIDX_SELECT_SPRITE)
+        | (1ULL << WIDX_OKAY) | (1ULL << WIDX_CANCEL);
     WindowInitScrollWidgets(window);
 
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
@@ -741,21 +742,21 @@ static void window_title_command_editor_invalidate(rct_window* w)
 
             // Draw button pressed while the tool is active
             if (sprite_selector_tool_is_active())
-                w->pressed_widgets |= (1 << WIDX_SELECT_SPRITE);
+                w->pressed_widgets |= (1ULL << WIDX_SELECT_SPRITE);
             else
-                w->pressed_widgets &= ~(1 << WIDX_SELECT_SPRITE);
+                w->pressed_widgets &= ~(1ULL << WIDX_SELECT_SPRITE);
 
             break;
     }
 
     if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO)
     {
-        w->disabled_widgets |= (1 << WIDX_GET) | (1 << WIDX_SELECT_SPRITE);
+        w->disabled_widgets |= (1ULL << WIDX_GET) | (1ULL << WIDX_SELECT_SPRITE);
         window_title_command_editor_widgets[WIDX_SELECT_SPRITE].tooltip = STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE_TOOLTIP;
     }
     else
     {
-        w->disabled_widgets &= ~((1 << WIDX_GET) | (1 << WIDX_SELECT_SPRITE));
+        w->disabled_widgets &= ~((1ULL << WIDX_GET) | (1ULL << WIDX_SELECT_SPRITE));
         window_title_command_editor_widgets[WIDX_SELECT_SPRITE].tooltip = STR_NONE;
     }
 }

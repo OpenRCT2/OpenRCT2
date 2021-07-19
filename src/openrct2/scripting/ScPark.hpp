@@ -208,7 +208,7 @@ namespace OpenRCT2::Scripting
             {
                 return msg->Text;
             }
-            return 0;
+            return {};
         }
 
         void text_set(const std::string& value)

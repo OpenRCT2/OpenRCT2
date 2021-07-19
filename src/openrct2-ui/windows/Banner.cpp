@@ -114,9 +114,9 @@ public:
     void OnOpen() override
     {
         widgets = window_banner_widgets;
-        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_BANNER_TEXT) | (1 << WIDX_BANNER_NO_ENTRY)
-            | (1 << WIDX_BANNER_DEMOLISH) | (1 << WIDX_MAIN_COLOUR) | (1 << WIDX_TEXT_COLOUR_DROPDOWN)
-            | (1 << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_BANNER_NO_ENTRY)
+            | (1ULL << WIDX_BANNER_DEMOLISH) | (1ULL << WIDX_MAIN_COLOUR) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN)
+            | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         WindowInitScrollWidgets(this);
     }
 

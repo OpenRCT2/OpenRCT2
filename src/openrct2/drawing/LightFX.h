@@ -68,6 +68,9 @@ void lightfx_add_3d_light_magic_from_drawing_tile(
 
 void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle);
 
+void LightFxAddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset);
+void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset);
+
 uint32_t lightfx_get_light_polution();
 
 void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b);

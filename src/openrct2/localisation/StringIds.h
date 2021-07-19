@@ -1228,7 +1228,7 @@ enum
     STR_LAST_BREAKDOWN = 1808,
     STR_CURRENT_BREAKDOWN = 1809,
     STR_CARRYING = 1810,
-    STR_CANT_BUILD_PARK_ENTRANCE_HERE = 1811,
+    STR_CANT_BUILD_THIS_HERE = 1811,
     STR_STRING_DEFINED_TOOLTIP = 1812,
     STR_MISCELLANEOUS = 1813,
     STR_ACTIONS = 1814,
@@ -3909,6 +3909,8 @@ enum
     STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER = 6451,
 
     STR_RIDE_OBJECT_SHOP_SELLS = 6452,
+
+    STR_COPY_BUILD_HASH = 6453,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

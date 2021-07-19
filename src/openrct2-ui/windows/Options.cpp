@@ -432,120 +432,120 @@ static void window_options_update_height_markers();
 #pragma region Enabled Widgets
 
 #define MAIN_OPTIONS_ENABLED_WIDGETS \
-    (1 << WIDX_CLOSE) | \
-    (1 << WIDX_TAB_1) | \
-    (1 << WIDX_TAB_2) | \
-    (1 << WIDX_TAB_3) | \
-    (1 << WIDX_TAB_4) | \
-    (1 << WIDX_TAB_5) | \
-    (1 << WIDX_TAB_6) | \
-    (1 << WIDX_TAB_7)
+    (1ULL << WIDX_CLOSE) | \
+    (1ULL << WIDX_TAB_1) | \
+    (1ULL << WIDX_TAB_2) | \
+    (1ULL << WIDX_TAB_3) | \
+    (1ULL << WIDX_TAB_4) | \
+    (1ULL << WIDX_TAB_5) | \
+    (1ULL << WIDX_TAB_6) | \
+    (1ULL << WIDX_TAB_7)
 
 static uint64_t window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1 << WIDX_RESOLUTION) |
-    (1 << WIDX_RESOLUTION_DROPDOWN) |
-    (1 << WIDX_FULLSCREEN) |
-    (1 << WIDX_FULLSCREEN_DROPDOWN) |
-    (1 << WIDX_DRAWING_ENGINE) |
-    (1 << WIDX_DRAWING_ENGINE_DROPDOWN) |
-    (1 << WIDX_UNCAP_FPS_CHECKBOX) |
-    (1 << WIDX_USE_VSYNC_CHECKBOX) |
-    (1 << WIDX_SHOW_FPS_CHECKBOX) |
-    (1 << WIDX_MULTITHREADING_CHECKBOX) |
-    (1 << WIDX_MINIMIZE_FOCUS_LOSS) |
-    (1 << WIDX_STEAM_OVERLAY_PAUSE) |
-    (1 << WIDX_DISABLE_SCREENSAVER_LOCK) |
-    (1 << WIDX_SCALE) |
-    (1 << WIDX_SCALE_UP) |
-    (1 << WIDX_SCALE_DOWN) |
-    (1 << WIDX_SCALE_QUALITY) |
-    (1 << WIDX_SCALE_QUALITY_DROPDOWN),
+    (1ULL << WIDX_RESOLUTION) |
+    (1ULL << WIDX_RESOLUTION_DROPDOWN) |
+    (1ULL << WIDX_FULLSCREEN) |
+    (1ULL << WIDX_FULLSCREEN_DROPDOWN) |
+    (1ULL << WIDX_DRAWING_ENGINE) |
+    (1ULL << WIDX_DRAWING_ENGINE_DROPDOWN) |
+    (1ULL << WIDX_UNCAP_FPS_CHECKBOX) |
+    (1ULL << WIDX_USE_VSYNC_CHECKBOX) |
+    (1ULL << WIDX_SHOW_FPS_CHECKBOX) |
+    (1ULL << WIDX_MULTITHREADING_CHECKBOX) |
+    (1ULL << WIDX_MINIMIZE_FOCUS_LOSS) |
+    (1ULL << WIDX_STEAM_OVERLAY_PAUSE) |
+    (1ULL << WIDX_DISABLE_SCREENSAVER_LOCK) |
+    (1ULL << WIDX_SCALE) |
+    (1ULL << WIDX_SCALE_UP) |
+    (1ULL << WIDX_SCALE_DOWN) |
+    (1ULL << WIDX_SCALE_QUALITY) |
+    (1ULL << WIDX_SCALE_QUALITY_DROPDOWN),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1 << WIDX_TILE_SMOOTHING_CHECKBOX) |
-    (1 << WIDX_GRIDLINES_CHECKBOX) |
-    (1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
-    (1 << WIDX_SHOW_GUEST_PURCHASES_CHECKBOX) |
-    (1 << WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX) |
-    (1 << WIDX_VIRTUAL_FLOOR) |
-    (1 << WIDX_VIRTUAL_FLOOR_DROPDOWN) |
-    (1 << WIDX_DAY_NIGHT_CHECKBOX) |
-    (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX) |
-    (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX) |
-    (1 << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) |
-    (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX),
+    (1ULL << WIDX_TILE_SMOOTHING_CHECKBOX) |
+    (1ULL << WIDX_GRIDLINES_CHECKBOX) |
+    (1ULL << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
+    (1ULL << WIDX_SHOW_GUEST_PURCHASES_CHECKBOX) |
+    (1ULL << WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX) |
+    (1ULL << WIDX_VIRTUAL_FLOOR) |
+    (1ULL << WIDX_VIRTUAL_FLOOR_DROPDOWN) |
+    (1ULL << WIDX_DAY_NIGHT_CHECKBOX) |
+    (1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX) |
+    (1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX) |
+    (1ULL << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) |
+    (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1 << WIDX_LANGUAGE) |
-    (1 << WIDX_LANGUAGE_DROPDOWN) |
-    (1 << WIDX_CURRENCY) |
-    (1 << WIDX_CURRENCY_DROPDOWN) |
-    (1 << WIDX_DISTANCE) |
-    (1 << WIDX_DISTANCE_DROPDOWN) |
-    (1 << WIDX_TEMPERATURE) |
-    (1 << WIDX_TEMPERATURE_DROPDOWN) |
-    (1 << WIDX_HEIGHT_LABELS) |
-    (1 << WIDX_HEIGHT_LABELS_DROPDOWN) |
-    (1 << WIDX_DATE_FORMAT) |
-    (1 << WIDX_DATE_FORMAT_DROPDOWN),
+    (1ULL << WIDX_LANGUAGE) |
+    (1ULL << WIDX_LANGUAGE_DROPDOWN) |
+    (1ULL << WIDX_CURRENCY) |
+    (1ULL << WIDX_CURRENCY_DROPDOWN) |
+    (1ULL << WIDX_DISTANCE) |
+    (1ULL << WIDX_DISTANCE_DROPDOWN) |
+    (1ULL << WIDX_TEMPERATURE) |
+    (1ULL << WIDX_TEMPERATURE_DROPDOWN) |
+    (1ULL << WIDX_HEIGHT_LABELS) |
+    (1ULL << WIDX_HEIGHT_LABELS_DROPDOWN) |
+    (1ULL << WIDX_DATE_FORMAT) |
+    (1ULL << WIDX_DATE_FORMAT_DROPDOWN),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1 << WIDX_SOUND) |
-    (1 << WIDX_SOUND_DROPDOWN) |
-    (1 << WIDX_MASTER_SOUND_CHECKBOX) |
-    (1 << WIDX_SOUND_CHECKBOX) |
-    (1 << WIDX_MUSIC_CHECKBOX) |
-    (1 << WIDX_AUDIO_FOCUS_CHECKBOX) |
-    (1 << WIDX_TITLE_MUSIC) |
-    (1 << WIDX_TITLE_MUSIC_DROPDOWN),
+    (1ULL << WIDX_SOUND) |
+    (1ULL << WIDX_SOUND_DROPDOWN) |
+    (1ULL << WIDX_MASTER_SOUND_CHECKBOX) |
+    (1ULL << WIDX_SOUND_CHECKBOX) |
+    (1ULL << WIDX_MUSIC_CHECKBOX) |
+    (1ULL << WIDX_AUDIO_FOCUS_CHECKBOX) |
+    (1ULL << WIDX_TITLE_MUSIC) |
+    (1ULL << WIDX_TITLE_MUSIC_DROPDOWN),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1 << WIDX_SCREEN_EDGE_SCROLLING) |
-    (1 << WIDX_TRAP_CURSOR) |
-    (1 << WIDX_INVERT_DRAG) |
-    (1 << WIDX_ZOOM_TO_CURSOR) |
-    (1 << WIDX_HOTKEY_DROPDOWN) |
-    (1 << WIDX_TOOLBAR_SHOW_FINANCES) |
-    (1 << WIDX_TOOLBAR_SHOW_RESEARCH) |
-    (1 << WIDX_TOOLBAR_SHOW_CHEATS) |
-    (1 << WIDX_TOOLBAR_SHOW_NEWS) |
-    (1 << WIDX_THEMES) |
-    (1 << WIDX_THEMES_DROPDOWN) |
-    (1 << WIDX_THEMES_BUTTON) |
-    (1 << WIDX_TOOLBAR_SHOW_MUTE) |
-    (1 << WIDX_TOOLBAR_SHOW_CHAT) |
-    (1 << WIDX_TOOLBAR_SHOW_ZOOM),
+    (1ULL << WIDX_SCREEN_EDGE_SCROLLING) |
+    (1ULL << WIDX_TRAP_CURSOR) |
+    (1ULL << WIDX_INVERT_DRAG) |
+    (1ULL << WIDX_ZOOM_TO_CURSOR) |
+    (1ULL << WIDX_HOTKEY_DROPDOWN) |
+    (1ULL << WIDX_TOOLBAR_SHOW_FINANCES) |
+    (1ULL << WIDX_TOOLBAR_SHOW_RESEARCH) |
+    (1ULL << WIDX_TOOLBAR_SHOW_CHEATS) |
+    (1ULL << WIDX_TOOLBAR_SHOW_NEWS) |
+    (1ULL << WIDX_THEMES) |
+    (1ULL << WIDX_THEMES_DROPDOWN) |
+    (1ULL << WIDX_THEMES_BUTTON) |
+    (1ULL << WIDX_TOOLBAR_SHOW_MUTE) |
+    (1ULL << WIDX_TOOLBAR_SHOW_CHAT) |
+    (1ULL << WIDX_TOOLBAR_SHOW_ZOOM),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1 << WIDX_REAL_NAME_CHECKBOX) |
-    (1 << WIDX_AUTO_STAFF_PLACEMENT) |
-    (1 << WIDX_TITLE_SEQUENCE) |
-    (1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
-    (1 << WIDX_TITLE_SEQUENCE_BUTTON) |
-    (1 << WIDX_TITLE_SEQUENCE_RANDOM) |
-    (1 << WIDX_SCENARIO_GROUPING) |
-    (1 << WIDX_SCENARIO_GROUPING_DROPDOWN) |
-    (1 << WIDX_SCENARIO_UNLOCKING) |
-    (1 << WIDX_ALLOW_EARLY_COMPLETION) |
-    (1 << WIDX_AUTO_OPEN_SHOPS) |
-    (1 << WIDX_DEFAULT_INSPECTION_INTERVAL) |
-    (1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
+    (1ULL << WIDX_REAL_NAME_CHECKBOX) |
+    (1ULL << WIDX_AUTO_STAFF_PLACEMENT) |
+    (1ULL << WIDX_TITLE_SEQUENCE) |
+    (1ULL << WIDX_TITLE_SEQUENCE_DROPDOWN) |
+    (1ULL << WIDX_TITLE_SEQUENCE_BUTTON) |
+    (1ULL << WIDX_TITLE_SEQUENCE_RANDOM) |
+    (1ULL << WIDX_SCENARIO_GROUPING) |
+    (1ULL << WIDX_SCENARIO_GROUPING_DROPDOWN) |
+    (1ULL << WIDX_SCENARIO_UNLOCKING) |
+    (1ULL << WIDX_ALLOW_EARLY_COMPLETION) |
+    (1ULL << WIDX_AUTO_OPEN_SHOPS) |
+    (1ULL << WIDX_DEFAULT_INSPECTION_INTERVAL) |
+    (1ULL << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1 << WIDX_DEBUGGING_TOOLS) |
-    (1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
-    (1 << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
-    (1 << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
-    (1 << WIDX_ALWAYS_NATIVE_LOADSAVE) |
-    (1 << WIDX_AUTOSAVE) |
-    (1 << WIDX_AUTOSAVE_DROPDOWN) |
-    (1 << WIDX_AUTOSAVE_AMOUNT) |
-    (1 << WIDX_AUTOSAVE_AMOUNT_UP) |
-    (1 << WIDX_AUTOSAVE_AMOUNT_DOWN) |
-    (1 << WIDX_PATH_TO_RCT1_TEXT) |
-    (1 << WIDX_PATH_TO_RCT1_BUTTON) |
-    (1 << WIDX_PATH_TO_RCT1_CLEAR),
+    (1ULL << WIDX_DEBUGGING_TOOLS) |
+    (1ULL << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
+    (1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
+    (1ULL << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
+    (1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE) |
+    (1ULL << WIDX_AUTOSAVE) |
+    (1ULL << WIDX_AUTOSAVE_DROPDOWN) |
+    (1ULL << WIDX_AUTOSAVE_AMOUNT) |
+    (1ULL << WIDX_AUTOSAVE_AMOUNT_UP) |
+    (1ULL << WIDX_AUTOSAVE_AMOUNT_DOWN) |
+    (1ULL << WIDX_PATH_TO_RCT1_TEXT) |
+    (1ULL << WIDX_PATH_TO_RCT1_BUTTON) |
+    (1ULL << WIDX_PATH_TO_RCT1_CLEAR),
 };
 // clang-format on
 
@@ -829,23 +829,23 @@ static void window_options_display_invalidate(rct_window* w)
     // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
     if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
     {
-        w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
-        w->disabled_widgets |= (1 << WIDX_RESOLUTION);
+        w->disabled_widgets |= (1ULL << WIDX_RESOLUTION_DROPDOWN);
+        w->disabled_widgets |= (1ULL << WIDX_RESOLUTION);
     }
     else
     {
-        w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
-        w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
+        w->disabled_widgets &= ~(1ULL << WIDX_RESOLUTION_DROPDOWN);
+        w->disabled_widgets &= ~(1ULL << WIDX_RESOLUTION);
     }
 
     // Disable Steam Overlay checkbox when using software rendering.
     if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
     {
-        w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
+        w->disabled_widgets |= (1ULL << WIDX_STEAM_OVERLAY_PAUSE);
     }
     else
     {
-        w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
+        w->disabled_widgets &= ~(1ULL << WIDX_STEAM_OVERLAY_PAUSE);
     }
 
     // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
@@ -853,23 +853,23 @@ static void window_options_display_invalidate(rct_window* w)
     if (gConfigGeneral.drawing_engine == DrawingEngine::Software
         || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
     {
-        w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
-        w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY_DROPDOWN);
+        w->disabled_widgets |= (1ULL << WIDX_SCALE_QUALITY);
+        w->disabled_widgets |= (1ULL << WIDX_SCALE_QUALITY_DROPDOWN);
     }
     else
     {
-        w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY);
-        w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY_DROPDOWN);
+        w->disabled_widgets &= ~(1ULL << WIDX_SCALE_QUALITY);
+        w->disabled_widgets &= ~(1ULL << WIDX_SCALE_QUALITY_DROPDOWN);
     }
 
     // Disable changing VSync for Software engine, as we can't control its use of VSync
     if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
     {
-        w->disabled_widgets |= (1 << WIDX_USE_VSYNC_CHECKBOX);
+        w->disabled_widgets |= (1ULL << WIDX_USE_VSYNC_CHECKBOX);
     }
     else
     {
-        w->disabled_widgets &= ~(1 << WIDX_USE_VSYNC_CHECKBOX);
+        w->disabled_widgets &= ~(1ULL << WIDX_USE_VSYNC_CHECKBOX);
     }
 
     WidgetSetCheckboxValue(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
@@ -1058,11 +1058,11 @@ static void window_options_rendering_invalidate(rct_window* w)
     WidgetSetCheckboxValue(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
     if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
     {
-        w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+        w->disabled_widgets &= ~(1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
     }
     else
     {
-        w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+        w->disabled_widgets |= (1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
         gConfigGeneral.enable_light_fx = false;
     }
 
@@ -1070,11 +1070,11 @@ static void window_options_rendering_invalidate(rct_window* w)
     if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
         && gConfigGeneral.enable_light_fx)
     {
-        w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+        w->disabled_widgets &= ~(1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
     }
     else
     {
-        w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+        w->disabled_widgets |= (1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
         gConfigGeneral.enable_light_fx_for_vehicles = false;
     }
 
@@ -1084,13 +1084,13 @@ static void window_options_rendering_invalidate(rct_window* w)
     if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
     {
         WidgetSetCheckboxValue(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
-        w->enabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-        w->disabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        w->enabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        w->disabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
     }
     else
     {
-        w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-        w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        w->enabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        w->disabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
     }
 
     window_options_common_invalidate_after(w);
@@ -1128,7 +1128,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
             break;
         case WIDX_CURRENCY_DROPDOWN:
         {
-            uint32_t num_items = EnumValue(CurrencyType::Count) + 1;             // All the currencies plus the separator
+            constexpr auto num_items = EnumValue(CurrencyType::Count) + 1;       // All the currencies plus the separator
             size_t num_ordinary_currencies = EnumValue(CurrencyType::Count) - 1; // All the currencies except custom currency
 
             for (size_t i = 0; i < num_ordinary_currencies; i++)
@@ -1926,13 +1926,13 @@ static void window_options_misc_invalidate(rct_window* w)
     // Disable title sequence dropdown if set to random
     if (gConfigInterface.random_title_sequence)
     {
-        w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
-        w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE);
+        w->disabled_widgets |= (1ULL << WIDX_TITLE_SEQUENCE_DROPDOWN);
+        w->disabled_widgets |= (1ULL << WIDX_TITLE_SEQUENCE);
     }
     else
     {
-        w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
-        w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE);
+        w->disabled_widgets &= ~(1ULL << WIDX_TITLE_SEQUENCE_DROPDOWN);
+        w->disabled_widgets &= ~(1ULL << WIDX_TITLE_SEQUENCE);
     }
 
     if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY)

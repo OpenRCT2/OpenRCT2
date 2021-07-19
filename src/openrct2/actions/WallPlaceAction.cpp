@@ -21,22 +21,22 @@
 #include "../world/Wall.h"
 
 WallPlaceActionResult::WallPlaceActionResult()
-    : GameActions::Result(GameActions::Status::Ok, STR_CANT_BUILD_PARK_ENTRANCE_HERE)
+    : GameActions::Result(GameActions::Status::Ok, STR_CANT_BUILD_THIS_HERE)
 {
 }
 
 WallPlaceActionResult::WallPlaceActionResult(GameActions::Status err)
-    : GameActions::Result(err, STR_CANT_BUILD_PARK_ENTRANCE_HERE)
+    : GameActions::Result(err, STR_CANT_BUILD_THIS_HERE)
 {
 }
 
 WallPlaceActionResult::WallPlaceActionResult(GameActions::Status err, rct_string_id msg)
-    : GameActions::Result(err, STR_CANT_BUILD_PARK_ENTRANCE_HERE, msg)
+    : GameActions::Result(err, STR_CANT_BUILD_THIS_HERE, msg)
 {
 }
 
 WallPlaceActionResult::WallPlaceActionResult(GameActions::Status error, rct_string_id msg, uint8_t* args)
-    : GameActions::Result(error, STR_CANT_BUILD_PARK_ENTRANCE_HERE, msg, args)
+    : GameActions::Result(error, STR_CANT_BUILD_THIS_HERE, msg, args)
 {
 }
 
@@ -78,7 +78,7 @@ void WallPlaceAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr WallPlaceAction::Query() const
 {
     auto res = std::make_unique<WallPlaceActionResult>();
-    res->ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+    res->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
     res->Position = _loc;
 
     res->Expenditure = ExpenditureType::Landscaping;
@@ -278,7 +278,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
 GameActions::Result::Ptr WallPlaceAction::Execute() const
 {
     auto res = std::make_unique<WallPlaceActionResult>();
-    res->ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+    res->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
     res->Position = _loc;
 
     res->Expenditure = ExpenditureType::Landscaping;
@@ -335,11 +335,6 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         {
             return result;
         }
-    }
-
-    if (!MapCheckCapacityAndReorganise(_loc))
-    {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     Banner* banner = nullptr;
@@ -506,7 +501,6 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
     rct_large_scenery_tile* tile;
 
     *wallAcrossTrack = false;
-    gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
     if (map_is_location_at_edge(_loc))
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_OFF_EDGE_OF_MAP);

@@ -214,22 +214,22 @@ void window_title_editor_open(int32_t tab)
 
     window = WindowCreateAutoPos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
     window->widgets = window_title_editor_widgets;
-    window->enabled_widgets = (1 << WIDX_TITLE_EDITOR_CLOSE) | (1 << WIDX_TITLE_EDITOR_PRESETS_TAB)
-        | (1 << WIDX_TITLE_EDITOR_SAVES_TAB) | (1 << WIDX_TITLE_EDITOR_SCRIPT_TAB) |
+    window->enabled_widgets = (1ULL << WIDX_TITLE_EDITOR_CLOSE) | (1ULL << WIDX_TITLE_EDITOR_PRESETS_TAB)
+        | (1ULL << WIDX_TITLE_EDITOR_SAVES_TAB) | (1ULL << WIDX_TITLE_EDITOR_SCRIPT_TAB) |
 
-        (1 << WIDX_TITLE_EDITOR_PRESETS) | (1 << WIDX_TITLE_EDITOR_PRESETS_DROPDOWN) | (1 << WIDX_TITLE_EDITOR_NEW_BUTTON)
-        | (1 << WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) | (1 << WIDX_TITLE_EDITOR_DELETE_BUTTON)
-        | (1 << WIDX_TITLE_EDITOR_RENAME_BUTTON) |
+        (1ULL << WIDX_TITLE_EDITOR_PRESETS) | (1ULL << WIDX_TITLE_EDITOR_PRESETS_DROPDOWN)
+        | (1ULL << WIDX_TITLE_EDITOR_NEW_BUTTON) | (1ULL << WIDX_TITLE_EDITOR_DUPLICATE_BUTTON)
+        | (1ULL << WIDX_TITLE_EDITOR_DELETE_BUTTON) | (1ULL << WIDX_TITLE_EDITOR_RENAME_BUTTON) |
 
-        (1 << WIDX_TITLE_EDITOR_ADD_SAVE) | (1 << WIDX_TITLE_EDITOR_REMOVE_SAVE) | (1 << WIDX_TITLE_EDITOR_RENAME_SAVE)
-        | (1 << WIDX_TITLE_EDITOR_LOAD_SAVE) |
+        (1ULL << WIDX_TITLE_EDITOR_ADD_SAVE) | (1ULL << WIDX_TITLE_EDITOR_REMOVE_SAVE) | (1ULL << WIDX_TITLE_EDITOR_RENAME_SAVE)
+        | (1ULL << WIDX_TITLE_EDITOR_LOAD_SAVE) |
 
-        (1 << WIDX_TITLE_EDITOR_INSERT) | (1 << WIDX_TITLE_EDITOR_EDIT) | (1 << WIDX_TITLE_EDITOR_DELETE) |
-        //(1 << WIDX_TITLE_EDITOR_RELOAD) |
-        (1 << WIDX_TITLE_EDITOR_SKIP_TO) | (1 << WIDX_TITLE_EDITOR_MOVE_DOWN) | (1 << WIDX_TITLE_EDITOR_MOVE_UP) |
+        (1ULL << WIDX_TITLE_EDITOR_INSERT) | (1ULL << WIDX_TITLE_EDITOR_EDIT) | (1ULL << WIDX_TITLE_EDITOR_DELETE) |
+        //(1ULL << WIDX_TITLE_EDITOR_RELOAD) |
+        (1ULL << WIDX_TITLE_EDITOR_SKIP_TO) | (1ULL << WIDX_TITLE_EDITOR_MOVE_DOWN) | (1ULL << WIDX_TITLE_EDITOR_MOVE_UP) |
 
-        (1 << WIDX_TITLE_EDITOR_PLAY) | (1 << WIDX_TITLE_EDITOR_STOP) | (1 << WIDX_TITLE_EDITOR_REPLAY)
-        | (1 << WIDX_TITLE_EDITOR_SKIP);
+        (1ULL << WIDX_TITLE_EDITOR_PLAY) | (1ULL << WIDX_TITLE_EDITOR_STOP) | (1ULL << WIDX_TITLE_EDITOR_REPLAY)
+        | (1ULL << WIDX_TITLE_EDITOR_SKIP);
 
     WindowInitScrollWidgets(window);
     window->list_information_type = 0;
@@ -784,16 +784,16 @@ static void window_title_editor_invalidate(rct_window* w)
     window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].bottom = w->height - 16;
 
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && gScreenFlags != SCREEN_FLAGS_PLAYING)
-        w->disabled_widgets |= (1 << WIDX_TITLE_EDITOR_PLAY);
+        w->disabled_widgets |= (1ULL << WIDX_TITLE_EDITOR_PLAY);
     else
-        w->disabled_widgets &= ~(1 << WIDX_TITLE_EDITOR_PLAY);
+        w->disabled_widgets &= ~(1ULL << WIDX_TITLE_EDITOR_PLAY);
     if (!title_is_previewing_sequence())
-        w->disabled_widgets |= (1 << WIDX_TITLE_EDITOR_REPLAY) | (1 << WIDX_TITLE_EDITOR_STOP) | (1 << WIDX_TITLE_EDITOR_SKIP)
-            | (1 << WIDX_TITLE_EDITOR_SKIP_TO);
+        w->disabled_widgets |= (1ULL << WIDX_TITLE_EDITOR_REPLAY) | (1ULL << WIDX_TITLE_EDITOR_STOP)
+            | (1ULL << WIDX_TITLE_EDITOR_SKIP) | (1ULL << WIDX_TITLE_EDITOR_SKIP_TO);
     else
         w->disabled_widgets &= ~(
-            (1 << WIDX_TITLE_EDITOR_REPLAY) | (1 << WIDX_TITLE_EDITOR_STOP) | (1 << WIDX_TITLE_EDITOR_SKIP)
-            | (1 << WIDX_TITLE_EDITOR_SKIP_TO));
+            (1ULL << WIDX_TITLE_EDITOR_REPLAY) | (1ULL << WIDX_TITLE_EDITOR_STOP) | (1ULL << WIDX_TITLE_EDITOR_SKIP)
+            | (1ULL << WIDX_TITLE_EDITOR_SKIP_TO));
 }
 
 static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)

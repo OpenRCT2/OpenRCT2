@@ -94,14 +94,14 @@ rct_window* window_land_rights_open()
 
     window = WindowCreate(ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
     window->widgets = window_land_rights_widgets;
-    window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW)
-        | (1 << WIDX_BUY_LAND_RIGHTS) | (1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
-    window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
+    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT)
+        | (1ULL << WIDX_PREVIEW) | (1ULL << WIDX_BUY_LAND_RIGHTS) | (1ULL << WIDX_BUY_CONSTRUCTION_RIGHTS);
+    window->hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
     WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
-    window->pressed_widgets = (1 << WIDX_BUY_LAND_RIGHTS);
+    window->pressed_widgets = (1ULL << WIDX_BUY_LAND_RIGHTS);
 
     gLandToolSize = 1;
 
@@ -219,10 +219,10 @@ static void window_land_rights_update(rct_window* w)
 static void window_land_rights_invalidate(rct_window* w)
 {
     // Set the preview image button to be pressed down
-    w->pressed_widgets |= (1 << WIDX_PREVIEW)
-        | (1 << ((_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
+    w->pressed_widgets |= (1ULL << WIDX_PREVIEW)
+        | (1ULL << ((_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
     w->pressed_widgets &= ~(
-        1
+        1ULL
         << ((_landRightsMode == LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS) ? WIDX_BUY_LAND_RIGHTS
                                                                           : WIDX_BUY_CONSTRUCTION_RIGHTS));
 
@@ -232,23 +232,23 @@ static void window_land_rights_invalidate(rct_window* w)
     // Disable ownership and/or construction buying functions if there are no tiles left for sale
     if (gLandRemainingOwnershipSales == 0)
     {
-        w->disabled_widgets |= (1 << WIDX_BUY_LAND_RIGHTS);
+        w->disabled_widgets |= (1ULL << WIDX_BUY_LAND_RIGHTS);
         window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
     }
     else
     {
-        w->disabled_widgets &= ~(1 << WIDX_BUY_LAND_RIGHTS);
+        w->disabled_widgets &= ~(1ULL << WIDX_BUY_LAND_RIGHTS);
         window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_RIGHTS_TIP;
     }
 
     if (gLandRemainingConstructionSales == 0)
     {
-        w->disabled_widgets |= (1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
+        w->disabled_widgets |= (1ULL << WIDX_BUY_CONSTRUCTION_RIGHTS);
         window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
     }
     else
     {
-        w->disabled_widgets &= ~(1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
+        w->disabled_widgets &= ~(1ULL << WIDX_BUY_CONSTRUCTION_RIGHTS);
         window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
     }
 }

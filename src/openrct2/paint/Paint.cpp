@@ -208,14 +208,14 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
 
     for (; numVerticalTiles > 0; --numVerticalTiles)
     {
-        tile_element_paint_setup(session, mapTile.x, mapTile.y);
+        tile_element_paint_setup(session, mapTile);
         sprite_paint_setup(session, mapTile.x, mapTile.y);
 
         auto loc1 = mapTile + adjacentTiles[0];
         sprite_paint_setup(session, loc1.x, loc1.y);
 
         auto loc2 = mapTile + adjacentTiles[1];
-        tile_element_paint_setup(session, loc2.x, loc2.y);
+        tile_element_paint_setup(session, loc2);
         sprite_paint_setup(session, loc2.x, loc2.y);
 
         auto loc3 = mapTile + adjacentTiles[2];
@@ -648,6 +648,7 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem 
             case ViewportInteractionItem::Banner:
                 imageId &= 0x7FFFF;
                 imageId |= seeThoughFlags;
+                break;
             default:
                 break;
         }
@@ -661,6 +662,7 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem 
             case ViewportInteractionItem::Wall:
                 imageId &= 0x7FFFF;
                 imageId |= seeThoughFlags;
+                break;
             default:
                 break;
         }

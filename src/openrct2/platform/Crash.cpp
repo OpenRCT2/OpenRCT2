@@ -52,7 +52,7 @@ const wchar_t* _wszCommitSha1Short = WSZ("");
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
-#    define BACKTRACE_TOKEN L"e650b4d649dc93a37d98b8611fa47b8732c6c08386979c22b5c3a545fea65f76"
+#    define BACKTRACE_TOKEN L"3c7c2c6de378d59819d6755369f4d099bfe1a0d990b065f2ae427ab096cd6f40"
 
 // Note: uploading gzipped crash dumps manually requires specifying
 // 'Content-Encoding: gzip' header in HTTP request, but we cannot do that,

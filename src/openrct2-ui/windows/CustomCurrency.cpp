@@ -71,10 +71,10 @@ rct_window* custom_currency_window_open()
 
     window = WindowCreateCentred(400, 100, &_windowCustomCurrencyEvents, WC_CUSTOM_CURRENCY_CONFIG, 0);
     window->widgets = window_custom_currency_widgets;
-    window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RATE) | (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN)
-        | (1 << WIDX_SYMBOL_TEXT) | (1 << WIDX_AFFIX_DROPDOWN) | (1 << WIDX_AFFIX_DROPDOWN_BUTTON);
+    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RATE) | (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN)
+        | (1ULL << WIDX_SYMBOL_TEXT) | (1ULL << WIDX_AFFIX_DROPDOWN) | (1ULL << WIDX_AFFIX_DROPDOWN_BUTTON);
 
-    window->hold_down_widgets = (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN);
+    window->hold_down_widgets = (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN);
     WindowInitScrollWidgets(window);
     window->colours[0] = COLOUR_LIGHT_BROWN;
     window->colours[1] = COLOUR_LIGHT_BROWN;

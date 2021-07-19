@@ -32,7 +32,8 @@
 
 enum class ResearchCategory : uint8_t;
 
-using ride_ratings_calculation = void (*)(Ride* ride);
+using ride_ratings_calculation = void (*)(Ride* ride, RideRatingUpdateState& state);
+
 struct RideComponentName
 {
     rct_string_id singular;

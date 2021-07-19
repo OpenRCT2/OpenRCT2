@@ -400,7 +400,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gGrassSceneryTileLoopPosition);
                 cs.ReadWrite(gWidePathTileLoopPosition);
 
-                ReadWriteRideRatingCalculationData(cs, gRideRatingsCalcData);
+                ReadWriteRideRatingCalculationData(cs, gRideRatingUpdateState);
             });
             if (!found)
             {
@@ -408,7 +408,7 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, RideRatingCalculationData& calcData)
+        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, RideRatingUpdateState& calcData)
         {
             cs.ReadWrite(calcData.AmountOfBrakes);
             cs.ReadWrite(calcData.Proximity);

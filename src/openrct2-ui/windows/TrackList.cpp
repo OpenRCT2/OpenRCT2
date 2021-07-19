@@ -241,7 +241,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
     // Displays a message if the ride can't load, fix #4080
     if (_loadedTrackDesign == nullptr)
     {
-        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
+        context_show_error(STR_CANT_BUILD_THIS_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
         return;
     }
 
@@ -454,23 +454,23 @@ static void window_track_list_invalidate(rct_window* w)
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || w->selected_list_item != 0)
     {
-        w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
-        w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
+        w->pressed_widgets |= 1ULL << WIDX_TRACK_PREVIEW;
+        w->disabled_widgets &= ~(1ULL << WIDX_TRACK_PREVIEW);
         window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
         window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
         if (gTrackDesignSceneryToggle)
         {
-            w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
+            w->pressed_widgets &= ~(1ULL << WIDX_TOGGLE_SCENERY);
         }
         else
         {
-            w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
+            w->pressed_widgets |= (1ULL << WIDX_TOGGLE_SCENERY);
         }
     }
     else
     {
-        w->pressed_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
-        w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
+        w->pressed_widgets &= ~(1ULL << WIDX_TRACK_PREVIEW);
+        w->disabled_widgets |= (1ULL << WIDX_TRACK_PREVIEW);
         window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
         window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
     }
