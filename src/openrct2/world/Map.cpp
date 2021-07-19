@@ -1361,7 +1361,19 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             res->GroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < pos.clearanceZ)
             {
-                goto loc_68BAE6;
+                if (clearFunc != nullptr)
+                {
+                    if (!clearFunc(&tileElement, pos, flags, &res->Cost))
+                    {
+                        goto loc_68B9B7;
+                    }
+                }
+                if (tileElement != nullptr)
+                {
+                    res->Error = GameActions::Status::NoClearance;
+                    res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
+                }
+                return res;
             }
         }
     loc_68B9B7:
@@ -1467,21 +1479,6 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
                 {
                     map_obstruction_set_error_text(tileElement, *res);
                     res->Error = GameActions::Status::NoClearance;
-                }
-                return res;
-
-            loc_68BAE6:
-                if (clearFunc != nullptr)
-                {
-                    if (!clearFunc(&tileElement, pos, flags, &res->Cost))
-                    {
-                        goto loc_68B9B7;
-                    }
-                }
-                if (tileElement != nullptr)
-                {
-                    res->Error = GameActions::Status::NoClearance;
-                    res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                 }
                 return res;
             }
