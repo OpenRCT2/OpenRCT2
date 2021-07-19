@@ -95,7 +95,6 @@ The following people are not part of the development team, but have been contrib
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
 
 ## Bug fixes
-* Struan Clark (xtruan)
 * (KirilAngelov)
 * (halfbro)
 * (Myrtle)
@@ -172,6 +171,7 @@ The following people are not part of the development team, but have been contrib
 * (zrowny)
 * Emre Aydin (aemreaydin)
 * Daniel Karandikar (DKarandikar)
+* Struan Clark (xtruan)
 
 ## Toolchain
 * (Balletie) - macOS
