@@ -33,7 +33,7 @@ money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
 {
     park_entrance_remove_ghost();
 
-    auto gameAction = PlaceParkEntranceAction(entranceLoc);
+    auto gameAction = PlaceParkEntranceAction(entranceLoc, gFootpathSelectedId);
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);
@@ -82,7 +82,7 @@ void ride_construct_new(RideSelection listItem)
 
 #pragma region RideSetStatusAction
 
-void ride_set_status(Ride* ride, int32_t status)
+void ride_set_status(Ride* ride, RideStatus status)
 {
     auto gameAction = RideSetStatusAction(ride->id, status);
     GameActions::Execute(&gameAction);

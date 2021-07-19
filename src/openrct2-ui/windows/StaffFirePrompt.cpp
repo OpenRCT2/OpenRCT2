@@ -14,7 +14,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/world/Sprite.h>
+#include <openrct2/world/Entity.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
 static constexpr const int32_t WW = 200;
@@ -62,7 +62,7 @@ rct_window* window_staff_fire_prompt_open(Peep* peep)
 
     w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
     w->widgets = window_staff_fire_widgets;
-    w->enabled_widgets |= (1 << WIDX_CLOSE) | (1 << WIDX_YES) | (1 << WIDX_CANCEL);
+    w->enabled_widgets |= (1ULL << WIDX_CLOSE) | (1ULL << WIDX_YES) | (1ULL << WIDX_CANCEL);
 
     WindowInitScrollWidgets(w);
 
@@ -99,7 +99,7 @@ static void window_staff_fire_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    Peep* peep = GetEntity<Peep>(w->number);
+    Peep* peep = GetEntity<Staff>(w->number);
     auto ft = Formatter();
     peep->FormatNameTo(ft);
 

@@ -151,9 +151,9 @@ public:
     void OnOpen() override
     {
         widgets = window_guest_list_widgets;
-        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_PAGE_DROPDOWN) | (1 << WIDX_PAGE_DROPDOWN_BUTTON)
-            | (1 << WIDX_INFO_TYPE_DROPDOWN) | (1 << WIDX_INFO_TYPE_DROPDOWN_BUTTON) | (1 << WIDX_MAP) | (1 << WIDX_TRACKING)
-            | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_FILTER_BY_NAME);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_PAGE_DROPDOWN) | (1ULL << WIDX_PAGE_DROPDOWN_BUTTON)
+            | (1ULL << WIDX_INFO_TYPE_DROPDOWN) | (1ULL << WIDX_INFO_TYPE_DROPDOWN_BUTTON) | (1ULL << WIDX_MAP)
+            | (1ULL << WIDX_TRACKING) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_FILTER_BY_NAME);
         WindowInitScrollWidgets(this);
 
         _selectedTab = TabId::Individual;
@@ -610,7 +610,7 @@ public:
         {
             _guestList.clear();
 
-            for (auto peep : EntityList<Guest>(EntityListId::Peep))
+            for (auto peep : EntityList<Guest>())
             {
                 sprite_set_flashing(peep, false);
                 if (peep->OutsideOfPark)
@@ -643,12 +643,15 @@ private:
         auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
         i += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
         i |= 0xA1600000;
-        gfx_draw_sprite(&dpi, i, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 }, 0);
+        gfx_draw_sprite(
+            &dpi, ImageId::FromUInt32(i),
+            windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });
 
         // Tab 2 image
         i = (_selectedTab == TabId::Summarised ? _tabAnimationIndex / 4 : 0);
         gfx_draw_sprite(
-            &dpi, SPR_TAB_GUESTS_0 + i, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top }, 0);
+            &dpi, ImageId(SPR_TAB_GUESTS_0 + i),
+            windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
     }
 
     void DrawScrollIndividual(rct_drawpixelinfo& dpi)
@@ -683,11 +686,11 @@ private:
                 {
                     case GuestViewType::Actions:
                         // Guest face
-                        gfx_draw_sprite(&dpi, get_peep_face_sprite_small(peep), { 118, y + 1 }, 0);
+                        gfx_draw_sprite(&dpi, ImageId(get_peep_face_sprite_small(peep)), { 118, y + 1 });
 
                         // Tracking icon
                         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
-                            gfx_draw_sprite(&dpi, STR_ENTER_SELECTION_SIZE, { 112, y + 1 }, 0);
+                            gfx_draw_sprite(&dpi, ImageId(STR_ENTER_SELECTION_SIZE), { 112, y + 1 });
 
                         // Action
                         ft = Formatter();
@@ -707,7 +710,7 @@ private:
 
                             ft = Formatter();
                             peep_thought_set_format_args(&thought, ft);
-                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft);
+                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, { FontSpriteBase::SMALL });
                             break;
                         }
                         break;
@@ -743,13 +746,21 @@ private:
                 for (uint32_t j = 0; j < std::size(group.Faces) && j < group.NumGuests; j++)
                 {
                     gfx_draw_sprite(
-                        &dpi, group.Faces[j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY, { static_cast<int32_t>(j) * 8, y + 12 },
-                        0);
+                        &dpi, ImageId(group.Faces[j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY),
+                        { static_cast<int32_t>(j) * 8, y + 12 });
                 }
 
-                // Draw action
+                // Draw action/thoughts
                 Formatter ft(group.Arguments.args);
-                DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft);
+                // Draw small font if displaying guests
+                if (_selectedView == GuestViewType::Thoughts)
+                {
+                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, { FontSpriteBase::SMALL });
+                }
+                else
+                {
+                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft);
+                }
 
                 // Draw guest count
                 ft = Formatter();
@@ -762,7 +773,7 @@ private:
         }
     }
 
-    bool GuestShouldBeVisible(const Peep& peep)
+    bool GuestShouldBeVisible(const Guest& peep)
     {
         if (_trackingOnly && !(peep.PeepFlags & PEEP_FLAGS_TRACKING))
             return false;
@@ -783,7 +794,7 @@ private:
         return true;
     }
 
-    bool IsPeepInFilter(const Peep& peep)
+    bool IsPeepInFilter(const Guest& peep)
     {
         auto guestViewType = _selectedFilter == GuestFilterType::Guests ? GuestViewType::Actions : GuestViewType::Thoughts;
         auto peepArgs = GetArgumentsFromPeep(peep, guestViewType);
@@ -828,7 +839,7 @@ private:
         _lastFindGroupsWait = 320;
         _groups.clear();
 
-        for (auto peep : EntityList<Guest>(EntityListId::Peep))
+        for (auto peep : EntityList<Guest>())
         {
             if (peep->OutsideOfPark)
                 continue;
@@ -864,7 +875,7 @@ private:
     /**
      * Calculates a hash value (arguments) for comparing peep actions/thoughts
      */
-    static FilterArguments GetArgumentsFromPeep(const Peep& peep, GuestViewType type)
+    static FilterArguments GetArgumentsFromPeep(const Guest& peep, GuestViewType type)
     {
         FilterArguments result;
         Formatter ft(result.args);
@@ -919,9 +930,9 @@ private:
         if (peepA != nullptr && peepB != nullptr)
         {
             // Compare types
-            if (peepA->AssignedPeepType != peepB->AssignedPeepType)
+            if (peepA->Type != peepB->Type)
             {
-                return static_cast<int32_t>(peepA->AssignedPeepType) < static_cast<int32_t>(peepB->AssignedPeepType);
+                return static_cast<int32_t>(peepA->Type) < static_cast<int32_t>(peepB->Type);
             }
 
             // Compare name

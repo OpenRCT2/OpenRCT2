@@ -23,11 +23,11 @@
 void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.path_bit.flags = stream->ReadValue<uint16_t>();
-    _legacyType.path_bit.draw_type = stream->ReadValue<uint8_t>();
-    _legacyType.path_bit.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-    _legacyType.path_bit.price = stream->ReadValue<int16_t>();
-    _legacyType.path_bit.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.flags = stream->ReadValue<uint16_t>();
+    _legacyType.draw_type = static_cast<PathBitDrawType>(stream->ReadValue<uint8_t>());
+    _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
+    _legacyType.price = stream->ReadValue<int16_t>();
+    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
@@ -38,7 +38,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     GetImageTable().Read(context, stream);
 
     // Validate properties
-    if (_legacyType.large_scenery.price <= 0)
+    if (_legacyType.price <= 0)
     {
         context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
@@ -67,7 +67,7 @@ void FootpathItemObject::Load()
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 
-    _legacyType.path_bit.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
 }
 
 void FootpathItemObject::Unload()
@@ -85,17 +85,17 @@ void FootpathItemObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
     gfx_draw_sprite(dpi, _legacyType.image, screenCoords - ScreenCoordsXY{ 22, 24 }, 0);
 }
 
-static uint8_t ParseDrawType(const std::string& s)
+static PathBitDrawType ParseDrawType(const std::string& s)
 {
     if (s == "lamp")
-        return PATH_BIT_DRAW_TYPE_LIGHTS;
+        return PathBitDrawType::Light;
     if (s == "bin")
-        return PATH_BIT_DRAW_TYPE_BINS;
+        return PathBitDrawType::Bin;
     if (s == "bench")
-        return PATH_BIT_DRAW_TYPE_BENCHES;
+        return PathBitDrawType::Bench;
     if (s == "fountain")
-        return PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS;
-    return PATH_BIT_DRAW_TYPE_LIGHTS;
+        return PathBitDrawType::JumpingFountain;
+    return PathBitDrawType::Light;
 }
 
 void FootpathItemObject::ReadJson(IReadObjectContext* context, json_t& root)
@@ -106,14 +106,14 @@ void FootpathItemObject::ReadJson(IReadObjectContext* context, json_t& root)
 
     if (properties.is_object())
     {
-        _legacyType.path_bit.draw_type = ParseDrawType(Json::GetString(properties["renderAs"]));
-        _legacyType.path_bit.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::LamppostDown);
-        _legacyType.path_bit.price = Json::GetNumber<int16_t>(properties["price"]);
+        _legacyType.draw_type = ParseDrawType(Json::GetString(properties["renderAs"]));
+        _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::LamppostDown);
+        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]);
 
         SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
 
         // clang-format off
-        _legacyType.path_bit.flags = Json::GetFlags<uint16_t>(
+        _legacyType.flags = Json::GetFlags<uint16_t>(
             properties,
             {
                 { "isBin",                  PATH_BIT_FLAG_IS_BIN,                   Json::FlagType::Normal },

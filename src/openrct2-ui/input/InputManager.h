@@ -46,11 +46,11 @@ namespace OpenRCT2::Ui
     class InputManager
     {
     private:
-        uint32_t _lastJoystickCheck;
+        uint32_t _lastJoystickCheck{};
         std::vector<SDL_Joystick*> _joysticks;
         std::queue<InputEvent> _events;
         ScreenCoordsXY _viewScroll;
-        uint32_t _mouseState;
+        uint32_t _mouseState{};
         std::vector<uint8_t> _keyboardState;
 
         void CheckJoysticks();

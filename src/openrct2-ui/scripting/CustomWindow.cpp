@@ -26,7 +26,6 @@
 #    include <openrct2/localisation/StringIds.h>
 #    include <openrct2/scripting/Plugin.h>
 #    include <openrct2/sprites.h>
-#    include <openrct2/world/Sprite.h>
 #    include <optional>
 #    include <string>
 #    include <vector>
@@ -393,7 +392,7 @@ namespace OpenRCT2::Ui::Windows
         {
             number = GetNewWindowNumber();
             custom_info = new CustomWindowInfo(owner, desc);
-            enabled_widgets = (1 << WIDX_CLOSE);
+            enabled_widgets = (1ULL << WIDX_CLOSE);
 
             // Set window tab
             page = desc.TabIndex.value_or(0);
@@ -866,7 +865,7 @@ namespace OpenRCT2::Ui::Windows
                         auto imageOffset = frame % tab.imageFrameCount;
                         image = image.WithIndex(image.GetIndex() + imageOffset);
                     }
-                    gfx_draw_sprite(&dpi, image.ToUInt32(), leftTop, image.GetTertiary());
+                    gfx_draw_sprite(&dpi, image, leftTop);
                 }
                 tabIndex++;
             }

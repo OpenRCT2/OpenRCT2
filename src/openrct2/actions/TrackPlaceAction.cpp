@@ -169,7 +169,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         numElements++;
     }
 
-    if (!map_check_free_elements_and_reorganise(numElements))
+    if (!CheckMapCapacity(numElements))
     {
         log_warning("Not enough free map elements to place track.");
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
@@ -232,12 +232,14 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
                                 && _trackType == TrackElemType::Flat)
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
-        if (!map_can_construct_with_clear_at(
-                { mapLoc, baseZ, clearanceZ }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &cost, crossingMode))
+        auto canBuild = MapCanConstructWithClearAt(
+            { mapLoc, baseZ, clearanceZ }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
+        if (canBuild->Error != GameActions::Status::Ok)
         {
-            return std::make_unique<TrackPlaceActionResult>(
-                GameActions::Status::NoClearance, gGameCommandErrorText, gCommonFormatArgs);
+            canBuild->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            return canBuild;
         }
+        cost += canBuild->Cost;
 
         // When building a level crossing, remove any pre-existing path furniture.
         if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH)
@@ -249,7 +251,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             }
         }
 
-        uint8_t mapGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        uint8_t mapGroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (res->GroundFlags != 0 && (res->GroundFlags & mapGroundFlags) == 0)
         {
             return std::make_unique<TrackPlaceActionResult>(
@@ -269,14 +271,14 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
 
         if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
         { // No element has this flag
-            if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
+            if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER)
             {
                 return std::make_unique<TrackPlaceActionResult>(
                     GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_UNDERWATER);
             }
         }
 
-        if (gMapGroundFlags & ELEMENT_IS_UNDERWATER && !gCheatsDisableClearanceChecks)
+        if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER && !gCheatsDisableClearanceChecks)
         {
             return std::make_unique<TrackPlaceActionResult>(
                 GameActions::Status::Disallowed, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
@@ -428,13 +430,15 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
                                 && _trackType == TrackElemType::Flat)
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
-        if (!map_can_construct_with_clear_at(
-                mapLocWithClearance, &map_place_non_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
-                &cost, crossingMode))
+        auto canBuild = MapCanConstructWithClearAt(
+            mapLocWithClearance, &map_place_non_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+            crossingMode);
+        if (canBuild->Error != GameActions::Status::Ok)
         {
-            return std::make_unique<TrackPlaceActionResult>(
-                GameActions::Status::NoClearance, gGameCommandErrorText, gCommonFormatArgs);
+            canBuild->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            return canBuild;
         }
+        cost += canBuild->Cost;
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
         {
@@ -459,7 +463,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             }
         }
 
-        uint8_t mapGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        uint8_t mapGroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (res->GroundFlags != 0 && (res->GroundFlags & mapGroundFlags) == 0)
         {
             return std::make_unique<TrackPlaceActionResult>(
@@ -543,7 +547,11 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         }
 
         auto* trackElement = TileElementInsert<TrackElement>(mapLoc, quarterTile.GetBaseQuarterOccupied());
-        Guard::Assert(trackElement != nullptr);
+        if (trackElement == nullptr)
+        {
+            log_warning("Cannot create track element for ride = %d", static_cast<int32_t>(_rideIndex));
+            return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements);
+        }
 
         trackElement->SetClearanceZ(clearanceZ);
         trackElement->SetDirection(_origin.direction);
@@ -614,7 +622,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         // If the placed tile is a station modify station properties.
         // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
-            && !(ride->status == RIDE_STATUS_SIMULATING && GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            && !(ride->status == RideStatus::Simulating && GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             if (trackBlock->index == 0)
             {
@@ -649,4 +657,19 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     price >>= 16;
     res->Cost = cost + ((price / 2) * 10);
     return res;
+}
+
+bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
+{
+    for (const rct_preview_track* trackBlock = TrackBlocks[_trackType]; trackBlock->index != 0xFF; trackBlock++)
+    {
+        auto rotatedTrack = CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction);
+
+        auto tileCoords = CoordsXY{ _origin.x, _origin.y } + rotatedTrack;
+        if (!MapCheckCapacityAndReorganise(tileCoords, numTiles))
+        {
+            return false;
+        }
+    }
+    return true;
 }

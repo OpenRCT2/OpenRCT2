@@ -24,6 +24,7 @@
 #    include "../platform/Platform2.h"
 #    include "Duktape.hpp"
 #    include "ScCheats.hpp"
+#    include "ScClimate.hpp"
 #    include "ScConsole.hpp"
 #    include "ScContext.hpp"
 #    include "ScDate.hpp"
@@ -43,8 +44,6 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
-
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 24;
 
 struct ExpressionStringifier final
 {
@@ -379,6 +378,8 @@ void ScriptEngine::Initialise()
 {
     auto ctx = static_cast<duk_context*>(_context);
     ScCheats::Register(ctx);
+    ScClimate::Register(ctx);
+    ScClimateState::Register(ctx);
     ScConfiguration::Register(ctx);
     ScConsole::Register(ctx);
     ScContext::Register(ctx);
@@ -411,6 +412,7 @@ void ScriptEngine::Initialise()
     ScStaff::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
+    dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
     dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
     dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
     dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
@@ -441,7 +443,7 @@ void ScriptEngine::LoadPlugins()
     if (Path::DirectoryExists(base))
     {
         auto pattern = Path::Combine(base, "*.js");
-        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(pattern, true));
+        auto scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {
             auto path = std::string(scanner->GetPath());

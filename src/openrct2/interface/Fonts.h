@@ -26,6 +26,7 @@ extern TTFFontSetDescriptor TTFFontHeiti;
 extern TTFFontSetDescriptor TTFFontSimSun;
 extern TTFFontSetDescriptor TTFFontLiHeiPro;
 extern TTFFontSetDescriptor TTFFontGulim;
+extern TTFFontSetDescriptor TTFFontMalgun;
 extern TTFFontSetDescriptor TTFFontNanum;
 extern TTFFontSetDescriptor TTFFontArial;
 extern TTFFontSetDescriptor TTFFontArialUnicode;

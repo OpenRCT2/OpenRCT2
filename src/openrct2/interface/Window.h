@@ -244,34 +244,34 @@ struct viewport_focus
 
 struct rct_window_event_list
 {
-    void (*close)(struct rct_window*);
-    void (*mouse_up)(struct rct_window*, rct_widgetindex);
-    void (*resize)(struct rct_window*);
-    void (*mouse_down)(struct rct_window*, rct_widgetindex, rct_widget*);
-    void (*dropdown)(struct rct_window*, rct_widgetindex, int32_t);
-    void (*unknown_05)(struct rct_window*);
-    void (*update)(struct rct_window*);
-    void (*periodic_update)(struct rct_window*);
-    void (*unknown_08)(struct rct_window*);
-    void (*tool_update)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&);
-    void (*tool_down)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&);
-    void (*tool_drag)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&);
-    void (*tool_up)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&);
-    void (*tool_abort)(struct rct_window*, rct_widgetindex);
-    void (*unknown_0E)(struct rct_window*);
-    void (*get_scroll_size)(struct rct_window*, int32_t, int32_t*, int32_t*);
-    void (*scroll_mousedown)(struct rct_window*, int32_t, const ScreenCoordsXY&);
-    void (*scroll_mousedrag)(struct rct_window*, int32_t, const ScreenCoordsXY&);
-    void (*scroll_mouseover)(struct rct_window*, int32_t, const ScreenCoordsXY&);
-    void (*text_input)(struct rct_window*, rct_widgetindex, char*);
-    void (*viewport_rotate)(struct rct_window*);
-    void (*unknown_15)(struct rct_window*, int32_t, int32_t);
-    OpenRCT2String (*tooltip)(struct rct_window*, const rct_widgetindex, const rct_string_id);
-    void (*cursor)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&, CursorID*);
-    void (*moved)(struct rct_window*, const ScreenCoordsXY&);
-    void (*invalidate)(struct rct_window*);
-    void (*paint)(struct rct_window*, rct_drawpixelinfo*);
-    void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int32_t);
+    void (*close)(struct rct_window*){};
+    void (*mouse_up)(struct rct_window*, rct_widgetindex){};
+    void (*resize)(struct rct_window*){};
+    void (*mouse_down)(struct rct_window*, rct_widgetindex, rct_widget*){};
+    void (*dropdown)(struct rct_window*, rct_widgetindex, int32_t){};
+    void (*unknown_05)(struct rct_window*){};
+    void (*update)(struct rct_window*){};
+    void (*periodic_update)(struct rct_window*){};
+    void (*unknown_08)(struct rct_window*){};
+    void (*tool_update)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&){};
+    void (*tool_down)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&){};
+    void (*tool_drag)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&){};
+    void (*tool_up)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&){};
+    void (*tool_abort)(struct rct_window*, rct_widgetindex){};
+    void (*unknown_0E)(struct rct_window*){};
+    void (*get_scroll_size)(struct rct_window*, int32_t, int32_t*, int32_t*){};
+    void (*scroll_mousedown)(struct rct_window*, int32_t, const ScreenCoordsXY&){};
+    void (*scroll_mousedrag)(struct rct_window*, int32_t, const ScreenCoordsXY&){};
+    void (*scroll_mouseover)(struct rct_window*, int32_t, const ScreenCoordsXY&){};
+    void (*text_input)(struct rct_window*, rct_widgetindex, char*){};
+    void (*viewport_rotate)(struct rct_window*){};
+    void (*unknown_15)(struct rct_window*, int32_t, int32_t){};
+    OpenRCT2String (*tooltip)(struct rct_window*, const rct_widgetindex, const rct_string_id){};
+    void (*cursor)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&, CursorID*){};
+    void (*moved)(struct rct_window*, const ScreenCoordsXY&){};
+    void (*invalidate)(struct rct_window*){};
+    void (*paint)(struct rct_window*, rct_drawpixelinfo*){};
+    void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int32_t){};
 
     typedef void (*fnEventInitializer)(rct_window_event_list&);
     rct_window_event_list(fnEventInitializer fn)

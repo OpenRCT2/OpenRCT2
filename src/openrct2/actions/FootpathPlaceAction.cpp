@@ -185,13 +185,13 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* 
     bool isQueue = _type & FOOTPATH_ELEMENT_INSERT_QUEUE;
     pathElement->SetIsQueue(isQueue);
 
-    rct_scenery_entry* elem = pathElement->GetAdditionEntry();
+    auto* elem = pathElement->GetAdditionEntry();
     if (elem != nullptr)
     {
         if (isQueue)
         {
             // remove any addition that isn't a TV or a lamp
-            if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0 && (elem->path_bit.flags & PATH_BIT_FLAG_LAMP) == 0)
+            if ((elem->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0 && (elem->flags & PATH_BIT_FLAG_LAMP) == 0)
             {
                 pathElement->SetIsBroken(false);
                 pathElement->SetAddition(0);
@@ -200,7 +200,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* 
         else
         {
             // remove all TVs
-            if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
+            if ((elem->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
             {
                 pathElement->SetIsBroken(false);
                 pathElement->SetAddition(0);
@@ -216,7 +216,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
 {
     bool entrancePath = false, entranceIsSamePath = false;
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_BUILD_FOOTPATH_HERE);
     }
@@ -248,16 +248,17 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
     uint8_t crossingMode = (_type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (_slope != TILE_ELEMENT_SLOPE_FLAT)
         ? CREATE_CROSSING_MODE_NONE
         : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath
-        && !map_can_construct_with_clear_at(
-            { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
+    auto canBuild = MapCanConstructWithClearAt(
+        { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
+    if (!entrancePath && canBuild->Error != GameActions::Status::Ok)
     {
-        return MakeResult(
-            GameActions::Status::NoClearance, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
+        canBuild->ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
+        return canBuild;
     }
+    res->Cost += canBuild->Cost;
 
-    gFootpathGroundFlags = gMapGroundFlags;
-    if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER))
+    gFootpathGroundFlags = canBuild->GroundFlags;
+    if (!gCheatsDisableClearanceChecks && (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER))
     {
         return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
     }
@@ -313,16 +314,17 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
     uint8_t crossingMode = (_type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (_slope != TILE_ELEMENT_SLOPE_FLAT)
         ? CREATE_CROSSING_MODE_NONE
         : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath
-        && !map_can_construct_with_clear_at(
-            { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
-            &res->Cost, crossingMode))
+    auto canBuild = MapCanConstructWithClearAt(
+        { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
+        crossingMode);
+    if (!entrancePath && canBuild->Error != GameActions::Status::Ok)
     {
-        return MakeResult(
-            GameActions::Status::NoClearance, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
+        canBuild->ErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
+        return canBuild;
     }
+    res->Cost += canBuild->Cost;
 
-    gFootpathGroundFlags = gMapGroundFlags;
+    gFootpathGroundFlags = canBuild->GroundFlags;
 
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)

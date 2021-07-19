@@ -799,14 +799,14 @@ STR_1410    :Vertikalt torn
 STR_1411    :{STRINGID} är i vägen
 STR_1412    :{WINDOW_COLOUR_3}Den här sortens åktur kan inte spara data
 STR_1413    :{WINDOW_COLOUR_3}Sparande av data börjar när nästa {STRINGID} lämnar {STRINGID}
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Hastighet
 STR_1416    :{WINDOW_COLOUR_2}Höjd
 STR_1417    :{WINDOW_COLOUR_2}Lodrät G-kraft
 STR_1418    :{WINDOW_COLOUR_2}Vågrät G-kraft
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Sparar data från {POP16}{STRINGID}
 STR_1423    :Kö
 STR_1424    :Gångväg
@@ -865,131 +865,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}Inte tillgänglig
 STR_1477    :{WINDOW_COLOUR_2}Intensitetsnivå: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Illamåendenivå: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Illamåendenivå: {BLACK}Inte tillgänglig
-STR_1480    :{SMALLFONT}”Jag har inte råd med {STRINGID}”
-STR_1481    :{SMALLFONT}”Jag har spenderat alla mina pengar”
-STR_1482    :{SMALLFONT}”Jag mår illa”
-STR_1483    :{SMALLFONT}”Jag mår pyton”
-STR_1484    :{SMALLFONT}”Jag vill åka något mer spännande än {STRINGID}”
-STR_1485    :{SMALLFONT}”{STRINGID} ser för intensiv ut för mig”
-STR_1486    :{SMALLFONT}”Jag är inte klar med min {STRINGID} än”
-STR_1487    :{SMALLFONT}”Bara att kolla på {STRINGID} får mig att må illa”
-STR_1488    :{SMALLFONT}”Jag tänker inte betala så mycket för {STRINGID}”
-STR_1489    :{SMALLFONT}”Jag vill gå hem”
-STR_1490    :{SMALLFONT}”{STRINGID} är verkligen värd pengarna”
-STR_1491    :{SMALLFONT}”Jag har redan {STRINGID}”
-STR_1492    :{SMALLFONT}”Jag har inte råd med {STRINGID}”
-STR_1493    :{SMALLFONT}”Jag är inte hungrig”
-STR_1494    :{SMALLFONT}”Jag är inte törstig”
-STR_1495    :{SMALLFONT}”Hjälp! Jag drunknar!”
-STR_1496    :{SMALLFONT}”Jag har tappat bort mig!”
-STR_1497    :{SMALLFONT}”{STRINGID} var superkul”
-STR_1498    :{SMALLFONT}”Jag har köat till {STRINGID} i åratal”
-STR_1499    :{SMALLFONT}”Jag är trött”
-STR_1500    :{SMALLFONT}”Jag är hungrig”
-STR_1501    :{SMALLFONT}”Jag är törstig”
-STR_1502    :{SMALLFONT}”Jag måste gå på toa”
-STR_1503    :{SMALLFONT}”Jag kan inte hitta {STRINGID}”
-STR_1504    :{SMALLFONT}”Jag tänker inte betala så mycket för att använda {STRINGID}”
-STR_1505    :{SMALLFONT}”Jag tänker inte åka {STRINGID} när det regnar”
-STR_1506    :{SMALLFONT}”Nedskräpningen här är hemsk”
-STR_1507    :{SMALLFONT}”Jag kan inte hitta parkutgången”
-STR_1508    :{SMALLFONT}”Jag vill hoppa av {STRINGID}”
-STR_1509    :{SMALLFONT}”Jag vill ut ur {STRINGID}”
-STR_1510    :{SMALLFONT}”Jag tänker inte åka {STRINGID} – Det är inte säkert nog”
-STR_1511    :{SMALLFONT}”Den här gångvägen är vidrig”
-STR_1512    :{SMALLFONT}”Det är för mycket folk här”
-STR_1513    :{SMALLFONT}”Skadegörelsen här är verkligen illa”
-STR_1514    :{SMALLFONT}”Snygga dekorationer!”
-STR_1515    :{SMALLFONT}”Den här parken är verkligen ren och fin”
-STR_1516    :{SMALLFONT}”Fontänerna är fantastiska”
-STR_1517    :{SMALLFONT}”Musiken här är trevlig”
-STR_1518    :{SMALLFONT}”Ballongen från {STRINGID} var verkligen värd pengarna”
-STR_1519    :{SMALLFONT}”Kramdjuret från {STRINGID} var verkligen värt pengarna”
-STR_1520    :{SMALLFONT}”Kartan från {STRINGID} var verkligen värd pengarna”
-STR_1521    :{SMALLFONT}”Fotot från åkturen {STRINGID} var verkligen värt pengarna”
-STR_1522    :{SMALLFONT}”Paraplyet från {STRINGID} var verkligen värt pengarna”
-STR_1523    :{SMALLFONT}”Drickan från {STRINGID} var verkligen värd pengarna”
-STR_1524    :{SMALLFONT}”Hamburgaren från {STRINGID} var verkligen värd pengarna”
-STR_1525    :{SMALLFONT}”Pommes fritesen från {STRINGID} var verkligen värda pengarna”
-STR_1526    :{SMALLFONT}”Glassen från {STRINGID} var verkligen värd pengarna”
-STR_1527    :{SMALLFONT}”Sockervadden från {STRINGID} var verkligen värd pengarna”
+STR_1480    :”Jag har inte råd med {STRINGID}”
+STR_1481    :”Jag har spenderat alla mina pengar”
+STR_1482    :”Jag mår illa”
+STR_1483    :”Jag mår pyton”
+STR_1484    :”Jag vill åka något mer spännande än {STRINGID}”
+STR_1485    :”{STRINGID} ser för intensiv ut för mig”
+STR_1486    :”Jag är inte klar med min {STRINGID} än”
+STR_1487    :”Bara att kolla på {STRINGID} får mig att må illa”
+STR_1488    :”Jag tänker inte betala så mycket för {STRINGID}”
+STR_1489    :”Jag vill gå hem”
+STR_1490    :”{STRINGID} är verkligen värd pengarna”
+STR_1491    :”Jag har redan {STRINGID}”
+STR_1492    :”Jag har inte råd med {STRINGID}”
+STR_1493    :”Jag är inte hungrig”
+STR_1494    :”Jag är inte törstig”
+STR_1495    :”Hjälp! Jag drunknar!”
+STR_1496    :”Jag har tappat bort mig!”
+STR_1497    :”{STRINGID} var superkul”
+STR_1498    :”Jag har köat till {STRINGID} i åratal”
+STR_1499    :”Jag är trött”
+STR_1500    :”Jag är hungrig”
+STR_1501    :”Jag är törstig”
+STR_1502    :”Jag måste gå på toa”
+STR_1503    :”Jag kan inte hitta {STRINGID}”
+STR_1504    :”Jag tänker inte betala så mycket för att använda {STRINGID}”
+STR_1505    :”Jag tänker inte åka {STRINGID} när det regnar”
+STR_1506    :”Nedskräpningen här är hemsk”
+STR_1507    :”Jag kan inte hitta parkutgången”
+STR_1508    :”Jag vill hoppa av {STRINGID}”
+STR_1509    :”Jag vill ut ur {STRINGID}”
+STR_1510    :”Jag tänker inte åka {STRINGID} – Det är inte säkert nog”
+STR_1511    :”Den här gångvägen är vidrig”
+STR_1512    :”Det är för mycket folk här”
+STR_1513    :”Skadegörelsen här är verkligen illa”
+STR_1514    :”Snygga dekorationer!”
+STR_1515    :”Den här parken är verkligen ren och fin”
+STR_1516    :”Fontänerna är fantastiska”
+STR_1517    :”Musiken här är trevlig”
+STR_1518    :”Ballongen från {STRINGID} var verkligen värd pengarna”
+STR_1519    :”Kramdjuret från {STRINGID} var verkligen värt pengarna”
+STR_1520    :”Kartan från {STRINGID} var verkligen värd pengarna”
+STR_1521    :”Fotot från åkturen {STRINGID} var verkligen värt pengarna”
+STR_1522    :”Paraplyet från {STRINGID} var verkligen värt pengarna”
+STR_1523    :”Drickan från {STRINGID} var verkligen värd pengarna”
+STR_1524    :”Hamburgaren från {STRINGID} var verkligen värd pengarna”
+STR_1525    :”Pommes fritesen från {STRINGID} var verkligen värda pengarna”
+STR_1526    :”Glassen från {STRINGID} var verkligen värd pengarna”
+STR_1527    :”Sockervadden från {STRINGID} var verkligen värd pengarna”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}”Pizzan från {STRINGID} var verkligen värd pengarna”
+STR_1531    :”Pizzan från {STRINGID} var verkligen värd pengarna”
 STR_1532    :
-STR_1533    :{SMALLFONT}”Popcornen från {STRINGID} var verkligen värda pengarna”
-STR_1534    :{SMALLFONT}”Varmkorven från {STRINGID} var verkligen värd pengarna”
-STR_1535    :{SMALLFONT}”Tentakeln från {STRINGID} var verkligen värd pengarna”
-STR_1536    :{SMALLFONT}”Hatten från {STRINGID} var verkligen värd pengarna”
-STR_1537    :{SMALLFONT}”Det kanderade äpplet från {STRINGID} var verkligen värt pengarna”
-STR_1538    :{SMALLFONT}”T-tröjan från {STRINGID} var verkligen värd pengarna”
-STR_1539    :{SMALLFONT}”Munken från {STRINGID} var verkligen värd pengarna”
-STR_1540    :{SMALLFONT}”Kaffet från {STRINGID} var verkligen värt pengarna”
+STR_1533    :”Popcornen från {STRINGID} var verkligen värda pengarna”
+STR_1534    :”Varmkorven från {STRINGID} var verkligen värd pengarna”
+STR_1535    :”Tentakeln från {STRINGID} var verkligen värd pengarna”
+STR_1536    :”Hatten från {STRINGID} var verkligen värd pengarna”
+STR_1537    :”Det kanderade äpplet från {STRINGID} var verkligen värt pengarna”
+STR_1538    :”T-tröjan från {STRINGID} var verkligen värd pengarna”
+STR_1539    :”Munken från {STRINGID} var verkligen värd pengarna”
+STR_1540    :”Kaffet från {STRINGID} var verkligen värt pengarna”
 STR_1541    :
-STR_1542    :{SMALLFONT}”Den friterade kycklingen från {STRINGID} var verkligen värd pengarna”
-STR_1543    :{SMALLFONT}”Saften från {STRINGID} var verkligen värd pengarna”
+STR_1542    :”Den friterade kycklingen från {STRINGID} var verkligen värd pengarna”
+STR_1543    :”Saften från {STRINGID} var verkligen värd pengarna”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}”Wow!”
-STR_1551    :{SMALLFONT}”Det känns som att någon iakttar mig”
-STR_1552    :{SMALLFONT}”Jag tänker inte betala så mycket för en ballong från {STRINGID}”
-STR_1553    :{SMALLFONT}”Jag tänker inte betala så mycket för ett mjukisdjur från {STRINGID}”
-STR_1554    :{SMALLFONT}”Jag tänker inte betala så mycket för en karta från {STRINGID}”
-STR_1555    :{SMALLFONT}”Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
-STR_1556    :{SMALLFONT}”Jag tänker inte betala så mycket för ett paraply från {STRINGID}”
-STR_1557    :{SMALLFONT}”Jag tänker inte betala så mycket för en dricka från {STRINGID}”
-STR_1558    :{SMALLFONT}”Jag tänker inte betala så mycket för en hamburgare från {STRINGID}”
-STR_1559    :{SMALLFONT}”Jag tänker inte betala så mycket för pommes frites från {STRINGID}”
-STR_1560    :{SMALLFONT}”Jag tänker inte betala så mycket för en glass från {STRINGID}”
-STR_1561    :{SMALLFONT}”Jag tänker inte betala så mycket för sockervadd från {STRINGID}”
+STR_1550    :”Wow!”
+STR_1551    :”Det känns som att någon iakttar mig”
+STR_1552    :”Jag tänker inte betala så mycket för en ballong från {STRINGID}”
+STR_1553    :”Jag tänker inte betala så mycket för ett mjukisdjur från {STRINGID}”
+STR_1554    :”Jag tänker inte betala så mycket för en karta från {STRINGID}”
+STR_1555    :”Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
+STR_1556    :”Jag tänker inte betala så mycket för ett paraply från {STRINGID}”
+STR_1557    :”Jag tänker inte betala så mycket för en dricka från {STRINGID}”
+STR_1558    :”Jag tänker inte betala så mycket för en hamburgare från {STRINGID}”
+STR_1559    :”Jag tänker inte betala så mycket för pommes frites från {STRINGID}”
+STR_1560    :”Jag tänker inte betala så mycket för en glass från {STRINGID}”
+STR_1561    :”Jag tänker inte betala så mycket för sockervadd från {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}”Jag tänker inte betala så mycket för pizza from {STRINGID}”
+STR_1565    :”Jag tänker inte betala så mycket för pizza from {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}”Jag tänker inte betala så mycket för popcorn från {STRINGID}”
-STR_1568    :{SMALLFONT}”Jag tänker inte betala så mycket för en varmkorv från {STRINGID}”
-STR_1569    :{SMALLFONT}”Jag tänker inte betala så mycket för tentakel från {STRINGID}”
-STR_1570    :{SMALLFONT}”Jag tänker inte betala så mycket för en hatt från {STRINGID}”
-STR_1571    :{SMALLFONT}”Jag tänker inte betala så mycket för ett kanderat äpple från {STRINGID}”
-STR_1572    :{SMALLFONT}”Jag tänker inte betala så mycket för en t-tröja från {STRINGID}”
-STR_1573    :{SMALLFONT}”Jag tänker inte betala så mycket för en munk från {STRINGID}”
-STR_1574    :{SMALLFONT}”Jag tänker inte betala så mycket för en kaffe från {STRINGID}”
+STR_1567    :”Jag tänker inte betala så mycket för popcorn från {STRINGID}”
+STR_1568    :”Jag tänker inte betala så mycket för en varmkorv från {STRINGID}”
+STR_1569    :”Jag tänker inte betala så mycket för tentakel från {STRINGID}”
+STR_1570    :”Jag tänker inte betala så mycket för en hatt från {STRINGID}”
+STR_1571    :”Jag tänker inte betala så mycket för ett kanderat äpple från {STRINGID}”
+STR_1572    :”Jag tänker inte betala så mycket för en t-tröja från {STRINGID}”
+STR_1573    :”Jag tänker inte betala så mycket för en munk från {STRINGID}”
+STR_1574    :”Jag tänker inte betala så mycket för en kaffe från {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}”Jag tänker inte betala så mycket för friterad kyckling från {STRINGID}”
-STR_1577    :{SMALLFONT}”Jag tänker inte betala så mycket för saft från {STRINGID}”
+STR_1576    :”Jag tänker inte betala så mycket för friterad kyckling från {STRINGID}”
+STR_1577    :”Jag tänker inte betala så mycket för saft från {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}”Fotot från åkturen {STRINGID} var verkligen värt pengarna”
-STR_1585    :{SMALLFONT}”Fotot från åkturen {STRINGID} var verkligen värt pengarna”
-STR_1586    :{SMALLFONT}”Fotot från åkturen {STRINGID} var verkligen värt pengarna”
-STR_1587    :{SMALLFONT}”Kringlan från {STRINGID} var verkligen värd pengarna”
-STR_1588    :{SMALLFONT}”Den varma chokladen från {STRINGID} var verkligen värd pengarna”
-STR_1589    :{SMALLFONT}”Istéet från {STRINGID} var verkligen värt pengarna”
-STR_1590    :{SMALLFONT}”Struvan från {STRINGID} var verkligen värd pengarna”
-STR_1591    :{SMALLFONT}”Solglasögonen från {STRINGID} var verkligen värda pengarna”
-STR_1592    :{SMALLFONT}”Biffnudlarna från {STRINGID} var verkligen värda pengarna”
-STR_1593    :{SMALLFONT}”De stekta nudlarna från {STRINGID} var verkligen värda pengarna”
-STR_1594    :{SMALLFONT}”Wontonsoppan från {STRINGID} var verkligen värd pengarna”
-STR_1595    :{SMALLFONT}”Köttbullssoppan från {STRINGID} var verkligen värd pengarna”
-STR_1596    :{SMALLFONT}”Fruktjuicen från {STRINGID} var verkligen värd pengarna”
-STR_1597    :{SMALLFONT}”Sojamjölken från {STRINGID} var verkligen värd pengarna”
-STR_1598    :{SMALLFONT}”Sujeonggwan från {STRINGID} var verkligen värd pengarna”
-STR_1599    :{SMALLFONT}”Mackan från {STRINGID} var verkligen värd pengarna”
-STR_1600    :{SMALLFONT}”Kakan från {STRINGID} var verkligen värd pengarna”
+STR_1584    :”Fotot från åkturen {STRINGID} var verkligen värt pengarna”
+STR_1585    :”Fotot från åkturen {STRINGID} var verkligen värt pengarna”
+STR_1586    :”Fotot från åkturen {STRINGID} var verkligen värt pengarna”
+STR_1587    :”Kringlan från {STRINGID} var verkligen värd pengarna”
+STR_1588    :”Den varma chokladen från {STRINGID} var verkligen värd pengarna”
+STR_1589    :”Istéet från {STRINGID} var verkligen värt pengarna”
+STR_1590    :”Struvan från {STRINGID} var verkligen värd pengarna”
+STR_1591    :”Solglasögonen från {STRINGID} var verkligen värda pengarna”
+STR_1592    :”Biffnudlarna från {STRINGID} var verkligen värda pengarna”
+STR_1593    :”De stekta nudlarna från {STRINGID} var verkligen värda pengarna”
+STR_1594    :”Wontonsoppan från {STRINGID} var verkligen värd pengarna”
+STR_1595    :”Köttbullssoppan från {STRINGID} var verkligen värd pengarna”
+STR_1596    :”Fruktjuicen från {STRINGID} var verkligen värd pengarna”
+STR_1597    :”Sojamjölken från {STRINGID} var verkligen värd pengarna”
+STR_1598    :”Sujeonggwan från {STRINGID} var verkligen värd pengarna”
+STR_1599    :”Mackan från {STRINGID} var verkligen värd pengarna”
+STR_1600    :”Kakan från {STRINGID} var verkligen värd pengarna”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}”Ugnskorven från {STRINGID} var verkligen värd pengarna”
+STR_1604    :”Ugnskorven från {STRINGID} var verkligen värd pengarna”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1001,27 +1001,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}”Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
-STR_1617    :{SMALLFONT}”Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
-STR_1618    :{SMALLFONT}”Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
-STR_1619    :{SMALLFONT}”Jag tänker inte betala så mycket för en kringla från {STRINGID}”
-STR_1620    :{SMALLFONT}”Jag tänker inte betala så mycket för varm choklad från {STRINGID}”
-STR_1621    :{SMALLFONT}”Jag tänker inte betala så mycket för iste från {STRINGID}”
-STR_1622    :{SMALLFONT}”Jag tänker inte betala så mycket för en struva från {STRINGID}”
-STR_1623    :{SMALLFONT}”Jag tänker inte betala så mycket för solglasögon från {STRINGID}”
-STR_1624    :{SMALLFONT}”Jag tänker inte betala så mycket för biffnudlar från {STRINGID}”
-STR_1625    :{SMALLFONT}”Jag tänker inte betala så mycket för stekta nudlar från {STRINGID}”
-STR_1626    :{SMALLFONT}”Jag tänker inte betala så mycket för wontonsoppa från {STRINGID}”
-STR_1627    :{SMALLFONT}”Jag tänker inte betala så mycket för köttbullssoppa från {STRINGID}”
-STR_1628    :{SMALLFONT}”Jag tänker inte betala så mycket för fruktjuice från {STRINGID}”
-STR_1629    :{SMALLFONT}”Jag tänker inte betala så mycket för sojamjölk från {STRINGID}”
-STR_1630    :{SMALLFONT}”Jag tänker inte betala så mycket för sujeonggwa från {STRINGID}”
-STR_1631    :{SMALLFONT}”Jag tänker inte betala så mycket för en macka från {STRINGID}”
-STR_1632    :{SMALLFONT}”Jag tänker inte betala så mycket för en kaka från {STRINGID}”
+STR_1616    :”Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
+STR_1617    :”Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
+STR_1618    :”Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
+STR_1619    :”Jag tänker inte betala så mycket för en kringla från {STRINGID}”
+STR_1620    :”Jag tänker inte betala så mycket för varm choklad från {STRINGID}”
+STR_1621    :”Jag tänker inte betala så mycket för iste från {STRINGID}”
+STR_1622    :”Jag tänker inte betala så mycket för en struva från {STRINGID}”
+STR_1623    :”Jag tänker inte betala så mycket för solglasögon från {STRINGID}”
+STR_1624    :”Jag tänker inte betala så mycket för biffnudlar från {STRINGID}”
+STR_1625    :”Jag tänker inte betala så mycket för stekta nudlar från {STRINGID}”
+STR_1626    :”Jag tänker inte betala så mycket för wontonsoppa från {STRINGID}”
+STR_1627    :”Jag tänker inte betala så mycket för köttbullssoppa från {STRINGID}”
+STR_1628    :”Jag tänker inte betala så mycket för fruktjuice från {STRINGID}”
+STR_1629    :”Jag tänker inte betala så mycket för sojamjölk från {STRINGID}”
+STR_1630    :”Jag tänker inte betala så mycket för sujeonggwa från {STRINGID}”
+STR_1631    :”Jag tänker inte betala så mycket för en macka från {STRINGID}”
+STR_1632    :”Jag tänker inte betala så mycket för en kaka från {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}”Jag tänker inte betala så mycket för en ugnskorv från {STRINGID}”
+STR_1636    :”Jag tänker inte betala så mycket för en ugnskorv från {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1033,10 +1033,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}”Hjälp! Släpp ner mig!”
-STR_1649    :{SMALLFONT}”Jag börjar få slut på pengar!”
-STR_1650    :{SMALLFONT}”Wow! De bygger en ny åktur!”
-STR_1653    :{SMALLFONT}”… och nu är vi på {STRINGID}!”
+STR_1648    :”Hjälp! Släpp ner mig!”
+STR_1649    :”Jag börjar få slut på pengar!”
+STR_1650    :”Wow! De bygger en ny åktur!”
+STR_1653    :”… och nu är vi på {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Senaste tankar:
 STR_1655    :Bygg gångväg på land
 STR_1656    :Bygg en bro eller tunnel
@@ -1188,7 +1188,7 @@ STR_1808    :{WINDOW_COLOUR_2}Senaste haveri: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuvarande haveri: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Bär på:
 STR_1811    :Kan inte bygga detta här…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Diverse saker
 STR_1814    :Handlingar
 STR_1815    :Tankar
@@ -1197,7 +1197,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alla besökare
 STR_1819    :{WINDOW_COLOUR_2}Alla besökare (sammanfattat)
 STR_1820    :{WINDOW_COLOUR_2}Besökare {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Besökare som tänker {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Besökare som tänker {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Besökare som tänker på {POP16}{STRINGID}
 STR_1823    :Visa besökares tankar om den här åkturen eller attraktionen
 STR_1824    :Visa besökare på den här åkturen eller attraktionen
@@ -1298,7 +1298,6 @@ STR_1921    :Starta ett nytt spel
 STR_1922    :Fortsätt spela ett sparat spel
 STR_1924    :Avsluta
 STR_1925    :Kan inte placera personen här…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} har gått sönder
 STR_1928    :{RED}{STRINGID} har kraschat!
 STR_1929    :{RED}{STRINGID} har fortfarande inte blivit fixad{NEWLINE}Ta reda på var dina mekaniker är och överväg att organisera dem bättre
@@ -1579,7 +1578,7 @@ STR_2218    :{RED}{STRINGID} på {STRINGID} har inte kommit tillbaka till {STRIN
 STR_2219    :{RED}{COMMA16} personer har omkommit i en olycka på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkomdöme: {BLACK}{COMMA16}
 STR_2221    :Parkomdöme: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Antal besökare: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Pengar: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Pengar: {RED}{CURRENCY2DP}
@@ -1592,7 +1591,7 @@ STR_2231    :Stoppbroms för nedförsbacke
 STR_2232    :Upplyftsbacke
 STR_2233    :Parkinformation
 STR_2234    :Senaste meddelanden
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :januari
 STR_2237    :februari
 STR_2238    :mars
@@ -1796,7 +1795,7 @@ STR_2450    :{YELLOW}Din kampanj för parken har slutförts
 STR_2451    :{YELLOW}Din kampanj för {STRINGID} har slutförts
 STR_2452    :{WINDOW_COLOUR_2}Pengar (utan lån): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Pengar (utan lån): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} –
+STR_2454    :{BLACK}{CURRENCY2DP} –
 STR_2457    :Visa finansiella konton
 STR_2458    :Visa graf med pengar (utan lån) över tid
 STR_2459    :Visa graf med parkvärde över tid
@@ -1906,7 +1905,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :All forskning färdig
-STR_2681    :{MEDIUMFONT}{BLACK}Ökar pengarna med {CURRENCY}
 STR_2684    :En stor grupp anländer
 STR_2685    :Parametrar för simplex-brus
 STR_2686    :Låg:
@@ -1994,7 +1992,7 @@ STR_2789    :{WINDOW_COLOUR_2}Du har misslyckats med ditt mål!
 STR_2790    :Skriv in namn i scenariolistan
 STR_2791    :Skriv in namn
 STR_2792    :Var god skriv in ditt namn i scenariolistan:
-STR_2793    :{SMALLFONT}(Avklarad av {STRINGID})
+STR_2793    :(Avklarad av {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Avklarad av: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} med ett företagsvärde på: {BLACK}{CURRENCY}
 STR_2795    :Sortera
 STR_2796    :Sortera åkturslistan i ordning enligt den valda informationstypen
@@ -2503,7 +2501,7 @@ STR_5134    :Justera större storlek av verktyget
 STR_5135    :Köp land- och bygglov
 STR_5136    :Köpa mark
 STR_5137    :Lås upp körlägesgränser
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Avaktivera bromsfel
 STR_5141    :Avaktivera alla haverier
@@ -2649,7 +2647,7 @@ STR_5297    :Öppna parken
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Snabbavskeda personal
-STR_5301    :{MEDIUMFONT}{BLACK}Återbetala ditt lån
+STR_5301    :Återbetala ditt lån
 STR_5302    :Återbetala lån
 STR_5303    :Tillåt byggande i pausat läge
 STR_5304    :Titelsekvens:
@@ -2808,7 +2806,7 @@ STR_5481    :Teman
 STR_5482    :{WINDOW_COLOUR_2}Tid sen senaste inspektionen: {BLACK}1 minut
 STR_5483    :{BLACK}({COMMA16} veckor återstår)
 STR_5484    :{BLACK}({COMMA16} vecka återstår)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Visa senaste meddelanden
 STR_5489    :Visa endast besökare du följer
@@ -3312,7 +3310,7 @@ STR_6030    :Dekorationsplockaren. Klicka på en dekoration på kartan för att 
 STR_6031    :Serverbeskrivning:
 STR_6032    :Serverhälsning:
 STR_6033    :Sökvägen till RCT1-mappen:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Vänligen välj installationsmappen för RCT1
 STR_6036    :Rensa
 STR_6037    :Den valda mappen innehåller inte en giltig RollerCoaster Tycoon 1-installation.
@@ -3457,7 +3455,7 @@ STR_6183    :Följ{MOVE_X}{87}Inget objekt valt
 STR_6184    :Följ objekt
 STR_6185    :Välj objekt
 STR_6186    :Inget objekt valt
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Spya
 STR_6189    :Anka
 STR_6190    :Du kan inte välja ett objekt medan titelsekvensen spelas.
@@ -3607,7 +3605,7 @@ STR_6356    :Sätter ut ankor om parken innehåller vatten
 STR_6357    :Tar bort alla ankor från kartan
 STR_6358    :Sida {UINT16}
 STR_6359    :{POP16}{POP16}Sida {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Aktivera ljuseffekter på åkturer (experiment)
 STR_6362    :Om aktiverad, lyses vagnar på spår upp om natten.
 STR_6363    :Text kopierad till urklipp

@@ -11,9 +11,10 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(
@@ -44,7 +45,7 @@ static void paint_twist_structure(
     if (vehicle != nullptr)
     {
         frameNum += (vehicle->sprite_direction >> 3) << 4;
-        frameNum += vehicle->vehicle_sprite_type;
+        frameNum += vehicle->Pitch;
         frameNum = frameNum % 216;
     }
 

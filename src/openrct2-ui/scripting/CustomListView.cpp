@@ -671,7 +671,7 @@ void CustomListView::PaintHeading(
     {
         boxFlags = INSET_RECT_FLAG_BORDER_INSET;
     }
-    gfx_fill_rect_inset(dpi, pos.x, pos.y, pos.x + size.width - 1, pos.y + size.height - 1, w->colours[1], boxFlags);
+    gfx_fill_rect_inset(dpi, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
     if (!text.empty())
     {
         PaintCell(dpi, pos, size, text.c_str(), false);

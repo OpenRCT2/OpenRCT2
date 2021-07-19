@@ -21,6 +21,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "ride/RideData.h"
+#include "ride/TrainManager.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "windows/Intent.h"
@@ -202,18 +203,18 @@ void setup_in_use_selection_flags()
     }
 
     // Apply selected object status for hacked vehicles that may not have an associated ride
-    for (auto vehicle : EntityList<Vehicle>(EntityListId::TrainHead))
+    for (auto* vehicle : TrainManager::View())
     {
         ObjectEntryIndex type = vehicle->ride_subtype;
-        if (type != RIDE_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
         {
             Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
         }
     }
-    for (auto vehicle : EntityList<Vehicle>(EntityListId::Vehicle))
+    for (auto vehicle : EntityList<Vehicle>())
     {
         ObjectEntryIndex type = vehicle->ride_subtype;
-        if (type != RIDE_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
         {
             Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
         }

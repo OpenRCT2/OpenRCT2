@@ -20,77 +20,15 @@
 
 enum class EntityListId : uint8_t
 {
-    Free,
-    TrainHead,
-    Peep,
-    Misc,
-    Litter,
-    Vehicle,
-    Count,
+    Count = 6,
 };
 
-const std::list<uint16_t>& GetEntityList(const EntityListId id);
+const std::list<uint16_t>& GetEntityList(const EntityType id);
 
-uint16_t GetEntityListCount(EntityListId list);
+uint16_t GetEntityListCount(EntityType list);
+uint16_t GetMiscEntityCount();
 uint16_t GetNumFreeEntities();
-void RebuildEntityLists();
 const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos);
-
-template<typename T, uint16_t SpriteBase::*NextList> class EntityIterator
-{
-private:
-    T* Entity = nullptr;
-    uint16_t NextEntityId = SPRITE_INDEX_NULL;
-
-public:
-    EntityIterator(const uint16_t _EntityId)
-        : NextEntityId(_EntityId)
-    {
-        ++(*this);
-    }
-    EntityIterator& operator++()
-    {
-        Entity = nullptr;
-
-        while (NextEntityId != SPRITE_INDEX_NULL && Entity == nullptr)
-        {
-            auto baseEntity = GetEntity(NextEntityId);
-            if (!baseEntity)
-            {
-                NextEntityId = SPRITE_INDEX_NULL;
-                continue;
-            }
-            NextEntityId = baseEntity->*NextList;
-            Entity = baseEntity->template As<T>();
-        }
-        return *this;
-    }
-
-    EntityIterator operator++(int)
-    {
-        EntityIterator retval = *this;
-        ++(*this);
-        return retval;
-    }
-    bool operator==(EntityIterator other) const
-    {
-        return Entity == other.Entity;
-    }
-    bool operator!=(EntityIterator other) const
-    {
-        return !(*this == other);
-    }
-    T* operator*()
-    {
-        return Entity;
-    }
-    // iterator traits
-    using difference_type = std::ptrdiff_t;
-    using value_type = T;
-    using pointer = const T*;
-    using reference = const T&;
-    using iterator_category = std::forward_iterator_tag;
-};
 
 template<typename T> class EntityTileIterator
 {
@@ -222,8 +160,8 @@ private:
     const std::list<uint16_t>& vec;
 
 public:
-    EntityList(EntityListId type)
-        : vec(GetEntityList(type))
+    EntityList()
+        : vec(GetEntityList(T::cEntityType))
     {
     }
 

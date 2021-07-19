@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../world/Sprite.h"
+#include "Peep.h"
 
 #include <iterator>
 

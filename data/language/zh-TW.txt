@@ -795,14 +795,14 @@ STR_1410    :垂直高塔
 STR_1411    :{STRINGID}擋在路上
 STR_1412    :{WINDOW_COLOUR_3}數據記錄並不適合這類型的遊樂設施
 STR_1413    :{WINDOW_COLOUR_3}數據會於{STRINGID}離開{STRINGID}後記錄
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}速度
 STR_1416    :{WINDOW_COLOUR_2}高度
 STR_1417    :{WINDOW_COLOUR_2}垂直重力
 STR_1418    :{WINDOW_COLOUR_2}橫向重力
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :從{POP16}{STRINGID}記錄數據中
 STR_1423    :輪侯區道路
 STR_1424    :道路
@@ -861,131 +861,131 @@ STR_1476    :{WINDOW_COLOUR_2}刺激度: {BLACK}暫無
 STR_1477    :{WINDOW_COLOUR_2}刺激度: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}噁心度: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}噁心度: {BLACK}暫無
-STR_1480    :{SMALLFONT}“我已經沒錢去乘坐{STRINGID}了”
-STR_1481    :{SMALLFONT}“我已經花光我的錢了”
-STR_1482    :{SMALLFONT}“我感到不適”
-STR_1483    :{SMALLFONT}“我感到非常不適”
-STR_1484    :{SMALLFONT}“我想去試試比{STRINGID}更刺激的遊樂設施”
-STR_1485    :{SMALLFONT}“對我來說, {STRINGID}看起來太刺激了”
-STR_1486    :{SMALLFONT}“我還未吃/喝完我的{STRINGID}”
-STR_1487    :{SMALLFONT}“只是看著{STRINGID}已經讓我感到不適”
-STR_1488    :{SMALLFONT}“我不會花這麼多錢去乘坐{STRINGID}”
-STR_1489    :{SMALLFONT}“我想回家”
-STR_1490    :{SMALLFONT}“{STRINGID}真的是超值”
-STR_1491    :{SMALLFONT}“我已經擁有{STRINGID}了”
-STR_1492    :{SMALLFONT}“我已經不夠錢從{STRINGID}購買東西了”
-STR_1493    :{SMALLFONT}“我還未餓”
-STR_1494    :{SMALLFONT}“我還未渴”
-STR_1495    :{SMALLFONT}“救命! 我快要溺死了!”
-STR_1496    :{SMALLFONT}“我迷路了!”
-STR_1497    :{SMALLFONT}“{STRINGID}真棒”
-STR_1498    :{SMALLFONT}“我輪候{STRINGID}很長時間了”
-STR_1499    :{SMALLFONT}“我累了”
-STR_1500    :{SMALLFONT}“我餓了”
-STR_1501    :{SMALLFONT}“我渴了”
-STR_1502    :{SMALLFONT}“我要上廁所”
-STR_1503    :{SMALLFONT}“我找不到{STRINGID}”
-STR_1504    :{SMALLFONT}“我不會花這麼多錢去使用{STRINGID}”
-STR_1505    :{SMALLFONT}“我不會在下雨時乘坐{STRINGID}”
-STR_1506    :{SMALLFONT}“這裡真多垃圾”
-STR_1507    :{SMALLFONT}“我找不到樂園出口”
-STR_1508    :{SMALLFONT}“我想從{STRINGID}中下來”
-STR_1509    :{SMALLFONT}“我想從{STRINGID}中出來”
-STR_1510    :{SMALLFONT}“我不會乘坐{STRINGID} - 它一點都不安全”
-STR_1511    :{SMALLFONT}“這道路真是令人噁心”
-STR_1512    :{SMALLFONT}“這裡實在太擠迫了”
-STR_1513    :{SMALLFONT}“這裡真多被刻意毀壞的設施”
-STR_1514    :{SMALLFONT}“這裡的景色真是美不勝收!”
-STR_1515    :{SMALLFONT}“這樂園真是又整齊又乾淨”
-STR_1516    :{SMALLFONT}“這些跳躍噴泉真棒”
-STR_1517    :{SMALLFONT}“這裡播放的音樂挺不錯”
-STR_1518    :{SMALLFONT}“這個由{STRINGID}購買的氣球真的是超值”
-STR_1519    :{SMALLFONT}“這隻由{STRINGID}購買的毛公仔真的是超值”
-STR_1520    :{SMALLFONT}“這份由{STRINGID}購買的樂園地圖真的是超值”
-STR_1521    :{SMALLFONT}“這張由{STRINGID}購買的即時照片真的是超值”
-STR_1522    :{SMALLFONT}“這把由{STRINGID}購買的雨傘真的是超值”
-STR_1523    :{SMALLFONT}“這杯由{STRINGID}購買的飲料真的是超值”
-STR_1524    :{SMALLFONT}“這個由{STRINGID}購買的漢堡真的是超值”
-STR_1525    :{SMALLFONT}“這客由{STRINGID}購買的薯條真的是超值”
-STR_1526    :{SMALLFONT}“這個由{STRINGID}購買的冰淇淋真的是超值”
-STR_1527    :{SMALLFONT}“這個由{STRINGID}購買的棉花糖真的是超值”
+STR_1480    :“我已經沒錢去乘坐{STRINGID}了”
+STR_1481    :“我已經花光我的錢了”
+STR_1482    :“我感到不適”
+STR_1483    :“我感到非常不適”
+STR_1484    :“我想去試試比{STRINGID}更刺激的遊樂設施”
+STR_1485    :“對我來說, {STRINGID}看起來太刺激了”
+STR_1486    :“我還未吃/喝完我的{STRINGID}”
+STR_1487    :“只是看著{STRINGID}已經讓我感到不適”
+STR_1488    :“我不會花這麼多錢去乘坐{STRINGID}”
+STR_1489    :“我想回家”
+STR_1490    :“{STRINGID}真的是超值”
+STR_1491    :“我已經擁有{STRINGID}了”
+STR_1492    :“我已經不夠錢從{STRINGID}購買東西了”
+STR_1493    :“我還未餓”
+STR_1494    :“我還未渴”
+STR_1495    :“救命! 我快要溺死了!”
+STR_1496    :“我迷路了!”
+STR_1497    :“{STRINGID}真棒”
+STR_1498    :“我輪候{STRINGID}很長時間了”
+STR_1499    :“我累了”
+STR_1500    :“我餓了”
+STR_1501    :“我渴了”
+STR_1502    :“我要上廁所”
+STR_1503    :“我找不到{STRINGID}”
+STR_1504    :“我不會花這麼多錢去使用{STRINGID}”
+STR_1505    :“我不會在下雨時乘坐{STRINGID}”
+STR_1506    :“這裡真多垃圾”
+STR_1507    :“我找不到樂園出口”
+STR_1508    :“我想從{STRINGID}中下來”
+STR_1509    :“我想從{STRINGID}中出來”
+STR_1510    :“我不會乘坐{STRINGID} - 它一點都不安全”
+STR_1511    :“這道路真是令人噁心”
+STR_1512    :“這裡實在太擠迫了”
+STR_1513    :“這裡真多被刻意毀壞的設施”
+STR_1514    :“這裡的景色真是美不勝收!”
+STR_1515    :“這樂園真是又整齊又乾淨”
+STR_1516    :“這些跳躍噴泉真棒”
+STR_1517    :“這裡播放的音樂挺不錯”
+STR_1518    :“這個由{STRINGID}購買的氣球真的是超值”
+STR_1519    :“這隻由{STRINGID}購買的毛公仔真的是超值”
+STR_1520    :“這份由{STRINGID}購買的樂園地圖真的是超值”
+STR_1521    :“這張由{STRINGID}購買的即時照片真的是超值”
+STR_1522    :“這把由{STRINGID}購買的雨傘真的是超值”
+STR_1523    :“這杯由{STRINGID}購買的飲料真的是超值”
+STR_1524    :“這個由{STRINGID}購買的漢堡真的是超值”
+STR_1525    :“這客由{STRINGID}購買的薯條真的是超值”
+STR_1526    :“這個由{STRINGID}購買的冰淇淋真的是超值”
+STR_1527    :“這個由{STRINGID}購買的棉花糖真的是超值”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“這件由{STRINGID}購買的批薩真的是超值”
+STR_1531    :“這件由{STRINGID}購買的批薩真的是超值”
 STR_1532    :
-STR_1533    :{SMALLFONT}“這客由{STRINGID}購買的爆米花真的是超值”
-STR_1534    :{SMALLFONT}“這隻由{STRINGID}購買的熱狗真的是超值”
-STR_1535    :{SMALLFONT}“這隻由{STRINGID}購買的觸手真的是超值”
-STR_1536    :{SMALLFONT}“這頂由{STRINGID}購買的帽子真的是超值”
-STR_1537    :{SMALLFONT}“這個由{STRINGID}購買的太妃蘋果糖真的是超值”
-STR_1538    :{SMALLFONT}“這件由{STRINGID}購買的T恤真的是超值”
-STR_1539    :{SMALLFONT}“這件由{STRINGID}購買的甜甜圈真的是超值”
-STR_1540    :{SMALLFONT}“這杯由{STRINGID}購買的咖啡真的是超值”
+STR_1533    :“這客由{STRINGID}購買的爆米花真的是超值”
+STR_1534    :“這隻由{STRINGID}購買的熱狗真的是超值”
+STR_1535    :“這隻由{STRINGID}購買的觸手真的是超值”
+STR_1536    :“這頂由{STRINGID}購買的帽子真的是超值”
+STR_1537    :“這個由{STRINGID}購買的太妃蘋果糖真的是超值”
+STR_1538    :“這件由{STRINGID}購買的T恤真的是超值”
+STR_1539    :“這件由{STRINGID}購買的甜甜圈真的是超值”
+STR_1540    :“這杯由{STRINGID}購買的咖啡真的是超值”
 STR_1541    :
-STR_1542    :{SMALLFONT}“這客由{STRINGID}購買的炸雞真的是超值”
-STR_1543    :{SMALLFONT}“這杯由{STRINGID}購買的檸檬水真的是超值”
+STR_1542    :“這客由{STRINGID}購買的炸雞真的是超值”
+STR_1543    :“這杯由{STRINGID}購買的檸檬水真的是超值”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“嘩!”
-STR_1551    :{SMALLFONT}“奇怪, 我覺得有人在悄悄地監視我”
-STR_1552    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個氣球”
-STR_1553    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一隻毛公仔”
-STR_1554    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一份樂園地圖”
-STR_1555    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一張即時照片”
-STR_1556    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一把雨傘”
-STR_1557    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯飲料”
-STR_1558    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個漢堡”
-STR_1559    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客薯條”
-STR_1560    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個冰淇淋”
-STR_1561    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一球棉花糖”
+STR_1550    :“嘩!”
+STR_1551    :“奇怪, 我覺得有人在悄悄地監視我”
+STR_1552    :“我不會花這麼多錢在{STRINGID}購買一個氣球”
+STR_1553    :“我不會花這麼多錢在{STRINGID}購買一隻毛公仔”
+STR_1554    :“我不會花這麼多錢在{STRINGID}購買一份樂園地圖”
+STR_1555    :“我不會花這麼多錢在{STRINGID}購買一張即時照片”
+STR_1556    :“我不會花這麼多錢在{STRINGID}購買一把雨傘”
+STR_1557    :“我不會花這麼多錢在{STRINGID}購買一杯飲料”
+STR_1558    :“我不會花這麼多錢在{STRINGID}購買一個漢堡”
+STR_1559    :“我不會花這麼多錢在{STRINGID}購買一客薯條”
+STR_1560    :“我不會花這麼多錢在{STRINGID}購買一個冰淇淋”
+STR_1561    :“我不會花這麼多錢在{STRINGID}購買一球棉花糖”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件批薩”
+STR_1565    :“我不會花這麼多錢在{STRINGID}購買一件批薩”
 STR_1566    :
-STR_1567    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客爆米花”
-STR_1568    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一隻熱狗”
-STR_1569    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一隻觸手”
-STR_1570    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一頂帽子”
-STR_1571    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個太妃蘋果糖”
-STR_1572    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件T恤”
-STR_1573    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件甜甜圈”
-STR_1574    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯咖啡”
+STR_1567    :“我不會花這麼多錢在{STRINGID}購買一客爆米花”
+STR_1568    :“我不會花這麼多錢在{STRINGID}購買一隻熱狗”
+STR_1569    :“我不會花這麼多錢在{STRINGID}購買一隻觸手”
+STR_1570    :“我不會花這麼多錢在{STRINGID}購買一頂帽子”
+STR_1571    :“我不會花這麼多錢在{STRINGID}購買一個太妃蘋果糖”
+STR_1572    :“我不會花這麼多錢在{STRINGID}購買一件T恤”
+STR_1573    :“我不會花這麼多錢在{STRINGID}購買一件甜甜圈”
+STR_1574    :“我不會花這麼多錢在{STRINGID}購買一杯咖啡”
 STR_1575    :
-STR_1576    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客炸雞”
-STR_1577    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯檸檬水”
+STR_1576    :“我不會花這麼多錢在{STRINGID}購買一客炸雞”
+STR_1577    :“我不會花這麼多錢在{STRINGID}購買一杯檸檬水”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“這張由{STRINGID}購買的即時照片真的是超值”
-STR_1585    :{SMALLFONT}“這張由{STRINGID}購買的即時照片真的是超值”
-STR_1586    :{SMALLFONT}“這張由{STRINGID}購買的即時照片真的是超值”
-STR_1587    :{SMALLFONT}“這件由{STRINGID}購買的椒鹽卷餅真的是超值”
-STR_1588    :{SMALLFONT}“這杯由{STRINGID}購買的熱巧克力真的是超值”
-STR_1589    :{SMALLFONT}“這杯由{STRINGID}購買的冰紅茶真的是超值”
-STR_1590    :{SMALLFONT}“這個由{STRINGID}購買的漏斗蛋糕真的是超值”
-STR_1591    :{SMALLFONT}“這副由{STRINGID}購買的太陽眼鏡真的是超值”
-STR_1592    :{SMALLFONT}“這份由{STRINGID}購買的牛肉麵真的是超值”
-STR_1593    :{SMALLFONT}“這份由{STRINGID}購買的炒米粉真的是超值”
-STR_1594    :{SMALLFONT}“這客由{STRINGID}購買的湯雲吞真的是超值”
-STR_1595    :{SMALLFONT}“這客由{STRINGID}購買的肉丸湯真的是超值”
-STR_1596    :{SMALLFONT}“這杯由{STRINGID}購買的果汁真的是超值”
-STR_1597    :{SMALLFONT}“這杯由{STRINGID}購買的豆漿真的是超值”
-STR_1598    :{SMALLFONT}“這杯由{STRINGID}購買的水正果真的是超值”
-STR_1599    :{SMALLFONT}“這件由{STRINGID}購買的潛艇三文治真的是超值”
-STR_1600    :{SMALLFONT}“這件由{STRINGID}購買的曲奇真的是超值”
+STR_1584    :“這張由{STRINGID}購買的即時照片真的是超值”
+STR_1585    :“這張由{STRINGID}購買的即時照片真的是超值”
+STR_1586    :“這張由{STRINGID}購買的即時照片真的是超值”
+STR_1587    :“這件由{STRINGID}購買的椒鹽卷餅真的是超值”
+STR_1588    :“這杯由{STRINGID}購買的熱巧克力真的是超值”
+STR_1589    :“這杯由{STRINGID}購買的冰紅茶真的是超值”
+STR_1590    :“這個由{STRINGID}購買的漏斗蛋糕真的是超值”
+STR_1591    :“這副由{STRINGID}購買的太陽眼鏡真的是超值”
+STR_1592    :“這份由{STRINGID}購買的牛肉麵真的是超值”
+STR_1593    :“這份由{STRINGID}購買的炒米粉真的是超值”
+STR_1594    :“這客由{STRINGID}購買的湯雲吞真的是超值”
+STR_1595    :“這客由{STRINGID}購買的肉丸湯真的是超值”
+STR_1596    :“這杯由{STRINGID}購買的果汁真的是超值”
+STR_1597    :“這杯由{STRINGID}購買的豆漿真的是超值”
+STR_1598    :“這杯由{STRINGID}購買的水正果真的是超值”
+STR_1599    :“這件由{STRINGID}購買的潛艇三文治真的是超值”
+STR_1600    :“這件由{STRINGID}購買的曲奇真的是超值”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“這條由{STRINGID}購買的烤香腸真的是超值”
+STR_1604    :“這條由{STRINGID}購買的烤香腸真的是超值”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -997,27 +997,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一張即時照片”
-STR_1617    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一張即時照片”
-STR_1618    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一張即時照片”
-STR_1619    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件椒鹽卷餅”
-STR_1620    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯熱巧克力”
-STR_1621    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯冰紅茶”
-STR_1622    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個漏斗蛋糕”
-STR_1623    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一副太陽眼鏡”
-STR_1624    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一份牛肉麵”
-STR_1625    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一份炒米粉”
-STR_1626    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客湯雲吞”
-STR_1627    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客肉丸湯”
-STR_1628    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯果汁”
-STR_1629    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯豆漿”
-STR_1630    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯水正果”
-STR_1631    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件潛艇三文治”
-STR_1632    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件曲奇”
+STR_1616    :“我不會花這麼多錢在{STRINGID}購買一張即時照片”
+STR_1617    :“我不會花這麼多錢在{STRINGID}購買一張即時照片”
+STR_1618    :“我不會花這麼多錢在{STRINGID}購買一張即時照片”
+STR_1619    :“我不會花這麼多錢在{STRINGID}購買一件椒鹽卷餅”
+STR_1620    :“我不會花這麼多錢在{STRINGID}購買一杯熱巧克力”
+STR_1621    :“我不會花這麼多錢在{STRINGID}購買一杯冰紅茶”
+STR_1622    :“我不會花這麼多錢在{STRINGID}購買一個漏斗蛋糕”
+STR_1623    :“我不會花這麼多錢在{STRINGID}購買一副太陽眼鏡”
+STR_1624    :“我不會花這麼多錢在{STRINGID}購買一份牛肉麵”
+STR_1625    :“我不會花這麼多錢在{STRINGID}購買一份炒米粉”
+STR_1626    :“我不會花這麼多錢在{STRINGID}購買一客湯雲吞”
+STR_1627    :“我不會花這麼多錢在{STRINGID}購買一客肉丸湯”
+STR_1628    :“我不會花這麼多錢在{STRINGID}購買一杯果汁”
+STR_1629    :“我不會花這麼多錢在{STRINGID}購買一杯豆漿”
+STR_1630    :“我不會花這麼多錢在{STRINGID}購買一杯水正果”
+STR_1631    :“我不會花這麼多錢在{STRINGID}購買一件潛艇三文治”
+STR_1632    :“我不會花這麼多錢在{STRINGID}購買一件曲奇”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一條烤香腸”
+STR_1636    :“我不會花這麼多錢在{STRINGID}購買一條烤香腸”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1029,11 +1029,11 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“救命! 放我下去!”
-STR_1649    :{SMALLFONT}“我花光了我身上的錢了!”
-STR_1650    :{SMALLFONT}“嘩! 嶄新的遊樂設施在建造中呢!”
+STR_1648    :“救命! 放我下去!”
+STR_1649    :“我花光了我身上的錢了!”
+STR_1650    :“嘩! 嶄新的遊樂設施在建造中呢!”
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :{SMALLFONT}“…然而, 現在我們已經在{STRINGID}之上!”
+STR_1653    :“…然而, 現在我們已經在{STRINGID}之上!”
 STR_1654    :{WINDOW_COLOUR_2}最近的想法:
 STR_1655    :在地上建造道路
 STR_1656    :建造橋樑或隧道
@@ -1185,7 +1185,7 @@ STR_1808    :{WINDOW_COLOUR_2}上次故障原因: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}今次故障原因: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}攜帶中:
 STR_1811    :不能建造於此…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :其他物件
 STR_1814    :動作
 STR_1815    :想法
@@ -1195,7 +1195,7 @@ STR_1818    :{WINDOW_COLOUR_2}所有遊客
 STR_1819    :{WINDOW_COLOUR_2}所有遊客 (總匯)
 STR_1820    :{WINDOW_COLOUR_2}{STRINGID}的遊客
 STR_1821    :{WINDOW_COLOUR_2}在想{STRINGID}的遊客
-STR_1822    :{WINDOW_COLOUR_2}在想{POP16}{STRINGID}的遊客
+STR_1822    :{WINDOW_COLOUR_2}在想{POP16}{SMALLFONT}{STRINGID}{MEDIUMFONT}的遊客
 STR_1823    :顯示遊客對此遊樂設施/店面的想法
 STR_1824    :顯示在使用此遊樂設施/店面的遊客
 STR_1825    :顯示在輪候此遊樂設施/店面的遊客
@@ -1297,7 +1297,6 @@ STR_1921    :開始新遊戲
 STR_1922    :繼續遊玩存檔
 STR_1924    :退出遊戲
 STR_1925    :不能放置人物於此…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID}發生故障了
 STR_1928    :{RED}{STRINGID}毀壞了!
 STR_1929    :{RED}{STRINGID}依然未修復好{NEWLINE}請檢查維修人員位置所在, 或考慮以更好的方法管理他們
@@ -1578,7 +1577,7 @@ STR_2218    :{RED}{STRINGID}, {STRINGID}的一部份, 尚未返回到{STRINGID}!
 STR_2219    :{RED}{COMMA16}人已喪生於{STRINGID}的意外中
 STR_2220    :{WINDOW_COLOUR_2}樂園評價: {BLACK}{COMMA16}
 STR_2221    :樂園評價: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}園內遊客: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}現金: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}現金: {RED}{CURRENCY2DP}
@@ -1591,7 +1590,7 @@ STR_2231    :下落煞車裝置
 STR_2232    :纜索坡道
 STR_2233    :樂園資料
 STR_2234    :最近訊息
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :1月
 STR_2237    :2月
 STR_2238    :3月
@@ -1795,7 +1794,7 @@ STR_2450    :{YELLOW}你針對樂園的推廣計劃現已結束
 STR_2451    :{YELLOW}你針對{STRINGID}的推廣計劃現已結束
 STR_2452    :{WINDOW_COLOUR_2}現金 (減去貸款): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}現金 (減去貸款): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :顯示財政報表
 STR_2458    :以圖表顯示過往到現在的凈現金
 STR_2459    :以圖表顯示過往到現在的樂園價格
@@ -1905,7 +1904,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :所有項目都已研發完畢
-STR_2681    :{MEDIUMFONT}{BLACK}增加{CURRENCY}到你的金錢裡
 STR_2684    :一大群遊客到訪
 STR_2685    :簡單雜噪參數
 STR_2686    :最低值:
@@ -1992,7 +1990,7 @@ STR_2789    :{WINDOW_COLOUR_2}你未能達到目標!
 STR_2790    :請輸入你要在劇情列表顯示的名字
 STR_2791    :輸入名字
 STR_2792    :請輸入你要在劇情列表顯示的名字:
-STR_2793    :{SMALLFONT}(已由{STRINGID}完成)
+STR_2793    :(已由{STRINGID}完成)
 STR_2794    :{WINDOW_COLOUR_2}完成目標者: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} 令公司價值增至: {BLACK}{CURRENCY}
 STR_2795    :排序
 STR_2796    :將遊樂設施以不同類別列出
@@ -2501,7 +2499,7 @@ STR_5134    :選擇較大的土地範圍
 STR_5135    :購買土地擁有權或建造權
 STR_5136    :土地擁有權
 STR_5137    :移除遊樂設施的運行限制
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :去除煞車組件故障
 STR_5141    :去除所有故障機會
@@ -2647,7 +2645,7 @@ STR_5297    :開放樂園
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :一鍵解僱員工
-STR_5301    :{MEDIUMFONT}{BLACK}付清你的貸款
+STR_5301    :付清你的貸款
 STR_5302    :付清貸款
 STR_5303    :暫停時可以建造物件
 STR_5304    :主選單動畫:
@@ -2806,7 +2804,7 @@ STR_5481    :主題
 STR_5482    :{WINDOW_COLOUR_2}上次檢查時間: {BLACK} 1分鐘前
 STR_5483    :{BLACK}(還剩{COMMA16}週結束)
 STR_5484    :{BLACK}(還剩{COMMA16}週結束)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :顯示最近消息
 STR_5489    :只顯示追蹤中的遊客
@@ -3310,7 +3308,7 @@ STR_6030    :景物選取器. 點撃選取地圖上的景物來建造相同的�
 STR_6031    :伺服器描述:
 STR_6032    :伺服器歡迎訊息:
 STR_6033    :夢幻遊樂園(RCT1)安裝路徑:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :請選擇已安裝夢幻遊樂園(RCT1)的文件夾
 STR_6036    :清除
 STR_6037    :請選擇一個正確的夢幻遊樂園(RCT1)文件夾
@@ -3455,7 +3453,7 @@ STR_6183    :追蹤{MOVE_X}{87}無選取中的元素
 STR_6184    :追蹤元素
 STR_6185    :選取元素
 STR_6186    :無選取中的元素
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :嘔吐物
 STR_6189    :鴨子
 STR_6190    :你不能於主標題畫面中選取元素.
@@ -3608,7 +3606,7 @@ STR_6356    :如果樂園中有水域存在, 則會生成鴨子
 STR_6357    :移除所有於地圖上的鴨子
 STR_6358    :第{UINT16}頁
 STR_6359    :{POP16}{POP16}第{UINT16}頁
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :啟用遊樂設施的燈光效果 (實驗性質)
 STR_6362    :當啟用此選項時, 所有在擁有軌道的遊樂設施中的車輛將會於晚中被照亮.
 STR_6363    :複製文字到剪貼簿

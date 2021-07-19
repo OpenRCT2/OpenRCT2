@@ -161,7 +161,6 @@ private:
 
                 files.push_back(std::move(path));
             }
-            delete scanner;
         }
         return ScanResult(stats, files);
     }

@@ -53,7 +53,7 @@ private:
 
     int32_t _cursorBlink{};
     size_t _maxInputLength{};
-    std::string _buffer;
+    std::vector<utf8> _buffer;
 
 public:
     void OnOpen() override
@@ -105,8 +105,8 @@ public:
 
     void SetText(std::string_view text, size_t maxLength)
     {
-        _buffer = text;
         _buffer.resize(maxLength);
+        safe_strcpy(_buffer.data(), std::string(text).c_str(), maxLength);
         _maxInputLength = maxLength;
         gTextInput = context_start_text_input(_buffer.data(), maxLength);
     }
@@ -216,7 +216,7 @@ public:
         screenCoords.y += 25;
 
         char wrapped_string[TEXT_INPUT_SIZE];
-        safe_strcpy(wrapped_string, _buffer.data(), TEXT_INPUT_SIZE);
+        safe_strcpy(wrapped_string, _buffer.data(), _buffer.size());
 
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
@@ -282,7 +282,7 @@ public:
 
         if (!cur_drawn)
         {
-            cursorX = gLastDrawStringX;
+            cursorX = dpi.lastStringPos.x;
             cursorY = screenCoords.y - 10;
         }
 
@@ -408,6 +408,9 @@ void window_text_input_open(
 
 void window_text_input_key(rct_window* w, char keychar)
 {
+    const auto wndNumber = w->number;
+    const auto wndClass = w->classification;
+
     // If the return button is pressed stop text input
     if (keychar == '\r')
     {
@@ -417,5 +420,9 @@ void window_text_input_key(rct_window* w, char keychar)
             textInputWindow->OnReturnPressed();
         }
     }
-    w->Invalidate();
+
+    // The window can be potentially closed within a callback, we need to check if its still alive.
+    w = window_find_by_number(wndClass, wndNumber);
+    if (w != nullptr)
+        w->Invalidate();
 }

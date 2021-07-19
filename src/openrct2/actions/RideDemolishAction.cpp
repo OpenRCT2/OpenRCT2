@@ -24,7 +24,6 @@
 #include "../world/Banner.h"
 #include "../world/EntityList.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 #include "MazeSetTrackAction.h"
 #include "TrackRemoveAction.h"
 
@@ -75,7 +74,7 @@ GameActions::Result::Ptr RideDemolishAction::Query() const
 
     if (_modifyType == RIDE_MODIFY_RENEW)
     {
-        if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+        if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
@@ -143,7 +142,7 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
         }
     }
 
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         uint8_t ride_id_bit = _rideIndex % 8;
         uint8_t ride_id_offset = _rideIndex / 8;

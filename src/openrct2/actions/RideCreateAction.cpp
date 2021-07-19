@@ -155,13 +155,13 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
         vehicle = SPRITE_INDEX_NULL;
     }
 
-    ride->status = RIDE_STATUS_CLOSED;
+    ride->status = RideStatus::Closed;
     ride->lifecycle_flags = 0;
     ride->vehicle_change_timeout = 0;
     ride->num_stations = 0;
     ride->num_vehicles = 1;
     ride->proposed_num_vehicles = 32;
-    ride->max_trains = 32;
+    ride->max_trains = MAX_VEHICLES_PER_RIDE;
     ride->num_cars_per_train = 1;
     ride->proposed_num_cars_per_train = 12;
     ride->min_waiting_time = 10;

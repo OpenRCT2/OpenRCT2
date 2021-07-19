@@ -141,23 +141,23 @@ static rct_window_event_list *window_research_page_events[] = {
 #pragma region Enabled widgets
 
 static uint32_t window_research_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_LAST_DEVELOPMENT_BUTTON),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_LAST_DEVELOPMENT_BUTTON),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_RESEARCH_FUNDING) |
-    (1 << WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON) |
-    (1 << WIDX_TRANSPORT_RIDES) |
-    (1 << WIDX_GENTLE_RIDES) |
-    (1 << WIDX_ROLLER_COASTERS) |
-    (1 << WIDX_THRILL_RIDES) |
-    (1 << WIDX_WATER_RIDES) |
-    (1 << WIDX_SHOPS_AND_STALLS) |
-    (1 << WIDX_SCENERY_AND_THEMING)
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_RESEARCH_FUNDING) |
+    (1ULL << WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON) |
+    (1ULL << WIDX_TRANSPORT_RIDES) |
+    (1ULL << WIDX_GENTLE_RIDES) |
+    (1ULL << WIDX_ROLLER_COASTERS) |
+    (1ULL << WIDX_THRILL_RIDES) |
+    (1ULL << WIDX_WATER_RIDES) |
+    (1ULL << WIDX_SHOPS_AND_STALLS) |
+    (1ULL << WIDX_SCENERY_AND_THEMING)
 };
 
 #pragma endregion
@@ -627,7 +627,8 @@ static void window_research_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w
         }
 
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
+            dpi, ImageId(spriteIndex),
+            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
 }
 

@@ -96,10 +96,6 @@ static bool _trackDesignPlaceStateHasScenery = false;
 static bool _trackDesignPlaceStatePlaceScenery = true;
 static bool _trackDesignPlaceIsReplay = false;
 
-static std::unique_ptr<map_backup> track_design_preview_backup_map();
-
-static void track_design_preview_restore_map(map_backup* backup);
-
 static void track_design_preview_clear_map();
 
 rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
@@ -677,13 +673,13 @@ static void track_design_mirror_scenery(TrackDesign* td6)
             entryIndex = 0;
         }
 
-        rct_scenery_entry* scenery_entry = static_cast<rct_scenery_entry*>(object_entry_get_chunk(entry_type, entryIndex));
         switch (entry_type)
         {
             case ObjectType::LargeScenery:
             {
+                auto* sceneryEntry = static_cast<LargeSceneryEntry*>(object_entry_get_chunk(entry_type, entryIndex));
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-                for (rct_large_scenery_tile* tile = scenery_entry->large_scenery.tiles; tile->x_offset != -1; tile++)
+                for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++)
                 {
                     if (x1 > tile->x_offset)
                     {
@@ -726,12 +722,13 @@ static void track_design_mirror_scenery(TrackDesign* td6)
             }
             case ObjectType::SmallScenery:
             {
+                auto* sceneryEntry = static_cast<SmallSceneryEntry*>(object_entry_get_chunk(entry_type, entryIndex));
                 scenery.y = -scenery.y;
 
-                if (scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_DIAGONAL))
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
                 {
                     scenery.flags ^= (1 << 0);
-                    if (!scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
                     {
                         scenery.flags ^= (1 << 2);
                     }
@@ -935,11 +932,11 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             uint8_t quadrant = (scenery.flags >> 2) + _currentTrackPieceDirection;
             quadrant &= 3;
 
-            rct_scenery_entry* small_scenery = get_small_scenery_entry(entry_index);
-            if (!(!scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_FULL_TILE)
-                  && scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_DIAGONAL))
+            auto* sceneryEntry = get_small_scenery_entry(entry_index);
+            if (!(!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)
+                  && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
                 && scenery_small_entry_has_flag(
-                    small_scenery,
+                    sceneryEntry,
                     SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
             {
                 quadrant = 0;
@@ -1586,7 +1583,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                 {
-                    flags = 0;
+                    flags = GAME_COMMAND_FLAG_NO_SPEND;
                 }
                 if (_trackDesignPlaceIsReplay)
                 {
@@ -1887,7 +1884,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     ObjectEntryIndex entry_index;
     if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
     {
-        entry_index = RIDE_ENTRY_INDEX_NULL;
+        entry_index = OBJECT_ENTRY_INDEX_NULL;
     }
 
     ride_id_t rideIndex;
@@ -1984,12 +1981,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
  */
 void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
 {
-    // Make a copy of the map
-    auto mapBackup = track_design_preview_backup_map();
-    if (mapBackup == nullptr)
-    {
-        return;
-    }
+    StashMap();
     track_design_preview_clear_map();
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
@@ -2003,7 +1995,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     if (!track_design_place_preview(td6, &cost, &ride, &flags))
     {
         std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
-        track_design_preview_restore_map(mapBackup.get());
+        UnstashMap();
         return;
     }
     td6->cost = cost;
@@ -2086,43 +2078,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     }
 
     ride->Delete();
-    track_design_preview_restore_map(mapBackup.get());
-}
-
-/**
- * Create a backup of the map as it will be cleared for drawing the track
- * design preview.
- *  rct2: 0x006D1C68
- */
-static std::unique_ptr<map_backup> track_design_preview_backup_map()
-{
-    auto backup = std::make_unique<map_backup>();
-    if (backup != nullptr)
-    {
-        std::memcpy(backup->tile_elements, gTileElements, sizeof(backup->tile_elements));
-        std::memcpy(backup->tile_pointers, gTileElementTilePointers, sizeof(backup->tile_pointers));
-        backup->next_free_tile_element = gNextFreeTileElement;
-        backup->map_size_units = gMapSizeUnits;
-        backup->map_size_units_minus_2 = gMapSizeMinus2;
-        backup->map_size = gMapSize;
-        backup->current_rotation = get_current_rotation();
-    }
-    return backup;
-}
-
-/**
- * Restores the map from a backup.
- *  rct2: 0x006D2378
- */
-static void track_design_preview_restore_map(map_backup* backup)
-{
-    std::memcpy(gTileElements, backup->tile_elements, sizeof(backup->tile_elements));
-    std::memcpy(gTileElementTilePointers, backup->tile_pointers, sizeof(backup->tile_pointers));
-    gNextFreeTileElement = backup->next_free_tile_element;
-    gMapSizeUnits = backup->map_size_units;
-    gMapSizeMinus2 = backup->map_size_units_minus_2;
-    gMapSize = backup->map_size;
-    gCurrentRotation = backup->current_rotation;
+    UnstashMap();
 }
 
 /**
@@ -2131,26 +2087,30 @@ static void track_design_preview_restore_map(map_backup* backup)
  */
 static void track_design_preview_clear_map()
 {
-    // These values were previously allocated in backup map but
-    // it seems more fitting to place in this function
+    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+
     gMapSizeUnits = 255 * COORDS_XY_STEP;
     gMapSizeMinus2 = (264 * 32) - 2;
     gMapSize = 256;
 
-    for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    // Reserve ~8 elements per tile
+    std::vector<TileElement> tileElements;
+    tileElements.reserve(numTiles * 8);
+
+    for (int32_t i = 0; i < numTiles; i++)
     {
-        TileElement* tile_element = &gTileElements[i];
-        tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-        tile_element->SetLastForTile(true);
-        tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-        tile_element->AsSurface()->SetWaterHeight(0);
-        tile_element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
-        tile_element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
-        tile_element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        tile_element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
-        tile_element->AsSurface()->SetParkFences(0);
+        auto* element = &tileElements.emplace_back();
+        element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+        element->SetLastForTile(true);
+        element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+        element->AsSurface()->SetWaterHeight(0);
+        element->AsSurface()->SetSurfaceStyle(0);
+        element->AsSurface()->SetEdgeStyle(0);
+        element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+        element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
+        element->AsSurface()->SetParkFences(0);
     }
-    map_update_tile_pointers();
+    SetTileElements(std::move(tileElements));
 }
 
 bool track_design_are_entrance_and_exit_placed()

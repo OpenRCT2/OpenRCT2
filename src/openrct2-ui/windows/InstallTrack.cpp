@@ -113,8 +113,8 @@ rct_window* window_install_track_open(const utf8* path)
 
     rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL)
-        | (1 << WIDX_CANCEL);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_TOGGLE_SCENERY) | (1ULL << WIDX_INSTALL)
+        | (1ULL << WIDX_CANCEL);
     WindowInitScrollWidgets(w);
     w->track_list.track_list_being_updated = false;
     window_push_others_right(w);
@@ -176,14 +176,14 @@ static void window_install_track_mouseup(rct_window* w, rct_widgetindex widgetIn
  */
 static void window_install_track_invalidate(rct_window* w)
 {
-    w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
+    w->pressed_widgets |= 1ULL << WIDX_TRACK_PREVIEW;
     if (!gTrackDesignSceneryToggle)
     {
-        w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
+        w->pressed_widgets |= (1ULL << WIDX_TOGGLE_SCENERY);
     }
     else
     {
-        w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
+        w->pressed_widgets &= ~(1ULL << WIDX_TOGGLE_SCENERY);
     }
 }
 
@@ -208,7 +208,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     g1temp.flags = G1_FLAG_BMP;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
-    gfx_draw_sprite(dpi, SPR_TEMP, screenPos, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TEMP), screenPos);
 
     screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };
 
@@ -242,7 +242,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
 
-        void* objectEntry = object_manager_load_object(&td6->vehicle_object);
+        const auto* objectEntry = object_manager_load_object(&td6->vehicle_object);
         if (objectEntry != nullptr)
         {
             auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);

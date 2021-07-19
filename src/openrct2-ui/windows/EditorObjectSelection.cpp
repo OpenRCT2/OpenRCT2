@@ -23,10 +23,12 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/RideObject.h>
+#include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
@@ -379,9 +381,9 @@ rct_window* window_editor_object_selection_open()
     window->widgets = _window_editor_object_selection_widgets.data();
     window->widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
-    window->enabled_widgets = (1 << WIDX_ADVANCED) | (1 << WIDX_INSTALL_TRACK) | (1 << WIDX_FILTER_DROPDOWN)
-        | (1 << WIDX_FILTER_TEXT_BOX) | (1 << WIDX_FILTER_CLEAR_BUTTON) | (1 << WIDX_CLOSE) | (1 << WIDX_LIST_SORT_TYPE)
-        | (1UL << WIDX_LIST_SORT_RIDE);
+    window->enabled_widgets = (1ULL << WIDX_ADVANCED) | (1ULL << WIDX_INSTALL_TRACK) | (1ULL << WIDX_FILTER_DROPDOWN)
+        | (1ULL << WIDX_FILTER_TEXT_BOX) | (1ULL << WIDX_FILTER_CLEAR_BUTTON) | (1ULL << WIDX_CLOSE)
+        | (1ULL << WIDX_LIST_SORT_TYPE) | (1UL << WIDX_LIST_SORT_RIDE);
 
     _filter_flags = gConfigInterface.object_selection_filter_flags;
     std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
@@ -806,12 +808,12 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     w->widgets[WIDX_FILTER_DROPDOWN].right = w->width - 137;
 
     // Set pressed widgets
-    w->pressed_widgets |= 1 << WIDX_PREVIEW;
+    w->pressed_widgets |= 1ULL << WIDX_PREVIEW;
     window_editor_object_selection_set_pressed_tab(w);
     if (w->list_information_type & 1)
-        w->pressed_widgets |= (1 << WIDX_ADVANCED);
+        w->pressed_widgets |= (1ULL << WIDX_ADVANCED);
     else
-        w->pressed_widgets &= ~(1 << WIDX_ADVANCED);
+        w->pressed_widgets &= ~(1ULL << WIDX_ADVANCED);
 
     // Set window title and buttons
     auto ft = Formatter::Common();
@@ -884,15 +886,16 @@ static void window_editor_object_selection_invalidate(rct_window* w)
 
     if (ridePage)
     {
-        w->enabled_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL) | (1 << WIDX_FILTER_RIDE_TAB_TRANSPORT)
-            | (1 << WIDX_FILTER_RIDE_TAB_GENTLE) | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL)
-            | (1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL);
+        w->enabled_widgets |= (1ULL << WIDX_FILTER_RIDE_TAB_ALL) | (1ULL << WIDX_FILTER_RIDE_TAB_TRANSPORT)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_GENTLE) | (1ULL << WIDX_FILTER_RIDE_TAB_COASTER)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_THRILL) | (1ULL << WIDX_FILTER_RIDE_TAB_WATER)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_STALL);
 
         for (int32_t i = 0; i < 7; i++)
             w->pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
 
         if ((_filter_flags & FILTER_RIDES) == FILTER_RIDES)
-            w->pressed_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL);
+            w->pressed_widgets |= (1ULL << WIDX_FILTER_RIDE_TAB_ALL);
         else
         {
             for (int32_t i = 0; i < 6; i++)
@@ -925,14 +928,129 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     else
     {
         w->enabled_widgets &= ~(
-            (1 << WIDX_FILTER_RIDE_TAB_ALL) | (1 << WIDX_FILTER_RIDE_TAB_TRANSPORT) | (1 << WIDX_FILTER_RIDE_TAB_GENTLE)
-            | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL) | (1 << WIDX_FILTER_RIDE_TAB_WATER)
-            | (1 << WIDX_FILTER_RIDE_TAB_STALL));
+            (1ULL << WIDX_FILTER_RIDE_TAB_ALL) | (1ULL << WIDX_FILTER_RIDE_TAB_TRANSPORT)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_GENTLE) | (1ULL << WIDX_FILTER_RIDE_TAB_COASTER)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_THRILL) | (1ULL << WIDX_FILTER_RIDE_TAB_WATER)
+            | (1ULL << WIDX_FILTER_RIDE_TAB_STALL));
         for (int32_t i = WIDX_FILTER_RIDE_TAB_FRAME; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
             w->widgets[i].type = WindowWidgetType::Empty;
 
         w->widgets[WIDX_LIST_SORT_TYPE].type = WindowWidgetType::Empty;
         w->widgets[WIDX_LIST_SORT_RIDE].type = WindowWidgetType::Empty;
+    }
+}
+
+static void window_editor_object_selection_paint_descriptions(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    auto widget = &w->widgets[WIDX_PREVIEW];
+    auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget->bottom + 23 };
+    auto width = w->windowPos.x + w->width - screenPos.x - 4;
+
+    auto description = object_get_description(_loadedObject.get());
+    if (!description.empty())
+    {
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(description.c_str());
+
+        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
+    }
+    if (get_selected_object_type(w) == ObjectType::Ride)
+    {
+        auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
+        const auto* rideEntry = reinterpret_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+        if (rideEntry->shop_item[0] != ShopItem::None)
+        {
+            std::string sells = "";
+            for (size_t i = 0; i < std::size(rideEntry->shop_item); i++)
+            {
+                if (rideEntry->shop_item[i] == ShopItem::None)
+                    continue;
+
+                if (!sells.empty())
+                    sells += ", ";
+
+                sells += language_get_string(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
+            }
+            auto ft = Formatter();
+            ft.Add<const char*>(sells.c_str());
+            screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
+        }
+    }
+    else if (get_selected_object_type(w) == ObjectType::SceneryGroup)
+    {
+        const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
+        auto ft = Formatter();
+        ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
+        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_INCLUDES_X_OBJECTS, ft) + 2;
+    }
+    else if (get_selected_object_type(w) == ObjectType::Music)
+    {
+        screenPos.y += DrawTextWrapped(dpi, screenPos, width, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
+        const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
+        for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
+        {
+            const auto* track = musicObject->GetTrack(i);
+            if (track->Name.empty())
+                continue;
+
+            auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
+                                                    : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
+            auto ft = Formatter();
+            ft.Add<const char*>(track->Name.c_str());
+            ft.Add<const char*>(track->Composer.c_str());
+            screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, width, stringId, ft);
+        }
+    }
+}
+
+static void window_editor_object_selection_paint_debug_data(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    list_item* listItem = &_listItems[w->selected_list_item];
+    auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
+    // Draw ride type.
+    if (get_selected_object_type(w) == ObjectType::Ride)
+    {
+        auto stringId = get_ride_type_string_id(listItem->repositoryItem);
+        DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+    }
+
+    screenPos.y += LIST_ROW_HEIGHT;
+
+    // Draw object source
+    auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
+    DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+    screenPos.y += LIST_ROW_HEIGHT;
+
+    // Draw object dat name
+    {
+        const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(path);
+        DrawTextBasic(
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
+            { COLOUR_BLACK, TextAlignment::RIGHT });
+        screenPos.y += LIST_ROW_HEIGHT;
+    }
+
+    // Draw object author (will be blank space if no author in file or a non JSON object)
+    {
+        auto ft = Formatter();
+        std::string authorsString;
+        for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
+        {
+            if (i > 0)
+            {
+                authorsString.append(", ");
+            }
+            authorsString.append(listItem->repositoryItem->Authors[i]);
+        }
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(authorsString.c_str());
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, w->width - w->widgets[WIDX_LIST].right - 4,
+            STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
     }
 }
 
@@ -953,9 +1071,9 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         widget = &w->widgets[WIDX_TAB_1 + i];
         if (widget->type != WindowWidgetType::Empty)
         {
-            auto image = ObjectSelectionPages[i].Image;
+            auto image = ImageId(ObjectSelectionPages[i].Image);
             auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-            gfx_draw_sprite(dpi, image, screenPos, 0);
+            gfx_draw_sprite(dpi, image, screenPos);
         }
     }
 
@@ -983,7 +1101,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
             spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
             auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-            gfx_draw_sprite(dpi, spriteIndex | (w->colours[1] << 19), screenPos, 0);
+            gfx_draw_sprite(dpi, ImageId(spriteIndex, w->colours[1]), screenPos);
         }
     }
 
@@ -1059,66 +1177,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         DrawTextEllipsised(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
     }
 
-    // Draw description of object
-    auto description = object_get_description(_loadedObject.get());
-    if (!description.empty())
-    {
-        auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<const char*>(description.c_str());
-
-        auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget->bottom + 18 };
-        width = w->windowPos.x + w->width - screenPos.x - 4;
-
-        DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, ft);
-    }
-
-    auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
-
-    // Draw ride type.
-    if (get_selected_object_type(w) == ObjectType::Ride)
-    {
-        auto stringId = get_ride_type_string_id(listItem->repositoryItem);
-        DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
-    }
-
-    screenPos.y += LIST_ROW_HEIGHT;
-
-    // Draw object source
-    auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
-    DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
-    screenPos.y += LIST_ROW_HEIGHT;
-
-    // Draw object dat name
-    {
-        const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
-        auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<const char*>(path);
-        DrawTextBasic(
-            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
-            { COLOUR_BLACK, TextAlignment::RIGHT });
-        screenPos.y += LIST_ROW_HEIGHT;
-    }
-
-    // Draw object author (will be blank space if no author in file or a non JSON object)
-    {
-        auto ft = Formatter();
-        std::string authorsString;
-        for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
-        {
-            if (i > 0)
-            {
-                authorsString.append(", ");
-            }
-            authorsString.append(listItem->repositoryItem->Authors[i]);
-        }
-        ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<const char*>(authorsString.c_str());
-        DrawTextEllipsised(
-            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, w->width - w->widgets[WIDX_LIST].right - 4,
-            STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
-    }
+    window_editor_object_selection_paint_descriptions(w, dpi);
+    window_editor_object_selection_paint_debug_data(w, dpi);
 }
 /**
  *
@@ -1140,7 +1200,8 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
         {
             // Draw checkbox
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                gfx_fill_rect_inset(dpi, 2, screenCoords.y, 11, screenCoords.y + 10, w->colours[1], INSET_RECT_F_E0);
+                gfx_fill_rect_inset(
+                    dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, w->colours[1], INSET_RECT_F_E0);
 
             // Highlight background
             auto highlighted = listItem.entry == w->object_entry && !(*listItem.flags & OBJECT_SELECTION_FLAG_6);
@@ -1298,7 +1359,7 @@ static void editor_load_selected_objects()
         {
             const ObjectRepositoryItem* item = &items[i];
             const rct_object_entry* entry = &item->ObjectEntry;
-            void* loadedObject = object_manager_get_loaded_object(entry);
+            const auto* loadedObject = object_manager_get_loaded_object(ObjectEntryDescriptor(*item));
             if (loadedObject == nullptr)
             {
                 loadedObject = object_manager_load_object(entry);

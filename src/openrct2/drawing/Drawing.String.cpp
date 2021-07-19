@@ -745,6 +745,7 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
     }
 }
 
+#ifndef NO_TTF
 static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
 {
     switch (codepoint)
@@ -769,6 +770,7 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
             return false;
     }
 }
+#endif // NO_TTF
 
 static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
@@ -957,8 +959,7 @@ void ttf_draw_string(
     ttf_process_string(dpi, text, &info);
     std::memcpy(text_palette, info.palette, sizeof(info.palette));
 
-    gLastDrawStringX = info.x;
-    gLastDrawStringY = info.y;
+    dpi->lastStringPos = { info.x, info.y };
 }
 
 static int32_t ttf_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase, bool noFormatting)
@@ -1018,8 +1019,7 @@ void gfx_draw_string_with_y_offsets(
     ttf_process_string(dpi, text, &info);
     std::memcpy(text_palette, info.palette, sizeof(info.palette));
 
-    gLastDrawStringX = info.x;
-    gLastDrawStringY = info.y;
+    dpi->lastStringPos = { info.x, info.y };
 }
 
 void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontSpriteBase fontSpriteBase)

@@ -15,6 +15,7 @@
 #include "../interface/Screenshot.h"
 #include "../localisation/StringIds.h"
 #include "../paint/Painter.h"
+#include "../platform/Platform2.h"
 #include "../ui/UiContext.h"
 #include "../world/Location.hpp"
 #include "IDrawingContext.h"
@@ -52,16 +53,8 @@ static IDrawingEngine* GetDrawingEngine()
 
 bool drawing_engine_requires_new_window(DrawingEngine srcEngine, DrawingEngine dstEngine)
 {
-#ifdef _WIN32
-    if (srcEngine != DrawingEngine::OpenGL && dstEngine != DrawingEngine::OpenGL)
-    {
-        // Windows is apparently able to switch to hardware rendering on the fly although
-        // using the same window in an unaccelerated and accelerated context is unsupported by SDL2
-        return false;
-    }
-#endif
-
-    return true;
+    bool openGL = srcEngine == DrawingEngine::OpenGL || dstEngine == DrawingEngine::OpenGL;
+    return Platform::RequireNewWindow(openGL);
 }
 
 void drawing_engine_init()
@@ -208,7 +201,7 @@ void gfx_draw_line(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colou
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawLine(colour, line.GetX1(), line.GetY1(), line.GetX2(), line.GetY2());
+        dc->DrawLine(colour, line);
     }
 }
 
@@ -240,9 +233,14 @@ void gfx_draw_dashed_line(
         {
             x = screenLine.GetX1() + dxPrecise * i * 2 / precisionFactor;
             y = screenLine.GetY1() + dyPrecise * i * 2 / precisionFactor;
-            dc->DrawLine(color, x, y, x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor);
+            dc->DrawLine(color, { { x, y }, { x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor } });
         }
     }
+}
+
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, ImageId image_id, const ScreenCoordsXY& coords)
+{
+    gfx_draw_sprite(dpi, image_id.ToUInt32(), coords, image_id.GetTertiary());
 }
 
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint32_t tertiary_colour)

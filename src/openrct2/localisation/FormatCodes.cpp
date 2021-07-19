@@ -20,7 +20,6 @@ static const std::unordered_map<std::string_view, FormatToken> FormatTokenMap = 
     { "NEWLINE",              FormatToken::Newline,             },
     { "NEWLINE_SMALLER",      FormatToken::NewlineSmall,        },
     { "TINYFONT",             FormatToken::FontTiny,            },
-    { "BIGFONT",              FormatToken::FontBig,             },
     { "MEDIUMFONT",           FormatToken::FontMedium,          },
     { "SMALLFONT",            FormatToken::FontSmall,           },
     { "OUTLINE",              FormatToken::OutlineEnable,       },

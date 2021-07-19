@@ -25,7 +25,7 @@ public:
 DEFINE_GAME_ACTION(TrackPlaceAction, GameCommand::PlaceTrack, TrackPlaceActionResult)
 {
 private:
-    NetworkRideId_t _rideIndex{ RideIdNewNull };
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
     int32_t _trackType{};
     CoordsXYZD _origin;
     int32_t _brakeSpeed{};
@@ -47,4 +47,7 @@ public:
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    bool CheckMapCapacity(int16_t numTiles) const;
 };

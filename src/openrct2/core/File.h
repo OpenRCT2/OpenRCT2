@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,4 +26,5 @@ namespace File
     std::vector<std::string> ReadAllLines(std::string_view path);
     void WriteAllBytes(const std::string& path, const void* buffer, size_t length);
     uint64_t GetLastModified(const std::string& path);
+    uint64_t GetSize(std::string_view path);
 } // namespace File

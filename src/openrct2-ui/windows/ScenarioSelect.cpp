@@ -182,8 +182,8 @@ rct_window* window_scenarioselect_open(std::function<void(std::string_view)> cal
         windowWidth, windowHeight, &window_scenarioselect_events, WC_SCENARIO_SELECT,
         WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));
     window->widgets = window_scenarioselect_widgets;
-    window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4)
-        | (1 << WIDX_TAB5) | (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8);
+    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3)
+        | (1ULL << WIDX_TAB4) | (1ULL << WIDX_TAB5) | (1ULL << WIDX_TAB6) | (1ULL << WIDX_TAB7) | (1ULL << WIDX_TAB8);
 
     window_scenarioselect_init_tabs(window);
     initialise_list_items(window);
@@ -409,8 +409,8 @@ static void window_scenarioselect_scrollmouseover(rct_window* w, int32_t scrollI
 static void window_scenarioselect_invalidate(rct_window* w)
 {
     w->pressed_widgets &= ~(
-        (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_TAB5)
-        | (1 << WIDX_TAB6) | (1 << WIDX_TAB7) | (1 << WIDX_TAB8));
+        (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4)
+        | (1ULL << WIDX_TAB5) | (1ULL << WIDX_TAB6) | (1ULL << WIDX_TAB7) | (1ULL << WIDX_TAB8));
 
     w->pressed_widgets |= 1LL << (w->selected_tab + WIDX_TAB1);
 
@@ -614,7 +614,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 if (isCompleted)
                 {
                     // Draw completion tick
-                    gfx_draw_sprite(dpi, SPR_MENU_CHECKMARK, { wide ? 500 : 395, y + 1 }, 0);
+                    gfx_draw_sprite(dpi, ImageId(SPR_MENU_CHECKMARK), { wide ? 500 : 395, y + 1 });
 
                     // Draw completion score
                     const utf8* completedByName = "???";
@@ -628,7 +628,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<char*>(buffer);
                     DrawTextBasic(
-                        dpi, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, format, ft, { TextAlignment::CENTRE });
+                        dpi, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, format, ft,
+                        { FontSpriteBase::SMALL, TextAlignment::CENTRE });
                 }
 
                 y += scenarioItemHeight;

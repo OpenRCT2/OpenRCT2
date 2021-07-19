@@ -31,22 +31,24 @@ bool tile_element_is_underground(TileElement* tileElement)
 
 BannerIndex TileElement::GetBannerIndex() const
 {
-    rct_scenery_entry* sceneryEntry;
-
     switch (GetType())
     {
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            sceneryEntry = AsLargeScenery()->GetEntry();
-            if (sceneryEntry == nullptr || sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
+        {
+            auto* sceneryEntry = AsLargeScenery()->GetEntry();
+            if (sceneryEntry == nullptr || sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
                 return BANNER_INDEX_NULL;
 
             return AsLargeScenery()->GetBannerIndex();
+        }
         case TILE_ELEMENT_TYPE_WALL:
-            sceneryEntry = AsWall()->GetEntry();
-            if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+        {
+            auto* wallEntry = AsWall()->GetEntry();
+            if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
                 return BANNER_INDEX_NULL;
 
             return AsWall()->GetBannerIndex();
+        }
         case TILE_ELEMENT_TYPE_BANNER:
             return AsBanner()->GetIndex();
         default:

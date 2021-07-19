@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,6 +22,7 @@
 
 using ObjectEntryIndex = uint16_t;
 constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
+struct ObjectRepositoryItem;
 
 // First 0xF of rct_object_entry->flags
 enum class ObjectType : uint8_t
@@ -180,6 +181,8 @@ struct ObjectEntryDescriptor
         Generation = ObjectGeneration::JSON;
         Identifier = std::string(newIdentifier);
     }
+
+    explicit ObjectEntryDescriptor(const ObjectRepositoryItem& ori);
 };
 
 struct IObjectRepository;
@@ -220,7 +223,7 @@ public:
     }
 
     bool IsAvailable() const;
-    size_t GetSize() const;
+    uint64_t GetSize() const;
     std::unique_ptr<OpenRCT2::IStream> GetStream() const;
 };
 
@@ -234,6 +237,7 @@ struct IReadObjectContext
     virtual std::vector<uint8_t> GetData(std::string_view path) abstract;
     virtual ObjectAsset GetAsset(std::string_view path) abstract;
 
+    virtual void LogVerbose(ObjectError code, const utf8* text) abstract;
     virtual void LogWarning(ObjectError code, const utf8* text) abstract;
     virtual void LogError(ObjectError code, const utf8* text) abstract;
 };

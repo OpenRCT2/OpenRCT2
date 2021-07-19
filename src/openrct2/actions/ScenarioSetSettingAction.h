@@ -34,6 +34,7 @@ enum class ScenarioSetSetting : uint8_t
     ForbidHighConstruction,
     ParkRatingHigherDifficultyLevel,
     GuestGenerationHigherDifficultyLevel,
+    AllowEarlyCompletion,
     Count
 };
 

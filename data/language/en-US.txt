@@ -39,64 +39,64 @@ STR_1396    :Color scheme options
 
 STR_1442    :Emptying trash can
 
-STR_1490    :{SMALLFONT}“{STRINGID} is a really good value”
+STR_1490    :“{STRINGID} is a really good value”
 
-STR_1502    :{SMALLFONT}“I need to go to the bathroom”
+STR_1502    :“I need to go to the bathroom”
 
-STR_1506    :{SMALLFONT}“The trash here is really bad”
+STR_1506    :“The trash here is really bad”
 
-STR_1518    :{SMALLFONT}“This balloon from {STRINGID} is a really good value”
-STR_1519    :{SMALLFONT}“This cuddly toy from {STRINGID} is a really good value”
-STR_1520    :{SMALLFONT}“This park map from {STRINGID} is a really good value”
-STR_1521    :{SMALLFONT}“This on-ride photo from {STRINGID} is a really good value”
-STR_1522    :{SMALLFONT}“This umbrella from {STRINGID} is a really good value”
-STR_1523    :{SMALLFONT}“This drink from {STRINGID} is a really good value”
-STR_1524    :{SMALLFONT}“This burger from {STRINGID} is a really good value”
-STR_1525    :{SMALLFONT}“These fries from {STRINGID} are a really good value”
-STR_1526    :{SMALLFONT}“This ice cream from {STRINGID} is a really good value”
-STR_1527    :{SMALLFONT}“This cotton candy from {STRINGID} is a really good value”
+STR_1518    :“This balloon from {STRINGID} is a really good value”
+STR_1519    :“This cuddly toy from {STRINGID} is a really good value”
+STR_1520    :“This park map from {STRINGID} is a really good value”
+STR_1521    :“This on-ride photo from {STRINGID} is a really good value”
+STR_1522    :“This umbrella from {STRINGID} is a really good value”
+STR_1523    :“This drink from {STRINGID} is a really good value”
+STR_1524    :“This burger from {STRINGID} is a really good value”
+STR_1525    :“These fries from {STRINGID} are a really good value”
+STR_1526    :“This ice cream from {STRINGID} is a really good value”
+STR_1527    :“This cotton candy from {STRINGID} is a really good value”
 
-STR_1531    :{SMALLFONT}“This pizza from {STRINGID} is a really good value”
+STR_1531    :“This pizza from {STRINGID} is a really good value”
 
-STR_1533    :{SMALLFONT}“This popcorn from {STRINGID} is a really good value”
-STR_1534    :{SMALLFONT}“This hot dog from {STRINGID} is a really good value”
-STR_1535    :{SMALLFONT}“This tentacle from {STRINGID} is a really good value”
-STR_1536    :{SMALLFONT}“This hat from {STRINGID} is a really good value”
-STR_1537    :{SMALLFONT}“This candy apple from {STRINGID} is a really good value”
-STR_1538    :{SMALLFONT}“This T-shirt from {STRINGID} is a really good value”
-STR_1539    :{SMALLFONT}“This donut from {STRINGID} is a really good value”
-STR_1540    :{SMALLFONT}“This coffee from {STRINGID} is a really good value”
+STR_1533    :“This popcorn from {STRINGID} is a really good value”
+STR_1534    :“This hot dog from {STRINGID} is a really good value”
+STR_1535    :“This tentacle from {STRINGID} is a really good value”
+STR_1536    :“This hat from {STRINGID} is a really good value”
+STR_1537    :“This candy apple from {STRINGID} is a really good value”
+STR_1538    :“This T-shirt from {STRINGID} is a really good value”
+STR_1539    :“This donut from {STRINGID} is a really good value”
+STR_1540    :“This coffee from {STRINGID} is a really good value”
 
-STR_1542    :{SMALLFONT}“This fried chicken from {STRINGID} is a really good value”
-STR_1543    :{SMALLFONT}“This lemonade from {STRINGID} is a really good value”
+STR_1542    :“This fried chicken from {STRINGID} is a really good value”
+STR_1543    :“This lemonade from {STRINGID} is a really good value”
 
-STR_1559    :{SMALLFONT}“I’m not paying that much for fries from {STRINGID}”
+STR_1559    :“I’m not paying that much for fries from {STRINGID}”
 
-STR_1561    :{SMALLFONT}“I’m not paying that much for cotton candy from {STRINGID}”
+STR_1561    :“I’m not paying that much for cotton candy from {STRINGID}”
 
-STR_1571    :{SMALLFONT}“I’m not paying that much for a candy apple from {STRINGID}”
+STR_1571    :“I’m not paying that much for a candy apple from {STRINGID}”
 
-STR_1573    :{SMALLFONT}“I’m not paying that much for a donut from {STRINGID}”
+STR_1573    :“I’m not paying that much for a donut from {STRINGID}”
 
-STR_1584    :{SMALLFONT}“This on-ride photo from {STRINGID} is a really good value”
-STR_1585    :{SMALLFONT}“This on-ride photo from {STRINGID} is a really good value”
-STR_1586    :{SMALLFONT}“This on-ride photo from {STRINGID} is a really good value”
-STR_1587    :{SMALLFONT}“This pretzel from {STRINGID} is a really good value”
-STR_1588    :{SMALLFONT}“This hot chocolate from {STRINGID} is a really good value”
-STR_1589    :{SMALLFONT}“This iced tea from {STRINGID} is a really good value”
-STR_1590    :{SMALLFONT}“This funnel cake from {STRINGID} is a really good value”
-STR_1591    :{SMALLFONT}“These sunglasses from {STRINGID} are a really good value”
-STR_1592    :{SMALLFONT}“These beef noodles from {STRINGID} are a really good value”
-STR_1593    :{SMALLFONT}“These fried rice noodles from {STRINGID} are a really good value”
-STR_1594    :{SMALLFONT}“This wonton soup from {STRINGID} is a really good value”
-STR_1595    :{SMALLFONT}“This meatball soup from {STRINGID} is a really good value”
-STR_1596    :{SMALLFONT}“This fruit juice from {STRINGID} is a really good value”
-STR_1597    :{SMALLFONT}“This soybean milk from {STRINGID} is a really good value”
-STR_1598    :{SMALLFONT}“This sujeonggwa from {STRINGID} is a really good value”
-STR_1599    :{SMALLFONT}“This sub sandwich from {STRINGID} is a really good value”
-STR_1600    :{SMALLFONT}“This cookie from {STRINGID} is a really good value”
+STR_1584    :“This on-ride photo from {STRINGID} is a really good value”
+STR_1585    :“This on-ride photo from {STRINGID} is a really good value”
+STR_1586    :“This on-ride photo from {STRINGID} is a really good value”
+STR_1587    :“This pretzel from {STRINGID} is a really good value”
+STR_1588    :“This hot chocolate from {STRINGID} is a really good value”
+STR_1589    :“This iced tea from {STRINGID} is a really good value”
+STR_1590    :“This funnel cake from {STRINGID} is a really good value”
+STR_1591    :“These sunglasses from {STRINGID} are a really good value”
+STR_1592    :“These beef noodles from {STRINGID} are a really good value”
+STR_1593    :“These fried rice noodles from {STRINGID} are a really good value”
+STR_1594    :“This wonton soup from {STRINGID} is a really good value”
+STR_1595    :“This meatball soup from {STRINGID} is a really good value”
+STR_1596    :“This fruit juice from {STRINGID} is a really good value”
+STR_1597    :“This soybean milk from {STRINGID} is a really good value”
+STR_1598    :“This sujeonggwa from {STRINGID} is a really good value”
+STR_1599    :“This sub sandwich from {STRINGID} is a really good value”
+STR_1600    :“This cookie from {STRINGID} is a really good value”
 
-STR_1604    :{SMALLFONT}“This roast sausage from {STRINGID} is a really good value”
+STR_1604    :“This roast sausage from {STRINGID} is a really good value”
 
 STR_1667    :{WINDOW_COLOUR_2}Bathroom:
 

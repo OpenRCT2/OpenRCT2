@@ -55,14 +55,13 @@ private:
      *
      *  rct2: 0x006E5CBA
      */
-    bool WallCheckObstructionWithTrack(rct_scenery_entry * wall, int32_t z0, TrackElement * trackElement, bool* wallAcrossTrack)
+    bool WallCheckObstructionWithTrack(WallSceneryEntry * wall, int32_t z0, TrackElement * trackElement, bool* wallAcrossTrack)
         const;
     /**
      *
      *  rct2: 0x006E5C1A
      */
-    GameActions::Result::Ptr WallCheckObstruction(rct_scenery_entry * wall, int32_t z0, int32_t z1, bool* wallAcrossTrack)
-        const;
+    GameActions::Result::Ptr WallCheckObstruction(WallSceneryEntry * wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
 
     /**
      * Gets whether the given track type can have a wall placed on the edge of the given direction.

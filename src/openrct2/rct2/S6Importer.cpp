@@ -32,6 +32,7 @@
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../peep/Peep.h"
 #include "../peep/Staff.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
@@ -43,14 +44,24 @@
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/TrainManager.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
+#include "../world/Balloon.h"
 #include "../world/Climate.h"
+#include "../world/Duck.h"
+#include "../world/EntityList.h"
+#include "../world/EntityTweener.h"
 #include "../world/Entrance.h"
+#include "../world/Fountain.h"
+#include "../world/Litter.h"
 #include "../world/MapAnimation.h"
+#include "../world/MoneyEffect.h"
 #include "../world/Park.h"
+#include "../world/Particle.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
@@ -217,7 +228,7 @@ public:
         scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
         ImportTileElements();
-        ImportSprites();
+        ImportEntities();
 
         gInitialCash = _s6.initial_cash;
         gBankLoan = _s6.current_loan;
@@ -448,13 +459,12 @@ public:
 
         // pad_13CE730
         // rct1_scenario_flags
-        gWidePathTileLoopX = _s6.wide_path_tile_loop_x;
-        gWidePathTileLoopY = _s6.wide_path_tile_loop_y;
+        gWidePathTileLoopPosition.x = _s6.wide_path_tile_loop_x;
+        gWidePathTileLoopPosition.y = _s6.wide_path_tile_loop_y;
         // pad_13CE778
 
         // Fix and set dynamic variables
         map_strip_ghost_flag_from_elements();
-        map_update_tile_pointers();
         game_convert_strings_to_utf8();
         map_count_remaining_land_rights();
         determine_ride_entrance_and_exit_locations();
@@ -527,7 +537,7 @@ public:
         }
 
         // pad_046;
-        dst->status = src->status;
+        dst->status = static_cast<RideStatus>(src->status);
 
         dst->default_name_number = src->name_arguments_number;
         if (is_user_string_id(src->name))
@@ -797,11 +807,11 @@ public:
     void ImportRideRatingsCalcData()
     {
         const auto& src = _s6.ride_ratings_calc_data;
-        auto& dst = gRideRatingsCalcData;
+        auto& dst = gRideRatingUpdateState;
         dst = {};
         dst.Proximity = { src.proximity_x, src.proximity_y, src.proximity_z };
         dst.ProximityStart = { src.proximity_start_x, src.proximity_start_y, src.proximity_start_z };
-        dst.CurrentRide = src.current_ride;
+        dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.current_ride);
         dst.State = src.state;
         if (src.current_ride < RCT12_MAX_RIDES_IN_PARK && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors))
             dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type);
@@ -941,7 +951,7 @@ public:
 
         if (src->flags & BANNER_FLAG_LINKED_TO_RIDE)
         {
-            dst->ride_index = src->ride_index;
+            dst->ride_index = RCT12RideIdToOpenRCT2RideId(src->ride_index);
         }
         else
         {
@@ -1011,7 +1021,7 @@ public:
         uint16_t numRiders = 0;
         for (const auto& sprite : _s6.sprites)
         {
-            if (sprite.unknown.sprite_identifier == SpriteIdentifier::Peep)
+            if (sprite.unknown.sprite_identifier == RCT12SpriteIdentifier::Peep)
             {
                 if (sprite.peep.current_ride == rideIndex
                     && (static_cast<PeepState>(sprite.peep.state) == PeepState::OnRide
@@ -1029,16 +1039,16 @@ public:
         // Build tile pointer cache (needed to get the first element at a certain location)
         auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements);
 
-        TileElement* dstElement = gTileElements;
+        std::vector<TileElement> tileElements;
         for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
             for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
             {
                 if (coords.x >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL || coords.y >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL)
                 {
-                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                    dstElement->SetLastForTile(true);
-                    dstElement++;
+                    auto& dstElement = tileElements.emplace_back();
+                    dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement.SetLastForTile(true);
                     continue;
                 }
 
@@ -1046,17 +1056,18 @@ public:
                 // This might happen with damaged parks. Make sure there is *something* to avoid crashes.
                 if (srcElement == nullptr)
                 {
-                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                    dstElement->SetLastForTile(true);
-                    dstElement++;
+                    auto& dstElement = tileElements.emplace_back();
+                    dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement.SetLastForTile(true);
                     continue;
                 }
 
                 do
                 {
+                    auto& dstElement = tileElements.emplace_back();
                     if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
                     {
-                        std::memcpy(dstElement, srcElement, sizeof(*srcElement));
+                        std::memcpy(&dstElement, srcElement, sizeof(*srcElement));
                     }
                     else
                     {
@@ -1065,19 +1076,20 @@ public:
                         if (tileElementType == RCT12TileElementType::Corrupt
                             || tileElementType == RCT12TileElementType::EightCarsCorrupt14
                             || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
-                            std::memcpy(dstElement, srcElement, sizeof(*srcElement));
+                            std::memcpy(&dstElement, srcElement, sizeof(*srcElement));
                         else
-                            ImportTileElement(dstElement, srcElement);
+                            ImportTileElement(&dstElement, srcElement);
                     }
-
-                    dstElement++;
                 } while (!(srcElement++)->IsLastForTile());
+
+                // Set last element flag in case the original last element was never added
+                if (tileElements.size() > 0)
+                {
+                    tileElements.back().SetLastForTile(true);
+                }
             }
         }
-
-        gNextFreeTileElementPointerIndex = _s6.next_free_tile_element_pointer_index;
-
-        map_update_tile_pointers();
+        SetTileElements(std::move(tileElements));
     }
 
     void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
@@ -1121,7 +1133,7 @@ public:
                 dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
                 dst2->SetSloped(src2->IsSloped());
                 dst2->SetSlopeDirection(src2->GetSlopeDirection());
-                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetWide(src2->IsWide());
                 dst2->SetIsQueue(src2->IsQueue());
@@ -1146,7 +1158,7 @@ public:
 
                 dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, _s6.rides[src2->GetRideIndex()].type));
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetColourScheme(src2->GetColourScheme());
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(src2->HasCableLift());
@@ -1204,7 +1216,7 @@ public:
                 auto src2 = src->AsEntrance();
 
                 dst2->SetEntranceType(src2->GetEntranceType());
-                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetPathType(src2->GetPathType());
@@ -1228,7 +1240,7 @@ public:
                 // Import banner information
                 dst2->SetBannerIndex(BANNER_INDEX_NULL);
                 auto entry = dst2->GetEntry();
-                if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+                if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))
@@ -1254,7 +1266,7 @@ public:
                 // Import banner information
                 dst2->SetBannerIndex(BANNER_INDEX_NULL);
                 auto entry = dst2->GetEntry();
-                if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+                if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto bannerIndex = src2->GetBannerIndex();
                     if (bannerIndex < std::size(_s6.banners))
@@ -1309,7 +1321,7 @@ public:
                 }
                 if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                 {
-                    campaign.RideId = _s6.campaign_ride_index[i];
+                    campaign.RideId = RCT12RideIdToOpenRCT2RideId(_s6.campaign_ride_index[i]);
                 }
                 else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                 {
@@ -1320,165 +1332,28 @@ public:
         }
     }
 
-    void ImportSprites()
+    void ImportEntities()
     {
         for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
         {
-            auto src = &_s6.sprites[i];
-            auto dst = GetEntity(i);
-            ImportSprite(reinterpret_cast<rct_sprite*>(dst), src);
-        }
-        RebuildEntityLists();
-    }
-
-    void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
-    {
-        std::memset(&dst->pad_00, 0, sizeof(rct_sprite));
-        switch (src->unknown.sprite_identifier)
-        {
-            case SpriteIdentifier::Null:
-                ImportSpriteCommonProperties(reinterpret_cast<SpriteBase*>(dst), &src->unknown);
-                break;
-            case SpriteIdentifier::Vehicle:
-                ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
-                break;
-            case SpriteIdentifier::Peep:
-                ImportSpritePeep(&dst->peep, &src->peep);
-                break;
-            case SpriteIdentifier::Misc:
-                ImportSpriteMisc(&dst->misc, &src->unknown);
-                break;
-            case SpriteIdentifier::Litter:
-                ImportSpriteLitter(&dst->litter, &src->litter);
-                break;
-            default:
-                ImportSpriteCommonProperties(reinterpret_cast<SpriteBase*>(dst), reinterpret_cast<const RCT12SpriteBase*>(src));
-                log_warning("Sprite identifier %d can not be imported.", src->unknown.sprite_identifier);
-                break;
+            ImportEntity(_s6.sprites[i].unknown);
         }
     }
 
-    void ImportSpriteVehicle(Vehicle* dst, const RCT2SpriteVehicle* src)
+    template<typename OpenRCT2_T> void ImportEntity(const RCT12SpriteBase& src);
+
+    void ImportEntityPeep(Peep* dst, const RCT2SpritePeep* src)
     {
-        const auto& ride = _s6.rides[src->ride];
-
-        ImportSpriteCommonProperties(static_cast<SpriteBase*>(dst), src);
-        dst->SubType = Vehicle::Type(src->type);
-        dst->vehicle_sprite_type = src->vehicle_sprite_type;
-        dst->bank_rotation = src->bank_rotation;
-        dst->remaining_distance = src->remaining_distance;
-        dst->velocity = src->velocity;
-        dst->acceleration = src->acceleration;
-        dst->ride = src->ride;
-        dst->vehicle_type = src->vehicle_type;
-        dst->colours = src->colours;
-        dst->track_progress = src->track_progress;
-        dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
-        if (src->boat_location.isNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
-            || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
-        {
-            dst->BoatLocation.setNull();
-            dst->SetTrackDirection(src->GetTrackDirection());
-            dst->SetTrackType(src->GetTrackType());
-            // RotationControlToggle and Booster are saved as the same track piece ID
-            // Which one the vehicle is using must be determined
-            if (GetRideTypeDescriptor(ride.type).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
-            {
-                dst->SetTrackType(RCT12FlatTrackTypeToOpenRCT2(src->GetTrackType()));
-            }
-            else if (src->GetTrackType() == TrackElemType::RotationControlToggleAlias)
-            {
-                // Merging hacks mean the track type that's appropriate for the ride type is not necessarily the track type the
-                // ride is on. It's possible to create unwanted behavior if a user layers spinning control track on top of
-                // booster track but this is unlikely since only two rides have spinning control track - by default they load as
-                // booster
-                TileElement* tileElement2 = map_get_track_element_at_of_type_seq(
-                    dst->TrackLocation, TrackElemType::RotationControlToggle, 0);
-
-                if (tileElement2 != nullptr)
-                    dst->SetTrackType(TrackElemType::RotationControlToggle);
-            }
-        }
-        else
-        {
-            dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
-            dst->SetTrackDirection(0);
-            dst->SetTrackType(0);
-        }
-
-        dst->next_vehicle_on_train = src->next_vehicle_on_train;
-        dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
-        dst->next_vehicle_on_ride = src->next_vehicle_on_ride;
-        dst->var_44 = src->var_44;
-        dst->mass = src->mass;
-        dst->update_flags = src->update_flags;
-        dst->SwingSprite = src->SwingSprite;
-        dst->current_station = src->current_station;
-        dst->current_time = src->current_time;
-        dst->crash_z = src->crash_z;
-
-        Vehicle::Status statusSrc = Vehicle::Status::MovingToEndOfStation;
-        if (src->status <= static_cast<uint8_t>(Vehicle::Status::StoppedByBlockBrakes))
-        {
-            statusSrc = static_cast<Vehicle::Status>(src->status);
-        }
-
-        dst->status = statusSrc;
-        dst->sub_state = src->sub_state;
-        for (size_t i = 0; i < std::size(src->peep); i++)
-        {
-            dst->peep[i] = src->peep[i];
-            dst->peep_tshirt_colours[i] = src->peep_tshirt_colours[i];
-        }
-        dst->num_seats = src->num_seats;
-        dst->num_peeps = src->num_peeps;
-        dst->next_free_seat = src->next_free_seat;
-        dst->restraints_position = src->restraints_position;
-        dst->crash_x = src->crash_x;
-        dst->sound2_flags = src->sound2_flags;
-        dst->spin_sprite = src->spin_sprite;
-        dst->sound1_id = static_cast<OpenRCT2::Audio::SoundId>(src->sound1_id);
-        dst->sound1_volume = src->sound1_volume;
-        dst->sound2_id = static_cast<OpenRCT2::Audio::SoundId>(src->sound2_id);
-        dst->sound2_volume = src->sound2_volume;
-        dst->sound_vector_factor = src->sound_vector_factor;
-        dst->time_waiting = src->time_waiting;
-        dst->speed = src->speed;
-        dst->powered_acceleration = src->powered_acceleration;
-        dst->dodgems_collision_direction = src->dodgems_collision_direction;
-        dst->animation_frame = src->animation_frame;
-        dst->var_C8 = src->var_C8;
-        dst->var_CA = src->var_CA;
-        dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
-        dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
-        dst->var_CE = src->var_CE;
-        dst->var_CF = src->var_CF;
-        dst->lost_time_out = src->lost_time_out;
-        dst->vertical_drop_countdown = src->vertical_drop_countdown;
-        dst->var_D3 = src->var_D3;
-        dst->mini_golf_current_animation = src->mini_golf_current_animation;
-        dst->mini_golf_flags = src->mini_golf_flags;
-        dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->ride_subtype);
-        dst->colours_extended = src->colours_extended;
-        dst->seat_rotation = src->seat_rotation;
-        dst->target_seat_rotation = src->target_seat_rotation;
-    }
-
-    void ImportSpritePeep(Peep* dst, const RCT2SpritePeep* src)
-    {
-        ImportSpriteCommonProperties(static_cast<SpriteBase*>(dst), src);
+        ImportEntityCommonProperties(static_cast<SpriteBase*>(dst), src);
         if (is_user_string_id(src->name_string_idx))
         {
             dst->SetName(GetUserString(src->name_string_idx));
         }
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * COORDS_Z_STEP };
         dst->NextFlags = src->next_flags;
-        dst->OutsideOfPark = static_cast<bool>(src->outside_of_park);
         dst->State = static_cast<PeepState>(src->state);
         dst->SubState = src->sub_state;
         dst->SpriteType = static_cast<PeepSpriteType>(src->sprite_type);
-        dst->AssignedPeepType = static_cast<PeepType>(src->peep_type);
-        dst->GuestNumRides = src->no_of_rides;
         dst->TshirtColour = src->tshirt_colour;
         dst->TrousersColour = src->trousers_colour;
         dst->DestinationX = src->destination_x;
@@ -1487,27 +1362,8 @@ public:
         dst->Var37 = src->var_37;
         dst->Energy = src->energy;
         dst->EnergyTarget = src->energy_target;
-        dst->Happiness = src->happiness;
-        dst->HappinessTarget = src->happiness_target;
-        dst->Nausea = src->nausea;
-        dst->NauseaTarget = src->nausea_target;
-        dst->Hunger = src->hunger;
-        dst->Thirst = src->thirst;
-        dst->Toilet = src->toilet;
         dst->Mass = src->mass;
-        dst->TimeToConsume = src->time_to_consume;
-        dst->Intensity = static_cast<IntensityRange>(src->intensity);
-        dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
         dst->WindowInvalidateFlags = src->window_invalidate_flags;
-        dst->PaidOnDrink = src->paid_on_drink;
-        for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
-        {
-            dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
-        }
-        dst->SetItemFlags(src->GetItemFlags());
-        dst->Photo2RideRef = RCT12RideIdToOpenRCT2RideId(src->photo2_ride_ref);
-        dst->Photo3RideRef = RCT12RideIdToOpenRCT2RideId(src->photo3_ride_ref);
-        dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
         dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->current_ride);
         dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;
@@ -1519,34 +1375,10 @@ public:
         dst->Action = static_cast<PeepActionType>(src->action);
         dst->ActionFrame = src->action_frame;
         dst->StepProgress = src->step_progress;
-        dst->GuestNextInQueue = src->next_in_queue;
         dst->PeepDirection = src->direction;
         dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->interaction_ride_index);
-        dst->TimeInQueue = src->time_in_queue;
-        for (size_t i = 0; i < std::size(src->rides_been_on); i++)
-        {
-            dst->RidesBeenOn[i] = src->rides_been_on[i];
-        }
         dst->Id = src->id;
-        dst->CashInPocket = src->cash_in_pocket;
-        dst->CashSpent = src->cash_spent;
-        dst->ParkEntryTime = src->park_entry_time;
-        dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
-        dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->previous_ride);
-        dst->PreviousRideTimeOut = src->previous_ride_time_out;
-        for (size_t i = 0; i < std::size(src->thoughts); i++)
-        {
-            auto srcThought = &src->thoughts[i];
-            auto dstThought = &dst->Thoughts[i];
-            dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-            dstThought->item = srcThought->item;
-            dstThought->freshness = srcThought->freshness;
-            dstThought->fresh_timeout = srcThought->fresh_timeout;
-        }
         dst->PathCheckOptimisation = src->path_check_optimisation;
-        dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->guest_heading_to_ride_id);
-        dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
-        dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
         dst->PeepFlags = src->peep_flags;
         dst->PathfindGoal = src->pathfind_goal;
         for (size_t i = 0; i < std::size(src->pathfind_history); i++)
@@ -1554,136 +1386,76 @@ public:
             dst->PathfindHistory[i] = src->pathfind_history[i];
         }
         dst->WalkingFrameNum = src->no_action_frame_num;
-        dst->LitterCount = src->litter_count;
-        dst->GuestTimeOnRide = src->time_on_ride;
-        dst->DisgustingCount = src->disgusting_count;
-        dst->PaidToEnter = src->paid_to_enter;
-        dst->PaidOnRides = src->paid_on_rides;
-        dst->PaidOnFood = src->paid_on_food;
-        dst->PaidOnSouvenirs = src->paid_on_souvenirs;
-        dst->AmountOfFood = src->no_of_food;
-        dst->AmountOfDrinks = src->no_of_drinks;
-        dst->AmountOfSouvenirs = src->no_of_souvenirs;
-        dst->VandalismSeen = src->vandalism_seen;
-        dst->VoucherType = src->voucher_type;
-        dst->VoucherRideId = RCT12RideIdToOpenRCT2RideId(src->voucher_arguments);
-        dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
-        dst->Angriness = src->angriness;
-        dst->TimeLost = src->time_lost;
-        dst->DaysInQueue = src->days_in_queue;
-        dst->BalloonColour = src->balloon_colour;
-        dst->UmbrellaColour = src->umbrella_colour;
-        dst->HatColour = src->hat_colour;
-        dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->favourite_ride);
-        dst->FavouriteRideRating = src->favourite_ride_rating;
     }
 
-    void ImportSpriteMisc(MiscEntity* cdst, const RCT12SpriteBase* csrc)
+    constexpr EntityType GetEntityTypeFromRCT2Sprite(const RCT12SpriteBase* src)
     {
-        ImportSpriteCommonProperties(cdst, csrc);
-        cdst->SubType = MiscEntityType(csrc->type);
-        switch (cdst->SubType)
+        EntityType output = EntityType::Null;
+        switch (src->sprite_identifier)
         {
-            case MiscEntityType::SteamParticle:
-            {
-                auto src = static_cast<const RCT12SpriteSteamParticle*>(csrc);
-                auto dst = static_cast<SteamParticle*>(cdst);
-                dst->time_to_move = src->time_to_move;
-                dst->frame = src->frame;
+            case RCT12SpriteIdentifier::Vehicle:
+                output = EntityType::Vehicle;
                 break;
-            }
-            case MiscEntityType::MoneyEffect:
-            {
-                auto src = static_cast<const RCT12SpriteMoneyEffect*>(csrc);
-                auto dst = static_cast<MoneyEffect*>(cdst);
-                dst->MoveDelay = src->move_delay;
-                dst->NumMovements = src->num_movements;
-                dst->Vertical = src->vertical;
-                dst->Value = src->value;
-                dst->OffsetX = src->offset_x;
-                dst->Wiggle = src->wiggle;
+            case RCT12SpriteIdentifier::Peep:
+                if (RCT12PeepType(static_cast<const RCT2SpritePeep*>(src)->peep_type) == RCT12PeepType::Guest)
+                {
+                    output = EntityType::Guest;
+                }
+                else
+                {
+                    output = EntityType::Staff;
+                }
                 break;
-            }
-            case MiscEntityType::CrashedVehicleParticle:
-            {
-                auto src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(csrc);
-                auto dst = static_cast<VehicleCrashParticle*>(cdst);
-                dst->frame = src->frame;
-                dst->time_to_live = src->time_to_live;
-                dst->frame = src->frame;
-                dst->colour[0] = src->colour[0];
-                dst->colour[1] = src->colour[1];
-                dst->crashed_sprite_base = src->crashed_sprite_base;
-                dst->velocity_x = src->velocity_x;
-                dst->velocity_y = src->velocity_y;
-                dst->velocity_z = src->velocity_z;
-                dst->acceleration_x = src->acceleration_x;
-                dst->acceleration_y = src->acceleration_y;
-                dst->acceleration_z = src->acceleration_z;
+            case RCT12SpriteIdentifier::Misc:
+
+                switch (RCT12MiscEntityType(src->type))
+                {
+                    case RCT12MiscEntityType::SteamParticle:
+                        output = EntityType::SteamParticle;
+                        break;
+                    case RCT12MiscEntityType::MoneyEffect:
+                        output = EntityType::MoneyEffect;
+                        break;
+                    case RCT12MiscEntityType::CrashedVehicleParticle:
+                        output = EntityType::CrashedVehicleParticle;
+                        break;
+                    case RCT12MiscEntityType::ExplosionCloud:
+                        output = EntityType::ExplosionCloud;
+                        break;
+                    case RCT12MiscEntityType::CrashSplash:
+                        output = EntityType::CrashSplash;
+                        break;
+                    case RCT12MiscEntityType::ExplosionFlare:
+                        output = EntityType::ExplosionFlare;
+                        break;
+                    case RCT12MiscEntityType::JumpingFountainWater:
+                    case RCT12MiscEntityType::JumpingFountainSnow:
+                        output = EntityType::JumpingFountain;
+                        break;
+                    case RCT12MiscEntityType::Balloon:
+                        output = EntityType::Balloon;
+                        break;
+                    case RCT12MiscEntityType::Duck:
+                        output = EntityType::Duck;
+                        break;
+                    default:
+                        break;
+                }
                 break;
-            }
-            case MiscEntityType::ExplosionCloud:
-            case MiscEntityType::ExplosionFlare:
-            case MiscEntityType::CrashSplash:
-            {
-                auto src = static_cast<const RCT12SpriteParticle*>(csrc);
-                auto dst = static_cast<MiscEntity*>(cdst);
-                dst->frame = src->frame;
+            case RCT12SpriteIdentifier::Litter:
+                output = EntityType::Litter;
                 break;
-            }
-            case MiscEntityType::JumpingFountainWater:
-            case MiscEntityType::JumpingFountainSnow:
-            {
-                auto* src = static_cast<const RCT12SpriteJumpingFountain*>(csrc);
-                auto* dst = static_cast<JumpingFountain*>(cdst);
-                dst->NumTicksAlive = src->num_ticks_alive;
-                dst->frame = src->frame;
-                dst->FountainFlags = src->fountain_flags;
-                dst->TargetX = src->target_x;
-                dst->TargetY = src->target_y;
-                dst->Iteration = src->iteration;
-                break;
-            }
-            case MiscEntityType::Balloon:
-            {
-                auto src = static_cast<const RCT12SpriteBalloon*>(csrc);
-                auto dst = static_cast<Balloon*>(cdst);
-                dst->popped = src->popped;
-                dst->time_to_move = src->time_to_move;
-                dst->frame = src->frame;
-                dst->colour = src->colour;
-                break;
-            }
-            case MiscEntityType::Duck:
-            {
-                auto src = static_cast<const RCT12SpriteDuck*>(csrc);
-                auto dst = static_cast<Duck*>(cdst);
-                dst->frame = src->frame;
-                dst->target_x = src->target_x;
-                dst->target_y = src->target_y;
-                dst->state = static_cast<Duck::DuckState>(src->state);
-                break;
-            }
             default:
-                log_warning("Misc. sprite type %d can not be imported.", cdst->SubType);
                 break;
         }
+        return output;
     }
 
-    void ImportSpriteLitter(Litter* dst, const RCT12SpriteLitter* src)
+    void ImportEntityCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
     {
-        ImportSpriteCommonProperties(dst, src);
-        dst->SubType = LitterType(src->type);
-        dst->creationTick = src->creationTick;
-    }
-
-    void ImportSpriteCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
-    {
-        dst->sprite_identifier = src->sprite_identifier;
-        dst->linked_list_index = static_cast<EntityListId>(EnumValue(src->linked_list_type_offset) >> 1);
+        dst->Type = GetEntityTypeFromRCT2Sprite(src);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
-        dst->flags = src->flags;
         dst->x = src->x;
         dst->y = src->y;
         dst->z = src->z;
@@ -1695,6 +1467,8 @@ public:
         dst->sprite_bottom = src->sprite_bottom;
         dst->sprite_direction = src->sprite_direction;
     }
+
+    void ImportEntity(const RCT12SpriteBase& src);
 
     std::string GetUserString(rct_string_id stringId)
     {
@@ -1728,6 +1502,368 @@ public:
         return result;
     }
 };
+
+template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<Vehicle>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT2SpriteVehicle*>(&baseSrc);
+    const auto& ride = _s6.rides[src->ride];
+
+    ImportEntityCommonProperties(dst, src);
+    dst->SubType = Vehicle::Type(src->type);
+    dst->Pitch = src->Pitch;
+    dst->bank_rotation = src->bank_rotation;
+    dst->remaining_distance = src->remaining_distance;
+    dst->velocity = src->velocity;
+    dst->acceleration = src->acceleration;
+    dst->ride = src->ride;
+    dst->vehicle_type = src->vehicle_type;
+    dst->colours = src->colours;
+    dst->track_progress = src->track_progress;
+    dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
+    if (src->boat_location.isNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
+        || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
+    {
+        dst->BoatLocation.setNull();
+        dst->SetTrackDirection(src->GetTrackDirection());
+        dst->SetTrackType(src->GetTrackType());
+        // RotationControlToggle and Booster are saved as the same track piece ID
+        // Which one the vehicle is using must be determined
+        if (GetRideTypeDescriptor(ride.type).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        {
+            dst->SetTrackType(RCT12FlatTrackTypeToOpenRCT2(src->GetTrackType()));
+        }
+        else if (src->GetTrackType() == TrackElemType::RotationControlToggleAlias)
+        {
+            // Merging hacks mean the track type that's appropriate for the ride type is not necessarily the track type the
+            // ride is on. It's possible to create unwanted behavior if a user layers spinning control track on top of
+            // booster track but this is unlikely since only two rides have spinning control track - by default they load as
+            // booster
+            TileElement* tileElement2 = map_get_track_element_at_of_type_seq(
+                dst->TrackLocation, TrackElemType::RotationControlToggle, 0);
+
+            if (tileElement2 != nullptr)
+                dst->SetTrackType(TrackElemType::RotationControlToggle);
+        }
+    }
+    else
+    {
+        dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
+        dst->SetTrackDirection(0);
+        dst->SetTrackType(0);
+    }
+
+    dst->next_vehicle_on_train = src->next_vehicle_on_train;
+    dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
+    dst->next_vehicle_on_ride = src->next_vehicle_on_ride;
+    dst->var_44 = src->var_44;
+    dst->mass = src->mass;
+    dst->update_flags = src->update_flags;
+    dst->SwingSprite = src->SwingSprite;
+    dst->current_station = src->current_station;
+    dst->current_time = src->current_time;
+    dst->crash_z = src->crash_z;
+
+    Vehicle::Status statusSrc = Vehicle::Status::MovingToEndOfStation;
+    if (src->status <= static_cast<uint8_t>(Vehicle::Status::StoppedByBlockBrakes))
+    {
+        statusSrc = static_cast<Vehicle::Status>(src->status);
+    }
+
+    dst->status = statusSrc;
+    dst->sub_state = src->sub_state;
+    for (size_t i = 0; i < std::size(src->peep); i++)
+    {
+        dst->peep[i] = src->peep[i];
+        dst->peep_tshirt_colours[i] = src->peep_tshirt_colours[i];
+    }
+    dst->num_seats = src->num_seats;
+    dst->num_peeps = src->num_peeps;
+    dst->next_free_seat = src->next_free_seat;
+    dst->restraints_position = src->restraints_position;
+    dst->crash_x = src->crash_x;
+    dst->sound2_flags = src->sound2_flags;
+    dst->spin_sprite = src->spin_sprite;
+    dst->sound1_id = static_cast<OpenRCT2::Audio::SoundId>(src->sound1_id);
+    dst->sound1_volume = src->sound1_volume;
+    dst->sound2_id = static_cast<OpenRCT2::Audio::SoundId>(src->sound2_id);
+    dst->sound2_volume = src->sound2_volume;
+    dst->sound_vector_factor = src->sound_vector_factor;
+    dst->time_waiting = src->time_waiting;
+    dst->speed = src->speed;
+    dst->powered_acceleration = src->powered_acceleration;
+    dst->dodgems_collision_direction = src->dodgems_collision_direction;
+    dst->animation_frame = src->animation_frame;
+    dst->var_C8 = src->var_C8;
+    dst->var_CA = src->var_CA;
+    dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
+    dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
+    dst->var_CE = src->var_CE;
+    dst->var_CF = src->var_CF;
+    dst->lost_time_out = src->lost_time_out;
+    dst->vertical_drop_countdown = src->vertical_drop_countdown;
+    dst->var_D3 = src->var_D3;
+    dst->mini_golf_current_animation = src->mini_golf_current_animation;
+    dst->mini_golf_flags = src->mini_golf_flags;
+    dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->ride_subtype);
+    dst->colours_extended = src->colours_extended;
+    dst->seat_rotation = src->seat_rotation;
+    dst->target_seat_rotation = src->target_seat_rotation;
+    dst->IsCrashedVehicle = src->flags & RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
+}
+
+template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<Guest>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
+    ImportEntityPeep(dst, src);
+
+    dst->OutsideOfPark = static_cast<bool>(src->outside_of_park);
+    dst->GuestNumRides = src->no_of_rides;
+    dst->Happiness = src->happiness;
+    dst->HappinessTarget = src->happiness_target;
+    dst->Nausea = src->nausea;
+    dst->NauseaTarget = src->nausea_target;
+    dst->Hunger = src->hunger;
+    dst->Thirst = src->thirst;
+    dst->Toilet = src->toilet;
+    dst->TimeToConsume = src->time_to_consume;
+    dst->Intensity = static_cast<IntensityRange>(src->intensity);
+    dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
+    dst->PaidOnDrink = src->paid_on_drink;
+    for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
+    {
+        dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
+    }
+    dst->SetItemFlags(src->GetItemFlags());
+    dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
+    dst->Photo2RideRef = RCT12RideIdToOpenRCT2RideId(src->photo2_ride_ref);
+    dst->Photo3RideRef = RCT12RideIdToOpenRCT2RideId(src->photo3_ride_ref);
+    dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
+    dst->GuestNextInQueue = src->next_in_queue;
+    dst->TimeInQueue = src->time_in_queue;
+    for (size_t i = 0; i < std::size(src->rides_been_on); i++)
+    {
+        dst->RidesBeenOn[i] = src->rides_been_on[i];
+    }
+    dst->CashInPocket = src->cash_in_pocket;
+    dst->CashSpent = src->cash_spent;
+    dst->ParkEntryTime = src->park_entry_time;
+    dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
+    dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->previous_ride);
+    dst->PreviousRideTimeOut = src->previous_ride_time_out;
+    for (size_t i = 0; i < std::size(src->thoughts); i++)
+    {
+        auto srcThought = &src->thoughts[i];
+        auto dstThought = &dst->Thoughts[i];
+        dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
+        dstThought->item = srcThought->item;
+        dstThought->freshness = srcThought->freshness;
+        dstThought->fresh_timeout = srcThought->fresh_timeout;
+    }
+    dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->guest_heading_to_ride_id);
+    dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
+    dst->LitterCount = src->litter_count;
+    dst->GuestTimeOnRide = src->time_on_ride;
+    dst->DisgustingCount = src->disgusting_count;
+    dst->PaidToEnter = src->paid_to_enter;
+    dst->PaidOnRides = src->paid_on_rides;
+    dst->PaidOnFood = src->paid_on_food;
+    dst->PaidOnSouvenirs = src->paid_on_souvenirs;
+    dst->AmountOfFood = src->no_of_food;
+    dst->AmountOfDrinks = src->no_of_drinks;
+    dst->AmountOfSouvenirs = src->no_of_souvenirs;
+    dst->VandalismSeen = src->vandalism_seen;
+    dst->VoucherType = src->voucher_type;
+    dst->VoucherRideId = RCT12RideIdToOpenRCT2RideId(src->voucher_arguments);
+    dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
+    dst->Angriness = src->angriness;
+    dst->TimeLost = src->time_lost;
+    dst->DaysInQueue = src->days_in_queue;
+    dst->BalloonColour = src->balloon_colour;
+    dst->UmbrellaColour = src->umbrella_colour;
+    dst->HatColour = src->hat_colour;
+    dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->favourite_ride);
+    dst->FavouriteRideRating = src->favourite_ride_rating;
+}
+
+template<> void S6Importer::ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<Staff>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
+    ImportEntityPeep(dst, src);
+
+    dst->AssignedStaffType = StaffType(src->staff_type);
+    dst->MechanicTimeSinceCall = src->mechanic_time_since_call;
+    dst->HireDate = src->park_entry_time;
+    dst->StaffId = src->staff_id;
+    dst->StaffOrders = src->staff_orders;
+    dst->StaffMowingTimeout = src->staff_mowing_timeout;
+    dst->StaffLawnsMown = src->paid_to_enter;
+    dst->StaffGardensWatered = src->paid_on_rides;
+    dst->StaffLitterSwept = src->paid_on_food;
+    dst->StaffBinsEmptied = src->paid_on_souvenirs;
+}
+
+template<> void S6Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<SteamParticle>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteSteamParticle*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->time_to_move = src->time_to_move;
+    dst->frame = src->frame;
+}
+
+template<> void S6Importer::ImportEntity<MoneyEffect>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<MoneyEffect>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteMoneyEffect*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->MoveDelay = src->move_delay;
+    dst->NumMovements = src->num_movements;
+    dst->Vertical = src->vertical;
+    dst->Value = src->value;
+    dst->OffsetX = src->offset_x;
+    dst->Wiggle = src->wiggle;
+}
+
+template<> void S6Importer::ImportEntity<VehicleCrashParticle>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<VehicleCrashParticle>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->frame = src->frame;
+    dst->time_to_live = src->time_to_live;
+    dst->frame = src->frame;
+    dst->colour[0] = src->colour[0];
+    dst->colour[1] = src->colour[1];
+    dst->crashed_sprite_base = src->crashed_sprite_base;
+    dst->velocity_x = src->velocity_x;
+    dst->velocity_y = src->velocity_y;
+    dst->velocity_z = src->velocity_z;
+    dst->acceleration_x = src->acceleration_x;
+    dst->acceleration_y = src->acceleration_y;
+    dst->acceleration_z = src->acceleration_z;
+}
+
+template<> void S6Importer::ImportEntity<ExplosionCloud>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<ExplosionCloud>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->frame = src->frame;
+}
+
+template<> void S6Importer::ImportEntity<ExplosionFlare>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<ExplosionFlare>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->frame = src->frame;
+}
+
+template<> void S6Importer::ImportEntity<CrashSplashParticle>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<CrashSplashParticle>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->frame = src->frame;
+}
+
+template<> void S6Importer::ImportEntity<JumpingFountain>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<JumpingFountain>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteJumpingFountain*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->NumTicksAlive = src->num_ticks_alive;
+    dst->frame = src->frame;
+    dst->FountainFlags = src->fountain_flags;
+    dst->TargetX = src->target_x;
+    dst->TargetY = src->target_y;
+    dst->Iteration = src->iteration;
+    dst->FountainType = RCT12MiscEntityType(src->type) == RCT12MiscEntityType::JumpingFountainSnow ? JumpingFountainType::Snow
+                                                                                                   : JumpingFountainType::Water;
+}
+
+template<> void S6Importer::ImportEntity<Balloon>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<Balloon>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteBalloon*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->popped = src->popped;
+    dst->time_to_move = src->time_to_move;
+    dst->frame = src->frame;
+    dst->colour = src->colour;
+}
+
+template<> void S6Importer::ImportEntity<Duck>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<Duck>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteDuck*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->frame = src->frame;
+    dst->target_x = src->target_x;
+    dst->target_y = src->target_y;
+    dst->state = static_cast<Duck::DuckState>(src->state);
+}
+
+template<> void S6Importer::ImportEntity<Litter>(const RCT12SpriteBase& baseSrc)
+{
+    auto dst = CreateEntityAt<Litter>(baseSrc.sprite_index);
+    auto src = static_cast<const RCT12SpriteLitter*>(&baseSrc);
+    ImportEntityCommonProperties(dst, src);
+    dst->SubType = Litter::Type(src->type);
+    dst->creationTick = src->creationTick;
+}
+
+void S6Importer::ImportEntity(const RCT12SpriteBase& src)
+{
+    switch (GetEntityTypeFromRCT2Sprite(&src))
+    {
+        case EntityType::Vehicle:
+            ImportEntity<Vehicle>(src);
+            break;
+        case EntityType::Guest:
+            ImportEntity<Guest>(src);
+            break;
+        case EntityType::Staff:
+            ImportEntity<Staff>(src);
+            break;
+        case EntityType::SteamParticle:
+            ImportEntity<SteamParticle>(src);
+            break;
+        case EntityType::MoneyEffect:
+            ImportEntity<MoneyEffect>(src);
+            break;
+        case EntityType::CrashedVehicleParticle:
+            ImportEntity<VehicleCrashParticle>(src);
+            break;
+        case EntityType::ExplosionCloud:
+            ImportEntity<ExplosionCloud>(src);
+            break;
+        case EntityType::ExplosionFlare:
+            ImportEntity<ExplosionFlare>(src);
+            break;
+        case EntityType::CrashSplash:
+            ImportEntity<CrashSplashParticle>(src);
+            break;
+        case EntityType::JumpingFountain:
+            ImportEntity<JumpingFountain>(src);
+            break;
+        case EntityType::Balloon:
+            ImportEntity<Balloon>(src);
+            break;
+        case EntityType::Duck:
+            ImportEntity<Duck>(src);
+            break;
+        case EntityType::Litter:
+            ImportEntity<Litter>(src);
+            break;
+        default:
+            // Null elements do not need imported
+            break;
+    }
+}
 
 std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectRepository)
 {

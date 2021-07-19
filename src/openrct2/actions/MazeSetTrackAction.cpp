@@ -51,12 +51,6 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
     res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
     res->Expenditure = ExpenditureType::RideConstruction;
     res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-    if (!map_check_free_elements_and_reorganise(1))
-    {
-        res->Error = GameActions::Status::NoFreeElements;
-        res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
-        return res;
-    }
     if ((_loc.z & 0xF) != 0 && _mode == GC_SET_MAZE_TRACK_BUILD)
     {
         res->Error = GameActions::Status::Unknown;
@@ -71,6 +65,12 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
         return res;
     }
 
+    if (!MapCheckCapacityAndReorganise(_loc))
+    {
+        res->Error = GameActions::Status::NoFreeElements;
+        res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
+        return res;
+    }
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)
     {
@@ -155,13 +155,6 @@ GameActions::Result::Ptr MazeSetTrackAction::Execute() const
     if (ride == nullptr)
     {
         res->Error = GameActions::Status::InvalidParameters;
-        res->ErrorMessage = STR_NONE;
-        return res;
-    }
-
-    if (!map_check_free_elements_and_reorganise(1))
-    {
-        res->Error = GameActions::Status::NoFreeElements;
         res->ErrorMessage = STR_NONE;
         return res;
     }

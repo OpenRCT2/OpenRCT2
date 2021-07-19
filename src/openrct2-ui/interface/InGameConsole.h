@@ -26,7 +26,8 @@ namespace OpenRCT2::Ui
         static constexpr int32_t CONSOLE_CARET_WIDTH = 6;
 
         bool _isOpen = false;
-        int32_t _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
+        ScreenCoordsXY _consoleTopLeft;
+        ScreenCoordsXY _consoleBottomRight;
         ScreenCoordsXY _lastMainViewport;
         std::deque<std::string> _consoleLines;
         utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE] = {};

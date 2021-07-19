@@ -41,10 +41,10 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
+#include "../world/Duck.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 #include "../world/Water.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
@@ -73,6 +73,7 @@ random_engine_t gScenarioRand;
 
 Objective gScenarioObjective;
 
+bool gAllowEarlyCompletionInNetworkPlay;
 uint16_t gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
@@ -152,7 +153,7 @@ void scenario_begin()
     award_reset();
     reset_all_ride_build_dates();
     date_reset();
-    duck_remove_all();
+    Duck::RemoveAll();
     park_calculate_size();
     map_count_remaining_land_rights();
     Staff::ResetStats();
@@ -288,7 +289,6 @@ static void scenario_day_update()
 {
     finance_update_daily_profit();
     peep_update_days_in_queue();
-    bool allowEarlyCompletion = gConfigGeneral.allow_early_completion && (network_get_mode() == NETWORK_MODE_NONE);
     switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_10_ROLLERCOASTERS:
@@ -299,7 +299,7 @@ static void scenario_day_update()
             scenario_objective_check();
             break;
         default:
-            if (allowEarlyCompletion)
+            if (AllowEarlyCompletion())
                 scenario_objective_check();
             break;
     }
@@ -478,7 +478,7 @@ bool scenario_create_ducks()
         CoordsXY targetPos{ centrePos.x + innerPos.x - SquareRadiusSize, centrePos.y + innerPos.y - SquareRadiusSize };
 
         Guard::Assert(map_is_location_valid(targetPos));
-        create_duck(targetPos);
+        Duck::Create(targetPos);
     }
 
     return true;
@@ -713,9 +713,8 @@ ObjectiveStatus Objective::CheckGuestsBy() const
 {
     int16_t parkRating = gParkRating;
     int32_t currentMonthYear = gDateMonthsElapsed;
-    bool allowEarlyCompletion = gConfigGeneral.allow_early_completion && (network_get_mode() == NETWORK_MODE_NONE);
 
-    if (currentMonthYear == MONTH_COUNT * Year || allowEarlyCompletion)
+    if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
         if (parkRating >= 600 && gNumGuestsInPark >= NumGuests)
         {
@@ -735,9 +734,8 @@ ObjectiveStatus Objective::CheckParkValueBy() const
     int32_t currentMonthYear = gDateMonthsElapsed;
     money32 objectiveParkValue = Currency;
     money32 parkValue = gParkValue;
-    bool allowEarlyCompletion = gConfigGeneral.allow_early_completion && (network_get_mode() == NETWORK_MODE_NONE);
 
-    if (currentMonthYear == MONTH_COUNT * Year || allowEarlyCompletion)
+    if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
         if (parkValue >= objectiveParkValue)
         {
@@ -763,7 +761,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
     std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::Open && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
@@ -863,7 +861,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
+        if (ride.status == RideStatus::Open && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
@@ -894,7 +892,7 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_CLOSED && ride.excitement >= MinimumExcitement)
+        if (ride.status != RideStatus::Closed && ride.excitement >= MinimumExcitement)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
@@ -942,6 +940,23 @@ ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
     }
 
     return ObjectiveStatus::Undecided;
+}
+
+/*
+ * Returns the AllowEarlyCompletion-Option to be used
+ * depending on the Current Network-Mode.
+ */
+bool AllowEarlyCompletion()
+{
+    switch (network_get_mode())
+    {
+        case NETWORK_MODE_CLIENT:
+            return gAllowEarlyCompletionInNetworkPlay;
+        case NETWORK_MODE_NONE:
+        case NETWORK_MODE_SERVER:
+        default:
+            return gConfigGeneral.allow_early_completion;
+    }
 }
 
 static void scenario_objective_check()

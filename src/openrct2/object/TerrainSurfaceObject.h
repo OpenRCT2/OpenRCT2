@@ -69,4 +69,6 @@ public:
 
     uint32_t GetImageId(
         const CoordsXY& position, int32_t length, int32_t rotation, int32_t offset, bool grid, bool underground) const;
+
+    static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
 };

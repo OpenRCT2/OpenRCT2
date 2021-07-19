@@ -227,7 +227,8 @@ namespace OpenRCT2::Scripting
                     img = img.WithSecondary(*_secondaryColour);
                 }
             }
-            gfx_draw_sprite(&_dpi, static_cast<int32_t>(img.ToUInt32()), { x, y }, _ternaryColour.value_or(0));
+
+            gfx_draw_sprite(&_dpi, img.WithTertiary(_ternaryColour.value_or(0)), { x, y });
         }
 
         void line(int32_t x1, int32_t y1, int32_t x2, int32_t y2)

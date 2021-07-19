@@ -227,6 +227,7 @@ namespace Config
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
             model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", true);
+            model->transparent_water = reader->GetBoolean("transparent_water", true);
             model->last_version_check_time = reader->GetInt64("last_version_check_time", 0);
         }
     }
@@ -304,6 +305,7 @@ namespace Config
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
         writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
         writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
+        writer->WriteBoolean("transparent_water", model->transparent_water);
         writer->WriteInt64("last_version_check_time", model->last_version_check_time);
     }
 
@@ -1000,7 +1002,7 @@ bool RCT1DataPresentAtLocation(const utf8* path)
 
 bool CsgIsUsable(const rct_gx& csg)
 {
-    return csg.header.num_entries == RCT1_NUM_LL_CSG_ENTRIES;
+    return csg.header.total_size == RCT1_LL_CSG1_DAT_FILE_SIZE && csg.header.num_entries == RCT1_NUM_LL_CSG_ENTRIES;
 }
 
 bool CsgAtLocationIsUsable(const utf8* path)

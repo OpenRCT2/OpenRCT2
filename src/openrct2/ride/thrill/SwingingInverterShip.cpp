@@ -10,9 +10,10 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 /** rct2: 0x01428010 */
 static constexpr const uint32_t swinging_inverter_ship_base_sprite_offset[] = { 0, 16, 0, 16 };
@@ -68,7 +69,7 @@ static void paint_swinging_inverter_ship_structure(
     uint32_t vehicleImageId = rideEntry->vehicles[0].base_image_id + swinging_inverter_ship_base_sprite_offset[direction];
     if (vehicle != nullptr)
     {
-        int32_t rotation = static_cast<int8_t>(vehicle->vehicle_sprite_type);
+        int32_t rotation = static_cast<int8_t>(vehicle->Pitch);
         if (rotation != 0)
         {
             vehicleImageId = rideEntry->vehicles[0].base_image_id

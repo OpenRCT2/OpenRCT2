@@ -85,7 +85,7 @@ enum
     MAP_SELECT_TYPE_EDGE_3,
 };
 
-// Used when calling map_can_construct_with_clear_at();
+// Used when calling MapCanConstructWithClearAt();
 // This assumes that the caller has already done the check on the element it wants to place,
 // as this function can only check the element the player wants to build through.
 enum
@@ -98,8 +98,7 @@ enum
 extern const std::array<CoordsXY, 8> CoordsDirectionDelta;
 extern const TileCoordsXY TileDirectionDelta[];
 
-extern uint16_t gWidePathTileLoopX;
-extern uint16_t gWidePathTileLoopY;
+extern TileCoordsXY gWidePathTileLoopPosition;
 extern uint16_t gGrassSceneryTileLoopPosition;
 
 extern int16_t gMapSizeUnits;
@@ -115,16 +114,8 @@ extern CoordsXY gMapSelectPositionB;
 extern CoordsXYZ gMapSelectArrowPosition;
 extern uint8_t gMapSelectArrowDirection;
 
-extern uint8_t gMapGroundFlags;
-
-extern TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
-extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
-
 extern std::vector<CoordsXY> gMapSelectionTiles;
 extern std::vector<PeepSpawn> gPeepSpawns;
-
-extern TileElement* gNextFreeTileElement;
-extern uint32_t gNextFreeTileElementPointerIndex;
 
 // Used in the land tool window to enable mountain tool / land smoothing
 extern bool gLandMountainMode;
@@ -147,9 +138,11 @@ extern const uint8_t tile_element_raise_styles[9][32];
 template<typename T> class TilePointerIndex
 {
     std::vector<T*> TilePointers;
-    uint16_t MapSize;
+    uint16_t MapSize{};
 
 public:
+    TilePointerIndex() = default;
+
     explicit TilePointerIndex(const uint16_t mapSize, T* tileElements)
     {
         MapSize = mapSize;
@@ -172,13 +165,23 @@ public:
     {
         return TilePointers[coords.x + (coords.y * MapSize)];
     }
+
+    void SetTile(TileCoordsXY coords, T* tileElement)
+    {
+        TilePointers[coords.x + (coords.y * MapSize)] = tileElement;
+    }
 };
+
+void ReorganiseTileElements();
+const std::vector<TileElement>& GetTileElements();
+void SetTileElements(std::vector<TileElement>&& tileElements);
+void StashMap();
+void UnstashMap();
 
 void map_init(int32_t size);
 
 void map_count_remaining_land_rights();
 void map_strip_ghost_flag_from_elements();
-void map_update_tile_pointers();
 TileElement* map_get_first_element_at(const CoordsXY& elementPos);
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n);
 void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements);
@@ -211,14 +214,13 @@ void tile_element_remove(TileElement* tileElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
-void map_reorganise_elements();
-bool map_check_free_elements_and_reorganise(int32_t num_elements);
+bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
 
 template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {
     auto* element = tile_element_insert(loc, occupiedQuadrants, T::ElementType);
-    return element->template as<T>();
+    return (element != nullptr) ? element->template as<T>() : nullptr;
 }
 
 namespace GameActions
@@ -231,13 +233,10 @@ using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coord
 
 int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-bool map_can_construct_with_clear_at(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
-    uint8_t crossingMode);
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode);
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
+    uint8_t crossingMode = CREATE_CROSSING_MODE_NONE, bool isTree = false);
 std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
-int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl);
 
 struct tile_element_iterator
 {

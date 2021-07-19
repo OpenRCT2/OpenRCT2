@@ -21,6 +21,7 @@
 #include <openrct2/peep/Peep.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/world/EntityTweener.h>
 #include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -53,7 +54,6 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();
     load_palette();
-    map_reorganise_elements();
     EntityTweener::Get().Reset();
     AutoCreateMapAnimations();
     fix_invalid_vehicle_sprite_sizes();
@@ -107,7 +107,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     Ride& ferrisWheel = *it;
 
     // Open it for free
-    ride_set_status(&ferrisWheel, RIDE_STATUS_OPEN);
+    ride_set_status(&ferrisWheel, RideStatus::Open);
     execute<RideSetPriceAction>(ferrisWheel.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into ferris wheel
@@ -167,7 +167,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     Ride& carRide = *it;
 
     // Open it for free
-    ride_set_status(&carRide, RIDE_STATUS_OPEN);
+    ride_set_status(&carRide, RideStatus::Open);
     execute<RideSetPriceAction>(carRide.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into the ride

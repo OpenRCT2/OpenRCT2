@@ -304,7 +304,6 @@ namespace OpenRCT2::Audio
 
     const std::string& GetDeviceName(int32_t index)
     {
-        Guard::Assert(index >= 0 && index < GetDeviceCount());
         if (index < 0 || index >= GetDeviceCount())
         {
             static std::string InvalidDevice = "Invalid Device";

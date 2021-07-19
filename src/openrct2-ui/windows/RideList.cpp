@@ -189,12 +189,12 @@ rct_window* window_ride_list_open()
     {
         window = WindowCreateAutoPos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
         window->widgets = window_ride_list_widgets;
-        window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OPEN_CLOSE_ALL) | (1 << WIDX_CURRENT_INFORMATION_TYPE)
-            | (1 << WIDX_INFORMATION_TYPE_DROPDOWN) | (1 << WIDX_SORT) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2)
-            | (1 << WIDX_TAB_3) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
+        window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OPEN_CLOSE_ALL) | (1ULL << WIDX_CURRENT_INFORMATION_TYPE)
+            | (1ULL << WIDX_INFORMATION_TYPE_DROPDOWN) | (1ULL << WIDX_SORT) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2)
+            | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
         if (network_get_mode() != NETWORK_MODE_CLIENT)
         {
-            window->enabled_widgets |= (1 << WIDX_QUICK_DEMOLISH);
+            window->enabled_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
         }
         WindowInitScrollWidgets(window);
         window->page = PAGE_RIDES;
@@ -525,10 +525,10 @@ static void window_ride_list_invalidate(rct_window* w)
         {
             auto c = static_cast<RideClassification>(w->page);
             allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
-                return ride.GetClassification() == c && ride.status == RIDE_STATUS_OPEN;
+                return ride.GetClassification() == c && ride.status == RideStatus::Open;
             });
             allOpen = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
-                return ride.GetClassification() == c && ride.status != RIDE_STATUS_OPEN;
+                return ride.GetClassification() == c && ride.status != RideStatus::Open;
             });
         }
 
@@ -764,21 +764,21 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window*
     if (w->page == PAGE_RIDES)
         sprite_idx += w->frame_no / 4;
     gfx_draw_sprite(
-        dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top }, 0);
+        dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top });
 
     // Shops and stalls tab
     sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
     if (w->page == PAGE_SHOPS_AND_STALLS)
         sprite_idx += w->frame_no / 4;
     gfx_draw_sprite(
-        dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_2].left, w->widgets[WIDX_TAB_2].top }, 0);
+        dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_2].left, w->widgets[WIDX_TAB_2].top });
 
     // Information kiosks and facilities tab
     sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
     if (w->page == PAGE_KIOSKS_AND_FACILITIES)
         sprite_idx += (w->frame_no / 4) % 8;
     gfx_draw_sprite(
-        dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].left, w->widgets[WIDX_TAB_3].top }, 0);
+        dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].left, w->widgets[WIDX_TAB_3].top });
 }
 
 /**
@@ -792,7 +792,7 @@ void window_ride_list_refresh_list(rct_window* w)
     {
         auto ride = &ridec;
         if (ride->GetClassification() != static_cast<RideClassification>(w->page)
-            || (ride->status == RIDE_STATUS_CLOSED && !ride_has_any_track_elements(ride)))
+            || (ride->status == RideStatus::Closed && !ride_has_any_track_elements(ride)))
             continue;
 
         if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST)
@@ -1017,9 +1017,9 @@ static void window_ride_list_close_all(rct_window* w)
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_CLOSED && ride.GetClassification() == static_cast<RideClassification>(w->page))
+        if (ride.status != RideStatus::Closed && ride.GetClassification() == static_cast<RideClassification>(w->page))
         {
-            ride_set_status(&ride, RIDE_STATUS_CLOSED);
+            ride_set_status(&ride, RideStatus::Closed);
         }
     }
 }
@@ -1028,9 +1028,9 @@ static void window_ride_list_open_all(rct_window* w)
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.status != RIDE_STATUS_OPEN && ride.GetClassification() == static_cast<RideClassification>(w->page))
+        if (ride.status != RideStatus::Open && ride.GetClassification() == static_cast<RideClassification>(w->page))
         {
-            ride_set_status(&ride, RIDE_STATUS_OPEN);
+            ride_set_status(&ride, RideStatus::Open);
         }
     }
 }

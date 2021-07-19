@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@
 #include "../localisation/StringIds.h"
 #include "../world/Scenery.h"
 #include "ObjectLimits.h"
+#include "ObjectRepository.h"
 
 #include <algorithm>
 #include <cstring>
@@ -251,18 +252,11 @@ bool ObjectAsset::IsAvailable() const
     }
 }
 
-size_t ObjectAsset::GetSize() const
+uint64_t ObjectAsset::GetSize() const
 {
     if (_zipPath.empty())
     {
-        try
-        {
-            return File::ReadAllBytes(_path).size();
-        }
-        catch (...)
-        {
-            return 0;
-        }
+        return File::GetSize(_path);
     }
     else
     {
@@ -299,6 +293,20 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
         }
     }
     return {};
+}
+
+ObjectEntryDescriptor::ObjectEntryDescriptor(const ObjectRepositoryItem& ori)
+{
+    if (!ori.Identifier.empty())
+    {
+        Generation = ObjectGeneration::JSON;
+        Identifier = std::string(ori.Identifier);
+    }
+    else
+    {
+        Generation = ObjectGeneration::DAT;
+        Entry = ori.ObjectEntry;
+    }
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

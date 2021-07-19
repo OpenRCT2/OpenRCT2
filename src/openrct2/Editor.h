@@ -21,8 +21,8 @@ namespace Editor
     void LoadTrackManager();
     bool LoadLandscape(const utf8* path);
 
-    bool CheckPark();
-    ObjectType CheckObjectSelection();
+    std::pair<bool, rct_string_id> CheckPark();
+    std::pair<ObjectType, rct_string_id> CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();
 

@@ -426,11 +426,11 @@ static void paint_monorail_track_flat(
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 3, height);
+        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 3, height);
+        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
     }
 
     if (direction == 0 || direction == 2)
@@ -515,11 +515,11 @@ static void paint_monorail_track_25_deg_up(
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 3, height);
+        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 3, height);
+        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
     }
 
     switch (direction)
@@ -557,11 +557,11 @@ static void paint_monorail_track_flat_to_25_deg_up(
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 3, height);
+        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 3, height);
+        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
     }
 
     switch (direction)
@@ -599,11 +599,11 @@ static void paint_monorail_track_25_deg_up_to_flat(
 
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 3, height);
+        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 32, 20, 3 });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 3, height);
+        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 20, 32, 3 });
     }
 
     switch (direction)

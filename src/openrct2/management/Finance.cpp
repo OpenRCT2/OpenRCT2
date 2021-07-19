@@ -22,7 +22,6 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 // Monthly research funding costs
 const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
@@ -75,7 +74,7 @@ bool finance_check_money_required(uint32_t flags)
  */
 bool finance_check_affordability(money32 cost, uint32_t flags)
 {
-    return cost <= 0 || !finance_check_money_required(flags) || cost <= gCash;
+    return !finance_check_money_required(flags) || cost <= 0 || cost <= gCash;
 }
 
 /**
@@ -111,7 +110,7 @@ void finance_pay_wages()
         return;
     }
 
-    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto peep : EntityList<Staff>())
     {
         finance_payment(GetStaffWage(peep->AssignedStaffType) / 4, ExpenditureType::Wages);
     }
@@ -165,7 +164,7 @@ void finance_pay_ride_upkeep()
             ride.Renew();
         }
 
-        if (ride.status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RideStatus::Closed && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             int16_t upkeep = ride.upkeep_cost;
             if (upkeep != -1)
@@ -242,7 +241,7 @@ void finance_update_daily_profit()
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
             current_profit -= GetStaffWage(peep->AssignedStaffType);
         }
@@ -258,7 +257,7 @@ void finance_update_daily_profit()
         // Ride costs
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RIDE_STATUS_CLOSED && ride.upkeep_cost != MONEY16_UNDEFINED)
+            if (ride.status != RideStatus::Closed && ride.upkeep_cost != MONEY16_UNDEFINED)
             {
                 current_profit -= 2 * ride.upkeep_cost;
             }

@@ -40,22 +40,14 @@
 
 void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElement* tileElement);
 
-uint8_t gFootpathProvisionalFlags;
-CoordsXYZ gFootpathProvisionalPosition;
-uint8_t gFootpathProvisionalType;
-uint8_t gFootpathProvisionalSlope;
-uint8_t gFootpathConstructionMode;
+ProvisionalFootpath gProvisionalFootpath;
 uint16_t gFootpathSelectedId;
-uint8_t gFootpathSelectedType;
 CoordsXYZ gFootpathConstructFromPosition;
-uint8_t gFootpathConstructDirection;
 uint8_t gFootpathConstructSlope;
-uint8_t gFootpathConstructValidDirections;
-money32 gFootpathPrice;
 uint8_t gFootpathGroundFlags;
 
-static uint8_t* _footpathQueueChainNext;
-static uint8_t _footpathQueueChain[64];
+static ride_id_t* _footpathQueueChainNext;
+static ride_id_t _footpathQueueChain[64];
 
 // This is the coordinates that a user of the bin should move to
 // rct2: 0x00992A4C
@@ -158,10 +150,10 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
     cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     if (res->Error == GameActions::Status::Ok)
     {
-        gFootpathProvisionalType = type;
-        gFootpathProvisionalPosition = footpathLoc;
-        gFootpathProvisionalSlope = slope;
-        gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
+        gProvisionalFootpath.Type = type;
+        gProvisionalFootpath.Position = footpathLoc;
+        gProvisionalFootpath.Slope = slope;
+        gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
@@ -185,15 +177,15 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
         }
         else if (
             gFootpathConstructSlope == TILE_ELEMENT_SLOPE_FLAT
-            || gFootpathProvisionalPosition.z < gFootpathConstructFromPosition.z)
+            || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
         {
             // Going either straight on, or down.
-            virtual_floor_set_height(gFootpathProvisionalPosition.z);
+            virtual_floor_set_height(gProvisionalFootpath.Position.z);
         }
         else
         {
             // Going up in the world!
-            virtual_floor_set_height(gFootpathProvisionalPosition.z + LAND_HEIGHT_STEP);
+            virtual_floor_set_height(gProvisionalFootpath.Position.z + LAND_HEIGHT_STEP);
         }
     }
 
@@ -206,12 +198,12 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
  */
 void footpath_provisional_remove()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
-        gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
+        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
 
         footpath_remove(
-            gFootpathProvisionalPosition,
+            gProvisionalFootpath.Position,
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                 | GAME_COMMAND_FLAG_GHOST);
     }
@@ -223,9 +215,9 @@ void footpath_provisional_remove()
  */
 void footpath_provisional_update()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
     {
-        gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
+        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         map_invalidate_tile_full(gFootpathConstructFromPosition);
@@ -572,7 +564,7 @@ struct rct_neighbour
 {
     uint8_t order;
     uint8_t direction;
-    uint8_t ride_index;
+    ride_id_t ride_index;
     uint8_t entrance_index;
 };
 
@@ -809,7 +801,7 @@ static void loc_6A6F1F(
         }
         else
         {
-            neighbour_list_push(neighbourList, 2, direction, 255, 255);
+            neighbour_list_push(neighbourList, 2, direction, RIDE_ID_NULL, 255);
         }
     }
     else
@@ -838,7 +830,7 @@ static void loc_6A6D7E(
     {
         if (query)
         {
-            neighbour_list_push(neighbourList, 7, direction, 255, 255);
+            neighbour_list_push(neighbourList, 7, direction, RIDE_ID_NULL, 255);
         }
         loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
     }
@@ -1199,7 +1191,7 @@ void footpath_queue_chain_push(ride_id_t rideIndex)
 {
     if (rideIndex != RIDE_ID_NULL)
     {
-        uint8_t* lastSlot = _footpathQueueChain + std::size(_footpathQueueChain) - 1;
+        auto* lastSlot = _footpathQueueChain + std::size(_footpathQueueChain) - 1;
         if (_footpathQueueChainNext <= lastSlot)
         {
             *_footpathQueueChainNext++ = rideIndex;
@@ -1213,7 +1205,7 @@ void footpath_queue_chain_push(ride_id_t rideIndex)
  */
 void footpath_update_queue_chains()
 {
-    for (uint8_t* queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++)
+    for (auto* queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++)
     {
         ride_id_t rideIndex = *queueChainPtr;
         auto ride = get_ride(rideIndex);
@@ -1624,7 +1616,7 @@ ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
     return GetAddition() - 1;
 }
 
-rct_scenery_entry* PathElement::GetAdditionEntry() const
+PathBitEntry* PathElement::GetAdditionEntry() const
 {
     if (!HasAddition())
         return nullptr;
@@ -1960,7 +1952,7 @@ void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElem
                 {
                     if (tileElement->AsPath()->GetEdges() & (1 << direction))
                     {
-                        footpath_chain_ride_queue(255, 0, footpathPos, tileElement, direction);
+                        footpath_chain_ride_queue(RIDE_ID_NULL, 0, footpathPos, tileElement, direction);
                     }
                 }
                 tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
@@ -1970,7 +1962,8 @@ void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElem
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
                 footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
-                footpath_chain_ride_queue(255, 0, footpathPos, tileElement, direction_reverse(tileElement->GetDirection()));
+                footpath_chain_ride_queue(
+                    RIDE_ID_NULL, 0, footpathPos, tileElement, direction_reverse(tileElement->GetDirection()));
             }
             break;
     }

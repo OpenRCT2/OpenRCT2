@@ -13,6 +13,7 @@
 #include "../interface/Window.h"
 #include "../management/Finance.h"
 #include "../peep/Peep.h"
+#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/Park.h"
 
@@ -235,6 +236,9 @@ GameActions::Result::Ptr ScenarioSetSettingAction::Execute() const
             {
                 gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
             }
+            break;
+        case ScenarioSetSetting::AllowEarlyCompletion:
+            gAllowEarlyCompletionInNetworkPlay = _value;
             break;
         default:
             log_error("Invalid setting: %u", _setting);

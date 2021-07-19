@@ -18,6 +18,7 @@
 #include <vector>
 
 struct paint_session;
+struct RecordedPaintSession;
 struct paint_struct;
 struct rct_drawpixelinfo;
 struct Peep;
@@ -116,10 +117,10 @@ void viewport_update_smart_staff_follow(rct_window* window, Peep* peep);
 void viewport_update_smart_vehicle_follow(rct_window* window);
 void viewport_render(
     rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
-    std::vector<paint_session>* sessions = nullptr);
+    std::vector<RecordedPaintSession>* sessions = nullptr);
 void viewport_paint(
     const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
-    std::vector<paint_session>* sessions = nullptr);
+    std::vector<RecordedPaintSession>* sessions = nullptr);
 
 CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords);
 
@@ -146,7 +147,6 @@ bool ViewportInteractionRightOver(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
-void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);
 
 void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 

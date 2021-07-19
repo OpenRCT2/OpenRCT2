@@ -52,45 +52,239 @@ static rct_widget window_sign_widgets[] = {
     { WIDGETS_END },
 };
 
-static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_sign_viewport_rotate(rct_window *w);
-static void window_sign_invalidate(rct_window *w);
-static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi);
-
-
-// 0x98E44C
-static rct_window_event_list window_sign_events([](auto& events)
-{
-    events.mouse_up = &window_sign_mouseup;
-    events.mouse_down = &window_sign_mousedown;
-    events.dropdown = &window_sign_dropdown;
-    events.text_input = &window_sign_textinput;
-    events.viewport_rotate = &window_sign_viewport_rotate;
-    events.invalidate = &window_sign_invalidate;
-    events.paint = &window_sign_paint;
-});
-
-static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_sign_small_invalidate(rct_window *w);
-
-// 0x9A410C
-static rct_window_event_list window_sign_small_events([](auto& events)
-{
-    events.mouse_up = &window_sign_small_mouseup;
-    events.mouse_down = &window_sign_mousedown;
-    events.dropdown = &window_sign_small_dropdown;
-    events.text_input = &window_sign_textinput;
-    events.viewport_rotate = &window_sign_viewport_rotate;
-    events.invalidate = &window_sign_small_invalidate;
-    events.paint = &window_sign_paint;
-});
 // clang-format on
 
-static void window_sign_show_text_input(rct_window* w);
+class SignWindow final : public Window
+{
+private:
+    bool _isSmall = false;
+    Banner* _banner = nullptr;
+
+    void ShowTextInput()
+    {
+        if (_banner != nullptr)
+        {
+            auto bannerText = _banner->GetText();
+            window_text_input_raw_open(this, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, bannerText.c_str(), 32);
+        }
+    }
+
+public:
+    void OnOpen() override
+    {
+        widgets = window_sign_widgets;
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SIGN_TEXT) | (1ULL << WIDX_SIGN_DEMOLISH)
+            | (1ULL << WIDX_MAIN_COLOUR) | (1ULL << WIDX_TEXT_COLOUR);
+
+        WindowInitScrollWidgets(this);
+    }
+
+    /*
+     * Initializes the window and sets it's number and if it's small
+     * @return true if successfull
+     */
+    bool Initialize(rct_windownumber windowNumber, const bool isSmall)
+    {
+        number = windowNumber;
+        _isSmall = isSmall;
+
+        _banner = GetBanner(number);
+        if (_banner == nullptr)
+            return false;
+
+        auto signViewPosition = _banner->position.ToCoordsXY().ToTileCentre();
+        auto* tileElement = banner_get_tile_element(number);
+        if (tileElement == nullptr)
+            return false;
+
+        int32_t viewZ = tileElement->GetBaseZ();
+        frame_no = viewZ;
+
+        if (_isSmall)
+        {
+            list_information_type = tileElement->AsWall()->GetPrimaryColour();
+            var_492 = tileElement->AsWall()->GetSecondaryColour();
+            SceneryEntry = tileElement->AsWall()->GetEntryIndex();
+        }
+        else
+        {
+            list_information_type = tileElement->AsLargeScenery()->GetPrimaryColour();
+            var_492 = tileElement->AsLargeScenery()->GetSecondaryColour();
+            SceneryEntry = tileElement->AsLargeScenery()->GetEntryIndex();
+        }
+
+        // Create viewport
+        rct_widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
+
+        viewport_create(
+            this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
+            viewportWidget.height() - 1, 0, { signViewPosition, viewZ }, 0, SPRITE_INDEX_NULL);
+
+        viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+        Invalidate();
+
+        return true;
+    }
+
+    void OnMouseUp(rct_widgetindex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                Close();
+                break;
+            case WIDX_SIGN_DEMOLISH:
+            {
+                auto* tileElement = banner_get_tile_element(number);
+                if (tileElement == nullptr)
+                {
+                    Close();
+                }
+                auto bannerCoords = _banner->position.ToCoordsXY();
+
+                if (_isSmall)
+                {
+                    CoordsXYZD wallLocation = { bannerCoords, tileElement->GetBaseZ(), tileElement->GetDirection() };
+                    auto wallRemoveAction = WallRemoveAction(wallLocation);
+                    GameActions::Execute(&wallRemoveAction);
+                }
+                else
+                {
+                    auto sceneryRemoveAction = LargeSceneryRemoveAction(
+                        { bannerCoords, tileElement->GetBaseZ(), tileElement->GetDirection() },
+                        tileElement->AsLargeScenery()->GetSequenceIndex());
+                    GameActions::Execute(&sceneryRemoveAction);
+                }
+                break;
+            }
+            case WIDX_SIGN_TEXT:
+                ShowTextInput();
+                break;
+        }
+    }
+
+    void OnMouseDown(rct_widgetindex widgetIndex) override
+    {
+        rct_widget* widget = &widgets[widgetIndex];
+        switch (widgetIndex)
+        {
+            case WIDX_MAIN_COLOUR:
+                WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(list_information_type));
+                break;
+            case WIDX_TEXT_COLOUR:
+                WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(var_492));
+                break;
+        }
+    }
+
+    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_MAIN_COLOUR:
+            {
+                if (dropdownIndex == -1)
+                    return;
+                list_information_type = dropdownIndex;
+                auto signSetStyleAction = SignSetStyleAction(number, dropdownIndex, var_492, !_isSmall);
+                GameActions::Execute(&signSetStyleAction);
+                break;
+            }
+            case WIDX_TEXT_COLOUR:
+            {
+                if (dropdownIndex == -1)
+                    return;
+                var_492 = dropdownIndex;
+                auto signSetStyleAction = SignSetStyleAction(number, list_information_type, dropdownIndex, !_isSmall);
+                GameActions::Execute(&signSetStyleAction);
+                break;
+            }
+            default:
+                return;
+        }
+
+        Invalidate();
+    }
+
+    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    {
+        if (widgetIndex == WIDX_SIGN_TEXT && !text.empty())
+        {
+            auto signSetNameAction = SignSetNameAction(number, std::string(text));
+            GameActions::Execute(&signSetNameAction);
+        }
+    }
+
+    void OnPrepareDraw() override
+    {
+        rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
+        rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
+
+        if (_isSmall)
+        {
+            auto* wallEntry = get_wall_entry(SceneryEntry);
+
+            main_colour_btn->type = WindowWidgetType::Empty;
+            text_colour_btn->type = WindowWidgetType::Empty;
+
+            if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+            {
+                main_colour_btn->type = WindowWidgetType::ColourBtn;
+            }
+            if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+            {
+                text_colour_btn->type = WindowWidgetType::ColourBtn;
+            }
+        }
+        else
+        {
+            auto* sceneryEntry = get_large_scenery_entry(SceneryEntry);
+
+            main_colour_btn->type = WindowWidgetType::Empty;
+            text_colour_btn->type = WindowWidgetType::Empty;
+
+            if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+            {
+                main_colour_btn->type = WindowWidgetType::ColourBtn;
+            }
+            if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+            {
+                text_colour_btn->type = WindowWidgetType::ColourBtn;
+            }
+        }
+
+        main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(var_492) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        DrawWidgets(dpi);
+
+        if (viewport != nullptr)
+        {
+            window_draw_viewport(&dpi, this);
+        }
+    }
+
+    void OnViewportRotate() override
+    {
+        RemoveViewport();
+
+        auto banner = GetBanner(number);
+
+        auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), frame_no };
+
+        // Create viewport
+        rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
+        viewport_create(
+            this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
+            viewportWidget->height() - 1, 0, signViewPos, 0, SPRITE_INDEX_NULL);
+        if (viewport != nullptr)
+            viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+        Invalidate();
+    }
+};
 
 /**
  *
@@ -98,244 +292,21 @@ static void window_sign_show_text_input(rct_window* w);
  */
 rct_window* window_sign_open(rct_windownumber number)
 {
-    rct_window* w;
-    rct_widget* viewportWidget;
+    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 
-    // Check if window is already open
-    w = window_bring_to_front_by_number(WC_BANNER, number);
     if (w != nullptr)
         return w;
 
-    w = WindowCreateAutoPos(WW, WH, &window_sign_events, WC_BANNER, WF_NO_SCROLLING);
-    w->widgets = window_sign_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SIGN_TEXT) | (1 << WIDX_SIGN_DEMOLISH) | (1 << WIDX_MAIN_COLOUR)
-        | (1 << WIDX_TEXT_COLOUR);
+    w = WindowCreate<SignWindow>(WC_BANNER, WW, WH, 0);
 
-    w->number = number;
-    WindowInitScrollWidgets(w);
-
-    auto banner = GetBanner(w->number);
-    if (banner == nullptr)
+    if (w == nullptr)
         return nullptr;
 
-    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
-    TileElement* tile_element = map_get_first_element_at(signViewPos);
-    if (tile_element == nullptr)
+    bool result = w->Initialize(number, false);
+    if (result != true)
         return nullptr;
-
-    while (1)
-    {
-        if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
-        {
-            rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
-            if (scenery_entry != nullptr && scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
-            {
-                auto bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
-
-                if (bannerIndex == w->number)
-                    break;
-            }
-        }
-        tile_element++;
-        if (tile_element >= &gTileElements[std::size(gTileElements)])
-        {
-            return nullptr;
-        }
-    }
-
-    int32_t view_z = tile_element->GetBaseZ();
-    w->frame_no = view_z;
-
-    w->list_information_type = tile_element->AsLargeScenery()->GetPrimaryColour();
-    w->var_492 = tile_element->AsLargeScenery()->GetSecondaryColour();
-    w->SceneryEntry = tile_element->AsLargeScenery()->GetEntryIndex();
-
-    // Create viewport
-    viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
-    viewport_create(
-        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
-        viewportWidget->height() - 1, 0, { signViewPos, view_z }, 0, SPRITE_INDEX_NULL);
-
-    w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
-    w->Invalidate();
 
     return w;
-}
-
-/**
- *
- *  rct2: 0x6B9765
- */
-static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        case WIDX_SIGN_DEMOLISH:
-        {
-            auto banner = GetBanner(w->number);
-            auto bannerCoords = banner->position.ToCoordsXY();
-            auto tile_element = map_get_first_element_at(bannerCoords);
-            if (tile_element == nullptr)
-                return;
-            while (1)
-            {
-                if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
-                {
-                    rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
-                    if (scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
-                    {
-                        auto bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
-                        if (bannerIndex == w->number)
-                            break;
-                    }
-                }
-                tile_element++;
-                if (tile_element >= &gTileElements[std::size(gTileElements)])
-                {
-                    return;
-                }
-            }
-
-            auto sceneryRemoveAction = LargeSceneryRemoveAction(
-                { bannerCoords, tile_element->GetBaseZ(), tile_element->GetDirection() },
-                tile_element->AsLargeScenery()->GetSequenceIndex());
-            GameActions::Execute(&sceneryRemoveAction);
-            break;
-        }
-        case WIDX_SIGN_TEXT:
-            window_sign_show_text_input(w);
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x6B9784
-  & 0x6E6164 */
-static void window_sign_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_MAIN_COLOUR:
-            WindowDropdownShowColour(w, widget, TRANSLUCENT(w->colours[1]), static_cast<uint8_t>(w->list_information_type));
-            break;
-        case WIDX_TEXT_COLOUR:
-            WindowDropdownShowColour(w, widget, TRANSLUCENT(w->colours[1]), static_cast<uint8_t>(w->var_492));
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x6B979C
- */
-static void window_sign_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_MAIN_COLOUR:
-        {
-            if (dropdownIndex == -1)
-                return;
-            w->list_information_type = dropdownIndex;
-            auto signSetStyleAction = SignSetStyleAction(w->number, dropdownIndex, w->var_492, true);
-            GameActions::Execute(&signSetStyleAction);
-            break;
-        }
-        case WIDX_TEXT_COLOUR:
-        {
-            if (dropdownIndex == -1)
-                return;
-            w->var_492 = dropdownIndex;
-            auto signSetStyleAction = SignSetStyleAction(w->number, w->list_information_type, dropdownIndex, true);
-            GameActions::Execute(&signSetStyleAction);
-            break;
-        }
-        default:
-            return;
-    }
-
-    w->Invalidate();
-}
-
-/**
- *
- *  rct2: 0x6B9791, 0x6E6171
- */
-static void window_sign_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
-{
-    if (widgetIndex == WIDX_SIGN_TEXT && text != nullptr)
-    {
-        auto signSetNameAction = SignSetNameAction(w->number, text);
-        GameActions::Execute(&signSetNameAction);
-    }
-}
-
-/**
- *
- *  rct2: 0x006B96F5
- */
-static void window_sign_invalidate(rct_window* w)
-{
-    rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
-    rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
-
-    rct_scenery_entry* scenery_entry = get_large_scenery_entry(w->SceneryEntry);
-
-    main_colour_btn->type = WindowWidgetType::Empty;
-    text_colour_btn->type = WindowWidgetType::Empty;
-
-    if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
-    {
-        main_colour_btn->type = WindowWidgetType::ColourBtn;
-    }
-    if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
-    {
-        text_colour_btn->type = WindowWidgetType::ColourBtn;
-    }
-
-    main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-    text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->var_492) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-}
-
-/**
- *
- *  rct2: 0x006B9754, 0x006E6134
- */
-static void window_sign_paint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-
-    // Draw viewport
-    if (w->viewport != nullptr)
-    {
-        window_draw_viewport(dpi, w);
-    }
-}
-
-/**
- *
- *  rct2: 0x6B9A6C, 0x6E6424
- */
-static void window_sign_viewport_rotate(rct_window* w)
-{
-    w->RemoveViewport();
-
-    auto banner = GetBanner(w->number);
-
-    auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), w->frame_no };
-
-    // Create viewport
-    rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
-    viewport_create(
-        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
-        viewportWidget->height() - 1, 0, signViewPos, 0, SPRITE_INDEX_NULL);
-    if (w->viewport != nullptr)
-        w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
-    w->Invalidate();
 }
 
 /**
@@ -344,174 +315,19 @@ static void window_sign_viewport_rotate(rct_window* w)
  */
 rct_window* window_sign_small_open(rct_windownumber number)
 {
-    rct_window* w;
-    rct_widget* viewportWidget;
+    auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 
-    // Check if window is already open
-    w = window_bring_to_front_by_number(WC_BANNER, number);
     if (w != nullptr)
         return w;
 
-    w = WindowCreateAutoPos(WW, WH, &window_sign_small_events, WC_BANNER, 0);
-    w->widgets = window_sign_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SIGN_TEXT) | (1 << WIDX_SIGN_DEMOLISH) | (1 << WIDX_MAIN_COLOUR)
-        | (1 << WIDX_TEXT_COLOUR);
+    w = WindowCreate<SignWindow>(WC_BANNER, WW, WH, 0);
 
-    w->number = number;
-    WindowInitScrollWidgets(w);
-    w->colours[0] = COLOUR_DARK_BROWN;
-    w->colours[1] = COLOUR_DARK_BROWN;
-    w->colours[2] = COLOUR_DARK_BROWN;
-
-    auto banner = GetBanner(w->number);
-    auto signViewPos = banner->position.ToCoordsXY().ToTileCentre();
-
-    TileElement* tile_element = map_get_first_element_at(signViewPos);
-    if (tile_element == nullptr)
+    if (w == nullptr)
         return nullptr;
 
-    while (1)
-    {
-        if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
-        {
-            rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
-            if (scenery_entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
-            {
-                if (tile_element->AsWall()->GetBannerIndex() == w->number)
-                    break;
-            }
-        }
-        tile_element++;
-    }
-
-    int32_t view_z = tile_element->GetBaseZ();
-    w->frame_no = view_z;
-
-    w->list_information_type = tile_element->AsWall()->GetPrimaryColour();
-    w->var_492 = tile_element->AsWall()->GetSecondaryColour();
-    w->SceneryEntry = tile_element->AsWall()->GetEntryIndex();
-
-    // Create viewport
-    viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
-    viewport_create(
-        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
-        viewportWidget->height() - 1, 0, { signViewPos, view_z }, 0, SPRITE_INDEX_NULL);
-
-    w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
-    w->flags |= WF_NO_SCROLLING;
-    w->Invalidate();
+    bool result = w->Initialize(number, true);
+    if (result != true)
+        return nullptr;
 
     return w;
-}
-
-/**
- *
- *  rct2: 0x6E6145
- */
-static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        case WIDX_SIGN_DEMOLISH:
-        {
-            auto banner = GetBanner(w->number);
-            auto bannerCoords = banner->position.ToCoordsXY();
-            auto tile_element = map_get_first_element_at(bannerCoords);
-            if (tile_element == nullptr)
-                return;
-            while (true)
-            {
-                if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
-                {
-                    rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
-                    if (scenery_entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
-                    {
-                        if (tile_element->AsWall()->GetBannerIndex() == w->number)
-                            break;
-                    }
-                }
-                tile_element++;
-            }
-            CoordsXYZD wallLocation = { bannerCoords, tile_element->GetBaseZ(), tile_element->GetDirection() };
-            auto wallRemoveAction = WallRemoveAction(wallLocation);
-            GameActions::Execute(&wallRemoveAction);
-            break;
-        }
-        case WIDX_SIGN_TEXT:
-            window_sign_show_text_input(w);
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x6E617C
- */
-static void window_sign_small_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_MAIN_COLOUR:
-        {
-            if (dropdownIndex == -1)
-                return;
-            w->list_information_type = dropdownIndex;
-            auto signSetStyleAction = SignSetStyleAction(w->number, dropdownIndex, w->var_492, false);
-            GameActions::Execute(&signSetStyleAction);
-            break;
-        }
-        case WIDX_TEXT_COLOUR:
-        {
-            if (dropdownIndex == -1)
-                return;
-            w->var_492 = dropdownIndex;
-            auto signSetStyleAction = SignSetStyleAction(w->number, w->list_information_type, dropdownIndex, false);
-            GameActions::Execute(&signSetStyleAction);
-            break;
-        }
-        default:
-            return;
-    }
-
-    w->Invalidate();
-}
-
-/**
- *
- *  rct2: 0x006E60D5
- */
-static void window_sign_small_invalidate(rct_window* w)
-{
-    rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
-    rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
-
-    rct_scenery_entry* scenery_entry = get_wall_entry(w->SceneryEntry);
-
-    main_colour_btn->type = WindowWidgetType::Empty;
-    text_colour_btn->type = WindowWidgetType::Empty;
-
-    if (scenery_entry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
-    {
-        main_colour_btn->type = WindowWidgetType::ColourBtn;
-    }
-    if (scenery_entry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
-    {
-        text_colour_btn->type = WindowWidgetType::ColourBtn;
-    }
-
-    main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-    text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->var_492) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-}
-
-static void window_sign_show_text_input(rct_window* w)
-{
-    auto banner = GetBanner(w->number);
-    if (banner != nullptr)
-    {
-        auto bannerText = banner->GetText();
-        window_text_input_raw_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, bannerText.c_str(), 32);
-    }
 }

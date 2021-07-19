@@ -26,6 +26,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/ride/TrainManager.h>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/world/EntityList.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
@@ -236,15 +238,16 @@ rct_window* window_map_open()
 
     w = WindowCreateAutoPos(245, 259, &window_map_events, WC_MAP, WF_10);
     w->widgets = window_map_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_PEOPLE_TAB) | (1 << WIDX_RIDES_TAB) | (1 << WIDX_MAP_SIZE_SPINNER)
-        | (1 << WIDX_MAP_SIZE_SPINNER_UP) | (1 << WIDX_MAP_SIZE_SPINNER_DOWN) | (1 << WIDX_LAND_TOOL)
-        | (1 << WIDX_LAND_TOOL_SMALLER) | (1 << WIDX_LAND_TOOL_LARGER) | (1 << WIDX_SET_LAND_RIGHTS)
-        | (1 << WIDX_LAND_OWNED_CHECKBOX) | (1 << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX) | (1 << WIDX_LAND_SALE_CHECKBOX)
-        | (1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX) | (1 << WIDX_BUILD_PARK_ENTRANCE) | (1 << WIDX_ROTATE_90)
-        | (1 << WIDX_PEOPLE_STARTING_POSITION) | (1 << WIDX_MAP_GENERATOR);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_PEOPLE_TAB) | (1ULL << WIDX_RIDES_TAB)
+        | (1ULL << WIDX_MAP_SIZE_SPINNER) | (1ULL << WIDX_MAP_SIZE_SPINNER_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_DOWN)
+        | (1ULL << WIDX_LAND_TOOL) | (1ULL << WIDX_LAND_TOOL_SMALLER) | (1ULL << WIDX_LAND_TOOL_LARGER)
+        | (1ULL << WIDX_SET_LAND_RIGHTS) | (1ULL << WIDX_LAND_OWNED_CHECKBOX)
+        | (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX) | (1ULL << WIDX_LAND_SALE_CHECKBOX)
+        | (1ULL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX) | (1ULL << WIDX_BUILD_PARK_ENTRANCE) | (1ULL << WIDX_ROTATE_90)
+        | (1ULL << WIDX_PEOPLE_STARTING_POSITION) | (1ULL << WIDX_MAP_GENERATOR);
 
-    w->hold_down_widgets = (1 << WIDX_MAP_SIZE_SPINNER_UP) | (1 << WIDX_MAP_SIZE_SPINNER_DOWN) | (1 << WIDX_LAND_TOOL_LARGER)
-        | (1 << WIDX_LAND_TOOL_SMALLER);
+    w->hold_down_widgets = (1ULL << WIDX_MAP_SIZE_SPINNER_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_DOWN)
+        | (1ULL << WIDX_LAND_TOOL_LARGER) | (1ULL << WIDX_LAND_TOOL_SMALLER);
 
     WindowInitScrollWidgets(w);
 
@@ -692,16 +695,16 @@ static void window_map_invalidate(rct_window* w)
     pressedWidgets |= (1ULL << WIDX_LAND_TOOL);
 
     if (_activeTool & (1 << 3))
-        pressedWidgets |= (1 << WIDX_LAND_SALE_CHECKBOX);
+        pressedWidgets |= (1ULL << WIDX_LAND_SALE_CHECKBOX);
 
     if (_activeTool & (1 << 2))
-        pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
+        pressedWidgets |= (1ULL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
 
     if (_activeTool & (1 << 1))
-        pressedWidgets |= (1 << WIDX_LAND_OWNED_CHECKBOX);
+        pressedWidgets |= (1ULL << WIDX_LAND_OWNED_CHECKBOX);
 
     if (_activeTool & (1 << 0))
-        pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
+        pressedWidgets |= (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
     w->pressed_widgets = pressedWidgets;
 
@@ -831,9 +834,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
                               w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-        gfx_draw_sprite(
-            dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
-            screenCoords, 0);
+        gfx_draw_sprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -885,7 +886,7 @@ static void window_map_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     g1temp.y_offset = -8;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
-    gfx_draw_sprite(dpi, SPR_TEMP, { 0, 0 }, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TEMP), { 0, 0 });
 
     if (w->selected_tab == PAGE_PEEPS)
     {
@@ -1006,7 +1007,8 @@ static void window_map_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
         image += w->list_information_type / 4;
 
     gfx_draw_sprite(
-        dpi, image, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_TAB].left, w->widgets[WIDX_PEOPLE_TAB].top }, 0);
+        dpi, ImageId(image),
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_TAB].left, w->widgets[WIDX_PEOPLE_TAB].top });
 
     // Ride/stall tab image (animated)
     image = SPR_TAB_RIDE_0;
@@ -1014,7 +1016,7 @@ static void window_map_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
         image += w->list_information_type / 4;
 
     gfx_draw_sprite(
-        dpi, image, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_RIDES_TAB].left, w->widgets[WIDX_RIDES_TAB].top }, 0);
+        dpi, ImageId(image), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_RIDES_TAB].left, w->widgets[WIDX_RIDES_TAB].top });
 }
 
 /**
@@ -1101,12 +1103,12 @@ static uint8_t MapGetStaffFlashColour()
 static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 {
     auto flashColour = MapGetGuestFlashColour();
-    for (auto guest : EntityList<Guest>(EntityListId::Peep))
+    for (auto guest : EntityList<Guest>())
     {
         DrawMapPeepPixel(guest, flashColour, dpi);
     }
     flashColour = MapGetStaffFlashColour();
-    for (auto staff : EntityList<Staff>(EntityListId::Peep))
+    for (auto staff : EntityList<Staff>())
     {
         DrawMapPeepPixel(staff, flashColour, dpi);
     }
@@ -1118,7 +1120,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
  */
 static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
 {
-    for (auto train : EntityList<Vehicle>(EntityListId::TrainHead))
+    for (auto train : TrainManager::View())
     {
         for (Vehicle* vehicle = train; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
@@ -1327,7 +1329,7 @@ static void window_map_place_park_entrance_tool_down(const ScreenCoordsXY& scree
     CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
     if (!parkEntrancePosition.isNull())
     {
-        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition);
+        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
         auto result = GameActions::Execute(&gameAction);
         if (result->Error == GameActions::Status::Ok)
         {
@@ -1577,7 +1579,7 @@ static void map_window_set_pixels(rct_window* w)
 
     for (int32_t i = 0; i < MAXIMUM_MAP_SIZE_TECHNICAL; i++)
     {
-        if (x > 0 && y > 0 && x < gMapSizeUnits && y < gMapSizeUnits)
+        if (!map_is_edge({ x, y }))
         {
             switch (w->selected_tab)
             {

@@ -227,13 +227,13 @@ namespace OpenRCT2::Scripting
 
         bool fastLiftHill_get()
         {
-            return gCheatsFastLiftHill;
+            return gCheatsUnlockOperatingLimits;
         }
 
         void fastLiftHill_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            gCheatsFastLiftHill = value;
+            gCheatsUnlockOperatingLimits = value;
         }
 
         bool freezeWeather_get()

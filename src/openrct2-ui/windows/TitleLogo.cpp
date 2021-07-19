@@ -51,7 +51,7 @@ rct_window* window_title_logo_open()
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);
     window->colours[1] = TRANSLUCENT(COLOUR_GREY);
     window->colours[2] = TRANSLUCENT(COLOUR_GREY);
-    window->enabled_widgets = (1 << WIDX_LOGO);
+    window->enabled_widgets = (1ULL << WIDX_LOGO);
 
     return window;
 }
@@ -73,6 +73,6 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
 static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 2, 2 };
-    gfx_draw_sprite(dpi, SPR_G2_LOGO, screenCoords, 0);
-    gfx_draw_sprite(dpi, SPR_G2_TITLE, screenCoords + ScreenCoordsXY{ 104, 18 }, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_G2_LOGO), screenCoords);
+    gfx_draw_sprite(dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
 }

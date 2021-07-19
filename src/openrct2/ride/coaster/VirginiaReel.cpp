@@ -158,7 +158,7 @@ void vehicle_visual_virginia_reel(
     const uint8_t rotation = session->CurrentRotation;
     int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
     int32_t baseImage_id = [&] {
-        switch (vehicle->vehicle_sprite_type)
+        switch (vehicle->Pitch)
         {
             case 1:
                 return (imageDirection & 24) + 8;

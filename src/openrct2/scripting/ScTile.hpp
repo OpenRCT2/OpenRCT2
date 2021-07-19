@@ -440,7 +440,7 @@ namespace OpenRCT2::Scripting
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     auto el = _element->AsPath();
-                    if (el->IsQueue() && el->GetRideIndex() != 0xFF)
+                    if (el->IsQueue() && el->GetRideIndex() != RIDE_ID_NULL)
                         duk_push_int(ctx, el->GetRideIndex());
                     else
                         duk_push_null(ctx);
@@ -466,7 +466,7 @@ namespace OpenRCT2::Scripting
             }
             return DukValue::take_from_stack(ctx);
         }
-        void ride_set(uint8_t value)
+        void ride_set(ride_id_t value)
         {
             ThrowIfGameStateNotMutable();
             switch (_element->GetType())
@@ -506,7 +506,7 @@ namespace OpenRCT2::Scripting
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     auto el = _element->AsPath();
-                    if (el->IsQueue() && el->GetRideIndex() != 0xFF)
+                    if (el->IsQueue() && el->GetRideIndex() != RIDE_ID_NULL)
                         duk_push_int(ctx, el->GetStationIndex());
                     else
                         duk_push_null(ctx);
@@ -836,7 +836,7 @@ namespace OpenRCT2::Scripting
                 // Insert corrupt element at the end of the list for this tile
                 // Note: Z = MAX_ELEMENT_HEIGHT to guarantee this
                 TileElement* insertedElement = tile_element_insert(
-                    { _coords, MAX_ELEMENT_HEIGHT }, 0, TileElementType::Corrupt);
+                    { _coords, MAX_ELEMENT_HEIGHT * COORDS_Z_STEP }, 0, TileElementType::Corrupt);
                 if (insertedElement == nullptr)
                 {
                     // TODO: Show error

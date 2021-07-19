@@ -147,6 +147,37 @@ namespace String
         }
         return result;
     }
+
+    /**
+     * Returns codepoint size or no value if not valid
+     */
+    constexpr std::optional<int> UTF8GetCodePointSize(std::string_view v)
+    {
+        if (v.size() >= 1 && !(v[0] & 0x80))
+        {
+            return { 1 };
+        }
+        else if (v.size() >= 2 && ((v[0] & 0xE0) == 0xC0))
+        {
+            return { 2 };
+        }
+        else if (v.size() >= 3 && ((v[0] & 0xF0) == 0xE0))
+        {
+            return { 3 };
+        }
+        else if (v.size() >= 4 && ((v[0] & 0xF8) == 0xF0))
+        {
+            return { 4 };
+        }
+        return {};
+    }
+
+    /**
+     * Truncates a string to at most `size` bytes,
+     * making sure not to cut in the middle of a sequence.
+     */
+    std::string_view UTF8Truncate(std::string_view v, size_t size);
+
 } // namespace String
 
 class CodepointView

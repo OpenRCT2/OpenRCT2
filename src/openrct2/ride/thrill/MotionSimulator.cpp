@@ -10,9 +10,10 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 enum
 {
@@ -64,7 +65,7 @@ static void paint_motionsimulator_vehicle(
         }
         else
         {
-            simulatorImageId += vehicle->vehicle_sprite_type * 4;
+            simulatorImageId += vehicle->Pitch * 4;
         }
     }
 

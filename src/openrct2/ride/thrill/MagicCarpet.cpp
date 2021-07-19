@@ -10,9 +10,10 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 enum
 {
@@ -185,7 +186,7 @@ static void paint_magic_carpet_structure(
     uint32_t swingImageId = 0;
     if (vehicle != nullptr)
     {
-        swingImageId = vehicle->vehicle_sprite_type;
+        swingImageId = vehicle->Pitch;
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }

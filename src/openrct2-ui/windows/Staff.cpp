@@ -27,9 +27,9 @@
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/Entity.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Sprite.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WW = 190;
@@ -203,30 +203,30 @@ static rct_window_event_list *window_staff_page_events[] = {
 };
 
 static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_PICKUP) |
-    (1 << WIDX_PATROL) |
-    (1 << WIDX_RENAME) |
-    (1 << WIDX_LOCATE) |
-    (1 << WIDX_FIRE),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_PICKUP) |
+    (1ULL << WIDX_PATROL) |
+    (1ULL << WIDX_RENAME) |
+    (1ULL << WIDX_LOCATE) |
+    (1ULL << WIDX_FIRE),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_CHECKBOX_1) |
-    (1 << WIDX_CHECKBOX_2) |
-    (1 << WIDX_CHECKBOX_3) |
-    (1 << WIDX_CHECKBOX_4) |
-    (1 << WIDX_COSTUME_BTN),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_CHECKBOX_1) |
+    (1ULL << WIDX_CHECKBOX_2) |
+    (1ULL << WIDX_CHECKBOX_3) |
+    (1ULL << WIDX_CHECKBOX_4) |
+    (1ULL << WIDX_COSTUME_BTN),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3)
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3)
 };
 // clang-format on
 
@@ -309,20 +309,20 @@ void window_staff_disable_widgets(rct_window* w)
 
     if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
     {
-        disabled_widgets |= (1 << WIDX_TAB_2);
+        disabled_widgets |= (1ULL << WIDX_TAB_2);
     }
 
     if (w->page == WINDOW_STAFF_OVERVIEW)
     {
         if (peep->CanBePickedUp())
         {
-            if (w->disabled_widgets & (1 << WIDX_PICKUP))
+            if (w->disabled_widgets & (1ULL << WIDX_PICKUP))
                 w->Invalidate();
         }
         else
         {
-            disabled_widgets |= (1 << WIDX_PICKUP);
-            if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
+            disabled_widgets |= (1ULL << WIDX_PICKUP);
+            if (!(w->disabled_widgets & (1ULL << WIDX_PICKUP)))
                 w->Invalidate();
         }
     }
@@ -815,7 +815,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
             w->pressed_widgets &= ~(
-                (1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2) | (1 << WIDX_CHECKBOX_3) | (1 << WIDX_CHECKBOX_4));
+                (1ULL << WIDX_CHECKBOX_1) | (1ULL << WIDX_CHECKBOX_2) | (1ULL << WIDX_CHECKBOX_3) | (1ULL << WIDX_CHECKBOX_4));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
         case StaffType::Mechanic:
@@ -827,7 +827,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
             window_staff_options_widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
-            w->pressed_widgets &= ~((1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2));
+            w->pressed_widgets &= ~((1ULL << WIDX_CHECKBOX_1) | (1ULL << WIDX_CHECKBOX_2));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
         case StaffType::Security:
@@ -928,7 +928,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos + ScreenCoordsXY{ 2, 2 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_HEARING_VIEWPORT), w->windowPos + ScreenCoordsXY{ 2, 2 });
         }
     }
 
@@ -952,7 +952,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_2))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
@@ -965,7 +965,7 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -974,7 +974,7 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_3))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
@@ -987,7 +987,7 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -995,7 +995,7 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_1))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
@@ -1019,7 +1019,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
+    if (peep->Is<Staff>() && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t ebx = GetPeepAnimation(peep->SpriteType).base_image + 1;
@@ -1033,32 +1033,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     ebx += eax;
 
-    int32_t sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
-    gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords, 0);
-
-    // If holding a balloon
-    if (ebx >= 0x2A1D && ebx < 0x2A3D)
-    {
-        ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
-        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
-    }
-
-    // If holding umbrella
-    if (ebx >= 0x2BBD && ebx < 0x2BDD)
-    {
-        ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
-        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
-    }
-
-    // If wearing hat
-    if (ebx >= 0x29DD && ebx < 0x29FD)
-    {
-        ebx += 32;
-        ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
-        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
-    }
+    gfx_draw_sprite(&clip_dpi, ImageId(ebx, peep->TshirtColour, peep->TrousersColour), screenCoords);
 }
 
 /**
@@ -1139,6 +1114,10 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
             break;
         case StaffType::Security:
+            ft = Formatter();
+            ft.Add<uint16_t>(peep->StaffVandalsStopped);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
+            break;
         case StaffType::Entertainer:
         case StaffType::Count:
             break;

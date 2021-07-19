@@ -25,6 +25,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
@@ -610,7 +611,7 @@ static void window_ride_construction_close(rct_window* w)
             if (!_autoOpeningShop)
             {
                 _autoOpeningShop = true;
-                ride_set_status(ride, RIDE_STATUS_OPEN);
+                ride_set_status(ride, RideStatus::Open);
                 _autoOpeningShop = false;
             }
         }
@@ -650,7 +651,7 @@ static void window_ride_construction_mouseup(rct_window* w, rct_widgetindex widg
         case WIDX_CONSTRUCT:
             window_ride_construction_construct(w);
             // Force any footpath construction to recheck the area.
-            gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_2;
+            gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
             break;
         case WIDX_DEMOLISH:
             window_ride_construction_mouseup_demolish(w);
@@ -669,7 +670,7 @@ static void window_ride_construction_mouseup(rct_window* w, rct_widgetindex widg
             auto ride = get_ride(_currentRideIndex);
             if (ride != nullptr)
             {
-                auto status = ride->status == RIDE_STATUS_SIMULATING ? RIDE_STATUS_CLOSED : RIDE_STATUS_SIMULATING;
+                auto status = ride->status == RideStatus::Simulating ? RideStatus::Closed : RideStatus::Simulating;
                 ride_set_status(ride, status);
             }
             break;
@@ -684,10 +685,10 @@ static void window_ride_construction_mouseup(rct_window* w, rct_widgetindex widg
 static void window_ride_construction_resize(rct_window* w)
 {
     window_ride_construction_update_enabled_track_pieces();
-    w->enabled_widgets &= ~(1 << WIDX_CONSTRUCT);
+    w->enabled_widgets &= ~(1ULL << WIDX_CONSTRUCT);
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
     {
-        w->enabled_widgets |= (1 << WIDX_CONSTRUCT);
+        w->enabled_widgets |= (1ULL << WIDX_CONSTRUCT);
     }
 
     auto ride = get_ride(_currentRideIndex);
@@ -1981,7 +1982,7 @@ static void window_ride_construction_entrance_click(rct_window* w)
     else
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
-        gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
+        gRideEntranceExitPlaceRideIndex = static_cast<ride_id_t>(w->number);
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();
@@ -2036,7 +2037,7 @@ static void window_ride_construction_update(rct_window* w)
 
     // Close construction window if ride is not closed,
     // editing ride while open will cause many issues until properly handled
-    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
         window_close(w);
         return;
@@ -2269,10 +2270,10 @@ static void window_ride_construction_invalidate(rct_window* w)
     // Simulate button
     auto& simulateWidget = w->widgets[WIDX_SIMULATE];
     simulateWidget.type = WindowWidgetType::Empty;
-    if (ride->SupportsStatus(RIDE_STATUS_SIMULATING))
+    if (ride->SupportsStatus(RideStatus::Simulating))
     {
         simulateWidget.type = WindowWidgetType::FlatBtn;
-        if (ride->status == RIDE_STATUS_SIMULATING)
+        if (ride->status == RideStatus::Simulating)
         {
             w->pressed_widgets |= (1ULL << WIDX_SIMULATE);
         }
@@ -2446,7 +2447,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
         // Draw this map tile
-        sub_68B2B7(session, coords);
+        tile_element_paint_setup(session, coords, true);
 
         // Restore map elements
         map_set_tile_element(centreTileCoords, _backupTileElementArrays[0]);
@@ -3114,7 +3115,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
         window_ride_construction_widgets[WIDX_BANK_RIGHT].right = 83;
         window_ride_construction_widgets[WIDX_BANK_RIGHT].top = 139;
         window_ride_construction_widgets[WIDX_BANK_RIGHT].bottom = 148;
-        w->hold_down_widgets |= (1 << WIDX_BANK_STRAIGHT) | (1 << WIDX_BANK_RIGHT);
+        w->hold_down_widgets |= (1ULL << WIDX_BANK_STRAIGHT) | (1ULL << WIDX_BANK_RIGHT);
     }
 
     window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].right = 162;
@@ -3142,10 +3143,10 @@ static void window_ride_construction_update_widgets(rct_window* w)
     }
 
     uint64_t pressedWidgets = w->pressed_widgets
-        & ((1 << WIDX_BACKGROUND) | (1 << WIDX_TITLE) | (1 << WIDX_CLOSE) | (1 << WIDX_DIRECTION_GROUPBOX)
-           | (1 << WIDX_SLOPE_GROUPBOX) | (1 << WIDX_BANKING_GROUPBOX) | (1 << WIDX_CONSTRUCT) | (1 << WIDX_DEMOLISH)
-           | (1 << WIDX_PREVIOUS_SECTION) | (1 << WIDX_NEXT_SECTION) | (1 << WIDX_ENTRANCE_EXIT_GROUPBOX) | (1 << WIDX_ENTRANCE)
-           | (1 << WIDX_EXIT));
+        & ((1ULL << WIDX_BACKGROUND) | (1ULL << WIDX_TITLE) | (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DIRECTION_GROUPBOX)
+           | (1ULL << WIDX_SLOPE_GROUPBOX) | (1ULL << WIDX_BANKING_GROUPBOX) | (1ULL << WIDX_CONSTRUCT)
+           | (1ULL << WIDX_DEMOLISH) | (1ULL << WIDX_PREVIOUS_SECTION) | (1ULL << WIDX_NEXT_SECTION)
+           | (1ULL << WIDX_ENTRANCE_EXIT_GROUPBOX) | (1ULL << WIDX_ENTRANCE) | (1ULL << WIDX_EXIT));
 
     window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_DEMOLISH].type = WindowWidgetType::FlatBtn;
@@ -3276,7 +3277,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     }
 
     if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
-        pressedWidgets |= (1 << WIDX_CHAIN_LIFT);
+        pressedWidgets |= (1ULL << WIDX_CHAIN_LIFT);
 
     w->pressed_widgets = pressedWidgets;
     w->Invalidate();
@@ -4419,6 +4420,14 @@ void window_ride_construction_keyboard_shortcut_slope_down()
 
     switch (_currentTrackSlopeEnd)
     {
+        case TRACK_SLOPE_DOWN_60:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
+                && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+            }
+            break;
         case TRACK_SLOPE_DOWN_25:
             if (!WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
@@ -4430,6 +4439,12 @@ void window_ride_construction_keyboard_shortcut_slope_down()
             if (!WidgetIsDisabled(w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+            }
+            else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+            {
+                return;
             }
             else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
@@ -4476,6 +4491,12 @@ void window_ride_construction_keyboard_shortcut_slope_down()
                 window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
             }
             else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+            {
+                return;
+            }
+            else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
@@ -4484,6 +4505,14 @@ void window_ride_construction_keyboard_shortcut_slope_down()
             else
             {
                 return;
+            }
+            break;
+        case TRACK_SLOPE_UP_90:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
+                && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
             }
             break;
         default:
@@ -4501,6 +4530,14 @@ void window_ride_construction_keyboard_shortcut_slope_up()
 
     switch (_currentTrackSlopeEnd)
     {
+        case TRACK_SLOPE_UP_60:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
+                && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+            }
+            break;
         case TRACK_SLOPE_UP_25:
             if (!WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
@@ -4511,6 +4548,12 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             if (!WidgetIsDisabled(w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+            }
+            else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+            {
+                return;
             }
             else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
@@ -4555,6 +4598,12 @@ void window_ride_construction_keyboard_shortcut_slope_up()
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP);
             }
             else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+            {
+                return;
+            }
+            else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
@@ -4562,6 +4611,14 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             else
             {
                 return;
+            }
+            break;
+        case TRACK_SLOPE_DOWN_90:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
+                && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
             }
             break;
         default:

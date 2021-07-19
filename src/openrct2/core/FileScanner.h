@@ -11,6 +11,7 @@
 
 #include "../common.h"
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -50,7 +51,7 @@ namespace Path
      * @param recurse Whether to scan sub directories or not.
      * @returns A new FileScanner, this must be deleted when no longer needed.
      */
-    IFileScanner* ScanDirectory(const std::string& pattern, bool recurse);
+    std::unique_ptr<IFileScanner> ScanDirectory(const std::string& pattern, bool recurse);
 
     /**
      * Scans a directory and all sub directories

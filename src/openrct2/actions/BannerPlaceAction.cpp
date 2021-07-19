@@ -55,15 +55,15 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
     res->Expenditure = ExpenditureType::Landscaping;
     res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
-    if (!map_check_free_elements_and_reorganise(1))
-    {
-        log_error("No free map elements.");
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
-    }
-
     if (!LocationValid(_loc))
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+    }
+
+    if (!MapCheckCapacityAndReorganise(_loc))
+    {
+        log_error("No free map elements.");
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
     }
 
     auto pathElement = GetValidPathElement();
@@ -99,13 +99,13 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
     }
 
-    rct_scenery_entry* bannerEntry = get_banner_entry(_bannerType);
+    auto* bannerEntry = get_banner_entry(_bannerType);
     if (bannerEntry == nullptr)
     {
         log_error("Invalid banner object type. bannerType = ", _bannerType);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
     }
-    res->Cost = bannerEntry->banner.price;
+    res->Cost = bannerEntry->price;
     return res;
 }
 
@@ -118,7 +118,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     res->Expenditure = ExpenditureType::Landscaping;
     res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
-    if (!map_check_free_elements_and_reorganise(1))
+    if (!MapCheckCapacityAndReorganise(_loc))
     {
         log_error("No free map elements.");
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
@@ -130,7 +130,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
     }
 
-    rct_scenery_entry* bannerEntry = get_banner_entry(_bannerType);
+    auto* bannerEntry = get_banner_entry(_bannerType);
     if (bannerEntry == nullptr)
     {
         log_error("Invalid banner object type. bannerType = ", _bannerType);
@@ -162,7 +162,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     map_invalidate_tile_full(_loc);
     map_animation_create(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
 
-    res->Cost = bannerEntry->banner.price;
+    res->Cost = bannerEntry->price;
     return res;
 }
 

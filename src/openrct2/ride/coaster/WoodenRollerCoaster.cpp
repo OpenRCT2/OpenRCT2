@@ -7,14 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../config/Config.h"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
+#include "../../paint/tile_element/Paint.Surface.h"
 #include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
-#include "../../world/Sprite.h"
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
@@ -200,8 +201,10 @@ enum
     SPR_WOODEN_RC_FLAT_NW_SE = 23754,
     SPR_WOODEN_RC_BRAKES_SW_NE = 23755,
     SPR_WOODEN_RC_BRAKES_NW_SE = 23756,
-    SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE = 23757,
-    SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE = 23758,
+    SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN = 23757,
+    SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN = 23758,
+    SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED = 23759,
+    SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED = 23760,
 
     SPR_WOODEN_RC_STATION_SW_NE = 23973,
     SPR_WOODEN_RC_STATION_NW_SE = 23974,
@@ -383,11 +386,11 @@ enum
     SPR_WOODEN_RC_STATION_RAILS_NW_SE = 24840,
 };
 
-static constexpr const uint32_t _wooden_rc_block_brakes_image_ids[4][2] = {
-    { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
-    { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
-    { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
-    { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
+static constexpr const uint32_t _wooden_rc_block_brakes_image_ids[4][3] = {
+    { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
+    { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
+    { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
+    { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
 };
 
 static uint32_t wooden_rc_get_track_colour(paint_session* session)
@@ -475,9 +478,11 @@ static void wooden_rc_track_station(
     int32_t trackType = tileElement->AsTrack()->GetTrackType();
     if (trackType == TrackElemType::EndStation)
     {
+        const auto brakeImg = tileElement->AsTrack()->BlockBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
+                                                                         : _wooden_rc_block_brakes_image_ids[direction][0];
         wooden_rc_track_paint(
-            session, _wooden_rc_block_brakes_image_ids[direction][0], _wooden_rc_block_brakes_image_ids[direction][1],
-            direction, 0, 2, 32, 27, 2, height, 0, 2, height);
+            session, brakeImg, _wooden_rc_block_brakes_image_ids[direction][2], direction, 0, 2, 32, 27, 2, height, 0, 2,
+            height);
     }
     else
     {
@@ -6078,6 +6083,9 @@ static void wooden_rc_track_water_splash(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    const bool transparent = gConfigGeneral.transparent_water || (session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+    const uint32_t waterOverlay = transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY;
+
     switch (trackSequence)
     {
         case 0:
@@ -6089,9 +6097,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24855, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23997, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6109,9 +6117,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24856, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23998, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6129,9 +6137,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24853, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23995, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6149,9 +6157,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24854, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23996, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6178,9 +6186,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24843, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23985, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6198,9 +6206,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24844, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23986, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6218,9 +6226,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24841, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23983, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6238,9 +6246,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24842, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23984, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6267,9 +6275,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24865, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24003, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6288,9 +6296,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24866, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24004, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6316,9 +6324,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24841, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23983, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6336,9 +6344,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24842, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23984, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6356,9 +6364,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24843, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23985, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6376,9 +6384,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24844, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23986, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6404,9 +6412,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24853, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23995, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6424,9 +6432,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24854, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23996, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6444,9 +6452,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24855, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23997, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -6464,9 +6472,9 @@ static void wooden_rc_track_water_splash(
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24856, 0, 0, 32, 25, 2, height, 0, 3, height);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x61000000 | SPR_WATER_MASK, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
-                        session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
+                        session, direction, 0x00000000 | waterOverlay, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     PaintAddImageAsChildRotated(
                         session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23998, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
@@ -11483,9 +11491,10 @@ static void wooden_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    const auto brakeImg = tileElement->AsTrack()->BlockBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
+                                                                     : _wooden_rc_block_brakes_image_ids[direction][0];
     wooden_rc_track_paint(
-        session, _wooden_rc_block_brakes_image_ids[direction][0], _wooden_rc_block_brakes_image_ids[direction][1], direction, 0,
-        2, 32, 25, 2, height, 0, 3, height);
+        session, brakeImg, _wooden_rc_block_brakes_image_ids[direction][2], direction, 0, 2, 32, 25, 2, height, 0, 3, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

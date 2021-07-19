@@ -17,7 +17,11 @@
 
 struct Banner;
 struct CoordsXY;
-struct rct_scenery_entry;
+struct LargeSceneryEntry;
+struct SmallSceneryEntry;
+struct WallSceneryEntry;
+struct PathBitEntry;
+struct BannerSceneryEntry;
 struct rct_footpath_entry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
@@ -324,7 +328,7 @@ public:
     bool HasAddition() const;
     uint8_t GetAddition() const;
     ObjectEntryIndex GetAdditionEntryIndex() const;
-    rct_scenery_entry* GetAdditionEntry() const;
+    PathBitEntry* GetAdditionEntry() const;
     void SetAddition(uint8_t newAddition);
 
     bool AdditionIsGhost() const;
@@ -458,7 +462,7 @@ private:
 public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
-    rct_scenery_entry* GetEntry() const;
+    SmallSceneryEntry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
     void IncreaseAge(const CoordsXY& sceneryPos);
@@ -492,7 +496,7 @@ private:
 public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
-    rct_scenery_entry* GetEntry() const;
+    LargeSceneryEntry* GetEntry() const;
     const LargeSceneryObject* GetObject() const;
 
     uint8_t GetSequenceIndex() const;
@@ -531,7 +535,7 @@ private:
 public:
     uint16_t GetEntryIndex() const;
     void SetEntryIndex(uint16_t newIndex);
-    rct_scenery_entry* GetEntry() const;
+    WallSceneryEntry* GetEntry() const;
 
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newslope);
@@ -604,7 +608,7 @@ private:
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;
-    rct_scenery_entry* GetEntry() const;
+    BannerSceneryEntry* GetEntry() const;
 
     BannerIndex GetIndex() const;
     void SetIndex(BannerIndex newIndex);

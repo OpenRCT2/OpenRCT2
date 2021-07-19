@@ -23,7 +23,6 @@
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Scenery.h"
-#include "../../world/Sprite.h"
 #include "../../world/Surface.h"
 #include "../Paint.h"
 #include "../Supports.h"
@@ -46,35 +45,14 @@ const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 |
  *
  *  rct2: 0x0068B35F
  */
-void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y)
+void tile_element_paint_setup(paint_session* session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
 {
-    if (x < gMapSizeUnits && y < gMapSizeUnits && x >= 32 && y >= 32)
+    if (!map_is_edge(mapCoords))
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(session, -1, 0);
-        session->Unk141E9DB = 0;
+        session->Unk141E9DB = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
         session->WaterHeight = 0xFFFF;
-
-        sub_68B3FB(session, x, y);
-    }
-    else if (!(session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
-    {
-        blank_tiles_paint(session, x, y);
-    }
-}
-
-/**
- *
- *  rct2: 0x0068B2B7
- */
-void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords)
-{
-    if (mapCoords.x < gMapSizeUnits && mapCoords.y < gMapSizeUnits && mapCoords.x >= 32 && mapCoords.y >= 32)
-    {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_force_set_general_support_height(session, -1, 0);
-        session->WaterHeight = 0xFFFF;
-        session->Unk141E9DB = G141E9DB_FLAG_2;
 
         sub_68B3FB(session, mapCoords.x, mapCoords.y);
     }
@@ -125,7 +103,7 @@ static void blank_tiles_paint(paint_session* session, int32_t x, int32_t y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->InteractionType = ViewportInteractionItem::None;
-    PaintAddImageAsParent(session, SPR_BLANK_TILE, 0, 0, 32, 32, -1, 16);
+    PaintAddImageAsParent(session, SPR_BLANK_TILE, { 0, 0, 16 }, { 32, 32, -1 });
 }
 
 bool gShowSupportSegmentHeights = false;
@@ -201,7 +179,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         session->SpritePosition.y = y;
         session->InteractionType = ViewportInteractionItem::None;
 
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, -1, arrowZ, 0, 0, arrowZ + 18);
+        PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { 32, 32, -1 }, { 0, 0, arrowZ + 18 });
     }
     int32_t bx = dx + 52;
 
@@ -372,8 +350,8 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             int32_t xOffset = sy * 10;
             int32_t yOffset = -22 + sx * 10;
             paint_struct* ps = PaintAddImageAsParent(
-                session, 5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16,
-                segmentHeight);
+                session, 5504 | imageColourFlats, { xOffset, yOffset, segmentHeight }, { 10, 10, 1 },
+                { xOffset + 1, yOffset + 16, segmentHeight });
             if (ps != nullptr)
             {
                 ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;

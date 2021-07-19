@@ -421,8 +421,8 @@ static void window_mapgen_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 static int32_t _mapSize = 150;
 static int32_t _baseHeight = 12;
 static int32_t _waterLevel = 6;
-static int32_t _floorTexture = TERRAIN_GRASS;
-static int32_t _wallTexture = TERRAIN_EDGE_ROCK;
+static int32_t _floorTexture = 0;
+static int32_t _wallTexture = 0;
 static bool _randomTerrain = true;
 static int32_t _placeTrees = 1;
 
@@ -780,9 +780,9 @@ static void window_mapgen_random_invalidate(rct_window* w)
 
     w->pressed_widgets = 0;
     if (_randomTerrain)
-        w->pressed_widgets |= 1 << WIDX_RANDOM_TERRAIN;
+        w->pressed_widgets |= 1ULL << WIDX_RANDOM_TERRAIN;
     if (_placeTrees)
-        w->pressed_widgets |= 1 << WIDX_RANDOM_PLACE_TREES;
+        w->pressed_widgets |= 1ULL << WIDX_RANDOM_PLACE_TREES;
 
     window_mapgen_set_pressed_tab(w);
 }
@@ -1319,7 +1319,8 @@ static void window_mapgen_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, 
         }
 
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
+            dpi, ImageId(spriteIndex),
+            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
 }
 

@@ -11,10 +11,11 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../peep/Peep.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
-
+#include "../Vehicle.h"
 enum
 {
     SPR_SPACE_RINGS_FENCE_NE = 22146,
@@ -49,7 +50,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
         {
             session->InteractionType = ViewportInteractionItem::Entity;
             session->CurrentlyDrawnItem = vehicle;
-            frameNum += static_cast<int8_t>(vehicle->vehicle_sprite_type) * 4;
+            frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
         }
 
         uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];

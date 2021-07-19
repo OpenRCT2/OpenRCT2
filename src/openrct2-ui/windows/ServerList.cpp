@@ -129,8 +129,8 @@ rct_window* window_server_list_open()
     window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
     window->widgets = window_server_list_widgets;
     window->enabled_widgets
-        = ((1 << WIDX_CLOSE) | (1 << WIDX_PLAYER_NAME_INPUT) | (1 << WIDX_FETCH_SERVERS) | (1 << WIDX_ADD_SERVER)
-           | (1 << WIDX_START_SERVER));
+        = ((1ULL << WIDX_CLOSE) | (1ULL << WIDX_PLAYER_NAME_INPUT) | (1ULL << WIDX_FETCH_SERVERS) | (1ULL << WIDX_ADD_SERVER)
+           | (1ULL << WIDX_START_SERVER));
     WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
@@ -493,14 +493,14 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             bool correctVersion = serverDetails.Version == network_get_version();
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
-        gfx_draw_sprite(dpi, compatibilitySpriteId, { right, screenCoords.y + 1 }, 0);
+        gfx_draw_sprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
         right -= 4;
 
         // Draw lock icon
         right -= 8;
         if (serverDetails.RequiresPassword)
         {
-            gfx_draw_sprite(dpi, SPR_G2_LOCKED, { right, screenCoords.y + 4 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
         }
         right -= 6;
 
@@ -520,7 +520,7 @@ static void server_list_get_item_button(int32_t buttonIndex, int32_t x, int32_t 
 
 static void join_server(std::string address)
 {
-    int32_t port = gConfigNetwork.default_port;
+    int32_t port = NETWORK_DEFAULT_PORT;
     auto beginBracketIndex = address.find('[');
     auto endBracketIndex = address.find(']');
     auto dotIndex = address.find('.');

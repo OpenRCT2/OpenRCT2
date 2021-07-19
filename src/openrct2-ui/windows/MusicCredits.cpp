@@ -109,7 +109,7 @@ rct_window* window_music_credits_open()
     window = WindowCreateCentred(510, 314, &window_music_credits_events, WC_MUSIC_CREDITS, 0);
 
     window->widgets = window_music_credits_widgets;
-    window->enabled_widgets = 1 << WIDX_CLOSE;
+    window->enabled_widgets = 1ULL << WIDX_CLOSE;
 
     WindowInitScrollWidgets(window);
     window->colours[0] = COLOUR_LIGHT_BLUE;
@@ -175,7 +175,7 @@ static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* d
 
     // Draw the separator
     screenCoords.y += 5;
-    gfx_fill_rect_inset(dpi, 4, screenCoords.y, 484, screenCoords.y + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
+    gfx_fill_rect_inset(dpi, { 4, screenCoords.y, 484, screenCoords.y + 1 }, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
     screenCoords.y += lineHeight + 1;
 
     for (size_t i = 0; i < std::size(music_credits_rct2); i++)

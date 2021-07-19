@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -139,9 +139,6 @@ static paint_struct* CreateNormalPaintStruct(
     paint_session* session, const uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset)
 {
-    if (session->NoPaintStructsAvailable())
-        return nullptr;
-
     auto* const g1 = gfx_get_g1_element(image_id & 0x7FFFF);
     if (g1 == nullptr)
     {
@@ -162,7 +159,12 @@ static paint_struct* CreateNormalPaintStruct(
     const auto rotBoundBoxOffset = CoordsXYZ{ boundBoxOffset.Rotate(swappedRotation), boundBoxOffset.z };
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session->CurrentRotation);
 
-    paint_struct* ps = session->AllocateNormalPaintEntry();
+    auto* ps = session->AllocateNormalPaintEntry();
+    if (ps == nullptr)
+    {
+        return nullptr;
+    }
+
     ps->image_id = image_id;
     ps->x = imagePos.x;
     ps->y = imagePos.y;
@@ -207,14 +209,14 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
 
     for (; numVerticalTiles > 0; --numVerticalTiles)
     {
-        tile_element_paint_setup(session, mapTile.x, mapTile.y);
+        tile_element_paint_setup(session, mapTile);
         sprite_paint_setup(session, mapTile.x, mapTile.y);
 
         auto loc1 = mapTile + adjacentTiles[0];
         sprite_paint_setup(session, loc1.x, loc1.y);
 
         auto loc2 = mapTile + adjacentTiles[1];
-        tile_element_paint_setup(session, loc2.x, loc2.y);
+        tile_element_paint_setup(session, loc2);
         sprite_paint_setup(session, loc2.x, loc2.y);
 
         auto loc3 = mapTile + adjacentTiles[2];
@@ -383,7 +385,7 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
     }
 }
 
-template<int TRotation> static void PaintSessionArrange(paint_session* session, bool)
+template<int TRotation> static void PaintSessionArrange(PaintSessionCore* session, bool)
 {
     paint_struct* psHead = &session->PaintHead;
 
@@ -423,7 +425,7 @@ template<int TRotation> static void PaintSessionArrange(paint_session* session, 
  *
  *  rct2: 0x00688217
  */
-void PaintSessionArrange(paint_session* session)
+void PaintSessionArrange(PaintSessionCore* session)
 {
     switch (session->CurrentRotation)
     {
@@ -647,6 +649,7 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem 
             case ViewportInteractionItem::Banner:
                 imageId &= 0x7FFFF;
                 imageId |= seeThoughFlags;
+                break;
             default:
                 break;
         }
@@ -660,6 +663,7 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem 
             case ViewportInteractionItem::Wall:
                 imageId &= 0x7FFFF;
                 imageId |= seeThoughFlags;
+                break;
             default:
                 break;
         }
@@ -692,9 +696,7 @@ void PaintSessionFree([[maybe_unused]] paint_session* session)
 paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
-    return PaintAddImageAsParent(
-        session, image_id, offset.x, offset.y, boundBoxSize.x, boundBoxSize.y, boundBoxSize.z, offset.z, offset.x, offset.y,
-        offset.z);
+    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize, offset);
 }
 
 paint_struct* PaintAddImageAsParent(
@@ -722,16 +724,11 @@ paint_struct* PaintAddImageAsParent(
  */
 // Track Pieces, Shops.
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    const CoordsXYZ& boundBoxOffset)
 {
     session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
-
-    CoordsXYZ offset = { x_offset, y_offset, z_offset };
-    CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-    CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
 
     auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
     if (ps == nullptr)
@@ -742,6 +739,16 @@ paint_struct* PaintAddImageAsParent(
     PaintSessionAddPSToQuadrant(session, ps);
 
     return ps;
+}
+
+paint_struct* PaintAddImageAsParent(
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+{
+    return PaintAddImageAsParent(
+        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
+        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
 }
 
 /**
@@ -809,9 +816,7 @@ paint_struct* PaintAddImageAsChild(
     paint_struct* parentPS = session->LastPS;
     if (parentPS == nullptr)
     {
-        return PaintAddImageAsParent(
-            session, image_id, offset.x, offset.y, boundBoxLength.x, boundBoxLength.y, boundBoxLength.z, offset.z,
-            boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
+        return PaintAddImageAsParent(session, image_id, offset, boundBoxLength, boundBoxOffset);
     }
 
     auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxLength, boundBoxOffset);
@@ -847,18 +852,18 @@ paint_struct* PaintAddImageAsChild(
  */
 bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
 {
-    if (session->NoPaintStructsAvailable())
-    {
-        return false;
-    }
-
-    attached_paint_struct* previousAttachedPS = session->LastAttachedPS;
+    auto* previousAttachedPS = session->LastAttachedPS;
     if (previousAttachedPS == nullptr)
     {
         return PaintAttachToPreviousPS(session, image_id, x, y);
     }
 
-    attached_paint_struct* ps = session->AllocateAttachedPaintEntry();
+    auto* ps = session->AllocateAttachedPaintEntry();
+    if (ps == nullptr)
+    {
+        return false;
+    }
+
     ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
@@ -880,18 +885,18 @@ bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int1
  */
 bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
 {
-    if (session->NoPaintStructsAvailable())
-    {
-        return false;
-    }
-
-    paint_struct* masterPs = session->LastPS;
+    auto* masterPs = session->LastPS;
     if (masterPs == nullptr)
     {
         return false;
     }
 
-    attached_paint_struct* ps = session->AllocateAttachedPaintEntry();
+    auto* ps = session->AllocateAttachedPaintEntry();
+    if (ps == nullptr)
+    {
+        return false;
+    }
+
     ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
@@ -918,7 +923,8 @@ void PaintFloatingMoneyEffect(
     paint_session* session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
     uint32_t rotation)
 {
-    if (session->NoPaintStructsAvailable())
+    auto* ps = session->AllocateStringPaintEntry();
+    if (ps == nullptr)
     {
         return;
     }
@@ -930,7 +936,6 @@ void PaintFloatingMoneyEffect(
     };
     const auto coord = translate_3d_to_2d_with_z(rotation, position);
 
-    paint_string_struct* ps = session->AllocateStringPaintEntry();
     ps->string_id = string_id;
     ps->next = nullptr;
     ps->args[0] = amount;
@@ -965,4 +970,134 @@ void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
             dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontSpriteBase::MEDIUM);
     } while ((ps = ps->next) != nullptr);
+}
+
+PaintEntryPool::Chain::Chain(PaintEntryPool* pool)
+    : Pool(pool)
+{
+}
+
+PaintEntryPool::Chain::Chain(Chain&& chain)
+{
+    *this = std::move(chain);
+}
+
+PaintEntryPool::Chain::~Chain()
+{
+    Clear();
+}
+
+PaintEntryPool::Chain& PaintEntryPool::Chain::operator=(Chain&& chain) noexcept
+{
+    Pool = chain.Pool;
+    Head = chain.Head;
+    Current = chain.Current;
+    chain.Pool = nullptr;
+    chain.Head = nullptr;
+    chain.Current = nullptr;
+    return *this;
+}
+
+paint_entry* PaintEntryPool::Chain::Allocate()
+{
+    if (Pool == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (Current == nullptr)
+    {
+        assert(Head == nullptr);
+        Head = Pool->AllocateNode();
+        if (Head == nullptr)
+        {
+            // Unable to allocate any more nodes
+            return nullptr;
+        }
+        Current = Head;
+    }
+    else if (Current->Count >= NodeSize)
+    {
+        // We need another node
+        Current->Next = Pool->AllocateNode();
+        if (Current->Next == nullptr)
+        {
+            // Unable to allocate any more nodes
+            return nullptr;
+        }
+        Current = Current->Next;
+    }
+
+    assert(Current->Count < NodeSize);
+    return &Current->PaintStructs[Current->Count++];
+}
+
+void PaintEntryPool::Chain::Clear()
+{
+    if (Pool != nullptr)
+    {
+        Pool->FreeNodes(Head);
+        Head = nullptr;
+        Current = nullptr;
+    }
+    assert(Head == nullptr);
+    assert(Current == nullptr);
+}
+
+size_t PaintEntryPool::Chain::GetCount() const
+{
+    size_t count = 0;
+    auto current = Head;
+    while (current != nullptr)
+    {
+        count += current->Count;
+        current = current->Next;
+    }
+    return count;
+}
+
+PaintEntryPool::~PaintEntryPool()
+{
+    for (auto node : _available)
+    {
+        delete node;
+    }
+    _available.clear();
+}
+
+PaintEntryPool::Node* PaintEntryPool::AllocateNode()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    PaintEntryPool::Node* result;
+    if (_available.size() > 0)
+    {
+        result = _available.back();
+        _available.pop_back();
+    }
+    else
+    {
+        result = new (std::nothrow) PaintEntryPool::Node();
+    }
+    return result;
+}
+
+PaintEntryPool::Chain PaintEntryPool::Create()
+{
+    return PaintEntryPool::Chain(this);
+}
+
+void PaintEntryPool::FreeNodes(PaintEntryPool::Node* head)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    auto node = head;
+    while (node != nullptr)
+    {
+        auto next = node->Next;
+        node->Next = nullptr;
+        node->Count = 0;
+        _available.push_back(node);
+        node = next;
+    }
 }

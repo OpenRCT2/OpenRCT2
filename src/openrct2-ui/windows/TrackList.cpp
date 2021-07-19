@@ -14,6 +14,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/localisation/Localisation.h>
@@ -27,6 +28,9 @@
 static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_DESIGN;
 static constexpr const int32_t WH = 431;
 static constexpr const int32_t WW = 600;
+static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
+static constexpr const int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
+static constexpr const int32_t WINDOW_PADDING = 5;
 
 // clang-format off
 enum {
@@ -51,8 +55,8 @@ static rct_widget window_track_list_widgets[] = {
     MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary  , STR_OBJECT_SEARCH_CLEAR                                     ),
     MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
     MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                                ),
-    MakeWidget({574, 405}, { 24,  24}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
-    MakeWidget({574, 381}, { 24,  24}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
+    MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
+    MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
     { WIDGETS_END },
 };
 
@@ -120,7 +124,7 @@ rct_window* window_track_list_open(RideSelection item)
         screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
 
-    rct_window* w = WindowCreate(screenPos, 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
+    rct_window* w = WindowCreate(screenPos, 600, WH, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
 
     window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
     w->widgets = window_track_list_widgets;
@@ -237,7 +241,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
     // Displays a message if the ride can't load, fix #4080
     if (_loadedTrackDesign == nullptr)
     {
-        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
+        context_show_error(STR_CANT_BUILD_THIS_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
         return;
     }
 
@@ -450,26 +454,35 @@ static void window_track_list_invalidate(rct_window* w)
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || w->selected_list_item != 0)
     {
-        w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
-        w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
+        w->pressed_widgets |= 1ULL << WIDX_TRACK_PREVIEW;
+        w->disabled_widgets &= ~(1ULL << WIDX_TRACK_PREVIEW);
         window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
         window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
         if (gTrackDesignSceneryToggle)
         {
-            w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
+            w->pressed_widgets &= ~(1ULL << WIDX_TOGGLE_SCENERY);
         }
         else
         {
-            w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
+            w->pressed_widgets |= (1ULL << WIDX_TOGGLE_SCENERY);
         }
     }
     else
     {
-        w->pressed_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
-        w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
+        w->pressed_widgets &= ~(1ULL << WIDX_TRACK_PREVIEW);
+        w->disabled_widgets |= (1ULL << WIDX_TRACK_PREVIEW);
         window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
         window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
     }
+
+    // When debugging tools are on, shift everything up a bit to make room for displaying the path.
+    const int32_t bottomMargin = gConfigGeneral.debugging_tools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
+    window_track_list_widgets[WIDX_TRACK_LIST].bottom = w->height - bottomMargin;
+    window_track_list_widgets[WIDX_ROTATE].bottom = w->height - bottomMargin;
+    window_track_list_widgets[WIDX_ROTATE].top = window_track_list_widgets[WIDX_ROTATE].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
+    window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom = window_track_list_widgets[WIDX_ROTATE].top;
+    window_track_list_widgets[WIDX_TOGGLE_SCENERY].top = window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom
+        - ROTATE_AND_SCENERY_BUTTON_SIZE;
 }
 
 /**
@@ -500,13 +513,26 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Track preview
     int32_t colour;
     rct_widget* widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
-    auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     colour = ColourMapA[w->colours[0]].darkest;
+    utf8* path = _trackDesigns[trackIndex].path;
+
+    // Show track file path (in debug mode)
+    if (gConfigGeneral.debugging_tools)
+    {
+        utf8 pathBuffer[MAX_PATH];
+        const utf8* pathPtr = pathBuffer;
+        shorten_path(pathBuffer, sizeof(pathBuffer), path, w->width, FontSpriteBase::MEDIUM);
+        auto ft = Formatter();
+        ft.Add<utf8*>(pathPtr);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 0, w->height - DEBUG_PATH_HEIGHT - 3 }, STR_STRING, ft, { w->colours[1] });
+    }
+
+    auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     gfx_fill_rect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
     if (_loadedTrackDesignIndex != trackIndex)
     {
-        utf8* path = _trackDesigns[trackIndex].path;
         if (track_list_load_design_for_preview(path))
         {
             _loadedTrackDesignIndex = trackIndex;
@@ -532,7 +558,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     g1temp.flags = G1_FLAG_BMP;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
-    gfx_draw_sprite(dpi, SPR_TEMP, trackPreview, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TEMP), trackPreview);
 
     screenPos.y = w->windowPos.y + widget->bottom - 12;
 

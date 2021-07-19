@@ -101,11 +101,11 @@ public:
     void OnOpen() override
     {
         widgets = window_staff_list_widgets;
-        enabled_widgets = (1 << WIDX_STAFF_LIST_CLOSE) | (1 << WIDX_STAFF_LIST_HANDYMEN_TAB)
-            | (1 << WIDX_STAFF_LIST_MECHANICS_TAB) | (1 << WIDX_STAFF_LIST_SECURITY_TAB)
-            | (1 << WIDX_STAFF_LIST_ENTERTAINERS_TAB) | (1 << WIDX_STAFF_LIST_HIRE_BUTTON)
-            | (1 << WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER) | (1 << WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
-            | (1 << WIDX_STAFF_LIST_MAP) | (1 << WIDX_STAFF_LIST_QUICK_FIRE);
+        enabled_widgets = (1ULL << WIDX_STAFF_LIST_CLOSE) | (1ULL << WIDX_STAFF_LIST_HANDYMEN_TAB)
+            | (1ULL << WIDX_STAFF_LIST_MECHANICS_TAB) | (1ULL << WIDX_STAFF_LIST_SECURITY_TAB)
+            | (1ULL << WIDX_STAFF_LIST_ENTERTAINERS_TAB) | (1ULL << WIDX_STAFF_LIST_HIRE_BUTTON)
+            | (1ULL << WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER) | (1ULL << WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
+            | (1ULL << WIDX_STAFF_LIST_MAP) | (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
         WindowInitScrollWidgets(this);
 
         widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
@@ -189,7 +189,7 @@ public:
             if (window_find_by_class(WC_MAP) != nullptr)
             {
                 gWindowMapFlashingFlags |= MapFlashingFlags::StaffListOpen;
-                for (auto peep : EntityList<Staff>(EntityListId::Peep))
+                for (auto peep : EntityList<Staff>())
                 {
                     sprite_set_flashing(peep, false);
                     if (peep->AssignedStaffType == GetSelectedStaffType())
@@ -416,7 +416,7 @@ public:
                 // True if a patrol path is set for the worker
                 if (gStaffModes[peep->StaffId] == StaffMode::Patrol)
                 {
-                    gfx_draw_sprite(&dpi, SPR_STAFF_PATROL_PATH, { nameColumnSize + 5, y }, 0);
+                    gfx_draw_sprite(&dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                 }
 
                 auto staffOrderIcon_x = nameColumnSize + 20;
@@ -429,7 +429,7 @@ public:
                     {
                         if (staffOrders & 1)
                         {
-                            gfx_draw_sprite(&dpi, staffOrderSprite, { staffOrderIcon_x, y }, 0);
+                            gfx_draw_sprite(&dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
                         }
                         staffOrders = staffOrders >> 1;
                         staffOrderIcon_x += 9;
@@ -439,7 +439,7 @@ public:
                 }
                 else
                 {
-                    gfx_draw_sprite(&dpi, GetEntertainerCostumeSprite(peep->SpriteType), { staffOrderIcon_x, y }, 0);
+                    gfx_draw_sprite(&dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
                 }
             }
 
@@ -483,7 +483,7 @@ public:
     {
         _staffList.clear();
 
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
             sprite_set_flashing(peep, false);
             if (peep->AssignedStaffType == GetSelectedStaffType())
@@ -517,8 +517,8 @@ private:
         const auto& widget = widgets[widgetIndex];
         auto imageId = (_selectedTab == tabIndex ? (_tabAnimationIndex & ~3) : 0);
         imageId += GetPeepAnimation(type).base_image + 1;
-        imageId |= SPRITE_ID_PALETTE_COLOUR_1(colour);
-        gfx_draw_sprite(&dpi, imageId, windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 }, 0);
+        gfx_draw_sprite(
+            &dpi, ImageId(imageId, colour), windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
     }
 
     void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabIndex, PeepSpriteType type) const
@@ -532,7 +532,7 @@ private:
         {
             auto imageId = (_selectedTab == 3 ? (_tabAnimationIndex & ~3) : 0);
             imageId += GetPeepAnimation(type).base_image + 1;
-            gfx_draw_sprite(&clippedDpi, imageId, { 15, 23 }, 0);
+            gfx_draw_sprite(&clippedDpi, ImageId(imageId), { 15, 23 });
         }
     }
 
@@ -559,7 +559,7 @@ private:
 
         Peep* closestPeep = nullptr;
         auto closestPeepDistance = std::numeric_limits<int32_t>::max();
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
             if (peep->AssignedStaffType != GetSelectedStaffType())
                 continue;

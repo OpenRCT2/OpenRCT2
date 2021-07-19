@@ -14,8 +14,10 @@
 #include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
+#include "../paint/sprite/Paint.Sprite.h"
 #include "../ride/RideData.h"
-#include "../world/Sprite.h"
+#include "../ride/Vehicle.h"
+#include "../world/Entity.h"
 #include "Track.h"
 
 #include <iterator>
@@ -966,11 +968,11 @@ static void vehicle_sprite_paint_6D51EB(
     paint_session* session, const Vehicle* vehicle, int32_t ebx, int32_t z, const rct_ride_entry_vehicle* vehicleEntry)
 {
     int32_t ecx = ebx / 2;
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
     {
         ebx = ebx / 2;
     }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15)
+    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
     {
         ebx = ebx / 8;
     }
@@ -2498,7 +2500,7 @@ static void vehicle_sprite_24(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS)
     {
-        int32_t eax = ((vehicle->vehicle_sprite_type - 24) * 4);
+        int32_t eax = ((vehicle->Pitch - 24) * 4);
         int32_t ecx = (imageDirection / 8) + eax + 144;
         int32_t ebx = (((imageDirection / 8) + eax) * vehicleEntry->base_num_frames) + vehicleEntry->corkscrew_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
@@ -2994,7 +2996,7 @@ static void vehicle_visual_splash2_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3017,7 +3019,7 @@ static void vehicle_visual_splash3_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3049,7 +3051,7 @@ static void vehicle_visual_splash4_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3077,7 +3079,7 @@ static void vehicle_visual_splash5_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle->Pitch != 0)
     {
         return;
     }
@@ -3121,9 +3123,9 @@ void vehicle_visual_default(
     paint_session* session, int32_t imageDirection, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->vehicle_sprite_type < std::size(vehicle_sprite_funcs))
+    if (vehicle->Pitch < std::size(vehicle_sprite_funcs))
     {
-        vehicle_sprite_funcs[vehicle->vehicle_sprite_type](session, vehicle, imageDirection, z, vehicleEntry);
+        vehicle_sprite_funcs[vehicle->Pitch](session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -3131,7 +3133,7 @@ void vehicle_visual_default(
  *
  *  rct2: 0x006D4244
  */
-void vehicle_paint(paint_session* session, const Vehicle* vehicle, int32_t imageDirection)
+template<> void PaintEntity(paint_session* session, const Vehicle* vehicle, int32_t imageDirection)
 {
     const rct_ride_entry_vehicle* vehicleEntry;
 
@@ -3139,14 +3141,14 @@ void vehicle_paint(paint_session* session, const Vehicle* vehicle, int32_t image
     int32_t y = vehicle->y;
     int32_t z = vehicle->z;
 
-    if (vehicle->flags & SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE)
+    if (vehicle->IsCrashedVehicle)
     {
         uint32_t ebx = 22965 + vehicle->animation_frame;
         PaintAddImageAsParent(session, ebx, 0, 0, 1, 1, 0, z, 0, 0, z + 2);
         return;
     }
 
-    if (vehicle->ride_subtype == RIDE_ENTRY_INDEX_NULL)
+    if (vehicle->ride_subtype == OBJECT_ENTRY_INDEX_NULL)
     {
         vehicleEntry = &CableLiftVehicle;
     }

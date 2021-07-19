@@ -11,7 +11,6 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../peep/Peep.h"
-#include "../../world/Sprite.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
 
@@ -19,12 +18,12 @@
  *
  *  rct2: 0x0068F0FB
  */
-void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection)
+template<> void PaintEntity(paint_session* session, const Peep* peep, int32_t imageDirection)
 {
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        if (peep->AssignedPeepType == PeepType::Staff)
+        if (peep->Is<Staff>())
         {
             int16_t peep_x, peep_y, peep_z;
 
@@ -69,7 +68,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
     PeepActionSpriteType actionSpriteType = peep->ActionSpriteType;
     uint8_t imageOffset = peep->ActionSpriteImageOffset;
 
-    if (peep->Action == PeepActionType::None1)
+    if (peep->Action == PeepActionType::Idle)
     {
         actionSpriteType = peep->NextActionSpriteType;
         imageOffset = 0;
@@ -82,25 +81,28 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
     uint32_t imageId = baseImageId | peep->TshirtColour << 19 | peep->TrousersColour << 24 | IMAGE_TYPE_REMAP
         | IMAGE_TYPE_REMAP_2_PLUS;
     PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
-
-    if (baseImageId >= 10717 && baseImageId < 10749)
+    auto* guest = peep->As<Guest>();
+    if (guest != nullptr)
     {
-        imageId = (baseImageId + 32) | peep->HatColour << 19 | IMAGE_TYPE_REMAP;
-        PaintAddImageAsChild(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
-        return;
-    }
+        if (baseImageId >= 10717 && baseImageId < 10749)
+        {
+            imageId = (baseImageId + 32) | guest->HatColour << 19 | IMAGE_TYPE_REMAP;
+            PaintAddImageAsChild(session, imageId, { 0, 0, peep->z }, { 1, 1, 11 }, { 0, 0, peep->z + 5 });
+            return;
+        }
 
-    if (baseImageId >= 10781 && baseImageId < 10813)
-    {
-        imageId = (baseImageId + 32) | peep->BalloonColour << 19 | IMAGE_TYPE_REMAP;
-        PaintAddImageAsChild(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
-        return;
-    }
+        if (baseImageId >= 10781 && baseImageId < 10813)
+        {
+            imageId = (baseImageId + 32) | guest->BalloonColour << 19 | IMAGE_TYPE_REMAP;
+            PaintAddImageAsChild(session, imageId, { 0, 0, peep->z }, { 1, 1, 11 }, { 0, 0, peep->z + 5 });
+            return;
+        }
 
-    if (baseImageId >= 11197 && baseImageId < 11229)
-    {
-        imageId = (baseImageId + 32) | peep->UmbrellaColour << 19 | IMAGE_TYPE_REMAP;
-        PaintAddImageAsChild(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
-        return;
+        if (baseImageId >= 11197 && baseImageId < 11229)
+        {
+            imageId = (baseImageId + 32) | guest->UmbrellaColour << 19 | IMAGE_TYPE_REMAP;
+            PaintAddImageAsChild(session, imageId, { 0, 0, peep->z }, { 1, 1, 11 }, { 0, 0, peep->z + 5 });
+            return;
+        }
     }
 }

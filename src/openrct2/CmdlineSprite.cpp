@@ -436,7 +436,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
 
         const rct_object_entry* entry = &ori->ObjectEntry;
-        void* loadedObject = object_manager_load_object(entry);
+        const auto* loadedObject = object_manager_load_object(entry);
         if (loadedObject == nullptr)
         {
             fprintf(stderr, "Unable to load object.\n");

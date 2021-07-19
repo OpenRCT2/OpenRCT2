@@ -26,6 +26,7 @@
 #include "network/network.h"
 #include "peep/Staff.h"
 #include "platform/Platform2.h"
+#include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
@@ -150,14 +151,24 @@ void GameState::Update()
         }
         else
         {
+            // NOTE: Here are a few special cases that would be normally handled in UpdateLogic.
+            // If the game is paused it will not call UpdateLogic at all.
             numUpdates = 0;
+
+            if (network_get_mode() == NETWORK_MODE_SERVER)
+            {
+                // Make sure the client always knows about what tick the host is on.
+                network_send_tick();
+            }
+
             // Update the animation list. Note this does not
             // increment the map animation.
             map_animation_invalidate_all();
 
-            // Special case because we set numUpdates to 0, otherwise in game_logic_update.
+            // Post-tick network update
             network_process_pending();
 
+            // Post-tick game actions.
             GameActions::ProcessQueue();
         }
     }
@@ -182,6 +193,8 @@ void GameState::Update()
             }
         }
     }
+
+    network_flush();
 
     if (!gOpenRCT2Headless)
     {

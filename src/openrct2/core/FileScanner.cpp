@@ -342,18 +342,18 @@ private:
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
-IFileScanner* Path::ScanDirectory(const std::string& pattern, bool recurse)
+std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bool recurse)
 {
 #ifdef _WIN32
-    return new FileScannerWindows(pattern, recurse);
+    return std::make_unique<FileScannerWindows>(pattern, recurse);
 #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-    return new FileScannerUnix(pattern, recurse);
+    return std::make_unique<FileScannerUnix>(pattern, recurse);
 #endif
 }
 
 void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& pattern)
 {
-    IFileScanner* scanner = Path::ScanDirectory(pattern, true);
+    auto scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
     {
         const FileInfo* fileInfo = scanner->GetFileInfo();
@@ -366,12 +366,11 @@ void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& patte
         result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
         result->PathChecksum += GetPathChecksum(path);
     }
-    delete scanner;
 }
 
 std::vector<std::string> Path::GetDirectories(const std::string& path)
 {
-    auto scanner = std::unique_ptr<IFileScanner>(ScanDirectory(path, false));
+    auto scanner = ScanDirectory(path, false);
     auto baseScanner = static_cast<FileScannerBase*>(scanner.get());
 
     std::vector<DirectoryChild> children;

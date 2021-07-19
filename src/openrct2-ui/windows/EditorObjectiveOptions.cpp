@@ -176,31 +176,31 @@ static rct_window_event_list *window_editor_objective_options_page_events[] = {
 #pragma region Enabled widgets
 
 static uint64_t window_editor_objective_options_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_OBJECTIVE) |
-    (1 << WIDX_OBJECTIVE_DROPDOWN) |
-    (1 << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_2_DECREASE) |
-    (1 << WIDX_PARK_NAME) |
-    (1 << WIDX_SCENARIO_NAME) |
-    (1 << WIDX_CATEGORY) |
-    (1 << WIDX_CATEGORY_DROPDOWN) |
-    (1 << WIDX_DETAILS),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_OBJECTIVE) |
+    (1ULL << WIDX_OBJECTIVE_DROPDOWN) |
+    (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
+    (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
+    (1ULL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
+    (1ULL << WIDX_OBJECTIVE_ARG_2_DECREASE) |
+    (1ULL << WIDX_PARK_NAME) |
+    (1ULL << WIDX_SCENARIO_NAME) |
+    (1ULL << WIDX_CATEGORY) |
+    (1ULL << WIDX_CATEGORY_DROPDOWN) |
+    (1ULL << WIDX_DETAILS),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2)
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2)
 };
 
 static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
-    (1 << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1 << WIDX_OBJECTIVE_ARG_2_DECREASE),
+    (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
+    (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
+    (1ULL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
+    (1ULL << WIDX_OBJECTIVE_ARG_2_DECREASE),
 
     0
 };
@@ -267,17 +267,17 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
     if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
         spriteIndex += (w->frame_no / 4) % 16;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
+    gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
-    if (!(w->disabled_widgets & (1 << WIDX_TAB_2)))
+    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_2)))
     {
         widget = &w->widgets[WIDX_TAB_2];
         spriteIndex = SPR_TAB_RIDE_0;
         if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
             spriteIndex += (w->frame_no / 4) % 16;
 
-        gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
+        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 }
 
@@ -1083,7 +1083,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             continue;
 
         // Checkbox
-        gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], INSET_RECT_F_E0);
+        gfx_fill_rect_inset(dpi, { { 2, y }, { 11, y + 10 } }, w->colours[1], INSET_RECT_F_E0);
 
         // Highlighted
         auto stringId = STR_BLACK_STRING;
@@ -1125,10 +1125,10 @@ static void window_editor_objective_options_update_disabled_widgets(rct_window* 
     const auto& rideManager = GetRideManager();
     if (std::any_of(rideManager.begin(), rideManager.end(), [](const Ride& ride) { return ride.IsRide(); }))
     {
-        w->disabled_widgets &= ~(1 << WIDX_TAB_2);
+        w->disabled_widgets &= ~(1ULL << WIDX_TAB_2);
     }
     else
     {
-        w->disabled_widgets |= (1 << WIDX_TAB_2);
+        w->disabled_widgets |= (1ULL << WIDX_TAB_2);
     }
 }

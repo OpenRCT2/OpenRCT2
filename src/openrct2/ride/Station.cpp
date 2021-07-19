@@ -10,10 +10,11 @@
 #include "Station.h"
 
 #include "../Game.h"
+#include "../peep/Peep.h"
 #include "../scenario/Scenario.h"
 #include "../world/Location.hpp"
-#include "../world/Sprite.h"
 #include "Track.h"
+#include "Vehicle.h"
 
 static void ride_update_station_blocksection(Ride* ride, StationIndex stationIndex);
 static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex);
@@ -57,7 +58,7 @@ static void ride_update_station_blocksection(Ride* ride, StationIndex stationInd
 {
     TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
 
-    if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0)
+    if ((ride->status == RideStatus::Closed && ride->num_riders == 0)
         || (tileElement != nullptr && tileElement->AsTrack()->BlockBrakeClosed()))
     {
         ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
@@ -88,7 +89,7 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
 {
     // Change of station depart flag should really call invalidate_station_start
     // but since dodgems do not have station lights there is no point.
-    if (ride->status == RIDE_STATUS_CLOSED || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
+    if (ride->status == RideStatus::Closed || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
     {
         ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
         return;
@@ -147,7 +148,7 @@ static void ride_update_station_normal(Ride* ride, StationIndex stationIndex)
 {
     int32_t time = ride->stations[stationIndex].Depart & STATION_DEPART_MASK;
     if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
-        || (ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0))
+        || (ride->status == RideStatus::Closed && ride->num_riders == 0))
     {
         if (time != 0 && time != 127 && !(gCurrentTicks & 7))
             time--;
@@ -179,7 +180,7 @@ static void ride_update_station_normal(Ride* ride, StationIndex stationIndex)
  */
 static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
 {
-    if (ride->status == RIDE_STATUS_CLOSED || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
+    if (ride->status == RideStatus::Closed || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
     {
         if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
         {

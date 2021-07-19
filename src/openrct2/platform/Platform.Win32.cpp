@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -534,6 +534,86 @@ namespace Platform
     {
         log_warning("Execute() not implemented for Windows!");
         return -1;
+    }
+
+    uint64_t GetLastModified(const std::string& path)
+    {
+        uint64_t lastModified = 0;
+        auto pathW = String::ToWideChar(path);
+        auto hFile = CreateFileW(pathW.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+        if (hFile != INVALID_HANDLE_VALUE)
+        {
+            FILETIME ftCreate, ftAccess, ftWrite;
+            if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
+            {
+                lastModified = (static_cast<uint64_t>(ftWrite.dwHighDateTime) << 32ULL)
+                    | static_cast<uint64_t>(ftWrite.dwLowDateTime);
+            }
+            CloseHandle(hFile);
+        }
+        return lastModified;
+    }
+
+    uint64_t GetFileSize(std::string_view path)
+    {
+        uint64_t size = 0;
+        auto pathW = String::ToWideChar(path);
+        WIN32_FILE_ATTRIBUTE_DATA attributes;
+        if (GetFileAttributesExW(pathW.c_str(), GetFileExInfoStandard, &attributes) != FALSE)
+        {
+            ULARGE_INTEGER fileSize;
+            fileSize.LowPart = attributes.nFileSizeLow;
+            fileSize.HighPart = attributes.nFileSizeHigh;
+            size = fileSize.QuadPart;
+        }
+        return size;
+    }
+
+    bool ShouldIgnoreCase()
+    {
+        return true;
+    }
+
+    bool IsPathSeparator(char c)
+    {
+        return c == '\\' || c == '/';
+    }
+
+    utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath)
+    {
+        auto relativePathW = String::ToWideChar(relativePath);
+        wchar_t absolutePathW[MAX_PATH];
+        DWORD length = GetFullPathNameW(
+            relativePathW.c_str(), static_cast<DWORD>(std::size(absolutePathW)), absolutePathW, nullptr);
+        if (length == 0)
+        {
+            return String::Set(buffer, bufferSize, relativePath);
+        }
+        else
+        {
+            auto absolutePath = String::ToUtf8(absolutePathW);
+            String::Set(buffer, bufferSize, absolutePath.c_str());
+            return buffer;
+        }
+    }
+
+    std::string ResolveCasing(const std::string& path, bool fileExists)
+    {
+        std::string result;
+        if (fileExists)
+        {
+            // Windows is case insensitive so it will exist and that is all that matters
+            // for now. We can properly resolve the casing if we ever need to.
+            result = path;
+        }
+        return result;
+    }
+
+    bool RequireNewWindow(bool openGL)
+    {
+        // Windows is apparently able to switch to hardware rendering on the fly although
+        // using the same window in an unaccelerated and accelerated context is unsupported by SDL2
+        return openGL;
     }
 } // namespace Platform
 

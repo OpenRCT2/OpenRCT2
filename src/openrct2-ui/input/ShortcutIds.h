@@ -69,6 +69,7 @@ namespace OpenRCT2::Ui::ShortcutId
 
     // View / toggle
     constexpr std::string_view ViewToggleUnderground = "view.toggle.show_underground";
+    constexpr std::string_view ViewToggleTransparentWater = "view.toggle.transparent_water";
     constexpr std::string_view ViewToggleBaseLand = "view.toggle.hide_base_land";
     constexpr std::string_view ViewToggleVerticalLand = "view.toggle.hide_vertical_land";
     constexpr std::string_view ViewToggleRides = "view.toggle.transparent_rides";

@@ -34,47 +34,50 @@
 #    include <iterator>
 #    include <vector>
 
-static void fixup_pointers(paint_session* s, size_t paint_session_entries, size_t paint_struct_entries, size_t quadrant_entries)
+static void fixup_pointers(std::vector<RecordedPaintSession>& s)
 {
-    for (size_t i = 0; i < paint_session_entries; i++)
+    for (size_t i = 0; i < s.size(); i++)
     {
-        for (size_t j = 0; j < paint_struct_entries; j++)
+        auto& entries = s[i].Entries;
+        auto& quadrants = s[i].Session.Quadrants;
+        for (size_t j = 0; j < entries.size(); j++)
         {
-            if (s[i].PaintStructs[j].basic.next_quadrant_ps == reinterpret_cast<paint_struct*>(paint_struct_entries))
+            if (entries[j].basic.next_quadrant_ps == reinterpret_cast<paint_struct*>(-1))
             {
-                s[i].PaintStructs[j].basic.next_quadrant_ps = nullptr;
+                entries[j].basic.next_quadrant_ps = nullptr;
             }
             else
             {
-                auto nextQuadrantPs = reinterpret_cast<uintptr_t>(s[i].PaintStructs[j].basic.next_quadrant_ps);
-                s[i].PaintStructs[j].basic.next_quadrant_ps = &s[i].PaintStructs[nextQuadrantPs].basic;
+                auto nextQuadrantPs = reinterpret_cast<size_t>(entries[j].basic.next_quadrant_ps) / sizeof(paint_entry);
+                entries[j].basic.next_quadrant_ps = &s[i].Entries[nextQuadrantPs].basic;
             }
         }
-        for (size_t j = 0; j < quadrant_entries; j++)
+        for (size_t j = 0; j < std::size(quadrants); j++)
         {
-            if (s[i].Quadrants[j] == reinterpret_cast<paint_struct*>(quadrant_entries))
+            if (quadrants[j] == reinterpret_cast<paint_struct*>(-1))
             {
-                s[i].Quadrants[j] = nullptr;
+                quadrants[j] = nullptr;
             }
             else
             {
-                s[i].Quadrants[j] = &s[i].PaintStructs[reinterpret_cast<size_t>(s[i].Quadrants[j])].basic;
+                auto ps = reinterpret_cast<size_t>(quadrants[j]) / sizeof(paint_entry);
+                quadrants[j] = &entries[ps].basic;
             }
         }
     }
 }
 
-static std::vector<paint_session> extract_paint_session(const std::string parkFileName)
+static std::vector<RecordedPaintSession> extract_paint_session(std::string_view parkFileName)
 {
     core_init();
     gOpenRCT2Headless = true;
     auto context = OpenRCT2::CreateContext();
-    std::vector<paint_session> sessions;
+    std::vector<RecordedPaintSession> sessions;
     log_info("Starting...");
     if (context->Initialise())
     {
         drawing_engine_init();
-        if (!context->LoadParkFromFile(parkFileName))
+        if (!context->LoadParkFromFile(std::string(parkFileName)))
         {
             log_error("Failed to load park!");
             return {};
@@ -133,21 +136,21 @@ static std::vector<paint_session> extract_paint_session(const std::string parkFi
 }
 
 // This function is based on benchgfx_render_screenshots
-static void BM_paint_session_arrange(benchmark::State& state, const std::vector<paint_session> inputSessions)
+static void BM_paint_session_arrange(benchmark::State& state, const std::vector<RecordedPaintSession> inputSessions)
 {
-    std::vector<paint_session> sessions = inputSessions;
+    auto sessions = inputSessions;
     // Fixing up the pointers continuously is wasteful. Fix it up once for `sessions` and store a copy.
     // Keep in mind we need bit-exact copy, as the lists use pointers.
     // Once sorted, just restore the copy with the original fixed-up version.
-    paint_session* local_s = new paint_session[std::size(sessions)];
-    fixup_pointers(&sessions[0], std::size(sessions), std::size(local_s->PaintStructs), std::size(local_s->Quadrants));
+    RecordedPaintSession* local_s = new RecordedPaintSession[std::size(sessions)];
+    fixup_pointers(sessions);
     std::copy_n(sessions.cbegin(), std::size(sessions), local_s);
     for (auto _ : state)
     {
         state.PauseTiming();
         std::copy_n(local_s, std::size(sessions), sessions.begin());
         state.ResumeTiming();
-        PaintSessionArrange(&sessions[0]);
+        PaintSessionArrange(&sessions[0].Session);
         benchmark::DoNotOptimize(sessions);
     }
     state.SetItemsProcessed(state.iterations() * std::size(sessions));
@@ -158,14 +161,14 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
 {
     {
         // Register some basic "baseline" benchmark
-        std::vector<paint_session> sessions(1);
-        for (auto& ps : sessions[0].PaintStructs)
+        std::vector<RecordedPaintSession> sessions(1);
+        for (auto& ps : sessions[0].Entries)
         {
-            ps.basic.next_quadrant_ps = reinterpret_cast<paint_struct*>((std::size(sessions[0].PaintStructs)));
+            ps.basic.next_quadrant_ps = reinterpret_cast<paint_struct*>(-1);
         }
-        for (auto& quad : sessions[0].Quadrants)
+        for (auto& quad : sessions[0].Session.Quadrants)
         {
-            quad = reinterpret_cast<paint_struct*>((std::size(sessions[0].Quadrants)));
+            quad = reinterpret_cast<paint_struct*>(-1);
         }
         benchmark::RegisterBenchmark("baseline", BM_paint_session_arrange, sessions);
     }
@@ -183,7 +186,7 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
         if (Platform::FileExists(argv[i]))
         {
             // Register benchmark for sv6 if valid
-            std::vector<paint_session> sessions = extract_paint_session(argv[i]);
+            std::vector<RecordedPaintSession> sessions = extract_paint_session(argv[i]);
             if (!sessions.empty())
                 benchmark::RegisterBenchmark(argv[i], BM_paint_session_arrange, sessions);
         }

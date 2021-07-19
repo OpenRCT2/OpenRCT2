@@ -85,7 +85,7 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
     char buffer[64]{};
-    FormatStringToBuffer(buffer, sizeof(buffer), "{MEDIUMFONT}{OUTLINE}{RED}{STRING}", text);
+    FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{RED}{STRING}", text);
 
     auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
     screenCoords.x = screenCoords.x - stringWidth;
@@ -104,7 +104,7 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
     MeasureFPS();
 
     char buffer[64]{};
-    FormatStringToBuffer(buffer, sizeof(buffer), "{MEDIUMFONT}{OUTLINE}{WHITE}{INT32}", _currentFPS);
+    FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
 
     // Draw Text
     int32_t stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
@@ -112,7 +112,7 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
     gfx_draw_string(dpi, screenCoords, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { gLastDrawStringX + 16, 16 } });
+    gfx_set_dirty_blocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi->lastStringPos.x + 16, 16 } });
 }
 
 void Painter::MeasureFPS()
@@ -151,7 +151,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     session->ViewFlags = viewFlags;
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
-    session->PaintStructs.clear();
+    session->PaintEntryChain = _paintStructPool.Create();
 
     std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);
     session->LastPS = nullptr;
@@ -167,5 +167,6 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
 
 void Painter::ReleaseSession(paint_session* session)
 {
+    session->PaintEntryChain.Clear();
     _freePaintSessions.push_back(session);
 }

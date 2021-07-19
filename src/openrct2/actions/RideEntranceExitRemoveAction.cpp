@@ -78,7 +78,7 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Query() const
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
+    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST);
     }

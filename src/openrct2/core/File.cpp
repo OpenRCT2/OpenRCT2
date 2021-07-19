@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,8 +57,7 @@ namespace File
         }
 
         std::vector<uint8_t> result;
-        fs.seekg(0, std::ios::end);
-        auto fsize = static_cast<size_t>(fs.tellg());
+        auto fsize = Platform::GetFileSize(path);
         if (fsize > SIZE_MAX)
         {
             std::string message = String::StdFormat(
@@ -68,7 +67,6 @@ namespace File
         else
         {
             result.resize(fsize);
-            fs.seekg(0);
             fs.read(reinterpret_cast<char*>(result.data()), result.size());
             fs.exceptions(fs.failbit);
         }
@@ -121,30 +119,12 @@ namespace File
 
     uint64_t GetLastModified(const std::string& path)
     {
-        uint64_t lastModified = 0;
-#ifdef _WIN32
-        auto pathW = String::ToWideChar(path);
-        auto hFile = CreateFileW(pathW.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
-        if (hFile != INVALID_HANDLE_VALUE)
-        {
-            FILETIME ftCreate, ftAccess, ftWrite;
-            if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
-            {
-                lastModified = (static_cast<uint64_t>(ftWrite.dwHighDateTime) << 32ULL)
-                    | static_cast<uint64_t>(ftWrite.dwLowDateTime);
-            }
-            CloseHandle(hFile);
-        }
-#else
-        struct stat statInfo
-        {
-        };
-        if (stat(path.c_str(), &statInfo) == 0)
-        {
-            lastModified = statInfo.st_mtime;
-        }
-#endif
-        return lastModified;
+        return Platform::GetLastModified(path);
+    }
+
+    uint64_t GetSize(std::string_view path)
+    {
+        return Platform::GetFileSize(path);
     }
 } // namespace File
 

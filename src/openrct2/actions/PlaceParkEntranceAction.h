@@ -15,14 +15,18 @@ DEFINE_GAME_ACTION(PlaceParkEntranceAction, GameCommand::PlaceParkEntrance, Game
 {
 private:
     CoordsXYZD _loc;
+    ObjectEntryIndex _pathType;
 
 public:
     PlaceParkEntranceAction() = default;
-    PlaceParkEntranceAction(const CoordsXYZD& location);
+    PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
 
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    bool CheckMapCapacity(int16_t numTiles) const;
 };

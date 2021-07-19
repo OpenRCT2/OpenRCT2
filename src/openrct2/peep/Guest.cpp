@@ -25,14 +25,20 @@
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/HookEngine.h"
+#include "../scripting/ScriptEngine.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../world/Balloon.h"
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
 #include "../world/LargeScenery.h"
 #include "../world/Map.h"
+#include "../world/MoneyEffect.h"
 #include "../world/Park.h"
+#include "../world/Particle.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
@@ -42,6 +48,7 @@
 #include "Staff.h"
 
 #include <algorithm>
+#include <functional>
 #include <iterator>
 
 using namespace OpenRCT2;
@@ -204,43 +211,233 @@ static constexpr const char *gPeepEasterEggNames[] = {
     "DAVID ELLIS"
 };
 
+// Flags used by PeepThoughtToActionMap
+enum PeepThoughtToActionFlag : uint8_t
+{
+    PEEP_THOUGHT_ACTION_NO_FLAGS = 0,
+    PEEP_THOUGHT_ACTION_FLAG_RIDE = (1 << 0),
+    PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR = (1 << 1),
+    PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE = (1 << 2),
+};
+
+/** rct2: 0x00981DB0 */
+static struct
+{
+    PeepActionType action;
+    PeepThoughtToActionFlag flags;
+} PeepThoughtToActionMap[] = {
+    { PeepActionType::ShakeHead, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::EmptyPockets, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Wow, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE },
+    { PeepActionType::ShakeHead, PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Wave, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Joy, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::CheckTime, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Wave, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Wave, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Disgust, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::BeingWatched, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::ShakeHead, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Joy, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Walking, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+};
+
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
 static constexpr const ride_rating NauseaMinimumThresholds[] = {
     0, 0, 200, 400
 };
 // clang-format on
 
-static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride);
+static bool peep_has_voucher_for_free_ride(Guest* peep, Ride* ride);
 static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide);
-static void peep_reset_ride_heading(Peep* peep);
-static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride);
+static void peep_reset_ride_heading(Guest* peep);
+static void peep_tried_to_enter_full_queue(Guest* peep, Ride* ride);
 static int16_t peep_calculate_ride_satisfaction(Guest* peep, Ride* ride);
-static void peep_update_favourite_ride(Peep* peep, Ride* ride);
-static int16_t peep_calculate_ride_value_satisfaction(Peep* peep, Ride* ride);
-static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Peep* peep, Ride* ride);
-static void peep_update_ride_nausea_growth(Peep* peep, Ride* ride);
-static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride);
-static bool peep_should_preferred_intensity_increase(Peep* peep);
-static bool peep_really_liked_ride(Peep* peep, Ride* ride);
+static void peep_update_favourite_ride(Guest* peep, Ride* ride);
+static int16_t peep_calculate_ride_value_satisfaction(Guest* peep, Ride* ride);
+static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Guest* peep, Ride* ride);
+static void peep_update_ride_nausea_growth(Guest* peep, Ride* ride);
+static bool peep_should_go_on_ride_again(Guest* peep, Ride* ride);
+static bool peep_should_preferred_intensity_increase(Guest* peep);
+static bool peep_really_liked_ride(Guest* peep, Ride* ride);
 static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z);
-static void peep_update_hunger(Peep* peep);
-static void peep_decide_whether_to_leave_park(Peep* peep);
-static void peep_leave_park(Peep* peep);
+static void peep_update_hunger(Guest* peep);
+static void peep_decide_whether_to_leave_park(Guest* peep);
+static void peep_leave_park(Guest* peep);
 static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags);
-bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
+bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 template<> bool SpriteBase::Is<Guest>() const
 {
-    auto peep = As<Peep>();
-    return peep && peep->AssignedPeepType == PeepType::Guest;
+    return Type == EntityType::Guest;
 }
 
-bool Guest::GuestHasValidXY() const
+static bool IsValidLocation(const CoordsXYZ& coords)
 {
-    if (x != LOCATION_NULL)
+    if (coords.x != LOCATION_NULL)
     {
-        if (map_is_location_valid({ x, y }))
+        if (map_is_location_valid(coords))
         {
             return true;
         }
@@ -249,17 +446,23 @@ bool Guest::GuestHasValidXY() const
     return false;
 }
 
-void Guest::ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg)
+template<void (Guest::*EasterEggFunc)(Guest*)> static void ApplyEasterEggToNearbyGuests(Guest* guest)
 {
-    if (!GuestHasValidXY())
+    const auto guestLoc = guest->GetLocation();
+    if (!IsValidLocation(guestLoc))
         return;
 
-    for (auto* otherGuest : EntityTileList<Guest>({ x, y }))
+    for (auto* otherGuest : EntityTileList<Guest>(guestLoc))
     {
-        auto zDiff = std::abs(otherGuest->z - z);
+        if (otherGuest == guest)
+        {
+            // Can not apply effect on self.
+            continue;
+        }
+        auto zDiff = std::abs(otherGuest->z - guestLoc.z);
         if (zDiff <= 32)
         {
-            (*this.*easter_egg)(otherGuest);
+            std::invoke(EasterEggFunc, *guest, otherGuest);
         }
     }
 }
@@ -282,7 +485,7 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
     if (peepDirection == otherPeepOppositeDirection)
     {
-        if (passingPeep->Action == PeepActionType::None1 || passingPeep->Action == PeepActionType::None2)
+        if (passingPeep->IsActionInterruptable())
         {
             passingPeep->Action = PeepActionType::Wave2;
             passingPeep->ActionFrame = 0;
@@ -294,12 +497,10 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 
 void Guest::MakePassingPeepsSick(Guest* passingPeep)
 {
-    if (this == passingPeep)
-        return;
     if (passingPeep->State != PeepState::Walking)
         return;
 
-    if (passingPeep->Action == PeepActionType::None1 || passingPeep->Action == PeepActionType::None2)
+    if (passingPeep->IsActionInterruptable())
     {
         passingPeep->Action = PeepActionType::ThrowUp;
         passingPeep->ActionFrame = 0;
@@ -310,8 +511,6 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
 
 void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
 {
-    if (this == passingPeep)
-        return;
     if (passingPeep->HasItem(ShopItem::IceCream))
         return;
 
@@ -327,24 +526,29 @@ void Guest::UpdateEasterEggInteractions()
 {
     if (PeepFlags & PEEP_FLAGS_PURPLE)
     {
-        ApplyEasterEggToNearbyGuests(&Guest::GivePassingPeepsPurpleClothes);
+        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsPurpleClothes>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_PIZZA)
     {
-        ApplyEasterEggToNearbyGuests(&Guest::GivePassingPeepsPizza);
+        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsPizza>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_CONTAGIOUS)
     {
-        ApplyEasterEggToNearbyGuests(&Guest::MakePassingPeepsSick);
+        ApplyEasterEggToNearbyGuests<&Guest::MakePassingPeepsSick>(this);
+    }
+
+    if (PeepFlags & PEEP_FLAGS_ICE_CREAM)
+    {
+        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsIceCream>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_JOY)
     {
         if (scenario_rand() <= 1456)
         {
-            if (Action == PeepActionType::None1 || Action == PeepActionType::None2)
+            if (IsActionInterruptable())
             {
                 Action = PeepActionType::Joy;
                 ActionFrame = 0;
@@ -352,11 +556,6 @@ void Guest::UpdateEasterEggInteractions()
                 UpdateCurrentActionSpriteType();
             }
         }
-    }
-
-    if (PeepFlags & PEEP_FLAGS_ICE_CREAM)
-    {
-        ApplyEasterEggToNearbyGuests(&Guest::GivePassingPeepsIceCream);
     }
 }
 
@@ -552,7 +751,7 @@ void Guest::loc_68F9F3()
     {
         if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
         {
-            if (Action >= PeepActionType::None1)
+            if (IsActionInterruptable())
             {
                 Action = PeepActionType::ThrowUp;
                 ActionFrame = 0;
@@ -699,8 +898,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
             {
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { x, y, z });
 
-                sprite_misc_explosion_cloud_create({ x, y, z + 16 });
-                sprite_misc_explosion_flare_create({ x, y, z + 16 });
+                ExplosionCloud::Create({ x, y, z + 16 });
+                ExplosionFlare::Create({ x, y, z + 16 });
 
                 Remove();
                 return;
@@ -952,9 +1151,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         // Check if the footpath has a queue line TV monitor on it
                         if (pathElement->HasAddition() && !pathElement->AdditionIsGhost())
                         {
-                            auto pathSceneryIndex = pathElement->GetAdditionEntryIndex();
-                            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
-                            if (sceneryEntry != nullptr && (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN))
+                            auto* pathAddEntry = pathElement->GetAdditionEntry();
+                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN))
                             {
                                 found = true;
                             }
@@ -1044,7 +1242,7 @@ void Guest::UpdateSitting()
         MoveTo(loc);
 
         sprite_direction = ((Var37 + 2) & 3) * 8;
-        Action = PeepActionType::None1;
+        Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::SittingIdle;
         SwitchNextActionSpriteType();
 
@@ -1055,13 +1253,13 @@ void Guest::UpdateSitting()
     }
     else if (SittingSubState == PeepSittingSubState::SatDown)
     {
-        if (Action < PeepActionType::None1)
+        if (!IsActionInterruptable())
         {
             UpdateAction();
-            if (Action != PeepActionType::None2)
+            if (!IsActionWalking())
                 return;
 
-            Action = PeepActionType::None1;
+            Action = PeepActionType::Idle;
             TryGetUpFromSitting();
             return;
         }
@@ -1496,9 +1694,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
  * ride's satisfaction value.
  *  rct2: 0x0069545B
  */
-void Guest::OnEnterRide(ride_id_t rideIndex)
+void Guest::OnEnterRide(Ride* ride)
 {
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -1530,13 +1727,12 @@ void Guest::OnEnterRide(ride_id_t rideIndex)
  *
  *  rct2: 0x0069576E
  */
-void Guest::OnExitRide(ride_id_t rideIndex)
+void Guest::OnExitRide(Ride* ride)
 {
-    auto ride = get_ride(rideIndex);
     if (PeepFlags & PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE)
     {
         PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-        FavouriteRide = rideIndex;
+        FavouriteRide = ride->id;
         // TODO fix this flag name or add another one
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
@@ -1549,7 +1745,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 
     if (ride != nullptr && peep_should_go_on_ride_again(this, ride))
     {
-        GuestHeadingToRideId = rideIndex;
+        GuestHeadingToRideId = ride->id;
         GuestIsLostCountdown = 200;
         ResetPathfindGoal();
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
@@ -1565,7 +1761,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 
     if (ride != nullptr && peep_really_liked_ride(this, ride))
     {
-        InsertNewThought(PeepThoughtType::WasGreat, rideIndex);
+        InsertNewThought(PeepThoughtType::WasGreat, ride->id);
 
         static constexpr OpenRCT2::Audio::SoundId laughs[3] = { OpenRCT2::Audio::SoundId::Laugh1,
                                                                 OpenRCT2::Audio::SoundId::Laugh2,
@@ -1706,7 +1902,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
     // Indicates whether a peep is physically at the ride, or is just thinking about going on the ride.
     bool peepAtRide = !thinking;
 
-    if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
         assert(ride->type < std::size(RideTypeDescriptors));
@@ -1748,7 +1944,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             else
             {
                 // Check if there's room in the queue for the peep to enter.
-                Peep* lastPeepInQueue = GetEntity<Guest>(ride->stations[entranceNum].LastPeepInQueue);
+                Guest* lastPeepInQueue = GetEntity<Guest>(ride->stations[entranceNum].LastPeepInQueue);
                 if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
                 {
                     int32_t dx = abs(lastPeepInQueue->x - x);
@@ -2149,7 +2345,7 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 
 void Guest::ReadMap()
 {
-    if (Action == PeepActionType::None1 || Action == PeepActionType::None2)
+    if (IsActionInterruptable())
     {
         Action = PeepActionType::ReadMap;
         ActionFrame = 0;
@@ -2158,7 +2354,7 @@ void Guest::ReadMap()
     }
 }
 
-static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
+static bool peep_has_voucher_for_free_ride(Guest* peep, Ride* ride)
 {
     return peep->HasItem(ShopItem::Voucher) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == ride->id;
 }
@@ -2168,7 +2364,7 @@ static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
  * Does not effect peeps that walk up to the queue entrance.
  * This flag is reset the next time a peep successfully joins the queue.
  */
-static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
+static void peep_tried_to_enter_full_queue(Guest* peep, Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_QUEUE_FULL;
     peep->PreviousRide = ride->id;
@@ -2180,7 +2376,7 @@ static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
     }
 }
 
-static void peep_reset_ride_heading(Peep* peep)
+static void peep_reset_ride_heading(Guest* peep)
 {
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
@@ -2240,7 +2436,7 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
 
     if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
     {
-        chosen_seat = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
+        chosen_seat = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
         if (vehicle->next_free_seat & 1)
         {
             chosen_seat++;
@@ -2355,7 +2551,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
 
         if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
         {
-            uint8_t position = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
+            uint8_t position = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
             if (vehicle->peep[position] != SPRITE_INDEX_NULL)
                 continue;
         }
@@ -2453,7 +2649,7 @@ static int16_t peep_calculate_ride_satisfaction(Guest* peep, Ride* ride)
  * the ride becomes the peep's favourite. (This doesn't happen right away, but will be updated once the peep
  * exits the ride.)
  */
-static void peep_update_favourite_ride(Peep* peep, Ride* ride)
+static void peep_update_favourite_ride(Guest* peep, Ride* ride)
 {
     peep->PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
     uint8_t peepRideRating = std::clamp((ride->excitement / 4) + peep->Happiness, 0, PEEP_MAX_HAPPINESS);
@@ -2468,7 +2664,7 @@ static void peep_update_favourite_ride(Peep* peep, Ride* ride)
 }
 
 /* rct2: 0x00695555 */
-static int16_t peep_calculate_ride_value_satisfaction(Peep* peep, Ride* ride)
+static int16_t peep_calculate_ride_value_satisfaction(Guest* peep, Ride* ride)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
@@ -2500,7 +2696,7 @@ static int16_t peep_calculate_ride_value_satisfaction(Peep* peep, Ride* ride)
  * of the ride fall exactly within the peep's preferences, but lower scores can still be achieved
  * if the peep's happiness is enough to offset it.
  */
-static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Peep* peep, Ride* ride)
+static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Guest* peep, Ride* ride)
 {
     if (!ride_has_ratings(ride))
     {
@@ -2600,7 +2796,7 @@ static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Peep* peep, Rid
  * - How hungry the peep is (+0% nausea at 50% hunger up to +100% nausea at 100% hunger)
  * - The peep's nausea tolerance (Final modifier: none: 100%, low: 50%, average: 25%, high: 12.5%)
  */
-static void peep_update_ride_nausea_growth(Peep* peep, Ride* ride)
+static void peep_update_ride_nausea_growth(Guest* peep, Ride* ride)
 {
     uint32_t nauseaMultiplier = std::clamp(256 - peep->HappinessTarget, 64, 200);
     uint32_t nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
@@ -2609,7 +2805,7 @@ static void peep_update_ride_nausea_growth(Peep* peep, Ride* ride)
     peep->NauseaTarget = static_cast<uint8_t>(std::min(peep->NauseaTarget + nauseaGrowthRateChange, 255u));
 }
 
-static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
+static bool peep_should_go_on_ride_again(Guest* peep, Ride* ride)
 {
     if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN))
         return false;
@@ -2642,7 +2838,7 @@ static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
     return true;
 }
 
-static bool peep_should_preferred_intensity_increase(Peep* peep)
+static bool peep_should_preferred_intensity_increase(Guest* peep)
 {
     if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
         return false;
@@ -2652,7 +2848,7 @@ static bool peep_should_preferred_intensity_increase(Peep* peep)
     return (scenario_rand() & 0xFF) >= static_cast<uint8_t>(peep->Intensity);
 }
 
-static bool peep_really_liked_ride(Peep* peep, Ride* ride)
+static bool peep_really_liked_ride(Guest* peep, Ride* ride)
 {
     if (peep->Happiness < 215)
         return false;
@@ -2691,24 +2887,23 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
             for (auto* tileElement : TileElementsView({ x, y }))
             {
                 Ride* ride;
-                rct_scenery_entry* scenery;
 
                 switch (tileElement->GetType())
                 {
                     case TILE_ELEMENT_TYPE_PATH:
+                    {
                         if (!tileElement->AsPath()->HasAddition())
                             break;
 
-                        scenery = tileElement->AsPath()->GetAdditionEntry();
-                        if (scenery == nullptr)
+                        auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+                        if (pathAddEntry == nullptr)
                         {
                             return PeepThoughtType::None;
                         }
                         if (tileElement->AsPath()->AdditionIsGhost())
                             break;
 
-                        if (scenery->path_bit.flags
-                            & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
+                        if (pathAddEntry->flags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
                         {
                             num_fountains++;
                             break;
@@ -2718,6 +2913,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                             num_rubbish++;
                         }
                         break;
+                    }
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                         num_scenery++;
@@ -2726,7 +2922,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                         if (ride != nullptr)
                         {
-                            if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RIDE_STATUS_CLOSED
+                            if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RideStatus::Closed
                                 && !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
                             {
                                 if (ride->type == RIDE_TYPE_MERRY_GO_ROUND)
@@ -2754,7 +2950,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
         }
     }
 
-    for (auto litter : EntityList<Litter>(EntityListId::Litter))
+    for (auto litter : EntityList<Litter>())
     {
         int16_t dist_x = abs(litter->x - centre_x);
         int16_t dist_y = abs(litter->y - centre_y);
@@ -2784,7 +2980,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
  *
  *  rct2: 0x0068F9A9
  */
-static void peep_update_hunger(Peep* peep)
+static void peep_update_hunger(Guest* peep)
 {
     if (peep->Hunger >= 3)
     {
@@ -2801,7 +2997,7 @@ static void peep_update_hunger(Peep* peep)
  *
  *  rct2: 0x0068F8CD
  */
-static void peep_decide_whether_to_leave_park(Peep* peep)
+static void peep_decide_whether_to_leave_park(Guest* peep)
 {
     if (peep->EnergyTarget >= 33)
     {
@@ -2853,7 +3049,7 @@ static void peep_decide_whether_to_leave_park(Peep* peep)
  *
  *  rct2: 0x0068F93E
  */
-static void peep_leave_park(Peep* peep)
+static void peep_leave_park(Guest* peep)
 {
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -3056,7 +3252,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
  *
  *  rct2: 0x0069AEB7
  */
-static bool peep_should_use_cash_machine(Peep* peep, ride_id_t rideIndex)
+static bool peep_should_use_cash_machine(Guest* peep, ride_id_t rideIndex)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
@@ -3090,7 +3286,7 @@ void Guest::UpdateBuying()
         return;
 
     auto ride = get_ride(CurrentRide);
-    if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
+    if (ride == nullptr || ride->status != RideStatus::Open)
     {
         SetState(PeepState::Falling);
         return;
@@ -3098,7 +3294,7 @@ void Guest::UpdateBuying()
 
     if (SubState == 1)
     {
-        if (Action != PeepActionType::None2)
+        if (!IsActionWalking())
         {
             UpdateAction();
             Invalidate();
@@ -3240,7 +3436,7 @@ void Guest::UpdateRideAtEntrance()
             return;
     }
 
-    if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0)
+    if (ride->status != RideStatus::Open || ride->vehicle_change_timeout != 0)
     {
         peep_update_ride_at_entrance_try_leave(this);
         return;
@@ -3297,7 +3493,7 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
     peep->SetDestination(entrance_loc, 3);
 
     ride->cur_num_customers++;
-    peep->OnEnterRide(peep->CurrentRide);
+    peep->OnEnterRide(ride);
     peep->RideSubState = PeepRideSubState::MazePathfinding;
 }
 
@@ -3317,7 +3513,7 @@ static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride
     peep->CurrentCar = 0;
 
     ride->cur_num_customers++;
-    peep->OnEnterRide(peep->CurrentRide);
+    peep->OnEnterRide(ride);
     peep->RideSubState = PeepRideSubState::ApproachSpiralSlide;
 }
 
@@ -3472,6 +3668,10 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     vehicle = vehicle->GetCar(CurrentCar);
+    if (vehicle == nullptr)
+    {
+        return;
+    }
 
     ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
@@ -3640,7 +3840,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
  *
  *  rct2: 0x00691FD4
  */
-static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride)
+static void peep_update_ride_no_free_vehicle_rejoin_queue(Guest* peep, Ride* ride)
 {
     TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, peep->CurrentRideStation);
 
@@ -3673,7 +3873,7 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
+        if (ride->status != RideStatus::Open || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
         {
             peep_update_ride_no_free_vehicle_rejoin_queue(this, ride);
             return;
@@ -3752,7 +3952,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     {
         return;
     }
-    if (ride->status == RIDE_STATUS_OPEN && ++RejoinQueueTimeout != 0
+    if (ride->status == RideStatus::Open && ++RejoinQueueTimeout != 0
         && !currentTrain->HasUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
         return;
@@ -3789,6 +3989,10 @@ void Guest::UpdateRideEnterVehicle()
         if (vehicle != nullptr)
         {
             vehicle = vehicle->GetCar(CurrentCar);
+            if (vehicle == nullptr)
+            {
+                return;
+            }
 
             if (ride->mode != RideMode::ForwardRotation && ride->mode != RideMode::BackwardRotation)
             {
@@ -3812,7 +4016,7 @@ void Guest::UpdateRideEnterVehicle()
                     seatedGuest->SetState(PeepState::OnRide);
                     seatedGuest->GuestTimeOnRide = 0;
                     seatedGuest->RideSubState = PeepRideSubState::OnRide;
-                    seatedGuest->OnEnterRide(CurrentRide);
+                    seatedGuest->OnEnterRide(ride);
                 }
             }
 
@@ -3828,7 +4032,7 @@ void Guest::UpdateRideEnterVehicle()
 
             GuestTimeOnRide = 0;
             RideSubState = PeepRideSubState::OnRide;
-            OnEnterRide(CurrentRide);
+            OnEnterRide(ride);
         }
     }
 }
@@ -4019,6 +4223,8 @@ void Guest::UpdateRideLeaveVehicle()
 
     rideEntry = vehicle->GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    if (vehicleEntry == nullptr)
+        return;
 
     Var37 = ((exitLocation.direction | peep_get_waypointed_seat_location(this, ride, vehicleEntry, station_direction) * 4) * 4)
         | 1;
@@ -4350,7 +4556,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     else if (waypoint == 2)
     {
         bool lastRide = false;
-        if (ride->status != RIDE_STATUS_OPEN)
+        if (ride->status != RideStatus::Open)
             lastRide = true;
         else if (CurrentCar++ != 0)
         {
@@ -4579,7 +4785,7 @@ void Guest::UpdateRideMazePathfinding()
         return;
     }
 
-    if (Action >= PeepActionType::None1)
+    if (IsActionInterruptable())
     {
         if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
         {
@@ -4709,7 +4915,7 @@ void Guest::UpdateRideLeaveExit()
         return;
     }
 
-    OnExitRide(CurrentRide);
+    OnExitRide(ride);
 
     if (ride != nullptr && (PeepFlags & PEEP_FLAGS_TRACKING))
     {
@@ -4768,15 +4974,15 @@ void Guest::UpdateRideShopInteract()
     if (ride == nullptr)
         return;
 
-    const int16_t tileCenterX = NextLoc.x + 16;
-    const int16_t tileCenterY = NextLoc.y + 16;
+    const int16_t tileCentreX = NextLoc.x + 16;
+    const int16_t tileCentreY = NextLoc.y + 16;
     if (ride->type == RIDE_TYPE_FIRST_AID)
     {
         if (Nausea <= 35)
         {
             RideSubState = PeepRideSubState::LeaveShop;
 
-            SetDestination({ tileCenterX, tileCenterY }, 3);
+            SetDestination({ tileCentreX, tileCentreY }, 3);
             HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
             Happiness = HappinessTarget;
         }
@@ -4802,7 +5008,7 @@ void Guest::UpdateRideShopInteract()
 
     RideSubState = PeepRideSubState::LeaveShop;
 
-    SetDestination({ tileCenterX, tileCenterY }, 3);
+    SetDestination({ tileCentreX, tileCentreY }, 3);
 
     HappinessTarget = std::min(HappinessTarget + 30, PEEP_MAX_HAPPINESS);
     Happiness = HappinessTarget;
@@ -4958,8 +5164,8 @@ void Guest::UpdateRide()
     }
 }
 
-static void peep_update_walking_break_scenery(Peep* peep);
-static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView);
+static void peep_update_walking_break_scenery(Guest* peep);
+static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideToView, uint8_t* rideSeatToView);
 
 /**
  *
@@ -4972,7 +5178,7 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_WAVING)
     {
-        if (Action >= PeepActionType::None1)
+        if (IsActionInterruptable())
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
@@ -4987,7 +5193,7 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_PHOTO)
     {
-        if (Action >= PeepActionType::None1)
+        if (IsActionInterruptable())
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
@@ -5002,7 +5208,7 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_PAINTING)
     {
-        if (Action >= PeepActionType::None1)
+        if (IsActionInterruptable())
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
@@ -5021,18 +5227,18 @@ void Guest::UpdateWalking()
         {
             if ((0xFFFF & scenario_rand()) <= 4096)
             {
-                static constexpr const LitterType litter_types[] = {
-                    LITTER_TYPE_EMPTY_CAN,
-                    LITTER_TYPE_RUBBISH,
-                    LITTER_TYPE_EMPTY_BURGER_BOX,
-                    LITTER_TYPE_EMPTY_CUP,
+                static constexpr const Litter::Type litter_types[] = {
+                    Litter::Type::EmptyCan,
+                    Litter::Type::Rubbish,
+                    Litter::Type::BurgerBox,
+                    Litter::Type::EmptyCup,
                 };
                 auto litterType = litter_types[scenario_rand() & 0x3];
                 int32_t litterX = x + (scenario_rand() & 0x7) - 3;
                 int32_t litterY = y + (scenario_rand() & 0x7) - 3;
                 Direction litterDirection = (scenario_rand() & 0x3);
 
-                litter_create({ litterX, litterY, z, litterDirection }, litterType);
+                Litter::Create({ litterX, litterY, z, litterDirection }, litterType);
             }
         }
     }
@@ -5042,13 +5248,13 @@ void Guest::UpdateWalking()
             && ((0xFFFF & scenario_rand()) <= 4096))
         {
             int32_t container = bitscanforward(GetEmptyContainerFlags());
-            LitterType litterType = LITTER_TYPE_SICK;
+            auto litterType = Litter::Type::Vomit;
 
             if (container != -1)
             {
                 auto item = static_cast<ShopItem>(container);
                 RemoveItem(item);
-                litterType = LitterType(GetShopItemDescriptor(item).LitterType);
+                litterType = Litter::Type(GetShopItemDescriptor(item).Type);
             }
 
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -5058,7 +5264,7 @@ void Guest::UpdateWalking()
             int32_t litterY = y + (scenario_rand() & 0x7) - 3;
             Direction litterDirection = (scenario_rand() & 0x3);
 
-            litter_create({ litterX, litterY, z, litterDirection }, litterType);
+            Litter::Create({ litterX, litterY, z, litterDirection }, litterType);
         }
     }
 
@@ -5153,13 +5359,13 @@ void Guest::UpdateWalking()
     {
         if (!tileElement->AsPath()->AdditionIsGhost())
         {
-            rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-            if (sceneryEntry == nullptr)
+            auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
+            if (pathAddEntry == nullptr)
             {
                 return;
             }
 
-            if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
+            if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
                 positions_free = 9;
         }
     }
@@ -5173,7 +5379,8 @@ void Guest::UpdateWalking()
     for (; !(edges & (1 << chosen_edge));)
         chosen_edge = (chosen_edge + 1) & 3;
 
-    uint8_t ride_to_view, ride_seat_to_view;
+    ride_id_t ride_to_view;
+    uint8_t ride_seat_to_view;
     if (!peep_find_ride_to_look_at(this, chosen_edge, &ride_to_view, &ride_seat_to_view))
         return;
 
@@ -5234,7 +5441,7 @@ void Guest::UpdateQueuing()
         return;
     }
     auto ride = get_ride(CurrentRide);
-    if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
+    if (ride == nullptr || ride->status != RideStatus::Open)
     {
         RemoveFromQueue();
         SetState(PeepState::One);
@@ -5278,7 +5485,7 @@ void Guest::UpdateQueuing()
 
     uint8_t pathingResult;
     PerformNextAction(pathingResult);
-    if (Action < PeepActionType::None1)
+    if (!IsActionInterruptable())
         return;
     if (SpriteType == PeepSpriteType::Normal)
     {
@@ -5298,7 +5505,7 @@ void Guest::UpdateQueuing()
     }
     else
     {
-        if (!(TimeInQueue & 0x3F) && Action == PeepActionType::None1 && NextActionSpriteType == PeepActionSpriteType::WatchRide)
+        if (!(TimeInQueue & 0x3F) && IsActionIdle() && NextActionSpriteType == PeepActionSpriteType::WatchRide)
         {
             switch (SpriteType)
             {
@@ -5435,7 +5642,7 @@ void Guest::UpdateWatching()
 
         sprite_direction = (Var37 & 3) * 8;
 
-        Action = PeepActionType::None1;
+        Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::WatchRide;
 
         SwitchNextActionSpriteType();
@@ -5447,14 +5654,14 @@ void Guest::UpdateWatching()
     }
     else if (SubState == 1)
     {
-        if (Action < PeepActionType::None1)
+        if (!IsActionInterruptable())
         {
             // 6917F6
             UpdateAction();
             Invalidate();
-            if (Action != PeepActionType::None2)
+            if (!IsActionWalking())
                 return;
-            Action = PeepActionType::None1;
+            Action = PeepActionType::Idle;
         }
         else
         {
@@ -5533,7 +5740,7 @@ void Guest::UpdateUsingBin()
         }
         case PeepUsingBinSubState::GoingBack:
         {
-            if (Action != PeepActionType::None2)
+            if (!IsActionWalking())
             {
                 UpdateAction();
                 Invalidate();
@@ -5549,8 +5756,8 @@ void Guest::UpdateUsingBin()
                 if (!pathElement->HasAddition())
                     break;
 
-                rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
-                if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
+                auto* pathAddEntry = pathElement->GetAdditionEntry();
+                if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
                     break;
 
                 if (pathElement->IsBroken())
@@ -5595,12 +5802,12 @@ void Guest::UpdateUsingBin()
                     continue;
                 }
 
-                LitterType litterType = LitterType(GetShopItemDescriptor(item).LitterType);
+                auto litterType = Litter::Type(GetShopItemDescriptor(item).Type);
 
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
+                Litter::Create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
                 RemoveItem(item);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -5661,8 +5868,8 @@ static PathElement* FindBench(const CoordsXYZ& loc)
         if (!pathElement->HasAddition())
             continue;
 
-        rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
-        if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
+        auto* pathAddEntry = pathElement->GetAdditionEntry();
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
             continue;
 
         if (pathElement->IsBroken())
@@ -5750,8 +5957,8 @@ static PathElement* FindBin(const CoordsXYZ& loc)
         if (!pathElement->HasAddition())
             continue;
 
-        rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
-        if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
+        auto* pathAddEntry = pathElement->GetAdditionEntry();
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
             continue;
 
         if (pathElement->IsBroken())
@@ -5828,8 +6035,8 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
         if (!pathElement->HasAddition())
             continue;
 
-        rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
-        if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE))
+        auto* pathAddEntry = pathElement->GetAdditionEntry();
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_BREAKABLE))
             continue;
 
         if (pathElement->IsBroken())
@@ -5848,7 +6055,7 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
  *
  *  rct2: 0x00690848
  */
-static void peep_update_walking_break_scenery(Peep* peep)
+static void peep_update_walking_break_scenery(Guest* peep)
 {
     if (gCheatsDisableVandalism)
         return;
@@ -5891,7 +6098,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
         return;
     }
 
-    for (auto inner_peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto inner_peep : EntityList<Staff>())
     {
         if (inner_peep->AssignedStaffType != StaffType::Security)
             continue;
@@ -5903,7 +6110,10 @@ static void peep_update_walking_break_scenery(Peep* peep)
         int32_t y_diff = abs(inner_peep->y - peep->y);
 
         if (std::max(x_diff, y_diff) < 224)
+        {
+            inner_peep->StaffVandalsStopped++;
             return;
+        }
     }
 
     tileElement->SetIsBroken(true);
@@ -5972,7 +6182,7 @@ static bool peep_should_watch_ride(TileElement* tileElement)
     return true;
 }
 
-bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
+bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
 {
     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     if (ride == nullptr)
@@ -5982,7 +6192,7 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
     if (ride->excitement == RIDE_RATING_UNDEFINED)
     {
         *rideSeatToView = 1;
-        if (ride->status != RIDE_STATUS_OPEN)
+        if (ride->status != RideStatus::Open)
         {
             if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * COORDS_Z_STEP))
             {
@@ -5995,7 +6205,7 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
     else
     {
         *rideSeatToView = 0;
-        if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * COORDS_Z_STEP))
             {
@@ -6019,7 +6229,7 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
  * @param[out] rideSeatToView (ch)
  * @return !CF
  */
-static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView)
+static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideToView, uint8_t* rideSeatToView)
 {
     TileElement* tileElement;
 
@@ -6045,7 +6255,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         if (tileElement->GetDirection() != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
-        if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
+        if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         if (peep->NextLoc.z + (4 * COORDS_Z_STEP) <= tileElement->GetBaseZ())
             continue;
@@ -6084,7 +6294,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         if (direction_reverse(tileElement->GetDirection()) != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
-        if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
+        if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
         if (peep->NextLoc.z + (4 * COORDS_Z_STEP) >= tileElement->GetBaseZ())
@@ -6123,7 +6333,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (sceneryEntry == nullptr || !(sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
@@ -6163,7 +6373,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
         {
             auto wallEntry = tileElement->AsWall()->GetEntry();
-            if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
+            if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             {
                 continue;
             }
@@ -6203,7 +6413,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         if (direction_reverse(tileElement->GetDirection()) != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
-        if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
+        if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         if (peep->NextLoc.z + (6 * COORDS_Z_STEP) <= tileElement->GetBaseZ())
             continue;
@@ -6239,8 +6449,8 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            auto sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (!(sceneryEntry == nullptr || sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            if (!(sceneryEntry == nullptr || sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
@@ -6280,7 +6490,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
         {
             auto wallEntry = tileElement->AsWall()->GetEntry();
-            if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
+            if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             {
                 continue;
             }
@@ -6319,7 +6529,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         if (direction_reverse(tileElement->GetDirection()) != edge)
             continue;
         auto wallEntry = tileElement->AsWall()->GetEntry();
-        if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
+        if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         if (peep->NextLoc.z + (8 * COORDS_Z_STEP) <= tileElement->GetBaseZ())
             continue;
@@ -6355,8 +6565,8 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            const auto* entry = tileElement->AsLargeScenery()->GetEntry();
-            if (entry == nullptr || !(entry->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
@@ -6386,8 +6596,8 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
     ActionSpriteImageOffset = 0;
     WalkingFrameNum = 0;
 
-    if (Action >= PeepActionType::None1)
-        Action = PeepActionType::None2;
+    if (IsActionInterruptable())
+        Action = PeepActionType::Walking;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     Guard::Assert(EnumValue(new_sprite_type) < std::size(gSpriteTypeToSlowWalkMap));
@@ -6401,13 +6611,13 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 
     if (State == PeepState::Sitting)
     {
-        Action = PeepActionType::None1;
+        Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::SittingIdle;
         SwitchNextActionSpriteType();
     }
     if (State == PeepState::Watching)
     {
-        Action = PeepActionType::None1;
+        Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::WatchRide;
         SwitchNextActionSpriteType();
     }
@@ -6471,7 +6681,7 @@ void Guest::UpdateSpriteType()
                 isBalloonPopped = true;
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
             }
-            create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
+            Balloon::Create({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
         RemoveItem(ShopItem::Balloon);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -6551,4 +6761,598 @@ void Guest::UpdateSpriteType()
 bool Guest::HeadingForRideOrParkExit() const
 {
     return (PeepFlags & PEEP_FLAGS_LEAVING_PARK) || (GuestHeadingToRideId != RIDE_ID_NULL);
+}
+
+/**
+ * rct2: 0x00698342
+ * thought.item (eax)
+ * thought.type (ebx)
+ * argument_1 (esi & ebx)
+ * argument_2 (esi+2)
+ */
+void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft)
+{
+    ft.Add<rct_string_id>(PeepThoughts[EnumValue(thought->type)]);
+
+    PeepThoughtToActionFlag flags = PeepThoughtToActionMap[EnumValue(thought->type)].flags;
+    if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)
+    {
+        auto ride = get_ride(thought->item);
+        if (ride != nullptr)
+        {
+            ride->FormatNameTo(ft);
+        }
+        else
+        {
+            ft.Add<rct_string_id>(STR_NONE);
+        }
+    }
+    else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR)
+    {
+        ft.Add<rct_string_id>(GetShopItemDescriptor(ShopItem(thought->item)).Naming.Singular);
+    }
+    else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE)
+    {
+        ft.Add<rct_string_id>(GetShopItemDescriptor(ShopItem(thought->item)).Naming.Indefinite);
+    }
+}
+
+/**
+ *
+ *  rct2: 0x699F5A
+ * al:thoughtType
+ * ah:thoughtArguments
+ * esi: peep
+ */
+void Guest::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
+{
+    PeepActionType newAction = PeepThoughtToActionMap[EnumValue(thoughtType)].action;
+    if (newAction != PeepActionType::Walking && IsActionInterruptable())
+    {
+        Action = newAction;
+        ActionFrame = 0;
+        ActionSpriteImageOffset = 0;
+        UpdateCurrentActionSpriteType();
+    }
+
+    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
+    {
+        rct_peep_thought* thought = &Thoughts[i];
+        // Remove the oldest thought by setting it to NONE.
+        if (thought->type == PeepThoughtType::None)
+            break;
+
+        if (thought->type == thoughtType && thought->item == thoughtArguments)
+        {
+            // If the thought type has not changed then we need to move
+            // it to the top of the thought list. This is done by first removing the
+            // existing thought and placing it at the top.
+            if (i < PEEP_MAX_THOUGHTS - 2)
+            {
+                memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+            }
+            break;
+        }
+    }
+
+    memmove(&Thoughts[1], &Thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
+
+    Thoughts[0].type = thoughtType;
+    Thoughts[0].item = thoughtArguments;
+    Thoughts[0].freshness = 0;
+    Thoughts[0].fresh_timeout = 0;
+
+    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+}
+
+// clang-format off
+/** rct2: 0x009823A0 */
+static constexpr const PeepNauseaTolerance nausea_tolerance_distribution[] = {
+    PeepNauseaTolerance::None,
+    PeepNauseaTolerance::Low, PeepNauseaTolerance::Low,
+    PeepNauseaTolerance::Average, PeepNauseaTolerance::Average, PeepNauseaTolerance::Average,
+    PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High,
+};
+
+/** rct2: 0x009823BC */
+static constexpr const uint8_t trouser_colours[] = {
+    COLOUR_BLACK,
+    COLOUR_GREY,
+    COLOUR_LIGHT_BROWN,
+    COLOUR_SATURATED_BROWN,
+    COLOUR_DARK_BROWN,
+    COLOUR_SALMON_PINK,
+    COLOUR_BLACK,
+    COLOUR_GREY,
+    COLOUR_LIGHT_BROWN,
+    COLOUR_SATURATED_BROWN,
+    COLOUR_DARK_BROWN,
+    COLOUR_SALMON_PINK,
+    COLOUR_BLACK,
+    COLOUR_GREY,
+    COLOUR_LIGHT_BROWN,
+    COLOUR_SATURATED_BROWN,
+    COLOUR_DARK_BROWN,
+    COLOUR_SALMON_PINK,
+    COLOUR_DARK_PURPLE,
+    COLOUR_LIGHT_PURPLE,
+    COLOUR_DARK_BLUE,
+    COLOUR_SATURATED_GREEN,
+    COLOUR_SATURATED_RED,
+    COLOUR_DARK_ORANGE,
+    COLOUR_BORDEAUX_RED,
+};
+
+/** rct2: 0x009823D5 */
+static constexpr const uint8_t tshirt_colours[] = {
+    COLOUR_BLACK,
+    COLOUR_GREY,
+    COLOUR_LIGHT_BROWN,
+    COLOUR_SATURATED_BROWN,
+    COLOUR_DARK_BROWN,
+    COLOUR_SALMON_PINK,
+    COLOUR_BLACK,
+    COLOUR_GREY,
+    COLOUR_LIGHT_BROWN,
+    COLOUR_SATURATED_BROWN,
+    COLOUR_DARK_BROWN,
+    COLOUR_SALMON_PINK,
+    COLOUR_DARK_PURPLE,
+    COLOUR_LIGHT_PURPLE,
+    COLOUR_DARK_BLUE,
+    COLOUR_SATURATED_GREEN,
+    COLOUR_SATURATED_RED,
+    COLOUR_DARK_ORANGE,
+    COLOUR_BORDEAUX_RED,
+    COLOUR_WHITE,
+    COLOUR_BRIGHT_PURPLE,
+    COLOUR_LIGHT_BLUE,
+    COLOUR_TEAL,
+    COLOUR_DARK_GREEN,
+    COLOUR_MOSS_GREEN,
+    COLOUR_BRIGHT_GREEN,
+    COLOUR_OLIVE_GREEN,
+    COLOUR_DARK_OLIVE_GREEN,
+    COLOUR_YELLOW,
+    COLOUR_LIGHT_ORANGE,
+    COLOUR_BRIGHT_RED,
+    COLOUR_DARK_PINK,
+    COLOUR_BRIGHT_PINK,
+};
+// clang-format on
+
+/**
+ *
+ *  rct2: 0x0069A05D
+ */
+Guest* Guest::Generate(const CoordsXYZ& coords)
+{
+    if (GetNumFreeEntities() < 400)
+        return nullptr;
+
+    Guest* peep = CreateEntity<Guest>();
+    peep->SpriteType = PeepSpriteType::Normal;
+    peep->OutsideOfPark = true;
+    peep->State = PeepState::Falling;
+    peep->Action = PeepActionType::Walking;
+    peep->SpecialSprite = 0;
+    peep->ActionSpriteImageOffset = 0;
+    peep->WalkingFrameNum = 0;
+    peep->ActionSpriteType = PeepActionSpriteType::None;
+    peep->PeepFlags = 0;
+    peep->FavouriteRide = RIDE_ID_NULL;
+    peep->FavouriteRideRating = 0;
+
+    const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
+    peep->sprite_width = spriteBounds->sprite_width;
+    peep->sprite_height_negative = spriteBounds->sprite_height_negative;
+    peep->sprite_height_positive = spriteBounds->sprite_height_positive;
+
+    peep->MoveTo(coords);
+    peep->sprite_direction = 0;
+    peep->Mass = (scenario_rand() & 0x1F) + 45;
+    peep->PathCheckOptimisation = 0;
+    peep->InteractionRideIndex = RIDE_ID_NULL;
+    peep->PreviousRide = RIDE_ID_NULL;
+    peep->Thoughts[0].type = PeepThoughtType::None;
+    peep->WindowInvalidateFlags = 0;
+
+    uint8_t intensityHighest = (scenario_rand() & 0x7) + 3;
+    uint8_t intensityLowest = std::min(intensityHighest, static_cast<uint8_t>(7)) - 3;
+
+    if (intensityHighest >= 7)
+        intensityHighest = 15;
+
+    /* Check which intensity boxes are enabled
+     * and apply the appropriate intensity settings. */
+    if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
+    {
+        if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+        {
+            intensityLowest = 0;
+            intensityHighest = 15;
+        }
+        else
+        {
+            intensityLowest = 0;
+            intensityHighest = 4;
+        }
+    }
+    else if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+    {
+        intensityLowest = 9;
+        intensityHighest = 15;
+    }
+
+    peep->Intensity = IntensityRange(intensityLowest, intensityHighest);
+
+    uint8_t nauseaTolerance = scenario_rand() & 0x7;
+    if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+    {
+        nauseaTolerance += 4;
+    }
+
+    peep->NauseaTolerance = nausea_tolerance_distribution[nauseaTolerance];
+
+    /* Scenario editor limits initial guest happiness to between 37..253.
+     * To be on the safe side, assume the value could have been hacked
+     * to any value 0..255. */
+    peep->Happiness = gGuestInitialHappiness;
+    /* Assume a default initial happiness of 0 is wrong and set
+     * to 128 (50%) instead. */
+    if (gGuestInitialHappiness == 0)
+        peep->Happiness = 128;
+    /* Initial value will vary by -15..16 */
+    int8_t happinessDelta = (scenario_rand() & 0x1F) - 15;
+    /* Adjust by the delta, clamping at min=0 and max=255. */
+    peep->Happiness = std::clamp(peep->Happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
+    peep->HappinessTarget = peep->Happiness;
+    peep->Nausea = 0;
+    peep->NauseaTarget = 0;
+
+    /* Scenario editor limits initial guest hunger to between 37..253.
+     * To be on the safe side, assume the value could have been hacked
+     * to any value 0..255. */
+    peep->Hunger = gGuestInitialHunger;
+    /* Initial value will vary by -15..16 */
+    int8_t hungerDelta = (scenario_rand() & 0x1F) - 15;
+    /* Adjust by the delta, clamping at min=0 and max=255. */
+    peep->Hunger = std::clamp(peep->Hunger + hungerDelta, 0, PEEP_MAX_HUNGER);
+
+    /* Scenario editor limits initial guest thirst to between 37..253.
+     * To be on the safe side, assume the value could have been hacked
+     * to any value 0..255. */
+    peep->Thirst = gGuestInitialThirst;
+    /* Initial value will vary by -15..16 */
+    int8_t thirstDelta = (scenario_rand() & 0x1F) - 15;
+    /* Adjust by the delta, clamping at min=0 and max=255. */
+    peep->Thirst = std::clamp(peep->Thirst + thirstDelta, 0, PEEP_MAX_THIRST);
+
+    peep->Toilet = 0;
+    peep->TimeToConsume = 0;
+    std::fill_n(peep->RidesBeenOn, 32, 0x00);
+
+    peep->GuestNumRides = 0;
+    std::fill_n(peep->RideTypesBeenOn, 16, 0x00);
+    peep->Id = gNextGuestNumber++;
+    peep->Name = nullptr;
+
+    money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
+    if (cash < 0)
+        cash = 0;
+
+    if (gGuestInitialCash == 0)
+    {
+        cash = 500;
+    }
+
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    {
+        cash = 0;
+    }
+
+    if (gGuestInitialCash == MONEY16_UNDEFINED)
+    {
+        cash = 0;
+    }
+
+    peep->CashInPocket = cash;
+    peep->CashSpent = 0;
+    peep->ParkEntryTime = -1;
+    peep->ResetPathfindGoal();
+    peep->RemoveAllItems();
+    peep->GuestHeadingToRideId = RIDE_ID_NULL;
+    peep->LitterCount = 0;
+    peep->DisgustingCount = 0;
+    peep->VandalismSeen = 0;
+    peep->PaidToEnter = 0;
+    peep->PaidOnRides = 0;
+    peep->PaidOnFood = 0;
+    peep->PaidOnDrink = 0;
+    peep->PaidOnSouvenirs = 0;
+    peep->AmountOfFood = 0;
+    peep->AmountOfDrinks = 0;
+    peep->AmountOfSouvenirs = 0;
+    peep->SurroundingsThoughtTimeout = 0;
+    peep->Angriness = 0;
+    peep->TimeLost = 0;
+
+    uint8_t tshirtColour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
+    peep->TshirtColour = tshirt_colours[tshirtColour];
+
+    uint8_t trousersColour = static_cast<uint8_t>(scenario_rand() % std::size(trouser_colours));
+    peep->TrousersColour = trouser_colours[trousersColour];
+
+    /* Minimum energy is capped at 32 and maximum at 128, so this initialises
+     * a peep with approx 34%-100% energy. (65 - 32) / (128 - 32) ≈ 34% */
+    uint8_t energy = (scenario_rand() % 64) + 65;
+    peep->Energy = energy;
+    peep->EnergyTarget = energy;
+
+    increment_guests_heading_for_park();
+
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_GENERATION))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("id", peep->sprite_index);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_GENERATION, e, true);
+    }
+#endif
+
+    return peep;
+}
+
+enum
+{
+    PEEP_FACE_OFFSET_ANGRY = 0,
+    PEEP_FACE_OFFSET_VERY_VERY_SICK,
+    PEEP_FACE_OFFSET_VERY_SICK,
+    PEEP_FACE_OFFSET_SICK,
+    PEEP_FACE_OFFSET_VERY_TIRED,
+    PEEP_FACE_OFFSET_TIRED,
+    PEEP_FACE_OFFSET_VERY_VERY_UNHAPPY,
+    PEEP_FACE_OFFSET_VERY_UNHAPPY,
+    PEEP_FACE_OFFSET_UNHAPPY,
+    PEEP_FACE_OFFSET_NORMAL,
+    PEEP_FACE_OFFSET_HAPPY,
+    PEEP_FACE_OFFSET_VERY_HAPPY,
+    PEEP_FACE_OFFSET_VERY_VERY_HAPPY,
+};
+
+static constexpr const int32_t face_sprite_small[] = {
+    SPR_PEEP_SMALL_FACE_ANGRY,
+    SPR_PEEP_SMALL_FACE_VERY_VERY_SICK,
+    SPR_PEEP_SMALL_FACE_VERY_SICK,
+    SPR_PEEP_SMALL_FACE_SICK,
+    SPR_PEEP_SMALL_FACE_VERY_TIRED,
+    SPR_PEEP_SMALL_FACE_TIRED,
+    SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY,
+    SPR_PEEP_SMALL_FACE_VERY_UNHAPPY,
+    SPR_PEEP_SMALL_FACE_UNHAPPY,
+    SPR_PEEP_SMALL_FACE_NORMAL,
+    SPR_PEEP_SMALL_FACE_HAPPY,
+    SPR_PEEP_SMALL_FACE_VERY_HAPPY,
+    SPR_PEEP_SMALL_FACE_VERY_VERY_HAPPY,
+};
+
+static constexpr const int32_t face_sprite_large[] = {
+    SPR_PEEP_LARGE_FACE_ANGRY_0,
+    SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0,
+    SPR_PEEP_LARGE_FACE_VERY_SICK_0,
+    SPR_PEEP_LARGE_FACE_SICK,
+    SPR_PEEP_LARGE_FACE_VERY_TIRED,
+    SPR_PEEP_LARGE_FACE_TIRED,
+    SPR_PEEP_LARGE_FACE_VERY_VERY_UNHAPPY,
+    SPR_PEEP_LARGE_FACE_VERY_UNHAPPY,
+    SPR_PEEP_LARGE_FACE_UNHAPPY,
+    SPR_PEEP_LARGE_FACE_NORMAL,
+    SPR_PEEP_LARGE_FACE_HAPPY,
+    SPR_PEEP_LARGE_FACE_VERY_HAPPY,
+    SPR_PEEP_LARGE_FACE_VERY_VERY_HAPPY,
+};
+
+static int32_t get_face_sprite_offset(Guest* peep)
+{
+    // ANGRY
+    if (peep->Angriness > 0)
+        return PEEP_FACE_OFFSET_ANGRY;
+
+    // VERY_VERY_SICK
+    if (peep->Nausea > 200)
+        return PEEP_FACE_OFFSET_VERY_VERY_SICK;
+
+    // VERY_SICK
+    if (peep->Nausea > 170)
+        return PEEP_FACE_OFFSET_VERY_SICK;
+
+    // SICK
+    if (peep->Nausea > 140)
+        return PEEP_FACE_OFFSET_SICK;
+
+    // VERY_TIRED
+    if (peep->Energy < 46)
+        return PEEP_FACE_OFFSET_VERY_TIRED;
+
+    // TIRED
+    if (peep->Energy < 70)
+        return PEEP_FACE_OFFSET_TIRED;
+
+    int32_t offset = PEEP_FACE_OFFSET_VERY_VERY_UNHAPPY;
+    // There are 7 different happiness based faces
+    for (int32_t i = 37; peep->Happiness >= i; i += 37)
+    {
+        offset++;
+    }
+
+    return offset;
+}
+
+/**
+ * Function split into large and small sprite
+ *  rct2: 0x00698721
+ */
+int32_t get_peep_face_sprite_small(Guest* peep)
+{
+    return face_sprite_small[get_face_sprite_offset(peep)];
+}
+
+/**
+ * Function split into large and small sprite
+ *  rct2: 0x00698721
+ */
+int32_t get_peep_face_sprite_large(Guest* peep)
+{
+    return face_sprite_large[get_face_sprite_offset(peep)];
+}
+
+/**
+ *
+ *  rct2: 0x00693CBB
+ */
+bool Guest::UpdateQueuePosition(PeepActionType previous_action)
+{
+    TimeInQueue++;
+
+    auto* guestNext = GetEntity<Guest>(GuestNextInQueue);
+    if (guestNext == nullptr)
+    {
+        return false;
+    }
+
+    int16_t x_diff = abs(guestNext->x - x);
+    int16_t y_diff = abs(guestNext->y - y);
+    int16_t z_diff = abs(guestNext->z - z);
+
+    if (z_diff > 10)
+        return false;
+
+    if (x_diff < y_diff)
+    {
+        int16_t temp_x = x_diff;
+        x_diff = y_diff;
+        y_diff = temp_x;
+    }
+
+    x_diff += y_diff / 2;
+    if (x_diff > 7)
+    {
+        if (x_diff > 13)
+        {
+            if ((x & 0xFFE0) != (guestNext->x & 0xFFE0) || (y & 0xFFE0) != (guestNext->y & 0xFFE0))
+                return false;
+        }
+
+        if (sprite_direction != guestNext->sprite_direction)
+            return false;
+
+        switch (guestNext->sprite_direction / 8)
+        {
+            case 0:
+                if (x >= guestNext->x)
+                    return false;
+                break;
+            case 1:
+                if (y <= guestNext->y)
+                    return false;
+                break;
+            case 2:
+                if (x <= guestNext->x)
+                    return false;
+                break;
+            case 3:
+                if (y >= guestNext->y)
+                    return false;
+                break;
+        }
+    }
+
+    if (!IsActionInterruptable())
+        UpdateAction();
+
+    if (!IsActionWalking())
+        return true;
+
+    Action = PeepActionType::Idle;
+    NextActionSpriteType = PeepActionSpriteType::WatchRide;
+    if (previous_action != PeepActionType::Idle)
+        Invalidate();
+    return true;
+}
+
+/**
+ *
+ *  rct2: 0x006966A9
+ */
+void Guest::RemoveFromQueue()
+{
+    auto ride = get_ride(CurrentRide);
+    if (ride == nullptr)
+        return;
+
+    auto& station = ride->stations[CurrentRideStation];
+    // Make sure we don't underflow, building while paused might reset it to 0 where peeps have
+    // not yet left the queue.
+    if (station.QueueLength > 0)
+    {
+        station.QueueLength--;
+    }
+
+    if (sprite_index == station.LastPeepInQueue)
+    {
+        station.LastPeepInQueue = GuestNextInQueue;
+        return;
+    }
+
+    auto* otherGuest = GetEntity<Guest>(station.LastPeepInQueue);
+    if (otherGuest == nullptr)
+    {
+        log_error("Invalid Guest Queue list!");
+        return;
+    }
+    for (; otherGuest != nullptr; otherGuest = GetEntity<Guest>(otherGuest->GuestNextInQueue))
+    {
+        if (sprite_index == otherGuest->GuestNextInQueue)
+        {
+            otherGuest->GuestNextInQueue = GuestNextInQueue;
+            return;
+        }
+    }
+}
+
+uint64_t Guest::GetItemFlags() const
+{
+    return ItemFlags;
+}
+
+void Guest::SetItemFlags(uint64_t itemFlags)
+{
+    ItemFlags = itemFlags;
+}
+
+void Guest::RemoveAllItems()
+{
+    ItemFlags = 0;
+}
+
+void Guest::RemoveItem(ShopItem item)
+{
+    ItemFlags &= ~EnumToFlag(item);
+}
+
+void Guest::GiveItem(ShopItem item)
+{
+    ItemFlags |= EnumToFlag(item);
+}
+
+bool Guest::HasItem(ShopItem peepItem) const
+{
+    return GetItemFlags() & EnumToFlag(peepItem);
 }

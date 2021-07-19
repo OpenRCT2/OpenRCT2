@@ -120,6 +120,9 @@ struct rct_drawpixelinfo
     uint8_t remX{};
     uint8_t remY{};
 
+    // Last position of drawn text.
+    ScreenCoordsXY lastStringPos{};
+
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 
     size_t GetBytesPerRow() const;
@@ -662,9 +665,6 @@ extern uint8_t gOtherPalette[256];
 extern uint8_t text_palette[];
 extern const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT];
 
-extern thread_local int32_t gLastDrawStringX;
-extern thread_local int32_t gLastDrawStringY;
-
 extern uint32_t gPickupPeepImage;
 extern int32_t gPickupPeepX;
 extern int32_t gPickupPeepY;
@@ -688,14 +688,12 @@ void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi);
 
 // line
 void gfx_draw_line(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour);
-void gfx_draw_line_software(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour);
+void gfx_draw_line_software(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour);
 void gfx_draw_dashed_line(
     rct_drawpixelinfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
 
 // rect
 void gfx_fill_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour);
-void gfx_fill_rect_inset(
-    rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom, int32_t colour, uint8_t flags);
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
 void gfx_filter_rect(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FilterPaletteID palette);
 void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
@@ -719,6 +717,7 @@ size_t ImageListGetMaximum();
 void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args);
 void FASTCALL gfx_bmp_sprite_to_buffer(DrawSpriteArgs& args);
 void FASTCALL gfx_rle_sprite_to_buffer(DrawSpriteArgs& args);
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, ImageId image_id, const ScreenCoordsXY& coords);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, const ScreenCoordsXY& coords, uint32_t tertiary_colour);
 void FASTCALL
     gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image_id, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);

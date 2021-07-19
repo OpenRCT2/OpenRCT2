@@ -794,14 +794,14 @@ STR_1410    :垂直の塔
 STR_1411    :{STRINGID} が邪魔になっています
 STR_1412    :{WINDOW_COLOUR_3}データロギングはこのライドには利用できません。
 STR_1413    :{WINDOW_COLOUR_3}{STRINGID}が{STRINGID}出発時にデータロギングが始まります。
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}速度
 STR_1416    :{WINDOW_COLOUR_2}高度
 STR_1417    :{WINDOW_COLOUR_2}垂直G
 STR_1418    :{WINDOW_COLOUR_2}側方G
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :{POP16}{STRINGID}からのデータのロギング中
 STR_1423    :行列の歩道
 STR_1424    :歩道
@@ -860,131 +860,131 @@ STR_1476    :{WINDOW_COLOUR_2}強烈度: {BLACK}まだ結果がない
 STR_1477    :{WINDOW_COLOUR_2}強烈度: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}ゲロ度: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}ゲロ度: {BLACK}まだ結果がない
-STR_1480    :{SMALLFONT}「{STRINGID}には手が出ない」
-STR_1481    :{SMALLFONT}「お金をすべて使っちゃった…」
-STR_1482    :{SMALLFONT}「気分が悪い…」
-STR_1483    :{SMALLFONT}「ひどく気分が悪い！」
-STR_1484    :{SMALLFONT}「{STRINGID}よりももっとスリルのあるのに乗りたい」
-STR_1485    :{SMALLFONT}「{STRINGID}は私には激しすぎる！」
-STR_1486    :{SMALLFONT}「{STRINGID}がまだ終わってない」
-STR_1487    :{SMALLFONT}「{STRINGID}を見て気分が悪くなった」
-STR_1488    :{SMALLFONT}「{STRINGID}に乗るのにそんなに払えないよ！」
-STR_1489    :{SMALLFONT}「家に帰りたい」
-STR_1490    :{SMALLFONT}「{STRINGID}の値段は本当にお得だよ」
-STR_1491    :{SMALLFONT}「{STRINGID}の一つはもう持ってるよ」
-STR_1492    :{SMALLFONT}「 {STRINGID}には手が出ない」
-STR_1493    :{SMALLFONT}「お腹は空いてないよ」
-STR_1494    :{SMALLFONT}「喉は渇いてないよ]
-STR_1495    :{SMALLFONT}「助けて！溺れている！」
-STR_1496    :{SMALLFONT}「迷っちゃった！」
-STR_1497    :{SMALLFONT}「{STRINGID}はすごかった！」
-STR_1498    :{SMALLFONT}「{STRINGID}にもう何年も並んでるよ」
-STR_1499    :{SMALLFONT}「疲れた」
-STR_1500    :{SMALLFONT}「お腹が減った」
-STR_1501    :{SMALLFONT}「喉が渇いた」
-STR_1502    :{SMALLFONT}「トイレに行きたい」
-STR_1503    :{SMALLFONT}「{STRINGID}はどこにあるの？」
-STR_1504    :{SMALLFONT}「{STRINGID}を使うのにそんなに払えないよ！」
-STR_1505    :{SMALLFONT}「雨が降ってる間は{STRINGID}には乗りたくない」
-STR_1506    :{SMALLFONT}「この場所はゴミであふれてる」
-STR_1507    :{SMALLFONT}「パークの出口はどこ？」
-STR_1508    :{SMALLFONT}「{STRINGID}を降りたい」
-STR_1509    :{SMALLFONT}「{STRINGID}から出たい」
-STR_1510    :{SMALLFONT}「{STRINGID}には乗りたくない――危ないよ！」
-STR_1511    :{SMALLFONT}「この道は胸が悪くなるな！」
-STR_1512    :{SMALLFONT}「ここはは混雑しすぎ…」
-STR_1513    :{SMALLFONT}「この道は壊れてる」
-STR_1514    :{SMALLFONT}「いい景色だな！」
-STR_1515    :{SMALLFONT}「このパークは本当に綺麗です！」
-STR_1516    :{SMALLFONT}「すごいジャンプ噴水だ！」
-STR_1517    :{SMALLFONT}「この音楽はいいな」
-STR_1518    :{SMALLFONT}「この{STRINGID}で買った風船の値段は本当にお得だよ」
-STR_1519    :{SMALLFONT}「この{STRINGID}で買った縫い包みの値段は本当にお得だよ」
-STR_1520    :{SMALLFONT}「この{STRINGID}で買った地図の値段は本当にお得だよ」
-STR_1521    :{SMALLFONT}「{STRINGID}のライドフォトの値段は本当にお得だよ」
-STR_1522    :{SMALLFONT}「この{STRINGID}で買った傘の値段は本当にお得だよ」
-STR_1523    :{SMALLFONT}「この{STRINGID}で買った飲み物の値段は本当にお得だよ」
-STR_1524    :{SMALLFONT}「この{STRINGID}で買ったハンバーガーの値段は本当にお得だよ」
-STR_1525    :{SMALLFONT}「この{STRINGID}で買ったポテトフライの値段は本当にお得だよ」
-STR_1526    :{SMALLFONT}「この{STRINGID}で買ったソフトクリームの値段は本当にお得だよ」
-STR_1527    :{SMALLFONT}「この{STRINGID}で買った綿菓子の値段は本当にお得だよ」
+STR_1480    :「{STRINGID}には手が出ない」
+STR_1481    :「お金をすべて使っちゃった…」
+STR_1482    :「気分が悪い…」
+STR_1483    :「ひどく気分が悪い！」
+STR_1484    :「{STRINGID}よりももっとスリルのあるのに乗りたい」
+STR_1485    :「{STRINGID}は私には激しすぎる！」
+STR_1486    :「{STRINGID}がまだ終わってない」
+STR_1487    :「{STRINGID}を見て気分が悪くなった」
+STR_1488    :「{STRINGID}に乗るのにそんなに払えないよ！」
+STR_1489    :「家に帰りたい」
+STR_1490    :「{STRINGID}の値段は本当にお得だよ」
+STR_1491    :「{STRINGID}の一つはもう持ってるよ」
+STR_1492    :「 {STRINGID}には手が出ない」
+STR_1493    :「お腹は空いてないよ」
+STR_1494    :「喉は渇いてないよ]
+STR_1495    :「助けて！溺れている！」
+STR_1496    :「迷っちゃった！」
+STR_1497    :「{STRINGID}はすごかった！」
+STR_1498    :「{STRINGID}にもう何年も並んでるよ」
+STR_1499    :「疲れた」
+STR_1500    :「お腹が減った」
+STR_1501    :「喉が渇いた」
+STR_1502    :「トイレに行きたい」
+STR_1503    :「{STRINGID}はどこにあるの？」
+STR_1504    :「{STRINGID}を使うのにそんなに払えないよ！」
+STR_1505    :「雨が降ってる間は{STRINGID}には乗りたくない」
+STR_1506    :「この場所はゴミであふれてる」
+STR_1507    :「パークの出口はどこ？」
+STR_1508    :「{STRINGID}を降りたい」
+STR_1509    :「{STRINGID}から出たい」
+STR_1510    :「{STRINGID}には乗りたくない――危ないよ！」
+STR_1511    :「この道は胸が悪くなるな！」
+STR_1512    :「ここはは混雑しすぎ…」
+STR_1513    :「この道は壊れてる」
+STR_1514    :「いい景色だな！」
+STR_1515    :「このパークは本当に綺麗です！」
+STR_1516    :「すごいジャンプ噴水だ！」
+STR_1517    :「この音楽はいいな」
+STR_1518    :「この{STRINGID}で買った風船の値段は本当にお得だよ」
+STR_1519    :「この{STRINGID}で買った縫い包みの値段は本当にお得だよ」
+STR_1520    :「この{STRINGID}で買った地図の値段は本当にお得だよ」
+STR_1521    :「{STRINGID}のライドフォトの値段は本当にお得だよ」
+STR_1522    :「この{STRINGID}で買った傘の値段は本当にお得だよ」
+STR_1523    :「この{STRINGID}で買った飲み物の値段は本当にお得だよ」
+STR_1524    :「この{STRINGID}で買ったハンバーガーの値段は本当にお得だよ」
+STR_1525    :「この{STRINGID}で買ったポテトフライの値段は本当にお得だよ」
+STR_1526    :「この{STRINGID}で買ったソフトクリームの値段は本当にお得だよ」
+STR_1527    :「この{STRINGID}で買った綿菓子の値段は本当にお得だよ」
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}「この{STRINGID}で買ったピザの値段は本当にお得だよ」
+STR_1531    :「この{STRINGID}で買ったピザの値段は本当にお得だよ」
 STR_1532    :
-STR_1533    :{SMALLFONT}「この{STRINGID}で買ったポップコーンの値段は本当にお得だよ」
-STR_1534    :{SMALLFONT}「この{STRINGID}で買ったホットドッグの値段は本当にお得だよ」
-STR_1535    :{SMALLFONT}「この{STRINGID}で買った触手の値段は本当にお得だよ」
-STR_1536    :{SMALLFONT}「この{STRINGID}で買った帽子の値段は本当にお得だよ」
-STR_1537    :{SMALLFONT}「この{STRINGID}で買ったリンゴ飴の値段は本当にお得だよ」
-STR_1538    :{SMALLFONT}「この{STRINGID}で買ったTシャツの値段は本当にお得だよ」
-STR_1539    :{SMALLFONT}「この{STRINGID}で買ったドーナツの値段は本当にお得だよ」
-STR_1540    :{SMALLFONT}「この{STRINGID}で買ったコーヒの値段は本当にお得だよ」
+STR_1533    :「この{STRINGID}で買ったポップコーンの値段は本当にお得だよ」
+STR_1534    :「この{STRINGID}で買ったホットドッグの値段は本当にお得だよ」
+STR_1535    :「この{STRINGID}で買った触手の値段は本当にお得だよ」
+STR_1536    :「この{STRINGID}で買った帽子の値段は本当にお得だよ」
+STR_1537    :「この{STRINGID}で買ったリンゴ飴の値段は本当にお得だよ」
+STR_1538    :「この{STRINGID}で買ったTシャツの値段は本当にお得だよ」
+STR_1539    :「この{STRINGID}で買ったドーナツの値段は本当にお得だよ」
+STR_1540    :「この{STRINGID}で買ったコーヒの値段は本当にお得だよ」
 STR_1541    :
-STR_1542    :{SMALLFONT}「この{STRINGID}で買ったフライドチキンの値段は本当にお得だよ」
-STR_1543    :{SMALLFONT}「この{STRINGID}で買ったレモネードの値段は本当にお得だよ」
+STR_1542    :「この{STRINGID}で買ったフライドチキンの値段は本当にお得だよ」
+STR_1543    :「この{STRINGID}で買ったレモネードの値段は本当にお得だよ」
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}「すごい!」
-STR_1551    :{SMALLFONT}「不思議な気持ちがある…誰かが私を見ているというかも？」
-STR_1552    :{SMALLFONT}「{STRINGID}の風船にそんなに払えないよ！」
-STR_1553    :{SMALLFONT}「{STRINGID}の縫い包みにそんなに払えないよ！」
-STR_1554    :{SMALLFONT}「{STRINGID}の地図にそんなに払えないよ！」
-STR_1555    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
-STR_1556    :{SMALLFONT}「{STRINGID}の傘にそんなに払えないよ！」
-STR_1557    :{SMALLFONT}「{STRINGID}の飲み物にそんなに払えないよ！」
-STR_1558    :{SMALLFONT}「{STRINGID}のハンバーガーにそんなに払えないよ！」
-STR_1559    :{SMALLFONT}「{STRINGID}のポテトフライにそんなに払えないよ！」
-STR_1560    :{SMALLFONT}「{STRINGID}のソフトクリームにそんなに払えないよ！」
-STR_1561    :{SMALLFONT}「{STRINGID}の綿菓子にそんなに払えないよ！」
+STR_1550    :「すごい!」
+STR_1551    :「不思議な気持ちがある…誰かが私を見ているというかも？」
+STR_1552    :「{STRINGID}の風船にそんなに払えないよ！」
+STR_1553    :「{STRINGID}の縫い包みにそんなに払えないよ！」
+STR_1554    :「{STRINGID}の地図にそんなに払えないよ！」
+STR_1555    :「{STRINGID}のライドフォトにそんなに払えないよ！」
+STR_1556    :「{STRINGID}の傘にそんなに払えないよ！」
+STR_1557    :「{STRINGID}の飲み物にそんなに払えないよ！」
+STR_1558    :「{STRINGID}のハンバーガーにそんなに払えないよ！」
+STR_1559    :「{STRINGID}のポテトフライにそんなに払えないよ！」
+STR_1560    :「{STRINGID}のソフトクリームにそんなに払えないよ！」
+STR_1561    :「{STRINGID}の綿菓子にそんなに払えないよ！」
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}「{STRINGID}のピザにそんなに払えないよ！」
+STR_1565    :「{STRINGID}のピザにそんなに払えないよ！」
 STR_1566    :
-STR_1567    :{SMALLFONT}「{STRINGID}のポップコーンにそんなに払えないよ！」
-STR_1568    :{SMALLFONT}「{STRINGID}のホットドッグにそんなに払えないよ！」
-STR_1569    :{SMALLFONT}「{STRINGID}の触手にそんなに払えないよ！」
-STR_1570    :{SMALLFONT}「{STRINGID}の帽子にそんなに払えないよ！」
-STR_1571    :{SMALLFONT}「{STRINGID}のリンゴ飴にそんなに払えないよ！」
-STR_1572    :{SMALLFONT}「{STRINGID}のTシャツにそんなに払えないよ！」
-STR_1573    :{SMALLFONT}「{STRINGID}のドーナツにそんなに払えないよ！」
-STR_1574    :{SMALLFONT}「{STRINGID}のコーヒにそんなに払えないよ！」
+STR_1567    :「{STRINGID}のポップコーンにそんなに払えないよ！」
+STR_1568    :「{STRINGID}のホットドッグにそんなに払えないよ！」
+STR_1569    :「{STRINGID}の触手にそんなに払えないよ！」
+STR_1570    :「{STRINGID}の帽子にそんなに払えないよ！」
+STR_1571    :「{STRINGID}のリンゴ飴にそんなに払えないよ！」
+STR_1572    :「{STRINGID}のTシャツにそんなに払えないよ！」
+STR_1573    :「{STRINGID}のドーナツにそんなに払えないよ！」
+STR_1574    :「{STRINGID}のコーヒにそんなに払えないよ！」
 STR_1575    :
-STR_1576    :{SMALLFONT}「{STRINGID}のフライドチキンにそんなに払えないよ！」
-STR_1577    :{SMALLFONT}「{STRINGID}のレモネードにそんなに払えないよ！」
+STR_1576    :「{STRINGID}のフライドチキンにそんなに払えないよ！」
+STR_1577    :「{STRINGID}のレモネードにそんなに払えないよ！」
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}「{STRINGID}のライドフォトの値段は本当にお得だよ」
-STR_1585    :{SMALLFONT}「{STRINGID}のライドフォトの値段は本当にお得だよ」
-STR_1586    :{SMALLFONT}「{STRINGID}のライドフォトの値段は本当にお得だよ」
-STR_1587    :{SMALLFONT}「{STRINGID}のプレッツェルの値段は本当にお得だよ」
-STR_1588    :{SMALLFONT}「{STRINGID}のホットココアの値段は本当にお得だよ」
-STR_1589    :{SMALLFONT}「{STRINGID}のアイスティーの値段は本当にお得だよ」
-STR_1590    :{SMALLFONT}「{STRINGID}のファンネルケーキの値段は本当にお得だよ」
-STR_1591    :{SMALLFONT}「{STRINGID}のサングラスの値段は本当にお得だよ」
-STR_1592    :{SMALLFONT}「{STRINGID}の牛肉ヌードルの値段は本当にお得だよ」
-STR_1593    :{SMALLFONT}「{STRINGID}の焼飯ヌードルの値段は本当にお得だよ」
-STR_1594    :{SMALLFONT}「{STRINGID}のワンタンスープの値段は本当にお得だよ」
-STR_1595    :{SMALLFONT}「{STRINGID}の肉団子スープの値段は本当にお得だよ」
-STR_1596    :{SMALLFONT}「{STRINGID}のフルーツジュースの値段は本当にお得だよ」
-STR_1597    :{SMALLFONT}「{STRINGID}の豆乳の値段は本当にお得だよ」
-STR_1598    :{SMALLFONT}「{STRINGID}のスジョングァの値段は本当にお得だよ」
-STR_1599    :{SMALLFONT}「{STRINGID}のサンドイッチの値段は本当にお得だよ」
-STR_1600    :{SMALLFONT}「{STRINGID}のクッキーの値段は本当にお得だよ」
+STR_1584    :「{STRINGID}のライドフォトの値段は本当にお得だよ」
+STR_1585    :「{STRINGID}のライドフォトの値段は本当にお得だよ」
+STR_1586    :「{STRINGID}のライドフォトの値段は本当にお得だよ」
+STR_1587    :「{STRINGID}のプレッツェルの値段は本当にお得だよ」
+STR_1588    :「{STRINGID}のホットココアの値段は本当にお得だよ」
+STR_1589    :「{STRINGID}のアイスティーの値段は本当にお得だよ」
+STR_1590    :「{STRINGID}のファンネルケーキの値段は本当にお得だよ」
+STR_1591    :「{STRINGID}のサングラスの値段は本当にお得だよ」
+STR_1592    :「{STRINGID}の牛肉ヌードルの値段は本当にお得だよ」
+STR_1593    :「{STRINGID}の焼飯ヌードルの値段は本当にお得だよ」
+STR_1594    :「{STRINGID}のワンタンスープの値段は本当にお得だよ」
+STR_1595    :「{STRINGID}の肉団子スープの値段は本当にお得だよ」
+STR_1596    :「{STRINGID}のフルーツジュースの値段は本当にお得だよ」
+STR_1597    :「{STRINGID}の豆乳の値段は本当にお得だよ」
+STR_1598    :「{STRINGID}のスジョングァの値段は本当にお得だよ」
+STR_1599    :「{STRINGID}のサンドイッチの値段は本当にお得だよ」
+STR_1600    :「{STRINGID}のクッキーの値段は本当にお得だよ」
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}「{STRINGID}のローストソーセージの値段は本当にお得だよ」
+STR_1604    :「{STRINGID}のローストソーセージの値段は本当にお得だよ」
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -996,27 +996,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
-STR_1617    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
-STR_1618    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
-STR_1619    :{SMALLFONT}「{STRINGID}のプレッツェルにそんなに払えないよ！」
-STR_1620    :{SMALLFONT}「{STRINGID}のホットココアにそんなに払えないよ！」
-STR_1621    :{SMALLFONT}「{STRINGID}のアイスティーにそんなに払えないよ！」
-STR_1622    :{SMALLFONT}「{STRINGID}のファンネルケーキにそんなに払えないよ！」
-STR_1623    :{SMALLFONT}「{STRINGID}のサングラスにそんなに払えないよ！」
-STR_1624    :{SMALLFONT}「{STRINGID}の牛肉ヌードルにそんなに払えないよ！」
-STR_1625    :{SMALLFONT}「{STRINGID}の焼飯ヌードルにそんなに払えないよ！」
-STR_1626    :{SMALLFONT}「{STRINGID}のワンタンスープにそんなに払えないよ！」
-STR_1627    :{SMALLFONT}「{STRINGID}の肉団子スープにそんなに払えないよ！」
-STR_1628    :{SMALLFONT}「{STRINGID}のフルーツジュースにそんなに払えないよ！」
-STR_1629    :{SMALLFONT}「{STRINGID}の豆乳にそんなに払えないよ！」
-STR_1630    :{SMALLFONT}「{STRINGID}のスジョングァにそんなに払えないよ！」
-STR_1631    :{SMALLFONT}「{STRINGID}のサンドイッチにそんなに払えないよ！」
-STR_1632    :{SMALLFONT}「{STRINGID}のクッキーにそんなに払えないよ！」
+STR_1616    :「{STRINGID}のライドフォトにそんなに払えないよ！」
+STR_1617    :「{STRINGID}のライドフォトにそんなに払えないよ！」
+STR_1618    :「{STRINGID}のライドフォトにそんなに払えないよ！」
+STR_1619    :「{STRINGID}のプレッツェルにそんなに払えないよ！」
+STR_1620    :「{STRINGID}のホットココアにそんなに払えないよ！」
+STR_1621    :「{STRINGID}のアイスティーにそんなに払えないよ！」
+STR_1622    :「{STRINGID}のファンネルケーキにそんなに払えないよ！」
+STR_1623    :「{STRINGID}のサングラスにそんなに払えないよ！」
+STR_1624    :「{STRINGID}の牛肉ヌードルにそんなに払えないよ！」
+STR_1625    :「{STRINGID}の焼飯ヌードルにそんなに払えないよ！」
+STR_1626    :「{STRINGID}のワンタンスープにそんなに払えないよ！」
+STR_1627    :「{STRINGID}の肉団子スープにそんなに払えないよ！」
+STR_1628    :「{STRINGID}のフルーツジュースにそんなに払えないよ！」
+STR_1629    :「{STRINGID}の豆乳にそんなに払えないよ！」
+STR_1630    :「{STRINGID}のスジョングァにそんなに払えないよ！」
+STR_1631    :「{STRINGID}のサンドイッチにそんなに払えないよ！」
+STR_1632    :「{STRINGID}のクッキーにそんなに払えないよ！」
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}「{STRINGID}のローストソーセージにそんなに払えないよ！」
+STR_1636    :「{STRINGID}のローストソーセージにそんなに払えないよ！」
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1028,10 +1028,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}「助けて！地上に降ろして！」
-STR_1649    :{SMALLFONT}「お金がなくなっちゃった！」
-STR_1650    :{SMALLFONT}「ワオ!新しい乗物ができてる！」
-STR_1653    :{SMALLFONT}「…さあ、{STRINGID}に乗ったぞ！」
+STR_1648    :「助けて！地上に降ろして！」
+STR_1649    :「お金がなくなっちゃった！」
+STR_1650    :「ワオ!新しい乗物ができてる！」
+STR_1653    :「…さあ、{STRINGID}に乗ったぞ！」
 STR_1654    :{WINDOW_COLOUR_2}最近の思考:
 STR_1655    :土地に歩道を敷設する
 STR_1656    :橋やトンネル型の歩道を敷設する
@@ -1183,7 +1183,7 @@ STR_1808    :{WINDOW_COLOUR_2}最後の故障: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}今の故障: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}所持品:
 STR_1811    :ここで建てることはできません。
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :雑貨のオブジェックト
 STR_1814    :活動
 STR_1815    :思考
@@ -1192,7 +1192,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}全てのゲスト
 STR_1819    :{WINDOW_COLOUR_2}全てのゲスト (要約)
 STR_1820    :{WINDOW_COLOUR_2}{STRINGID}のゲスト
-STR_1821    :{WINDOW_COLOUR_2}{STRINGID}を考えるのゲスト
+STR_1821    :{WINDOW_COLOUR_2}{SMALLFONT}{STRINGID}{MEDIUMFONT}を考えるのゲスト
 STR_1822    :{WINDOW_COLOUR_2}{POP16}{STRINGID}を考えるのゲスト
 STR_1823    :この乗物/施設についての来園客の感想を表示
 STR_1824    :この乗物/施設の乗客を表示
@@ -1293,7 +1293,6 @@ STR_1921    :新しいゲームを始める
 STR_1922    :ゲームを再開する
 STR_1924    :終了
 STR_1925    :ゲストはここに置けません…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID}は壊れています。
 STR_1928    :{RED}{STRINGID}がクラッシュしました！
 STR_1929    :{RED}{STRINGID}はまだ修理しませんでした。{NEWLINE}整備士がどこにいるのかを確認し、それらを整理することを検討して下さい。
@@ -1574,7 +1573,7 @@ STR_2218    :{RED}{STRINGID}の{STRINGID}が{STRINGID}にまだ戻ってきて�
 STR_2219    :{RED}{COMMA16}人の来客は{STRINGID}上の事故で死亡してしまいました。
 STR_2220    :{WINDOW_COLOUR_2}パーク評価値: {BLACK}{COMMA16}
 STR_2221    :パーク評価値: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}パーク内の人: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}現金: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}現金: {RED}{CURRENCY2DP}
@@ -1587,7 +1586,7 @@ STR_2231    :ドロップに・ホールド・ブレーキ
 STR_2232    :ケーブル・リフト・ヒル
 STR_2233    :パーク・インフォメーション
 STR_2234    :最近のメッセージ
-STR_2235    :{SMALLFONT}{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_2235    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_2236    :1月
 STR_2237    :2月
 STR_2238    :3月
@@ -1791,7 +1790,7 @@ STR_2450    :{YELLOW}パークの広告キャンペーンが終わりました�
 STR_2451    :{YELLOW}{STRINGID}の広告キャンペーンが終わりました。
 STR_2452    :{WINDOW_COLOUR_2}資金／借入: {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}資金／借入: {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :財務状況を表示
 STR_2458    :キャッシュ (ローン除く)の推移グラフを表示
 STR_2459    :遊園地評価額の推移グラフを表示
@@ -1901,7 +1900,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :All research complete
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
 STR_2684    :Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Low:
@@ -1988,7 +1986,7 @@ STR_2789    :{WINDOW_COLOUR_2}残念！目的に失敗しました！
 STR_2790    :シナリオリストに名前を入力
 STR_2791    :名前の入力
 STR_2792    :シナリオリストのために名前を入力して下さい。
-STR_2793    :{SMALLFONT}({STRINGID}の勝利)
+STR_2793    :({STRINGID}の勝利)
 STR_2794    :{WINDOW_COLOUR_2}勝者の名前: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2}会社評価額: {BLACK}{CURRENCY}
 STR_2795    :並べ替える
 STR_2796    :表示されている情報の種類によって乗物リストを並び替える
@@ -2495,7 +2493,7 @@ STR_5134    :パーク敷地のもっと大量の調整
 STR_5135    :パーク敷地や土地利用権を購入する
 STR_5136    :パーク敷地
 STR_5137    :Unlock operating limits
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Disable brakes failure
 STR_5141    :Disable all breakdowns
@@ -2641,7 +2639,7 @@ STR_5297    :遊園地を開ける
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Quick fire staff
-STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
+STR_5301    :Clear your loan
 STR_5302    :借入額をクリアする
 STR_5303    :Allow building in pause mode
 STR_5304    :タイトル順序:
@@ -2800,7 +2798,7 @@ STR_5481    :スタイル
 STR_5482    :{WINDOW_COLOUR_2}最後の点検からの経過時間: {BLACK}1分
 STR_5483    :{BLACK}(残り{COMMA16}週間)
 STR_5484    :{BLACK}(残り{COMMA16}週間)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :最近のメッセージの表示
 STR_5489    :Show only tracked guests
@@ -3305,7 +3303,7 @@ STR_6030    :Scenery picker. Click any scenery on the map to select the same pie
 STR_6031    :サーバの説明:
 STR_6032    :サーバの挨拶:
 STR_6033    :RCT1インストールのパス:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :RCT1のダイレクトリーを選定します。
 STR_6036    :クリア
 STR_6037    :Please select a valid RCT1 directory
@@ -3450,7 +3448,7 @@ STR_6183    :フォーロー{MOVE_X}{87}スプライト選択なし
 STR_6184    :スプライトのフォロー
 STR_6185    :スプライトを選ぶ
 STR_6186    :スプライト選択なし
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :嘔吐物
 STR_6189    :鴨
 STR_6190    :タイトルスクリーンからスプライトに選択はでしかせん。
@@ -3600,7 +3598,7 @@ STR_6356    :パークに水があれば、カモを投入する
 STR_6357    :全部のカモを取り除く
 STR_6358    :{UINT16}ページ目
 STR_6359    :{POP16}{POP16}{UINT16}ページ目
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :乗り物のライトの効果を表示にする（試験的）
 STR_6362    :有効になっている場合、追跡された乗り物の車両は夜間にライトアップされます。
 STR_6363    :テキストをクリップボードにコピーしました。

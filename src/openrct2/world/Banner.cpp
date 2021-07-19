@@ -85,7 +85,7 @@ void Banner::FormatTextTo(Formatter& ft) const
  *
  *  rct2: 0x006B7EAB
  */
-static uint8_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
+static ride_id_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 {
     TileElement* tileElement = map_get_first_element_at(bannerCoords);
     ride_id_t resultRideIndex = RIDE_ID_NULL;
@@ -202,8 +202,8 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
         if (wallElement == nullptr)
             continue;
 
-        rct_scenery_entry* scenery_entry = wallElement->GetEntry();
-        if (scenery_entry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+        auto* wallEntry = wallElement->GetEntry();
+        if (wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
             continue;
         if (wallElement->GetBannerIndex() != bannerIndex)
             continue;
@@ -217,7 +217,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  *
  *  rct2: 0x006B7D86
  */
-uint8_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
+ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 {
     static constexpr const std::array<CoordsXY, 9> NeighbourCheckOrder = { CoordsXY{ COORDS_XY_STEP, 0 },
                                                                            CoordsXY{ -COORDS_XY_STEP, 0 },
@@ -333,7 +333,7 @@ Banner* BannerElement::GetBanner() const
     return ::GetBanner(GetIndex());
 }
 
-rct_scenery_entry* BannerElement::GetEntry() const
+BannerSceneryEntry* BannerElement::GetEntry() const
 {
     auto banner = GetBanner();
     if (banner != nullptr)

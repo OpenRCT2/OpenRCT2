@@ -270,73 +270,73 @@ void window_guest_set_colours();
 
 // 0x981D3C
 static constexpr const uint32_t window_guest_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7) |
-    (1 << WIDX_RENAME)|
-    (1 << WIDX_PICKUP)|
-    (1 << WIDX_LOCATE)|
-    (1 << WIDX_TRACK),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7) |
+    (1ULL << WIDX_RENAME)|
+    (1ULL << WIDX_PICKUP)|
+    (1ULL << WIDX_LOCATE)|
+    (1ULL << WIDX_TRACK),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7) |
-    (1 << WIDX_RIDE_SCROLL),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7) |
+    (1ULL << WIDX_RIDE_SCROLL),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7),
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_TAB_7)
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7)
 };
 
 static constexpr const rct_size16 window_guest_page_sizes[][2] = {
@@ -372,7 +372,7 @@ rct_window* window_guest_open(Peep* peep)
     {
         return nullptr;
     }
-    if (peep->AssignedPeepType == PeepType::Staff)
+    if (peep->Is<Staff>())
     {
         return window_staff_open(peep);
     }
@@ -489,22 +489,22 @@ void window_guest_disable_widgets(rct_window* w)
 
     if (peep->CanBePickedUp())
     {
-        if (w->disabled_widgets & (1 << WIDX_PICKUP))
+        if (w->disabled_widgets & (1ULL << WIDX_PICKUP))
             w->Invalidate();
     }
     else
     {
-        disabled_widgets = (1 << WIDX_PICKUP);
-        if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
+        disabled_widgets = (1ULL << WIDX_PICKUP);
+        if (!(w->disabled_widgets & (1ULL << WIDX_PICKUP)))
             w->Invalidate();
     }
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
-        disabled_widgets |= (1 << WIDX_TAB_4); // Disable finance tab if no money
+        disabled_widgets |= (1ULL << WIDX_TAB_4); // Disable finance tab if no money
     }
     if (!gConfigGeneral.debugging_tools)
     {
-        disabled_widgets |= (1 << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
+        disabled_widgets |= (1ULL << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
     }
     w->disabled_widgets = disabled_widgets;
 }
@@ -733,7 +733,7 @@ void window_guest_viewport_init(rct_window* w)
  */
 static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_1))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
@@ -758,7 +758,8 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         return;
     }
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
+    auto* staff = peep->As<Staff>();
+    if (staff != nullptr && staff->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t animationFrame = GetPeepAnimation(peep->SpriteType).base_image + 1;
@@ -772,31 +773,29 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     }
     animationFrame += animationFrameOffset;
 
-    int32_t sprite_id = animationFrame | SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
-    gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords, 0);
+    auto sprite_id = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
+    gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords);
 
-    // If holding a balloon
-    if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
+    auto* guest = peep->As<Guest>();
+    if (guest != nullptr)
     {
-        animationFrame += 32;
-        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
-        gfx_draw_sprite(&clip_dpi, animationFrame, screenCoords, 0);
-    }
+        // If holding a balloon
+        if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
+        {
+            gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
+        }
 
-    // If holding umbrella
-    if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
-    {
-        animationFrame += 32;
-        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
-        gfx_draw_sprite(&clip_dpi, animationFrame, screenCoords, 0);
-    }
+        // If holding umbrella
+        if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
+        {
+            gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
+        }
 
-    // If wearing hat
-    if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
-    {
-        animationFrame += 32;
-        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
-        gfx_draw_sprite(&clip_dpi, animationFrame, screenCoords, 0);
+        // If wearing hat
+        if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
+        {
+            gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
+        }
     }
 }
 
@@ -806,7 +805,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
  */
 static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_2))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
@@ -835,7 +834,7 @@ static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
         }
     }
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -844,7 +843,7 @@ static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_3))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
@@ -857,7 +856,7 @@ static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 4) & 0xF;
     }
 
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -866,7 +865,7 @@ static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_4))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_4))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_4];
@@ -879,7 +878,7 @@ static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi
         image_id += (w->frame_no / 2) & 0x7;
     }
 
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -888,7 +887,7 @@ static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi
  */
 static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_5))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_5))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_5];
@@ -901,7 +900,7 @@ static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         image_id += (w->frame_no / 2) & 0x7;
     }
 
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -910,20 +909,18 @@ static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dp
  */
 static void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_6))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_6))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_6];
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
-    int32_t image_id = SPR_TAB_GUEST_INVENTORY;
-
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TAB_GUEST_INVENTORY), screenCoords);
 }
 
 static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1 << WIDX_TAB_7))
+    if (w->disabled_widgets & (1ULL << WIDX_TAB_7))
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_7];
@@ -935,7 +932,7 @@ static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 2) & 0x3;
     }
 
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -960,7 +957,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos + ScreenCoordsXY{ 2, 2 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_HEARING_VIEWPORT), w->windowPos + ScreenCoordsXY{ 2, 2 });
         }
     }
 
@@ -1016,7 +1013,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         peep_thought_set_format_args(&peep->Thoughts[i], ft);
-        DrawTextBasic(&dpi_marquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, {});
+        DrawTextBasic(&dpi_marquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontSpriteBase::SMALL });
     }
 }
 
@@ -1033,10 +1030,10 @@ void window_guest_overview_invalidate(rct_window* w)
     {
         return;
     }
-    w->pressed_widgets &= ~(1 << WIDX_TRACK);
+    w->pressed_widgets &= ~(1ULL << WIDX_TRACK);
     if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
     {
-        w->pressed_widgets |= (1 << WIDX_TRACK);
+        w->pressed_widgets |= (1ULL << WIDX_TRACK);
     }
 
     window_guest_overview_widgets[WIDX_VIEWPORT].right = w->width - 26;
@@ -1258,14 +1255,16 @@ void window_guest_stats_update(rct_window* w)
  *
  */
 static void window_guest_stats_bars_paint(
-    int32_t value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blinkFlag)
+    int32_t value, const ScreenCoordsXY& origCoords, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blinkFlag)
 {
+    auto coords = origCoords;
     if (font_get_line_height(FontSpriteBase::MEDIUM) > 10)
     {
-        y += 1;
+        coords.y += 1;
     }
 
-    gfx_fill_rect_inset(dpi, x + 61, y + 1, x + 61 + 121, y + 9, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(
+        dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, w->colours[1], INSET_RECT_F_30);
 
     if (!blinkFlag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
     {
@@ -1275,7 +1274,7 @@ static void window_guest_stats_bars_paint(
         if (value <= 2)
             return;
 
-        gfx_fill_rect_inset(dpi, x + 63, y + 2, x + 63 + value - 1, y + 8, colour, 0);
+        gfx_fill_rect_inset(dpi, { coords + ScreenCoordsXY{ 63, 2 }, coords + ScreenCoordsXY{ 63 + value - 1, 8 } }, colour, 0);
     }
 }
 
@@ -1323,7 +1322,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t happiness = NormalizeGuestStatValue(peep->Happiness, PEEP_MAX_HAPPINESS, 10);
     int32_t barColour = COLOUR_BRIGHT_GREEN;
     bool barBlink = happiness < 50;
-    window_guest_stats_bars_paint(happiness, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(happiness, screenCoords, w, dpi, barColour, barBlink);
 
     // Energy
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1332,7 +1331,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t energy = NormalizeGuestStatValue(peep->Energy - PEEP_MIN_ENERGY, PEEP_MAX_ENERGY - PEEP_MIN_ENERGY, 10);
     barColour = COLOUR_BRIGHT_GREEN;
     barBlink = energy < 50;
-    window_guest_stats_bars_paint(energy, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(energy, screenCoords, w, dpi, barColour, barBlink);
 
     // Hunger
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1342,7 +1341,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     hunger = 255 - hunger; // the bar should be longer when peep->Hunger is low
     barColour = COLOUR_BRIGHT_RED;
     barBlink = hunger > 170;
-    window_guest_stats_bars_paint(hunger, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(hunger, screenCoords, w, dpi, barColour, barBlink);
 
     // Thirst
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1352,7 +1351,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     thirst = 255 - thirst; // the bar should be longer when peep->Thirst is low
     barColour = COLOUR_BRIGHT_RED;
     barBlink = thirst > 170;
-    window_guest_stats_bars_paint(thirst, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(thirst, screenCoords, w, dpi, barColour, barBlink);
 
     // Nausea
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1361,7 +1360,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t nausea = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
     barColour = COLOUR_BRIGHT_RED;
     barBlink = nausea > 120;
-    window_guest_stats_bars_paint(nausea, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(nausea, screenCoords, w, dpi, barColour, barBlink);
 
     // Toilet
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1370,7 +1369,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t toilet = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
     barColour = COLOUR_BRIGHT_RED;
     barBlink = toilet > 160;
-    window_guest_stats_bars_paint(toilet, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(toilet, screenCoords, w, dpi, barColour, barBlink);
 
     // Time in park
     screenCoords.y += LIST_ROW_HEIGHT + 1;
@@ -1385,7 +1384,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenCoords.y += LIST_ROW_HEIGHT + 9;
     gfx_fill_rect_inset(
-        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1],
+        dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Preferred Ride
@@ -1672,7 +1671,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     gfx_fill_rect_inset(
-        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1],
+        dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter
@@ -1796,18 +1795,18 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
 
     screenCoords.y += 10;
-    for (rct_peep_thought* thought = peep->Thoughts; thought < &peep->Thoughts[PEEP_MAX_THOUGHTS]; ++thought)
+    for (const auto& thought : peep->Thoughts)
     {
-        if (thought->type == PeepThoughtType::None)
+        if (thought.type == PeepThoughtType::None)
             return;
-        if (thought->freshness == 0)
+        if (thought.freshness == 0)
             continue;
 
         int32_t width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
             - window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left - 8;
 
         auto ft = Formatter();
-        peep_thought_set_format_args(thought, ft);
+        peep_thought_set_format_args(&thought, ft);
         screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft, { FontSpriteBase::SMALL });
 
         // If this is the last visible line end drawing.
@@ -1839,7 +1838,7 @@ void window_guest_inventory_update(rct_window* w)
     }
 }
 
-static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Peep* peep, ShopItem item)
+static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Guest* guest, ShopItem item)
 {
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
     auto parkName = park.Name.c_str();
@@ -1857,10 +1856,10 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
     {
         case ShopItem::Balloon:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | GetShopItemDescriptor(item).Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest->BalloonColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::Photo:
-            ride = get_ride(peep->Photo1RideRef);
+            ride = get_ride(guest->Photo1RideRef);
             if (ride != nullptr)
             {
                 ft.Rewind();
@@ -1871,10 +1870,10 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             break;
         case ShopItem::Umbrella:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | GetShopItemDescriptor(item).Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest->UmbrellaColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::Voucher:
-            switch (peep->VoucherType)
+            switch (guest->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
                     ft.Rewind();
@@ -1884,7 +1883,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                     ft.Add<const char*>(parkName);
                     break;
                 case VOUCHER_TYPE_RIDE_FREE:
-                    ride = get_ride(peep->VoucherRideId);
+                    ride = get_ride(guest->VoucherRideId);
                     if (ride != nullptr)
                     {
                         ft.Rewind();
@@ -1904,20 +1903,20 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                     ft.Rewind();
                     ft.Increment(6);
                     ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                    ft.Add<rct_string_id>(GetShopItemDescriptor(peep->VoucherShopItem).Naming.Singular);
+                    ft.Add<rct_string_id>(GetShopItemDescriptor(guest->VoucherShopItem).Naming.Singular);
                     break;
             }
             break;
         case ShopItem::Hat:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | GetShopItemDescriptor(item).Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest->HatColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::TShirt:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->TshirtColour) | GetShopItemDescriptor(item).Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest->TshirtColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::Photo2:
-            ride = get_ride(peep->Photo2RideRef);
+            ride = get_ride(guest->Photo2RideRef);
             if (ride != nullptr)
             {
                 ft.Rewind();
@@ -1926,7 +1925,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             }
             break;
         case ShopItem::Photo3:
-            ride = get_ride(peep->Photo3RideRef);
+            ride = get_ride(guest->Photo3RideRef);
             if (ride != nullptr)
             {
                 ft.Rewind();
@@ -1935,7 +1934,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             }
             break;
         case ShopItem::Photo4:
-            ride = get_ride(peep->Photo4RideRef);
+            ride = get_ride(guest->Photo4RideRef);
             if (ride != nullptr)
             {
                 ft.Rewind();

@@ -18,7 +18,6 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/EntityList.h"
-#include "../world/Sprite.h"
 
 StaffSetColourAction::StaffSetColourAction(StaffType staffType, uint8_t colour)
     : _staffType(static_cast<uint8_t>(staffType))
@@ -56,7 +55,7 @@ GameActions::Result::Ptr StaffSetColourAction::Execute() const
     }
 
     // Update each staff member's uniform
-    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto peep : EntityList<Staff>())
     {
         if (peep->AssignedStaffType == static_cast<StaffType>(_staffType))
         {

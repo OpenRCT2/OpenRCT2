@@ -1228,7 +1228,7 @@ enum
     STR_LAST_BREAKDOWN = 1808,
     STR_CURRENT_BREAKDOWN = 1809,
     STR_CARRYING = 1810,
-    STR_CANT_BUILD_PARK_ENTRANCE_HERE = 1811,
+    STR_CANT_BUILD_THIS_HERE = 1811,
     STR_STRING_DEFINED_TOOLTIP = 1812,
     STR_MISCELLANEOUS = 1813,
     STR_ACTIONS = 1814,
@@ -1342,7 +1342,7 @@ enum
     STR_CONTINUE_SAVED_GAME_TIP = 1922,
     STR_EXIT = 1924,
     STR_ERR_CANT_PLACE_PERSON_HERE = 1925,
-    // STR_1926    :{SMALLFONT} // Used in window_game_bottom_toolbar_onpaint and window_news_onscrollpaint
+    // STR_1926    :<removed string - do not use>
     STR_RIDE_IS_BROKEN_DOWN = 1927,
     STR_RIDE_HAS_CRASHED = 1928,
     STR_RIDE_IS_STILL_NOT_FIXED = 1929,
@@ -2004,7 +2004,7 @@ enum
     // 2671--2679 unused
 
     STR_RESEARCH_COMPLETED_AL = 2680,
-    STR_CHEAT_5K_MONEY_TIP = 2681,
+    // STR_2681    :<removed string - do not use>
     // STR_2682    :<removed string - do not use>
     // STR_2683    :<removed string - do not use>
     STR_CHEAT_LARGE_TRAM_GUESTS_TIP = 2684,
@@ -3055,8 +3055,6 @@ enum
     STR_NOTIFICATION_GUEST_DIED = 5606,
     STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT = 5608,
     STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT = 5609,
-    // STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will
-    // be used/gained. Use with caution.
     STR_REMOVE_SELECTED_ELEMENT_TIP = 5610,
     STR_TILE_INSPECTOR_FLAG_GHOST_SHORT = 5611,
     STR_TILE_INSPECTOR_FLAG_GHOST = 5612,
@@ -3935,6 +3933,23 @@ enum
 
     STR_SHORTCUT_REMOVE = 6433,
     STR_SHORTCUT_REMOVE_TIP = 6434,
+
+    STR_STAFF_STAT_VANDALS_STOPPED = 6435,
+
+    STR_TILE_INSPECTOR_TOGGLE_INVISIBILITY_TIP = 6436,
+    STR_TILE_INSPECTOR_FLAG_INVISIBLE = 6437,
+    STR_TILE_INSPECTOR_INVISIBLE_SHORT = 6438,
+    STR_SHORTCUT_TOGGLE_INVISIBILITY = 6439,
+
+    STR_VIEWPORT_TRANSPARENT_WATER = 6440,
+
+    STR_MUSIC_OBJECT_TRACK_HEADER = 6449,
+    STR_MUSIC_OBJECT_TRACK_LIST_ITEM = 6450,
+    STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER = 6451,
+
+    STR_RIDE_OBJECT_SHOP_SELLS = 6452,
+
+    STR_COPY_BUILD_HASH = 6453,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

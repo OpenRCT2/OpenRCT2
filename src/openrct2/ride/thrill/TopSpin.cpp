@@ -12,11 +12,12 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
+#include "../../world/Entity.h"
 #include "../../world/Map.h"
-#include "../../world/Sprite.h"
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 #include <iterator>
 
@@ -66,7 +67,7 @@ static void top_spin_paint_vehicle(
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
 
-        armRotation = vehicle->vehicle_sprite_type;
+        armRotation = vehicle->Pitch;
         seatRotation = vehicle->bank_rotation;
     }
 
@@ -90,7 +91,7 @@ static void top_spin_paint_vehicle(
     // Left back bottom support
     image_id += 572;
     PaintAddImageAsParent(
-        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+        session, image_id, { al, cl, height }, { lengthX, lengthY, 90 }, { boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ });
 
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)

@@ -10,9 +10,11 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Sprite.h"
+#include "../../peep/Peep.h"
+#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 
 static constexpr const uint8_t edges_1x4_ne_sw[] = {
     EDGE_NW | EDGE_SE,
@@ -79,7 +81,7 @@ static void paint_ferris_wheel_structure(
     uint32_t imageOffset = 0;
     if (vehicle != nullptr)
     {
-        imageOffset = vehicle->vehicle_sprite_type % 8;
+        imageOffset = vehicle->Pitch % 8;
     }
 
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
@@ -110,7 +112,7 @@ static void paint_ferris_wheel_structure(
                 continue;
             }
 
-            int32_t frameNum = (vehicle->vehicle_sprite_type + i * 4) % 128;
+            int32_t frameNum = (vehicle->Pitch + i * 4) % 128;
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
             imageId = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
             PaintAddImageAsChild(

@@ -422,7 +422,7 @@ private:
 
     void InitialiseWidgets()
     {
-        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RESET);
 
         _widgets.clear();
         _widgets.insert(_widgets.begin(), std::begin(window_shortcut_widgets), std::end(window_shortcut_widgets) - 1);
@@ -492,7 +492,7 @@ private:
                 }
 
                 const auto& widget = widgets[widgetIndex];
-                gfx_draw_sprite(&dpi, imageId, windowPos + ScreenCoordsXY{ widget.left, widget.top }, 0);
+                gfx_draw_sprite(&dpi, ImageId(imageId), windowPos + ScreenCoordsXY{ widget.left, widget.top });
             }
         }
     }

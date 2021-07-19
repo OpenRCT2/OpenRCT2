@@ -4,7 +4,7 @@
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :스파이럴 롤러코스터
-STR_0003    :스탠드업 롤러코스터
+STR_0003    :스탠드 업 롤러코스터
 STR_0004    :서스펜디드 스윙잉 코스터
 STR_0005    :인버티드 롤러코스터
 STR_0006    :주니어 롤러코스터
@@ -240,8 +240,8 @@ STR_0831    :화면 축소하기
 STR_0832    :게임 화면을 시계방향으로 90° 회전하기
 STR_0833    :게임 일시정지
 STR_0834    :디스크 및 게임 설정
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :‘OpenRCT2’에 대해서
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
@@ -324,7 +324,7 @@ STR_0935    :놀이기구 출구가 있습니다
 STR_0936    :공원 입구가 있습니다
 STR_0937    :보기 설정
 STR_0938    :지형의 높이나 경사를 조정합니다.
-STR_0939    :지하/내부 시야
+STR_0939    :지하/내부 보기
 STR_0940    :땅 표면 감추기
 STR_0941    :절벽 감추기
 STR_0942    :놀이기구 감추기
@@ -559,7 +559,7 @@ STR_1170    :{STRING}
 STR_1171    :{RED}닫힘
 STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :보도와 대기 줄을 만듭니다
-STR_1174    :전광판 사인이 있습니다
+STR_1174    :팻말이 있습니다
 STR_1175    :경사진 보도 위에 건설할 수 없습니다
 STR_1176    :보도를 여기에 건설할 수 없습니다…
 STR_1177    :보도를 제거할 수 없습니다…
@@ -799,21 +799,21 @@ STR_1410    :버티컬 타워
 STR_1411    :{STRINGID}(이)가 중간에 있습니다
 STR_1412    :{WINDOW_COLOUR_3}이 종류의 놀이기구는 데이터를 기록할 수 없습니다
 STR_1413    :{WINDOW_COLOUR_3}다음 {STRINGID}(이)가 {STRINGID}(을)를 출발할 때 데이터를 기록합니다
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}속력
 STR_1416    :{WINDOW_COLOUR_2}고도
 STR_1417    :{WINDOW_COLOUR_2}수직 중력
 STR_1418    :{WINDOW_COLOUR_2}측면 중력
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :{POP16}{STRINGID} 기준으로 데이터 기록 중
 STR_1423    :대기 줄
 STR_1424    :보도
 STR_1425    :보도
 STR_1426    :대기 줄
 STR_1427    :{WINDOW_COLOUR_2}손님: {BLACK}{COMMA32}명/시간
-STR_1428    :{WINDOW_COLOUR_2}입장료:
+STR_1428    :{WINDOW_COLOUR_2}탑승료:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :무료
 STR_1431    :걷는 중
@@ -865,131 +865,131 @@ STR_1476    :{WINDOW_COLOUR_2}격렬도: {BLACK}아직 조회할 수 없음
 STR_1477    :{WINDOW_COLOUR_2}격렬도: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}멀미도: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}멀미도: {BLACK}아직 조회할 수 없음
-STR_1480    :{SMALLFONT}“{STRINGID}에 쓸 돈은 없어”
-STR_1481    :{SMALLFONT}“내 돈을 전부 다 써버렸어”
-STR_1482    :{SMALLFONT}“속이 메스꺼워”
-STR_1483    :{SMALLFONT}“속이 정말 메스꺼워”
-STR_1484    :{SMALLFONT}“{STRINGID}보다 더 스릴 있는 걸 타고 싶어”
-STR_1485    :{SMALLFONT}“{STRINGID}(은)는 내가 타기엔 너무 격렬해 보여”
-STR_1486    :{SMALLFONT}“아직 {STRINGID}(을)를 다 먹지 않았어”
-STR_1487    :{SMALLFONT}“{STRINGID}(은)는 바라만 봐도 속이 메스꺼워”
-STR_1488    :{SMALLFONT}“{STRINGID}에 돈을 쓰고 싶지 않아”
-STR_1489    :{SMALLFONT}“집에 가고 싶어”
-STR_1490    :{SMALLFONT}“{STRINGID}(은)는 정말 가격이 좋아”
-STR_1491    :{SMALLFONT}“{STRINGID}(을)를 이미 갖고 있어”
-STR_1492    :{SMALLFONT}“{STRINGID}에 쓸 돈은 없어”
-STR_1493    :{SMALLFONT}“배고프지 않아”
-STR_1494    :{SMALLFONT}“목마르지 않아”
-STR_1495    :{SMALLFONT}“살려주세요! 물에 빠졌어요!”
-STR_1496    :{SMALLFONT}“길을 잃어버렸어!”
-STR_1497    :{SMALLFONT}“{STRINGID}(은)는 정말 훌륭했어”
-STR_1498    :{SMALLFONT}“{STRINGID}(을)를 타려고 한참이나 기다렸어”
-STR_1499    :{SMALLFONT}“피곤해”
-STR_1500    :{SMALLFONT}“배고파”
-STR_1501    :{SMALLFONT}“목말라”
-STR_1502    :{SMALLFONT}“화장실에 가야겠어”
-STR_1503    :{SMALLFONT}“{STRINGID}(을)를 못 찾겠어”
-STR_1504    :{SMALLFONT}“{STRINGID}(을)를 이용하는데 돈을 쓰고 싶지 않아”
-STR_1505    :{SMALLFONT}“비가 오는 동안에는 {STRINGID}에 가지 않을래”
-STR_1506    :{SMALLFONT}“여기는 쓰레기가 여기 저기 널려있어”
-STR_1507    :{SMALLFONT}“공원 출구를 찾을 수 없어”
-STR_1508    :{SMALLFONT}“{STRINGID}에서 내리고 싶어”
-STR_1509    :{SMALLFONT}“{STRINGID}에서 나가고 싶어”
-STR_1510    :{SMALLFONT}“{STRINGID}(은)는 안전하지 않아서 가지 않을래”
-STR_1511    :{SMALLFONT}“이 길은 역겨워”
-STR_1512    :{SMALLFONT}“여긴 사람이 너무 많아”
-STR_1513    :{SMALLFONT}“여기는 시설이 막 파괴되어 있어”
-STR_1514    :{SMALLFONT}“풍경이 참 좋다!”
-STR_1515    :{SMALLFONT}“이 공원은 정말 깨끗하고 깔끔한 것 같아”
-STR_1516    :{SMALLFONT}“분수대가 참 훌륭해”
-STR_1517    :{SMALLFONT}“여기 음악 좋다”
-STR_1518    :{SMALLFONT}“{STRINGID}에서 산 풍선은 가격이 참 적당한 것 같아”
-STR_1519    :{SMALLFONT}“{STRINGID}에서 산 캐릭터 인형은 가격이 참 적당한 것 같아”
-STR_1520    :{SMALLFONT}“{STRINGID}에서 산 공원 지도는 가격이 참 적당한 것 같아”
-STR_1521    :{SMALLFONT}“{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아”
-STR_1522    :{SMALLFONT}“{STRINGID}에서 산 우산은 가격이 참 적당한 것 같아”
-STR_1523    :{SMALLFONT}“{STRINGID}에서 산 음료수는 가격이 참 적당한 것 같아”
-STR_1524    :{SMALLFONT}“{STRINGID}에서 산 햄버거는 가격이 참 적당한 것 같아”
-STR_1525    :{SMALLFONT}“{STRINGID}에서 산 감자 칩은 가격이 참 적당한 것 같아”
-STR_1526    :{SMALLFONT}“{STRINGID}에서 산 아이스크림은 가격이 참 적당한 것 같아”
-STR_1527    :{SMALLFONT}“{STRINGID}에서 산 솜사탕은 가격이 참 적당한 것 같아”
+STR_1480    :“{STRINGID}에 쓸 돈은 없어”
+STR_1481    :“내 돈을 전부 다 써버렸어”
+STR_1482    :“속이 메스꺼워”
+STR_1483    :“속이 정말 메스꺼워”
+STR_1484    :“{STRINGID}보다 더 스릴 있는 걸 타고 싶어”
+STR_1485    :“{STRINGID}(은)는 내가 타기엔 너무 격렬해 보여”
+STR_1486    :“아직 {STRINGID}(을)를 다 먹지 않았어”
+STR_1487    :“{STRINGID}(은)는 바라만 봐도 속이 메스꺼워”
+STR_1488    :“{STRINGID}에 돈을 쓰고 싶지 않아”
+STR_1489    :“집에 가고 싶어”
+STR_1490    :“{STRINGID}(은)는 정말 가격이 좋아”
+STR_1491    :“{STRINGID}(을)를 이미 갖고 있어”
+STR_1492    :“{STRINGID}에 쓸 돈은 없어”
+STR_1493    :“배고프지 않아”
+STR_1494    :“목마르지 않아”
+STR_1495    :“살려주세요! 물에 빠졌어요!”
+STR_1496    :“길을 잃어버렸어!”
+STR_1497    :“{STRINGID}(은)는 정말 훌륭했어”
+STR_1498    :“{STRINGID}(을)를 타려고 한참이나 기다렸어”
+STR_1499    :“피곤해”
+STR_1500    :“배고파”
+STR_1501    :“목말라”
+STR_1502    :“화장실에 가야겠어”
+STR_1503    :“{STRINGID}(을)를 못 찾겠어”
+STR_1504    :“{STRINGID}(을)를 이용하는데 돈을 쓰고 싶지 않아”
+STR_1505    :“비가 오는 동안에는 {STRINGID}에 가지 않을래”
+STR_1506    :“여기는 쓰레기가 여기 저기 널려있어”
+STR_1507    :“공원 출구를 찾을 수 없어”
+STR_1508    :“{STRINGID}에서 내리고 싶어”
+STR_1509    :“{STRINGID}에서 나가고 싶어”
+STR_1510    :“{STRINGID}(은)는 안전하지 않아서 가지 않을래”
+STR_1511    :“이 길은 역겨워”
+STR_1512    :“여긴 사람이 너무 많아”
+STR_1513    :“여기는 시설이 막 파괴되어 있어”
+STR_1514    :“풍경이 참 좋다!”
+STR_1515    :“이 공원은 정말 깨끗하고 깔끔한 것 같아”
+STR_1516    :“분수대가 참 훌륭해”
+STR_1517    :“여기 음악 좋다”
+STR_1518    :“{STRINGID}에서 산 풍선은 가격이 참 적당한 것 같아”
+STR_1519    :“{STRINGID}에서 산 캐릭터 인형은 가격이 참 적당한 것 같아”
+STR_1520    :“{STRINGID}에서 산 공원 지도는 가격이 참 적당한 것 같아”
+STR_1521    :“{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아”
+STR_1522    :“{STRINGID}에서 산 우산은 가격이 참 적당한 것 같아”
+STR_1523    :“{STRINGID}에서 산 음료수는 가격이 참 적당한 것 같아”
+STR_1524    :“{STRINGID}에서 산 햄버거는 가격이 참 적당한 것 같아”
+STR_1525    :“{STRINGID}에서 산 감자 칩은 가격이 참 적당한 것 같아”
+STR_1526    :“{STRINGID}에서 산 아이스크림은 가격이 참 적당한 것 같아”
+STR_1527    :“{STRINGID}에서 산 솜사탕은 가격이 참 적당한 것 같아”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“{STRINGID}에서 산 피자는 가격이 참 적당한 것 같아”
+STR_1531    :“{STRINGID}에서 산 피자는 가격이 참 적당한 것 같아”
 STR_1532    :
-STR_1533    :{SMALLFONT}“{STRINGID}에서 산 팝콘은 가격이 참 적당한 것 같아”
-STR_1534    :{SMALLFONT}“{STRINGID}에서 산 핫도그는 가격이 참 적당한 것 같아”
-STR_1535    :{SMALLFONT}“{STRINGID}에서 산 문어발은 가격이 참 적당한 것 같아”
-STR_1536    :{SMALLFONT}“{STRINGID}에서 산 모자는 가격이 참 적당한 것 같아”
-STR_1537    :{SMALLFONT}“{STRINGID}에서 산 사과 토피 사탕은 가격이 참 적당한 것 같아”
-STR_1538    :{SMALLFONT}“{STRINGID}에서 산 티셔츠는 가격이 참 적당한 것 같아”
-STR_1539    :{SMALLFONT}“{STRINGID}에서 산 도넛은 가격이 참 적당한 것 같아”
-STR_1540    :{SMALLFONT}“{STRINGID}에서 산 커피는 가격이 참 적당한 것 같아”
+STR_1533    :“{STRINGID}에서 산 팝콘은 가격이 참 적당한 것 같아”
+STR_1534    :“{STRINGID}에서 산 핫도그는 가격이 참 적당한 것 같아”
+STR_1535    :“{STRINGID}에서 산 문어발은 가격이 참 적당한 것 같아”
+STR_1536    :“{STRINGID}에서 산 모자는 가격이 참 적당한 것 같아”
+STR_1537    :“{STRINGID}에서 산 사과 토피 사탕은 가격이 참 적당한 것 같아”
+STR_1538    :“{STRINGID}에서 산 티셔츠는 가격이 참 적당한 것 같아”
+STR_1539    :“{STRINGID}에서 산 도넛은 가격이 참 적당한 것 같아”
+STR_1540    :“{STRINGID}에서 산 커피는 가격이 참 적당한 것 같아”
 STR_1541    :
-STR_1542    :{SMALLFONT}“{STRINGID}에서 산 프라이드치킨은 가격이 참 적당한 것 같아”
-STR_1543    :{SMALLFONT}“{STRINGID}에서 산 레모네이드는 가격이 참 적당한 것 같아”
+STR_1542    :“{STRINGID}에서 산 프라이드치킨은 가격이 참 적당한 것 같아”
+STR_1543    :“{STRINGID}에서 산 레모네이드는 가격이 참 적당한 것 같아”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“와우!”
-STR_1551    :{SMALLFONT}“누가 지켜보는 것 같은 이상한 기분이 들어”
-STR_1552    :{SMALLFONT}“{STRINGID}의 풍선에 돈을 쓰고 싶지 않아”
-STR_1553    :{SMALLFONT}“{STRINGID}의 캐릭터 인형에 돈을 쓰고 싶지 않아”
-STR_1554    :{SMALLFONT}“{STRINGID}의 공원 지도에 돈을 쓰고 싶지 않아”
-STR_1555    :{SMALLFONT}“{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아”
-STR_1556    :{SMALLFONT}“{STRINGID}의 우산에 돈을 쓰고 싶지 않아”
-STR_1557    :{SMALLFONT}“{STRINGID}의 음료수에 돈을 쓰고 싶지 않아”
-STR_1558    :{SMALLFONT}“{STRINGID}의 햄버거에 돈을 쓰고 싶지 않아”
-STR_1559    :{SMALLFONT}“{STRINGID}의 감자 칩에 돈을 쓰고 싶지 않아”
-STR_1560    :{SMALLFONT}“{STRINGID}의 아이스크립에 돈을 쓰고 싶지 않아”
-STR_1561    :{SMALLFONT}“{STRINGID}의 솜사탕에 돈을 쓰고 싶지 않아”
+STR_1550    :“와우!”
+STR_1551    :“누가 지켜보는 것 같은 이상한 기분이 들어”
+STR_1552    :“{STRINGID}의 풍선에 돈을 쓰고 싶지 않아”
+STR_1553    :“{STRINGID}의 캐릭터 인형에 돈을 쓰고 싶지 않아”
+STR_1554    :“{STRINGID}의 공원 지도에 돈을 쓰고 싶지 않아”
+STR_1555    :“{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아”
+STR_1556    :“{STRINGID}의 우산에 돈을 쓰고 싶지 않아”
+STR_1557    :“{STRINGID}의 음료수에 돈을 쓰고 싶지 않아”
+STR_1558    :“{STRINGID}의 햄버거에 돈을 쓰고 싶지 않아”
+STR_1559    :“{STRINGID}의 감자 칩에 돈을 쓰고 싶지 않아”
+STR_1560    :“{STRINGID}의 아이스크립에 돈을 쓰고 싶지 않아”
+STR_1561    :“{STRINGID}의 솜사탕에 돈을 쓰고 싶지 않아”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“{STRINGID}의 피자에 돈을 쓰고 싶지 않아”
+STR_1565    :“{STRINGID}의 피자에 돈을 쓰고 싶지 않아”
 STR_1566    :
-STR_1567    :{SMALLFONT}“{STRINGID}의 팝콘에 돈을 쓰고 싶지 않아”
-STR_1568    :{SMALLFONT}“{STRINGID}의 핫도그에 돈을 쓰고 싶지 않아”
-STR_1569    :{SMALLFONT}“{STRINGID}의 문어발에 돈을 쓰고 싶지 않아”
-STR_1570    :{SMALLFONT}“{STRINGID}의 모자에 돈을 쓰고 싶지 않아”
-STR_1571    :{SMALLFONT}“{STRINGID}의 사과 토피 사탕에 돈을 쓰고 싶지 않아”
-STR_1572    :{SMALLFONT}“{STRINGID}의 티셔츠에 돈을 쓰고 싶지 않아”
-STR_1573    :{SMALLFONT}“{STRINGID}의 도넛에 돈을 쓰고 싶지 않아”
-STR_1574    :{SMALLFONT}“{STRINGID}의 커피에 돈을 쓰고 싶지 않아”
+STR_1567    :“{STRINGID}의 팝콘에 돈을 쓰고 싶지 않아”
+STR_1568    :“{STRINGID}의 핫도그에 돈을 쓰고 싶지 않아”
+STR_1569    :“{STRINGID}의 문어발에 돈을 쓰고 싶지 않아”
+STR_1570    :“{STRINGID}의 모자에 돈을 쓰고 싶지 않아”
+STR_1571    :“{STRINGID}의 사과 토피 사탕에 돈을 쓰고 싶지 않아”
+STR_1572    :“{STRINGID}의 티셔츠에 돈을 쓰고 싶지 않아”
+STR_1573    :“{STRINGID}의 도넛에 돈을 쓰고 싶지 않아”
+STR_1574    :“{STRINGID}의 커피에 돈을 쓰고 싶지 않아”
 STR_1575    :
-STR_1576    :{SMALLFONT}“{STRINGID}의 프라이드치킨에 돈을 쓰고 싶지 않아”
-STR_1577    :{SMALLFONT}“{STRINGID}의 레모네이드에 돈을 쓰고 싶지 않아”
+STR_1576    :“{STRINGID}의 프라이드치킨에 돈을 쓰고 싶지 않아”
+STR_1577    :“{STRINGID}의 레모네이드에 돈을 쓰고 싶지 않아”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아”
-STR_1585    :{SMALLFONT}“{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아”
-STR_1586    :{SMALLFONT}“{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아”
-STR_1587    :{SMALLFONT}“{STRINGID}에서 산 프레첼은 가격이 참 적당한 것 같아”
-STR_1588    :{SMALLFONT}“{STRINGID}에서 산 핫초코는 가격이 참 적당한 것 같아”
-STR_1589    :{SMALLFONT}“{STRINGID}에서 산 아이스 티는 가격이 참 적당한 것 같아”
-STR_1590    :{SMALLFONT}“{STRINGID}에서 산 퍼넬 케이크는 가격이 참 적당한 것 같아”
-STR_1591    :{SMALLFONT}“{STRINGID}에서 산 선글라스는 가격이 참 적당한 것 같아”
-STR_1592    :{SMALLFONT}“{STRINGID}에서 산 고기 국수는 가격이 참 적당한 것 같아”
-STR_1593    :{SMALLFONT}“{STRINGID}에서 산 볶음 쌀국수은 가격이 참 적당한 것 같아”
-STR_1594    :{SMALLFONT}“{STRINGID}에서 산 만둣국은 가격이 참 적당한 것 같아”
-STR_1595    :{SMALLFONT}“{STRINGID}에서 산 미트볼 수프는 가격이 참 적당한 것 같아”
-STR_1596    :{SMALLFONT}“{STRINGID}에서 산 과일 주스는 가격이 참 적당한 것 같아”
-STR_1597    :{SMALLFONT}“{STRINGID}에서 산 두유는 가격이 참 적당한 것 같아”
-STR_1598    :{SMALLFONT}“{STRINGID}에서 산 수정과는 가격이 참 적당한 것 같아”
-STR_1599    :{SMALLFONT}“{STRINGID}에서 산 샌드위치는 가격이 참 적당한 것 같아”
-STR_1600    :{SMALLFONT}“{STRINGID}에서 산 쿠키는 가격이 참 적당한 것 같아”
+STR_1584    :“{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아”
+STR_1585    :“{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아”
+STR_1586    :“{STRINGID}에서 산 탑승 사진은 가격이 참 적당한 것 같아”
+STR_1587    :“{STRINGID}에서 산 프레첼은 가격이 참 적당한 것 같아”
+STR_1588    :“{STRINGID}에서 산 핫초코는 가격이 참 적당한 것 같아”
+STR_1589    :“{STRINGID}에서 산 아이스 티는 가격이 참 적당한 것 같아”
+STR_1590    :“{STRINGID}에서 산 퍼넬 케이크는 가격이 참 적당한 것 같아”
+STR_1591    :“{STRINGID}에서 산 선글라스는 가격이 참 적당한 것 같아”
+STR_1592    :“{STRINGID}에서 산 고기 국수는 가격이 참 적당한 것 같아”
+STR_1593    :“{STRINGID}에서 산 볶음 쌀국수은 가격이 참 적당한 것 같아”
+STR_1594    :“{STRINGID}에서 산 만둣국은 가격이 참 적당한 것 같아”
+STR_1595    :“{STRINGID}에서 산 미트볼 수프는 가격이 참 적당한 것 같아”
+STR_1596    :“{STRINGID}에서 산 과일 주스는 가격이 참 적당한 것 같아”
+STR_1597    :“{STRINGID}에서 산 두유는 가격이 참 적당한 것 같아”
+STR_1598    :“{STRINGID}에서 산 수정과는 가격이 참 적당한 것 같아”
+STR_1599    :“{STRINGID}에서 산 샌드위치는 가격이 참 적당한 것 같아”
+STR_1600    :“{STRINGID}에서 산 쿠키는 가격이 참 적당한 것 같아”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“{STRINGID}에서 산 구운 소시지는 가격이 참 적당한 것 같아”
+STR_1604    :“{STRINGID}에서 산 구운 소시지는 가격이 참 적당한 것 같아”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1001,27 +1001,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아”
-STR_1617    :{SMALLFONT}“{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아”
-STR_1618    :{SMALLFONT}“{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아”
-STR_1619    :{SMALLFONT}“{STRINGID}의 프레첼에 돈을 쓰고 싶지 않아”
-STR_1620    :{SMALLFONT}“{STRINGID}의 핫초코에 돈을 쓰고 싶지 않아”
-STR_1621    :{SMALLFONT}“{STRINGID}의 아이스 티에 돈을 쓰고 싶지 않아”
-STR_1622    :{SMALLFONT}“{STRINGID}의 퍼넬 케이크에 돈을 쓰고 싶지 않아”
-STR_1623    :{SMALLFONT}“{STRINGID}의 선글라스에 돈을 쓰고 싶지 않아”
-STR_1624    :{SMALLFONT}“{STRINGID}의 고기 국수에 돈을 쓰고 싶지 않아”
-STR_1625    :{SMALLFONT}“{STRINGID}의 볶음 쌀국수에 돈을 쓰고 싶지 않아”
-STR_1626    :{SMALLFONT}“{STRINGID}의 만둣국에 돈을 쓰고 싶지 않아”
-STR_1627    :{SMALLFONT}“{STRINGID}의 미트볼 수프에 돈을 쓰고 싶지 않아”
-STR_1628    :{SMALLFONT}“{STRINGID}의 과일 주스에 돈을 쓰고 싶지 않아”
-STR_1629    :{SMALLFONT}“{STRINGID}의 두유에 돈을 쓰고 싶지 않아”
-STR_1630    :{SMALLFONT}“{STRINGID}의 수정과에 돈을 쓰고 싶지 않아”
-STR_1631    :{SMALLFONT}“{STRINGID}의 샌드위치에 돈을 쓰고 싶지 않아”
-STR_1632    :{SMALLFONT}“{STRINGID}의 쿠키에 돈을 쓰고 싶지 않아”
+STR_1616    :“{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아”
+STR_1617    :“{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아”
+STR_1618    :“{STRINGID}의 탑승 사진에 돈을 쓰고 싶지 않아”
+STR_1619    :“{STRINGID}의 프레첼에 돈을 쓰고 싶지 않아”
+STR_1620    :“{STRINGID}의 핫초코에 돈을 쓰고 싶지 않아”
+STR_1621    :“{STRINGID}의 아이스 티에 돈을 쓰고 싶지 않아”
+STR_1622    :“{STRINGID}의 퍼넬 케이크에 돈을 쓰고 싶지 않아”
+STR_1623    :“{STRINGID}의 선글라스에 돈을 쓰고 싶지 않아”
+STR_1624    :“{STRINGID}의 고기 국수에 돈을 쓰고 싶지 않아”
+STR_1625    :“{STRINGID}의 볶음 쌀국수에 돈을 쓰고 싶지 않아”
+STR_1626    :“{STRINGID}의 만둣국에 돈을 쓰고 싶지 않아”
+STR_1627    :“{STRINGID}의 미트볼 수프에 돈을 쓰고 싶지 않아”
+STR_1628    :“{STRINGID}의 과일 주스에 돈을 쓰고 싶지 않아”
+STR_1629    :“{STRINGID}의 두유에 돈을 쓰고 싶지 않아”
+STR_1630    :“{STRINGID}의 수정과에 돈을 쓰고 싶지 않아”
+STR_1631    :“{STRINGID}의 샌드위치에 돈을 쓰고 싶지 않아”
+STR_1632    :“{STRINGID}의 쿠키에 돈을 쓰고 싶지 않아”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“{STRINGID}의 구운 소시지에 돈을 쓰고 싶지 않아”
+STR_1636    :“{STRINGID}의 구운 소시지에 돈을 쓰고 싶지 않아”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1033,11 +1033,11 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“살려주세요! 절 내려주세요!”
-STR_1649    :{SMALLFONT}“돈이 다 떨어져가고 있어요!”
-STR_1650    :{SMALLFONT}“와우! 새 놀이기구가 지어지고 있어요!”
+STR_1648    :“살려주세요! 절 내려주세요!”
+STR_1649    :“돈이 다 떨어져가고 있어요!”
+STR_1650    :“와우! 새 놀이기구가 지어지고 있어요!”
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :{SMALLFONT}“…마침내 {STRINGID}에 탔어요!”
+STR_1653    :“…마침내 {STRINGID}에 탔어요!”
 STR_1654    :{WINDOW_COLOUR_2}최근 생각:
 STR_1655    :땅 위에 보도 건설
 STR_1656    :다리나 터널 보도를 건설
@@ -1067,12 +1067,12 @@ STR_1679    :나선 상승 (왼쪽)
 STR_1680    :나선 상승 (오른쪽)
 STR_1681    :나선 하강 (왼쪽)
 STR_1682    :나선 하강 (오른쪽)
-STR_1683    :기본 크기 2 x 2
-STR_1684    :기본 크기 4 x 4
-STR_1685    :기본 크기 2 x 4
-STR_1686    :기본 크기 5 x 1
+STR_1683    :기본 크기 2 × 2
+STR_1684    :기본 크기 4 × 4
+STR_1685    :기본 크기 2 × 4
+STR_1686    :기본 크기 5 × 1
 STR_1687    :물 튀김
-STR_1688    :기본 크기 4 x 1
+STR_1688    :기본 크기 4 × 1
 STR_1689    :블록 브레이크
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  비용: {BLACK}{CURRENCY}
@@ -1125,7 +1125,7 @@ STR_1738    :바퀴 수를 변경할 수 없습니다…
 STR_1739    :레이스 우승자 : 손님 {INT32}
 STR_1740    :레이스 우승자 : {STRINGID}
 STR_1741    :아직 건설되지 않았습니다!
-STR_1742    :{WINDOW_COLOUR_2}최대 놀이기구 탑승 인원:
+STR_1742    :{WINDOW_COLOUR_2}최대 탑승 인원:
 STR_1743    :이 놀이기구에 한 번에 탑승할 수 있는 최대 인원 수를 설정합니다
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :변경할 수 없습니다…
@@ -1189,7 +1189,7 @@ STR_1808    :{WINDOW_COLOUR_2}최근 고장: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}현재 고장: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}보유 중:
 STR_1811    :여기에 건설할 수 없습니다…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :기타 오브젝트
 STR_1814    :행동
 STR_1815    :생각
@@ -1198,7 +1198,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}모든 손님
 STR_1819    :{WINDOW_COLOUR_2}모든 손님 (항목별 분류)
 STR_1820    :{WINDOW_COLOUR_2}{STRINGID} 손님
-STR_1821    :{WINDOW_COLOUR_2}{STRINGID} 손님 생각
+STR_1821    :{WINDOW_COLOUR_2}{SMALLFONT}{STRINGID}{MEDIUMFONT} 손님 생각
 STR_1822    :{WINDOW_COLOUR_2}{POP16}{STRINGID}에 대한 손님 생각
 STR_1823    :이 놀이기구/시설에 대한 손님들의 생각을 보여줍니다
 STR_1824    :이 놀이기구/시설에 있는 손님을 보여줍니다
@@ -1301,7 +1301,6 @@ STR_1921    :새로운 게임을 시작합니다
 STR_1922    :저장된 게임을 계속해서 플레이합니다
 STR_1924    :게임을 종료합니다
 STR_1925    :사람을 여기에 놓을 수 없습니다…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} 고장 발생
 STR_1928    :{RED}{STRINGID} 충돌!
 STR_1929    :{RED}{STRINGID} - 아직 수리되지 않음{NEWLINE}정비기술자의 위치와 업무 효율을 점검하세요
@@ -1582,7 +1581,7 @@ STR_2218    :{RED}{POP16}{POP16}{STRINGID}의 {PUSH16}{PUSH16}{PUSH16}{PUSH16}{P
 STR_2219    :{RED}{COMMA16}명의 손님이 {STRINGID} 사고로 사망하였습니다!
 STR_2220    :{WINDOW_COLOUR_2}공원 등급: {BLACK}{COMMA16}
 STR_2221    :공원 등급: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}공원에 있는 손님 수: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}재정: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}재정: {RED}{CURRENCY2DP}
@@ -1595,7 +1594,7 @@ STR_2231    :낙하 브레이크
 STR_2232    :케이블 리프트 힐
 STR_2233    :공원 정보
 STR_2234    :최근 메시지
-STR_2235    :{SMALLFONT}{POP16}{STRINGID} {PUSH16}{PUSH16}{STRINGID}
+STR_2235    :{POP16}{STRINGID} {PUSH16}{PUSH16}{STRINGID}
 STR_2236    :1월
 STR_2237    :2월
 STR_2238    :3월
@@ -1675,7 +1674,7 @@ STR_2312    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA2DP32} (근사치)
 STR_2313    :{WINDOW_COLOUR_2}멀미도: {BLACK}{COMMA2DP32} (근사치)
 STR_2314    :{WINDOW_COLOUR_2}놀이기구 길이: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}비용: {BLACK}약 {CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}필요한 공간: {BLACK}{COMMA16} x {COMMA16}칸
+STR_2316    :{WINDOW_COLOUR_2}필요한 공간: {BLACK}{COMMA16} × {COMMA16}칸
 STR_2321    :{WINDOW_COLOUR_2}놀이기구/시설 수: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}직원: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}공원 크기: {BLACK}{COMMA32}m²
@@ -1799,7 +1798,7 @@ STR_2450    :{YELLOW}공원 광고가 종료되었습니다
 STR_2451    :{YELLOW}{STRINGID} 광고가 종료되었습니다
 STR_2452    :{WINDOW_COLOUR_2}재정 (대출 제외): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}재정 (대출 제외): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :재정 요약을 보여줍니다
 STR_2458    :시간에 따른 재정 보유 그래프(대출 제외)를 보여줍니다
 STR_2459    :시간에 따른 공원 가치 그래프를 보여줍니다
@@ -1909,7 +1908,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :모든 연구가 완료되었습니다
-STR_2681    :{MEDIUMFONT}{BLACK}돈 {CURRENCY} 늘리기
 STR_2684    :손님을 대규모로 부릅니다
 STR_2685    :단일 노이즈 매개 변수
 STR_2686    :저:
@@ -1991,12 +1989,12 @@ STR_2784    :키보드 단축키 변경
 STR_2785    :{WINDOW_COLOUR_2}새 단축키를 누르세요:{NEWLINE}“{STRINGID}”
 STR_2786    :새 단축키를 설정하려면 단축키 설명을 클릭하세요
 STR_2787    :{WINDOW_COLOUR_2}공원 가치: {BLACK}{CURRENCY}
-STR_2788    :{WINDOW_COLOUR_2}축하합니다 !{NEWLINE}{BLACK}시나리오 목표를 {CURRENCY}의 회사 가치로 달성하였습니다 !
-STR_2789    :{WINDOW_COLOUR_2}목표 달성에 실패하였습니다 !
+STR_2788    :{WINDOW_COLOUR_2}축하합니다!{NEWLINE}{BLACK}시나리오 목표를 {CURRENCY}의 회사 가치로 달성하였습니다!
+STR_2789    :{WINDOW_COLOUR_2}목표 달성에 실패하였습니다!
 STR_2790    :시나리오 차트에 이름을 기록하세요
 STR_2791    :이름을 입력하세요
 STR_2792    :시나리오 차트에 이름을 기록하세요:
-STR_2793    :{SMALLFONT}(달성: {STRINGID})
+STR_2793    :(달성: {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}달성: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2}회사 가치: {BLACK}{CURRENCY}
 STR_2795    :정렬
 STR_2796    :놀이기구 목록을 정보 종류에 따라 정렬하여 표시합니다.
@@ -2115,15 +2113,15 @@ STR_2976    :선택한 색상 조합을 사용하여 이 놀이기구의 특정 
 STR_2977    :직원 이름
 STR_2978    :새 직원 이름을 입력하세요:
 STR_2979    :직원 이름을 바꿀 수 없습니다…
-STR_2980    :게임에 전광판이 너무 많습니다
+STR_2980    :게임에 팻말이 너무 많습니다
 STR_2981    :{RED}출입 금지
-STR_2982    :전광판 내용
-STR_2983    :이 전광판의 문구를 입력하세요:
-STR_2984    :전광판의 내용을 바꿀 수 없습니다…
-STR_2985    :전광판
-STR_2986    :전광판의 내용을 바꿉니다
-STR_2987    :이 전광판을 ‘손님 출입 금지’로 설정합니다
-STR_2988    :이 전광판을 제거합니다
+STR_2982    :팻말 내용
+STR_2983    :이 팻말의 문구를 입력하세요:
+STR_2984    :팻말의 내용을 바꿀 수 없습니다…
+STR_2985    :팻말
+STR_2986    :팻말의 내용을 바꿉니다
+STR_2987    :이 팻말을 ‘손님 출입 금지’로 설정합니다
+STR_2988    :이 팻말을 제거합니다
 STR_2989    :주 색상 선택
 STR_2990    :문구 색상 선택
 STR_2991    :팻말
@@ -2503,7 +2501,7 @@ STR_5134    :땅 구입 도구 크기 늘이기
 STR_5135    :땅 소유권과 건설권 구입하기
 STR_5136    :땅 소유권
 STR_5137    :놀이기구 운영 제한 없애기
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :브레이크 고장 안 나게
 STR_5141    :고장 안 나게
@@ -2560,7 +2558,7 @@ STR_5205    :손님
 STR_5206    :손님 목록
 STR_5207    :직원
 STR_5208    :직원 목록
-STR_5209    :전광판
+STR_5209    :팻말
 STR_5210    :오브젝트 선택
 STR_5211    :개발 목록
 STR_5212    :시나리오 설정
@@ -2649,7 +2647,7 @@ STR_5297    :공원을 엽니다
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :직원 간편 해고
-STR_5301    :{MEDIUMFONT}{BLACK}대출금을 모두 갚습니다
+STR_5301    :대출금을 모두 갚습니다
 STR_5302    :대출금 모두 갚기
 STR_5303    :일시정지 모드에서 건설 허용
 STR_5304    :타이틀 시퀀스:
@@ -2797,7 +2795,7 @@ STR_5470    :맵을 왼쪽으로 스크롤
 STR_5471    :맵을 아래로 스크롤
 STR_5472    :맵을 오른쪽으로 스크롤
 STR_5473    :밤낮을 순환
-STR_5474    :전광판의 영문자를 대문자로 표시
+STR_5474    :팻말의 영문자를 대문자로 표시
 STR_5475    :{COMMA16}주
 STR_5476    :하드웨어
 STR_5477    :지도 렌더링
@@ -2808,7 +2806,7 @@ STR_5481    :테마
 STR_5482    :{WINDOW_COLOUR_2}최근 점검 시간: {BLACK}1분
 STR_5483    :{BLACK}({COMMA16}주 남음)
 STR_5484    :{BLACK}({COMMA16}주 남음)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :최근 메시지 보이기
 STR_5489    :추적 중인 손님만 보기
@@ -3220,7 +3218,7 @@ STR_5938    :{WINDOW_COLOUR_2}수면 고도: {BLACK}{COMMA16}
 STR_5939    :공원 울타리 제거
 STR_5940    :공원 울타리 복구
 STR_5941    :{WINDOW_COLOUR_2}기본 높이:
-STR_5942    :{WINDOW_COLOUR_2}공원 이름: {BLACK}{STRINGID}
+STR_5942    :{WINDOW_COLOUR_2}보도 이름: {BLACK}{STRINGID}
 STR_5943    :{WINDOW_COLOUR_2}기물: {BLACK}{STRINGID}
 STR_5944    :{WINDOW_COLOUR_2}기물: {BLACK}없음
 STR_5945    :{WINDOW_COLOUR_2}연결된 면:
@@ -3312,7 +3310,7 @@ STR_6030    :오브젝트 스포이드 기능입니다. 지도 상의 오브젝�
 STR_6031    :서버 설명:
 STR_6032    :서버 인사말:
 STR_6033    :RCT1 설치 경로:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :RCT1이 설치된 폴더를 선택하세요
 STR_6036    :초기화
 STR_6037    :선택한 폴더에는 RollerCoaster Tycoon 1이 올바르게 설치되어 있지 않습니다.
@@ -3457,7 +3455,7 @@ STR_6183    :따라가기{MOVE_X}{87}선택된 스프라이트 없음
 STR_6184    :스프라이트 따라가기
 STR_6185    :스프라이트 선택
 STR_6186    :선택된 스프라이트 없음
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :구토
 STR_6189    :오리
 STR_6190    :메인 타이틀 시퀀스가 활성화되어 있을 때는 스프라이트를 선택할 수 없습니다.
@@ -3607,7 +3605,7 @@ STR_6356    :공원에 물이 있을 경우 오리를 생성합니다
 STR_6357    :공원에 있는 모든 오리를 제거합니다
 STR_6358    :{UINT16}쪽
 STR_6359    :{POP16}{POP16}{UINT16}쪽
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :차량 조명 효과 (실험적 기능)
 STR_6362    :이 설정을 켜면, 밤에 트랙형 놀이기구의 차량에 조명이 들어옵니다.
 STR_6363    :텍스트를 클립보드에 복사하였습니다
@@ -3682,6 +3680,25 @@ STR_6431    :오른쪽 마우스 버튼
 STR_6432    :마우스 {INT32}
 STR_6433    :해제
 STR_6434    :여기에 할당된 단축키를 해제합니다.
+STR_6435    :{WINDOW_COLOUR_2}기물파괴범 검거 횟수: {BLACK}{COMMA16}
+STR_6436    :감춤 여부
+STR_6437    :감춤
+STR_6438    :I
+STR_6439    :칸 조사 창: 감춤 여부
+STR_6440    :물 투명하게 보기
+STR_6441    :최소 하나 이상의 일반 보도 바닥 오브젝트를 선택해야 합니다.
+STR_6442    :최소 하나 이상의 대기 줄 보도 바닥 오브젝트를 선택해야 합니다.
+STR_6443    :최소 하나 이상의 보도 난간 오브젝트를 선택해야 합니다.
+STR_6444    :보도 바닥
+STR_6445    :보도 난간
+STR_6446    :{WINDOW_COLOUR_2}바닥 이름: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}난간 이름: {BLACK}{STRINGID}
+STR_6448    :지원하지 않는 오브젝트 포맷
+STR_6449    :{WINDOW_COLOUR_2}트랙:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}판매: {BLACK}{STRING}
+STR_6453    :버전 정보 복사
 
 #############
 # Scenarios #

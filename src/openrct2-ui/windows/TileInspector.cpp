@@ -1635,12 +1635,11 @@ static void window_tile_inspector_invalidate(rct_window* w)
         {
             bool canBeSloped = false;
             bool hasAnimation = false;
-            const auto sceneryEntry = tileElement->AsWall()->GetEntry();
-            if (sceneryEntry != nullptr)
+            const auto wallEntry = tileElement->AsWall()->GetEntry();
+            if (wallEntry != nullptr)
             {
-                const rct_wall_scenery_entry wallEntry = sceneryEntry->wall;
-                canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
-                hasAnimation = wallEntry.flags & WALL_SCENERY_IS_DOOR;
+                canBeSloped = !(wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
+                hasAnimation = wallEntry->flags & WALL_SCENERY_IS_DOOR;
             }
 
             w->widgets[WIDX_WALL_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
@@ -1870,9 +1869,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (tileElement->AsPath()->HasAddition())
                 {
                     const auto pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
-                    const auto* sceneryElement = get_footpath_item_entry(pathAdditionType);
-                    rct_string_id additionNameId = sceneryElement != nullptr
-                        ? sceneryElement->name
+                    const auto* pathBitEntry = get_footpath_item_entry(pathAdditionType);
+                    rct_string_id additionNameId = pathBitEntry != nullptr
+                        ? pathBitEntry->name
                         : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE);
                     DrawTextBasic(
                         dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId,
@@ -1975,7 +1974,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_SCENERY_AGE, &age, { COLOUR_WHITE });
 
                 // Quadrant value
-                const rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 if (sceneryEntry != nullptr && !(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
                 {
                     int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
@@ -2095,18 +2094,14 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, { COLOUR_WHITE });
 
                 // Banner info
-                const auto wallEntry = tileElement->AsWall()->GetEntry();
-                if (wallEntry != nullptr && wallEntry->wall.flags & WALL_SCENERY_IS_BANNER)
+                auto banner = tileElement->AsWall()->GetBanner();
+                if (banner != nullptr && !banner->IsNull())
                 {
-                    auto banner = tileElement->AsWall()->GetBanner();
-                    if (banner != nullptr && !banner->IsNull())
-                    {
-                        Formatter ft;
-                        banner->FormatTextTo(ft);
-                        DrawTextBasic(
-                            dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft,
-                            { COLOUR_WHITE });
-                    }
+                    Formatter ft;
+                    banner->FormatTextTo(ft);
+                    DrawTextBasic(
+                        dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft,
+                        { COLOUR_WHITE });
                 }
                 else
                 {
@@ -2161,8 +2156,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     { COLOUR_WHITE });
 
                 // Banner info
-                rct_scenery_entry* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
-                if (largeSceneryEntry != nullptr && largeSceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+                auto* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
+                if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto banner = sceneryElement->GetBanner();
                     if (banner != nullptr && !banner->IsNull())
@@ -2299,10 +2294,10 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             {
-                const auto* entry = tileElement->AsSmallScenery()->GetEntry();
+                const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_OBJECT_SELECTION_SMALL_SCENERY),
-                    entry != nullptr ? language_get_string(entry->name) : "");
+                    sceneryEntry != nullptr ? language_get_string(sceneryEntry->name) : "");
                 typeName = buffer;
                 break;
             }

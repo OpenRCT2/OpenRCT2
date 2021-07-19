@@ -19,12 +19,14 @@
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../ride/Ride.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"
+#include "../world/Duck.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
@@ -107,7 +109,7 @@ GameActions::Result::Ptr SetCheatAction::Execute() const
             gCheatsShowVehiclesFromOtherTrackTypes = _param1 != 0;
             break;
         case CheatType::FastLiftHill:
-            gCheatsFastLiftHill = _param1 != 0;
+            gCheatsUnlockOperatingLimits = _param1 != 0;
             break;
         case CheatType::DisableBrakesFailure:
             gCheatsDisableBrakesFailure = _param1 != 0;
@@ -232,7 +234,7 @@ GameActions::Result::Ptr SetCheatAction::Execute() const
             CreateDucks(_param1);
             break;
         case CheatType::RemoveDucks:
-            duck_remove_all();
+            Duck::RemoveAll();
             break;
         case CheatType::AllowTrackPlaceInvalidHeights:
             gCheatsAllowTrackPlaceInvalidHeights = _param1 != 0;
@@ -410,13 +412,12 @@ void SetCheatAction::FixVandalism() const
 
 void SetCheatAction::RemoveLitter() const
 {
-    for (auto litter : EntityList<Litter>(EntityListId::Litter))
+    for (auto litter : EntityList<Litter>())
     {
         sprite_remove(litter);
     }
 
     tile_element_iterator it;
-    rct_scenery_entry* sceneryEntry;
 
     tile_element_iterator_begin(&it);
     do
@@ -427,8 +428,8 @@ void SetCheatAction::RemoveLitter() const
         if (!(it.element)->AsPath()->HasAddition())
             continue;
 
-        sceneryEntry = it.element->AsPath()->GetAdditionEntry();
-        if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
+        auto* pathBitEntry = it.element->AsPath()->GetAdditionEntry();
+        if (pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
             it.element->AsPath()->SetAdditionStatus(0xFF);
 
     } while (tile_element_iterator_next(&it));
@@ -553,7 +554,7 @@ void SetCheatAction::GenerateGuests(int32_t count) const
 
 void SetCheatAction::SetGuestParameter(int32_t parameter, int32_t value) const
 {
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         switch (parameter)
         {
@@ -597,7 +598,7 @@ void SetCheatAction::SetGuestParameter(int32_t parameter, int32_t value) const
 
 void SetCheatAction::GiveObjectToGuests(int32_t object) const
 {
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         switch (object)
         {
@@ -661,7 +662,7 @@ void SetCheatAction::RemoveAllGuests() const
 
     // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
     // will be fetched on a deleted guest.
-    for (auto guest : EntityList<Guest>(EntityListId::Peep))
+    for (auto guest : EntityList<Guest>())
     {
         guest->Remove();
     }
@@ -672,7 +673,7 @@ void SetCheatAction::RemoveAllGuests() const
 
 void SetCheatAction::SetStaffSpeed(uint8_t value) const
 {
-    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto peep : EntityList<Staff>())
     {
         peep->Energy = value;
         peep->EnergyTarget = value;
