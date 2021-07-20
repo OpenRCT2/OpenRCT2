@@ -308,6 +308,8 @@ private:
     void UpdateDepartingBoatHire();
     void UpdateTravellingBoatHireSetup();
     void UpdateBoatLocation();
+    void UpdateArrivingPassThroughStation(
+        const Ride& curRide, const rct_ride_entry_vehicle& vehicleEntry, bool stationBrakesWork);
     void UpdateArriving();
     void UpdateUnloadingPassengers();
     void UpdateWaitingForCableLift();

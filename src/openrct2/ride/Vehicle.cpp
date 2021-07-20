@@ -3894,6 +3894,91 @@ void Vehicle::UpdateTravelling()
         sub_state = 1;
 }
 
+void Vehicle::UpdateArrivingPassThroughStation(
+    const Ride& curRide, const rct_ride_entry_vehicle& vehicleEntry, bool stationBrakesWork)
+{
+    if (sub_state == 0)
+    {
+        if (curRide.mode == RideMode::Race && curRide.lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+        {
+            return;
+        }
+
+        if (velocity <= 131940)
+        {
+            acceleration = 3298;
+            return;
+        }
+
+        int32_t velocity_diff = velocity;
+        if (velocity_diff >= 1572864)
+            velocity_diff /= 8;
+        else
+            velocity_diff /= 16;
+
+        if (!stationBrakesWork)
+        {
+            return;
+        }
+
+        if (curRide.num_circuits != 1)
+        {
+            if (num_laps + 1 < curRide.num_circuits)
+            {
+                return;
+            }
+        }
+        velocity -= velocity_diff;
+        acceleration = 0;
+    }
+    else
+    {
+        if (!(vehicleEntry.flags & VEHICLE_ENTRY_FLAG_POWERED) && velocity >= -131940)
+        {
+            acceleration = -3298;
+        }
+
+        if (velocity >= -131940)
+        {
+            return;
+        }
+
+        int32_t velocity_diff = velocity;
+        if (velocity_diff < -1572864)
+            velocity_diff /= 8;
+        else
+            velocity_diff /= 16;
+
+        if (!stationBrakesWork)
+        {
+            return;
+        }
+
+        if (num_laps + 1 < curRide.num_circuits)
+        {
+            return;
+        }
+
+        if (num_laps + 1 != curRide.num_circuits)
+        {
+            velocity -= velocity_diff;
+            acceleration = 0;
+            return;
+        }
+
+        if (GetRideTypeDescriptor(curRide.type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)
+            && curRide.mode != RideMode::Shuttle && curRide.mode != RideMode::PoweredLaunch)
+        {
+            SetUpdateFlag(VEHICLE_UPDATE_FLAG_12);
+        }
+        else
+        {
+            velocity -= velocity_diff;
+            acceleration = 0;
+        }
+    }
+}
+
 /**
  *
  *  rct2: 0x006D8C36
@@ -3948,88 +4033,8 @@ void Vehicle::UpdateArriving()
     rct_ride_entry* rideEntry = GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
-    if (sub_state == 0)
-    {
-        if (curRide->mode == RideMode::Race && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
-        {
-            goto loc_6D8E36;
-        }
+    UpdateArrivingPassThroughStation(*curRide, *vehicleEntry, stationBrakesWork);
 
-        if (velocity <= 131940)
-        {
-            acceleration = 3298;
-            goto loc_6D8E36;
-        }
-
-        int32_t velocity_diff = velocity;
-        if (velocity_diff >= 1572864)
-            velocity_diff /= 8;
-        else
-            velocity_diff /= 16;
-
-        if (!stationBrakesWork)
-        {
-            goto loc_6D8E36;
-        }
-
-        if (curRide->num_circuits != 1)
-        {
-            if (num_laps + 1 < curRide->num_circuits)
-            {
-                goto loc_6D8E36;
-            }
-        }
-        velocity -= velocity_diff;
-        acceleration = 0;
-    }
-    else
-    {
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && velocity >= -131940)
-        {
-            acceleration = -3298;
-        }
-
-        if (velocity >= -131940)
-        {
-            goto loc_6D8E36;
-        }
-
-        int32_t velocity_diff = velocity;
-        if (velocity_diff < -1572864)
-            velocity_diff /= 8;
-        else
-            velocity_diff /= 16;
-
-        if (!stationBrakesWork)
-        {
-            goto loc_6D8E36;
-        }
-
-        if (num_laps + 1 < curRide->num_circuits)
-        {
-            goto loc_6D8E36;
-        }
-
-        if (num_laps + 1 != curRide->num_circuits)
-        {
-            velocity -= velocity_diff;
-            acceleration = 0;
-            goto loc_6D8E36;
-        }
-
-        if (GetRideTypeDescriptor(curRide->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)
-            && curRide->mode != RideMode::Shuttle && curRide->mode != RideMode::PoweredLaunch)
-        {
-            SetUpdateFlag(VEHICLE_UPDATE_FLAG_12);
-        }
-        else
-        {
-            velocity -= velocity_diff;
-            acceleration = 0;
-        }
-    }
-
-loc_6D8E36:
     curFlags = UpdateTrackMotion(nullptr);
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && !stationBrakesWork)
     {
