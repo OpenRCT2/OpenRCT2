@@ -9226,6 +9226,83 @@ static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const 
     }
 }
 
+int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const rct_ride_entry_vehicle& vehicleEntry)
+{
+    int32_t sumAcceleration = 0;
+    int32_t numVehicles = 0;
+    uint16_t totalMass = 0;
+
+    for (Vehicle* vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    {
+        numVehicles++;
+        totalMass += vehicle->mass;
+        sumAcceleration += vehicle->acceleration;
+    }
+
+    int32_t newAcceleration = ((sumAcceleration / numVehicles) * 21) >> 9;
+    newAcceleration -= velocity >> 12;
+    newAcceleration -= GetAccelerationDecrease2(velocity, totalMass);
+
+    if (!(vehicleEntry.flags & VEHICLE_ENTRY_FLAG_POWERED))
+    {
+        return newAcceleration;
+    }
+    if (vehicleEntry.flags & VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
+    {
+        if (speed * 0x4000 < velocity)
+        {
+            return newAcceleration;
+        }
+    }
+    {
+        int32_t poweredAcceleration = speed << 14;
+        int32_t quarterForce = (speed * totalMass) >> 2;
+        if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
+        {
+            poweredAcceleration = -poweredAcceleration;
+        }
+        poweredAcceleration -= velocity;
+        poweredAcceleration *= powered_acceleration << 1;
+        if (quarterForce != 0)
+            poweredAcceleration /= quarterForce;
+
+        if (vehicleEntry.flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
+        {
+            if (poweredAcceleration < 0)
+            {
+                poweredAcceleration >>= 4;
+            }
+
+            if (vehicleEntry.flags & VEHICLE_ENTRY_FLAG_SPINNING)
+            {
+                spin_speed = std::clamp(spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
+            }
+
+            if (Pitch != 0)
+            {
+                poweredAcceleration = std::max(0, poweredAcceleration);
+                if (vehicleEntry.flags & VEHICLE_ENTRY_FLAG_SPINNING)
+                {
+                    if (Pitch == 2)
+                    {
+                        spin_speed = 0;
+                    }
+                }
+                newAcceleration += poweredAcceleration;
+                return newAcceleration;
+            }
+        }
+
+        if (abs(velocity) > 0x10000)
+        {
+            newAcceleration = 0;
+        }
+        newAcceleration += poweredAcceleration;
+    }
+
+    return newAcceleration;
+}
+
 int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
 {
     auto curRide = GetRide();
@@ -9269,79 +9346,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         }
     }
 
-    int32_t sumAcceleration = 0;
-    int32_t numVehicles = 0;
-    uint16_t totalMass = 0;
-
-    for (Vehicle* vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
-    {
-        numVehicles++;
-        totalMass += vehicle->mass;
-        sumAcceleration += vehicle->acceleration;
-    }
-
-    int32_t newAcceleration = ((sumAcceleration / numVehicles) * 21) >> 9;
-    newAcceleration -= velocity >> 12;
-    newAcceleration -= GetAccelerationDecrease2(velocity, totalMass);
-
-    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
-    {
-        goto loc_6DD069;
-    }
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
-    {
-        if (speed * 0x4000 < velocity)
-        {
-            goto loc_6DD069;
-        }
-    }
-    {
-        int32_t poweredAcceleration = speed << 14;
-        int32_t quarterForce = (speed * totalMass) >> 2;
-        if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
-        {
-            poweredAcceleration = -poweredAcceleration;
-        }
-        poweredAcceleration -= velocity;
-        poweredAcceleration *= powered_acceleration << 1;
-        if (quarterForce != 0)
-            poweredAcceleration /= quarterForce;
-
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
-        {
-            if (poweredAcceleration < 0)
-            {
-                poweredAcceleration >>= 4;
-            }
-
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
-            {
-                spin_speed = std::clamp(spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
-            }
-
-            if (Pitch != 0)
-            {
-                poweredAcceleration = std::max(0, poweredAcceleration);
-                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
-                {
-                    if (Pitch == 2)
-                    {
-                        spin_speed = 0;
-                    }
-                }
-                newAcceleration += poweredAcceleration;
-                goto loc_6DD069;
-            }
-        }
-
-        if (abs(velocity) > 0x10000)
-        {
-            newAcceleration = 0;
-        }
-        newAcceleration += poweredAcceleration;
-    }
-loc_6DD069:
-    acceleration = newAcceleration;
+    acceleration = UpdateTrackMotionMiniGolfCalculateAcceleration(*vehicleEntry);
 
     if (outStation != nullptr)
         *outStation = _vehicleStationIndex;
