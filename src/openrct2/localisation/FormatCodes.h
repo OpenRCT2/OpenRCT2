@@ -174,6 +174,8 @@ namespace UnicodeChar
     constexpr char32_t o_macron = 0x14D;
     constexpr char32_t o_double_acute_uc = 0x150;
     constexpr char32_t o_double_acute = 0x151;
+    constexpr char32_t oe_uc = 0x152;
+    constexpr char32_t oe = 0x153;
     constexpr char32_t r_caron_uc = 0x158;
     constexpr char32_t r_caron = 0x159;
     constexpr char32_t s_acute_uc = 0x15A;

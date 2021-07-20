@@ -845,6 +845,18 @@
         "forceBmp": true
     },
     {
+        "path": "font/latin/oe-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/oe-small.png",
+        "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/u-double-acute-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1406,6 +1418,18 @@
     {
         "path": "font/latin/o-double-acute-bold.png",
         "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/oe-uc-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/oe-bold.png",
+        "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
@@ -1979,6 +2003,18 @@
     {
         "path": "font/latin/o-double-acute-tiny.png",
         "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/oe-uc-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/oe-tiny.png",
+        "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     },
