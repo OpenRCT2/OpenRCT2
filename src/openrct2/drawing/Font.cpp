@@ -177,6 +177,7 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::interpunct, SPR_G2_INTERPUNCT - SPR_CHAR_START },
     { UnicodeChar::multiplication_sign, CSChar::cross - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::en_dash, '-' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::em_dash, '-' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::single_quote_open, '`' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::single_quote_end, '\'' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::single_german_quote_open, ',' - CS_SPRITE_FONT_OFFSET },
