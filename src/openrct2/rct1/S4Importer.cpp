@@ -2592,6 +2592,42 @@ private:
 
         return RIDE_TYPE_NULL;
     }
+
+    bool IsGuestOnVehicle(const rct1_vehicle& vehicle, uint16_t guestId)
+    {
+        if (guestId == SPRITE_INDEX_NULL)
+        {
+            return false;
+        }
+        auto* peep = static_cast<const rct1_peep*>(&_s4.sprites[guestId].peep);
+        if (peep->sprite_identifier != RCT12SpriteIdentifier::Peep || peep->type != EnumValue(RCT12PeepType::Guest))
+        {
+            return false;
+        }
+        if (peep->current_ride != vehicle.ride)
+        {
+            return false;
+        }
+        if (_s4.rides->vehicles[peep->current_train] == SPRITE_INDEX_NULL)
+        {
+            return false;
+        }
+        auto* train = &_s4.sprites[_s4.rides->vehicles[peep->current_train]].vehicle;
+        const rct1_vehicle* car = train;
+        for (uint8_t i = peep->current_car; i != 0; i--)
+        {
+            if (car->next_vehicle_on_train == SPRITE_INDEX_NULL)
+            {
+                return false;
+            }
+            car = &_s4.sprites[train->next_vehicle_on_train].vehicle;
+        }
+        if (car != &vehicle)
+        {
+            return false;
+        }
+        return true;
+    }
 };
 
 // Very similar but not the same as S6Importer version (due to peeps)
@@ -2728,11 +2764,15 @@ template<> void S4Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& srcBase
     // Guests (indexes converted later)
     for (int i = 0; i < 32; i++)
     {
-        uint16_t spriteIndex = src->peep[i];
-        dst->peep[i] = spriteIndex;
-        if (spriteIndex != SPRITE_INDEX_NULL)
+        if (IsGuestOnVehicle(*src, src->peep[i]))
         {
+            dst->peep[i] = src->peep[i];
             dst->peep_tshirt_colours[i] = RCT1::GetColour(src->peep_tshirt_colours[i]);
+        }
+        else
+        {
+            dst->peep[i] = SPRITE_INDEX_NULL;
+            dst->peep_tshirt_colours[i] = 0;
         }
     }
 

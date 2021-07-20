@@ -1501,6 +1501,42 @@ public:
 
         return result;
     }
+
+    bool IsGuestOnVehicle(const RCT2SpriteVehicle& vehicle, uint16_t guestId)
+    {
+        if (guestId == SPRITE_INDEX_NULL)
+        {
+            return false;
+        }
+        auto* peep = static_cast<const RCT2SpritePeep*>(&_s6.sprites[guestId].unknown);
+        if (peep->sprite_identifier!= RCT12SpriteIdentifier::Peep || peep->peep_type != EnumValue(RCT12PeepType::Guest))
+        {
+            return false;
+        }
+        if (peep->current_ride != vehicle.ride)
+        {
+            return false;
+        }
+        if (_s6.rides->vehicles[peep->current_train] == SPRITE_INDEX_NULL)
+        {
+            return false;
+        }
+        auto* train = &_s6.sprites[_s6.rides->vehicles[peep->current_train]].vehicle;
+        const RCT2SpriteVehicle* car = train;
+        for (uint8_t i = peep->current_car; i != 0; i--)
+        {
+            if (car->next_vehicle_on_train == SPRITE_INDEX_NULL)
+            {
+                return false;
+            }
+            car = &_s6.sprites[train->next_vehicle_on_train].vehicle;
+        }
+        if (car != &vehicle)
+        {
+            return false;
+        }
+        return true;
+    }
 };
 
 template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc)
@@ -1574,8 +1610,16 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->sub_state = src->sub_state;
     for (size_t i = 0; i < std::size(src->peep); i++)
     {
-        dst->peep[i] = src->peep[i];
-        dst->peep_tshirt_colours[i] = src->peep_tshirt_colours[i];
+        if (IsGuestOnVehicle(*src, src->peep[i]))
+        {
+            dst->peep[i] = src->peep[i];
+            dst->peep_tshirt_colours[i] = src->peep_tshirt_colours[i];
+        }
+        else
+        {
+            dst->peep[i] = SPRITE_INDEX_NULL;
+            dst->peep_tshirt_colours[i] = 0;
+        }
     }
     dst->num_seats = src->num_seats;
     dst->num_peeps = src->num_peeps;
