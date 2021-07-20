@@ -3904,7 +3904,7 @@ void Vehicle::UpdateArriving()
     if (curRide == nullptr)
         return;
 
-    uint8_t unkF64E35 = 1;
+    bool stationBrakesWork = true;
     uint32_t curFlags = 0;
 
     switch (curRide->mode)
@@ -3942,7 +3942,7 @@ void Vehicle::UpdateArriving()
     if (hasBrakesFailure && curRide->inspection_station == current_station
         && curRide->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
     {
-        unkF64E35 = 0;
+        stationBrakesWork = false;
     }
 
     rct_ride_entry* rideEntry = GetRideEntry();
@@ -3967,7 +3967,7 @@ void Vehicle::UpdateArriving()
         else
             velocity_diff /= 16;
 
-        if (unkF64E35 == 0)
+        if (!stationBrakesWork)
         {
             goto loc_6D8E36;
         }
@@ -4000,7 +4000,7 @@ void Vehicle::UpdateArriving()
         else
             velocity_diff /= 16;
 
-        if (unkF64E35 == 0)
+        if (!stationBrakesWork)
         {
             goto loc_6D8E36;
         }
@@ -4031,13 +4031,13 @@ void Vehicle::UpdateArriving()
 
 loc_6D8E36:
     curFlags = UpdateTrackMotion(nullptr);
-    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && unkF64E35 == 0)
+    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && !stationBrakesWork)
     {
         UpdateCollisionSetup();
         return;
     }
 
-    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION && unkF64E35 == 0)
+    if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION && !stationBrakesWork)
     {
         SetState(Vehicle::Status::Departing, 1);
         return;
