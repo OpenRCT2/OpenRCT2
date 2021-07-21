@@ -284,12 +284,12 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
 
         SetNewLargeSceneryElement(*newSceneryElement, tileNum);
         map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
+        map_invalidate_tile_full(curTile);
 
         if (tileNum == 0)
         {
-            res->tileElement = newSceneryElement->as<TileElement>();
+            res->firstTileHeight = zLow;
         }
-        map_invalidate_tile_full(curTile);
     }
 
     // Allocate banner after all tiles to ensure banner id doesn't need to be freed.
