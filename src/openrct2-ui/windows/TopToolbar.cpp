@@ -3467,6 +3467,7 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
     {
         Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
         Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
+        Dropdown::SetDisabled(DDIDX_OBJECTIVE_OPTIONS, true);
     }
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
