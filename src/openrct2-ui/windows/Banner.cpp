@@ -76,7 +76,6 @@ class BannerWindow final : public Window
 private:
     Banner* _banner;
     CoordsXYZ _bannerViewPos;
-    BannerElement* _bannerElement = nullptr;
 
     void CreateViewport()
     {
@@ -90,24 +89,33 @@ private:
         Invalidate();
     }
 
-    void InitTileElement()
+    BannerElement* GetBannerElement()
     {
-        TileElement* tileElement = map_get_first_element_at(_banner->position.ToCoordsXY().ToTileCentre());
-        if (tileElement != nullptr)
+        if (_banner == nullptr)
         {
-            while (1)
-            {
-                if ((tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tileElement->AsBanner()->GetIndex() == number))
-                {
-                    _bannerElement = tileElement->AsBanner();
-                    return;
-                }
-                if (tileElement->IsLastForTile())
-                    break;
-                tileElement++;
-            }
+            return nullptr;
         }
-        _bannerElement = nullptr;
+
+        TileElement* tileElement = map_get_first_element_at(_banner->position.ToCoordsXY().ToTileCentre());
+        if (tileElement == nullptr)
+        {
+            return nullptr;
+        }
+
+        do
+        {
+            auto* bannerElement = tileElement->AsBanner();
+            if (bannerElement == nullptr)
+            {
+                continue;
+            }
+            if (bannerElement->GetIndex() == number)
+            {
+                return bannerElement;
+            }
+        } while (!(tileElement++)->IsLastForTile());
+
+        return nullptr;
     }
 
 public:
@@ -125,12 +133,11 @@ public:
         number = _number;
         _banner = GetBanner(number);
 
-        InitTileElement();
-        if (_bannerElement == nullptr)
+        auto* bannerElement = GetBannerElement();
+        if (bannerElement == nullptr)
             return;
 
-        frame_no = _bannerElement->GetBaseZ();
-        _bannerViewPos = CoordsXYZ{ _banner->position.ToCoordsXY().ToTileCentre(), frame_no };
+        _bannerViewPos = CoordsXYZ{ _banner->position.ToCoordsXY().ToTileCentre(), bannerElement->GetBaseZ() };
         CreateViewport();
     }
 
@@ -172,11 +179,12 @@ public:
                 break;
             case WIDX_BANNER_DEMOLISH:
             {
-                if (_banner == nullptr || _bannerElement == nullptr)
+                auto* bannerElement = GetBannerElement();
+                if (_banner == nullptr || bannerElement == nullptr)
                     break;
 
                 auto bannerRemoveAction = BannerRemoveAction(
-                    { _banner->position.ToCoordsXY(), _bannerElement->GetBaseZ(), _bannerElement->GetPosition() });
+                    { _banner->position.ToCoordsXY(), bannerElement->GetBaseZ(), bannerElement->GetPosition() });
                 GameActions::Execute(&bannerRemoveAction);
                 break;
             }
