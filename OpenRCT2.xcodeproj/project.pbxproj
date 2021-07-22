@@ -767,6 +767,7 @@
 		F42186C5840D4196981ADD16 /* EntityTweener.h in Headers */ = {isa = PBXBuildFile; fileRef = 091352A950004312BAB18717 /* EntityTweener.h */; };
 		0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D3DD6CD73F5421880280D9D /* Litter.cpp */; };
 		B9B6F97CE24E4A559C7BBA0A /* RideConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BCCA2EF0F5A40D5B83A83AC /* RideConstruction.cpp */; };
+		317B766A750D4365B22A1682 /* EnumMap.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BA2317BF6FB54E328DEB7055 /* EnumMap.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1836,6 +1837,7 @@
 		091352A950004312BAB18717 /* EntityTweener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EntityTweener.h; path = src/openrct2/world/EntityTweener.h; sourceTree = SOURCE_ROOT; };
 		9D3DD6CD73F5421880280D9D /* Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Litter.cpp; path = src/openrct2/world/Litter.cpp; sourceTree = SOURCE_ROOT; };
 		6BCCA2EF0F5A40D5B83A83AC /* RideConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RideConstruction.cpp; path = src/openrct2/ride/RideConstruction.cpp; sourceTree = SOURCE_ROOT; };
+		BA2317BF6FB54E328DEB7055 /* EnumMap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = EnumMap.hpp; path = src/openrct2/core/EnumMap.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2503,6 +2505,7 @@
 				4C8BB67F25533D64005C8830 /* StringReader.h */,
 				F76C83991EC4E7CC00FA49E2 /* Zip.cpp */,
 				F76C839A1EC4E7CC00FA49E2 /* Zip.h */,
+				BA2317BF6FB54E328DEB7055 /* EnumMap.hpp */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -3468,6 +3471,7 @@
 				2ADE2F342244191E002598AF /* VirtualFloor.h in Headers */,
 				66A10F8B257F1E1800DD651A /* LandSmoothAction.h in Headers */,
 				F42186C5840D4196981ADD16 /* EntityTweener.h in Headers */,
+				317B766A750D4365B22A1682 /* EnumMap.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
