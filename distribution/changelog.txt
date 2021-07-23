@@ -3,6 +3,7 @@
 - Fix: [#15028] Crash when placing large scenery.
 - Fix: [#15048] Crash when removing litter with cheats.
 - Fix: [#15052] Crash when using banner window.
+- Fix: [#15063] Crash when opening large scenery signs.
 - Improved: [#12626] Allow using RCT2 saves to mark RCT Classic (.sea) parks as finished and vice versa. 
 
 0.3.4 (2021-07-19)
