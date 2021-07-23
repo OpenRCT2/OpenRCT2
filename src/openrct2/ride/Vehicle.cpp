@@ -8945,6 +8945,8 @@ loc_6DC743:
                 track_progress++;
                 break;
             case 1: // loc_6DC7ED
+                log_error("Invalid move info...");
+                assert(false);
                 var_D3 = static_cast<uint8_t>(moveInfo->z);
                 track_progress++;
                 break;
