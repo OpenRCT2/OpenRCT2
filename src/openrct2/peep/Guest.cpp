@@ -3905,7 +3905,7 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     if (ride_entry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
     {
-        vehicle->mini_golf_flags &= ~(1 << 5);
+        vehicle->mini_golf_flags &= ~MiniGolfFlag::Flag5;
 
         for (size_t i = 0; i < ride->num_vehicles; ++i)
         {
@@ -3920,7 +3920,7 @@ void Guest::UpdateRideFreeVehicleCheck()
             if (second_vehicle->num_peeps == 0)
                 continue;
 
-            if (second_vehicle->mini_golf_flags & (1 << 5))
+            if (second_vehicle->mini_golf_flags & MiniGolfFlag::Flag5)
                 continue;
 
             return;

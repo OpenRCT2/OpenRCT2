@@ -375,6 +375,18 @@ struct train_ref
     Vehicle* tail;
 };
 
+namespace MiniGolfFlag
+{
+    constexpr uint8_t Flag0 = (1 << 0);
+    constexpr uint8_t Flag1 = (1 << 1);
+    constexpr uint8_t Flag2 = (1 << 2);
+    constexpr uint8_t Flag3 = (1 << 3);
+    constexpr uint8_t Flag4 = (1 << 4);
+    constexpr uint8_t Flag5 = (1 << 5); // transitioning between hole
+    constexpr uint8_t Flag6 = (1 << 6);
+    constexpr uint8_t Flag7 = (1 << 7);
+}
+
 enum : uint32_t
 {
     VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1
