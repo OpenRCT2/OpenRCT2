@@ -102,15 +102,25 @@ public:
 
         if (_isSmall)
         {
-            list_information_type = tileElement->AsWall()->GetPrimaryColour();
-            var_492 = tileElement->AsWall()->GetSecondaryColour();
-            SceneryEntry = tileElement->AsWall()->GetEntryIndex();
+            auto* wallElement = tileElement->AsWall();
+            if (wallElement == nullptr)
+            {
+                return false;
+            }
+            list_information_type = wallElement->GetPrimaryColour();
+            var_492 = wallElement->GetSecondaryColour();
+            SceneryEntry = wallElement->GetEntryIndex();
         }
         else
         {
-            list_information_type = tileElement->AsLargeScenery()->GetPrimaryColour();
-            var_492 = tileElement->AsLargeScenery()->GetSecondaryColour();
-            SceneryEntry = tileElement->AsLargeScenery()->GetEntryIndex();
+            auto* sceneryElement = tileElement->AsLargeScenery();
+            if (sceneryElement == nullptr)
+            {
+                return false;
+            }
+            list_information_type = sceneryElement->GetPrimaryColour();
+            var_492 = sceneryElement->GetSecondaryColour();
+            SceneryEntry = sceneryElement->GetEntryIndex();
         }
 
         // Create viewport
