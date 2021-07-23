@@ -8768,7 +8768,7 @@ loc_6DC476:
     if (mini_golf_flags & MiniGolfFlag::Flag2)
     {
         uint8_t nextFrame = animation_frame + 1;
-        if (nextFrame < mini_golf_peep_animation_lengths[mini_golf_current_animation])
+        if (nextFrame < mini_golf_peep_animation_lengths[EnumValue(mini_golf_current_animation)])
         {
             animation_frame = nextFrame;
             goto loc_6DC985;
@@ -8959,33 +8959,34 @@ loc_6DC743:
                 track_progress++;
                 break;
             case MiniGolfState::Unk4: // loc_6DC820
-                trackPos.z = moveInfo->z;
+            {
+                auto animation = MiniGolfAnimation(moveInfo->z);
                 // When the ride is closed occasionally the peep is removed
                 // but the vehicle is still on the track. This will prevent
                 // it from crashing in that situation.
-                if (peep[0] != SPRITE_INDEX_NULL)
+                auto* curPeep = TryGetEntity<Guest>(peep[0]);
+                if (curPeep != nullptr)
                 {
-                    if (trackPos.z == 2)
+                    if (animation == MiniGolfAnimation::SwingLeft)
                     {
-                        auto* curPeep = GetEntity<Guest>(peep[0]);
-                        if (curPeep != nullptr && curPeep->Id & 7)
+                        if (curPeep->Id & 7)
                         {
-                            trackPos.z = 7;
+                            animation = MiniGolfAnimation::Swing;
                         }
                     }
-                    if (trackPos.z == 6)
+                    if (animation == MiniGolfAnimation::PutLeft)
                     {
-                        auto* curPeep = GetEntity<Guest>(peep[0]);
-                        if (curPeep != nullptr && curPeep->Id & 7)
+                        if (curPeep->Id & 7)
                         {
-                            trackPos.z = 8;
+                            animation = MiniGolfAnimation::Put;
                         }
                     }
                 }
-                mini_golf_current_animation = static_cast<uint8_t>(trackPos.z);
+                mini_golf_current_animation = animation;
                 animation_frame = 0;
                 track_progress++;
                 break;
+            }
             case MiniGolfState::Unk5: // loc_6DC87A
                 mini_golf_flags |= MiniGolfFlag::Flag2;
                 track_progress++;

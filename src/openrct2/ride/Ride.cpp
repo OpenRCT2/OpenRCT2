@@ -3124,7 +3124,7 @@ static Vehicle* vehicle_create_car(
         {
             subposition = VehicleTrackSubposition::MiniGolfStart9;
             vehicle->var_D3 = 0;
-            vehicle->mini_golf_current_animation = 0;
+            vehicle->mini_golf_current_animation = MiniGolfAnimation::Walk;
             vehicle->mini_golf_flags = 0;
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_REVERSER_BOGIE)

@@ -1237,7 +1237,7 @@ void vehicle_visual_mini_golf_player(
     if (peep == nullptr)
         return;
 
-    uint8_t frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->animation_frame];
+    uint8_t frame = mini_golf_peep_animation_frames[EnumValue(vehicle->mini_golf_current_animation)][vehicle->animation_frame];
     uint32_t ebx = (frame << 2) + (imageDirection >> 3);
 
     uint32_t image_id = rideEntry->vehicles[0].base_image_id + 1 + ebx;
@@ -1251,7 +1251,7 @@ void vehicle_visual_mini_golf_player(
 void vehicle_visual_mini_golf_ball(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
-    if (vehicle->mini_golf_current_animation != 1)
+    if (vehicle->mini_golf_current_animation != MiniGolfAnimation::PlaceBallDownwards)
     {
         return;
     }
