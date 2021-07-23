@@ -18536,8 +18536,8 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9395FF, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_939691, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18545,14 +18545,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_939691, {
     {     15,   16,    0,  0,  0,  0 }, {     13,   16,    0,  0,  0,  0 }, {     11,   16,    0,  0,  0,  0 }, {      9,   16,    0,  0,  0,  0 }, {      7,   16,    0,  0,  0,  0 },
     {      5,   16,    0,  0,  0,  0 }, {      3,   16,    0,  0,  0,  0 }, {      1,   16,    0,  0,  0,  0 }, {     -1,   16,    0,  0,  0,  0 }, {     -3,   16,    0,  0,  0,  0 },
     {     -5,   16,    0,  0,  0,  0 }, {     -7,   16,    0,  0,  0,  0 }, {     -9,   16,    0,  0,  0,  0 }, {    -11,   16,    0,  0,  0,  0 }, {    -13,   16,    0,  0,  0,  0 },
-    {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
+    {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     MINI_GOLF_STATE(Unk6),              {    -17,   16,    0,  0,  0,  0 }, {    -19,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -23,   16,    0,  0,  0,  0 },
     {    -25,   16,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {    -29,   16,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93C082, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18560,14 +18560,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93C082, {
     {     16,   16,    0,  8,  0,  0 }, {     16,   18,    0,  8,  0,  0 }, {     16,   20,    0,  8,  0,  0 }, {     16,   22,    0,  8,  0,  0 }, {     16,   24,    0,  8,  0,  0 },
     {     16,   26,    0,  8,  0,  0 }, {     16,   28,    0,  8,  0,  0 }, {     16,   30,    0,  8,  0,  0 }, {     16,   32,    0,  8,  0,  0 }, {     16,   34,    0,  8,  0,  0 },
     {     16,   36,    0,  8,  0,  0 }, {     16,   38,    0,  8,  0,  0 }, {     16,   40,    0,  8,  0,  0 }, {     16,   42,    0,  8,  0,  0 }, {     16,   44,    0,  8,  0,  0 },
-    {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
+    {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     MINI_GOLF_STATE(Unk6),              {     16,   48,    0,  8,  0,  0 }, {     16,   50,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   54,    0,  8,  0,  0 },
     {     16,   56,    0,  8,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93EA73, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18575,14 +18575,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93EA73, {
     {     16,   15,    0, 16,  0,  0 }, {     18,   15,    0, 16,  0,  0 }, {     20,   15,    0, 16,  0,  0 }, {     22,   15,    0, 16,  0,  0 }, {     24,   15,    0, 16,  0,  0 },
     {     26,   15,    0, 16,  0,  0 }, {     28,   15,    0, 16,  0,  0 }, {     30,   15,    0, 16,  0,  0 }, {     32,   15,    0, 16,  0,  0 }, {     34,   15,    0, 16,  0,  0 },
     {     36,   15,    0, 16,  0,  0 }, {     38,   15,    0, 16,  0,  0 }, {     40,   15,    0, 16,  0,  0 }, {     42,   15,    0, 16,  0,  0 }, {     44,   15,    0, 16,  0,  0 },
-    {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
+    {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     MINI_GOLF_STATE(Unk6),              {     48,   15,    0, 16,  0,  0 }, {     50,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     54,   15,    0, 16,  0,  0 },
     {     56,   15,    0, 16,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     60,   15,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_941464, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18590,14 +18590,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_941464, {
     {     15,   15,    0, 24,  0,  0 }, {     15,   13,    0, 24,  0,  0 }, {     15,   11,    0, 24,  0,  0 }, {     15,    9,    0, 24,  0,  0 }, {     15,    7,    0, 24,  0,  0 },
     {     15,    5,    0, 24,  0,  0 }, {     15,    3,    0, 24,  0,  0 }, {     15,    1,    0, 24,  0,  0 }, {     15,   -1,    0, 24,  0,  0 }, {     15,   -3,    0, 24,  0,  0 },
     {     15,   -5,    0, 24,  0,  0 }, {     15,   -7,    0, 24,  0,  0 }, {     15,   -9,    0, 24,  0,  0 }, {     15,  -11,    0, 24,  0,  0 }, {     15,  -13,    0, 24,  0,  0 },
-    {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
+    {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     MINI_GOLF_STATE(Unk6),              {     15,  -17,    0, 24,  0,  0 }, {     15,  -19,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -23,    0, 24,  0,  0 },
     {     15,  -25,    0, 24,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93A46E, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18606,13 +18606,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93A46E, {
     {      5,   16,    0,  0,  0,  0 }, {      3,   16,    0,  0,  0,  0 }, {      1,   16,    0,  0,  0,  0 }, {     -1,   16,    0,  0,  0,  0 }, {     -3,   16,    0,  0,  0,  0 },
     {     -5,   16,    0,  0,  0,  0 }, {     -7,   16,    0,  0,  0,  0 }, {     -9,   16,    0,  0,  0,  0 }, {    -11,   16,    0,  0,  0,  0 }, {    -13,   16,    0,  0,  0,  0 },
     {    -15,   16,    0,  0,  0,  0 }, {    -17,   16,    0,  0,  0,  0 }, {    -19,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -23,   16,    0,  0,  0,  0 },
-    {    -25,   16,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {    -27,   16,    0,  0,  0,  0 },
+    {    -25,   16,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {    -27,   16,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {    -29,   16,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93CE5F, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18621,13 +18621,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93CE5F, {
     {     16,   26,    0,  8,  0,  0 }, {     16,   28,    0,  8,  0,  0 }, {     16,   30,    0,  8,  0,  0 }, {     16,   32,    0,  8,  0,  0 }, {     16,   34,    0,  8,  0,  0 },
     {     16,   36,    0,  8,  0,  0 }, {     16,   38,    0,  8,  0,  0 }, {     16,   40,    0,  8,  0,  0 }, {     16,   42,    0,  8,  0,  0 }, {     16,   44,    0,  8,  0,  0 },
     {     16,   46,    0,  8,  0,  0 }, {     16,   48,    0,  8,  0,  0 }, {     16,   50,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   54,    0,  8,  0,  0 },
-    {     16,   56,    0,  8,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     16,   58,    0,  8,  0,  0 },
+    {     16,   56,    0,  8,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     16,   58,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93F850, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18636,13 +18636,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93F850, {
     {     26,   15,    0, 16,  0,  0 }, {     28,   15,    0, 16,  0,  0 }, {     30,   15,    0, 16,  0,  0 }, {     32,   15,    0, 16,  0,  0 }, {     34,   15,    0, 16,  0,  0 },
     {     36,   15,    0, 16,  0,  0 }, {     38,   15,    0, 16,  0,  0 }, {     40,   15,    0, 16,  0,  0 }, {     42,   15,    0, 16,  0,  0 }, {     44,   15,    0, 16,  0,  0 },
     {     46,   15,    0, 16,  0,  0 }, {     48,   15,    0, 16,  0,  0 }, {     50,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     54,   15,    0, 16,  0,  0 },
-    {     56,   15,    0, 16,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     58,   15,    0, 16,  0,  0 },
+    {     56,   15,    0, 16,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     58,   15,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     60,   15,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_942241, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18651,13 +18651,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_942241, {
     {     15,    5,    0, 24,  0,  0 }, {     15,    3,    0, 24,  0,  0 }, {     15,    1,    0, 24,  0,  0 }, {     15,   -1,    0, 24,  0,  0 }, {     15,   -3,    0, 24,  0,  0 },
     {     15,   -5,    0, 24,  0,  0 }, {     15,   -7,    0, 24,  0,  0 }, {     15,   -9,    0, 24,  0,  0 }, {     15,  -11,    0, 24,  0,  0 }, {     15,  -13,    0, 24,  0,  0 },
     {     15,  -15,    0, 24,  0,  0 }, {     15,  -17,    0, 24,  0,  0 }, {     15,  -19,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -23,    0, 24,  0,  0 },
-    {     15,  -25,    0, 24,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     15,  -27,    0, 24,  0,  0 },
+    {     15,  -25,    0, 24,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     15,  -27,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93B2AE, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18666,13 +18666,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93B2AE, {
     {      5,   16,    5,  0,  0,  0 }, {      3,   16,    5,  0,  0,  0 }, {      1,   16,    5,  0,  0,  0 }, {     -1,   16,    5,  0,  0,  0 }, {     -3,   16,    5,  0,  0,  0 },
     {     -5,   16,    5,  0,  0,  0 }, {     -7,   16,    5,  0,  0,  0 }, {     -9,   16,    0,  0,  0,  0 }, {    -11,   16,    0,  0,  0,  0 }, {    -13,   16,    0,  0,  0,  0 },
     {    -15,   16,    0,  0,  0,  0 }, {    -17,   16,    0,  0,  0,  0 }, {    -19,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -23,   16,    0,  0,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {    -23,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
+    MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {    -23,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
     {    -23,   16,    0,  0,  0,  0 }, {    -25,   16,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {    -29,   16,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93DC9F, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18681,13 +18681,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93DC9F, {
     {     16,   26,    5,  8,  0,  0 }, {     16,   28,    5,  8,  0,  0 }, {     16,   30,    5,  8,  0,  0 }, {     16,   32,    5,  8,  0,  0 }, {     16,   34,    5,  8,  0,  0 },
     {     16,   36,    5,  8,  0,  0 }, {     16,   38,    5,  8,  0,  0 }, {     16,   40,    0,  8,  0,  0 }, {     16,   42,    0,  8,  0,  0 }, {     16,   44,    0,  8,  0,  0 },
     {     16,   46,    0,  8,  0,  0 }, {     16,   48,    0,  8,  0,  0 }, {     16,   50,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   54,    0,  8,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     16,   54,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
+    MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     16,   54,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
     {     16,   54,    0,  8,  0,  0 }, {     16,   56,    0,  8,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_940690, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18696,13 +18696,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_940690, {
     {     26,   15,    5, 16,  0,  0 }, {     28,   15,    5, 16,  0,  0 }, {     30,   15,    5, 16,  0,  0 }, {     32,   15,    5, 16,  0,  0 }, {     34,   15,    5, 16,  0,  0 },
     {     36,   15,    5, 16,  0,  0 }, {     38,   15,    5, 16,  0,  0 }, {     40,   15,    0, 16,  0,  0 }, {     42,   15,    0, 16,  0,  0 }, {     44,   15,    0, 16,  0,  0 },
     {     46,   15,    0, 16,  0,  0 }, {     48,   15,    0, 16,  0,  0 }, {     50,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     54,   15,    0, 16,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     54,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
+    MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     54,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
     {     54,   15,    0, 16,  0,  0 }, {     56,   15,    0, 16,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     60,   15,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_943081, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18711,13 +18711,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_943081, {
     {     15,    5,    5, 24,  0,  0 }, {     15,    3,    5, 24,  0,  0 }, {     15,    1,    5, 24,  0,  0 }, {     15,   -1,    5, 24,  0,  0 }, {     15,   -3,    5, 24,  0,  0 },
     {     15,   -5,    5, 24,  0,  0 }, {     15,   -7,    5, 24,  0,  0 }, {     15,   -9,    0, 24,  0,  0 }, {     15,  -11,    0, 24,  0,  0 }, {     15,  -13,    0, 24,  0,  0 },
     {     15,  -15,    0, 24,  0,  0 }, {     15,  -17,    0, 24,  0,  0 }, {     15,  -19,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -23,    0, 24,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     15,  -23,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
+    MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     15,  -23,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
     {     15,  -23,    0, 24,  0,  0 }, {     15,  -25,    0, 24,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_943E56, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18728,15 +18728,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_943E56, {
     {     -3,   28,    0,  8,  0,  0 }, {     -3,   30,    0,  8,  0,  0 }, {     -3,   32,    0,  8,  0,  0 }, {     -3,   34,    0,  8,  0,  0 }, {     -3,   36,    0,  8,  0,  0 },
     {     -3,   38,    0,  8,  0,  0 }, {     -3,   40,    0,  8,  0,  0 }, {     -3,   42,    0,  8,  0,  0 }, {     -3,   44,    0,  8,  0,  0 }, {     -3,   46,    0,  8,  0,  0 },
     {     -3,   48,    0,  8,  0,  0 }, {     -5,   48,    0,  0,  0,  0 }, {     -7,   48,    0,  0,  0,  0 }, {     -9,   48,    0,  0,  0,  0 }, {    -11,   48,    0,  0,  0,  0 },
-    {    -13,   48,    0,  0,  0,  0 }, {    -15,   48,    0,  0,  0,  0 }, {    -17,   48,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {    -13,   48,    0,  0,  0,  0 }, {    -15,   48,    0,  0,  0,  0 }, {    -17,   48,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {    -17,   49,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,   48,    0,  8,  0,  0 }, {    -17,   50,    0,  8,  0,  0 },
     {    -17,   52,    0,  8,  0,  0 }, {    -17,   54,    0,  8,  0,  0 }, {    -17,   56,    0,  8,  0,  0 }, {    -17,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {    -17,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_946B14, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18747,15 +18747,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_946B14, {
     {     28,   34,    0, 16,  0,  0 }, {     30,   34,    0, 16,  0,  0 }, {     32,   34,    0, 16,  0,  0 }, {     34,   34,    0, 16,  0,  0 }, {     36,   34,    0, 16,  0,  0 },
     {     38,   34,    0, 16,  0,  0 }, {     40,   34,    0, 16,  0,  0 }, {     42,   34,    0, 16,  0,  0 }, {     44,   34,    0, 16,  0,  0 }, {     46,   34,    0, 16,  0,  0 },
     {     48,   34,    0, 16,  0,  0 }, {     48,   36,    0,  8,  0,  0 }, {     48,   38,    0,  8,  0,  0 }, {     48,   40,    0,  8,  0,  0 }, {     48,   42,    0,  8,  0,  0 },
-    {     48,   44,    0,  8,  0,  0 }, {     48,   46,    0,  8,  0,  0 }, {     48,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     48,   44,    0,  8,  0,  0 }, {     48,   46,    0,  8,  0,  0 }, {     48,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     49,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,   48,    0, 16,  0,  0 }, {     50,   48,    0, 16,  0,  0 },
     {     52,   48,    0, 16,  0,  0 }, {     54,   48,    0, 16,  0,  0 }, {     56,   48,    0, 16,  0,  0 }, {     58,   48,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     60,   48,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9497D2, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18766,15 +18766,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9497D2, {
     {     34,    3,    0, 24,  0,  0 }, {     34,    1,    0, 24,  0,  0 }, {     34,   -1,    0, 24,  0,  0 }, {     34,   -3,    0, 24,  0,  0 }, {     34,   -5,    0, 24,  0,  0 },
     {     34,   -7,    0, 24,  0,  0 }, {     34,   -9,    0, 24,  0,  0 }, {     34,  -11,    0, 24,  0,  0 }, {     34,  -13,    0, 24,  0,  0 }, {     34,  -15,    0, 24,  0,  0 },
     {     34,  -17,    0, 24,  0,  0 }, {     36,  -17,    0, 16,  0,  0 }, {     38,  -17,    0, 16,  0,  0 }, {     40,  -17,    0, 16,  0,  0 }, {     42,  -17,    0, 16,  0,  0 },
-    {     44,  -17,    0, 16,  0,  0 }, {     46,  -17,    0, 16,  0,  0 }, {     48,  -17,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     44,  -17,    0, 16,  0,  0 }, {     46,  -17,    0, 16,  0,  0 }, {     48,  -17,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     48,  -18,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,  -17,    0, 24,  0,  0 }, {     48,  -19,    0, 24,  0,  0 },
     {     48,  -21,    0, 24,  0,  0 }, {     48,  -23,    0, 24,  0,  0 }, {     48,  -25,    0, 24,  0,  0 }, {     48,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     48,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94C490, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18785,15 +18785,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94C490, {
     {      3,   -3,    0,  0,  0,  0 }, {      1,   -3,    0,  0,  0,  0 }, {     -1,   -3,    0,  0,  0,  0 }, {     -3,   -3,    0,  0,  0,  0 }, {     -5,   -3,    0,  0,  0,  0 },
     {     -7,   -3,    0,  0,  0,  0 }, {     -9,   -3,    0,  0,  0,  0 }, {    -11,   -3,    0,  0,  0,  0 }, {    -13,   -3,    0,  0,  0,  0 }, {    -15,   -3,    0,  0,  0,  0 },
     {    -17,   -3,    0,  0,  0,  0 }, {    -17,   -5,    0, 24,  0,  0 }, {    -17,   -7,    0, 24,  0,  0 }, {    -17,   -9,    0, 24,  0,  0 }, {    -17,  -11,    0, 24,  0,  0 },
-    {    -17,  -13,    0, 24,  0,  0 }, {    -17,  -15,    0, 24,  0,  0 }, {    -17,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {    -17,  -13,    0, 24,  0,  0 }, {    -17,  -15,    0, 24,  0,  0 }, {    -17,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {    -18,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,  -17,    0,  0,  0,  0 }, {    -19,  -17,    0,  0,  0,  0 },
     {    -21,  -17,    0,  0,  0,  0 }, {    -23,  -17,    0,  0,  0,  0 }, {    -25,  -17,    0,  0,  0,  0 }, {    -27,  -17,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {    -29,  -17,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9454B5, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18804,15 +18804,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9454B5, {
     {     -3,    4,    0, 24,  0,  0 }, {     -3,    2,    0, 24,  0,  0 }, {     -3,    0,    0, 24,  0,  0 }, {     -3,   -2,    0, 24,  0,  0 }, {     -3,   -4,    0, 24,  0,  0 },
     {     -3,   -6,    0, 24,  0,  0 }, {     -3,   -8,    0, 24,  0,  0 }, {     -3,  -10,    0, 24,  0,  0 }, {     -3,  -12,    0, 24,  0,  0 }, {     -3,  -14,    0, 24,  0,  0 },
     {     -3,  -16,    0, 24,  0,  0 }, {     -5,  -16,    0,  0,  0,  0 }, {     -7,  -16,    0,  0,  0,  0 }, {     -9,  -16,    0,  0,  0,  0 }, {    -11,  -16,    0,  0,  0,  0 },
-    {    -13,  -16,    0,  0,  0,  0 }, {    -15,  -16,    0,  0,  0,  0 }, {    -17,  -16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {    -13,  -16,    0,  0,  0,  0 }, {    -15,  -16,    0,  0,  0,  0 }, {    -17,  -16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {    -17,  -17,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,  -16,    0, 24,  0,  0 }, {    -17,  -18,    0, 24,  0,  0 },
     {    -17,  -20,    0, 24,  0,  0 }, {    -17,  -22,    0, 24,  0,  0 }, {    -17,  -24,    0, 24,  0,  0 }, {    -17,  -26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {    -17,  -28,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_948173, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18823,15 +18823,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_948173, {
     {      4,   34,    0,  0,  0,  0 }, {      2,   34,    0,  0,  0,  0 }, {      0,   34,    0,  0,  0,  0 }, {     -2,   34,    0,  0,  0,  0 }, {     -4,   34,    0,  0,  0,  0 },
     {     -6,   34,    0,  0,  0,  0 }, {     -8,   34,    0,  0,  0,  0 }, {    -10,   34,    0,  0,  0,  0 }, {    -12,   34,    0,  0,  0,  0 }, {    -14,   34,    0,  0,  0,  0 },
     {    -16,   34,    0,  0,  0,  0 }, {    -16,   36,    0,  8,  0,  0 }, {    -16,   38,    0,  8,  0,  0 }, {    -16,   40,    0,  8,  0,  0 }, {    -16,   42,    0,  8,  0,  0 },
-    {    -16,   44,    0,  8,  0,  0 }, {    -16,   46,    0,  8,  0,  0 }, {    -16,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {    -16,   44,    0,  8,  0,  0 }, {    -16,   46,    0,  8,  0,  0 }, {    -16,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {    -17,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -16,   48,    0,  0,  0,  0 }, {    -18,   48,    0,  0,  0,  0 },
     {    -20,   48,    0,  0,  0,  0 }, {    -22,   48,    0,  0,  0,  0 }, {    -24,   48,    0,  0,  0,  0 }, {    -26,   48,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {    -28,   48,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94AE31, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18842,15 +18842,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94AE31, {
     {     34,   27,    0,  8,  0,  0 }, {     34,   29,    0,  8,  0,  0 }, {     34,   31,    0,  8,  0,  0 }, {     34,   33,    0,  8,  0,  0 }, {     34,   35,    0,  8,  0,  0 },
     {     34,   37,    0,  8,  0,  0 }, {     34,   39,    0,  8,  0,  0 }, {     34,   41,    0,  8,  0,  0 }, {     34,   43,    0,  8,  0,  0 }, {     34,   45,    0,  8,  0,  0 },
     {     34,   47,    0,  8,  0,  0 }, {     36,   47,    0, 16,  0,  0 }, {     38,   47,    0, 16,  0,  0 }, {     40,   47,    0, 16,  0,  0 }, {     42,   47,    0, 16,  0,  0 },
-    {     44,   47,    0, 16,  0,  0 }, {     46,   47,    0, 16,  0,  0 }, {     48,   47,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     44,   47,    0, 16,  0,  0 }, {     46,   47,    0, 16,  0,  0 }, {     48,   47,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     48,   48,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,   47,    0,  8,  0,  0 }, {     48,   49,    0,  8,  0,  0 },
     {     48,   51,    0,  8,  0,  0 }, {     48,   53,    0,  8,  0,  0 }, {     48,   55,    0,  8,  0,  0 }, {     48,   57,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     48,   59,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94DAEF, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_ANIMATION(Jump),          MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
@@ -18861,14 +18861,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94DAEF, {
     {     27,   -3,    0, 16,  0,  0 }, {     29,   -3,    0, 16,  0,  0 }, {     31,   -3,    0, 16,  0,  0 }, {     33,   -3,    0, 16,  0,  0 }, {     35,   -3,    0, 16,  0,  0 },
     {     37,   -3,    0, 16,  0,  0 }, {     39,   -3,    0, 16,  0,  0 }, {     41,   -3,    0, 16,  0,  0 }, {     43,   -3,    0, 16,  0,  0 }, {     45,   -3,    0, 16,  0,  0 },
     {     47,   -3,    0, 16,  0,  0 }, {     47,   -5,    0, 24,  0,  0 }, {     47,   -7,    0, 24,  0,  0 }, {     47,   -9,    0, 24,  0,  0 }, {     47,  -11,    0, 24,  0,  0 },
-    {     47,  -13,    0, 24,  0,  0 }, {     47,  -15,    0, 24,  0,  0 }, {     47,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     47,  -13,    0, 24,  0,  0 }, {     47,  -15,    0, 24,  0,  0 }, {     47,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     48,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     47,  -17,    0, 16,  0,  0 }, {     49,  -17,    0, 16,  0,  0 },
     {     51,  -17,    0, 16,  0,  0 }, {     53,  -17,    0, 16,  0,  0 }, {     55,  -17,    0, 16,  0,  0 }, {     57,  -17,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     59,  -17,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9398A6, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     25,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
     {     16,   16,    0,  0,  0,  0 }, {     13,   17,    0,  0,  0,  0 }, {     10,   17,    0,  0,  0,  0 }, {      8,   17,    0,  0,  0,  0 }, {      6,   17,    0,  0,  0,  0 },
     {      4,   17,    0,  0,  0,  0 }, {      2,   17,    0,  0,  0,  0 }, {      0,   18,    0,  0,  0,  0 }, {     -2,   18,    0,  0,  0,  0 }, {     -4,   18,    0,  0,  0,  0 },
@@ -18882,7 +18882,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9398A6, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93C297, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    6,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
     {     16,   15,    0,  8,  0,  0 }, {     17,   18,    0,  8,  0,  0 }, {     17,   21,    0,  8,  0,  0 }, {     17,   23,    0,  8,  0,  0 }, {     17,   25,    0,  8,  0,  0 },
     {     17,   27,    0,  8,  0,  0 }, {     17,   29,    0,  8,  0,  0 }, {     18,   31,    0,  8,  0,  0 }, {     18,   33,    0,  8,  0,  0 }, {     18,   35,    0,  8,  0,  0 },
@@ -18896,7 +18896,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93C297, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93EC88, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      6,   15,    0, 16,  0,  0 }, {      9,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
     {     15,   15,    0, 16,  0,  0 }, {     18,   14,    0, 16,  0,  0 }, {     21,   14,    0, 16,  0,  0 }, {     23,   14,    0, 16,  0,  0 }, {     25,   14,    0, 16,  0,  0 },
     {     27,   14,    0, 16,  0,  0 }, {     29,   14,    0, 16,  0,  0 }, {     31,   13,    0, 16,  0,  0 }, {     33,   13,    0, 16,  0,  0 }, {     35,   13,    0, 16,  0,  0 },
@@ -18910,7 +18910,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93EC88, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_941679, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   25,    0, 24,  0,  0 }, {     15,   22,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
     {     15,   16,    0, 24,  0,  0 }, {     14,   13,    0, 24,  0,  0 }, {     14,   10,    0, 24,  0,  0 }, {     14,    8,    0, 24,  0,  0 }, {     14,    6,    0, 24,  0,  0 },
     {     14,    4,    0, 24,  0,  0 }, {     14,    2,    0, 24,  0,  0 }, {     13,    0,    0, 24,  0,  0 }, {     13,   -2,    0, 24,  0,  0 }, {     13,   -4,    0, 24,  0,  0 },
@@ -18924,7 +18924,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_941679, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93A68C, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     25,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 }, {     19,   15,    0,  0,  0,  0 },
     {     16,   15,    0,  0,  0,  0 }, {     13,   14,    0,  0,  0,  0 }, {     10,   14,    0,  0,  0,  0 }, {      7,   13,    0,  0,  0,  0 }, {      4,   13,    0,  0,  0,  0 },
     {      1,   12,    0,  0,  0,  0 }, {     -2,   12,    0,  0,  0,  0 }, {     -2,   15,    0,  0,  0,  0 }, {     -2,   18,    0,  0,  0,  0 }, {     -2,   21,    0,  0,  0,  0 },
@@ -18939,7 +18939,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93A68C, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93D07D, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    6,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 }, {     15,   12,    0,  8,  0,  0 },
     {     15,   15,    0,  8,  0,  0 }, {     14,   18,    0,  8,  0,  0 }, {     14,   21,    0,  8,  0,  0 }, {     13,   24,    0,  8,  0,  0 }, {     13,   27,    0,  8,  0,  0 },
     {     12,   30,    0,  8,  0,  0 }, {     12,   33,    0,  8,  0,  0 }, {     15,   33,    0,  8,  0,  0 }, {     18,   33,    0,  8,  0,  0 }, {     21,   33,    0,  8,  0,  0 },
@@ -18954,7 +18954,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93D07D, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93FA6E, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      6,   15,    0, 16,  0,  0 }, {      9,   15,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 },
     {     15,   16,    0, 16,  0,  0 }, {     18,   17,    0, 16,  0,  0 }, {     21,   17,    0, 16,  0,  0 }, {     24,   18,    0, 16,  0,  0 }, {     27,   18,    0, 16,  0,  0 },
     {     30,   19,    0, 16,  0,  0 }, {     33,   19,    0, 16,  0,  0 }, {     33,   16,    0, 16,  0,  0 }, {     33,   13,    0, 16,  0,  0 }, {     33,   10,    0, 16,  0,  0 },
@@ -18969,7 +18969,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93FA6E, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94245F, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   25,    0, 24,  0,  0 }, {     15,   22,    0, 24,  0,  0 }, {     16,   19,    0, 24,  0,  0 },
     {     16,   16,    0, 24,  0,  0 }, {     17,   13,    0, 24,  0,  0 }, {     17,   10,    0, 24,  0,  0 }, {     18,    7,    0, 24,  0,  0 }, {     18,    4,    0, 24,  0,  0 },
     {     19,    1,    0, 24,  0,  0 }, {     19,   -2,    0, 24,  0,  0 }, {     16,   -2,    0, 24,  0,  0 }, {     13,   -2,    0, 24,  0,  0 }, {     10,   -2,    0, 24,  0,  0 },
@@ -18984,11 +18984,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94245F, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93B4CC, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     24,   16,    0,  0,  0,  0 }, {     21,   17,    0,  0,  0,  0 }, {     18,   18,    0,  0,  0,  0 },
     {     15,   19,    0,  0,  0,  0 }, {     12,   19,    0,  0,  0,  0 }, {     10,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {      7,   20,    0,  0,  0,  0 },
     {      5,   19,    0,  0,  0,  0 }, {      3,   16,    0,  0,  0,  0 }, {      1,   16,    0,  0,  0,  0 }, {     -1,   17,    0,  0,  0,  0 }, {     -3,   16,    0,  0,  0,  0 },
-    {     -5,   16,    0,  0,  0,  0 }, {     -7,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     -8,   16,    0,  0,  0,  0 }, {    -10,   16,    0,  0,  0,  0 },
+    {     -5,   16,    0,  0,  0,  0 }, {     -7,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     -8,   16,    0,  0,  0,  0 }, {    -10,   16,    0,  0,  0,  0 },
     {    -12,   16,    0,  0,  0,  0 }, {    -14,   16,    0,  0,  0,  0 }, {    -15,   16,    0,  0,  0,  0 }, {    -16,   16,    0,  0,  0,  0 }, {    -17,   16,    0,  0,  0,  0 },
     {    -18,   16,    0,  0,  0,  0 }, {    -19,   16,    0,  0,  0,  0 }, {    -20,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -22,   16,    0,  0,  0,  0 },
     {    -23,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk2),              {    -29,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk6),
@@ -18996,11 +18996,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93B4CC, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93DEBD, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    7,    0,  8,  0,  0 }, {     17,   10,    0,  8,  0,  0 }, {     18,   13,    0,  8,  0,  0 },
     {     19,   16,    0,  8,  0,  0 }, {     19,   19,    0,  8,  0,  0 }, {     20,   21,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     20,   24,    0,  8,  0,  0 },
     {     19,   26,    0,  8,  0,  0 }, {     16,   28,    0,  8,  0,  0 }, {     16,   30,    0,  8,  0,  0 }, {     17,   32,    0,  8,  0,  0 }, {     16,   34,    0,  8,  0,  0 },
-    {     16,   36,    0,  8,  0,  0 }, {     16,   38,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     16,   39,    0,  8,  0,  0 }, {     16,   41,    0,  8,  0,  0 },
+    {     16,   36,    0,  8,  0,  0 }, {     16,   38,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     16,   39,    0,  8,  0,  0 }, {     16,   41,    0,  8,  0,  0 },
     {     16,   43,    0,  8,  0,  0 }, {     16,   45,    0,  8,  0,  0 }, {     16,   46,    0,  8,  0,  0 }, {     16,   47,    0,  8,  0,  0 }, {     16,   48,    0,  8,  0,  0 },
     {     16,   49,    0,  8,  0,  0 }, {     16,   50,    0,  8,  0,  0 }, {     16,   51,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   53,    0,  8,  0,  0 },
     {     16,   54,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk2),              {     16,   60,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk6),
@@ -19008,11 +19008,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93DEBD, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9408AE, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      7,   15,    0, 16,  0,  0 }, {     10,   14,    0, 16,  0,  0 }, {     13,   13,    0, 16,  0,  0 },
     {     16,   12,    0, 16,  0,  0 }, {     19,   12,    0, 16,  0,  0 }, {     21,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     24,   11,    0, 16,  0,  0 },
     {     26,   12,    0, 16,  0,  0 }, {     28,   15,    0, 16,  0,  0 }, {     30,   15,    0, 16,  0,  0 }, {     32,   14,    0, 16,  0,  0 }, {     34,   15,    0, 16,  0,  0 },
-    {     36,   15,    0, 16,  0,  0 }, {     38,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     39,   15,    0, 16,  0,  0 }, {     41,   15,    0, 16,  0,  0 },
+    {     36,   15,    0, 16,  0,  0 }, {     38,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     39,   15,    0, 16,  0,  0 }, {     41,   15,    0, 16,  0,  0 },
     {     43,   15,    0, 16,  0,  0 }, {     45,   15,    0, 16,  0,  0 }, {     46,   15,    0, 16,  0,  0 }, {     47,   15,    0, 16,  0,  0 }, {     48,   15,    0, 16,  0,  0 },
     {     49,   15,    0, 16,  0,  0 }, {     50,   15,    0, 16,  0,  0 }, {     51,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     53,   15,    0, 16,  0,  0 },
     {     54,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk2),              {     60,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk6),
@@ -19020,11 +19020,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9408AE, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94329F, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   24,    0, 24,  0,  0 }, {     14,   21,    0, 24,  0,  0 }, {     13,   18,    0, 24,  0,  0 },
     {     12,   15,    0, 24,  0,  0 }, {     12,   12,    0, 24,  0,  0 }, {     11,   10,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     11,    7,    0, 24,  0,  0 },
     {     12,    5,    0, 24,  0,  0 }, {     15,    3,    0, 24,  0,  0 }, {     15,    1,    0, 24,  0,  0 }, {     14,   -1,    0, 24,  0,  0 }, {     15,   -3,    0, 24,  0,  0 },
-    {     15,   -5,    0, 24,  0,  0 }, {     15,   -7,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     15,   -8,    0, 24,  0,  0 }, {     15,  -10,    0, 24,  0,  0 },
+    {     15,   -5,    0, 24,  0,  0 }, {     15,   -7,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     15,   -8,    0, 24,  0,  0 }, {     15,  -10,    0, 24,  0,  0 },
     {     15,  -12,    0, 24,  0,  0 }, {     15,  -14,    0, 24,  0,  0 }, {     15,  -15,    0, 24,  0,  0 }, {     15,  -16,    0, 24,  0,  0 }, {     15,  -17,    0, 24,  0,  0 },
     {     15,  -18,    0, 24,  0,  0 }, {     15,  -19,    0, 24,  0,  0 }, {     15,  -20,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -22,    0, 24,  0,  0 },
     {     15,  -23,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk2),              {     15,  -29,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk6),
@@ -19032,11 +19032,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94329F, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_944104, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     24,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 },
     {     15,   16,    0,  0,  0,  0 }, {     12,   16,    0,  0,  0,  0 }, {      9,   16,    0,  0,  0,  0 }, {      6,   16,    0,  0,  0,  0 }, {      3,   16,    0,  0,  0,  0 },
     {      0,   16,    0,  0,  0,  0 }, {     -3,   16,    0,  0,  0,  0 }, {     -6,   16,    0,  0,  0,  0 }, {     -9,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -12,   16,    0,  0,  0,  0 }, {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {    -18,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 },
+    {    -12,   16,    0,  0,  0,  0 }, {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {    -18,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 },
     {    -24,   16,    0,  0,  0,  0 }, {    -25,   15,    0,  0,  0,  0 }, {    -26,   13,    0,  0,  0,  0 }, {    -27,   11,    0,  0,  0,  0 }, {    -28,    9,    0,  0,  0,  0 },
     {    -26,    7,    0,  0,  0,  0 }, {    -24,    5,    1,  0,  0,  0 }, {    -22,    3,    1,  0,  0,  0 }, {    -20,    2,    1,  0,  0,  0 }, {    -18,    2,    1,  0,  0,  0 },
     {    -16,    3,    2,  0,  0,  0 }, {    -14,    3,    2,  0,  0,  0 }, {    -14,    5,    2,  0,  0,  0 }, {    -13,    7,    2,  0,  0,  0 }, {    -12,    9,    3,  0,  0,  0 },
@@ -19050,11 +19050,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_944104, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_946DC2, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    7,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   13,    0,  8,  0,  0 },
     {     16,   16,    0,  8,  0,  0 }, {     16,   19,    0,  8,  0,  0 }, {     16,   22,    0,  8,  0,  0 }, {     16,   25,    0,  8,  0,  0 }, {     16,   28,    0,  8,  0,  0 },
     {     16,   31,    0,  8,  0,  0 }, {     16,   34,    0,  8,  0,  0 }, {     16,   37,    0,  8,  0,  0 }, {     16,   40,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     16,   43,    0,  8,  0,  0 }, {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     16,   49,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 },
+    {     16,   43,    0,  8,  0,  0 }, {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     16,   49,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 },
     {     16,   55,    0,  8,  0,  0 }, {     15,   56,    0,  8,  0,  0 }, {     13,   57,    0,  8,  0,  0 }, {     11,   58,    0,  8,  0,  0 }, {      9,   59,    0,  8,  0,  0 },
     {      7,   57,    0,  8,  0,  0 }, {      5,   55,    1,  8,  0,  0 }, {      3,   53,    1,  8,  0,  0 }, {      2,   51,    1,  8,  0,  0 }, {      2,   49,    1,  8,  0,  0 },
     {      3,   47,    2,  8,  0,  0 }, {      3,   45,    2,  8,  0,  0 }, {      5,   45,    2,  8,  0,  0 }, {      7,   44,    2,  8,  0,  0 }, {      9,   43,    3,  8,  0,  0 },
@@ -19068,11 +19068,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_946DC2, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_949A80, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      7,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     13,   15,    0, 16,  0,  0 },
     {     16,   15,    0, 16,  0,  0 }, {     19,   15,    0, 16,  0,  0 }, {     22,   15,    0, 16,  0,  0 }, {     25,   15,    0, 16,  0,  0 }, {     28,   15,    0, 16,  0,  0 },
     {     31,   15,    0, 16,  0,  0 }, {     34,   15,    0, 16,  0,  0 }, {     37,   15,    0, 16,  0,  0 }, {     40,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     43,   15,    0, 16,  0,  0 }, {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     49,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 },
+    {     43,   15,    0, 16,  0,  0 }, {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     49,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 },
     {     55,   15,    0, 16,  0,  0 }, {     56,   16,    0, 16,  0,  0 }, {     57,   18,    0, 16,  0,  0 }, {     58,   20,    0, 16,  0,  0 }, {     59,   22,    0, 16,  0,  0 },
     {     57,   24,    0, 16,  0,  0 }, {     55,   26,    1, 16,  0,  0 }, {     53,   28,    1, 16,  0,  0 }, {     51,   29,    1, 16,  0,  0 }, {     49,   29,    1, 16,  0,  0 },
     {     47,   28,    2, 16,  0,  0 }, {     45,   28,    2, 16,  0,  0 }, {     45,   26,    2, 16,  0,  0 }, {     44,   24,    2, 16,  0,  0 }, {     43,   22,    3, 16,  0,  0 },
@@ -19086,11 +19086,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_949A80, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94C73E, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   24,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   18,    0, 24,  0,  0 },
     {     15,   15,    0, 24,  0,  0 }, {     15,   12,    0, 24,  0,  0 }, {     15,    9,    0, 24,  0,  0 }, {     15,    6,    0, 24,  0,  0 }, {     15,    3,    0, 24,  0,  0 },
     {     15,    0,    0, 24,  0,  0 }, {     15,   -3,    0, 24,  0,  0 }, {     15,   -6,    0, 24,  0,  0 }, {     15,   -9,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     15,  -12,    0, 24,  0,  0 }, {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     15,  -18,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 },
+    {     15,  -12,    0, 24,  0,  0 }, {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     15,  -18,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 },
     {     15,  -24,    0, 24,  0,  0 }, {     16,  -25,    0, 24,  0,  0 }, {     18,  -26,    0, 24,  0,  0 }, {     20,  -27,    0, 24,  0,  0 }, {     22,  -28,    0, 24,  0,  0 },
     {     24,  -26,    0, 24,  0,  0 }, {     26,  -24,    1, 24,  0,  0 }, {     28,  -22,    1, 24,  0,  0 }, {     29,  -20,    1, 24,  0,  0 }, {     29,  -18,    1, 24,  0,  0 },
     {     28,  -16,    2, 24,  0,  0 }, {     28,  -14,    2, 24,  0,  0 }, {     26,  -14,    2, 24,  0,  0 }, {     24,  -13,    2, 24,  0,  0 }, {     22,  -12,    3, 24,  0,  0 },
@@ -19104,11 +19104,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94C73E, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_945763, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     24,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 },
     {     15,   16,    0,  0,  0,  0 }, {     12,   16,    0,  0,  0,  0 }, {      9,   16,    0,  0,  0,  0 }, {      6,   16,    0,  0,  0,  0 }, {      3,   16,    0,  0,  0,  0 },
     {      0,   16,    0,  0,  0,  0 }, {     -3,   16,    0,  0,  0,  0 }, {     -6,   16,    0,  0,  0,  0 }, {     -9,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -12,   16,    0,  0,  0,  0 }, {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {    -18,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 },
+    {    -12,   16,    0,  0,  0,  0 }, {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {    -18,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 },
     {    -24,   16,    0,  0,  0,  0 }, {    -25,   17,    0,  0,  0,  0 }, {    -26,   19,    0,  0,  0,  0 }, {    -27,   21,    0,  0,  0,  0 }, {    -28,   23,    0,  0,  0,  0 },
     {    -26,   25,    0,  0,  0,  0 }, {    -24,   27,    1,  0,  0,  0 }, {    -22,   29,    1,  0,  0,  0 }, {    -20,   30,    1,  0,  0,  0 }, {    -18,   30,    1,  0,  0,  0 },
     {    -16,   29,    2,  0,  0,  0 }, {    -14,   29,    2,  0,  0,  0 }, {    -14,   27,    2,  0,  0,  0 }, {    -13,   25,    2,  0,  0,  0 }, {    -12,   23,    3,  0,  0,  0 },
@@ -19122,11 +19122,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_945763, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_948421, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    7,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   13,    0,  8,  0,  0 },
     {     16,   16,    0,  8,  0,  0 }, {     16,   19,    0,  8,  0,  0 }, {     16,   22,    0,  8,  0,  0 }, {     16,   25,    0,  8,  0,  0 }, {     16,   28,    0,  8,  0,  0 },
     {     16,   31,    0,  8,  0,  0 }, {     16,   34,    0,  8,  0,  0 }, {     16,   37,    0,  8,  0,  0 }, {     16,   40,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     16,   43,    0,  8,  0,  0 }, {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     16,   49,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 },
+    {     16,   43,    0,  8,  0,  0 }, {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     16,   49,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 },
     {     16,   55,    0,  8,  0,  0 }, {     17,   56,    0,  8,  0,  0 }, {     19,   57,    0,  8,  0,  0 }, {     21,   58,    0,  8,  0,  0 }, {     23,   59,    0,  8,  0,  0 },
     {     25,   57,    0,  8,  0,  0 }, {     27,   55,    1,  8,  0,  0 }, {     29,   53,    1,  8,  0,  0 }, {     30,   51,    1,  8,  0,  0 }, {     30,   49,    1,  8,  0,  0 },
     {     29,   47,    2,  8,  0,  0 }, {     29,   45,    2,  8,  0,  0 }, {     27,   45,    2,  8,  0,  0 }, {     25,   44,    2,  8,  0,  0 }, {     23,   43,    3,  8,  0,  0 },
@@ -19140,11 +19140,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_948421, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94B0DF, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      7,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     13,   15,    0, 16,  0,  0 },
     {     16,   15,    0, 16,  0,  0 }, {     19,   15,    0, 16,  0,  0 }, {     22,   15,    0, 16,  0,  0 }, {     25,   15,    0, 16,  0,  0 }, {     28,   15,    0, 16,  0,  0 },
     {     31,   15,    0, 16,  0,  0 }, {     34,   15,    0, 16,  0,  0 }, {     37,   15,    0, 16,  0,  0 }, {     40,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     43,   15,    0, 16,  0,  0 }, {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     49,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 },
+    {     43,   15,    0, 16,  0,  0 }, {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     49,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 },
     {     55,   15,    0, 16,  0,  0 }, {     56,   14,    0, 16,  0,  0 }, {     57,   12,    0, 16,  0,  0 }, {     58,   10,    0, 16,  0,  0 }, {     59,    8,    0, 16,  0,  0 },
     {     57,    6,    0, 16,  0,  0 }, {     55,    4,    1, 16,  0,  0 }, {     53,    2,    1, 16,  0,  0 }, {     51,    1,    1, 16,  0,  0 }, {     49,    1,    1, 16,  0,  0 },
     {     47,    2,    2, 16,  0,  0 }, {     45,    2,    2, 16,  0,  0 }, {     45,    4,    2, 16,  0,  0 }, {     44,    6,    2, 16,  0,  0 }, {     43,    8,    3, 16,  0,  0 },
@@ -19158,11 +19158,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94B0DF, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94DD9D, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   24,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   18,    0, 24,  0,  0 },
     {     15,   15,    0, 24,  0,  0 }, {     15,   12,    0, 24,  0,  0 }, {     15,    9,    0, 24,  0,  0 }, {     15,    6,    0, 24,  0,  0 }, {     15,    3,    0, 24,  0,  0 },
     {     15,    0,    0, 24,  0,  0 }, {     15,   -3,    0, 24,  0,  0 }, {     15,   -6,    0, 24,  0,  0 }, {     15,   -9,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     15,  -12,    0, 24,  0,  0 }, {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     15,  -18,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 },
+    {     15,  -12,    0, 24,  0,  0 }, {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     15,  -18,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 },
     {     15,  -24,    0, 24,  0,  0 }, {     14,  -25,    0, 24,  0,  0 }, {     12,  -26,    0, 24,  0,  0 }, {     10,  -27,    0, 24,  0,  0 }, {      8,  -28,    0, 24,  0,  0 },
     {      6,  -26,    0, 24,  0,  0 }, {      4,  -24,    1, 24,  0,  0 }, {      2,  -22,    1, 24,  0,  0 }, {      1,  -20,    1, 24,  0,  0 }, {      1,  -18,    1, 24,  0,  0 },
     {      2,  -16,    2, 24,  0,  0 }, {      2,  -14,    2, 24,  0,  0 }, {      4,  -14,    2, 24,  0,  0 }, {      6,  -13,    2, 24,  0,  0 }, {      8,  -12,    3, 24,  0,  0 },
@@ -19176,8 +19176,8 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94DD9D, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_939A85, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -19186,15 +19186,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_939A85, {
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      3,   16,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {      3,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      3,   16,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {      1,   16,    0,  0,  0,  0 },
     {     -1,   16,    0,  0,  0,  0 }, {     -3,   16,    0,  0,  0,  0 }, {     -5,   16,    0,  0,  0,  0 }, {     -7,   16,    0,  0,  0,  0 }, {     -9,   16,    0,  0,  0,  0 },
-    {    -11,   16,    0,  0,  0,  0 }, {    -13,   16,    0,  0,  0,  0 }, {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {    -11,   16,    0,  0,  0,  0 }, {    -13,   16,    0,  0,  0,  0 }, {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {    -15,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,   16,    0,  0,  0,  0 }, {    -19,   16,    0,  0,  0,  0 },
     {    -21,   16,    0,  0,  0,  0 }, {    -23,   16,    0,  0,  0,  0 }, {    -25,   16,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {    -29,   16,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93C476, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -19203,15 +19203,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93C476, {
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,   28,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {     16,   28,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,   28,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     16,   30,    0,  8,  0,  0 },
     {     16,   32,    0,  8,  0,  0 }, {     16,   34,    0,  8,  0,  0 }, {     16,   36,    0,  8,  0,  0 }, {     16,   38,    0,  8,  0,  0 }, {     16,   40,    0,  8,  0,  0 },
-    {     16,   42,    0,  8,  0,  0 }, {     16,   44,    0,  8,  0,  0 }, {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     16,   42,    0,  8,  0,  0 }, {     16,   44,    0,  8,  0,  0 }, {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     16,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     16,   48,    0,  8,  0,  0 }, {     16,   50,    0,  8,  0,  0 },
     {     16,   52,    0,  8,  0,  0 }, {     16,   54,    0,  8,  0,  0 }, {     16,   56,    0,  8,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     16,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93EE67, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -19220,15 +19220,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93EE67, {
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     28,   15,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {     28,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     28,   15,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     30,   15,    0, 16,  0,  0 },
     {     32,   15,    0, 16,  0,  0 }, {     34,   15,    0, 16,  0,  0 }, {     36,   15,    0, 16,  0,  0 }, {     38,   15,    0, 16,  0,  0 }, {     40,   15,    0, 16,  0,  0 },
-    {     42,   15,    0, 16,  0,  0 }, {     44,   15,    0, 16,  0,  0 }, {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     42,   15,    0, 16,  0,  0 }, {     44,   15,    0, 16,  0,  0 }, {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     46,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,   15,    0, 16,  0,  0 }, {     50,   15,    0, 16,  0,  0 },
     {     52,   15,    0, 16,  0,  0 }, {     54,   15,    0, 16,  0,  0 }, {     56,   15,    0, 16,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     60,   15,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_941858, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -19237,15 +19237,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_941858, {
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,    3,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {     15,    3,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,    3,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     15,    1,    0, 24,  0,  0 },
     {     15,   -1,    0, 24,  0,  0 }, {     15,   -3,    0, 24,  0,  0 }, {     15,   -5,    0, 24,  0,  0 }, {     15,   -7,    0, 24,  0,  0 }, {     15,   -9,    0, 24,  0,  0 },
-    {     15,  -11,    0, 24,  0,  0 }, {     15,  -13,    0, 24,  0,  0 }, {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     15,  -11,    0, 24,  0,  0 }, {     15,  -13,    0, 24,  0,  0 }, {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     15,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     15,  -17,    0, 24,  0,  0 }, {     15,  -19,    0, 24,  0,  0 },
     {     15,  -21,    0, 24,  0,  0 }, {     15,  -23,    0, 24,  0,  0 }, {     15,  -25,    0, 24,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     15,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93A898, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -19258,14 +19258,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93A898, {
     MINI_GOLF_STATE(Unk5),              {     -4,   22,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     -4,   22,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     {     -5,   20,    0, 24,  0,  0 }, {     -5,   18,    0, 24,  0,  0 }, {     -5,   16,    0, 24,  0,  0 }, {     -7,   16,    0,  0,  0,  0 }, {     -9,   16,    0,  0,  0,  0 },
     {    -11,   16,    0,  0,  0,  0 }, {    -13,   16,    0,  0,  0,  0 }, {    -15,   16,    0,  0,  0,  0 }, {    -17,   16,    0,  0,  0,  0 }, {    -19,   16,    0,  0,  0,  0 },
-    {    -21,   16,    0,  0,  0,  0 }, {    -23,   16,    0,  0,  0,  0 }, {    -25,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {    -21,   16,    0,  0,  0,  0 }, {    -23,   16,    0,  0,  0,  0 }, {    -25,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {    -29,   16,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93D289, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -19278,14 +19278,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93D289, {
     MINI_GOLF_STATE(Unk5),              {     22,   35,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     22,   35,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     {     20,   36,    0,  0,  0,  0 }, {     18,   36,    0,  0,  0,  0 }, {     16,   36,    0,  0,  0,  0 }, {     16,   38,    0,  8,  0,  0 }, {     16,   40,    0,  8,  0,  0 },
     {     16,   42,    0,  8,  0,  0 }, {     16,   44,    0,  8,  0,  0 }, {     16,   46,    0,  8,  0,  0 }, {     16,   48,    0,  8,  0,  0 }, {     16,   50,    0,  8,  0,  0 },
-    {     16,   52,    0,  8,  0,  0 }, {     16,   54,    0,  8,  0,  0 }, {     16,   56,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     16,   52,    0,  8,  0,  0 }, {     16,   54,    0,  8,  0,  0 }, {     16,   56,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     16,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93FC7A, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -19298,14 +19298,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93FC7A, {
     MINI_GOLF_STATE(Unk5),              {     35,    9,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     35,    9,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     {     36,   11,    0,  8,  0,  0 }, {     36,   13,    0,  8,  0,  0 }, {     36,   15,    0,  8,  0,  0 }, {     38,   15,    0, 16,  0,  0 }, {     40,   15,    0, 16,  0,  0 },
     {     42,   15,    0, 16,  0,  0 }, {     44,   15,    0, 16,  0,  0 }, {     46,   15,    0, 16,  0,  0 }, {     48,   15,    0, 16,  0,  0 }, {     50,   15,    0, 16,  0,  0 },
-    {     52,   15,    0, 16,  0,  0 }, {     54,   15,    0, 16,  0,  0 }, {     56,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     52,   15,    0, 16,  0,  0 }, {     54,   15,    0, 16,  0,  0 }, {     56,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     60,   15,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94266B, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -19318,14 +19318,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94266B, {
     MINI_GOLF_STATE(Unk5),              {      9,   -4,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      9,   -4,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     {     11,   -5,    0, 16,  0,  0 }, {     13,   -5,    0, 16,  0,  0 }, {     15,   -5,    0, 16,  0,  0 }, {     15,   -7,    0, 24,  0,  0 }, {     15,   -9,    0, 24,  0,  0 },
     {     15,  -11,    0, 24,  0,  0 }, {     15,  -13,    0, 24,  0,  0 }, {     15,  -15,    0, 24,  0,  0 }, {     15,  -17,    0, 24,  0,  0 }, {     15,  -19,    0, 24,  0,  0 },
-    {     15,  -21,    0, 24,  0,  0 }, {     15,  -23,    0, 24,  0,  0 }, {     15,  -25,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     15,  -21,    0, 24,  0,  0 }, {     15,  -23,    0, 24,  0,  0 }, {     15,  -25,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),
     {     15,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93B648, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -19336,14 +19336,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93B648, {
     {    -23,   16,    0,  0,  0,  0 }, {    -23,   14,    0, 24,  0,  0 }, {    -23,   12,    0, 24,  0,  0 }, {    -23,   10,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -23,   10,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {    -23,   10,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -23,   10,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {    -23,   10,    0,  8,  0,  0 },
-    {    -23,   12,    0,  8,  0,  0 }, {    -23,   14,    0,  8,  0,  0 }, {    -23,   16,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {    -23,   12,    0,  8,  0,  0 }, {    -23,   14,    0,  8,  0,  0 }, {    -23,   16,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {    -23,   16,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -23,   16,    0,  0,  0,  0 }, {    -25,   16,    0,  0,  0,  0 },
     {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {    -29,   16,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93E039, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -19354,14 +19354,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93E039, {
     {     16,   54,    0,  8,  0,  0 }, {     14,   54,    0,  0,  0,  0 }, {     12,   54,    0,  0,  0,  0 }, {     10,   54,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     10,   54,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {     10,   54,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     10,   54,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     10,   54,    0, 16,  0,  0 },
-    {     12,   54,    0, 16,  0,  0 }, {     14,   54,    0, 16,  0,  0 }, {     16,   54,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     12,   54,    0, 16,  0,  0 }, {     14,   54,    0, 16,  0,  0 }, {     16,   54,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     16,   54,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     16,   54,    0,  8,  0,  0 }, {     16,   56,    0,  8,  0,  0 },
     {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_940A2A, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -19372,14 +19372,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_940A2A, {
     {     54,   15,    0, 16,  0,  0 }, {     54,   17,    0,  8,  0,  0 }, {     54,   19,    0,  8,  0,  0 }, {     54,   21,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     54,   21,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {     54,   21,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     54,   21,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     54,   21,    0, 24,  0,  0 },
-    {     54,   19,    0, 24,  0,  0 }, {     54,   17,    0, 24,  0,  0 }, {     54,   15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     54,   19,    0, 24,  0,  0 }, {     54,   17,    0, 24,  0,  0 }, {     54,   15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     54,   15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     54,   15,    0, 16,  0,  0 }, {     56,   15,    0, 16,  0,  0 },
     {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     60,   15,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94341B, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -19390,14 +19390,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94341B, {
     {     15,  -23,    0, 24,  0,  0 }, {     17,  -23,    0, 16,  0,  0 }, {     19,  -23,    0, 16,  0,  0 }, {     21,  -23,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     21,  -23,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {     21,  -23,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     21,  -23,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     21,  -23,    0,  0,  0,  0 },
-    {     19,  -23,    0,  0,  0,  0 }, {     17,  -23,    0,  0,  0,  0 }, {     15,  -23,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     19,  -23,    0,  0,  0,  0 }, {     17,  -23,    0,  0,  0,  0 }, {     15,  -23,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     15,  -23,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     15,  -23,    0, 24,  0,  0 }, {     15,  -25,    0, 24,  0,  0 },
     {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9443A0, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -19411,15 +19411,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9443A0, {
     {     -7,   42,    0,  0,  0,  0 }, {     -9,   42,    0,  0,  0,  0 }, {    -11,   42,    0,  0,  0,  0 }, {    -13,   42,    0,  0,  0,  0 }, {    -15,   42,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -16,   41,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {    -16,   41,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -16,   41,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -17,   43,    0,  8,  0,  0 }, {    -17,   45,    0,  8,  0,  0 }, {    -17,   47,    0,  8,  0,  0 }, {    -17,   49,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {    -17,   43,    0,  8,  0,  0 }, {    -17,   45,    0,  8,  0,  0 }, {    -17,   47,    0,  8,  0,  0 }, {    -17,   49,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {    -17,   49,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,   48,    0,  8,  0,  0 },
     {    -17,   50,    0,  8,  0,  0 }, {    -17,   52,    0,  8,  0,  0 }, {    -17,   54,    0,  8,  0,  0 }, {    -17,   56,    0,  8,  0,  0 }, {    -17,   58,    0,  8,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {    -17,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94705E, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -19433,15 +19433,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94705E, {
     {     42,   38,    0,  8,  0,  0 }, {     42,   40,    0,  8,  0,  0 }, {     42,   42,    0,  8,  0,  0 }, {     42,   44,    0,  8,  0,  0 }, {     42,   46,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     41,   47,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     41,   47,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     41,   47,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     43,   48,    0, 16,  0,  0 }, {     45,   48,    0, 16,  0,  0 }, {     47,   48,    0, 16,  0,  0 }, {     49,   48,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {     43,   48,    0, 16,  0,  0 }, {     45,   48,    0, 16,  0,  0 }, {     47,   48,    0, 16,  0,  0 }, {     49,   48,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {     49,   48,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,   48,    0, 16,  0,  0 },
     {     50,   48,    0, 16,  0,  0 }, {     52,   48,    0, 16,  0,  0 }, {     54,   48,    0, 16,  0,  0 }, {     56,   48,    0, 16,  0,  0 }, {     58,   48,    0, 16,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {     60,   48,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_949D1C, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -19455,15 +19455,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_949D1C, {
     {     38,  -11,    0, 16,  0,  0 }, {     40,  -11,    0, 16,  0,  0 }, {     42,  -11,    0, 16,  0,  0 }, {     44,  -11,    0, 16,  0,  0 }, {     46,  -11,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     47,  -10,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     47,  -10,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     47,  -10,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     48,  -12,    0, 24,  0,  0 }, {     48,  -14,    0, 24,  0,  0 }, {     48,  -16,    0, 24,  0,  0 }, {     48,  -18,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {     48,  -12,    0, 24,  0,  0 }, {     48,  -14,    0, 24,  0,  0 }, {     48,  -16,    0, 24,  0,  0 }, {     48,  -18,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {     48,  -18,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,  -17,    0, 24,  0,  0 },
     {     48,  -19,    0, 24,  0,  0 }, {     48,  -21,    0, 24,  0,  0 }, {     48,  -23,    0, 24,  0,  0 }, {     48,  -25,    0, 24,  0,  0 }, {     48,  -27,    0, 24,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {     48,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94C9DA, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -19477,15 +19477,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94C9DA, {
     {    -11,   -7,    0, 24,  0,  0 }, {    -11,   -9,    0, 24,  0,  0 }, {    -11,  -11,    0, 24,  0,  0 }, {    -11,  -13,    0, 24,  0,  0 }, {    -11,  -15,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -10,  -16,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {    -10,  -16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -10,  -16,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -12,  -17,    0,  0,  0,  0 }, {    -14,  -17,    0,  0,  0,  0 }, {    -16,  -17,    0,  0,  0,  0 }, {    -18,  -17,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {    -12,  -17,    0,  0,  0,  0 }, {    -14,  -17,    0,  0,  0,  0 }, {    -16,  -17,    0,  0,  0,  0 }, {    -18,  -17,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {    -18,  -17,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,  -17,    0,  0,  0,  0 },
     {    -19,  -17,    0,  0,  0,  0 }, {    -21,  -17,    0,  0,  0,  0 }, {    -23,  -17,    0,  0,  0,  0 }, {    -25,  -17,    0,  0,  0,  0 }, {    -27,  -17,    0,  0,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {    -29,  -17,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9459FF, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -19499,15 +19499,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9459FF, {
     {     -7,  -10,    0,  0,  0,  0 }, {     -9,  -10,    0,  0,  0,  0 }, {    -11,  -10,    0,  0,  0,  0 }, {    -13,  -10,    0,  0,  0,  0 }, {    -15,  -10,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -16,   -9,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {    -16,   -9,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -16,   -9,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -17,  -11,    0, 24,  0,  0 }, {    -17,  -13,    0, 24,  0,  0 }, {    -17,  -15,    0, 24,  0,  0 }, {    -17,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {    -17,  -11,    0, 24,  0,  0 }, {    -17,  -13,    0, 24,  0,  0 }, {    -17,  -15,    0, 24,  0,  0 }, {    -17,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {    -17,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,  -16,    0, 24,  0,  0 },
     {    -17,  -18,    0, 24,  0,  0 }, {    -17,  -20,    0, 24,  0,  0 }, {    -17,  -22,    0, 24,  0,  0 }, {    -17,  -24,    0, 24,  0,  0 }, {    -17,  -26,    0, 24,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {    -17,  -28,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9486BD, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -19521,15 +19521,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9486BD, {
     {    -10,   38,    0,  8,  0,  0 }, {    -10,   40,    0,  8,  0,  0 }, {    -10,   42,    0,  8,  0,  0 }, {    -10,   44,    0,  8,  0,  0 }, {    -10,   46,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     -9,   47,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     -9,   47,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     -9,   47,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -11,   48,    0,  0,  0,  0 }, {    -13,   48,    0,  0,  0,  0 }, {    -15,   48,    0,  0,  0,  0 }, {    -17,   48,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {    -11,   48,    0,  0,  0,  0 }, {    -13,   48,    0,  0,  0,  0 }, {    -15,   48,    0,  0,  0,  0 }, {    -17,   48,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {    -17,   48,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -16,   48,    0,  0,  0,  0 },
     {    -18,   48,    0,  0,  0,  0 }, {    -20,   48,    0,  0,  0,  0 }, {    -22,   48,    0,  0,  0,  0 }, {    -24,   48,    0,  0,  0,  0 }, {    -26,   48,    0,  0,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {    -28,   48,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94B37B, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -19543,15 +19543,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94B37B, {
     {     38,   41,    0, 16,  0,  0 }, {     40,   41,    0, 16,  0,  0 }, {     42,   41,    0, 16,  0,  0 }, {     44,   41,    0, 16,  0,  0 }, {     46,   41,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     47,   40,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     47,   40,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     47,   40,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     48,   42,    0,  8,  0,  0 }, {     48,   44,    0,  8,  0,  0 }, {     48,   46,    0,  8,  0,  0 }, {     48,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {     48,   42,    0,  8,  0,  0 }, {     48,   44,    0,  8,  0,  0 }, {     48,   46,    0,  8,  0,  0 }, {     48,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {     48,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,   47,    0,  8,  0,  0 },
     {     48,   49,    0,  8,  0,  0 }, {     48,   51,    0,  8,  0,  0 }, {     48,   53,    0,  8,  0,  0 }, {     48,   55,    0,  8,  0,  0 }, {     48,   57,    0,  8,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {     48,   59,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94E039, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -19565,14 +19565,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94E039, {
     {     41,   -7,    0, 24,  0,  0 }, {     41,   -9,    0, 24,  0,  0 }, {     41,  -11,    0, 24,  0,  0 }, {     41,  -13,    0, 24,  0,  0 }, {     41,  -15,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     40,  -16,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     40,  -16,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     40,  -16,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     42,  -17,    0, 16,  0,  0 }, {     44,  -17,    0, 16,  0,  0 }, {     46,  -17,    0, 16,  0,  0 }, {     48,  -17,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {     42,  -17,    0, 16,  0,  0 }, {     44,  -17,    0, 16,  0,  0 }, {     46,  -17,    0, 16,  0,  0 }, {     48,  -17,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {     48,  -17,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     47,  -17,    0, 16,  0,  0 },
     {     49,  -17,    0, 16,  0,  0 }, {     51,  -17,    0, 16,  0,  0 }, {     53,  -17,    0, 16,  0,  0 }, {     55,  -17,    0, 16,  0,  0 }, {     57,  -17,    0, 16,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {     59,  -17,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_939CD9, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 },
     {     19,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 }, {     17,   16,    0,  0,  0,  0 }, {     16,   16,    0,  0,  0,  0 }, {     15,   16,    0,  0,  0,  0 },
     {     14,   16,    0,  0,  0,  0 }, {     13,   16,    0,  0,  0,  0 }, {     12,   16,    0,  0,  0,  0 }, {     11,   16,    0,  0,  0,  0 }, {     10,   16,    0,  0,  0,  0 },
@@ -19586,7 +19586,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_939CD9, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93C6CA, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 },
     {     16,   12,    0,  8,  0,  0 }, {     16,   13,    0,  8,  0,  0 }, {     16,   14,    0,  8,  0,  0 }, {     16,   15,    0,  8,  0,  0 }, {     16,   16,    0,  8,  0,  0 },
     {     16,   17,    0,  8,  0,  0 }, {     16,   18,    0,  8,  0,  0 }, {     16,   19,    0,  8,  0,  0 }, {     16,   20,    0,  8,  0,  0 }, {     16,   21,    0,  8,  0,  0 },
@@ -19600,7 +19600,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93C6CA, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93F0BB, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 },
     {     12,   15,    0, 16,  0,  0 }, {     13,   15,    0, 16,  0,  0 }, {     14,   15,    0, 16,  0,  0 }, {     15,   15,    0, 16,  0,  0 }, {     16,   15,    0, 16,  0,  0 },
     {     17,   15,    0, 16,  0,  0 }, {     18,   15,    0, 16,  0,  0 }, {     19,   15,    0, 16,  0,  0 }, {     20,   15,    0, 16,  0,  0 }, {     21,   15,    0, 16,  0,  0 },
@@ -19614,7 +19614,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93F0BB, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_941AAC, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 },
     {     15,   19,    0, 24,  0,  0 }, {     15,   18,    0, 24,  0,  0 }, {     15,   17,    0, 24,  0,  0 }, {     15,   16,    0, 24,  0,  0 }, {     15,   15,    0, 24,  0,  0 },
     {     15,   14,    0, 24,  0,  0 }, {     15,   13,    0, 24,  0,  0 }, {     15,   12,    0, 24,  0,  0 }, {     15,   11,    0, 24,  0,  0 }, {     15,   10,    0, 24,  0,  0 },
@@ -19628,7 +19628,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_941AAC, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93AB73, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     25,   16,    0,  0,  0,  0 }, {     22,   15,    0,  0,  0,  0 }, {     20,   15,    0,  0,  0,  0 },
     {     18,   15,    0,  0,  0,  0 }, {     16,   14,    0,  0,  0,  0 }, {     14,   14,    0,  0,  0,  0 }, {     12,   13,    0,  0,  0,  0 }, {     10,   13,    0,  0,  0,  0 },
     {      8,   13,    0,  0,  0,  0 }, {      6,   12,    0,  0,  0,  0 }, {      4,   12,    0,  0,  0,  0 }, {      2,   11,    0,  0,  0,  0 }, {      1,   11,    0,  0,  0,  0 },
@@ -19644,7 +19644,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93AB73, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93D564, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    6,    0,  8,  0,  0 }, {     15,    9,    0,  8,  0,  0 }, {     15,   11,    0,  8,  0,  0 },
     {     15,   13,    0,  8,  0,  0 }, {     14,   15,    0,  8,  0,  0 }, {     14,   17,    0,  8,  0,  0 }, {     13,   19,    0,  8,  0,  0 }, {     13,   21,    0,  8,  0,  0 },
     {     13,   23,    0,  8,  0,  0 }, {     12,   25,    0,  8,  0,  0 }, {     12,   27,    0,  8,  0,  0 }, {     11,   29,    0,  8,  0,  0 }, {     11,   30,    0,  8,  0,  0 },
@@ -19660,7 +19660,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93D564, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93FF55, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      6,   15,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 }, {     11,   16,    0, 16,  0,  0 },
     {     13,   16,    0, 16,  0,  0 }, {     15,   17,    0, 16,  0,  0 }, {     17,   17,    0, 16,  0,  0 }, {     19,   18,    0, 16,  0,  0 }, {     21,   18,    0, 16,  0,  0 },
     {     23,   18,    0, 16,  0,  0 }, {     25,   19,    0, 16,  0,  0 }, {     27,   19,    0, 16,  0,  0 }, {     29,   20,    0, 16,  0,  0 }, {     30,   20,    0, 16,  0,  0 },
@@ -19676,7 +19676,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93FF55, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_942946, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   25,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 }, {     16,   20,    0, 24,  0,  0 },
     {     16,   18,    0, 24,  0,  0 }, {     17,   16,    0, 24,  0,  0 }, {     17,   14,    0, 24,  0,  0 }, {     18,   12,    0, 24,  0,  0 }, {     18,   10,    0, 24,  0,  0 },
     {     18,    8,    0, 24,  0,  0 }, {     19,    6,    0, 24,  0,  0 }, {     19,    4,    0, 24,  0,  0 }, {     20,    2,    0, 24,  0,  0 }, {     20,    1,    0, 24,  0,  0 },
@@ -19692,11 +19692,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_942946, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93B8DB, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     24,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 },
     {     15,   16,    0,  0,  0,  0 }, {     13,   16,    0,  0,  0,  0 }, {     11,   16,    0,  0,  0,  0 }, {      9,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     {      7,   15,    0,  0,  0,  0 }, {      5,   15,    0,  0,  0,  0 }, {      3,   14,    0,  0,  0,  0 }, {      1,   13,    0,  0,  0,  0 }, {     -1,   13,    0,  0,  0,  0 },
-    {     -3,   12,    0,  0,  0,  0 }, {     -5,   12,    0,  0,  0,  0 }, {     -7,   11,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     -8,   11,    0,  0,  0,  0 },
+    {     -3,   12,    0,  0,  0,  0 }, {     -5,   12,    0,  0,  0,  0 }, {     -7,   11,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     -8,   11,    0,  0,  0,  0 },
     {     -9,   11,    0,  0,  0,  0 }, {    -10,   11,    0,  0,  0,  0 }, {    -11,   11,    0,  0,  0,  0 }, {    -12,   11,    0,  0,  0,  0 }, {    -13,   11,    0,  0,  0,  0 },
     {    -14,   11,    0,  0,  0,  0 }, {    -15,   11,    0,  0,  0,  0 }, {    -16,   11,    0,  0,  0,  0 }, {    -17,   11,    0,  0,  0,  0 }, {    -18,   11,    0,  0,  0,  0 },
     {    -19,   11,    0,  0,  0,  0 }, {    -20,   11,    0,  0,  0,  0 }, {    -21,   11,    0,  0,  0,  0 }, {    -22,   11,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),
@@ -19706,11 +19706,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93B8DB, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93E2CC, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    7,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   13,    0,  8,  0,  0 },
     {     16,   16,    0,  8,  0,  0 }, {     16,   18,    0,  8,  0,  0 }, {     16,   20,    0,  8,  0,  0 }, {     16,   22,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     {     15,   24,    0,  8,  0,  0 }, {     15,   26,    0,  8,  0,  0 }, {     14,   28,    0,  8,  0,  0 }, {     13,   30,    0,  8,  0,  0 }, {     13,   32,    0,  8,  0,  0 },
-    {     12,   34,    0,  8,  0,  0 }, {     12,   36,    0,  8,  0,  0 }, {     11,   38,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     11,   39,    0,  8,  0,  0 },
+    {     12,   34,    0,  8,  0,  0 }, {     12,   36,    0,  8,  0,  0 }, {     11,   38,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     11,   39,    0,  8,  0,  0 },
     {     11,   40,    0,  8,  0,  0 }, {     11,   41,    0,  8,  0,  0 }, {     11,   42,    0,  8,  0,  0 }, {     11,   43,    0,  8,  0,  0 }, {     11,   44,    0,  8,  0,  0 },
     {     11,   45,    0,  8,  0,  0 }, {     11,   46,    0,  8,  0,  0 }, {     11,   47,    0,  8,  0,  0 }, {     11,   48,    0,  8,  0,  0 }, {     11,   49,    0,  8,  0,  0 },
     {     11,   50,    0,  8,  0,  0 }, {     11,   51,    0,  8,  0,  0 }, {     11,   52,    0,  8,  0,  0 }, {     11,   53,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),
@@ -19720,11 +19720,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93E2CC, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_940CBD, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      7,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     13,   15,    0, 16,  0,  0 },
     {     16,   15,    0, 16,  0,  0 }, {     18,   15,    0, 16,  0,  0 }, {     20,   15,    0, 16,  0,  0 }, {     22,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     {     24,   16,    0, 16,  0,  0 }, {     26,   16,    0, 16,  0,  0 }, {     28,   17,    0, 16,  0,  0 }, {     30,   18,    0, 16,  0,  0 }, {     32,   18,    0, 16,  0,  0 },
-    {     34,   19,    0, 16,  0,  0 }, {     36,   19,    0, 16,  0,  0 }, {     38,   20,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     39,   20,    0, 16,  0,  0 },
+    {     34,   19,    0, 16,  0,  0 }, {     36,   19,    0, 16,  0,  0 }, {     38,   20,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     39,   20,    0, 16,  0,  0 },
     {     40,   20,    0, 16,  0,  0 }, {     41,   20,    0, 16,  0,  0 }, {     42,   20,    0, 16,  0,  0 }, {     43,   20,    0, 16,  0,  0 }, {     44,   20,    0, 16,  0,  0 },
     {     45,   20,    0, 16,  0,  0 }, {     46,   20,    0, 16,  0,  0 }, {     47,   20,    0, 16,  0,  0 }, {     48,   20,    0, 16,  0,  0 }, {     49,   20,    0, 16,  0,  0 },
     {     50,   20,    0, 16,  0,  0 }, {     51,   20,    0, 16,  0,  0 }, {     52,   20,    0, 16,  0,  0 }, {     53,   20,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),
@@ -19734,11 +19734,11 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_940CBD, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9436AE, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   24,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   18,    0, 24,  0,  0 },
     {     15,   15,    0, 24,  0,  0 }, {     15,   13,    0, 24,  0,  0 }, {     15,   11,    0, 24,  0,  0 }, {     15,    9,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
     {     16,    7,    0, 24,  0,  0 }, {     16,    5,    0, 24,  0,  0 }, {     17,    3,    0, 24,  0,  0 }, {     18,    1,    0, 24,  0,  0 }, {     18,   -1,    0, 24,  0,  0 },
-    {     19,   -3,    0, 24,  0,  0 }, {     19,   -5,    0, 24,  0,  0 }, {     20,   -7,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     20,   -8,    0, 24,  0,  0 },
+    {     19,   -3,    0, 24,  0,  0 }, {     19,   -5,    0, 24,  0,  0 }, {     20,   -7,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     20,   -8,    0, 24,  0,  0 },
     {     20,   -9,    0, 24,  0,  0 }, {     20,  -10,    0, 24,  0,  0 }, {     20,  -11,    0, 24,  0,  0 }, {     20,  -12,    0, 24,  0,  0 }, {     20,  -13,    0, 24,  0,  0 },
     {     20,  -14,    0, 24,  0,  0 }, {     20,  -15,    0, 24,  0,  0 }, {     20,  -16,    0, 24,  0,  0 }, {     20,  -17,    0, 24,  0,  0 }, {     20,  -18,    0, 24,  0,  0 },
     {     20,  -19,    0, 24,  0,  0 }, {     20,  -20,    0, 24,  0,  0 }, {     20,  -21,    0, 24,  0,  0 }, {     20,  -22,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),
@@ -19748,7 +19748,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9436AE, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9446DE, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     24,   16,    0,  0,  0,  0 }, {     21,   17,    0,  0,  0,  0 }, {     19,   17,    0,  0,  0,  0 },
     {     17,   17,    0,  0,  0,  0 }, {     15,   16,    0,  0,  0,  0 }, {     13,   18,    0,  0,  0,  0 }, {     11,   18,    0,  0,  0,  0 }, {      9,   18,    0,  0,  0,  0 },
     {      7,   18,    0,  0,  0,  0 }, {      5,   18,    0,  0,  0,  0 }, {      4,   18,    0,  0,  0,  0 }, {      3,   19,    0,  0,  0,  0 }, {      2,   19,    0,  0,  0,  0 },
@@ -19758,7 +19758,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9446DE, {
     {     10,   20,    0,  0,  0,  0 }, {     11,   20,    0,  0,  0,  0 }, {     12,   20,    0,  0,  0,  0 }, {     13,   20,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     14,   20,    0,  0,  0,  0 }, {     12,   20,    0,  0,  0,  0 }, {      9,   20,    0,  0,  0,  0 }, {      6,   20,    0,  0,  0,  0 },
     {      3,   20,    0,  0,  0,  0 }, {      0,   20,    0,  0,  0,  0 }, {     -3,   20,    0,  0,  0,  0 }, {     -6,   20,    0,  0,  0,  0 }, {     -9,   20,    0,  0,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {    -12,   20,    0,  0,  0,  0 }, {    -15,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {    -18,   16,    0,  0,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {    -12,   20,    0,  0,  0,  0 }, {    -15,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {    -18,   16,    0,  0,  0,  0 },
     {    -21,   16,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -25,   15,    0,  0,  0,  0 }, {    -26,   13,    0,  0,  0,  0 }, {    -27,   11,    0,  0,  0,  0 },
     {    -28,    9,    0,  0,  0,  0 }, {    -26,    7,    0,  0,  0,  0 }, {    -24,    5,    1,  0,  0,  0 }, {    -22,    3,    1,  0,  0,  0 }, {    -20,    2,    1,  0,  0,  0 },
     {    -18,    2,    1,  0,  0,  0 }, {    -16,    3,    2,  0,  0,  0 }, {    -14,    3,    2,  0,  0,  0 }, {    -14,    5,    2,  0,  0,  0 }, {    -13,    7,    2,  0,  0,  0 },
@@ -19773,7 +19773,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9446DE, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94739C, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    7,    0,  8,  0,  0 }, {     17,   10,    0,  8,  0,  0 }, {     17,   12,    0,  8,  0,  0 },
     {     17,   14,    0,  8,  0,  0 }, {     16,   16,    0,  8,  0,  0 }, {     18,   18,    0,  8,  0,  0 }, {     18,   20,    0,  8,  0,  0 }, {     18,   22,    0,  8,  0,  0 },
     {     18,   24,    0,  8,  0,  0 }, {     18,   26,    0,  8,  0,  0 }, {     18,   27,    0,  8,  0,  0 }, {     19,   28,    0,  8,  0,  0 }, {     19,   29,    0,  8,  0,  0 },
@@ -19783,7 +19783,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94739C, {
     {     20,   21,    0,  8,  0,  0 }, {     20,   20,    0,  8,  0,  0 }, {     20,   19,    0,  8,  0,  0 }, {     20,   18,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     20,   17,    0,  8,  0,  0 }, {     20,   19,    0,  8,  0,  0 }, {     20,   22,    0,  8,  0,  0 }, {     20,   25,    0,  8,  0,  0 },
     {     20,   28,    0,  8,  0,  0 }, {     20,   31,    0,  8,  0,  0 }, {     20,   34,    0,  8,  0,  0 }, {     20,   37,    0,  8,  0,  0 }, {     20,   40,    0,  8,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     20,   43,    0,  8,  0,  0 }, {     20,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     16,   49,    0,  8,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     20,   43,    0,  8,  0,  0 }, {     20,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     16,   49,    0,  8,  0,  0 },
     {     16,   52,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     15,   56,    0,  8,  0,  0 }, {     13,   57,    0,  8,  0,  0 }, {     11,   58,    0,  8,  0,  0 },
     {      9,   59,    0,  8,  0,  0 }, {      7,   57,    0,  8,  0,  0 }, {      5,   55,    1,  8,  0,  0 }, {      3,   53,    1,  8,  0,  0 }, {      2,   51,    1,  8,  0,  0 },
     {      2,   49,    1,  8,  0,  0 }, {      3,   47,    2,  8,  0,  0 }, {      3,   45,    2,  8,  0,  0 }, {      5,   45,    2,  8,  0,  0 }, {      7,   44,    2,  8,  0,  0 },
@@ -19798,7 +19798,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94739C, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94A05A, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      7,   15,    0, 16,  0,  0 }, {     10,   14,    0, 16,  0,  0 }, {     12,   14,    0, 16,  0,  0 },
     {     14,   14,    0, 16,  0,  0 }, {     16,   15,    0, 16,  0,  0 }, {     18,   13,    0, 16,  0,  0 }, {     20,   13,    0, 16,  0,  0 }, {     22,   13,    0, 16,  0,  0 },
     {     24,   13,    0, 16,  0,  0 }, {     26,   13,    0, 16,  0,  0 }, {     27,   13,    0, 16,  0,  0 }, {     28,   12,    0, 16,  0,  0 }, {     29,   12,    0, 16,  0,  0 },
@@ -19808,7 +19808,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94A05A, {
     {     21,   11,    0, 16,  0,  0 }, {     20,   11,    0, 16,  0,  0 }, {     19,   11,    0, 16,  0,  0 }, {     18,   11,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     17,   11,    0, 16,  0,  0 }, {     19,   11,    0, 16,  0,  0 }, {     22,   11,    0, 16,  0,  0 }, {     25,   11,    0, 16,  0,  0 },
     {     28,   11,    0, 16,  0,  0 }, {     31,   11,    0, 16,  0,  0 }, {     34,   11,    0, 16,  0,  0 }, {     37,   11,    0, 16,  0,  0 }, {     40,   11,    0, 16,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     43,   11,    0, 16,  0,  0 }, {     46,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     49,   15,    0, 16,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     43,   11,    0, 16,  0,  0 }, {     46,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     49,   15,    0, 16,  0,  0 },
     {     52,   15,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     56,   16,    0, 16,  0,  0 }, {     57,   18,    0, 16,  0,  0 }, {     58,   20,    0, 16,  0,  0 },
     {     59,   22,    0, 16,  0,  0 }, {     57,   24,    0, 16,  0,  0 }, {     55,   26,    1, 16,  0,  0 }, {     53,   28,    1, 16,  0,  0 }, {     51,   29,    1, 16,  0,  0 },
     {     49,   29,    1, 16,  0,  0 }, {     47,   28,    2, 16,  0,  0 }, {     45,   28,    2, 16,  0,  0 }, {     45,   26,    2, 16,  0,  0 }, {     44,   24,    2, 16,  0,  0 },
@@ -19823,7 +19823,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94A05A, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94CD18, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   24,    0, 24,  0,  0 }, {     14,   21,    0, 24,  0,  0 }, {     14,   19,    0, 24,  0,  0 },
     {     14,   17,    0, 24,  0,  0 }, {     15,   15,    0, 24,  0,  0 }, {     13,   13,    0, 24,  0,  0 }, {     13,   11,    0, 24,  0,  0 }, {     13,    9,    0, 24,  0,  0 },
     {     13,    7,    0, 24,  0,  0 }, {     13,    5,    0, 24,  0,  0 }, {     13,    4,    0, 24,  0,  0 }, {     12,    3,    0, 24,  0,  0 }, {     12,    2,    0, 24,  0,  0 },
@@ -19833,7 +19833,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94CD18, {
     {     11,   10,    0, 24,  0,  0 }, {     11,   11,    0, 24,  0,  0 }, {     11,   12,    0, 24,  0,  0 }, {     11,   13,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     11,   14,    0, 24,  0,  0 }, {     11,   12,    0, 24,  0,  0 }, {     11,    9,    0, 24,  0,  0 }, {     11,    6,    0, 24,  0,  0 },
     {     11,    3,    0, 24,  0,  0 }, {     11,    0,    0, 24,  0,  0 }, {     11,   -3,    0, 24,  0,  0 }, {     11,   -6,    0, 24,  0,  0 }, {     11,   -9,    0, 24,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     11,  -12,    0, 24,  0,  0 }, {     11,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     15,  -18,    0, 24,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     11,  -12,    0, 24,  0,  0 }, {     11,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     15,  -18,    0, 24,  0,  0 },
     {     15,  -21,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     16,  -25,    0, 24,  0,  0 }, {     18,  -26,    0, 24,  0,  0 }, {     20,  -27,    0, 24,  0,  0 },
     {     22,  -28,    0, 24,  0,  0 }, {     24,  -26,    0, 24,  0,  0 }, {     26,  -24,    1, 24,  0,  0 }, {     28,  -22,    1, 24,  0,  0 }, {     29,  -20,    1, 24,  0,  0 },
     {     29,  -18,    1, 24,  0,  0 }, {     28,  -16,    2, 24,  0,  0 }, {     28,  -14,    2, 24,  0,  0 }, {     26,  -14,    2, 24,  0,  0 }, {     24,  -13,    2, 24,  0,  0 },
@@ -19848,7 +19848,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94CD18, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_945D3D, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     24,   16,    0,  0,  0,  0 }, {     21,   15,    0,  0,  0,  0 }, {     19,   15,    0,  0,  0,  0 },
     {     17,   15,    0,  0,  0,  0 }, {     15,   16,    0,  0,  0,  0 }, {     13,   14,    0,  0,  0,  0 }, {     11,   14,    0,  0,  0,  0 }, {      9,   14,    0,  0,  0,  0 },
     {      7,   14,    0,  0,  0,  0 }, {      5,   14,    0,  0,  0,  0 }, {      4,   14,    0,  0,  0,  0 }, {      3,   13,    0,  0,  0,  0 }, {      2,   13,    0,  0,  0,  0 },
@@ -19858,7 +19858,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_945D3D, {
     {     10,   12,    0,  0,  0,  0 }, {     11,   12,    0,  0,  0,  0 }, {     12,   12,    0,  0,  0,  0 }, {     13,   12,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     14,   12,    0,  0,  0,  0 }, {     12,   12,    0,  0,  0,  0 }, {      9,   12,    0,  0,  0,  0 }, {      6,   12,    0,  0,  0,  0 },
     {      3,   12,    0,  0,  0,  0 }, {      0,   12,    0,  0,  0,  0 }, {     -3,   12,    0,  0,  0,  0 }, {     -6,   12,    0,  0,  0,  0 }, {     -9,   12,    0,  0,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {    -12,   12,    0,  0,  0,  0 }, {    -15,   12,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {    -18,   16,    0,  0,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {    -12,   12,    0,  0,  0,  0 }, {    -15,   12,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {    -18,   16,    0,  0,  0,  0 },
     {    -21,   16,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -25,   17,    0,  0,  0,  0 }, {    -26,   19,    0,  0,  0,  0 }, {    -27,   21,    0,  0,  0,  0 },
     {    -28,   23,    0,  0,  0,  0 }, {    -26,   25,    0,  0,  0,  0 }, {    -24,   27,    1,  0,  0,  0 }, {    -22,   29,    1,  0,  0,  0 }, {    -20,   30,    1,  0,  0,  0 },
     {    -18,   30,    1,  0,  0,  0 }, {    -16,   29,    2,  0,  0,  0 }, {    -14,   29,    2,  0,  0,  0 }, {    -14,   27,    2,  0,  0,  0 }, {    -13,   25,    2,  0,  0,  0 },
@@ -19873,7 +19873,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_945D3D, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9489FB, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    7,    0,  8,  0,  0 }, {     15,   10,    0,  8,  0,  0 }, {     15,   12,    0,  8,  0,  0 },
     {     15,   14,    0,  8,  0,  0 }, {     16,   16,    0,  8,  0,  0 }, {     14,   18,    0,  8,  0,  0 }, {     14,   20,    0,  8,  0,  0 }, {     14,   22,    0,  8,  0,  0 },
     {     14,   24,    0,  8,  0,  0 }, {     14,   26,    0,  8,  0,  0 }, {     14,   27,    0,  8,  0,  0 }, {     13,   28,    0,  8,  0,  0 }, {     13,   29,    0,  8,  0,  0 },
@@ -19883,7 +19883,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9489FB, {
     {     12,   21,    0,  8,  0,  0 }, {     12,   20,    0,  8,  0,  0 }, {     12,   19,    0,  8,  0,  0 }, {     12,   18,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     12,   17,    0,  8,  0,  0 }, {     12,   19,    0,  8,  0,  0 }, {     12,   22,    0,  8,  0,  0 }, {     12,   25,    0,  8,  0,  0 },
     {     12,   28,    0,  8,  0,  0 }, {     12,   31,    0,  8,  0,  0 }, {     12,   34,    0,  8,  0,  0 }, {     12,   37,    0,  8,  0,  0 }, {     12,   40,    0,  8,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     12,   43,    0,  8,  0,  0 }, {     12,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     16,   49,    0,  8,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     12,   43,    0,  8,  0,  0 }, {     12,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     16,   49,    0,  8,  0,  0 },
     {     16,   52,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     17,   56,    0,  8,  0,  0 }, {     19,   57,    0,  8,  0,  0 }, {     21,   58,    0,  8,  0,  0 },
     {     23,   59,    0,  8,  0,  0 }, {     25,   57,    0,  8,  0,  0 }, {     27,   55,    1,  8,  0,  0 }, {     29,   53,    1,  8,  0,  0 }, {     30,   51,    1,  8,  0,  0 },
     {     30,   49,    1,  8,  0,  0 }, {     29,   47,    2,  8,  0,  0 }, {     29,   45,    2,  8,  0,  0 }, {     27,   45,    2,  8,  0,  0 }, {     25,   44,    2,  8,  0,  0 },
@@ -19898,7 +19898,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9489FB, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94B6B9, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      7,   15,    0, 16,  0,  0 }, {     10,   16,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 },
     {     14,   16,    0, 16,  0,  0 }, {     16,   15,    0, 16,  0,  0 }, {     18,   17,    0, 16,  0,  0 }, {     20,   17,    0, 16,  0,  0 }, {     22,   17,    0, 16,  0,  0 },
     {     24,   17,    0, 16,  0,  0 }, {     26,   17,    0, 16,  0,  0 }, {     27,   17,    0, 16,  0,  0 }, {     28,   18,    0, 16,  0,  0 }, {     29,   18,    0, 16,  0,  0 },
@@ -19908,7 +19908,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94B6B9, {
     {     21,   19,    0, 16,  0,  0 }, {     20,   19,    0, 16,  0,  0 }, {     19,   19,    0, 16,  0,  0 }, {     18,   19,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     17,   19,    0, 16,  0,  0 }, {     19,   19,    0, 16,  0,  0 }, {     22,   19,    0, 16,  0,  0 }, {     25,   19,    0, 16,  0,  0 },
     {     28,   19,    0, 16,  0,  0 }, {     31,   19,    0, 16,  0,  0 }, {     34,   19,    0, 16,  0,  0 }, {     37,   19,    0, 16,  0,  0 }, {     40,   19,    0, 16,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     43,   19,    0, 16,  0,  0 }, {     46,   19,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     49,   15,    0, 16,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     43,   19,    0, 16,  0,  0 }, {     46,   19,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     49,   15,    0, 16,  0,  0 },
     {     52,   15,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     56,   14,    0, 16,  0,  0 }, {     57,   12,    0, 16,  0,  0 }, {     58,   10,    0, 16,  0,  0 },
     {     59,    8,    0, 16,  0,  0 }, {     57,    6,    0, 16,  0,  0 }, {     55,    4,    1, 16,  0,  0 }, {     53,    2,    1, 16,  0,  0 }, {     51,    1,    1, 16,  0,  0 },
     {     49,    1,    1, 16,  0,  0 }, {     47,    2,    2, 16,  0,  0 }, {     45,    2,    2, 16,  0,  0 }, {     45,    4,    2, 16,  0,  0 }, {     44,    6,    2, 16,  0,  0 },
@@ -19923,7 +19923,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94B6B9, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94E377, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   24,    0, 24,  0,  0 }, {     16,   21,    0, 24,  0,  0 }, {     16,   19,    0, 24,  0,  0 },
     {     16,   17,    0, 24,  0,  0 }, {     15,   15,    0, 24,  0,  0 }, {     17,   13,    0, 24,  0,  0 }, {     17,   11,    0, 24,  0,  0 }, {     17,    9,    0, 24,  0,  0 },
     {     17,    7,    0, 24,  0,  0 }, {     17,    5,    0, 24,  0,  0 }, {     17,    4,    0, 24,  0,  0 }, {     18,    3,    0, 24,  0,  0 }, {     18,    2,    0, 24,  0,  0 },
@@ -19933,7 +19933,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94E377, {
     {     19,   10,    0, 24,  0,  0 }, {     19,   11,    0, 24,  0,  0 }, {     19,   12,    0, 24,  0,  0 }, {     19,   13,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     19,   14,    0, 24,  0,  0 }, {     19,   12,    0, 24,  0,  0 }, {     19,    9,    0, 24,  0,  0 }, {     19,    6,    0, 24,  0,  0 },
     {     19,    3,    0, 24,  0,  0 }, {     19,    0,    0, 24,  0,  0 }, {     19,   -3,    0, 24,  0,  0 }, {     19,   -6,    0, 24,  0,  0 }, {     19,   -9,    0, 24,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     19,  -12,    0, 24,  0,  0 }, {     19,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     15,  -18,    0, 24,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     19,  -12,    0, 24,  0,  0 }, {     19,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     15,  -18,    0, 24,  0,  0 },
     {     15,  -21,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     14,  -25,    0, 24,  0,  0 }, {     12,  -26,    0, 24,  0,  0 }, {     10,  -27,    0, 24,  0,  0 },
     {      8,  -28,    0, 24,  0,  0 }, {      6,  -26,    0, 24,  0,  0 }, {      4,  -24,    1, 24,  0,  0 }, {      2,  -22,    1, 24,  0,  0 }, {      1,  -20,    1, 24,  0,  0 },
     {      1,  -18,    1, 24,  0,  0 }, {      2,  -16,    2, 24,  0,  0 }, {      2,  -14,    2, 24,  0,  0 }, {      4,  -14,    2, 24,  0,  0 }, {      6,  -13,    2, 24,  0,  0 },
@@ -19948,8 +19948,8 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94E377, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_939EAF, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -19964,14 +19964,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_939EAF, {
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -25,   18,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {    -25,   18,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -25,   18,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {    -23,   18,    0, 16,  0,  0 },
     {    -21,   18,    0, 16,  0,  0 }, {    -19,   18,    0, 16,  0,  0 }, {    -17,   18,    0, 16,  0,  0 }, {    -15,   18,    0, 16,  0,  0 }, {    -15,   16,    0,  8,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {    -15,   16,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
+    MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {    -15,   16,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
     {    -17,   16,    0,  0,  0,  0 }, {    -19,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -23,   16,    0,  0,  0,  0 }, {    -25,   16,    0,  0,  0,  0 },
     {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {    -29,   16,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93C8A0, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -19986,14 +19986,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93C8A0, {
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     18,   56,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {     18,   56,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     18,   56,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     18,   54,    0, 24,  0,  0 },
     {     18,   52,    0, 24,  0,  0 }, {     18,   50,    0, 24,  0,  0 }, {     18,   48,    0, 24,  0,  0 }, {     18,   46,    0, 24,  0,  0 }, {     16,   46,    0, 16,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     16,   46,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
+    MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     16,   46,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
     {     16,   48,    0,  8,  0,  0 }, {     16,   50,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   54,    0,  8,  0,  0 }, {     16,   56,    0,  8,  0,  0 },
     {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93F291, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -20008,14 +20008,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93F291, {
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     56,   13,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {     56,   13,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     56,   13,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     54,   13,    0,  0,  0,  0 },
     {     52,   13,    0,  0,  0,  0 }, {     50,   13,    0,  0,  0,  0 }, {     48,   13,    0,  0,  0,  0 }, {     46,   13,    0,  0,  0,  0 }, {     46,   15,    0, 24,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     46,   15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
+    MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     46,   15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
     {     48,   15,    0, 16,  0,  0 }, {     50,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     54,   15,    0, 16,  0,  0 }, {     56,   15,    0, 16,  0,  0 },
     {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     60,   15,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_941C82, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -20030,14 +20030,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_941C82, {
     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     13,  -25,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),
     {     13,  -25,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     13,  -25,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     13,  -23,    0,  8,  0,  0 },
     {     13,  -21,    0,  8,  0,  0 }, {     13,  -19,    0,  8,  0,  0 }, {     13,  -17,    0,  8,  0,  0 }, {     13,  -15,    0,  8,  0,  0 }, {     15,  -15,    0,  0,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     15,  -15,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
+    MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     15,  -15,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),
     {     15,  -17,    0, 24,  0,  0 }, {     15,  -19,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -23,    0, 24,  0,  0 }, {     15,  -25,    0, 24,  0,  0 },
     {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93ADA3, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -20048,13 +20048,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93ADA3, {
     {    -19,   12,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -19,   12,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {    -19,   12,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -19,   12,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {    -19,   14,    0,  8,  0,  0 }, {    -19,   16,    0,  8,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -23,   16,    0,  0,  0,  0 },
-    {    -25,   16,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {    -27,   16,    0,  0,  0,  0 },
+    {    -25,   16,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {    -27,   16,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {    -29,   16,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93D794, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -20065,13 +20065,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93D794, {
     {     12,   50,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     12,   50,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     12,   50,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     12,   50,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     14,   50,    0, 16,  0,  0 }, {     16,   50,    0, 16,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   54,    0,  8,  0,  0 },
-    {     16,   56,    0,  8,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     16,   58,    0,  8,  0,  0 },
+    {     16,   56,    0,  8,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     16,   58,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_940185, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -20082,13 +20082,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_940185, {
     {     50,   19,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     50,   19,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     50,   19,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     50,   19,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     50,   17,    0, 24,  0,  0 }, {     50,   15,    0, 24,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     54,   15,    0, 16,  0,  0 },
-    {     56,   15,    0, 16,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     58,   15,    0, 16,  0,  0 },
+    {     56,   15,    0, 16,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     58,   15,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     60,   15,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_942B76, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -20099,13 +20099,13 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_942B76, {
     {     19,  -19,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     19,  -19,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     19,  -19,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     19,  -19,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     17,  -19,    0,  0,  0,  0 }, {     15,  -19,    0,  0,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -23,    0, 24,  0,  0 },
-    {     15,  -25,    0, 24,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),              {     15,  -27,    0, 24,  0,  0 },
+    {     15,  -25,    0, 24,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),              {     15,  -27,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93BAB1, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     20,   16,    0,  0,  0,  0 },
@@ -20119,14 +20119,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93BAB1, {
     {    -19,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -23,   16,    0,  0,  0,  0 }, {    -23,   18,    0,  8,  0,  0 }, {    -23,   20,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -23,   21,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {    -23,   21,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -23,   21,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -23,   20,    0, 24,  0,  0 }, {    -23,   18,    0, 24,  0,  0 }, {    -23,   16,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {    -23,   20,    0, 24,  0,  0 }, {    -23,   18,    0, 24,  0,  0 }, {    -23,   16,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {    -23,   16,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -23,   16,    0,  0,  0,  0 }, {    -25,   16,    0,  0,  0,  0 },
     {    -27,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {    -29,   16,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93E4A2, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   11,    0,  8,  0,  0 },
@@ -20140,14 +20140,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93E4A2, {
     {     16,   50,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   54,    0,  8,  0,  0 }, {     18,   54,    0, 16,  0,  0 }, {     20,   54,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     21,   54,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     21,   54,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     21,   54,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     20,   54,    0,  0,  0,  0 }, {     18,   54,    0,  0,  0,  0 }, {     16,   54,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     20,   54,    0,  0,  0,  0 }, {     18,   54,    0,  0,  0,  0 }, {     16,   54,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     16,   54,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     16,   54,    0,  8,  0,  0 }, {     16,   56,    0,  8,  0,  0 },
     {     16,   58,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_940E93, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     11,   15,    0, 16,  0,  0 },
@@ -20161,14 +20161,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_940E93, {
     {     50,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     54,   15,    0, 16,  0,  0 }, {     54,   13,    0, 24,  0,  0 }, {     54,   11,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     54,   10,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     54,   10,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     54,   10,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     54,   11,    0,  8,  0,  0 }, {     54,   13,    0,  8,  0,  0 }, {     54,   15,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     54,   11,    0,  8,  0,  0 }, {     54,   13,    0,  8,  0,  0 }, {     54,   15,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     54,   15,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     54,   15,    0, 16,  0,  0 }, {     56,   15,    0, 16,  0,  0 },
     {     58,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     60,   15,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_943884, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   20,    0, 24,  0,  0 },
@@ -20182,14 +20182,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_943884, {
     {     15,  -19,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -23,    0, 24,  0,  0 }, {     13,  -23,    0,  0,  0,  0 }, {     11,  -23,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     10,  -23,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     10,  -23,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     10,  -23,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     11,  -23,    0, 16,  0,  0 }, {     13,  -23,    0, 16,  0,  0 }, {     15,  -23,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),MINI_GOLF_STATE(Unk5),
+    {     11,  -23,    0, 16,  0,  0 }, {     13,  -23,    0, 16,  0,  0 }, {     15,  -23,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
     {     15,  -23,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     15,  -23,    0, 24,  0,  0 }, {     15,  -25,    0, 24,  0,  0 },
     {     15,  -27,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_944AA3, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -20205,15 +20205,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_944AA3, {
     {     -7,   42,    0,  0,  0,  0 }, {     -9,   42,    0,  0,  0,  0 }, {    -11,   42,    0,  0,  0,  0 }, {    -13,   42,    0,  0,  0,  0 }, {    -15,   42,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -16,   41,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {    -16,   41,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -16,   41,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -17,   43,    0,  8,  0,  0 }, {    -17,   45,    0,  8,  0,  0 }, {    -17,   47,    0,  8,  0,  0 }, {    -17,   49,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {    -17,   43,    0,  8,  0,  0 }, {    -17,   45,    0,  8,  0,  0 }, {    -17,   47,    0,  8,  0,  0 }, {    -17,   49,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {    -17,   49,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,   48,    0,  8,  0,  0 },
     {    -17,   50,    0,  8,  0,  0 }, {    -17,   52,    0,  8,  0,  0 }, {    -17,   54,    0,  8,  0,  0 }, {    -17,   56,    0,  8,  0,  0 }, {    -17,   58,    0,  8,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {    -17,   60,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_947761, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -20229,15 +20229,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_947761, {
     {     42,   38,    0,  8,  0,  0 }, {     42,   40,    0,  8,  0,  0 }, {     42,   42,    0,  8,  0,  0 }, {     42,   44,    0,  8,  0,  0 }, {     42,   46,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     41,   47,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     41,   47,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     41,   47,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     43,   48,    0, 16,  0,  0 }, {     45,   48,    0, 16,  0,  0 }, {     47,   48,    0, 16,  0,  0 }, {     49,   48,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {     43,   48,    0, 16,  0,  0 }, {     45,   48,    0, 16,  0,  0 }, {     47,   48,    0, 16,  0,  0 }, {     49,   48,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {     49,   48,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,   48,    0, 16,  0,  0 },
     {     50,   48,    0, 16,  0,  0 }, {     52,   48,    0, 16,  0,  0 }, {     54,   48,    0, 16,  0,  0 }, {     56,   48,    0, 16,  0,  0 }, {     58,   48,    0, 16,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {     60,   48,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94A41F, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -20253,15 +20253,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94A41F, {
     {     38,  -11,    0, 16,  0,  0 }, {     40,  -11,    0, 16,  0,  0 }, {     42,  -11,    0, 16,  0,  0 }, {     44,  -11,    0, 16,  0,  0 }, {     46,  -11,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     47,  -10,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     47,  -10,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     47,  -10,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     48,  -12,    0, 24,  0,  0 }, {     48,  -14,    0, 24,  0,  0 }, {     48,  -16,    0, 24,  0,  0 }, {     48,  -18,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {     48,  -12,    0, 24,  0,  0 }, {     48,  -14,    0, 24,  0,  0 }, {     48,  -16,    0, 24,  0,  0 }, {     48,  -18,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {     48,  -18,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,  -17,    0, 24,  0,  0 },
     {     48,  -19,    0, 24,  0,  0 }, {     48,  -21,    0, 24,  0,  0 }, {     48,  -23,    0, 24,  0,  0 }, {     48,  -25,    0, 24,  0,  0 }, {     48,  -27,    0, 24,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {     48,  -29,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94D0DD, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -20277,15 +20277,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94D0DD, {
     {    -11,   -7,    0, 24,  0,  0 }, {    -11,   -9,    0, 24,  0,  0 }, {    -11,  -11,    0, 24,  0,  0 }, {    -11,  -13,    0, 24,  0,  0 }, {    -11,  -15,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -10,  -16,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {    -10,  -16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -10,  -16,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -12,  -17,    0,  0,  0,  0 }, {    -14,  -17,    0,  0,  0,  0 }, {    -16,  -17,    0,  0,  0,  0 }, {    -18,  -17,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {    -12,  -17,    0,  0,  0,  0 }, {    -14,  -17,    0,  0,  0,  0 }, {    -16,  -17,    0,  0,  0,  0 }, {    -18,  -17,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {    -18,  -17,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,  -17,    0,  0,  0,  0 },
     {    -19,  -17,    0,  0,  0,  0 }, {    -21,  -17,    0,  0,  0,  0 }, {    -23,  -17,    0,  0,  0,  0 }, {    -25,  -17,    0,  0,  0,  0 }, {    -27,  -17,    0,  0,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {    -29,  -17,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_946102, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     27,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     27,   16,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     27,   16,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -20301,15 +20301,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_946102, {
     {     -7,  -10,    0,  0,  0,  0 }, {     -9,  -10,    0,  0,  0,  0 }, {    -11,  -10,    0,  0,  0,  0 }, {    -13,  -10,    0,  0,  0,  0 }, {    -15,  -10,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {    -16,   -9,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {    -16,   -9,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {    -16,   -9,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -17,  -11,    0, 24,  0,  0 }, {    -17,  -13,    0, 24,  0,  0 }, {    -17,  -15,    0, 24,  0,  0 }, {    -17,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {    -17,  -11,    0, 24,  0,  0 }, {    -17,  -13,    0, 24,  0,  0 }, {    -17,  -15,    0, 24,  0,  0 }, {    -17,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {    -17,  -17,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -17,  -16,    0, 24,  0,  0 },
     {    -17,  -18,    0, 24,  0,  0 }, {    -17,  -20,    0, 24,  0,  0 }, {    -17,  -22,    0, 24,  0,  0 }, {    -17,  -24,    0, 24,  0,  0 }, {    -17,  -26,    0, 24,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {    -17,  -28,    0, 24,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_948DC0, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     16,    4,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     16,    4,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    4,    0,  0,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -20325,15 +20325,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_948DC0, {
     {    -10,   38,    0,  8,  0,  0 }, {    -10,   40,    0,  8,  0,  0 }, {    -10,   42,    0,  8,  0,  0 }, {    -10,   44,    0,  8,  0,  0 }, {    -10,   46,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     -9,   47,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     -9,   47,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     -9,   47,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -11,   48,    0,  0,  0,  0 }, {    -13,   48,    0,  0,  0,  0 }, {    -15,   48,    0,  0,  0,  0 }, {    -17,   48,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {    -11,   48,    0,  0,  0,  0 }, {    -13,   48,    0,  0,  0,  0 }, {    -15,   48,    0,  0,  0,  0 }, {    -17,   48,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {    -17,   48,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {    -16,   48,    0,  0,  0,  0 },
     {    -18,   48,    0,  0,  0,  0 }, {    -20,   48,    0,  0,  0,  0 }, {    -22,   48,    0,  0,  0,  0 }, {    -24,   48,    0,  0,  0,  0 }, {    -26,   48,    0,  0,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {    -28,   48,    0,  0,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94BA7E, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {      4,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {      4,   15,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      4,   15,    0,  8,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -20349,15 +20349,15 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94BA7E, {
     {     38,   41,    0, 16,  0,  0 }, {     40,   41,    0, 16,  0,  0 }, {     42,   41,    0, 16,  0,  0 }, {     44,   41,    0, 16,  0,  0 }, {     46,   41,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     47,   40,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     47,   40,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     47,   40,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     48,   42,    0,  8,  0,  0 }, {     48,   44,    0,  8,  0,  0 }, {     48,   46,    0,  8,  0,  0 }, {     48,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {     48,   42,    0,  8,  0,  0 }, {     48,   44,    0,  8,  0,  0 }, {     48,   46,    0,  8,  0,  0 }, {     48,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {     48,   48,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     48,   47,    0,  8,  0,  0 },
     {     48,   49,    0,  8,  0,  0 }, {     48,   51,    0,  8,  0,  0 }, {     48,   53,    0,  8,  0,  0 }, {     48,   55,    0,  8,  0,  0 }, {     48,   57,    0,  8,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {     48,   59,    0,  8,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94E73C, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
-    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    MINI_GOLF_STATE(Unk5),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
+    MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUp),   MINI_GOLF_STATE(Unk5),
     {     15,   27,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(PutLeft),       MINI_GOLF_STATE(Unk5),              {     15,   27,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   27,    0, 16,  0,  0 },
     MINI_GOLF_ANIMATION(Walk),          {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -20373,14 +20373,14 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94E73C, {
     {     41,   -7,    0, 24,  0,  0 }, {     41,   -9,    0, 24,  0,  0 }, {     41,  -11,    0, 24,  0,  0 }, {     41,  -13,    0, 24,  0,  0 }, {     41,  -15,    0, 24,  0,  0 },
     MINI_GOLF_ANIMATION(SwingLeft),     MINI_GOLF_STATE(Unk5),              MINI_GOLF_STATE(Unk3),              {     40,  -16,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PutLeft),
     MINI_GOLF_STATE(Unk5),              {     40,  -16,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     40,  -16,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     42,  -17,    0, 16,  0,  0 }, {     44,  -17,    0, 16,  0,  0 }, {     46,  -17,    0, 16,  0,  0 }, {     48,  -17,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallUpwards),
+    {     42,  -17,    0, 16,  0,  0 }, {     44,  -17,    0, 16,  0,  0 }, {     46,  -17,    0, 16,  0,  0 }, {     48,  -17,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PickupBall),    
     MINI_GOLF_STATE(Unk5),              {     48,  -17,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          MINI_GOLF_STATE(Unk6),              {     47,  -17,    0, 16,  0,  0 },
     {     49,  -17,    0, 16,  0,  0 }, {     51,  -17,    0, 16,  0,  0 }, {     53,  -17,    0, 16,  0,  0 }, {     55,  -17,    0, 16,  0,  0 }, {     57,  -17,    0, 16,  0,  0 },
     MINI_GOLF_STATE(Unk3),              {     59,  -17,    0, 16,  0,  0 },
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93A1F6, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     25,   16,    0,  0,  0,  0 }, {     23,   15,    0,  0,  0,  0 }, {     21,   15,    0,  0,  0,  0 },
     {     19,   14,    0,  0,  0,  0 }, {     17,   13,    0,  0,  0,  0 }, {     15,   13,    0,  0,  0,  0 }, {     14,   13,    0,  0,  0,  0 }, {     13,   12,    0,  0,  0,  0 },
     {     12,   12,    0,  0,  0,  0 }, {     11,   12,    0,  0,  0,  0 }, {     10,   11,    0,  0,  0,  0 }, {      9,   11,    0,  0,  0,  0 }, {      8,   11,    0,  0,  0,  0 },
@@ -20397,7 +20397,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93A1F6, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93CBE7, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    6,    0,  8,  0,  0 }, {     15,    8,    0,  8,  0,  0 }, {     15,   10,    0,  8,  0,  0 },
     {     14,   12,    0,  8,  0,  0 }, {     13,   14,    0,  8,  0,  0 }, {     13,   16,    0,  8,  0,  0 }, {     13,   17,    0,  8,  0,  0 }, {     12,   18,    0,  8,  0,  0 },
     {     12,   19,    0,  8,  0,  0 }, {     12,   20,    0,  8,  0,  0 }, {     11,   21,    0,  8,  0,  0 }, {     11,   22,    0,  8,  0,  0 }, {     11,   23,    0,  8,  0,  0 },
@@ -20414,7 +20414,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93CBE7, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93F5D8, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      6,   15,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {     10,   16,    0, 16,  0,  0 },
     {     12,   17,    0, 16,  0,  0 }, {     14,   18,    0, 16,  0,  0 }, {     16,   18,    0, 16,  0,  0 }, {     17,   18,    0, 16,  0,  0 }, {     18,   19,    0, 16,  0,  0 },
     {     19,   19,    0, 16,  0,  0 }, {     20,   19,    0, 16,  0,  0 }, {     21,   20,    0, 16,  0,  0 }, {     22,   20,    0, 16,  0,  0 }, {     23,   20,    0, 16,  0,  0 },
@@ -20431,7 +20431,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93F5D8, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_941FC9, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   25,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   21,    0, 24,  0,  0 },
     {     17,   19,    0, 24,  0,  0 }, {     18,   17,    0, 24,  0,  0 }, {     18,   15,    0, 24,  0,  0 }, {     18,   14,    0, 24,  0,  0 }, {     19,   13,    0, 24,  0,  0 },
     {     19,   12,    0, 24,  0,  0 }, {     19,   11,    0, 24,  0,  0 }, {     20,   10,    0, 24,  0,  0 }, {     20,    9,    0, 24,  0,  0 }, {     20,    8,    0, 24,  0,  0 },
@@ -20448,7 +20448,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_941FC9, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93B01B, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     25,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 }, {     19,   15,    0,  0,  0,  0 },
     {     16,   15,    0,  0,  0,  0 }, {     13,   14,    0,  0,  0,  0 }, {     10,   14,    0,  0,  0,  0 }, {      7,   13,    0,  0,  0,  0 }, {      4,   13,    0,  0,  0,  0 },
     {      1,   12,    0,  0,  0,  0 }, {     -2,   12,    0,  0,  0,  0 }, {     -2,   15,    0,  0,  0,  0 }, {     -2,   18,    0,  0,  0,  0 }, {     -2,   21,    0,  0,  0,  0 },
@@ -20466,7 +20466,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93B01B, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93DA0C, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    6,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 }, {     15,   12,    0,  8,  0,  0 },
     {     15,   15,    0,  8,  0,  0 }, {     14,   18,    0,  8,  0,  0 }, {     14,   21,    0,  8,  0,  0 }, {     13,   24,    0,  8,  0,  0 }, {     13,   27,    0,  8,  0,  0 },
     {     12,   30,    0,  8,  0,  0 }, {     12,   33,    0,  8,  0,  0 }, {     15,   33,    0,  8,  0,  0 }, {     18,   33,    0,  8,  0,  0 }, {     21,   33,    0,  8,  0,  0 },
@@ -20484,7 +20484,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93DA0C, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9403FD, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      6,   15,    0, 16,  0,  0 }, {      9,   15,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 },
     {     15,   16,    0, 16,  0,  0 }, {     18,   17,    0, 16,  0,  0 }, {     21,   17,    0, 16,  0,  0 }, {     24,   18,    0, 16,  0,  0 }, {     27,   18,    0, 16,  0,  0 },
     {     30,   19,    0, 16,  0,  0 }, {     33,   19,    0, 16,  0,  0 }, {     33,   16,    0, 16,  0,  0 }, {     33,   13,    0, 16,  0,  0 }, {     33,   10,    0, 16,  0,  0 },
@@ -20502,7 +20502,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9403FD, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_942DEE, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   25,    0, 24,  0,  0 }, {     15,   22,    0, 24,  0,  0 }, {     16,   19,    0, 24,  0,  0 },
     {     16,   16,    0, 24,  0,  0 }, {     17,   13,    0, 24,  0,  0 }, {     17,   10,    0, 24,  0,  0 }, {     18,    7,    0, 24,  0,  0 }, {     18,    4,    0, 24,  0,  0 },
     {     19,    1,    0, 24,  0,  0 }, {     19,   -2,    0, 24,  0,  0 }, {     16,   -2,    0, 24,  0,  0 }, {     13,   -2,    0, 24,  0,  0 }, {     10,   -2,    0, 24,  0,  0 },
@@ -20520,7 +20520,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_942DEE, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93BDCB, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     24,   16,    0,  0,  0,  0 }, {     21,   15,    0,  0,  0,  0 }, {     18,   14,    0,  0,  0,  0 },
     {     16,   14,    0,  0,  0,  0 }, {     14,   14,    0,  0,  0,  0 }, {     12,   13,    0,  0,  0,  0 }, {     10,   13,    0,  0,  0,  0 }, {      9,   13,    0,  0,  0,  0 },
     {     11,   12,    0,  0,  0,  0 }, {     12,   12,    0,  0,  0,  0 }, {     13,   12,    0,  0,  0,  0 }, {     14,   12,    0,  0,  0,  0 }, {     15,   12,    0,  0,  0,  0 },
@@ -20528,7 +20528,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93BDCB, {
     MINI_GOLF_STATE(Unk3),              {     20,   11,    0,  0,  0,  0 }, {     18,   11,    0,  0,  0,  0 }, {     16,   11,    0,  0,  0,  0 }, {     14,   11,    0,  0,  0,  0 },
     {     12,   11,    0,  0,  0,  0 }, {     10,   11,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {      7,   12,    0,  0,  0,  0 }, {      5,   13,    0,  0,  0,  0 },
     {      3,   14,    0,  0,  0,  0 }, {      1,   15,    0,  0,  0,  0 }, {     -1,   16,    0,  0,  0,  0 }, {     -3,   17,    0,  0,  0,  0 }, {     -5,   18,    0,  0,  0,  0 },
-    {     -7,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     -9,   20,    0,  0,  0,  0 }, {    -11,   20,    0,  0,  0,  0 }, {    -13,   20,    0,  0,  0,  0 },
+    {     -7,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     -9,   20,    0,  0,  0,  0 }, {    -11,   20,    0,  0,  0,  0 }, {    -13,   20,    0,  0,  0,  0 },
     {    -15,   20,    0,  0,  0,  0 }, {    -17,   20,    0,  0,  0,  0 }, {    -19,   20,    0,  0,  0,  0 }, {    -21,   20,    0,  0,  0,  0 }, {    -22,   20,    0,  0,  0,  0 },
     {    -23,   20,    0,  0,  0,  0 }, {    -24,   20,    0,  0,  0,  0 }, {    -25,   20,    0,  0,  0,  0 }, {    -26,   20,    0,  0,  0,  0 }, {    -27,   20,    0,  0,  0,  0 },
     {    -28,   20,    0,  0,  0,  0 }, {    -29,   20,    0,  0,  0,  0 }, {    -30,   20,    0,  0,  0,  0 }, {    -29,   20,    0,  0,  0,  0 }, {    -28,   20,    0,  0,  0,  0 },
@@ -20539,7 +20539,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93BDCB, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_93E7BC, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    7,    0,  8,  0,  0 }, {     15,   10,    0,  8,  0,  0 }, {     14,   13,    0,  8,  0,  0 },
     {     14,   15,    0,  8,  0,  0 }, {     14,   17,    0,  8,  0,  0 }, {     13,   19,    0,  8,  0,  0 }, {     13,   21,    0,  8,  0,  0 }, {     13,   22,    0,  8,  0,  0 },
     {     12,   20,    0,  8,  0,  0 }, {     12,   19,    0,  8,  0,  0 }, {     12,   18,    0,  8,  0,  0 }, {     12,   17,    0,  8,  0,  0 }, {     12,   16,    0,  8,  0,  0 },
@@ -20547,7 +20547,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93E7BC, {
     MINI_GOLF_STATE(Unk3),              {     11,   11,    0,  8,  0,  0 }, {     11,   13,    0,  8,  0,  0 }, {     11,   15,    0,  8,  0,  0 }, {     11,   17,    0,  8,  0,  0 },
     {     11,   19,    0,  8,  0,  0 }, {     11,   21,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     12,   24,    0,  8,  0,  0 }, {     13,   26,    0,  8,  0,  0 },
     {     14,   28,    0,  8,  0,  0 }, {     15,   30,    0,  8,  0,  0 }, {     16,   32,    0,  8,  0,  0 }, {     17,   34,    0,  8,  0,  0 }, {     18,   36,    0,  8,  0,  0 },
-    {     20,   38,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     20,   40,    0,  8,  0,  0 }, {     20,   42,    0,  8,  0,  0 }, {     20,   44,    0,  8,  0,  0 },
+    {     20,   38,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     20,   40,    0,  8,  0,  0 }, {     20,   42,    0,  8,  0,  0 }, {     20,   44,    0,  8,  0,  0 },
     {     20,   46,    0,  8,  0,  0 }, {     20,   48,    0,  8,  0,  0 }, {     20,   50,    0,  8,  0,  0 }, {     20,   52,    0,  8,  0,  0 }, {     20,   53,    0,  8,  0,  0 },
     {     20,   54,    0,  8,  0,  0 }, {     20,   55,    0,  8,  0,  0 }, {     20,   56,    0,  8,  0,  0 }, {     20,   57,    0,  8,  0,  0 }, {     20,   58,    0,  8,  0,  0 },
     {     20,   59,    0,  8,  0,  0 }, {     20,   60,    0,  8,  0,  0 }, {     20,   61,    0,  8,  0,  0 }, {     20,   60,    0,  8,  0,  0 }, {     20,   59,    0,  8,  0,  0 },
@@ -20558,7 +20558,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_93E7BC, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_9411AD, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      7,   15,    0, 16,  0,  0 }, {     10,   16,    0, 16,  0,  0 }, {     13,   17,    0, 16,  0,  0 },
     {     15,   17,    0, 16,  0,  0 }, {     17,   17,    0, 16,  0,  0 }, {     19,   18,    0, 16,  0,  0 }, {     21,   18,    0, 16,  0,  0 }, {     22,   18,    0, 16,  0,  0 },
     {     20,   19,    0, 16,  0,  0 }, {     19,   19,    0, 16,  0,  0 }, {     18,   19,    0, 16,  0,  0 }, {     17,   19,    0, 16,  0,  0 }, {     16,   19,    0, 16,  0,  0 },
@@ -20566,7 +20566,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9411AD, {
     MINI_GOLF_STATE(Unk3),              {     11,   20,    0, 16,  0,  0 }, {     13,   20,    0, 16,  0,  0 }, {     15,   20,    0, 16,  0,  0 }, {     17,   20,    0, 16,  0,  0 },
     {     19,   20,    0, 16,  0,  0 }, {     21,   20,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     24,   19,    0, 16,  0,  0 }, {     26,   18,    0, 16,  0,  0 },
     {     28,   17,    0, 16,  0,  0 }, {     30,   16,    0, 16,  0,  0 }, {     32,   15,    0, 16,  0,  0 }, {     34,   14,    0, 16,  0,  0 }, {     36,   13,    0, 16,  0,  0 },
-    {     38,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     40,   11,    0, 16,  0,  0 }, {     42,   11,    0, 16,  0,  0 }, {     44,   11,    0, 16,  0,  0 },
+    {     38,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     40,   11,    0, 16,  0,  0 }, {     42,   11,    0, 16,  0,  0 }, {     44,   11,    0, 16,  0,  0 },
     {     46,   11,    0, 16,  0,  0 }, {     48,   11,    0, 16,  0,  0 }, {     50,   11,    0, 16,  0,  0 }, {     52,   11,    0, 16,  0,  0 }, {     53,   11,    0, 16,  0,  0 },
     {     54,   11,    0, 16,  0,  0 }, {     55,   11,    0, 16,  0,  0 }, {     56,   11,    0, 16,  0,  0 }, {     57,   11,    0, 16,  0,  0 }, {     58,   11,    0, 16,  0,  0 },
     {     59,   11,    0, 16,  0,  0 }, {     60,   11,    0, 16,  0,  0 }, {     61,   11,    0, 16,  0,  0 }, {     60,   11,    0, 16,  0,  0 }, {     59,   11,    0, 16,  0,  0 },
@@ -20577,7 +20577,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_9411AD, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_943B9E, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   24,    0, 24,  0,  0 }, {     16,   21,    0, 24,  0,  0 }, {     17,   18,    0, 24,  0,  0 },
     {     17,   16,    0, 24,  0,  0 }, {     17,   14,    0, 24,  0,  0 }, {     18,   12,    0, 24,  0,  0 }, {     18,   10,    0, 24,  0,  0 }, {     18,    9,    0, 24,  0,  0 },
     {     19,   11,    0, 24,  0,  0 }, {     19,   12,    0, 24,  0,  0 }, {     19,   13,    0, 24,  0,  0 }, {     19,   14,    0, 24,  0,  0 }, {     19,   15,    0, 24,  0,  0 },
@@ -20585,7 +20585,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_943B9E, {
     MINI_GOLF_STATE(Unk3),              {     20,   20,    0, 24,  0,  0 }, {     20,   18,    0, 24,  0,  0 }, {     20,   16,    0, 24,  0,  0 }, {     20,   14,    0, 24,  0,  0 },
     {     20,   12,    0, 24,  0,  0 }, {     20,   10,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     19,    7,    0, 24,  0,  0 }, {     18,    5,    0, 24,  0,  0 },
     {     17,    3,    0, 24,  0,  0 }, {     16,    1,    0, 24,  0,  0 }, {     15,   -1,    0, 24,  0,  0 }, {     14,   -3,    0, 24,  0,  0 }, {     13,   -5,    0, 24,  0,  0 },
-    {     11,   -7,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     11,   -9,    0, 24,  0,  0 }, {     11,  -11,    0, 24,  0,  0 }, {     11,  -13,    0, 24,  0,  0 },
+    {     11,   -7,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     11,   -9,    0, 24,  0,  0 }, {     11,  -11,    0, 24,  0,  0 }, {     11,  -13,    0, 24,  0,  0 },
     {     11,  -15,    0, 24,  0,  0 }, {     11,  -17,    0, 24,  0,  0 }, {     11,  -19,    0, 24,  0,  0 }, {     11,  -21,    0, 24,  0,  0 }, {     11,  -22,    0, 24,  0,  0 },
     {     11,  -23,    0, 24,  0,  0 }, {     11,  -24,    0, 24,  0,  0 }, {     11,  -25,    0, 24,  0,  0 }, {     11,  -26,    0, 24,  0,  0 }, {     11,  -27,    0, 24,  0,  0 },
     {     11,  -28,    0, 24,  0,  0 }, {     11,  -29,    0, 24,  0,  0 }, {     11,  -30,    0, 24,  0,  0 }, {     11,  -29,    0, 24,  0,  0 }, {     11,  -28,    0, 24,  0,  0 },
@@ -20596,7 +20596,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_943B9E, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_944E3B, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     24,   16,    0,  0,  0,  0 }, {     21,   17,    0,  0,  0,  0 }, {     19,   17,    0,  0,  0,  0 },
     {     17,   17,    0,  0,  0,  0 }, {     15,   16,    0,  0,  0,  0 }, {     13,   18,    0,  0,  0,  0 }, {     11,   18,    0,  0,  0,  0 }, {      9,   18,    0,  0,  0,  0 },
     {      7,   18,    0,  0,  0,  0 }, {      5,   18,    0,  0,  0,  0 }, {      4,   18,    0,  0,  0,  0 }, {      3,   19,    0,  0,  0,  0 }, {      2,   19,    0,  0,  0,  0 },
@@ -20606,7 +20606,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_944E3B, {
     {     10,   20,    0,  0,  0,  0 }, {     11,   20,    0,  0,  0,  0 }, {     12,   20,    0,  0,  0,  0 }, {     13,   20,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     14,   20,    0,  0,  0,  0 }, {     12,   20,    0,  0,  0,  0 }, {      9,   20,    0,  0,  0,  0 }, {      6,   20,    0,  0,  0,  0 },
     {      3,   20,    0,  0,  0,  0 }, {      0,   20,    0,  0,  0,  0 }, {     -3,   20,    0,  0,  0,  0 }, {     -6,   20,    0,  0,  0,  0 }, {     -9,   20,    0,  0,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {    -12,   20,    0,  0,  0,  0 }, {    -15,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {    -18,   16,    0,  0,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {    -12,   20,    0,  0,  0,  0 }, {    -15,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {    -18,   16,    0,  0,  0,  0 },
     {    -21,   16,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -25,   15,    0,  0,  0,  0 }, {    -26,   13,    0,  0,  0,  0 }, {    -27,   11,    0,  0,  0,  0 },
     {    -28,    9,    0,  0,  0,  0 }, {    -26,    7,    0,  0,  0,  0 }, {    -25,    6,    0,  0,  0,  0 }, {    -24,    5,    1,  0,  0,  0 }, {    -23,    4,    1,  0,  0,  0 },
     {    -22,    3,    1,  0,  0,  0 }, {    -21,    2,    1,  0,  0,  0 }, {    -20,    2,    1,  0,  0,  0 }, {    -19,    2,    1,  0,  0,  0 }, {    -18,    2,    1,  0,  0,  0 },
@@ -20614,7 +20614,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_944E3B, {
     {    -20,    2,    1,  0,  0,  0 }, {    -21,    2,    1,  0,  0,  0 }, {    -22,    3,    1,  0,  0,  0 }, {    -23,    4,    1,  0,  0,  0 }, {    -24,    5,    1,  0,  0,  0 },
     {    -25,    6,    0,  0,  0,  0 }, {    -26,    7,    0,  0,  0,  0 }, {    -28,    9,    0,  0,  0,  0 }, {    -27,   11,    0,  0,  0,  0 }, {    -26,   13,    0,  0,  0,  0 },
     {    -25,   15,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -18,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -15,   20,    0,  0,  0,  0 }, {    -12,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     -9,   20,    0,  0,  0,  0 }, {     -8,   20,    0,  0,  0,  0 },
+    {    -15,   20,    0,  0,  0,  0 }, {    -12,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     -9,   20,    0,  0,  0,  0 }, {     -8,   20,    0,  0,  0,  0 },
     {     -7,   20,    0,  0,  0,  0 }, {     -6,   20,    0,  0,  0,  0 }, {     -5,   20,    0,  0,  0,  0 }, {     -4,   20,    0,  0,  0,  0 }, {     -3,   20,    0,  0,  0,  0 },
     {     -2,   20,    0,  0,  0,  0 }, {     -1,   20,    0,  0,  0,  0 }, {      0,   20,    0,  0,  0,  0 }, {      1,   20,    0,  0,  0,  0 }, {      2,   20,    0,  0,  0,  0 },
     {      3,   20,    0,  0,  0,  0 }, {      4,   20,    0,  0,  0,  0 }, {      5,   20,    0,  0,  0,  0 }, {      6,   20,    0,  0,  0,  0 }, {      7,   20,    0,  0,  0,  0 },
@@ -20622,7 +20622,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_944E3B, {
     {     13,   20,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              MINI_GOLF_STATE(Unk3),              {     14,   20,    0,  0,  0,  0 }, {     12,   20,    0,  0,  0,  0 },
     {      9,   20,    0,  0,  0,  0 }, {      6,   20,    0,  0,  0,  0 }, {      3,   20,    0,  0,  0,  0 }, {      0,   20,    0,  0,  0,  0 }, {     -3,   20,    0,  0,  0,  0 },
     {     -6,   20,    0,  0,  0,  0 }, {     -9,   20,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {    -12,   20,    0,  0,  0,  0 }, {    -15,   20,    0,  0,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallDownwards),              {    -18,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -25,   15,    0,  0,  0,  0 },
+    MINI_GOLF_ANIMATION(PlaceBallDown), {    -18,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -25,   15,    0,  0,  0,  0 },
     {    -26,   13,    0,  0,  0,  0 }, {    -27,   11,    0,  0,  0,  0 }, {    -28,    9,    0,  0,  0,  0 }, {    -26,    7,    0,  0,  0,  0 }, {    -24,    5,    1,  0,  0,  0 },
     {    -22,    3,    1,  0,  0,  0 }, {    -20,    2,    1,  0,  0,  0 }, {    -18,    2,    1,  0,  0,  0 }, {    -16,    3,    2,  0,  0,  0 }, {    -14,    3,    2,  0,  0,  0 },
     {    -14,    5,    2,  0,  0,  0 }, {    -13,    7,    2,  0,  0,  0 }, {    -12,    9,    3,  0,  0,  0 }, {    -12,   11,    3,  0,  0,  0 }, {    -11,   13,    3,  0,  0,  0 },
@@ -20636,7 +20636,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_944E3B, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_947AF9, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    7,    0,  8,  0,  0 }, {     17,   10,    0,  8,  0,  0 }, {     17,   12,    0,  8,  0,  0 },
     {     17,   14,    0,  8,  0,  0 }, {     16,   16,    0,  8,  0,  0 }, {     18,   18,    0,  8,  0,  0 }, {     18,   20,    0,  8,  0,  0 }, {     18,   22,    0,  8,  0,  0 },
     {     18,   24,    0,  8,  0,  0 }, {     18,   26,    0,  8,  0,  0 }, {     18,   27,    0,  8,  0,  0 }, {     19,   28,    0,  8,  0,  0 }, {     19,   29,    0,  8,  0,  0 },
@@ -20646,7 +20646,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_947AF9, {
     {     20,   21,    0,  8,  0,  0 }, {     20,   20,    0,  8,  0,  0 }, {     20,   19,    0,  8,  0,  0 }, {     20,   18,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     20,   17,    0,  8,  0,  0 }, {     20,   19,    0,  8,  0,  0 }, {     20,   22,    0,  8,  0,  0 }, {     20,   25,    0,  8,  0,  0 },
     {     20,   28,    0,  8,  0,  0 }, {     20,   31,    0,  8,  0,  0 }, {     20,   34,    0,  8,  0,  0 }, {     20,   37,    0,  8,  0,  0 }, {     20,   40,    0,  8,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     20,   43,    0,  8,  0,  0 }, {     20,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     16,   49,    0,  8,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     20,   43,    0,  8,  0,  0 }, {     20,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     16,   49,    0,  8,  0,  0 },
     {     16,   52,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     15,   56,    0,  8,  0,  0 }, {     13,   57,    0,  8,  0,  0 }, {     11,   58,    0,  8,  0,  0 },
     {      9,   59,    0,  8,  0,  0 }, {      7,   57,    0,  8,  0,  0 }, {      6,   56,    0,  8,  0,  0 }, {      5,   55,    1,  8,  0,  0 }, {      4,   54,    1,  8,  0,  0 },
     {      3,   53,    1,  8,  0,  0 }, {      2,   52,    1,  8,  0,  0 }, {      2,   51,    1,  8,  0,  0 }, {      2,   50,    1,  8,  0,  0 }, {      2,   49,    1,  8,  0,  0 },
@@ -20654,7 +20654,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_947AF9, {
     {      2,   51,    1,  8,  0,  0 }, {      2,   52,    1,  8,  0,  0 }, {      3,   53,    1,  8,  0,  0 }, {      4,   54,    1,  8,  0,  0 }, {      5,   55,    1,  8,  0,  0 },
     {      6,   56,    0,  8,  0,  0 }, {      7,   57,    0,  8,  0,  0 }, {      9,   59,    0,  8,  0,  0 }, {     11,   58,    0,  8,  0,  0 }, {     13,   57,    0,  8,  0,  0 },
     {     15,   56,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   49,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     20,   46,    0,  8,  0,  0 }, {     20,   43,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     20,   40,    0,  8,  0,  0 }, {     20,   39,    0,  8,  0,  0 },
+    {     20,   46,    0,  8,  0,  0 }, {     20,   43,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     20,   40,    0,  8,  0,  0 }, {     20,   39,    0,  8,  0,  0 },
     {     20,   38,    0,  8,  0,  0 }, {     20,   37,    0,  8,  0,  0 }, {     20,   36,    0,  8,  0,  0 }, {     20,   35,    0,  8,  0,  0 }, {     20,   34,    0,  8,  0,  0 },
     {     20,   33,    0,  8,  0,  0 }, {     20,   32,    0,  8,  0,  0 }, {     20,   31,    0,  8,  0,  0 }, {     20,   30,    0,  8,  0,  0 }, {     20,   29,    0,  8,  0,  0 },
     {     20,   28,    0,  8,  0,  0 }, {     20,   27,    0,  8,  0,  0 }, {     20,   26,    0,  8,  0,  0 }, {     20,   25,    0,  8,  0,  0 }, {     20,   24,    0,  8,  0,  0 },
@@ -20662,7 +20662,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_947AF9, {
     {     20,   18,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              MINI_GOLF_STATE(Unk3),              {     20,   17,    0,  8,  0,  0 }, {     20,   19,    0,  8,  0,  0 },
     {     20,   22,    0,  8,  0,  0 }, {     20,   25,    0,  8,  0,  0 }, {     20,   28,    0,  8,  0,  0 }, {     20,   31,    0,  8,  0,  0 }, {     20,   34,    0,  8,  0,  0 },
     {     20,   37,    0,  8,  0,  0 }, {     20,   40,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     20,   43,    0,  8,  0,  0 }, {     20,   46,    0,  8,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     16,   49,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     15,   56,    0,  8,  0,  0 },
+    MINI_GOLF_ANIMATION(PlaceBallDown), {     16,   49,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     15,   56,    0,  8,  0,  0 },
     {     13,   57,    0,  8,  0,  0 }, {     11,   58,    0,  8,  0,  0 }, {      9,   59,    0,  8,  0,  0 }, {      7,   57,    0,  8,  0,  0 }, {      5,   55,    1,  8,  0,  0 },
     {      3,   53,    1,  8,  0,  0 }, {      2,   51,    1,  8,  0,  0 }, {      2,   49,    1,  8,  0,  0 }, {      3,   47,    2,  8,  0,  0 }, {      3,   45,    2,  8,  0,  0 },
     {      5,   45,    2,  8,  0,  0 }, {      7,   44,    2,  8,  0,  0 }, {      9,   43,    3,  8,  0,  0 }, {     11,   43,    3,  8,  0,  0 }, {     13,   42,    3,  8,  0,  0 },
@@ -20676,7 +20676,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_947AF9, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94A7B7, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      7,   15,    0, 16,  0,  0 }, {     10,   14,    0, 16,  0,  0 }, {     12,   14,    0, 16,  0,  0 },
     {     14,   14,    0, 16,  0,  0 }, {     16,   15,    0, 16,  0,  0 }, {     18,   13,    0, 16,  0,  0 }, {     20,   13,    0, 16,  0,  0 }, {     22,   13,    0, 16,  0,  0 },
     {     24,   13,    0, 16,  0,  0 }, {     26,   13,    0, 16,  0,  0 }, {     27,   13,    0, 16,  0,  0 }, {     28,   12,    0, 16,  0,  0 }, {     29,   12,    0, 16,  0,  0 },
@@ -20686,7 +20686,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94A7B7, {
     {     21,   11,    0, 16,  0,  0 }, {     20,   11,    0, 16,  0,  0 }, {     19,   11,    0, 16,  0,  0 }, {     18,   11,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     17,   11,    0, 16,  0,  0 }, {     19,   11,    0, 16,  0,  0 }, {     22,   11,    0, 16,  0,  0 }, {     25,   11,    0, 16,  0,  0 },
     {     28,   11,    0, 16,  0,  0 }, {     31,   11,    0, 16,  0,  0 }, {     34,   11,    0, 16,  0,  0 }, {     37,   11,    0, 16,  0,  0 }, {     40,   11,    0, 16,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     43,   11,    0, 16,  0,  0 }, {     46,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     49,   15,    0, 16,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     43,   11,    0, 16,  0,  0 }, {     46,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     49,   15,    0, 16,  0,  0 },
     {     52,   15,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     56,   16,    0, 16,  0,  0 }, {     57,   18,    0, 16,  0,  0 }, {     58,   20,    0, 16,  0,  0 },
     {     59,   22,    0, 16,  0,  0 }, {     57,   24,    0, 16,  0,  0 }, {     56,   25,    0, 16,  0,  0 }, {     55,   26,    1, 16,  0,  0 }, {     54,   27,    1, 16,  0,  0 },
     {     53,   28,    1, 16,  0,  0 }, {     52,   29,    1, 16,  0,  0 }, {     51,   29,    1, 16,  0,  0 }, {     50,   29,    1, 16,  0,  0 }, {     49,   29,    1, 16,  0,  0 },
@@ -20694,7 +20694,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94A7B7, {
     {     51,   29,    1, 16,  0,  0 }, {     52,   29,    1, 16,  0,  0 }, {     53,   28,    1, 16,  0,  0 }, {     54,   27,    1, 16,  0,  0 }, {     55,   26,    1, 16,  0,  0 },
     {     56,   25,    0, 16,  0,  0 }, {     57,   24,    0, 16,  0,  0 }, {     59,   22,    0, 16,  0,  0 }, {     58,   20,    0, 16,  0,  0 }, {     57,   18,    0, 16,  0,  0 },
     {     56,   16,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     49,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     46,   11,    0, 16,  0,  0 }, {     43,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     40,   11,    0, 16,  0,  0 }, {     39,   11,    0, 16,  0,  0 },
+    {     46,   11,    0, 16,  0,  0 }, {     43,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     40,   11,    0, 16,  0,  0 }, {     39,   11,    0, 16,  0,  0 },
     {     38,   11,    0, 16,  0,  0 }, {     37,   11,    0, 16,  0,  0 }, {     36,   11,    0, 16,  0,  0 }, {     35,   11,    0, 16,  0,  0 }, {     34,   11,    0, 16,  0,  0 },
     {     33,   11,    0, 16,  0,  0 }, {     32,   11,    0, 16,  0,  0 }, {     31,   11,    0, 16,  0,  0 }, {     30,   11,    0, 16,  0,  0 }, {     29,   11,    0, 16,  0,  0 },
     {     28,   11,    0, 16,  0,  0 }, {     27,   11,    0, 16,  0,  0 }, {     26,   11,    0, 16,  0,  0 }, {     25,   11,    0, 16,  0,  0 }, {     24,   11,    0, 16,  0,  0 },
@@ -20702,7 +20702,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94A7B7, {
     {     18,   11,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              MINI_GOLF_STATE(Unk3),              {     17,   11,    0, 16,  0,  0 }, {     19,   11,    0, 16,  0,  0 },
     {     22,   11,    0, 16,  0,  0 }, {     25,   11,    0, 16,  0,  0 }, {     28,   11,    0, 16,  0,  0 }, {     31,   11,    0, 16,  0,  0 }, {     34,   11,    0, 16,  0,  0 },
     {     37,   11,    0, 16,  0,  0 }, {     40,   11,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     43,   11,    0, 16,  0,  0 }, {     46,   11,    0, 16,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     49,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     56,   16,    0, 16,  0,  0 },
+    MINI_GOLF_ANIMATION(PlaceBallDown), {     49,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     56,   16,    0, 16,  0,  0 },
     {     57,   18,    0, 16,  0,  0 }, {     58,   20,    0, 16,  0,  0 }, {     59,   22,    0, 16,  0,  0 }, {     57,   24,    0, 16,  0,  0 }, {     55,   26,    1, 16,  0,  0 },
     {     53,   28,    1, 16,  0,  0 }, {     51,   29,    1, 16,  0,  0 }, {     49,   29,    1, 16,  0,  0 }, {     47,   28,    2, 16,  0,  0 }, {     45,   28,    2, 16,  0,  0 },
     {     45,   26,    2, 16,  0,  0 }, {     44,   24,    2, 16,  0,  0 }, {     43,   22,    3, 16,  0,  0 }, {     43,   20,    3, 16,  0,  0 }, {     42,   18,    3, 16,  0,  0 },
@@ -20716,7 +20716,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94A7B7, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94D475, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   24,    0, 24,  0,  0 }, {     14,   21,    0, 24,  0,  0 }, {     14,   19,    0, 24,  0,  0 },
     {     14,   17,    0, 24,  0,  0 }, {     15,   15,    0, 24,  0,  0 }, {     13,   13,    0, 24,  0,  0 }, {     13,   11,    0, 24,  0,  0 }, {     13,    9,    0, 24,  0,  0 },
     {     13,    7,    0, 24,  0,  0 }, {     13,    5,    0, 24,  0,  0 }, {     13,    4,    0, 24,  0,  0 }, {     12,    3,    0, 24,  0,  0 }, {     12,    2,    0, 24,  0,  0 },
@@ -20726,7 +20726,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94D475, {
     {     11,   10,    0, 24,  0,  0 }, {     11,   11,    0, 24,  0,  0 }, {     11,   12,    0, 24,  0,  0 }, {     11,   13,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     11,   14,    0, 24,  0,  0 }, {     11,   12,    0, 24,  0,  0 }, {     11,    9,    0, 24,  0,  0 }, {     11,    6,    0, 24,  0,  0 },
     {     11,    3,    0, 24,  0,  0 }, {     11,    0,    0, 24,  0,  0 }, {     11,   -3,    0, 24,  0,  0 }, {     11,   -6,    0, 24,  0,  0 }, {     11,   -9,    0, 24,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     11,  -12,    0, 24,  0,  0 }, {     11,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     15,  -18,    0, 24,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     11,  -12,    0, 24,  0,  0 }, {     11,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     15,  -18,    0, 24,  0,  0 },
     {     15,  -21,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     16,  -25,    0, 24,  0,  0 }, {     18,  -26,    0, 24,  0,  0 }, {     20,  -27,    0, 24,  0,  0 },
     {     22,  -28,    0, 24,  0,  0 }, {     24,  -26,    0, 24,  0,  0 }, {     25,  -25,    0, 24,  0,  0 }, {     26,  -24,    1, 24,  0,  0 }, {     27,  -23,    1, 24,  0,  0 },
     {     28,  -22,    1, 24,  0,  0 }, {     29,  -21,    1, 24,  0,  0 }, {     29,  -20,    1, 24,  0,  0 }, {     29,  -19,    1, 24,  0,  0 }, {     29,  -18,    1, 24,  0,  0 },
@@ -20734,7 +20734,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94D475, {
     {     29,  -20,    1, 24,  0,  0 }, {     29,  -21,    1, 24,  0,  0 }, {     28,  -22,    1, 24,  0,  0 }, {     27,  -23,    1, 24,  0,  0 }, {     26,  -24,    1, 24,  0,  0 },
     {     25,  -25,    0, 24,  0,  0 }, {     24,  -26,    0, 24,  0,  0 }, {     22,  -28,    0, 24,  0,  0 }, {     20,  -27,    0, 24,  0,  0 }, {     18,  -26,    0, 24,  0,  0 },
     {     16,  -25,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -18,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     11,  -15,    0, 24,  0,  0 }, {     11,  -12,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     11,   -9,    0, 24,  0,  0 }, {     11,   -8,    0, 24,  0,  0 },
+    {     11,  -15,    0, 24,  0,  0 }, {     11,  -12,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     11,   -9,    0, 24,  0,  0 }, {     11,   -8,    0, 24,  0,  0 },
     {     11,   -7,    0, 24,  0,  0 }, {     11,   -6,    0, 24,  0,  0 }, {     11,   -5,    0, 24,  0,  0 }, {     11,   -4,    0, 24,  0,  0 }, {     11,   -3,    0, 24,  0,  0 },
     {     11,   -2,    0, 24,  0,  0 }, {     11,   -1,    0, 24,  0,  0 }, {     11,    0,    0, 24,  0,  0 }, {     11,    1,    0, 24,  0,  0 }, {     11,    2,    0, 24,  0,  0 },
     {     11,    3,    0, 24,  0,  0 }, {     11,    4,    0, 24,  0,  0 }, {     11,    5,    0, 24,  0,  0 }, {     11,    6,    0, 24,  0,  0 }, {     11,    7,    0, 24,  0,  0 },
@@ -20742,7 +20742,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94D475, {
     {     11,   13,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              MINI_GOLF_STATE(Unk3),              {     11,   14,    0, 24,  0,  0 }, {     11,   12,    0, 24,  0,  0 },
     {     11,    9,    0, 24,  0,  0 }, {     11,    6,    0, 24,  0,  0 }, {     11,    3,    0, 24,  0,  0 }, {     11,    0,    0, 24,  0,  0 }, {     11,   -3,    0, 24,  0,  0 },
     {     11,   -6,    0, 24,  0,  0 }, {     11,   -9,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     11,  -12,    0, 24,  0,  0 }, {     11,  -15,    0, 24,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     15,  -18,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     16,  -25,    0, 24,  0,  0 },
+    MINI_GOLF_ANIMATION(PlaceBallDown), {     15,  -18,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     16,  -25,    0, 24,  0,  0 },
     {     18,  -26,    0, 24,  0,  0 }, {     20,  -27,    0, 24,  0,  0 }, {     22,  -28,    0, 24,  0,  0 }, {     24,  -26,    0, 24,  0,  0 }, {     26,  -24,    1, 24,  0,  0 },
     {     28,  -22,    1, 24,  0,  0 }, {     29,  -20,    1, 24,  0,  0 }, {     29,  -18,    1, 24,  0,  0 }, {     28,  -16,    2, 24,  0,  0 }, {     28,  -14,    2, 24,  0,  0 },
     {     26,  -14,    2, 24,  0,  0 }, {     24,  -13,    2, 24,  0,  0 }, {     22,  -12,    3, 24,  0,  0 }, {     20,  -12,    3, 24,  0,  0 }, {     18,  -11,    3, 24,  0,  0 },
@@ -20756,7 +20756,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94D475, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94649A, {
-    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     31,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     26,   16,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     24,   16,    0,  0,  0,  0 }, {     21,   15,    0,  0,  0,  0 }, {     19,   15,    0,  0,  0,  0 },
     {     17,   15,    0,  0,  0,  0 }, {     15,   16,    0,  0,  0,  0 }, {     13,   14,    0,  0,  0,  0 }, {     11,   14,    0,  0,  0,  0 }, {      9,   14,    0,  0,  0,  0 },
     {      7,   14,    0,  0,  0,  0 }, {      5,   14,    0,  0,  0,  0 }, {      4,   14,    0,  0,  0,  0 }, {      3,   13,    0,  0,  0,  0 }, {      2,   13,    0,  0,  0,  0 },
@@ -20766,7 +20766,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94649A, {
     {     10,   12,    0,  0,  0,  0 }, {     11,   12,    0,  0,  0,  0 }, {     12,   12,    0,  0,  0,  0 }, {     13,   12,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     14,   12,    0,  0,  0,  0 }, {     12,   12,    0,  0,  0,  0 }, {      9,   12,    0,  0,  0,  0 }, {      6,   12,    0,  0,  0,  0 },
     {      3,   12,    0,  0,  0,  0 }, {      0,   12,    0,  0,  0,  0 }, {     -3,   12,    0,  0,  0,  0 }, {     -6,   12,    0,  0,  0,  0 }, {     -9,   12,    0,  0,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {    -12,   12,    0,  0,  0,  0 }, {    -15,   12,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {    -18,   16,    0,  0,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {    -12,   12,    0,  0,  0,  0 }, {    -15,   12,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {    -18,   16,    0,  0,  0,  0 },
     {    -21,   16,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -25,   17,    0,  0,  0,  0 }, {    -26,   19,    0,  0,  0,  0 }, {    -27,   21,    0,  0,  0,  0 },
     {    -28,   23,    0,  0,  0,  0 }, {    -26,   25,    0,  0,  0,  0 }, {    -25,   26,    0,  0,  0,  0 }, {    -24,   27,    1,  0,  0,  0 }, {    -23,   28,    1,  0,  0,  0 },
     {    -22,   29,    1,  0,  0,  0 }, {    -21,   30,    1,  0,  0,  0 }, {    -20,   30,    1,  0,  0,  0 }, {    -19,   30,    1,  0,  0,  0 }, {    -18,   30,    1,  0,  0,  0 },
@@ -20774,7 +20774,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94649A, {
     {    -20,   30,    1,  0,  0,  0 }, {    -21,   30,    1,  0,  0,  0 }, {    -22,   29,    1,  0,  0,  0 }, {    -23,   28,    1,  0,  0,  0 }, {    -24,   27,    1,  0,  0,  0 },
     {    -25,   26,    0,  0,  0,  0 }, {    -26,   25,    0,  0,  0,  0 }, {    -28,   23,    0,  0,  0,  0 }, {    -27,   21,    0,  0,  0,  0 }, {    -26,   19,    0,  0,  0,  0 },
     {    -25,   17,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -18,   16,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {    -15,   12,    0,  0,  0,  0 }, {    -12,   12,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     -9,   12,    0,  0,  0,  0 }, {     -8,   12,    0,  0,  0,  0 },
+    {    -15,   12,    0,  0,  0,  0 }, {    -12,   12,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     -9,   12,    0,  0,  0,  0 }, {     -8,   12,    0,  0,  0,  0 },
     {     -7,   12,    0,  0,  0,  0 }, {     -6,   12,    0,  0,  0,  0 }, {     -5,   12,    0,  0,  0,  0 }, {     -4,   12,    0,  0,  0,  0 }, {     -3,   12,    0,  0,  0,  0 },
     {     -2,   12,    0,  0,  0,  0 }, {     -1,   12,    0,  0,  0,  0 }, {      0,   12,    0,  0,  0,  0 }, {      1,   12,    0,  0,  0,  0 }, {      2,   12,    0,  0,  0,  0 },
     {      3,   12,    0,  0,  0,  0 }, {      4,   12,    0,  0,  0,  0 }, {      5,   12,    0,  0,  0,  0 }, {      6,   12,    0,  0,  0,  0 }, {      7,   12,    0,  0,  0,  0 },
@@ -20782,7 +20782,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94649A, {
     {     13,   12,    0,  0,  0,  0 }, MINI_GOLF_STATE(Unk2),              MINI_GOLF_STATE(Unk3),              {     14,   12,    0,  0,  0,  0 }, {     12,   12,    0,  0,  0,  0 },
     {      9,   12,    0,  0,  0,  0 }, {      6,   12,    0,  0,  0,  0 }, {      3,   12,    0,  0,  0,  0 }, {      0,   12,    0,  0,  0,  0 }, {     -3,   12,    0,  0,  0,  0 },
     {     -6,   12,    0,  0,  0,  0 }, {     -9,   12,    0,  0,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {    -12,   12,    0,  0,  0,  0 }, {    -15,   12,    0,  0,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallDownwards),              {    -18,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -25,   17,    0,  0,  0,  0 },
+    MINI_GOLF_ANIMATION(PlaceBallDown), {    -18,   16,    0,  0,  0,  0 }, {    -21,   16,    0,  0,  0,  0 }, {    -24,   16,    0,  0,  0,  0 }, {    -25,   17,    0,  0,  0,  0 },
     {    -26,   19,    0,  0,  0,  0 }, {    -27,   21,    0,  0,  0,  0 }, {    -28,   23,    0,  0,  0,  0 }, {    -26,   25,    0,  0,  0,  0 }, {    -24,   27,    1,  0,  0,  0 },
     {    -22,   29,    1,  0,  0,  0 }, {    -20,   30,    1,  0,  0,  0 }, {    -18,   30,    1,  0,  0,  0 }, {    -16,   30,    2,  0,  0,  0 }, {    -14,   29,    2,  0,  0,  0 },
     {    -14,   27,    2,  0,  0,  0 }, {    -13,   25,    2,  0,  0,  0 }, {    -12,   23,    3,  0,  0,  0 }, {    -12,   21,    3,  0,  0,  0 }, {    -11,   19,    3,  0,  0,  0 },
@@ -20796,7 +20796,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94649A, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_949158, {
-    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     16,    0,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     16,    5,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     16,    7,    0,  8,  0,  0 }, {     15,   10,    0,  8,  0,  0 }, {     15,   12,    0,  8,  0,  0 },
     {     15,   14,    0,  8,  0,  0 }, {     16,   16,    0,  8,  0,  0 }, {     14,   18,    0,  8,  0,  0 }, {     14,   20,    0,  8,  0,  0 }, {     14,   22,    0,  8,  0,  0 },
     {     14,   24,    0,  8,  0,  0 }, {     14,   26,    0,  8,  0,  0 }, {     14,   27,    0,  8,  0,  0 }, {     13,   28,    0,  8,  0,  0 }, {     13,   29,    0,  8,  0,  0 },
@@ -20806,7 +20806,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_949158, {
     {     12,   21,    0,  8,  0,  0 }, {     12,   20,    0,  8,  0,  0 }, {     12,   19,    0,  8,  0,  0 }, {     12,   18,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     12,   17,    0,  8,  0,  0 }, {     12,   19,    0,  8,  0,  0 }, {     12,   22,    0,  8,  0,  0 }, {     12,   25,    0,  8,  0,  0 },
     {     12,   28,    0,  8,  0,  0 }, {     12,   31,    0,  8,  0,  0 }, {     12,   34,    0,  8,  0,  0 }, {     12,   37,    0,  8,  0,  0 }, {     12,   40,    0,  8,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     12,   43,    0,  8,  0,  0 }, {     12,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     16,   49,    0,  8,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     12,   43,    0,  8,  0,  0 }, {     12,   46,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     16,   49,    0,  8,  0,  0 },
     {     16,   52,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     17,   56,    0,  8,  0,  0 }, {     19,   57,    0,  8,  0,  0 }, {     21,   58,    0,  8,  0,  0 },
     {     23,   59,    0,  8,  0,  0 }, {     25,   57,    0,  8,  0,  0 }, {     26,   56,    0,  8,  0,  0 }, {     27,   55,    1,  8,  0,  0 }, {     28,   54,    1,  8,  0,  0 },
     {     29,   53,    1,  8,  0,  0 }, {     30,   52,    1,  8,  0,  0 }, {     30,   51,    1,  8,  0,  0 }, {     30,   50,    1,  8,  0,  0 }, {     30,   49,    1,  8,  0,  0 },
@@ -20814,7 +20814,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_949158, {
     {     30,   51,    1,  8,  0,  0 }, {     30,   52,    1,  8,  0,  0 }, {     29,   53,    1,  8,  0,  0 }, {     28,   54,    1,  8,  0,  0 }, {     27,   55,    1,  8,  0,  0 },
     {     26,   56,    0,  8,  0,  0 }, {     25,   57,    0,  8,  0,  0 }, {     23,   59,    0,  8,  0,  0 }, {     21,   58,    0,  8,  0,  0 }, {     19,   57,    0,  8,  0,  0 },
     {     17,   56,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   49,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     12,   46,    0,  8,  0,  0 }, {     12,   43,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     12,   40,    0,  8,  0,  0 }, {     12,   39,    0,  8,  0,  0 },
+    {     12,   46,    0,  8,  0,  0 }, {     12,   43,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     12,   40,    0,  8,  0,  0 }, {     12,   39,    0,  8,  0,  0 },
     {     12,   38,    0,  8,  0,  0 }, {     12,   37,    0,  8,  0,  0 }, {     12,   36,    0,  8,  0,  0 }, {     12,   35,    0,  8,  0,  0 }, {     12,   34,    0,  8,  0,  0 },
     {     12,   33,    0,  8,  0,  0 }, {     12,   32,    0,  8,  0,  0 }, {     12,   31,    0,  8,  0,  0 }, {     12,   30,    0,  8,  0,  0 }, {     12,   29,    0,  8,  0,  0 },
     {     12,   28,    0,  8,  0,  0 }, {     12,   27,    0,  8,  0,  0 }, {     12,   26,    0,  8,  0,  0 }, {     12,   25,    0,  8,  0,  0 }, {     12,   24,    0,  8,  0,  0 },
@@ -20822,7 +20822,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_949158, {
     {     12,   18,    0,  8,  0,  0 }, MINI_GOLF_STATE(Unk2),              MINI_GOLF_STATE(Unk3),              {     12,   17,    0,  8,  0,  0 }, {     12,   19,    0,  8,  0,  0 },
     {     12,   22,    0,  8,  0,  0 }, {     12,   25,    0,  8,  0,  0 }, {     12,   28,    0,  8,  0,  0 }, {     12,   31,    0,  8,  0,  0 }, {     12,   34,    0,  8,  0,  0 },
     {     12,   37,    0,  8,  0,  0 }, {     12,   40,    0,  8,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     12,   43,    0,  8,  0,  0 }, {     12,   46,    0,  8,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     16,   49,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     17,   56,    0,  8,  0,  0 },
+    MINI_GOLF_ANIMATION(PlaceBallDown), {     16,   49,    0,  8,  0,  0 }, {     16,   52,    0,  8,  0,  0 }, {     16,   55,    0,  8,  0,  0 }, {     17,   56,    0,  8,  0,  0 },
     {     19,   57,    0,  8,  0,  0 }, {     21,   58,    0,  8,  0,  0 }, {     23,   59,    0,  8,  0,  0 }, {     25,   57,    0,  8,  0,  0 }, {     27,   55,    1,  8,  0,  0 },
     {     29,   53,    1,  8,  0,  0 }, {     30,   51,    1,  8,  0,  0 }, {     30,   49,    1,  8,  0,  0 }, {     30,   47,    2,  8,  0,  0 }, {     29,   45,    2,  8,  0,  0 },
     {     27,   45,    2,  8,  0,  0 }, {     25,   44,    2,  8,  0,  0 }, {     23,   43,    3,  8,  0,  0 }, {     21,   43,    3,  8,  0,  0 }, {     19,   42,    3,  8,  0,  0 },
@@ -20836,7 +20836,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_949158, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94BE16, {
-    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {      0,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {      5,   15,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk3),              {      7,   15,    0, 16,  0,  0 }, {     10,   16,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 },
     {     14,   16,    0, 16,  0,  0 }, {     16,   15,    0, 16,  0,  0 }, {     18,   17,    0, 16,  0,  0 }, {     20,   17,    0, 16,  0,  0 }, {     22,   17,    0, 16,  0,  0 },
     {     24,   17,    0, 16,  0,  0 }, {     26,   17,    0, 16,  0,  0 }, {     27,   17,    0, 16,  0,  0 }, {     28,   18,    0, 16,  0,  0 }, {     29,   18,    0, 16,  0,  0 },
@@ -20846,7 +20846,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94BE16, {
     {     21,   19,    0, 16,  0,  0 }, {     20,   19,    0, 16,  0,  0 }, {     19,   19,    0, 16,  0,  0 }, {     18,   19,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     17,   19,    0, 16,  0,  0 }, {     19,   19,    0, 16,  0,  0 }, {     22,   19,    0, 16,  0,  0 }, {     25,   19,    0, 16,  0,  0 },
     {     28,   19,    0, 16,  0,  0 }, {     31,   19,    0, 16,  0,  0 }, {     34,   19,    0, 16,  0,  0 }, {     37,   19,    0, 16,  0,  0 }, {     40,   19,    0, 16,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     43,   19,    0, 16,  0,  0 }, {     46,   19,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     49,   15,    0, 16,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     43,   19,    0, 16,  0,  0 }, {     46,   19,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     49,   15,    0, 16,  0,  0 },
     {     52,   15,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     56,   14,    0, 16,  0,  0 }, {     57,   12,    0, 16,  0,  0 }, {     58,   10,    0, 16,  0,  0 },
     {     59,    8,    0, 16,  0,  0 }, {     57,    6,    0, 16,  0,  0 }, {     56,    5,    0, 16,  0,  0 }, {     55,    4,    1, 16,  0,  0 }, {     54,    3,    1, 16,  0,  0 },
     {     53,    2,    1, 16,  0,  0 }, {     52,    1,    1, 16,  0,  0 }, {     51,    1,    1, 16,  0,  0 }, {     50,    1,    1, 16,  0,  0 }, {     49,    1,    1, 16,  0,  0 },
@@ -20854,7 +20854,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94BE16, {
     {     51,    1,    1, 16,  0,  0 }, {     52,    1,    1, 16,  0,  0 }, {     53,    2,    1, 16,  0,  0 }, {     54,    3,    1, 16,  0,  0 }, {     55,    4,    1, 16,  0,  0 },
     {     56,    5,    0, 16,  0,  0 }, {     57,    6,    0, 16,  0,  0 }, {     59,    8,    0, 16,  0,  0 }, {     58,   10,    0, 16,  0,  0 }, {     57,   12,    0, 16,  0,  0 },
     {     56,   14,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     49,   15,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     46,   19,    0, 16,  0,  0 }, {     43,   19,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     40,   19,    0, 16,  0,  0 }, {     39,   19,    0, 16,  0,  0 },
+    {     46,   19,    0, 16,  0,  0 }, {     43,   19,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     40,   19,    0, 16,  0,  0 }, {     39,   19,    0, 16,  0,  0 },
     {     38,   19,    0, 16,  0,  0 }, {     37,   19,    0, 16,  0,  0 }, {     36,   19,    0, 16,  0,  0 }, {     35,   19,    0, 16,  0,  0 }, {     34,   19,    0, 16,  0,  0 },
     {     33,   19,    0, 16,  0,  0 }, {     32,   19,    0, 16,  0,  0 }, {     31,   19,    0, 16,  0,  0 }, {     30,   19,    0, 16,  0,  0 }, {     29,   19,    0, 16,  0,  0 },
     {     28,   19,    0, 16,  0,  0 }, {     27,   19,    0, 16,  0,  0 }, {     26,   19,    0, 16,  0,  0 }, {     25,   19,    0, 16,  0,  0 }, {     24,   19,    0, 16,  0,  0 },
@@ -20862,7 +20862,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94BE16, {
     {     18,   19,    0, 16,  0,  0 }, MINI_GOLF_STATE(Unk2),              MINI_GOLF_STATE(Unk3),              {     17,   19,    0, 16,  0,  0 }, {     19,   19,    0, 16,  0,  0 },
     {     22,   19,    0, 16,  0,  0 }, {     25,   19,    0, 16,  0,  0 }, {     28,   19,    0, 16,  0,  0 }, {     31,   19,    0, 16,  0,  0 }, {     34,   19,    0, 16,  0,  0 },
     {     37,   19,    0, 16,  0,  0 }, {     40,   19,    0, 16,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     43,   19,    0, 16,  0,  0 }, {     46,   19,    0, 16,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     49,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     56,   14,    0, 16,  0,  0 },
+    MINI_GOLF_ANIMATION(PlaceBallDown), {     49,   15,    0, 16,  0,  0 }, {     52,   15,    0, 16,  0,  0 }, {     55,   15,    0, 16,  0,  0 }, {     56,   14,    0, 16,  0,  0 },
     {     57,   12,    0, 16,  0,  0 }, {     58,   10,    0, 16,  0,  0 }, {     59,    8,    0, 16,  0,  0 }, {     57,    6,    0, 16,  0,  0 }, {     55,    4,    1, 16,  0,  0 },
     {     53,    2,    1, 16,  0,  0 }, {     51,    1,    1, 16,  0,  0 }, {     49,    1,    1, 16,  0,  0 }, {     47,    1,    2, 16,  0,  0 }, {     45,    2,    2, 16,  0,  0 },
     {     45,    4,    2, 16,  0,  0 }, {     44,    6,    2, 16,  0,  0 }, {     43,    8,    3, 16,  0,  0 }, {     43,   10,    3, 16,  0,  0 }, {     42,   12,    3, 16,  0,  0 },
@@ -20876,7 +20876,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94BE16, {
 })
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_94EAD4, {
-    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),
+    MINI_GOLF_STATE(Unk0),              {     15,   31,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown),
     {     15,   26,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk3),              {     15,   24,    0, 24,  0,  0 }, {     16,   21,    0, 24,  0,  0 }, {     16,   19,    0, 24,  0,  0 },
     {     16,   17,    0, 24,  0,  0 }, {     15,   15,    0, 24,  0,  0 }, {     17,   13,    0, 24,  0,  0 }, {     17,   11,    0, 24,  0,  0 }, {     17,    9,    0, 24,  0,  0 },
     {     17,    7,    0, 24,  0,  0 }, {     17,    5,    0, 24,  0,  0 }, {     17,    4,    0, 24,  0,  0 }, {     18,    3,    0, 24,  0,  0 }, {     18,    2,    0, 24,  0,  0 },
@@ -20886,7 +20886,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94EAD4, {
     {     19,   10,    0, 24,  0,  0 }, {     19,   11,    0, 24,  0,  0 }, {     19,   12,    0, 24,  0,  0 }, {     19,   13,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),
     MINI_GOLF_STATE(Unk3),              {     19,   14,    0, 24,  0,  0 }, {     19,   12,    0, 24,  0,  0 }, {     19,    9,    0, 24,  0,  0 }, {     19,    6,    0, 24,  0,  0 },
     {     19,    3,    0, 24,  0,  0 }, {     19,    0,    0, 24,  0,  0 }, {     19,   -3,    0, 24,  0,  0 }, {     19,   -6,    0, 24,  0,  0 }, {     19,   -9,    0, 24,  0,  0 },
-    MINI_GOLF_ANIMATION(Walk),          {     19,  -12,    0, 24,  0,  0 }, {     19,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     15,  -18,    0, 24,  0,  0 },
+    MINI_GOLF_ANIMATION(Walk),          {     19,  -12,    0, 24,  0,  0 }, {     19,  -15,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     15,  -18,    0, 24,  0,  0 },
     {     15,  -21,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     14,  -25,    0, 24,  0,  0 }, {     12,  -26,    0, 24,  0,  0 }, {     10,  -27,    0, 24,  0,  0 },
     {      8,  -28,    0, 24,  0,  0 }, {      6,  -26,    0, 24,  0,  0 }, {      5,  -25,    0, 24,  0,  0 }, {      4,  -24,    1, 24,  0,  0 }, {      3,  -23,    1, 24,  0,  0 },
     {      2,  -22,    1, 24,  0,  0 }, {      1,  -21,    1, 24,  0,  0 }, {      1,  -20,    1, 24,  0,  0 }, {      1,  -19,    1, 24,  0,  0 }, {      1,  -18,    1, 24,  0,  0 },
@@ -20894,7 +20894,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94EAD4, {
     {      1,  -20,    1, 24,  0,  0 }, {      1,  -21,    1, 24,  0,  0 }, {      2,  -22,    1, 24,  0,  0 }, {      3,  -23,    1, 24,  0,  0 }, {      4,  -24,    1, 24,  0,  0 },
     {      5,  -25,    0, 24,  0,  0 }, {      6,  -26,    0, 24,  0,  0 }, {      8,  -28,    0, 24,  0,  0 }, {     10,  -27,    0, 24,  0,  0 }, {     12,  -26,    0, 24,  0,  0 },
     {     14,  -25,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -18,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),
-    {     19,  -15,    0, 24,  0,  0 }, {     19,  -12,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     19,   -9,    0, 24,  0,  0 }, {     19,   -8,    0, 24,  0,  0 },
+    {     19,  -15,    0, 24,  0,  0 }, {     19,  -12,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(PlaceBallDown), {     19,   -9,    0, 24,  0,  0 }, {     19,   -8,    0, 24,  0,  0 },
     {     19,   -7,    0, 24,  0,  0 }, {     19,   -6,    0, 24,  0,  0 }, {     19,   -5,    0, 24,  0,  0 }, {     19,   -4,    0, 24,  0,  0 }, {     19,   -3,    0, 24,  0,  0 },
     {     19,   -2,    0, 24,  0,  0 }, {     19,   -1,    0, 24,  0,  0 }, {     19,    0,    0, 24,  0,  0 }, {     19,    1,    0, 24,  0,  0 }, {     19,    2,    0, 24,  0,  0 },
     {     19,    3,    0, 24,  0,  0 }, {     19,    4,    0, 24,  0,  0 }, {     19,    5,    0, 24,  0,  0 }, {     19,    6,    0, 24,  0,  0 }, {     19,    7,    0, 24,  0,  0 },
@@ -20902,7 +20902,7 @@ CREATE_VEHICLE_INFO(TrackVehicleInfo_94EAD4, {
     {     19,   13,    0, 24,  0,  0 }, MINI_GOLF_STATE(Unk2),              MINI_GOLF_STATE(Unk3),              {     19,   14,    0, 24,  0,  0 }, {     19,   12,    0, 24,  0,  0 },
     {     19,    9,    0, 24,  0,  0 }, {     19,    6,    0, 24,  0,  0 }, {     19,    3,    0, 24,  0,  0 }, {     19,    0,    0, 24,  0,  0 }, {     19,   -3,    0, 24,  0,  0 },
     {     19,   -6,    0, 24,  0,  0 }, {     19,   -9,    0, 24,  0,  0 }, MINI_GOLF_ANIMATION(Walk),          {     19,  -12,    0, 24,  0,  0 }, {     19,  -15,    0, 24,  0,  0 },
-    MINI_GOLF_ANIMATION(PlaceBallDownwards),              {     15,  -18,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     14,  -25,    0, 24,  0,  0 },
+    MINI_GOLF_ANIMATION(PlaceBallDown), {     15,  -18,    0, 24,  0,  0 }, {     15,  -21,    0, 24,  0,  0 }, {     15,  -24,    0, 24,  0,  0 }, {     14,  -25,    0, 24,  0,  0 },
     {     12,  -26,    0, 24,  0,  0 }, {     10,  -27,    0, 24,  0,  0 }, {      8,  -28,    0, 24,  0,  0 }, {      6,  -26,    0, 24,  0,  0 }, {      4,  -24,    1, 24,  0,  0 },
     {      2,  -22,    1, 24,  0,  0 }, {      1,  -20,    1, 24,  0,  0 }, {      1,  -18,    1, 24,  0,  0 }, {      1,  -16,    2, 24,  0,  0 }, {      2,  -14,    2, 24,  0,  0 },
     {      4,  -14,    2, 24,  0,  0 }, {      6,  -13,    2, 24,  0,  0 }, {      8,  -12,    3, 24,  0,  0 }, {     10,  -12,    3, 24,  0,  0 }, {     12,  -11,    3, 24,  0,  0 },

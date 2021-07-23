@@ -403,11 +403,11 @@ enum class MiniGolfState : int16_t
 enum class MiniGolfAnimation : uint8_t
 {
     Walk,
-    PlaceBallDownwards,
+    PlaceBallDown,
     SwingLeft,
-    PlaceBallUpwards,
-    Jump,
     PickupBall,
+    Jump,
+    PlaceBallUp,
     PutLeft,
     Swing,
     Put,
