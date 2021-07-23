@@ -8921,9 +8921,9 @@ loc_6DC743:
         {
             break;
         }
-        switch (moveInfo->y)
+        switch (MiniGolfState(moveInfo->y))
         {
-            case 0: // loc_6DC7B4
+            case MiniGolfState::Unk0: // loc_6DC7B4
                 if (!IsHead())
                 {
                     mini_golf_flags |= MiniGolfFlag::Flag3;
@@ -8944,21 +8944,21 @@ loc_6DC743:
                 }
                 track_progress++;
                 break;
-            case 1: // loc_6DC7ED
-                log_error("Invalid move info...");
+            case MiniGolfState::Unk1: // loc_6DC7ED
+                log_error("Unused move info...");
                 assert(false);
                 var_D3 = static_cast<uint8_t>(moveInfo->z);
                 track_progress++;
                 break;
-            case 2: // loc_6DC800
+            case MiniGolfState::Unk2: // loc_6DC800
                 mini_golf_flags |= MiniGolfFlag::Flag0;
                 track_progress++;
                 break;
-            case 3: // loc_6DC810
+            case MiniGolfState::Unk3: // loc_6DC810
                 mini_golf_flags |= MiniGolfFlag::Flag1;
                 track_progress++;
                 break;
-            case 4: // loc_6DC820
+            case MiniGolfState::Unk4: // loc_6DC820
                 trackPos.z = moveInfo->z;
                 // When the ride is closed occasionally the peep is removed
                 // but the vehicle is still on the track. This will prevent
@@ -8986,11 +8986,11 @@ loc_6DC743:
                 animation_frame = 0;
                 track_progress++;
                 break;
-            case 5: // loc_6DC87A
+            case MiniGolfState::Unk5: // loc_6DC87A
                 mini_golf_flags |= MiniGolfFlag::Flag2;
                 track_progress++;
                 break;
-            case 6: // loc_6DC88A
+            case MiniGolfState::Unk6: // loc_6DC88A
                 mini_golf_flags &= ~MiniGolfFlag::Flag4;
                 mini_golf_flags |= MiniGolfFlag::Flag5;
                 track_progress++;

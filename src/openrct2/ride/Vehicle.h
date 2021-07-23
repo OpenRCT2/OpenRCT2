@@ -385,7 +385,18 @@ namespace MiniGolfFlag
     constexpr uint8_t Flag5 = (1 << 5); // transitioning between hole
     constexpr uint8_t Flag6 = (1 << 6);
     constexpr uint8_t Flag7 = (1 << 7);
-}
+} // namespace MiniGolfFlag
+
+enum class MiniGolfState : int16_t
+{
+    Unk0,
+    Unk1, // Unused
+    Unk2,
+    Unk3,
+    Unk4,
+    Unk5,
+    Unk6,
+};
 
 enum : uint32_t
 {
