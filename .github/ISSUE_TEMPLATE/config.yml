@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
 - name: Localisation
   url: https://github.com/OpenRCT2/Localisation
-  about: For localisation issues, go to the localisation repository
+  about: For localisation issues, go to the localisation repository.
 - name: OpenRCT2 Discord Server
   url: https://discord.gg/ZXZd8D8
-  about: Join our Discord server
+  about: Join our Discord server.
