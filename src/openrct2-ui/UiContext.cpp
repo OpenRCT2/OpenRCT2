@@ -179,11 +179,8 @@ public:
         if (mode == FULLSCREEN_MODE::FULLSCREEN)
         {
             SDL_SetWindowFullscreen(_window, 0);
-        }
 
-        // Set window size
-        if (mode == FULLSCREEN_MODE::FULLSCREEN)
-        {
+            // Set window size
             UpdateFullscreenResolutions();
             Resolution resolution = GetClosestResolution(gConfigGeneral.fullscreen_width, gConfigGeneral.fullscreen_height);
             SDL_SetWindowSize(_window, resolution.Width, resolution.Height);
