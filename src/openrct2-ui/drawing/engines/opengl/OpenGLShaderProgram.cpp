@@ -21,9 +21,8 @@
 using namespace OpenRCT2;
 
 OpenGLShader::OpenGLShader(const char* name, GLenum type)
+    : _type(type)
 {
-    _type = type;
-
     auto path = GetPath(name);
     auto sourceCode = ReadSourceCode(path);
     auto sourceCodeStr = sourceCode.c_str();

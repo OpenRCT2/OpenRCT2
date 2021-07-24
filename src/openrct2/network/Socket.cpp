@@ -631,11 +631,11 @@ public:
 
 private:
     explicit TcpSocket(SOCKET socket, const std::string& hostName, const std::string& ipAddress)
+        : _status(SocketStatus::Connected)
+        , _socket(socket)
+        , _ipAddress(ipAddress)
+        , _hostName(hostName)
     {
-        _socket = socket;
-        _hostName = hostName;
-        _ipAddress = ipAddress;
-        _status = SocketStatus::Connected;
     }
 
     void CloseSocket()
@@ -833,10 +833,10 @@ public:
 
 private:
     explicit UdpSocket(SOCKET socket, const std::string& hostName)
+        : _status(SocketStatus::Connected)
+        , _socket(socket)
+        , _hostName(hostName)
     {
-        _socket = socket;
-        _hostName = hostName;
-        _status = SocketStatus::Connected;
     }
 
     SOCKET CreateSocket()
