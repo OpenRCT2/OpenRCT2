@@ -1,0 +1,30 @@
+name: Feature request
+title: "[Feature] "
+description: Request a new feature to be added to OpenRCT2.
+labels:
+- feature
+
+body:
+- type: markdown
+  attributes:
+    value: Before filing this request, [please check if it hasn't already been suggested before](https://github.com/OpenRCT2/OpenRCT2/issues?q=is%3Aissue+is%3Aopen+label%3Afeature). If it has, please add to the existing issue instead.
+
+- type: textarea
+  attributes:
+    label: Describe the feature
+    placeholder: Describe your feature idea here. You can paste or drag & drop attachments here.
+  validations:
+    required: true
+
+- type: dropdown
+  attributes:
+    label: Feature type
+    description: What things had an issue?  Check all that apply.
+    multiple: true
+    options:
+      - Quality of life
+      - Multiplayer
+      - Plug-ins
+      - Other
+  validations:
+    required: true
