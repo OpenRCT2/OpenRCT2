@@ -91,9 +91,9 @@ private:
 
 public:
     Atlas(GLuint index, int32_t imageSize)
+        : _index(index)
+        , _imageSize(imageSize)
     {
-        _index = index;
-        _imageSize = imageSize;
     }
 
     void Initialise(int32_t atlasWidth, int32_t atlasHeight)

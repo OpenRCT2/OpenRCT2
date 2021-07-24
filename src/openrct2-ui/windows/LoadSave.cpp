@@ -117,13 +117,13 @@ enum
 
 struct LoadSaveListItem
 {
-    std::string name;
-    std::string path;
-    time_t date_modified;
-    std::string date_formatted;
-    std::string time_formatted;
-    uint8_t type;
-    bool loaded;
+    std::string name{};
+    std::string path{};
+    time_t date_modified{ 0 };
+    std::string date_formatted{};
+    std::string time_formatted{};
+    uint8_t type{ 0 };
+    bool loaded{ false };
 };
 
 static std::function<void(int32_t result, std::string_view)> _loadSaveCallback;
