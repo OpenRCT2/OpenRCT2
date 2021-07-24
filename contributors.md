@@ -93,6 +93,7 @@ The following people are not part of the development team, but have been contrib
 * Keith Stellyes (keithstellyes) - Misc.
 * Bas Cantrijn (Basssiiie) - Misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
+* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes
 
 ## Bug fixes
 * (KirilAngelov)
