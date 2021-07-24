@@ -123,7 +123,7 @@ public:
 
     ~UiContext() override
     {
-        CloseWindow();
+        UiContext::CloseWindow();
         delete _windowManager;
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
         delete _platformUiContext;
