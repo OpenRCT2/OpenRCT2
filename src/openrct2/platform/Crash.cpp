@@ -69,6 +69,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
                      L"post?format=minidump&token=" BACKTRACE_TOKEN);
     std::map<std::wstring, std::wstring> parameters;
     parameters[L"product_name"] = L"openrct2";
+    parameters[L"version"] = String::ToWideChar(gVersionInfoFull);
     // In case of releases this can be empty
     if (wcslen(_wszCommitSha1Short) > 0)
     {
@@ -336,7 +337,7 @@ CExceptionHandler crash_init()
     auto exHandler = new google_breakpad::ExceptionHandler(
         GetDumpDirectory(), 0, OnCrash, 0, google_breakpad::ExceptionHandler::HANDLER_ALL, MiniDumpWithDataSegs, PipeName, 0);
     return reinterpret_cast<CExceptionHandler>(exHandler);
-#else  // USE_BREAKPAD
+#else // USE_BREAKPAD
     return nullptr;
 #endif // USE_BREAKPAD
 }
