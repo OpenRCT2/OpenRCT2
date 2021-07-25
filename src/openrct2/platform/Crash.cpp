@@ -27,10 +27,12 @@
 #    include "../Context.h"
 #    include "../Game.h"
 #    include "../OpenRCT2.h"
+#    include "../PlatformEnvironment.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/Guard.hpp"
+#    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../interface/Screenshot.h"
 #    include "../localisation/Language.h"
@@ -53,6 +55,8 @@ const wchar_t* _wszCommitSha1Short = WSZ("");
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
 #    define BACKTRACE_TOKEN L"742b8d9d70c52df663e4f2449f90039cf9406f89e57ecb90b0f086ba16e33d20"
+
+using namespace OpenRCT2;
 
 // Note: uploading gzipped crash dumps manually requires specifying
 // 'Content-Encoding: gzip' header in HTTP request, but we cannot do that,
@@ -319,9 +323,10 @@ static bool OnCrash(
 
 static std::wstring GetDumpDirectory()
 {
-    char userDirectory[MAX_PATH];
-    platform_get_user_directory(userDirectory, nullptr, sizeof(userDirectory));
-    auto result = String::ToWideChar(userDirectory);
+    auto env = GetContext()->GetPlatformEnvironment();
+    auto crashPath = env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::CRASH);
+
+    auto result = String::ToWideChar(crashPath.c_str());
     return result;
 }
 
@@ -337,7 +342,7 @@ CExceptionHandler crash_init()
     auto exHandler = new google_breakpad::ExceptionHandler(
         GetDumpDirectory(), 0, OnCrash, 0, google_breakpad::ExceptionHandler::HANDLER_ALL, MiniDumpWithDataSegs, PipeName, 0);
     return reinterpret_cast<CExceptionHandler>(exHandler);
-#else // USE_BREAKPAD
+#else  // USE_BREAKPAD
     return nullptr;
 #endif // USE_BREAKPAD
 }
