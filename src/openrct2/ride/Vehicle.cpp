@@ -740,6 +740,34 @@ template<> bool SpriteBase::Is<Vehicle>() const
     return Type == EntityType::Vehicle;
 }
 
+/**
+ * Fires the "vehicle.crash" api hook
+ * @param vehicleId Entity id of the vehicle that just crashed
+ * @param crashId What the vehicle crashed into. Should be either "another_vehicle", "land", or "water"
+ */
+static void FireVehicleCrashHook(const uint16_t vehicleId, const std::string_view crashId)
+{
+    // If ENABLE_SCRIPTING is not defined, the body of this function is empty.
+    // Calls to this function should probably still be wrapped in a #ifdef to avoid
+    //  unoptimized code from wasting time by calling an empty function
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("id", vehicleId);
+        obj.Set("crashIntoType", crashId);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH, e, true);
+    }
+#endif
+}
+
 static bool vehicle_move_info_valid(
     VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction, int32_t offset)
 {
@@ -3601,20 +3629,7 @@ void Vehicle::UpdateCollisionSetup()
         train->sub_state = 2;
 
 #ifdef ENABLE_SCRIPTING
-        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
-        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH))
-        {
-            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
-
-            // Create event args object
-            auto obj = OpenRCT2::Scripting::DukObject(ctx);
-            obj.Set("id", train->sprite_index);
-            obj.Set("crashIntoType", "another_vehicle");
-
-            // Call the subscriptions
-            auto e = obj.Take();
-            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH, e, true);
-        }
+        FireVehicleCrashHook(train->sprite_index, "another_vehicle");
 #endif
 
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { train->x, train->y, train->z });
@@ -5354,20 +5369,7 @@ void Vehicle::CrashOnLand()
     SetState(Vehicle::Status::Crashed, sub_state);
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH))
-    {
-        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
-
-        // Create event args object
-        auto obj = OpenRCT2::Scripting::DukObject(ctx);
-        obj.Set("id", sprite_index);
-        obj.Set("crashIntoType", "land");
-
-        // Call the subscriptions
-        auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH, e, true);
-    }
+    FireVehicleCrashHook(sprite_index, "land");
 #endif
 
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
@@ -5433,20 +5435,7 @@ void Vehicle::CrashOnWater()
     SetState(Vehicle::Status::Crashed, sub_state);
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH))
-    {
-        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
-
-        // Create event args object
-        auto obj = OpenRCT2::Scripting::DukObject(ctx);
-        obj.Set("id", sprite_index);
-        obj.Set("crashIntoType", "water");
-
-        // Call the subscriptions
-        auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH, e, true);
-    }
+    FireVehicleCrashHook(sprite_index, "water");
 #endif
 
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
