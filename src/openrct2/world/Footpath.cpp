@@ -1412,7 +1412,7 @@ static int32_t footpath_is_connected_to_map_edge_helper(CoordsXYZ footpathPos, i
 
             edges = tileElement->AsPath()->GetEdges();
             currentTile.direction = direction_reverse(currentTile.direction);
-            if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY))
+            if (!tileElement->IsLastForTile() && !(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY))
             {
                 int elementIndex = 1;
                 // Loop over all elements and cull appropriate edges
@@ -1422,12 +1422,10 @@ static int32_t footpath_is_connected_to_map_edge_helper(CoordsXYZ footpathPos, i
                         break;
                     if (tileElement[elementIndex].GetType() != TILE_ELEMENT_TYPE_BANNER)
                     {
-                        ++elementIndex;
                         continue;
                     }
                     edges &= tileElement[elementIndex].AsBanner()->GetAllowedEdges();
-                    ++elementIndex;
-                } while (!tileElement[elementIndex].IsLastForTile());
+                } while (!tileElement[elementIndex++].IsLastForTile());
             }
 
             // Exclude the direction we came from
