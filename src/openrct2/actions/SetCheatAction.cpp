@@ -417,20 +417,20 @@ void SetCheatAction::RemoveLitter() const
         sprite_remove(litter);
     }
 
-    tile_element_iterator it;
-
+    tile_element_iterator it{};
     tile_element_iterator_begin(&it);
     do
     {
         if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        if (!(it.element)->AsPath()->HasAddition())
+        auto* path = it.element->AsPath();
+        if (path->HasAddition())
             continue;
 
-        auto* pathBitEntry = it.element->AsPath()->GetAdditionEntry();
-        if (pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
-            it.element->AsPath()->SetAdditionStatus(0xFF);
+        auto* pathBitEntry = path->GetAdditionEntry();
+        if (pathBitEntry != nullptr && pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
+            path->SetAdditionStatus(0xFF);
 
     } while (tile_element_iterator_next(&it));
 
