@@ -4330,6 +4330,9 @@ static void vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPo
             remainingDistance = 0;
         }
         train_ref train = vehicle_create_train(rideIndex, trainsPos, vehicleIndex, &remainingDistance, trackElement);
+        if (train.head == nullptr || train.tail == nullptr)
+            continue;
+
         if (vehicleIndex == 0)
         {
             firstTrain = train;
