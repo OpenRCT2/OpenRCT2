@@ -429,10 +429,10 @@ Banner* CreateBanner()
 
 void DeleteBanner(BannerIndex id)
 {
-    auto banner = GetBanner(id);
+    auto* const banner = GetBanner(id);
     if (banner != nullptr)
     {
-        banner = {};
+        *banner = {};
     }
 }
 
