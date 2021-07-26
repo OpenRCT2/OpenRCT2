@@ -711,8 +711,8 @@ void scenario_remove_trackless_rides(rct_s6_data* s6)
 
 ObjectiveStatus Objective::CheckGuestsBy() const
 {
-    int16_t parkRating = gParkRating;
-    int32_t currentMonthYear = gDateMonthsElapsed;
+    auto parkRating = gParkRating;
+    auto currentMonthYear = gDateMonthsElapsed;
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
