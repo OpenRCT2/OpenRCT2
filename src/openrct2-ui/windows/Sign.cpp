@@ -58,13 +58,13 @@ class SignWindow final : public Window
 {
 private:
     bool _isSmall = false;
-    Banner* _banner = nullptr;
 
     void ShowTextInput()
     {
-        if (_banner != nullptr)
+        auto* banner = GetBanner(number);
+        if (banner != nullptr)
         {
-            auto bannerText = _banner->GetText();
+            auto bannerText = banner->GetText();
             window_text_input_raw_open(this, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, bannerText.c_str(), 32);
         }
     }
@@ -87,12 +87,13 @@ public:
     {
         number = windowNumber;
         _isSmall = isSmall;
-
-        _banner = GetBanner(number);
-        if (_banner == nullptr)
+        auto* banner = GetBanner(number);
+        if (banner == nullptr)
+        {
             return false;
+        }
 
-        auto signViewPosition = _banner->position.ToCoordsXY().ToTileCentre();
+        auto signViewPosition = banner->position.ToCoordsXY().ToTileCentre();
         auto* tileElement = banner_get_tile_element(number);
         if (tileElement == nullptr)
             return false;
@@ -138,6 +139,12 @@ public:
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
     {
+        auto* banner = GetBanner(number);
+        if (banner == nullptr)
+        {
+            Close();
+            return;
+        }
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
@@ -150,7 +157,7 @@ public:
                 {
                     Close();
                 }
-                auto bannerCoords = _banner->position.ToCoordsXY();
+                auto bannerCoords = banner->position.ToCoordsXY();
 
                 if (_isSmall)
                 {
