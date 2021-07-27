@@ -50,7 +50,7 @@ int16_t gSceneryShiftPressZOffset;
 int16_t gSceneryCtrlPressed;
 int16_t gSceneryCtrlPressZ;
 
-money32 gClearSceneryCost;
+money64 gClearSceneryCost;
 
 // rct2: 0x009A3E74
 const CoordsXY SceneryQuadrantOffsets[] = { { 7, 7 }, { 7, 23 }, { 23, 23 }, { 23, 7 } };
