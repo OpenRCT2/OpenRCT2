@@ -277,7 +277,7 @@ extern int16_t gSceneryCtrlPressZ;
 
 extern const CoordsXY SceneryQuadrantOffsets[];
 
-extern money32 gClearSceneryCost;
+extern money64 gClearSceneryCost;
 
 void init_scenery();
 void scenery_update_tile(const CoordsXY& sceneryPos);

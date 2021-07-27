@@ -1997,9 +1997,9 @@ static uint8_t top_toolbar_tool_update_land_paint(const ScreenCoordsXY& screenPo
 
     if (!mapTile)
     {
-        if (gClearSceneryCost != MONEY32_UNDEFINED)
+        if (gClearSceneryCost != MONEY64_UNDEFINED)
         {
-            gClearSceneryCost = MONEY32_UNDEFINED;
+            gClearSceneryCost = MONEY64_UNDEFINED;
             window_invalidate_by_class(WC_CLEAR_SCENERY);
         }
         return state_changed;
@@ -2067,7 +2067,7 @@ static void top_toolbar_tool_update_scenery_clear(const ScreenCoordsXY& screenPo
 
     auto action = GetClearAction();
     auto result = GameActions::Query(&action);
-    auto cost = (result->Error == GameActions::Status::Ok ? result->Cost : MONEY32_UNDEFINED);
+    auto cost = (result->Error == GameActions::Status::Ok ? result->Cost : MONEY64_UNDEFINED);
     if (gClearSceneryCost != cost)
     {
         gClearSceneryCost = cost;

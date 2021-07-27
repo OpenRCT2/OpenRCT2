@@ -88,7 +88,7 @@ rct_window* window_clear_scenery_open()
     window_push_others_below(window);
 
     gLandToolSize = 2;
-    gClearSceneryCost = MONEY32_UNDEFINED;
+    gClearSceneryCost = MONEY64_UNDEFINED;
 
     gClearSmallScenery = true;
     gClearLargeScenery = false;
@@ -227,11 +227,12 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw cost amount
-    if (gClearSceneryCost != MONEY32_UNDEFINED && gClearSceneryCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (gClearSceneryCost != MONEY64_UNDEFINED && gClearSceneryCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        money64 value = gClearSceneryCost;
+        auto ft = Formatter();
+        ft.Add<money64>(gClearSceneryCost);
         screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + w->windowPos.x;
         screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5 + 27;
-        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &value, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
     }
 }

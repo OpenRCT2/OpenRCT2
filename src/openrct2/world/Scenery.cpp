@@ -51,7 +51,7 @@ int16_t gSceneryShiftPressZOffset;
 int16_t gSceneryCtrlPressed;
 int16_t gSceneryCtrlPressZ;
 
-money32 gClearSceneryCost;
+money64 gClearSceneryCost;
 
 static std::vector<ScenerySelection> _restrictedScenery;
 
