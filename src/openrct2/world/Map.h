@@ -104,9 +104,18 @@ extern uint16_t gGrassSceneryTileLoopPosition;
 extern int32_t gMapSize;
 extern int32_t gMapBaseZ;
 
-inline int32_t GetMapSizeUnits() { return (gMapSize - 1) * COORDS_XY_STEP; }
-inline int32_t GetMapSizeMinus2() { return (gMapSize * COORDS_XY_STEP) + MAXIMUM_MAP_SIZE_PRACTICAL; }
-inline int32_t GetMapSizeMaxXY() { return GetMapSizeUnits() - 1; }
+inline int32_t GetMapSizeUnits()
+{
+    return (gMapSize - 1) * COORDS_XY_STEP;
+}
+inline int32_t GetMapSizeMinus2()
+{
+    return (gMapSize * COORDS_XY_STEP) + MAXIMUM_MAP_SIZE_PRACTICAL;
+}
+inline int32_t GetMapSizeMaxXY()
+{
+    return GetMapSizeUnits() - 1;
+}
 
 extern uint16_t gMapSelectFlags;
 extern uint16_t gMapSelectType;

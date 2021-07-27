@@ -926,8 +926,7 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
 uint8_t map_get_lowest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), GetMapSizeMaxXY()),
-                            std::min(range.GetBottom(), GetMapSizeMaxXY()) };
+                            std::min(range.GetRight(), GetMapSizeMaxXY()), std::min(range.GetBottom(), GetMapSizeMaxXY()) };
 
     uint8_t min_height = 0xFF;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -956,8 +955,7 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
 uint8_t map_get_highest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), GetMapSizeMaxXY()),
-                            std::min(range.GetBottom(), GetMapSizeMaxXY()) };
+                            std::min(range.GetRight(), GetMapSizeMaxXY()), std::min(range.GetBottom(), GetMapSizeMaxXY()) };
 
     uint8_t max_height = 0;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
