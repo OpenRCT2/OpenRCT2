@@ -49,6 +49,7 @@ namespace OpenRCT2
         HEIGHTMAP,   // Contains heightmap data.
         REPLAY,      // Contains recorded replays.
         LOG_DESYNCS, // Contains desync reports.
+        CRASH,       // Contains crash dumps.
     };
 
     enum class PATHID

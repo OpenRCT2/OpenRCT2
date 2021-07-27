@@ -1134,6 +1134,7 @@ namespace OpenRCT2
                     DIRID::SEQUENCE,
                     DIRID::REPLAY,
                     DIRID::LOG_DESYNCS,
+                    DIRID::CRASH,
                 });
         }
 
