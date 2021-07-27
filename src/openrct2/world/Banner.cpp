@@ -31,7 +31,7 @@
 #include <iterator>
 #include <limits>
 
-static Banner _banners[MAX_BANNERS];
+static std::vector<Banner> _banners;
 
 std::string Banner::GetText() const
 {
@@ -114,9 +114,17 @@ static BannerIndex BannerGetNewIndex()
 {
     for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
-        if (_banners[bannerIndex].IsNull())
+        if (bannerIndex < _banners.size())
         {
-            return bannerIndex;
+            if (_banners[bannerIndex].IsNull())
+            {
+                return bannerIndex;
+            }
+        }
+        else
+        {
+            _banners.emplace_back();
+            return static_cast<BannerIndex>(_banners.size() - 1);
         }
     }
     return BANNER_INDEX_NULL;
@@ -128,41 +136,7 @@ static BannerIndex BannerGetNewIndex()
  */
 void banner_init()
 {
-    for (auto& banner : _banners)
-    {
-        banner = {};
-    }
-}
-
-/**
- * Creates a new banner and returns the index of the banner
- * If the flag GAME_COMMAND_FLAG_APPLY is NOT set then returns
- * the first unused index but does NOT mark the banner as created.
- * returns 0xFF on failure.
- *
- *  rct2: 0x006BA278
- */
-BannerIndex create_new_banner(uint8_t flags)
-{
-    BannerIndex bannerIndex = BannerGetNewIndex();
-
-    if (bannerIndex == BANNER_INDEX_NULL)
-    {
-        gGameCommandErrorText = STR_TOO_MANY_BANNERS_IN_GAME;
-        return bannerIndex;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        auto banner = &_banners[bannerIndex];
-
-        banner->flags = 0;
-        banner->type = 0;
-        banner->text = {};
-        banner->colour = 2;
-        banner->text_colour = 2;
-    }
-    return bannerIndex;
+    _banners.clear();
 }
 
 TileElement* banner_get_tile_element(BannerIndex bannerIndex)
@@ -261,12 +235,16 @@ ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 
 void banner_reset_broken_index()
 {
-    for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
+    for (BannerIndex bannerIndex = 0; bannerIndex < _banners.size(); bannerIndex++)
     {
         auto tileElement = banner_get_tile_element(bannerIndex);
         if (tileElement == nullptr)
         {
-            _banners[bannerIndex].type = BANNER_NULL;
+            auto banner = GetBanner(bannerIndex);
+            if (banner != nullptr)
+            {
+                banner->type = BANNER_NULL;
+            }
         }
     }
 }
@@ -274,7 +252,7 @@ void banner_reset_broken_index()
 void fix_duplicated_banners()
 {
     // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
-    bool activeBanners[std::size(_banners)]{};
+    std::vector<bool> activeBanners;
     for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
@@ -292,6 +270,10 @@ void fix_duplicated_banners()
                         if (bannerIndex == BANNER_INDEX_NULL)
                             continue;
 
+                        if (activeBanners.size() <= bannerIndex)
+                        {
+                            activeBanners.resize(bannerIndex + 1);
+                        }
                         if (activeBanners[bannerIndex])
                         {
                             log_info(
@@ -299,24 +281,23 @@ void fix_duplicated_banners()
                                 tileElement->base_height);
 
                             // Banner index is already in use by another banner, so duplicate it
-                            auto newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
-                            if (newBannerIndex == BANNER_INDEX_NULL)
+                            auto newBanner = CreateBanner();
+                            if (newBanner == nullptr)
                             {
                                 log_error("Failed to create new banner.");
                                 continue;
                             }
-                            Guard::Assert(!activeBanners[newBannerIndex]);
+                            Guard::Assert(!activeBanners[newBanner->id]);
 
                             // Copy over the original banner, but update the location
-                            auto newBanner = GetBanner(newBannerIndex);
                             auto oldBanner = GetBanner(bannerIndex);
-                            if (oldBanner != nullptr && newBanner != nullptr)
+                            if (oldBanner != nullptr)
                             {
                                 *newBanner = *oldBanner;
                                 newBanner->position = { x, y };
                             }
 
-                            tileElement->AsBanner()->SetIndex(newBannerIndex);
+                            tileElement->AsBanner()->SetIndex(newBanner->id);
                         }
 
                         // Mark banner index as in-use
@@ -379,11 +360,111 @@ void BannerElement::ResetAllowedEdges()
     AllowedEdges |= 0b00001111;
 }
 
+void UnlinkAllRideBanners()
+{
+    for (auto& banner : _banners)
+    {
+        if (!banner.IsNull())
+        {
+            banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+            banner.ride_index = RIDE_ID_NULL;
+        }
+    }
+}
+
+void UnlinkAllBannersForRide(ride_id_t rideId)
+{
+    for (auto& banner : _banners)
+    {
+        if (!banner.IsNull() && (banner.flags & BANNER_FLAG_LINKED_TO_RIDE) && banner.ride_index == rideId)
+        {
+            banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+            banner.ride_index = RIDE_ID_NULL;
+            banner.text = {};
+        }
+    }
+}
+
 Banner* GetBanner(BannerIndex id)
 {
-    if (id < std::size(_banners))
+    if (id < _banners.size())
     {
+        auto banner = &_banners[id];
+        if (banner != nullptr && !banner->IsNull())
+        {
+            return banner;
+        }
+    }
+    return nullptr;
+}
+
+Banner* GetOrCreateBanner(BannerIndex id)
+{
+    if (id < MAX_BANNERS)
+    {
+        if (id >= _banners.size())
+        {
+            _banners.resize(id + 1);
+        }
         return &_banners[id];
     }
     return nullptr;
+}
+
+Banner* CreateBanner()
+{
+    auto bannerIndex = BannerGetNewIndex();
+    auto banner = GetOrCreateBanner(bannerIndex);
+    if (banner != nullptr)
+    {
+        banner->id = bannerIndex;
+        banner->flags = 0;
+        banner->type = 0;
+        banner->text = {};
+        banner->colour = 2;
+        banner->text_colour = 2;
+    }
+    return banner;
+}
+
+void DeleteBanner(BannerIndex id)
+{
+    auto* const banner = GetBanner(id);
+    if (banner != nullptr)
+    {
+        *banner = {};
+    }
+}
+
+void TrimBanners()
+{
+    if (_banners.size() > 0)
+    {
+        auto lastBannerId = _banners.size() - 1;
+        while (lastBannerId != std::numeric_limits<size_t>::max() && _banners[lastBannerId].IsNull())
+        {
+            lastBannerId--;
+        }
+        _banners.resize(lastBannerId + 1);
+        _banners.shrink_to_fit();
+    }
+}
+
+size_t GetNumBanners()
+{
+    size_t count = 0;
+    for (const auto& banner : _banners)
+    {
+        if (!banner.IsNull())
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+bool HasReachedBannerLimit()
+{
+    auto numBanners = GetNumBanners();
+    return numBanners >= MAX_BANNERS;
 }

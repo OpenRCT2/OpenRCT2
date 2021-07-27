@@ -1246,9 +1246,16 @@ public:
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
-                        auto dstBanner = GetBanner(bannerIndex);
-                        ImportBanner(dstBanner, srcBanner);
-                        dst2->SetBannerIndex(src2->GetBannerIndex());
+                        auto dstBanner = GetOrCreateBanner(bannerIndex);
+                        if (dstBanner == nullptr)
+                        {
+                            dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                        }
+                        else
+                        {
+                            ImportBanner(dstBanner, srcBanner);
+                            dst2->SetBannerIndex(src2->GetBannerIndex());
+                        }
                     }
                 }
                 break;
@@ -1272,9 +1279,16 @@ public:
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
-                        auto dstBanner = GetBanner(bannerIndex);
-                        ImportBanner(dstBanner, srcBanner);
-                        dst2->SetBannerIndex(src2->GetBannerIndex());
+                        auto dstBanner = GetOrCreateBanner(bannerIndex);
+                        if (dstBanner == nullptr)
+                        {
+                            dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                        }
+                        else
+                        {
+                            ImportBanner(dstBanner, srcBanner);
+                            dst2->SetBannerIndex(src2->GetBannerIndex());
+                        }
                     }
                 }
                 break;
@@ -1284,7 +1298,6 @@ public:
                 auto dst2 = dst->AsBanner();
                 auto src2 = src->AsBanner();
 
-                dst2->SetIndex(src2->GetIndex());
                 dst2->SetPosition(src2->GetPosition());
                 dst2->SetAllowedEdges(src2->GetAllowedEdges());
 
@@ -1292,8 +1305,16 @@ public:
                 if (bannerIndex < std::size(_s6.banners))
                 {
                     auto srcBanner = &_s6.banners[bannerIndex];
-                    auto dstBanner = GetBanner(bannerIndex);
-                    ImportBanner(dstBanner, srcBanner);
+                    auto dstBanner = GetOrCreateBanner(bannerIndex);
+                    if (dstBanner == nullptr)
+                    {
+                        dst2->SetIndex(BANNER_INDEX_NULL);
+                    }
+                    else
+                    {
+                        ImportBanner(dstBanner, srcBanner);
+                        dst2->SetIndex(bannerIndex);
+                    }
                 }
                 else
                 {

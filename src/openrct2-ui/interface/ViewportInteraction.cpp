@@ -423,15 +423,19 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         case ViewportInteractionItem::Banner:
         {
             auto banner = tileElement->AsBanner()->GetBanner();
-            auto* bannerEntry = get_banner_entry(banner->type);
+            if (banner != nullptr)
+            {
+                auto* bannerEntry = get_banner_entry(banner->type);
 
-            auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-            banner->FormatTextTo(ft, /*addColour*/ true);
-            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-            ft.Add<rct_string_id>(bannerEntry->name);
-            SetMapTooltip(ft);
-            return info;
+                auto ft = Formatter();
+                ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                banner->FormatTextTo(ft, /*addColour*/ true);
+                ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                ft.Add<rct_string_id>(bannerEntry->name);
+                SetMapTooltip(ft);
+                return info;
+            }
+            break;
         }
         default:
             break;

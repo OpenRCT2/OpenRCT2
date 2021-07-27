@@ -82,7 +82,7 @@ void TileElement::RemoveBannerEntry()
     if (banner != nullptr)
     {
         window_close_by_number(WC_BANNER, bannerIndex);
-        *banner = {};
+        DeleteBanner(banner->id);
     }
 }
 
