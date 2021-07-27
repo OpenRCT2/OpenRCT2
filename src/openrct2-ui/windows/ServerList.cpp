@@ -401,19 +401,19 @@ static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
 
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, nullptr,
-        { COLOUR_WHITE });
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {}, { COLOUR_WHITE });
 
     // Draw version number
     std::string version = network_get_version();
-    const char* versionCStr = version.c_str();
+    auto ft = Formatter();
+    ft.Add<const char*>(version.c_str());
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION,
-        static_cast<void*>(&versionCStr), { COLOUR_WHITE });
-
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, static_cast<void*>(&_numPlayersOnline),
+        dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
         { COLOUR_WHITE });
+
+    ft = Formatter();
+    ft.Add<uint32_t>(_numPlayersOnline);
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, ft, { COLOUR_WHITE });
 }
 
 static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)

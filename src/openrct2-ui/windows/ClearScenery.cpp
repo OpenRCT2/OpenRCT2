@@ -222,8 +222,9 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
                                     w->windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        DrawTextBasic(
-            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize, { TextAlignment::CENTRE });
+        auto ft = Formatter();
+        ft.Add<uint16_t>(gLandToolSize);
+        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
     }
 
     // Draw cost amount

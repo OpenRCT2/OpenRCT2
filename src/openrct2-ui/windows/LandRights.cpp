@@ -262,16 +262,19 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        DrawTextBasic(
-            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize, { TextAlignment::CENTRE });
+        auto ft = Formatter();
+        ft.Add<uint16_t>(gLandToolSize);
+        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
     }
 
     // Draw cost amount
     if (_landRightsCost != MONEY32_UNDEFINED && _landRightsCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
+        auto ft = Formatter();
+        ft.Add<money64>(_landRightsCost);
         screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + w->windowPos.x,
                          window_land_rights_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 32 };
-        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &_landRightsCost, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
     }
 }
 

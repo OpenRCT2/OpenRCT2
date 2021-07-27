@@ -710,7 +710,7 @@ void CustomListView::PaintSeperator(
         // Draw string
         Formatter ft;
         ft.Add<const char*>(text);
-        DrawTextBasic(dpi, { centreX, pos.y }, STR_STRING, ft.Data(), { baseColour, TextAlignment::CENTRE });
+        DrawTextBasic(dpi, { centreX, pos.y }, STR_STRING, ft, { baseColour, TextAlignment::CENTRE });
 
         // Get string dimensions
         format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());

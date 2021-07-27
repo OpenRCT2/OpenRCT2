@@ -633,8 +633,9 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            money64 cost = _window_footpath_cost;
-            DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, &cost, { TextAlignment::CENTRE });
+            auto ft = Formatter();
+            ft.Add<money64>(_window_footpath_cost);
+            DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
         }
     }
 }
