@@ -811,7 +811,7 @@ static void paint_splash_boats_station(
 
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
-        track_paint_util_draw_station_platform(session, ride, direction, height, 7, tileElement);
+        track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 7, tileElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 

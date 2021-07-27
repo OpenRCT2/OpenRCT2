@@ -551,6 +551,9 @@ void track_paint_util_draw_station_inverted(
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
+    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
+
     bool hasFence;
     uint32_t imageId;
 
@@ -850,11 +853,14 @@ bool track_paint_util_draw_station_covers_2(
     return true;
 }
 
-void track_paint_util_draw_station_platform(
+void track_paint_util_draw_narrow_station_platform(
     paint_session* session, Ride* ride, Direction direction, int32_t height, int32_t zOffset, const TileElement* tileElement)
 {
     CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
+    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
+
     if (direction & 1)
     {
         bool hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
@@ -899,6 +905,9 @@ void track_paint_util_draw_pier(
     paint_session* session, Ride* ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
     int32_t height, const TileElement* tileElement, uint8_t rotation)
 {
+    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
+
     bool hasFence;
     uint32_t imageId;
 

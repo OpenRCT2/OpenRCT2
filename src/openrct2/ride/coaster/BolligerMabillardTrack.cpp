@@ -98,7 +98,7 @@ void bolliger_mabillard_track_station(
 
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
-        track_paint_util_draw_station_platform(session, ride, direction, height, 9, tileElement);
+        track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 9, tileElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
