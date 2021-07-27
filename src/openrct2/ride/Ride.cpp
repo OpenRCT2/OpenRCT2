@@ -1057,6 +1057,16 @@ static void ride_remove_vehicles(Ride* ride)
 
         for (size_t i = 0; i < MAX_STATIONS; i++)
             ride->stations[i].TrainAtStation = RideStation::NO_TRAIN;
+
+        // Also clean up orphaned vehicles for good measure.
+        for (auto* vehicle : TrainManager::View())
+        {
+            if (vehicle->ride == ride->id)
+            {
+                vehicle->Invalidate();
+                sprite_remove(vehicle);
+            }
+        }
     }
 }
 
@@ -4172,9 +4182,15 @@ static Vehicle* vehicle_create_car(
         vehicle->update_flags = 0;
 
         CoordsXY chosenLoc;
+        auto numAttempts = 0;
         // loc_6DDD26:
         do
         {
+            numAttempts++;
+            // This can happen when trying to spawn dozens of cars in a tiny area.
+            if (numAttempts > 10000)
+                return nullptr;
+
             vehicle->sprite_direction = scenario_rand() & 0x1E;
             chosenLoc.y = dodgemPos.y + (scenario_rand() & 0xFF);
             chosenLoc.x = dodgemPos.x + (scenario_rand() & 0xFF);
@@ -4318,15 +4334,16 @@ static train_ref vehicle_create_train(
     return train;
 }
 
-static void vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPos, TrackElement* trackElement)
+static bool vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPos, TrackElement* trackElement)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
-        return;
+        return false;
 
     train_ref firstTrain = {};
     train_ref lastTrain = {};
     int32_t remainingDistance = 0;
+    bool allTrainsCreated = true;
 
     for (int32_t vehicleIndex = 0; vehicleIndex < ride->num_vehicles; vehicleIndex++)
     {
@@ -4336,7 +4353,10 @@ static void vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPo
         }
         train_ref train = vehicle_create_train(rideIndex, trainsPos, vehicleIndex, &remainingDistance, trackElement);
         if (train.head == nullptr || train.tail == nullptr)
+        {
+            allTrainsCreated = false;
             continue;
+        }
 
         if (vehicleIndex == 0)
         {
@@ -4365,6 +4385,8 @@ static void vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPo
         firstTrain.head->prev_vehicle_on_ride = lastTrain.tail->sprite_index;
     if (firstTrain.head != nullptr)
         lastTrain.tail->next_vehicle_on_ride = firstTrain.head->sprite_index;
+
+    return allTrainsCreated;
 }
 
 /**
@@ -4474,7 +4496,14 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
         direction = trackElement->GetDirection();
     }
 
-    vehicle_create_trains(id, vehiclePos, trackElement);
+    if (!vehicle_create_trains(id, vehiclePos, trackElement))
+    {
+        // This flag is needed for ride_remove_vehicles()
+        lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
+        ride_remove_vehicles(this);
+        gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
+        return false;
+    }
     // return true;
 
     // Initialise station departs
