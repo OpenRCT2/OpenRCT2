@@ -867,3 +867,32 @@ template<> struct DataSerializerTraits_t<rct_peep_thought>
         stream->Write(msg, strlen(msg));
     }
 };
+
+template<> struct DataSerializerTraits_t<TileCoordsXYZD>
+{
+    static void encode(OpenRCT2::IStream* stream, const TileCoordsXYZD& coord)
+    {
+        stream->WriteValue(ByteSwapBE(coord.x));
+        stream->WriteValue(ByteSwapBE(coord.y));
+        stream->WriteValue(ByteSwapBE(coord.z));
+        stream->WriteValue(ByteSwapBE(coord.direction));
+    }
+
+    static void decode(OpenRCT2::IStream* stream, TileCoordsXYZD& coord)
+    {
+        auto x = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto z = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto d = ByteSwapBE(stream->ReadValue<Direction>());
+        coord = TileCoordsXYZD{ x, y, z, d };
+    }
+
+    static void log(OpenRCT2::IStream* stream, const TileCoordsXYZD& coord)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "TileCoordsXYZD(x = %d, y = %d, z = %d, direction = %d)", coord.x, coord.y, coord.z,
+            coord.direction);
+        stream->Write(msg, strlen(msg));
+    }
+};
