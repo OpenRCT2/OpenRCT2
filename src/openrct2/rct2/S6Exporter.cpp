@@ -1343,10 +1343,27 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     dst->id = src->Id;
     dst->path_check_optimisation = src->PathCheckOptimisation;
     dst->peep_flags = src->PeepFlags;
-    dst->pathfind_goal = src->PathfindGoal;
+    if (src->PathfindGoal.isNull())
+    {
+        dst->pathfind_goal = { 0xFF, 0xFF, 0xFF, INVALID_DIRECTION };
+    }
+    else
+    {
+        dst->pathfind_goal = { static_cast<uint8_t>(src->PathfindGoal.x), static_cast<uint8_t>(src->PathfindGoal.y),
+                               static_cast<uint8_t>(src->PathfindGoal.z), src->PathfindGoal.direction };
+    }
     for (size_t i = 0; i < std::size(src->PathfindHistory); i++)
     {
-        dst->pathfind_history[i] = src->PathfindHistory[i];
+        if (src->PathfindHistory[i].isNull())
+        {
+            dst->pathfind_history[i] = { 0xFF, 0xFF, 0xFF, INVALID_DIRECTION };
+        }
+        else
+        {
+            dst->pathfind_history[i] = { static_cast<uint8_t>(src->PathfindHistory[i].x),
+                                         static_cast<uint8_t>(src->PathfindHistory[i].y),
+                                         static_cast<uint8_t>(src->PathfindHistory[i].z), src->PathfindHistory[i].direction };
+        }
     }
     dst->no_action_frame_num = src->WalkingFrameNum;
 }

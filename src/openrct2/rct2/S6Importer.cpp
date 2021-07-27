@@ -1365,6 +1365,10 @@ public:
 
     void ImportEntityPeep(Peep* dst, const RCT2SpritePeep* src)
     {
+        const auto isNullLocation = [](const rct12_xyzd8& pos) {
+            return pos.x == 0xFF && pos.y == 0xFF && pos.z == 0xFF && pos.direction == INVALID_DIRECTION;
+        };
+
         ImportEntityCommonProperties(static_cast<SpriteBase*>(dst), src);
         if (is_user_string_id(src->name_string_idx))
         {
@@ -1401,10 +1405,28 @@ public:
         dst->Id = src->id;
         dst->PathCheckOptimisation = src->path_check_optimisation;
         dst->PeepFlags = src->peep_flags;
-        dst->PathfindGoal = src->pathfind_goal;
+        if (isNullLocation(src->pathfind_goal))
+        {
+            dst->PathfindGoal.setNull();
+            dst->PathfindGoal.direction = INVALID_DIRECTION;
+        }
+        else
+        {
+            dst->PathfindGoal = { src->pathfind_goal.x, src->pathfind_goal.y, src->pathfind_goal.z,
+                                  src->pathfind_goal.direction };
+        }
         for (size_t i = 0; i < std::size(src->pathfind_history); i++)
         {
-            dst->PathfindHistory[i] = src->pathfind_history[i];
+            if (isNullLocation(src->pathfind_history[i]))
+            {
+                dst->PathfindHistory[i].setNull();
+                dst->PathfindHistory[i].direction = INVALID_DIRECTION;
+            }
+            else
+            {
+                dst->PathfindHistory[i] = { src->pathfind_history[i].x, src->pathfind_history[i].y, src->pathfind_history[i].z,
+                                            src->pathfind_history[i].direction };
+            }
         }
         dst->WalkingFrameNum = src->no_action_frame_num;
     }
