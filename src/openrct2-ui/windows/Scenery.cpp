@@ -172,14 +172,14 @@ static SceneryTabInfo* GetSceneryTabInfoForGroup(ObjectEntryIndex sceneryGroupIn
     {
         return &_tabEntries[_tabEntries.size() - 1];
     }
-    else if (_tabEntries.size() > sceneryGroupIndex)
+
+    for (auto& tabEntry : _tabEntries)
     {
-        return &_tabEntries[sceneryGroupIndex];
+        if (tabEntry.SceneryGroupIndex == sceneryGroupIndex)
+            return &tabEntry;
     }
-    else
-    {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 static std::optional<size_t> window_scenery_find_tab_with_scenery(const ScenerySelection& scenery)
