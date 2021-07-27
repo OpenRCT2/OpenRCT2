@@ -478,7 +478,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             {
                 ft.Add<rct_string_id>(STR_BROKEN);
             }
-            ft.Add<rct_string_id>(pathAddEntry->name);
+            ft.Add<rct_string_id>(pathAddEntry != nullptr ? pathAddEntry->name : STR_NONE);
             SetMapTooltip(ft);
             return info;
         }

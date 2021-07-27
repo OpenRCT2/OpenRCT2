@@ -226,7 +226,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         log_error("No free map elements available");
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
     }
-
+    
     // Allocate banner
     Banner* banner = nullptr;
     if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
@@ -274,7 +274,8 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         if (canBuild->Error != GameActions::Status::Ok)
         {
             DeleteBanner(banner->id);
-            return MakeResult(GameActions::Status::NoClearance, gGameCommandErrorText, gCommonFormatArgs);
+            canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+            return canBuild;
         }
 
         supportsCost += canBuild->Cost;
@@ -301,12 +302,12 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         }
 
         map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
+        map_invalidate_tile_full(curTile);
 
         if (tileNum == 0)
         {
-            res->tileElement = newSceneryElement->as<TileElement>();
+            res->firstTileHeight = zLow;
         }
-        map_invalidate_tile_full(curTile);
     }
 
     // Force ride construction to recheck area

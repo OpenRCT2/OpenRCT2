@@ -1332,6 +1332,39 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
     }
 }
 
+static bool MapLoc68BABCShouldContinue(
+    TileElement* tileElement, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, uint8_t flags, money32& price,
+    uint8_t crossingMode, bool canBuildCrossing)
+{
+    if (clearFunc != nullptr)
+    {
+        if (!clearFunc(&tileElement, pos, flags, &price))
+        {
+            return true;
+        }
+    }
+
+    // Crossing mode 1: building track over path
+    if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_PATH
+        && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue() && !tileElement->AsPath()->IsSloped())
+    {
+        return true;
+    }
+    // Crossing mode 2: building path over track
+    else if (
+        crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
+        && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
+    {
+        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+        if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /**
  *
  *  rct2: 0x0068B932
@@ -1380,7 +1413,18 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             {
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
-                    goto loc_68BABC;
+                    if (MapLoc68BABCShouldContinue(
+                            tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
+                    {
+                        continue;
+                    }
+
+                    if (tileElement != nullptr)
+                    {
+                        map_obstruction_set_error_text(tileElement, *res);
+                        res->Error = GameActions::Status::NoClearance;
+                    }
+                    return res;
                 }
             }
             continue;
@@ -1391,10 +1435,26 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             res->GroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < pos.clearanceZ)
             {
-                goto loc_68BAE6;
+                bool returnError = true;
+                if (clearFunc != nullptr)
+                {
+                    if (!clearFunc(&tileElement, pos, flags, &res->Cost))
+                    {
+                        returnError = false;
+                    }
+                }
+                if (returnError)
+                {
+                    if (tileElement != nullptr)
+                    {
+                        res->Error = GameActions::Status::NoClearance;
+                        res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
+                    }
+                    return res;
+                }
             }
         }
-    loc_68B9B7:
+
         if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
@@ -1465,53 +1525,16 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
                         continue;
                     }
                 }
-            loc_68BABC:
-                if (clearFunc != nullptr)
-                {
-                    if (!clearFunc(&tileElement, pos, flags, &res->Cost))
-                    {
-                        continue;
-                    }
-                }
 
-                // Crossing mode 1: building track over path
-                if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_PATH
-                    && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue()
-                    && !tileElement->AsPath()->IsSloped())
+                if (MapLoc68BABCShouldContinue(tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
                 {
                     continue;
-                }
-                // Crossing mode 2: building path over track
-                else if (
-                    crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
-                    && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
-                {
-                    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
-                    {
-                        continue;
-                    }
                 }
 
                 if (tileElement != nullptr)
                 {
                     map_obstruction_set_error_text(tileElement, *res);
                     res->Error = GameActions::Status::NoClearance;
-                }
-                return res;
-
-            loc_68BAE6:
-                if (clearFunc != nullptr)
-                {
-                    if (!clearFunc(&tileElement, pos, flags, &res->Cost))
-                    {
-                        goto loc_68B9B7;
-                    }
-                }
-                if (tileElement != nullptr)
-                {
-                    res->Error = GameActions::Status::NoClearance;
-                    res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                 }
                 return res;
             }

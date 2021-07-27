@@ -123,7 +123,7 @@ public:
 
     ~UiContext() override
     {
-        CloseWindow();
+        UiContext::CloseWindow();
         delete _windowManager;
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
         delete _platformUiContext;
@@ -179,11 +179,8 @@ public:
         if (mode == FULLSCREEN_MODE::FULLSCREEN)
         {
             SDL_SetWindowFullscreen(_window, 0);
-        }
 
-        // Set window size
-        if (mode == FULLSCREEN_MODE::FULLSCREEN)
-        {
+            // Set window size
             UpdateFullscreenResolutions();
             Resolution resolution = GetClosestResolution(gConfigGeneral.fullscreen_width, gConfigGeneral.fullscreen_height);
             SDL_SetWindowSize(_window, resolution.Width, resolution.Height);
@@ -598,7 +595,7 @@ public:
         {
             scaleQuality = ScaleQuality::Linear;
         }
-        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", static_cast<int32_t>(scaleQuality));
+        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%d", static_cast<int32_t>(scaleQuality));
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
         int32_t width, height;

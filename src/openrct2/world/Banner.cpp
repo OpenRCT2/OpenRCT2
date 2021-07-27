@@ -406,7 +406,6 @@ Banner* GetOrCreateBanner(BannerIndex id)
         {
             _banners.resize(id + 1);
         }
-        _banners[id].id = id;
         return &_banners[id];
     }
     return nullptr;
@@ -430,10 +429,10 @@ Banner* CreateBanner()
 
 void DeleteBanner(BannerIndex id)
 {
-    auto banner = GetBanner(id);
+    auto* const banner = GetBanner(id);
     if (banner != nullptr)
     {
-        banner = {};
+        *banner = {};
     }
 }
 

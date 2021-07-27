@@ -56,7 +56,7 @@ namespace OpenRCT2::Audio
 
         ~AudioMixerImpl() override
         {
-            Close();
+            AudioMixerImpl::Close();
             delete _nullSource;
         }
 

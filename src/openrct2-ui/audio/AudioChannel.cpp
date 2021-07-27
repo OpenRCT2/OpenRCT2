@@ -47,9 +47,9 @@ namespace OpenRCT2::Audio
     public:
         AudioChannelImpl()
         {
-            SetRate(1);
-            SetVolume(MIXER_VOLUME_MAX);
-            SetPan(0.5f);
+            AudioChannelImpl::SetRate(1);
+            AudioChannelImpl::SetVolume(MIXER_VOLUME_MAX);
+            AudioChannelImpl::SetPan(0.5f);
         }
 
         ~AudioChannelImpl() override

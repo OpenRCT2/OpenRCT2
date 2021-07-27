@@ -607,8 +607,8 @@ bool scenario_prepare_for_save()
 
 ObjectiveStatus Objective::CheckGuestsBy() const
 {
-    int16_t parkRating = gParkRating;
-    int32_t currentMonthYear = gDateMonthsElapsed;
+    auto parkRating = gParkRating;
+    auto currentMonthYear = gDateMonthsElapsed;
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {

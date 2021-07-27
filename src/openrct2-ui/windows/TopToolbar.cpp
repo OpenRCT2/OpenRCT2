@@ -2541,9 +2541,7 @@ static money32 try_place_ghost_large_scenery(
 
     gSceneryPlaceRotation = loc.direction;
 
-    TileElement* tileElement = lspar->tileElement;
-    gSceneryGhostPosition = { loc, tileElement->GetBaseZ() };
-
+    gSceneryGhostPosition = { loc, lspar->firstTileHeight };
     if (lspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on

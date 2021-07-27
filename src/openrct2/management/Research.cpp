@@ -513,6 +513,9 @@ bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, R
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
 {
     rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
+    if (rideEntry == nullptr)
+        return;
+
     for (auto rideType : rideEntry->ride_type)
     {
         if (rideType != RIDE_TYPE_NULL)

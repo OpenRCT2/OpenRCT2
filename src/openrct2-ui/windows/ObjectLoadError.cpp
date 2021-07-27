@@ -152,7 +152,7 @@ private:
         _nextDownloadQueued = true;
     }
 
-    void DownloadObject(const ObjectEntryDescriptor& entry, const std::string name, const std::string url)
+    void DownloadObject(const ObjectEntryDescriptor& entry, const std::string& name, const std::string& url)
     {
         try
         {

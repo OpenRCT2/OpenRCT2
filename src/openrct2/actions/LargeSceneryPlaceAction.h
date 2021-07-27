@@ -22,7 +22,7 @@ public:
     LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args);
 
     uint8_t GroundFlags{ 0 };
-    TileElement* tileElement = nullptr;
+    int32_t firstTileHeight{ 0 };
     BannerIndex bannerId = BANNER_INDEX_NULL;
 };
 

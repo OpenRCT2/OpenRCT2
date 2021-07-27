@@ -497,7 +497,7 @@ private:
 
     void AddAvailableEntriesFromMap()
     {
-        size_t maxTiles = 128 * 128;
+        size_t maxTiles = RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE;
         size_t tileIndex = 0;
         RCT12TileElement* tileElement = _s4.tile_elements;
 

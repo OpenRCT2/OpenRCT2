@@ -232,7 +232,7 @@ namespace OpenRCT2::Ui
             return result;
         }
 
-        static std::wstring GetFilterString(const std::vector<FileDialogDesc::Filter> filters)
+        static std::wstring GetFilterString(const std::vector<FileDialogDesc::Filter>& filters)
         {
             std::wstringstream filtersb;
             for (const auto& filter : filters)
