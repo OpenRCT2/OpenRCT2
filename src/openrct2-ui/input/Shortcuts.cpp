@@ -711,6 +711,7 @@ static void ShortcutToggleTransparentWater()
 
     gConfigGeneral.transparent_water ^= 1;
     config_save_default();
+    gfx_invalidate_screen();
 }
 
 #pragma endregion
