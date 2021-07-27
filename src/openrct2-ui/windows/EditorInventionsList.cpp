@@ -497,7 +497,6 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
 {
     rct_widget* widget;
     ResearchItem* researchItem;
-    rct_string_id stringId;
     int32_t width;
 
     WindowDrawWidgets(w, dpi);
@@ -566,8 +565,9 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
 
     // Item category
     screenPos.x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
-    stringId = researchItem->GetCategoryInventionString();
-    DrawTextBasic(dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, &stringId);
+    ft = Formatter();
+    ft.Add<rct_string_id>(researchItem->GetCategoryInventionString());
+    DrawTextBasic(dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
 }
 
 /**

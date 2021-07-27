@@ -241,5 +241,5 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_string_id stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
         ? STR_PREFIX
         : STR_SUFFIX;
-    DrawTextBasic(dpi, drawPos, stringId, w, { w->colours[1] });
+    DrawTextBasic(dpi, drawPos, stringId, {}, { w->colours[1] });
 }

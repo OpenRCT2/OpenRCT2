@@ -162,9 +162,10 @@ namespace Graph
             if (history[i] != MONEY64_UNDEFINED && yearOver32 % 4 == 0)
             {
                 // Draw month text
-                int32_t monthFormat = DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)];
+                auto ft = Formatter();
+                ft.Add<rct_string_id>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, &monthFormat,
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
                     { FontSpriteBase::SMALL, TextAlignment::CENTRE });
 
                 // Draw month mark
@@ -260,9 +261,10 @@ namespace Graph
             gfx_draw_dashed_line(dpi, { info.coords, { info.coords.x, cursorPosition.y } }, DefaultDashedLength, 0);
         }
 
+        auto ft = Formatter();
+        ft.Add<money64>(info.money);
         DrawTextBasic(
-            dpi, info.coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, &info.money,
-            { TextAlignment::CENTRE });
+            dpi, info.coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, ft, { TextAlignment::CENTRE });
 
         gfx_fill_rect(
             dpi, { { info.coords - ScreenCoordsXY{ 2, 2 } }, info.coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);

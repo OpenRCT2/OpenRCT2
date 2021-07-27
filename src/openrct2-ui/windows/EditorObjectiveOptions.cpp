@@ -791,7 +791,6 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 {
     int32_t width;
     rct_string_id stringId;
-    uint64_t arg;
 
     WindowDrawWidgets(w, dpi);
     window_editor_objective_options_draw_tab_images(w, dpi);
@@ -802,8 +801,9 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 
     // Objective value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE].left + 1, w->widgets[WIDX_OBJECTIVE].top };
-    stringId = ObjectiveDropdownOptionNames[gScenarioObjective.Type];
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
+    auto ft = Formatter();
+    ft.Add<rct_string_id>(ObjectiveDropdownOptionNames[gScenarioObjective.Type]);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WindowWidgetType::Empty)
     {
@@ -837,34 +837,35 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         // Objective argument 1 value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_1].top };
+        ft = Formatter();
         switch (gScenarioObjective.Type)
         {
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_GUESTS_AND_RATING:
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT;
-                arg = gScenarioObjective.NumGuests;
+                ft.Add<uint16_t>(gScenarioObjective.NumGuests);
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
             case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
                 stringId = STR_CURRENCY_FORMAT_LABEL;
-                arg = gScenarioObjective.Currency;
+                ft.Add<money64>(gScenarioObjective.Currency);
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_LENGTH;
-                arg = gScenarioObjective.MinimumLength;
+                ft.Add<uint16_t>(gScenarioObjective.MinimumLength);
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
-                arg = gScenarioObjective.MinimumExcitement;
+                ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
                 break;
             default:
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
-                arg = gScenarioObjective.Currency;
+                ft.Add<money64>(gScenarioObjective.Currency);
                 break;
         }
-        DrawTextBasic(dpi, screenCoords, stringId, &arg, COLOUR_BLACK);
+        DrawTextBasic(dpi, screenCoords, stringId, ft, COLOUR_BLACK);
     }
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_2].type != WindowWidgetType::Empty)
@@ -876,8 +877,9 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         // Objective argument 2 value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
-        arg = (gScenarioObjective.Year * MONTH_COUNT) - 1;
-        DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg);
+        ft = Formatter();
+        ft.Add<uint16_t>((gScenarioObjective.Year * MONTH_COUNT) - 1);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, ft);
     }
 
     // Park name
@@ -888,7 +890,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto parkName = park.Name.c_str();
 
-        auto ft = Formatter();
+        ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(parkName);
         DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft);
@@ -898,7 +900,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_SCENARIO_NAME].top };
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
-    auto ft = Formatter();
+    ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gScenarioName.c_str());
     DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft);
@@ -922,8 +924,9 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 
     // Scenario category value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CATEGORY].left + 1, w->widgets[WIDX_CATEGORY].top };
-    stringId = ScenarioCategoryStringIds[gScenarioCategory];
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
+    ft = Formatter();
+    ft.Add<rct_string_id>(ScenarioCategoryStringIds[gScenarioCategory]);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 }
 
 /**

@@ -146,9 +146,9 @@ public:
         // Draw number for tool sizes bigger than 7
         if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
         {
-            DrawTextBasic(
-                &dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize,
-                { TextAlignment::CENTRE });
+            auto ft = Formatter();
+            ft.Add<uint16_t>(gLandToolSize);
+            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
 
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))

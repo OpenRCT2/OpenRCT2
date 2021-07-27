@@ -685,8 +685,6 @@ static void window_mapgen_base_invalidate(rct_window* w)
 
 static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    uint16_t arg;
-
     WindowDrawWidgets(w, dpi);
     window_mapgen_draw_tab_images(dpi, w);
 
@@ -704,20 +702,24 @@ static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // The practical map size is 2 lower than the technical map size
     // This needs to be cast down to a uint16_t because that's what the STR_RESOLUTION_X_BY_Y string takes.
-    uint16_t mapSizeArgs[] = { static_cast<uint16_t>(_mapSize - 2), static_cast<uint16_t>(_mapSize - 2) };
+    auto ft = Formatter();
+    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
+    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_MAP_SIZE].left + 1, w->widgets[WIDX_MAP_SIZE].top + 1 },
-        STR_RESOLUTION_X_BY_Y, &mapSizeArgs, { w->colours[1] });
+        STR_RESOLUTION_X_BY_Y, ft, { w->colours[1] });
 
-    arg = (_baseHeight - 12) / 2;
+    ft = Formatter();
+    ft.Add<uint16_t>((_baseHeight - 12) / 2);
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_BASE_HEIGHT].left + 1, w->widgets[WIDX_BASE_HEIGHT].top + 1 },
-        STR_COMMA16, &arg, { w->colours[1] });
+        STR_COMMA16, ft, { w->colours[1] });
 
-    arg = (_waterLevel - 12) / 2;
+    ft = Formatter();
+    ft.Add<uint16_t>((_waterLevel - 12) / 2);
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_WATER_LEVEL].left + 1, w->widgets[WIDX_WATER_LEVEL].top + 1 },
-        STR_COMMA16, &arg, { w->colours[1] });
+        STR_COMMA16, ft, { w->colours[1] });
 }
 
 #pragma endregion
@@ -1002,8 +1004,6 @@ static void window_mapgen_simplex_invalidate(rct_window* w)
 
 static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    uint16_t arg;
-
     WindowDrawWidgets(w, dpi);
     window_mapgen_draw_tab_images(dpi, w);
 
@@ -1027,21 +1027,29 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
         { textColour });
 
+    auto ft = Formatter();
+    ft.Add<uint16_t>(_simplex_low);
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_LOW].left + 1, w->widgets[WIDX_SIMPLEX_LOW].top + 1 },
-        STR_COMMA16, &_simplex_low, { textColour });
+        STR_COMMA16, ft, { textColour });
+    ft = Formatter();
+    ft.Add<uint16_t>(_simplex_high);
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_HIGH].left + 1, w->widgets[WIDX_SIMPLEX_HIGH].top + 1 },
-        STR_COMMA16, &_simplex_high, { textColour });
+        STR_COMMA16, ft, { textColour });
+    ft = Formatter();
+    ft.Add<uint16_t>(_simplex_base_freq);
     DrawTextBasic(
         dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
-        STR_WINDOW_OBJECTIVE_VALUE_RATING, &_simplex_base_freq, { textColour });
+        STR_WINDOW_OBJECTIVE_VALUE_RATING, ft, { textColour });
+    ft = Formatter();
+    ft.Add<uint16_t>(_simplex_octaves);
     DrawTextBasic(
         dpi,
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_OCTAVES].left + 1, w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
-        STR_COMMA16, &_simplex_octaves, { textColour });
+        STR_COMMA16, ft, { textColour });
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1 }, STR_TERRAIN_LABEL,
         {}, { textColour });
@@ -1051,18 +1059,21 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // The practical map size is 2 lower than the technical map size.
     // This needs to be cast down to a uint16_t because that's what the STR_RESOLUTION_X_BY_Y string takes.
-    uint16_t mapSizeArgs[] = { static_cast<uint16_t>(_mapSize - 2), static_cast<uint16_t>(_mapSize - 2) };
+    ft = Formatter();
+    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
+    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
     DrawTextBasic(
         dpi,
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_MAP_SIZE].left + 1, w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1 },
-        STR_RESOLUTION_X_BY_Y, &mapSizeArgs, { textColour });
+        STR_RESOLUTION_X_BY_Y, ft, { textColour });
 
-    arg = (_waterLevel - 12) / 2;
+    ft = Formatter();
+    ft.Add<uint16_t>((_waterLevel - 12) / 2);
     DrawTextBasic(
         dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_WATER_LEVEL].left + 1, w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 },
-        STR_COMMA16, &arg, { textColour });
+        STR_COMMA16, ft, { textColour });
 }
 
 #pragma endregion
@@ -1215,45 +1226,53 @@ static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Smooth strength label and value
     const colour_t strengthColour = _heightmapSmoothMap ? enabledColour : disabledColour;
-    int16_t strength = _heightmapSmoothStrength;
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
         { strengthColour });
+
+    auto ft = Formatter();
+    ft.Add<uint16_t>(_heightmapSmoothStrength);
     DrawTextBasic(
         dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1, w->widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 },
-        STR_COMMA16, &strength, { strengthColour });
+        STR_COMMA16, ft, { strengthColour });
 
     // Low label and value
     const colour_t labelColour = _heightmapLoaded ? enabledColour : disabledColour;
-    int16_t low = _heightmapLow;
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_LOW_, {},
         { labelColour });
+
+    ft = Formatter();
+    ft.Add<uint16_t>(_heightmapLow);
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_LOW].left + 1, w->widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
-        STR_COMMA16, &low, { labelColour });
+        STR_COMMA16, ft, { labelColour });
 
     // High label and value
-    int16_t high = _heightmapHigh;
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_HIGH, {},
         { labelColour });
+
+    ft = Formatter();
+    ft.Add<uint16_t>(_heightmapHigh);
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_HIGH].left + 1, w->widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
-        STR_COMMA16, &high, { labelColour });
+        STR_COMMA16, ft, { labelColour });
 
     // Water level label and value
-    int16_t waterLevel = _waterLevel;
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
         { labelColour });
+
+    ft = Formatter();
+    ft.Add<uint16_t>(_waterLevel);
     DrawTextBasic(
         dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].left + 1, w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 },
-        STR_COMMA16, &waterLevel, { labelColour });
+        STR_COMMA16, ft, { labelColour });
 }
 
 #pragma endregion
