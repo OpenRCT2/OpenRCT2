@@ -59,7 +59,8 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
 
     if (!CheckMapCapacity(3))
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
     }
 
     if (gParkEntrances.size() >= MAX_PARK_ENTRANCES)
