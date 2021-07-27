@@ -226,7 +226,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         log_error("No free map elements available");
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
     }
-    
+
     // Allocate banner
     Banner* banner = nullptr;
     if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
