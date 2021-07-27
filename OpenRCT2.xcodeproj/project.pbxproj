@@ -769,6 +769,7 @@
 		E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */; };
 		F42186C5840D4196981ADD16 /* EntityTweener.h in Headers */ = {isa = PBXBuildFile; fileRef = 091352A950004312BAB18717 /* EntityTweener.h */; };
 		0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D3DD6CD73F5421880280D9D /* Litter.cpp */; };
+		B9B6F97CE24E4A559C7BBA0A /* RideConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BCCA2EF0F5A40D5B83A83AC /* RideConstruction.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1842,6 +1843,7 @@
 		0EB0D1DF6CC74E4190301D84 /* EntityTweener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntityTweener.cpp; path = src/openrct2/world/EntityTweener.cpp; sourceTree = SOURCE_ROOT; };
 		091352A950004312BAB18717 /* EntityTweener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EntityTweener.h; path = src/openrct2/world/EntityTweener.h; sourceTree = SOURCE_ROOT; };
 		9D3DD6CD73F5421880280D9D /* Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Litter.cpp; path = src/openrct2/world/Litter.cpp; sourceTree = SOURCE_ROOT; };
+		6BCCA2EF0F5A40D5B83A83AC /* RideConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RideConstruction.cpp; path = src/openrct2/ride/RideConstruction.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2900,6 +2902,7 @@
 				4C7B540A20060D7900A52E21 /* VehiclePaint.h */,
 				4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */,
 				4CB2716924195B45000CF9EE /* VehicleSubpositionData.h */,
+				6BCCA2EF0F5A40D5B83A83AC /* RideConstruction.cpp */,
 			);
 			path = ride;
 			sourceTree = "<group>";
@@ -4285,6 +4288,7 @@
 				C688791820289B9B0084B384 /* MonorailCycles.cpp in Sources */,
 				E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */,
 				0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */,
+				B9B6F97CE24E4A559C7BBA0A /* RideConstruction.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

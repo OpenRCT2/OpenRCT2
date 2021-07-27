@@ -1257,4 +1257,6 @@ void ride_clear_leftover_entrances(Ride* ride);
 
 std::vector<ride_id_t> GetTracklessRides();
 
+void ride_remove_vehicles(Ride* ride);
+
 #endif
