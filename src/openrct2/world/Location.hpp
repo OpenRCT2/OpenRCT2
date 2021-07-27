@@ -268,6 +268,12 @@ struct CoordsXYZ : public CoordsXY
     {
         return ToTileStart() + CoordsXYZ{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE, 0 };
     }
+
+    void setNull()
+    {
+        CoordsXY::setNull();
+        z = 0;
+    }
 };
 
 struct CoordsXYRangedZ : public CoordsXY
@@ -458,6 +464,12 @@ struct TileCoordsXYZ : public TileCoordsXY
             return ret;
         }
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP };
+    }
+
+    void setNull()
+    {
+        TileCoordsXY::setNull();
+        z = 0;
     }
 };
 
@@ -654,6 +666,12 @@ struct TileCoordsXYZD : public TileCoordsXYZ
             return ret;
         }
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP, direction };
+    }
+
+    void setNull()
+    {
+        TileCoordsXYZ::setNull();
+        direction = INVALID_DIRECTION;
     }
 };
 
