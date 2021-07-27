@@ -9,6 +9,7 @@
 
 #include "../../common.h"
 #include "../../interface/Viewport.h"
+#include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Map.h"
@@ -458,16 +459,23 @@ static void paint_monorail_station(
     const TileElement* tileElement)
 {
     uint32_t imageId;
+    const StationObject* stationObject = nullptr;
+    const auto* ride = get_ride(rideIndex);
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
 
-    if (direction == 0 || direction == 2)
+    if (stationObject == nullptr || !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
-        imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height);
-    }
-    else if (direction == 1 || direction == 3)
-    {
-        imageId = SPR_STATION_BASE_B_NW_SE | session->TrackColours[SCHEME_MISC];
-        PaintAddImageAsParent(session, imageId, 0, 0, 28, 32, 2, height - 2, 2, 0, height);
+        if (direction == 0 || direction == 2)
+        {
+            imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
+            PaintAddImageAsParent(session, imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height);
+        }
+        else if (direction == 1 || direction == 3)
+        {
+            imageId = SPR_STATION_BASE_B_NW_SE | session->TrackColours[SCHEME_MISC];
+            PaintAddImageAsParent(session, imageId, 0, 0, 28, 32, 2, height - 2, 2, 0, height);
+        }
     }
 
     imageId = monorail_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
