@@ -92,7 +92,8 @@ static void paint_enterprise(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
+    StationObject* stationObject = ride_get_station_object(ride);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
         session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesRope,

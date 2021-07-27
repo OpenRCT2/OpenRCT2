@@ -151,12 +151,16 @@ static void paint_ferris_wheel(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
+    auto ride = get_ride(rideIndex);
+    StationObject* stationObject = nullptr;
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
+
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     uint32_t imageId;
     uint8_t rotation = session->CurrentRotation;
     uint32_t colourFlags = session->TrackColours[SCHEME_MISC];
-    auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
         if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session->MapPosition, tileElement, ride, rotation))

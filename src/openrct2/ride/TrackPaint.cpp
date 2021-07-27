@@ -204,6 +204,10 @@ enum
 bool track_paint_util_has_fence(
     enum edge_t edge, const CoordsXY& position, const TileElement* tileElement, Ride* ride, uint8_t rotation)
 {
+    const auto* stationObject = ride_get_station_object(ride);
+    if (stationObject != nullptr && stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return false;
+
     TileCoordsXY offset;
     switch (edge)
     {
@@ -231,8 +235,12 @@ bool track_paint_util_has_fence(
 }
 
 void track_paint_util_paint_floor(
-    paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4])
+    paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4],
+    const StationObject* stationStyle)
 {
+    if (stationStyle != nullptr && stationStyle->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
+
     uint32_t imageId;
 
     if (edges & EDGE_SW && edges & EDGE_SE)
