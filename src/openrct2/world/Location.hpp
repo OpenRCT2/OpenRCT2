@@ -615,6 +615,12 @@ struct TileCoordsXYZD : public TileCoordsXYZ
     {
     }
 
+    TileCoordsXYZD(const TileCoordsXYZ& t_, Direction d_)
+        : TileCoordsXYZ(t_)
+        , direction(d_)
+    {
+    }
+
     TileCoordsXYZD(const TileCoordsXY& t_, int32_t z_, Direction d_)
         : TileCoordsXYZ(t_, z_)
         , direction(d_)
