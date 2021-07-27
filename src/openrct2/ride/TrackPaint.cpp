@@ -339,6 +339,9 @@ static void track_paint_util_draw_station_impl(
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
+    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
+
     bool hasFence;
     uint32_t imageId;
 
