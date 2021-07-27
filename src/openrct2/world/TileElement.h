@@ -277,6 +277,7 @@ public:
     FootpathObject* GetPathEntry() const;
     ObjectEntryIndex GetPathEntryIndex() const;
     void SetPathEntryIndex(ObjectEntryIndex newIndex);
+    bool HasLegacyPathEntry() const;
 
     ObjectEntryIndex GetSurfaceEntryIndex() const;
     FootpathSurfaceObject* GetSurfaceEntry() const;
