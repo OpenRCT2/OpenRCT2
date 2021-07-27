@@ -1,5 +1,4 @@
 name: Bug report
-title: "[Bug] "
 description: Report an issue you encountered when playing OpenRCT2.
 labels: 
 - bug
@@ -34,7 +33,7 @@ body:
 - type: dropdown
   attributes:
     label: Area(s) with issue?
-    description: What things had an issue?  Check all that apply.
+    description: What things had an issue? Check all that apply.
     multiple: true
     options:
       - The bug also exists in RCT2 (vanilla)

@@ -1,5 +1,4 @@
 name: Feature request
-title: "[Feature] "
 description: Request a new feature to be added to OpenRCT2.
 labels:
 - feature
@@ -19,7 +18,7 @@ body:
 - type: dropdown
   attributes:
     label: Feature type
-    description: What things had an issue?  Check all that apply.
+    description: What things had an issue? Check all that apply.
     multiple: true
     options:
       - Quality of life
