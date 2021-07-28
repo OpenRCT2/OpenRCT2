@@ -456,6 +456,11 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             {
                 finish_object_selection();
             }
+            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            {
+                auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
+                GameActions::Execute(&loadOrQuitAction);
+            }
             break;
         case WIDX_FILTER_RIDE_TAB_ALL:
             _filter_flags |= FILTER_RIDES;
