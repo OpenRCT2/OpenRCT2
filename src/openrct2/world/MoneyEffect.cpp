@@ -29,7 +29,7 @@ template<> bool SpriteBase::Is<MoneyEffect>() const
  *
  *  rct2: 0x0067351F
  */
-void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool vertical)
+void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool vertical)
 {
     if (value == MONEY(0, 00))
         return;
@@ -63,7 +63,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
  *
  *  rct2: 0x0069C5D0
  */
-void MoneyEffect::Create(money32 value, const CoordsXYZ& loc)
+void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
 {
     auto offsetLoc = loc;
     if (loc.isNull())
