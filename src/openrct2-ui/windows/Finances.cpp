@@ -741,7 +741,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
             continue;
 
         // Modifier balance then keep halving until less than 127 pixels
-        balance = abs(balance) >> yAxisScale;
+        balance = std::abs(balance) >> yAxisScale;
         while (balance > 127)
         {
             balance /= 2;
@@ -845,7 +845,7 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
             continue;
 
         // Modifier balance then keep halving until less than 255 pixels
-        balance = abs(balance) >> yAxisScale;
+        balance = std::abs(balance) >> yAxisScale;
         while (balance > 255)
         {
             balance /= 2;
@@ -950,7 +950,7 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
             continue;
 
         // Modifier balance then keep halving until less than 127 pixels
-        balance = abs(balance) >> yAxisScale;
+        balance = std::abs(balance) >> yAxisScale;
         while (balance > 127)
         {
             balance /= 2;
