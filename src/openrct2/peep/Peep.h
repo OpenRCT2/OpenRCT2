@@ -616,8 +616,8 @@ struct Peep : SpriteBase
     ride_id_t InteractionRideIndex;
     uint32_t Id;
     uint8_t PathCheckOptimisation; // see peep.checkForPath
-    rct12_xyzd8 PathfindGoal;
-    std::array<rct12_xyzd8, 4> PathfindHistory;
+    TileCoordsXYZD PathfindGoal;
+    std::array<TileCoordsXYZD, 4> PathfindHistory;
     uint8_t WalkingFrameNum;
     uint32_t PeepFlags;
 

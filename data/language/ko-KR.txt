@@ -2408,7 +2408,7 @@ STR_3308    :{WINDOW_COLOUR_2}흥미도:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
-STR_3312    :{WINDOW_COLOUR_2}파괴할 수 없는 놀이기구/시설:
+STR_3312    :{WINDOW_COLOUR_2}수정·파괴할 수 없는 놀이기구/시설:
 STR_3313    :시나리오 이름
 STR_3314    :시나리오 이름을 입력하세요:
 STR_3315    :공원/시나리오 상세 설명
