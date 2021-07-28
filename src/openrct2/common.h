@@ -148,6 +148,21 @@ static constexpr money64 ToMoney64(money32 value)
     return value == MONEY32_UNDEFINED ? MONEY64_UNDEFINED : value;
 }
 
+static constexpr money64 ToMoney64(money16 value)
+{
+    return value == MONEY16_UNDEFINED ? MONEY64_UNDEFINED : value;
+}
+
+static constexpr money32 ToMoney32(money64 value)
+{
+    return value == MONEY64_UNDEFINED ? MONEY32_UNDEFINED : static_cast<money32>(value);
+}
+
+static constexpr money16 ToMoney16(money64 value)
+{
+    return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : static_cast<money16>(value);
+}
+
 using EMPTY_ARGS_VOID_POINTER = void();
 using rct_string_id = uint16_t;
 
