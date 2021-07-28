@@ -18,11 +18,10 @@
  * rct2: 0x0077084A
  */
 static void paint_circus_tent(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -53,7 +52,7 @@ static void paint_circus_tent(
  * rct2: 0x0076FAD4
  */
 static void paint_circus(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -62,7 +61,6 @@ static void paint_circus(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    auto ride = get_ride(rideIndex);
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
         stationObject = ride_get_station_object(ride);
@@ -79,22 +77,22 @@ static void paint_circus(
     switch (trackSequence)
     {
         case 1:
-            paint_circus_tent(session, rideIndex, direction, 32, 32, height);
+            paint_circus_tent(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_circus_tent(session, rideIndex, direction, 32, -32, height);
+            paint_circus_tent(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_circus_tent(session, rideIndex, direction, 0, -32, height);
+            paint_circus_tent(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_circus_tent(session, rideIndex, direction, -32, 32, height);
+            paint_circus_tent(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_circus_tent(session, rideIndex, direction, -32, -32, height);
+            paint_circus_tent(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_circus_tent(session, rideIndex, direction, -32, 0, height);
+            paint_circus_tent(session, ride, direction, -32, 0, height);
             break;
     }
 
