@@ -49,6 +49,9 @@ static int32_t _pickup_peep_old_x = LOCATION_NULL;
 // with uint16_t and needs some spare room for other data in the packet.
 static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 
+// If data is sent fast enough it would halt the entire server, process only a maximum amount.
+static constexpr uint32_t MaxPacketsPerUpdate = 100;
+
 #    include "../Cheats.h"
 #    include "../ParkImporter.h"
 #    include "../Version.h"
@@ -1654,8 +1657,11 @@ void NetworkBase::Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, 
 bool NetworkBase::ProcessConnection(NetworkConnection& connection)
 {
     NetworkReadPacket packetStatus;
+
+    uint32_t countProcessed = 0;
     do
     {
+        countProcessed++;
         packetStatus = connection.ReadPacket();
         switch (packetStatus)
         {
@@ -1681,7 +1687,7 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
                 // could not read anything from socket
                 break;
         }
-    } while (packetStatus == NetworkReadPacket::Success);
+    } while (packetStatus == NetworkReadPacket::Success && countProcessed < MaxPacketsPerUpdate);
 
     if (!connection.ReceivedPacketRecently())
     {
