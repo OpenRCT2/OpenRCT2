@@ -280,7 +280,8 @@ extern const size_t mini_golf_peep_animation_lengths[];
 bool track_paint_util_has_fence(
     enum edge_t edge, const CoordsXY& position, const TileElement* tileElement, Ride* ride, uint8_t rotation);
 void track_paint_util_paint_floor(
-    paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4]);
+    paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4],
+    const StationObject* stationStyle);
 void track_paint_util_paint_fences(
     paint_session* session, uint8_t edges, const CoordsXY& position, const TileElement* tileElement, Ride* ride,
     uint32_t colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
@@ -289,7 +290,7 @@ bool track_paint_util_draw_station_covers(
 bool track_paint_util_draw_station_covers_2(
     paint_session* session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
     uint8_t stationVariant);
-void track_paint_util_draw_station_platform(
+void track_paint_util_draw_narrow_station_platform(
     paint_session* session, Ride* ride, Direction direction, int32_t height, int32_t zOffset, const TileElement* tileElement);
 void track_paint_util_draw_station(
     paint_session* session, ride_id_t rideIndex, Direction direction, uint16_t height, const TileElement* tileElement);

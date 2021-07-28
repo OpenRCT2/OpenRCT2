@@ -204,6 +204,10 @@ enum
 bool track_paint_util_has_fence(
     enum edge_t edge, const CoordsXY& position, const TileElement* tileElement, Ride* ride, uint8_t rotation)
 {
+    const auto* stationObject = ride_get_station_object(ride);
+    if (stationObject != nullptr && stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return false;
+
     TileCoordsXY offset;
     switch (edge)
     {
@@ -231,8 +235,12 @@ bool track_paint_util_has_fence(
 }
 
 void track_paint_util_paint_floor(
-    paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4])
+    paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4],
+    const StationObject* stationStyle)
 {
+    if (stationStyle != nullptr && stationStyle->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
+
     uint32_t imageId;
 
     if (edges & EDGE_SW && edges & EDGE_SE)
@@ -330,6 +338,9 @@ static void track_paint_util_draw_station_impl(
     CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
+
+    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
 
     bool hasFence;
     uint32_t imageId;
@@ -538,6 +549,9 @@ void track_paint_util_draw_station_inverted(
     CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
+
+    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
 
     bool hasFence;
     uint32_t imageId;
@@ -838,11 +852,14 @@ bool track_paint_util_draw_station_covers_2(
     return true;
 }
 
-void track_paint_util_draw_station_platform(
+void track_paint_util_draw_narrow_station_platform(
     paint_session* session, Ride* ride, Direction direction, int32_t height, int32_t zOffset, const TileElement* tileElement)
 {
     CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
+    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
+
     if (direction & 1)
     {
         bool hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
@@ -887,6 +904,9 @@ void track_paint_util_draw_pier(
     paint_session* session, Ride* ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
     int32_t height, const TileElement* tileElement, uint8_t rotation)
 {
+    if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
+        return;
+
     bool hasFence;
     uint32_t imageId;
 
