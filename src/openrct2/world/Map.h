@@ -110,7 +110,7 @@ inline int32_t GetMapSizeUnits()
 }
 inline int32_t GetMapSizeMinus2()
 {
-    return (gMapSize * COORDS_XY_STEP) + MAXIMUM_MAP_SIZE_PRACTICAL;
+    return (gMapSize * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2);
 }
 inline int32_t GetMapSizeMaxXY()
 {
