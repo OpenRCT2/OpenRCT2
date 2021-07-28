@@ -81,8 +81,8 @@ public:
         gLandPaintMode = false;
         _selectedFloorTexture = 0;
         _selectedWallTexture = 0;
-        gLandToolRaiseCost = MONEY32_UNDEFINED;
-        gLandToolLowerCost = MONEY32_UNDEFINED;
+        gLandToolRaiseCost = MONEY64_UNDEFINED;
+        gLandToolLowerCost = MONEY64_UNDEFINED;
     }
 
     void OnClose() override
@@ -283,7 +283,7 @@ public:
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             // Draw raise cost amount
-            if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
+            if (gLandToolRaiseCost != MONEY64_UNDEFINED && gLandToolRaiseCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gLandToolRaiseCost);
@@ -292,7 +292,7 @@ public:
             screenCoords.y += 10;
 
             // Draw lower cost amount
-            if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
+            if (gLandToolLowerCost != MONEY64_UNDEFINED && gLandToolLowerCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gLandToolLowerCost);
