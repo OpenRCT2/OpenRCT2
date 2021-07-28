@@ -275,7 +275,7 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
         return objectPath;
     }
 
-    std::string altName = std::string(name);
+    std::string altName = name;
     auto rangeStart = name.find(".DAT");
     if (rangeStart != std::string::npos)
     {
