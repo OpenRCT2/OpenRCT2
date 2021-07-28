@@ -1698,14 +1698,22 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
 void NetworkBase::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet)
 {
     const auto& handlerList = GetMode() == NETWORK_MODE_SERVER ? server_command_handlers : client_command_handlers;
-    auto it = handlerList.find(packet.GetCommand());
-    if (it != handlerList.end())
+
+    try
     {
-        auto commandHandler = it->second;
-        if (connection.AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
+        auto it = handlerList.find(packet.GetCommand());
+        if (it != handlerList.end())
         {
-            (this->*commandHandler)(connection, packet);
+            auto commandHandler = it->second;
+            if (connection.AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
+            {
+                (this->*commandHandler)(connection, packet);
+            }
         }
+    }
+    catch (const std::exception& ex)
+    {
+        log_verbose("Exception during packet processing: %s", ex.what());
     }
 
     packet.Clear();
