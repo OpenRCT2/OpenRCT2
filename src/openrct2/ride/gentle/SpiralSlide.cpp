@@ -46,7 +46,7 @@ enum
 };
 
 static void spiral_slide_paint_tile_right(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id = 0;
@@ -64,7 +64,7 @@ static void spiral_slide_paint_tile_right(
 }
 
 static void spiral_slide_paint_tile_left(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id = 0;
@@ -82,12 +82,11 @@ static void spiral_slide_paint_tile_left(
 }
 
 static void spiral_slide_paint_tile_front(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id = 0;
 
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -192,7 +191,7 @@ static constexpr const uint32_t spiral_slide_fence_sprites[] = {
  * rct: 0x007485C8
  */
 static void paint_spiral_slide(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
@@ -205,7 +204,6 @@ static void paint_spiral_slide(
     uint32_t imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];
     PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
-    auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
@@ -216,13 +214,13 @@ static void paint_spiral_slide(
     switch (trackSequence)
     {
         case 1:
-            spiral_slide_paint_tile_right(session, rideIndex, trackSequence, direction, height, tileElement);
+            spiral_slide_paint_tile_right(session, ride, trackSequence, direction, height, tileElement);
             break;
         case 2:
-            spiral_slide_paint_tile_left(session, rideIndex, trackSequence, direction, height, tileElement);
+            spiral_slide_paint_tile_left(session, ride, trackSequence, direction, height, tileElement);
             break;
         case 3:
-            spiral_slide_paint_tile_front(session, rideIndex, trackSequence, direction, height, tileElement);
+            spiral_slide_paint_tile_front(session, ride, trackSequence, direction, height, tileElement);
             break;
     }
 

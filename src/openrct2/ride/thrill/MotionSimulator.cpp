@@ -32,9 +32,9 @@ enum
  *  rct2: 0x0076522A
  */
 static void paint_motionsimulator_vehicle(
-    paint_session* session, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height, const TileElement* tileElement)
+    paint_session* session, const Ride* ride, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
 {
-    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     if (ride == nullptr)
         return;
 
@@ -132,7 +132,7 @@ static void paint_motionsimulator_vehicle(
 
 /** rct2: 0x008A85C4 */
 static void paint_motionsimulator(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
@@ -141,7 +141,6 @@ static void paint_motionsimulator(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    auto ride = get_ride(rideIndex);
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
         stationObject = ride_get_station_object(ride);
@@ -158,13 +157,13 @@ static void paint_motionsimulator(
     switch (trackSequence)
     {
         case 1:
-            paint_motionsimulator_vehicle(session, 16, -16, direction, height, tileElement);
+            paint_motionsimulator_vehicle(session, ride, 16, -16, direction, height, tileElement);
             break;
         case 2:
-            paint_motionsimulator_vehicle(session, -16, 16, direction, height, tileElement);
+            paint_motionsimulator_vehicle(session, ride, -16, 16, direction, height, tileElement);
             break;
         case 3:
-            paint_motionsimulator_vehicle(session, -16, -16, direction, height, tileElement);
+            paint_motionsimulator_vehicle(session, ride, -16, -16, direction, height, tileElement);
             break;
     }
 

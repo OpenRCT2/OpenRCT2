@@ -196,7 +196,7 @@ static constexpr const uint32_t reverse_freefall_rc_track_pieces_vertical_suppor
 };
 
 static void paint_reverse_freefall_rc_flat(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (direction & 1)
@@ -218,7 +218,7 @@ static void paint_reverse_freefall_rc_flat(
 }
 
 static void paint_reverse_freefall_rc_station(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t imageId;
@@ -252,7 +252,6 @@ static void paint_reverse_freefall_rc_station(
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    auto ride = get_ride(rideIndex);
     if (ride != nullptr)
         track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 5, tileElement);
 
@@ -261,7 +260,7 @@ static void paint_reverse_freefall_rc_station(
 }
 
 static void paint_reverse_freefall_rc_slope(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     TESTPAINT_IGNORE_ALL();
@@ -357,7 +356,7 @@ static void paint_reverse_freefall_rc_slope(
 }
 
 static void paint_reverse_freefall_rc_vertical(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t supportsImageId, trackImageId;
@@ -388,7 +387,7 @@ static void paint_reverse_freefall_rc_vertical(
 }
 
 static void paint_reverse_freefall_rc_onride_photo(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     static constexpr const uint32_t imageIds[4] = {
