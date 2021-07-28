@@ -3689,6 +3689,20 @@ STR_6436    :Näkymättömyys päälle/pois
 STR_6437    :Näkymätön
 STR_6438    :N
 STR_6439    :Ruututyökalu: Näkymättömyys päälle/pois
+STR_6440    :Läpinäkyvä vesi
+STR_6441    :Ainakin yhden polunpinnan tulee olla valittu.
+STR_6442    :Ainakin yhden jonotusaluepinnan tulee olla valittu.
+STR_6443    :Ainakin yhden polunkaiteen tulee olla valittu.
+STR_6444    :Polun pinnat
+STR_6445    :Polun kaiteet
+STR_6446    :{WINDOW_COLOUR_2}Pinnan nimi: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Kaiteen nimi: {BLACK}{STRINGID}
+STR_6448    :Esineen muotoa ei tueta
+STR_6449    :{WINDOW_COLOUR_2}Raidat:
+STR_6450    :{BLACK}”{STRING}”
+STR_6451    :{BLACK}”{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Myy: {BLACK}{STRING}
+STR_6453    :Kopioi versiotiedot
 
 #############
 # Scenarios #
