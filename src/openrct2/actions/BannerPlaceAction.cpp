@@ -38,7 +38,7 @@ BannerPlaceActionResult::BannerPlaceActionResult(GameActions::Status err, rct_st
 {
 }
 
-BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, uint8_t primaryColour)
+BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, uint8_t primaryColour)
     : _loc(loc)
     , _bannerType(bannerType)
     , _primaryColour(primaryColour)

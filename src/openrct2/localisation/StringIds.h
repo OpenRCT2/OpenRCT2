@@ -3905,6 +3905,8 @@ enum
 
     STR_COPY_BUILD_HASH = 6453,
 
+    STR_CANT_RENAME_BANNER = 6454,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
