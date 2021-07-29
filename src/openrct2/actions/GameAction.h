@@ -126,7 +126,7 @@ namespace GameActions
         GameActions::Status Error = GameActions::Status::Ok;
         StringVariant ErrorTitle;
         StringVariant ErrorMessage;
-        std::array<uint8_t, 32> ErrorMessageArgs;
+        std::array<uint8_t, 32> ErrorMessageArgs{};
         CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
         money32 Cost = 0;
         ExpenditureType Expenditure = ExpenditureType::Count;
