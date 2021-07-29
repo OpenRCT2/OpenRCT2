@@ -32,8 +32,8 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/title/TitleScreen.h>
 #include <openrct2/sprites.h>
+#include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <string>
