@@ -54,6 +54,7 @@
 #include <cstdint>
 #include <ctime>
 #include <numeric>
+#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -4424,14 +4425,16 @@ static const FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& de
     if (desc.Generation == ObjectGeneration::JSON)
     {
         auto datPathName = GetDATPathName(desc.Identifier);
-        if (datPathName == std::nullopt)
+        if (datPathName.has_value())
+        {
+            rct_object_entry objectEntry = {};
+            objectEntry.SetName(datPathName.value());
+            return GetFootpathSurfaceId(ObjectEntryDescriptor(objectEntry));
+        }
+        else
         {
             return nullptr;
         }
-
-        rct_object_entry objectEntry = {};
-        objectEntry.SetName(datPathName.value());
-        return GetFootpathSurfaceId(ObjectEntryDescriptor(objectEntry));
     }
 
     // Even old .park saves with DAT identifiers somehow exist.
