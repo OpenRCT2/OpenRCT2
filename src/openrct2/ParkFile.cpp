@@ -245,12 +245,14 @@ namespace OpenRCT2
                 auto* pathToSurfaceMap = _pathToSurfaceMap;
                 auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
                 auto* pathToRailingsMap = _pathToRailingsMap;
+                const auto version = os.GetHeader().TargetVersion;
+                log_error("version %d", version);
 
                 ObjectList requiredObjects;
                 os.ReadWriteChunk(
                     ParkFileChunkType::OBJECTS,
-                    [&requiredObjects, pathToSurfaceMap, pathToQueueSurfaceMap,
-                     pathToRailingsMap](OrcaStream::ChunkStream& cs) {
+                    [&requiredObjects, pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap,
+                     version](OrcaStream::ChunkStream& cs) {
                         ObjectEntryIndex surfaceCount = 0;
                         ObjectEntryIndex railingsCount = 0;
                         auto numSubLists = cs.Read<uint16_t>();
@@ -271,7 +273,7 @@ namespace OpenRCT2
                                         rct_object_entry datEntry;
                                         cs.Read(&datEntry, sizeof(datEntry));
                                         ObjectEntryDescriptor desc(datEntry);
-                                        if (datEntry.GetType() == ObjectType::Paths)
+                                        if (version <= 2 && datEntry.GetType() == ObjectType::Paths)
                                         {
                                             auto footpathMapping = GetFootpathMapping(desc);
                                             if (footpathMapping != nullptr)
@@ -294,15 +296,18 @@ namespace OpenRCT2
                                         desc.Identifier = MapToNewObjectIdentifier(cs.Read<std::string>());
                                         desc.Version = cs.Read<std::string>();
 
-                                        auto footpathMapping = GetFootpathMapping(desc);
-                                        if (footpathMapping != nullptr)
+                                        if (version <= 2)
                                         {
-                                            // We have surface objects for this footpath
-                                            UpdateFootpathsFromMapping(
-                                                pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, requiredObjects,
-                                                surfaceCount, railingsCount, j, footpathMapping);
+                                            auto footpathMapping = GetFootpathMapping(desc);
+                                            if (footpathMapping != nullptr)
+                                            {
+                                                // We have surface objects for this footpath
+                                                UpdateFootpathsFromMapping(
+                                                    pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, requiredObjects,
+                                                    surfaceCount, railingsCount, j, footpathMapping);
 
-                                            continue;
+                                                continue;
+                                            }
                                         }
 
                                         requiredObjects.SetObject(j, desc);
