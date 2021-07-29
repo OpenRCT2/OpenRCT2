@@ -248,3 +248,12 @@ SET_CHECK_CXX_FLAGS(test_s6importexporttests)
 target_link_libraries(test_s6importexporttests ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_s6importexporttests)
 add_test(NAME s6importexporttests COMMAND test_s6importexporttests)
+
+# EnumMap Test
+set(ENUMMAP_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/EnumMapTest.cpp.cpp"
+                                 "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_enummap ${S6IMPORTEXPORT_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_enummap)
+target_link_libraries(test_enummap ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_enummap)
+add_test(NAME enummaptests COMMAND test_enummap)
