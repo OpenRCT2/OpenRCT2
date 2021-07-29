@@ -9,7 +9,7 @@
 #include <gtest/gtest.h>
 #include <openrct2/core/EnumMap.hpp>
 
-enum class TestEnumClassContinous
+enum class TestEnumClassContinuous
 {
     A,
     B,
@@ -20,7 +20,7 @@ enum class TestEnumClassContinous
     G
 };
 
-enum class TestEnumClassNonContinous
+enum class TestEnumClassNonContinuous
 {
     A = 1,
     B,
@@ -125,22 +125,22 @@ template<typename TEnum> void TestEnumValueLookup()
     SUCCEED();
 }
 
-TEST(EnumMapTest, LookupContinousByKey)
+TEST(EnumMapTest, LookupContinuousByKey)
 {
-    TestEnumKeyLookup<TestEnumClassContinous>();
+    TestEnumKeyLookup<TestEnumClassContinuous>();
 }
 
-TEST(EnumMapTest, LookupContiniousByValue)
+TEST(EnumMapTest, LookupContinuousByValue)
 {
-    TestEnumValueLookup<TestEnumClassContinous>();
+    TestEnumValueLookup<TestEnumClassContinuous>();
 }
 
-TEST(EnumMapTest, LookupNonContinousByKey)
+TEST(EnumMapTest, LookupNonContinuousByKey)
 {
-    TestEnumKeyLookup<TestEnumClassNonContinous>();
+    TestEnumKeyLookup<TestEnumClassNonContinuous>();
 }
 
-TEST(EnumMapTest, LookupNonContiniousByValue)
+TEST(EnumMapTest, LookupNonContinuousByValue)
 {
-    TestEnumValueLookup<TestEnumClassNonContinous>();
+    TestEnumValueLookup<TestEnumClassNonContinuous>();
 }
