@@ -32,6 +32,7 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/title/TitleScreen.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -458,8 +459,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             }
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
             {
-                auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
-                GameActions::Execute(&loadOrQuitAction);
+                title_load();
             }
             break;
         case WIDX_FILTER_RIDE_TAB_ALL:
