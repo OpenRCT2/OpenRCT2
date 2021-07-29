@@ -2051,51 +2051,6 @@ STR_2854    :{RED}Müşteriler {STRINGID} aletinin girişini bulamıyor!{NEWLINE
 STR_2855    :{RED}{STRINGID} aletinin çıkışı yok !{NEWLINE}Alet çıkışına yol inşa ediniz
 STR_2858    :Pazarlama kampanyası başlatılamıyor…
 STR_2861    :{WINDOW_COLOUR_2}Infogrames Interactive Inc.'e lisanslı
-STR_2862    :Müzik…
-STR_2863    :Müzik
-STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
-STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) non copyright
-STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
-STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) non copyright
-STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
-STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Traditional)
-STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Traditional)
-STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyright
-STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
-STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
-STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright © Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Ana renkler
 STR_2972    :Alternatif renkler 1
 STR_2973    :Alternatif renkler 2

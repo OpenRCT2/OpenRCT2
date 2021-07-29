@@ -2059,51 +2059,6 @@ STR_2854    :{RED}{STRINGID}의 입구로 가는 길이 없습니다 !{NEWLINE}�
 STR_2855    :{RED}{STRINGID}의 출구에서 나오는 길이 없습니다 !{NEWLINE}출구로 가는 길을 만드세요
 STR_2858    :광고 이벤트를 시작할 수 없습니다…
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
-STR_2862    :음악 저작권…
-STR_2863    :음악 저작권
-STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (푸치크) 저작권 없음
-STR_2865    :{WINDOW_COLOUR_2}Heyken’s Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) 저작권 없음
-STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (민요)
-STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (요한 슈트라우스) 저작권 없음
-STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (민요)
-STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (민요)
-STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (민요)
-STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (주페) 저작권 없음
-STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (요한 슈트라우스) 저작권 없음
-STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (민요)
-STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 타이틀 음악:   (Allister Brimble) copyright © Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer’s Heat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh’s Tomb:   (Allister Brimble) copyright © Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar’s March:   (Allister Brimble) copyright © Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja’s Noodles:   (Allister Brimble) copyright © Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble’s Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire’s Lair:   (Allister Brimble) copyright © Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics “Liquid Grooves”)
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :주 색상 조합
 STR_2972    :부 색상 조합 1
 STR_2973    :부 색상 조합 2
