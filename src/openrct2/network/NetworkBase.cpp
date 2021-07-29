@@ -50,6 +50,7 @@ static int32_t _pickup_peep_old_x = LOCATION_NULL;
 static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 
 // If data is sent fast enough it would halt the entire server, process only a maximum amount.
+// This limit is per connection, the current value was determined by tests with fuzzing.
 static constexpr uint32_t MaxPacketsPerUpdate = 100;
 
 #    include "../Cheats.h"
@@ -1705,21 +1706,21 @@ void NetworkBase::ProcessPacket(NetworkConnection& connection, NetworkPacket& pa
 {
     const auto& handlerList = GetMode() == NETWORK_MODE_SERVER ? server_command_handlers : client_command_handlers;
 
-    try
+    auto it = handlerList.find(packet.GetCommand());
+    if (it != handlerList.end())
     {
-        auto it = handlerList.find(packet.GetCommand());
-        if (it != handlerList.end())
+        auto commandHandler = it->second;
+        if (connection.AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
         {
-            auto commandHandler = it->second;
-            if (connection.AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
+            try
             {
                 (this->*commandHandler)(connection, packet);
             }
+            catch (const std::exception& ex)
+            {
+                log_verbose("Exception during packet processing: %s", ex.what());
+            }
         }
-    }
-    catch (const std::exception& ex)
-    {
-        log_verbose("Exception during packet processing: %s", ex.what());
     }
 
     packet.Clear();
