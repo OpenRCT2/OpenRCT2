@@ -324,7 +324,7 @@ public:
             gParkValueHistory[i] = ToMoney64(_s6.park_value_history[i]);
         }
 
-        gScenarioCompletedCompanyValue = ToMoney64(_s6.completed_company_value);
+        gScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.completed_company_value);
         gTotalAdmissions = _s6.total_admissions;
         gTotalIncomeFromAdmissions = ToMoney64(_s6.income_from_admissions);
         gCompanyValue = ToMoney64(_s6.company_value);

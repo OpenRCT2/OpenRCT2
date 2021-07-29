@@ -1346,7 +1346,7 @@ private:
         }
         gCurrentExpenditure = ToMoney64(_s4.total_expenditure);
 
-        gScenarioCompletedCompanyValue = ToMoney64(_s4.completed_company_value);
+        gScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.completed_company_value);
         gTotalAdmissions = _s4.num_admissions;
         gTotalIncomeFromAdmissions = ToMoney64(_s4.admission_total_income);
 
