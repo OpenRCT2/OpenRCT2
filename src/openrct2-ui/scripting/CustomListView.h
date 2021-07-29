@@ -41,7 +41,7 @@ namespace OpenRCT2::Ui::Windows
     struct ListViewColumn
     {
         bool CanSort{};
-        ColumnSortOrder SortOrder;
+        ColumnSortOrder SortOrder{};
         std::string Header;
         std::string HeaderTooltip;
         std::optional<int32_t> RatioWidth{};
