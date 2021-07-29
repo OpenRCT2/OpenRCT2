@@ -459,6 +459,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             }
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
             {
+                game_unload_scripts();
                 title_load();
             }
             break;
