@@ -3652,6 +3652,7 @@ STR_6451    :{BLACK}“{STRING}” - {STRING}
 STR_6452    :{WINDOW_COLOUR_2}Sells: {BLACK}{STRING}
 STR_6453    :Copy version info
 STR_6454    :Can’t rename banner…
+STR_6455    :Can’t rename sign…
 
 #############
 # Scenarios #

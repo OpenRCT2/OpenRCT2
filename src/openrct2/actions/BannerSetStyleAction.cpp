@@ -50,7 +50,7 @@ GameActions::Result::Ptr BannerSetStyleAction::Query() const
     if (banner == nullptr)
     {
         log_error("Invalid banner index: index = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
     }
 
     res->Expenditure = ExpenditureType::Landscaping;
@@ -62,7 +62,7 @@ GameActions::Result::Ptr BannerSetStyleAction::Query() const
     if (tileElement == nullptr)
     {
         log_error("Could not find banner index = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
     }
 
     switch (_type)
@@ -86,12 +86,12 @@ GameActions::Result::Ptr BannerSetStyleAction::Query() const
             if (tileElement->AsBanner() == nullptr)
             {
                 log_error("Tile element was not a banner.");
-                return MakeResult(GameActions::Status::Unknown, STR_NONE);
+                return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS);
             }
             break;
         default:
             log_error("Invalid type: %u", _type);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
     }
     return res;
 }
@@ -104,7 +104,7 @@ GameActions::Result::Ptr BannerSetStyleAction::Execute() const
     if (banner == nullptr)
     {
         log_error("Invalid banner index: index = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
     }
 
     res->Expenditure = ExpenditureType::Landscaping;
@@ -116,7 +116,7 @@ GameActions::Result::Ptr BannerSetStyleAction::Execute() const
     if (tileElement == nullptr)
     {
         log_error("Could not find banner index = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
     }
 
     switch (_type)
@@ -133,7 +133,7 @@ GameActions::Result::Ptr BannerSetStyleAction::Execute() const
             if (bannerElement == nullptr)
             {
                 log_error("Tile element was not a banner.");
-                return MakeResult(GameActions::Status::Unknown, STR_NONE);
+                return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS);
             }
 
             banner->flags &= ~BANNER_FLAG_NO_ENTRY;
@@ -148,7 +148,7 @@ GameActions::Result::Ptr BannerSetStyleAction::Execute() const
         }
         default:
             log_error("Invalid type: %u", _type);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
