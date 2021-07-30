@@ -90,12 +90,6 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 {
     thread_local std::string lineBuffer;
 
-    if (!chat_available())
-    {
-        gChatOpen = false;
-        return;
-    }
-
     _chatLeft = 10;
     _chatRight = std::min((context_get_width() - 10), CHAT_MAX_WINDOW_WIDTH);
     _chatWidth = _chatRight - _chatLeft;
