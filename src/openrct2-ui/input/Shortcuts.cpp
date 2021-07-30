@@ -470,9 +470,12 @@ static void ShortcutScaleUp()
     gfx_invalidate_screen();
     context_trigger_resize();
     context_update_cursor_scale();
-    int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
-    std::string scalestring = format_string(STR_UI_SCALING_SET, &scale);
-    chat_history_add(scalestring.c_str());
+    if (window_find_by_class(WC_TOP_TOOLBAR) != nullptr || window_find_by_class(WC_TITLE_LOGO) != nullptr)
+    {
+        int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
+        std::string scalestring = format_string(STR_UI_SCALING_SET, &scale);
+        chat_history_add(scalestring.c_str());
+    }
 }
 
 static void ShortcutScaleDown()
@@ -483,9 +486,12 @@ static void ShortcutScaleDown()
     gfx_invalidate_screen();
     context_trigger_resize();
     context_update_cursor_scale();
-    int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
-    std::string scalestring = format_string(STR_UI_SCALING_SET, &scale);
-    chat_history_add(scalestring.c_str());
+    if (window_find_by_class(WC_TOP_TOOLBAR) != nullptr || window_find_by_class(WC_TITLE_LOGO) != nullptr)
+    {
+        int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
+        std::string scalestring = format_string(STR_UI_SCALING_SET, &scale);
+        chat_history_add(scalestring.c_str());
+    }
 }
 
 // Tile inspector shortcuts
