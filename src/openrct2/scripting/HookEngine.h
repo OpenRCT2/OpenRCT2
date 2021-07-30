@@ -39,6 +39,7 @@ namespace OpenRCT2::Scripting
         RIDE_RATINGS_CALCULATE,
         ACTION_LOCATION,
         GUEST_GENERATION,
+        VEHICLE_CRASH,
         COUNT,
         UNDEFINED = -1,
     };
