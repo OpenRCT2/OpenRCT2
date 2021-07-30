@@ -49,7 +49,7 @@ GameActions::Result::Ptr SignSetNameAction::Query() const
     if (banner == nullptr)
     {
         log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
     return MakeResult();
 }
@@ -60,7 +60,7 @@ GameActions::Result::Ptr SignSetNameAction::Execute() const
     if (banner == nullptr)
     {
         log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
 
     if (!_name.empty())

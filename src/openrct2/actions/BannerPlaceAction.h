@@ -31,7 +31,7 @@ private:
 
 public:
     BannerPlaceAction() = default;
-    BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, uint8_t primaryColour);
+    BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
