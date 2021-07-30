@@ -1579,7 +1579,6 @@ static void window_ride_init_viewport(rct_window* w)
     if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
         focus.sprite.sprite_id = ride->vehicles[viewSelectionIndex];
-
         rct_ride_entry* ride_entry = ride->GetRideEntry();
         if (ride_entry && ride_entry->tab_vehicle != 0)
         {
@@ -1601,7 +1600,6 @@ static void window_ride_init_viewport(rct_window* w)
     else if (viewSelectionIndex >= ride->num_vehicles && viewSelectionIndex < (ride->num_vehicles + ride->num_stations))
     {
         int32_t count = viewSelectionIndex - ride->num_vehicles;
-        
         for (const auto& station : ride->stations)
         {
             if (!station.Start.isNull())
@@ -1625,7 +1623,6 @@ static void window_ride_init_viewport(rct_window* w)
         {
             w->viewport_focus_coordinates.var_480 = 0;
         }
-
         if (w->number < ride_overall_views.size())
         {
             const auto& view = ride_overall_views[w->number];
