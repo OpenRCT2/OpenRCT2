@@ -1601,15 +1601,15 @@ static void window_ride_init_viewport(rct_window* w)
     else if (eax >= ride->num_vehicles && eax < (ride->num_vehicles + ride->num_stations))
     {
         StationIndex stationIndex = STATION_INDEX_NULL;
-        int32_t count = eax - ride->num_vehicles;
-        do
+        int count = eax - ride->num_vehicles;
+        while (count >= 0)
         {
             stationIndex++;
             if (!ride->stations[stationIndex].Start.isNull())
             {
                 count--;
             }
-        } while (count >= 0);
+        } 
 
         auto location = ride->stations[stationIndex].GetStart();
         focus.coordinate.x = location.x;
