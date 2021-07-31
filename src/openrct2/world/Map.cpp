@@ -207,7 +207,6 @@ static bool map_check_free_elements_and_reorganise(size_t numElementsOnTile, siz
     // Check hard cap on num in use tiles (this would be the size of _tileElements immediately after a reorg)
     if (_tileElementsInUse + numNewElements > MAX_TILE_ELEMENTS)
     {
-        gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
         return false;
     }
 
