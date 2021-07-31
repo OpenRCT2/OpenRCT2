@@ -73,7 +73,6 @@ static CoordsXYZ _trackPreviewOrigin;
 
 bool _trackDesignDrawingPreview;
 static uint8_t _trackDesignPlaceOperation;
-static money32 _trackDesignPlaceCost;
 static int16_t _trackDesignPlaceZ;
 static int16_t _trackDesignPlaceSceneryZ;
 
@@ -965,23 +964,24 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(const TrackDesignSceneryElem
     return true;
 }
 
-static bool TrackDesignPlaceSceneryElement(
-    CoordsXY mapCoord, uint8_t mode, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
+static std::pair<bool, money32> TrackDesignPlaceSceneryElement(
+    CoordsXY mapCoord, uint8_t mode, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ,
+    money32 totalCost)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
         track_design_add_selection_tile(mapCoord);
-        return true;
+        return std::pair(true, totalCost);
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST && mode == 0)
     {
-        return TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ);
+        return std::pair(TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ), totalCost);
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
     {
-        return TrackDesignPlaceSceneryElementGetPlaceZ(scenery);
+        return std::pair(TrackDesignPlaceSceneryElementGetPlaceZ(scenery), totalCost);
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY || _trackDesignPlaceOperation == PTD_OPERATION_PLACE
@@ -992,7 +992,7 @@ static bool TrackDesignPlaceSceneryElement(
         ObjectEntryIndex entry_index;
         if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
         {
-            return true;
+            return std::pair(true, totalCost);
         }
 
         money32 cost;
@@ -1006,11 +1006,11 @@ static bool TrackDesignPlaceSceneryElement(
             {
                 if (mode != 0)
                 {
-                    return true;
+                    return std::pair(true, totalCost);
                 }
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return true;
+                    return std::pair(true, totalCost);
                 }
 
                 rotation += scenery.flags;
@@ -1054,11 +1054,11 @@ static bool TrackDesignPlaceSceneryElement(
             {
                 if (mode != 0)
                 {
-                    return true;
+                    return std::pair(true, totalCost);
                 }
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return true;
+                    return std::pair(true, totalCost);
                 }
 
                 rotation += scenery.flags;
@@ -1098,11 +1098,11 @@ static bool TrackDesignPlaceSceneryElement(
             {
                 if (mode != 0)
                 {
-                    return true;
+                    return std::pair(true, totalCost);
                 }
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return true;
+                    return std::pair(true, totalCost);
                 }
 
                 z = scenery.z * COORDS_Z_STEP + originZ;
@@ -1141,7 +1141,7 @@ static bool TrackDesignPlaceSceneryElement(
             case ObjectType::Paths:
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return true;
+                    return std::pair(true, totalCost);
                 }
 
                 z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
@@ -1193,14 +1193,14 @@ static bool TrackDesignPlaceSceneryElement(
                 {
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
-                        return true;
+                        return std::pair(true, totalCost);
                     }
 
                     auto* pathElement = map_get_path_element_at({ mapCoord.x / 32, mapCoord.y / 32, z });
 
                     if (pathElement == nullptr)
                     {
-                        return true;
+                        return std::pair(true, totalCost);
                     }
 
                     footpath_queue_chain_reset();
@@ -1222,40 +1222,40 @@ static bool TrackDesignPlaceSceneryElement(
                     }
                     footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
                     footpath_update_queue_chains();
-                    return true;
+                    return std::pair(true, totalCost);
                 }
                 break;
             default:
                 _trackDesignPlaceStateSceneryUnavailable = true;
-                return true;
+                return std::pair(true, totalCost);
         }
-        _trackDesignPlaceCost = add_clamp_money32(_trackDesignPlaceCost, cost);
+        totalCost = add_clamp_money32(totalCost, cost);
         if (_trackDesignPlaceOperation != PTD_OPERATION_PLACE)
         {
             if (cost == MONEY32_UNDEFINED)
             {
-                _trackDesignPlaceCost = MONEY32_UNDEFINED;
+                totalCost = MONEY32_UNDEFINED;
             }
         }
-        if (_trackDesignPlaceCost != MONEY32_UNDEFINED)
+        if (totalCost != MONEY32_UNDEFINED)
         {
-            return true;
+            return std::pair(true, totalCost);
         }
         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE)
         {
-            return true;
+            return std::pair(true, totalCost);
         }
-        return false;
+        return std::pair(false, totalCost);
     }
-    return true;
+    return std::pair(true, totalCost);
 }
 
 /**
  *
  *  rct2: 0x006D0964
  */
-static int32_t track_design_place_all_scenery(
-    const std::vector<TrackDesignSceneryElement>& sceneryList, const CoordsXYZ& origin)
+static std::pair<bool, money32> track_design_place_all_scenery(
+    const std::vector<TrackDesignSceneryElement>& sceneryList, const CoordsXYZ& origin, money32 cost)
 {
     for (uint8_t mode = 0; mode <= 1; mode++)
     {
@@ -1279,16 +1279,20 @@ static int32_t track_design_place_all_scenery(
             auto mapCoord = CoordsXYZ{ tileCoords.ToCoordsXY(), origin.z };
             track_design_update_max_min_coordinates(mapCoord);
 
-            if (!TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, origin.z))
+            auto [placementSuccess, newCost] = TrackDesignPlaceSceneryElement(
+                mapCoord, mode, scenery, rotation, origin.z, cost);
+            cost = newCost;
+            if (!placementSuccess)
             {
-                return 0;
+                return std::pair(false, cost);
             }
         }
     }
-    return 1;
+    return std::pair(true, cost);
 }
 
-static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords, Ride* ride)
+static std::pair<bool, money32> track_design_place_maze(
+    TrackDesign* td6, const CoordsXYZ& coords, Ride* ride, money32 totalCost)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
@@ -1298,7 +1302,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
     }
 
     _trackDesignPlaceZ = 0;
-    _trackDesignPlaceCost = 0;
+    totalCost = 0;
 
     for (const auto& maze_element : td6->maze_elements)
     {
@@ -1435,12 +1439,11 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                     break;
             }
 
-            _trackDesignPlaceCost += cost;
+            totalCost += cost;
 
             if (cost == MONEY32_UNDEFINED)
             {
-                _trackDesignPlaceCost = cost;
-                return 0;
+                return std::pair(false, MONEY32_UNDEFINED);
             }
         }
 
@@ -1487,10 +1490,11 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
     }
 
     _trackPreviewOrigin = coords;
-    return 1;
+    return std::pair(true, totalCost);
 }
 
-static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, Ride* ride)
+static std::pair<bool, money32> track_design_place_ride(
+    TrackDesign* td6, const CoordsXYZ& origin, Ride* ride, money32 totalCost)
 {
     _trackPreviewOrigin = origin;
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
@@ -1501,7 +1505,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
     }
 
     _trackDesignPlaceZ = 0;
-    _trackDesignPlaceCost = 0;
+    totalCost = 0;
     uint8_t rotation = _currentTrackPieceDirection;
 
     // Track elements
@@ -1587,11 +1591,10 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                                                            : GameActions::QueryNested(&trackPlaceAction);
                 money32 cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
 
-                _trackDesignPlaceCost += cost;
+                totalCost += cost;
                 if (cost == MONEY32_UNDEFINED)
                 {
-                    _trackDesignPlaceCost = cost;
-                    return false;
+                    return std::pair(false, MONEY32_UNDEFINED);
                 }
                 break;
             }
@@ -1609,7 +1612,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                     auto surfaceElement = map_get_surface_element_at(tile);
                     if (surfaceElement == nullptr)
                     {
-                        return false;
+                        return std::pair(false, MONEY32_UNDEFINED);
                     }
 
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
@@ -1682,8 +1685,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                     newCoords.z += entrance.z;
                     if (tile_element == nullptr)
                     {
-                        _trackDesignPlaceCost = MONEY32_UNDEFINED;
-                        return false;
+                        return std::pair(false, MONEY32_UNDEFINED);
                     }
 
                     do
@@ -1724,12 +1726,11 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                         auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
                                                                    : GameActions::QueryNested(&rideEntranceExitPlaceAction);
 
-                        _trackDesignPlaceCost += res->Cost;
+                        totalCost += res->Cost;
 
                         if (res->Error != GameActions::Status::Ok)
                         {
-                            _trackDesignPlaceCost = MONEY32_UNDEFINED;
-                            return false;
+                            return std::pair(false, MONEY32_UNDEFINED);
                         }
                         _trackDesignPlaceStateEntranceExitPlaced = true;
                         break;
@@ -1743,12 +1744,11 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                     auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
                     if (res->Error != GameActions::Status::Ok)
                     {
-                        _trackDesignPlaceCost = MONEY32_UNDEFINED;
-                        return false;
+                        return std::pair(false, MONEY32_UNDEFINED);
                     }
                     else
                     {
-                        _trackDesignPlaceCost += res->Cost;
+                        totalCost += res->Cost;
                         _trackDesignPlaceStateEntranceExitPlaced = true;
                     }
                 }
@@ -1762,7 +1762,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
         sub_6CB945(ride);
         ride->Delete();
     }
-    return true;
+    return std::pair(true, totalCost);
 }
 
 /**
@@ -1778,7 +1778,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
  * bl == 6, Clear white outlined track.
  *  rct2: 0x006D01B3
  */
-int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
+money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
 {
     // Previously byte_F4414E was cleared here
     _trackDesignPlaceStatePlaceScenery = placeScenery;
@@ -1799,22 +1799,26 @@ int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
     _trackPreviewMax = coords;
 
     _trackDesignPlaceSceneryZ = 0;
-    uint8_t track_place_success = 0;
+    bool trackPlaceSuccess = false;
+    money32 trackPlaceCost = 0;
     if (td6->type == RIDE_TYPE_MAZE)
     {
-        track_place_success = track_design_place_maze(td6, coords, ride);
+        std::tie(trackPlaceSuccess, trackPlaceCost) = track_design_place_maze(td6, coords, ride, trackPlaceCost);
     }
     else
     {
-        track_place_success = track_design_place_ride(td6, coords, ride);
+        std::tie(trackPlaceSuccess, trackPlaceCost) = track_design_place_ride(td6, coords, ride, trackPlaceCost);
     }
 
     // Scenery elements
-    if (track_place_success)
+    if (trackPlaceSuccess)
     {
-        if (!track_design_place_all_scenery(td6->scenery_elements, _trackPreviewOrigin))
+        bool success = false;
+        std::tie(success, trackPlaceCost) = track_design_place_all_scenery(
+            td6->scenery_elements, _trackPreviewOrigin, trackPlaceCost);
+        if (!success)
         {
-            return _trackDesignPlaceCost;
+            return MONEY32_UNDEFINED;
         }
     }
 
@@ -1833,7 +1837,7 @@ int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
         // from _trackDesignPlaceZ, causing bug #259.
         return _trackDesignPlaceZ - _trackDesignPlaceSceneryZ;
     }
-    return _trackDesignPlaceCost;
+    return trackPlaceCost;
 }
 
 static money32 track_design_ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)

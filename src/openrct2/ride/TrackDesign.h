@@ -204,7 +204,7 @@ std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
 
 void track_design_mirror(TrackDesign* td6);
 
-int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords);
+money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
