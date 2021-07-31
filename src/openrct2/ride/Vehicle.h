@@ -385,8 +385,6 @@ namespace MiniGolfFlag
     constexpr uint8_t Flag3 = (1 << 3);
     constexpr uint8_t Flag4 = (1 << 4);
     constexpr uint8_t Flag5 = (1 << 5); // transitioning between hole
-    constexpr uint8_t Flag6 = (1 << 6);
-    constexpr uint8_t Flag7 = (1 << 7);
 } // namespace MiniGolfFlag
 
 enum class MiniGolfState : int16_t
@@ -408,9 +406,9 @@ enum class MiniGolfAnimation : uint8_t
     PickupBall,
     Jump,
     PlaceBallUp,
-    PutLeft,
+    PuttLeft,
     Swing,
-    Put,
+    Putt,
 };
 
 enum : uint32_t

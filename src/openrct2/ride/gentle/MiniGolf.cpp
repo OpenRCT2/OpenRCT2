@@ -408,12 +408,12 @@ static constexpr const uint8_t mini_golf_peep_animation_frames_place_ball_upward
 };
 
 /** rct2: 0x009334C5 */
-static constexpr const uint8_t mini_golf_peep_animation_frames_put[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_putt[] = {
     35, 36, 36, 36, 36, 36, 35, 35, 35, 35,
 };
 
 /** rct2: 0x009334AA */
-static constexpr const uint8_t mini_golf_peep_animation_frames_put_left[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_putt_left[] = {
     10, 11, 11, 11, 11, 11, 10, 10, 10, 10,
 };
 
@@ -425,9 +425,9 @@ static constexpr const uint8_t* mini_golf_peep_animation_frames[] = {
     mini_golf_peep_animation_frames_pickup_ball,
     mini_golf_peep_animation_frames_jump,
     mini_golf_peep_animation_frames_place_ball_upwards,
-    mini_golf_peep_animation_frames_put_left,
+    mini_golf_peep_animation_frames_putt_left,
     mini_golf_peep_animation_frames_swing,
-    mini_golf_peep_animation_frames_put,
+    mini_golf_peep_animation_frames_putt,
 };
 
 const size_t mini_golf_peep_animation_lengths[] = {
@@ -437,9 +437,9 @@ const size_t mini_golf_peep_animation_lengths[] = {
     std::size(mini_golf_peep_animation_frames_pickup_ball),
     std::size(mini_golf_peep_animation_frames_jump),
     std::size(mini_golf_peep_animation_frames_place_ball_upwards),
-    std::size(mini_golf_peep_animation_frames_put_left),
+    std::size(mini_golf_peep_animation_frames_putt_left),
     std::size(mini_golf_peep_animation_frames_swing),
-    std::size(mini_golf_peep_animation_frames_put),
+    std::size(mini_golf_peep_animation_frames_putt),
 };
 // clang-format on
 

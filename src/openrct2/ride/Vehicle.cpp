@@ -8974,11 +8974,11 @@ loc_6DC743:
                             animation = MiniGolfAnimation::Swing;
                         }
                     }
-                    if (animation == MiniGolfAnimation::PutLeft)
+                    if (animation == MiniGolfAnimation::PuttLeft)
                     {
                         if (curPeep->Id & 7)
                         {
-                            animation = MiniGolfAnimation::Put;
+                            animation = MiniGolfAnimation::Putt;
                         }
                     }
                 }
