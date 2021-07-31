@@ -215,7 +215,7 @@ ObjectEntryDescriptor SmallSceneryObject::GetScgPiratHeader() const
 
 ObjectEntryDescriptor SmallSceneryObject::GetScgMineHeader() const
 {
-    return ObjectEntryDescriptor("rct2.scgpirat");
+    return ObjectEntryDescriptor("rct2.scgmine");
 }
 
 ObjectEntryDescriptor SmallSceneryObject::GetScgAbstrHeader() const
