@@ -158,7 +158,7 @@ void SmallSceneryObject::PerformFixes()
     auto identifier = GetLegacyIdentifier();
     static const auto& scgWalls = Object::GetScgWallsHeader();
 
-    // ToonTowner's base blocks. Make put them in the Walls and Roofs group.
+    // ToonTowner's base blocks. Put them in the Walls and Roofs group.
     if (identifier == "XXBBCL01" ||
         identifier == "XXBBMD01" ||
         identifier == "ARBASE2 ")
