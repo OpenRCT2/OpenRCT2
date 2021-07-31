@@ -739,7 +739,8 @@ namespace Config
         desc.filters[1].pattern = "*";
         desc.filters[2].name = nullptr;
 
-        desc.initial_directory = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME).c_str();
+        const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+        desc.initial_directory = userHomePath.c_str();
 
         return platform_open_common_file_dialog(installerPath, &desc, 4096);
     }
