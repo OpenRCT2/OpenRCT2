@@ -3658,6 +3658,8 @@ STR_6450    :{BLACK}« {STRING} »
 STR_6451    :{BLACK}« {STRING} » — {STRING}
 STR_6452    :{WINDOW_COLOUR_2}Vend : {BLACK}{STRING}
 STR_6453    :Copier les informations de version
+STR_6454    :Impossible de renommer la bannière…
+STR_6455    :Impossible de renommer le panneau…
 
 #############
 # Scenarios #
