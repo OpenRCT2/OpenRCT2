@@ -55,6 +55,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/EntityList.h>
 #include <openrct2/world/Park.h>
+#include <optional>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -1546,6 +1547,32 @@ static void window_ride_anchor_border_widgets(rct_window* w)
 
 #pragma region Main
 
+static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_window& w)
+{
+    const auto* ride = get_ride(w.number);
+    if (ride == nullptr)
+        return {};
+
+    int32_t viewSelectionIndex = w.ride.view - 1 - ride->num_vehicles;
+    if (viewSelectionIndex < 0)
+    {
+        return {};
+    }
+
+    for (StationIndex index = 0; index < sizeof(ride->stations); ++index)
+    {
+        const auto& station = ride->stations[index];
+        if (!station.Start.isNull())
+        {
+            if (viewSelectionIndex-- == 0)
+            {
+                return { index };
+            }
+        }
+    }
+    return {};
+}
+
 /**
  *
  *  rct2: 0x006AF994
@@ -1599,22 +1626,14 @@ static void window_ride_init_viewport(rct_window* w)
     }
     else if (viewSelectionIndex >= ride->num_vehicles && viewSelectionIndex < (ride->num_vehicles + ride->num_stations))
     {
-        int32_t count = viewSelectionIndex - ride->num_vehicles;
-        for (const auto& station : ride->stations)
+        auto stationIndex = GetStationIndexFromViewSelection(*w);
+        if (stationIndex)
         {
-            if (!station.Start.isNull())
-            {
-                count--;
-            }
-            if (count == 0)
-            {
-                auto location = station.GetStart();
-                focus.coordinate.x = location.x;
-                focus.coordinate.y = location.y;
-                focus.coordinate.z = location.z;
-                focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
-                break;
-            }
+            auto location = ride->stations[*stationIndex].GetStart();
+            focus.coordinate.x = location.x;
+            focus.coordinate.y = location.y;
+            focus.coordinate.z = location.z;
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
         }
     }
     else
@@ -2528,48 +2547,41 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
         return STR_NONE;
 
     int32_t count = w->ride.view - ride->num_vehicles - 1;
-    StationIndex stationIndex = STATION_INDEX_NULL;
     rct_string_id stringId = STR_EMPTY;
-
-    do
+    auto stationIndex = GetStationIndexFromViewSelection(*w);
+    if (stationIndex)
     {
-        stationIndex++;
-        if (!ride->stations[stationIndex].Start.isNull())
-            count--;
-    } while (count >= 0);
+        // Entrance / exit
+        if (ride->status == RideStatus::Closed)
+        {
+            if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
+                stringId = STR_NO_ENTRANCE;
+            else if (ride_get_exit_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
+                stringId = STR_NO_EXIT;
+        }
+        else
+        {
+            if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
+                stringId = STR_EXIT_ONLY;
+        }
+        // Queue length
+        if (stringId == STR_EMPTY)
+        {
+            stringId = STR_QUEUE_EMPTY;
+            uint16_t queueLength = ride->stations[*stationIndex].QueueLength;
+            if (queueLength == 1)
+                stringId = STR_QUEUE_ONE_PERSON;
+            else if (queueLength > 1)
+                stringId = STR_QUEUE_PEOPLE;
 
-    // Entrance / exit
-    if (ride->status == RideStatus::Closed)
-    {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
-            stringId = STR_NO_ENTRANCE;
-        else if (ride_get_exit_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
-            stringId = STR_NO_EXIT;
+            ft.Add<rct_string_id>(stringId);
+            ft.Add<uint16_t>(queueLength);
+        }
+        else
+        {
+            ft.Add<rct_string_id>(stringId);
+        }
     }
-    else
-    {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
-            stringId = STR_EXIT_ONLY;
-    }
-
-    // Queue length
-    if (stringId == STR_EMPTY)
-    {
-        stringId = STR_QUEUE_EMPTY;
-        uint16_t queueLength = ride->stations[stationIndex].QueueLength;
-        if (queueLength == 1)
-            stringId = STR_QUEUE_ONE_PERSON;
-        else if (queueLength > 1)
-            stringId = STR_QUEUE_PEOPLE;
-
-        ft.Add<rct_string_id>(stringId);
-        ft.Add<uint16_t>(queueLength);
-    }
-    else
-    {
-        ft.Add<rct_string_id>(stringId);
-    }
-
     return STR_BLACK_STRING;
 }
 
