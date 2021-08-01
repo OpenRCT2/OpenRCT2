@@ -2574,7 +2574,6 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     {
         ft.Add<rct_string_id>(stringId);
     }
-    
     return STR_BLACK_STRING;
 }
 
