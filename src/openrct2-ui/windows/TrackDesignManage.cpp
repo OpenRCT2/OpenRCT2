@@ -204,10 +204,8 @@ static void window_track_delete_prompt_open()
     int32_t screenHeight = context_get_height();
     rct_window* w = WindowCreate(
         ScreenCoordsXY(
-            std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2),
-            (screenHeight - WH_DELETE_PROMPT) / 2),
-        WW_DELETE_PROMPT, WH_DELETE_PROMPT,
-        &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
+            std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),
+        WW_DELETE_PROMPT, WH_DELETE_PROMPT, &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_track_delete_prompt_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RENAME) | (1ULL << WIDX_DELETE);
     WindowInitScrollWidgets(w);
@@ -250,11 +248,8 @@ static void window_track_delete_prompt_paint(rct_window* w, rct_drawpixelinfo* d
     WindowDrawWidgets(w, dpi);
 
     DrawTextWrapped(
-        dpi,
-        { w->windowPos.x + (WW_DELETE_PROMPT / 2), w->windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) },
-        (WW_DELETE_PROMPT - 4),
-        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK,
-        &_trackDesignFileReference->name, { TextAlignment::CENTRE });
+        dpi, { w->windowPos.x + (WW_DELETE_PROMPT / 2), w->windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
+        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, &_trackDesignFileReference->name, { TextAlignment::CENTRE });
 }
 
 static void window_track_design_list_reload_tracks()
