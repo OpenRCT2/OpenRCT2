@@ -3928,6 +3928,8 @@ enum : uint16_t
     STR_ADJUST_SMALLER_PATROL_AREA_TIP = 6469,
     STR_ADJUST_LARGER_PATROL_AREA_TIP = 6470,
 
+    STR_SEE_THROUGH_VEHICLES = 6471,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

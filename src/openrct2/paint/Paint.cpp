@@ -56,7 +56,7 @@ bool gPaintBlockedTiles;
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
-static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
+static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, EntityType entityType, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
@@ -482,6 +482,17 @@ void PaintSessionArrange(PaintSessionCore& session)
     Guard::Assert(false);
 }
 
+static EntityType GetEntityTypeFromPaintSession(const paint_struct* ps)
+{
+    auto entityType = EntityType::Null;
+    auto* entity = reinterpret_cast<const EntityBase*>(ps->tileElement);
+    if (entity != nullptr)
+    {
+        entityType = entity->Type;
+    }
+    return entityType;
+}
+
 static void PaintDrawStruct(paint_session& session, paint_struct* ps)
 {
     rct_drawpixelinfo* dpi = &session.DPI;
@@ -503,7 +514,8 @@ static void PaintDrawStruct(paint_session& session, paint_struct* ps)
         }
     }
 
-    auto imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, session.ViewFlags);
+    auto entityType = GetEntityTypeFromPaintSession(ps);
+    auto imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, entityType, session.ViewFlags);
     if (gPaintBoundingBoxes && dpi->zoom_level == ZoomLevel{ 0 })
     {
         PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
@@ -553,7 +565,8 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
-        auto imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, viewFlags);
+        auto entityType = GetEntityTypeFromPaintSession(ps);
+        auto imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, entityType, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
             gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
@@ -661,12 +674,19 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId image
     gfx_draw_sprite(dpi, imageId, { x, y });
 }
 
-static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags)
+static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, EntityType entityType, uint32_t viewFlags)
 {
     auto seeThrough = imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
     {
         if (spriteType == ViewportInteractionItem::Ride)
+        {
+            return seeThrough;
+        }
+    }
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
+    {
+        if (spriteType == ViewportInteractionItem::Entity && entityType == EntityType::Vehicle)
         {
             return seeThrough;
         }

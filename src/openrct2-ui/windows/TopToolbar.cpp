@@ -137,17 +137,18 @@ enum TopToolbarViewMenuDdidx
     DDIDX_HIDE_VERTICAL = 3,
     // separator
     DDIDX_SEETHROUGH_RIDES = 5,
-    DDIDX_SEETHROUGH_SCENERY = 6,
-    DDIDX_SEETHROUGH_PATHS = 7,
-    DDIDX_INVISIBLE_SUPPORTS = 8,
-    DDIDX_INVISIBLE_PEEPS = 9,
+    DDIDX_SEETHROUGH_VEHICLES = 6,
+    DDIDX_SEETHROUGH_SCENERY = 7,
+    DDIDX_SEETHROUGH_PATHS = 8,
+    DDIDX_INVISIBLE_SUPPORTS = 9,
+    DDIDX_INVISIBLE_PEEPS = 10,
     // separator
-    DDIDX_LAND_HEIGHTS = 11,
-    DDIDX_TRACK_HEIGHTS = 12,
-    DDIDX_PATH_HEIGHTS = 13,
+    DDIDX_LAND_HEIGHTS = 12,
+    DDIDX_TRACK_HEIGHTS = 13,
+    DDIDX_PATH_HEIGHTS = 14,
     // separator
-    DDIDX_VIEW_CLIPPING = 15,
-    DDIDX_HIGHLIGHT_PATH_ISSUES = 16,
+    DDIDX_VIEW_CLIPPING = 16,
+    DDIDX_HIGHLIGHT_PATH_ISSUES = 17,
 
     TOP_TOOLBAR_VIEW_MENU_COUNT,
 };
@@ -3624,6 +3625,7 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
         Separator(),
         ToggleOption(DDIDX_SEETHROUGH_RIDES, STR_SEE_THROUGH_RIDES),
+        ToggleOption(DDIDX_SEETHROUGH_VEHICLES, STR_SEE_THROUGH_VEHICLES),
         ToggleOption(DDIDX_SEETHROUGH_SCENERY, STR_SEE_THROUGH_SCENERY),
         ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
         ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
@@ -3657,6 +3659,8 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         Dropdown::SetChecked(DDIDX_HIDE_VERTICAL, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_RIDES, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
+        Dropdown::SetChecked(DDIDX_SEETHROUGH_VEHICLES, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_SCENERY, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
@@ -3711,6 +3715,9 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 break;
             case DDIDX_SEETHROUGH_RIDES:
                 w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+                break;
+            case DDIDX_SEETHROUGH_VEHICLES:
+                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_VEHICLES;
                 break;
             case DDIDX_SEETHROUGH_SCENERY:
                 w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;

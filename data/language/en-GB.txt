@@ -3659,6 +3659,7 @@ STR_6467    :Nausea: {COMMA2DP32}
 STR_6468    :Not Yet Known
 STR_6469    :Adjust smaller area of patrol area
 STR_6470    :Adjust larger area of patrol area
+STR_6471    :See-Through Vehicles
 
 #############
 # Scenarios #
