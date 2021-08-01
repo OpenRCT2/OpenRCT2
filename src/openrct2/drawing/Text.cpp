@@ -113,15 +113,9 @@ static void DrawText(
 }
 
 void DrawTextBasic(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, TextPaint textPaint)
-{
-    DrawText(dpi, coords, textPaint, format, args);
-}
-
-void DrawTextBasic(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, TextPaint textPaint)
 {
-    DrawTextBasic(dpi, coords, format, ft.Data(), textPaint);
+    DrawText(dpi, coords, textPaint, format, ft.Data());
 }
 
 void DrawTextEllipsised(

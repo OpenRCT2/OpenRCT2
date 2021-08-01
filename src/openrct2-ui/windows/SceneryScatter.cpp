@@ -216,8 +216,8 @@ static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto preview = window_scenery_scatter_widgets[WIDX_PREVIEW];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + preview.midX(), w->windowPos.y + preview.midY() };
-        DrawTextBasic(
-            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gWindowSceneryScatterSize,
-            { TextAlignment::CENTRE });
+        auto ft = Formatter();
+        ft.Add<uint16_t>(gWindowSceneryScatterSize);
+        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
     }
 }

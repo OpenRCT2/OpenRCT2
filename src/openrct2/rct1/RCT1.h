@@ -633,7 +633,7 @@ struct rct1_s4
     money32 weekly_profit_history[RCT12_FINANCE_GRAPH_SIZE];
     money32 park_value;
     money32 park_value_history[RCT12_FINANCE_GRAPH_SIZE];
-    uint32_t completed_company_value;
+    money32 completed_company_value;
     uint32_t num_admissions;
     money32 admission_total_income;
     money32 company_value;

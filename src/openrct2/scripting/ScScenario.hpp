@@ -107,7 +107,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 excitement_get()
+        money64 excitement_get()
         {
             if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             {
@@ -116,7 +116,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        void excitement_set(money32 value)
+        void excitement_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
             if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
@@ -125,7 +125,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 parkValue_get()
+        money64 parkValue_get()
         {
             if (gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
                 || gScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
@@ -135,7 +135,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        void parkValue_set(money32 value)
+        void parkValue_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
             if (gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
@@ -145,7 +145,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 monthlyIncome_get()
+        money64 monthlyIncome_get()
         {
             if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_RIDE_INCOME
                 || gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
@@ -155,7 +155,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        void monthlyIncome_set(money32 value)
+        void monthlyIncome_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
             if (gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
@@ -246,7 +246,7 @@ namespace OpenRCT2::Scripting
         DukValue completedCompanyValue_get() const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED
+            if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED
                 || gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {
                 return ToDuk(ctx, nullptr);
@@ -261,7 +261,7 @@ namespace OpenRCT2::Scripting
 
         std::string status_get() const
         {
-            if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED)
+            if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED)
                 return "inProgress";
             else if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
                 return "failed";
@@ -271,18 +271,18 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             if (value == "inProgress")
-                gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
+                gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
             else if (value == "failed")
                 gScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
             else if (value == "completed")
                 gScenarioCompletedCompanyValue = gCompanyValue;
         }
 
-        money32 companyValueRecord_get() const
+        money64 companyValueRecord_get() const
         {
             return gScenarioCompanyValueRecord;
         }
-        void companyValueRecord_set(money32 value)
+        void companyValueRecord_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
             gScenarioCompanyValueRecord = value;

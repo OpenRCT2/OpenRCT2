@@ -200,8 +200,8 @@ void S6Exporter::Export()
     ExportEntities();
     ExportParkName();
 
-    _s6.initial_cash = gInitialCash;
-    _s6.current_loan = gBankLoan;
+    _s6.initial_cash = ToMoney32(gInitialCash);
+    _s6.current_loan = ToMoney32(gBankLoan);
     _s6.park_flags = gParkFlags;
     _s6.park_entrance_fee = gParkEntranceFee;
     // rct1_park_entrance_x
@@ -226,7 +226,13 @@ void S6Exporter::Export()
     _s6.guests_in_park = gNumGuestsInPark;
     _s6.guests_heading_for_park = gNumGuestsHeadingForPark;
 
-    std::memcpy(_s6.expenditure_table, gExpenditureTable, sizeof(_s6.expenditure_table));
+    for (size_t i = 0; i < RCT12_EXPENDITURE_TABLE_MONTH_COUNT; i++)
+    {
+        for (size_t j = 0; j < RCT12_EXPENDITURE_TYPE_COUNT; j++)
+        {
+            _s6.expenditure_table[i][j] = ToMoney32(gExpenditureTable[i][j]);
+        }
+    }
 
     _s6.last_guests_in_park = gNumGuestsInParkLastWeek;
     // pad_01357BCA
@@ -268,7 +274,7 @@ void S6Exporter::Export()
     _s6.park_size = gParkSize;
     _s6.guest_generation_probability = _guestGenerationProbability;
     _s6.total_ride_value_for_money = gTotalRideValueForMoney;
-    _s6.maximum_loan = gMaxBankLoan;
+    _s6.maximum_loan = ToMoney32(gMaxBankLoan);
     _s6.guest_initial_cash = gGuestInitialCash;
     _s6.guest_initial_hunger = gGuestInitialHunger;
     _s6.guest_initial_thirst = gGuestInitialThirst;
@@ -285,24 +291,25 @@ void S6Exporter::Export()
 
     ExportMarketingCampaigns();
 
-    std::memcpy(_s6.balance_history, gCashHistory, sizeof(_s6.balance_history));
-
-    _s6.current_expenditure = gCurrentExpenditure;
-    _s6.current_profit = gCurrentProfit;
-    _s6.weekly_profit_average_dividend = gWeeklyProfitAverageDividend;
+    _s6.current_expenditure = ToMoney32(gCurrentExpenditure);
+    _s6.current_profit = ToMoney32(gCurrentProfit);
+    _s6.weekly_profit_average_dividend = ToMoney32(gWeeklyProfitAverageDividend);
     _s6.weekly_profit_average_divisor = gWeeklyProfitAverageDivisor;
     // pad_0135833A
 
-    std::memcpy(_s6.weekly_profit_history, gWeeklyProfitHistory, sizeof(_s6.weekly_profit_history));
+    _s6.park_value = ToMoney32(gParkValue);
 
-    _s6.park_value = gParkValue;
+    for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
+    {
+        _s6.balance_history[i] = ToMoney32(gCashHistory[i]);
+        _s6.weekly_profit_history[i] = ToMoney32(gWeeklyProfitHistory[i]);
+        _s6.park_value_history[i] = ToMoney32(gParkValueHistory[i]);
+    }
 
-    std::memcpy(_s6.park_value_history, gParkValueHistory, sizeof(_s6.park_value_history));
-
-    _s6.completed_company_value = gScenarioCompletedCompanyValue;
+    _s6.completed_company_value = OpenRCT2CompletedCompanyValueToRCT12(gScenarioCompletedCompanyValue);
     _s6.total_admissions = gTotalAdmissions;
-    _s6.income_from_admissions = gTotalIncomeFromAdmissions;
-    _s6.company_value = gCompanyValue;
+    _s6.income_from_admissions = ToMoney32(gTotalIncomeFromAdmissions);
+    _s6.company_value = ToMoney32(gCompanyValue);
     std::memcpy(_s6.peep_warning_throttle, gPeepWarningThrottle, sizeof(_s6.peep_warning_throttle));
 
     // Awards
@@ -324,10 +331,10 @@ void S6Exporter::Export()
     _s6.loan_hash = GetLoanHash(gInitialCash, gBankLoan, gMaxBankLoan);
     _s6.ride_count = ride_get_count();
     // pad_013587CA
-    _s6.historical_profit = gHistoricalProfit;
+    _s6.historical_profit = ToMoney32(gHistoricalProfit);
     // pad_013587D4
     String::Set(_s6.scenario_completed_name, sizeof(_s6.scenario_completed_name), gScenarioCompletedBy.c_str());
-    _s6.cash = ENCRYPT_MONEY(gCash);
+    _s6.cash = ENCRYPT_MONEY(ToMoney32(gCash));
     // pad_013587FC
     _s6.park_rating_casualty_penalty = gParkRatingCasualtyPenalty;
     _s6.map_size_units = gMapSizeUnits;
@@ -693,7 +700,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     // pad_14E[0x02];
 
     dst->total_customers = src->total_customers;
-    dst->total_profit = src->total_profit;
+    dst->total_profit = ToMoney32(src->total_profit);
     dst->popularity = src->popularity;
     dst->popularity_time_out = src->popularity_time_out;
     dst->popularity_next = src->popularity_next;
@@ -743,7 +750,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->connected_message_throttle = src->connected_message_throttle;
 
     dst->income_per_hour = src->income_per_hour;
-    dst->profit = src->profit;
+    dst->profit = ToMoney32(src->profit);
 
     for (uint8_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {

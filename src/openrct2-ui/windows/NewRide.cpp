@@ -942,7 +942,7 @@ static void window_new_ride_paint_ride_information(
     {
         // Get price of ride
         int32_t unk2 = GetRideTypeDescriptor(item.Type).StartTrackPiece;
-        money32 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
+        money64 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
         price *= TrackPricing[unk2];
         price = (price >> 17) * 10 * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
@@ -952,7 +952,7 @@ static void window_new_ride_paint_ride_information(
             stringId = STR_NEW_RIDE_COST_FROM;
 
         ft = Formatter();
-        ft.Add<money32>(price);
+        ft.Add<money64>(price);
         DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, { TextAlignment::RIGHT });
     }
 }

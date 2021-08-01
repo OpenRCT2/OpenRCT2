@@ -29,7 +29,7 @@ template<> bool SpriteBase::Is<MoneyEffect>() const
  *
  *  rct2: 0x0067351F
  */
-void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool vertical)
+void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool vertical)
 {
     if (value == MONEY(0, 00))
         return;
@@ -63,7 +63,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
  *
  *  rct2: 0x0069C5D0
  */
-void MoneyEffect::Create(money32 value, const CoordsXYZ& loc)
+void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
 {
     auto offsetLoc = loc;
     if (loc.isNull())
@@ -133,12 +133,12 @@ void MoneyEffect::Update()
     sprite_remove(this);
 }
 
-std::pair<rct_string_id, money32> MoneyEffect::GetStringId() const
+std::pair<rct_string_id, money64> MoneyEffect::GetStringId() const
 {
     rct_string_id spentStringId = Vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
     rct_string_id receiveStringId = Vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
     rct_string_id stringId = receiveStringId;
-    money32 outValue = Value;
+    money64 outValue = Value;
     if (Value < 0)
     {
         outValue *= -1;
