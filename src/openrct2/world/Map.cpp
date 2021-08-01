@@ -2494,13 +2494,16 @@ void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles)
     FixLandOwnershipTilesWithOwnership(tiles, OWNERSHIP_AVAILABLE);
 }
 
-void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8_t ownership)
+void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade)
 {
     for (const TileCoordsXY* tile = tiles.begin(); tile != tiles.end(); ++tile)
     {
         auto surfaceElement = map_get_surface_element_at(tile->ToCoordsXY());
         if (surfaceElement != nullptr)
         {
+            if (doNotDowngrade && surfaceElement->GetOwnership() == OWNERSHIP_OWNED)
+                continue;
+
             surfaceElement->SetOwnership(ownership);
             update_park_fences_around_tile({ (*tile).x * 32, (*tile).y * 32 });
         }
