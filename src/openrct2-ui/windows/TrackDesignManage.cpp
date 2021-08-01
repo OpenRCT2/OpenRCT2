@@ -19,8 +19,8 @@
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
 static constexpr const int32_t WH = 44;
 static constexpr const int32_t WW = 250;
-static constexpr const int32_t WH2 = 74;
-static constexpr const int32_t WW2 = 250;
+static constexpr const int32_t WH_DELETE_PROMPT = 74;
+static constexpr const int32_t WW_DELETE_PROMPT = 250;
 
 #pragma region Widgets
 
@@ -44,7 +44,7 @@ static rct_widget window_track_manage_widgets[] = {
 };
 
 static rct_widget window_track_delete_prompt_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW2, WH2),
+    WINDOW_SHIM(STR_DELETE_FILE, WW_DELETE_PROMPT, WH_DELETE_PROMPT),
     MakeWidget({ 10, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     MakeWidget({130, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL             ),
     { WIDGETS_END }
@@ -95,7 +95,7 @@ rct_window* window_track_manage_open(track_design_file_ref* tdFileRef)
     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 
     rct_window* w = WindowCreateCentred(
-        250, 44, &window_track_manage_events, WC_MANAGE_TRACK_DESIGN, WF_STICK_TO_FRONT | WF_TRANSPARENT);
+        WW, WH, &window_track_manage_events, WC_MANAGE_TRACK_DESIGN, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     w->widgets = window_track_manage_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RENAME) | (1ULL << WIDX_DELETE);
     WindowInitScrollWidgets(w);
@@ -203,7 +203,7 @@ static void window_track_delete_prompt_open()
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
     rct_window* w = WindowCreate(
-        ScreenCoordsXY(std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2), (screenHeight - 44) / 2), 250, 74,
+        ScreenCoordsXY(std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2), WW_DELETE_PROMPT, WH_DELETE_PROMPT,
         &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_track_delete_prompt_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RENAME) | (1ULL << WIDX_DELETE);
@@ -244,10 +244,6 @@ static void window_track_delete_prompt_mouseup(rct_window* w, rct_widgetindex wi
  */
 static void window_track_delete_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    char str_delete_file[256];
-    format_string(str_delete_file, 256, STR_DELETE_FILE, nullptr);
-    Formatter::Common().Add<char*>(str_delete_file);
-
     WindowDrawWidgets(w, dpi);
 
     DrawTextWrapped(
