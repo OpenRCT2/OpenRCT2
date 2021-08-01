@@ -49,6 +49,7 @@ enum
     VIEWPORT_FLAG_CLIP_VIEW = (1 << 17),
     VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES = (1 << 18),
     VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
+    VIEWPORT_FLAG_SEETHROUGH_VEHICLES = (1 << 20),
 };
 
 enum class ViewportInteractionItem : uint8_t

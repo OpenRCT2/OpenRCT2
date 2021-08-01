@@ -54,7 +54,8 @@ bool gPaintBlockedTiles;
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
-static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
+static uint32_t PaintPSColourifyImage(
+    uint32_t imageId, ViewportInteractionItem spriteType, EntityType *entityType, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
@@ -497,7 +498,13 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
         }
     }
 
-    uint32_t imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, session->ViewFlags);
+    EntityType *entityType = nullptr;
+    auto* entity = reinterpret_cast<SpriteBase*>(ps->tileElement);
+    if (entity != nullptr)
+    {
+        entityType = &entity->Type;
+    }
+    uint32_t imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, entityType, session->ViewFlags);
     if (gPaintBoundingBoxes && dpi->zoom_level == 0)
     {
         PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
@@ -544,8 +551,13 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     for (; attached_ps != nullptr; attached_ps = attached_ps->next)
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
-
-        uint32_t imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, viewFlags);
+        EntityType *entityType = nullptr;
+        auto* entity = reinterpret_cast<SpriteBase*>(ps->tileElement);
+        if (entity != nullptr)
+        {
+            entityType = &entity->Type;
+        }
+        uint32_t imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, entityType, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
             gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
@@ -653,7 +665,8 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imag
     gfx_draw_sprite(dpi, imageId, { x, y }, ps->tertiary_colour);
 }
 
-static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags)
+static uint32_t PaintPSColourifyImage(
+    uint32_t imageId, ViewportInteractionItem spriteType, EntityType* entityType, uint32_t viewFlags)
 {
     constexpr uint32_t primaryColour = COLOUR_BRIGHT_YELLOW;
     constexpr uint32_t secondaryColour = COLOUR_GREY;
@@ -665,6 +678,17 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem 
         {
             imageId &= 0x7FFFF;
             imageId |= seeThoughFlags;
+        }
+    }
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
+    {
+        if (spriteType == ViewportInteractionItem::Entity)
+        {
+            if (entityType != nullptr && *entityType == EntityType::Vehicle)
+            {
+                imageId &= 0x7FFFF;
+                imageId |= seeThoughFlags;
+            }
         }
     }
     if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
