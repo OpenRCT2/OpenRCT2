@@ -2533,12 +2533,15 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     int32_t stationIndex = 0;
     auto lastStation = ride->stations[0];
 
-    for (const auto& station: ride->stations) {
+    for (const auto& station: ride->stations) 
+    {
         stationIndex++;
-        if (!station.Start.isNull()) {
+        if (!station.Start.isNull()) 
+        {
             count--;
         }
-        if (count == 0) {
+        if (count == 0) 
+        {
             lastStation = station;
             break;
         }
@@ -2546,7 +2549,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     // Entrance / exit
     if (ride->status == RideStatus::Closed)
     {
-       if (ride_get_entrance_location(ride, stationIndex).isNull())
+        if (ride_get_entrance_location(ride, stationIndex).isNull())
             stringId = STR_NO_ENTRANCE;
         else if (ride_get_exit_location(ride, stationIndex).isNull())
             stringId = STR_NO_EXIT;
