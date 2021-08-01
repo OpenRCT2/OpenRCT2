@@ -19,6 +19,7 @@
 #include "../../world/LargeScenery.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
+#include "../../world/TileInspector.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
@@ -227,7 +228,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         return;
     }
     session->InteractionType = ViewportInteractionItem::LargeScenery;
-    uint32_t sequenceNum = tileElement->AsLargeScenery()->GetSequenceIndex();
+    const uint32_t sequenceNum = tileElement->AsLargeScenery()->GetSequenceIndex();
     const LargeSceneryObject* object = tileElement->AsLargeScenery()->GetObject();
     if (object == nullptr)
         return;
@@ -250,20 +251,25 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     {
         if (!track_design_save_contains_tile_element(tileElement))
         {
-            sequenceNum = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
             image_id &= 0x7FFFF;
-            dword_F4387C = sequenceNum;
+            dword_F4387C = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
             image_id |= dword_F4387C;
         }
     }
     if (tileElement->IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
-        sequenceNum = CONSTRUCTION_MARKER;
         image_id &= 0x7FFFF;
-        dword_F4387C = sequenceNum;
+        dword_F4387C = CONSTRUCTION_MARKER;
         image_id |= dword_F4387C;
     }
+    else if (OpenRCT2::TileInspector::IsElementSelected(tileElement))
+    {
+        image_id &= 0x7FFFF;
+        dword_F4387C = CONSTRUCTION_MARKER;
+        image_id |= dword_F4387C;
+    }
+
     int32_t boxlengthZ = tile->z_clearance;
     if (boxlengthZ > 0x80)
     {

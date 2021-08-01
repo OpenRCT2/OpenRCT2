@@ -15,6 +15,7 @@
 #include "../../sprites.h"
 #include "../../world/Banner.h"
 #include "../../world/Scenery.h"
+#include "../../world/TileInspector.h"
 #include "../Paint.h"
 #include "Paint.TileElement.h"
 
@@ -72,6 +73,10 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     if (tile_element->IsGhost()) // if being placed
     {
         session->InteractionType = ViewportInteractionItem::None;
+        image_id |= CONSTRUCTION_MARKER;
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(tile_element))
+    {
         image_id |= CONSTRUCTION_MARKER;
     }
     else

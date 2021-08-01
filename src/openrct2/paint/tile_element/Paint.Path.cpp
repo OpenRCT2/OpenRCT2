@@ -23,10 +23,13 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/Surface.h"
+#include "../../world/TileInspector.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.Surface.h"
 #include "Paint.TileElement.h"
+
+using namespace OpenRCT2;
 
 bool gPaintWidePathsAsGhost = false;
 
@@ -843,6 +846,11 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     {
         session->InteractionType = ViewportInteractionItem::None;
         imageFlags = CONSTRUCTION_MARKER;
+    }
+    else if (TileInspector::IsElementSelected(tile_element))
+    {
+        imageFlags |= CONSTRUCTION_MARKER;
+        sceneryImageFlags = CONSTRUCTION_MARKER;
     }
 
     // For debugging purpose, show blocked tiles with a colour

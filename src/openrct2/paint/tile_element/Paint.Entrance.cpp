@@ -21,6 +21,7 @@
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Park.h"
+#include "../../world/TileInspector.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
@@ -95,6 +96,13 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     if (tile_element->IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
+        image_id = CONSTRUCTION_MARKER;
+        entranceImageId = image_id;
+        if (transparant_image_id)
+            transparant_image_id = image_id;
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(tile_element))
+    {
         image_id = CONSTRUCTION_MARKER;
         entranceImageId = image_id;
         if (transparant_image_id)
@@ -225,6 +233,10 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     if (tile_element->IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
+        ghost_id = CONSTRUCTION_MARKER;
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(tile_element))
+    {
         ghost_id = CONSTRUCTION_MARKER;
     }
 

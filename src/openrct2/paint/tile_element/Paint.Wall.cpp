@@ -19,6 +19,7 @@
 #include "../../world/Banner.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
+#include "../../world/TileInspector.h"
 #include "../../world/Wall.h"
 #include "../Paint.h"
 #include "Paint.TileElement.h"
@@ -201,6 +202,10 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     if (tile_element->IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
+        dword_141F710 = CONSTRUCTION_MARKER;
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(tile_element))
+    {
         dword_141F710 = CONSTRUCTION_MARKER;
     }
 
