@@ -537,6 +537,7 @@ static void window_ride_main_textinput(rct_window *w, rct_widgetindex widgetInde
 static void window_ride_main_viewport_rotate(rct_window *w);
 static void window_ride_main_invalidate(rct_window *w);
 static void window_ride_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_ride_main_follow_ride(rct_window *w);
 
 static void window_ride_vehicle_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_vehicle_resize(rct_window *w);
@@ -1766,9 +1767,6 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_RENAME:
             window_ride_rename(w);
             break;
-        case WIDX_LOCATE:
-            w->ScrollToViewport();
-            break;
         case WIDX_DEMOLISH:
             context_open_detail_window(WD_DEMOLISH_RIDE, w->number);
             break;
@@ -2064,6 +2062,49 @@ static void window_ride_show_ride_type_dropdown(rct_window* w, rct_widget* widge
     Dropdown::SetChecked(pos, true);
 }
 
+static void window_ride_show_locate_dropdown(rct_window* w, rct_widget* widget)
+{
+    auto ride = get_ride(w->rideId);
+    if (ride == nullptr)
+        return;
+
+    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+
+    WindowDropdownShowText(
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
+    gDropdownDefaultIndex = 0;
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        // Disable if we're a flat ride
+        Dropdown::SetDisabled(1, true);
+    }
+}
+
+static void window_ride_main_follow_ride(rct_window* w)
+{
+    auto ride = get_ride(w->rideId);
+    if (ride != nullptr)
+    {
+        if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN))
+        {
+            if (w->ride.view > 0)
+            {
+                if (w->ride.view <= ride->num_vehicles)
+                {
+                    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
+                    if (vehicle != nullptr)
+                    {
+                        uint16_t headVehicleSpriteIndex = vehicle->sprite_index;
+                        rct_window* w_main = window_get_main();
+                        window_follow_sprite(w_main, headVehicleSpriteIndex);
+                    }
+                }
+            }
+        }
+    }
+}
+
 static void populate_vehicle_type_dropdown(Ride* ride)
 {
     auto& objManager = GetContext()->GetObjectManager();
@@ -2179,6 +2220,9 @@ static void window_ride_main_mousedown(rct_window* w, rct_widgetindex widgetInde
         case WIDX_RIDE_TYPE_DROPDOWN:
             window_ride_show_ride_type_dropdown(w, widget);
             break;
+        case WIDX_LOCATE:
+            window_ride_show_locate_dropdown(w, widget);
+            break;
     }
 }
 
@@ -2263,6 +2307,19 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                     GameActions::Execute(&rideSetSetting);
                 }
             }
+            break;
+        case WIDX_LOCATE:
+        {
+            if (dropdownIndex == 0)
+            {
+                w->ScrollToViewport();
+            }
+            else if (dropdownIndex == 1)
+            {
+                window_ride_main_follow_ride(w);
+            }
+            break;
+        }
     }
 }
 

@@ -519,7 +519,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
 // rct2: 0x006E7A15
 static void viewport_set_underground_flag(int32_t underground, rct_window* window, rct_viewport* viewport)
 {
-    if (window->classification != WC_MAIN_WINDOW)
+    if (window->classification != WC_MAIN_WINDOW
+        || (window->classification == WC_MAIN_WINDOW && window->viewport_smart_follow_sprite != SPRITE_INDEX_NULL))
     {
         if (!underground)
         {

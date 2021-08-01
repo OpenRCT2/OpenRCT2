@@ -134,6 +134,8 @@ static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetI
 static void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_staff_overview_viewport_rotate(rct_window *w);
+static void window_staff_follow(rct_window *w);
+static void window_staff_show_locate_dropdown(rct_window* w, rct_widget* widget);
 
 static void window_staff_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_options_update(rct_window* w);
@@ -408,9 +410,6 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_TAB_3:
             window_staff_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
-        case WIDX_LOCATE:
-            w->ScrollToViewport();
-            break;
         case WIDX_PICKUP:
         {
             w->picked_peep_old_x = peep->x;
@@ -509,30 +508,34 @@ void window_staff_overview_resize(rct_window* w)
  */
 void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    if (widgetIndex != WIDX_PATROL)
+    switch (widgetIndex)
     {
-        return;
-    }
+        case WIDX_LOCATE:
+            window_staff_show_locate_dropdown(w, widget);
+            break;
+        case WIDX_PATROL:
+        {
+            // Dropdown names
+            gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
+            gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
 
-    // Dropdown names
-    gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
-    gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
+            auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
+            int32_t extray = widget->height() + 1;
+            WindowDropdownShowText(dropdownPos, extray, w->colours[1], 0, 2);
+            gDropdownDefaultIndex = 0;
 
-    auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
-    int32_t extray = widget->height() + 1;
-    WindowDropdownShowText(dropdownPos, extray, w->colours[1], 0, 2);
-    gDropdownDefaultIndex = 0;
+            const auto peep = GetStaff(w);
+            if (peep == nullptr)
+            {
+                return;
+            }
 
-    const auto peep = GetStaff(w);
-    if (peep == nullptr)
-    {
-        return;
-    }
-
-    // Disable clear patrol area if no area is set.
-    if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
-    {
-        Dropdown::SetDisabled(1, true);
+            // Disable clear patrol area if no area is set.
+            if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
+            {
+                Dropdown::SetDisabled(1, true);
+            }
+        }
     }
 }
 
@@ -542,38 +545,68 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
  */
 void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    if (widgetIndex != WIDX_PATROL)
+    switch (widgetIndex)
     {
-        return;
-    }
+        case WIDX_LOCATE:
+        {
+            if (dropdownIndex == 0)
+            {
+                w->ScrollToViewport();
+            }
+            else if (dropdownIndex == 1)
+            {
+                window_staff_follow(w);
+            }
+            break;
+        }
+        case WIDX_PATROL:
+        {
+            // Clear patrol
+            if (dropdownIndex == 1)
+            {
+                const auto peep = GetStaff(w);
+                if (peep == nullptr)
+                {
+                    return;
+                }
+                for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+                {
+                    gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
+                }
+                assert(gStaffModes[peep->StaffId] == StaffMode::Patrol);
+                gStaffModes[peep->StaffId] = StaffMode::Walk;
 
-    // Clear patrol
-    if (dropdownIndex == 1)
-    {
-        const auto peep = GetStaff(w);
-        if (peep == nullptr)
-        {
-            return;
+                gfx_invalidate_screen();
+                staff_update_greyed_patrol_areas();
+            }
+            else
+            {
+                if (!tool_set(w, widgetIndex, Tool::WalkDown))
+                {
+                    show_gridlines();
+                    gStaffDrawPatrolAreas = w->number;
+                    gfx_invalidate_screen();
+                }
+            }
+            break;
         }
-        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-        {
-            gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
-        }
-        assert(gStaffModes[peep->StaffId] == StaffMode::Patrol);
-        gStaffModes[peep->StaffId] = StaffMode::Walk;
+    }
+}
 
-        gfx_invalidate_screen();
-        staff_update_greyed_patrol_areas();
-    }
-    else
-    {
-        if (!tool_set(w, widgetIndex, Tool::WalkDown))
-        {
-            show_gridlines();
-            gStaffDrawPatrolAreas = w->number;
-            gfx_invalidate_screen();
-        }
-    }
+static void window_staff_show_locate_dropdown(rct_window* w, rct_widget* widget)
+{
+    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+
+    WindowDropdownShowText(
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
+    gDropdownDefaultIndex = 0;
+}
+
+static void window_staff_follow(rct_window* w)
+{
+    rct_window* w_main = window_get_main();
+    window_follow_sprite(w_main, w->number);
 }
 
 /**
