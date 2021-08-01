@@ -1931,9 +1931,8 @@ enum
     STR_SHORTCUT_SHOW_RECENT_MESSAGES = 2522,
     STR_SHORTCUT_SHOW_MAP = 2523,
     STR_SHORTCUT_SCREENSHOT = 2524,
-    STR_SHORTCUT_GIANT_SCREENSHOT = 2525,
 
-    // 2526--2532 unused
+    // 2525--2532 unused
 
     STR_SHORTCUT_BACKSPACE = 2533,
     STR_SHORTCUT_TAB = 2534,
@@ -3908,6 +3907,8 @@ enum
 
     STR_CANT_RENAME_BANNER = 6454,
     STR_CANT_RENAME_SIGN = 6455,
+
+    STR_SHORTCUT_GIANT_SCREENSHOT = 6456,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

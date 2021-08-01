@@ -1861,7 +1861,6 @@ STR_2521    :Show staff list
 STR_2522    :Show recent messages
 STR_2523    :Show map
 STR_2524    :Screenshot
-STR_2525    :Giant Screenshot
 STR_2533    :Backspace
 STR_2534    :Tab
 STR_2537    :Clear
@@ -3654,6 +3653,7 @@ STR_6452    :{WINDOW_COLOUR_2}Sells: {BLACK}{STRING}
 STR_6453    :Copy version info
 STR_6454    :Can’t rename banner…
 STR_6455    :Can’t rename sign…
+STR_6456    :Giant Screenshot
 
 #############
 # Scenarios #
