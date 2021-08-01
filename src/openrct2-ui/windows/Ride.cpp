@@ -2533,14 +2533,14 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     int32_t stationIndex = 0;
     auto lastStation = ride->stations[0];
 
-    for (const auto& station: ride->stations) 
+    for (const auto& station : ride->stations) 
     {
         stationIndex++;
-        if (!station.Start.isNull()) 
+        if (!station.Start.isNull())
         {
             count--;
         }
-        if (count == 0) 
+        if (count == 0)
         {
             lastStation = station;
             break;
@@ -2565,7 +2565,6 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     {
         stringId = STR_QUEUE_EMPTY;
         uint16_t queueLength = lastStation.QueueLength;
-        
         if (queueLength == 1)
             stringId = STR_QUEUE_ONE_PERSON;
         else if (queueLength > 1)
