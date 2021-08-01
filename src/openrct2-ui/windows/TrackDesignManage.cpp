@@ -19,6 +19,8 @@
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
 static constexpr const int32_t WH = 44;
 static constexpr const int32_t WW = 250;
+static constexpr const int32_t WH2 = 74;
+static constexpr const int32_t WW2 = 250;
 
 #pragma region Widgets
 
@@ -42,7 +44,7 @@ static rct_widget window_track_manage_widgets[] = {
 };
 
 static rct_widget window_track_delete_prompt_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    WINDOW_SHIM(WINDOW_TITLE, WW2, WH2),
     MakeWidget({ 10, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     MakeWidget({130, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL             ),
     { WIDGETS_END }
@@ -131,6 +133,7 @@ static void window_track_manage_mouseup(rct_window* w, rct_widgetindex widgetInd
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
+            window_close_by_class(WC_TRACK_DELETE_PROMPT);
             window_close(w);
             break;
         case WIDX_RENAME:
@@ -241,6 +244,10 @@ static void window_track_delete_prompt_mouseup(rct_window* w, rct_widgetindex wi
  */
 static void window_track_delete_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
+    char str_delete_file[256];
+    format_string(str_delete_file, 256, STR_DELETE_FILE, nullptr);
+    Formatter::Common().Add<char*>(str_delete_file);
+
     WindowDrawWidgets(w, dpi);
 
     DrawTextWrapped(
