@@ -10,6 +10,7 @@
 #include "S6Exporter.h"
 
 #include "../Context.h"
+#include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -159,15 +160,24 @@ void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
 
 void S6Exporter::Export()
 {
-    _s6.info = gS6Info;
+    _s6.info = {};
+    _s6.info.editor_step = gEditorStep;
+    _s6.info.category = gScenarioCategory;
+    _s6.info.objective_type = gScenarioObjective.Type;
+    _s6.info.objective_arg_1 = gScenarioObjective.Year;
+    _s6.info.objective_arg_2 = gScenarioObjective.Currency;
+    _s6.info.objective_arg_3 = gScenarioObjective.NumGuests;
+    _s6.info.entry.flags = 0xFFFFFFFF;
+
     {
-        auto temp = utf8_to_rct2(gS6Info.name);
+        auto temp = utf8_to_rct2(gScenarioName.c_str());
         safe_strcpy(_s6.info.name, temp.data(), sizeof(_s6.info.name));
     }
     {
-        auto temp = utf8_to_rct2(gS6Info.details);
+        auto temp = utf8_to_rct2(gScenarioDetails.c_str());
         safe_strcpy(_s6.info.details, temp.data(), sizeof(_s6.info.details));
     }
+
     uint32_t researchedTrackPiecesA[128] = {};
     uint32_t researchedTrackPiecesB[128] = {};
 
