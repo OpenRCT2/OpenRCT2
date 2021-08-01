@@ -5,6 +5,7 @@
 - Fix: [#14316] Closing the Track Designs Manager window causes broken state.
 - Fix: [#15096] Crash when placing entrances in the scenario editor near the map corner.
 - Fix: [#15142] ToonTowner's mine roofs were moved into the pirate theme scenery group instead of the mine theme scenery group.
+- Fix: [#15148] Track Designs Manager delete confirmation window doesn't display properly.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
 - Change: [#8601] Revert ToonTower base block fix to re-enable support
 blocking.
