@@ -2533,7 +2533,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     int32_t stationIndex = 0;
     auto lastStation = ride->stations[0];
 
-    for (const auto& station : ride->stations) 
+    for (const auto& station : ride->stations)
     {
         stationIndex++;
         if (!station.Start.isNull())
