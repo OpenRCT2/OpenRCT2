@@ -293,15 +293,32 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
     const auto env = GetContext()->GetPlatformEnvironment();
     auto objectsPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
     auto objectPath = Path::Combine(objectsPath, name);
+    if (File::Exists(objectPath))
+    {
+        return objectPath;
+    }
+
+    std::string altName = name;
+    auto rangeStart = name.find(".DAT");
+    if (rangeStart != std::string::npos)
+    {
+        altName.replace(rangeStart, 4, ".POB");
+    }
+    objectPath = Path::Combine(objectsPath, altName);
+    if (File::Exists(objectPath))
+    {
+        return objectPath;
+    }
+
     if (!File::Exists(objectPath))
     {
         // Search recursively for any file with the target name (case insensitive)
-        auto filter = Path::Combine(objectsPath, "*.dat");
+        auto filter = Path::Combine(objectsPath, "*.dat;*.pob");
         auto scanner = Path::ScanDirectory(filter, true);
         while (scanner->Next())
         {
             auto currentName = Path::GetFileName(scanner->GetPathRelative());
-            if (String::Equals(currentName, name, true))
+            if (String::Equals(currentName, name, true) || String::Equals(currentName, altName, true))
             {
                 objectPath = scanner->GetPath();
                 break;

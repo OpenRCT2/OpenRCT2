@@ -32,14 +32,12 @@ static haunted_house_bound_box haunted_house_data[] = {
  * rct2: 0x0076F72C
  */
 static void paint_haunted_house_structure(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part,
-    uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     uint8_t frameNum = 0;
 
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -95,7 +93,7 @@ static void paint_haunted_house_structure(
  * rct2: 0x0076E9B0
  */
 static void paint_haunted_house(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -104,7 +102,6 @@ static void paint_haunted_house(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    auto ride = get_ride(rideIndex);
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
         stationObject = ride_get_station_object(ride);
@@ -121,13 +118,13 @@ static void paint_haunted_house(
     switch (trackSequence)
     {
         case 3:
-            paint_haunted_house_structure(session, rideIndex, direction, 32, -32, 0, height + 3);
+            paint_haunted_house_structure(session, ride, direction, 32, -32, 0, height + 3);
             break;
         case 6:
-            paint_haunted_house_structure(session, rideIndex, direction, -32, 32, 4, height + 3);
+            paint_haunted_house_structure(session, ride, direction, -32, 32, 4, height + 3);
             break;
         case 7:
-            paint_haunted_house_structure(session, rideIndex, direction, -32, -32, 2, height + 3);
+            paint_haunted_house_structure(session, ride, direction, -32, -32, 2, height + 3);
             break;
     }
 

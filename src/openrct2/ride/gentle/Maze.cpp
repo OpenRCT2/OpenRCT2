@@ -45,7 +45,7 @@ enum
  * rct: 0x004ACF4A
  */
 static void maze_paint_setup(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint16_t maze_entry = tileElement->AsTrack()->GetMazeEntry();
@@ -61,7 +61,7 @@ static void maze_paint_setup(
     paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
     int32_t base_image_id = 0;
-    switch (get_ride(rideIndex)->track_colour[0].supports)
+    switch (ride->track_colour[0].supports)
     {
         case 0:
             base_image_id = SPR_MAZE_BASE_BRICK;

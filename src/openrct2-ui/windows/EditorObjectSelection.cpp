@@ -33,6 +33,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <string>
@@ -455,6 +456,11 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
             {
                 finish_object_selection();
+            }
+            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            {
+                game_unload_scripts();
+                title_load();
             }
             break;
         case WIDX_FILTER_RIDE_TAB_ALL:

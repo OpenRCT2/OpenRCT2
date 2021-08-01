@@ -938,3 +938,8 @@ std::string_view GetStationIdentifierFromStyle(uint8_t style);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
 void SetDefaultRCT2TerrainObjects(ObjectList& objectList);
 void RCT12AddDefaultObjects(ObjectList& objectList);
+
+static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
+
+money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
+money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue);

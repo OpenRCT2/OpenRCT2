@@ -267,6 +267,7 @@ declare global {
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
         subscribe(hook: "guest.generation", callback: (id: number) => void): IDisposable;
+        subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
 
         /**
          * Registers a function to be called every so often in realtime, specified by the given delay.
@@ -367,7 +368,7 @@ declare global {
     type HookType =
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
-        "ride.ratings.calculate" | "action.location";
+        "ride.ratings.calculate" | "action.location" | "vehicle.crash";
 
     type ExpenditureType =
         "ride_construction" |
@@ -516,6 +517,13 @@ declare global {
         readonly isClientOnly: boolean;
         result: boolean;
     }
+	
+	type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
+	
+	interface VehicleCrashArgs {
+		readonly id: number;
+		readonly crashIntoType: VehicleCrashIntoType;
+	}
 
     /**
      * APIs for the in-game date.

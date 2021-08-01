@@ -18,11 +18,10 @@
  * rct2: 0x007664C2
  */
 static void paint_3d_cinema_structure(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -53,7 +52,7 @@ static void paint_3d_cinema_structure(
  * rct2: 0x0076574C
  */
 static void paint_3d_cinema(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -62,7 +61,6 @@ static void paint_3d_cinema(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    auto ride = get_ride(rideIndex);
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
         stationObject = ride_get_station_object(ride);
@@ -79,22 +77,22 @@ static void paint_3d_cinema(
     switch (trackSequence)
     {
         case 1:
-            paint_3d_cinema_structure(session, rideIndex, direction, 32, 32, height);
+            paint_3d_cinema_structure(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_3d_cinema_structure(session, rideIndex, direction, 32, -32, height);
+            paint_3d_cinema_structure(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_3d_cinema_structure(session, rideIndex, direction, 0, -32, height);
+            paint_3d_cinema_structure(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_3d_cinema_structure(session, rideIndex, direction, -32, 32, height);
+            paint_3d_cinema_structure(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_3d_cinema_structure(session, rideIndex, direction, -32, -32, height);
+            paint_3d_cinema_structure(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_3d_cinema_structure(session, rideIndex, direction, -32, 0, height);
+            paint_3d_cinema_structure(session, ride, direction, -32, 0, height);
             break;
     }
 

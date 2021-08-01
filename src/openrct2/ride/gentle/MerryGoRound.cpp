@@ -25,12 +25,11 @@ static constexpr const uint16_t merry_go_round_breakdown_vibration[] = { 0, 1, 2
  * rct2: 0x0076287D
  */
 static void paint_merry_go_round_structure(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
     height += 7;
 
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -104,7 +103,7 @@ static void paint_merry_go_round_structure(
  * rct2: 0x00761B0C
  */
 static void paint_merry_go_round(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -113,7 +112,6 @@ static void paint_merry_go_round(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    auto ride = get_ride(rideIndex);
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
         stationObject = ride_get_station_object(ride);
@@ -130,22 +128,22 @@ static void paint_merry_go_round(
     switch (trackSequence)
     {
         case 1:
-            paint_merry_go_round_structure(session, rideIndex, direction, 32, 32, height);
+            paint_merry_go_round_structure(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_merry_go_round_structure(session, rideIndex, direction, 32, -32, height);
+            paint_merry_go_round_structure(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_merry_go_round_structure(session, rideIndex, direction, 0, -32, height);
+            paint_merry_go_round_structure(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_merry_go_round_structure(session, rideIndex, direction, -32, 32, height);
+            paint_merry_go_round_structure(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_merry_go_round_structure(session, rideIndex, direction, -32, -32, height);
+            paint_merry_go_round_structure(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_merry_go_round_structure(session, rideIndex, direction, -32, 0, height);
+            paint_merry_go_round_structure(session, ride, direction, -32, 0, height);
             break;
     }
 

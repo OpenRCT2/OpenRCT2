@@ -17,6 +17,7 @@
 #    include "../actions/RideCreateAction.h"
 #    include "../actions/StaffHireNewAction.h"
 #    include "../config/Config.h"
+#    include "../core/EnumMap.hpp"
 #    include "../core/File.h"
 #    include "../core/FileScanner.h"
 #    include "../core/Path.hpp"
@@ -987,7 +988,8 @@ public:
     }
 };
 
-const static std::unordered_map<std::string, GameCommand> ActionNameToType = {
+// clang-format off
+const static EnumMap<GameCommand> ActionNameToType = {
     { "balloonpress", GameCommand::BalloonPress },
     { "bannerplace", GameCommand::PlaceBanner },
     { "bannerremove", GameCommand::RemoveBanner },
@@ -1067,21 +1069,21 @@ const static std::unordered_map<std::string, GameCommand> ActionNameToType = {
     { "waterraise", GameCommand::RaiseWater },
     { "watersetheight", GameCommand::SetWaterHeight }
 };
+// clang-format on
 
 static std::string GetActionName(GameCommand commandId)
 {
-    auto it = std::find_if(
-        ActionNameToType.begin(), ActionNameToType.end(), [commandId](const auto& kvp) { return kvp.second == commandId; });
+    auto it = ActionNameToType.find(commandId);
     if (it != ActionNameToType.end())
     {
-        return it->first;
+        return std::string{ it->first };
     }
     return {};
 }
 
-static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& actionid)
+static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& name)
 {
-    auto result = ActionNameToType.find(actionid);
+    auto result = ActionNameToType.find(name);
     if (result != ActionNameToType.end())
     {
         return GameActions::Create(result->second);

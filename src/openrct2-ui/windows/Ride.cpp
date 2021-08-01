@@ -1559,7 +1559,7 @@ static void window_ride_init_viewport(rct_window* w)
     if (ride == nullptr)
         return;
 
-    int32_t eax = w->viewport_focus_coordinates.var_480 - 1;
+    int32_t viewSelectionIndex = w->viewport_focus_coordinates.var_480 - 1;
 
     struct
     {
@@ -1576,10 +1576,9 @@ static void window_ride_init_viewport(rct_window* w)
     focus.coordinate.width = 0;
     focus.coordinate.height = 0;
 
-    if (eax >= 0 && eax < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        focus.sprite.sprite_id = ride->vehicles[eax];
-
+        focus.sprite.sprite_id = ride->vehicles[viewSelectionIndex];
         rct_ride_entry* ride_entry = ride->GetRideEntry();
         if (ride_entry && ride_entry->tab_vehicle != 0)
         {
@@ -1598,32 +1597,32 @@ static void window_ride_init_viewport(rct_window* w)
             focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE;
         }
     }
-    else if (eax >= ride->num_vehicles && eax < (ride->num_vehicles + ride->num_stations))
+    else if (viewSelectionIndex >= ride->num_vehicles && viewSelectionIndex < (ride->num_vehicles + ride->num_stations))
     {
-        StationIndex stationIndex = STATION_INDEX_NULL;
-        int32_t count = eax - ride->num_vehicles;
-        do
+        int32_t count = viewSelectionIndex - ride->num_vehicles;
+        for (const auto& station : ride->stations)
         {
-            stationIndex++;
-            if (!ride->stations[stationIndex].Start.isNull())
+            if (!station.Start.isNull())
             {
                 count--;
             }
-        } while (count >= 0);
-
-        auto location = ride->stations[stationIndex].GetStart();
-        focus.coordinate.x = location.x;
-        focus.coordinate.y = location.y;
-        focus.coordinate.z = location.z;
-        focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            if (count == 0)
+            {
+                auto location = station.GetStart();
+                focus.coordinate.x = location.x;
+                focus.coordinate.y = location.y;
+                focus.coordinate.z = location.z;
+                focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+                break;
+            }
+        }
     }
     else
     {
-        if (eax > 0)
+        if (viewSelectionIndex > 0)
         {
             w->viewport_focus_coordinates.var_480 = 0;
         }
-
         if (w->number < ride_overall_views.size())
         {
             const auto& view = ride_overall_views[w->number];

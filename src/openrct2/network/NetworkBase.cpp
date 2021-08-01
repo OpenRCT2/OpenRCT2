@@ -40,7 +40,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "33"
+#define NETWORK_STREAM_VERSION "3"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -51,6 +51,10 @@ static int32_t _pickup_peep_old_x = LOCATION_NULL;
 // General chunk size is 63 KiB, this can not be any larger because the packet size is encoded
 // with uint16_t and needs some spare room for other data in the packet.
 static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
+
+// If data is sent fast enough it would halt the entire server, process only a maximum amount.
+// This limit is per connection, the current value was determined by tests with fuzzing.
+static constexpr uint32_t MaxPacketsPerUpdate = 100;
 
 #    include "../Cheats.h"
 #    include "../ParkImporter.h"
@@ -1658,8 +1662,11 @@ void NetworkBase::Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, 
 bool NetworkBase::ProcessConnection(NetworkConnection& connection)
 {
     NetworkReadPacket packetStatus;
+
+    uint32_t countProcessed = 0;
     do
     {
+        countProcessed++;
         packetStatus = connection.ReadPacket();
         switch (packetStatus)
         {
@@ -1685,7 +1692,7 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
                 // could not read anything from socket
                 break;
         }
-    } while (packetStatus == NetworkReadPacket::Success);
+    } while (packetStatus == NetworkReadPacket::Success && countProcessed < MaxPacketsPerUpdate);
 
     if (!connection.ReceivedPacketRecently())
     {
@@ -1702,13 +1709,21 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
 void NetworkBase::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet)
 {
     const auto& handlerList = GetMode() == NETWORK_MODE_SERVER ? server_command_handlers : client_command_handlers;
+
     auto it = handlerList.find(packet.GetCommand());
     if (it != handlerList.end())
     {
         auto commandHandler = it->second;
         if (connection.AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
         {
-            (this->*commandHandler)(connection, packet);
+            try
+            {
+                (this->*commandHandler)(connection, packet);
+            }
+            catch (const std::exception& ex)
+            {
+                log_verbose("Exception during packet processing: %s", ex.what());
+            }
         }
     }
 

@@ -93,6 +93,7 @@ The following people are not part of the development team, but have been contrib
 * Keith Stellyes (keithstellyes) - Misc.
 * Bas Cantrijn (Basssiiie) - Misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
+* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes
 
 ## Bug fixes
 * (KirilAngelov)
@@ -172,6 +173,8 @@ The following people are not part of the development team, but have been contrib
 * Emre Aydin (aemreaydin)
 * Daniel Karandikar (DKarandikar)
 * Struan Clark (xtruan)
+* Kane Shaw (seifer7)
+* Saad Rehman (SaadRehmanCS)
 
 ## Toolchain
 * (Balletie) - macOS

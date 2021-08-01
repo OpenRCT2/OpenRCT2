@@ -51,8 +51,8 @@ public:
         window_push_others_below(this);
 
         gLandToolSize = 1;
-        gWaterToolRaiseCost = MONEY32_UNDEFINED;
-        gWaterToolLowerCost = MONEY32_UNDEFINED;
+        gWaterToolRaiseCost = MONEY64_UNDEFINED;
+        gWaterToolLowerCost = MONEY64_UNDEFINED;
     }
 
     void OnClose() override
@@ -156,7 +156,7 @@ public:
             // Draw raise cost amount
             screenCoords = { window_water_widgets[WIDX_PREVIEW].midX() + windowPos.x,
                              window_water_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
-            if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
+            if (gWaterToolRaiseCost != MONEY64_UNDEFINED && gWaterToolRaiseCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gWaterToolRaiseCost);
@@ -165,7 +165,7 @@ public:
             screenCoords.y += 10;
 
             // Draw lower cost amount
-            if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
+            if (gWaterToolLowerCost != MONEY64_UNDEFINED && gWaterToolLowerCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gWaterToolLowerCost);

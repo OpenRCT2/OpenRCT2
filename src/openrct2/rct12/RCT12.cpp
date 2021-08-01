@@ -14,6 +14,7 @@
 #include "../localisation/Localisation.h"
 #include "../object/ObjectList.h"
 #include "../ride/Track.h"
+#include "../scenario/Scenario.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
 #include "../world/LargeScenery.h"
@@ -1445,4 +1446,20 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
             objectList.SetObject(ObjectType::Music, static_cast<ObjectEntryIndex>(i), _musicStyles[i]);
         }
     }
+}
+
+money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue)
+{
+    if (origValue == RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+        return COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+
+    return ToMoney64(origValue);
+}
+
+money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue)
+{
+    if (origValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+        return RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+
+    return ToMoney32(origValue);
 }

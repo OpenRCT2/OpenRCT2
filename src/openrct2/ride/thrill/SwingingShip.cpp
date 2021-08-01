@@ -57,7 +57,7 @@ static constexpr const uint32_t swinging_ship_frame_sprites[][2] = {
 
 /** rct2: 0x4AF254 */
 static void paint_swinging_ship_structure(
-    paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     uint32_t imageId, baseImageId;
 
@@ -173,10 +173,9 @@ static void paint_swinging_ship_structure(
 
 /** rct2: 0x008A85C4 */
 static void paint_swinging_ship(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 

@@ -38,7 +38,7 @@ static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t o
 }
 
 static void paint_dodgems(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
@@ -50,7 +50,6 @@ static void paint_dodgems(
     uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
     PaintAddImageAsParent(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
 
-    auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(

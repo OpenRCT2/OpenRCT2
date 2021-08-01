@@ -1442,7 +1442,7 @@ private:
         }
         gCurrentExpenditure = ToMoney64(_s4.total_expenditure);
 
-        gScenarioCompletedCompanyValue = ToMoney64(_s4.completed_company_value);
+        gScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.completed_company_value);
         gTotalAdmissions = _s4.num_admissions;
         gTotalIncomeFromAdmissions = ToMoney64(_s4.admission_total_income);
 
@@ -2332,7 +2332,7 @@ private:
         if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
             gScenarioObjective.Currency = ToMoney64(CorrectRCT1ParkValue(_s4.scenario_objective_currency));
         else
-            gScenarioObjective.Currency = _s4.scenario_objective_currency;
+            gScenarioObjective.Currency = ToMoney64(_s4.scenario_objective_currency);
 
         // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
         if (_s4.scenario_objective_type == OBJECTIVE_BUILD_THE_BEST)

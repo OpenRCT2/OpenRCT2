@@ -97,7 +97,7 @@ void vehicle_visual_roto_drop(
 
 /** rct2: 0x00886194 */
 static void paint_roto_drop_base(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -109,7 +109,6 @@ static void paint_roto_drop_base(
     uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
-    auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
@@ -178,7 +177,7 @@ static void paint_roto_drop_base(
 
 /** rct2: 0x008861A4 */
 static void paint_roto_drop_tower_section(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (trackSequence == 1)

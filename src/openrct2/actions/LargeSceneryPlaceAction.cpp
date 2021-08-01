@@ -273,7 +273,10 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
             isTree);
         if (canBuild->Error != GameActions::Status::Ok)
         {
-            DeleteBanner(banner->id);
+            if (banner != nullptr)
+            {
+                DeleteBanner(banner->id);
+            }
             canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
             return canBuild;
         }

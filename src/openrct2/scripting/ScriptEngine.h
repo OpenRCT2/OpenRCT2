@@ -46,7 +46,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 31;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 33;
 
 #    ifndef DISABLE_NETWORK
     class ScSocketBase;

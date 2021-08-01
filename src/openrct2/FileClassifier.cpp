@@ -195,7 +195,7 @@ static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* 
 uint32_t get_file_extension_type(const utf8* path)
 {
     auto extension = Path::GetExtension(path);
-    if (String::Equals(extension, ".dat", true))
+    if (String::Equals(extension, ".dat", true) || String::Equals(extension, ".pob", true))
         return FILE_EXTENSION_DAT;
     if (String::Equals(extension, ".sc4", true))
         return FILE_EXTENSION_SC4;

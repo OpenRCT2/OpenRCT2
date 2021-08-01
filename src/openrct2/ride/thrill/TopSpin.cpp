@@ -43,10 +43,9 @@ static int8_t TopSpinSeatPositionOffset[] = {
  *  rct2: 0x0076750D
  */
 static void top_spin_paint_vehicle(
-    paint_session* session, int32_t al, int32_t cl, ride_id_t rideIndex, uint8_t direction, int32_t height,
+    paint_session* session, int32_t al, int32_t cl, const Ride* ride, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -246,7 +245,7 @@ static void top_spin_paint_vehicle(
  * rct2: 0x0076679C
  */
 static void paint_top_spin(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -255,7 +254,6 @@ static void paint_top_spin(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
-    auto ride = get_ride(rideIndex);
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
         stationObject = ride_get_station_object(ride);
@@ -272,22 +270,22 @@ static void paint_top_spin(
     switch (trackSequence)
     {
         case 1:
-            top_spin_paint_vehicle(session, 32, 32, rideIndex, direction, height, tileElement);
+            top_spin_paint_vehicle(session, 32, 32, ride, direction, height, tileElement);
             break;
         case 3:
-            top_spin_paint_vehicle(session, 32, -32, rideIndex, direction, height, tileElement);
+            top_spin_paint_vehicle(session, 32, -32, ride, direction, height, tileElement);
             break;
         case 5:
-            top_spin_paint_vehicle(session, 0, -32, rideIndex, direction, height, tileElement);
+            top_spin_paint_vehicle(session, 0, -32, ride, direction, height, tileElement);
             break;
         case 6:
-            top_spin_paint_vehicle(session, -32, 32, rideIndex, direction, height, tileElement);
+            top_spin_paint_vehicle(session, -32, 32, ride, direction, height, tileElement);
             break;
         case 7:
-            top_spin_paint_vehicle(session, -32, -32, rideIndex, direction, height, tileElement);
+            top_spin_paint_vehicle(session, -32, -32, ride, direction, height, tileElement);
             break;
         case 8:
-            top_spin_paint_vehicle(session, -32, 0, rideIndex, direction, height, tileElement);
+            top_spin_paint_vehicle(session, -32, 0, ride, direction, height, tileElement);
             break;
     }
 
