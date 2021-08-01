@@ -2528,27 +2528,32 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
         return STR_NONE;
 
     int32_t count = w->ride.view - ride->num_vehicles - 1;
-    StationIndex stationIndex = STATION_INDEX_NULL;
     rct_string_id stringId = STR_EMPTY;
 
-    do
-    {
-        stationIndex++;
-        if (!ride->stations[stationIndex].Start.isNull())
-            count--;
-    } while (count >= 0);
+    int32_t stationIndex = 0;
+    auto lastStation = ride->stations[0];
 
+    for (const auto& station: ride->stations) {
+        stationIndex++;
+        if (!station.Start.isNull()) {
+            count--;
+        }
+        if (count == 0) {
+            lastStation = station;
+            break;
+        }
+    }
     // Entrance / exit
     if (ride->status == RideStatus::Closed)
     {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
+       if (ride_get_entrance_location(ride, stationIndex).isNull())
             stringId = STR_NO_ENTRANCE;
-        else if (ride_get_exit_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
+        else if (ride_get_exit_location(ride, stationIndex).isNull())
             stringId = STR_NO_EXIT;
     }
     else
     {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(stationIndex)).isNull())
+        if (ride_get_entrance_location(ride, stationIndex).isNull())
             stringId = STR_EXIT_ONLY;
     }
 
@@ -2556,7 +2561,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     if (stringId == STR_EMPTY)
     {
         stringId = STR_QUEUE_EMPTY;
-        uint16_t queueLength = ride->stations[stationIndex].QueueLength;
+        uint16_t queueLength = lastStation.QueueLength;
         if (queueLength == 1)
             stringId = STR_QUEUE_ONE_PERSON;
         else if (queueLength > 1)
@@ -2569,7 +2574,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     {
         ft.Add<rct_string_id>(stringId);
     }
-
+    
     return STR_BLACK_STRING;
 }
 
