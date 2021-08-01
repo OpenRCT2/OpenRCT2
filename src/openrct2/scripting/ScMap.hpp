@@ -38,13 +38,7 @@ namespace OpenRCT2::Scripting
 
         DukValue size_get() const
         {
-            auto ctx = _context;
-            auto objIdx = duk_push_object(ctx);
-            duk_push_number(ctx, gMapSize);
-            duk_put_prop_string(ctx, objIdx, "x");
-            duk_push_number(ctx, gMapSize);
-            duk_put_prop_string(ctx, objIdx, "y");
-            return DukValue::take_from_stack(ctx);
+            return ToDuk(_context, CoordsXY{ gMapSize, gMapSize });
         }
 
         int32_t numRides_get() const
@@ -110,7 +104,7 @@ namespace OpenRCT2::Scripting
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
                 }
             }
-            if (type == "car")
+            else if (type == "car")
             {
                 for (auto trainHead : TrainManager::View())
                 {
