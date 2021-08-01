@@ -690,7 +690,9 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_CASH].left + 1, w->widgets[WIDX_INITIAL_CASH].top };
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gInitialCash);
+        auto ft = Formatter();
+        ft.Add<money64>(gInitialCash);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
     if (w->widgets[WIDX_INITIAL_LOAN].type != WindowWidgetType::Empty)
@@ -700,7 +702,9 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_LOAN].left + 1, w->widgets[WIDX_INITIAL_LOAN].top };
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gBankLoan);
+        auto ft = Formatter();
+        ft.Add<money64>(gBankLoan);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
     if (w->widgets[WIDX_MAXIMUM_LOAN].type != WindowWidgetType::Empty)
@@ -710,7 +714,9 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_MAXIMUM_LOAN].left + 1, w->widgets[WIDX_MAXIMUM_LOAN].top };
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan);
+        auto ft = Formatter();
+        ft.Add<money64>(gMaxBankLoan);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
     if (w->widgets[WIDX_INTEREST_RATE].type != WindowWidgetType::Empty)
@@ -721,8 +727,9 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_INTEREST_RATE].left + 1, w->widgets[WIDX_INTEREST_RATE].top };
 
-        int16_t interestRate = std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX);
-        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &interestRate);
+        auto ft = Formatter();
+        ft.Add<int16_t>(std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX));
+        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
     }
 }
 
@@ -955,7 +962,6 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
  */
 static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t arg;
     ScreenCoordsXY screenCoords{};
 
     WindowDrawWidgets(w, dpi);
@@ -970,8 +976,9 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
         // Cash per guest value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_CASH_PER_GUEST].left + 1, w->widgets[WIDX_CASH_PER_GUEST].top };
-        arg = gGuestInitialCash;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        auto ft = Formatter();
+        ft.Add<money64>(gGuestInitialCash);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
     // Guest initial happiness label
@@ -981,8 +988,9 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
     // Guest initial happiness value
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
-    arg = (gGuestInitialHappiness * 100) / 255;
-    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
+    auto ft = Formatter();
+    ft.Add<uint16_t>((gGuestInitialHappiness * 100) / 255);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
     // Guest initial hunger label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
@@ -991,8 +999,9 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
     // Guest initial hunger value
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
-    arg = ((255 - gGuestInitialHunger) * 100) / 255;
-    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
+    ft = Formatter();
+    ft.Add<uint16_t>(((255 - gGuestInitialHunger) * 100) / 255);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
     // Guest initial thirst label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
@@ -1001,8 +1010,9 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
     // Guest initial thirst value
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
-    arg = ((255 - gGuestInitialThirst) * 100) / 255;
-    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
+    ft = Formatter();
+    ft.Add<uint16_t>(((255 - gGuestInitialThirst) * 100) / 255);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 }
 
 #pragma endregion
@@ -1316,9 +1326,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
  */
 static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t arg;
     ScreenCoordsXY screenCoords{};
-    rct_string_id stringId;
 
     WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
@@ -1331,8 +1339,9 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
 
         // Cost to buy land value
         screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LAND_COST].left + 1, w->widgets[WIDX_LAND_COST].top };
-        arg = gLandPrice;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        auto ft = Formatter();
+        ft.Add<money64>(gLandPrice);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
     if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WindowWidgetType::Empty)
@@ -1345,8 +1354,9 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1,
                               w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
-        arg = gConstructionRightsPrice;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        auto ft = Formatter();
+        ft.Add<money64>(gConstructionRightsPrice);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
     if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WindowWidgetType::Empty)
@@ -1355,15 +1365,16 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1, w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top };
 
+        auto ft = Formatter();
         // Pay for park and/or rides value
         if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-            stringId = STR_PAID_ENTRY_PAID_RIDES;
+            ft.Add<rct_string_id>(STR_PAID_ENTRY_PAID_RIDES);
         else if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-            stringId = STR_FREE_PARK_ENTER;
+            ft.Add<rct_string_id>(STR_FREE_PARK_ENTER);
         else
-            stringId = STR_PAY_PARK_ENTER;
+            ft.Add<rct_string_id>(STR_PAY_PARK_ENTER);
 
-        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 
     if (w->widgets[WIDX_ENTRY_PRICE].type != WindowWidgetType::Empty)
@@ -1375,8 +1386,9 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
 
         // Entry price value
         screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_ENTRY_PRICE].left + 1, w->widgets[WIDX_ENTRY_PRICE].top };
-        arg = gParkEntranceFee;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        auto ft = Formatter();
+        ft.Add<money64>(gParkEntranceFee);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
     // Climate label
@@ -1385,8 +1397,9 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
 
     // Climate value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CLIMATE].left + 1, w->widgets[WIDX_CLIMATE].top };
-    stringId = ClimateNames[static_cast<uint8_t>(gClimate)];
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
+    auto ft = Formatter();
+    ft.Add<rct_string_id>(ClimateNames[static_cast<uint8_t>(gClimate)]);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 }
 
 #pragma endregion

@@ -19,12 +19,12 @@
 #define MAX_TOOL_SIZE_WITH_SPRITE 7
 
 extern uint16_t gLandToolSize;
-extern money32 gLandToolRaiseCost;
-extern money32 gLandToolLowerCost;
+extern money64 gLandToolRaiseCost;
+extern money64 gLandToolLowerCost;
 extern ObjectEntryIndex gLandToolTerrainSurface;
 extern ObjectEntryIndex gLandToolTerrainEdge;
-extern money32 gWaterToolRaiseCost;
-extern money32 gWaterToolLowerCost;
+extern money64 gWaterToolRaiseCost;
+extern money64 gWaterToolLowerCost;
 
 namespace LandTool
 {

@@ -424,8 +424,8 @@ Banner* CreateBanner()
         banner->flags = 0;
         banner->type = 0;
         banner->text = {};
-        banner->colour = 2;
-        banner->text_colour = 2;
+        banner->colour = COLOUR_WHITE;
+        banner->text_colour = COLOUR_WHITE;
     }
     return banner;
 }
