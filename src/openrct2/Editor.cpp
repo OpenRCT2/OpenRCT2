@@ -138,6 +138,9 @@ namespace Editor
         gS6Info.objective_arg_3 = gScenarioObjective.NumGuests;
         climate_reset(gClimate);
 
+        // reset whether the scenario has been won, to make sure it hasn't:
+        gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gS6Info.editor_step = EditorStep::ObjectiveSelection;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
