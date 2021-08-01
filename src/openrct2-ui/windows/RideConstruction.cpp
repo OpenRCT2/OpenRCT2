@@ -2324,12 +2324,14 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     // Draw cost
     screenCoords = { w->windowPos.x + widget->midX(), w->windowPos.y + widget->bottom - 23 };
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
-        DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, w, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
     screenCoords.y += 11;
     if (_currentTrackPrice != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, static_cast<void*>(&_currentTrackPrice), { TextAlignment::CENTRE });
+        auto ft = Formatter();
+        ft.Add<money64>(_currentTrackPrice);
+        DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
     }
 }
 

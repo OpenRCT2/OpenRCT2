@@ -657,6 +657,10 @@ namespace OpenRCT2
         {
             FormatArgument(ss, token, std::get<int32_t>(value));
         }
+        else if (std::holds_alternative<int64_t>(value))
+        {
+            FormatArgument(ss, token, std::get<int64_t>(value));
+        }
         else if (std::holds_alternative<const char*>(value))
         {
             FormatArgument(ss, token, std::get<const char*>(value));
@@ -755,10 +759,12 @@ namespace OpenRCT2
                 case FormatToken::Comma32:
                 case FormatToken::Int32:
                 case FormatToken::Comma2dp32:
-                case FormatToken::Currency2dp:
-                case FormatToken::Currency:
                 case FormatToken::Sprite:
                     anyArgs.push_back(ReadFromArgs<int32_t>(args));
+                    break;
+                case FormatToken::Currency2dp:
+                case FormatToken::Currency:
+                    anyArgs.push_back(ReadFromArgs<int64_t>(args));
                     break;
                 case FormatToken::UInt16:
                 case FormatToken::MonthYear:

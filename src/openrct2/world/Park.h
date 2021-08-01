@@ -59,16 +59,16 @@ namespace OpenRCT2
         bool IsOpen() const;
 
         uint16_t GetParkRating() const;
-        money32 GetParkValue() const;
-        money32 GetCompanyValue() const;
+        money64 GetParkValue() const;
+        money64 GetCompanyValue() const;
 
         void Initialise();
         void Update(const Date& date);
 
         int32_t CalculateParkSize() const;
         int32_t CalculateParkRating() const;
-        money32 CalculateParkValue() const;
-        money32 CalculateCompanyValue() const;
+        money64 CalculateParkValue() const;
+        money64 CalculateCompanyValue() const;
         static uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
 
         Guest* GenerateGuest();
@@ -77,7 +77,7 @@ namespace OpenRCT2
         void UpdateHistories();
 
     private:
-        money32 CalculateRideValue(const Ride* ride) const;
+        money64 CalculateRideValue(const Ride* ride) const;
         money16 CalculateTotalRideValueForMoney() const;
         uint32_t CalculateSuggestedMaxGuests() const;
         uint32_t CalculateGuestGenerationProbability() const;

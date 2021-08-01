@@ -194,7 +194,7 @@ struct rct_s6_data
     // SC6[11]
     money32 current_expenditure;
     money32 current_profit;
-    uint32_t weekly_profit_average_dividend;
+    money32 weekly_profit_average_dividend;
     uint16_t weekly_profit_average_divisor;
     uint8_t pad_0135833A[2];
 
@@ -373,7 +373,7 @@ struct Objective
     };
     union
     {
-        money32 Currency;
+        money64 Currency;
         uint16_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
     };
 
@@ -423,7 +423,7 @@ enum
 #define AUTOSAVE_PAUSE 0
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
-static constexpr money32 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
+static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
@@ -433,8 +433,8 @@ extern random_engine_t gScenarioRand;
 extern Objective gScenarioObjective;
 extern bool gAllowEarlyCompletionInNetworkPlay;
 extern uint16_t gScenarioParkRatingWarningDays;
-extern money32 gScenarioCompletedCompanyValue;
-extern money32 gScenarioCompanyValueRecord;
+extern money64 gScenarioCompletedCompanyValue;
+extern money64 gScenarioCompanyValueRecord;
 
 extern rct_s6_info gS6Info;
 extern std::string gScenarioName;

@@ -898,7 +898,9 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
-    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, &gParkRating);
+    auto ft = Formatter();
+    ft.Add<uint16_t>(gParkRating);
+    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
     // Graph border
     gfx_fill_rect_inset(
@@ -912,7 +914,7 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 200;
-        auto ft = Formatter();
+        ft = Formatter();
         ft.Add<uint32_t>(axisValue);
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
@@ -1033,8 +1035,9 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
-    DrawTextBasic(
-        dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark);
+    auto ft = Formatter();
+    ft.Add<uint32_t>(gNumGuestsInPark);
+    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
     // Graph border
     gfx_fill_rect_inset(
@@ -1048,7 +1051,7 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 1000;
-        auto ft = Formatter();
+        ft = Formatter();
         ft.Add<uint32_t>(axisValue);
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
@@ -1181,12 +1184,16 @@ static void window_park_price_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_PAGE_BACKGROUND].left + 4, w->widgets[WIDX_PAGE_BACKGROUND].top + 30 };
-    DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions);
+    auto ft = Formatter();
+    ft.Add<money64>(gTotalIncomeFromAdmissions);
+    DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
-    money32 parkEntranceFee = park_get_entrance_fee();
+    money64 parkEntranceFee = park_get_entrance_fee();
     auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PRICE].left + 1, w->widgets[WIDX_PRICE].top + 1 };
-    DrawTextBasic(dpi, screenCoords, stringId, &parkEntranceFee, { w->colours[1] });
+    ft = Formatter();
+    ft.Add<money64>(parkEntranceFee);
+    DrawTextBasic(dpi, screenCoords, stringId, ft, { w->colours[1] });
 }
 
 #pragma endregion
@@ -1489,14 +1496,14 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
         else
-            ft.Add<money32>(gScenarioObjective.Currency);
+            ft.Add<money64>(gScenarioObjective.Currency);
     }
 
     screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
     screenCoords.y += 5;
 
     // Objective outcome
-    if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
+    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
     {
         if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
         {
@@ -1507,7 +1514,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Objective completed
             ft = Formatter();
-            ft.Add<money32>(gScenarioCompletedCompanyValue);
+            ft.Add<money64>(gScenarioCompletedCompanyValue);
             DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
         }
     }

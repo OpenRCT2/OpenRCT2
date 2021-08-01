@@ -318,7 +318,7 @@ private:
 class ScenarioRepository final : public IScenarioRepository
 {
 private:
-    static constexpr uint32_t HighscoreFileVersion = 1;
+    static constexpr uint32_t HighscoreFileVersion = 2;
 
     std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
@@ -416,7 +416,7 @@ public:
         return nullptr;
     }
 
-    bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money32 companyValue, const utf8* name) override
+    bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money64 companyValue, const utf8* name) override
     {
         // Scan the scenarios so we have a fresh list to query. This is to prevent the issue of scenario completions
         // not getting recorded, see #4951.
@@ -598,7 +598,7 @@ private:
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             uint32_t fileVersion = fs.ReadValue<uint32_t>();
-            if (fileVersion != 1)
+            if (fileVersion != 1 && fileVersion != 2)
             {
                 Console::Error::WriteLine("Invalid or incompatible highscores file.");
                 return;
@@ -612,7 +612,7 @@ private:
                 scenario_highscore_entry* highscore = InsertHighscore();
                 highscore->fileName = fs.ReadString();
                 highscore->name = fs.ReadString();
-                highscore->company_value = fs.ReadValue<money32>();
+                highscore->company_value = fileVersion == 1 ? fs.ReadValue<money32>() : fs.ReadValue<money64>();
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }
         }
@@ -784,7 +784,7 @@ const scenario_index_entry* scenario_repository_get_by_index(size_t index)
     return repo->GetByIndex(index);
 }
 
-bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money32 companyValue, const utf8* name)
+bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name)
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);

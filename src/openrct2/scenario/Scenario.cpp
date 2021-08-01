@@ -75,8 +75,8 @@ Objective gScenarioObjective;
 
 bool gAllowEarlyCompletionInNetworkPlay;
 uint16_t gScenarioParkRatingWarningDays;
-money32 gScenarioCompletedCompanyValue;
-money32 gScenarioCompanyValueRecord;
+money64 gScenarioCompletedCompanyValue;
+money64 gScenarioCompanyValueRecord;
 
 char gScenarioFileName[MAX_PATH];
 
@@ -144,7 +144,7 @@ void scenario_begin()
     gCurrentProfit = 0;
     gWeeklyProfitAverageDividend = 0;
     gWeeklyProfitAverageDivisor = 0;
-    gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
+    gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
     gScenarioCompletedBy = "?";
@@ -197,7 +197,7 @@ void scenario_failure()
  */
 void scenario_success()
 {
-    const money32 companyValue = gCompanyValue;
+    auto companyValue = gCompanyValue;
 
     gScenarioCompletedCompanyValue = companyValue;
     peep_applause();
@@ -928,8 +928,8 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 
 ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
 {
-    money32* lastMonthExpenditure = gExpenditureTable[1];
-    int32_t lastMonthProfit = lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)]
+    const auto* lastMonthExpenditure = gExpenditureTable[1];
+    auto lastMonthProfit = lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)]
         + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)]
         + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkSales)]
         + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkStock)];
@@ -978,7 +978,7 @@ static void scenario_objective_check()
  */
 ObjectiveStatus Objective::Check() const
 {
-    if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
+    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
     {
         return ObjectiveStatus::Undecided;
     }

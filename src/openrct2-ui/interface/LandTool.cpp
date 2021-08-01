@@ -37,12 +37,12 @@ static uint16_t toolSizeSpriteIndices[] =
 // clang-format on
 
 uint16_t gLandToolSize;
-money32 gLandToolRaiseCost;
-money32 gLandToolLowerCost;
+money64 gLandToolRaiseCost;
+money64 gLandToolLowerCost;
 ObjectEntryIndex gLandToolTerrainSurface;
 ObjectEntryIndex gLandToolTerrainEdge;
-money32 gWaterToolRaiseCost;
-money32 gWaterToolLowerCost;
+money64 gWaterToolRaiseCost;
+money64 gWaterToolLowerCost;
 
 uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
 {

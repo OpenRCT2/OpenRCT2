@@ -386,27 +386,25 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1, w->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
 
-    fixed16_1dp clipHeightValueInUnits;
-    fixed32_2dp clipHeightValueInMeters;
-    fixed16_1dp clipHeightValueInFeet;
-    int32_t clipHeightRawValue = static_cast<int32_t>(gClipHeight);
     switch (gClipHeightDisplayType)
     {
         case DISPLAY_TYPE::DISPLAY_RAW:
         default:
-            DrawTextBasic(
-                dpi, screenCoords, STR_FORMAT_INTEGER, &clipHeightRawValue, { w->colours[0] }); // Printing the raw value.
+        {
+            auto ft = Formatter();
+            ft.Add<int32_t>(static_cast<int32_t>(gClipHeight));
+            DrawTextBasic(dpi, screenCoords, STR_FORMAT_INTEGER, ft, { w->colours[0] }); // Printing the raw value.
             break;
-
+        }
         case DISPLAY_TYPE::DISPLAY_UNITS:
             // Print the value in the configured height label type:
             if (gConfigGeneral.show_height_as_units == 1)
             {
                 // Height label is Units.
-                clipHeightValueInUnits = static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0));
+                auto ft = Formatter();
+                ft.Add<fixed16_1dp>(static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0)));
                 DrawTextBasic(
-                    dpi, screenCoords, STR_UNIT1DP_NO_SUFFIX, &clipHeightValueInUnits,
-                    { w->colours[0] }); // Printing the value in Height Units.
+                    dpi, screenCoords, STR_UNIT1DP_NO_SUFFIX, ft, { w->colours[0] }); // Printing the value in Height Units.
             }
             else
             {
@@ -416,16 +414,19 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     case MeasurementFormat::Metric:
                     case MeasurementFormat::SI:
-                        clipHeightValueInMeters = static_cast<fixed32_2dp>(
-                            FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
-                        DrawTextBasic(
-                            dpi, screenCoords, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, { w->colours[0] });
+                    {
+                        auto ft = Formatter();
+                        ft.Add<fixed32_2dp>(static_cast<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50)));
+                        DrawTextBasic(dpi, screenCoords, STR_UNIT2DP_SUFFIX_METRES, ft, { w->colours[0] });
                         break;
+                    }
                     case MeasurementFormat::Imperial:
-                        clipHeightValueInFeet = static_cast<fixed16_1dp>(
-                            FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
-                        DrawTextBasic(dpi, screenCoords, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, { w->colours[0] });
+                    {
+                        auto ft = Formatter();
+                        ft.Add<fixed16_1dp>(static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0)));
+                        DrawTextBasic(dpi, screenCoords, STR_UNIT1DP_SUFFIX_FEET, ft, { w->colours[0] });
                         break;
+                    }
                 }
             }
     }
