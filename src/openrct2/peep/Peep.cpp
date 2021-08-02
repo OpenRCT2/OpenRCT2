@@ -1460,6 +1460,13 @@ void Peep::FormatActionTo(Formatter& ft) const
     }
 }
 
+static constexpr const rct_string_id _staffNames[] = {
+    STR_HANDYMAN_X,
+    STR_MECHANIC_X,
+    STR_SECURITY_GUARD_X,
+    STR_ENTERTAINER_X,
+};
+
 void Peep::FormatNameTo(Formatter& ft) const
 {
     if (Name == nullptr)
@@ -1467,20 +1474,13 @@ void Peep::FormatNameTo(Formatter& ft) const
         auto* staff = As<Staff>();
         if (staff != nullptr)
         {
-            static constexpr const rct_string_id staffNames[] = {
-                STR_HANDYMAN_X,
-                STR_MECHANIC_X,
-                STR_SECURITY_GUARD_X,
-                STR_ENTERTAINER_X,
-            };
-
             auto staffNameIndex = static_cast<uint8_t>(staff->AssignedStaffType);
-            if (staffNameIndex > sizeof(staffNames))
+            if (staffNameIndex >= std::size(_staffNames))
             {
                 staffNameIndex = 0;
             }
 
-            ft.Add<rct_string_id>(staffNames[staffNameIndex]);
+            ft.Add<rct_string_id>(_staffNames[staffNameIndex]);
             ft.Add<uint32_t>(Id);
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
