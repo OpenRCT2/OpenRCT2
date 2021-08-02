@@ -509,7 +509,7 @@ static void close_ride_window_for_construction(rct_windownumber number)
 rct_window* window_ride_construction_open()
 {
     ride_id_t rideIndex = _currentRideIndex;
-    close_ride_window_for_construction(rideIndex);
+    close_ride_window_for_construction(static_cast<int32_t>(rideIndex));
 
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -543,7 +543,7 @@ rct_window* window_ride_construction_open()
     w->colours[1] = COLOUR_DARK_BROWN;
     w->colours[2] = COLOUR_DARK_BROWN;
 
-    w->number = rideIndex;
+    w->number = static_cast<int32_t>(rideIndex);
 
     window_push_others_right(w);
     show_gridlines();
@@ -620,7 +620,7 @@ static void window_ride_construction_close(rct_window* w)
 
         ride->SetToDefaultInspectionInterval();
         auto intent = Intent(WC_RIDE);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(ride->id));
         context_open_intent(&intent);
     }
     else
@@ -1937,7 +1937,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         _currentTrackPieceType, 0,
         { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, _currentTrackPieceDirection });
 
-    const auto rideId = w->number;
+    const auto rideId = static_cast<ride_id_t>(w->number);
     trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
         {
@@ -2017,7 +2017,7 @@ static void window_ride_construction_exit_click(rct_window* w)
     else
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
-        gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
+        gRideEntranceExitPlaceRideIndex = static_cast<ride_id_t>(w->number);
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();

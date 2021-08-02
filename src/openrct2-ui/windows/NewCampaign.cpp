@@ -22,7 +22,9 @@
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 109;
 static constexpr const int32_t WW = 350;
-constexpr uint16_t SELECTED_RIDE_UNDEFINED = 0xFFFF;
+
+constexpr auto SELECTED_RIDE_UNDEFINED = RIDE_ID_NULL;
+constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
 
 // clang-format off
 enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
@@ -252,7 +254,8 @@ public:
                 break;
             case WIDX_START_BUTTON:
             {
-                auto gameAction = ParkMarketingAction(campaign.campaign_type, campaign.RideId, campaign.no_weeks);
+                auto gameAction = ParkMarketingAction(
+                    campaign.campaign_type, static_cast<int32_t>(campaign.RideId), campaign.no_weeks);
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
@@ -322,7 +325,7 @@ public:
                 widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
                 widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
-                if (campaign.ShopItemId != SELECTED_RIDE_UNDEFINED)
+                if (campaign.ShopItemId != SELECTED_ITEM_UNDEFINED)
                 {
                     widgets[WIDX_RIDE_DROPDOWN].text = GetShopItemDescriptor(ShopItem(campaign.ShopItemId)).Naming.Plural;
                 }

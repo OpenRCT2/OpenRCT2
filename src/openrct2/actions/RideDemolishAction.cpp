@@ -131,14 +131,16 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
 
     ride->ValidateStations();
     ride_clear_leftover_entrances(ride);
-    News::DisableNewsItems(News::ItemType::Ride, _rideIndex);
 
-    UnlinkAllBannersForRide(_rideIndex);
+    const auto rideId = ride->id;
+    News::DisableNewsItems(News::ItemType::Ride, EnumValue(rideId));
 
-    RideUse::GetHistory().RemoveValue(_rideIndex);
+    UnlinkAllBannersForRide(ride->id);
+
+    RideUse::GetHistory().RemoveValue(ride->id);
     for (auto peep : EntityList<Guest>())
     {
-        peep->RemoveRideFromMemory(_rideIndex);
+        peep->RemoveRideFromMemory(ride->id);
     }
 
     MarketingCancelCampaignsForRide(_rideIndex);
@@ -157,9 +159,9 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
     // Close windows related to the demolished ride
-    window_close_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
-    window_close_by_number(WC_RIDE, _rideIndex);
-    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
+    window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(rideId));
+    window_close_by_number(WC_RIDE, EnumValue(rideId));
+    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, EnumValue(rideId));
     window_close_by_class(WC_NEW_CAMPAIGN);
 
     // Refresh windows that display the ride name
@@ -272,7 +274,7 @@ GameActions::Result::Ptr RideDemolishAction::RefurbishRide(Ride* ride) const
         res->Position = { location, tile_element_height(location) };
     }
 
-    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
+    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, static_cast<int32_t>(_rideIndex));
 
     return res;
 }

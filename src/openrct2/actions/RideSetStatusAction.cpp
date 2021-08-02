@@ -154,7 +154,7 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
             ride->race_winner = SPRITE_INDEX_NULL;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WC_RIDE, _rideIndex);
+            window_invalidate_by_number(WC_RIDE, static_cast<int32_t>(_rideIndex));
             break;
         case RideStatus::Simulating:
         {
@@ -176,7 +176,7 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WC_RIDE, _rideIndex);
+            window_invalidate_by_number(WC_RIDE, static_cast<int32_t>(_rideIndex));
             break;
         }
         case RideStatus::Testing:
@@ -195,7 +195,7 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
 
             // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
             //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
-            rct_window* constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
+            rct_window* constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, static_cast<int32_t>(_rideIndex));
             if (constructionWindow != nullptr)
             {
                 window_close(constructionWindow);
@@ -223,7 +223,7 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WC_RIDE, _rideIndex);
+            window_invalidate_by_number(WC_RIDE, static_cast<int32_t>(_rideIndex));
             break;
         }
         default:

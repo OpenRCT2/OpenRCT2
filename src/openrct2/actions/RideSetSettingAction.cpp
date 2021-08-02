@@ -233,7 +233,7 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };
     }
-    window_invalidate_by_number(WC_RIDE, _rideIndex);
+    window_invalidate_by_number(WC_RIDE, static_cast<int32_t>(_rideIndex));
     return res;
 }
 

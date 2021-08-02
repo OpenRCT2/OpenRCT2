@@ -2095,8 +2095,8 @@ int32_t guest_path_finding(Guest* peep)
             if (!(adjustedEdges & (1 << chosenDirection)))
                 continue;
 
-            ride_id_t rideIndex, pathSearchResult;
-            pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
+            ride_id_t rideIndex = RIDE_ID_NULL;
+            auto pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
             switch (pathSearchResult)
             {
                 case PATH_SEARCH_DEAD_END:

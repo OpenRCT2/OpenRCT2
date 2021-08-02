@@ -139,7 +139,7 @@ GameActions::Result::Ptr RideSetAppearanceAction::Execute() const
             gfx_invalidate_screen();
             break;
     }
-    window_invalidate_by_number(WC_RIDE, _rideIndex);
+    window_invalidate_by_number(WC_RIDE, static_cast<int32_t>(_rideIndex));
 
     auto res = std::make_unique<GameActions::Result>();
     if (!ride->overall_view.IsNull())

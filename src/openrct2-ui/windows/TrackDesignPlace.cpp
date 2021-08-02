@@ -268,7 +268,9 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     // Check if tool map position has changed since last update
     if (mapCoords == _windowTrackPlaceLast)
     {
-        place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { mapCoords, 0 });
+        place_virtual_track(
+            _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(static_cast<ride_id_t>(0)),
+            { mapCoords, 0 });
         return;
     }
 
@@ -308,7 +310,8 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), trackLoc);
+    place_virtual_track(
+        _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(static_cast<ride_id_t>(0)), trackLoc);
 }
 
 /**
@@ -348,7 +351,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
                     if (track_design_are_entrance_and_exit_placed())
                     {
                         auto intent = Intent(WC_RIDE);
-                        intent.putExtra(INTENT_EXTRA_RIDE_ID, result->rideIndex);
+                        intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(result->rideIndex));
                         context_open_intent(&intent);
                         auto wnd = window_find_by_class(WC_TRACK_DESIGN_PLACE);
                         window_close(wnd);
@@ -469,7 +472,9 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc)
     if (surfaceElement->GetWaterHeight() > 0)
         z = std::max(z, surfaceElement->GetWaterHeight());
 
-    return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), { loc, z });
+    return z
+        + place_virtual_track(
+               _trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(static_cast<ride_id_t>(0)), { loc, z });
 }
 
 /**

@@ -199,7 +199,7 @@ GameActions::Result::Ptr RideSetVehicleAction::Execute() const
     }
 
     auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);
-    intent.putExtra(INTENT_EXTRA_RIDE_ID, _rideIndex);
+    intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(_rideIndex));
     context_broadcast_intent(&intent);
 
     gfx_invalidate_screen();

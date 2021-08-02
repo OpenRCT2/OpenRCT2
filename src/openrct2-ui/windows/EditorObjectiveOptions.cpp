@@ -972,7 +972,7 @@ static void window_editor_objective_options_rides_update(rct_window* w)
     {
         if (ride.IsRide())
         {
-            w->list_item_positions[numItems] = ride.id;
+            w->list_item_positions[numItems] = static_cast<uint32_t>(ride.id);
             numItems++;
         }
     }
@@ -1005,7 +1005,8 @@ static void window_editor_objective_options_rides_scrollmousedown(
     if (i < 0 || i >= w->no_list_items)
         return;
 
-    auto ride = get_ride(w->list_item_positions[i]);
+    const auto rideId = static_cast<ride_id_t>(w->list_item_positions[i]);
+    auto ride = get_ride(rideId);
     if (ride != nullptr)
     {
         ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
@@ -1098,7 +1099,8 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         }
 
         // Checkbox mark
-        auto ride = get_ride(w->list_item_positions[i]);
+        const auto rideId = static_cast<ride_id_t>(w->list_item_positions[i]);
+        auto ride = get_ride(rideId);
         if (ride != nullptr)
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)

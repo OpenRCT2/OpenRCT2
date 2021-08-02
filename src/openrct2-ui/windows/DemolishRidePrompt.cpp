@@ -84,7 +84,7 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     w->widgets = window_ride_demolish_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_DEMOLISH);
     WindowInitScrollWidgets(w);
-    w->number = ride->id;
+    w->number = static_cast<int32_t>(ride->id);
     _demolishRideCost = -ride_get_refund_price(ride);
 
     return w;
@@ -109,7 +109,7 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
     w->widgets = window_ride_refurbish_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_REFURBISH);
     WindowInitScrollWidgets(w);
-    w->number = ride->id;
+    w->number = static_cast<int32_t>(ride->id);
     _demolishRideCost = -ride_get_refund_price(ride);
 
     return w;
@@ -125,7 +125,7 @@ static void window_ride_demolish_mouseup(rct_window* w, rct_widgetindex widgetIn
     {
         case WIDX_DEMOLISH:
         {
-            auto ride = get_ride(w->number);
+            auto ride = get_ride(static_cast<ride_id_t>(w->number));
             ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
             break;
         }
@@ -142,7 +142,7 @@ static void window_ride_refurbish_mouseup(rct_window* w, rct_widgetindex widgetI
     {
         case WIDX_REFURBISH:
         {
-            auto ride = get_ride(w->number);
+            auto ride = get_ride(static_cast<ride_id_t>(w->number));
             ride_action_modify(ride, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
             break;
         }
@@ -161,7 +161,7 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    auto ride = get_ride(w->number);
+    auto ride = get_ride(static_cast<ride_id_t>(w->number));
     if (ride != nullptr)
     {
         auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID : STR_DEMOLISH_RIDE_ID_MONEY;
@@ -178,7 +178,7 @@ static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    auto ride = get_ride(w->number);
+    auto ride = get_ride(static_cast<ride_id_t>(w->number));
     if (ride != nullptr)
     {
         auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY : STR_REFURBISH_RIDE_ID_MONEY;

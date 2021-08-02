@@ -180,7 +180,7 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
         }
         if (invalidate)
         {
-            window_invalidate_by_number(WC_RIDE, ride.id);
+            window_invalidate_by_number(WC_RIDE, static_cast<int32_t>(ride.id));
         }
     }
 }
