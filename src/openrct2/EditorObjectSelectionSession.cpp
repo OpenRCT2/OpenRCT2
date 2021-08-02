@@ -192,14 +192,10 @@ void setup_in_use_selection_flags()
         }
     } while (tile_element_iterator_next(&iter));
 
-    for (ride_id_t ride_index = 0; ride_index < MAX_RIDES; ride_index++)
+    for (auto& ride : GetRideManager())
     {
-        auto ride = get_ride(ride_index);
-        if (ride != nullptr)
-        {
-            ObjectEntryIndex type = ride->subtype;
-            Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
-        }
+        ObjectEntryIndex type = ride.subtype;
+        Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
     }
 
     // Apply selected object status for hacked vehicles that may not have an associated ride
