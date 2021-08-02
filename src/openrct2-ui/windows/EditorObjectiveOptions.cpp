@@ -375,11 +375,12 @@ static void window_editor_objective_options_main_mouseup(rct_window* w, rct_widg
             break;
         }
         case WIDX_SCENARIO_NAME:
-            window_text_input_raw_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gS6Info.name, 64);
+            window_text_input_raw_open(
+                w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gScenarioName.c_str(), 64);
             break;
         case WIDX_DETAILS:
             window_text_input_raw_open(
-                w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, gS6Info.details, 256);
+                w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, gScenarioDetails.c_str(), 256);
             break;
     }
 }
@@ -448,7 +449,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
         w->colours[1], 0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 3);
-    Dropdown::SetChecked(gS6Info.category, true);
+    Dropdown::SetChecked(gScenarioCategory, true);
 }
 
 static void window_editor_objective_options_arg_1_increase(rct_window* w)
@@ -654,9 +655,9 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
                 window_editor_objective_options_set_objective(w, newObjectiveType);
             break;
         case WIDX_CATEGORY_DROPDOWN:
-            if (gS6Info.category != static_cast<uint8_t>(dropdownIndex))
+            if (gScenarioCategory != static_cast<uint8_t>(dropdownIndex))
             {
-                gS6Info.category = static_cast<uint8_t>(dropdownIndex);
+                gScenarioCategory = static_cast<SCENARIO_CATEGORY>(dropdownIndex);
                 w->Invalidate();
             }
             break;
@@ -708,19 +709,19 @@ static void window_editor_objective_options_main_textinput(rct_window* w, rct_wi
             auto action = ParkSetNameAction(text);
             GameActions::Execute(&action);
 
-            if (gS6Info.name[0] == '\0')
+            if (gScenarioName.empty())
             {
                 auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                String::Set(gS6Info.name, sizeof(gS6Info.name), park.Name.c_str());
+                gScenarioName = park.Name;
             }
             break;
         }
         case WIDX_SCENARIO_NAME:
-            safe_strcpy(gS6Info.name, text, std::size(gS6Info.name));
+            gScenarioName = text;
             w->Invalidate();
             break;
         case WIDX_DETAILS:
-            safe_strcpy(gS6Info.details, text, std::size(gS6Info.details));
+            gScenarioDetails = text;
             w->Invalidate();
             break;
     }
@@ -901,7 +902,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 
     ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
-    ft.Add<const char*>(gS6Info.name);
+    ft.Add<const char*>(gScenarioName.c_str());
     DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft);
 
     // Scenario details label
@@ -914,7 +915,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 
     ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
-    ft.Add<const char*>(gS6Info.details);
+    ft.Add<const char*>(gScenarioDetails.c_str());
     DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft);
 
     // Scenario category label
@@ -924,7 +925,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     // Scenario category value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CATEGORY].left + 1, w->widgets[WIDX_CATEGORY].top };
     ft = Formatter();
-    ft.Add<rct_string_id>(ScenarioCategoryStringIds[gS6Info.category]);
+    ft.Add<rct_string_id>(ScenarioCategoryStringIds[gScenarioCategory]);
     DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 }
 

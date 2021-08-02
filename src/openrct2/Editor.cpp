@@ -47,6 +47,8 @@
 
 using namespace OpenRCT2;
 
+EditorStep gEditorStep;
+
 namespace Editor
 {
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
@@ -84,9 +86,9 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gS6Info.editor_step = EditorStep::ObjectSelection;
+        gEditorStep = EditorStep::ObjectSelection;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gS6Info.category = SCENARIO_CATEGORY_OTHER;
+        gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -130,17 +132,11 @@ namespace Editor
         }
         gParkFlags |= PARK_FLAGS_NO_MONEY;
 
-        safe_strcpy(gS6Info.name, gScenarioName.c_str(), sizeof(gS6Info.name));
-        safe_strcpy(gS6Info.details, gScenarioDetails.c_str(), sizeof(gS6Info.details));
-        gS6Info.objective_type = gScenarioObjective.Type;
-        gS6Info.objective_arg_1 = gScenarioObjective.Year;
-        gS6Info.objective_arg_2 = gScenarioObjective.Currency;
-        gS6Info.objective_arg_3 = gScenarioObjective.NumGuests;
         climate_reset(gClimate);
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gS6Info.editor_step = EditorStep::ObjectiveSelection;
-        gS6Info.category = SCENARIO_CATEGORY_OTHER;
+        gEditorStep = EditorStep::ObjectiveSelection;
+        gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         News::InitQueue();
         context_open_window_view(WV_EDITOR_MAIN);
@@ -162,7 +158,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
-        gS6Info.editor_step = EditorStep::ObjectSelection;
+        gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -183,7 +179,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
-        gS6Info.editor_step = EditorStep::ObjectSelection;
+        gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -242,7 +238,7 @@ namespace Editor
         load_from_sv4(path);
         ClearMapForEditing(true);
 
-        gS6Info.editor_step = EditorStep::LandscapeEditor;
+        gEditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -256,7 +252,7 @@ namespace Editor
         load_from_sc4(path);
         ClearMapForEditing(false);
 
-        gS6Info.editor_step = EditorStep::LandscapeEditor;
+        gEditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -285,7 +281,7 @@ namespace Editor
 
         ClearMapForEditing(loadedFromSave);
 
-        gS6Info.editor_step = EditorStep::LandscapeEditor;
+        gEditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -371,7 +367,7 @@ namespace Editor
             return;
         }
 
-        switch (gS6Info.editor_step)
+        switch (gEditorStep)
         {
             case EditorStep::ObjectSelection:
                 if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))

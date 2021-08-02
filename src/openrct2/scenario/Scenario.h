@@ -436,7 +436,7 @@ extern uint16_t gScenarioParkRatingWarningDays;
 extern money64 gScenarioCompletedCompanyValue;
 extern money64 gScenarioCompanyValueRecord;
 
-extern rct_s6_info gS6Info;
+extern SCENARIO_CATEGORY gScenarioCategory;
 extern std::string gScenarioName;
 extern std::string gScenarioDetails;
 extern std::string gScenarioCompletedBy;
