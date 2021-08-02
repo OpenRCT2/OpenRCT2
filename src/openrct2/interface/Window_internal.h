@@ -48,7 +48,7 @@ struct rct_window
     rct_windownumber number{};
     uint16_t flags{};
     rct_scroll scrolls[3];
-    uint8_t list_item_positions[1024]{};
+    uint32_t list_item_positions[1024]{};
     uint16_t no_list_items{};     // 0 for no items
     int16_t selected_list_item{}; // -1 for none selected
     union
