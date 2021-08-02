@@ -13,11 +13,12 @@
 
 #include <cstdint>
 #include <limits>
+#include <type_traits>
 
-using ride_id_t = uint16_t;
+enum class ride_id_t : uint16_t;
 struct Ride;
 
-constexpr const ride_id_t RIDE_ID_NULL = std::numeric_limits<ride_id_t>::max();
+constexpr const ride_id_t RIDE_ID_NULL = static_cast<ride_id_t>(std::numeric_limits<std::underlying_type_t<ride_id_t>>::max());
 
 /**
  * Couples a ride type and subtype together.
