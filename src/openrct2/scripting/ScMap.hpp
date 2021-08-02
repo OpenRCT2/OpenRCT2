@@ -17,7 +17,11 @@
 #    include "../world/Balloon.h"
 #    include "../world/Duck.h"
 #    include "../world/EntityList.h"
+#    include "../world/Fountain.h"
+#    include "../world/Litter.h"
 #    include "../world/Map.h"
+#    include "../world/MoneyEffect.h"
+#    include "../world/Particle.h"
 #    include "Duktape.hpp"
 #    include "ScEntity.hpp"
 #    include "ScRide.hpp"
@@ -163,6 +167,77 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
+        template<typename TEntityType, typename TScriptType> DukValue createEntityType(const DukValue& initializer)
+        {
+            TEntityType* entity = CreateEntity<TEntityType>();
+
+            auto entityPos = CoordsXYZ{ AsOrDefault(initializer["x"], 0), AsOrDefault(initializer["y"], 0),
+                                        AsOrDefault(initializer["z"], 0) };
+            entity->MoveTo(entityPos);
+
+            return GetObjectAsDukValue(_context, std::make_shared<TScriptType>(entity->sprite_index));
+        }
+
+        DukValue createEntity(const std::string& type, const DukValue& initializer)
+        {
+            if (type == "car")
+            {
+                return createEntityType<Vehicle, ScVehicle>(initializer);
+            }
+            else if (type == "staff")
+            {
+                return createEntityType<Staff, ScStaff>(initializer);
+            }
+            else if (type == "guest")
+            {
+                return createEntityType<Guest, ScGuest>(initializer);
+            }
+            else if (type == "steam_particle")
+            {
+                return createEntityType<SteamParticle, ScEntity>(initializer);
+            }
+            else if (type == "money_effect")
+            {
+                return createEntityType<MoneyEffect, ScEntity>(initializer);
+            }
+            else if (type == "crashed_vehicle_particle")
+            {
+                return createEntityType<VehicleCrashParticle, ScEntity>(initializer);
+            }
+            else if (type == "explosion_cloud")
+            {
+                return createEntityType<ExplosionCloud, ScEntity>(initializer);
+            }
+            else if (type == "crash_splash")
+            {
+                return createEntityType<CrashSplashParticle, ScEntity>(initializer);
+            }
+            else if (type == "explosion_flare")
+            {
+                return createEntityType<ExplosionFlare, ScEntity>(initializer);
+            }
+            else if (type == "balloon")
+            {
+                return createEntityType<Balloon, ScEntity>(initializer);
+            }
+            else if (type == "duck")
+            {
+                return createEntityType<Duck, ScEntity>(initializer);
+            }
+            else if (type == "jumping_fountain")
+            {
+                return createEntityType<JumpingFountain, ScEntity>(initializer);
+            }
+            else if (type == "litter")
+            {
+                return createEntityType<Litter, ScEntity>(initializer);
+            }
+            else
+            {
+                duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
+            }
+        }
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScMap::size_get, nullptr, "size");
@@ -173,6 +248,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScMap::getTile, "getTile");
             dukglue_register_method(ctx, &ScMap::getEntity, "getEntity");
             dukglue_register_method(ctx, &ScMap::getAllEntities, "getAllEntities");
+            dukglue_register_method(ctx, &ScMap::createEntity, "createEntity");
         }
 
     private:

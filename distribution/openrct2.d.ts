@@ -577,6 +577,7 @@ declare global {
         getAllEntities(type: "peep"): Peep[];
         getAllEntities(type: "guest"): Guest[];
         getAllEntities(type: "staff"): Staff[];
+        createEntity(type: EntityType, initializer: object): Entity;
     }
 
     type TileElementType =
