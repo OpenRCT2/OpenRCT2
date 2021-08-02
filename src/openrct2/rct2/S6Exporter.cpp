@@ -609,7 +609,7 @@ void S6Exporter::ExportRides()
     const Ride nullRide{};
     for (int32_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
     {
-        const auto* src = get_ride(index);
+        const auto* src = get_ride(static_cast<ride_id_t>(index));
         if (src == nullptr)
         {
             src = &nullRide;
@@ -931,9 +931,9 @@ void S6Exporter::ExportRideMeasurements()
 {
     // Get all the ride measurements
     std::vector<Ride*> ridesWithMeasurements;
-    for (ride_id_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
+    for (size_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {
-        auto ride = get_ride(i);
+        auto ride = get_ride(static_cast<ride_id_t>(i));
         if (ride != nullptr && ride->measurement != nullptr)
         {
             ridesWithMeasurements.push_back(ride);
@@ -958,8 +958,8 @@ void S6Exporter::ExportRideMeasurements()
         ExportRideMeasurement(_s6.ride_measurements[i], *src->measurement.get());
 
         auto rideId = src->id;
-        dst.ride_index = rideId;
-        _s6.rides[rideId].measurement_index = i;
+        dst.ride_index = static_cast<uint8_t>(rideId);
+        _s6.rides[static_cast<uint8_t>(rideId)].measurement_index = i;
         i++;
     }
 }
@@ -1224,7 +1224,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpriteVehicle* dst, const Vehicle* 
     dst->remaining_distance = src->remaining_distance;
     dst->velocity = src->velocity;
     dst->acceleration = src->acceleration;
-    dst->ride = src->ride;
+    dst->ride = static_cast<uint8_t>(src->ride);
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
@@ -1840,7 +1840,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, const TileElement* src
             // Skipping IsHighlighted()
 
             // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-            auto ride = get_ride(dst2->GetRideIndex());
+            auto ride = get_ride(static_cast<ride_id_t>(dst2->GetRideIndex()));
             if (ride)
             {
                 if (ride->type == RIDE_TYPE_MAZE)
