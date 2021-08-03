@@ -175,6 +175,7 @@ The following people are not part of the development team, but have been contrib
 * Struan Clark (xtruan)
 * Kane Shaw (seifer7)
 * Saad Rehman (SaadRehmanCS)
+* (ocalhoun6)
 
 ## Toolchain
 * (Balletie) - macOS
