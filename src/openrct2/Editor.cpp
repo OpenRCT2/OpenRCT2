@@ -140,6 +140,7 @@ namespace Editor
 
         // reset whether the scenario has been won, to make sure it hasn't:
         gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+        gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gS6Info.editor_step = EditorStep::ObjectiveSelection;
