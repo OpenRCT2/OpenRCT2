@@ -515,13 +515,13 @@ declare global {
         readonly isClientOnly: boolean;
         result: boolean;
     }
-	
-	type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
-	
-	interface VehicleCrashArgs {
-		readonly id: number;
-		readonly crashIntoType: VehicleCrashIntoType;
-	}
+    
+    type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
+    
+    interface VehicleCrashArgs {
+        readonly id: number;
+        readonly crashIntoType: VehicleCrashIntoType;
+    }
 
     /**
      * APIs for the in-game date.
@@ -570,7 +570,12 @@ declare global {
         getTile(x: number, y: number): Tile;
         getEntity(id: number): Entity;
         getAllEntities(type: EntityType): Entity[];
+        /**
+         * @deprecated since version 34, use guest or staff instead.
+         */
         getAllEntities(type: "peep"): Peep[];
+        getAllEntities(type: "guest"): Guest[];
+        getAllEntities(type: "staff"): Staff[];
     }
 
     type TileElementType =
@@ -1064,7 +1069,12 @@ declare global {
         "jumping_fountain_water" |
         "litter" |
         "money_effect" |
+        /**
+         * @deprecated since version 34, use guest or staff instead.
+         */
         "peep" |
+        "guest" |
+        "staff" |
         "steam_particle";
 
     /**
@@ -1076,7 +1086,7 @@ declare global {
          */
         readonly id: number;
         /**
-         * The type of entity, e.g. car, duck, litter, or peep.
+         * The type of entity, e.g. guest, vehicle, etc.
          */
         readonly type: EntityType;
         /**
@@ -1214,7 +1224,7 @@ declare global {
         readonly remainingDistance: number;
 
         /**
-         * List of peep IDs ordered by seat.
+         * List of guest IDs ordered by seat.
          */
         peeps: Array<number | null>;
 
@@ -1261,6 +1271,7 @@ declare global {
 
     /**
      * Represents a guest or staff member.
+     * @deprecated since version 34, use guest or staff instead.
      */
     interface Peep extends Entity {
         /**
@@ -1329,6 +1340,9 @@ declare global {
         "iceCream" |
         "hereWeAre";
 
+    /**
+     * @deprecated since version 34, use EntityType instead.
+     */
     type PeepType = "guest" | "staff";
 
     /**
