@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Name;
         ImageId Image;
         std::string Text;
-        TextAlignment TextAlign;
+        TextAlignment TextAlign{};
         colour_t Colour{};
         std::string Tooltip;
         std::vector<std::string> Items;
