@@ -42,6 +42,7 @@ namespace OpenRCT2::Scripting
         std::vector<std::string> Authors;
         PluginType Type{};
         int32_t MinApiVersion{};
+        std::optional<int32_t> TargetApiVersion{};
         DukValue Main;
     };
 
@@ -79,6 +80,8 @@ namespace OpenRCT2::Scripting
         {
             return _hasStarted;
         }
+
+        int32_t GetTargetAPIVersion() const;
 
         Plugin() = default;
         Plugin(duk_context* context, const std::string& path);

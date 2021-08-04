@@ -135,6 +135,7 @@ declare global {
         type: PluginType;
         licence: string;
         minApiVersion?: number;
+        targetApiVersion?: number;
         main: () => void;
     }
 

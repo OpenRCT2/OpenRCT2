@@ -15,6 +15,7 @@
 #    include "../OpenRCT2.h"
 #    include "../core/File.h"
 #    include "Duktape.hpp"
+#    include "ScriptEngine.h"
 
 #    include <algorithm>
 #    include <fstream>
@@ -120,12 +121,19 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
         metadata.Name = TryGetString(dukMetadata["name"], "Plugin name not specified.");
         metadata.Version = TryGetString(dukMetadata["version"], "Plugin version not specified.");
         metadata.Type = ParsePluginType(TryGetString(dukMetadata["type"], "Plugin type not specified."));
+
         CheckForLicence(dukMetadata["licence"], metadata.Name);
 
         auto dukMinApiVersion = dukMetadata["minApiVersion"];
         if (dukMinApiVersion.type() == DukValue::Type::NUMBER)
         {
             metadata.MinApiVersion = dukMinApiVersion.as_int();
+        }
+
+        auto dukTargetApiVersion = dukMetadata["targetApiVersion"];
+        if (dukTargetApiVersion.type() == DukValue::Type::NUMBER)
+        {
+            metadata.TargetApiVersion = dukTargetApiVersion.as_int();
         }
 
         auto dukAuthors = dukMetadata["authors"];
@@ -159,6 +167,15 @@ void Plugin::CheckForLicence(const DukValue& dukLicence, std::string_view plugin
 {
     if (dukLicence.type() != DukValue::Type::STRING || dukLicence.as_string().empty())
         log_error("Plugin %s does not specify a licence", std::string(pluginName).c_str());
+}
+
+int32_t Plugin::GetTargetAPIVersion() const
+{
+    if (_metadata.TargetApiVersion)
+        return *_metadata.TargetApiVersion;
+
+    // If not specified, default to 33 since that is the API version from before 'targetAPIVersion' was introduced.
+    return 33;
 }
 
 #endif

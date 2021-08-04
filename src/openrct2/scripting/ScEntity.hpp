@@ -48,6 +48,8 @@ namespace OpenRCT2::Scripting
 
         std::string type_get() const
         {
+            const auto targetApiVersion = GetTargetAPIVersion();
+
             auto entity = GetEntity();
             if (entity != nullptr)
             {
@@ -56,9 +58,15 @@ namespace OpenRCT2::Scripting
                     case EntityType::Vehicle:
                         return "car";
                     case EntityType::Guest:
-                        return "guest";
+                        if (targetApiVersion <= 33)
+                            return "peep";
+                        else
+                            return "guest";
                     case EntityType::Staff:
-                        return "staff";
+                        if (targetApiVersion <= 33)
+                            return "peep";
+                        else
+                            return "staff";
                     case EntityType::SteamParticle:
                         return "steam_particle";
                     case EntityType::MoneyEffect:

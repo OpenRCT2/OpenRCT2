@@ -264,6 +264,8 @@ namespace OpenRCT2::Scripting
 
     bool IsGameStateMutable();
     void ThrowIfGameStateNotMutable();
+    int32_t GetTargetAPIVersion();
+
     std::string Stringify(const DukValue& value);
 
 } // namespace OpenRCT2::Scripting
