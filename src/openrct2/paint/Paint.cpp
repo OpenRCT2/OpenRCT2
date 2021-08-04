@@ -727,6 +727,46 @@ static uint32_t PaintPSColourifyImage(
                 break;
         }
     }
+    if (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES)
+    {
+        if (spriteType == ViewportInteractionItem::Ride)
+        {
+            imageId = 0x7FFFF;
+        }
+        else if (spriteType == ViewportInteractionItem::Entity)
+        {
+            if (entityType != nullptr && *entityType == EntityType::Vehicle)
+            {
+                imageId = 0x7FFFF;
+            }
+        }
+    }
+    if (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS)
+    {
+        switch (spriteType)
+        {
+            case ViewportInteractionItem::Footpath:
+            case ViewportInteractionItem::FootpathItem:
+            case ViewportInteractionItem::Banner:
+                imageId = 0x7FFFF;
+                break;
+            default:
+                break;
+        }
+    }
+    if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY)
+    {
+        switch (spriteType)
+        {
+            case ViewportInteractionItem::Scenery:
+            case ViewportInteractionItem::LargeScenery:
+            case ViewportInteractionItem::Wall:
+                imageId = 0x7FFFF;
+                break;
+            default:
+                break;
+        }
+    }
     return imageId;
 }
 

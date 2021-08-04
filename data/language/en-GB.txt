@@ -3657,6 +3657,9 @@ STR_6456    :Giant Screenshot
 STR_6457    :Report a bug on GitHub
 STR_6458    :Follow this on Main View
 STR_6459    :See-Through Vehicles
+STR_6460    :Invisible Rides
+STR_6461    :Invisible Scenery
+STR_6462    :Invisible Paths
 
 #############
 # Scenarios #

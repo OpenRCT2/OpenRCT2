@@ -3913,6 +3913,9 @@ enum
 
     STR_FOLLOW_SUBJECT_TIP = 6458,
     STR_SEE_THROUGH_VEHICLES = 6459,
+    STR_INVISIBLE_RIDES = 6460,
+    STR_INVISIBLE_SCENERY = 6461,
+    STR_INVISIBLE_PATHS = 6462,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
