@@ -56,8 +56,9 @@ namespace OpenRCT2::Scripting
                     case EntityType::Vehicle:
                         return "car";
                     case EntityType::Guest:
+                        return "guest";
                     case EntityType::Staff:
-                        return "peep";
+                        return "staff";
                     case EntityType::SteamParticle:
                         return "steam_particle";
                     case EntityType::MoneyEffect:
