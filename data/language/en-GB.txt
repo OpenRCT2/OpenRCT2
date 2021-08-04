@@ -3660,6 +3660,9 @@ STR_6468    :Not Yet Known
 STR_6469    :Adjust smaller area of patrol area
 STR_6470    :Adjust larger area of patrol area
 STR_6471    :See-Through Vehicles
+STR_6472    :Invisible Rides
+STR_6473    :Invisible Scenery
+STR_6474    :Invisible Paths
 
 #############
 # Scenarios #
