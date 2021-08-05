@@ -1226,8 +1226,14 @@ declare global {
 
         /**
          * List of guest IDs ordered by seat.
+         * @deprecated since version 34, use guests instead.
          */
         peeps: Array<number | null>;
+
+        /**
+         * List of guest IDs ordered by seat.
+         */
+        guests: Array<number | null>;
 
         /**
          * Moves the vehicle forward or backwards along the track, relative to its current

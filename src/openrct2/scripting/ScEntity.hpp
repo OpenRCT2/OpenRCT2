@@ -276,7 +276,8 @@ namespace OpenRCT2::Scripting
                 ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
             dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
             dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
-            dukglue_register_property(ctx, &ScVehicle::peeps_get, nullptr, "peeps");
+            dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "peeps");
+            dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
             dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
             dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
         }
@@ -609,7 +610,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::vector<DukValue> peeps_get() const
+        std::vector<DukValue> guests_get() const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             std::vector<DukValue> result;
