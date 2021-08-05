@@ -41,6 +41,7 @@ registerPlugin({
     authors: ['Your Name'],
     type: 'remote',
     licence: 'MIT',
+    targetApiVersion: 34,
     main: main
 });
 ```
@@ -48,6 +49,12 @@ registerPlugin({
 This will log a message to the terminal screen (`stdout`) when you open any park. If you are on Windows, make sure to run `openrct2.com` instead of `openrct2.exe` so you can interact with the `stdin` / `stdout` console. The console is a JavaScript interpreter (REPL), this means you can write and test expressions similar to the console found in web browsers when you press `F12`. When you make changes to your script, you must exit your current game and open it again for the script to reload... unless you use the hot reload feature.
 
 The hot reload feature can be enabled by editing your `config.ini` file and setting `enable_hot_reloading` to `true` under `[plugin]`. When this is enabled, the game will auto-reload the script in real-time whenever you save your JavaScript file. This allows rapid development of plug-ins as you can write code and quickly preview your changes, such as closing and opening a specific custom window on startup. A demonstration of this can be found on YouTube: [OpenRCT2 plugin hot-reload demo](https://www.youtube.com/watch?v=jmjWzEhmDjk)
+
+## Breaking changes
+As of version 34 there are breaking Api changes.
+
+> Version 34
+```Entity.type will now return "guest" or "staff" instead of "peep"```
 
 ## Frequently Asked Questions
 
@@ -72,6 +79,12 @@ Yes, but the performance would be so dire that it would be a waste of their time
 Scripts can consist of any behaviour and have a large memory pool available to them. The speed will vary depending on the hardware and system executing them. The scripts are interpreted, so do not expect anywhere close to the performance of native code. In most scenarios this should be satisfactory, but a random map generator, or genetic algorithm for building roller coasters might struggle. Like any language, there will be tricks to optimising JavaScript and the use of the OpenRCT2 APIs.
 
 The APIs for OpenRCT2 try to mimic the internal data structures as close as possible but we can only add so many at a time. The best way to grow the plug-in system is to add APIs on-demand. So if you find an API is missing, please raise an issue for it on GitHub and also feel free to submit a pull request afterwards.
+
+> What is ```targetApiVersion```
+
+In case there are breaking Api changes plugins can use this to keep the old Api behavior, as an example in version 34 ```Entity.Type``` would no longer return "peep" for
+guests and staff, instead it would return either "guest" or "staff", so if your plugin expects "peep" you can specify the version 33 to keep the old behavior. See the list
+of breaking changes. If this is not specified it will default to version 33, it is recommended to specify the current api version.
 
 > How do I debug my script?
 
