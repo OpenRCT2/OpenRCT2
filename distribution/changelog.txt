@@ -1,14 +1,14 @@
 0.3.4.1+ (in development)
 ------------------------------------------------------------------------
-- Feature: [#15084] [Plugin] Add "vehicle.crash" hook
+- Feature: [#15084] [Plugin] Add "vehicle.crash" hook.
 - Feature: [#15143] Added a shortcut key for Giant Screenshot.
 - Fix: [#14316] Closing the Track Designs Manager window causes broken state.
 - Fix: [#15096] Crash when placing entrances in the scenario editor near the map corner.
 - Fix: [#15142] ToonTowner's mine roofs were moved into the pirate theme scenery group instead of the mine theme scenery group.
 - Fix: [#15148] Track Designs Manager delete confirmation window doesn't display properly.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
-- Change: [#8601] Revert ToonTower base block fix to re-enable support
-blocking.
+- Change: [#8601] Revert ToonTower base block fix to re-enable support blocking.
+- Change: [#15174] [Plugin] Deprecate the type "peep" and add support to target a specific scripting api version.
 
 0.3.4.1 (2021-07-25)
 ------------------------------------------------------------------------
