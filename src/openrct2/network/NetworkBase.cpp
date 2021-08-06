@@ -2488,6 +2488,12 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
     for (uint32_t i = 0; i < size; i++)
     {
         const char* name = reinterpret_cast<const char*>(packet.Read(8));
+        if (name == nullptr)
+        {
+            log_error("Client sent malformed object request data %s", connection.Socket->GetHostName());
+            return;
+        }
+
         // This is required, as packet does not have null terminator
         std::string s(name, name + 8);
         log_verbose("Client requested object %s", s.c_str());

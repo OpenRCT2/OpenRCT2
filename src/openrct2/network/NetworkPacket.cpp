@@ -73,13 +73,13 @@ void NetworkPacket::WriteString(const utf8* string)
 
 const uint8_t* NetworkPacket::Read(size_t size)
 {
-    if (BytesRead + size > Header.Size)
+    if (BytesRead + size > Data.size())
     {
         return nullptr;
     }
     else
     {
-        uint8_t* data = &GetData()[BytesRead];
+        const uint8_t* data = Data.data() + BytesRead;
         BytesRead += size;
         return data;
     }
@@ -87,18 +87,24 @@ const uint8_t* NetworkPacket::Read(size_t size)
 
 const utf8* NetworkPacket::ReadString()
 {
-    char* str = reinterpret_cast<char*>(&GetData()[BytesRead]);
-    char* strend = str;
-    while (BytesRead < Header.Size && *strend != 0)
+    if (BytesRead >= Data.size())
+        return nullptr;
+
+    const char* str = reinterpret_cast<const char*>(Data.data() + BytesRead);
+
+    size_t stringLen = 0;
+    while (BytesRead < Data.size() && str[stringLen] != '\0')
     {
         BytesRead++;
-        strend++;
+        stringLen++;
     }
-    if (*strend != 0)
-    {
+
+    if (str[stringLen] != '\0')
         return nullptr;
-    }
+
+    // Skip null terminator.
     BytesRead++;
+
     return str;
 }
 

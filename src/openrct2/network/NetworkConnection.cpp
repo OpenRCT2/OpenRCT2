@@ -61,13 +61,14 @@ NetworkReadPacket NetworkConnection::ReadPacket()
 
         // NOTE: For compatibility reasons for the master server we need to remove sizeof(Header.Id) from the size.
         // Previously the Id field was not part of the header rather part of the body.
-        header.Size -= sizeof(header.Id);
+        header.Size -= std::min<uint16_t>(header.Size, sizeof(header.Id));
 
         // Fall-through: Read rest of packet.
     }
 
     // Read packet body.
     {
+        // NOTE: BytesTransfered includes the header length, this will not underflow.
         const size_t missingLength = header.Size - (InboundPacket.BytesTransferred - sizeof(header));
 
         uint8_t buffer[NetworkBufferSize];
