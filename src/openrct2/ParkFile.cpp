@@ -54,12 +54,19 @@
 #include <cstdint>
 #include <ctime>
 #include <numeric>
+#include <optional>
 #include <string_view>
 #include <vector>
 
 using namespace OpenRCT2;
 
 static std::string_view MapToNewObjectIdentifier(std::string_view s);
+static std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
+static const FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
+static void UpdateFootpathsFromMapping(
+    ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
+    ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
+    const FootpathMapping* footpathMapping);
 
 namespace OpenRCT2
 {
@@ -106,6 +113,9 @@ namespace OpenRCT2
 
     private:
         std::unique_ptr<OrcaStream> _os;
+        ObjectEntryIndex _pathToSurfaceMap[MAX_PATH_OBJECTS];
+        ObjectEntryIndex _pathToQueueSurfaceMap[MAX_PATH_OBJECTS];
+        ObjectEntryIndex _pathToRailingsMap[MAX_PATH_OBJECTS];
 
     public:
         void Load(const std::string_view& path)
@@ -230,44 +240,86 @@ namespace OpenRCT2
 
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
-                ObjectList requiredObjects;
-                os.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&requiredObjects](OrcaStream::ChunkStream& cs) {
-                    auto numSubLists = cs.Read<uint16_t>();
-                    for (size_t i = 0; i < numSubLists; i++)
-                    {
-                        auto objectType = static_cast<ObjectType>(cs.Read<uint16_t>());
-                        auto subListSize = static_cast<ObjectEntryIndex>(cs.Read<uint32_t>());
-                        for (ObjectEntryIndex j = 0; j < subListSize; j++)
-                        {
-                            auto kind = cs.Read<uint8_t>();
+                std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
+                std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
+                std::fill(std::begin(_pathToRailingsMap), std::end(_pathToRailingsMap), OBJECT_ENTRY_INDEX_NULL);
+                auto* pathToSurfaceMap = _pathToSurfaceMap;
+                auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
+                auto* pathToRailingsMap = _pathToRailingsMap;
+                const auto version = os.GetHeader().TargetVersion;
+                log_error("version %d", version);
 
-                            switch (kind)
+                ObjectList requiredObjects;
+                os.ReadWriteChunk(
+                    ParkFileChunkType::OBJECTS,
+                    [&requiredObjects, pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap,
+                     version](OrcaStream::ChunkStream& cs) {
+                        ObjectEntryIndex surfaceCount = 0;
+                        ObjectEntryIndex railingsCount = 0;
+                        auto numSubLists = cs.Read<uint16_t>();
+                        for (size_t i = 0; i < numSubLists; i++)
+                        {
+                            auto objectType = static_cast<ObjectType>(cs.Read<uint16_t>());
+                            auto subListSize = static_cast<ObjectEntryIndex>(cs.Read<uint32_t>());
+                            for (ObjectEntryIndex j = 0; j < subListSize; j++)
                             {
-                                case DESCRIPTOR_NONE:
-                                    break;
-                                case DESCRIPTOR_DAT:
+                                auto kind = cs.Read<uint8_t>();
+
+                                switch (kind)
                                 {
-                                    rct_object_entry datEntry;
-                                    cs.Read(&datEntry, sizeof(datEntry));
-                                    ObjectEntryDescriptor desc(datEntry);
-                                    requiredObjects.SetObject(j, desc);
-                                    break;
+                                    case DESCRIPTOR_NONE:
+                                        break;
+                                    case DESCRIPTOR_DAT:
+                                    {
+                                        rct_object_entry datEntry;
+                                        cs.Read(&datEntry, sizeof(datEntry));
+                                        ObjectEntryDescriptor desc(datEntry);
+                                        if (version <= 2 && datEntry.GetType() == ObjectType::Paths)
+                                        {
+                                            auto footpathMapping = GetFootpathMapping(desc);
+                                            if (footpathMapping != nullptr)
+                                            {
+                                                UpdateFootpathsFromMapping(
+                                                    pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, requiredObjects,
+                                                    surfaceCount, railingsCount, j, footpathMapping);
+
+                                                continue;
+                                            }
+                                        }
+
+                                        requiredObjects.SetObject(j, desc);
+                                        break;
+                                    }
+                                    case DESCRIPTOR_JSON:
+                                    {
+                                        ObjectEntryDescriptor desc;
+                                        desc.Type = objectType;
+                                        desc.Identifier = MapToNewObjectIdentifier(cs.Read<std::string>());
+                                        desc.Version = cs.Read<std::string>();
+
+                                        if (version <= 2)
+                                        {
+                                            auto footpathMapping = GetFootpathMapping(desc);
+                                            if (footpathMapping != nullptr)
+                                            {
+                                                // We have surface objects for this footpath
+                                                UpdateFootpathsFromMapping(
+                                                    pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, requiredObjects,
+                                                    surfaceCount, railingsCount, j, footpathMapping);
+
+                                                continue;
+                                            }
+                                        }
+
+                                        requiredObjects.SetObject(j, desc);
+                                        break;
+                                    }
+                                    default:
+                                        throw std::runtime_error("Unknown object descriptor kind.");
                                 }
-                                case DESCRIPTOR_JSON:
-                                {
-                                    ObjectEntryDescriptor desc;
-                                    desc.Type = objectType;
-                                    desc.Identifier = MapToNewObjectIdentifier(cs.Read<std::string>());
-                                    desc.Version = cs.Read<std::string>();
-                                    requiredObjects.SetObject(j, desc);
-                                    break;
-                                }
-                                default:
-                                    throw std::runtime_error("Unknown object descriptor kind.");
                             }
                         }
-                    }
-                });
+                    });
                 RequiredObjects = std::move(requiredObjects);
             }
             else
@@ -814,29 +866,59 @@ namespace OpenRCT2
 
         void ReadWriteTilesChunk(OrcaStream& os)
         {
-            auto found = os.ReadWriteChunk(ParkFileChunkType::TILES, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gMapSize); // x
-                cs.Write(gMapSize);     // y
+            auto* pathToSurfaceMap = _pathToSurfaceMap;
+            auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
+            auto* pathToRailingsMap = _pathToRailingsMap;
 
-                if (cs.GetMode() == OrcaStream::Mode::READING)
-                {
-                    OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize);
+            auto found = os.ReadWriteChunk(
+                ParkFileChunkType::TILES,
+                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap](OrcaStream::ChunkStream& cs) {
+                    cs.ReadWrite(gMapSize); // x
+                    cs.Write(gMapSize);     // y
 
-                    auto numElements = cs.Read<uint32_t>();
+                    if (cs.GetMode() == OrcaStream::Mode::READING)
+                    {
+                        OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize);
 
-                    std::vector<TileElement> tileElements;
-                    tileElements.resize(numElements);
-                    cs.Read(tileElements.data(), tileElements.size() * sizeof(TileElement));
-                    SetTileElements(std::move(tileElements));
-                    UpdateParkEntranceLocations();
-                }
-                else
-                {
-                    auto tileElements = GetReorganisedTileElementsWithoutGhosts();
-                    cs.Write(static_cast<uint32_t>(tileElements.size()));
-                    cs.Write(tileElements.data(), tileElements.size() * sizeof(TileElement));
-                }
-            });
+                        auto numElements = cs.Read<uint32_t>();
+
+                        std::vector<TileElement> tileElements;
+                        tileElements.resize(numElements);
+                        cs.Read(tileElements.data(), tileElements.size() * sizeof(TileElement));
+                        SetTileElements(std::move(tileElements));
+                        {
+                            tile_element_iterator it;
+                            tile_element_iterator_begin(&it);
+                            while (tile_element_iterator_next(&it))
+                            {
+                                if (it.element->GetType() == TILE_ELEMENT_TYPE_PATH)
+                                {
+                                    auto* pathElement = it.element->AsPath();
+                                    if (pathElement->HasLegacyPathEntry())
+                                    {
+                                        auto pathEntryIndex = pathElement->GetPathEntryIndex();
+                                        if (pathToRailingsMap[pathEntryIndex] != OBJECT_ENTRY_INDEX_NULL)
+                                        {
+                                            if (pathElement->IsQueue())
+                                                pathElement->SetSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
+                                            else
+                                                pathElement->SetSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
+
+                                            pathElement->SetRailingEntryIndex(pathToRailingsMap[pathEntryIndex]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        UpdateParkEntranceLocations();
+                    }
+                    else
+                    {
+                        auto tileElements = GetReorganisedTileElementsWithoutGhosts();
+                        cs.Write(static_cast<uint32_t>(tileElements.size()));
+                        cs.Write(tileElements.data(), tileElements.size() * sizeof(TileElement));
+                    }
+                });
             if (!found)
             {
                 throw std::runtime_error("No tiles chunk found.");
@@ -4304,4 +4386,87 @@ static std::string_view MapToNewObjectIdentifier(std::string_view s)
         return it->second;
     }
     return s;
+}
+
+static std::map<std::string_view, std::string_view> DATPathNames = {
+    { "rct2.pathash", "PATHASH " },  { "rct2.pathcrzy", "PATHCRZY" }, { "rct2.pathdirt", "PATHDIRT" },
+    { "rct2.pathspce", "PATHSPCE" }, { "rct2.road", "ROAD    " },     { "rct2.tarmacb", "TARMACB " },
+    { "rct2.tarmacg", "TARMACG " },  { "rct2.tarmac", "TARMAC  " },   { "rct2.1920path", "1920PATH" },
+    { "rct2.futrpath", "FUTRPATH" }, { "rct2.futrpat2", "FUTRPAT2" }, { "rct2.jurrpath", "JURRPATH" },
+    { "rct2.medipath", "MEDIPATH" }, { "rct2.mythpath", "MYTHPATH" }, { "rct2.ranbpath", "RANBPATH" },
+};
+
+static std::optional<std::string_view> GetDATPathName(std::string_view newPathName)
+{
+    auto it = DATPathNames.find(newPathName);
+    if (it != DATPathNames.end())
+    {
+        return it->second;
+    }
+    return std::nullopt;
+}
+
+static FootpathMapping _extendedFootpathMappings[] = {
+    { "rct1.path.tarmac", "rct1.footpath_surface.tarmac", "rct1.footpath_surface.queue_blue", "rct2.footpath_railings.wood" },
+};
+
+static const FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc)
+{
+    for (const auto& mapping : _extendedFootpathMappings)
+    {
+        if (mapping.Original == desc.GetName())
+        {
+            return &mapping;
+        }
+    }
+
+    // GetFootpathSurfaceId expects an old-style DAT identifier. In early versions of the NSF,
+    // we used JSON ids for legacy paths, so we have to map those to old DAT identifiers first.
+    if (desc.Generation == ObjectGeneration::JSON)
+    {
+        auto datPathName = GetDATPathName(desc.Identifier);
+        if (datPathName.has_value())
+        {
+            rct_object_entry objectEntry = {};
+            objectEntry.SetName(datPathName.value());
+            return GetFootpathSurfaceId(ObjectEntryDescriptor(objectEntry));
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
+
+    // Even old .park saves with DAT identifiers somehow exist.
+    return GetFootpathSurfaceId(desc);
+}
+
+static void UpdateFootpathsFromMapping(
+    ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
+    ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
+    const FootpathMapping* footpathMapping)
+{
+    auto surfaceIndex = requiredObjects.Find(ObjectType::FootpathSurface, footpathMapping->NormalSurface);
+    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    {
+        requiredObjects.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->NormalSurface);
+        surfaceIndex = surfaceCount++;
+    }
+    pathToSurfaceMap[entryIndex] = surfaceIndex;
+
+    surfaceIndex = requiredObjects.Find(ObjectType::FootpathSurface, footpathMapping->QueueSurface);
+    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    {
+        requiredObjects.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->QueueSurface);
+        surfaceIndex = surfaceCount++;
+    }
+    pathToQueueSurfaceMap[entryIndex] = surfaceIndex;
+
+    auto railingIndex = requiredObjects.Find(ObjectType::FootpathRailings, footpathMapping->Railing);
+    if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
+    {
+        requiredObjects.SetObject(ObjectType::FootpathRailings, railingCount, footpathMapping->Railing);
+        railingIndex = railingCount++;
+    }
+    pathToRailingsMap[entryIndex] = railingIndex;
 }

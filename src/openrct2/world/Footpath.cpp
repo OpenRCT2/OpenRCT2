@@ -1666,6 +1666,11 @@ void PathElement::SetPathEntryIndex(ObjectEntryIndex newIndex)
     Flags2 |= FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
+bool PathElement::HasLegacyPathEntry() const
+{
+    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
+}
+
 ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 {
     if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
