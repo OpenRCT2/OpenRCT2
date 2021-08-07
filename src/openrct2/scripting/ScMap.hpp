@@ -230,7 +230,7 @@ namespace OpenRCT2::Scripting
             }
             else if (type == "litter")
             {
-                return createEntityType<Litter, ScEntity>(initializer);
+                return createEntityType<Litter, ScLitter>(initializer);
             }
             else
             {
@@ -263,6 +263,8 @@ namespace OpenRCT2::Scripting
                     return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
                 case EntityType::Guest:
                     return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));
+                case EntityType::Litter:
+                    return GetObjectAsDukValue(_context, std::make_shared<ScLitter>(spriteId));
                 default:
                     return GetObjectAsDukValue(_context, std::make_shared<ScEntity>(spriteId));
             }
