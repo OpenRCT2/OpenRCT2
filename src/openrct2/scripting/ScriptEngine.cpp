@@ -1419,4 +1419,11 @@ void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
     }
 }
 
+int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
+{
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& execInfo = scriptEngine.GetExecInfo();
+    return execInfo.GetCurrentPlugin()->GetTargetAPIVersion();
+}
+
 #endif

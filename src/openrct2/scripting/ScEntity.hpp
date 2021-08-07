@@ -48,6 +48,8 @@ namespace OpenRCT2::Scripting
 
         std::string type_get() const
         {
+            const auto targetApiVersion = GetTargetAPIVersion();
+
             auto entity = GetEntity();
             if (entity != nullptr)
             {
@@ -56,8 +58,15 @@ namespace OpenRCT2::Scripting
                     case EntityType::Vehicle:
                         return "car";
                     case EntityType::Guest:
+                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
+                            return "peep";
+                        else
+                            return "guest";
                     case EntityType::Staff:
-                        return "peep";
+                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
+                            return "peep";
+                        else
+                            return "staff";
                     case EntityType::SteamParticle:
                         return "steam_particle";
                     case EntityType::MoneyEffect:
@@ -267,7 +276,8 @@ namespace OpenRCT2::Scripting
                 ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
             dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
             dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
-            dukglue_register_property(ctx, &ScVehicle::peeps_get, nullptr, "peeps");
+            dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "peeps");
+            dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
             dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
             dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
         }
@@ -600,7 +610,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::vector<DukValue> peeps_get() const
+        std::vector<DukValue> guests_get() const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             std::vector<DukValue> result;

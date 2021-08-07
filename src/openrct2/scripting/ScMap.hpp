@@ -147,6 +147,20 @@ namespace OpenRCT2::Scripting
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
                 }
             }
+            else if (type == "guest")
+            {
+                for (auto sprite : EntityList<Guest>())
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+                }
+            }
+            else if (type == "staff")
+            {
+                for (auto sprite : EntityList<Staff>())
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+                }
+            }
             else
             {
                 duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
