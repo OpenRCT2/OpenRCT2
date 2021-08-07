@@ -727,20 +727,6 @@ static uint32_t PaintPSColourifyImage(
                 break;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES)
-    {
-        if (spriteType == ViewportInteractionItem::Ride)
-        {
-            imageId = 0x7FFFF;
-        }
-        else if (spriteType == ViewportInteractionItem::Entity)
-        {
-            if (entityType != nullptr && *entityType == EntityType::Vehicle)
-            {
-                imageId = 0x7FFFF;
-            }
-        }
-    }
     if (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS)
     {
         switch (spriteType)

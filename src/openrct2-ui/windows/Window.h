@@ -74,6 +74,7 @@ rct_window* window_title_options_open();
 rct_window* window_viewport_open();
 rct_window* window_water_open();
 rct_window* window_view_clipping_open();
+rct_window* window_transparency_open();
 
 // WC_FINANCES
 rct_window* window_finances_open();
