@@ -470,6 +470,15 @@ public:
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         park.Name = GetUserString(_s6.park_name);
 
+        FixLandOwnership();
+
+        research_determine_first_of_type();
+
+        CheatsReset();
+        ClearRestrictedScenery();
+    }
+    void FixLandOwnership() const
+    {
         if (String::Equals(_s6.scenario_filename, "Europe - European Cultural Festival.SC6"))
         {
             // This scenario breaks pathfinding. Create passages between the worlds. (List is grouped by neighbouring tiles.)
@@ -484,11 +493,33 @@ public:
                 OWNERSHIP_OWNED);
             // clang-format on
         }
-
-        research_determine_first_of_type();
-
-        CheatsReset();
-        ClearRestrictedScenery();
+        else if (String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6"))
+        {
+            FixLandOwnershipTilesWithOwnership(
+                {
+                    { 132, 124 },
+                    { 133, 124 },
+                    { 133, 125 },
+                    { 133, 126 },
+                    { 119, 35 },
+                    { 132, 62 },
+                    { 133, 67 },
+                    { 136, 71 },
+                    { 87, 33 },
+                    { 87, 34 },
+                    { 90, 36 },
+                    { 91, 36 },
+                },
+                OWNERSHIP_OWNED);
+            // We set the doNotDowngrade flag for cases where the player has used a cheat to own all land.
+            FixLandOwnershipTilesWithOwnership(
+                {
+                    { 49, 99 },
+                    { 50, 99 },
+                    { 88, 110 },
+                },
+                OWNERSHIP_AVAILABLE, true);
+        }
     }
 
     void ImportRides()

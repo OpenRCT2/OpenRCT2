@@ -5715,7 +5715,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     stringId = ride->max_negative_vertical_g <= RIDE_G_FORCES_RED_NEG_VERTICAL ? STR_MAX_NEGATIVE_VERTICAL_G_RED
                                                                                                : STR_MAX_NEGATIVE_VERTICAL_G;
                     ft = Formatter();
-                    ft.Add<fixed16_2dp>(ride->max_negative_vertical_g);
+                    ft.Add<int32_t>(ride->max_negative_vertical_g);
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 

@@ -2511,6 +2511,13 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
     auto& repo = GetContext()->GetObjectRepository();
     for (uint32_t i = 0; i < size; i++)
     {
+        const char* name = reinterpret_cast<const char*>(packet.Read(8));
+        if (name == nullptr)
+        {
+            log_error("Client sent malformed object request data %s", connection.Socket->GetHostName());
+            return;
+        }
+
         uint8_t generation{};
         packet >> generation;
 

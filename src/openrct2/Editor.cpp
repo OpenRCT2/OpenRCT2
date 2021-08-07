@@ -140,6 +140,10 @@ namespace Editor
 
         climate_reset(gClimate);
 
+        // Clear the scenario completion status
+        gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+        gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;

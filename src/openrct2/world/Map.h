@@ -311,6 +311,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
 uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos);
 
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
-void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8_t ownership);
+void FixLandOwnershipTilesWithOwnership(
+    std::initializer_list<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade = false);
 
 #endif

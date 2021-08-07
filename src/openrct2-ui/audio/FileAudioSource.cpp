@@ -68,11 +68,11 @@ namespace OpenRCT2::Audio
 
         bool LoadWAV(SDL_RWops* rw)
         {
-            const uint32_t DATA = 0x61746164;
-            const uint32_t FMT = 0x20746D66;
-            const uint32_t RIFF = 0x46464952;
-            const uint32_t WAVE = 0x45564157;
-            const uint16_t pcmformat = 0x0001;
+            constexpr uint32_t DATA = 0x61746164;
+            constexpr uint32_t FMT = 0x20746D66;
+            constexpr uint32_t RIFF = 0x46464952;
+            constexpr uint32_t WAVE = 0x45564157;
+            constexpr uint16_t pcmformat = 0x0001;
 
             Unload();
 
@@ -152,10 +152,10 @@ namespace OpenRCT2::Audio
             {
                 return subchunkSize;
             }
-            const uint32_t FACT = 0x74636166;
-            const uint32_t LIST = 0x5453494c;
-            const uint32_t BEXT = 0x74786562;
-            const uint32_t JUNK = 0x4B4E554A;
+            constexpr uint32_t FACT = 0x74636166;
+            constexpr uint32_t LIST = 0x5453494c;
+            constexpr uint32_t BEXT = 0x74786562;
+            constexpr uint32_t JUNK = 0x4B4E554A;
             while (subchunkId == FACT || subchunkId == LIST || subchunkId == BEXT || subchunkId == JUNK)
             {
                 SDL_RWseek(rw, subchunkSize, RW_SEEK_CUR);

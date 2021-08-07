@@ -40,6 +40,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrainManager.h"
 #include "Vehicle.h"
 
 bool gGotoStartPlacementMode = false;
@@ -173,16 +174,16 @@ static void ride_remove_cable_lift(Ride* ride)
  *
  *  rct2: 0x006DD506
  */
-void ride_remove_vehicles(Ride* ride)
+void Ride::RemoveVehicles()
 {
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
-        ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
+        lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
+        lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
         for (size_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
         {
-            uint16_t spriteIndex = ride->vehicles[i];
+            uint16_t spriteIndex = vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
                 Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
@@ -195,11 +196,21 @@ void ride_remove_vehicles(Ride* ride)
                 sprite_remove(vehicle);
             }
 
-            ride->vehicles[i] = SPRITE_INDEX_NULL;
+            vehicles[i] = SPRITE_INDEX_NULL;
         }
 
         for (size_t i = 0; i < MAX_STATIONS; i++)
-            ride->stations[i].TrainAtStation = RideStation::NO_TRAIN;
+            stations[i].TrainAtStation = RideStation::NO_TRAIN;
+
+        // Also clean up orphaned vehicles for good measure.
+        for (auto* vehicle : TrainManager::View())
+        {
+            if (vehicle->ride == id)
+            {
+                vehicle->Invalidate();
+                sprite_remove(vehicle);
+            }
+        }
     }
 }
 
@@ -223,7 +234,7 @@ void ride_clear_for_construction(Ride* ride)
     }
 
     ride_remove_cable_lift(ride);
-    ride_remove_vehicles(ride);
+    ride->RemoveVehicles();
     ride_clear_blocked_tiles(ride);
 
     auto w = window_find_by_number(WC_RIDE, ride->id);

@@ -3408,9 +3408,9 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
 
     if (!vehicle_create_trains(id, vehiclePos, trackElement))
     {
-        // This flag is needed for ride_remove_vehicles()
+        // This flag is needed for Ride::RemoveVehicles()
         lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
-        ride_remove_vehicles(this);
+        RemoveVehicles();
         gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
         return false;
     }

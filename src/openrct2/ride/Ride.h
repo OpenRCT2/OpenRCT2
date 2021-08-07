@@ -467,6 +467,8 @@ public:
 
     uint8_t GetNumShelteredSections() const;
     void IncreaseNumShelteredSections();
+
+    void RemoveVehicles();
 };
 
 #pragma pack(push, 1)

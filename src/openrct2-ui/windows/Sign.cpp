@@ -156,6 +156,7 @@ public:
                 if (tileElement == nullptr)
                 {
                     Close();
+                    return;
                 }
                 auto bannerCoords = banner->position.ToCoordsXY();
 
