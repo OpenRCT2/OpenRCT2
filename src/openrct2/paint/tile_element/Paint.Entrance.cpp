@@ -124,6 +124,9 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
     {
         return;
     }
+    
+    if ((session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) && ride->is_visible == false)
+        return;
 
     auto stationObj = ride->GetStationObject();
     if (stationObj == nullptr || stationObj->BaseImageId == ImageIndexUndefined)

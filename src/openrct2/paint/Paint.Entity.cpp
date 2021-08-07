@@ -73,8 +73,19 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
             }
         }
 
-        const auto entityPos = spr->GetLocation();
+        if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) && spr->Type == EntityType::Vehicle)
+        {
+            const auto veh = spr->As<Vehicle>();
+            if (veh != nullptr)
+            {
+                auto ride = get_ride(veh->ride);
+                if (ride != nullptr && !ride->is_visible)
+                    return;
+            }
+        }
 
+        const auto entityPos = spr->GetLocation();
+        
         // Only paint sprites that are below the clip height and inside the clip selection.
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base

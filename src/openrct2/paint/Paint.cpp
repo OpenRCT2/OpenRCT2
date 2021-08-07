@@ -722,17 +722,6 @@ static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem sp
                 break;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES)
-    {
-        if (spriteType == ViewportInteractionItem::Ride)
-        {
-            return ImageId();
-        }
-        else if (spriteType == ViewportInteractionItem::Entity && entityType == EntityType::Vehicle)
-        {
-            return ImageId();
-        }
-    }
     if (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS)
     {
         switch (spriteType)

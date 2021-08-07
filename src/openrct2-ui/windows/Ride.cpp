@@ -1374,6 +1374,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
 static void WindowRideSetPage(rct_window* w, int32_t page)
 {
     int32_t listen;
+    auto ride = get_ride(w->number);
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
         if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
@@ -1418,6 +1419,17 @@ static void WindowRideSetPage(rct_window* w, int32_t page)
     window_event_invalidate_call(w);
     WindowInitScrollWidgets(w);
     w->Invalidate();
+
+    if (listen != 0 && w->viewport != nullptr)
+    {
+        ride->is_visible = true;
+        log_info("Set ride to visible. Ride ID %u Window Number %u", ride->id, w->number);
+    }
+    else if (listen == 0 && w->viewport != nullptr)
+    {
+        ride->is_visible = false;
+        log_info("Set ride to invisible. Ride ID %u Window Number %u", ride->id, w->number);
+    }
 
     if (listen != 0 && w->viewport != nullptr)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;

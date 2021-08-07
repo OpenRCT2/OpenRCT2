@@ -287,6 +287,7 @@ public:
     uint16_t inversions;
     uint16_t holes;
     uint8_t sheltered_eighths;
+    bool is_visible = false;
 
     std::unique_ptr<RideMeasurement> measurement;
 

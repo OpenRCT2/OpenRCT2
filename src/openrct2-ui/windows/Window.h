@@ -75,6 +75,7 @@ rct_window* WindowTitleOptionsOpen();
 rct_window* WindowViewportOpen();
 rct_window* WindowWaterOpen();
 rct_window* WindowViewClippingOpen();
+rct_window* WindowTransparencyOpen();
 
 // WC_FINANCES
 rct_window* WindowFinancesOpen();

@@ -133,6 +133,8 @@ public:
                 return WindowViewportOpen();
             case WC_WATER:
                 return WindowWaterOpen();
+            case WC_TRANSPARENCY:
+                return WindowTransparencyOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;

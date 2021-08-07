@@ -137,21 +137,19 @@ enum TopToolbarViewMenuDdidx
     DDIDX_HIDE_VERTICAL = 3,
     // separator
     DDIDX_SEETHROUGH_RIDES = 5,
-    DDIDX_SEETHROUGH_VEHICLES = 6,
-    DDIDX_SEETHROUGH_SCENERY = 7,
-    DDIDX_SEETHROUGH_PATHS = 8,
-    DDIDX_INVISIBLE_RIDES = 9,
-    DDIDX_INVISIBLE_SCENERY = 10,
-    DDIDX_INVISIBLE_PATHS = 11,
-    DDIDX_INVISIBLE_SUPPORTS = 12,
-    DDIDX_INVISIBLE_PEEPS = 13,
+    DDIDX_SEETHROUGH_SCENERY = 6,
+    DDIDX_SEETHROUGH_PATHS = 7,
+    DDIDX_INVISIBLE_SUPPORTS = 8,
+    DDIDX_INVISIBLE_PEEPS = 9,
     // separator
-    DDIDX_LAND_HEIGHTS = 15,
-    DDIDX_TRACK_HEIGHTS = 16,
-    DDIDX_PATH_HEIGHTS = 17,
+    DDIDX_LAND_HEIGHTS = 11,
+    DDIDX_TRACK_HEIGHTS = 12,
+    DDIDX_PATH_HEIGHTS = 13,
     // separator
-    DDIDX_VIEW_CLIPPING = 19,
-    DDIDX_HIGHLIGHT_PATH_ISSUES = 20,
+    DDIDX_VIEW_CLIPPING = 15,
+    DDIDX_HIGHLIGHT_PATH_ISSUES = 16,
+    // separator
+    DDIDX_TRANSPARENCY = 18,
 
     TOP_TOOLBAR_VIEW_MENU_COUNT,
 };
@@ -3628,12 +3626,8 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
         Separator(),
         ToggleOption(DDIDX_SEETHROUGH_RIDES, STR_SEE_THROUGH_RIDES),
-        ToggleOption(DDIDX_SEETHROUGH_VEHICLES, STR_SEE_THROUGH_VEHICLES),
         ToggleOption(DDIDX_SEETHROUGH_SCENERY, STR_SEE_THROUGH_SCENERY),
         ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
-        ToggleOption(DDIDX_INVISIBLE_RIDES, STR_INVISIBLE_RIDES),
-        ToggleOption(DDIDX_INVISIBLE_SCENERY, STR_INVISIBLE_SCENERY),
-        ToggleOption(DDIDX_INVISIBLE_PATHS, STR_INVISIBLE_PATHS),
         ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
         ToggleOption(DDIDX_INVISIBLE_PEEPS, STR_INVISIBLE_PEOPLE),
         Separator(),
@@ -3643,6 +3637,8 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         Separator(),
         ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
         ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
+        Separator(),
+        ToggleOption(DDIDX_TRANSPARENCY, STR_INVISIBLE_PEOPLE),
     };
 
     static_assert(ItemIDsMatchIndices(items));
@@ -3665,18 +3661,10 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         Dropdown::SetChecked(DDIDX_HIDE_VERTICAL, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_RIDES, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
-        Dropdown::SetChecked(DDIDX_SEETHROUGH_VEHICLES, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_SCENERY, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_PATHS, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_RIDES)
-        Dropdown::SetChecked(DDIDX_INVISIBLE_RIDES, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SCENERY)
-        Dropdown::SetChecked(DDIDX_INVISIBLE_SCENERY, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PATHS)
-        Dropdown::SetChecked(DDIDX_INVISIBLE_PATHS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
         Dropdown::SetChecked(DDIDX_INVISIBLE_SUPPORTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
@@ -3726,28 +3714,13 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
                 break;
             case DDIDX_SEETHROUGH_RIDES:
-                if (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-                    w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
-                else
-                    w->viewport->flags |= VIEWPORT_FLAG_SEETHROUGH_RIDES | VIEWPORT_FLAG_SEETHROUGH_VEHICLES;
-                break;
-            case DDIDX_SEETHROUGH_VEHICLES:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_VEHICLES;
+                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
                 break;
             case DDIDX_SEETHROUGH_SCENERY:
                 w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
                 break;
             case DDIDX_SEETHROUGH_PATHS:
                 w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_PATHS;
-                break;
-            case DDIDX_INVISIBLE_RIDES:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_RIDES;
-                break;
-            case DDIDX_INVISIBLE_SCENERY:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SCENERY;
-                break;
-            case DDIDX_INVISIBLE_PATHS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PATHS;
                 break;
             case DDIDX_INVISIBLE_SUPPORTS:
                 w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
@@ -3777,6 +3750,9 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 break;
             case DDIDX_HIGHLIGHT_PATH_ISSUES:
                 w->viewport->flags ^= VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES;
+                break;
+            case DDIDX_TRANSPARENCY:
+                context_open_window(WC_TRANSPARENCY);
                 break;
             default:
                 return;
