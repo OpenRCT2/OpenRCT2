@@ -58,12 +58,12 @@ namespace OpenRCT2::Scripting
                     case EntityType::Vehicle:
                         return "car";
                     case EntityType::Guest:
-                        if (targetApiVersion <= 33)
+                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
                             return "peep";
                         else
                             return "guest";
                     case EntityType::Staff:
-                        if (targetApiVersion <= 33)
+                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
                             return "peep";
                         else
                             return "staff";

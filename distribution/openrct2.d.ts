@@ -1070,13 +1070,13 @@ declare global {
         "jumping_fountain_water" |
         "litter" |
         "money_effect" |
+        "guest" |
+        "staff" |
+        "steam_particle" |
         /**
          * @deprecated since version 34, use guest or staff instead.
          */
-        "peep" |
-        "guest" |
-        "staff" |
-        "steam_particle";
+        "peep";
 
     /**
      * Represents an object "entity" on the map that can typically moves and has a sub-tile coordinate.
