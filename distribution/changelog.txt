@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#15084] [Plugin] Add "vehicle.crash" hook.
 - Feature: [#15143] Added a shortcut key for Giant Screenshot.
+- Feature: [#15165] [Plugin] Add the ability to create entities using "map.createEntity".
 - Fix: [#13465] Creating a scenario based on a won save game results in a scenario that’s instantly won.
 - Fix: [#14316] Closing the Track Designs Manager window causes broken state.
 - Fix: [#14667] “Extreme Hawaiian Island” has unpurchaseable land tiles (original bug).
