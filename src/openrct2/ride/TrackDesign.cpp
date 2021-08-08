@@ -83,7 +83,7 @@ static CoordsXYZ _trackPreviewMin;
 static CoordsXYZ _trackPreviewMax;
 static CoordsXYZ _trackPreviewOrigin;
 
-bool byte_9D8150;
+bool _trackDesignDrawingPreview;
 static uint8_t _trackDesignPlaceOperation;
 static money32 _trackDesignPlaceCost;
 static int16_t _trackDesignPlaceZ;
@@ -1919,7 +1919,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         }
     }
 
-    byte_9D8150 = true;
+    _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
     uint32_t backup_park_flags = gParkFlags;
     gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
@@ -1958,7 +1958,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         }
 
         _currentTrackPieceDirection = backup_rotation;
-        byte_9D8150 = false;
+        _trackDesignDrawingPreview = false;
         *cost = resultCost;
         *outRide = ride;
         return true;
@@ -1967,7 +1967,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     {
         _currentTrackPieceDirection = backup_rotation;
         ride->Delete();
-        byte_9D8150 = false;
+        _trackDesignDrawingPreview = false;
         return false;
     }
 }

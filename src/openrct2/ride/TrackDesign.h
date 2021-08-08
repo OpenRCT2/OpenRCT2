@@ -195,7 +195,7 @@ enum
 extern TrackDesign* gActiveTrackDesign;
 extern bool gTrackDesignSceneryToggle;
 
-extern bool byte_9D8150;
+extern bool _trackDesignDrawingPreview;
 
 extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;

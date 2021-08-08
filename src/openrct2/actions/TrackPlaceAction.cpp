@@ -284,7 +284,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
                 GameActions::Status::Disallowed, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !byte_9D8150)
+        if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !_trackDesignDrawingPreview)
         {
             auto surfaceElement = map_get_surface_element_at(mapLoc);
             if (surfaceElement == nullptr)
@@ -347,7 +347,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
                 }
 
                 ride_height /= COORDS_Z_PER_TINY_Z;
-                if (ride_height > maxHeight && !byte_9D8150)
+                if (ride_height > maxHeight && !_trackDesignDrawingPreview)
                 {
                     return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Disallowed, STR_TOO_HIGH_FOR_SUPPORTS);
                 }
