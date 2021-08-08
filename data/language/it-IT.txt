@@ -2067,15 +2067,15 @@ STR_2976    :Dipingi una determinata area di quest'attrazione secondo il modello
 STR_2977    :Nome del dipendente
 STR_2978    :Digita il nome di questo dipendente:
 STR_2979    :Impossibile battezzare il dipendente…
-STR_2980    :Troppe insegne nella partita
+STR_2980    :Troppi cartelli nella partita
 STR_2981    :{RED}Vietato l'ingresso
-STR_2982    :Testo dell'insegna
-STR_2983    :Digita il testo di questa insegna:
-STR_2984    :Impossibile fissare il testo dell'insegna…
-STR_2985    :Insegna
-STR_2986    :Modifica il testo dell'insegna
-STR_2987    :Imposta quest'insegna come cartello di “Vietato l'ingresso” per i visitatori
-STR_2988    :Demolisci questa insegna
+STR_2982    :Testo del cartello
+STR_2983    :Digita il testo di questo cartello:
+STR_2984    :Impossibile impostare il testo del cartello…
+STR_2985    :Cartello
+STR_2986    :Modifica il testo del cartello
+STR_2987    :Imposta questo cartello come “Vietato l'ingresso” per i visitatori
+STR_2988    :Demolisci questo cartello
 STR_2989    :Scegli il colore principale
 STR_2990    :Scegli il colore del testo
 STR_2991    :Insegna
@@ -2514,7 +2514,7 @@ STR_5204    :Lista attrazioni
 STR_5205    :Visitatore
 STR_5206    :Lista visitatori
 STR_5207    :Personale
-STR_5208    :Lista personale
+STR_5208    :Lista del personale
 STR_5209    :Cartello
 STR_5210    :Selezione oggetti
 STR_5211    :Lista delle invenzioni
@@ -2753,7 +2753,7 @@ STR_5470    :Scorri la mappa a sinistra
 STR_5471    :Scorri la mappa in basso
 STR_5472    :Scorri la mappa a destra
 STR_5473    :Ciclo giorno/notte
-STR_5474    :Mostra testo nei cartelli in maiuscolo
+STR_5474    :Mostra testo in maiuscolo nei cartelli
 STR_5475    :{COMMA16} settimane
 STR_5476    :Hardware
 STR_5477    :Rendering della Mappa
@@ -3601,7 +3601,7 @@ STR_6392    :Impossibile trovare {STRING} in questo percorso.
 STR_6393    :Selezione obiettivo
 STR_6394    :Obiettivo
 STR_6395    :Manutenzione
-STR_6396    :Disattiva screensaver e risparmio energetico dello schermo
+STR_6396    :Disattiva screensaver e autospegnimento schermo
 STR_6397    :Se attivato, le funzionalità di screensaver e di risparmio energetico dello schermo saranno disabilitate mentre OpenRCT2 è in esecuzione.
 STR_6398    :Il file contiene tipi di percorsi non supportati. Aggiornare a una nuova versione di OpenRCT2.
 STR_6399    :OpenRCT2 necessita dei file originali di RollerCoaster Tycoon 2 per funzionare. Impostare la variabile “game_path” nel file config.ini al percorso nel quale è installato RollerCoaster Tycoon 2, dopodiché riavviare OpenRCT2.
@@ -3659,6 +3659,9 @@ STR_6450    :{BLACK}“{STRING}”
 STR_6451    :{BLACK}“{STRING}” - {STRING}
 STR_6452    :{WINDOW_COLOUR_2}Vende: {BLACK}{STRING}
 STR_6453    :Copia info versione
+STR_6454    :Impossibile rinominare il cartello…
+STR_6455    :Impossibile rinominare l’insegna…
+STR_6456    :Screenshot gigante
 
 
 #############
