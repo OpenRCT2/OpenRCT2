@@ -24,6 +24,7 @@
 #    include "../../../world/Particle.h"
 #    include "../../Duktape.hpp"
 #    include "../entity/ScEntity.hpp"
+#    include "../entity/ScVehicle.hpp"
 #    include "../ride/ScRide.hpp"
 #    include "../world/ScTile.hpp"
 

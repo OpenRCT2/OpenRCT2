@@ -772,6 +772,8 @@
 		43D56A4FA1734F25995F4968 /* ScPark.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9AB8D336AB654D0280549A89 /* ScPark.hpp */; };
 		0AFABA9549854247A5C61D52 /* ScScenario.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A9F55F2291284217BA0E4E51 /* ScScenario.hpp */; };
 		F8A3BFA6806D448B86F1FF6A /* ScTile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 22D7DD798F054A068273739B /* ScTile.hpp */; };
+		73FB2E7C254144D9BAE4925A /* ScVehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B734D45D6B1D45E89AD2E6CE /* ScVehicle.cpp */; };
+		D274ADAB9B644AC581EA2299 /* ScVehicle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8E2C4C07B668487DA3493122 /* ScVehicle.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1846,6 +1848,8 @@
 		9AB8D336AB654D0280549A89 /* ScPark.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPark.hpp; path = src/openrct2/scripting/bindings/world/ScPark.hpp; sourceTree = SOURCE_ROOT; };
 		A9F55F2291284217BA0E4E51 /* ScScenario.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScScenario.hpp; path = src/openrct2/scripting/bindings/world/ScScenario.hpp; sourceTree = SOURCE_ROOT; };
 		22D7DD798F054A068273739B /* ScTile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScTile.hpp; path = src/openrct2/scripting/bindings/world/ScTile.hpp; sourceTree = SOURCE_ROOT; };
+		B734D45D6B1D45E89AD2E6CE /* ScVehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScVehicle.cpp; path = src/openrct2/scripting/bindings/entity/ScVehicle.cpp; sourceTree = SOURCE_ROOT; };
+		8E2C4C07B668487DA3493122 /* ScVehicle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScVehicle.hpp; path = src/openrct2/scripting/bindings/entity/ScVehicle.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1977,20 +1981,20 @@
 				93DFD03324521C19001FCBAF /* HookEngine.h */,
 				93DFD03F24521C19001FCBAF /* Plugin.cpp */,
 				93DFD03124521C19001FCBAF /* Plugin.h */,
-				93DFD03724521C19001FCBAF /* ScConfiguration.hpp */,
-				93DFD03C24521C19001FCBAF /* ScConsole.hpp */,
-				93DFD03E24521C19001FCBAF /* ScContext.hpp */,
-				93DFD04124521C19001FCBAF /* ScDate.hpp */,
-				93DFD03924521C19001FCBAF /* ScDisposable.hpp */,
-				93DFD03A24521C19001FCBAF /* ScEntity.hpp */,
-				93DFD04224521C19001FCBAF /* ScMap.hpp */,
-				93DFD03424521C19001FCBAF /* ScNetwork.hpp */,
-				93DFD03224521C19001FCBAF /* ScObject.hpp */,
-				93DFD03D24521C19001FCBAF /* ScPark.hpp */,
-				93DFD04024521C19001FCBAF /* ScRide.hpp */,
+				93DFD03724521C19001FCBAF,
+				93DFD03C24521C19001FCBAF,
+				93DFD03E24521C19001FCBAF,
+				93DFD04124521C19001FCBAF,
+				93DFD03924521C19001FCBAF,
+				93DFD03A24521C19001FCBAF,
+				93DFD04224521C19001FCBAF,
+				93DFD03424521C19001FCBAF,
+				93DFD03224521C19001FCBAF,
+				93DFD03D24521C19001FCBAF,
+				93DFD04024521C19001FCBAF,
 				93DFD03824521C19001FCBAF /* ScriptEngine.cpp */,
 				93DFD04324521C19001FCBAF /* ScriptEngine.h */,
-				93DFD03624521C19001FCBAF /* ScTile.hpp */,
+				93DFD03624521C19001FCBAF,
 			);
 			path = scripting;
 			sourceTree = "<group>";
@@ -3359,6 +3363,8 @@
 			isa = PBXGroup;
 			children = (
 				6DF61461D47C40CF92019B24 /* ScEntity.hpp */,
+				B734D45D6B1D45E89AD2E6CE /* ScVehicle.cpp */,
+				8E2C4C07B668487DA3493122 /* ScVehicle.hpp */,
 			);
 			name = entity;
 			sourceTree = "<group>";
@@ -3556,6 +3562,7 @@
 				43D56A4FA1734F25995F4968 /* ScPark.hpp in Headers */,
 				0AFABA9549854247A5C61D52 /* ScScenario.hpp in Headers */,
 				F8A3BFA6806D448B86F1FF6A /* ScTile.hpp in Headers */,
+				D274ADAB9B644AC581EA2299 /* ScVehicle.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4361,6 +4368,7 @@
 				E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */,
 				0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */,
 				B9B6F97CE24E4A559C7BBA0A /* RideConstruction.cpp in Sources */,
+				73FB2E7C254144D9BAE4925A /* ScVehicle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
