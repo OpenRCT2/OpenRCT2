@@ -783,6 +783,9 @@
 		359328A3A65D49578912CA40 /* ScLitter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C30388F4F6D34DF59EF7072C /* ScLitter.hpp */; };
 		149D1ACFD5FA42938364C843 /* ScPlayerGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA49170D35604E6A986D09D9 /* ScPlayerGroup.cpp */; };
 		97C222A2A4F543E9AEC3912B /* ScPlayerGroup.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 887EBCE57E4A48C88191346E /* ScPlayerGroup.hpp */; };
+		E436DE7807A74621B7BF2276 /* ScPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2A4181A243F4B77BA36ACE2 /* ScPlayer.cpp */; };
+		2D0A43F28D5747C9B617F342 /* ScPlayer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7A08C451885D4D419FB4820D /* ScPlayer.hpp */; };
+		F08623EA69E7456DB79F3E06 /* ScNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1868,6 +1871,9 @@
 		C30388F4F6D34DF59EF7072C /* ScLitter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScLitter.hpp; path = src/openrct2/scripting/bindings/entity/ScLitter.hpp; sourceTree = SOURCE_ROOT; };
 		DA49170D35604E6A986D09D9 /* ScPlayerGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScPlayerGroup.cpp; path = src/openrct2/scripting/bindings/network/ScPlayerGroup.cpp; sourceTree = SOURCE_ROOT; };
 		887EBCE57E4A48C88191346E /* ScPlayerGroup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPlayerGroup.hpp; path = src/openrct2/scripting/bindings/network/ScPlayerGroup.hpp; sourceTree = SOURCE_ROOT; };
+		E2A4181A243F4B77BA36ACE2 /* ScPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScPlayer.cpp; path = src/openrct2/scripting/bindings/network/ScPlayer.cpp; sourceTree = SOURCE_ROOT; };
+		7A08C451885D4D419FB4820D /* ScPlayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPlayer.hpp; path = src/openrct2/scripting/bindings/network/ScPlayer.hpp; sourceTree = SOURCE_ROOT; };
+		200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScNetwork.cpp; path = src/openrct2/scripting/bindings/network/ScNetwork.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3413,6 +3419,9 @@
 				D4DD54E62DAE4E4889E26DF6 /* ScSocket.hpp */,
 				DA49170D35604E6A986D09D9 /* ScPlayerGroup.cpp */,
 				887EBCE57E4A48C88191346E /* ScPlayerGroup.hpp */,
+				E2A4181A243F4B77BA36ACE2 /* ScPlayer.cpp */,
+				7A08C451885D4D419FB4820D /* ScPlayer.hpp */,
+				200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */,
 			);
 			name = network;
 			sourceTree = "<group>";
@@ -3595,6 +3604,7 @@
 				9DF65BAE250C4307AE5794DB /* ScStaff.hpp in Headers */,
 				359328A3A65D49578912CA40 /* ScLitter.hpp in Headers */,
 				97C222A2A4F543E9AEC3912B /* ScPlayerGroup.hpp in Headers */,
+				2D0A43F28D5747C9B617F342 /* ScPlayer.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4405,6 +4415,8 @@
 				7A06F880718F49CA9FB71F52 /* ScStaff.cpp in Sources */,
 				8E6484F6C43644F4B644D361 /* ScLitter.cpp in Sources */,
 				149D1ACFD5FA42938364C843 /* ScPlayerGroup.cpp in Sources */,
+				E436DE7807A74621B7BF2276 /* ScPlayer.cpp in Sources */,
+				F08623EA69E7456DB79F3E06 /* ScNetwork.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

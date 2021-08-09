@@ -11,124 +11,13 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../Context.h"
-#    include "../../../actions/NetworkModifyGroupAction.h"
-#    include "../../../actions/PlayerKickAction.h"
-#    include "../../../actions/PlayerSetGroupAction.h"
-#    include "../../../network/NetworkAction.h"
-#    include "../../../network/network.h"
 #    include "../../Duktape.hpp"
-#    include "../network/ScSocket.hpp"
+#    include "ScPlayer.hpp"
 #    include "ScPlayerGroup.hpp"
+#    include "ScSocket.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    class ScPlayer
-    {
-    private:
-        int32_t _id;
-
-    public:
-        ScPlayer(int32_t id)
-            : _id(id)
-        {
-        }
-
-        int32_t id_get() const
-        {
-            return _id;
-        }
-
-        std::string name_get() const
-        {
-#    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
-            if (index == -1)
-                return {};
-            return network_get_player_name(index);
-#    else
-            return {};
-#    endif
-        }
-
-        int32_t group_get() const
-        {
-#    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
-            if (index == -1)
-                return {};
-            return network_get_player_group(index);
-#    else
-            return 0;
-#    endif
-        }
-        void group_set(int32_t value)
-        {
-#    ifndef DISABLE_NETWORK
-            auto playerSetGroupAction = PlayerSetGroupAction(_id, value);
-            GameActions::Execute(&playerSetGroupAction);
-#    endif
-        }
-
-        int32_t ping_get() const
-        {
-#    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
-            if (index == -1)
-                return {};
-            return network_get_player_ping(index);
-#    else
-            return 0;
-#    endif
-        }
-
-        int32_t commandsRan_get() const
-        {
-#    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
-            if (index == -1)
-                return {};
-            return network_get_player_commands_ran(index);
-#    else
-            return 0;
-#    endif
-        }
-
-        int32_t moneySpent_get() const
-        {
-#    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
-            if (index == -1)
-                return {};
-            return network_get_player_money_spent(index);
-#    else
-            return 0;
-#    endif
-        }
-
-        std::string ipAddress_get() const
-        {
-            return network_get_player_ip_address(_id);
-        }
-
-        std::string publicKeyHash_get() const
-        {
-            return network_get_player_public_key_hash(_id);
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_property(ctx, &ScPlayer::id_get, nullptr, "id");
-            dukglue_register_property(ctx, &ScPlayer::name_get, nullptr, "name");
-            dukglue_register_property(ctx, &ScPlayer::group_get, &ScPlayer::group_set, "group");
-            dukglue_register_property(ctx, &ScPlayer::ping_get, nullptr, "ping");
-            dukglue_register_property(ctx, &ScPlayer::commandsRan_get, nullptr, "commandsRan");
-            dukglue_register_property(ctx, &ScPlayer::moneySpent_get, nullptr, "moneySpent");
-            dukglue_register_property(ctx, &ScPlayer::ipAddress_get, nullptr, "ipAddress");
-            dukglue_register_property(ctx, &ScPlayer::publicKeyHash_get, nullptr, "publicKeyHash");
-        }
-    };
-
     class ScNetwork
     {
     private:
@@ -138,272 +27,47 @@ namespace OpenRCT2::Scripting
         duk_context* _context;
 
     public:
-        ScNetwork(duk_context* ctx)
-            : _context(ctx)
-        {
-        }
+        ScNetwork(duk_context* ctx);
 
-        std::string mode_get() const
-        {
+        std::string mode_get() const;
+        int32_t numPlayers_get() const;
+        int32_t numGroups_get() const;
+        int32_t defaultGroup_get() const;
+        void defaultGroup_set(int32_t value);
+
+        std::vector<std::shared_ptr<ScPlayerGroup>> groups_get() const;
+
+        std::vector<std::shared_ptr<ScPlayer>> players_get() const;
+
+        std::shared_ptr<ScPlayer> currentPlayer_get() const;
+
+        std::shared_ptr<ScPlayer> getPlayer(int32_t index) const;
+
+        DukValue stats_get() const;
+
+        std::shared_ptr<ScPlayerGroup> getGroup(int32_t index) const;
+
+        void addGroup();
+
+        void removeGroup(int32_t index);
+
+        void kickPlayer(int32_t index);
+
+        void sendMessage(std::string message, DukValue players);
+
 #    ifndef DISABLE_NETWORK
-            switch (network_get_mode())
-            {
-                case NETWORK_MODE_SERVER:
-                    return "server";
-                case NETWORK_MODE_CLIENT:
-                    return "client";
-            }
-#    endif
-            return "none";
-        }
-        int32_t numPlayers_get() const
-        {
-#    ifndef DISABLE_NETWORK
-            return network_get_num_players();
+        std::shared_ptr<ScListener> createListener();
 #    else
-            return 0;
+        void createListener();
 #    endif
-        }
-        int32_t numGroups_get() const
-        {
+
 #    ifndef DISABLE_NETWORK
-            return network_get_num_groups();
+        std::shared_ptr<ScSocket> createSocket();
 #    else
-            return 0;
-#    endif
-        }
-        int32_t defaultGroup_get() const
-        {
-#    ifndef DISABLE_NETWORK
-            return network_get_default_group();
-#    else
-            return 0;
-#    endif
-        }
-        void defaultGroup_set(int32_t value)
-        {
-#    ifndef DISABLE_NETWORK
-            auto action = NetworkModifyGroupAction(ModifyGroupType::SetDefault, value);
-            GameActions::Execute(&action);
-#    endif
-        }
-
-        std::vector<std::shared_ptr<ScPlayerGroup>> groups_get() const
-        {
-            std::vector<std::shared_ptr<ScPlayerGroup>> groups;
-#    ifndef DISABLE_NETWORK
-            auto numGroups = network_get_num_groups();
-            for (int32_t i = 0; i < numGroups; i++)
-            {
-                auto groupId = network_get_group_id(i);
-                groups.push_back(std::make_shared<ScPlayerGroup>(groupId));
-            }
-#    endif
-            return groups;
-        }
-
-        std::vector<std::shared_ptr<ScPlayer>> players_get() const
-        {
-            std::vector<std::shared_ptr<ScPlayer>> players;
-#    ifndef DISABLE_NETWORK
-            auto numPlayers = network_get_num_players();
-            for (int32_t i = 0; i < numPlayers; i++)
-            {
-                auto playerId = network_get_player_id(i);
-                players.push_back(std::make_shared<ScPlayer>(playerId));
-            }
-#    endif
-            return players;
-        }
-
-        std::shared_ptr<ScPlayer> currentPlayer_get() const
-        {
-            std::shared_ptr<ScPlayer> player;
-#    ifndef DISABLE_NETWORK
-            auto playerId = network_get_current_player_id();
-            player = std::make_shared<ScPlayer>(playerId);
-#    endif
-            return player;
-        }
-
-        std::shared_ptr<ScPlayer> getPlayer(int32_t index) const
-        {
-#    ifndef DISABLE_NETWORK
-            auto numPlayers = network_get_num_players();
-            if (index < numPlayers)
-            {
-                auto playerId = network_get_player_id(index);
-                return std::make_shared<ScPlayer>(playerId);
-            }
-#    endif
-            return nullptr;
-        }
-
-        DukValue stats_get() const
-        {
-#    ifndef DISABLE_NETWORK
-            auto obj = OpenRCT2::Scripting::DukObject(_context);
-            auto networkStats = network_get_stats();
-            {
-                duk_push_array(_context);
-                duk_uarridx_t index = 0;
-                for (auto v : networkStats.bytesReceived)
-                {
-                    duk_push_number(_context, v);
-                    duk_put_prop_index(_context, -2, index);
-                    index++;
-                }
-                obj.Set("bytesReceived", DukValue::take_from_stack(_context));
-            }
-            {
-                duk_push_array(_context);
-                duk_uarridx_t index = 0;
-                for (auto v : networkStats.bytesSent)
-                {
-                    duk_push_number(_context, v);
-                    duk_put_prop_index(_context, -2, index);
-                    index++;
-                }
-                obj.Set("bytesSent", DukValue::take_from_stack(_context));
-            }
-            return obj.Take();
-#    else
-            return ToDuk(_context, nullptr);
-#    endif
-        }
-
-        std::shared_ptr<ScPlayerGroup> getGroup(int32_t index) const
-        {
-#    ifndef DISABLE_NETWORK
-            auto numGroups = network_get_num_groups();
-            if (index < numGroups)
-            {
-                auto groupId = network_get_group_id(index);
-                return std::make_shared<ScPlayerGroup>(groupId);
-            }
-#    endif
-            return nullptr;
-        }
-
-        void addGroup()
-        {
-#    ifndef DISABLE_NETWORK
-            auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::AddGroup);
-            GameActions::Execute(&networkModifyGroup);
-#    endif
-        }
-
-        void removeGroup(int32_t index)
-        {
-#    ifndef DISABLE_NETWORK
-            auto numGroups = network_get_num_groups();
-            if (index < numGroups)
-            {
-                auto groupId = network_get_group_id(index);
-                auto networkAction = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, groupId);
-                GameActions::Execute(&networkAction);
-            }
-#    endif
-        }
-
-        void kickPlayer(int32_t index)
-        {
-#    ifndef DISABLE_NETWORK
-            auto numPlayers = network_get_num_players();
-            if (index < numPlayers)
-            {
-                auto playerId = network_get_player_id(index);
-                auto kickPlayerAction = PlayerKickAction(playerId);
-                GameActions::Execute(&kickPlayerAction);
-            }
-#    endif
-        }
-
-        void sendMessage(std::string message, DukValue players)
-        {
-#    ifndef DISABLE_NETWORK
-            if (players.is_array())
-            {
-                if (network_get_mode() == NETWORK_MODE_SERVER)
-                {
-                    std::vector<uint8_t> playerIds;
-                    auto playerArray = players.as_array();
-                    for (const auto& item : playerArray)
-                    {
-                        if (item.type() == DukValue::Type::NUMBER)
-                        {
-                            playerIds.push_back(static_cast<uint8_t>(item.as_int()));
-                        }
-                    }
-                    if (!playerArray.empty())
-                    {
-                        network_send_chat(message.c_str(), playerIds);
-                    }
-                }
-                else
-                {
-                    duk_error(players.context(), DUK_ERR_ERROR, "Only servers can send private messages.");
-                }
-            }
-            else
-            {
-                network_send_chat(message.c_str());
-            }
-#    endif
-        }
-
-#    ifndef DISABLE_NETWORK
-        std::shared_ptr<ScListener> createListener()
-        {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-            auto socket = std::make_shared<ScListener>(plugin);
-            scriptEngine.AddSocket(socket);
-            return socket;
-        }
-#    else
-        void createListener()
-        {
-            duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
-        }
+        void createSocket();
 #    endif
 
-#    ifndef DISABLE_NETWORK
-        std::shared_ptr<ScSocket> createSocket()
-        {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-            auto socket = std::make_shared<ScSocket>(plugin);
-            scriptEngine.AddSocket(socket);
-            return socket;
-        }
-#    else
-        void createSocket()
-        {
-            duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
-        }
-#    endif
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_register_property(ctx, &ScNetwork::mode_get, nullptr, "mode");
-            dukglue_register_property(ctx, &ScNetwork::numGroups_get, nullptr, "numGroups");
-            dukglue_register_property(ctx, &ScNetwork::numPlayers_get, nullptr, "numPlayers");
-            dukglue_register_property(ctx, &ScNetwork::groups_get, nullptr, "groups");
-            dukglue_register_property(ctx, &ScNetwork::players_get, nullptr, "players");
-            dukglue_register_property(ctx, &ScNetwork::currentPlayer_get, nullptr, "currentPlayer");
-            dukglue_register_property(ctx, &ScNetwork::defaultGroup_get, &ScNetwork::defaultGroup_set, "defaultGroup");
-            dukglue_register_property(ctx, &ScNetwork::stats_get, nullptr, "stats");
-            dukglue_register_method(ctx, &ScNetwork::addGroup, "addGroup");
-            dukglue_register_method(ctx, &ScNetwork::getGroup, "getGroup");
-            dukglue_register_method(ctx, &ScNetwork::removeGroup, "removeGroup");
-            dukglue_register_method(ctx, &ScNetwork::getPlayer, "getPlayer");
-            dukglue_register_method(ctx, &ScNetwork::kickPlayer, "kickPlayer");
-            dukglue_register_method(ctx, &ScNetwork::sendMessage, "sendMessage");
-
-            dukglue_register_method(ctx, &ScNetwork::createListener, "createListener");
-            dukglue_register_method(ctx, &ScNetwork::createSocket, "createSocket");
-        }
+        static void Register(duk_context* ctx);
     };
 } // namespace OpenRCT2::Scripting
 
