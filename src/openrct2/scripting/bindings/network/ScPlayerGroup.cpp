@@ -50,6 +50,7 @@ namespace OpenRCT2::Scripting
 #    endif
     }
 
+#    ifndef DISABLE_NETWORK
     static std::string TransformPermissionKeyToJS(const std::string& s)
     {
         auto result = s.substr(sizeof("PERMISSION_") - 1);
@@ -59,6 +60,17 @@ namespace OpenRCT2::Scripting
         }
         return result;
     }
+
+    static std::string TransformPermissionKeyToInternal(const std::string& s)
+    {
+        auto result = "PERMISSION_" + s;
+        for (auto& c : result)
+        {
+            c = std::toupper(c);
+        }
+        return result;
+    }
+#    endif
 
     std::vector<std::string> ScPlayerGroup::permissions_get() const
     {
@@ -82,16 +94,6 @@ namespace OpenRCT2::Scripting
 #    else
         return {};
 #    endif
-    }
-
-    static std::string TransformPermissionKeyToInternal(const std::string& s)
-    {
-        auto result = "PERMISSION_" + s;
-        for (auto& c : result)
-        {
-            c = std::toupper(c);
-        }
-        return result;
     }
 
     void ScPlayerGroup::permissions_set(std::vector<std::string> value)
