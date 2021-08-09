@@ -2737,6 +2737,14 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
     {
         return;
     }
+    if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_GUESTS) && Is<Guest>())
+    {
+        return;
+    }
+    if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_STAFF) && Is<Staff>())
+    {
+        return;
+    }
 
     PeepActionSpriteType actionSpriteType = ActionSpriteType;
     uint8_t imageOffset = ActionSpriteImageOffset;
@@ -2753,7 +2761,7 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
     uint32_t imageId = baseImageId | TshirtColour << 19 | TrousersColour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
 
-    auto* guest = As<Guest>();
+    auto* guest = As<Staff>();
     if (guest != nullptr)
     {
         if (baseImageId >= 10717 && baseImageId < 10749)

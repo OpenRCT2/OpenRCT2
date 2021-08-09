@@ -3638,7 +3638,7 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
         ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
         Separator(),
-        ToggleOption(DDIDX_TRANSPARENCY, STR_INVISIBLE_PEOPLE),
+        ToggleOption(DDIDX_TRANSPARENCY, STR_TRANSPARENCY_OPTIONS),
     };
 
     static_assert(ItemIDsMatchIndices(items));

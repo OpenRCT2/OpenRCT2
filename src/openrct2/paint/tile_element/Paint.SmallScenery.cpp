@@ -122,6 +122,11 @@ void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height
         return;
     }
 
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE) && (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_TREES))
+    {
+        return;
+    }
+
     session.InteractionType = ViewportInteractionItem::Scenery;
     CoordsXYZ boxLength;
     CoordsXYZ boxOffset{ 0, 0, height };
@@ -141,6 +146,10 @@ void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+    }
+    else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE) && (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES))
+    {
+        imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
     boxLength.x = 2;
