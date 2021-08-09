@@ -26,6 +26,7 @@
 #    include "Duktape.hpp"
 #    include "bindings/entity/ScEntity.hpp"
 #    include "bindings/entity/ScGuest.hpp"
+#    include "bindings/entity/ScLitter.hpp"
 #    include "bindings/entity/ScPeep.hpp"
 #    include "bindings/entity/ScStaff.hpp"
 #    include "bindings/game/ScCheats.hpp"

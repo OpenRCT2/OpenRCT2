@@ -14,14 +14,11 @@
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../peep/Peep.h"
-#    include "../../../peep/Staff.h"
 #    include "../../../util/Util.h"
 #    include "../../../world/EntityList.h"
-#    include "../../../world/Litter.h"
 #    include "../../../world/Sprite.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
-#    include "../ride/ScRide.hpp"
 
 #    include <algorithm>
 #    include <string_view>
@@ -207,71 +204,6 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScEntity::y_get, &ScEntity::y_set, "y");
             dukglue_register_property(ctx, &ScEntity::z_get, &ScEntity::z_set, "z");
             dukglue_register_method(ctx, &ScEntity::remove, "remove");
-        }
-    };
-
-    static const DukEnumMap<Litter::Type> LitterTypeMap({
-        { "vomit", Litter::Type::Vomit },
-        { "vomit_alt", Litter::Type::VomitAlt },
-        { "empty_can", Litter::Type::EmptyCan },
-        { "rubbish", Litter::Type::Rubbish },
-        { "burger_box", Litter::Type::BurgerBox },
-        { "empty_cup", Litter::Type::EmptyCup },
-        { "empty_box", Litter::Type::EmptyBox },
-        { "empty_bottle", Litter::Type::EmptyBottle },
-        { "empty_bowl_red", Litter::Type::EmptyBowlRed },
-        { "empty_drink_carton", Litter::Type::EmptyDrinkCarton },
-        { "empty_juice_cup", Litter::Type::EmptyJuiceCup },
-        { "empty_bowl_blue", Litter::Type::EmptyBowlBlue },
-    });
-
-    class ScLitter : public ScEntity
-    {
-    public:
-        ScLitter(uint16_t Id)
-            : ScEntity(Id)
-        {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScEntity, ScLitter>(ctx);
-            dukglue_register_property(ctx, &ScLitter::litterType_get, &ScLitter::litterType_set, "litterType");
-            dukglue_register_property(ctx, &ScLitter::creationTick_get, nullptr, "creationTick");
-        }
-
-    private:
-        Litter* GetLitter() const
-        {
-            return ::GetEntity<Litter>(_id);
-        }
-
-        std::string litterType_get() const
-        {
-            auto* litter = GetLitter();
-            auto it = LitterTypeMap.find(litter->SubType);
-            if (it == LitterTypeMap.end())
-                return "";
-            return std::string{ it->first };
-        }
-
-        void litterType_set(const std::string& litterType)
-        {
-            ThrowIfGameStateNotMutable();
-
-            auto it = LitterTypeMap.find(litterType);
-            if (it == LitterTypeMap.end())
-                return;
-            auto* litter = GetLitter();
-            litter->SubType = it->second;
-        }
-
-        uint32_t creationTick_get() const
-        {
-            auto* litter = GetLitter();
-            if (litter == nullptr)
-                return 0;
-            return litter->creationTick;
         }
     };
 

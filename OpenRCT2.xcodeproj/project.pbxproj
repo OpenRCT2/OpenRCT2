@@ -779,6 +779,8 @@
 		D7B575F07C4D4E42887C72AA /* ScPeep.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2B63F2F751A3427C9CE9B214 /* ScPeep.hpp */; };
 		7A06F880718F49CA9FB71F52 /* ScStaff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EFAF58A62B44C4B887559B7 /* ScStaff.cpp */; };
 		9DF65BAE250C4307AE5794DB /* ScStaff.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C30AB6C640464647ABE90EC4 /* ScStaff.hpp */; };
+		8E6484F6C43644F4B644D361 /* ScLitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36C67B84754D4FEFA3678AA9 /* ScLitter.cpp */; };
+		359328A3A65D49578912CA40 /* ScLitter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C30388F4F6D34DF59EF7072C /* ScLitter.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1860,6 +1862,8 @@
 		2B63F2F751A3427C9CE9B214 /* ScPeep.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPeep.hpp; path = src/openrct2/scripting/bindings/entity/ScPeep.hpp; sourceTree = SOURCE_ROOT; };
 		3EFAF58A62B44C4B887559B7 /* ScStaff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScStaff.cpp; path = src/openrct2/scripting/bindings/entity/ScStaff.cpp; sourceTree = SOURCE_ROOT; };
 		C30AB6C640464647ABE90EC4 /* ScStaff.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScStaff.hpp; path = src/openrct2/scripting/bindings/entity/ScStaff.hpp; sourceTree = SOURCE_ROOT; };
+		36C67B84754D4FEFA3678AA9 /* ScLitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScLitter.cpp; path = src/openrct2/scripting/bindings/entity/ScLitter.cpp; sourceTree = SOURCE_ROOT; };
+		C30388F4F6D34DF59EF7072C /* ScLitter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScLitter.hpp; path = src/openrct2/scripting/bindings/entity/ScLitter.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3380,6 +3384,8 @@
 				2B63F2F751A3427C9CE9B214 /* ScPeep.hpp */,
 				3EFAF58A62B44C4B887559B7 /* ScStaff.cpp */,
 				C30AB6C640464647ABE90EC4 /* ScStaff.hpp */,
+				36C67B84754D4FEFA3678AA9 /* ScLitter.cpp */,
+				C30388F4F6D34DF59EF7072C /* ScLitter.hpp */,
 			);
 			name = entity;
 			sourceTree = "<group>";
@@ -3581,6 +3587,7 @@
 				428B1DADD66C4829894AD0A1 /* ScGuest.hpp in Headers */,
 				D7B575F07C4D4E42887C72AA /* ScPeep.hpp in Headers */,
 				9DF65BAE250C4307AE5794DB /* ScStaff.hpp in Headers */,
+				359328A3A65D49578912CA40 /* ScLitter.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4389,6 +4396,7 @@
 				73FB2E7C254144D9BAE4925A /* ScVehicle.cpp in Sources */,
 				BC39D70B9A2249E4B14E99FA /* ScGuest.cpp in Sources */,
 				7A06F880718F49CA9FB71F52 /* ScStaff.cpp in Sources */,
+				8E6484F6C43644F4B644D361 /* ScLitter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
