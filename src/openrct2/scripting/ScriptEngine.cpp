@@ -34,6 +34,7 @@
 #    include "bindings/game/ScContext.hpp"
 #    include "bindings/game/ScDisposable.hpp"
 #    include "bindings/network/ScNetwork.hpp"
+#    include "bindings/network/ScPlayerGroup.hpp"
 #    include "bindings/network/ScSocket.hpp"
 #    include "bindings/object/ScObject.hpp"
 #    include "bindings/ride/ScRide.hpp"
