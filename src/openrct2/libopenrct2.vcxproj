@@ -405,6 +405,9 @@
     <ClInclude Include="scenario\Scenario.h" />
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
+    <ClInclude Include="scripting\bindings\entity\ScGuest.hpp" />
+    <ClInclude Include="scripting\bindings\entity\ScPeep.hpp" />
+    <ClInclude Include="scripting\bindings\entity\ScStaff.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScVehicle.hpp" />
     <ClInclude Include="scripting\Duktape.hpp" />
     <ClInclude Include="scripting\HookEngine.h" />
@@ -850,6 +853,8 @@
     <ClCompile Include="scenario\Scenario.cpp" />
     <ClCompile Include="scenario\ScenarioRepository.cpp" />
     <ClCompile Include="scenario\ScenarioSources.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScStaff.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScVehicle.cpp" />
     <ClCompile Include="scripting\HookEngine.cpp" />
     <ClCompile Include="scripting\Plugin.cpp" />

@@ -774,6 +774,11 @@
 		F8A3BFA6806D448B86F1FF6A /* ScTile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 22D7DD798F054A068273739B /* ScTile.hpp */; };
 		73FB2E7C254144D9BAE4925A /* ScVehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B734D45D6B1D45E89AD2E6CE /* ScVehicle.cpp */; };
 		D274ADAB9B644AC581EA2299 /* ScVehicle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8E2C4C07B668487DA3493122 /* ScVehicle.hpp */; };
+		BC39D70B9A2249E4B14E99FA /* ScGuest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DB792F5A06849BDAF95B28F /* ScGuest.cpp */; };
+		428B1DADD66C4829894AD0A1 /* ScGuest.hpp in Headers */ = {isa = PBXBuildFile; fileRef = CAFBD63A702F42F2BDB53A39 /* ScGuest.hpp */; };
+		D7B575F07C4D4E42887C72AA /* ScPeep.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2B63F2F751A3427C9CE9B214 /* ScPeep.hpp */; };
+		7A06F880718F49CA9FB71F52 /* ScStaff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EFAF58A62B44C4B887559B7 /* ScStaff.cpp */; };
+		9DF65BAE250C4307AE5794DB /* ScStaff.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C30AB6C640464647ABE90EC4 /* ScStaff.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1850,6 +1855,11 @@
 		22D7DD798F054A068273739B /* ScTile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScTile.hpp; path = src/openrct2/scripting/bindings/world/ScTile.hpp; sourceTree = SOURCE_ROOT; };
 		B734D45D6B1D45E89AD2E6CE /* ScVehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScVehicle.cpp; path = src/openrct2/scripting/bindings/entity/ScVehicle.cpp; sourceTree = SOURCE_ROOT; };
 		8E2C4C07B668487DA3493122 /* ScVehicle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScVehicle.hpp; path = src/openrct2/scripting/bindings/entity/ScVehicle.hpp; sourceTree = SOURCE_ROOT; };
+		5DB792F5A06849BDAF95B28F /* ScGuest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScGuest.cpp; path = src/openrct2/scripting/bindings/entity/ScGuest.cpp; sourceTree = SOURCE_ROOT; };
+		CAFBD63A702F42F2BDB53A39 /* ScGuest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScGuest.hpp; path = src/openrct2/scripting/bindings/entity/ScGuest.hpp; sourceTree = SOURCE_ROOT; };
+		2B63F2F751A3427C9CE9B214 /* ScPeep.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPeep.hpp; path = src/openrct2/scripting/bindings/entity/ScPeep.hpp; sourceTree = SOURCE_ROOT; };
+		3EFAF58A62B44C4B887559B7 /* ScStaff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScStaff.cpp; path = src/openrct2/scripting/bindings/entity/ScStaff.cpp; sourceTree = SOURCE_ROOT; };
+		C30AB6C640464647ABE90EC4 /* ScStaff.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScStaff.hpp; path = src/openrct2/scripting/bindings/entity/ScStaff.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3365,6 +3375,11 @@
 				6DF61461D47C40CF92019B24 /* ScEntity.hpp */,
 				B734D45D6B1D45E89AD2E6CE /* ScVehicle.cpp */,
 				8E2C4C07B668487DA3493122 /* ScVehicle.hpp */,
+				5DB792F5A06849BDAF95B28F /* ScGuest.cpp */,
+				CAFBD63A702F42F2BDB53A39 /* ScGuest.hpp */,
+				2B63F2F751A3427C9CE9B214 /* ScPeep.hpp */,
+				3EFAF58A62B44C4B887559B7 /* ScStaff.cpp */,
+				C30AB6C640464647ABE90EC4 /* ScStaff.hpp */,
 			);
 			name = entity;
 			sourceTree = "<group>";
@@ -3563,6 +3578,9 @@
 				0AFABA9549854247A5C61D52 /* ScScenario.hpp in Headers */,
 				F8A3BFA6806D448B86F1FF6A /* ScTile.hpp in Headers */,
 				D274ADAB9B644AC581EA2299 /* ScVehicle.hpp in Headers */,
+				428B1DADD66C4829894AD0A1 /* ScGuest.hpp in Headers */,
+				D7B575F07C4D4E42887C72AA /* ScPeep.hpp in Headers */,
+				9DF65BAE250C4307AE5794DB /* ScStaff.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4369,6 +4387,8 @@
 				0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */,
 				B9B6F97CE24E4A559C7BBA0A /* RideConstruction.cpp in Sources */,
 				73FB2E7C254144D9BAE4925A /* ScVehicle.cpp in Sources */,
+				BC39D70B9A2249E4B14E99FA /* ScGuest.cpp in Sources */,
+				7A06F880718F49CA9FB71F52 /* ScStaff.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
