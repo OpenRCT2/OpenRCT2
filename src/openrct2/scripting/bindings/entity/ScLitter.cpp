@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
-
 #ifdef ENABLE_SCRIPTING
 
 #    include "ScLitter.hpp"
