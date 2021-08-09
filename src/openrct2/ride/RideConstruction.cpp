@@ -510,9 +510,9 @@ void ride_remove_provisional_track_piece()
         {
             auto trackType = next_track.element->AsTrack()->GetTrackType();
             int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
-            auto trackRemoveAction = TrackRemoveAction{ trackType,
-                                                        trackSequence,
-                                                        { next_track.x, next_track.y, z, static_cast<Direction>(direction) } };
+            auto trackRemoveAction = TrackRemoveAction{
+                rideIndex, trackType, trackSequence, { next_track.x, next_track.y, z, static_cast<Direction>(direction) }
+            };
             trackRemoveAction.SetFlags(
                 GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&trackRemoveAction);
@@ -1146,7 +1146,7 @@ int32_t ride_get_refund_price(const Ride* ride)
     do
     {
         auto trackRemoveAction = TrackRemoveAction(
-            trackElement.element->AsTrack()->GetTrackType(), trackElement.element->AsTrack()->GetSequenceIndex(),
+            ride->id, trackElement.element->AsTrack()->GetTrackType(), trackElement.element->AsTrack()->GetSequenceIndex(),
             { trackElement.x, trackElement.y, trackElement.element->GetBaseZ(), direction });
         trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
 

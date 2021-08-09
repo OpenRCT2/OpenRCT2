@@ -19,8 +19,10 @@
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
-TrackRemoveAction::TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin)
-    : _trackType(trackType)
+TrackRemoveAction::TrackRemoveAction(
+    NetworkRideId_t rideIndex, track_type_t trackType, int32_t sequence, const CoordsXYZD& origin)
+    : _rideIndex(rideIndex)
+    , _trackType(trackType)
     , _sequence(sequence)
     , _origin(origin)
 {
@@ -30,6 +32,7 @@ TrackRemoveAction::TrackRemoveAction(track_type_t trackType, int32_t sequence, c
 void TrackRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_origin);
+    visitor.Visit("ride", _rideIndex);
     visitor.Visit("trackType", _trackType);
     visitor.Visit("sequence", _sequence);
 }
@@ -43,7 +46,7 @@ void TrackRemoveAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_trackType) << DS_TAG(_sequence) << DS_TAG(_origin);
+    stream << DS_TAG(_rideIndex) << DS_TAG(_trackType) << DS_TAG(_sequence) << DS_TAG(_origin);
 }
 
 GameActions::Result::Ptr TrackRemoveAction::Query() const
@@ -119,7 +122,7 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
             STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
     }
 
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    ride_id_t rideIndex = _rideIndex;
     auto trackType = tileElement->AsTrack()->GetTrackType();
 
     auto ride = get_ride(rideIndex);
@@ -304,7 +307,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
     }
 
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    ride_id_t rideIndex = _rideIndex;
     auto trackType = tileElement->AsTrack()->GetTrackType();
     bool isLiftHill = tileElement->AsTrack()->HasChain();
 

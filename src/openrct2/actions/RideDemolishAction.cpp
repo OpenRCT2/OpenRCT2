@@ -294,7 +294,7 @@ money32 RideDemolishAction::DemolishTracks() const
 
         if (type != TrackElemType::Maze)
         {
-            auto trackRemoveAction = TrackRemoveAction(type, it.element->AsTrack()->GetSequenceIndex(), location);
+            auto trackRemoveAction = TrackRemoveAction(_rideIndex, type, it.element->AsTrack()->GetSequenceIndex(), location);
             trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
 
             auto removRes = GameActions::ExecuteNested(&trackRemoveAction);

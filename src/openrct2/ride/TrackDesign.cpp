@@ -1540,7 +1540,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                 const rct_preview_track* trackBlock = TrackBlocks[trackType];
                 int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(
-                    trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
+                    ride->id, trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
                     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                 GameActions::ExecuteNested(&trackRemoveAction);
