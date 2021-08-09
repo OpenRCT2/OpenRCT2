@@ -11,14 +11,14 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../Context.h"
-#    include "../GameState.h"
-#    include "../common.h"
-#    include "../core/String.hpp"
-#    include "../scenario/Scenario.h"
-#    include "../world/Park.h"
-#    include "Duktape.hpp"
-#    include "ScriptEngine.h"
+#    include "../../../Context.h"
+#    include "../../../GameState.h"
+#    include "../../../common.h"
+#    include "../../../core/String.hpp"
+#    include "../../../scenario/Scenario.h"
+#    include "../../../world/Park.h"
+#    include "../../Duktape.hpp"
+#    include "../../ScriptEngine.h"
 
 #    include <algorithm>
 

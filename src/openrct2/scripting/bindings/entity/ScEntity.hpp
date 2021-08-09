@@ -15,12 +15,12 @@
 #    include "../common.h"
 #    include "../peep/Peep.h"
 #    include "../peep/Staff.h"
+#    include "../ride/ScRide.hpp"
 #    include "../util/Util.h"
 #    include "../world/EntityList.h"
 #    include "../world/Litter.h"
 #    include "../world/Sprite.h"
 #    include "Duktape.hpp"
-#    include "ScRide.hpp"
 #    include "ScriptEngine.h"
 
 #    include <algorithm>

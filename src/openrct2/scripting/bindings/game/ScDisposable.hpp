@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "Duktape.hpp"
+#    include "../../Duktape.hpp"
 
 #    include <functional>
 

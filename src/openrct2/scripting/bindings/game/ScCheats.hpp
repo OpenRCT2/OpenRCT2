@@ -11,9 +11,9 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../Cheats.h"
+#    include "../../../Cheats.h"
+#    include "../../ScriptEngine.h"
 #    include "Duktape.hpp"
-#    include "ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {

@@ -11,14 +11,14 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../Context.h"
-#    include "../actions/NetworkModifyGroupAction.h"
-#    include "../actions/PlayerKickAction.h"
-#    include "../actions/PlayerSetGroupAction.h"
-#    include "../network/NetworkAction.h"
-#    include "../network/network.h"
-#    include "Duktape.hpp"
-#    include "ScSocket.hpp"
+#    include "../../../Context.h"
+#    include "../../../actions/NetworkModifyGroupAction.h"
+#    include "../../../actions/PlayerKickAction.h"
+#    include "../../../actions/PlayerSetGroupAction.h"
+#    include "../../../network/NetworkAction.h"
+#    include "../../../network/network.h"
+#    include "../../Duktape.hpp"
+#    include "../network/ScSocket.hpp"
 
 namespace OpenRCT2::Scripting
 {

@@ -11,21 +11,21 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../common.h"
-#    include "../ride/Ride.h"
-#    include "../ride/TrainManager.h"
-#    include "../world/Balloon.h"
-#    include "../world/Duck.h"
-#    include "../world/EntityList.h"
-#    include "../world/Fountain.h"
-#    include "../world/Litter.h"
-#    include "../world/Map.h"
-#    include "../world/MoneyEffect.h"
-#    include "../world/Particle.h"
-#    include "Duktape.hpp"
-#    include "ScEntity.hpp"
-#    include "ScRide.hpp"
-#    include "ScTile.hpp"
+#    include "../../../common.h"
+#    include "../../../ride/Ride.h"
+#    include "../../../ride/TrainManager.h"
+#    include "../../../world/Balloon.h"
+#    include "../../../world/Duck.h"
+#    include "../../../world/EntityList.h"
+#    include "../../../world/Fountain.h"
+#    include "../../../world/Litter.h"
+#    include "../../../world/Map.h"
+#    include "../../../world/MoneyEffect.h"
+#    include "../../../world/Particle.h"
+#    include "../../Duktape.hpp"
+#    include "../entity/ScEntity.hpp"
+#    include "../ride/ScRide.hpp"
+#    include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
 {
