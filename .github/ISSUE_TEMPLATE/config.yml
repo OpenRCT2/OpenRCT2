@@ -1,4 +1,4 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
 - name: Translation / Localisation
   url: https://github.com/OpenRCT2/Localisation
