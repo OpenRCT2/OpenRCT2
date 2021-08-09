@@ -577,6 +577,7 @@ declare global {
         getAllEntities(type: "peep"): Peep[];
         getAllEntities(type: "guest"): Guest[];
         getAllEntities(type: "staff"): Staff[];
+        createEntity(type: EntityType, initializer: object): Entity;
     }
 
     type TileElementType =
@@ -1468,6 +1469,34 @@ declare global {
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
+
+    /**
+     * Represents litter entity.
+     */
+    interface Litter extends Entity {
+        /**
+         * The type of the litter.
+         */
+        litterType: LitterType;
+
+        /**
+         * The tick number this entity was created.
+         */
+        creationTime: number;
+    }
+
+    type LitterType = "vomit" | 
+        "vomit_alt" | 
+        "empty_can" |  
+        "rubbish" | 
+        "burger_box" | 
+        "empty_cup" | 
+        "empty_box" | 
+        "empty_bottle" | 
+        "empty_bowl_red" | 
+        "empty_drink_carton" |  
+        "empty_juice_cup" | 
+        "empty_bowl_blue";
 
     /**
      * Network APIs
