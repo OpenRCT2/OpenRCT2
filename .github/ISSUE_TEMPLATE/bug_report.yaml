@@ -19,7 +19,7 @@ body:
   attributes:
     label: OpenRCT2 build
     placeholder: OpenRCT2, v0.3.4.1 (d76611e on develop) provided by GitHub
-    description: You can copy the version information from the About window. Open the "Disk and game options" menu (floppy disk on the top toolbar), choose "About 'OpenRCT2'" and click the copy button next to the version information.
+    description: You can see the version by running `openrct2 --version` or copy it from the About window. Open the "Disk and game options" menu (floppy disk on the top toolbar), choose "About 'OpenRCT2'" and click the copy button next to the version information.
   validations:
     required: true
 
