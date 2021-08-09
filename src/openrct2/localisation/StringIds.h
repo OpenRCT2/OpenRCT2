@@ -3938,6 +3938,9 @@ enum : uint16_t
     STR_INVISIBLE_STAFF = 6478,
     STR_TRANSPARENCY_OPTIONS = 6479,
     STR_TRANSPARENCY_OPTIONS_TITLE = 6480,
+    STR_TRANSPARENCY_OPTIONS_TITLE_MAIN = 6481,
+    STR_TRANSPARENCY_OPTIONS_TITLE_RIDE = 6482,
+    STR_TRANSPARENCY_OPTIONS_TITLE_MISC = 6483,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
