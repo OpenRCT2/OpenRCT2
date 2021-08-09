@@ -786,6 +786,8 @@
 		E436DE7807A74621B7BF2276 /* ScPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2A4181A243F4B77BA36ACE2 /* ScPlayer.cpp */; };
 		2D0A43F28D5747C9B617F342 /* ScPlayer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7A08C451885D4D419FB4820D /* ScPlayer.hpp */; };
 		F08623EA69E7456DB79F3E06 /* ScNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */; };
+		CDC72A71A28542F4AD73A91C /* ScRideStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */; };
+		63858E295E3F451283987982 /* ScRideStation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1874,6 +1876,8 @@
 		E2A4181A243F4B77BA36ACE2 /* ScPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScPlayer.cpp; path = src/openrct2/scripting/bindings/network/ScPlayer.cpp; sourceTree = SOURCE_ROOT; };
 		7A08C451885D4D419FB4820D /* ScPlayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPlayer.hpp; path = src/openrct2/scripting/bindings/network/ScPlayer.hpp; sourceTree = SOURCE_ROOT; };
 		200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScNetwork.cpp; path = src/openrct2/scripting/bindings/network/ScNetwork.cpp; sourceTree = SOURCE_ROOT; };
+		522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScRideStation.cpp; path = src/openrct2/scripting/bindings/ride/ScRideStation.cpp; sourceTree = SOURCE_ROOT; };
+		1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScRideStation.hpp; path = src/openrct2/scripting/bindings/ride/ScRideStation.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3438,6 +3442,8 @@
 			isa = PBXGroup;
 			children = (
 				AD97B712FDF7454CADC7A328 /* ScRide.hpp */,
+				522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */,
+				1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */,
 			);
 			name = ride;
 			sourceTree = "<group>";
@@ -3605,6 +3611,7 @@
 				359328A3A65D49578912CA40 /* ScLitter.hpp in Headers */,
 				97C222A2A4F543E9AEC3912B /* ScPlayerGroup.hpp in Headers */,
 				2D0A43F28D5747C9B617F342 /* ScPlayer.hpp in Headers */,
+				63858E295E3F451283987982 /* ScRideStation.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4417,6 +4424,7 @@
 				149D1ACFD5FA42938364C843 /* ScPlayerGroup.cpp in Sources */,
 				E436DE7807A74621B7BF2276 /* ScPlayer.cpp in Sources */,
 				F08623EA69E7456DB79F3E06 /* ScNetwork.cpp in Sources */,
+				CDC72A71A28542F4AD73A91C /* ScRideStation.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

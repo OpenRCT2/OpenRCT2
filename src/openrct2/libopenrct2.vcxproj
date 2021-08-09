@@ -412,6 +412,7 @@
     <ClInclude Include="scripting\bindings\entity\ScVehicle.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayer.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayerGroup.hpp" />
+    <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
     <ClInclude Include="scripting\Duktape.hpp" />
     <ClInclude Include="scripting\HookEngine.h" />
     <ClInclude Include="scripting\Plugin.h" />
@@ -863,6 +864,7 @@
     <ClCompile Include="scripting\bindings\network\ScNetwork.cpp" />
     <ClCompile Include="scripting\bindings\network\ScPlayer.cpp" />
     <ClCompile Include="scripting\bindings\network\ScPlayerGroup.cpp" />
+    <ClCompile Include="scripting\bindings\ride\ScRideStation.cpp" />
     <ClCompile Include="scripting\HookEngine.cpp" />
     <ClCompile Include="scripting\Plugin.cpp" />
     <ClCompile Include="scripting\ScriptEngine.cpp" />

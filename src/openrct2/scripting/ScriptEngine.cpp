@@ -39,6 +39,7 @@
 #    include "bindings/network/ScSocket.hpp"
 #    include "bindings/object/ScObject.hpp"
 #    include "bindings/ride/ScRide.hpp"
+#    include "bindings/ride/ScRideStation.hpp"
 #    include "bindings/world/ScClimate.hpp"
 #    include "bindings/world/ScDate.hpp"
 #    include "bindings/world/ScMap.hpp"
