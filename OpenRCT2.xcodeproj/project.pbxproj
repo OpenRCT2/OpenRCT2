@@ -788,6 +788,7 @@
 		F08623EA69E7456DB79F3E06 /* ScNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */; };
 		CDC72A71A28542F4AD73A91C /* ScRideStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */; };
 		63858E295E3F451283987982 /* ScRideStation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */; };
+		705A4B342C7D4F38B26BAFA4 /* ScRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B00C9900ED42AFA72764ED /* ScRide.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1878,6 +1879,7 @@
 		200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScNetwork.cpp; path = src/openrct2/scripting/bindings/network/ScNetwork.cpp; sourceTree = SOURCE_ROOT; };
 		522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScRideStation.cpp; path = src/openrct2/scripting/bindings/ride/ScRideStation.cpp; sourceTree = SOURCE_ROOT; };
 		1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScRideStation.hpp; path = src/openrct2/scripting/bindings/ride/ScRideStation.hpp; sourceTree = SOURCE_ROOT; };
+		F3B00C9900ED42AFA72764ED /* ScRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScRide.cpp; path = src/openrct2/scripting/bindings/ride/ScRide.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3444,6 +3446,7 @@
 				AD97B712FDF7454CADC7A328 /* ScRide.hpp */,
 				522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */,
 				1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */,
+				F3B00C9900ED42AFA72764ED /* ScRide.cpp */,
 			);
 			name = ride;
 			sourceTree = "<group>";
@@ -4425,6 +4428,7 @@
 				E436DE7807A74621B7BF2276 /* ScPlayer.cpp in Sources */,
 				F08623EA69E7456DB79F3E06 /* ScNetwork.cpp in Sources */,
 				CDC72A71A28542F4AD73A91C /* ScRideStation.cpp in Sources */,
+				705A4B342C7D4F38B26BAFA4 /* ScRide.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
