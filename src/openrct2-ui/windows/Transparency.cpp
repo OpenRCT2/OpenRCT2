@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -67,7 +68,7 @@ enum WINDOW_TRANSPARENCY_WIDGET_IDX
     WIDX_INVISIBLE_GUESTS,
     WIDX_INVISIBLE_STAFF,
 
-    WIDX_PLACEHOLDER_RIDES = WIDX_TAB_CONTENT,
+    WIDX_LIST = WIDX_TAB_CONTENT,
 
     WIDX_PLACEHOLDER_MISC = WIDX_TAB_CONTENT,
 };
@@ -131,7 +132,7 @@ static rct_widget window_transparency_main_widgets[] =
 static rct_widget window_transparency_rides_widgets[] =
 {
     MAIN_TRANSPARENCY_WIDGETS,
-    MakeWidget({  5,  48}, {238, 279},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS), // Guests parameters group frame
+    MakeWidget({  4, 60}, {288, 327}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL),
     { WIDGETS_END },
 };
 
@@ -175,7 +176,7 @@ static uint64_t window_transparency_page_enabled_widgets[] = {
     (1ULL << WIDX_INVISIBLE_STAFF),
 
     MAIN_TRANSPARENCY_ENABLED_WIDGETS |
-    (1ULL << WIDX_PLACEHOLDER_RIDES),
+    (1ULL << WIDX_LIST),
 
     MAIN_TRANSPARENCY_ENABLED_WIDGETS |
     (1ULL << WIDX_PLACEHOLDER_MISC)
@@ -186,19 +187,23 @@ static uint64_t window_transparency_page_hold_down_widgets[] = {
 };
 
 static rct_string_id window_transparency_page_titles[] = {
-    STR_CHEAT_TITLE_FINANCIAL,
-    STR_CHEAT_TITLE_RIDE,
-    STR_CHEAT_TITLE_PARK,
+    STR_TRANSPARENCY_OPTIONS_TITLE_MAIN,
+    STR_TRANSPARENCY_OPTIONS_TITLE_RIDE,
+    STR_TRANSPARENCY_OPTIONS_TITLE_MISC,
 };
 // clang-format on
 
 class TransparencyWindow final : public Window
 {
 private:
+    int32_t _selected_list_item = -1;
+    std::vector<ride_id_t> _rideList;
+
 public:
     void OnOpen() override
     {
         SetPage(WINDOW_TRANSPARENCY_PAGE_MAIN);
+        RefreshRideList();
     }
 
     void OnUpdate() override
@@ -229,6 +234,9 @@ public:
                 {
                     case WINDOW_TRANSPARENCY_PAGE_MAIN:
                         OnMouseUpMain(widgetIndex);
+                        break;
+                    case WINDOW_TRANSPARENCY_PAGE_RIDES:
+                        OnMouseUpRides(widgetIndex);
                         break;
                 }
                 break;
@@ -301,6 +309,11 @@ public:
                 w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_STAFF;
                 break;
         }
+    }
+
+    void OnMouseUpRides(rct_widgetindex widgetIndex)
+    {
+        // TODO: Get the clicked on ride id, get the ride, set toggle is_visible
     }
 
     void OnPrepareDraw() override
@@ -468,8 +481,63 @@ private:
     {
     }
 
-    void OnMouseUpRides(rct_widgetindex widgetIndex)
+    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
+        ScreenCoordsXY screenCoords;
+        auto bgColour = ThemeGetColour(WC_CUSTOM, 0);
+
+        //uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
+        //gfx_clear(dpi, paletteIndex);
+
+        screenCoords.y = 2;
+        for (size_t i = 0; i < _rideList.size(); i++)
+        {
+            auto ridec = get_ride(_rideList[i]);
+            if (ridec == nullptr)
+                continue;
+
+            if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
+            {
+                gfx_fill_rect_inset(&dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, bgColour, INSET_RECT_F_E0);
+
+                // Draw checkmark
+                if (ridec->is_visible == true)
+                {
+                    screenCoords.x = 2;
+                    FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
+                    colour_t colour2 = NOT_TRANSLUCENT(bgColour);
+                    gfx_draw_string(
+                        &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
+                        { static_cast<colour_t>(colour2), fontSpriteBase });
+                }
+
+                screenCoords.x = 13;
+
+                int32_t width_limit = widgets[WIDX_LIST].width() - screenCoords.x;
+
+                // Ride name
+                auto ft = Formatter();
+                ridec->FormatNameTo(ft);
+                DrawTextEllipsised(&dpi, { screenCoords.x, screenCoords.y }, width_limit, STR_WINDOW_COLOUR_2_STRINGID, ft);
+            }
+            screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+        }
+    }
+
+    void RefreshRideList()
+    {
+        _rideList.clear();
+
+        size_t list_index = 0;
+        for (auto& ridec : GetRideManager())
+        {
+            auto rided = &ridec;
+            _rideList.push_back(rided->id);
+            list_index++;
+        }
+
+        _selected_list_item = -1;
+        Invalidate();
     }
 };
 
