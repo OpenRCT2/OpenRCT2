@@ -34,6 +34,10 @@ static constexpr const CoordsXY lengths[] = {
  */
 void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
 {
+    constexpr uint32_t primaryColour = COLOUR_BRIGHT_YELLOW;
+    constexpr uint32_t secondaryColour = COLOUR_GREY;
+    constexpr uint32_t seeThoughFlags = IMAGE_TYPE_TRANSPARENT | (primaryColour << 19) | (secondaryColour << 24);
+
     if (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
         return;
@@ -66,6 +70,12 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     auto* sceneryEntry = sceneryElement.GetEntry();
 
     if (sceneryEntry == nullptr)
+    {
+        return;
+    }
+
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)
+        && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_TREES)
     {
         return;
     }
@@ -155,6 +165,12 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     if (marker != 0)
     {
         baseImageid = (baseImageid & 0x7FFFF) | marker;
+    }
+    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)
+        && session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES)
+    {
+        baseImageid &= 0x7FFFF;
+        baseImageid |= seeThoughFlags;
     }
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
