@@ -32,6 +32,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/world/TileInspector.h>
 
 // clang-format off
 static constexpr const rct_string_id EntranceTypeStringIds[] = {
@@ -438,6 +439,7 @@ static void window_tile_inspector_invalidate(rct_window* w);
 static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 static void window_tile_inspector_set_page(rct_window* w, const TileInspectorPage page);
+static void window_tile_inspector_close(rct_window* w);
 
 // clang-format off
 static rct_window_event_list TileInspectorWindowEvents([](auto& events)
@@ -456,6 +458,7 @@ static rct_window_event_list TileInspectorWindowEvents([](auto& events)
     events.invalidate = &window_tile_inspector_invalidate;
     events.paint = &window_tile_inspector_paint;
     events.scroll_paint = &window_tile_inspector_scrollpaint;
+    events.close = &window_tile_inspector_close;
 });
 
 static uint64_t PageEnabledWidgets[] = {
@@ -542,10 +545,14 @@ static void window_tile_inspector_select_element_from_list(rct_window* w, int32_
     if (index < 0 || index >= windowTileInspectorElementCount)
     {
         windowTileInspectorSelectedIndex = -1;
+        OpenRCT2::TileInspector::SetSelectedElement(nullptr);
     }
     else
     {
         windowTileInspectorSelectedIndex = index;
+
+        const TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
+        OpenRCT2::TileInspector::SetSelectedElement(tileElement);
     }
 
     w->Invalidate();
@@ -759,6 +766,11 @@ static void window_tile_inspector_clamp_corrupt(int32_t elementIndex)
 {
     auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::CorruptClamp, elementIndex);
     GameActions::Execute(&modifyTile);
+}
+
+static void window_tile_inspector_close(rct_window* w)
+{
+    OpenRCT2::TileInspector::SetSelectedElement(nullptr);
 }
 
 static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetIndex)
@@ -1286,6 +1298,8 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, const Scre
     windowTileInspectorTileSelected = true;
     windowTileInspectorToolMap = mapCoords;
     windowTileInspectorTile = TileCoordsXY(mapCoords);
+
+    OpenRCT2::TileInspector::SetSelectedElement(clickedElement);
 
     window_tile_inspector_load_tile(w, clickedElement);
 }

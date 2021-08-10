@@ -16,6 +16,7 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/SmallScenery.h"
+#include "../../world/TileInspector.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
@@ -56,6 +57,10 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     if (tileElement->IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
+        marker = CONSTRUCTION_MARKER;
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(tileElement))
+    {
         marker = CONSTRUCTION_MARKER;
     }
 

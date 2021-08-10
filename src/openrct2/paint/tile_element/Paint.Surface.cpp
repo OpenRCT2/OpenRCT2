@@ -27,6 +27,7 @@
 #include "../../sprites.h"
 #include "../../world/Entity.h"
 #include "../../world/Surface.h"
+#include "../../world/TileInspector.h"
 #include "Paint.TileElement.h"
 
 #include <algorithm>
@@ -1073,6 +1074,11 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         {
             imageId &= 0xDC07FFFF; // remove colour
             imageId |= 0x41880000;
+        }
+
+        if (OpenRCT2::TileInspector::IsElementSelected(tileElement))
+        {
+            imageId |= CONSTRUCTION_MARKER;
         }
 
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
