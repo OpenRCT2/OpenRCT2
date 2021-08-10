@@ -48,6 +48,7 @@
 #    include "bindings/world/ScParkMessage.hpp"
 #    include "bindings/world/ScScenario.hpp"
 #    include "bindings/world/ScTile.hpp"
+#    include "bindings/world/ScTileElement.hpp"
 
 #    include <iostream>
 #    include <stdexcept>
