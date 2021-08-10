@@ -45,6 +45,7 @@
 #    include "bindings/world/ScDate.hpp"
 #    include "bindings/world/ScMap.hpp"
 #    include "bindings/world/ScPark.hpp"
+#    include "bindings/world/ScParkMessage.hpp"
 #    include "bindings/world/ScScenario.hpp"
 #    include "bindings/world/ScTile.hpp"
 

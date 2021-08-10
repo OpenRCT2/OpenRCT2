@@ -790,6 +790,8 @@
 		63858E295E3F451283987982 /* ScRideStation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */; };
 		705A4B342C7D4F38B26BAFA4 /* ScRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B00C9900ED42AFA72764ED /* ScRide.cpp */; };
 		2B8F76B32C944D3C97F0FFAF /* ScMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4BE60702D7549488A32CC0B /* ScMap.cpp */; };
+		BE55C1C86BFE4A0DA61260E2 /* ScParkMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1939C9C3CFDB4FB6BA5DE47E /* ScParkMessage.cpp */; };
+		AD5EC8B5EBF240B3874BC581 /* ScParkMessage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 56E37ADCDBD440BD8AC35446 /* ScParkMessage.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1882,6 +1884,8 @@
 		1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScRideStation.hpp; path = src/openrct2/scripting/bindings/ride/ScRideStation.hpp; sourceTree = SOURCE_ROOT; };
 		F3B00C9900ED42AFA72764ED /* ScRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScRide.cpp; path = src/openrct2/scripting/bindings/ride/ScRide.cpp; sourceTree = SOURCE_ROOT; };
 		E4BE60702D7549488A32CC0B /* ScMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScMap.cpp; path = src/openrct2/scripting/bindings/world/ScMap.cpp; sourceTree = SOURCE_ROOT; };
+		1939C9C3CFDB4FB6BA5DE47E /* ScParkMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScParkMessage.cpp; path = src/openrct2/scripting/bindings/world/ScParkMessage.cpp; sourceTree = SOURCE_ROOT; };
+		56E37ADCDBD440BD8AC35446 /* ScParkMessage.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScParkMessage.hpp; path = src/openrct2/scripting/bindings/world/ScParkMessage.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3463,6 +3467,8 @@
 				A9F55F2291284217BA0E4E51 /* ScScenario.hpp */,
 				22D7DD798F054A068273739B /* ScTile.hpp */,
 				E4BE60702D7549488A32CC0B /* ScMap.cpp */,
+				1939C9C3CFDB4FB6BA5DE47E /* ScParkMessage.cpp */,
+				56E37ADCDBD440BD8AC35446 /* ScParkMessage.hpp */,
 			);
 			name = world;
 			sourceTree = "<group>";
@@ -3618,6 +3624,7 @@
 				97C222A2A4F543E9AEC3912B /* ScPlayerGroup.hpp in Headers */,
 				2D0A43F28D5747C9B617F342 /* ScPlayer.hpp in Headers */,
 				63858E295E3F451283987982 /* ScRideStation.hpp in Headers */,
+				AD5EC8B5EBF240B3874BC581 /* ScParkMessage.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4433,6 +4440,7 @@
 				CDC72A71A28542F4AD73A91C /* ScRideStation.cpp in Sources */,
 				705A4B342C7D4F38B26BAFA4 /* ScRide.cpp in Sources */,
 				2B8F76B32C944D3C97F0FFAF /* ScMap.cpp in Sources */,
+				BE55C1C86BFE4A0DA61260E2 /* ScParkMessage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
