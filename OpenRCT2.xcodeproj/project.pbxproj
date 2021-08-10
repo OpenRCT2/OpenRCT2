@@ -792,6 +792,10 @@
 		2B8F76B32C944D3C97F0FFAF /* ScMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4BE60702D7549488A32CC0B /* ScMap.cpp */; };
 		BE55C1C86BFE4A0DA61260E2 /* ScParkMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1939C9C3CFDB4FB6BA5DE47E /* ScParkMessage.cpp */; };
 		AD5EC8B5EBF240B3874BC581 /* ScParkMessage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 56E37ADCDBD440BD8AC35446 /* ScParkMessage.hpp */; };
+		887B0043454440BAB322A9E8 /* ScPark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9C4DE37309A4B5F965D7718 /* ScPark.cpp */; };
+		5B6E418A2F264952BA0CC2F2 /* ScTileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43D18154E96444749737E3F6 /* ScTileElement.cpp */; };
+		DEC539DE402F4B8993E4C357 /* ScTileElement.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F4C26E211F1D44C9ADA70740 /* ScTileElement.hpp */; };
+		6C90BE01D190493295071B23 /* ScTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B67E36A8620400CA70FBA49 /* ScTile.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1886,6 +1890,10 @@
 		E4BE60702D7549488A32CC0B /* ScMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScMap.cpp; path = src/openrct2/scripting/bindings/world/ScMap.cpp; sourceTree = SOURCE_ROOT; };
 		1939C9C3CFDB4FB6BA5DE47E /* ScParkMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScParkMessage.cpp; path = src/openrct2/scripting/bindings/world/ScParkMessage.cpp; sourceTree = SOURCE_ROOT; };
 		56E37ADCDBD440BD8AC35446 /* ScParkMessage.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScParkMessage.hpp; path = src/openrct2/scripting/bindings/world/ScParkMessage.hpp; sourceTree = SOURCE_ROOT; };
+		E9C4DE37309A4B5F965D7718 /* ScPark.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScPark.cpp; path = src/openrct2/scripting/bindings/world/ScPark.cpp; sourceTree = SOURCE_ROOT; };
+		43D18154E96444749737E3F6 /* ScTileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScTileElement.cpp; path = src/openrct2/scripting/bindings/world/ScTileElement.cpp; sourceTree = SOURCE_ROOT; };
+		F4C26E211F1D44C9ADA70740 /* ScTileElement.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScTileElement.hpp; path = src/openrct2/scripting/bindings/world/ScTileElement.hpp; sourceTree = SOURCE_ROOT; };
+		5B67E36A8620400CA70FBA49 /* ScTile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScTile.cpp; path = src/openrct2/scripting/bindings/world/ScTile.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3469,6 +3477,10 @@
 				E4BE60702D7549488A32CC0B /* ScMap.cpp */,
 				1939C9C3CFDB4FB6BA5DE47E /* ScParkMessage.cpp */,
 				56E37ADCDBD440BD8AC35446 /* ScParkMessage.hpp */,
+				E9C4DE37309A4B5F965D7718 /* ScPark.cpp */,
+				43D18154E96444749737E3F6 /* ScTileElement.cpp */,
+				F4C26E211F1D44C9ADA70740 /* ScTileElement.hpp */,
+				5B67E36A8620400CA70FBA49 /* ScTile.cpp */,
 			);
 			name = world;
 			sourceTree = "<group>";
@@ -3625,6 +3637,7 @@
 				2D0A43F28D5747C9B617F342 /* ScPlayer.hpp in Headers */,
 				63858E295E3F451283987982 /* ScRideStation.hpp in Headers */,
 				AD5EC8B5EBF240B3874BC581 /* ScParkMessage.hpp in Headers */,
+				DEC539DE402F4B8993E4C357 /* ScTileElement.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4441,6 +4454,9 @@
 				705A4B342C7D4F38B26BAFA4 /* ScRide.cpp in Sources */,
 				2B8F76B32C944D3C97F0FFAF /* ScMap.cpp in Sources */,
 				BE55C1C86BFE4A0DA61260E2 /* ScParkMessage.cpp in Sources */,
+				887B0043454440BAB322A9E8 /* ScPark.cpp in Sources */,
+				5B6E418A2F264952BA0CC2F2 /* ScTileElement.cpp in Sources */,
+				6C90BE01D190493295071B23 /* ScTile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
