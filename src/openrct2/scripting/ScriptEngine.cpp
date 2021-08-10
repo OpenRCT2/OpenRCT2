@@ -29,6 +29,7 @@
 #    include "bindings/entity/ScLitter.hpp"
 #    include "bindings/entity/ScPeep.hpp"
 #    include "bindings/entity/ScStaff.hpp"
+#    include "bindings/entity/ScVehicle.hpp"
 #    include "bindings/game/ScCheats.hpp"
 #    include "bindings/game/ScConsole.hpp"
 #    include "bindings/game/ScContext.hpp"

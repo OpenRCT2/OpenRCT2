@@ -789,6 +789,7 @@
 		CDC72A71A28542F4AD73A91C /* ScRideStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */; };
 		63858E295E3F451283987982 /* ScRideStation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */; };
 		705A4B342C7D4F38B26BAFA4 /* ScRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B00C9900ED42AFA72764ED /* ScRide.cpp */; };
+		2B8F76B32C944D3C97F0FFAF /* ScMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4BE60702D7549488A32CC0B /* ScMap.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1880,6 +1881,7 @@
 		522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScRideStation.cpp; path = src/openrct2/scripting/bindings/ride/ScRideStation.cpp; sourceTree = SOURCE_ROOT; };
 		1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScRideStation.hpp; path = src/openrct2/scripting/bindings/ride/ScRideStation.hpp; sourceTree = SOURCE_ROOT; };
 		F3B00C9900ED42AFA72764ED /* ScRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScRide.cpp; path = src/openrct2/scripting/bindings/ride/ScRide.cpp; sourceTree = SOURCE_ROOT; };
+		E4BE60702D7549488A32CC0B /* ScMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScMap.cpp; path = src/openrct2/scripting/bindings/world/ScMap.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3460,6 +3462,7 @@
 				9AB8D336AB654D0280549A89 /* ScPark.hpp */,
 				A9F55F2291284217BA0E4E51 /* ScScenario.hpp */,
 				22D7DD798F054A068273739B /* ScTile.hpp */,
+				E4BE60702D7549488A32CC0B /* ScMap.cpp */,
 			);
 			name = world;
 			sourceTree = "<group>";
@@ -4429,6 +4432,7 @@
 				F08623EA69E7456DB79F3E06 /* ScNetwork.cpp in Sources */,
 				CDC72A71A28542F4AD73A91C /* ScRideStation.cpp in Sources */,
 				705A4B342C7D4F38B26BAFA4 /* ScRide.cpp in Sources */,
+				2B8F76B32C944D3C97F0FFAF /* ScMap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
