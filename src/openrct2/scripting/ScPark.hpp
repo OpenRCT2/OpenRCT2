@@ -449,6 +449,16 @@ namespace OpenRCT2::Scripting
             gConstructionRightsPrice = value;
         }
 
+        int16_t casualtyPenalty_get() const
+        {
+            return gParkRatingCasualtyPenalty;
+        }
+        void casualtyPenalty_set(int16_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            gParkRatingCasualtyPenalty = value;
+        }
+
         uint16_t parkSize_get() const
         {
             return gParkSize;
@@ -600,6 +610,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::parkSize_get, nullptr, "parkSize");
             dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
             dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
+            dukglue_register_property(ctx, &ScPark::casualtyPenalty_get, &ScPark::casualtyPenalty_set, "casualtyPenalty");
             dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");
             dukglue_register_method(ctx, &ScPark::setFlag, "setFlag");
             dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
