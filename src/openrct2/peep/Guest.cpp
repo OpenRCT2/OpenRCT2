@@ -7356,3 +7356,112 @@ bool Guest::HasItem(ShopItem peepItem) const
 {
     return GetItemFlags() & EnumToFlag(peepItem);
 }
+
+static bool IsThoughtShopItemRelated(const PeepThoughtType type)
+{
+    switch (type)
+    {
+        case PeepThoughtType::AlreadyGot:
+        case PeepThoughtType::HaventFinished:
+        case PeepThoughtType::CantAffordItem:
+            return true;
+        default:
+            break;
+    }
+    return false;
+}
+
+void Guest::RemoveRideFromMemory(ride_id_t rideId)
+{
+    uint8_t ride_id_bit = rideId % 8;
+    uint8_t ride_id_offset = rideId / 8;
+
+    // clear ride from potentially being in RidesBeenOn
+    RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
+    if (State == PeepState::Watching)
+    {
+        if (CurrentRide == rideId)
+        {
+            CurrentRide = RIDE_ID_NULL;
+            if (TimeToStand >= 50)
+            {
+                // make peep stop watching the ride
+                TimeToStand = 50;
+            }
+        }
+    }
+
+    // remove any free voucher for this ride from peep
+    if (HasItem(ShopItem::Voucher))
+    {
+        if (VoucherType == VOUCHER_TYPE_RIDE_FREE && VoucherRideId == rideId)
+        {
+            RemoveItem(ShopItem::Voucher);
+        }
+    }
+
+    // remove any photos of this ride from peep
+    if (HasItem(ShopItem::Photo))
+    {
+        if (Photo1RideRef == rideId)
+        {
+            RemoveItem(ShopItem::Photo);
+        }
+    }
+    if (HasItem(ShopItem::Photo2))
+    {
+        if (Photo2RideRef == rideId)
+        {
+            RemoveItem(ShopItem::Photo2);
+        }
+    }
+    if (HasItem(ShopItem::Photo3))
+    {
+        if (Photo3RideRef == rideId)
+        {
+            RemoveItem(ShopItem::Photo3);
+        }
+    }
+    if (HasItem(ShopItem::Photo4))
+    {
+        if (Photo4RideRef == rideId)
+        {
+            RemoveItem(ShopItem::Photo4);
+        }
+    }
+
+    if (GuestHeadingToRideId == rideId)
+    {
+        GuestHeadingToRideId = RIDE_ID_NULL;
+    }
+    if (FavouriteRide == rideId)
+    {
+        FavouriteRide = RIDE_ID_NULL;
+    }
+
+    // Erase all thoughts that contain the ride.
+    for (auto it = std::begin(Thoughts); it != std::end(Thoughts);)
+    {
+        const auto& entry = *it;
+        if (entry.type == PeepThoughtType::None)
+            break;
+
+        // Ride ids and shop item ids might have the same value, look only for ride thoughts.
+        if (IsThoughtShopItemRelated(entry.type) || entry.item != rideId)
+        {
+            it++;
+            continue;
+        }
+
+        if (auto itNext = std::next(it); itNext != std::end(Thoughts))
+        {
+            // Overwrite this entry by shifting all entries that follow.
+            std::rotate(it, itNext, std::end(Thoughts));
+        }
+
+        // Last slot is now free.
+        auto& lastEntry = Thoughts.back();
+        lastEntry.type = PeepThoughtType::None;
+        lastEntry.item = PEEP_THOUGHT_ITEM_NONE;
+    }
+}

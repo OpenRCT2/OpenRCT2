@@ -784,6 +784,10 @@ public:
     bool HasItem(ShopItem peepItem) const;
     void Serialise(DataSerialiser& stream);
 
+    // Removes the ride from the guests memory, this includes
+    // the history, thoughts, etc.
+    void RemoveRideFromMemory(ride_id_t rideId);
+
 private:
     void UpdateRide();
     void UpdateOnRide(){}; // TODO
