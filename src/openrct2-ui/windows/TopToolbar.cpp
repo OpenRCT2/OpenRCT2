@@ -3665,9 +3665,9 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_SCENERY, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_PATHS, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
         Dropdown::SetChecked(DDIDX_INVISIBLE_SUPPORTS, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS || mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF)
         Dropdown::SetChecked(DDIDX_INVISIBLE_PEEPS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
         Dropdown::SetChecked(DDIDX_LAND_HEIGHTS, true);
@@ -3723,10 +3723,17 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_PATHS;
                 break;
             case DDIDX_INVISIBLE_SUPPORTS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+                if (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+                    w->viewport->flags = w->viewport->flags
+                        & ~(VIEWPORT_FLAG_SEETHROUGH_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
+                else
+                    w->viewport->flags |= (VIEWPORT_FLAG_SEETHROUGH_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
                 break;
             case DDIDX_INVISIBLE_PEEPS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+                if (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS || w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF)
+                    w->viewport->flags = w->viewport->flags & ~(VIEWPORT_FLAG_INVISIBLE_GUESTS | VIEWPORT_FLAG_INVISIBLE_STAFF);
+                else
+                    w->viewport->flags |= (VIEWPORT_FLAG_INVISIBLE_GUESTS | VIEWPORT_FLAG_INVISIBLE_STAFF);
                 break;
             case DDIDX_LAND_HEIGHTS:
                 w->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;

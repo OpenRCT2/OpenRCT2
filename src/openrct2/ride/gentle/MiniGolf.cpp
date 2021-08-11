@@ -1213,7 +1213,7 @@ void vehicle_visual_mini_golf_player(
         return;
     }
 
-    if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS) || (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_GUESTS))
+    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_GUESTS)
     {
         return;
     }
@@ -1255,7 +1255,7 @@ void vehicle_visual_mini_golf_ball(
         return;
     }
 
-    if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS) || (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_GUESTS))
+    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_GUESTS)
     {
         return;
     }

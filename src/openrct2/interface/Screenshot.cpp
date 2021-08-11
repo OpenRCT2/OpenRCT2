@@ -564,7 +564,7 @@ static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewpor
 
     if (options->hide_guests)
     {
-        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_GUESTS | VIEWPORT_FLAG_INVISIBLE_STAFF;
     }
 
     if (options->hide_sprites)

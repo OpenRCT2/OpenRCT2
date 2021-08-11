@@ -445,6 +445,10 @@ static constexpr const uint16_t word_97B3C4[] = {
     15,
     0,
 };
+
+constexpr uint32_t primaryColour = COLOUR_BRIGHT_YELLOW;
+constexpr uint32_t secondaryColour = COLOUR_GREY;
+constexpr uint32_t seeThoughFlags = IMAGE_TYPE_TRANSPARENT | (primaryColour << 19) | (secondaryColour << 24);
 // clang-format on
 
 bool wooden_a_supports_paint_setup(
@@ -472,14 +476,19 @@ bool wooden_b_supports_paint_setup(
 bool wooden_a_supports_paint_setup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    {
+        return false;
+    }
+
     if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
 
-    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
-        return false;
+        imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
     int32_t z = floor2(session.Support.height + 15, 16);
@@ -629,16 +638,19 @@ bool wooden_a_supports_paint_setup(
 bool wooden_b_supports_paint_setup(
     paint_session& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
-    bool _9E32B1 = false;
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    {
+        return false;
+    }
 
     if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
 
-    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
-        return false;
+        imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
     uint16_t baseHeight = ceil2(session.Support.height, 16);
@@ -651,8 +663,8 @@ bool wooden_b_supports_paint_setup(
 
     int16_t heightSteps = supportLength / 16;
 
+    bool _9E32B1 = false;
     bool goTo662E8B = false;
-
     if (session.Support.slope & 0x20)
     {
         goTo662E8B = true;
@@ -801,14 +813,19 @@ bool metal_a_supports_paint_setup(
 {
     support_height* supportSegments = session.SupportSegments;
 
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    {
+        return false;
+    }
+
     if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
 
-    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
-        return false;
+        imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1).ToUInt32();
     }
 
     int16_t originalHeight = height;
@@ -1000,14 +1017,19 @@ bool metal_b_supports_paint_setup(
     support_height* supportSegments = session.SupportSegments;
     uint8_t originalSegment = segment;
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false; // AND
     }
 
-    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
-        return false; // AND
+        return false;
+    }
+
+    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    {
+        imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1).ToUInt32();
     }
 
     uint16_t _9E3294 = 0xFFFF;
@@ -1180,14 +1202,19 @@ bool path_a_supports_paint_setup(
         *underground = false; // AND
     }
 
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    {
+        return false;
+    }
+
     if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
 
-    if (!(session.Flags & PaintSessionFlags::PassedSurface))
+    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
-        return false;
+        imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
     uint16_t baseHeight = ceil2(session.Support.height, 16);
@@ -1330,14 +1357,19 @@ bool path_b_supports_paint_setup(
 {
     support_height* supportSegments = session.SupportSegments;
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-    {
-        return false; // AND
-    }
-
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
-        return false; // AND
+        return false;
+    }
+
+    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    {
+        return false;
+    }
+
+    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    {
+        imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
     if (height < supportSegments[segment].height)

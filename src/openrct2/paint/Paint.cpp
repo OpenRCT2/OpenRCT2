@@ -722,7 +722,7 @@ static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem sp
                 break;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS)
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS && viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS)
     {
         switch (spriteType)
         {
@@ -734,7 +734,7 @@ static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem sp
                 break;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY)
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY && viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY)
     {
         switch (spriteType)
         {

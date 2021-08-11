@@ -9,8 +9,8 @@
 
 #include <algorithm>
 #include <iterator>
-#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -45,32 +45,26 @@ enum WINDOW_TRANSPARENCY_WIDGET_IDX
     WIDX_PAGE_BACKGROUND,
     WIDX_TAB_1,
     WIDX_TAB_2,
-    WIDX_TAB_3,
     WIDX_TAB_CONTENT,
 
-    WIDX_TERRAIN_GROUP = WIDX_TAB_CONTENT,
-    WIDX_UNDERGROUND_VIEW,
-    WIDX_TRANSPARENT_WATER,
-    WIDX_HIDE_BASE_LAND,
-    WIDX_HIDE_VERTICAL_FACES,
-    WIDX_SEE_THROUGH_GROUP,
-    WIDX_SEE_THROUGH_RIDES,
+    WIDX_SEE_THROUGH_RIDES = WIDX_TAB_CONTENT,
     WIDX_SEE_THROUGH_VEHICLES,
     WIDX_SEE_THROUGH_SCENERY,
     WIDX_SEE_THROUGH_TREES,
     WIDX_SEE_THROUGH_PATHS,
-    WIDX_INVISIBLE_GROUP,
+    WIDX_SEE_THROUGH_SUPPORTS,
+    WIDX_INVISIBLE_GUESTS,
+    WIDX_INVISIBLE_STAFF,
     WIDX_INVISIBLE_RIDES,
+    WIDX_INVISIBLE_VEHICLES,
     WIDX_INVISIBLE_SCENERY,
     WIDX_INVISIBLE_TREES,
     WIDX_INVISIBLE_PATHS,
     WIDX_INVISIBLE_SUPPORTS,
-    WIDX_INVISIBLE_GUESTS,
-    WIDX_INVISIBLE_STAFF,
 
     WIDX_LIST = WIDX_TAB_CONTENT,
 
-    WIDX_PLACEHOLDER_MISC = WIDX_TAB_CONTENT,
+    WIDX_MISC_GROUP = WIDX_TAB_CONTENT,
 };
 
 #pragma region MEASUREMENTS
@@ -78,6 +72,9 @@ enum WINDOW_TRANSPARENCY_WIDGET_IDX
 static constexpr const rct_string_id WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
 static constexpr const int32_t WW = 249;
 static constexpr const int32_t WH = 300;
+
+static constexpr ScreenSize ICON_BUTTON = {24, 24};
+static constexpr ScreenSize FLAT_BUTTON = {24, 12};
 
 static constexpr ScreenSize CHEAT_BUTTON = {110, 17};
 static constexpr ScreenSize CHEAT_CHECK = {221, 12};
@@ -92,39 +89,30 @@ static constexpr const int32_t TAB_START = 3;
 
 #define MAIN_TRANSPARENCY_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({ 0, 43}, {WW, 257}, WindowWidgetType::ImgBtn, WindowColour::Secondary), /* tab content panel */ \
-    MakeTab   ({ 3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */ \
-    MakeTab   ({34, 17}, STR_RIDE_CHEATS_TIP                           ), /* tab 2 */ \
-    MakeTab   ({65, 17}, STR_PARK_CHEATS_TIP                           )  /* tab 3 */
+    MakeWidget({ 0, 81}, {WW, 257}, WindowWidgetType::ImgBtn, WindowColour::Secondary), /* tab content panel */ \
+    MakeTab   ({ 3, 55}, STR_TRANSPARENCY_OPTIONS_TITLE_MAIN), /* tab 1 */ \
+    MakeTab   ({34, 55}, STR_TRANSPARENCY_OPTIONS_TITLE_RIDE)
 
 // 15px group padding top, 17px margin between lines, 17px group padding bottom. 22px group margin bottom
 static rct_widget window_transparency_main_widgets[] =
 {
     MAIN_TRANSPARENCY_WIDGETS,
-    MakeWidget({  5,  48}, {238,  83},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS), // General parameters group frame
     
-    MakeWidget({ 11,  63}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_UNDERGROUND_VIEW,           STR_UNDERGROUND_VIEW),
-    MakeWidget({ 11,  80}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_VIEWPORT_TRANSPARENT_WATER, STR_VIEWPORT_TRANSPARENT_WATER),
-    MakeWidget({ 11,  97}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_REMOVE_BASE_LAND,           STR_REMOVE_BASE_LAND),
-    MakeWidget({ 11, 114}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_REMOVE_VERTICAL_FACES,      STR_REMOVE_VERTICAL_FACES),
-    
-    MakeWidget({  5, 136}, {238,  100},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS), // See-through parameters group frame
+    MakeWidget({102, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_RIDE,                       STR_SEE_THROUGH_RIDES),
+    MakeWidget({127, 15}, ICON_BUTTON,    WindowWidgetType::Button,   WindowColour::Secondary, STR_NONE,                       STR_SEE_THROUGH_VEHICLES),
+    MakeWidget({ 27, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY,    STR_SEE_THROUGH_SCENERY),
+    MakeWidget({  2, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_TREES,            STR_SEE_THROUGH_TREES),
+    MakeWidget({ 52, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,         STR_SEE_THROUGH_PATHS),
+    MakeWidget({ 77, 15}, ICON_BUTTON,    WindowWidgetType::Button,   WindowColour::Secondary, STR_NONE,                       STR_SEE_THROUGH_SUPPORTS),
+    MakeWidget({152, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_GUESTS,                     STR_INVISIBLE_GUESTS),
+    MakeWidget({177, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_MECHANIC,                   STR_INVISIBLE_STAFF),
 
-    MakeWidget({ 11, 151}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SEE_THROUGH_RIDES,          STR_SEE_THROUGH_RIDES),
-    MakeWidget({ 11, 168}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SEE_THROUGH_VEHICLES,       STR_SEE_THROUGH_VEHICLES),
-    MakeWidget({ 11, 185}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SEE_THROUGH_SCENERY,        STR_SEE_THROUGH_SCENERY),
-    MakeWidget({ 11, 202}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SEE_THROUGH_TREES,          STR_SEE_THROUGH_TREES), // Trees
-    MakeWidget({ 11, 219}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SEE_THROUGH_PATHS,          STR_SEE_THROUGH_PATHS),
-
-    MakeWidget({  5, 241}, {238,  134},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS), // Invisible parameters group frame
-
-    MakeWidget({ 11, 256}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_INVISIBLE_RIDES,            STR_INVISIBLE_RIDES),
-    MakeWidget({ 11, 273}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_INVISIBLE_SCENERY,          STR_INVISIBLE_SCENERY),
-    MakeWidget({ 11, 290}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_INVISIBLE_TREES,            STR_INVISIBLE_TREES), // Trees
-    MakeWidget({ 11, 307}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_INVISIBLE_PATHS,            STR_INVISIBLE_PATHS),
-    MakeWidget({ 11, 324}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_INVISIBLE_SUPPORTS,         STR_INVISIBLE_SUPPORTS),
-    MakeWidget({ 11, 341}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_INVISIBLE_GUESTS,           STR_INVISIBLE_GUESTS), // Guests
-    MakeWidget({ 11, 358}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_INVISIBLE_STAFF,            STR_INVISIBLE_STAFF), // Staff
+    MakeWidget({102,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_RIDES),
+    MakeWidget({127,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEHICLES),
+    MakeWidget({ 27,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SCENERY),
+    MakeWidget({  2,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_TREES),
+    MakeWidget({ 52,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_PATHS),
+    MakeWidget({ 77,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SUPPORTS),
 
     { WIDGETS_END },
 };
@@ -132,15 +120,7 @@ static rct_widget window_transparency_main_widgets[] =
 static rct_widget window_transparency_rides_widgets[] =
 {
     MAIN_TRANSPARENCY_WIDGETS,
-    MakeWidget({  4, 60}, {288, 327}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL),
-    { WIDGETS_END },
-};
-
-//Strings for following moved to window_cheats_paint()
-static rct_widget window_transparency_misc_widgets[] =
-{
-    MAIN_TRANSPARENCY_WIDGETS,
-    MakeWidget        ({  5,  48}, {238,  60},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP), // General group
+    MakeWidget({  4, 95}, {160, 120}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL),
     { WIDGETS_END },
 };
 
@@ -148,42 +128,39 @@ static rct_widget *window_transparency_page_widgets[] =
 {
     window_transparency_main_widgets,
     window_transparency_rides_widgets,
-    window_transparency_misc_widgets,
 };
 
-#define MAIN_TRANSPARENCY_ENABLED_WIDGETS (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3)
+#define MAIN_TRANSPARENCY_ENABLED_WIDGETS (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2)
 
 static uint64_t window_transparency_page_enabled_widgets[] = {
     MAIN_TRANSPARENCY_ENABLED_WIDGETS |
-    (1ULL << WIDX_TERRAIN_GROUP) |
-    (1ULL << WIDX_UNDERGROUND_VIEW) |
-    (1ULL << WIDX_TRANSPARENT_WATER) |
-    (1ULL << WIDX_HIDE_BASE_LAND) |
-    (1ULL << WIDX_HIDE_VERTICAL_FACES) |
-    (1ULL << WIDX_SEE_THROUGH_GROUP) |
     (1ULL << WIDX_SEE_THROUGH_RIDES) |
     (1ULL << WIDX_SEE_THROUGH_VEHICLES) |
     (1ULL << WIDX_SEE_THROUGH_SCENERY) |
     (1ULL << WIDX_SEE_THROUGH_TREES) |
     (1ULL << WIDX_SEE_THROUGH_PATHS) |
-    (1ULL << WIDX_INVISIBLE_GROUP) |
     (1ULL << WIDX_INVISIBLE_RIDES) |
+    (1ULL << WIDX_INVISIBLE_VEHICLES) |
     (1ULL << WIDX_INVISIBLE_SCENERY) |
     (1ULL << WIDX_INVISIBLE_TREES) |
     (1ULL << WIDX_INVISIBLE_PATHS) |
     (1ULL << WIDX_INVISIBLE_SUPPORTS) |
     (1ULL << WIDX_INVISIBLE_GUESTS) |
-    (1ULL << WIDX_INVISIBLE_STAFF),
+    (1ULL << WIDX_INVISIBLE_STAFF) |
+    (1ULL << WIDX_SEE_THROUGH_SUPPORTS),
 
     MAIN_TRANSPARENCY_ENABLED_WIDGETS |
     (1ULL << WIDX_LIST),
 
     MAIN_TRANSPARENCY_ENABLED_WIDGETS |
-    (1ULL << WIDX_PLACEHOLDER_MISC)
+    (1ULL << WIDX_MISC_GROUP)
+};
+static uint64_t window_transparency_page_disabled_widgets[] = {
+    0,
 };
 
 static uint64_t window_transparency_page_hold_down_widgets[] = {
-        WIDX_UNDERGROUND_VIEW,
+        0,
 };
 
 static rct_string_id window_transparency_page_titles[] = {
@@ -226,7 +203,6 @@ public:
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
-            case WIDX_TAB_3:
                 SetPage(widgetIndex - WIDX_TAB_1);
                 break;
             default:
@@ -238,6 +214,9 @@ public:
                     case WINDOW_TRANSPARENCY_PAGE_RIDES:
                         OnMouseUpRides(widgetIndex);
                         break;
+                    case WINDOW_TRANSPARENCY_PAGE_MISC:
+                        OnMouseUpMisc(widgetIndex);
+                        break;
                 }
                 break;
         }
@@ -247,73 +226,27 @@ public:
     {
     }
 
-    void OnMouseUpMain(rct_widgetindex widgetIndex)
-    {
-        rct_window* w = window_get_main();
-        if (w == nullptr)
-            return;
-
-        switch (widgetIndex)
-        {
-            case WIDX_UNDERGROUND_VIEW:
-                w->viewport->flags ^= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                break;
-            case WIDX_TRANSPARENT_WATER:
-                gConfigGeneral.transparent_water ^= 1;
-                config_save_default();
-                break;
-            case WIDX_HIDE_BASE_LAND:
-                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_BASE;
-                break;
-            case WIDX_HIDE_VERTICAL_FACES:
-                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
-                break;
-            case WIDX_SEE_THROUGH_RIDES:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
-                break;
-            case WIDX_SEE_THROUGH_VEHICLES:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_VEHICLES;
-                break;
-            case WIDX_SEE_THROUGH_SCENERY:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
-                break;
-            case WIDX_SEE_THROUGH_TREES:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_TREES;
-                break;
-            case WIDX_SEE_THROUGH_PATHS:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_PATHS;
-                break;
-            case WIDX_INVISIBLE_RIDES:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_RIDES;
-                break;
-            case WIDX_INVISIBLE_SCENERY:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SCENERY;
-                break;
-            case WIDX_INVISIBLE_TREES:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_TREES;
-                break;
-            case WIDX_INVISIBLE_PATHS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PATHS;
-                break;
-            case WIDX_INVISIBLE_SUPPORTS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
-                break;
-            case WIDX_INVISIBLE_GUESTS:
-                if (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-                    w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_GUESTS;
-                break;
-            case WIDX_INVISIBLE_STAFF:
-                if (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-                    w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_STAFF;
-                break;
-        }
-    }
-
     void OnMouseUpRides(rct_widgetindex widgetIndex)
     {
-        // TODO: Get the clicked on ride id, get the ride, set toggle is_visible
+    }
+
+    void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        auto i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+        // i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
+        for (const auto& rideItem : _rideList)
+        {
+            if (i == 0)
+            {
+                auto ridec = get_ride(rideItem);
+                if (ridec != nullptr)
+                {
+                    ridec->is_visible = (ridec->is_visible == true ? false : true);
+                }
+                break;
+            }
+            i--;
+        }
     }
 
     void OnPrepareDraw() override
@@ -343,29 +276,23 @@ public:
         switch (page)
         {
             case WINDOW_TRANSPARENCY_PAGE_MAIN:
-                SetCheckboxValue(WIDX_UNDERGROUND_VIEW, (w->viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE));
-                SetCheckboxValue(WIDX_TRANSPARENT_WATER, (gConfigGeneral.transparent_water == 1));
-                SetCheckboxValue(WIDX_HIDE_BASE_LAND, (w->viewport->flags & VIEWPORT_FLAG_HIDE_BASE));
-                SetCheckboxValue(WIDX_HIDE_VERTICAL_FACES, (w->viewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL));
-                SetCheckboxValue(WIDX_SEE_THROUGH_RIDES, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES));
-                SetCheckboxValue(WIDX_SEE_THROUGH_VEHICLES, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES));
-                SetCheckboxValue(WIDX_SEE_THROUGH_SCENERY, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY));
-                SetCheckboxValue(WIDX_SEE_THROUGH_TREES, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_TREES));
-                SetCheckboxValue(WIDX_SEE_THROUGH_PATHS, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS));
-                SetCheckboxValue(WIDX_INVISIBLE_RIDES, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_RIDES));
-                SetCheckboxValue(WIDX_INVISIBLE_SCENERY, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SCENERY));
-                SetCheckboxValue(WIDX_INVISIBLE_TREES, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_TREES));
-                SetCheckboxValue(WIDX_INVISIBLE_PATHS, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_PATHS));
-                SetCheckboxValue(WIDX_INVISIBLE_SUPPORTS, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
-                SetCheckboxValue(
-                    WIDX_INVISIBLE_GUESTS,
-                    (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS)
-                        || (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS));
-                SetCheckboxValue(
-                    WIDX_INVISIBLE_STAFF,
-                    (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF)
-                        || (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS));
-            break;
+                SetWidgetPressed(WIDX_SEE_THROUGH_RIDES, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES));
+                SetWidgetPressed(WIDX_SEE_THROUGH_VEHICLES, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES));
+                SetWidgetPressed(WIDX_SEE_THROUGH_SCENERY, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY));
+                SetWidgetPressed(WIDX_SEE_THROUGH_TREES, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_TREES));
+                SetWidgetPressed(WIDX_SEE_THROUGH_PATHS, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS));
+                SetWidgetPressed(WIDX_SEE_THROUGH_SUPPORTS, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS));
+                SetWidgetPressed(WIDX_INVISIBLE_RIDES, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_RIDES));
+                SetWidgetPressed(WIDX_INVISIBLE_VEHICLES, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_VEHICLES));
+                SetWidgetPressed(WIDX_INVISIBLE_SCENERY, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SCENERY));
+                SetWidgetPressed(WIDX_INVISIBLE_TREES, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_TREES));
+                SetWidgetPressed(WIDX_INVISIBLE_PATHS, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_PATHS));
+                SetWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
+                SetWidgetPressed(WIDX_INVISIBLE_GUESTS, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS));
+                SetWidgetPressed(WIDX_INVISIBLE_STAFF, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF));
+                break;
+            case WINDOW_TRANSPARENCY_PAGE_MISC:
+                break;
         }
     }
 
@@ -417,7 +344,6 @@ private:
         constexpr const uint16_t tabs[] = {
             WIDX_TAB_1,
             WIDX_TAB_2,
-            WIDX_TAB_3,
         };
 
         auto left = TAB_START;
@@ -433,7 +359,7 @@ private:
 
     void DrawTabImages(rct_drawpixelinfo& dpi)
     {
-        // Money tab
+        // Main tab
         if (!IsWidgetDisabled(WIDX_TAB_1))
         {
             uint32_t sprite_idx = SPR_TAB_FINANCES_SUMMARY_0;
@@ -452,21 +378,60 @@ private:
             gfx_draw_sprite(
                 &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
         }
-
-        // Guests tab
-        if (!IsWidgetDisabled(WIDX_TAB_3))
-        {
-            uint32_t sprite_idx = SPR_TAB_GUESTS_0;
-            if (page == WINDOW_TRANSPARENCY_PAGE_MISC)
-                sprite_idx += (frame_no / 3) % 8;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
-        }
     }
 
-    void OnMouseDownMisc(rct_widgetindex widgetIndex)
+    void OnMouseUpMain(rct_widgetindex widgetIndex)
     {
-        // auto* widget = &widgets[widgetIndex];
+        rct_window* w = window_get_main();
+        if (w == nullptr)
+            return;
+
+        switch (widgetIndex)
+        {
+            case WIDX_SEE_THROUGH_RIDES:
+                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+                break;
+            case WIDX_SEE_THROUGH_VEHICLES:
+                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_VEHICLES;
+                break;
+            case WIDX_SEE_THROUGH_SCENERY:
+                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+                break;
+            case WIDX_SEE_THROUGH_TREES:
+                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_TREES;
+                break;
+            case WIDX_SEE_THROUGH_PATHS:
+                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_PATHS;
+                break;
+            case WIDX_SEE_THROUGH_SUPPORTS:
+                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SUPPORTS;
+                break;
+            case WIDX_INVISIBLE_RIDES:
+                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_RIDES;
+                break;
+            case WIDX_INVISIBLE_VEHICLES:
+                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+                break;
+            case WIDX_INVISIBLE_SCENERY:
+                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SCENERY;
+                break;
+            case WIDX_INVISIBLE_TREES:
+                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_TREES;
+                break;
+            case WIDX_INVISIBLE_PATHS:
+                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PATHS;
+                break;
+            case WIDX_INVISIBLE_SUPPORTS:
+                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+                break;
+            case WIDX_INVISIBLE_GUESTS:
+                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_GUESTS;
+                break;
+            case WIDX_INVISIBLE_STAFF:
+                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_STAFF;
+                break;
+        }
+        w->Invalidate();
     }
 
     void OnMouseUpMisc(rct_widgetindex widgetIndex)
@@ -477,17 +442,10 @@ private:
     {
     }
 
-    void OnMouseDownRides(rct_widgetindex widgetIndex)
-    {
-    }
-
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         ScreenCoordsXY screenCoords;
         auto bgColour = ThemeGetColour(WC_CUSTOM, 0);
-
-        //uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
-        //gfx_clear(dpi, paletteIndex);
 
         screenCoords.y = 2;
         for (size_t i = 0; i < _rideList.size(); i++)
