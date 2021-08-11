@@ -3922,9 +3922,11 @@ enum
     STR_INVISIBLE_STAFF = 6466,
     STR_TRANSPARENCY_OPTIONS = 6467,
     STR_TRANSPARENCY_OPTIONS_TITLE = 6468,
-    STR_TRANSPARENCY_OPTIONS_TITLE_MAIN = 6468,
-    STR_TRANSPARENCY_OPTIONS_TITLE_RIDE = 6468,
-    STR_TRANSPARENCY_OPTIONS_TITLE_MISC = 6468,
+    STR_TRANSPARENCY_OPTIONS_TITLE_MAIN = 6469,
+    STR_TRANSPARENCY_OPTIONS_TITLE_RIDE = 6470,
+    STR_TRANSPARENCY_OPTIONS_TITLE_MISC = 6471,
+    STR_INVISIBLE_VEHICLES = 6472,
+    STR_SEE_THROUGH_SUPPORTS = 6473,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

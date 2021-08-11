@@ -1524,17 +1524,6 @@ static void window_ride_set_page(rct_window* w, int32_t page)
     w->Invalidate();
 
     if (listen != 0 && w->viewport != nullptr)
-    {
-        ride->is_visible = true;
-        log_info("Set ride to visible. Ride ID %u Window Number %u", ride->id, w->number);
-    }
-    else if (listen == 0 && w->viewport != nullptr)
-    {
-        ride->is_visible = false;
-        log_info("Set ride to invisible. Ride ID %u Window Number %u", ride->id, w->number);
-    }
-
-    if (listen != 0 && w->viewport != nullptr)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
 

@@ -55,8 +55,7 @@ template<> void PaintEntity(paint_session* session, const Peep* peep, int32_t im
         return;
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS
-        || (peep->Is<Staff>() && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_STAFF)
+    if ((peep->Is<Staff>() && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_STAFF)
         || (!peep->Is<Staff>() && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_GUESTS))
     {
         return;

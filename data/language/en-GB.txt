@@ -3666,6 +3666,11 @@ STR_6465    :Invisible Guests
 STR_6466    :Invisible Staff
 STR_6467    :Transparency Options
 STR_6468    :Transparency Options
+STR_6469    :Transparency Options
+STR_6470    :Ride Exclusions
+STR_6471    :Other Options
+STR_6472    :Invisible Vehicles
+STR_6473    :See-Through Supports
 
 #############
 # Scenarios #

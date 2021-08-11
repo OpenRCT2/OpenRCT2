@@ -444,6 +444,10 @@ static constexpr const uint16_t word_97B3C4[] = {
     15,
     0,
 };
+
+constexpr uint32_t primaryColour = COLOUR_BRIGHT_YELLOW;
+constexpr uint32_t secondaryColour = COLOUR_GREY;
+constexpr uint32_t seeThoughFlags = IMAGE_TYPE_TRANSPARENT | (primaryColour << 19) | (secondaryColour << 24);
 // clang-format on
 
 /**
@@ -460,6 +464,12 @@ bool wooden_a_supports_paint_setup(
     paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
 {
     if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    {
+        imageColourFlags &= 0x7FFFF;
+        imageColourFlags |= seeThoughFlags;
+    }
+
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
@@ -624,7 +634,13 @@ bool wooden_b_supports_paint_setup(
 {
     bool _9E32B1 = false;
 
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    {
+        imageColourFlags &= 0x7FFFF;
+        imageColourFlags |= seeThoughFlags;
+    }
+
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
@@ -797,7 +813,13 @@ bool metal_a_supports_paint_setup(
 {
     support_height* supportSegments = session->SupportSegments;
 
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    {
+        imageColourFlags &= 0x7FFFF;
+        imageColourFlags |= seeThoughFlags;
+    }
+
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
@@ -996,7 +1018,13 @@ bool metal_b_supports_paint_setup(
     support_height* supportSegments = session->SupportSegments;
     uint8_t originalSegment = segment;
 
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    {
+        imageColourFlags &= 0x7FFFF;
+        imageColourFlags |= seeThoughFlags;
+    }
+
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false; // AND
     }
@@ -1176,7 +1204,13 @@ bool path_a_supports_paint_setup(
         *underground = false; // AND
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    {
+        imageColourFlags &= 0x7FFFF;
+        imageColourFlags |= seeThoughFlags;
+    }
+
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
@@ -1325,7 +1359,13 @@ bool path_b_supports_paint_setup(
 {
     support_height* supportSegments = session->SupportSegments;
 
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    {
+        imageColourFlags &= 0x7FFFF;
+        imageColourFlags |= seeThoughFlags;
+    }
+
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false; // AND
     }

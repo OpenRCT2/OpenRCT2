@@ -727,7 +727,7 @@ static uint32_t PaintPSColourifyImage(
                 break;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS)
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS && viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS)
     {
         switch (spriteType)
         {
@@ -740,7 +740,7 @@ static uint32_t PaintPSColourifyImage(
                 break;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY)
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY && viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY)
     {
         switch (spriteType)
         {

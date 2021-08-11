@@ -160,17 +160,19 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     {
         baseImageid = (baseImageid & 0x7FFFF) | marker;
     }
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)
-        && session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES)
-    {
-        baseImageid &= 0x7FFFF;
-        baseImageid |= seeThoughFlags;
-    }
-    else if (
+    
+    if (
         scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)
         && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_TREES)
     {
         baseImageid = 0x7FFFF;
+    }
+    else if (
+        scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)
+        && session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES)
+    {
+        baseImageid &= 0x7FFFF;
+        baseImageid |= seeThoughFlags;
     }
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
