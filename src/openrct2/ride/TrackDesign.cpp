@@ -66,18 +66,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-struct map_backup
-{
-    TileElement tile_elements[MAX_TILE_ELEMENTS];
-    TileElement* tile_pointers[MAX_TILE_TILE_ELEMENT_POINTERS];
-    TileElement* next_free_tile_element;
-    uint16_t map_size_units;
-    uint16_t map_size_units_minus_2;
-    uint16_t map_size;
-    uint8_t current_rotation;
-};
-
-TrackDesign* gActiveTrackDesign;
 bool gTrackDesignSceneryToggle;
 static CoordsXYZ _trackPreviewMin;
 static CoordsXYZ _trackPreviewMax;
