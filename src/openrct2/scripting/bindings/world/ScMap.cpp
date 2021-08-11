@@ -231,10 +231,9 @@ namespace OpenRCT2::Scripting
         {
             return createEntityType<Litter, ScLitter>(_context, initializer);
         }
-        else
-        {
-            duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
-        }
+
+        duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
+        return DukValue{};
     }
 
     void ScMap::Register(duk_context* ctx)
