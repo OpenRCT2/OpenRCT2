@@ -33,7 +33,7 @@ enum
  */
 static void paint_motionsimulator_vehicle(
     paint_session* session, const Ride* ride, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     if (ride == nullptr)
         return;
@@ -133,7 +133,7 @@ static void paint_motionsimulator_vehicle(
 /** rct2: 0x008A85C4 */
 static void paint_motionsimulator(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 
@@ -150,20 +150,20 @@ static void paint_motionsimulator(
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
+            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
             fenceSpritesRope, session->CurrentRotation);
     }
 
     switch (trackSequence)
     {
         case 1:
-            paint_motionsimulator_vehicle(session, ride, 16, -16, direction, height, tileElement);
+            paint_motionsimulator_vehicle(session, ride, 16, -16, direction, height, trackElement);
             break;
         case 2:
-            paint_motionsimulator_vehicle(session, ride, -16, 16, direction, height, tileElement);
+            paint_motionsimulator_vehicle(session, ride, -16, 16, direction, height, trackElement);
             break;
         case 3:
-            paint_motionsimulator_vehicle(session, ride, -16, -16, direction, height, tileElement);
+            paint_motionsimulator_vehicle(session, ride, -16, -16, direction, height, trackElement);
             break;
     }
 

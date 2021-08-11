@@ -591,6 +591,8 @@ public:
 
     PathSurfaceIndex GetPathType() const;
     void SetPathType(PathSurfaceIndex newPathType);
+
+    int32_t GetDirections() const;
 };
 assert_struct_size(EntranceElement, 16);
 

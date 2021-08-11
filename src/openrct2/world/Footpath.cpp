@@ -94,16 +94,14 @@ static constexpr const uint8_t connected_path_count[] = {
     4, // 0b1111
 };
 
-int32_t entrance_get_directions(const TileElement* tileElement)
+int32_t EntranceElement::GetDirections() const
 {
-    uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
-    uint8_t sequence = tileElement->AsEntrance()->GetSequenceIndex();
-    return EntranceDirections[(entranceType * 8) + sequence];
+    return EntranceDirections[(GetEntranceType() * 8) + GetSequenceIndex()];
 }
 
-static bool entrance_has_direction(TileElement* tileElement, int32_t direction)
+static bool entrance_has_direction(const EntranceElement& entranceElement, int32_t direction)
 {
-    return entrance_get_directions(tileElement) & (1 << (direction & 3));
+    return entranceElement.GetDirections() & (1 << (direction & 3));
 }
 
 TileElement* map_get_footpath_element(const CoordsXYZ& coords)
@@ -353,7 +351,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
         && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        int32_t directions = entrance_get_directions(*tileElement);
+        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
             int32_t bx = bitscanforward(directions);
@@ -370,7 +368,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
         EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath, ViewportInteractionItem::Ride));
     if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        int32_t directions = entrance_get_directions(*tileElement);
+        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
             int32_t bx = (*tileElement)->GetDirectionWithOffset(bitscanforward(directions));
@@ -903,7 +901,8 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                     if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
-                        if (entrance_has_direction(tileElement, direction_reverse(direction - tileElement->GetDirection())))
+                        if (entrance_has_direction(
+                                *(tileElement->AsEntrance()), direction_reverse(direction - tileElement->GetDirection())))
                         {
                             if (query)
                             {
@@ -941,7 +940,8 @@ static void loc_6A6C85(
 
     if (tileElementPos.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        if (!entrance_has_direction(tileElementPos.element, direction - tileElementPos.element->GetDirection()))
+        if (!entrance_has_direction(
+                *(tileElementPos.element->AsEntrance()), direction - tileElementPos.element->GetDirection()))
         {
             return;
         }
@@ -2117,7 +2117,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (tileElement->base_height == coords.z)
                 {
-                    if (entrance_has_direction(tileElement, coords.direction - tileElement->GetDirection()))
+                    if (entrance_has_direction(*(tileElement->AsEntrance()), coords.direction - tileElement->GetDirection()))
                     {
                         // Entrance wants to be connected towards the given direction
                         return true;

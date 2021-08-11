@@ -88,7 +88,7 @@ static void paint_space_rings_structure(
 /** rct2: 0x00767C40 */
 static void paint_space_rings(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     if (ride == nullptr)
         return;
@@ -108,12 +108,12 @@ static void paint_space_rings(
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_SPACE_RINGS_FENCE_SW | session->TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2);
             }
-            if (track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_SPACE_RINGS_FENCE_SE | session->TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2);
@@ -121,7 +121,7 @@ static void paint_space_rings(
             break;
         default:
             track_paint_util_paint_fences(
-                session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+                session, edges, position, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
                 space_rings_fence_sprites, session->CurrentRotation);
             break;
     }

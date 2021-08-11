@@ -124,7 +124,7 @@ static void paint_swinging_inverter_ship_structure(
 /** rct2: 0x00760260 */
 static void paint_swinging_inverter_ship(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
     uint32_t imageId;
