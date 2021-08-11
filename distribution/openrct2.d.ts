@@ -516,9 +516,9 @@ declare global {
         readonly isClientOnly: boolean;
         result: boolean;
     }
-    
+
     type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
-    
+
     interface VehicleCrashArgs {
         readonly id: number;
         readonly crashIntoType: VehicleCrashIntoType;
@@ -577,6 +577,8 @@ declare global {
         getAllEntities(type: "peep"): Peep[];
         getAllEntities(type: "guest"): Guest[];
         getAllEntities(type: "staff"): Staff[];
+        getAllEntities(type: "car"): Car[];
+        getAllEntities(type: "litter"): Litter[];
         createEntity(type: EntityType, initializer: object): Entity;
     }
 
@@ -1034,6 +1036,11 @@ declare global {
          * The value of the ride.
          */
         value: number;
+
+        /**
+         * The percentage of downtime for this ride from 0 to 100.
+         */
+        readonly downtime: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";
@@ -1441,6 +1448,21 @@ declare global {
          * Amount of cash in the guest's pocket.
          */
         cash: number;
+
+        /**
+         * Whether the guest is within the boundaries of the park.
+         */
+        readonly isInPark: boolean;
+
+        /**
+         * Whether the guest is lost or not. The guest is lost when the countdown is below 90.
+         */
+        readonly isLost: boolean;
+
+        /**
+         * Countdown between 0 and 255 that keeps track of how long the guest has been looking for its current destination.
+         */
+        lostCountdown: number;
     }
 
     /**
@@ -1485,17 +1507,17 @@ declare global {
         creationTime: number;
     }
 
-    type LitterType = "vomit" | 
-        "vomit_alt" | 
-        "empty_can" |  
-        "rubbish" | 
-        "burger_box" | 
-        "empty_cup" | 
-        "empty_box" | 
-        "empty_bottle" | 
-        "empty_bowl_red" | 
-        "empty_drink_carton" |  
-        "empty_juice_cup" | 
+    type LitterType = "vomit" |
+        "vomit_alt" |
+        "empty_can" |
+        "rubbish" |
+        "burger_box" |
+        "empty_cup" |
+        "empty_box" |
+        "empty_bottle" |
+        "empty_bowl_red" |
+        "empty_drink_carton" |
+        "empty_juice_cup" |
         "empty_bowl_blue";
 
     /**
@@ -1749,6 +1771,12 @@ declare global {
          * The purchase price of one tile for construction rights.
          */
         constructionRightsPrice: number;
+
+        /**
+         * The amount of penalty points currentlty applied to the park rating for
+         * drowned guests and crashed coaster cars.
+         */
+        casualtyPenalty: number;
 
         /**
          * The number of tiles on the map with park ownership or construction rights.

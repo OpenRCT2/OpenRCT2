@@ -848,6 +848,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScGuest::maxIntensity_get, &ScGuest::maxIntensity_set, "maxIntensity");
             dukglue_register_property(ctx, &ScGuest::nauseaTolerance_get, &ScGuest::nauseaTolerance_set, "nauseaTolerance");
             dukglue_register_property(ctx, &ScGuest::cash_get, &ScGuest::cash_set, "cash");
+            dukglue_register_property(ctx, &ScGuest::isInPark_get, nullptr, "isInPark");
+            dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
+            dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
         }
 
     private:
@@ -1113,6 +1116,33 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr)
             {
                 peep->CashInPocket = std::max(0, value);
+            }
+        }
+
+        bool isInPark_get() const
+        {
+            auto peep = GetGuest();
+            return (peep != nullptr && !peep->OutsideOfPark);
+        }
+
+        bool isLost_get() const
+        {
+            auto peep = GetGuest();
+            return (peep != nullptr && peep->GuestIsLostCountdown < 90);
+        }
+
+        uint8_t lostCountdown_get() const
+        {
+            auto peep = GetGuest();
+            return peep != nullptr ? peep->GuestIsLostCountdown : 0;
+        }
+        void lostCountdown_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetGuest();
+            if (peep != nullptr)
+            {
+                peep->GuestIsLostCountdown = value;
             }
         }
     };
