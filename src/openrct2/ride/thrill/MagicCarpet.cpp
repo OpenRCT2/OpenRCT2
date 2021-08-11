@@ -216,7 +216,7 @@ static void paint_magic_carpet_structure(
 /** rct2: 0x00898514 */
 static void paint_magic_carpet(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
 

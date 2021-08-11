@@ -98,7 +98,7 @@ void vehicle_visual_roto_drop(
 /** rct2: 0x00886194 */
 static void paint_roto_drop_base(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -112,7 +112,7 @@ static void paint_roto_drop_base(
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
+            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
             fenceSpritesMetalB, session->CurrentRotation);
     }
 
@@ -178,7 +178,7 @@ static void paint_roto_drop_base(
 /** rct2: 0x008861A4 */
 static void paint_roto_drop_tower_section(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     if (trackSequence == 1)
     {
@@ -188,8 +188,8 @@ static void paint_roto_drop_tower_section(
     uint32_t imageId = SPR_ROTO_DROP_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
-    const TileElement* nextTileElement = tileElement + 1;
-    if (tileElement->IsLastForTile() || tileElement->GetClearanceZ() != nextTileElement->GetBaseZ())
+    const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
+    if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
         imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);

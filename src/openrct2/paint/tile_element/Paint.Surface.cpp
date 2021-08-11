@@ -422,9 +422,9 @@ static uint32_t get_tunnel_image(ObjectEntryIndex index, uint8_t type)
     return result;
 }
 
-static uint8_t viewport_surface_paint_setup_get_relative_slope(const TileElement* tileElement, int32_t rotation)
+static uint8_t viewport_surface_paint_setup_get_relative_slope(const SurfaceElement& surfaceElement, int32_t rotation)
 {
-    const uint8_t slope = tileElement->AsSurface()->GetSlope();
+    const uint8_t slope = surfaceElement.GetSlope();
     const uint8_t slopeHeight = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
     uint16_t slopeCorners = (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) << rotation;
     slopeCorners = ((slopeCorners >> 4) | slopeCorners) & 0x0F;
@@ -961,23 +961,24 @@ static std::pair<int32_t, int32_t> surface_get_height_above_water(
 /**
  *  rct2: 0x0066062C
  */
-void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
+void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, const SurfaceElement& tileElement)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
     session->InteractionType = ViewportInteractionItem::Terrain;
     session->DidPassSurface = true;
-    session->SurfaceElement = tileElement;
+    session->SurfaceElement = reinterpret_cast<const TileElement*>(&tileElement);
 
     const auto zoomLevel = dpi->zoom_level;
     const uint8_t rotation = session->CurrentRotation;
-    const auto terrain_type = tileElement->AsSurface()->GetSurfaceStyle();
+    const auto terrain_type = tileElement.GetSurfaceStyle();
     const uint8_t surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
     const CoordsXY& base = session->SpritePosition;
     const corner_height& cornerHeights = corner_heights[surfaceShape];
+    const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
     tile_descriptor selfDescriptor = {
         TileCoordsXY(base),
-        tileElement,
+        elementPtr,
         static_cast<uint8_t>(terrain_type),
         surfaceShape,
         {
@@ -1010,8 +1011,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             continue;
         }
 
-        const uint32_t surfaceSlope = viewport_surface_paint_setup_get_relative_slope(
-            reinterpret_cast<TileElement*>(surfaceElement), rotation);
+        const uint32_t surfaceSlope = viewport_surface_paint_setup_get_relative_slope(*surfaceElement, rotation);
         const uint8_t baseHeight = surfaceElement->GetBaseZ() / 16;
         const corner_height& ch = corner_heights[surfaceSlope];
 
@@ -1058,7 +1058,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         {
             if ((session->ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
             {
-                grassLength = tileElement->AsSurface()->GetGrassLength() & 0x7;
+                grassLength = tileElement.GetGrassLength() & 0x7;
             }
         }
 
@@ -1076,7 +1076,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             imageId |= 0x41880000;
         }
 
-        if (OpenRCT2::TileInspector::IsElementSelected(tileElement))
+        if (OpenRCT2::TileInspector::IsElementSelected(elementPtr))
         {
             imageId |= CONSTRUCTION_MARKER;
         }
@@ -1118,8 +1118,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         {
             assert(surfaceShape < std::size(byte_97B444));
 
-            auto [local_height, local_surfaceShape] = surface_get_height_above_water(
-                *tileElement->AsSurface(), height, surfaceShape);
+            auto [local_height, local_surfaceShape] = surface_get_height_above_water(tileElement, height, surfaceShape);
             image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[local_surfaceShape];
             image_id |= patrolColour << 19;
 
@@ -1150,12 +1149,12 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     if (session->ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         // loc_660E9A:
-        if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
+        if (tileElement.GetOwnership() & OWNERSHIP_OWNED)
         {
             assert(surfaceShape < std::size(byte_97B444));
             PaintAttachToPreviousPS(session, SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
         }
-        else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_AVAILABLE)
+        else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
         {
             const CoordsXY& pos = session->MapPosition;
             const int32_t height2 = (tile_element_height({ pos.x + 16, pos.y + 16 })) + 3;
@@ -1165,14 +1164,14 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         }
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
+    if (session->ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.GetOwnership() & OWNERSHIP_OWNED))
     {
-        if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+        if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
         {
             assert(surfaceShape < std::size(byte_97B444));
             PaintAttachToPreviousPS(session, SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
         }
-        else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+        else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
         {
             const CoordsXY& pos = session->MapPosition;
             const int32_t height2 = tile_element_height({ pos.x + 16, pos.y + 16 });
@@ -1226,8 +1225,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             else
             {
                 // The water tool should draw its grid _on_ the water, rather than on the surface under water.
-                auto [local_height, local_surfaceShape] = surface_get_height_above_water(
-                    *tileElement->AsSurface(), height, surfaceShape);
+                auto [local_height, local_surfaceShape] = surface_get_height_above_water(tileElement, height, surfaceShape);
 
                 const int32_t image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
@@ -1280,7 +1278,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
     if (!(session->ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
-        const auto edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
+        const auto edgeStyle = tileElement.GetEdgeStyle();
         if (static_cast<int32_t>(edgeStyle) >= object_entry_group_counts[EnumValue(ObjectType::TerrainEdge)])
         {
             log_verbose("edgeStyle: %d", edgeStyle);
@@ -1294,7 +1292,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             session, EDGE_BOTTOMRIGHT, height, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
     }
 
-    const uint16_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
+    const uint16_t waterHeight = tileElement.GetWaterHeight();
     const bool waterGetsClipped = (session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * COORDS_Z_STEP);
 
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
@@ -1323,7 +1321,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         if (!(session->ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
         {
             // This wasn't in the original, but the code depended on globals that were only set in a different conditional
-            const uint32_t edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
+            const uint32_t edgeStyle = tileElement.GetEdgeStyle();
             // end new code
 
             viewport_surface_draw_water_side_bottom(
@@ -1337,12 +1335,12 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         }
     }
 
-    if ((tileElement->AsSurface()->GetParkFences()) && !gTrackDesignSaveMode)
+    if ((tileElement.GetParkFences()) && !gTrackDesignSaveMode)
     {
         // Owned land boundary fences
         session->InteractionType = ViewportInteractionItem::ParkEntrance;
 
-        uint8_t rotatedFences = rol4(tileElement->AsSurface()->GetParkFences(), rotation);
+        uint8_t rotatedFences = rol4(tileElement.GetParkFences(), rotation);
 
         for (const auto& fenceData : _tileSurfaceBoundaries)
         {

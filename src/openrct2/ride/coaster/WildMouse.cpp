@@ -166,7 +166,7 @@ static constexpr const uint32_t _wild_mouse_block_brakes_image_ids[NumOrthogonal
 /** rct2: 0x0078B1E4 */
 static void wild_mouse_track_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WILD_MOUSE_FLAT_SW_NE, SPR_WILD_MOUSE_FLAT_CHAIN_SW_NE },
@@ -175,7 +175,7 @@ static void wild_mouse_track_flat(
         { SPR_WILD_MOUSE_FLAT_NW_SE, SPR_WILD_MOUSE_FLAT_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -190,7 +190,7 @@ static void wild_mouse_track_flat(
 
 static void wild_mouse_track_station(
     paint_session* session, const Ride* ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t baseImageIds[4] = {
         SPR_STATION_BASE_B_SW_NE,
@@ -199,13 +199,13 @@ static void wild_mouse_track_station(
         SPR_STATION_BASE_B_NW_SE,
     };
 
-    int32_t trackType = tileElement->AsTrack()->GetTrackType();
+    int32_t trackType = trackElement.GetTrackType();
     PaintAddImageAsParentRotated(
         session, direction, baseImageIds[direction] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 2, height - 2, 0, 2,
         height);
     if (trackType == TrackElemType::EndStation)
     {
-        bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+        bool isClosed = trackElement.BlockBrakeClosed();
         PaintAddImageAsChildRotated(
             session, direction, _wild_mouse_block_brakes_image_ids[direction][isClosed] | session->TrackColours[SCHEME_TRACK],
             0, 0, 32, 20, 2, height, 0, 0, height);
@@ -217,7 +217,7 @@ static void wild_mouse_track_station(
             height, 0, 0, height);
     }
     track_paint_util_draw_station_metal_supports(session, direction, height, session->TrackColours[SCHEME_SUPPORTS]);
-    track_paint_util_draw_station(session, ride, direction, height, tileElement);
+    track_paint_util_draw_station(session, ride, direction, height, trackElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -226,7 +226,7 @@ static void wild_mouse_track_station(
 /** rct2: 0x0078B1F4 */
 static void wild_mouse_track_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WILD_MOUSE_25_DEG_SW_NE, SPR_WILD_MOUSE_25_DEG_CHAIN_SW_NE },
@@ -235,7 +235,7 @@ static void wild_mouse_track_25_deg_up(
         { SPR_WILD_MOUSE_25_DEG_SE_NW, SPR_WILD_MOUSE_25_DEG_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -258,7 +258,7 @@ static void wild_mouse_track_25_deg_up(
 /** rct2: 0x0078B204 */
 static void wild_mouse_track_60_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WILD_MOUSE_60_DEG_SW_NE, SPR_WILD_MOUSE_60_DEG_CHAIN_SW_NE },
@@ -267,7 +267,7 @@ static void wild_mouse_track_60_deg_up(
         { SPR_WILD_MOUSE_60_DEG_SE_NW, SPR_WILD_MOUSE_60_DEG_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
     {
@@ -304,7 +304,7 @@ static void wild_mouse_track_60_deg_up(
 /** rct2: 0x0078B214 */
 static void wild_mouse_track_flat_to_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WILD_MOUSE_FLAT_TO_25_DEG_SW_NE, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SW_NE },
@@ -313,7 +313,7 @@ static void wild_mouse_track_flat_to_25_deg_up(
         { SPR_WILD_MOUSE_FLAT_TO_25_DEG_SE_NW, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -336,7 +336,7 @@ static void wild_mouse_track_flat_to_25_deg_up(
 /** rct2: 0x0078B224 */
 static void wild_mouse_track_25_deg_up_to_60_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WILD_MOUSE_25_DEG_TO_60_DEG_SW_NE, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SW_NE },
@@ -351,7 +351,7 @@ static void wild_mouse_track_25_deg_up_to_60_deg_up(
         { 0, 0 },
     };
 
-    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
@@ -383,7 +383,7 @@ static void wild_mouse_track_25_deg_up_to_60_deg_up(
 /** rct2: 0x0078B234 */
 static void wild_mouse_track_60_deg_up_to_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WILD_MOUSE_60_DEG_TO_25_DEG_SW_NE, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_SW_NE },
@@ -398,7 +398,7 @@ static void wild_mouse_track_60_deg_up_to_25_deg_up(
         { 0, 0 },
     };
 
-    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
@@ -430,7 +430,7 @@ static void wild_mouse_track_60_deg_up_to_25_deg_up(
 /** rct2: 0x0078B244 */
 static void wild_mouse_track_25_deg_up_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WILD_MOUSE_25_DEG_TO_FLAT_SW_NE, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SW_NE },
@@ -439,7 +439,7 @@ static void wild_mouse_track_25_deg_up_to_flat(
         { SPR_WILD_MOUSE_25_DEG_TO_FLAT_SE_NW, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -462,54 +462,54 @@ static void wild_mouse_track_25_deg_up_to_flat(
 /** rct2: 0x0078B254 */
 static void wild_mouse_track_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    wild_mouse_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    wild_mouse_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0078B264 */
 static void wild_mouse_track_60_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    wild_mouse_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    wild_mouse_track_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0078B274 */
 static void wild_mouse_track_flat_to_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    wild_mouse_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    wild_mouse_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0078B284 */
 static void wild_mouse_track_25_deg_down_to_60_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    wild_mouse_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    wild_mouse_track_60_deg_up_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0078B294 */
 static void wild_mouse_track_60_deg_down_to_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    wild_mouse_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    wild_mouse_track_25_deg_up_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0078B2A4 */
 static void wild_mouse_track_25_deg_down_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    wild_mouse_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    wild_mouse_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 static void wild_mouse_track_right_quarter_turn_3(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const sprite_bb imageIds[4][3] = {
         {
@@ -565,7 +565,7 @@ static void wild_mouse_track_right_quarter_turn_3(
 
 static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const sprite_bb imageIds[4][2] = {
         {
@@ -624,16 +624,16 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
 
 static void wild_mouse_track_left_quarter_turn_3_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    wild_mouse_track_right_quarter_turn_3_25_deg_down(session, ride, trackSequence, (direction + 1) % 4, height, tileElement);
+    wild_mouse_track_right_quarter_turn_3_25_deg_down(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
 /** rct2: 0x0078B314 */
 static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const sprite_bb imageIds[4][2] = {
         {
@@ -703,24 +703,24 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
 /** rct2: 0x0078B324 */
 static void wild_mouse_track_left_quarter_turn_3_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    wild_mouse_track_right_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction + 1) % 4, height, tileElement);
+    wild_mouse_track_right_quarter_turn_3_25_deg_up(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
 static void wild_mouse_track_left_quarter_turn_3(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    wild_mouse_track_right_quarter_turn_3(session, ride, trackSequence, (direction + 1) % 4, height, tileElement);
+    wild_mouse_track_right_quarter_turn_3(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
 /** rct2: 0x0078B394 */
 static void wild_mouse_track_left_quarter_turn_1(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4] = {
         SPR_WILD_MOUSE_QUARTER_TURN_1_SW_NE,
@@ -755,15 +755,15 @@ static void wild_mouse_track_left_quarter_turn_1(
 /** rct2: 0x0078B3A4 */
 static void wild_mouse_track_right_quarter_turn_1(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    wild_mouse_track_left_quarter_turn_1(session, ride, trackSequence, (direction - 1) & 3, height, tileElement);
+    wild_mouse_track_left_quarter_turn_1(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x0078B354 */
 static void wild_mouse_track_flat_to_60_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WILD_MOUSE_FLAT_TO_60_DEG_SW_NE, SPR_WILD_MOUSE_FLAT_TO_60_DEG_CHAIN_SW_NE },
@@ -778,7 +778,7 @@ static void wild_mouse_track_flat_to_60_deg_up(
         { 0, 0 },
     };
 
-    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
@@ -810,7 +810,7 @@ static void wild_mouse_track_flat_to_60_deg_up(
 /** rct2: 0x0078B364 */
 static void wild_mouse_track_60_deg_up_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_WILD_MOUSE_60_DEG_TO_FLAT_SW_NE, SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_SW_NE },
@@ -825,7 +825,7 @@ static void wild_mouse_track_60_deg_up_to_flat(
         { 0, 0 },
     };
 
-    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
+    uint8_t isChained = trackElement.HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
@@ -864,23 +864,23 @@ static void wild_mouse_track_60_deg_up_to_flat(
 /** rct2: 0x0078B374 */
 static void wild_mouse_track_flat_to_60_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    wild_mouse_track_60_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    wild_mouse_track_60_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0078B384 */
 static void wild_mouse_track_60_deg_down_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    wild_mouse_track_flat_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    wild_mouse_track_flat_to_60_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x0078B344 */
 static void wild_mouse_track_brakes(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     uint32_t imageId = _wild_mouse_brakes_image_ids[direction] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
@@ -897,7 +897,7 @@ static void wild_mouse_track_brakes(
 /** rct2: 0x0078B3C4 */
 static void wild_mouse_track_rotation_control_toggle(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4] = {
         SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_SW_NE,
@@ -921,9 +921,9 @@ static void wild_mouse_track_rotation_control_toggle(
 /** rct2: 0x0078B3B4 */
 static void wild_mouse_track_block_brakes(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+    bool isClosed = trackElement.BlockBrakeClosed();
     uint32_t imageId = _wild_mouse_block_brakes_image_ids[direction][isClosed] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))

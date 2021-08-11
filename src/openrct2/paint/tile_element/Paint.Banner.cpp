@@ -33,7 +33,7 @@ constexpr CoordsXY BannerBoundBoxes[][2] = {
  *
  *  rct2: 0x006B9CC4
  */
-void banner_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
+void PaintBanner(paint_session* session, uint8_t direction, int32_t height, const BannerElement& bannerElement)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
 
@@ -44,13 +44,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     height -= 16;
 
-    auto bannerElement = tile_element->AsBanner();
-    if (bannerElement == nullptr)
-    {
-        return;
-    }
-
-    auto banner = bannerElement->GetBanner();
+    auto banner = bannerElement.GetBanner();
     if (banner == nullptr)
     {
         return;
@@ -62,7 +56,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
         return;
     }
 
-    direction += bannerElement->GetPosition();
+    direction += bannerElement.GetPosition();
     direction &= 3;
 
     CoordsXYZ boundBoxOffset = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
@@ -70,12 +64,12 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     uint32_t base_id = (direction << 1) + bannerEntry->image;
     uint32_t image_id = base_id;
 
-    if (tile_element->IsGhost()) // if being placed
+    if (bannerElement.IsGhost()) // if being placed
     {
         session->InteractionType = ViewportInteractionItem::None;
         image_id |= CONSTRUCTION_MARKER;
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(tile_element))
+    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&bannerElement)))
     {
         image_id |= CONSTRUCTION_MARKER;
     }
@@ -95,7 +89,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     direction = direction_reverse(direction);
     direction--;
     // If text not showing / ghost
-    if (direction >= 2 || (tile_element->IsGhost()))
+    if (direction >= 2 || (bannerElement.IsGhost()))
         return;
 
     uint16_t scrollingMode = bannerEntry->scrolling_mode;
