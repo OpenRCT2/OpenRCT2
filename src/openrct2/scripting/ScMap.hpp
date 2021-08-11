@@ -236,6 +236,8 @@ namespace OpenRCT2::Scripting
             {
                 duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
             }
+
+            return DukValue();
         }
 
         static void Register(duk_context* ctx)
