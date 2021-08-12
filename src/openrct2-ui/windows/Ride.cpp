@@ -1476,7 +1476,6 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
 static void window_ride_set_page(rct_window* w, int32_t page)
 {
     int32_t listen;
-    auto ride = get_ride(w->number);
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
         if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)

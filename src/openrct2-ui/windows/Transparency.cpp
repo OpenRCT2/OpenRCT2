@@ -76,11 +76,6 @@ static constexpr const int32_t WH = 300;
 static constexpr ScreenSize ICON_BUTTON = {24, 24};
 static constexpr ScreenSize FLAT_BUTTON = {24, 12};
 
-static constexpr ScreenSize CHEAT_BUTTON = {110, 17};
-static constexpr ScreenSize CHEAT_CHECK = {221, 12};
-static constexpr ScreenSize CHEAT_SPINNER = {117, 14};
-static constexpr ScreenSize MINMAX_BUTTON = {55, 17};
-
 static constexpr const int32_t TAB_WIDTH = 31;
 static constexpr const int32_t TAB_START = 3;
 
