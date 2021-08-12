@@ -2610,7 +2610,7 @@ void sub_6C94D8()
             }
             break;
         }
-        case RideConstructionState::Build:
+        case RideConstructionState::MazeBuild:
         case RideConstructionState::MazeMove:
         case RideConstructionState::MazeFill:
         {
@@ -3735,7 +3735,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     {
         for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
         {
-            _rideConstructionState = RideConstructionState::Build;
+            _rideConstructionState = RideConstructionState::MazeBuild;
             _currentTrackBegin.x = mapCoords.x;
             _currentTrackBegin.y = mapCoords.y;
             _currentTrackBegin.z = z;

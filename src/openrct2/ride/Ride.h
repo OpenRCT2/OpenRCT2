@@ -889,7 +889,7 @@ enum class RideConstructionState : uint8_t
     Selected,
     Place,
     EntranceExit,
-    Build,
+    MazeBuild,
     MazeMove,
     MazeFill
 };

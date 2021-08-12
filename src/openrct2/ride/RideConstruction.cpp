@@ -550,7 +550,7 @@ void ride_construction_invalidate_current_track()
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
                 nullptr, TRACK_ELEMENT_SET_HIGHLIGHT_FALSE);
             break;
-        case RideConstructionState::Build:
+        case RideConstructionState::MazeBuild:
         case RideConstructionState::MazeMove:
         case RideConstructionState::MazeFill:
         case RideConstructionState::Front:
@@ -950,7 +950,7 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
         if (trackElement != nullptr)
         {
             _currentRideIndex = trackElement->GetRideIndex();
-            _rideConstructionState = RideConstructionState::Build;
+            _rideConstructionState = RideConstructionState::MazeBuild;
             _currentTrackBegin.x = tileElement.x;
             _currentTrackBegin.y = tileElement.y;
             _currentTrackBegin.z = trackElement->GetBaseZ();

@@ -274,7 +274,7 @@ static void window_maze_construction_mousedown(rct_window* w, rct_widgetindex wi
     switch (widgetIndex)
     {
         case WIDX_MAZE_BUILD_MODE:
-            window_maze_construction_build_mode_mousedown(RideConstructionState::Build);
+            window_maze_construction_build_mode_mousedown(RideConstructionState::MazeBuild);
             break;
         case WIDX_MAZE_MOVE_MODE:
             window_maze_construction_build_mode_mousedown(RideConstructionState::MazeMove);
@@ -484,7 +484,7 @@ void window_maze_construction_update_pressed_widgets()
                 pressedWidgets |= EnumToFlag(WIDX_MAZE_EXIT);
             }
             break;
-        case RideConstructionState::Build:
+        case RideConstructionState::MazeBuild:
             pressedWidgets |= EnumToFlag(WIDX_MAZE_BUILD_MODE);
             break;
         case RideConstructionState::MazeMove:
@@ -519,7 +519,7 @@ static void window_maze_construction_construct(int32_t direction)
     z = _currentTrackBegin.z;
     switch (_rideConstructionState)
     {
-        case RideConstructionState::Build:
+        case RideConstructionState::MazeBuild:
             mode = GC_SET_MAZE_TRACK_BUILD;
             flags = GAME_COMMAND_FLAG_APPLY;
             break;
