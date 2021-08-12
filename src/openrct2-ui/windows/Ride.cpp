@@ -2546,42 +2546,44 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     if (ride == nullptr)
         return STR_NONE;
 
-    int32_t count = w->ride.view - ride->num_vehicles - 1;
-    rct_string_id stringId = STR_EMPTY;
-    auto stationIndex = GetStationIndexFromViewSelection(*w);
-    if (stationIndex)
+    const auto stationIndex = GetStationIndexFromViewSelection(*w);
+    if (!stationIndex)
     {
-        // Entrance / exit
-        if (ride->status == RideStatus::Closed)
-        {
-            if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
-                stringId = STR_NO_ENTRANCE;
-            else if (ride_get_exit_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
-                stringId = STR_NO_EXIT;
-        }
-        else
-        {
-            if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
-                stringId = STR_EXIT_ONLY;
-        }
-        // Queue length
-        if (stringId == STR_EMPTY)
-        {
-            stringId = STR_QUEUE_EMPTY;
-            uint16_t queueLength = ride->stations[*stationIndex].QueueLength;
-            if (queueLength == 1)
-                stringId = STR_QUEUE_ONE_PERSON;
-            else if (queueLength > 1)
-                stringId = STR_QUEUE_PEOPLE;
-
-            ft.Add<rct_string_id>(stringId);
-            ft.Add<uint16_t>(queueLength);
-        }
-        else
-        {
-            ft.Add<rct_string_id>(stringId);
-        }
+        return STR_NONE;
     }
+
+    rct_string_id stringId = STR_EMPTY;
+    // Entrance / exit
+    if (ride->status == RideStatus::Closed)
+    {
+        if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
+            stringId = STR_NO_ENTRANCE;
+        else if (ride_get_exit_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
+            stringId = STR_NO_EXIT;
+    }
+    else
+    {
+        if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
+            stringId = STR_EXIT_ONLY;
+    }
+    // Queue length
+    if (stringId == STR_EMPTY)
+    {
+        stringId = STR_QUEUE_EMPTY;
+        uint16_t queueLength = ride->stations[*stationIndex].QueueLength;
+        if (queueLength == 1)
+            stringId = STR_QUEUE_ONE_PERSON;
+        else if (queueLength > 1)
+            stringId = STR_QUEUE_PEOPLE;
+
+        ft.Add<rct_string_id>(stringId);
+        ft.Add<uint16_t>(queueLength);
+    }
+    else
+    {
+        ft.Add<rct_string_id>(stringId);
+    }
+
     return STR_BLACK_STRING;
 }
 
