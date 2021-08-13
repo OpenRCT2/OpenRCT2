@@ -476,13 +476,14 @@ static void window_object_load_error_mouseup(rct_window* w, rct_widgetindex widg
         case WIDX_COPY_CURRENT:
             if (w->selected_list_item > -1 && w->selected_list_item < w->no_list_items)
             {
-                utf8* selected_name = strndup(_invalid_entries[w->selected_list_item].name, 8);
-                utf8* strp = strchr(selected_name, ' ');
+                utf8 selectedName[32]{};
+                strncpy(selectedName, _invalid_entries[w->selected_list_item].name, 8);
+
+                utf8* strp = strchr(selectedName, ' ');
                 if (strp != nullptr)
                     *strp = '\0';
 
-                platform_place_string_on_clipboard(selected_name);
-                SafeFree(selected_name);
+                platform_place_string_on_clipboard(selectedName);
             }
             break;
         case WIDX_COPY_ALL:
@@ -578,7 +579,10 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
 
         // Draw the actual object entry's name...
         screenCoords.x = NAME_COL_LEFT - 3;
-        gfx_draw_string(dpi, screenCoords, strndup(_invalid_entries[i].name, 8), { COLOUR_DARK_GREEN });
+
+        utf8 nameBuf[32]{};
+        strncpy(nameBuf, _invalid_entries[i].name, 8);
+        gfx_draw_string(dpi, screenCoords, nameBuf, { COLOUR_DARK_GREEN });
 
         // ... source game ...
         rct_string_id sourceStringId = object_manager_get_source_game_string(_invalid_entries[i].GetSourceGame());
