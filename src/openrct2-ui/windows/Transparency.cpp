@@ -94,13 +94,13 @@ static rct_widget window_transparency_main_widgets[] =
     MAIN_TRANSPARENCY_WIDGETS,
     
     MakeWidget({102, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_RIDE,                       STR_SEE_THROUGH_RIDES),
-    MakeWidget({127, 15}, ICON_BUTTON,    WindowWidgetType::Button,   WindowColour::Secondary, STR_NONE,                       STR_SEE_THROUGH_VEHICLES),
+    MakeWidget({127, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_COASTER_TRAIN,    STR_SEE_THROUGH_VEHICLES),
     MakeWidget({ 27, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY,    STR_SEE_THROUGH_SCENERY),
     MakeWidget({  2, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_TREES,            STR_SEE_THROUGH_TREES),
     MakeWidget({ 52, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,         STR_SEE_THROUGH_PATHS),
-    MakeWidget({ 77, 15}, ICON_BUTTON,    WindowWidgetType::Button,   WindowColour::Secondary, STR_NONE,                       STR_SEE_THROUGH_SUPPORTS),
+    MakeWidget({ 77, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_SUPPORTS,         STR_SEE_THROUGH_SUPPORTS),
     MakeWidget({152, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_GUESTS,                     STR_INVISIBLE_GUESTS),
-    MakeWidget({177, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_MECHANIC,                   STR_INVISIBLE_STAFF),
+    MakeWidget({177, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_MECHANIC,                   STR_INVISIBLE_STAFF), // TODO: Color clothing in sprite
 
     MakeWidget({102,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_RIDES),
     MakeWidget({127,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEHICLES),
