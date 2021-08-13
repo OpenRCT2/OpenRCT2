@@ -504,6 +504,12 @@
         "y_offset": 1
     },
     {
+        "path": "icons/coaster_train.png"
+    },
+    {
+        "path": "icons/supports.png"
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
