@@ -22,6 +22,7 @@
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Climate.h>
@@ -33,7 +34,6 @@ enum
 {
     WINDOW_TRANSPARENCY_PAGE_MAIN,
     WINDOW_TRANSPARENCY_PAGE_RIDES,
-    WINDOW_TRANSPARENCY_PAGE_MISC,
     WINDOW_TRANSPARENCY_PAGE_COUNT,
 };
 
@@ -63,51 +63,44 @@ enum WINDOW_TRANSPARENCY_WIDGET_IDX
     WIDX_INVISIBLE_SUPPORTS,
 
     WIDX_LIST = WIDX_TAB_CONTENT,
-
-    WIDX_MISC_GROUP = WIDX_TAB_CONTENT,
 };
 
 #pragma region MEASUREMENTS
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
-static constexpr const int32_t WW = 249;
-static constexpr const int32_t WH = 300;
+static constexpr const int32_t WW = 203;
+static constexpr const int32_t WH = 70;
 
 static constexpr ScreenSize ICON_BUTTON = {24, 24};
 static constexpr ScreenSize FLAT_BUTTON = {24, 12};
-
-static constexpr const int32_t TAB_WIDTH = 31;
-static constexpr const int32_t TAB_START = 3;
-
 
 #pragma endregion
 
 #define MAIN_TRANSPARENCY_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({ 0, 81}, {WW, 257}, WindowWidgetType::ImgBtn, WindowColour::Secondary), /* tab content panel */ \
-    MakeTab   ({ 3, 55}, STR_TRANSPARENCY_OPTIONS_TITLE_MAIN), /* tab 1 */ \
-    MakeTab   ({34, 55}, STR_TRANSPARENCY_OPTIONS_TITLE_RIDE)
+    MakeWidget({  0,  0}, {  0,  0},      WindowWidgetType::ImgBtn,   WindowColour::Secondary), /* tab content panel */ \
+    MakeWidget({189, 42}, { 12,  6},      WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_TRANSPARENCY_OPTIONS_TITLE), \
+    MakeWidget({189, 48}, { 12,  6},      WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_TRANSPARENCY_OPTIONS_TITLE_RIDE)
 
-// 15px group padding top, 17px margin between lines, 17px group padding bottom. 22px group margin bottom
 static rct_widget window_transparency_main_widgets[] =
 {
     MAIN_TRANSPARENCY_WIDGETS,
     
-    MakeWidget({102, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_RIDE,                       STR_SEE_THROUGH_RIDES),
-    MakeWidget({127, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_COASTER_TRAIN,    STR_SEE_THROUGH_VEHICLES),
-    MakeWidget({ 27, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY,    STR_SEE_THROUGH_SCENERY),
-    MakeWidget({  2, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_TREES,            STR_SEE_THROUGH_TREES),
-    MakeWidget({ 52, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,         STR_SEE_THROUGH_PATHS),
-    MakeWidget({ 77, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_SUPPORTS,         STR_SEE_THROUGH_SUPPORTS),
-    MakeWidget({152, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_GUESTS,                     STR_INVISIBLE_GUESTS),
-    MakeWidget({177, 15}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_MECHANIC,                   STR_INVISIBLE_STAFF), // TODO: Color clothing in sprite
+    MakeWidget({ 77, 17}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_RIDE,                       STR_SEE_THROUGH_RIDES),
+    MakeWidget({102, 17}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_COASTER_TRAIN,    STR_SEE_THROUGH_VEHICLES),
+    MakeWidget({ 27, 17}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY,    STR_SEE_THROUGH_SCENERY),
+    MakeWidget({  2, 17}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_TREES,            STR_SEE_THROUGH_TREES),
+    MakeWidget({ 52, 17}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,         STR_SEE_THROUGH_PATHS),
+    MakeWidget({127, 17}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_BUTTON_SUPPORTS,         STR_SEE_THROUGH_SUPPORTS),
+    MakeWidget({152, 17}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_GUESTS,                     STR_INVISIBLE_GUESTS),
+    MakeWidget({177, 17}, ICON_BUTTON,    WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                     STR_INVISIBLE_STAFF),
 
-    MakeWidget({102,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_RIDES),
-    MakeWidget({127,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEHICLES),
-    MakeWidget({ 27,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SCENERY),
-    MakeWidget({  2,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_TREES),
-    MakeWidget({ 52,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_PATHS),
-    MakeWidget({ 77,  40}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SUPPORTS),
+    MakeWidget({ 77,  42}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_RIDES),
+    MakeWidget({102,  42}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEHICLES),
+    MakeWidget({ 27,  42}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SCENERY),
+    MakeWidget({  2,  42}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_TREES),
+    MakeWidget({ 52,  42}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_PATHS),
+    MakeWidget({127,  42}, FLAT_BUTTON,   WindowWidgetType::Button,   WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SUPPORTS),
 
     { WIDGETS_END },
 };
@@ -115,7 +108,7 @@ static rct_widget window_transparency_main_widgets[] =
 static rct_widget window_transparency_rides_widgets[] =
 {
     MAIN_TRANSPARENCY_WIDGETS,
-    MakeWidget({  4, 95}, {160, 120}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL),
+    MakeWidget({  2, 17}, {160, 200},     WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL),
     { WIDGETS_END },
 };
 
@@ -145,23 +138,12 @@ static uint64_t window_transparency_page_enabled_widgets[] = {
     (1ULL << WIDX_SEE_THROUGH_SUPPORTS),
 
     MAIN_TRANSPARENCY_ENABLED_WIDGETS |
-    (1ULL << WIDX_LIST),
-
-    MAIN_TRANSPARENCY_ENABLED_WIDGETS |
-    (1ULL << WIDX_MISC_GROUP)
-};
-static uint64_t window_transparency_page_disabled_widgets[] = {
-    0,
-};
-
-static uint64_t window_transparency_page_hold_down_widgets[] = {
-        0,
+    (1ULL << WIDX_LIST)
 };
 
 static rct_string_id window_transparency_page_titles[] = {
-    STR_TRANSPARENCY_OPTIONS_TITLE_MAIN,
-    STR_TRANSPARENCY_OPTIONS_TITLE_RIDE,
-    STR_TRANSPARENCY_OPTIONS_TITLE_MISC,
+    STR_TRANSPARENCY_OPTIONS_TITLE,
+    STR_TRANSPARENCY_OPTIONS_TITLE_RIDE
 };
 // clang-format on
 
@@ -175,18 +157,17 @@ public:
     void OnOpen() override
     {
         SetPage(WINDOW_TRANSPARENCY_PAGE_MAIN);
+
+        auto* w = window_get_main();
+        if (w != nullptr)
+            windowPos.x = ((w->width / 2) - (width / 2));
+
         RefreshRideList();
     }
 
     void OnUpdate() override
     {
-        frame_no++;
         InvalidateWidget(WIDX_TAB_1 + page);
-    }
-
-    void OnMouseDown(rct_widgetindex widgetIndex) override
-    {
-        // switch (page)
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
@@ -206,41 +187,30 @@ public:
                     case WINDOW_TRANSPARENCY_PAGE_MAIN:
                         OnMouseUpMain(widgetIndex);
                         break;
-                    case WINDOW_TRANSPARENCY_PAGE_RIDES:
-                        OnMouseUpRides(widgetIndex);
-                        break;
-                    case WINDOW_TRANSPARENCY_PAGE_MISC:
-                        OnMouseUpMisc(widgetIndex);
-                        break;
                 }
                 break;
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
-    {
-    }
-
-    void OnMouseUpRides(rct_widgetindex widgetIndex)
-    {
-    }
-
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        auto i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-        // i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
-        for (const auto& rideItem : _rideList)
+        if (page == WINDOW_TRANSPARENCY_PAGE_RIDES)
         {
-            if (i == 0)
+            auto i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+            // i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
+            for (const auto& rideItem : _rideList)
             {
-                auto ridec = get_ride(rideItem);
-                if (ridec != nullptr)
+                if (i == 0)
                 {
-                    ridec->is_visible = (ridec->is_visible == true ? false : true);
+                    auto ridec = get_ride(rideItem);
+                    if (ridec != nullptr)
+                    {
+                        ridec->ignore_invisible_flag = (ridec->ignore_invisible_flag == true ? false : true);
+                    }
+                    break;
                 }
-                break;
+                i--;
             }
-            i--;
         }
     }
 
@@ -286,20 +256,22 @@ public:
                 SetWidgetPressed(WIDX_INVISIBLE_GUESTS, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS));
                 SetWidgetPressed(WIDX_INVISIBLE_STAFF, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF));
                 break;
-            case WINDOW_TRANSPARENCY_PAGE_MISC:
-                break;
         }
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        UpdateTabPositions();
         DrawWidgets(dpi);
-        DrawTabImages(dpi);
-    }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
-    {
+        if (page == WINDOW_TRANSPARENCY_PAGE_MAIN)
+        {
+            // Locate mechanic button image
+            rct_widget* widget = &widgets[WIDX_INVISIBLE_STAFF];
+            auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
+            gfx_draw_sprite(
+                &dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, screenCoords,
+                0);
+        }
     }
 
     OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback) override
@@ -311,10 +283,7 @@ private:
     void SetPage(int32_t p)
     {
         page = p;
-        frame_no = 0;
-
         enabled_widgets = window_transparency_page_enabled_widgets[p];
-        hold_down_widgets = window_transparency_page_hold_down_widgets[p];
         pressed_widgets = 0;
         widgets = window_transparency_page_widgets[p];
 
@@ -325,54 +294,13 @@ private:
             maxY = std::max<int32_t>(maxY, widget->bottom);
             widget++;
         }
-        maxY += 6;
+        maxY += 4;
 
         Invalidate();
         height = maxY;
         widgets[WIDX_BACKGROUND].bottom = maxY - 1;
         widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;
         Invalidate();
-    }
-
-    void UpdateTabPositions()
-    {
-        constexpr const uint16_t tabs[] = {
-            WIDX_TAB_1,
-            WIDX_TAB_2,
-        };
-
-        auto left = TAB_START;
-        for (auto tab : tabs)
-        {
-            widgets[tab].left = left;
-            if (!IsWidgetDisabled(tab))
-            {
-                left += TAB_WIDTH;
-            }
-        }
-    }
-
-    void DrawTabImages(rct_drawpixelinfo& dpi)
-    {
-        // Main tab
-        if (!IsWidgetDisabled(WIDX_TAB_1))
-        {
-            uint32_t sprite_idx = SPR_TAB_FINANCES_SUMMARY_0;
-            if (page == WINDOW_TRANSPARENCY_PAGE_MAIN)
-                sprite_idx += (frame_no / 2) % 8;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
-        }
-
-        // Rides tab
-        if (!IsWidgetDisabled(WIDX_TAB_2))
-        {
-            uint32_t sprite_idx = SPR_TAB_RIDE_0;
-            if (page == WINDOW_TRANSPARENCY_PAGE_RIDES)
-                sprite_idx += (frame_no / 4) % 16;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
-        }
     }
 
     void OnMouseUpMain(rct_widgetindex widgetIndex)
@@ -429,14 +357,6 @@ private:
         w->Invalidate();
     }
 
-    void OnMouseUpMisc(rct_widgetindex widgetIndex)
-    {
-    }
-
-    void OnDropdownMisc(rct_widgetindex widgetIndex, int32_t dropdownIndex)
-    {
-    }
-
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         ScreenCoordsXY screenCoords;
@@ -454,7 +374,7 @@ private:
                 gfx_fill_rect_inset(&dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, bgColour, INSET_RECT_F_E0);
 
                 // Draw checkmark
-                if (ridec->is_visible == true)
+                if (ridec->ignore_invisible_flag == true)
                 {
                     screenCoords.x = 2;
                     FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
@@ -498,8 +418,7 @@ rct_window* WindowTransparencyOpen()
 {
     auto* window = window_bring_to_front_by_class(WC_TRANSPARENCY);
     if (window == nullptr)
-    {
         window = WindowCreate<TransparencyWindow>(WC_TRANSPARENCY, ScreenCoordsXY(32, 32), WW, WH);
-    }
+
     return window;
 }

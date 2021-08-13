@@ -126,7 +126,7 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
     }
     
     if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES)
-        && ride->is_visible == false)
+        && ride->ignore_invisible_flag == false)
         return;
 
     auto stationObj = ride->GetStationObject();

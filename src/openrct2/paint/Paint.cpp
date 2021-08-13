@@ -684,7 +684,7 @@ static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem sp
             return seeThrough;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES))
     {
         if (spriteType == ViewportInteractionItem::Entity && entityType == EntityType::Vehicle)
         {

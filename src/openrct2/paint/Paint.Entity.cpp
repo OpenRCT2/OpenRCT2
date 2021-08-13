@@ -79,7 +79,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
             if (veh != nullptr)
             {
                 auto ride = get_ride(veh->ride);
-                if (ride != nullptr && !ride->is_visible)
+                if (ride != nullptr && !ride->ignore_invisible_flag)
                     return;
             }
         }
