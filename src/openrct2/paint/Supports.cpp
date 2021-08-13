@@ -444,10 +444,6 @@ static constexpr const uint16_t word_97B3C4[] = {
     15,
     0,
 };
-
-constexpr uint32_t primaryColour = COLOUR_BRIGHT_YELLOW;
-constexpr uint32_t secondaryColour = COLOUR_GREY;
-constexpr uint32_t seeThoughFlags = IMAGE_TYPE_TRANSPARENT | (primaryColour << 19) | (secondaryColour << 24);
 // clang-format on
 
 /**
@@ -466,7 +462,7 @@ bool wooden_a_supports_paint_setup(
     if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         imageColourFlags &= 0x7FFFF;
-        imageColourFlags |= seeThoughFlags;
+        imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
@@ -637,7 +633,7 @@ bool wooden_b_supports_paint_setup(
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
         imageColourFlags &= 0x7FFFF;
-        imageColourFlags |= seeThoughFlags;
+        imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
@@ -816,7 +812,7 @@ bool metal_a_supports_paint_setup(
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
         imageColourFlags &= 0x7FFFF;
-        imageColourFlags |= seeThoughFlags;
+        imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
@@ -1021,7 +1017,7 @@ bool metal_b_supports_paint_setup(
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
         imageColourFlags &= 0x7FFFF;
-        imageColourFlags |= seeThoughFlags;
+        imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
@@ -1207,7 +1203,7 @@ bool path_a_supports_paint_setup(
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
         imageColourFlags &= 0x7FFFF;
-        imageColourFlags |= seeThoughFlags;
+        imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
@@ -1362,7 +1358,7 @@ bool path_b_supports_paint_setup(
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
         imageColourFlags &= 0x7FFFF;
-        imageColourFlags |= seeThoughFlags;
+        imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
     if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)

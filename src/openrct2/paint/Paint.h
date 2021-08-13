@@ -19,6 +19,11 @@
 #include <mutex>
 #include <thread>
 
+constexpr uint32_t gColourifyImagePrimaryColour = COLOUR_BRIGHT_YELLOW;
+constexpr uint32_t gColourifyImageSecondaryColour = COLOUR_GREY;
+constexpr uint32_t gColourifyImageSeeThroughFlags = IMAGE_TYPE_TRANSPARENT | (gColourifyImagePrimaryColour << 19)
+    | (gColourifyImageSecondaryColour << 24);
+
 struct TileElement;
 enum class RailingEntrySupportType : uint8_t;
 enum class ViewportInteractionItem : uint8_t;

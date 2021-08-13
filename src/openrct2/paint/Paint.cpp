@@ -668,26 +668,22 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imag
 static uint32_t PaintPSColourifyImage(
     uint32_t imageId, ViewportInteractionItem spriteType, EntityType* entityType, uint32_t viewFlags)
 {
-    constexpr uint32_t primaryColour = COLOUR_BRIGHT_YELLOW;
-    constexpr uint32_t secondaryColour = COLOUR_GREY;
-    constexpr uint32_t seeThoughFlags = IMAGE_TYPE_TRANSPARENT | (primaryColour << 19) | (secondaryColour << 24);
-
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES))
     {
         if (spriteType == ViewportInteractionItem::Ride)
         {
             imageId &= 0x7FFFF;
-            imageId |= seeThoughFlags;
+            imageId |= gColourifyImageSeeThroughFlags;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES))
     {
         if (spriteType == ViewportInteractionItem::Entity)
         {
             if (entityType != nullptr && *entityType == EntityType::Vehicle)
             {
                 imageId &= 0x7FFFF;
-                imageId |= seeThoughFlags;
+                imageId |= gColourifyImageSeeThroughFlags;
             }
         }
     }
@@ -696,7 +692,7 @@ static uint32_t PaintPSColourifyImage(
         if (spriteType == ViewportInteractionItem::Wall)
         {
             imageId &= 0x7FFFF;
-            imageId |= seeThoughFlags;
+            imageId |= gColourifyImageSeeThroughFlags;
         }
     }
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
@@ -707,7 +703,7 @@ static uint32_t PaintPSColourifyImage(
             case ViewportInteractionItem::FootpathItem:
             case ViewportInteractionItem::Banner:
                 imageId &= 0x7FFFF;
-                imageId |= seeThoughFlags;
+                imageId |= gColourifyImageSeeThroughFlags;
                 break;
             default:
                 break;
@@ -721,7 +717,7 @@ static uint32_t PaintPSColourifyImage(
             case ViewportInteractionItem::LargeScenery:
             case ViewportInteractionItem::Wall:
                 imageId &= 0x7FFFF;
-                imageId |= seeThoughFlags;
+                imageId |= gColourifyImageSeeThroughFlags;
                 break;
             default:
                 break;
