@@ -186,8 +186,8 @@ struct PaintSessionCore
     attached_paint_struct* LastAttachedPS;
     const TileElement* SurfaceElement;
     const void* CurrentlyDrawnItem;
-    TileElement* PathElementOnSameHeight;
-    TileElement* TrackElementOnSameHeight;
+    const TileElement* PathElementOnSameHeight;
+    const TileElement* TrackElementOnSameHeight;
     paint_struct PaintHead;
     uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;

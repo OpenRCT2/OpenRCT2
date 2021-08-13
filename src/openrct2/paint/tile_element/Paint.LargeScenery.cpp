@@ -19,6 +19,7 @@
 #include "../../world/LargeScenery.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
+#include "../../world/TileInspector.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
@@ -27,7 +28,7 @@
 
 // 6B8172:
 static void large_scenery_paint_supports(
-    paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement, uint32_t dword_F4387C,
+    paint_session* session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, uint32_t dword_F4387C,
     const rct_large_scenery_tile* tile)
 {
     if (tile->flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
@@ -53,7 +54,7 @@ static void large_scenery_paint_supports(
 
     wooden_b_supports_paint_setup(session, (direction & 1), ax, supportHeight, supportImageColourFlags, nullptr);
 
-    int32_t clearanceHeight = ceil2(tileElement->GetClearanceZ() + 15, 16);
+    int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
 
     if (tile->flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
     {
@@ -220,19 +221,19 @@ static constexpr const boundbox s98E3C4[] = {
  *
  * rct2: 0x006B7F0C
  */
-void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
+void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
 {
     if (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
         return;
     }
     session->InteractionType = ViewportInteractionItem::LargeScenery;
-    uint32_t sequenceNum = tileElement->AsLargeScenery()->GetSequenceIndex();
-    const LargeSceneryObject* object = tileElement->AsLargeScenery()->GetObject();
+    const uint32_t sequenceNum = tileElement.GetSequenceIndex();
+    const LargeSceneryObject* object = tileElement.GetObject();
     if (object == nullptr)
         return;
 
-    const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+    const auto* sceneryEntry = tileElement.GetEntry();
     if (sceneryEntry == nullptr)
         return;
 
@@ -242,28 +243,32 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         return;
 
     uint32_t dword_F4387C = 0;
-    image_id |= SPRITE_ID_PALETTE_COLOUR_2(
-        tileElement->AsLargeScenery()->GetPrimaryColour(), tileElement->AsLargeScenery()->GetSecondaryColour());
+    image_id |= SPRITE_ID_PALETTE_COLOUR_2(tileElement.GetPrimaryColour(), tileElement.GetSecondaryColour());
     CoordsXYZ boxlength;
     CoordsXYZ boxoffset;
     if (gTrackDesignSaveMode)
     {
-        if (!track_design_save_contains_tile_element(tileElement))
+        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&tileElement)))
         {
-            sequenceNum = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
             image_id &= 0x7FFFF;
-            dword_F4387C = sequenceNum;
+            dword_F4387C = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
             image_id |= dword_F4387C;
         }
     }
-    if (tileElement->IsGhost())
+    if (tileElement.IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
-        sequenceNum = CONSTRUCTION_MARKER;
         image_id &= 0x7FFFF;
-        dword_F4387C = sequenceNum;
+        dword_F4387C = CONSTRUCTION_MARKER;
         image_id |= dword_F4387C;
     }
+    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&tileElement)))
+    {
+        image_id &= 0x7FFFF;
+        dword_F4387C = CONSTRUCTION_MARKER;
+        image_id |= dword_F4387C;
+    }
+
     int32_t boxlengthZ = tile->z_clearance;
     if (boxlengthZ > 0x80)
     {
@@ -295,7 +300,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     {
         if (sceneryEntry->tiles[1].x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)))
         {
-            int32_t sequenceDirection = (tileElement->AsLargeScenery()->GetSequenceIndex() - 1) & 3;
+            int32_t sequenceDirection = (tileElement.GetSequenceIndex() - 1) & 3;
             if (sequenceDirection != direction)
             {
                 large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
@@ -310,13 +315,13 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         }
         // 6B8331:
         // Draw sign text:
-        int32_t textColour = tileElement->AsLargeScenery()->GetSecondaryColour();
+        int32_t textColour = tileElement.GetSecondaryColour();
         if (dword_F4387C)
         {
             textColour = COLOUR_GREY;
         }
         textColour = (textColour << 19) | IMAGE_TYPE_REMAP;
-        auto banner = tileElement->AsLargeScenery()->GetBanner();
+        auto banner = tileElement.GetBanner();
         if (banner != nullptr)
         {
             auto ft = Formatter();
@@ -408,14 +413,14 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
-    uint8_t sequenceDirection2 = (tileElement->AsLargeScenery()->GetSequenceIndex() - 1) & 3;
+    uint8_t sequenceDirection2 = (tileElement.GetSequenceIndex() - 1) & 3;
     if (sequenceDirection2 != direction)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
     // Draw scrolling text:
-    uint8_t textColour = tileElement->AsLargeScenery()->GetSecondaryColour();
+    uint8_t textColour = tileElement.GetSecondaryColour();
     if (dword_F4387C)
     {
         textColour = COLOUR_GREY;
@@ -430,7 +435,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     }
     // 6B809A:
     uint16_t scrollMode = sceneryEntry->scrolling_mode + ((direction + 1) & 0x3);
-    auto banner = tileElement->AsLargeScenery()->GetBanner();
+    auto banner = tileElement.GetBanner();
     if (banner != nullptr)
     {
         auto ft = Formatter();

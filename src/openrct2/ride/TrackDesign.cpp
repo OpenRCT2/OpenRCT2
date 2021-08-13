@@ -67,13 +67,12 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-TrackDesign* gActiveTrackDesign;
 bool gTrackDesignSceneryToggle;
 static CoordsXYZ _trackPreviewMin;
 static CoordsXYZ _trackPreviewMax;
 static CoordsXYZ _trackPreviewOrigin;
 
-bool byte_9D8150;
+bool _trackDesignDrawingPreview;
 static uint8_t _trackDesignPlaceOperation;
 static money32 _trackDesignPlaceCost;
 static int16_t _trackDesignPlaceZ;
@@ -1320,7 +1319,7 @@ static bool TrackDesignPlaceSceneryElement(
  *  rct2: 0x006D0964
  */
 static int32_t track_design_place_all_scenery(
-    const std::vector<TrackDesignSceneryElement>& sceneryList, int32_t originX, int32_t originY, int32_t originZ)
+    const std::vector<TrackDesignSceneryElement>& sceneryList, const CoordsXYZ& origin)
 {
     for (uint8_t mode = 0; mode <= 1; mode++)
     {
@@ -1337,14 +1336,14 @@ static int32_t track_design_place_all_scenery(
         for (const auto& scenery : sceneryList)
         {
             uint8_t rotation = _currentTrackPieceDirection;
-            TileCoordsXY tileCoords = { originX / COORDS_XY_STEP, originY / COORDS_XY_STEP };
+            TileCoordsXY tileCoords = TileCoordsXY(origin);
             TileCoordsXY offsets = { scenery.x, scenery.y };
             tileCoords += offsets.Rotate(rotation);
 
-            auto mapCoord = CoordsXYZ{ tileCoords.ToCoordsXY(), originZ };
+            auto mapCoord = CoordsXYZ{ tileCoords.ToCoordsXY(), origin.z };
             track_design_update_max_min_coordinates(mapCoord);
 
-            if (!TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, originZ))
+            if (!TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, origin.z))
             {
                 return 0;
             }
@@ -1877,8 +1876,7 @@ int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
     // Scenery elements
     if (track_place_success)
     {
-        if (!track_design_place_all_scenery(
-                td6->scenery_elements, _trackPreviewOrigin.x, _trackPreviewOrigin.y, _trackPreviewOrigin.z))
+        if (!track_design_place_all_scenery(td6->scenery_elements, _trackPreviewOrigin))
         {
             return _trackDesignPlaceCost;
         }
@@ -1975,7 +1973,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         }
     }
 
-    byte_9D8150 = true;
+    _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
     uint32_t backup_park_flags = gParkFlags;
     gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
@@ -2014,7 +2012,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         }
 
         _currentTrackPieceDirection = backup_rotation;
-        byte_9D8150 = false;
+        _trackDesignDrawingPreview = false;
         *cost = resultCost;
         *outRide = ride;
         return true;
@@ -2023,7 +2021,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     {
         _currentTrackPieceDirection = backup_rotation;
         ride->Delete();
-        byte_9D8150 = false;
+        _trackDesignDrawingPreview = false;
         return false;
     }
 }

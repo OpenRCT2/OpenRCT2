@@ -33,9 +33,9 @@ static constexpr const uint32_t _BobsleighBlockBrakeImages[NumOrthogonalDirectio
 /** rct2: 0x006FE5B4 */
 static void bobsleigh_rc_track_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    if (tileElement->AsTrack()->HasChain())
+    if (trackElement.HasChain())
     {
         switch (direction)
         {
@@ -91,7 +91,7 @@ static void bobsleigh_rc_track_flat(
 
 static void bobsleigh_rc_track_station(
     paint_session* session, const Ride* ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { 14580, SPR_STATION_BASE_B_SW_NE },
@@ -106,7 +106,7 @@ static void bobsleigh_rc_track_station(
     PaintAddImageAsParentRotated(
         session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
-    track_paint_util_draw_station(session, ride, direction, height, tileElement);
+    track_paint_util_draw_station(session, ride, direction, height, trackElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -115,9 +115,9 @@ static void bobsleigh_rc_track_station(
 /** rct2: 0x006FE5C4 */
 static void bobsleigh_rc_track_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    if (tileElement->AsTrack()->HasChain())
+    if (trackElement.HasChain())
     {
         switch (direction)
         {
@@ -201,9 +201,9 @@ static void bobsleigh_rc_track_25_deg_up(
 /** rct2: 0x006FE5D4 */
 static void bobsleigh_rc_track_flat_to_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    if (tileElement->AsTrack()->HasChain())
+    if (trackElement.HasChain())
     {
         switch (direction)
         {
@@ -287,9 +287,9 @@ static void bobsleigh_rc_track_flat_to_25_deg_up(
 /** rct2: 0x006FE5E4 */
 static void bobsleigh_rc_track_25_deg_up_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    if (tileElement->AsTrack()->HasChain())
+    if (trackElement.HasChain())
     {
         switch (direction)
         {
@@ -373,31 +373,31 @@ static void bobsleigh_rc_track_25_deg_up_to_flat(
 /** rct2: 0x006FE5F4 */
 static void bobsleigh_rc_track_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bobsleigh_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    bobsleigh_rc_track_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE604 */
 static void bobsleigh_rc_track_flat_to_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bobsleigh_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    bobsleigh_rc_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE614 */
 static void bobsleigh_rc_track_25_deg_down_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bobsleigh_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    bobsleigh_rc_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE624 */
 static void bobsleigh_rc_track_left_quarter_turn_5(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -621,16 +621,16 @@ static void bobsleigh_rc_track_left_quarter_turn_5(
 /** rct2: 0x006FE634 */
 static void bobsleigh_rc_track_right_quarter_turn_5(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bobsleigh_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, tileElement);
+    bobsleigh_rc_track_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE644 */
 static void bobsleigh_rc_track_flat_to_left_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -672,7 +672,7 @@ static void bobsleigh_rc_track_flat_to_left_bank(
 /** rct2: 0x006FE654 */
 static void bobsleigh_rc_track_flat_to_right_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -714,7 +714,7 @@ static void bobsleigh_rc_track_flat_to_right_bank(
 /** rct2: 0x006FE664 */
 static void bobsleigh_rc_track_left_bank_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -756,7 +756,7 @@ static void bobsleigh_rc_track_left_bank_to_flat(
 /** rct2: 0x006FE674 */
 static void bobsleigh_rc_track_right_bank_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -798,7 +798,7 @@ static void bobsleigh_rc_track_right_bank_to_flat(
 /** rct2: 0x006FE684 */
 static void bobsleigh_rc_track_banked_left_quarter_turn_5(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -1022,16 +1022,16 @@ static void bobsleigh_rc_track_banked_left_quarter_turn_5(
 /** rct2: 0x006FE694 */
 static void bobsleigh_rc_track_banked_right_quarter_turn_5(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bobsleigh_rc_track_banked_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, tileElement);
+    bobsleigh_rc_track_banked_left_quarter_turn_5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE6A4 */
 static void bobsleigh_rc_track_left_bank_to_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -1080,7 +1080,7 @@ static void bobsleigh_rc_track_left_bank_to_25_deg_up(
 /** rct2: 0x006FE6B4 */
 static void bobsleigh_rc_track_right_bank_to_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -1129,7 +1129,7 @@ static void bobsleigh_rc_track_right_bank_to_25_deg_up(
 /** rct2: 0x006FE6C4 */
 static void bobsleigh_rc_track_25_deg_up_to_left_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -1178,7 +1178,7 @@ static void bobsleigh_rc_track_25_deg_up_to_left_bank(
 /** rct2: 0x006FE6D4 */
 static void bobsleigh_rc_track_25_deg_up_to_right_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -1227,39 +1227,39 @@ static void bobsleigh_rc_track_25_deg_up_to_right_bank(
 /** rct2: 0x006FE6E4 */
 static void bobsleigh_rc_track_left_bank_to_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bobsleigh_rc_track_25_deg_up_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    bobsleigh_rc_track_25_deg_up_to_right_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE6F4 */
 static void bobsleigh_rc_track_right_bank_to_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bobsleigh_rc_track_25_deg_up_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    bobsleigh_rc_track_25_deg_up_to_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE704 */
 static void bobsleigh_rc_track_25_deg_down_to_left_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bobsleigh_rc_track_right_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    bobsleigh_rc_track_right_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE714 */
 static void bobsleigh_rc_track_25_deg_down_to_right_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bobsleigh_rc_track_left_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    bobsleigh_rc_track_left_bank_to_25_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE724 */
 static void bobsleigh_rc_track_left_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -1301,15 +1301,15 @@ static void bobsleigh_rc_track_left_bank(
 /** rct2: 0x006FE734 */
 static void bobsleigh_rc_track_right_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bobsleigh_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, tileElement);
+    bobsleigh_rc_track_left_bank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE744 */
 static void bobsleigh_rc_track_s_bend_left(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -1492,7 +1492,7 @@ static void bobsleigh_rc_track_s_bend_left(
 /** rct2: 0x006FE754 */
 static void bobsleigh_rc_track_s_bend_right(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -1675,7 +1675,7 @@ static void bobsleigh_rc_track_s_bend_right(
 /** rct2: 0x006FE794 */
 static void bobsleigh_rc_track_left_quarter_turn_3(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -1814,16 +1814,16 @@ static void bobsleigh_rc_track_left_quarter_turn_3(
 /** rct2: 0x006FE7A4 */
 static void bobsleigh_rc_track_right_quarter_turn_3(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bobsleigh_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, tileElement);
+    bobsleigh_rc_track_left_quarter_turn_3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE7B4 */
 static void bobsleigh_rc_track_left_quarter_turn_3_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -1962,16 +1962,16 @@ static void bobsleigh_rc_track_left_quarter_turn_3_bank(
 /** rct2: 0x006FE7C4 */
 static void bobsleigh_rc_track_right_quarter_turn_3_bank(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bobsleigh_rc_track_left_quarter_turn_3_bank(session, ride, trackSequence, (direction - 1) & 3, height, tileElement);
+    bobsleigh_rc_track_left_quarter_turn_3_bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE7D4 */
 static void bobsleigh_rc_track_left_half_banked_helix_up_small(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -2243,7 +2243,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_small(
 /** rct2: 0x006FE7E4 */
 static void bobsleigh_rc_track_right_half_banked_helix_up_small(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -2515,7 +2515,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_small(
 /** rct2: 0x006FE7F4 */
 static void bobsleigh_rc_track_left_half_banked_helix_down_small(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     if (trackSequence >= 4)
     {
@@ -2523,13 +2523,14 @@ static void bobsleigh_rc_track_left_half_banked_helix_down_small(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bobsleigh_rc_track_right_half_banked_helix_up_small(session, ride, trackSequence, (direction + 1) & 3, height, tileElement);
+    bobsleigh_rc_track_right_half_banked_helix_up_small(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE804 */
 static void bobsleigh_rc_track_right_half_banked_helix_down_small(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     if (trackSequence >= 4)
     {
@@ -2537,13 +2538,13 @@ static void bobsleigh_rc_track_right_half_banked_helix_down_small(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    bobsleigh_rc_track_left_half_banked_helix_up_small(session, ride, trackSequence, (direction - 1) & 3, height, tileElement);
+    bobsleigh_rc_track_left_half_banked_helix_up_small(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE814 */
 static void bobsleigh_rc_track_left_half_banked_helix_up_large(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -2985,7 +2986,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_large(
 /** rct2: 0x006FE824 */
 static void bobsleigh_rc_track_right_half_banked_helix_up_large(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (trackSequence)
     {
@@ -3427,7 +3428,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_large(
 /** rct2: 0x006FE834 */
 static void bobsleigh_rc_track_left_half_banked_helix_down_large(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     if (trackSequence >= 7)
     {
@@ -3435,13 +3436,14 @@ static void bobsleigh_rc_track_left_half_banked_helix_down_large(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bobsleigh_rc_track_right_half_banked_helix_up_large(session, ride, trackSequence, (direction + 1) & 3, height, tileElement);
+    bobsleigh_rc_track_right_half_banked_helix_up_large(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE844 */
 static void bobsleigh_rc_track_right_half_banked_helix_down_large(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     if (trackSequence >= 7)
     {
@@ -3449,13 +3451,13 @@ static void bobsleigh_rc_track_right_half_banked_helix_down_large(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    bobsleigh_rc_track_left_half_banked_helix_up_large(session, ride, trackSequence, (direction - 1) & 3, height, tileElement);
+    bobsleigh_rc_track_left_half_banked_helix_up_large(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x006FE854 */
 static void bobsleigh_rc_track_brakes(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -3487,9 +3489,9 @@ static void bobsleigh_rc_track_brakes(
 /** rct2: 0x006FE864 */
 static void bobsleigh_rc_track_block_brakes(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
-    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+    bool isClosed = trackElement.BlockBrakeClosed();
     switch (direction)
     {
         case 0:
@@ -3521,7 +3523,7 @@ static void bobsleigh_rc_track_block_brakes(
 
 static void bobsleigh_rc_track_on_ride_photo(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     switch (direction)
     {
@@ -3564,7 +3566,7 @@ static void bobsleigh_rc_track_on_ride_photo(
 
             break;
     }
-    track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
+    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);

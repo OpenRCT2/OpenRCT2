@@ -103,14 +103,14 @@ uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation);
 
 void tile_element_paint_setup(paint_session* session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
 
-void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element);
-void banner_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element);
-void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement);
-void path_paint(paint_session* session, uint16_t height, const TileElement* tileElement);
-void scenery_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement);
-void fence_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement);
-void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement);
-void track_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement);
+void PaintEntrance(paint_session* session, uint8_t direction, int32_t height, const EntranceElement& entranceElement);
+void PaintBanner(paint_session* session, uint8_t direction, int32_t height, const BannerElement& bannerElement);
+void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, const SurfaceElement& tileElement);
+void PaintPath(paint_session* session, uint16_t height, const PathElement& tileElement);
+void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement);
+void PaintWall(paint_session* session, uint8_t direction, int32_t height, const WallElement& tileElement);
+void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement);
+void PaintTrack(paint_session* session, uint8_t direction, int32_t height, const TrackElement& tileElement);
 
 bool PaintShouldShowHeightMarkers(const paint_session* session, const uint32_t viewportFlag);
 

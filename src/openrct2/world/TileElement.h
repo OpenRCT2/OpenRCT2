@@ -592,6 +592,8 @@ public:
     ObjectEntryIndex GetSurfaceEntryIndex() const;
     FootpathSurfaceObject* GetSurfaceEntry() const;
     void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
+
+    int32_t GetDirections() const;
 };
 assert_struct_size(EntranceElement, 16);
 

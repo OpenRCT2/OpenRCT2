@@ -30,7 +30,7 @@
 bool gDisableErrorWindowSound = false;
 
 uint64_t _enabledRidePieces;
-uint8_t _rideConstructionState2;
+RideConstructionState _rideConstructionState2;
 
 // This variable is updated separately from ride->num_stations because the latter
 // is unreliable if currently in station construction mode
@@ -133,7 +133,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     uint8_t startBank = _previousTrackBankEnd;
     uint8_t endBank = _currentTrackBankEnd;
 
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+    if (_rideConstructionState == RideConstructionState::Back)
     {
         startSlope = _currentTrackSlopeEnd;
         endSlope = _previousTrackSlopeEnd;
@@ -150,7 +150,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
     if (curve == TRACK_CURVE_LEFT_LARGE || curve == TRACK_CURVE_RIGHT_LARGE)
     {
-        if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+        if (_rideConstructionState == RideConstructionState::Back)
         {
             startsDiagonal = !startsDiagonal;
         }
@@ -205,7 +205,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
                 return std::make_tuple(false, 0);
             }
 
-            if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+            if (_rideConstructionState == RideConstructionState::Back)
             {
                 if (endSlope != TRACK_SLOPE_DOWN_25)
                 {
@@ -317,7 +317,7 @@ bool window_ride_construction_update_state(
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;
     auto z = _currentTrackBegin.z;
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+    if (_rideConstructionState == RideConstructionState::Back)
     {
         z -= trackCoordinates.z_end;
         trackDirection = _currentTrackPieceDirection ^ 0x02;
@@ -401,7 +401,7 @@ void window_ride_construction_do_entrance_exit_check()
         return;
     }
 
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_0)
+    if (_rideConstructionState == RideConstructionState::State0)
     {
         w = window_find_by_class(WC_RIDE_CONSTRUCTION);
         if (w != nullptr)
@@ -432,7 +432,7 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
     if (gGotoStartPlacementMode)
     {
         _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
-        _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
+        _rideConstructionState = RideConstructionState::Front;
         _currentTrackSelectionFlags = 0;
         _currentTrackPieceDirection = piecePos.direction & 3;
         auto savedCurrentTrackCurve = _currentTrackCurve;
@@ -464,15 +464,15 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
     }
     else
     {
-        if (_rideConstructionState2 == RIDE_CONSTRUCTION_STATE_SELECTED
-            || _rideConstructionState2 == RIDE_CONSTRUCTION_STATE_FRONT)
+        if (_rideConstructionState2 == RideConstructionState::Selected
+            || _rideConstructionState2 == RideConstructionState::Front)
         {
             if (type == TrackElemType::MiddleStation || type == TrackElemType::BeginStation)
             {
                 type = TrackElemType::EndStation;
             }
         }
-        if (_rideConstructionState2 == RIDE_CONSTRUCTION_STATE_BACK)
+        if (_rideConstructionState2 == RideConstructionState::Back)
         {
             if (type == TrackElemType::MiddleStation)
             {
@@ -482,17 +482,17 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
         if (network_get_mode() == NETWORK_MODE_CLIENT)
         {
             // rideConstructionState needs to be set again to the proper value, this only affects the client
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
+            _rideConstructionState = RideConstructionState::Selected;
         }
         _currentTrackBegin = piecePos;
         _currentTrackPieceDirection = piecePos.direction;
         _currentTrackPieceType = type;
         _currentTrackSelectionFlags = 0;
-        if (_rideConstructionState2 == RIDE_CONSTRUCTION_STATE_FRONT)
+        if (_rideConstructionState2 == RideConstructionState::Front)
         {
             ride_select_next_section();
         }
-        else if (_rideConstructionState2 == RIDE_CONSTRUCTION_STATE_BACK)
+        else if (_rideConstructionState2 == RideConstructionState::Back)
         {
             ride_select_previous_section();
         }

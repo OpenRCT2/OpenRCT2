@@ -109,7 +109,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
             return std::make_unique<WallPlaceActionResult>(GameActions::Status::NotOwned);
         }
     }
-    else if (!byte_9D8150 && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))
+    else if (!_trackDesignDrawingPreview && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))
     {
         log_error("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
         return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);

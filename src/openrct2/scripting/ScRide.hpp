@@ -642,6 +642,12 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint8_t downtime_get() const
+        {
+            auto ride = GetRide();
+            return ride != nullptr ? ride->downtime : 0;
+        }
+
         Ride* GetRide() const
         {
             return get_ride(_rideId);
@@ -681,6 +687,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(
                 ctx, &ScRide::inspectionInterval_get, &ScRide::inspectionInterval_set, "inspectionInterval");
             dukglue_register_property(ctx, &ScRide::value_get, &ScRide::value_set, "value");
+            dukglue_register_property(ctx, &ScRide::downtime_get, nullptr, "downtime");
         }
     };
 } // namespace OpenRCT2::Scripting

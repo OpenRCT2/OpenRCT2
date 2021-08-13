@@ -563,7 +563,7 @@ rct_window* window_ride_construction_open()
     _previousTrackSlopeEnd = 0;
 
     _currentTrackPieceDirection = 0;
-    _rideConstructionState = RIDE_CONSTRUCTION_STATE_PLACE;
+    _rideConstructionState = RideConstructionState::Place;
     _currentTrackSelectionFlags = 0;
     _autoOpeningShop = false;
     _autoRotatingShop = true;
@@ -686,7 +686,7 @@ static void window_ride_construction_resize(rct_window* w)
 {
     window_ride_construction_update_enabled_track_pieces();
     w->enabled_widgets &= ~(1ULL << WIDX_CONSTRUCT);
-    if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
+    if (_rideConstructionState != RideConstructionState::Place)
     {
         w->enabled_widgets |= (1ULL << WIDX_CONSTRUCT);
     }
@@ -767,7 +767,7 @@ static void window_ride_construction_resize(rct_window* w)
                 | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
         }
     }
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_0)
+    if (_rideConstructionState == RideConstructionState::State0)
     {
         disabledWidgets |= (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_DEMOLISH) | (1ULL << WIDX_PREVIOUS_SECTION)
             | (1ULL << WIDX_NEXT_SECTION);
@@ -1001,7 +1001,7 @@ static void window_ride_construction_resize(rct_window* w)
             {
                 disabledWidgets |= (1ULL << WIDX_SLOPE_UP_STEEP);
                 if (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT
-                    || _rideConstructionState != RIDE_CONSTRUCTION_STATE_BACK || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED))
+                    || _rideConstructionState != RideConstructionState::Back || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED))
                 {
                     disabledWidgets |= (1ULL << WIDX_LEVEL);
                 }
@@ -1010,7 +1010,7 @@ static void window_ride_construction_resize(rct_window* w)
             {
                 disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP);
                 if (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT
-                    || _rideConstructionState != RIDE_CONSTRUCTION_STATE_FRONT || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED))
+                    || _rideConstructionState != RideConstructionState::Front || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED))
                 {
                     disabledWidgets |= (1ULL << WIDX_LEVEL);
                 }
@@ -1147,7 +1147,7 @@ static void window_ride_construction_resize(rct_window* w)
     }
     if (is_track_enabled(TRACK_SLOPE_CURVE_BANKED))
     {
-        if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT)
+        if (_rideConstructionState == RideConstructionState::Front)
         {
             if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL)
             {
@@ -1157,7 +1157,7 @@ static void window_ride_construction_resize(rct_window* w)
                 }
             }
         }
-        else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+        else if (_rideConstructionState == RideConstructionState::Back)
         {
             if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL)
             {
@@ -1173,7 +1173,7 @@ static void window_ride_construction_resize(rct_window* w)
         disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE)
             | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL) | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL);
     }
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT)
+    if (_rideConstructionState == RideConstructionState::Front)
     {
         disabledWidgets |= (1ULL << WIDX_NEXT_SECTION);
         if (window_ride_construction_update_state(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
@@ -1181,7 +1181,7 @@ static void window_ride_construction_resize(rct_window* w)
             disabledWidgets |= (1ULL << WIDX_CONSTRUCT);
         }
     }
-    else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+    else if (_rideConstructionState == RideConstructionState::Back)
     {
         disabledWidgets |= (1ULL << WIDX_PREVIOUS_SECTION);
         if (window_ride_construction_update_state(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr))
@@ -1193,8 +1193,8 @@ static void window_ride_construction_resize(rct_window* w)
     {
         disabledWidgets &= ~(1ULL << WIDX_BANKING_GROUPBOX);
     }
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT
-        || _rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
+    if (_rideConstructionState == RideConstructionState::EntranceExit
+        || _rideConstructionState == RideConstructionState::Selected)
     {
         disabledWidgets |= (1ULL << WIDX_DIRECTION_GROUPBOX) | (1ULL << WIDX_SLOPE_GROUPBOX) | (1ULL << WIDX_BANKING_GROUPBOX)
             | (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE)
@@ -1383,7 +1383,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             break;
         case WIDX_SLOPE_DOWN:
             ride_construction_invalidate_current_track();
-            if (_rideConstructionState == 2 && _currentTrackBankEnd != TRACK_BANK_NONE)
+            if (_rideConstructionState == RideConstructionState::Back && _currentTrackBankEnd != TRACK_BANK_NONE)
             {
                 _currentTrackBankEnd = TRACK_BANK_NONE;
             }
@@ -1391,7 +1391,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             break;
         case WIDX_LEVEL:
             ride_construction_invalidate_current_track();
-            if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT && _previousTrackSlopeEnd == 6)
+            if (_rideConstructionState == RideConstructionState::Front && _previousTrackSlopeEnd == 6)
             {
                 if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL)
                 {
@@ -1402,7 +1402,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                     _currentTrackBankEnd = TRACK_BANK_RIGHT;
                 }
             }
-            else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK && _previousTrackSlopeEnd == 2)
+            else if (_rideConstructionState == RideConstructionState::Back && _previousTrackSlopeEnd == 2)
             {
                 if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL)
                 {
@@ -1417,13 +1417,13 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             break;
         case WIDX_SLOPE_UP:
             ride_construction_invalidate_current_track();
-            if (_rideConstructionState == 1 && _currentTrackBankEnd != TRACK_BANK_NONE)
+            if (_rideConstructionState == RideConstructionState::Front && _currentTrackBankEnd != TRACK_BANK_NONE)
             {
                 _currentTrackBankEnd = TRACK_BANK_NONE;
             }
             if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
             {
-                if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT && _currentTrackCurve == TRACK_CURVE_NONE)
+                if (_rideConstructionState == RideConstructionState::Front && _currentTrackCurve == TRACK_CURVE_NONE)
                 {
                     _currentTrackCurve = TrackElemType::ReverseFreefallSlope | RideConstructionSpecialPieceSelected;
                     window_ride_construction_update_active_elements();
@@ -1547,7 +1547,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                 uint8_t brakesSpeed = *brakesSpeedPtr + 2;
                 if (brakesSpeed <= maxBrakesSpeed)
                 {
-                    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
+                    if (_rideConstructionState == RideConstructionState::Selected)
                     {
                         ride_construction_set_brakes_speed(brakesSpeed);
                     }
@@ -1573,7 +1573,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                 uint8_t brakesSpeed = *brakesSpeedPtr - 2;
                 if (brakesSpeed >= 2)
                 {
-                    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
+                    if (_rideConstructionState == RideConstructionState::Selected)
                     {
                         ride_construction_set_brakes_speed(brakesSpeed);
                     }
@@ -1604,7 +1604,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
         case WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP:
             if (_currentSeatRotationAngle < 15)
             {
-                if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
+                if (_rideConstructionState == RideConstructionState::Selected)
                 {
                     ride_selected_track_set_seat_rotation(_currentSeatRotationAngle + 1);
                 }
@@ -1618,7 +1618,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
         case WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN:
             if (_currentSeatRotationAngle > 0)
             {
-                if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
+                if (_rideConstructionState == RideConstructionState::Selected)
                 {
                     ride_selected_track_set_seat_rotation(_currentSeatRotationAngle - 1);
                 }
@@ -1668,7 +1668,7 @@ static void CloseConstructWindowOnCompletion(Ride* ride);
 
 static void CloseConstructWindowOnCompletion(Ride* ride)
 {
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_0)
+    if (_rideConstructionState == RideConstructionState::State0)
     {
         auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
         if (w != nullptr)
@@ -1711,14 +1711,14 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
             _currentTrackPieceDirection = next_track.element->GetDirection();
             _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
+            _rideConstructionState = RideConstructionState::Selected;
             _rideConstructionNextArrowPulse = 0;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             ride_select_next_section();
         }
         else
         {
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
+            _rideConstructionState = RideConstructionState::State0;
         }
 
         window_ride_construction_do_station_check();
@@ -1756,14 +1756,14 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
+            _rideConstructionState = RideConstructionState::Selected;
             _rideConstructionNextArrowPulse = 0;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             ride_select_previous_section();
         }
         else
         {
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
+            _rideConstructionState = RideConstructionState::State0;
         }
 
         window_ride_construction_do_station_check();
@@ -1796,11 +1796,11 @@ static void window_ride_construction_construct(rct_window* w)
     auto trackPlaceAction = TrackPlaceAction(
         rideIndex, trackType, { trackPos, static_cast<uint8_t>(trackDirection) }, (properties)&0xFF, (properties >> 8) & 0x0F,
         (properties >> 12) & 0x0F, liftHillAndAlternativeState, false);
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+    if (_rideConstructionState == RideConstructionState::Back)
     {
         trackPlaceAction.SetCallback(RideConstructPlacedBackwardGameActionCallback);
     }
-    else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT)
+    else if (_rideConstructionState == RideConstructionState::Front)
     {
         trackPlaceAction.SetCallback(RideConstructPlacedForwardGameActionCallback);
     }
@@ -1863,24 +1863,24 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     ride_construction_invalidate_current_track();
 
     // Select the track element that is to be deleted
-    _rideConstructionState2 = RIDE_CONSTRUCTION_STATE_SELECTED;
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT)
+    _rideConstructionState2 = RideConstructionState::Selected;
+    if (_rideConstructionState == RideConstructionState::Front)
     {
         if (!ride_select_backwards_from_front())
         {
             window_ride_construction_update_active_elements();
             return;
         }
-        _rideConstructionState2 = RIDE_CONSTRUCTION_STATE_FRONT;
+        _rideConstructionState2 = RideConstructionState::Front;
     }
-    else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+    else if (_rideConstructionState == RideConstructionState::Back)
     {
         if (!ride_select_forwards_from_back())
         {
             window_ride_construction_update_active_elements();
             return;
         }
-        _rideConstructionState2 = RIDE_CONSTRUCTION_STATE_BACK;
+        _rideConstructionState2 = RideConstructionState::Back;
     }
 
     // Invalidate the selected track element or make sure it's at origin???
@@ -1986,10 +1986,10 @@ static void window_ride_construction_entrance_click(rct_window* w)
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();
-        if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
+        if (_rideConstructionState != RideConstructionState::EntranceExit)
         {
             gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
+            _rideConstructionState = RideConstructionState::EntranceExit;
         }
         window_ride_construction_update_active_elements();
     }
@@ -2016,10 +2016,10 @@ static void window_ride_construction_exit_click(rct_window* w)
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();
-        if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
+        if (_rideConstructionState != RideConstructionState::EntranceExit)
         {
             gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
+            _rideConstructionState = RideConstructionState::EntranceExit;
         }
         window_ride_construction_update_active_elements();
     }
@@ -2053,7 +2053,7 @@ static void window_ride_construction_update(rct_window* w)
             break;
     }
 
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE)
+    if (_rideConstructionState == RideConstructionState::Place)
     {
         if (!WidgetIsActiveTool(w, WIDX_CONSTRUCT))
         {
@@ -2062,7 +2062,7 @@ static void window_ride_construction_update(rct_window* w)
         }
     }
 
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
+    if (_rideConstructionState == RideConstructionState::EntranceExit)
     {
         if (!WidgetIsActiveTool(w, WIDX_ENTRANCE) && !WidgetIsActiveTool(w, WIDX_EXIT))
         {
@@ -2073,13 +2073,15 @@ static void window_ride_construction_update(rct_window* w)
 
     switch (_rideConstructionState)
     {
-        case RIDE_CONSTRUCTION_STATE_FRONT:
-        case RIDE_CONSTRUCTION_STATE_BACK:
-        case RIDE_CONSTRUCTION_STATE_SELECTED:
+        case RideConstructionState::Front:
+        case RideConstructionState::Back:
+        case RideConstructionState::Selected:
             if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION)
             {
                 tool_cancel();
             }
+            break;
+        default:
             break;
     }
 
@@ -2323,7 +2325,7 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
 
     // Draw cost
     screenCoords = { w->windowPos.x + widget->midX(), w->windowPos.y + widget->bottom - 23 };
-    if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
+    if (_rideConstructionState != RideConstructionState::Place)
         DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
     screenCoords.y += 11;
@@ -2479,7 +2481,7 @@ void window_ride_construction_update_active_elements_impl()
     window_ride_construction_update_map_selection();
 
     _selectedTrackType = TrackElemType::None;
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
+    if (_rideConstructionState == RideConstructionState::Selected)
     {
         if (sub_6C683D(
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
@@ -2540,8 +2542,8 @@ void sub_6C94D8()
 
     switch (_rideConstructionState)
     {
-        case RIDE_CONSTRUCTION_STATE_FRONT:
-        case RIDE_CONSTRUCTION_STATE_BACK:
+        case RideConstructionState::Front:
+        case RideConstructionState::Back:
         {
             if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
             {
@@ -2569,7 +2571,7 @@ void sub_6C94D8()
             type = _currentTrackPieceType;
             if (direction >= 4)
                 direction += 4;
-            if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+            if (_rideConstructionState == RideConstructionState::Back)
                 direction = direction_reverse(direction);
             gMapSelectArrowPosition = trackPos;
             gMapSelectArrowDirection = direction;
@@ -2579,7 +2581,7 @@ void sub_6C94D8()
             map_invalidate_tile_full(trackPos);
             break;
         }
-        case RIDE_CONSTRUCTION_STATE_SELECTED:
+        case RideConstructionState::Selected:
         {
             auto curTime = platform_get_ticks();
             if (_rideConstructionNextArrowPulse >= curTime)
@@ -2595,13 +2597,13 @@ void sub_6C94D8()
             if (newCoords == std::nullopt)
             {
                 ride_construction_remove_ghosts();
-                _rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
+                _rideConstructionState = RideConstructionState::State0;
             }
             break;
         }
-        case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
-        case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
-        case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
+        case RideConstructionState::MazeBuild:
+        case RideConstructionState::MazeMove:
+        case RideConstructionState::MazeFill:
         {
             auto curTime = platform_get_ticks();
             if (_rideConstructionNextArrowPulse >= curTime)
@@ -2628,6 +2630,8 @@ void sub_6C94D8()
             map_invalidate_tile_full(trackPos);
             break;
         }
+        default:
+            break;
     }
 }
 
@@ -2646,17 +2650,17 @@ static void window_ride_construction_update_map_selection()
 
     switch (_rideConstructionState)
     {
-        case RIDE_CONSTRUCTION_STATE_0:
+        case RideConstructionState::State0:
             trackDirection = _currentTrackPieceDirection;
             trackType = 0;
             trackPos = _currentTrackBegin;
             break;
-        case RIDE_CONSTRUCTION_STATE_SELECTED:
+        case RideConstructionState::Selected:
             trackDirection = _currentTrackPieceDirection;
             trackType = _currentTrackPieceType;
             trackPos = _currentTrackBegin;
             break;
-        case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
+        case RideConstructionState::EntranceExit:
             gMapSelectionTiles.clear();
             return;
         default:
@@ -2706,12 +2710,12 @@ static void window_ride_construction_update_possible_ride_configurations()
         }
 
         int32_t slope, bank;
-        if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT || _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE)
+        if (_rideConstructionState == RideConstructionState::Front || _rideConstructionState == RideConstructionState::Place)
         {
             slope = TrackDefinitions[trackType].vangle_start;
             bank = TrackDefinitions[trackType].bank_start;
         }
-        else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
+        else if (_rideConstructionState == RideConstructionState::Back)
         {
             slope = TrackDefinitions[trackType].vangle_end;
             bank = TrackDefinitions[trackType].bank_end;
@@ -3157,22 +3161,22 @@ static void window_ride_construction_update_widgets(rct_window* w)
 
     switch (_rideConstructionState)
     {
-        case RIDE_CONSTRUCTION_STATE_FRONT:
+        case RideConstructionState::Front:
             window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::ImgBtn;
             window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
             break;
-        case RIDE_CONSTRUCTION_STATE_BACK:
+        case RideConstructionState::Back:
             window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::ImgBtn;
             window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
             break;
-        case RIDE_CONSTRUCTION_STATE_PLACE:
+        case RideConstructionState::Place:
             window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::ImgBtn;
             window_ride_construction_widgets[WIDX_DEMOLISH].type = WindowWidgetType::Empty;
             window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
             window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
             window_ride_construction_widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
             break;
-        case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
+        case RideConstructionState::EntranceExit:
             window_ride_construction_widgets[WIDX_DEMOLISH].type = WindowWidgetType::Empty;
             window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
             window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
@@ -3359,7 +3363,7 @@ static void loc_6C7502(int32_t al)
 {
     _currentTrackSlopeEnd = al;
     _currentTrackPrice = MONEY32_UNDEFINED;
-    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT)
+    if (_rideConstructionState == RideConstructionState::Front)
     {
         if (al != 2 && al != 4 && al != 0)
         {
@@ -3533,7 +3537,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         _currentTrackBegin.z += 16;
     }
 
-    if (_autoRotatingShop && _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE
+    if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
         && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
     {
         TileElement* pathsByDir[NumOrthogonalDirections];
@@ -3722,7 +3726,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     {
         for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
         {
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
+            _rideConstructionState = RideConstructionState::MazeBuild;
             _currentTrackBegin.x = mapCoords.x;
             _currentTrackBegin.y = mapCoords.y;
             _currentTrackBegin.z = z;
@@ -3743,7 +3747,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
             if (_trackPlaceCost == MONEY32_UNDEFINED)
             {
-                _rideConstructionState = RIDE_CONSTRUCTION_STATE_PLACE;
+                _rideConstructionState = RideConstructionState::Place;
                 rct_string_id errorText = gGameCommandErrorText;
                 z -= 8;
                 if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER
@@ -3778,7 +3782,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
     for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
     {
-        _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
+        _rideConstructionState = RideConstructionState::Front;
         _currentTrackBegin.x = mapCoords.x;
         _currentTrackBegin.y = mapCoords.y;
         _currentTrackBegin.z = z;

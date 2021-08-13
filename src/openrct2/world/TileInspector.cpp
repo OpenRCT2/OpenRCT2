@@ -1063,4 +1063,18 @@ namespace OpenRCT2::TileInspector
 
         return std::make_unique<GameActions::Result>();
     }
+
+    // NOTE: The pointer is exclusively used to determine the  current selection,
+    // do not access the data, points to potentially invalid memory.
+    static const TileElement* _highlightedElement = nullptr;
+
+    void SetSelectedElement(const TileElement* elem)
+    {
+        _highlightedElement = elem;
+    }
+
+    bool IsElementSelected(const TileElement* elem)
+    {
+        return _highlightedElement == elem;
+    }
 } // namespace OpenRCT2::TileInspector

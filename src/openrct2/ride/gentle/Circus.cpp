@@ -53,7 +53,7 @@ static void paint_circus_tent(
  */
 static void paint_circus(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -70,7 +70,7 @@ static void paint_circus(
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
+            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
             fenceSpritesRope, session->CurrentRotation);
     }
 

@@ -17,6 +17,7 @@
 #    include "../peep/Staff.h"
 #    include "../util/Util.h"
 #    include "../world/EntityList.h"
+#    include "../world/Litter.h"
 #    include "../world/Sprite.h"
 #    include "Duktape.hpp"
 #    include "ScRide.hpp"
@@ -48,6 +49,8 @@ namespace OpenRCT2::Scripting
 
         std::string type_get() const
         {
+            const auto targetApiVersion = GetTargetAPIVersion();
+
             auto entity = GetEntity();
             if (entity != nullptr)
             {
@@ -56,8 +59,15 @@ namespace OpenRCT2::Scripting
                     case EntityType::Vehicle:
                         return "car";
                     case EntityType::Guest:
+                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
+                            return "peep";
+                        else
+                            return "guest";
                     case EntityType::Staff:
-                        return "peep";
+                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
+                            return "peep";
+                        else
+                            return "staff";
                     case EntityType::SteamParticle:
                         return "steam_particle";
                     case EntityType::MoneyEffect:
@@ -267,7 +277,8 @@ namespace OpenRCT2::Scripting
                 ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
             dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
             dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
-            dukglue_register_property(ctx, &ScVehicle::peeps_get, nullptr, "peeps");
+            dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "peeps");
+            dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
             dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
             dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
         }
@@ -600,7 +611,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::vector<DukValue> peeps_get() const
+        std::vector<DukValue> guests_get() const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             std::vector<DukValue> result;
@@ -837,6 +848,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScGuest::maxIntensity_get, &ScGuest::maxIntensity_set, "maxIntensity");
             dukglue_register_property(ctx, &ScGuest::nauseaTolerance_get, &ScGuest::nauseaTolerance_set, "nauseaTolerance");
             dukglue_register_property(ctx, &ScGuest::cash_get, &ScGuest::cash_set, "cash");
+            dukglue_register_property(ctx, &ScGuest::isInPark_get, nullptr, "isInPark");
+            dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
+            dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
         }
 
     private:
@@ -1104,6 +1118,33 @@ namespace OpenRCT2::Scripting
                 peep->CashInPocket = std::max(0, value);
             }
         }
+
+        bool isInPark_get() const
+        {
+            auto peep = GetGuest();
+            return (peep != nullptr && !peep->OutsideOfPark);
+        }
+
+        bool isLost_get() const
+        {
+            auto peep = GetGuest();
+            return (peep != nullptr && peep->GuestIsLostCountdown < 90);
+        }
+
+        uint8_t lostCountdown_get() const
+        {
+            auto peep = GetGuest();
+            return peep != nullptr ? peep->GuestIsLostCountdown : 0;
+        }
+        void lostCountdown_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetGuest();
+            if (peep != nullptr)
+            {
+                peep->GuestIsLostCountdown = value;
+            }
+        }
     };
 
     class ScStaff : public ScPeep
@@ -1231,6 +1272,71 @@ namespace OpenRCT2::Scripting
             {
                 peep->StaffOrders = value;
             }
+        }
+    };
+
+    static const DukEnumMap<Litter::Type> LitterTypeMap({
+        { "vomit", Litter::Type::Vomit },
+        { "vomit_alt", Litter::Type::VomitAlt },
+        { "empty_can", Litter::Type::EmptyCan },
+        { "rubbish", Litter::Type::Rubbish },
+        { "burger_box", Litter::Type::BurgerBox },
+        { "empty_cup", Litter::Type::EmptyCup },
+        { "empty_box", Litter::Type::EmptyBox },
+        { "empty_bottle", Litter::Type::EmptyBottle },
+        { "empty_bowl_red", Litter::Type::EmptyBowlRed },
+        { "empty_drink_carton", Litter::Type::EmptyDrinkCarton },
+        { "empty_juice_cup", Litter::Type::EmptyJuiceCup },
+        { "empty_bowl_blue", Litter::Type::EmptyBowlBlue },
+    });
+
+    class ScLitter : public ScEntity
+    {
+    public:
+        ScLitter(uint16_t Id)
+            : ScEntity(Id)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScEntity, ScLitter>(ctx);
+            dukglue_register_property(ctx, &ScLitter::litterType_get, &ScLitter::litterType_set, "litterType");
+            dukglue_register_property(ctx, &ScLitter::creationTick_get, nullptr, "creationTick");
+        }
+
+    private:
+        Litter* GetLitter() const
+        {
+            return ::GetEntity<Litter>(_id);
+        }
+
+        std::string litterType_get() const
+        {
+            auto* litter = GetLitter();
+            auto it = LitterTypeMap.find(litter->SubType);
+            if (it == LitterTypeMap.end())
+                return "";
+            return std::string{ it->first };
+        }
+
+        void litterType_set(const std::string& litterType)
+        {
+            ThrowIfGameStateNotMutable();
+
+            auto it = LitterTypeMap.find(litterType);
+            if (it == LitterTypeMap.end())
+                return;
+            auto* litter = GetLitter();
+            litter->SubType = it->second;
+        }
+
+        uint32_t creationTick_get() const
+        {
+            auto* litter = GetLitter();
+            if (litter == nullptr)
+                return 0;
+            return litter->creationTick;
         }
     };
 

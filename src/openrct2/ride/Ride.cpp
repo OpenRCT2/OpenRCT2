@@ -715,7 +715,7 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
     }
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == ride->id)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == ride->id)
     {
         ride_construction_invalidate_current_track();
     }
@@ -2586,7 +2586,7 @@ static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
 {
     ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
 
     track_circuit_iterator it;
@@ -2650,7 +2650,7 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
         return true;
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         ride_construction_invalidate_current_track();
     }
@@ -2708,7 +2708,7 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
         return true;
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         ride_construction_invalidate_current_track();
     }
@@ -2748,7 +2748,7 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
 static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
 {
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0
+    if (w != nullptr && _rideConstructionState != RideConstructionState::State0
         && _currentRideIndex == input->element->AsTrack()->GetRideIndex())
     {
         ride_construction_invalidate_current_track();
@@ -2809,7 +2809,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
         return false;
 
     auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         ride_construction_invalidate_current_track();
     }
@@ -4891,7 +4891,7 @@ static int32_t ride_get_track_length(Ride* ride)
     ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
+    if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
     {
         ride_construction_invalidate_current_track();
     }

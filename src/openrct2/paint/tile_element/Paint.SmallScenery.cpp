@@ -16,6 +16,7 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/SmallScenery.h"
+#include "../../world/TileInspector.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
@@ -31,13 +32,12 @@ static constexpr const CoordsXY lengths[] = {
  *
  *  rct2: 0x006DFF47
  */
-void scenery_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement)
+void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
 {
     if (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
         return;
     }
-    const SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
     session->InteractionType = ViewportInteractionItem::Scenery;
     CoordsXYZ boxlength;
     CoordsXYZ boxoffset;
@@ -48,18 +48,22 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     const int32_t rotation = session->CurrentRotation;
     if (gTrackDesignSaveMode)
     {
-        if (!track_design_save_contains_tile_element(tileElement))
+        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&sceneryElement)))
         {
             marker = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
         }
     }
-    if (tileElement->IsGhost())
+    if (sceneryElement.IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
         marker = CONSTRUCTION_MARKER;
     }
+    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
+    {
+        marker = CONSTRUCTION_MARKER;
+    }
 
-    auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+    auto* sceneryEntry = sceneryElement.GetEntry();
 
     if (sceneryEntry == nullptr)
     {
@@ -114,7 +118,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     else
     {
         // 6DFFC2:
-        uint8_t quadrant = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) & 3;
+        uint8_t quadrant = (sceneryElement.GetSceneryQuadrant() + rotation) & 3;
         x_offset = SceneryQuadrantOffsets[quadrant].x;
         y_offset = SceneryQuadrantOffsets[quadrant].y;
         boxoffset.x = x_offset;
@@ -128,11 +132,11 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     }
     if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_WITHER))
     {
-        if (tileElement->AsSmallScenery()->GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_1)
+        if (sceneryElement.GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_1)
         {
             baseImageid += 4;
         }
-        if (tileElement->AsSmallScenery()->GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_2)
+        if (sceneryElement.GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_2)
         {
             baseImageid += 4;
         }
@@ -141,11 +145,11 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     {
         if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
-            baseImageid |= SPRITE_ID_PALETTE_COLOUR_2(sceneryElement->GetPrimaryColour(), sceneryElement->GetSecondaryColour());
+            baseImageid |= SPRITE_ID_PALETTE_COLOUR_2(sceneryElement.GetPrimaryColour(), sceneryElement.GetSecondaryColour());
         }
         else
         {
-            baseImageid |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
+            baseImageid |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement.GetPrimaryColour());
         }
     }
     if (marker != 0)
@@ -165,7 +169,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         {
             // Draw translucent overlay:
             // TODO: Name palette entries
-            int32_t image_id = (baseImageid & 0x7FFFF) + (EnumValue(GlassPaletteIds[sceneryElement->GetPrimaryColour()]) << 19)
+            int32_t image_id = (baseImageid & 0x7FFFF) + (EnumValue(GlassPaletteIds[sceneryElement.GetPrimaryColour()]) << 19)
                 + 0x40000004;
             PaintAddImageAsChild(
                 session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
@@ -287,7 +291,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     // 6E01F8:
                     frame += ((session->SpritePosition.x / 4) + (session->SpritePosition.y / 4));
-                    frame += tileElement->AsSmallScenery()->GetSceneryQuadrant() << 2;
+                    frame += sceneryElement.GetSceneryQuadrant() << 2;
                 }
                 // 6E0222:
                 uint16_t delay = sceneryEntry->animation_delay & 0xFF;
@@ -308,11 +312,11 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                     if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
                     {
                         image_id |= SPRITE_ID_PALETTE_COLOUR_2(
-                            sceneryElement->GetPrimaryColour(), sceneryElement->GetSecondaryColour());
+                            sceneryElement.GetPrimaryColour(), sceneryElement.GetSecondaryColour());
                     }
                     else
                     {
-                        image_id |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
+                        image_id |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement.GetPrimaryColour());
                     }
                 }
                 if (marker != 0)
@@ -335,7 +339,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         }
     }
     // 6E0556: Draw supports:
-    if (sceneryElement->NeedsSupports())
+    if (sceneryElement.NeedsSupports())
     {
         if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_SUPPORTS)))
         {
@@ -349,7 +353,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             uint32_t supportImageColourFlags = IMAGE_TYPE_REMAP;
             if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_PAINT_SUPPORTS))
             {
-                supportImageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
+                supportImageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(sceneryElement.GetPrimaryColour());
             }
             if (marker != 0)
             {
@@ -385,7 +389,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
             // 6E075C:
-            direction = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) % 4;
+            direction = (sceneryElement.GetSceneryQuadrant() + rotation) % 4;
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
             return;
@@ -403,7 +407,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     }
     if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
     {
-        direction = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) % 4;
+        direction = (sceneryElement.GetSceneryQuadrant() + rotation) % 4;
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         return;

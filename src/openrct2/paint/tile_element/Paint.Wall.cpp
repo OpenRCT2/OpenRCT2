@@ -19,6 +19,7 @@
 #include "../../world/Banner.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
+#include "../../world/TileInspector.h"
 #include "../../world/Wall.h"
 #include "../Paint.h"
 #include "Paint.TileElement.h"
@@ -39,7 +40,7 @@ static constexpr const uint8_t byte_9A40CC[] = {
     0, 0, 20, 24, 28, 32, 32, 32, 32, 32, 28, 24, 20, 0, 4, 0, 0, 0, 4, 8, 12, 16, 16, 16, 16, 16, 12, 8, 4, 0, 20, 0,
 };
 
-static void fence_paint_door(
+static void PaintWallDoor(
     paint_session* session, uint32_t imageId, WallSceneryEntry* wallEntry, uint32_t imageColourFlags, uint32_t tertiaryColour,
     uint32_t dword_141F710, CoordsXYZ offset, CoordsXYZ boundsR1, CoordsXYZ boundsR1_, CoordsXYZ boundsR2, CoordsXYZ boundsR2_,
     CoordsXYZ boundsL1, CoordsXYZ boundsL1_)
@@ -96,7 +97,7 @@ static void fence_paint_door(
     }
 }
 
-static void fence_paint_wall(
+static void PaintWallWall(
     paint_session* session, uint32_t frameNum, const WallSceneryEntry* wallEntry, uint32_t dword_141F710,
     uint32_t imageColourFlags, uint32_t dword_141F718, uint32_t tertiaryColour, uint32_t imageOffset, CoordsXYZ offset,
     CoordsXYZ bounds, CoordsXYZ boundsOffset)
@@ -154,11 +155,11 @@ static void fence_paint_wall(
  * @param height (dx)
  * @param tile_element (esi)
  */
-void fence_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
+void PaintWall(paint_session* session, uint8_t direction, int32_t height, const WallElement& wallElement)
 {
     session->InteractionType = ViewportInteractionItem::Wall;
 
-    auto* wallEntry = tile_element->AsWall()->GetEntry();
+    auto* wallEntry = wallElement.GetEntry();
     if (wallEntry == nullptr)
     {
         return;
@@ -170,37 +171,41 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         frameNum = (gCurrentTicks & 7) * 2;
     }
 
-    int32_t primaryColour = tile_element->AsWall()->GetPrimaryColour();
+    int32_t primaryColour = wallElement.GetPrimaryColour();
     uint32_t imageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(primaryColour);
     uint32_t dword_141F718 = imageColourFlags + 0x23800006;
 
     if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
     {
-        uint8_t secondaryColour = tile_element->AsWall()->GetSecondaryColour();
+        uint8_t secondaryColour = wallElement.GetSecondaryColour();
         imageColourFlags |= secondaryColour << 24 | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32_t tertiaryColour = 0;
     if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {
-        tertiaryColour = tile_element->AsWall()->GetTertiaryColour();
+        tertiaryColour = wallElement.GetTertiaryColour();
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
-    paint_util_set_general_support_height(session, 8 * tile_element->clearance_height, 0x20);
+    paint_util_set_general_support_height(session, 8 * wallElement.clearance_height, 0x20);
 
     uint32_t dword_141F710 = 0;
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
-        if (!track_design_save_contains_tile_element(tile_element))
+        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&wallElement)))
         {
             dword_141F710 = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
         }
     }
 
-    if (tile_element->IsGhost())
+    if (wallElement.IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
+        dword_141F710 = CONSTRUCTION_MARKER;
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&wallElement)))
+    {
         dword_141F710 = CONSTRUCTION_MARKER;
     }
 
@@ -212,9 +217,9 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     {
         CoordsXYZ offset;
         CoordsXYZ boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
-        uint8_t animationFrame = tile_element->AsWall()->GetAnimationFrame();
+        uint8_t animationFrame = wallElement.GetAnimationFrame();
         // Add the direction as well
-        if (tile_element->AsWall()->AnimationIsBackwards())
+        if (wallElement.AnimationIsBackwards())
             animationFrame |= (1 << 4);
         uint32_t imageId;
         switch (direction)
@@ -232,7 +237,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
                 offset = { 0, 0, static_cast<int16_t>(height) };
 
-                fence_paint_door(
+                PaintWallDoor(
                     session, imageId, wallEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_,
                     boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -250,7 +255,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
                 offset = { 1, 31, static_cast<int16_t>(height) };
 
-                fence_paint_door(
+                PaintWallDoor(
                     session, imageId, wallEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_,
                     boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -268,7 +273,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
                 offset = { 31, 0, static_cast<int16_t>(height) };
 
-                fence_paint_door(
+                PaintWallDoor(
                     session, imageId, wallEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_,
                     boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -286,7 +291,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
                 offset = { 2, 1, static_cast<int16_t>(height) };
 
-                fence_paint_door(
+                PaintWallDoor(
                     session, imageId, wallEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_,
                     boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -301,11 +306,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     switch (direction)
     {
         case 0:
-            if (tile_element->AsWall()->GetSlope() == 2)
+            if (wallElement.GetSlope() == 2)
             {
                 imageOffset = 3;
             }
-            else if (tile_element->AsWall()->GetSlope() == 1)
+            else if (wallElement.GetSlope() == 1)
             {
                 imageOffset = 5;
             }
@@ -320,11 +325,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
 
         case 1:
-            if (tile_element->AsWall()->GetSlope() == 2)
+            if (wallElement.GetSlope() == 2)
             {
                 imageOffset = 2;
             }
-            else if (tile_element->AsWall()->GetSlope() == 1)
+            else if (wallElement.GetSlope() == 1)
             {
                 imageOffset = 4;
             }
@@ -354,11 +359,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
 
         case 2:
-            if (tile_element->AsWall()->GetSlope() == 2)
+            if (wallElement.GetSlope() == 2)
             {
                 imageOffset = 5;
             }
-            else if (tile_element->AsWall()->GetSlope() == 1)
+            else if (wallElement.GetSlope() == 1)
             {
                 imageOffset = 3;
             }
@@ -378,11 +383,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
 
         case 3:
-            if (tile_element->AsWall()->GetSlope() == 2)
+            if (wallElement.GetSlope() == 2)
             {
                 imageOffset = 4;
             }
-            else if (tile_element->AsWall()->GetSlope() == 1)
+            else if (wallElement.GetSlope() == 1)
             {
                 imageOffset = 2;
             }
@@ -397,7 +402,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
     }
 
-    fence_paint_wall(
+    PaintWallWall(
         session, frameNum, wallEntry, dword_141F710, imageColourFlags, dword_141F718, tertiaryColour, imageOffset, offset,
         bounds, boundsOffset);
 
@@ -411,7 +416,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         return;
     }
 
-    auto secondaryColour = tile_element->AsWall()->GetSecondaryColour();
+    auto secondaryColour = wallElement.GetSecondaryColour();
     if (dword_141F710 != 0)
     {
         secondaryColour = COLOUR_GREY;
@@ -431,7 +436,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         return;
     }
 
-    auto banner = tile_element->AsWall()->GetBanner();
+    auto banner = wallElement.GetBanner();
     if (banner != nullptr)
     {
         auto ft = Formatter();

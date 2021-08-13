@@ -132,7 +132,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     session->MapPosition.x = x;
     session->MapPosition.y = y;
 
-    TileElement* tile_element = map_get_first_element_at(session->MapPosition);
+    const TileElement* tile_element = map_get_first_element_at(session->MapPosition);
     if (tile_element == nullptr)
         return;
     uint8_t rotation = session->CurrentRotation;
@@ -241,7 +241,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             previousBaseZ = baseZ;
             session->PathElementOnSameHeight = nullptr;
             session->TrackElementOnSameHeight = nullptr;
-            TileElement* tile_element_sub_iterator = tile_element;
+            const TileElement* tile_element_sub_iterator = tile_element;
             while (!(tile_element_sub_iterator++)->IsLastForTile())
             {
                 if (tile_element->IsInvisible())
@@ -271,28 +271,28 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         switch (tile_element->GetType())
         {
             case TILE_ELEMENT_TYPE_SURFACE:
-                surface_paint(session, direction, baseZ, tile_element);
+                PaintSurface(session, direction, baseZ, *(tile_element->AsSurface()));
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                path_paint(session, baseZ, tile_element);
+                PaintPath(session, baseZ, *(tile_element->AsPath()));
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
-                track_paint(session, direction, baseZ, tile_element);
+                PaintTrack(session, direction, baseZ, *(tile_element->AsTrack()));
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                scenery_paint(session, direction, baseZ, tile_element);
+                PaintSmallScenery(session, direction, baseZ, *(tile_element->AsSmallScenery()));
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                entrance_paint(session, direction, baseZ, tile_element);
+                PaintEntrance(session, direction, baseZ, *(tile_element->AsEntrance()));
                 break;
             case TILE_ELEMENT_TYPE_WALL:
-                fence_paint(session, direction, baseZ, tile_element);
+                PaintWall(session, direction, baseZ, *(tile_element->AsWall()));
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                large_scenery_paint(session, direction, baseZ, tile_element);
+                PaintLargeScenery(session, direction, baseZ, *(tile_element->AsLargeScenery()));
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
-                banner_paint(session, direction, baseZ, tile_element);
+                PaintBanner(session, direction, baseZ, *(tile_element->AsBanner()));
                 break;
         }
         session->MapPosition = mapPosition;

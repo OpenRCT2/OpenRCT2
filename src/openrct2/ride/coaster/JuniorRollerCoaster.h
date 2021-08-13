@@ -11,7 +11,6 @@
 #define _JUNIOR_ROLLER_COASTER_H
 
 #include "../../common.h"
-#include "../../paint/tile_element/Paint.TileElement.h"
 
 enum class JuniorRcChainType : uint8_t
 {
@@ -21,97 +20,99 @@ enum class JuniorRcChainType : uint8_t
 };
 
 struct Ride;
+struct paint_session;
+struct TrackElement;
 
 void junior_rc_paint_station(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, uint8_t rideType);
+    const TrackElement& trackElement, uint8_t rideType);
 
 void junior_rc_paint_track_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_60_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_flat_to_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_25_deg_up_to_60_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_60_deg_up_to_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_25_deg_up_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 
 void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 
 void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 
 void junior_rc_paint_track_diag_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_60_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_flat_to_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_flat_to_60_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_25_deg_up_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_60_deg_up_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_60_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_flat_to_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_flat_to_60_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_25_deg_down_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 void junior_rc_paint_track_diag_60_deg_down_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TileElement* tileElement, JuniorRcChainType chainType);
+    const TrackElement& trackElement, JuniorRcChainType chainType);
 
 #endif // _JUNIOR_ROLLER_COASTER_H

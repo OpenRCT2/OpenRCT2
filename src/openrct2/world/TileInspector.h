@@ -21,6 +21,10 @@ namespace OpenRCT2::TileInspector
 {
     using GameActionResultPtr = std::unique_ptr<GameActions::Result>;
 
+    void SetSelectedElement(const TileElement* elem);
+    bool IsElementSelected(const TileElement* elem);
+
+    GameActionResultPtr InsertCorruptElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
     GameActionResultPtr RemoveElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
     GameActionResultPtr SwapElementsAt(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting);
     GameActionResultPtr RotateElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);

@@ -121,7 +121,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
         return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
     }
 
-    if (!byte_9D8150 && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))
+    if (!_trackDesignDrawingPreview && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))
     {
         return std::make_unique<SmallSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
     }

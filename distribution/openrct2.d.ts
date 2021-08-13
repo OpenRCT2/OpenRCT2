@@ -135,6 +135,7 @@ declare global {
         type: PluginType;
         licence: string;
         minApiVersion?: number;
+        targetApiVersion?: number;
         main: () => void;
     }
 
@@ -517,13 +518,13 @@ declare global {
         readonly isClientOnly: boolean;
         result: boolean;
     }
-	
-	type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
-	
-	interface VehicleCrashArgs {
-		readonly id: number;
-		readonly crashIntoType: VehicleCrashIntoType;
-	}
+
+    type VehicleCrashIntoType = "another_vehicle"|"land"|"water";
+
+    interface VehicleCrashArgs {
+        readonly id: number;
+        readonly crashIntoType: VehicleCrashIntoType;
+    }
 
     /**
      * APIs for the in-game date.
@@ -572,7 +573,15 @@ declare global {
         getTile(x: number, y: number): Tile;
         getEntity(id: number): Entity;
         getAllEntities(type: EntityType): Entity[];
+        /**
+         * @deprecated since version 34, use guest or staff instead.
+         */
         getAllEntities(type: "peep"): Peep[];
+        getAllEntities(type: "guest"): Guest[];
+        getAllEntities(type: "staff"): Staff[];
+        getAllEntities(type: "car"): Car[];
+        getAllEntities(type: "litter"): Litter[];
+        createEntity(type: EntityType, initializer: object): Entity;
     }
 
     type TileElementType =
@@ -1032,6 +1041,11 @@ declare global {
          * The value of the ride.
          */
         value: number;
+
+        /**
+         * The percentage of downtime for this ride from 0 to 100.
+         */
+        readonly downtime: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";
@@ -1057,20 +1071,12 @@ declare global {
         exit: CoordsXYZD;
     }
 
-    type EntityType =
-        "balloon" |
-        "car" |
-        "crash_splash" |
-        "crashed_vehicle_particle" |
-        "duck" |
-        "explosion_cloud" |
-        "explosion_flare" |
-        "jumping_fountain_snow" |
-        "jumping_fountain_water" |
-        "litter" |
-        "money_effect" |
-        "peep" |
-        "steam_particle";
+    type EntityType
+        = "balloon"|"car"|"crash_splash"|"crashed_vehicle_particle"|"duck"|"explosion_cloud"|"explosion_flare"|"jumping_fountain_snow"|"jumping_fountain_water"|"litter"|"money_effect"|"guest"|"staff"|"steam_particle"|
+        /**
+         * @deprecated since version 34, use guest or staff instead.
+         */
+        "peep";
 
     /**
      * Represents an object "entity" on the map that can typically moves and has a sub-tile coordinate.
@@ -1081,7 +1087,7 @@ declare global {
          */
         readonly id: number;
         /**
-         * The type of entity, e.g. car, duck, litter, or peep.
+         * The type of entity, e.g. guest, vehicle, etc.
          */
         readonly type: EntityType;
         /**
@@ -1219,9 +1225,15 @@ declare global {
         readonly remainingDistance: number;
 
         /**
-         * List of peep IDs ordered by seat.
+         * List of guest IDs ordered by seat.
+         * @deprecated since version 34, use guests instead.
          */
         peeps: Array<number | null>;
+
+        /**
+         * List of guest IDs ordered by seat.
+         */
+        guests: Array<number|null>;
 
         /**
          * Moves the vehicle forward or backwards along the track, relative to its current
@@ -1266,6 +1278,7 @@ declare global {
 
     /**
      * Represents a guest or staff member.
+     * @deprecated since version 34, use guest or staff instead.
      */
     interface Peep extends Entity {
         /**
@@ -1334,6 +1347,9 @@ declare global {
         "iceCream" |
         "hereWeAre";
 
+    /**
+     * @deprecated since version 34, use EntityType instead.
+     */
     type PeepType = "guest" | "staff";
 
     /**
@@ -1424,6 +1440,21 @@ declare global {
          * Amount of cash in the guest's pocket.
          */
         cash: number;
+
+        /**
+         * Whether the guest is within the boundaries of the park.
+         */
+        readonly isInPark: boolean;
+
+        /**
+         * Whether the guest is lost or not. The guest is lost when the countdown is below 90.
+         */
+        readonly isLost: boolean;
+
+        /**
+         * Countdown between 0 and 255 that keeps track of how long the guest has been looking for its current destination.
+         */
+        lostCountdown: number;
     }
 
     /**
@@ -1452,6 +1483,24 @@ declare global {
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
+
+    /**
+     * Represents litter entity.
+     */
+    interface Litter extends Entity {
+        /**
+         * The type of the litter.
+         */
+        litterType: LitterType;
+
+        /**
+         * The tick number this entity was created.
+         */
+        creationTime: number;
+    }
+
+    type LitterType
+        = "vomit"|"vomit_alt"|"empty_can"|"rubbish"|"burger_box"|"empty_cup"|"empty_box"|"empty_bottle"|"empty_bowl_red"|"empty_drink_carton"|"empty_juice_cup"|"empty_bowl_blue";
 
     /**
      * Network APIs
@@ -1704,6 +1753,12 @@ declare global {
          * The purchase price of one tile for construction rights.
          */
         constructionRightsPrice: number;
+
+        /**
+         * The amount of penalty points currentlty applied to the park rating for
+         * drowned guests and crashed coaster cars.
+         */
+        casualtyPenalty: number;
 
         /**
          * The number of tiles on the map with park ownership or construction rights.

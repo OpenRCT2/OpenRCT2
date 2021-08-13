@@ -17,7 +17,11 @@
 #    include "../world/Balloon.h"
 #    include "../world/Duck.h"
 #    include "../world/EntityList.h"
+#    include "../world/Fountain.h"
+#    include "../world/Litter.h"
 #    include "../world/Map.h"
+#    include "../world/MoneyEffect.h"
+#    include "../world/Particle.h"
 #    include "Duktape.hpp"
 #    include "ScEntity.hpp"
 #    include "ScRide.hpp"
@@ -38,13 +42,7 @@ namespace OpenRCT2::Scripting
 
         DukValue size_get() const
         {
-            auto ctx = _context;
-            auto objIdx = duk_push_object(ctx);
-            duk_push_number(ctx, gMapSize);
-            duk_put_prop_string(ctx, objIdx, "x");
-            duk_push_number(ctx, gMapSize);
-            duk_put_prop_string(ctx, objIdx, "y");
-            return DukValue::take_from_stack(ctx);
+            return ToDuk(_context, CoordsXY{ gMapSize, gMapSize });
         }
 
         int32_t numRides_get() const
@@ -110,7 +108,7 @@ namespace OpenRCT2::Scripting
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
                 }
             }
-            if (type == "car")
+            else if (type == "car")
             {
                 for (auto trainHead : TrainManager::View())
                 {
@@ -147,12 +145,99 @@ namespace OpenRCT2::Scripting
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
                 }
             }
+            else if (type == "guest")
+            {
+                for (auto sprite : EntityList<Guest>())
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+                }
+            }
+            else if (type == "staff")
+            {
+                for (auto sprite : EntityList<Staff>())
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+                }
+            }
             else
             {
                 duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
             }
 
             return result;
+        }
+
+        template<typename TEntityType, typename TScriptType> DukValue createEntityType(const DukValue& initializer)
+        {
+            TEntityType* entity = CreateEntity<TEntityType>();
+
+            auto entityPos = CoordsXYZ{ AsOrDefault(initializer["x"], 0), AsOrDefault(initializer["y"], 0),
+                                        AsOrDefault(initializer["z"], 0) };
+            entity->MoveTo(entityPos);
+
+            return GetObjectAsDukValue(_context, std::make_shared<TScriptType>(entity->sprite_index));
+        }
+
+        DukValue createEntity(const std::string& type, const DukValue& initializer)
+        {
+            if (type == "car")
+            {
+                return createEntityType<Vehicle, ScVehicle>(initializer);
+            }
+            else if (type == "staff")
+            {
+                return createEntityType<Staff, ScStaff>(initializer);
+            }
+            else if (type == "guest")
+            {
+                return createEntityType<Guest, ScGuest>(initializer);
+            }
+            else if (type == "steam_particle")
+            {
+                return createEntityType<SteamParticle, ScEntity>(initializer);
+            }
+            else if (type == "money_effect")
+            {
+                return createEntityType<MoneyEffect, ScEntity>(initializer);
+            }
+            else if (type == "crashed_vehicle_particle")
+            {
+                return createEntityType<VehicleCrashParticle, ScEntity>(initializer);
+            }
+            else if (type == "explosion_cloud")
+            {
+                return createEntityType<ExplosionCloud, ScEntity>(initializer);
+            }
+            else if (type == "crash_splash")
+            {
+                return createEntityType<CrashSplashParticle, ScEntity>(initializer);
+            }
+            else if (type == "explosion_flare")
+            {
+                return createEntityType<ExplosionFlare, ScEntity>(initializer);
+            }
+            else if (type == "balloon")
+            {
+                return createEntityType<Balloon, ScEntity>(initializer);
+            }
+            else if (type == "duck")
+            {
+                return createEntityType<Duck, ScEntity>(initializer);
+            }
+            else if (type == "jumping_fountain")
+            {
+                return createEntityType<JumpingFountain, ScEntity>(initializer);
+            }
+            else if (type == "litter")
+            {
+                return createEntityType<Litter, ScLitter>(initializer);
+            }
+            else
+            {
+                duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
+            }
+
+            return DukValue();
         }
 
         static void Register(duk_context* ctx)
@@ -165,6 +250,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScMap::getTile, "getTile");
             dukglue_register_method(ctx, &ScMap::getEntity, "getEntity");
             dukglue_register_method(ctx, &ScMap::getAllEntities, "getAllEntities");
+            dukglue_register_method(ctx, &ScMap::createEntity, "createEntity");
         }
 
     private:
@@ -179,6 +265,8 @@ namespace OpenRCT2::Scripting
                     return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
                 case EntityType::Guest:
                     return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));
+                case EntityType::Litter:
+                    return GetObjectAsDukValue(_context, std::make_shared<ScLitter>(spriteId));
                 default:
                     return GetObjectAsDukValue(_context, std::make_shared<ScEntity>(spriteId));
             }

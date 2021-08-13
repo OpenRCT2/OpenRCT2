@@ -32,6 +32,7 @@ struct scenario_index_entry;
 
 enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
+enum class RideConstructionState : uint8_t;
 
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12
@@ -874,7 +875,7 @@ money32 place_provisional_track_piece(
     const CoordsXYZ& trackPos);
 
 extern uint64_t _enabledRidePieces;
-extern uint8_t _rideConstructionState2;
+extern RideConstructionState _rideConstructionState2;
 extern bool _stationConstructed;
 extern bool _deferClose;
 

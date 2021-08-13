@@ -44,13 +44,13 @@ static int8_t TopSpinSeatPositionOffset[] = {
  */
 static void top_spin_paint_vehicle(
     paint_session* session, int32_t al, int32_t cl, const Ride* ride, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     if (ride == nullptr)
         return;
 
     int32_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
-    // As we will be drawing a vehicle we need to backup the tileElement that
+    // As we will be drawing a vehicle we need to backup the trackElement that
     // is assigned to the drawings.
     const TileElement* curTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -246,7 +246,7 @@ static void top_spin_paint_vehicle(
  */
 static void paint_top_spin(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -263,29 +263,29 @@ static void paint_top_spin(
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
             fenceSpritesRope, session->CurrentRotation);
     }
 
     switch (trackSequence)
     {
         case 1:
-            top_spin_paint_vehicle(session, 32, 32, ride, direction, height, tileElement);
+            top_spin_paint_vehicle(session, 32, 32, ride, direction, height, trackElement);
             break;
         case 3:
-            top_spin_paint_vehicle(session, 32, -32, ride, direction, height, tileElement);
+            top_spin_paint_vehicle(session, 32, -32, ride, direction, height, trackElement);
             break;
         case 5:
-            top_spin_paint_vehicle(session, 0, -32, ride, direction, height, tileElement);
+            top_spin_paint_vehicle(session, 0, -32, ride, direction, height, trackElement);
             break;
         case 6:
-            top_spin_paint_vehicle(session, -32, 32, ride, direction, height, tileElement);
+            top_spin_paint_vehicle(session, -32, 32, ride, direction, height, trackElement);
             break;
         case 7:
-            top_spin_paint_vehicle(session, -32, -32, ride, direction, height, tileElement);
+            top_spin_paint_vehicle(session, -32, -32, ride, direction, height, trackElement);
             break;
         case 8:
-            top_spin_paint_vehicle(session, -32, 0, ride, direction, height, tileElement);
+            top_spin_paint_vehicle(session, -32, 0, ride, direction, height, trackElement);
             break;
     }
 

@@ -883,17 +883,17 @@ enum
     RIDE_CRASH_TYPE_FATALITIES = 8
 };
 
-enum
+enum class RideConstructionState : uint8_t
 {
-    RIDE_CONSTRUCTION_STATE_0,
-    RIDE_CONSTRUCTION_STATE_FRONT,
-    RIDE_CONSTRUCTION_STATE_BACK,
-    RIDE_CONSTRUCTION_STATE_SELECTED,
-    RIDE_CONSTRUCTION_STATE_PLACE,
-    RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT,
-    RIDE_CONSTRUCTION_STATE_MAZE_BUILD,
-    RIDE_CONSTRUCTION_STATE_MAZE_MOVE,
-    RIDE_CONSTRUCTION_STATE_MAZE_FILL
+    State0,
+    Front,
+    Back,
+    Selected,
+    Place,
+    EntranceExit,
+    MazeBuild,
+    MazeMove,
+    MazeFill
 };
 
 enum
@@ -1088,7 +1088,7 @@ extern uint16_t _numCurrentPossibleRideConfigurations;
 extern uint16_t _numCurrentPossibleSpecialTrackPieces;
 
 extern uint32_t _currentTrackCurve;
-extern uint8_t _rideConstructionState;
+extern RideConstructionState _rideConstructionState;
 extern ride_id_t _currentRideIndex;
 
 extern CoordsXYZ _currentTrackBegin;
@@ -1116,7 +1116,7 @@ extern CoordsXYZD _unkF440C5;
 extern uint8_t gRideEntranceExitPlaceType;
 extern ride_id_t gRideEntranceExitPlaceRideIndex;
 extern StationIndex gRideEntranceExitPlaceStationIndex;
-extern uint8_t gRideEntranceExitPlacePreviousRideConstructionState;
+extern RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
 extern uint8_t gRideEntranceExitPlaceDirection;
 
 extern bool gGotoStartPlacementMode;
