@@ -77,7 +77,14 @@ public:
 
         // Create viewport
         viewport_create(this, windowPos, width, height, 0, TileCoordsXYZ(128, 128, 0).ToCoordsXYZ(), 1, SPRITE_INDEX_NULL);
-        rct_window* mainWindow = window_get_main();
+        if (viewport == nullptr)
+        {
+            Close();
+            window_error_open("Unexpected Error", "Failed to create viewport window.");
+            return;
+        }
+
+        auto mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
             rct_viewport* mainViewport = mainWindow->viewport;
@@ -96,9 +103,7 @@ public:
 
     void OnUpdate() override
     {
-        rct_window* mainWindow;
-
-        mainWindow = window_get_main();
+        auto mainWindow = window_get_main();
         if (mainWindow == nullptr)
             return;
 
@@ -114,8 +119,6 @@ public:
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        rct_window* mainWindow;
-
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
@@ -136,7 +139,7 @@ public:
                 }
                 break;
             case WIDX_LOCATE:
-                mainWindow = window_get_main();
+                auto mainWindow = window_get_main();
                 if (mainWindow != nullptr)
                 {
                     auto info = get_map_coordinates_from_pos(
