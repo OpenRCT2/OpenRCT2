@@ -57,7 +57,7 @@ class ViewportWindow final : public Window
 private:
     int32_t _viewportWindowNumber = 1;
 
-    void get_free_viewport_number(rct_window* w)
+    void GetFreeViewportNumber(rct_window* w)
     {
         if (w != nullptr && w->classification == WC_VIEWPORT)
         {
@@ -69,7 +69,7 @@ private:
 public:
     void OnOpen() override
     {
-        window_visit_each([&](rct_window* w) { get_free_viewport_number(w); });
+        window_visit_each([&](rct_window* w) { GetFreeViewportNumber(w); });
         number = _viewportWindowNumber;
 
         widgets = window_viewport_widgets;
