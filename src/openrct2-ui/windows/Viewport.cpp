@@ -55,22 +55,22 @@ static rct_widget window_viewport_widgets[] =
 class ViewportWindow final : public Window
 {
 private:
-    int32_t _viewportWindowNumber = 1;
-
-    void GetFreeViewportNumber(rct_window* w)
+    void GetFreeViewportNumber()
     {
-        if (w != nullptr && w->classification == WC_VIEWPORT)
-        {
-            if (w->number >= _viewportWindowNumber)
-                _viewportWindowNumber = w->number + 1;
-        }
+        number = 1;
+        window_visit_each([&](rct_window* w) {
+            if (w != nullptr && w != this && w->classification == WC_VIEWPORT)
+            {
+                if (w->number >= number)
+                    number = w->number + 1;
+            }
+        });
     }
 
 public:
     void OnOpen() override
     {
-        window_visit_each([&](rct_window* w) { GetFreeViewportNumber(w); });
-        number = _viewportWindowNumber;
+        GetFreeViewportNumber();
 
         widgets = window_viewport_widgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE);
@@ -84,7 +84,7 @@ public:
             return;
         }
 
-        auto mainWindow = window_get_main();
+        auto* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
             rct_viewport* mainViewport = mainWindow->viewport;
@@ -103,7 +103,7 @@ public:
 
     void OnUpdate() override
     {
-        auto mainWindow = window_get_main();
+        auto* mainWindow = window_get_main();
         if (mainWindow == nullptr)
             return;
 
@@ -139,7 +139,7 @@ public:
                 }
                 break;
             case WIDX_LOCATE:
-                auto mainWindow = window_get_main();
+                auto* mainWindow = window_get_main();
                 if (mainWindow != nullptr)
                 {
                     auto info = get_map_coordinates_from_pos(
