@@ -66,7 +66,7 @@ struct paint_struct
     int32_t map_y;
     uint16_t quadrant_index;
     uint8_t flags;
-    uint8_t quadrant_flags;
+    uint8_t SortFlags;
     ViewportInteractionItem sprite_type;
 };
 
