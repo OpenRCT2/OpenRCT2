@@ -965,19 +965,18 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(const TrackDesignSceneryElem
 }
 
 static std::optional<money32> TrackDesignPlaceSceneryElement(
-    CoordsXY mapCoord, uint8_t mode, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ,
-    money32 totalCost)
+    CoordsXY mapCoord, uint8_t mode, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
         track_design_add_selection_tile(mapCoord);
-        return totalCost;
+        return 0;
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST && mode == 0)
     {
         if (TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ))
-            return totalCost;
+            return 0;
 
         return std::nullopt;
     }
@@ -985,11 +984,12 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
     if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
     {
         if (TrackDesignPlaceSceneryElementGetPlaceZ(scenery))
-            return totalCost;
+            return 0;
 
         return std::nullopt;
     }
 
+    money32 totalCost = 0;
     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY || _trackDesignPlaceOperation == PTD_OPERATION_PLACE
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
@@ -998,7 +998,7 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
         ObjectEntryIndex entry_index;
         if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
         {
-            return totalCost;
+            return 0;
         }
 
         money32 cost;
@@ -1012,11 +1012,11 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
             {
                 if (mode != 0)
                 {
-                    return totalCost;
+                    return 0;
                 }
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return totalCost;
+                    return 0;
                 }
 
                 rotation += scenery.flags;
@@ -1060,11 +1060,11 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
             {
                 if (mode != 0)
                 {
-                    return totalCost;
+                    return 0;
                 }
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return totalCost;
+                    return 0;
                 }
 
                 rotation += scenery.flags;
@@ -1104,11 +1104,11 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
             {
                 if (mode != 0)
                 {
-                    return totalCost;
+                    return 0;
                 }
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return totalCost;
+                    return 0;
                 }
 
                 z = scenery.z * COORDS_Z_STEP + originZ;
@@ -1147,7 +1147,7 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
             case ObjectType::Paths:
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return totalCost;
+                    return 0;
                 }
 
                 z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
@@ -1199,14 +1199,14 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
                 {
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
-                        return totalCost;
+                        return 0;
                     }
 
                     auto* pathElement = map_get_path_element_at({ mapCoord.x / 32, mapCoord.y / 32, z });
 
                     if (pathElement == nullptr)
                     {
-                        return totalCost;
+                        return 0;
                     }
 
                     footpath_queue_chain_reset();
@@ -1228,12 +1228,12 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
                     }
                     footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
                     footpath_update_queue_chains();
-                    return totalCost;
+                    return 0;
                 }
                 break;
             default:
                 _trackDesignPlaceStateSceneryUnavailable = true;
-                return totalCost;
+                return 0;
         }
         totalCost = add_clamp_money32(totalCost, cost);
         if (_trackDesignPlaceOperation != PTD_OPERATION_PLACE)
@@ -1261,8 +1261,10 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
  *  rct2: 0x006D0964
  */
 static std::optional<money32> track_design_place_all_scenery(
-    const std::vector<TrackDesignSceneryElement>& sceneryList, const CoordsXYZ& origin, money32 cost)
+    const std::vector<TrackDesignSceneryElement>& sceneryList, const CoordsXYZ& origin)
 {
+    money32 cost = 0;
+
     for (uint8_t mode = 0; mode <= 1; mode++)
     {
         if (!sceneryList.empty())
@@ -1285,14 +1287,15 @@ static std::optional<money32> track_design_place_all_scenery(
             auto mapCoord = CoordsXYZ{ tileCoords.ToCoordsXY(), origin.z };
             track_design_update_max_min_coordinates(mapCoord);
 
-            auto placementCost = TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, origin.z, cost);
+            auto placementCost = TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, origin.z);
             if (!placementCost.has_value() || placementCost == MONEY32_UNDEFINED)
             {
                 return std::nullopt;
             }
-            cost = placementCost.value();
+            cost += placementCost.value();
         }
     }
+
     return cost;
 }
 
@@ -1815,14 +1818,13 @@ money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
     // Scenery elements
     if (trackPlaceCost.has_value())
     {
-        auto trackPlusSceneryCost = track_design_place_all_scenery(
-            td6->scenery_elements, _trackPreviewOrigin, trackPlaceCost.value());
-        if (!trackPlusSceneryCost.has_value())
+        auto sceneryCost = track_design_place_all_scenery(td6->scenery_elements, _trackPreviewOrigin);
+        if (!sceneryCost.has_value())
         {
             return MONEY32_UNDEFINED;
         }
 
-        trackPlaceCost = trackPlusSceneryCost;
+        trackPlaceCost = trackPlaceCost.value() + sceneryCost.value();
     }
 
     // 0x6D0FE6
