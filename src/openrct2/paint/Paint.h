@@ -36,13 +36,6 @@ struct attached_paint_struct
     uint8_t flags;
 };
 
-enum PAINT_QUADRANT_FLAGS
-{
-    PAINT_QUADRANT_FLAG_IDENTICAL = (1 << 0),
-    PAINT_QUADRANT_FLAG_BIGGER = (1 << 7),
-    PAINT_QUADRANT_FLAG_NEXT = (1 << 1),
-};
-
 struct paint_struct_bound_box
 {
     int32_t x;

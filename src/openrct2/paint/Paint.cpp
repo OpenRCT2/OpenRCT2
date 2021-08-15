@@ -297,6 +297,13 @@ template<> bool CheckBoundingBox<3>(const paint_struct_bound_box& initialBBox, c
     return false;
 }
 
+enum PAINT_QUADRANT_FLAGS
+{
+    PAINT_QUADRANT_FLAG_IDENTICAL = (1 << 0),
+    PAINT_QUADRANT_FLAG_BIGGER = (1 << 7),
+    PAINT_QUADRANT_FLAG_NEXT = (1 << 1),
+};
+
 template<uint8_t _TRotation>
 static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag)
 {
