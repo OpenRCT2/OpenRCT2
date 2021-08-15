@@ -29,12 +29,12 @@ DEFINE_GAME_ACTION(RideSetAppearanceAction, GameCommand::SetRideAppearance, Game
 private:
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
     RideSetAppearanceType _type{};
-    uint8_t _value{};
+    uint16_t _value{};
     uint32_t _index{};
 
 public:
     RideSetAppearanceAction() = default;
-    RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint8_t value, uint32_t index);
+    RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 

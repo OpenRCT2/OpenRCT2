@@ -363,7 +363,7 @@ public:
     money64 profit;
     TrackColour track_colour[NUM_COLOUR_SCHEMES];
     uint8_t music;
-    uint8_t entrance_style;
+    ObjectEntryIndex entrance_style;
     uint16_t vehicle_change_timeout;
     uint8_t num_block_brakes;
     uint8_t lift_hill_speed;
@@ -1119,7 +1119,7 @@ extern uint8_t gRideEntranceExitPlaceDirection;
 
 extern bool gGotoStartPlacementMode;
 
-extern uint8_t gLastEntranceStyle;
+extern ObjectEntryIndex gLastEntranceStyle;
 
 int32_t ride_get_count();
 void ride_init_all();

@@ -21,7 +21,8 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
-RideSetAppearanceAction::RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint8_t value, uint32_t index)
+RideSetAppearanceAction::RideSetAppearanceAction(
+    ride_id_t rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index)
     : _rideIndex(rideIndex)
     , _type(type)
     , _value(value)
