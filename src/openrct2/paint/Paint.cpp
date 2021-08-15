@@ -178,7 +178,6 @@ static paint_struct* CreateNormalPaintStruct(
     ps->attached_ps = nullptr;
     ps->children = nullptr;
     ps->sprite_type = session->InteractionType;
-    ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
     ps->tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session->CurrentlyDrawnItem));
