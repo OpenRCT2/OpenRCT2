@@ -78,7 +78,7 @@ uint8_t _currentSeatRotationAngle;
 
 CoordsXYZD _unkF440C5;
 
-uint8_t gLastEntranceStyle;
+ObjectEntryIndex gLastEntranceStyle;
 
 uint8_t gRideEntranceExitPlaceType;
 ride_id_t gRideEntranceExitPlaceRideIndex;
