@@ -41,12 +41,12 @@ static constexpr ScreenSize VIEWPORT_BUTTON = {24, 24};
 
 static rct_widget window_viewport_widgets[] =
 {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
-    MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
-    MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP       ), // zoom in
-    MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP      ), // zoom out
-    MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP), // locate
+    WINDOW_SHIM_NEW(WINDOW_TITLE, WW, WH),
+    MakeWidget({0, 0,  14, 0},             WindowWidgetType::Resize,   WindowColour::Secondary, 0xFFFFFFFF,      STR_NONE,               WIDGET_FLAGS::GROW_WIDTH | WIDGET_FLAGS::GROW_HEIGHT ), // resize
+    MakeWidget({3, 26, 17, 3},             WindowWidgetType::Viewport, WindowColour::Primary  , 0xFFFFFFFF,      STR_NONE,               WIDGET_FLAGS::GROW_WIDTH | WIDGET_FLAGS::GROW_HEIGHT ), // viewport
+    MakeWidget({1, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP,        WIDGET_FLAGS::ANCHOR_RIGHT), // zoom in
+    MakeWidget({1, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP,       WIDGET_FLAGS::ANCHOR_RIGHT), // zoom out
+    MakeWidget({1, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP, WIDGET_FLAGS::ANCHOR_RIGHT | WIDGET_FLAGS::ANCHOR_BOTTOM), // locate
     { WIDGETS_END },
 };
 
@@ -175,24 +175,6 @@ public:
 
     void OnPrepareDraw() override
     {
-        rct_widget* viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
-
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_CONTENT_PANEL].bottom = height - 1;
-        widgets[WIDX_ZOOM_IN].left = width - 27;
-        widgets[WIDX_ZOOM_IN].right = width - 2;
-        widgets[WIDX_ZOOM_OUT].left = width - 27;
-        widgets[WIDX_ZOOM_OUT].right = width - 2;
-        widgets[WIDX_LOCATE].left = width - 27;
-        widgets[WIDX_LOCATE].right = width - 2;
-        widgets[WIDX_VIEWPORT].right = widgets[WIDX_ZOOM_IN].left - 1;
-        widgets[WIDX_VIEWPORT].bottom = widgets[WIDX_BACKGROUND].bottom - 3;
-
         // Set title
         Formatter::Common().Add<uint32_t>(number);
 
@@ -202,15 +184,6 @@ public:
             disabled_widgets |= 1ULL << WIDX_ZOOM_IN;
         if (viewport != nullptr && viewport->zoom >= ZoomLevel::max())
             disabled_widgets |= 1ULL << WIDX_ZOOM_OUT;
-
-        if (viewport != nullptr)
-        {
-            viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
-            viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
-            viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
-            viewport->view_width = viewport->width * viewport->zoom;
-            viewport->view_height = viewport->height * viewport->zoom;
-        }
     }
 };
 

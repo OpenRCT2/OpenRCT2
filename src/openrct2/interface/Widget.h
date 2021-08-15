@@ -74,17 +74,44 @@ constexpr const ScreenSize TAB_SIZE = { 31, 27 };
 
 constexpr rct_widget MakeWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
-    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE, uint32_t flags = 0)
 {
     rct_widget out = {};
     out.left = origin.x;
     out.right = origin.x + size.width - 1;
+    out.initial_left = out.left;
+    out.initial_right = out.right;
     out.top = origin.y;
     out.bottom = origin.y + size.height - 1;
+    out.initial_top = out.top;
+    out.initial_bottom = out.bottom;
     out.type = type;
     out.colour = static_cast<uint8_t>(colour);
     out.content = content;
     out.tooltip = tooltip;
+    out.flags = flags;
+
+    return out;
+}
+
+constexpr rct_widget MakeWidget(
+    const ScreenCoordsXXYY& leftRightTopBottomMargins, WindowWidgetType type, WindowColour colour,
+    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE, uint32_t flags = 0)
+{
+    rct_widget out = {};
+    out.left = leftRightTopBottomMargins.start.x;
+    out.right = leftRightTopBottomMargins.end.x;
+    out.initial_left = out.left;
+    out.initial_right = out.right;
+    out.top = leftRightTopBottomMargins.start.y;
+    out.bottom = leftRightTopBottomMargins.end.y;
+    out.initial_top = out.top;
+    out.initial_bottom = out.bottom;
+    out.type = type;
+    out.colour = static_cast<uint8_t>(colour);
+    out.content = content;
+    out.tooltip = tooltip;
+    out.flags = flags;
 
     return out;
 }

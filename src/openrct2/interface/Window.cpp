@@ -614,6 +614,106 @@ void window_update_scroll_widgets(rct_window* w)
         scrollIndex++;
     }
 }
+void window_update_anchor_widgets(rct_window* w)
+{
+    int32_t left = 0;
+    int32_t right = 0;
+    int32_t top = 0;
+    int32_t bottom = 0;
+    int32_t width = 0;
+    int32_t height = 0;
+    int32_t positionChanged = 0;
+
+    assert(w != nullptr);
+    for (int32_t i = 0;; i++)
+    {
+        rct_widget* widget = &w->widgets[i];
+        if (widget->type == WindowWidgetType::Last)
+            break;
+
+        if (widget->flags & WIDGET_FLAGS::ANCHOR_RIGHT)
+        {
+            width = (widget->initial_right - widget->initial_left);
+            right = (w->width - widget->initial_left) - 1;
+            left = (right - width) - 1;
+
+            if (right != widget->right || left != widget->left)
+            {
+                widget->right = right;
+                widget->left = left;
+                positionChanged = 1;
+            }
+        }
+
+        if (widget->flags & WIDGET_FLAGS::ANCHOR_BOTTOM)
+        {
+            height = (widget->initial_bottom - widget->initial_top);
+            bottom = (w->height - widget->initial_top) - 1;
+            top = (bottom - height) - 1;
+
+            if (bottom != widget->bottom || top != widget->top)
+            {
+                widget->bottom = bottom;
+                widget->top = top;
+                positionChanged = 1;
+            }
+        }
+
+        if (widget->flags & WIDGET_FLAGS::GROW_WIDTH)
+        {
+            right = (w->width - widget->initial_right) - 1;
+
+            if (right != widget->right)
+            {
+                widget->right = right;
+                positionChanged = 1;
+            }
+        }
+
+        if (widget->flags & WIDGET_FLAGS::GROW_HEIGHT)
+        {
+            bottom = (w->height - widget->initial_bottom) - 1;
+
+            if (bottom != widget->bottom)
+            {
+                widget->bottom = bottom;
+                positionChanged = 1;
+            }
+        }
+    }
+
+    if (positionChanged)
+        w->Invalidate();
+}
+
+void window_reposition_viewport_to_widget(rct_window* w, rct_widgetindex widget_index)
+{
+    if (w == nullptr || w->viewport == nullptr)
+        return;
+
+    if (widget_index == -1)
+    {
+        for (int32_t i = 0; widget_index == -1; i++)
+        {
+            rct_widget* widget = &w->widgets[i];
+            if (widget->type == WindowWidgetType::Last)
+                break;
+
+            if (widget->type == WindowWidgetType::Viewport)
+                widget_index = i;
+        }
+    }
+
+    if (widget_index == -1)
+        return;
+
+    rct_widget* viewportWidget = &w->widgets[widget_index];
+    w->viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
+    w->viewport->width = w->widgets[widget_index].width() - 1;
+    w->viewport->height = w->widgets[widget_index].height() - 1;
+    w->viewport->view_width = w->viewport->width * w->viewport->zoom;
+    w->viewport->view_height = w->viewport->height * w->viewport->zoom;
+}
 
 int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index)
 {
@@ -1225,6 +1325,8 @@ static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t le
 
     // Invalidate modifies the window colours so first get the correct
     // colour before setting the global variables for the string painting
+    window_update_anchor_widgets(w);
+    window_reposition_viewport_to_widget(w);
     window_event_invalidate_call(w);
 
     // Text colouring

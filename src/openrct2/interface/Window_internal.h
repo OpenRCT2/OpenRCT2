@@ -41,6 +41,8 @@ struct rct_window
     ScreenCoordsXY windowPos;
     int16_t width{};
     int16_t height{};
+    int16_t initial_width{};
+    int16_t initial_height{};
     int16_t min_width{};
     int16_t max_width{};
     int16_t min_height{};

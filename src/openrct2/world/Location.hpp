@@ -71,6 +71,19 @@ struct ScreenCoordsXY
     }
 };
 
+struct ScreenCoordsXXYY
+{
+    ScreenCoordsXY start;
+    ScreenCoordsXY end;
+
+    ScreenCoordsXXYY() = default;
+    constexpr ScreenCoordsXXYY(int32_t _x1, int32_t _x2, int32_t _y1, int32_t _y2)
+        : start({ _x1, _y1 })
+        , end({ _x2, _y2 })
+    {
+    }
+};
+
 struct ScreenSize
 {
     int32_t width{};

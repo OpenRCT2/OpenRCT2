@@ -269,6 +269,8 @@ rct_window* WindowCreate(
     w->windowPos = pos;
     w->width = width;
     w->height = height;
+    w->initial_width = width;
+    w->initial_height = height;
     w->min_width = width;
     w->max_width = width;
     w->min_height = height;

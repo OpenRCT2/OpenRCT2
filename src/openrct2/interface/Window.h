@@ -79,6 +79,10 @@ namespace WIDGET_FLAGS
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
     const WidgetFlags IS_HIDDEN = 1 << 5;
     const WidgetFlags IS_HOLDABLE = 1 << 6;
+    const WidgetFlags ANCHOR_RIGHT = 1 << 7;
+    const WidgetFlags ANCHOR_BOTTOM = 1 << 8;
+    const WidgetFlags GROW_WIDTH = 1 << 9;
+    const WidgetFlags GROW_HEIGHT = 1 << 10;
 } // namespace WIDGET_FLAGS
 
 enum class WindowWidgetType : uint8_t;
@@ -107,6 +111,10 @@ struct rct_widget
     // New properties
     WidgetFlags flags{};
     utf8* sztooltip{};
+    int16_t initial_left = left;
+    int16_t initial_right = right;
+    int16_t initial_top = top;
+    int16_t initial_bottom = bottom;
 
     int16_t width() const
     {
@@ -836,6 +844,8 @@ OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex wi
 CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_event_invalidate_call(rct_window* w);
+void window_update_anchor_widgets(rct_window* w);
+void window_reposition_viewport_to_widget(rct_window* w, rct_widgetindex widget_index = -1);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi);
 void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
