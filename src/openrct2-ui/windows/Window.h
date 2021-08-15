@@ -208,9 +208,10 @@ rct_window* window_scenery_scatter_open();
 #define WINDOW_SHIM_WHITE(TITLE, WIDTH, HEIGHT) WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, STR_CLOSE_X_WHITE)
 
 #define WINDOW_SHIM_NEW_RAW(TITLE, WIDTH, HEIGHT, CLOSE_STR) \
-    { WindowWidgetType::Frame,    0,  0,    0,        0, 0,          0xFFFFFFFF,  STR_NONE            , WIDGET_FLAGS::GROW_WIDTH | WIDGET_FLAGS::GROW_HEIGHT}, \
-    { WindowWidgetType::Caption,  0,  1,    2,        1, 14,         TITLE,       STR_WINDOW_TITLE_TIP, WIDGET_FLAGS::GROW_WIDTH }, \
-    { WindowWidgetType::CloseBox, 0,  2,   11,        2, 13,         CLOSE_STR,   STR_CLOSE_WINDOW_TIP, WIDGET_FLAGS::ANCHOR_RIGHT }
+    {    WindowWidgetType::Frame,      0,    0,     0,   0,      0,  0xFFFFFFFF,               STR_NONE, WIDGET_FLAGS::FIT_WIDTH | WIDGET_FLAGS::FIT_HEIGHT}, \
+    {  WindowWidgetType::Caption,      0,    1,     2,   1,     14,       TITLE,   STR_WINDOW_TITLE_TIP, WIDGET_FLAGS::FIT_WIDTH }, \
+    { WindowWidgetType::CloseBox,      0,    2,    11,   2,     13,   CLOSE_STR,   STR_CLOSE_WINDOW_TIP, WIDGET_FLAGS::ANCHOR_RIGHT }
+//                          type, colour, left, right, top, bottom,     content,                tooltip, flags
 
 #define WINDOW_SHIM_NEW(TITLE, WIDTH, HEIGHT) WINDOW_SHIM_NEW_RAW(TITLE, WIDTH, HEIGHT, STR_CLOSE_X)
 #define WINDOW_SHIM_NEW_WHITE(TITLE, WIDTH, HEIGHT) WINDOW_SHIM_NEW_RAW(TITLE, WIDTH, HEIGHT, STR_CLOSE_X_WHITE)

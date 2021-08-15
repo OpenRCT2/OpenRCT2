@@ -27,6 +27,7 @@ enum WINDOW_VIEWPORT_WIDGET_IDX
     WIDX_ZOOM_IN,
     WIDX_ZOOM_OUT,
     WIDX_LOCATE,
+    WIDX_SIDEBUTTON,
 };
 
 #pragma region MEASUREMENTS
@@ -42,11 +43,12 @@ static constexpr ScreenSize VIEWPORT_BUTTON = {24, 24};
 static rct_widget window_viewport_widgets[] =
 {
     WINDOW_SHIM_NEW(WINDOW_TITLE, WW, WH),
-    MakeWidget({0, 0,  14, 0},             WindowWidgetType::Resize,   WindowColour::Secondary, 0xFFFFFFFF,      STR_NONE,               WIDGET_FLAGS::GROW_WIDTH | WIDGET_FLAGS::GROW_HEIGHT ), // resize
-    MakeWidget({3, 26, 17, 3},             WindowWidgetType::Viewport, WindowColour::Primary  , 0xFFFFFFFF,      STR_NONE,               WIDGET_FLAGS::GROW_WIDTH | WIDGET_FLAGS::GROW_HEIGHT ), // viewport
-    MakeWidget({1, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP,        WIDGET_FLAGS::ANCHOR_RIGHT), // zoom in
-    MakeWidget({1, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP,       WIDGET_FLAGS::ANCHOR_RIGHT), // zoom out
-    MakeWidget({1, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP, WIDGET_FLAGS::ANCHOR_RIGHT | WIDGET_FLAGS::ANCHOR_BOTTOM), // locate
+    MakeWidget({  0, 14}, {  0,  0}, {  0,  0}, WindowWidgetType::Resize,   WindowColour::Secondary, 0xFFFFFFFF,      STR_NONE,               WIDGET_FLAGS::FIT_WIDTH | WIDGET_FLAGS::FIT_HEIGHT ), // resize
+    MakeWidget({  3, 17}, {  0,  0}, { 26,  3}, WindowWidgetType::Viewport, WindowColour::Primary  , 0xFFFFFFFF,      STR_NONE,               WIDGET_FLAGS::FIT_WIDTH | WIDGET_FLAGS::FIT_HEIGHT ), // viewport
+    MakeWidget({  1, 17}, VIEWPORT_BUTTON,      WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP,        WIDGET_FLAGS::ANCHOR_RIGHT), // zoom in
+    MakeWidget({  1, 41}, VIEWPORT_BUTTON,      WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP,       WIDGET_FLAGS::ANCHOR_RIGHT), // zoom out
+    MakeWidget({  1, 17}, VIEWPORT_BUTTON,      WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP, WIDGET_FLAGS::ANCHOR_RIGHT | WIDGET_FLAGS::ANCHOR_BOTTOM), // locate
+    MakeWidget({  1, 65}, { 24,  0}, {  0, 42}, WindowWidgetType::Button,   WindowColour::Primary  , STR_TEST_RUN,    STR_TEST_RUN,           WIDGET_FLAGS::ANCHOR_RIGHT | WIDGET_FLAGS::FIT_HEIGHT ), // test
     { WIDGETS_END },
 };
 
@@ -73,7 +75,7 @@ public:
         GetFreeViewportNumber();
 
         widgets = window_viewport_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE) | (1ULL << WIDX_SIDEBUTTON);
 
         // Create viewport
         viewport_create(this, windowPos, width, height, 0, TileCoordsXYZ(128, 128, 0).ToCoordsXYZ(), 1, SPRITE_INDEX_NULL);

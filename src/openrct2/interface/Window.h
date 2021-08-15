@@ -81,8 +81,8 @@ namespace WIDGET_FLAGS
     const WidgetFlags IS_HOLDABLE = 1 << 6;
     const WidgetFlags ANCHOR_RIGHT = 1 << 7;
     const WidgetFlags ANCHOR_BOTTOM = 1 << 8;
-    const WidgetFlags GROW_WIDTH = 1 << 9;
-    const WidgetFlags GROW_HEIGHT = 1 << 10;
+    const WidgetFlags FIT_WIDTH = 1 << 9;
+    const WidgetFlags FIT_HEIGHT = 1 << 10;
 } // namespace WIDGET_FLAGS
 
 enum class WindowWidgetType : uint8_t;

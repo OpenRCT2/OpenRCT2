@@ -659,18 +659,18 @@ void window_update_anchor_widgets(rct_window* w)
             }
         }
 
-        if (widget->flags & WIDGET_FLAGS::GROW_WIDTH)
+        if (widget->flags & WIDGET_FLAGS::FIT_WIDTH)
         {
             right = (w->width - widget->initial_right) - 1;
 
-            if (right != widget->right)
+            if (right != widget->right || left != widget->left)
             {
                 widget->right = right;
                 positionChanged = 1;
             }
         }
 
-        if (widget->flags & WIDGET_FLAGS::GROW_HEIGHT)
+        if (widget->flags & WIDGET_FLAGS::FIT_HEIGHT)
         {
             bottom = (w->height - widget->initial_bottom) - 1;
 

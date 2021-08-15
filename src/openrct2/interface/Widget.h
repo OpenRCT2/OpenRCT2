@@ -95,18 +95,39 @@ constexpr rct_widget MakeWidget(
 }
 
 constexpr rct_widget MakeWidget(
-    const ScreenCoordsXXYY& leftRightTopBottomMargins, WindowWidgetType type, WindowColour colour,
-    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE, uint32_t flags = 0)
+    const ScreenCoordsXY& marginTopLeft, const ScreenSize& size, ScreenCoordsXY marginBottomRight, WindowWidgetType type,
+    WindowColour colour, uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE, uint32_t flags = 0)
 {
     rct_widget out = {};
-    out.left = leftRightTopBottomMargins.start.x;
-    out.right = leftRightTopBottomMargins.end.x;
-    out.initial_left = out.left;
-    out.initial_right = out.right;
-    out.top = leftRightTopBottomMargins.start.y;
-    out.bottom = leftRightTopBottomMargins.end.y;
-    out.initial_top = out.top;
-    out.initial_bottom = out.bottom;
+    if (flags & WIDGET_FLAGS::FIT_WIDTH)
+    {
+        out.left = marginTopLeft.x;
+        out.right = marginBottomRight.x;
+        out.initial_left = out.left;
+        out.initial_right = out.right;
+    }
+    else
+    {
+        out.left = marginTopLeft.x;
+        out.right = marginTopLeft.x + size.width - 1;
+        out.initial_left = out.left;
+        out.initial_right = out.right;
+    }
+
+    if (flags & WIDGET_FLAGS::FIT_HEIGHT)
+    {
+        out.top = marginTopLeft.y;
+        out.bottom = marginBottomRight.y;
+        out.initial_top = out.top;
+        out.initial_bottom = out.bottom;
+    }
+    else
+    {
+        out.top = marginTopLeft.y;
+        out.bottom = marginTopLeft.y + size.height - 1;
+        out.initial_top = out.top;
+        out.initial_bottom = out.bottom;
+    }
     out.type = type;
     out.colour = static_cast<uint8_t>(colour);
     out.content = content;
