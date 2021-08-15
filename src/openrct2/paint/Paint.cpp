@@ -297,12 +297,13 @@ template<> bool CheckBoundingBox<3>(const paint_struct_bound_box& initialBBox, c
     return false;
 }
 
-enum PAINT_QUADRANT_FLAGS
+namespace PaintSortFlags
 {
-    PAINT_QUADRANT_FLAG_IDENTICAL = (1 << 0),
-    PAINT_QUADRANT_FLAG_BIGGER = (1 << 7),
-    PAINT_QUADRANT_FLAG_NEXT = (1 << 1),
-};
+    static constexpr uint8_t None = 0;
+    static constexpr uint8_t PendingVisit = (1U << 0);
+    static constexpr uint8_t Neighbor = (1U << 1);
+    static constexpr uint8_t OutsideQuadrant = (1U << 7);
+} // namespace PaintSortFlags
 
 template<uint8_t _TRotation>
 static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag)
@@ -329,15 +330,15 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
 
         if (ps->quadrant_index > quadrantIndex + 1)
         {
-            ps->quadrant_flags = PAINT_QUADRANT_FLAG_BIGGER;
+            ps->SortFlags = PaintSortFlags::OutsideQuadrant;
         }
         else if (ps->quadrant_index == quadrantIndex + 1)
         {
-            ps->quadrant_flags = PAINT_QUADRANT_FLAG_NEXT | PAINT_QUADRANT_FLAG_IDENTICAL;
+            ps->SortFlags = PaintSortFlags::Neighbor | PaintSortFlags::PendingVisit;
         }
         else if (ps->quadrant_index == quadrantIndex)
         {
-            ps->quadrant_flags = flag | PAINT_QUADRANT_FLAG_IDENTICAL;
+            ps->SortFlags = flag | PaintSortFlags::PendingVisit;
         }
     } while (ps->quadrant_index <= quadrantIndex + 1);
     ps = ps_temp;
@@ -349,14 +350,14 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
             ps_next = ps->next_quadrant_ps;
             if (ps_next == nullptr)
                 return ps_cache;
-            if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER)
+            if (ps_next->SortFlags & PaintSortFlags::OutsideQuadrant)
                 return ps_cache;
-            if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_IDENTICAL)
+            if (ps_next->SortFlags & PaintSortFlags::PendingVisit)
                 break;
             ps = ps_next;
         }
 
-        ps_next->quadrant_flags &= ~PAINT_QUADRANT_FLAG_IDENTICAL;
+        ps_next->SortFlags &= ~PaintSortFlags::PendingVisit;
         ps_temp = ps;
 
         const paint_struct_bound_box& initialBBox = ps_next->bounds;
@@ -367,9 +368,9 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
             ps_next = ps_next->next_quadrant_ps;
             if (ps_next == nullptr)
                 break;
-            if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER)
+            if (ps_next->SortFlags & PaintSortFlags::OutsideQuadrant)
                 break;
-            if (!(ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_NEXT))
+            if (!(ps_next->SortFlags & PaintSortFlags::Neighbor))
                 continue;
 
             const paint_struct_bound_box& currentBBox = ps_next->bounds;
@@ -416,12 +417,12 @@ template<int TRotation> static void PaintSessionArrange(PaintSessionCore* sessio
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
         paint_struct* ps_cache = PaintArrangeStructsHelperRotation<TRotation>(
-            psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT);
+            psHead, session->QuadrantBackIndex & 0xFFFF, PaintSortFlags::Neighbor);
 
         quadrantIndex = session->QuadrantBackIndex;
         while (++quadrantIndex < session->QuadrantFrontIndex)
         {
-            ps_cache = PaintArrangeStructsHelperRotation<TRotation>(ps_cache, quadrantIndex & 0xFFFF, 0);
+            ps_cache = PaintArrangeStructsHelperRotation<TRotation>(ps_cache, quadrantIndex & 0xFFFF, PaintSortFlags::None);
         }
     }
 }
