@@ -818,6 +818,10 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
     }
 
     TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
+
+    // Update selection, can be nullptr.
+    OpenRCT2::TileInspector::SetSelectedElement(tileElement);
+
     if (tileElement == nullptr)
         return;
 
