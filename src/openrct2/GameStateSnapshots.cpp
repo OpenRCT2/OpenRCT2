@@ -300,20 +300,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, Intensity);
         COMPARE_FIELD(Guest, NauseaTolerance);
         COMPARE_FIELD(Guest, PaidOnDrink);
-        for (int i = 0; i < 16; i++)
-        {
-            COMPARE_FIELD(Guest, RideTypesBeenOn[i]);
-        }
         COMPARE_FIELD(Guest, ItemFlags);
         COMPARE_FIELD(Guest, Photo2RideRef);
         COMPARE_FIELD(Guest, Photo3RideRef);
         COMPARE_FIELD(Guest, Photo4RideRef);
         COMPARE_FIELD(Guest, GuestNextInQueue);
         COMPARE_FIELD(Guest, TimeInQueue);
-        for (int i = 0; i < 32; i++)
-        {
-            COMPARE_FIELD(Guest, RidesBeenOn[i]);
-        }
 
         COMPARE_FIELD(Guest, CashInPocket);
         COMPARE_FIELD(Guest, CashSpent);

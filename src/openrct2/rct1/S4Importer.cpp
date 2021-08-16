@@ -2851,14 +2851,6 @@ template<> void S4Importer::ImportEntity<Guest>(const RCT12SpriteBase& srcBase)
     }
     OpenRCT2::RideUse::GetHistory().Set(dst->sprite_index, std::move(ridesBeenOn));
     OpenRCT2::RideUse::GetTypeHistory().Set(dst->sprite_index, std::move(typesBeenOn));
-    for (size_t i = 0; i < 32; i++)
-    {
-        dst->RidesBeenOn[i] = src->rides_been_on[i];
-    }
-    for (size_t i = 0; i < 16; i++)
-    {
-        dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
-    }
 
     dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
 

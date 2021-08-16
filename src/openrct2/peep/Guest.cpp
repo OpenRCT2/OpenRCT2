@@ -2299,8 +2299,6 @@ void Guest::SetHasRidden(const Ride* ride)
 {
     OpenRCT2::RideUse::GetHistory().Add(sprite_index, ride->id);
 
-    RidesBeenOn[ride->id / 8] |= 1 << (ride->id % 8);
-
     SetHasRiddenRideType(ride->type);
 }
 
@@ -2315,8 +2313,6 @@ void Guest::SetHasRiddenRideType(int32_t rideType)
     rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
 
     OpenRCT2::RideUse::GetTypeHistory().Add(sprite_index, rideType);
-
-    RideTypesBeenOn[rideType / 8] |= 1 << (rideType % 8);
 }
 
 bool Guest::HasRiddenRideType(int32_t rideType) const
@@ -7038,10 +7034,8 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     peep->Toilet = 0;
     peep->TimeToConsume = 0;
-    std::fill_n(peep->RidesBeenOn, 32, 0x00);
 
     peep->GuestNumRides = 0;
-    std::fill_n(peep->RideTypesBeenOn, 16, 0x00);
     peep->Id = gNextGuestNumber++;
     peep->Name = nullptr;
 
@@ -7381,11 +7375,6 @@ static bool IsThoughtShopItemRelated(const PeepThoughtType type)
 
 void Guest::RemoveRideFromMemory(ride_id_t rideId)
 {
-    uint8_t ride_id_bit = rideId % 8;
-    uint8_t ride_id_offset = rideId / 8;
-
-    // clear ride from potentially being in RidesBeenOn
-    RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
     if (State == PeepState::Watching)
     {
         if (CurrentRide == rideId)

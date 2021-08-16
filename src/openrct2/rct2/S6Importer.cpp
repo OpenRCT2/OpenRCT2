@@ -1700,10 +1700,7 @@ template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
     dst->Intensity = static_cast<IntensityRange>(src->intensity);
     dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
     dst->PaidOnDrink = src->paid_on_drink;
-    for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
-    {
-        dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
-    }
+
     std::vector<uint16_t> typesBeenOn;
     std::vector<ride_id_t> ridesBeenOn;
     for (uint16_t i = 0; i < RCT2_MAX_RIDE_OBJECTS; i++)
@@ -1729,10 +1726,6 @@ template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
     dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
     dst->GuestNextInQueue = src->next_in_queue;
     dst->TimeInQueue = src->time_in_queue;
-    for (size_t i = 0; i < std::size(src->rides_been_on); i++)
-    {
-        dst->RidesBeenOn[i] = src->rides_been_on[i];
-    }
     dst->CashInPocket = src->cash_in_pocket;
     dst->CashSpent = src->cash_spent;
     dst->ParkEntryTime = src->park_entry_time;
