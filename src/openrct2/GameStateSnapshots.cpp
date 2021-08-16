@@ -79,6 +79,8 @@ struct GameStateSnapshot_t
             numSavedSprites = static_cast<uint32_t>(indexTable.size());
         }
 
+        // Encodes and checks the size of each of the entity so that we
+        // can fail gracefully when fields added/removed
         if (!EntitiesSizeCheck<Vehicle, Guest, Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle>(ds))
         {
             log_error("Entity index corrupted!");
