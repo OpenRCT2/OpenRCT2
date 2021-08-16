@@ -179,61 +179,65 @@ namespace OpenRCT2::Scripting
 
     DukValue ScMap::createEntity(const std::string& type, const DukValue& initializer)
     {
+        DukValue res;
         if (type == "car")
         {
-            return createEntityType<Vehicle, ScVehicle>(_context, initializer);
+            res = createEntityType<Vehicle, ScVehicle>(_context, initializer);
         }
         else if (type == "staff")
         {
-            return createEntityType<Staff, ScStaff>(_context, initializer);
+            res = createEntityType<Staff, ScStaff>(_context, initializer);
         }
         else if (type == "guest")
         {
-            return createEntityType<Guest, ScGuest>(_context, initializer);
+            res = createEntityType<Guest, ScGuest>(_context, initializer);
         }
         else if (type == "steam_particle")
         {
-            return createEntityType<SteamParticle, ScEntity>(_context, initializer);
+            res = createEntityType<SteamParticle, ScEntity>(_context, initializer);
         }
         else if (type == "money_effect")
         {
-            return createEntityType<MoneyEffect, ScEntity>(_context, initializer);
+            res = createEntityType<MoneyEffect, ScEntity>(_context, initializer);
         }
         else if (type == "crashed_vehicle_particle")
         {
-            return createEntityType<VehicleCrashParticle, ScEntity>(_context, initializer);
+            res = createEntityType<VehicleCrashParticle, ScEntity>(_context, initializer);
         }
         else if (type == "explosion_cloud")
         {
-            return createEntityType<ExplosionCloud, ScEntity>(_context, initializer);
+            res = createEntityType<ExplosionCloud, ScEntity>(_context, initializer);
         }
         else if (type == "crash_splash")
         {
-            return createEntityType<CrashSplashParticle, ScEntity>(_context, initializer);
+            res = createEntityType<CrashSplashParticle, ScEntity>(_context, initializer);
         }
         else if (type == "explosion_flare")
         {
-            return createEntityType<ExplosionFlare, ScEntity>(_context, initializer);
+            res = createEntityType<ExplosionFlare, ScEntity>(_context, initializer);
         }
         else if (type == "balloon")
         {
-            return createEntityType<Balloon, ScEntity>(_context, initializer);
+            res = createEntityType<Balloon, ScEntity>(_context, initializer);
         }
         else if (type == "duck")
         {
-            return createEntityType<Duck, ScEntity>(_context, initializer);
+            res = createEntityType<Duck, ScEntity>(_context, initializer);
         }
         else if (type == "jumping_fountain")
         {
-            return createEntityType<JumpingFountain, ScEntity>(_context, initializer);
+            res = createEntityType<JumpingFountain, ScEntity>(_context, initializer);
         }
         else if (type == "litter")
         {
-            return createEntityType<Litter, ScLitter>(_context, initializer);
+            res = createEntityType<Litter, ScLitter>(_context, initializer);
+        }
+        else
+        {
+            duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
         }
 
-        duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
-        return DukValue{};
+        return res;
     }
 
     void ScMap::Register(duk_context* ctx)
