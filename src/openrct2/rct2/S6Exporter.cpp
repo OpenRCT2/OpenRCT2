@@ -347,10 +347,10 @@ void S6Exporter::Export()
     _s6.cash = ENCRYPT_MONEY(ToMoney32(gCash));
     // pad_013587FC
     _s6.park_rating_casualty_penalty = gParkRatingCasualtyPenalty;
-    _s6.map_size_units = gMapSizeUnits;
-    _s6.map_size_minus_2 = gMapSizeMinus2;
+    _s6.map_size_units = GetMapSizeUnits();
+    _s6.map_size_minus_2 = GetMapSizeMinus2();
     _s6.map_size = gMapSize;
-    _s6.map_max_xy = gMapSizeMaxXY;
+    _s6.map_max_xy = GetMapSizeMaxXY();
     _s6.same_price_throughout = gSamePriceThroughoutPark & 0xFFFFFFFF;
     _s6.suggested_max_guests = _suggestedGuestMaximum;
     _s6.park_rating_warning_days = gScenarioParkRatingWarningDays;

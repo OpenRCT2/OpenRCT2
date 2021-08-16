@@ -390,10 +390,10 @@ void FootpathPlaceAction::AutomaticallySetPeepSpawn() const
     if (_loc.x != 32)
     {
         direction++;
-        if (_loc.y != gMapSizeUnits - 32)
+        if (_loc.y != GetMapSizeUnits() - 32)
         {
             direction++;
-            if (_loc.x != gMapSizeUnits - 32)
+            if (_loc.x != GetMapSizeUnits() - 32)
             {
                 direction++;
                 if (_loc.y != 32)

@@ -353,10 +353,7 @@ public:
         gCash = ToMoney64(DECRYPT_MONEY(_s6.cash));
         // pad_013587FC
         gParkRatingCasualtyPenalty = _s6.park_rating_casualty_penalty;
-        gMapSizeUnits = _s6.map_size_units;
-        gMapSizeMinus2 = _s6.map_size_minus_2;
         gMapSize = _s6.map_size;
-        gMapSizeMaxXY = _s6.map_max_xy;
         gSamePriceThroughoutPark = _s6.same_price_throughout
             | (static_cast<uint64_t>(_s6.same_price_throughout_extended) << 32);
         _suggestedGuestMaximum = _s6.suggested_max_guests;

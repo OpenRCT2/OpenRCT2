@@ -101,11 +101,21 @@ extern const TileCoordsXY TileDirectionDelta[];
 extern TileCoordsXY gWidePathTileLoopPosition;
 extern uint16_t gGrassSceneryTileLoopPosition;
 
-extern int16_t gMapSizeUnits;
-extern int16_t gMapSizeMinus2;
-extern int16_t gMapSize;
-extern int16_t gMapSizeMaxXY;
-extern int16_t gMapBaseZ;
+extern int32_t gMapSize;
+extern int32_t gMapBaseZ;
+
+inline int32_t GetMapSizeUnits()
+{
+    return (gMapSize - 1) * COORDS_XY_STEP;
+}
+inline int32_t GetMapSizeMinus2()
+{
+    return (gMapSize * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2);
+}
+inline int32_t GetMapSizeMaxXY()
+{
+    return GetMapSizeUnits() - 1;
+}
 
 extern uint16_t gMapSelectFlags;
 extern uint16_t gMapSelectType;
@@ -126,8 +136,8 @@ extern bool gClearSmallScenery;
 extern bool gClearLargeScenery;
 extern bool gClearFootpath;
 
-extern uint16_t gLandRemainingOwnershipSales;
-extern uint16_t gLandRemainingConstructionSales;
+extern uint32_t gLandRemainingOwnershipSales;
+extern uint32_t gLandRemainingConstructionSales;
 
 extern bool gMapLandRightsUpdateSuccess;
 

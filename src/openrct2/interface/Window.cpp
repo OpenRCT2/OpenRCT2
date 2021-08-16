@@ -732,7 +732,7 @@ void window_push_others_right(rct_window* window)
         w->Invalidate();
         if (window->windowPos.x + window->width + 13 >= context_get_width())
             return;
-        uint16_t push_amount = window->windowPos.x + window->width - w->windowPos.x + 3;
+        auto push_amount = window->windowPos.x + window->width - w->windowPos.x + 3;
         w->windowPos.x += push_amount;
         w->Invalidate();
         if (w->viewport != nullptr)
@@ -834,15 +834,15 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
             bool found = false;
             while (!found)
             {
-                int16_t x2 = w->viewport->pos.x + static_cast<int16_t>(w->viewport->width * window_scroll_locations[i][0]);
-                int16_t y2 = w->viewport->pos.y + static_cast<int16_t>(w->viewport->height * window_scroll_locations[i][1]);
+                auto x2 = w->viewport->pos.x + static_cast<int32_t>(w->viewport->width * window_scroll_locations[i][0]);
+                auto y2 = w->viewport->pos.y + static_cast<int32_t>(w->viewport->height * window_scroll_locations[i][1]);
 
                 auto it = window_get_iterator(w);
                 for (; it != g_window_list.end(); it++)
                 {
                     auto w2 = (*it).get();
-                    int16_t x1 = w2->windowPos.x - 10;
-                    int16_t y1 = w2->windowPos.y - 10;
+                    auto x1 = w2->windowPos.x - 10;
+                    auto y1 = w2->windowPos.y - 10;
                     if (x2 >= x1 && x2 <= w2->width + x1 + 20)
                     {
                         if (y2 >= y1 && y2 <= w2->height + y1 + 20)
@@ -871,8 +871,8 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
             if (!(w->flags & WF_NO_SCROLLING))
             {
                 w->savedViewPos = screenCoords
-                    - ScreenCoordsXY{ static_cast<int16_t>(w->viewport->view_width * window_scroll_locations[i][0]),
-                                      static_cast<int16_t>(w->viewport->view_height * window_scroll_locations[i][1]) };
+                    - ScreenCoordsXY{ static_cast<int32_t>(w->viewport->view_width * window_scroll_locations[i][0]),
+                                      static_cast<int32_t>(w->viewport->view_height * window_scroll_locations[i][1]) };
                 w->flags |= WF_SCROLLING_TO_LOCATION;
             }
         }
@@ -940,7 +940,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 }
 
 void window_viewport_get_map_coords_by_cursor(
-    rct_window* w, int16_t* map_x, int16_t* map_y, int16_t* offset_x, int16_t* offset_y)
+    rct_window* w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
 {
     // Get mouse position to offset against.
     auto mouseCoords = context_get_cursor_position_scaled();
@@ -971,7 +971,7 @@ void window_viewport_get_map_coords_by_cursor(
     *offset_y = (w->savedViewPos.y - (centreLoc->y + rebased_y)) * w->viewport->zoom;
 }
 
-void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y)
+void window_viewport_centre_tile_around_cursor(rct_window* w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
 {
     // Get viewport coordinates centring around the tile.
     int32_t z = tile_element_height({ map_x, map_y });
@@ -1019,10 +1019,10 @@ void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
         return;
 
     // Zooming to cursor? Remember where we're pointing at the moment.
-    int16_t saved_map_x = 0;
-    int16_t saved_map_y = 0;
-    int16_t offset_x = 0;
-    int16_t offset_y = 0;
+    int32_t saved_map_x = 0;
+    int32_t saved_map_y = 0;
+    int32_t offset_x = 0;
+    int32_t offset_y = 0;
     if (gConfigGeneral.zoom_to_cursor && atCursor)
     {
         window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
@@ -1281,8 +1281,8 @@ void window_resize(rct_window* w, int32_t dw, int32_t dh)
     w->Invalidate();
 
     // Clamp new size to minimum and maximum
-    w->width = std::clamp<int16_t>(w->width + dw, w->min_width, w->max_width);
-    w->height = std::clamp<int16_t>(w->height + dh, w->min_height, w->max_height);
+    w->width = std::clamp<int32_t>(w->width + dw, w->min_width, w->max_width);
+    w->height = std::clamp<int32_t>(w->height + dh, w->min_height, w->max_height);
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
@@ -2078,7 +2078,7 @@ bool window_is_visible(rct_window* w)
  * right (dx)
  * bottom (bp)
  */
-void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom)
+void window_draw_all(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     auto windowDPI = dpi->Crop({ left, top }, { right - left, bottom - top });
     window_visit_each([&windowDPI, left, top, right, bottom](rct_window* w) {
