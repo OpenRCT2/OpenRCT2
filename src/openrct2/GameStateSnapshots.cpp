@@ -39,6 +39,21 @@ struct GameStateSnapshot_t
     OpenRCT2::MemoryStream storedSprites;
     OpenRCT2::MemoryStream parkParameters;
 
+    template<typename T> bool EntitySizeCheck(DataSerialiser& ds)
+    {
+        uint32_t size = sizeof(T);
+        ds << size;
+        if (ds.IsLoading())
+        {
+            return size == sizeof(T);
+        }
+        return true;
+    }
+    template<typename... T> bool EntitiesSizeCheck(DataSerialiser& ds)
+    {
+        return (EntitySizeCheck<T>(ds) && ...);
+    }
+
     // Must pass a function that can access the sprite.
     void SerialiseSprites(std::function<rct_sprite*(const size_t)> getEntity, const size_t numSprites, bool saving)
     {
@@ -64,6 +79,11 @@ struct GameStateSnapshot_t
             numSavedSprites = static_cast<uint32_t>(indexTable.size());
         }
 
+        if (!EntitiesSizeCheck<Vehicle, Guest, Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle>(ds))
+        {
+            log_error("Entity index corrupted!");
+            return;
+        }
         ds << numSavedSprites;
 
         if (loading)
