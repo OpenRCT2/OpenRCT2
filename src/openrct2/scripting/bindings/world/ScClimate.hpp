@@ -11,12 +11,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../Context.h"
-#    include "../common.h"
-#    include "../core/String.hpp"
-#    include "../world/Climate.h"
-#    include "Duktape.hpp"
-#    include "ScriptEngine.h"
+#    include "../../../Context.h"
+#    include "../../../common.h"
+#    include "../../../core/String.hpp"
+#    include "../../../world/Climate.h"
+#    include "../../Duktape.hpp"
+#    include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {

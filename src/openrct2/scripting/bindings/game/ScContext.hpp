@@ -11,17 +11,17 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../actions/GameAction.h"
-#    include "../interface/Screenshot.h"
-#    include "../localisation/Formatting.h"
-#    include "../object/ObjectManager.h"
-#    include "../scenario/Scenario.h"
-#    include "Duktape.hpp"
-#    include "HookEngine.h"
-#    include "ScConfiguration.hpp"
-#    include "ScDisposable.hpp"
-#    include "ScObject.hpp"
-#    include "ScriptEngine.h"
+#    include "../../../actions/GameAction.h"
+#    include "../../../interface/Screenshot.h"
+#    include "../../../localisation/Formatting.h"
+#    include "../../../object/ObjectManager.h"
+#    include "../../../scenario/Scenario.h"
+#    include "../../Duktape.hpp"
+#    include "../../HookEngine.h"
+#    include "../../ScriptEngine.h"
+#    include "../game/ScConfiguration.hpp"
+#    include "../game/ScDisposable.hpp"
+#    include "../object/ScObject.hpp"
 
 #    include <cstdio>
 #    include <memory>

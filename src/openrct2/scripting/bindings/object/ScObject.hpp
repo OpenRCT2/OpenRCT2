@@ -11,13 +11,13 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../Context.h"
-#    include "../common.h"
-#    include "../object/ObjectManager.h"
-#    include "../object/RideObject.h"
-#    include "../object/SmallSceneryObject.h"
-#    include "Duktape.hpp"
-#    include "ScriptEngine.h"
+#    include "../../../Context.h"
+#    include "../../../common.h"
+#    include "../../../object/ObjectManager.h"
+#    include "../../../object/RideObject.h"
+#    include "../../../object/SmallSceneryObject.h"
+#    include "../../Duktape.hpp"
+#    include "../../ScriptEngine.h"
 
 #    include <optional>
 

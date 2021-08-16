@@ -344,23 +344,11 @@
 		93DFD02E24521BA0001FCBAF /* FileWatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD02C24521B9F001FCBAF /* FileWatcher.h */; };
 		93DFD02F24521BA0001FCBAF /* FileWatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93DFD02D24521BA0001FCBAF /* FileWatcher.cpp */; };
 		93DFD04424521C1A001FCBAF /* Plugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03124521C19001FCBAF /* Plugin.h */; };
-		93DFD04524521C1A001FCBAF /* ScObject.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03224521C19001FCBAF /* ScObject.hpp */; };
 		93DFD04624521C1A001FCBAF /* HookEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03324521C19001FCBAF /* HookEngine.h */; };
-		93DFD04724521C1A001FCBAF /* ScNetwork.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03424521C19001FCBAF /* ScNetwork.hpp */; };
 		93DFD04824521C1A001FCBAF /* HookEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93DFD03524521C19001FCBAF /* HookEngine.cpp */; };
-		93DFD04924521C1A001FCBAF /* ScTile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03624521C19001FCBAF /* ScTile.hpp */; };
-		93DFD04A24521C1A001FCBAF /* ScConfiguration.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03724521C19001FCBAF /* ScConfiguration.hpp */; };
 		93DFD04B24521C1A001FCBAF /* ScriptEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93DFD03824521C19001FCBAF /* ScriptEngine.cpp */; };
-		93DFD04C24521C1A001FCBAF /* ScDisposable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03924521C19001FCBAF /* ScDisposable.hpp */; };
-		93DFD04D24521C1A001FCBAF /* ScEntity.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03A24521C19001FCBAF /* ScEntity.hpp */; };
 		93DFD04E24521C1A001FCBAF /* Duktape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03B24521C19001FCBAF /* Duktape.hpp */; };
-		93DFD04F24521C1A001FCBAF /* ScConsole.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03C24521C19001FCBAF /* ScConsole.hpp */; };
-		93DFD05024521C1A001FCBAF /* ScPark.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03D24521C19001FCBAF /* ScPark.hpp */; };
-		93DFD05124521C1A001FCBAF /* ScContext.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD03E24521C19001FCBAF /* ScContext.hpp */; };
 		93DFD05224521C1A001FCBAF /* Plugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93DFD03F24521C19001FCBAF /* Plugin.cpp */; };
-		93DFD05324521C1A001FCBAF /* ScRide.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD04024521C19001FCBAF /* ScRide.hpp */; };
-		93DFD05424521C1A001FCBAF /* ScDate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD04124521C19001FCBAF /* ScDate.hpp */; };
-		93DFD05524521C1A001FCBAF /* ScMap.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD04224521C19001FCBAF /* ScMap.hpp */; };
 		93DFD05624521C1A001FCBAF /* ScriptEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 93DFD04324521C19001FCBAF /* ScriptEngine.h */; };
 		93F6004C213DD7DD00EEB83E /* TerrainSurfaceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F60049213DD7DC00EEB83E /* TerrainSurfaceObject.cpp */; };
 		93F6004D213DD7DD00EEB83E /* TerrainEdgeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F6004A213DD7DC00EEB83E /* TerrainEdgeObject.cpp */; };
@@ -768,6 +756,46 @@
 		0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D3DD6CD73F5421880280D9D /* Litter.cpp */; };
 		B9B6F97CE24E4A559C7BBA0A /* RideConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BCCA2EF0F5A40D5B83A83AC /* RideConstruction.cpp */; };
 		317B766A750D4365B22A1682 /* EnumMap.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BA2317BF6FB54E328DEB7055 /* EnumMap.hpp */; };
+		8C801369C7E44292A5348DFB /* ScEntity.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 6DF61461D47C40CF92019B24 /* ScEntity.hpp */; };
+		BCCE3EDC711F4F0587F1C359 /* ScCheats.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3F68EA974AF941BCAD28A04F /* ScCheats.hpp */; };
+		F396A397541149D6ACA290D2 /* ScConfiguration.hpp in Headers */ = {isa = PBXBuildFile; fileRef = FD736DB2EE1C4C888977BCAF /* ScConfiguration.hpp */; };
+		2EEDD899BAF94706ACED5F6D /* ScConsole.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E4B39FC3EB9C4EFDA82F42D7 /* ScConsole.hpp */; };
+		74E3377F2FC04316959F1AED /* ScContext.hpp in Headers */ = {isa = PBXBuildFile; fileRef = DAF78631DD8D45E3B3C2FDD1 /* ScContext.hpp */; };
+		A10C0EE3C2614B53AFB6ED35 /* ScDisposable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8865B46C60FD434CAD50A2F4 /* ScDisposable.hpp */; };
+		05F6EF4AAFEC4BA4A454046B /* ScNetwork.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB01D4A8144819A82E3CB4 /* ScNetwork.hpp */; };
+		AC4C9184C93A4113A6BEEC60 /* ScSocket.hpp in Headers */ = {isa = PBXBuildFile; fileRef = D4DD54E62DAE4E4889E26DF6 /* ScSocket.hpp */; };
+		A962C2EF5FA6429C92318441 /* ScObject.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 24F9DF02868247738D05CC40 /* ScObject.hpp */; };
+		E09450B2440E465CBCE62DEB /* ScRide.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AD97B712FDF7454CADC7A328 /* ScRide.hpp */; };
+		A2EC8BBCB8AD49ECB1C22F9D /* ScClimate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 0C2031084A4E462EB6E5BDE4 /* ScClimate.hpp */; };
+		2AE59B9E2E4D496286970915 /* ScDate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 613ADB50EF0F4D73A66E4538 /* ScDate.hpp */; };
+		7930E9462549403181C5D164 /* ScMap.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 74CDED6B7EF041458032681A /* ScMap.hpp */; };
+		43D56A4FA1734F25995F4968 /* ScPark.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9AB8D336AB654D0280549A89 /* ScPark.hpp */; };
+		0AFABA9549854247A5C61D52 /* ScScenario.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A9F55F2291284217BA0E4E51 /* ScScenario.hpp */; };
+		F8A3BFA6806D448B86F1FF6A /* ScTile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 22D7DD798F054A068273739B /* ScTile.hpp */; };
+		73FB2E7C254144D9BAE4925A /* ScVehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B734D45D6B1D45E89AD2E6CE /* ScVehicle.cpp */; };
+		D274ADAB9B644AC581EA2299 /* ScVehicle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8E2C4C07B668487DA3493122 /* ScVehicle.hpp */; };
+		BC39D70B9A2249E4B14E99FA /* ScGuest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DB792F5A06849BDAF95B28F /* ScGuest.cpp */; };
+		428B1DADD66C4829894AD0A1 /* ScGuest.hpp in Headers */ = {isa = PBXBuildFile; fileRef = CAFBD63A702F42F2BDB53A39 /* ScGuest.hpp */; };
+		D7B575F07C4D4E42887C72AA /* ScPeep.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2B63F2F751A3427C9CE9B214 /* ScPeep.hpp */; };
+		7A06F880718F49CA9FB71F52 /* ScStaff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EFAF58A62B44C4B887559B7 /* ScStaff.cpp */; };
+		9DF65BAE250C4307AE5794DB /* ScStaff.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C30AB6C640464647ABE90EC4 /* ScStaff.hpp */; };
+		8E6484F6C43644F4B644D361 /* ScLitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36C67B84754D4FEFA3678AA9 /* ScLitter.cpp */; };
+		359328A3A65D49578912CA40 /* ScLitter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C30388F4F6D34DF59EF7072C /* ScLitter.hpp */; };
+		149D1ACFD5FA42938364C843 /* ScPlayerGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA49170D35604E6A986D09D9 /* ScPlayerGroup.cpp */; };
+		97C222A2A4F543E9AEC3912B /* ScPlayerGroup.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 887EBCE57E4A48C88191346E /* ScPlayerGroup.hpp */; };
+		E436DE7807A74621B7BF2276 /* ScPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2A4181A243F4B77BA36ACE2 /* ScPlayer.cpp */; };
+		2D0A43F28D5747C9B617F342 /* ScPlayer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 7A08C451885D4D419FB4820D /* ScPlayer.hpp */; };
+		F08623EA69E7456DB79F3E06 /* ScNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */; };
+		CDC72A71A28542F4AD73A91C /* ScRideStation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */; };
+		63858E295E3F451283987982 /* ScRideStation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */; };
+		705A4B342C7D4F38B26BAFA4 /* ScRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F3B00C9900ED42AFA72764ED /* ScRide.cpp */; };
+		2B8F76B32C944D3C97F0FFAF /* ScMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4BE60702D7549488A32CC0B /* ScMap.cpp */; };
+		BE55C1C86BFE4A0DA61260E2 /* ScParkMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1939C9C3CFDB4FB6BA5DE47E /* ScParkMessage.cpp */; };
+		AD5EC8B5EBF240B3874BC581 /* ScParkMessage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 56E37ADCDBD440BD8AC35446 /* ScParkMessage.hpp */; };
+		887B0043454440BAB322A9E8 /* ScPark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9C4DE37309A4B5F965D7718 /* ScPark.cpp */; };
+		5B6E418A2F264952BA0CC2F2 /* ScTileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43D18154E96444749737E3F6 /* ScTileElement.cpp */; };
+		DEC539DE402F4B8993E4C357 /* ScTileElement.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F4C26E211F1D44C9ADA70740 /* ScTileElement.hpp */; };
+		6C90BE01D190493295071B23 /* ScTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B67E36A8620400CA70FBA49 /* ScTile.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1462,23 +1490,11 @@
 		93DFD02C24521B9F001FCBAF /* FileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileWatcher.h; sourceTree = "<group>"; };
 		93DFD02D24521BA0001FCBAF /* FileWatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileWatcher.cpp; sourceTree = "<group>"; };
 		93DFD03124521C19001FCBAF /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plugin.h; sourceTree = "<group>"; };
-		93DFD03224521C19001FCBAF /* ScObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScObject.hpp; sourceTree = "<group>"; };
 		93DFD03324521C19001FCBAF /* HookEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HookEngine.h; sourceTree = "<group>"; };
-		93DFD03424521C19001FCBAF /* ScNetwork.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScNetwork.hpp; sourceTree = "<group>"; };
 		93DFD03524521C19001FCBAF /* HookEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HookEngine.cpp; sourceTree = "<group>"; };
-		93DFD03624521C19001FCBAF /* ScTile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScTile.hpp; sourceTree = "<group>"; };
-		93DFD03724521C19001FCBAF /* ScConfiguration.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScConfiguration.hpp; sourceTree = "<group>"; };
 		93DFD03824521C19001FCBAF /* ScriptEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScriptEngine.cpp; sourceTree = "<group>"; };
-		93DFD03924521C19001FCBAF /* ScDisposable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScDisposable.hpp; sourceTree = "<group>"; };
-		93DFD03A24521C19001FCBAF /* ScEntity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScEntity.hpp; sourceTree = "<group>"; };
 		93DFD03B24521C19001FCBAF /* Duktape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Duktape.hpp; sourceTree = "<group>"; };
-		93DFD03C24521C19001FCBAF /* ScConsole.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScConsole.hpp; sourceTree = "<group>"; };
-		93DFD03D24521C19001FCBAF /* ScPark.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScPark.hpp; sourceTree = "<group>"; };
-		93DFD03E24521C19001FCBAF /* ScContext.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScContext.hpp; sourceTree = "<group>"; };
 		93DFD03F24521C19001FCBAF /* Plugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Plugin.cpp; sourceTree = "<group>"; };
-		93DFD04024521C19001FCBAF /* ScRide.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScRide.hpp; sourceTree = "<group>"; };
-		93DFD04124521C19001FCBAF /* ScDate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScDate.hpp; sourceTree = "<group>"; };
-		93DFD04224521C19001FCBAF /* ScMap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScMap.hpp; sourceTree = "<group>"; };
 		93DFD04324521C19001FCBAF /* ScriptEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptEngine.h; sourceTree = "<group>"; };
 		93F60048213DD7DC00EEB83E /* TerrainSurfaceObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainSurfaceObject.h; sourceTree = "<group>"; };
 		93F60049213DD7DC00EEB83E /* TerrainSurfaceObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainSurfaceObject.cpp; sourceTree = "<group>"; };
@@ -1838,6 +1854,46 @@
 		9D3DD6CD73F5421880280D9D /* Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Litter.cpp; path = src/openrct2/world/Litter.cpp; sourceTree = SOURCE_ROOT; };
 		6BCCA2EF0F5A40D5B83A83AC /* RideConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RideConstruction.cpp; path = src/openrct2/ride/RideConstruction.cpp; sourceTree = SOURCE_ROOT; };
 		BA2317BF6FB54E328DEB7055 /* EnumMap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = EnumMap.hpp; path = src/openrct2/core/EnumMap.hpp; sourceTree = SOURCE_ROOT; };
+		6DF61461D47C40CF92019B24 /* ScEntity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScEntity.hpp; path = src/openrct2/scripting/bindings/entity/ScEntity.hpp; sourceTree = SOURCE_ROOT; };
+		3F68EA974AF941BCAD28A04F /* ScCheats.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScCheats.hpp; path = src/openrct2/scripting/bindings/game/ScCheats.hpp; sourceTree = SOURCE_ROOT; };
+		FD736DB2EE1C4C888977BCAF /* ScConfiguration.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScConfiguration.hpp; path = src/openrct2/scripting/bindings/game/ScConfiguration.hpp; sourceTree = SOURCE_ROOT; };
+		E4B39FC3EB9C4EFDA82F42D7 /* ScConsole.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScConsole.hpp; path = src/openrct2/scripting/bindings/game/ScConsole.hpp; sourceTree = SOURCE_ROOT; };
+		DAF78631DD8D45E3B3C2FDD1 /* ScContext.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScContext.hpp; path = src/openrct2/scripting/bindings/game/ScContext.hpp; sourceTree = SOURCE_ROOT; };
+		8865B46C60FD434CAD50A2F4 /* ScDisposable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScDisposable.hpp; path = src/openrct2/scripting/bindings/game/ScDisposable.hpp; sourceTree = SOURCE_ROOT; };
+		BDEB01D4A8144819A82E3CB4 /* ScNetwork.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScNetwork.hpp; path = src/openrct2/scripting/bindings/network/ScNetwork.hpp; sourceTree = SOURCE_ROOT; };
+		D4DD54E62DAE4E4889E26DF6 /* ScSocket.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScSocket.hpp; path = src/openrct2/scripting/bindings/network/ScSocket.hpp; sourceTree = SOURCE_ROOT; };
+		24F9DF02868247738D05CC40 /* ScObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScObject.hpp; path = src/openrct2/scripting/bindings/object/ScObject.hpp; sourceTree = SOURCE_ROOT; };
+		AD97B712FDF7454CADC7A328 /* ScRide.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScRide.hpp; path = src/openrct2/scripting/bindings/ride/ScRide.hpp; sourceTree = SOURCE_ROOT; };
+		0C2031084A4E462EB6E5BDE4 /* ScClimate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScClimate.hpp; path = src/openrct2/scripting/bindings/world/ScClimate.hpp; sourceTree = SOURCE_ROOT; };
+		613ADB50EF0F4D73A66E4538 /* ScDate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScDate.hpp; path = src/openrct2/scripting/bindings/world/ScDate.hpp; sourceTree = SOURCE_ROOT; };
+		74CDED6B7EF041458032681A /* ScMap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScMap.hpp; path = src/openrct2/scripting/bindings/world/ScMap.hpp; sourceTree = SOURCE_ROOT; };
+		9AB8D336AB654D0280549A89 /* ScPark.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPark.hpp; path = src/openrct2/scripting/bindings/world/ScPark.hpp; sourceTree = SOURCE_ROOT; };
+		A9F55F2291284217BA0E4E51 /* ScScenario.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScScenario.hpp; path = src/openrct2/scripting/bindings/world/ScScenario.hpp; sourceTree = SOURCE_ROOT; };
+		22D7DD798F054A068273739B /* ScTile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScTile.hpp; path = src/openrct2/scripting/bindings/world/ScTile.hpp; sourceTree = SOURCE_ROOT; };
+		B734D45D6B1D45E89AD2E6CE /* ScVehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScVehicle.cpp; path = src/openrct2/scripting/bindings/entity/ScVehicle.cpp; sourceTree = SOURCE_ROOT; };
+		8E2C4C07B668487DA3493122 /* ScVehicle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScVehicle.hpp; path = src/openrct2/scripting/bindings/entity/ScVehicle.hpp; sourceTree = SOURCE_ROOT; };
+		5DB792F5A06849BDAF95B28F /* ScGuest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScGuest.cpp; path = src/openrct2/scripting/bindings/entity/ScGuest.cpp; sourceTree = SOURCE_ROOT; };
+		CAFBD63A702F42F2BDB53A39 /* ScGuest.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScGuest.hpp; path = src/openrct2/scripting/bindings/entity/ScGuest.hpp; sourceTree = SOURCE_ROOT; };
+		2B63F2F751A3427C9CE9B214 /* ScPeep.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPeep.hpp; path = src/openrct2/scripting/bindings/entity/ScPeep.hpp; sourceTree = SOURCE_ROOT; };
+		3EFAF58A62B44C4B887559B7 /* ScStaff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScStaff.cpp; path = src/openrct2/scripting/bindings/entity/ScStaff.cpp; sourceTree = SOURCE_ROOT; };
+		C30AB6C640464647ABE90EC4 /* ScStaff.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScStaff.hpp; path = src/openrct2/scripting/bindings/entity/ScStaff.hpp; sourceTree = SOURCE_ROOT; };
+		36C67B84754D4FEFA3678AA9 /* ScLitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScLitter.cpp; path = src/openrct2/scripting/bindings/entity/ScLitter.cpp; sourceTree = SOURCE_ROOT; };
+		C30388F4F6D34DF59EF7072C /* ScLitter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScLitter.hpp; path = src/openrct2/scripting/bindings/entity/ScLitter.hpp; sourceTree = SOURCE_ROOT; };
+		DA49170D35604E6A986D09D9 /* ScPlayerGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScPlayerGroup.cpp; path = src/openrct2/scripting/bindings/network/ScPlayerGroup.cpp; sourceTree = SOURCE_ROOT; };
+		887EBCE57E4A48C88191346E /* ScPlayerGroup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPlayerGroup.hpp; path = src/openrct2/scripting/bindings/network/ScPlayerGroup.hpp; sourceTree = SOURCE_ROOT; };
+		E2A4181A243F4B77BA36ACE2 /* ScPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScPlayer.cpp; path = src/openrct2/scripting/bindings/network/ScPlayer.cpp; sourceTree = SOURCE_ROOT; };
+		7A08C451885D4D419FB4820D /* ScPlayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScPlayer.hpp; path = src/openrct2/scripting/bindings/network/ScPlayer.hpp; sourceTree = SOURCE_ROOT; };
+		200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScNetwork.cpp; path = src/openrct2/scripting/bindings/network/ScNetwork.cpp; sourceTree = SOURCE_ROOT; };
+		522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScRideStation.cpp; path = src/openrct2/scripting/bindings/ride/ScRideStation.cpp; sourceTree = SOURCE_ROOT; };
+		1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScRideStation.hpp; path = src/openrct2/scripting/bindings/ride/ScRideStation.hpp; sourceTree = SOURCE_ROOT; };
+		F3B00C9900ED42AFA72764ED /* ScRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScRide.cpp; path = src/openrct2/scripting/bindings/ride/ScRide.cpp; sourceTree = SOURCE_ROOT; };
+		E4BE60702D7549488A32CC0B /* ScMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScMap.cpp; path = src/openrct2/scripting/bindings/world/ScMap.cpp; sourceTree = SOURCE_ROOT; };
+		1939C9C3CFDB4FB6BA5DE47E /* ScParkMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScParkMessage.cpp; path = src/openrct2/scripting/bindings/world/ScParkMessage.cpp; sourceTree = SOURCE_ROOT; };
+		56E37ADCDBD440BD8AC35446 /* ScParkMessage.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScParkMessage.hpp; path = src/openrct2/scripting/bindings/world/ScParkMessage.hpp; sourceTree = SOURCE_ROOT; };
+		E9C4DE37309A4B5F965D7718 /* ScPark.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScPark.cpp; path = src/openrct2/scripting/bindings/world/ScPark.cpp; sourceTree = SOURCE_ROOT; };
+		43D18154E96444749737E3F6 /* ScTileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScTileElement.cpp; path = src/openrct2/scripting/bindings/world/ScTileElement.cpp; sourceTree = SOURCE_ROOT; };
+		F4C26E211F1D44C9ADA70740 /* ScTileElement.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScTileElement.hpp; path = src/openrct2/scripting/bindings/world/ScTileElement.hpp; sourceTree = SOURCE_ROOT; };
+		5B67E36A8620400CA70FBA49 /* ScTile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScTile.cpp; path = src/openrct2/scripting/bindings/world/ScTile.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1963,25 +2019,26 @@
 		93DFD03024521C19001FCBAF /* scripting */ = {
 			isa = PBXGroup;
 			children = (
+				59B0CA75A27A4C5EB9EF6CA7 /* bindings */,
 				93DFD03B24521C19001FCBAF /* Duktape.hpp */,
 				93DFD03524521C19001FCBAF /* HookEngine.cpp */,
 				93DFD03324521C19001FCBAF /* HookEngine.h */,
 				93DFD03F24521C19001FCBAF /* Plugin.cpp */,
 				93DFD03124521C19001FCBAF /* Plugin.h */,
-				93DFD03724521C19001FCBAF /* ScConfiguration.hpp */,
-				93DFD03C24521C19001FCBAF /* ScConsole.hpp */,
-				93DFD03E24521C19001FCBAF /* ScContext.hpp */,
-				93DFD04124521C19001FCBAF /* ScDate.hpp */,
-				93DFD03924521C19001FCBAF /* ScDisposable.hpp */,
-				93DFD03A24521C19001FCBAF /* ScEntity.hpp */,
-				93DFD04224521C19001FCBAF /* ScMap.hpp */,
-				93DFD03424521C19001FCBAF /* ScNetwork.hpp */,
-				93DFD03224521C19001FCBAF /* ScObject.hpp */,
-				93DFD03D24521C19001FCBAF /* ScPark.hpp */,
-				93DFD04024521C19001FCBAF /* ScRide.hpp */,
+				93DFD03724521C19001FCBAF,
+				93DFD03C24521C19001FCBAF,
+				93DFD03E24521C19001FCBAF,
+				93DFD04124521C19001FCBAF,
+				93DFD03924521C19001FCBAF,
+				93DFD03A24521C19001FCBAF,
+				93DFD04224521C19001FCBAF,
+				93DFD03424521C19001FCBAF,
+				93DFD03224521C19001FCBAF,
+				93DFD03D24521C19001FCBAF,
+				93DFD04024521C19001FCBAF,
 				93DFD03824521C19001FCBAF /* ScriptEngine.cpp */,
 				93DFD04324521C19001FCBAF /* ScriptEngine.h */,
-				93DFD03624521C19001FCBAF /* ScTile.hpp */,
+				93DFD03624521C19001FCBAF,
 			);
 			path = scripting;
 			sourceTree = "<group>";
@@ -3333,6 +3390,101 @@
 			path = input;
 			sourceTree = "<group>";
 		};
+		59B0CA75A27A4C5EB9EF6CA7 /* bindings */ = {
+			isa = PBXGroup;
+			children = (
+				EDFE9D20A43646C7981E7254 /* entity */,
+				C1C271EB7D2B4A3AA23CE0E6 /* game */,
+				9192A7EACCF44110BF1B89BC /* network */,
+				CCCD0912DE2D444FA8DA7222 /* object */,
+				0B69C59376EB45E58BA6ADF5 /* ride */,
+				281760CC5B1249CBA8E771D7 /* world */,
+			);
+			name = bindings;
+			sourceTree = "<group>";
+		};
+		EDFE9D20A43646C7981E7254 /* entity */ = {
+			isa = PBXGroup;
+			children = (
+				6DF61461D47C40CF92019B24 /* ScEntity.hpp */,
+				B734D45D6B1D45E89AD2E6CE /* ScVehicle.cpp */,
+				8E2C4C07B668487DA3493122 /* ScVehicle.hpp */,
+				5DB792F5A06849BDAF95B28F /* ScGuest.cpp */,
+				CAFBD63A702F42F2BDB53A39 /* ScGuest.hpp */,
+				2B63F2F751A3427C9CE9B214 /* ScPeep.hpp */,
+				3EFAF58A62B44C4B887559B7 /* ScStaff.cpp */,
+				C30AB6C640464647ABE90EC4 /* ScStaff.hpp */,
+				36C67B84754D4FEFA3678AA9 /* ScLitter.cpp */,
+				C30388F4F6D34DF59EF7072C /* ScLitter.hpp */,
+			);
+			name = entity;
+			sourceTree = "<group>";
+		};
+		C1C271EB7D2B4A3AA23CE0E6 /* game */ = {
+			isa = PBXGroup;
+			children = (
+				3F68EA974AF941BCAD28A04F /* ScCheats.hpp */,
+				FD736DB2EE1C4C888977BCAF /* ScConfiguration.hpp */,
+				E4B39FC3EB9C4EFDA82F42D7 /* ScConsole.hpp */,
+				DAF78631DD8D45E3B3C2FDD1 /* ScContext.hpp */,
+				8865B46C60FD434CAD50A2F4 /* ScDisposable.hpp */,
+			);
+			name = game;
+			sourceTree = "<group>";
+		};
+		9192A7EACCF44110BF1B89BC /* network */ = {
+			isa = PBXGroup;
+			children = (
+				BDEB01D4A8144819A82E3CB4 /* ScNetwork.hpp */,
+				D4DD54E62DAE4E4889E26DF6 /* ScSocket.hpp */,
+				DA49170D35604E6A986D09D9 /* ScPlayerGroup.cpp */,
+				887EBCE57E4A48C88191346E /* ScPlayerGroup.hpp */,
+				E2A4181A243F4B77BA36ACE2 /* ScPlayer.cpp */,
+				7A08C451885D4D419FB4820D /* ScPlayer.hpp */,
+				200F0E6CAD3B41499A3CFC36 /* ScNetwork.cpp */,
+			);
+			name = network;
+			sourceTree = "<group>";
+		};
+		CCCD0912DE2D444FA8DA7222 /* object */ = {
+			isa = PBXGroup;
+			children = (
+				24F9DF02868247738D05CC40 /* ScObject.hpp */,
+			);
+			name = object;
+			sourceTree = "<group>";
+		};
+		0B69C59376EB45E58BA6ADF5 /* ride */ = {
+			isa = PBXGroup;
+			children = (
+				AD97B712FDF7454CADC7A328 /* ScRide.hpp */,
+				522FE124ED4F4E18BCF79042 /* ScRideStation.cpp */,
+				1260386710BF4EA4B4FC31D3 /* ScRideStation.hpp */,
+				F3B00C9900ED42AFA72764ED /* ScRide.cpp */,
+			);
+			name = ride;
+			sourceTree = "<group>";
+		};
+		281760CC5B1249CBA8E771D7 /* world */ = {
+			isa = PBXGroup;
+			children = (
+				0C2031084A4E462EB6E5BDE4 /* ScClimate.hpp */,
+				613ADB50EF0F4D73A66E4538 /* ScDate.hpp */,
+				74CDED6B7EF041458032681A /* ScMap.hpp */,
+				9AB8D336AB654D0280549A89 /* ScPark.hpp */,
+				A9F55F2291284217BA0E4E51 /* ScScenario.hpp */,
+				22D7DD798F054A068273739B /* ScTile.hpp */,
+				E4BE60702D7549488A32CC0B /* ScMap.cpp */,
+				1939C9C3CFDB4FB6BA5DE47E /* ScParkMessage.cpp */,
+				56E37ADCDBD440BD8AC35446 /* ScParkMessage.hpp */,
+				E9C4DE37309A4B5F965D7718 /* ScPark.cpp */,
+				43D18154E96444749737E3F6 /* ScTileElement.cpp */,
+				F4C26E211F1D44C9ADA70740 /* ScTileElement.hpp */,
+				5B67E36A8620400CA70FBA49 /* ScTile.cpp */,
+			);
+			name = world;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -3357,7 +3509,6 @@
 				66A10F8D257F1E1800DD651A /* GuestSetFlagsAction.h in Headers */,
 				66A10FA7257F1E1800DD651A /* PeepPickupAction.h in Headers */,
 				939A359C20C12FC800630B3F /* Paint.Sprite.h in Headers */,
-				93DFD05524521C1A001FCBAF /* ScMap.hpp in Headers */,
 				9308DA04209908090079EE96 /* TileElement.h in Headers */,
 				C67B28152002D67A00109C93 /* Widget.h in Headers */,
 				66A10F99257F1E1800DD651A /* LargeScenerySetColourAction.h in Headers */,
@@ -3370,7 +3521,6 @@
 				C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */,
 				66A10F50257F1E1700DD651A /* ParkEntranceRemoveAction.h in Headers */,
 				66A10F4D257F1E1700DD651A /* StaffSetNameAction.h in Headers */,
-				93DFD05124521C1A001FCBAF /* ScContext.hpp in Headers */,
 				66A10FD6257F1E3000DD651A /* WallRemoveAction.h in Headers */,
 				939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */,
 				66A10F7B257F1E1800DD651A /* MazeSetTrackAction.h in Headers */,
@@ -3378,14 +3528,12 @@
 				66A10F53257F1E1700DD651A /* LandLowerAction.h in Headers */,
 				66A10F5E257F1E1700DD651A /* LargeSceneryRemoveAction.h in Headers */,
 				66A10F5D257F1E1700DD651A /* RideSetStatusAction.h in Headers */,
-				93DFD05024521C1A001FCBAF /* ScPark.hpp in Headers */,
 				93B4DC1625487CDF008D63FF /* Formatting.h in Headers */,
 				66A10F86257F1E1800DD651A /* LoadOrQuitAction.h in Headers */,
 				93DFD02E24521BA0001FCBAF /* FileWatcher.h in Headers */,
 				2ADE2F28224418B2002598AF /* DataSerialiserTag.h in Headers */,
 				66A10F74257F1E1800DD651A /* RideEntranceExitRemoveAction.h in Headers */,
 				66A10F9A257F1E1800DD651A /* StaffFireAction.h in Headers */,
-				93DFD04C24521C1A001FCBAF /* ScDisposable.hpp in Headers */,
 				66A10FAC257F1E1800DD651A /* RideSetSettingAction.h in Headers */,
 				2ADE2F2E224418E7002598AF /* ConversionTables.h in Headers */,
 				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
@@ -3399,7 +3547,6 @@
 				66A10F77257F1E1800DD651A /* StaffSetOrdersAction.h in Headers */,
 				2ADE2F2C224418B2002598AF /* FileIndex.hpp in Headers */,
 				66A10FAF257F1E1800DD651A /* RideSetNameAction.h in Headers */,
-				93DFD04A24521C1A001FCBAF /* ScConfiguration.hpp in Headers */,
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				66A10F62257F1E1700DD651A /* SurfaceSetStyleAction.h in Headers */,
 				66A10EC1257F1DF800DD651A /* FootpathAdditionRemoveAction.h in Headers */,
@@ -3408,11 +3555,9 @@
 				66A10F96257F1E1800DD651A /* SignSetStyleAction.h in Headers */,
 				2ADE2F29224418B2002598AF /* Numerics.hpp in Headers */,
 				66A10FD5257F1E3000DD651A /* WaterRaiseAction.h in Headers */,
-				93DFD04924521C1A001FCBAF /* ScTile.hpp in Headers */,
 				936F412B24CE030F00E07BCF /* NetworkBase.h in Headers */,
 				66A10EC2257F1DF800DD651A /* FootpathRemoveAction.h in Headers */,
 				66A10EA3257F1DE100DD651A /* BalloonPressAction.h in Headers */,
-				93DFD04524521C1A001FCBAF /* ScObject.hpp in Headers */,
 				2ADE2F382244198B002598AF /* SpriteBase.h in Headers */,
 				66A10EC8257F1DF800DD651A /* BannerPlaceAction.h in Headers */,
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
@@ -3422,17 +3567,13 @@
 				66A10FD7257F1E3000DD651A /* WaterLowerAction.h in Headers */,
 				939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */,
 				93CBA4C320A7502E00867D56 /* Imaging.h in Headers */,
-				93DFD04D24521C1A001FCBAF /* ScEntity.hpp in Headers */,
 				66A10F4E257F1E1700DD651A /* PauseToggleAction.h in Headers */,
 				93DFD04E24521C1A001FCBAF /* Duktape.hpp in Headers */,
 				66A10FA2257F1E1800DD651A /* LargeSceneryPlaceAction.h in Headers */,
 				2ADE2F3622441960002598AF /* RideTypes.h in Headers */,
 				66A10F68257F1E1800DD651A /* NetworkModifyGroupAction.h in Headers */,
-				93DFD05324521C1A001FCBAF /* ScRide.hpp in Headers */,
 				66A10F88257F1E1800DD651A /* SignSetNameAction.h in Headers */,
 				93AE2389252F948A00CD03C3 /* Formatter.h in Headers */,
-				93DFD05424521C1A001FCBAF /* ScDate.hpp in Headers */,
-				93DFD04F24521C1A001FCBAF /* ScConsole.hpp in Headers */,
 				66A10F91257F1E1800DD651A /* StaffHireNewAction.h in Headers */,
 				9308DA05209908090079EE96 /* Surface.h in Headers */,
 				66A10F9F257F1E1800DD651A /* LandBuyRightsAction.h in Headers */,
@@ -3455,7 +3596,6 @@
 				66A10F84257F1E1800DD651A /* StaffSetPatrolAreaAction.h in Headers */,
 				66A10F56257F1E1700DD651A /* SmallSceneryRemoveAction.h in Headers */,
 				66A10F5C257F1E1700DD651A /* SetParkEntranceFeeAction.h in Headers */,
-				93DFD04724521C1A001FCBAF /* ScNetwork.hpp in Headers */,
 				66A10F8F257F1E1800DD651A /* StaffSetCostumeAction.h in Headers */,
 				66A10ED5257F1DF800DD651A /* BannerSetStyleAction.h in Headers */,
 				66A10F97257F1E1800DD651A /* SetCheatAction.h in Headers */,
@@ -3472,6 +3612,32 @@
 				66A10F8B257F1E1800DD651A /* LandSmoothAction.h in Headers */,
 				F42186C5840D4196981ADD16 /* EntityTweener.h in Headers */,
 				317B766A750D4365B22A1682 /* EnumMap.hpp in Headers */,
+				8C801369C7E44292A5348DFB /* ScEntity.hpp in Headers */,
+				BCCE3EDC711F4F0587F1C359 /* ScCheats.hpp in Headers */,
+				F396A397541149D6ACA290D2 /* ScConfiguration.hpp in Headers */,
+				2EEDD899BAF94706ACED5F6D /* ScConsole.hpp in Headers */,
+				74E3377F2FC04316959F1AED /* ScContext.hpp in Headers */,
+				A10C0EE3C2614B53AFB6ED35 /* ScDisposable.hpp in Headers */,
+				05F6EF4AAFEC4BA4A454046B /* ScNetwork.hpp in Headers */,
+				AC4C9184C93A4113A6BEEC60 /* ScSocket.hpp in Headers */,
+				A962C2EF5FA6429C92318441 /* ScObject.hpp in Headers */,
+				E09450B2440E465CBCE62DEB /* ScRide.hpp in Headers */,
+				A2EC8BBCB8AD49ECB1C22F9D /* ScClimate.hpp in Headers */,
+				2AE59B9E2E4D496286970915 /* ScDate.hpp in Headers */,
+				7930E9462549403181C5D164 /* ScMap.hpp in Headers */,
+				43D56A4FA1734F25995F4968 /* ScPark.hpp in Headers */,
+				0AFABA9549854247A5C61D52 /* ScScenario.hpp in Headers */,
+				F8A3BFA6806D448B86F1FF6A /* ScTile.hpp in Headers */,
+				D274ADAB9B644AC581EA2299 /* ScVehicle.hpp in Headers */,
+				428B1DADD66C4829894AD0A1 /* ScGuest.hpp in Headers */,
+				D7B575F07C4D4E42887C72AA /* ScPeep.hpp in Headers */,
+				9DF65BAE250C4307AE5794DB /* ScStaff.hpp in Headers */,
+				359328A3A65D49578912CA40 /* ScLitter.hpp in Headers */,
+				97C222A2A4F543E9AEC3912B /* ScPlayerGroup.hpp in Headers */,
+				2D0A43F28D5747C9B617F342 /* ScPlayer.hpp in Headers */,
+				63858E295E3F451283987982 /* ScRideStation.hpp in Headers */,
+				AD5EC8B5EBF240B3874BC581 /* ScParkMessage.hpp in Headers */,
+				DEC539DE402F4B8993E4C357 /* ScTileElement.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4277,6 +4443,20 @@
 				E73A781EBC3C440A99D59821 /* EntityTweener.cpp in Sources */,
 				0746674FA0794ABF86E406A1 /* Litter.cpp in Sources */,
 				B9B6F97CE24E4A559C7BBA0A /* RideConstruction.cpp in Sources */,
+				73FB2E7C254144D9BAE4925A /* ScVehicle.cpp in Sources */,
+				BC39D70B9A2249E4B14E99FA /* ScGuest.cpp in Sources */,
+				7A06F880718F49CA9FB71F52 /* ScStaff.cpp in Sources */,
+				8E6484F6C43644F4B644D361 /* ScLitter.cpp in Sources */,
+				149D1ACFD5FA42938364C843 /* ScPlayerGroup.cpp in Sources */,
+				E436DE7807A74621B7BF2276 /* ScPlayer.cpp in Sources */,
+				F08623EA69E7456DB79F3E06 /* ScNetwork.cpp in Sources */,
+				CDC72A71A28542F4AD73A91C /* ScRideStation.cpp in Sources */,
+				705A4B342C7D4F38B26BAFA4 /* ScRide.cpp in Sources */,
+				2B8F76B32C944D3C97F0FFAF /* ScMap.cpp in Sources */,
+				BE55C1C86BFE4A0DA61260E2 /* ScParkMessage.cpp in Sources */,
+				887B0043454440BAB322A9E8 /* ScPark.cpp in Sources */,
+				5B6E418A2F264952BA0CC2F2 /* ScTileElement.cpp in Sources */,
+				6C90BE01D190493295071B23 /* ScTile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
