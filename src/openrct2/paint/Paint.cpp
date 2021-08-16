@@ -301,7 +301,7 @@ namespace PaintSortFlags
 {
     static constexpr uint8_t None = 0;
     static constexpr uint8_t PendingVisit = (1U << 0);
-    static constexpr uint8_t Neighbor = (1U << 1);
+    static constexpr uint8_t Neighbour = (1U << 1);
     static constexpr uint8_t OutsideQuadrant = (1U << 7);
 } // namespace PaintSortFlags
 
@@ -340,8 +340,8 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
         }
         else if (ps->quadrant_index == quadrantIndex + 1)
         {
-            // Is neighbor and requires a visit.
-            ps->SortFlags = PaintSortFlags::Neighbor | PaintSortFlags::PendingVisit;
+            // Is neighbour and requires a visit.
+            ps->SortFlags = PaintSortFlags::Neighbour | PaintSortFlags::PendingVisit;
         }
         else if (ps->quadrant_index == quadrantIndex)
         {
@@ -391,7 +391,7 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
                 break;
             if (ps_next->SortFlags & PaintSortFlags::OutsideQuadrant)
                 break;
-            if (!(ps_next->SortFlags & PaintSortFlags::Neighbor))
+            if (!(ps_next->SortFlags & PaintSortFlags::Neighbour))
                 continue;
 
             const paint_struct_bound_box& currentBBox = ps_next->bounds;
@@ -439,7 +439,7 @@ template<int TRotation> static void PaintSessionArrange(PaintSessionCore* sessio
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
         paint_struct* ps_cache = PaintArrangeStructsHelperRotation<TRotation>(
-            psHead, session->QuadrantBackIndex & 0xFFFF, PaintSortFlags::Neighbor);
+            psHead, session->QuadrantBackIndex & 0xFFFF, PaintSortFlags::Neighbour);
 
         quadrantIndex = session->QuadrantBackIndex;
         while (++quadrantIndex < session->QuadrantFrontIndex)
