@@ -366,8 +366,6 @@ public:
         // pad_01358842
         ImportResearchList();
         gMapBaseZ = _s6.map_base_z;
-        gScenarioName = std::string_view(_s6.scenario_name, sizeof(_s6.scenario_name));
-        gScenarioDetails = std::string_view(_s6.scenario_description, sizeof(_s6.scenario_description));
         gBankLoanInterestRate = _s6.current_interest_rate;
         // pad_0135934B
         // Preserve compatibility with vanilla RCT2's save format.
