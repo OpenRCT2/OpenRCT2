@@ -49,7 +49,7 @@ static void top_spin_paint_vehicle(
     if (ride == nullptr)
         return;
 
-    uint32_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
+    int32_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     // As we will be drawing a vehicle we need to backup the trackElement that
     // is assigned to the drawings.
     const TileElement* curTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
