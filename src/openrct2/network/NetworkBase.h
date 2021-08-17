@@ -12,10 +12,17 @@
 
 #ifndef DISABLE_NETWORK
 
+namespace OpenRCT2
+{
+    struct IContext;
+}
+
 class NetworkBase
 {
+    OpenRCT2::IContext& _context;
+
 public:
-    NetworkBase();
+    NetworkBase(OpenRCT2::IContext& context);
 
 public: // Uncategorized
     bool BeginServer(uint16_t port, const std::string& address);

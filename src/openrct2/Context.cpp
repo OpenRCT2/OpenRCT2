@@ -46,6 +46,7 @@
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
+#include "network/NetworkBase.h"
 #include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -108,6 +109,9 @@ namespace OpenRCT2
 #ifdef ENABLE_SCRIPTING
         ScriptEngine _scriptEngine;
 #endif
+#ifndef DISABLE_NETWORK
+        NetworkBase _network;
+#endif
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
@@ -150,6 +154,9 @@ namespace OpenRCT2
 #ifdef ENABLE_SCRIPTING
             , _scriptEngine(_stdInOutConsole, *env)
 #endif
+#ifndef DISABLE_NETWORK
+            , _network(*this)
+#endif
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -164,7 +171,7 @@ namespace OpenRCT2
             //       If objects use GetContext() in their destructor things won't go well.
 
             GameActions::ClearQueue();
-            network_close();
+            _network.Close();
             window_close_all();
 
             // Unload objects after closing all windows, this is to overcome windows like
@@ -256,10 +263,17 @@ namespace OpenRCT2
             return _drawingEngine.get();
         }
 
-        virtual Paint::Painter* GetPainter() override
+        Paint::Painter* GetPainter() override
         {
             return _painter.get();
         }
+
+#ifndef DISABLE_NETWORK
+        NetworkBase& GetNetwork() override
+        {
+            return _network;
+        }
+#endif
 
         int32_t RunOpenRCT2(int argc, const char** argv) override
         {
