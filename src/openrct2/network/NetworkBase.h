@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../System.hpp"
 #include "../actions/GameAction.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
@@ -17,10 +18,8 @@ namespace OpenRCT2
     struct IContext;
 }
 
-class NetworkBase
+class NetworkBase : public OpenRCT2::System
 {
-    OpenRCT2::IContext& _context;
-
 public:
     NetworkBase(OpenRCT2::IContext& context);
 
@@ -32,7 +31,8 @@ public: // Common
     bool Init();
     void Close();
     uint32_t GetServerTick();
-    void Update();
+    // FIXME: This is currently the wrong function to override in System, will be refactored later.
+    void Update() override final;
     void Flush();
     void ProcessPending();
     void ProcessPlayerList();
@@ -96,7 +96,7 @@ public: // Server
     void Server_Send_EVENT_PLAYER_JOINED(const char* playerName);
     void Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, const char* reason);
     void Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
-    void Server_Send_SCRIPTS(NetworkConnection& connection) const;
+    void Server_Send_SCRIPTS(NetworkConnection& connection);
 
     // Handlers
     void Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);

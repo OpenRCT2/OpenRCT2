@@ -106,7 +106,7 @@ static void network_get_private_key_path(utf8* buffer, size_t bufferSize, const 
 static void network_get_public_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash);
 
 NetworkBase::NetworkBase(OpenRCT2::IContext& context)
-    : _context(context)
+    : OpenRCT2::System(context)
 {
     wsa_initialized = false;
     mode = NETWORK_MODE_NONE;
@@ -555,7 +555,7 @@ void NetworkBase::UpdateClient()
 
                         auto intent = Intent(WC_NETWORK_STATUS);
                         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
-                        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { GetContext()->GetNetwork().Close(); });
+                        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                         context_open_intent(&intent);
                     }
                     break;
@@ -570,7 +570,7 @@ void NetworkBase::UpdateClient()
 
                         auto intent = Intent(WC_NETWORK_STATUS);
                         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
-                        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { GetContext()->GetNetwork().Close(); });
+                        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                         context_open_intent(&intent);
 
                         server_connect_time = platform_get_ticks();
@@ -587,7 +587,7 @@ void NetworkBase::UpdateClient()
 
                     auto intent = Intent(WC_NETWORK_STATUS);
                     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
-                    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { GetContext()->GetNetwork().Close(); });
+                    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                     context_open_intent(&intent);
                     break;
                 }
@@ -1096,7 +1096,7 @@ void NetworkBase::AppendLog(std::ostream& fs, const std::string& s)
 
 void NetworkBase::BeginChatLog()
 {
-    auto env = _context.GetPlatformEnvironment();
+    auto env = GetContext().GetPlatformEnvironment();
     auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
 
@@ -1123,7 +1123,7 @@ void NetworkBase::CloseChatLog()
 
 void NetworkBase::BeginServerLog()
 {
-    auto env = _context.GetPlatformEnvironment();
+    auto env = GetContext().GetPlatformEnvironment();
     auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
 
@@ -1270,14 +1270,14 @@ void NetworkBase::Server_Send_OBJECTS_LIST(
     }
 }
 
-void NetworkBase::Server_Send_SCRIPTS(NetworkConnection& connection) const
+void NetworkBase::Server_Send_SCRIPTS(NetworkConnection& connection)
 {
     NetworkPacket packet(NetworkCommand::Scripts);
 
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
-    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& scriptEngine = GetContext().GetScriptEngine();
     const auto& plugins = scriptEngine.GetPlugins();
     std::vector<std::shared_ptr<Plugin>> pluginsToSend;
     for (const auto& plugin : plugins)
@@ -1366,8 +1366,8 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
     {
         // This will send all custom objects to connected clients
         // TODO: fix it so custom objects negotiation is performed even in this case.
-        auto context = GetContext();
-        auto& objManager = context->GetObjectManager();
+        auto& context = GetContext();
+        auto& objManager = context.GetObjectManager();
         objects = objManager.GetPackableObjects();
     }
 
@@ -2180,7 +2180,7 @@ void NetworkBase::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection,
         return;
     }
 
-    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+    IGameStateSnapshots* snapshots = GetContext().GetGameStateSnapshots();
 
     const GameStateSnapshot_t* snapshot = snapshots->GetLinkedSnapshot(tick);
     if (snapshot)
@@ -2275,8 +2275,8 @@ void NetworkBase::Server_Client_Joined(const char* name, const std::string& keyh
         format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
         chat_history_add(text);
 
-        auto context = GetContext();
-        auto& objManager = context->GetObjectManager();
+        auto& context = GetContext();
+        auto& objManager = context.GetObjectManager();
         auto objects = objManager.GetPackableObjects();
         Server_Send_OBJECTS_LIST(connection, objects);
         Server_Send_SCRIPTS(connection);
@@ -2304,7 +2304,7 @@ void NetworkBase::Server_Handle_TOKEN(NetworkConnection& connection, [[maybe_unu
 
 void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet)
 {
-    auto& repo = GetContext()->GetObjectRepository();
+    auto& repo = GetContext().GetObjectRepository();
 
     uint32_t index = 0;
     uint32_t totalObjects = 0;
@@ -2335,7 +2335,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
 
         auto intent = Intent(WC_NETWORK_STATUS);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
-        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { GetContext()->GetNetwork().Close(); });
+        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
         context_open_intent(&intent);
 
         char objectName[12]{};
@@ -2375,7 +2375,7 @@ void NetworkBase::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPa
     packet >> numScripts;
 
 #    ifdef ENABLE_SCRIPTING
-    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& scriptEngine = GetContext().GetScriptEngine();
     for (uint32_t i = 0; i < numScripts; i++)
     {
         uint32_t codeLength{};
@@ -2421,7 +2421,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
         _serverGameState.SetPosition(0);
         DataSerialiser ds(false, _serverGameState);
 
-        IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+        IGameStateSnapshots* snapshots = GetContext().GetGameStateSnapshots();
 
         GameStateSnapshot_t& serverSnapshot = snapshots->CreateSnapshot();
         snapshots->SerialiseSnapshot(serverSnapshot, ds);
@@ -2431,8 +2431,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
         {
             GameStateCompareData_t cmpData = snapshots->Compare(serverSnapshot, *desyncSnapshot);
 
-            std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
-                DIRBASE::USER, DIRID::LOG_DESYNCS);
+            std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_DESYNCS);
 
             platform_ensure_directory_exists(outputPath.c_str());
 
@@ -2480,7 +2479,7 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
         return;
     }
     log_verbose("Client requested %u objects", size);
-    auto& repo = GetContext()->GetObjectRepository();
+    auto& repo = GetContext().GetObjectRepository();
     for (uint32_t i = 0; i < size; i++)
     {
         const char* name = reinterpret_cast<const char*>(packet.Read(8));
@@ -2661,7 +2660,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
 
     auto intent = Intent(WC_NETWORK_STATUS);
     intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_downloading_map });
-    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { GetContext()->GetNetwork().Close(); });
+    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
     context_open_intent(&intent);
 
     std::memcpy(&chunk_buffer[offset], const_cast<void*>(static_cast<const void*>(packet.Read(chunksize))), chunksize);
@@ -2733,9 +2732,9 @@ bool NetworkBase::LoadMap(IStream* stream)
     bool result = false;
     try
     {
-        auto context = GetContext();
-        auto& objManager = context->GetObjectManager();
-        auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
+        auto& context = GetContext();
+        auto& objManager = context.GetObjectManager();
+        auto importer = ParkImporter::CreateS6(context.GetObjectRepository());
         auto loadResult = importer->LoadFromStream(stream, false);
         objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
         importer->Import();
