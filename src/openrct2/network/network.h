@@ -93,7 +93,6 @@ Peep* network_get_pickup_peep(uint8_t playerid);
 void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x);
 int32_t network_get_pickup_peep_old_x(uint8_t playerid);
 
-void network_send_map();
 void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds = {});
 void network_send_game_action(const GameAction* action);
 void network_send_password(const std::string& password);

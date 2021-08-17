@@ -3852,12 +3852,6 @@ int32_t network_get_current_player_group_index()
     return -1;
 }
 
-void network_send_map()
-{
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
-    network.Server_Send_MAP();
-}
-
 void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
@@ -4066,9 +4060,6 @@ void network_request_gamestate_snapshot()
 {
 }
 void network_send_game_action(const GameAction* action)
-{
-}
-void network_send_map()
 {
 }
 void network_update()
