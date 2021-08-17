@@ -44,7 +44,7 @@ constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
 static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
-static void FreeEntity(SpriteBase* entity);
+static void FreeEntity(SpriteBase& entity);
 
 constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 {
@@ -239,7 +239,7 @@ void reset_sprite_list()
         {
             continue;
         }
-        FreeEntity(spr);
+        FreeEntity(*spr);
         spr->Type = EntityType::Null;
         spr->sprite_index = i;
 

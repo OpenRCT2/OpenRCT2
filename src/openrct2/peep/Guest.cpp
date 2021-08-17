@@ -7446,7 +7446,7 @@ void Guest::RemoveRideFromMemory(ride_id_t rideId)
             break;
 
         // Ride ids and shop item ids might have the same value, look only for ride thoughts.
-        if (IsThoughtShopItemRelated(entry.type) || entry.item != rideId)
+        if (IsThoughtShopItemRelated(entry.type) || entry.ride != rideId)
         {
             it++;
             continue;
@@ -7461,6 +7461,6 @@ void Guest::RemoveRideFromMemory(ride_id_t rideId)
         // Last slot is now free.
         auto& lastEntry = Thoughts.back();
         lastEntry.type = PeepThoughtType::None;
-        lastEntry.item = PEEP_THOUGHT_ITEM_NONE;
+        lastEntry.argument = 0;
     }
 }

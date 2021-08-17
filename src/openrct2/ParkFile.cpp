@@ -33,6 +33,7 @@
 #include "object/Object.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "peep/RideUseSystem.h"
 #include "peep/Staff.h"
 #include "ride/ShopItem.h"
 #include "ride/Vehicle.h"
@@ -73,7 +74,7 @@ namespace OpenRCT2
     constexpr uint32_t PARK_FILE_MAGIC = 0x4B524150; // PARK
 
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x2;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x3;
 
     // The minimum version that is forwards compatible with the current version.
     constexpr uint32_t PARK_FILE_MIN_VERSION = 0x2;
@@ -1282,6 +1283,31 @@ namespace OpenRCT2
             cs.ReadWrite(entity.sprite_direction);
         }
 
+        static std::vector<ObjectEntryIndex> LegacyGetRideTypesBeenOn(const std::array<uint8_t, 16>& srcArray)
+        {
+            std::vector<ObjectEntryIndex> ridesTypesBeenOn;
+            for (ObjectEntryIndex i = 0; i < RCT12_MAX_RIDE_OBJECTS; i++)
+            {
+                if (srcArray[i / 8] & (1 << (i % 8)))
+                {
+                    ridesTypesBeenOn.push_back(i);
+                }
+            }
+            return ridesTypesBeenOn;
+        }
+        static std::vector<ride_id_t> LegacyGetRidesBeenOn(const std::array<uint8_t, 32>& srcArray)
+        {
+            std::vector<ride_id_t> ridesBeenOn;
+            for (uint16_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
+            {
+                if (srcArray[i / 8] & (1 << (i % 8)))
+                {
+                    ridesBeenOn.push_back(i);
+                }
+            }
+            return ridesBeenOn;
+        }
+
         static void ReadWritePeep(OrcaStream& os, OrcaStream::ChunkStream& cs, Peep& entity)
         {
             auto version = os.GetHeader().TargetVersion;
@@ -1408,10 +1434,12 @@ namespace OpenRCT2
                 if (guest != nullptr)
                 {
                     cs.ReadWrite(guest->PaidOnDrink);
-                    cs.ReadWriteArray(guest->RideTypesBeenOn, [&cs](uint8_t& rideType) {
+                    std::array<uint8_t, 16> rideTypeBeenOn;
+                    cs.ReadWriteArray(rideTypeBeenOn, [&cs](uint8_t& rideType) {
                         cs.ReadWrite(rideType);
                         return true;
                     });
+                    OpenRCT2::RideUse::GetTypeHistory().Set(guest->sprite_index, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
                     cs.ReadWrite(guest->ItemFlags);
                     cs.ReadWrite(guest->Photo2RideRef);
                     cs.ReadWrite(guest->Photo3RideRef);
@@ -1465,10 +1493,12 @@ namespace OpenRCT2
                 if (guest != nullptr)
                 {
                     cs.ReadWrite(guest->TimeInQueue);
-                    cs.ReadWriteArray(guest->RidesBeenOn, [&cs](ride_id_t& rideId) {
-                        cs.ReadWrite(rideId);
+                    std::array<uint8_t, 32> ridesBeenOn;
+                    cs.ReadWriteArray(ridesBeenOn, [&cs](uint8_t& rideType) {
+                        cs.ReadWrite(rideType);
                         return true;
                     });
+                    OpenRCT2::RideUse::GetHistory().Set(guest->sprite_index, LegacyGetRidesBeenOn(ridesBeenOn));
                 }
                 else
                 {
@@ -1770,15 +1800,62 @@ namespace OpenRCT2
             cs.Write(static_cast<uint8_t>(guest.Intensity));
         }
         cs.ReadWrite(guest.NauseaTolerance);
-        cs.ReadWriteArray(guest.RideTypesBeenOn, [&cs](uint8_t& rideType) {
-            cs.ReadWrite(rideType);
-            return true;
-        });
+
+        if (os.GetHeader().TargetVersion < 3)
+        {
+            std::array<uint8_t, 16> rideTypeBeenOn;
+            cs.ReadWriteArray(rideTypeBeenOn, [&cs](uint8_t& rideType) {
+                cs.ReadWrite(rideType);
+                return true;
+            });
+            OpenRCT2::RideUse::GetTypeHistory().Set(guest.sprite_index, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
+        }
+
         cs.ReadWrite(guest.TimeInQueue);
-        cs.ReadWriteArray(guest.RidesBeenOn, [&cs](ride_id_t& rideId) {
-            cs.ReadWrite(rideId);
-            return true;
-        });
+        if (os.GetHeader().TargetVersion < 3)
+        {
+            std::array<uint8_t, 32> ridesBeenOn;
+            cs.ReadWriteArray(ridesBeenOn, [&cs](uint8_t& rideType) {
+                cs.ReadWrite(rideType);
+                return true;
+            });
+            OpenRCT2::RideUse::GetHistory().Set(guest.sprite_index, LegacyGetRidesBeenOn(ridesBeenOn));
+        }
+        else
+        {
+            if (cs.GetMode() == OrcaStream::Mode::READING)
+            {
+                std::vector<ride_id_t> rideUse;
+                cs.ReadWriteVector(rideUse, [&cs](ride_id_t& rideId) { cs.ReadWrite(rideId); });
+                OpenRCT2::RideUse::GetHistory().Set(guest.sprite_index, std::move(rideUse));
+                std::vector<ObjectEntryIndex> rideTypeUse;
+                cs.ReadWriteVector(rideTypeUse, [&cs](ObjectEntryIndex& rideType) { cs.ReadWrite(rideType); });
+                OpenRCT2::RideUse::GetTypeHistory().Set(guest.sprite_index, std::move(rideTypeUse));
+            }
+            else
+            {
+                auto* rideUse = OpenRCT2::RideUse::GetHistory().GetAll(guest.sprite_index);
+                if (rideUse == nullptr)
+                {
+                    std::vector<ride_id_t> empty;
+                    cs.ReadWriteVector(empty, [&cs](ride_id_t& rideId) { cs.ReadWrite(rideId); });
+                }
+                else
+                {
+                    cs.ReadWriteVector(*rideUse, [&cs](ride_id_t& rideId) { cs.ReadWrite(rideId); });
+                }
+                auto* rideTypeUse = OpenRCT2::RideUse::GetTypeHistory().GetAll(guest.sprite_index);
+                if (rideTypeUse == nullptr)
+                {
+                    std::vector<ObjectEntryIndex> empty;
+                    cs.ReadWriteVector(empty, [&cs](ObjectEntryIndex& rideId) { cs.ReadWrite(rideId); });
+                }
+                else
+                {
+                    cs.ReadWriteVector(*rideTypeUse, [&cs](ObjectEntryIndex& rideId) { cs.ReadWrite(rideId); });
+                }
+            }
+        }
         cs.ReadWrite(guest.CashInPocket);
         cs.ReadWrite(guest.CashSpent);
         cs.ReadWrite(guest.Photo1RideRef);
