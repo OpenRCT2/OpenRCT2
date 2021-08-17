@@ -96,12 +96,10 @@ int32_t network_get_pickup_peep_old_x(uint8_t playerid);
 void network_send_map();
 void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds = {});
 void network_send_game_action(const GameAction* action);
-void network_enqueue_game_action(const GameAction* action);
 void network_send_password(const std::string& password);
 
 void network_set_password(const char* password);
 
-void network_print_error();
 void network_append_chat_log(const utf8* text);
 void network_append_server_log(const utf8* text);
 const utf8* network_get_server_name();
