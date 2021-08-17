@@ -171,7 +171,9 @@ namespace OpenRCT2
             //       If objects use GetContext() in their destructor things won't go well.
 
             GameActions::ClearQueue();
+#ifndef DISABLE_NETWORK
             _network.Close();
+#endif
             window_close_all();
 
             // Unload objects after closing all windows, this is to overcome windows like
@@ -651,22 +653,29 @@ namespace OpenRCT2
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 
+#ifndef DISABLE_NETWORK
                 bool sendMap = false;
+#endif
                 if (info.Type == FILE_TYPE::SAVED_GAME)
                 {
+#ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_CLIENT)
                     {
                         _network.Close();
                     }
+#endif
                     game_load_init();
+#ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_SERVER)
                     {
                         sendMap = true;
                     }
+#endif
                 }
                 else
                 {
                     scenario_begin();
+#ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_SERVER)
                     {
                         sendMap = true;
@@ -675,14 +684,18 @@ namespace OpenRCT2
                     {
                         _network.Close();
                     }
+#endif
                 }
                 // This ensures that the newly loaded save reflects the user's
                 // 'show real names of guests' option, now that it's a global setting
                 peep_update_names(gConfigGeneral.show_real_names_of_guests);
+#ifndef DISABLE_NETWORK
                 if (sendMap)
                 {
                     _network.Server_Send_MAP();
                 }
+#endif
+
 #ifdef USE_BREAKPAD
                 if (_network.GetMode() == NETWORK_MODE_NONE)
                 {
