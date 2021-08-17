@@ -2833,24 +2833,8 @@ template<> void S4Importer::ImportEntity<Guest>(const RCT12SpriteBase& srcBase)
     dst->Angriness = src->angriness;
     dst->TimeLost = src->time_lost;
 
-    std::vector<uint16_t> typesBeenOn;
-    std::vector<ride_id_t> ridesBeenOn;
-    for (uint16_t i = 0; i < RCT2_MAX_RIDE_OBJECTS; i++)
-    {
-        if (src->ride_types_been_on[i / 8] & (1 << (i % 8)))
-        {
-            typesBeenOn.push_back(i);
-        }
-    }
-    for (uint16_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
-    {
-        if (src->rides_been_on[i / 8] & (1 << (i % 8)))
-        {
-            ridesBeenOn.push_back(i);
-        }
-    }
-    OpenRCT2::RideUse::GetHistory().Set(dst->sprite_index, std::move(ridesBeenOn));
-    OpenRCT2::RideUse::GetTypeHistory().Set(dst->sprite_index, std::move(typesBeenOn));
+    OpenRCT2::RideUse::GetHistory().Set(dst->sprite_index, RCT12GetRidesBeenOn(src));
+    OpenRCT2::RideUse::GetTypeHistory().Set(dst->sprite_index, RCT12GetRideTypesBeenOn(src));
 
     dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
 
