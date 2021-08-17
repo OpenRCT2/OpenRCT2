@@ -3214,11 +3214,6 @@ void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& con
     network_chat_show_server_greeting();
 }
 
-void network_close()
-{
-    OpenRCT2::GetContext()->GetNetwork().Close();
-}
-
 void network_reconnect()
 {
     OpenRCT2::GetContext()->GetNetwork().Reconnect();
@@ -4212,9 +4207,6 @@ void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
 {
 }
 void network_send_password(const std::string& password)
-{
-}
-void network_close()
 {
 }
 void network_reconnect()
