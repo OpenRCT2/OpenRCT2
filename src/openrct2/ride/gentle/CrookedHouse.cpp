@@ -90,14 +90,14 @@ static void paint_crooked_house(
         case 3:
             paint_crooked_house_structure(session, direction, 32, -32, 0, height);
             break;
-        // case 5: sub_88ABA4(direction, 0, 224, 1, height); break;
+        // case 5: sub_88ABA4(direction, 0, -32, 1, height); break;
         case 6:
             paint_crooked_house_structure(session, direction, -32, 32, 4, height);
             break;
         case 7:
             paint_crooked_house_structure(session, direction, -32, -32, 2, height);
             break;
-            // case 8: sub_88ABA4(rideIndex, 224, 0, 3, height); break;
+            // case 8: sub_88ABA4(rideIndex, -32, 0, 3, height); break;
     }
 
     int32_t cornerSegments = 0;

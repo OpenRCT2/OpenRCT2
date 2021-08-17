@@ -24,6 +24,7 @@ enum class ViewportInteractionItem : uint8_t;
 
 struct attached_paint_struct
 {
+    attached_paint_struct* next;
     uint32_t image_id;
     union
     {
@@ -34,15 +35,6 @@ struct attached_paint_struct
     int32_t x;
     int32_t y;
     uint8_t flags;
-    uint8_t pad_0D;
-    attached_paint_struct* next;
-};
-
-enum PAINT_QUADRANT_FLAGS
-{
-    PAINT_QUADRANT_FLAG_IDENTICAL = (1 << 0),
-    PAINT_QUADRANT_FLAG_BIGGER = (1 << 7),
-    PAINT_QUADRANT_FLAG_NEXT = (1 << 1),
 };
 
 struct paint_struct_bound_box
@@ -57,6 +49,11 @@ struct paint_struct_bound_box
 
 struct paint_struct
 {
+    paint_struct_bound_box bounds;
+    attached_paint_struct* attached_ps;
+    paint_struct* children;
+    paint_struct* next_quadrant_ps;
+    TileElement* tileElement;
     uint32_t image_id;
     union
     {
@@ -64,21 +61,14 @@ struct paint_struct
         // If masked image_id is masked_id
         uint32_t colour_image_id;
     };
-    paint_struct_bound_box bounds;
     int32_t x;
     int32_t y;
-    uint16_t quadrant_index;
-    uint8_t flags;
-    uint8_t quadrant_flags;
-    attached_paint_struct* attached_ps;
-    paint_struct* children;
-    paint_struct* next_quadrant_ps;
-    ViewportInteractionItem sprite_type;
-    uint8_t var_29;
-    uint16_t pad_2A;
     int32_t map_x;
     int32_t map_y;
-    TileElement* tileElement;
+    uint16_t quadrant_index;
+    uint8_t flags;
+    uint8_t SortFlags;
+    ViewportInteractionItem sprite_type;
 };
 
 struct paint_string_struct

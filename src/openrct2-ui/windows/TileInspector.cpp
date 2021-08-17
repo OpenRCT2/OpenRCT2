@@ -796,6 +796,10 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
     }
 
     TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
+
+    // Update selection, can be nullptr.
+    OpenRCT2::TileInspector::SetSelectedElement(tileElement);
+
     if (tileElement == nullptr)
         return;
 
@@ -1971,6 +1975,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 // Current base height
                 screenCoords.x = w->windowPos.x + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
+                ft = Formatter();
                 ft.Add<int32_t>(tileElement->base_height);
                 DrawTextBasic(dpi, screenCoords, STR_FORMAT_INTEGER, ft, { COLOUR_WHITE });
                 break;

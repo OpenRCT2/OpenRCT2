@@ -178,7 +178,6 @@ static paint_struct* CreateNormalPaintStruct(
     ps->attached_ps = nullptr;
     ps->children = nullptr;
     ps->sprite_type = session->InteractionType;
-    ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
     ps->tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session->CurrentlyDrawnItem));
@@ -298,11 +297,21 @@ template<> bool CheckBoundingBox<3>(const paint_struct_bound_box& initialBBox, c
     return false;
 }
 
+namespace PaintSortFlags
+{
+    static constexpr uint8_t None = 0;
+    static constexpr uint8_t PendingVisit = (1U << 0);
+    static constexpr uint8_t Neighbour = (1U << 1);
+    static constexpr uint8_t OutsideQuadrant = (1U << 7);
+} // namespace PaintSortFlags
+
 template<uint8_t _TRotation>
 static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag)
 {
     paint_struct* ps;
     paint_struct* ps_temp;
+
+    // Get the first node in the specified quadrant.
     do
     {
         ps = ps_next;
@@ -311,9 +320,12 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
             return ps;
     } while (quadrantIndex > ps_next->quadrant_index);
 
-    // Cache the last visited node so we don't have to walk the whole list again
-    paint_struct* ps_cache = ps;
+    // We keep track of the first node in the quadrant so the next call with a higher quadrant index
+    // can use this node to skip some iterations.
+    paint_struct* psQuadrantEntry = ps;
 
+    // Visit all nodes in the linked quadrant list and determine their current
+    // sorting relevancy.
     ps_temp = ps;
     do
     {
@@ -323,47 +335,63 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
 
         if (ps->quadrant_index > quadrantIndex + 1)
         {
-            ps->quadrant_flags = PAINT_QUADRANT_FLAG_BIGGER;
+            // Outside of the range.
+            ps->SortFlags = PaintSortFlags::OutsideQuadrant;
         }
         else if (ps->quadrant_index == quadrantIndex + 1)
         {
-            ps->quadrant_flags = PAINT_QUADRANT_FLAG_NEXT | PAINT_QUADRANT_FLAG_IDENTICAL;
+            // Is neighbour and requires a visit.
+            ps->SortFlags = PaintSortFlags::Neighbour | PaintSortFlags::PendingVisit;
         }
         else if (ps->quadrant_index == quadrantIndex)
         {
-            ps->quadrant_flags = flag | PAINT_QUADRANT_FLAG_IDENTICAL;
+            // In specified quadrant, requires visit.
+            ps->SortFlags = flag | PaintSortFlags::PendingVisit;
         }
     } while (ps->quadrant_index <= quadrantIndex + 1);
     ps = ps_temp;
 
+    // Iterate all nodes in the current list and re-order them based on
+    // the current rotation and their bounding box.
     while (true)
     {
+        // Get the first pending node in the quadrant list
         while (true)
         {
             ps_next = ps->next_quadrant_ps;
             if (ps_next == nullptr)
-                return ps_cache;
-            if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER)
-                return ps_cache;
-            if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_IDENTICAL)
+            {
+                // End of the current list.
+                return psQuadrantEntry;
+            }
+            if (ps_next->SortFlags & PaintSortFlags::OutsideQuadrant)
+            {
+                // Reached point outside of specified quadrant.
+                return psQuadrantEntry;
+            }
+            if (ps_next->SortFlags & PaintSortFlags::PendingVisit)
+            {
+                // Found node to check on.
                 break;
+            }
             ps = ps_next;
         }
 
-        ps_next->quadrant_flags &= ~PAINT_QUADRANT_FLAG_IDENTICAL;
+        // Mark visited.
+        ps_next->SortFlags &= ~PaintSortFlags::PendingVisit;
         ps_temp = ps;
 
+        // Compare current node against the remaining children.
         const paint_struct_bound_box& initialBBox = ps_next->bounds;
-
         while (true)
         {
             ps = ps_next;
             ps_next = ps_next->next_quadrant_ps;
             if (ps_next == nullptr)
                 break;
-            if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER)
+            if (ps_next->SortFlags & PaintSortFlags::OutsideQuadrant)
                 break;
-            if (!(ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_NEXT))
+            if (!(ps_next->SortFlags & PaintSortFlags::Neighbour))
                 continue;
 
             const paint_struct_bound_box& currentBBox = ps_next->bounds;
@@ -372,6 +400,7 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
 
             if (compareResult)
             {
+                // Child node intersects with current node, move behind.
                 ps->next_quadrant_ps = ps_next->next_quadrant_ps;
                 paint_struct* ps_temp2 = ps_temp->next_quadrant_ps;
                 ps_temp->next_quadrant_ps = ps_next;
@@ -410,12 +439,12 @@ template<int TRotation> static void PaintSessionArrange(PaintSessionCore* sessio
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
         paint_struct* ps_cache = PaintArrangeStructsHelperRotation<TRotation>(
-            psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT);
+            psHead, session->QuadrantBackIndex & 0xFFFF, PaintSortFlags::Neighbour);
 
         quadrantIndex = session->QuadrantBackIndex;
         while (++quadrantIndex < session->QuadrantFrontIndex)
         {
-            ps_cache = PaintArrangeStructsHelperRotation<TRotation>(ps_cache, quadrantIndex & 0xFFFF, 0);
+            ps_cache = PaintArrangeStructsHelperRotation<TRotation>(ps_cache, quadrantIndex & 0xFFFF, PaintSortFlags::None);
         }
     }
 }

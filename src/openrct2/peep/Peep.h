@@ -697,11 +697,7 @@ public:
     uint8_t TimeToConsume;
     IntensityRange Intensity{ 0 };
     PeepNauseaTolerance NauseaTolerance;
-    uint8_t RideTypesBeenOn[16];
     uint16_t TimeInQueue;
-    // 255 bit bitmap of every ride the peep has been on see
-    // window_peep_rides_update for how to use.
-    ride_id_t RidesBeenOn[32];
     money32 CashInPocket;
     money32 CashSpent;
     ride_id_t Photo1RideRef;
@@ -790,6 +786,10 @@ public:
     void GiveItem(ShopItem item);
     bool HasItem(ShopItem peepItem) const;
     void Serialise(DataSerialiser& stream);
+
+    // Removes the ride from the guests memory, this includes
+    // the history, thoughts, etc.
+    void RemoveRideFromMemory(ride_id_t rideId);
 
 private:
     void UpdateRide();

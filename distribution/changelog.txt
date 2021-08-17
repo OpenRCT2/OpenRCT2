@@ -13,6 +13,7 @@
 - Fix: [#15148] Track Designs Manager delete confirmation window doesn't display properly.
 - Fix: [#15170] Plugin: incorrect label text alignment.
 - Fix: [#15184] Crash when hovering over water types in Object Selection.
+- Fix: [#15193] Crash when rides/stalls are demolished.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
 - Change: [#8601] Revert ToonTower base block fix to re-enable support blocking.
 - Change: [#15174] [Plugin] Deprecate the type "peep" and add support to target a specific scripting api version.

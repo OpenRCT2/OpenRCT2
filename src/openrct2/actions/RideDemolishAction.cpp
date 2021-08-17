@@ -17,6 +17,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
+#include "../peep/RideUseSystem.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ui/UiContext.h"
@@ -134,92 +135,10 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
 
     UnlinkAllBannersForRide(_rideIndex);
 
+    RideUse::GetHistory().RemoveValue(_rideIndex);
     for (auto peep : EntityList<Guest>())
     {
-        uint8_t ride_id_bit = _rideIndex % 8;
-        uint8_t ride_id_offset = _rideIndex / 8;
-
-        // clear ride from potentially being in RidesBeenOn
-        peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
-        if (peep->State == PeepState::Watching)
-        {
-            if (peep->CurrentRide == _rideIndex)
-            {
-                peep->CurrentRide = RIDE_ID_NULL;
-                if (peep->TimeToStand >= 50)
-                {
-                    // make peep stop watching the ride
-                    peep->TimeToStand = 50;
-                }
-            }
-        }
-
-        // remove any free voucher for this ride from peep
-        if (peep->HasItem(ShopItem::Voucher))
-        {
-            if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Voucher);
-            }
-        }
-
-        // remove any photos of this ride from peep
-        if (peep->HasItem(ShopItem::Photo))
-        {
-            if (peep->Photo1RideRef == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Photo);
-            }
-        }
-        if (peep->HasItem(ShopItem::Photo2))
-        {
-            if (peep->Photo2RideRef == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Photo2);
-            }
-        }
-        if (peep->HasItem(ShopItem::Photo3))
-        {
-            if (peep->Photo3RideRef == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Photo3);
-            }
-        }
-        if (peep->HasItem(ShopItem::Photo4))
-        {
-            if (peep->Photo4RideRef == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Photo4);
-            }
-        }
-
-        if (peep->GuestHeadingToRideId == _rideIndex)
-        {
-            peep->GuestHeadingToRideId = RIDE_ID_NULL;
-        }
-        if (peep->FavouriteRide == _rideIndex)
-        {
-            peep->FavouriteRide = RIDE_ID_NULL;
-        }
-
-        for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
-        {
-            // Don't touch items after the first NONE thought as they are not valid
-            // fixes issues with clearing out bad thought data in multiplayer
-            if (peep->Thoughts[i].type == PeepThoughtType::None)
-                break;
-
-            // TODO actually verify the thought is a ride specific thought...
-            if (peep->Thoughts[i].type != PeepThoughtType::None && peep->Thoughts[i].ride == static_cast<ride_id_t>(_rideIndex))
-            {
-                // Clear top thought, push others up
-                memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
-                peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
-                peep->Thoughts[PEEP_MAX_THOUGHTS - 1].argument = std::numeric_limits<uint32_t>::max();
-                // Next iteration, check the new thought at this index
-                i--;
-            }
-        }
+        peep->RemoveRideFromMemory(_rideIndex);
     }
 
     MarketingCancelCampaignsForRide(_rideIndex);
