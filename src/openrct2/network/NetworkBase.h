@@ -29,7 +29,6 @@ public: // Uncategorized
     bool BeginClient(const std::string& host, uint16_t port);
 
 public: // Common
-    void SetEnvironment(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
     bool Init();
     void Close();
     uint32_t GetServerTick();
@@ -180,7 +179,6 @@ public: // Public common
 private: // Common Data
     using CommandHandler = void (NetworkBase::*)(NetworkConnection& connection, NetworkPacket& packet);
 
-    std::shared_ptr<OpenRCT2::IPlatformEnvironment> _env;
     std::vector<uint8_t> chunk_buffer;
     std::ofstream _chat_log_fs;
     uint32_t _lastUpdateTime = 0;

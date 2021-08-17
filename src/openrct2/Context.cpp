@@ -477,7 +477,6 @@ namespace OpenRCT2
                 gGameSoundsOff = !gConfigSound.master_sound_enabled;
             }
 
-            network_set_env(_env);
             chat_init();
             CopyOriginalUserFilesOver();
 

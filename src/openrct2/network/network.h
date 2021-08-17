@@ -35,12 +35,6 @@ enum class ModifyGroupType : uint8_t;
 enum class PermissionState : uint8_t;
 enum class NetworkPermission : uint32_t;
 
-namespace OpenRCT2
-{
-    struct IPlatformEnvironment;
-}
-
-void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 void network_close();
 void network_reconnect();
 void network_shutdown_client();

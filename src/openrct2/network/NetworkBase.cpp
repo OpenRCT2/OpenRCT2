@@ -147,11 +147,6 @@ NetworkBase::NetworkBase(OpenRCT2::IContext& context)
     _server_log_fs << std::unitbuf;
 }
 
-void NetworkBase::SetEnvironment(const std::shared_ptr<IPlatformEnvironment>& env)
-{
-    _env = env;
-}
-
 bool NetworkBase::Init()
 {
     status = NETWORK_STATUS_READY;
@@ -1101,7 +1096,8 @@ void NetworkBase::AppendLog(std::ostream& fs, const std::string& s)
 
 void NetworkBase::BeginChatLog()
 {
-    auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
+    auto env = _context.GetPlatformEnvironment();
+    auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
 
 #    if defined(_WIN32) && !defined(__MINGW32__)
@@ -1127,7 +1123,8 @@ void NetworkBase::CloseChatLog()
 
 void NetworkBase::BeginServerLog()
 {
-    auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
+    auto env = _context.GetPlatformEnvironment();
+    auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
 
 #    if defined(_WIN32) && !defined(__MINGW32__)
@@ -3217,11 +3214,6 @@ void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& con
     network_chat_show_server_greeting();
 }
 
-void network_set_env(const std::shared_ptr<IPlatformEnvironment>& env)
-{
-    OpenRCT2::GetContext()->GetNetwork().SetEnvironment(env);
-}
-
 void network_close()
 {
     OpenRCT2::GetContext()->GetNetwork().Close();
@@ -4235,9 +4227,6 @@ void network_close()
 {
 }
 void network_reconnect()
-{
-}
-void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>&)
 {
 }
 void network_shutdown_client()
