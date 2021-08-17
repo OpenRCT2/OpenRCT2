@@ -17,6 +17,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
+#include "../peep/RideUseSystem.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ui/UiContext.h"
@@ -134,6 +135,7 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
 
     UnlinkAllBannersForRide(_rideIndex);
 
+    RideUse::GetHistory().RemoveValue(_rideIndex);
     for (auto peep : EntityList<Guest>())
     {
         peep->RemoveRideFromMemory(_rideIndex);

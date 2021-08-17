@@ -45,6 +45,7 @@
 #include "../world/TileElementsView.h"
 #include "GuestPathfinding.h"
 #include "Peep.h"
+#include "RideUseSystem.h"
 #include "Staff.h"
 
 #include <algorithm>
@@ -2296,27 +2297,30 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
 
 void Guest::SetHasRidden(const Ride* ride)
 {
-    RidesBeenOn[ride->id / 8] |= 1 << (ride->id % 8);
+    OpenRCT2::RideUse::GetHistory().Add(sprite_index, ride->id);
+
     SetHasRiddenRideType(ride->type);
 }
 
 bool Guest::HasRidden(const Ride* ride) const
 {
-    return RidesBeenOn[ride->id / 8] & (1 << (ride->id % 8));
+    return OpenRCT2::RideUse::GetHistory().Contains(sprite_index, ride->id);
 }
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
 {
     // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
     rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
-    RideTypesBeenOn[rideType / 8] |= 1 << (rideType % 8);
+
+    OpenRCT2::RideUse::GetTypeHistory().Add(sprite_index, rideType);
 }
 
 bool Guest::HasRiddenRideType(int32_t rideType) const
 {
     // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
     rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
-    return RideTypesBeenOn[rideType / 8] & (1 << (rideType % 8));
+
+    return OpenRCT2::RideUse::GetTypeHistory().Contains(sprite_index, rideType);
 }
 
 void Guest::SetParkEntryTime(int32_t entryTime)
@@ -7030,10 +7034,8 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     peep->Toilet = 0;
     peep->TimeToConsume = 0;
-    std::fill_n(peep->RidesBeenOn, 32, 0x00);
 
     peep->GuestNumRides = 0;
-    std::fill_n(peep->RideTypesBeenOn, 16, 0x00);
     peep->Id = gNextGuestNumber++;
     peep->Name = nullptr;
 
@@ -7373,11 +7375,6 @@ static bool IsThoughtShopItemRelated(const PeepThoughtType type)
 
 void Guest::RemoveRideFromMemory(ride_id_t rideId)
 {
-    uint8_t ride_id_bit = rideId % 8;
-    uint8_t ride_id_offset = rideId / 8;
-
-    // clear ride from potentially being in RidesBeenOn
-    RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
     if (State == PeepState::Watching)
     {
         if (CurrentRide == rideId)

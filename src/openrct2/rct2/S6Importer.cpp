@@ -34,6 +34,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/Peep.h"
+#include "../peep/RideUseSystem.h"
 #include "../peep/Staff.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
@@ -1699,10 +1700,10 @@ template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
     dst->Intensity = static_cast<IntensityRange>(src->intensity);
     dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
     dst->PaidOnDrink = src->paid_on_drink;
-    for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
-    {
-        dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
-    }
+
+    OpenRCT2::RideUse::GetHistory().Set(dst->sprite_index, RCT12GetRidesBeenOn(src));
+    OpenRCT2::RideUse::GetTypeHistory().Set(dst->sprite_index, RCT12GetRideTypesBeenOn(src));
+
     dst->SetItemFlags(src->GetItemFlags());
     dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
     dst->Photo2RideRef = RCT12RideIdToOpenRCT2RideId(src->photo2_ride_ref);
@@ -1710,10 +1711,6 @@ template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
     dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
     dst->GuestNextInQueue = src->next_in_queue;
     dst->TimeInQueue = src->time_in_queue;
-    for (size_t i = 0; i < std::size(src->rides_been_on); i++)
-    {
-        dst->RidesBeenOn[i] = src->rides_been_on[i];
-    }
     dst->CashInPocket = src->cash_in_pocket;
     dst->CashSpent = src->cash_spent;
     dst->ParkEntryTime = src->park_entry_time;

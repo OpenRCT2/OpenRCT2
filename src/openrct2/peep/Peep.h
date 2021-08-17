@@ -693,11 +693,7 @@ public:
     uint8_t TimeToConsume;
     IntensityRange Intensity{ 0 };
     PeepNauseaTolerance NauseaTolerance;
-    uint8_t RideTypesBeenOn[16];
     uint16_t TimeInQueue;
-    // 255 bit bitmap of every ride the peep has been on see
-    // window_peep_rides_update for how to use.
-    uint8_t RidesBeenOn[32];
     money32 CashInPocket;
     money32 CashSpent;
     ride_id_t Photo1RideRef;

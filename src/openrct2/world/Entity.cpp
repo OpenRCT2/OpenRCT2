@@ -186,9 +186,7 @@ void Guest::Serialise(DataSerialiser& stream)
     stream << TimeToConsume;
     stream << Intensity;
     stream << NauseaTolerance;
-    stream << RideTypesBeenOn;
     stream << TimeInQueue;
-    stream << RidesBeenOn;
     stream << CashInPocket;
     stream << CashSpent;
     stream << Photo1RideRef;

@@ -39,7 +39,6 @@ constexpr const uint16_t RCT2_MAX_RESEARCHED_SCENERY_ITEMS = (RCT2_MAX_RESEARCHE
                                                                                                             // per quad.
 constexpr uint16_t TD6MaxTrackElements = 8192;
 
-constexpr const uint8_t RCT2_MAX_RIDE_OBJECTS = 128;
 constexpr const uint8_t RCT2_MAX_SMALL_SCENERY_OBJECTS = 252;
 constexpr const uint8_t RCT2_MAX_LARGE_SCENERY_OBJECTS = 128;
 constexpr const uint8_t RCT2_MAX_WALL_SCENERY_OBJECTS = 128;
@@ -58,7 +57,7 @@ constexpr const uint16_t RCT2_MAXIMUM_MAP_SIZE_TECHNICAL = 256;
 
 // clang-format off
 constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
-    RCT2_MAX_RIDE_OBJECTS +
+    RCT12_MAX_RIDE_OBJECTS +
     RCT2_MAX_SMALL_SCENERY_OBJECTS +
     RCT2_MAX_LARGE_SCENERY_OBJECTS +
     RCT2_MAX_WALL_SCENERY_OBJECTS +
@@ -74,7 +73,7 @@ static_assert(RCT2_OBJECT_ENTRY_COUNT == 721);
 
 // clang-format off
 constexpr const int32_t rct2_object_entry_group_counts[] = {
-    RCT2_MAX_RIDE_OBJECTS,
+    RCT12_MAX_RIDE_OBJECTS,
     RCT2_MAX_SMALL_SCENERY_OBJECTS,
     RCT2_MAX_LARGE_SCENERY_OBJECTS,
     RCT2_MAX_WALL_SCENERY_OBJECTS,

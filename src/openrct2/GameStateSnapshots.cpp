@@ -39,6 +39,21 @@ struct GameStateSnapshot_t
     OpenRCT2::MemoryStream storedSprites;
     OpenRCT2::MemoryStream parkParameters;
 
+    template<typename T> bool EntitySizeCheck(DataSerialiser& ds)
+    {
+        uint32_t size = sizeof(T);
+        ds << size;
+        if (ds.IsLoading())
+        {
+            return size == sizeof(T);
+        }
+        return true;
+    }
+    template<typename... T> bool EntitiesSizeCheck(DataSerialiser& ds)
+    {
+        return (EntitySizeCheck<T>(ds) && ...);
+    }
+
     // Must pass a function that can access the sprite.
     void SerialiseSprites(std::function<rct_sprite*(const size_t)> getEntity, const size_t numSprites, bool saving)
     {
@@ -64,6 +79,13 @@ struct GameStateSnapshot_t
             numSavedSprites = static_cast<uint32_t>(indexTable.size());
         }
 
+        // Encodes and checks the size of each of the entity so that we
+        // can fail gracefully when fields added/removed
+        if (!EntitiesSizeCheck<Vehicle, Guest, Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle>(ds))
+        {
+            log_error("Entity index corrupted!");
+            return;
+        }
         ds << numSavedSprites;
 
         if (loading)
@@ -300,20 +322,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, Intensity);
         COMPARE_FIELD(Guest, NauseaTolerance);
         COMPARE_FIELD(Guest, PaidOnDrink);
-        for (int i = 0; i < 16; i++)
-        {
-            COMPARE_FIELD(Guest, RideTypesBeenOn[i]);
-        }
         COMPARE_FIELD(Guest, ItemFlags);
         COMPARE_FIELD(Guest, Photo2RideRef);
         COMPARE_FIELD(Guest, Photo3RideRef);
         COMPARE_FIELD(Guest, Photo4RideRef);
         COMPARE_FIELD(Guest, GuestNextInQueue);
         COMPARE_FIELD(Guest, TimeInQueue);
-        for (int i = 0; i < 32; i++)
-        {
-            COMPARE_FIELD(Guest, RidesBeenOn[i]);
-        }
 
         COMPARE_FIELD(Guest, CashInPocket);
         COMPARE_FIELD(Guest, CashSpent);

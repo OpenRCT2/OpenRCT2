@@ -796,6 +796,9 @@
 		5B6E418A2F264952BA0CC2F2 /* ScTileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43D18154E96444749737E3F6 /* ScTileElement.cpp */; };
 		DEC539DE402F4B8993E4C357 /* ScTileElement.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F4C26E211F1D44C9ADA70740 /* ScTileElement.hpp */; };
 		6C90BE01D190493295071B23 /* ScTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B67E36A8620400CA70FBA49 /* ScTile.cpp */; };
+		258C212125F84FA2B4C3BCAE /* RideUseSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58DEACC694664E7C8DACB93D /* RideUseSystem.cpp */; };
+		E6C71B6165224F65AA87E65B /* RideUseSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DA720D496604387806AC168 /* RideUseSystem.h */; };
+		C8D612EB56BD4214BEC0F7FF /* GroupVector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F4D523B8782E4C458AF1490D /* GroupVector.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1894,6 +1897,9 @@
 		43D18154E96444749737E3F6 /* ScTileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScTileElement.cpp; path = src/openrct2/scripting/bindings/world/ScTileElement.cpp; sourceTree = SOURCE_ROOT; };
 		F4C26E211F1D44C9ADA70740 /* ScTileElement.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScTileElement.hpp; path = src/openrct2/scripting/bindings/world/ScTileElement.hpp; sourceTree = SOURCE_ROOT; };
 		5B67E36A8620400CA70FBA49 /* ScTile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScTile.cpp; path = src/openrct2/scripting/bindings/world/ScTile.cpp; sourceTree = SOURCE_ROOT; };
+		58DEACC694664E7C8DACB93D /* RideUseSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RideUseSystem.cpp; path = src/openrct2/peep/RideUseSystem.cpp; sourceTree = SOURCE_ROOT; };
+		2DA720D496604387806AC168 /* RideUseSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RideUseSystem.h; path = src/openrct2/peep/RideUseSystem.h; sourceTree = SOURCE_ROOT; };
+		F4D523B8782E4C458AF1490D /* GroupVector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupVector.hpp; path = src/openrct2/core/GroupVector.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2563,6 +2569,7 @@
 				F76C83991EC4E7CC00FA49E2 /* Zip.cpp */,
 				F76C839A1EC4E7CC00FA49E2 /* Zip.h */,
 				BA2317BF6FB54E328DEB7055 /* EnumMap.hpp */,
+				F4D523B8782E4C458AF1490D /* GroupVector.hpp */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -2831,6 +2838,8 @@
 				4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */,
 				4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */,
 				4CFE4E7F1F90A3F1005243C2 /* Staff.h */,
+				58DEACC694664E7C8DACB93D /* RideUseSystem.cpp */,
+				2DA720D496604387806AC168 /* RideUseSystem.h */,
 			);
 			path = peep;
 			sourceTree = "<group>";
@@ -3638,6 +3647,8 @@
 				63858E295E3F451283987982 /* ScRideStation.hpp in Headers */,
 				AD5EC8B5EBF240B3874BC581 /* ScParkMessage.hpp in Headers */,
 				DEC539DE402F4B8993E4C357 /* ScTileElement.hpp in Headers */,
+				E6C71B6165224F65AA87E65B /* RideUseSystem.h in Headers */,
+				C8D612EB56BD4214BEC0F7FF /* GroupVector.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4457,6 +4468,7 @@
 				887B0043454440BAB322A9E8 /* ScPark.cpp in Sources */,
 				5B6E418A2F264952BA0CC2F2 /* ScTileElement.cpp in Sources */,
 				6C90BE01D190493295071B23 /* ScTile.cpp in Sources */,
+				258C212125F84FA2B4C3BCAE /* RideUseSystem.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,6 +33,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/Peep.h"
+#include "../peep/RideUseSystem.h"
 #include "../peep/Staff.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../ride/Ride.h"
@@ -1212,9 +1213,21 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Guest* src)
     dst->intensity = static_cast<uint8_t>(src->Intensity);
     dst->nausea_tolerance = EnumValue(src->NauseaTolerance);
     dst->paid_on_drink = src->PaidOnDrink;
-    for (size_t i = 0; i < std::size(src->RideTypesBeenOn); i++)
+    auto* typeHistory = OpenRCT2::RideUse::GetTypeHistory().GetAll(src->sprite_index);
+    if (typeHistory != nullptr)
     {
-        dst->ride_types_been_on[i] = src->RideTypesBeenOn[i];
+        for (auto typeId : *typeHistory)
+        {
+            dst->ride_types_been_on[typeId / 8] |= (1 << (typeId % 8));
+        }
+    }
+    auto* rideHistory = OpenRCT2::RideUse::GetHistory().GetAll(src->sprite_index);
+    if (rideHistory != nullptr)
+    {
+        for (auto rideId : *rideHistory)
+        {
+            dst->rides_been_on[rideId / 8] |= (1 << (rideId % 8));
+        }
     }
     dst->item_extra_flags = static_cast<uint32_t>(src->GetItemFlags() >> 32);
     dst->photo1_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo1RideRef);
@@ -1223,10 +1236,6 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Guest* src)
     dst->photo4_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo4RideRef);
     dst->next_in_queue = src->GuestNextInQueue;
     dst->time_in_queue = src->TimeInQueue;
-    for (size_t i = 0; i < std::size(src->RidesBeenOn); i++)
-    {
-        dst->rides_been_on[i] = src->RidesBeenOn[i];
-    }
     dst->cash_in_pocket = src->CashInPocket;
     dst->cash_spent = src->CashSpent;
     dst->park_entry_time = src->ParkEntryTime;
