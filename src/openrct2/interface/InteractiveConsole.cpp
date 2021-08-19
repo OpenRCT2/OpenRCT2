@@ -1172,13 +1172,27 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         bool invalidTitle = false;
         if (argv[0] == "object_selection" && invalidArguments(&invalidTitle, !title))
         {
-            // Only this window should be open for safety reasons
-            window_close_all();
-            context_open_window(WC_EDITOR_OBJECT_SELECTION);
+            if (network_get_mode() != NETWORK_MODE_NONE)
+            {
+                console.WriteLineError("Cannot open this window in multiplayer mode.");
+            }
+            else
+            {
+                // Only this window should be open for safety reasons
+                window_close_all();
+                context_open_window(WC_EDITOR_OBJECT_SELECTION);
+            }
         }
         else if (argv[0] == "inventions_list" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WC_EDITOR_INVENTION_LIST);
+            if (network_get_mode() != NETWORK_MODE_NONE)
+            {
+                console.WriteLineError("Cannot open this window in multiplayer mode.");
+            }
+            else
+            {
+                context_open_window(WC_EDITOR_INVENTION_LIST);
+            }
         }
         else if (argv[0] == "scenario_options" && invalidArguments(&invalidTitle, !title))
         {
@@ -1186,7 +1200,14 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "objective_options" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+            if (network_get_mode() != NETWORK_MODE_NONE)
+            {
+                console.WriteLineError("Cannot open this window in multiplayer mode.");
+            }
+            else
+            {
+                context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+            }
         }
         else if (argv[0] == "options")
         {
