@@ -199,7 +199,7 @@ extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;
 extern ride_id_t gTrackDesignSaveRideIndex;
 
-std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
+[[nodiscard]] std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
 
 void track_design_mirror(TrackDesign* td6);
 

@@ -65,6 +65,6 @@ namespace OpenRCT2
         virtual bool NormaliseReplay(const std::string& inputFile, const std::string& outputFile) = 0;
     };
 
-    std::unique_ptr<IReplayManager> CreateReplayManager();
+    [[nodiscard]] std::unique_ptr<IReplayManager> CreateReplayManager();
 
 } // namespace OpenRCT2

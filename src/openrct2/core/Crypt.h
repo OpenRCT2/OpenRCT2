@@ -50,10 +50,10 @@ namespace Crypt
     using Sha256Algorithm = HashAlgorithm<32>;
 
     // Factories
-    std::unique_ptr<Sha1Algorithm> CreateSHA1();
-    std::unique_ptr<Sha256Algorithm> CreateSHA256();
-    std::unique_ptr<RsaAlgorithm> CreateRSA();
-    std::unique_ptr<RsaKey> CreateRSAKey();
+    [[nodiscard]] std::unique_ptr<Sha1Algorithm> CreateSHA1();
+    [[nodiscard]] std::unique_ptr<Sha256Algorithm> CreateSHA256();
+    [[nodiscard]] std::unique_ptr<RsaAlgorithm> CreateRSA();
+    [[nodiscard]] std::unique_ptr<RsaKey> CreateRSAKey();
 
     inline Sha1Algorithm::Result SHA1(const void* data, size_t dataLen)
     {

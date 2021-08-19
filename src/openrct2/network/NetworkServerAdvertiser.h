@@ -30,4 +30,4 @@ struct INetworkServerAdvertiser
     virtual void Update() abstract;
 };
 
-std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);
+[[nodiscard]] std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);

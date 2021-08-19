@@ -51,7 +51,7 @@ namespace Path
      * @param recurse Whether to scan sub directories or not.
      * @returns A new FileScanner, this must be deleted when no longer needed.
      */
-    std::unique_ptr<IFileScanner> ScanDirectory(const std::string& pattern, bool recurse);
+    [[nodiscard]] std::unique_ptr<IFileScanner> ScanDirectory(const std::string& pattern, bool recurse);
 
     /**
      * Scans a directory and all sub directories
@@ -60,5 +60,5 @@ namespace Path
      */
     void QueryDirectory(QueryDirectoryResult* result, const std::string& pattern);
 
-    std::vector<std::string> GetDirectories(const std::string& path);
+    [[nodiscard]] std::vector<std::string> GetDirectories(const std::string& path);
 } // namespace Path

@@ -43,13 +43,13 @@ struct IObjectManager
     virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) abstract;
 };
 
-std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);
+[[nodiscard]] std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);
 
-Object* object_manager_get_loaded_object_by_index(size_t index);
-Object* object_manager_get_loaded_object(const ObjectEntryDescriptor& entry);
-ObjectEntryIndex object_manager_get_loaded_object_entry_index(const Object* loadedObject);
-ObjectEntryIndex object_manager_get_loaded_object_entry_index(const ObjectEntryDescriptor& entry);
+[[nodiscard]] Object* object_manager_get_loaded_object_by_index(size_t index);
+[[nodiscard]] Object* object_manager_get_loaded_object(const ObjectEntryDescriptor& entry);
+[[nodiscard]] ObjectEntryIndex object_manager_get_loaded_object_entry_index(const Object* loadedObject);
+[[nodiscard]] ObjectEntryIndex object_manager_get_loaded_object_entry_index(const ObjectEntryDescriptor& entry);
 Object* object_manager_load_object(const rct_object_entry* entry);
 void object_manager_unload_objects(const std::vector<rct_object_entry>& entries);
 void object_manager_unload_all_objects();
-rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame);
+[[nodiscard]] rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame);

@@ -31,9 +31,9 @@ struct ITrackDesignRepository
 {
     virtual ~ITrackDesignRepository() = default;
 
-    virtual size_t GetCount() const abstract;
-    virtual size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const abstract;
-    virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(
+    [[nodiscard]] virtual size_t GetCount() const abstract;
+    [[nodiscard]] virtual size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const abstract;
+    [[nodiscard]] virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(
         uint8_t rideType, const std::string& entry) const abstract;
 
     virtual void Scan(int32_t language) abstract;
@@ -42,8 +42,9 @@ struct ITrackDesignRepository
     virtual std::string Install(const std::string& path, const std::string& name) abstract;
 };
 
-std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
-std::string GetNameFromTrackPath(const std::string& path);
+[[nodiscard]] std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(
+    const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+[[nodiscard]] std::string GetNameFromTrackPath(const std::string& path);
 
 void track_repository_scan();
 bool track_repository_delete(const utf8* path);

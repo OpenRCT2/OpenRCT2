@@ -625,18 +625,18 @@ public: // Peep
     void UpdateCurrentActionSpriteType();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
-    uint8_t GetNextDirection() const;
+    [[nodiscard]] uint8_t GetNextDirection() const;
     bool GetNextIsSloped() const;
     bool GetNextIsSurface() const;
     void SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
     bool CanBePickedUp() const;
     void Pickup();
     void PickupAbort(int32_t old_x);
-    std::unique_ptr<GameActions::Result> Place(const TileCoordsXYZ& location, bool apply);
+    [[nodiscard]] std::unique_ptr<GameActions::Result> Place(const TileCoordsXYZ& location, bool apply);
     void RemoveFromRide();
     void FormatActionTo(Formatter&) const;
     void FormatNameTo(Formatter&) const;
-    std::string GetName() const;
+    [[nodiscard]] std::string GetName() const;
     bool SetName(std::string_view value);
     bool IsActionWalking() const;
     bool IsActionIdle() const;
@@ -648,16 +648,16 @@ public: // Peep
 
     void SetDestination(const CoordsXY& coords);
     void SetDestination(const CoordsXY& coords, int32_t tolerance);
-    CoordsXY GetDestination() const;
+    [[nodiscard]] CoordsXY GetDestination() const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep
-    bool CheckForPath();
+    [[nodiscard]] bool CheckForPath();
     void PerformNextAction(uint8_t& pathing_result);
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
-    int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
+    [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextActionSpriteType();
-    PeepActionSpriteType GetActionSpriteType();
+    [[nodiscard]] PeepActionSpriteType GetActionSpriteType();
 
 private:
     void UpdateFalling();
