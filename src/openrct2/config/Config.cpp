@@ -37,8 +37,6 @@
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
 
-#include <memory>
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
@@ -565,7 +563,7 @@ namespace Config
     {
         try
         {
-            auto reader = std::unique_ptr<IIniReader>(CreateDefaultIniReader());
+            auto reader = CreateDefaultIniReader();
             ReadGeneral(reader.get());
             ReadInterface(reader.get());
             ReadSound(reader.get());
@@ -586,7 +584,7 @@ namespace Config
         try
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
-            auto reader = std::unique_ptr<IIniReader>(CreateIniReader(&fs));
+            auto reader = CreateIniReader(&fs);
             ReadGeneral(reader.get());
             ReadInterface(reader.get());
             ReadSound(reader.get());
@@ -610,7 +608,7 @@ namespace Config
             Path::CreateDirectory(directory);
 
             auto fs = FileStream(path, FILE_MODE_WRITE);
-            auto writer = std::unique_ptr<IIniWriter>(CreateIniWriter(&fs));
+            auto writer = CreateIniWriter(&fs);
             WriteGeneral(writer.get());
             WriteInterface(writer.get());
             WriteSound(writer.get());

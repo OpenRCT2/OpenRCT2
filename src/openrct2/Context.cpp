@@ -524,7 +524,7 @@ namespace OpenRCT2
                 {
                     drawingEngine->Initialise();
                     drawingEngine->SetVSync(gConfigGeneral.use_vsync);
-                    _drawingEngine = std::unique_ptr<IDrawingEngine>(std::move(drawingEngine));
+                    _drawingEngine = std::move(drawingEngine);
                 }
                 catch (const std::exception& ex)
                 {
