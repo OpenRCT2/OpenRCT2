@@ -801,8 +801,8 @@ paint_struct* PaintAddImageAsParent(
     int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
     int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
-    assert(bound_box_length_x > 0);
-    assert(bound_box_length_y > 0);
+    assert(bound_box_length_x >= 0);
+    assert(bound_box_length_y >= 0);
 
     session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
@@ -863,8 +863,8 @@ paint_struct* PaintAddImageAsChild(
     int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
     int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
-    assert(bound_box_length_x > 0);
-    assert(bound_box_length_y > 0);
+    assert(bound_box_length_x >= 0);
+    assert(bound_box_length_y >= 0);
     return PaintAddImageAsChild(
         session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
         { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
