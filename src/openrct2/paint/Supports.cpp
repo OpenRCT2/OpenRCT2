@@ -305,12 +305,8 @@ static constexpr const uint16_t* WoodenCurveSupportImageIds[12] = {
 };
 
 struct unk_supports_desc_bound_box {
-    struct {
-        uint8_t x, y, z;
-    } offset;
-    struct {
-        uint8_t x, y, z;
-    } length;
+    CoordsXYZ offset;
+    CoordsXYZ length;
 };
 
 struct unk_supports_desc {
@@ -780,7 +776,7 @@ bool wooden_b_supports_paint_setup(
     {
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
-        unk_supports_desc supportsDesc = byte_97B23C[specialIndex];
+        const unk_supports_desc& supportsDesc = byte_97B23C[specialIndex];
 
         if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][specialIndex] != 0
             && supportsDesc.var_7 != 0)
@@ -788,13 +784,12 @@ bool wooden_b_supports_paint_setup(
             uint32_t imageId = WoodenCurveSupportImageIds[supportType][specialIndex];
             imageId |= imageColourFlags;
 
-            unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
+            const unk_supports_desc_bound_box& boundBox = supportsDesc.bounding_box;
 
             if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr)
             {
                 PaintAddImageAsParent(
-                    session, imageId | imageColourFlags, { 0, 0, baseHeight },
-                    { boundBox.length.x, boundBox.length.y, boundBox.length.z },
+                    session, imageId | imageColourFlags, { 0, 0, baseHeight }, boundBox.length,
                     { boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight });
                 _9E32B1 = true;
             }
