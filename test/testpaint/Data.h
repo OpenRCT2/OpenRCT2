@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _TEST_PAINT_DATA_H_
-#define _TEST_PAINT_DATA_H_
+#pragma once
 
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
@@ -20,5 +19,3 @@ extern const utf8string TrackElemNames[256];
 extern const utf8string RideCodeNames[RCT2_RIDE_TYPE_COUNT];
 extern const utf8string TrackCodeNames[256];
 extern const uint32_t* RideTypeTrackPaintFunctionsOld[RCT2_RIDE_TYPE_COUNT];
-
-#endif // #endif _TEST_PAINT_DATA_H_

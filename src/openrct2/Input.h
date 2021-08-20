@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _INPUT_H_
-#define _INPUT_H_
+#pragma once
 
 #include "interface/Window.h"
 
@@ -117,5 +116,3 @@ void reset_tooltip_not_shown();
 void input_reset_place_obj_modifier();
 
 void InputScrollViewport(const ScreenCoordsXY& screenCoords);
-
-#endif

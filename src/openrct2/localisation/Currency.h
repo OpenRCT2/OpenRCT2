@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef CURRENCY_H
-#define CURRENCY_H
+#pragma once
 
 #include "../common.h"
 
@@ -68,5 +67,3 @@ extern currency_descriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType
  * custom currency entry
  */
 void currency_load_custom_currency_config();
-
-#endif

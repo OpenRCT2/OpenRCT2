@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _PEEP_H_
-#define _PEEP_H_
+#pragma once
 
 #include "../common.h"
 #include "../management/Finance.h"
@@ -1036,5 +1035,3 @@ inline const rct_sprite_bounds& GetSpriteBounds(
 {
     return g_peep_animation_entries[EnumValue(spriteType)].sprite_bounds[EnumValue(actionSpriteType)];
 };
-
-#endif

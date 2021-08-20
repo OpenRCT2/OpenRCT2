@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _JUNIOR_ROLLER_COASTER_H
-#define _JUNIOR_ROLLER_COASTER_H
+#pragma once
 
 #include "../../common.h"
 
@@ -114,5 +113,3 @@ void junior_rc_paint_track_diag_25_deg_down_to_flat(
 void junior_rc_paint_track_diag_60_deg_down_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TrackElement& trackElement, JuniorRcChainType chainType);
-
-#endif // _JUNIOR_ROLLER_COASTER_H
