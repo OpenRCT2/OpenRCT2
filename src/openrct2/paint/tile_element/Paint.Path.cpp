@@ -441,8 +441,7 @@ static void sub_6A4101(
         boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
         boundBoxOffsets.y = BannerBoundBoxes[direction][1].y;
         imageId++;
-        PaintAddImageAsParent(
-            session, imageId, { 0, 0, height }, { 1, 1, 21 }, { boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 21 }, boundBoxOffsets);
 
         direction--;
         // If text shown

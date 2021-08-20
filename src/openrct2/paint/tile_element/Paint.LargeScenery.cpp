@@ -289,9 +289,7 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
     boxlength.x = s98E3C4[esi].length.x;
     boxlength.y = s98E3C4[esi].length.y;
     boxlength.z = boxlengthZ;
-    PaintAddImageAsParent(
-        session, image_id, { 0, 0, height }, { boxlength.x, boxlength.y, boxlengthZ },
-        { boxoffset.x, boxoffset.y, boxoffset.z });
+    PaintAddImageAsParent(session, image_id, { 0, 0, height }, { boxlength.x, boxlength.y, boxlengthZ }, boxoffset);
     if (sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE || direction == 1 || direction == 2)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);

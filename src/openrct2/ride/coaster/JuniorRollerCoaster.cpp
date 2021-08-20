@@ -2467,10 +2467,8 @@ static void junior_rc_left_bank_paint_setup(
 
     image_id = junior_rc_track_pieces_left_bank[direction] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(
-        session, image_id, { 0, 0, height },
-        { junior_rc_left_bank_bound_lengths[direction].x, junior_rc_left_bank_bound_lengths[direction].y,
-          static_cast<int8_t>(junior_rc_left_bank_bound_lengths[direction].z) },
-        { junior_rc_left_bank_bound_offsets[direction].x, junior_rc_left_bank_bound_offsets[direction].y, height });
+        session, image_id, { 0, 0, height }, junior_rc_left_bank_bound_lengths[direction],
+        { junior_rc_left_bank_bound_offsets[direction], height });
 
     if (direction & 1)
     {
@@ -3085,9 +3083,9 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
             break;
     }
     if (imageId != 0)
-        PaintAddImageAsParent(
-            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { boundsLength.x, boundsLength.y, 1 }, { boundsOffset.x, boundsOffset.y, height });
+    {
+        PaintAddImageAsParent(session, imageId, { offset, height }, { boundsLength, 1 }, { boundsOffset, height });
+    }
 
     if (direction == 0 && trackSequence == 0)
     {
@@ -4959,12 +4957,9 @@ void junior_rc_paint_track_60_deg_up(
     image_id |= junior_rc_track_pieces_60_deg_up[EnumValue(chainType)][direction];
 
     PaintAddImageAsParent(
-        session, image_id,
-        { static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
-          static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].y), height },
-        { junior_rc_60_deg_up_bound_lengths[direction].x, junior_rc_60_deg_up_bound_lengths[direction].y,
-          junior_rc_60_deg_up_bound_thickness[direction] },
-        { junior_rc_60_deg_up_bound_offsets[direction].x, junior_rc_60_deg_up_bound_offsets[direction].y, height });
+        session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
+        { junior_rc_60_deg_up_bound_lengths[direction], junior_rc_60_deg_up_bound_thickness[direction] },
+        { junior_rc_60_deg_up_bound_offsets[direction], height });
 
     switch (direction)
     {
@@ -5037,14 +5032,10 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
     image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][0];
 
     PaintAddImageAsParent(
-        session, image_id,
-        { static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
-          static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].y), height },
-        { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0].x,
-          junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0].y,
+        session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
+        { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0],
           junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] },
-        { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0].x,
-          junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0].y, height });
+        { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0], height });
 
     if (junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][1] != 0)
     {
@@ -5053,14 +5044,10 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
         image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][1];
 
         PaintAddImageAsParent(
-            session, image_id,
-            { static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
-              static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].y), height },
-            { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1].x,
-              junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1].y,
+            session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
+            { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1],
               junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] },
-            { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1].x,
-              junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1].y, height });
+            { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1], height });
     }
 
     switch (direction)
@@ -5118,14 +5105,10 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
     image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][0];
 
     PaintAddImageAsParent(
-        session, image_id,
-        { static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
-          static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].y), height },
-        { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0].x,
-          junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0].y,
+        session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
+        { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][0],
           junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] },
-        { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0].x,
-          junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0].y, height });
+        { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0], height });
 
     if (junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][1] != 0)
     {
@@ -5134,14 +5117,10 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
         image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][1];
 
         PaintAddImageAsParent(
-            session, image_id,
-            { static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
-              static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].y), height },
-            { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1].x,
-              junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1].y,
+            session, image_id, { junior_rc_60_deg_up_tile_offsets[direction], height },
+            { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1],
               junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] },
-            { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1].x,
-              junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1].y, height });
+            { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1], height });
     }
 
     switch (direction)
@@ -5437,13 +5416,9 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
     image_id |= junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][0];
 
     PaintAddImageAsParent(
-        session, image_id,
-        { static_cast<int8_t>(junior_rc_flat_to_60_deg_up_tile_offsets[direction][0].x),
-          static_cast<int8_t>(junior_rc_flat_to_60_deg_up_tile_offsets[direction][0].y), height + 24 },
-        { junior_rc_flat_to_60_deg_up_bound_lengths[direction][0].x, junior_rc_flat_to_60_deg_up_bound_lengths[direction][0].y,
-          junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
-        { junior_rc_flat_to_60_deg_up_bound_offsets[direction][0].x, junior_rc_flat_to_60_deg_up_bound_offsets[direction][0].y,
-          height });
+        session, image_id, { junior_rc_flat_to_60_deg_up_tile_offsets[direction][0], height + 24 },
+        { junior_rc_flat_to_60_deg_up_bound_lengths[direction][0], junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
+        { junior_rc_flat_to_60_deg_up_bound_offsets[direction][0], height });
 
     if (junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][1] != 0)
     {
@@ -5452,14 +5427,9 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
         image_id |= junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][1];
 
         PaintAddImageAsParent(
-            session, image_id,
-            { static_cast<int8_t>(junior_rc_flat_to_60_deg_up_tile_offsets[direction][1].x),
-              static_cast<int8_t>(junior_rc_flat_to_60_deg_up_tile_offsets[direction][1].y), height },
-            { junior_rc_flat_to_60_deg_up_bound_lengths[direction][1].x,
-              junior_rc_flat_to_60_deg_up_bound_lengths[direction][1].y,
-              junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
-            { junior_rc_flat_to_60_deg_up_bound_offsets[direction][1].x,
-              junior_rc_flat_to_60_deg_up_bound_offsets[direction][1].y, height });
+            session, image_id, { junior_rc_flat_to_60_deg_up_tile_offsets[direction][1], height },
+            { junior_rc_flat_to_60_deg_up_bound_lengths[direction][1], junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
+            { junior_rc_flat_to_60_deg_up_bound_offsets[direction][1], height });
     }
 
     switch (direction)
@@ -5509,13 +5479,9 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
     image_id |= junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][0];
 
     PaintAddImageAsParent(
-        session, image_id,
-        { static_cast<int8_t>(junior_rc_60_deg_up_to_flat_tile_offsets[direction][0].x),
-          static_cast<int8_t>(junior_rc_60_deg_up_to_flat_tile_offsets[direction][0].y), height + 24 },
-        { junior_rc_flat_to_60_deg_up_bound_lengths[direction][0].x, junior_rc_flat_to_60_deg_up_bound_lengths[direction][0].y,
-          junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
-        { junior_rc_flat_to_60_deg_up_bound_offsets[direction][0].x, junior_rc_flat_to_60_deg_up_bound_offsets[direction][0].y,
-          height });
+        session, image_id, { junior_rc_60_deg_up_to_flat_tile_offsets[direction][0], height + 24 },
+        { junior_rc_flat_to_60_deg_up_bound_lengths[direction][0], junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
+        { junior_rc_flat_to_60_deg_up_bound_offsets[direction][0], height });
 
     if (junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][1] != 0)
     {
@@ -5524,14 +5490,9 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
         image_id |= junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][1];
 
         PaintAddImageAsParent(
-            session, image_id,
-            { static_cast<int8_t>(junior_rc_60_deg_up_to_flat_tile_offsets[direction][1].x),
-              static_cast<int8_t>(junior_rc_60_deg_up_to_flat_tile_offsets[direction][1].y), height },
-            { junior_rc_flat_to_60_deg_up_bound_lengths[direction][1].x,
-              junior_rc_flat_to_60_deg_up_bound_lengths[direction][1].y,
-              junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
-            { junior_rc_flat_to_60_deg_up_bound_offsets[direction][1].x,
-              junior_rc_flat_to_60_deg_up_bound_offsets[direction][1].y, height });
+            session, image_id, { junior_rc_60_deg_up_to_flat_tile_offsets[direction][1], height },
+            { junior_rc_flat_to_60_deg_up_bound_lengths[direction][1], junior_rc_flat_to_60_deg_up_bound_thickness[direction] },
+            { junior_rc_flat_to_60_deg_up_bound_offsets[direction][1], height });
     }
 
     switch (direction)

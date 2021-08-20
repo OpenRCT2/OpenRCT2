@@ -159,8 +159,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
         PaintAddImageAsParent(
-            session, baseImageid, { x_offset, y_offset, height }, { boxlength.x, boxlength.y, boxlength.z - 1 },
-            { boxoffset.x, boxoffset.y, boxoffset.z });
+            session, baseImageid, { x_offset, y_offset, height }, { boxlength.x, boxlength.y, boxlength.z - 1 }, boxoffset);
     }
 
     if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_GLASS))
@@ -327,7 +326,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
                 {
                     PaintAddImageAsParent(
                         session, image_id, { x_offset, y_offset, height }, { boxlength.x, boxlength.y, boxlength.z - 1 },
-                        { boxoffset.x, boxoffset.y, boxoffset.z });
+                        boxoffset);
                 }
                 else
                 {
