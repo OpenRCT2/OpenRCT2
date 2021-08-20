@@ -1037,7 +1037,7 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         image_id += get_height_marker_offset();
         image_id -= gMapBaseZ;
 
-        PaintAddImageAsParent(session, image_id, 16, 16, 1, 1, 0, height);
+        PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 1, 1, 0 });
     }
 
     bool has_surface = false;
@@ -1137,7 +1137,7 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         {
             if ((spawn.x & 0xFFE0) == pos.x && (spawn.y & 0xFFE0) == pos.y)
             {
-                PaintAddImageAsParent(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn.z);
+                PaintAddImageAsParent(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, { 0, 0, spawn.z }, { 32, 32, 16 });
 
                 const int32_t offset = (direction_reverse(spawn.direction) + rotation) & 3;
                 const uint32_t image_id = (PEEP_SPAWN_ARROW_0 + offset) | 0x20380000;

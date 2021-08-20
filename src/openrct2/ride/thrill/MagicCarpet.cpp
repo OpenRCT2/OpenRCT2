@@ -241,7 +241,7 @@ static void paint_magic_carpet(
             }
 
             uint32_t imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
-            PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
             break;
     }
 

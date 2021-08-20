@@ -2732,13 +2732,11 @@ static void junior_rc_s_bend_left_paint_setup(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 1, height);
+        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 1 });
     }
     else
     {
-        PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 1, height);
+        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 1 });
     }
 
     if (direction == 0 || direction == 2)
@@ -2838,13 +2836,11 @@ static void junior_rc_s_bend_right_paint_setup(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 1, height);
+        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 1 });
     }
     else
     {
-        PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 1, height);
+        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 1 });
     }
 
     if (direction == 0 || direction == 2)
@@ -5643,14 +5639,14 @@ static void junior_rc_booster_paint_setup(
     if (direction & 1)
     {
         PaintAddImageAsParent(
-            session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session->TrackColours[SCHEME_TRACK], 0, 0, 20, 32, 1, height);
+            session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session->TrackColours[SCHEME_TRACK], { 0, 0, height }, { 20, 32, 1 });
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
         PaintAddImageAsParent(
-            session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height);
+            session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session->TrackColours[SCHEME_TRACK], { 0, 0, height }, { 32, 20, 1 });
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }

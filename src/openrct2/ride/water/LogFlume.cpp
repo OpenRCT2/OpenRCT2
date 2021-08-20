@@ -196,7 +196,7 @@ static void paint_log_flume_track_station(
     {
         imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
     }
-    PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
     if (direction & 1)
     {
@@ -755,7 +755,7 @@ static void paint_log_flume_track_on_ride_photo(
     const TrackElement& trackElement)
 {
     uint32_t imageId = SPR_STATION_BASE_D | IMAGE_TYPE_REMAP;
-    PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
     if (direction & 1)
     {

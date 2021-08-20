@@ -765,13 +765,11 @@ static void paint_monorail_track_s_bend_left(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 3, height);
+        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
     }
     else
     {
-        PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 3, height);
+        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 3 });
     }
 
     if (direction == 0 || direction == 2)
@@ -871,13 +869,11 @@ static void paint_monorail_track_s_bend_right(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 3, height);
+        PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 3 });
     }
     else
     {
-        PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 3, height);
+        PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 3 });
     }
 
     if (direction == 0 || direction == 2)

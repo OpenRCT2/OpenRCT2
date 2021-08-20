@@ -793,7 +793,7 @@ static void paint_splash_boats_station(
         PaintAddImageAsParent(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height + 3);
 
         imageId = SPR_STATION_BASE_B_NW_SE | session->TrackColours[SCHEME_MISC];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
     }
     else
     {
@@ -802,7 +802,7 @@ static void paint_splash_boats_station(
         PaintAddImageAsParent(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3);
 
         imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);

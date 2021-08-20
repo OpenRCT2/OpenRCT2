@@ -928,7 +928,7 @@ void PaintPath(paint_session* session, uint16_t height, const PathElement& tileE
             }
 
             PaintAddImageAsParent(
-                session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, patrolAreaBaseZ + 2);
+                session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, { 16, 16, patrolAreaBaseZ + 2 }, { 1, 1, 0 });
         }
     }
 

@@ -268,9 +268,6 @@ extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset);
-paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,

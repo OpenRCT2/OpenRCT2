@@ -1501,10 +1501,9 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_3(
     }
 
     const sprite_bb* spriteBB = &sprites[direction][sprite];
-    uint32_t imageId = spriteBB->sprite_id | colourFlags;
-    PaintAddImageAsParent(
-        session, imageId, static_cast<int8_t>(spriteBB->offset.x), static_cast<int8_t>(spriteBB->offset.y), spriteBB->bb_size.x,
-        spriteBB->bb_size.y, static_cast<int8_t>(spriteBB->bb_size.z), height + spriteBB->offset.z);
+    const uint32_t imageId = spriteBB->sprite_id | colourFlags;
+    const auto& offset = spriteBB->offset;
+    PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size);
 }
 
 void track_paint_util_right_quarter_turn_5_tiles_tunnel(
@@ -1772,10 +1771,9 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_4(
     }
 
     const sprite_bb* spriteBB = &sprites[direction][sprite];
-    uint32_t imageId = spriteBB->sprite_id | colourFlags;
-    PaintAddImageAsParent(
-        session, imageId, static_cast<int8_t>(spriteBB->offset.x), static_cast<int8_t>(spriteBB->offset.y), spriteBB->bb_size.x,
-        spriteBB->bb_size.y, static_cast<int8_t>(spriteBB->bb_size.z), height + spriteBB->offset.z);
+    const uint32_t imageId = spriteBB->sprite_id | colourFlags;
+    const auto& offset = spriteBB->offset;
+    PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size);
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_tunnel(
