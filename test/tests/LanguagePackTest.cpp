@@ -23,27 +23,25 @@ protected:
 
 TEST_F(LanguagePackTest, create_empty)
 {
-    ILanguagePack* empty = LanguagePackFactory::FromText(0, "");
+    auto empty = LanguagePackFactory::FromText(0, "");
     ASSERT_EQ(empty->GetId(), 0);
     ASSERT_EQ(empty->GetCount(), 0U);
-    delete empty;
 }
 
 TEST_F(LanguagePackTest, create_mutable_id_1)
 {
-    ILanguagePack* lang = LanguagePackFactory::FromText(1, "STR_0000:\n");
+    auto lang = LanguagePackFactory::FromText(1, "STR_0000:\n");
     ASSERT_EQ(lang->GetId(), 1);
     ASSERT_EQ(lang->GetCount(), 1U);
     ASSERT_STREQ(lang->GetString(0), nullptr);
     lang->SetString(0, "xx");
     ASSERT_EQ(lang->GetCount(), 1U);
     ASSERT_STREQ(lang->GetString(0), "xx");
-    delete lang;
 }
 
 TEST_F(LanguagePackTest, language_pack_simple)
 {
-    ILanguagePack* lang = LanguagePackFactory::FromText(0, LanguageEnGB);
+    auto lang = LanguagePackFactory::FromText(0, LanguageEnGB);
     ASSERT_EQ(lang->GetId(), 0);
     ASSERT_EQ(lang->GetCount(), 4U);
     ASSERT_STREQ(lang->GetString(2), "Spiral Roller Coaster");
@@ -55,12 +53,11 @@ TEST_F(LanguagePackTest, language_pack_simple)
     ASSERT_EQ(lang->GetString(1000), nullptr);
     ASSERT_EQ(lang->GetScenarioOverrideStringId("No such park", 0), STR_NONE);
     ASSERT_EQ(lang->GetObjectOverrideStringId("        ", 0), STR_NONE);
-    delete lang;
 }
 
 TEST_F(LanguagePackTest, language_pack_multibyte)
 {
-    ILanguagePack* lang = LanguagePackFactory::FromText(0, (const utf8*)LanguageZhTW);
+    auto lang = LanguagePackFactory::FromText(0, (const utf8*)LanguageZhTW);
     ASSERT_EQ(lang->GetId(), 0);
     ASSERT_EQ(lang->GetCount(), 4U);
     ASSERT_STREQ(lang->GetString(2), u8"懸吊式雲霄飛車");
@@ -70,7 +67,6 @@ TEST_F(LanguagePackTest, language_pack_multibyte)
     ASSERT_STREQ(lang->GetString(0x7002), u8"在隱藏於森林深處的清空範圍中, 建造一個很受歡迎的樂園");
     ASSERT_EQ(lang->GetObjectOverrideStringId("CONDORRD", 0), 0x6000);
     ASSERT_STREQ(lang->GetString(0x6000), u8"神鷹暢遊");
-    delete lang;
 }
 
 const utf8* LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX becomes the string id number.\n"
