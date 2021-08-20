@@ -434,8 +434,7 @@ static void sub_6A4101(
         uint32_t imageId = (direction << 1) + base_image_id + 28;
 
         // Draw pole in the back
-        PaintAddImageAsParent(
-            session, imageId, { 0, 0, height }, { 1, 1, 21 }, { boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 21 }, boundBoxOffsets);
 
         // Draw pole in the front and banner
         boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
@@ -1046,8 +1045,8 @@ void path_paint_box_support(
     if (!hasSupports || !session->DidPassSurface)
     {
         PaintAddImageAsParent(
-            session, imageId | imageFlags, { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },
-            { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
+            session, imageId | imageFlags, { 0, 0, height }, { boundBoxSize, 0 },
+            { boundBoxOffset, height + boundingBoxZOffset });
     }
     else
     {
@@ -1063,8 +1062,8 @@ void path_paint_box_support(
         }
 
         PaintAddImageAsParent(
-            session, image_id | imageFlags, { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },
-            { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
+            session, image_id | imageFlags, { 0, 0, height }, { boundBoxSize, 0 },
+            { boundBoxOffset, height + boundingBoxZOffset });
 
         // TODO: Revert this when path import works correctly.
         if (!pathElement.IsQueue() && !pathElement.ShouldDrawPathOverSupports())
@@ -1212,8 +1211,8 @@ void path_paint_pole_support(
         }
 
         PaintAddImageAsParent(
-            session, bridgeImage | imageFlags, { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },
-            { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
+            session, bridgeImage | imageFlags, { 0, 0, height }, { boundBoxSize, 0 },
+            { boundBoxOffset, height + boundingBoxZOffset });
 
         // TODO: Revert this when path import works correctly.
         if (pathElement.IsQueue() || pathElement.ShouldDrawPathOverSupports())

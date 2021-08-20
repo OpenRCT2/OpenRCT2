@@ -829,9 +829,7 @@ bool track_paint_util_draw_station_covers_2(
     if (baseImageId & IMAGE_TYPE_TRANSPARENT)
     {
         imageId = (baseImageId & ~IMAGE_TYPE_TRANSPARENT) + imageOffset;
-        PaintAddImageAsParent(
-            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), offset.z },
-            { bounds.x, bounds.y, static_cast<int8_t>(bounds.z) }, { boundsOffset.x, boundsOffset.y, boundsOffset.z });
+        PaintAddImageAsParent(session, imageId, offset, bounds, boundsOffset);
 
         uint32_t edi = session->TrackColours[SCHEME_TRACK] & (0b11111 << 19);
 
@@ -1034,8 +1032,8 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][0]);
 
         PaintAddImageAsParent(
-            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { boundsLength.x, boundsLength.y, thickness[0] }, { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height }, { boundsLength, thickness[0] },
+            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
     }
     if (sprites[direction][index][1] != 0)
     {
@@ -1044,9 +1042,7 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
         CoordsXY boundsLength = boundsLengths[direction][index][1];
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][1]);
 
-        PaintAddImageAsParent(
-            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { boundsLength.x, boundsLength.y, thickness[1] }, boundsOffset);
+        PaintAddImageAsParent(session, imageId, { offset, height }, { boundsLength, thickness[1] }, boundsOffset);
     }
 }
 
@@ -1132,8 +1128,8 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][0]);
 
         PaintAddImageAsParent(
-            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { boundsLength.x, boundsLength.y, thickness[0] }, { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height }, { boundsLength, thickness[0] },
+            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
     }
     if (sprites[direction][index][1] != 0)
     {
@@ -1143,8 +1139,8 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][1]);
 
         PaintAddImageAsParent(
-            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { boundsLength.x, boundsLength.y, thickness[1] }, { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height }, { boundsLength, thickness[1] },
+            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
     }
 }
 
@@ -1344,8 +1340,8 @@ void track_paint_util_diag_tiles_paint(
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction]);
 
     PaintAddImageAsParent(
-        session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-        { boundsLength.x, boundsLength.y, thickness }, { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        session, imageId, { offset, height }, { boundsLength, thickness },
+        { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
 }
 
 const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
@@ -1752,11 +1748,11 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_3(
         return;
     }
     const sprite_bb* spriteBB = &sprites[direction][sprite];
+    const auto& offset = spriteBB->offset;
+    const auto& bbOffset = spriteBB->bb_offset;
     PaintAddImageAsParent(
-        session, spriteBB->sprite_id | colourFlags,
-        { static_cast<int8_t>(spriteBB->offset.x), static_cast<int8_t>(spriteBB->offset.y), spriteBB->offset.z + height },
-        { spriteBB->bb_size.x, spriteBB->bb_size.y, static_cast<int8_t>(spriteBB->bb_size.z) },
-        { spriteBB->bb_offset.x, spriteBB->bb_offset.y, height + spriteBB->bb_offset.z });
+        session, spriteBB->sprite_id | colourFlags, { offset.x, offset.y, offset.z + height }, spriteBB->bb_size,
+        { bbOffset.x, bbOffset.y, height + bbOffset.z });
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_4(

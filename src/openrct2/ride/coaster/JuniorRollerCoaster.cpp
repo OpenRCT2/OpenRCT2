@@ -3162,9 +3162,10 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
             break;
     }
     if (imageId != 0)
+    {
         PaintAddImageAsParent(
-            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { boundsLength.x, boundsLength.y, 1 }, { boundsOffset.x, boundsOffset.y, height });
+            session, imageId, { offset, height }, { boundsLength.x, boundsLength.y, 1 }, { boundsOffset, height });
+    }
 
     if (direction == 0 && trackSequence == 0)
     {
