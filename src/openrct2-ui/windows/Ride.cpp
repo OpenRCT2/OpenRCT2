@@ -2946,7 +2946,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords.y += LIST_ROW_HEIGHT;
 
         ft = Formatter();
-        ft.Add<int16_t>(rideEntry->intensity_multiplier);
+        ft.Add<int16_t>(rideEntry->excitement_multiplier);
         DrawTextBasic(dpi, screenCoords, STR_EXCITEMENT_FACTOR, ft);
     }
 
