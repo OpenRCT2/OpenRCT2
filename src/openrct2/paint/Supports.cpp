@@ -603,8 +603,7 @@ bool wooden_a_supports_paint_setup(
             if (byte_97B23C[special].var_6 == 0 || session->WoodenSupportsPrependTo == nullptr)
             {
                 PaintAddImageAsParent(
-                    session, imageId, { 0, 0, z }, { bBox.length.x, bBox.length.y, bBox.length.z },
-                    { bBox.offset.x, bBox.offset.y, bBox.offset.z + z });
+                    session, imageId, { 0, 0, z }, bBox.length, { bBox.offset.x, bBox.offset.y, bBox.offset.z + z });
                 hasSupports = true;
             }
             else

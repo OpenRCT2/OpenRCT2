@@ -1638,8 +1638,8 @@ void track_paint_util_right_quarter_turn_3_tiles_paint(
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index]);
 
     PaintAddImageAsParent(
-        session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-        { boundsLength.x, boundsLength.y, thickness }, { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        session, imageId, { offset, height }, { boundsLength.x, boundsLength.y, thickness },
+        { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_2(
