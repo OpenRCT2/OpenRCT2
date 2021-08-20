@@ -279,7 +279,7 @@ void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     const auto groupId = network_get_group_id(dropdownIndex);
     const auto windowHandle = std::make_pair(w->classification, w->number);
     auto playerSetGroupAction = PlayerSetGroupAction(playerId, groupId);
-    playerSetGroupAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+    playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error == GameActions::Status::Ok)
         {
             window_invalidate_by_number(windowHandle.first, windowHandle.second);
