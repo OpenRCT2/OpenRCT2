@@ -93,8 +93,8 @@ static void paint_ferris_wheel_structure(
 
     imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(
-        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-        boundBox.offset_y, height);
+        session, imageId, { xOffset, yOffset, height }, { boundBox.length_x, boundBox.length_y, 127 },
+        { boundBox.offset_x, boundBox.offset_y, height });
 
     imageId = (baseImageId + direction * 8 + imageOffset) | imageColourFlags;
     PaintAddImageAsChild(
@@ -175,12 +175,12 @@ static void paint_ferris_wheel(
         {
             // Bound box is slightly different from track_paint_util_paint_fences
             imageId = SPR_FENCE_ROPE_SE | colourFlags;
-            PaintAddImageAsParent(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
         }
         if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, rotation))
         {
             imageId = SPR_FENCE_ROPE_SW | colourFlags;
-            PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
         }
     }
 

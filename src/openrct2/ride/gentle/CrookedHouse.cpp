@@ -58,8 +58,8 @@ static void paint_crooked_house_structure(
 
     rct_crooked_house_bound_box boundBox = crooked_house_data[segment];
     PaintAddImageAsParent(
-        session, image_id, x_offset, y_offset, boundBox.length_x, boundBox.length_y, 127, height + 3, boundBox.offset_x,
-        boundBox.offset_y, height + 3);
+        session, image_id, { x_offset, y_offset, height + 3 }, { boundBox.length_x, boundBox.length_y, 127 },
+        { boundBox.offset_x, boundBox.offset_y, height + 3 });
 }
 
 static void paint_crooked_house(

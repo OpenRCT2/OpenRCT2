@@ -60,16 +60,16 @@ static void PaintWallDoor(
         paint_struct* ps;
 
         ps = PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsR1.x, boundsR1.y,
-            static_cast<int8_t>(boundsR1.z), offset.z, boundsR1_.x, boundsR1_.y, boundsR1_.z);
+            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), offset.z },
+            { boundsR1.x, boundsR1.y, static_cast<int8_t>(boundsR1.z) }, { boundsR1_.x, boundsR1_.y, boundsR1_.z });
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
         }
 
         ps = PaintAddImageAsParent(
-            session, imageId + 1, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsR2.x, boundsR2.y,
-            static_cast<int8_t>(boundsR2.z), offset.z, boundsR2_.x, boundsR2_.y, boundsR2_.z);
+            session, imageId + 1, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), offset.z },
+            { boundsR2.x, boundsR2.y, static_cast<int8_t>(boundsR2.z) }, { boundsR2_.x, boundsR2_.y, boundsR2_.z });
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
@@ -80,8 +80,8 @@ static void PaintWallDoor(
         paint_struct* ps;
 
         ps = PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsL1.x, boundsL1.y,
-            static_cast<int8_t>(boundsL1.z), offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z);
+            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), offset.z },
+            { boundsL1.x, boundsL1.y, static_cast<int8_t>(boundsL1.z) }, { boundsL1_.x, boundsL1_.y, boundsL1_.z });
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
@@ -118,8 +118,8 @@ static void PaintWallWall(
         }
 
         PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y,
-            static_cast<int8_t>(bounds.z), offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z);
+            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), offset.z },
+            { bounds.x, bounds.y, static_cast<int8_t>(bounds.z) }, { boundsOffset.x, boundsOffset.y, boundsOffset.z });
         if (dword_141F710 == 0)
         {
             imageId = baseImageId + dword_141F718;
@@ -141,8 +141,8 @@ static void PaintWallWall(
         }
 
         paint_struct* paint = PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y,
-            static_cast<int8_t>(bounds.z), offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z);
+            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), offset.z },
+            { bounds.x, bounds.y, static_cast<int8_t>(bounds.z) }, { boundsOffset.x, boundsOffset.y, boundsOffset.z });
         if (paint != nullptr)
         {
             paint->tertiary_colour = tertiaryColour;

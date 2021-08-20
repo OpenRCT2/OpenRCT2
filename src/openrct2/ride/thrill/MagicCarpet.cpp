@@ -85,8 +85,8 @@ static void paint_magic_carpet_frame(
     if (plane == PLANE_BACK)
     {
         PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
-            bbOffset.x, bbOffset.y, bbOffset.z);
+            session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), offset.z },
+            { bbSize.x, bbSize.y, 127 }, { bbOffset.x, bbOffset.y, bbOffset.z });
     }
     else
     {

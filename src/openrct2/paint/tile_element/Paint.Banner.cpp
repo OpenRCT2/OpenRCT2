@@ -78,12 +78,14 @@ void PaintBanner(paint_session* session, uint8_t direction, int32_t height, cons
         image_id |= (banner->colour << 19) | IMAGE_TYPE_REMAP;
     }
 
-    PaintAddImageAsParent(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
+    PaintAddImageAsParent(
+        session, image_id, { 0, 0, height }, { 1, 1, 0x15 }, { boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z });
     boundBoxOffset.x = BannerBoundBoxes[direction][1].x;
     boundBoxOffset.y = BannerBoundBoxes[direction][1].y;
 
     image_id++;
-    PaintAddImageAsParent(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
+    PaintAddImageAsParent(
+        session, image_id, { 0, 0, height }, { 1, 1, 0x15 }, { boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z });
 
     // Opposite direction
     direction = direction_reverse(direction);

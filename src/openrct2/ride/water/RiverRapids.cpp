@@ -229,7 +229,8 @@ void vehicle_visual_river_rapids(
         image_id |= CONSTRUCTION_MARKER;
     }
     PaintAddImageAsParent(
-        session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z);
+        session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+        { bb->offset_x, bb->offset_y, bb->offset_z + z });
 
     if (session->DPI.zoom_level < 2 && vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {

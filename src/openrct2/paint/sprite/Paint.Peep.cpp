@@ -80,7 +80,7 @@ template<> void PaintEntity(paint_session* session, const Peep* peep, int32_t im
         + imageOffset * 4;
     uint32_t imageId = baseImageId | peep->TshirtColour << 19 | peep->TrousersColour << 24 | IMAGE_TYPE_REMAP
         | IMAGE_TYPE_REMAP_2_PLUS;
-    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
+    PaintAddImageAsParent(session, imageId, { 0, 0, peep->z }, { 1, 1, 11 }, { 0, 0, peep->z + 5 });
     auto* guest = peep->As<Guest>();
     if (guest != nullptr)
     {

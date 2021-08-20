@@ -370,8 +370,8 @@ static void sub_6A4101(
                 case 3:
                     PaintAddImageAsParent(session, 17 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
                     PaintAddImageAsParent(
-                        session, 18 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
-                        height + 2); // bound_box_offset_y seems to be a bug
+                        session, 18 + base_image_id, { 28, 0, height }, { 1, 28, 7 },
+                        { 28, 4, height + 2 }); // bound_box_offset_y seems to be a bug
                     PaintAddImageAsParent(session, 25 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
                     break;
                 case 4:
@@ -403,8 +403,8 @@ static void sub_6A4101(
                 case 12:
                     PaintAddImageAsParent(session, 16 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
                     PaintAddImageAsParent(
-                        session, 19 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
-                        height + 2); // bound_box_offset_x seems to be a bug
+                        session, 19 + base_image_id, { 0, 28, height }, { 28, 1, 7 },
+                        { 4, 28, height + 2 }); // bound_box_offset_x seems to be a bug
                     PaintAddImageAsParent(session, 27 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
                     break;
                 default:
@@ -435,14 +435,14 @@ static void sub_6A4101(
 
         // Draw pole in the back
         PaintAddImageAsParent(
-            session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
+            session, imageId, { 0, 0, height }, { 1, 1, 21 }, { boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z });
 
         // Draw pole in the front and banner
         boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
         boundBoxOffsets.y = BannerBoundBoxes[direction][1].y;
         imageId++;
         PaintAddImageAsParent(
-            session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
+            session, imageId, { 0, 0, height }, { 1, 1, 21 }, { boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z });
 
         direction--;
         // If text shown
@@ -559,8 +559,8 @@ static void sub_6A4101(
             case 3:
                 PaintAddImageAsParent(session, 3 + base_image_id, { 0, 4, height }, { 28, 1, 7 }, { 0, 4, height + 2 });
                 PaintAddImageAsParent(
-                    session, 4 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
-                    height + 2); // bound_box_offset_y seems to be a bug
+                    session, 4 + base_image_id, { 28, 0, height }, { 1, 28, 7 },
+                    { 28, 4, height + 2 }); // bound_box_offset_y seems to be a bug
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
                     PaintAddImageAsParent(session, 11 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 0, 28, height + 2 });
@@ -585,8 +585,8 @@ static void sub_6A4101(
             case 12:
                 PaintAddImageAsParent(session, 2 + base_image_id, { 4, 0, height }, { 1, 28, 7 }, { 4, 0, height + 2 });
                 PaintAddImageAsParent(
-                    session, 5 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
-                    height + 2); // bound_box_offset_x seems to be a bug
+                    session, 5 + base_image_id, { 0, 28, height }, { 28, 1, 7 },
+                    { 4, 28, height + 2 }); // bound_box_offset_x seems to be a bug
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
                     PaintAddImageAsParent(session, 13 + base_image_id, { 0, 0, height }, { 4, 4, 7 }, { 28, 0, height + 2 });
@@ -1047,8 +1047,8 @@ void path_paint_box_support(
     if (!hasSupports || !session->DidPassSurface)
     {
         PaintAddImageAsParent(
-            session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
-            height + boundingBoxZOffset);
+            session, imageId | imageFlags, { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },
+            { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
     }
     else
     {
@@ -1064,8 +1064,8 @@ void path_paint_box_support(
         }
 
         PaintAddImageAsParent(
-            session, image_id | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
-            height + boundingBoxZOffset);
+            session, image_id | imageFlags, { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },
+            { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
 
         // TODO: Revert this when path import works correctly.
         if (!pathElement.IsQueue() && !pathElement.ShouldDrawPathOverSupports())
@@ -1194,8 +1194,8 @@ void path_paint_pole_support(
     if (!hasSupports || !session->DidPassSurface)
     {
         PaintAddImageAsParent(
-            session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
-            height + boundingBoxZOffset);
+            session, imageId | imageFlags, { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },
+            { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
     }
     else
     {
@@ -1213,8 +1213,8 @@ void path_paint_pole_support(
         }
 
         PaintAddImageAsParent(
-            session, bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
-            boundBoxOffset.y, height + boundingBoxZOffset);
+            session, bridgeImage | imageFlags, { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },
+            { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset });
 
         // TODO: Revert this when path import works correctly.
         if (pathElement.IsQueue() || pathElement.ShouldDrawPathOverSupports())

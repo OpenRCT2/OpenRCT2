@@ -58,8 +58,8 @@ static void paint_haunted_house_structure(
     uint32_t imageId = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];
     haunted_house_bound_box boundBox = haunted_house_data[part];
     PaintAddImageAsParent(
-        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-        boundBox.offset_y, height);
+        session, imageId, { xOffset, yOffset, height }, { boundBox.length_x, boundBox.length_y, 127 },
+        { boundBox.offset_x, boundBox.offset_y, height });
 
     rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level <= 0 && frameNum != 0)

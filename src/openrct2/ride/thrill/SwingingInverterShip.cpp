@@ -101,8 +101,8 @@ static void paint_swinging_inverter_ship_structure(
     if (direction & 2)
     {
         PaintAddImageAsParent(
-            session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-            boundBox.offset_y, height);
+            session, vehicleImageId, { xOffset, yOffset, height }, { boundBox.length_x, boundBox.length_y, 127 },
+            { boundBox.offset_x, boundBox.offset_y, height });
         PaintAddImageAsChild(
             session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);
@@ -110,8 +110,8 @@ static void paint_swinging_inverter_ship_structure(
     else
     {
         PaintAddImageAsParent(
-            session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-            boundBox.offset_y, height);
+            session, frameImageId, { xOffset, yOffset, height }, { boundBox.length_x, boundBox.length_y, 127 },
+            { boundBox.offset_x, boundBox.offset_y, height });
         PaintAddImageAsChild(
             session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);

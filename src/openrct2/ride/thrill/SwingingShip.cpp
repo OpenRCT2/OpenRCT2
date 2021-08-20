@@ -113,8 +113,8 @@ static void paint_swinging_ship_structure(
 
     imageId = swinging_ship_frame_sprites[(direction & 1)][0] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(
-        session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
-        height);
+        session, imageId, { xOffset, yOffset, height }, { bounds.length_x, bounds.length_y, 80 },
+        { bounds.offset_x, bounds.offset_y, height });
 
     imageId = baseImageId | imageColourFlags;
     PaintAddImageAsChild(
