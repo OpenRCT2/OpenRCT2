@@ -415,16 +415,18 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
 
         const utf8* name = network_get_server_name();
         {
-            screenCoords.y += DrawTextWrapped(
-                dpi, screenCoords, width, STR_STRING, static_cast<void*>(&name), { w->colours[1] });
+            auto ft = Formatter();
+            ft.Add<const char*>(name);
+            screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
         const utf8* description = network_get_server_description();
         if (!str_is_null_or_empty(description))
         {
-            screenCoords.y += DrawTextWrapped(
-                dpi, screenCoords, width, STR_STRING, static_cast<void*>(&description), { w->colours[1] });
+            auto ft = Formatter();
+            ft.Add<const char*>(description);
+            screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 

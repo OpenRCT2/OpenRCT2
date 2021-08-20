@@ -141,9 +141,11 @@ void gfx_draw_string_no_formatting(
 }
 
 int32_t DrawTextWrapped(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const void* args,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
     TextPaint textPaint)
 {
+    const void* args = ft.Data();
+
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
 
@@ -164,11 +166,4 @@ int32_t DrawTextWrapped(
     }
 
     return layout.GetHeight();
-}
-
-int32_t DrawTextWrapped(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
-    TextPaint textPaint)
-{
-    return DrawTextWrapped(dpi, coords, width, format, ft.Data(), textPaint);
 }

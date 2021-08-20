@@ -202,14 +202,17 @@ public:
 
         if (_descriptionStringId == STR_NONE)
         {
-            auto* text = _description.c_str();
+            auto ft = Formatter();
+            ft.Add<const char*>(_description.c_str());
             DrawTextWrapped(
-                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, &text, { colours[1], TextAlignment::CENTRE });
+                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
         }
         else
         {
+            auto ft = Formatter();
+            ft.Add<const char*>(TextInputDescriptionArgs);
             DrawTextWrapped(
-                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, &TextInputDescriptionArgs,
+                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, ft,
                 { colours[1], TextAlignment::CENTRE });
         }
 
