@@ -2931,12 +2931,13 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 64 };
 
     // Description
-    screenCoords.y += DrawTextWrapped(
-        dpi, screenCoords, 300, STR_BLACK_STRING, &rideEntry->naming.Description, { TextAlignment::LEFT });
+    auto ft = Formatter();
+    ft.Add<rct_string_id>(rideEntry->naming.Description);
+    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::LEFT });
     screenCoords.y += 2;
 
     // Capacity
-    auto ft = Formatter();
+    ft = Formatter();
     ft.Add<rct_string_id>(rideEntry->capacity);
     DrawTextBasic(dpi, screenCoords, STR_CAPACITY, ft);
 
@@ -6941,7 +6942,9 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         queueTime = ride->GetMaxQueueTime();
         stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
-        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 308, stringId, &queueTime, { TextAlignment::LEFT });
+        ft = Formatter();
+        ft.Add<int32_t>(queueTime);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 308, stringId, ft, { TextAlignment::LEFT });
         screenCoords.y += 5;
     }
 

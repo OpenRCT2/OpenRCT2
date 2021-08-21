@@ -247,9 +247,11 @@ static void window_track_delete_prompt_paint(rct_window* w, rct_drawpixelinfo* d
 {
     WindowDrawWidgets(w, dpi);
 
+    auto ft = Formatter();
+    ft.Add<const char*>(_trackDesignFileReference->name);
     DrawTextWrapped(
         dpi, { w->windowPos.x + (WW_DELETE_PROMPT / 2), w->windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
-        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, &_trackDesignFileReference->name, { TextAlignment::CENTRE });
+        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
 }
 
 static void window_track_design_list_reload_tracks()
