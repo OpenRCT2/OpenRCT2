@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _RCT1_H_
-#define _RCT1_H_
+#pragma once
 
 #include "../management/Award.h"
 #include "../management/NewsItem.h"
@@ -1289,5 +1288,3 @@ void load_from_sv4(const char* path);
 void load_from_sc4(const char* path);
 
 track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
-
-#endif

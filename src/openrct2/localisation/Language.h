@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _LANGUAGE_H_
-#define _LANGUAGE_H_
+#pragma once
 
 #include "../common.h"
 #include "../drawing/Font.h"
@@ -137,5 +136,3 @@ constexpr utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
         return dst + 4;
     }
 }
-
-#endif

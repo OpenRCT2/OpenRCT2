@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _COMMON_H_
-#define _COMMON_H_
+#pragma once
 
 #ifndef _USE_MATH_DEFINES
 #    define _USE_MATH_DEFINES
@@ -232,5 +231,3 @@ constexpr uint16_t SPRITE_INDEX_NULL = 0xFFFF;
 #else      // PLATFORM_X86
 #    define FASTCALL
 #endif // PLATFORM_X86
-
-#endif

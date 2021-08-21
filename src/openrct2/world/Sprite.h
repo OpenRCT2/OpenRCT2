@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _SPRITE_H_
-#define _SPRITE_H_
+#pragma once
 
 #include "../common.h"
 #include "SpriteBase.h"
@@ -47,5 +46,3 @@ rct_sprite_checksum sprite_checksum();
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
-
-#endif

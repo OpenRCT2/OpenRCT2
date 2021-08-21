@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _DRAWING_H_
-#define _DRAWING_H_
+#pragma once
 
 #include "../common.h"
 #include "../interface/Colour.h"
@@ -790,5 +789,3 @@ std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
 
 #include "NewDrawing.h"
-
-#endif

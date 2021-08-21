@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef OPENRCT2_FONT_FAMILIES_H
-#define OPENRCT2_FONT_FAMILIES_H
+#pragma once
 
 #define FAMILY_OPENRCT2_SPRITE nullptr
 
@@ -33,5 +32,3 @@ extern TTFontFamily const TTFFamilySansSerif;
 #    define FAMILY(x) FAMILY_OPENRCT2_SPRITE
 
 #endif // NO_TTF
-
-#endif // OPENRCT2_FONT_FAMILIES_H

@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _STRING_IDS_H_
-#define _STRING_IDS_H_
+#pragma once
 
 #include "../common.h"
 
@@ -3913,5 +3912,3 @@ enum
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
-
-#endif

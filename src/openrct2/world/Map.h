@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _MAP_H_
-#define _MAP_H_
+#pragma once
 
 #include "../common.h"
 #include "Location.hpp"
@@ -312,5 +311,3 @@ uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos);
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(
     std::initializer_list<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade = false);
-
-#endif

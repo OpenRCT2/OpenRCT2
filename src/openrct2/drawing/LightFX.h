@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _LIGHTFX_H
-#define _LIGHTFX_H
+#pragma once
 
 #ifdef __ENABLE_LIGHTFX__
 
@@ -79,5 +78,3 @@ void lightfx_render_to_texture(
     const uint32_t* lightPalette);
 
 #endif // __ENABLE_LIGHTFX__
-
-#endif

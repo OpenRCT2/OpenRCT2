@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _SCENARIO_H_
-#define _SCENARIO_H_
+#pragma once
 
 #include "../common.h"
 #include "../core/Random.hpp"
@@ -467,5 +466,3 @@ void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char* name);
 void scenario_autosave_check();
-
-#endif

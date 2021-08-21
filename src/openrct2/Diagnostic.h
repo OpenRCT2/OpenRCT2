@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _DIAGNOSTIC_H_
-#define _DIAGNOSTIC_H_
+#pragma once
 
 #include <cstdint>
 
@@ -88,5 +87,3 @@ void diagnostic_log_with_location(
 #define log_warning(format, ...) diagnostic_log_macro(DiagnosticLevel::Warning, format, ##__VA_ARGS__)
 #define log_verbose(format, ...) diagnostic_log(DiagnosticLevel::Verbose, format, ##__VA_ARGS__)
 #define log_info(format, ...) diagnostic_log_macro(DiagnosticLevel::Information, format, ##__VA_ARGS__)
-
-#endif

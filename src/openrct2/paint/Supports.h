@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _DRAWING_SUPPORTS_H_
-#define _DRAWING_SUPPORTS_H_
+#pragma once
 
 #include "../common.h"
 #include "../world/Footpath.h"
@@ -54,5 +53,3 @@ enum
 {
     SUPPORTS_SLOPE_5 = 1 << 5
 };
-
-#endif

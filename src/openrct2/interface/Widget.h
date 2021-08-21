@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _WIDGET_H_
-#define _WIDGET_H_
+#pragma once
 
 #include "../localisation/StringIds.h"
 #include "Window.h"
@@ -152,5 +151,3 @@ void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value);
 void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value);
 void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value);
 void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
-
-#endif

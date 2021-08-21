@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _DRAWING_FONT_H_
-#define _DRAWING_FONT_H_
+#pragma once
 
 #include "../common.h"
 
@@ -68,5 +67,3 @@ int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase);
 bool font_supports_string_sprite(const utf8* text);
 bool font_supports_string_ttf(const utf8* text, int32_t fontSize);
 bool font_supports_string(const utf8* text, int32_t fontSize);
-
-#endif
