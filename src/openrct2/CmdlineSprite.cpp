@@ -185,7 +185,7 @@ bool SpriteFile::Save(const utf8* path)
 static bool SpriteImageExport(const rct_g1_element& spriteElement, const char* outPath)
 {
     const auto pixelBufferSize = spriteElement.width * spriteElement.height;
-    std::unique_ptr<uint8_t[]> pixelBuffer(new uint8_t[pixelBufferSize]);
+    auto pixelBuffer = std::make_unique<uint8_t[]>(pixelBufferSize);
     auto pixels = pixelBuffer.get();
     std::fill_n(pixels, pixelBufferSize, 0x00);
 

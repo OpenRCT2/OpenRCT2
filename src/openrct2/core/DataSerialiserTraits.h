@@ -284,7 +284,7 @@ template<> struct DataSerializerTraits_t<OpenRCT2::MemoryStream>
         uint32_t length = 0;
         s.decode(stream, length);
 
-        std::unique_ptr<uint8_t[]> buf(new uint8_t[length]);
+        auto buf = std::make_unique<uint8_t[]>(length);
         stream->Read(buf.get(), length);
 
         val.Write(buf.get(), length);
