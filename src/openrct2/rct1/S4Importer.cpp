@@ -2715,7 +2715,7 @@ template<> void S4Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& srcBase
     dst->var_C0 = src->var_C0;
     dst->var_C4 = src->var_C4;
     dst->animation_frame = src->animation_frame;
-    dst->var_C8 = src->var_C8;
+    dst->animationState = src->animationState;
     dst->var_CA = src->var_CA;
     dst->var_CE = src->var_CE;
     dst->var_D3 = src->var_D3;

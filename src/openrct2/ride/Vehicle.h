@@ -180,7 +180,7 @@ struct Vehicle : SpriteBase
     };
     uint8_t animation_frame;
     uint8_t pad_C6[0x2];
-    uint16_t var_C8;
+    uint16_t animationState;
     uint16_t var_CA;
     OpenRCT2::Audio::SoundId scream_sound_id;
     VehicleTrackSubposition TrackSubposition;
