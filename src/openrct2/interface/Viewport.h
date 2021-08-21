@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _VIEWPORT_H_
-#define _VIEWPORT_H_
+#pragma once
 
 #include "../world/Location.hpp"
 #include "Window.h"
@@ -161,5 +160,3 @@ uint8_t get_current_rotation();
 int32_t get_height_marker_offset();
 
 void viewport_set_saved_view();
-
-#endif

@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _WINDOW_H_
-#define _WINDOW_H_
+#pragma once
 
 #include "../common.h"
 #include "../localisation/Formatter.h"
@@ -899,5 +898,3 @@ extern bool _deferClose;
 
 rct_window* window_get_listening();
 rct_windowclass window_get_classification(rct_window* window);
-
-#endif

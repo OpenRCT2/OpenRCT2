@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _PAINT_TILE_ELEMENT_H
-#define _PAINT_TILE_ELEMENT_H
+#pragma once
 
 #include "../../common.h"
 #include "../../world/Map.h"
@@ -113,5 +112,3 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
 void PaintTrack(paint_session* session, uint8_t direction, int32_t height, const TrackElement& tileElement);
 
 bool PaintShouldShowHeightMarkers(const paint_session* session, const uint32_t viewportFlag);
-
-#endif

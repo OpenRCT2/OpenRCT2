@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef NETWORKKEY_H
-#define NETWORKKEY_H
+#pragma once
 
 #ifndef DISABLE_NETWORK
 
@@ -50,5 +49,3 @@ private:
 };
 
 #endif // DISABLE_NETWORK
-
-#endif // NETWORKKEY_H

@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _RIDE_H_
-#define _RIDE_H_
+#pragma once
 
 #include "../common.h"
 #include "../localisation/Formatter.h"
@@ -1254,5 +1253,3 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
-
-#endif

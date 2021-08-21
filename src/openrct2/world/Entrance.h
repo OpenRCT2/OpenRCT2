@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _ENTRANCE_H_
-#define _ENTRANCE_H_
+#pragma once
 
 #include "../common.h"
 #include "Location.hpp"
@@ -56,5 +55,3 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance);
 void maze_entrance_hedge_removal(const CoordsXYE& entrance);
 
 void fix_park_entrance_locations();
-
-#endif

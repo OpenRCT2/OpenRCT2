@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _TRACK_PAINT_H
-#define _TRACK_PAINT_H
+#pragma once
 
 #include "../common.h"
 #include "../paint/Paint.h"
@@ -479,5 +478,3 @@ namespace SingleRailRC
 {
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
 }
-
-#endif

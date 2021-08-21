@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _SCENERY_H_
-#define _SCENERY_H_
+#pragma once
 
 #include "../common.h"
 #include "../world/Location.hpp"
@@ -290,5 +289,3 @@ PathBitEntry* get_footpath_item_entry(ObjectEntryIndex entryIndex);
 rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex);
 
 int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry);
-
-#endif

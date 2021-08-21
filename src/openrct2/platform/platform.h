@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _PLATFORM_H_
-#define _PLATFORM_H_
+#pragma once
 
 #include "../common.h"
 #include "../config/Config.h"
@@ -167,5 +166,3 @@ public:
 void platform_android_init_class_loader();
 jclass platform_android_find_class(JNIEnv* env, const char* name);
 #endif // __ANDROID__
-
-#endif

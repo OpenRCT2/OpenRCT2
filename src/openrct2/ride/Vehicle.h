@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _VEHICLE_H_
-#define _VEHICLE_H_
+#pragma once
 
 #include "../audio/audio.h"
 #include "../common.h"
@@ -563,5 +562,3 @@ extern int32_t _vehicleUnkF64E10;
 extern uint8_t _vehicleF64E2C;
 extern Vehicle* _vehicleFrontVehicle;
 extern CoordsXYZ unk_F64E20;
-
-#endif

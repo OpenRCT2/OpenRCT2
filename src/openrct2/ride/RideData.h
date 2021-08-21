@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _RIDE_DATA_H_
-#define _RIDE_DATA_H_
+#pragma once
 
 #define TRACK_COLOUR_PRESETS(...)                                                                                              \
     {                                                                                                                          \
@@ -365,5 +364,3 @@ constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 {
     return rideType < std::size(RideTypeDescriptors);
 }
-
-#endif
