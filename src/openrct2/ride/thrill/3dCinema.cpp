@@ -42,7 +42,8 @@ static void paint_3d_cinema_structure(
     }
 
     uint32_t imageId = (rideEntry->vehicles[0].base_image_id + direction) | imageColourFlags;
-    PaintAddImageAsParent(session, imageId, xOffset, yOffset, 24, 24, 47, height + 3, xOffset + 16, yOffset + 16, height + 3);
+    PaintAddImageAsParent(
+        session, imageId, { xOffset, yOffset, height + 3 }, { 24, 24, 47 }, { xOffset + 16, yOffset + 16, height + 3 });
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType = ViewportInteractionItem::Ride;

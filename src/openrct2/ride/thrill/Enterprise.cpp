@@ -53,7 +53,7 @@ static void paint_enterprise_structure(
     }
 
     uint32_t imageId = (baseImageId + imageOffset) | imageColourFlags;
-    PaintAddImageAsParent(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
+    PaintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { 0, 0, height });
 
     rct_drawpixelinfo* dpi = &session->DPI;
 

@@ -17,15 +17,14 @@
 
 struct haunted_house_bound_box
 {
-    int16_t offset_x;
-    int16_t offset_y;
-    int16_t length_x;
-    int16_t length_y;
+    CoordsXY offset;
+    CoordsXY length;
 };
 
 /** rct2: 0x1428180 */
-static haunted_house_bound_box haunted_house_data[] = {
-    { 6, 0, 42, 24 }, { 0, 0, 0, 0 }, { -16, -16, 32, 32 }, { 0, 0, 0, 0 }, { 0, 6, 24, 42 }, { 0, 0, 0, 0 },
+static constexpr haunted_house_bound_box haunted_house_data[] = {
+    { { 6, 0 }, { 42, 24 } }, { { 0, 0 }, { 0, 0 } },   { { -16, -16 }, { 32, 32 } },
+    { { 0, 0 }, { 0, 0 } },   { { 0, 6 }, { 24, 42 } }, { { 0, 0 }, { 0, 0 } },
 };
 
 /**
@@ -56,10 +55,10 @@ static void paint_haunted_house_structure(
     }
 
     uint32_t imageId = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];
-    haunted_house_bound_box boundBox = haunted_house_data[part];
+
+    const haunted_house_bound_box& boundBox = haunted_house_data[part];
     PaintAddImageAsParent(
-        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-        boundBox.offset_y, height);
+        session, imageId, { xOffset, yOffset, height }, { boundBox.length, 127 }, { boundBox.offset, height });
 
     rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level <= 0 && frameNum != 0)
@@ -81,8 +80,8 @@ static void paint_haunted_house_structure(
         }
         imageId = imageId | session->TrackColours[SCHEME_MISC];
         PaintAddImageAsChild(
-            session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-            boundBox.offset_y, height);
+            session, imageId, xOffset, yOffset, boundBox.length.x, boundBox.length.y, 127, height, boundBox.offset.x,
+            boundBox.offset.y, height);
     }
 
     session->CurrentlyDrawnItem = savedTileElement;

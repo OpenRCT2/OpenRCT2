@@ -591,10 +591,10 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
     {
         int32_t part = trackSequence == 0 ? 0 : 1;
         const sprite_bb* sbb = &imageIds[direction][part];
+        const auto& offset = sbb->offset;
         PaintAddImageAsParent(
-            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], static_cast<int8_t>(sbb->offset.x),
-            static_cast<int8_t>(sbb->offset.y), sbb->bb_size.x, sbb->bb_size.y, static_cast<int8_t>(sbb->bb_size.z),
-            height + static_cast<int8_t>(sbb->offset.z));
+            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], { offset.x, offset.y, height + offset.z },
+            sbb->bb_size);
     }
 
     track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(
@@ -660,9 +660,8 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
         int32_t part = trackSequence == 0 ? 0 : 1;
         const sprite_bb* sbb = &imageIds[direction][part];
         PaintAddImageAsParent(
-            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], static_cast<int8_t>(sbb->offset.x),
-            static_cast<int8_t>(sbb->offset.y), sbb->bb_size.x, sbb->bb_size.y, static_cast<int8_t>(sbb->bb_size.z),
-            height + static_cast<int8_t>(sbb->offset.z));
+            session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK],
+            { sbb->offset.x, sbb->offset.y, height + sbb->offset.z }, sbb->bb_size);
     }
 
     track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(session, height, direction, trackSequence, TUNNEL_1, TUNNEL_2);
@@ -733,16 +732,16 @@ static void wild_mouse_track_left_quarter_turn_1(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, imageId, 0, 0, 26, 24, 2, height, 6, 2, height);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 24, 2 }, { 6, 2, height });
             break;
         case 1:
-            PaintAddImageAsParent(session, imageId, 0, 0, 26, 26, 2, height);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 26, 2 });
             break;
         case 2:
-            PaintAddImageAsParent(session, imageId, 0, 0, 24, 26, 2, height, 2, 6, height);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 24, 26, 2 }, { 2, 6, height });
             break;
         case 3:
-            PaintAddImageAsParent(session, imageId, 0, 0, 24, 24, 2, height, 6, 6, height);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 24, 24, 2 }, { 6, 6, height });
             break;
     }
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session->TrackColours[SCHEME_SUPPORTS]);

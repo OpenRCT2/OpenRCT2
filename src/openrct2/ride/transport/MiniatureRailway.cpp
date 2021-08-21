@@ -1286,7 +1286,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
         if (trackSequence == 1 && direction == 0)
         {
             uint32_t imageId = SPR_G2_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_3 | session->TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, 0, 0, 8, 8, 2, height, 0, 0, height);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 8, 8, 2 }, { 0, 0, height });
         }
     }
     else
@@ -1442,8 +1442,7 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
                 bounds = miniature_railway_track_pieces_right_eight_to_orthog_bounds[direction][index];
                 offset = miniature_railway_track_pieces_right_eight_to_orthog_offset[direction][index];
             }
-            PaintAddImageAsParent(
-                session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, bounds, { offset, height });
         }
     }
     else
@@ -1452,8 +1451,7 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
             | session->TrackColours[SCHEME_SUPPORTS];
         CoordsXY offset = miniature_railway_track_floor_pieces_left_eight_to_diag_offset[direction][trackSequence];
         CoordsXYZ bounds = miniature_railway_track_floor_pieces_left_eight_to_diag_bounds[direction][trackSequence];
-        PaintAddImageAsParent(
-            session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, bounds, { offset, height });
 
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
@@ -1582,8 +1580,7 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
                 bounds = miniature_railway_track_pieces_left_eight_to_orthog_bounds[direction][index];
                 offset = miniature_railway_track_pieces_left_eight_to_orthog_offset[direction][index];
             }
-            PaintAddImageAsParent(
-                session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, bounds, { offset, height });
         }
     }
     else
@@ -1592,8 +1589,7 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
             | session->TrackColours[SCHEME_SUPPORTS];
         CoordsXY offset = miniature_railway_track_floor_pieces_right_eight_to_diag_offset[direction][trackSequence];
         CoordsXYZ bounds = miniature_railway_track_floor_pieces_right_eight_to_diag_bounds[direction][trackSequence];
-        PaintAddImageAsParent(
-            session, imageId, 0, 0, bounds.x, bounds.y, static_cast<int8_t>(bounds.z), height, offset.x, offset.y, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, bounds, { offset, height });
 
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
@@ -1709,8 +1705,8 @@ static void miniature_railway_track_diag_flat(
     if (isSupported)
     {
         PaintAddImageAsParent(
-            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], 0, 0, floorBoundSize.x, floorBoundSize.y,
-            (drawRail ? 2 : 0), height, floorBoundOffset.x, floorBoundOffset.y, height);
+            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], { 0, 0, height },
+            { floorBoundSize, (drawRail ? 2 : 0) }, { floorBoundOffset, height });
         if (drawRail)
         {
             PaintAddImageAsChild(
@@ -1721,7 +1717,7 @@ static void miniature_railway_track_diag_flat(
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, imageId | session->TrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height);
+            session, imageId | session->TrackColours[SCHEME_TRACK], { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1804,9 +1800,9 @@ static void miniature_railway_track_diag_25_deg_up(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], 0, 0, floorBoundSize.x, floorBoundSize.y,
-            (drawRail ? 2 : 0), height + offsetsB[direction][trackSequence][0], floorBoundOffset.x, floorBoundOffset.y,
-            height + offsetsB[direction][trackSequence][1]);
+            session, floorImage | session->TrackColours[SCHEME_SUPPORTS],
+            { 0, 0, height + offsetsB[direction][trackSequence][0] }, { floorBoundSize, (drawRail ? 2 : 0) },
+            { floorBoundOffset, height + offsetsB[direction][trackSequence][1] });
         if (drawRail)
         {
             PaintAddImageAsChild(
@@ -1817,8 +1813,8 @@ static void miniature_railway_track_diag_25_deg_up(
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, imageId | session->TrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16,
-            height + offsetB[direction]);
+            session, imageId | session->TrackColours[SCHEME_TRACK], { -16, -16, height }, { 32, 32, 2 },
+            { -16, -16, height + offsetB[direction] });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1857,8 +1853,8 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], 0, 0, floorBoundSize.x, floorBoundSize.y,
-            (drawRail ? 2 : 0), height, floorBoundOffset.x, floorBoundOffset.y, height);
+            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], { 0, 0, height },
+            { floorBoundSize, (drawRail ? 2 : 0) }, { floorBoundOffset, height });
         if (drawRail)
         {
             PaintAddImageAsChild(
@@ -1869,7 +1865,7 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, imageId | session->TrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height);
+            session, imageId | session->TrackColours[SCHEME_TRACK], { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1931,9 +1927,9 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], 0, 0, floorBoundSize.x, floorBoundSize.y,
-            (drawRail ? 2 : 0), height + offsetsB[direction][trackSequence][0], floorBoundOffset.x, floorBoundOffset.y,
-            height + offsetsB[direction][trackSequence][1]);
+            session, floorImage | session->TrackColours[SCHEME_SUPPORTS],
+            { 0, 0, height + offsetsB[direction][trackSequence][0] }, { floorBoundSize, (drawRail ? 2 : 0) },
+            { floorBoundOffset, height + offsetsB[direction][trackSequence][1] });
         if (drawRail)
         {
             PaintAddImageAsChild(
@@ -1944,8 +1940,8 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, imageId | session->TrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16,
-            height + railOffsets[direction]);
+            session, imageId | session->TrackColours[SCHEME_TRACK], { -16, -16, height }, { 32, 32, 2 },
+            { -16, -16, height + railOffsets[direction] });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2006,9 +2002,9 @@ static void miniature_railway_track_diag_25_deg_down(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], 0, 0, floorBoundSize.x, floorBoundSize.y,
-            (drawRail ? 2 : 0), height + offsetsB[direction][trackSequence][0], floorBoundOffset.x, floorBoundOffset.y,
-            height + offsetsB[direction][trackSequence][1]);
+            session, floorImage | session->TrackColours[SCHEME_SUPPORTS],
+            { 0, 0, height + offsetsB[direction][trackSequence][0] }, { floorBoundSize, (drawRail ? 2 : 0) },
+            { floorBoundOffset, height + offsetsB[direction][trackSequence][1] });
         if (drawRail)
         {
             PaintAddImageAsChild(
@@ -2019,8 +2015,8 @@ static void miniature_railway_track_diag_25_deg_down(
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, imageId | session->TrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16,
-            height + railOffsets[direction]);
+            session, imageId | session->TrackColours[SCHEME_TRACK], { -16, -16, height }, { 32, 32, 2 },
+            { -16, -16, height + railOffsets[direction] });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2080,9 +2076,9 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], 0, 0, floorBoundSize.x, floorBoundSize.y,
-            (drawRail ? 2 : 0), height + offsetsB[direction][trackSequence][0], floorBoundOffset.x, floorBoundOffset.y,
-            height + offsetsB[direction][trackSequence][1]);
+            session, floorImage | session->TrackColours[SCHEME_SUPPORTS],
+            { 0, 0, height + offsetsB[direction][trackSequence][0] }, { floorBoundSize, (drawRail ? 2 : 0) },
+            { floorBoundOffset, height + offsetsB[direction][trackSequence][1] });
         if (drawRail)
         {
             PaintAddImageAsChild(
@@ -2093,8 +2089,8 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, imageId | session->TrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16,
-            height + railOffsets[direction]);
+            session, imageId | session->TrackColours[SCHEME_TRACK], { -16, -16, height }, { 32, 32, 2 },
+            { -16, -16, height + railOffsets[direction] });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2131,8 +2127,8 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], 0, 0, floorBoundSize.x, floorBoundSize.y,
-            (drawRail ? 2 : 0), height, floorBoundOffset.x, floorBoundOffset.y, height);
+            session, floorImage | session->TrackColours[SCHEME_SUPPORTS], { 0, 0, height },
+            { floorBoundSize, (drawRail ? 2 : 0) }, { floorBoundOffset, height });
         if (drawRail)
         {
             PaintAddImageAsChild(
@@ -2143,7 +2139,7 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, imageId | session->TrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height);
+            session, imageId | session->TrackColours[SCHEME_TRACK], { -16, -16, height }, { 32, 32, 2 }, { -16, -16, height });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

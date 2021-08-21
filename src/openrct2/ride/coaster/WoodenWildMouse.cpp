@@ -570,16 +570,16 @@ static void wooden_wild_mouse_track_left_quarter_turn_1(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, imageId, 6, 0, 26, 24, 1, height, 6, 2, height);
+            PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 26, 24, 1 }, { 6, 2, height });
             break;
         case 1:
-            PaintAddImageAsParent(session, imageId, 0, 0, 26, 26, 1, height);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 26, 1 });
             break;
         case 2:
-            PaintAddImageAsParent(session, imageId, 0, 6, 24, 26, 1, height, 2, 6, height);
+            PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 24, 26, 1 }, { 2, 6, height });
             break;
         case 3:
-            PaintAddImageAsParent(session, imageId, 6, 6, 24, 24, 1, height);
+            PaintAddImageAsParent(session, imageId, { 6, 6, height }, { 24, 24, 1 });
             break;
     }
     wooden_a_supports_paint_setup(session, supportType[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);

@@ -83,32 +83,38 @@ static void paint_motionsimulator_vehicle(
         case 0:
             // Simulator
             imageId = simulatorImageId;
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 20, 44 }, { offsetX, offsetY, offsetZ });
             // Stairs
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
             PaintAddImageAsChild(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
             // Stairs (rail)
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 2, 44, offsetZ, offsetX, offsetY + 32, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 2, 44 }, { offsetX, offsetY + 32, offsetZ });
             break;
         case 1:
             // Simulator
             imageId = simulatorImageId;
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 20, 44 }, { offsetX, offsetY, offsetZ });
             // Stairs
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
             PaintAddImageAsChild(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
             // Stairs (rail)
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 2, 20, 44, offsetZ, offsetX + 34, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 2, 20, 44 }, { offsetX + 34, offsetY, offsetZ });
             break;
         case 2:
             // Stairs (rail)
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 2, 44, offsetZ, offsetX, offsetY - 10, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 2, 44 }, { offsetX, offsetY - 10, offsetZ });
             // Stairs
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY + 5, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 20, 44 }, { offsetX, offsetY + 5, offsetZ });
             // Simulator
             imageId = simulatorImageId;
             PaintAddImageAsChild(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY + 5, offsetZ);
@@ -116,10 +122,12 @@ static void paint_motionsimulator_vehicle(
         case 3:
             // Stairs (rail)
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 2, 20, 44, offsetZ, offsetX - 10, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 2, 20, 44 }, { offsetX - 10, offsetY, offsetZ });
             // Stairs
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX + 5, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 20, 44 }, { offsetX + 5, offsetY, offsetZ });
             // Simulator
             imageId = simulatorImageId;
             PaintAddImageAsChild(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX + 5, offsetY, offsetZ);

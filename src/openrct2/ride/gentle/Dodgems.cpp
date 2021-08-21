@@ -31,7 +31,7 @@ static constexpr const uint32_t dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TO
 static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t offset)
 {
     uint32_t image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, 2, height);
+    PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 32, 2 });
 
     image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (EnumValue(FilterPaletteID::PaletteDarken3) << 19) | IMAGE_TYPE_TRANSPARENT;
     PaintAttachToPreviousPS(session, image_id, 0, 0);
@@ -48,7 +48,7 @@ static void paint_dodgems(
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
-    PaintAddImageAsParent(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });
 
     if (ride != nullptr)
     {

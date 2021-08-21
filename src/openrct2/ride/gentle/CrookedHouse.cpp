@@ -16,17 +16,15 @@
 
 struct rct_crooked_house_bound_box
 {
-    int16_t offset_x;
-    int16_t offset_y;
-    int16_t length_x;
-    int16_t length_y;
+    CoordsXY offset;
+    CoordsXY length;
 };
 
-static constexpr const rct_crooked_house_bound_box crooked_house_data[] = { { 6, 0, 42, 24 },
-                                                                            { 0, 0, 0, 0 },
-                                                                            { -16, -16, 32, 32 },
-                                                                            { 0, 0, 0, 0 }, // Unused
-                                                                            { 0, 6, 24, 42 } };
+static constexpr const rct_crooked_house_bound_box crooked_house_data[] = { { { 6, 0 }, { 42, 24 } },
+                                                                            { { 0, 0 }, { 0, 0 } },
+                                                                            { { -16, -16 }, { 32, 32 } },
+                                                                            { { 0, 0 }, { 0, 0 } }, // Unused
+                                                                            { { 0, 6 }, { 24, 42 } } };
 
 /**
  *  rct2: 0x0088ABA4
@@ -56,10 +54,9 @@ static void paint_crooked_house_structure(
 
     uint32_t image_id = (direction + rideEntry->vehicles[0].base_image_id) | session->TrackColours[SCHEME_MISC];
 
-    rct_crooked_house_bound_box boundBox = crooked_house_data[segment];
+    const rct_crooked_house_bound_box& boundBox = crooked_house_data[segment];
     PaintAddImageAsParent(
-        session, image_id, x_offset, y_offset, boundBox.length_x, boundBox.length_y, 127, height + 3, boundBox.offset_x,
-        boundBox.offset_y, height + 3);
+        session, image_id, { x_offset, y_offset, height + 3 }, { boundBox.length, 127 }, { boundBox.offset, height + 3 });
 }
 
 static void paint_crooked_house(

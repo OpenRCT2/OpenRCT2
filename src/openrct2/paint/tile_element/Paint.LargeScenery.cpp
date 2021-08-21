@@ -244,8 +244,6 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
 
     uint32_t dword_F4387C = 0;
     image_id |= SPRITE_ID_PALETTE_COLOUR_2(tileElement.GetPrimaryColour(), tileElement.GetSecondaryColour());
-    CoordsXYZ boxlength;
-    CoordsXYZ boxoffset;
     if (gTrackDesignSaveMode)
     {
         if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&tileElement)))
@@ -283,14 +281,9 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
         edi = rol16(edi, direction);
         esi = (edi & 0xF) | (edi >> 12);
     }
-    boxoffset.x = s98E3C4[esi].offset.x;
-    boxoffset.y = s98E3C4[esi].offset.y;
-    boxoffset.z = height;
-    boxlength.x = s98E3C4[esi].length.x;
-    boxlength.y = s98E3C4[esi].length.y;
-    boxlength.z = boxlengthZ;
-    PaintAddImageAsParent(
-        session, image_id, 0, 0, boxlength.x, boxlength.y, boxlengthZ, height, boxoffset.x, boxoffset.y, boxoffset.z);
+    const CoordsXYZ bbLength = { s98E3C4[esi].offset, height };
+    const CoordsXYZ bbOffset = { s98E3C4[esi].length, boxlengthZ };
+    PaintAddImageAsParent(session, image_id, { 0, 0, height }, bbLength, bbOffset);
     if (sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE || direction == 1 || direction == 2)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
@@ -454,7 +447,7 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
         uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
         PaintAddImageAsChild(
             session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textColour), 0, 0, 1, 1, 21,
-            height + 25, boxoffset.x, boxoffset.y, boxoffset.z);
+            height + 25, bbOffset.x, bbOffset.y, bbOffset.z);
     }
 
     large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);

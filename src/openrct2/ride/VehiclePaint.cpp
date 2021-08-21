@@ -918,7 +918,8 @@ static void vehicle_sprite_paint(
         image_id |= CONSTRUCTION_MARKER;
     }
     paint_struct* ps = PaintAddImageAsParent(
-        session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z);
+        session, image_id, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
+        { bb.offset_x, bb.offset_y, bb.offset_z + z });
     if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
@@ -3144,7 +3145,7 @@ template<> void PaintEntity(paint_session* session, const Vehicle* vehicle, int3
     if (vehicle->IsCrashedVehicle)
     {
         uint32_t ebx = 22965 + vehicle->animation_frame;
-        PaintAddImageAsParent(session, ebx, 0, 0, 1, 1, 0, z, 0, 0, z + 2);
+        PaintAddImageAsParent(session, ebx, { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
         return;
     }
 
