@@ -7,12 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _OPENRCT2_CRASH_
-#define _OPENRCT2_CRASH_
+#pragma once
 
 using CExceptionHandler = void*;
 
 extern bool gOpenRCT2SilentBreakpad;
 CExceptionHandler crash_init();
-
-#endif /* _OPENRCT2_CRASH_ */

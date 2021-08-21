@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _ADDRESSES_H_
-#define _ADDRESSES_H_
+#pragma once
 
 #include <openrct2/common.h>
 
@@ -41,5 +40,3 @@
  */
 int32_t RCT2_CALLPROC_X(
     int32_t address, int32_t _eax, int32_t _ebx, int32_t _ecx, int32_t _edx, int32_t _esi, int32_t _edi, int32_t _ebp);
-
-#endif

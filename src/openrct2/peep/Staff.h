@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _STAFF_H_
-#define _STAFF_H_
+#pragma once
 
 #include "../common.h"
 #include "Peep.h"
@@ -75,5 +74,3 @@ int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costume
 
 money32 GetStaffWage(StaffType type);
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
-
-#endif

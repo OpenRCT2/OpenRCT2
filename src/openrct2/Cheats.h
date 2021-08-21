@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _CHEATS_H_
-#define _CHEATS_H_
+#pragma once
 
 #include "common.h"
 
@@ -120,5 +119,3 @@ void CheatsReset();
 const char* CheatsGetName(CheatType cheatType);
 void CheatsSet(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0);
 void CheatsSerialise(class DataSerialiser& ds);
-
-#endif

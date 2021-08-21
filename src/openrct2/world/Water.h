@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _WATER_H_
-#define _WATER_H_
+#pragma once
 
 #include "../common.h"
 
@@ -28,5 +27,3 @@ struct rct_water_type
 };
 assert_struct_size(rct_water_type, 16);
 #pragma pack(pop)
-
-#endif
