@@ -1179,7 +1179,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpriteVehicle* dst, const Vehicle* 
     dst->powered_acceleration = src->powered_acceleration;
     dst->dodgems_collision_direction = src->dodgems_collision_direction;
     dst->animation_frame = src->animation_frame;
-    dst->var_C8 = src->var_C8;
+    dst->animation_state = src->animation_state;
     dst->var_CA = src->var_CA;
     dst->scream_sound_id = static_cast<uint8_t>(src->scream_sound_id);
     dst->TrackSubposition = static_cast<uint8_t>(src->TrackSubposition);
