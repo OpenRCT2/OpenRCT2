@@ -3058,7 +3058,7 @@ static Vehicle* vehicle_create_car(
     vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
     vehicle->var_C4 = 0;
     vehicle->animation_frame = 0;
-    vehicle->animation_state = 0;
+    vehicle->animationState = 0;
     vehicle->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
     vehicle->Pitch = 0;
     vehicle->bank_rotation = 0;

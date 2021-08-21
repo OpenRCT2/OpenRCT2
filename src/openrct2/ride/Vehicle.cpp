@@ -1522,16 +1522,16 @@ bool Vehicle::OpenRestraints()
         }
         if (vehicleEntry->animation == VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
         {
-            if (vehicle->animation_state + 0x3333 < 0xFFFF)
+            if (vehicle->animationState + 0x3333 < 0xFFFF)
             {
-                vehicle->animation_state = vehicle->animation_state + 0x3333 - 0xFFFF;
+                vehicle->animationState = vehicle->animationState + 0x3333 - 0xFFFF;
                 vehicle->animation_frame++;
                 vehicle->animation_frame &= 7;
                 vehicle->Invalidate();
             }
             else
             {
-                vehicle->animation_state += 0x3333;
+                vehicle->animationState += 0x3333;
             }
             restraintsOpen = false;
             continue;
@@ -3639,7 +3639,7 @@ void Vehicle::UpdateCollisionSetup()
         }
 
         train->IsCrashedVehicle = true;
-        train->animation_state = scenario_rand();
+        train->animationState = scenario_rand();
         train->var_CA = scenario_rand();
 
         train->animation_frame = train->var_CA & 0x7;
@@ -5408,7 +5408,7 @@ void Vehicle::CrashOnLand()
 
     IsCrashedVehicle = true;
     animation_frame = 0;
-    animation_state = 0;
+    animationState = 0;
     sprite_width = 13;
     sprite_height_negative = 45;
     sprite_height_positive = 5;
@@ -5475,7 +5475,7 @@ void Vehicle::CrashOnWater()
 
     IsCrashedVehicle = true;
     animation_frame = 0;
-    animation_state = 0;
+    animationState = 0;
     sprite_width = 13;
     sprite_height_negative = 45;
     sprite_height_positive = 5;
@@ -5506,14 +5506,14 @@ void Vehicle::UpdateCrash()
                     ExplosionCloud::Create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
                 }
             }
-            if (curVehicle->animation_state + 7281 > 0xFFFF)
+            if (curVehicle->animationState + 7281 > 0xFFFF)
             {
                 curVehicle->animation_frame++;
                 if (curVehicle->animation_frame >= 8)
                     curVehicle->animation_frame = 0;
                 curVehicle->Invalidate();
             }
-            curVehicle->animation_state += 7281;
+            curVehicle->animationState += 7281;
             continue;
         }
 
@@ -7275,11 +7275,11 @@ void Vehicle::UpdateSpinningCar()
  */
 void Vehicle::UpdateAdditionalAnimation()
 {
-    uint8_t target_frame{};
-    uint8_t steam_frame{};
+    uint8_t targetFrame{};
+    uint8_t steamFrame{};
     uint32_t eax{};
 
-    uint32_t* curAnimation_state = reinterpret_cast<uint32_t*>(&animation_state);
+    uint32_t* curAnimation_state = reinterpret_cast<uint32_t*>(&animationState);
     auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
@@ -7289,14 +7289,14 @@ void Vehicle::UpdateAdditionalAnimation()
     {
         case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
             *curAnimation_state += _vehicleVelocityF64E08;
-            target_frame = (*curAnimation_state >> 20) & 3;
-            if (animation_frame != target_frame)
+            targetFrame = (*curAnimation_state >> 20) & 3;
+            if (animation_frame != targetFrame)
             {
-                steam_frame = animation_frame;
-                animation_frame = target_frame;
-                target_frame &= 0x02;
-                steam_frame &= 0x02;
-                if (target_frame != steam_frame)
+                steamFrame = animation_frame;
+                animation_frame = targetFrame;
+                targetFrame &= 0x02;
+                steamFrame &= 0x02;
+                if (targetFrame != steamFrame)
                 {
                     auto curRide = GetRide();
                     if (curRide != nullptr)
@@ -7328,50 +7328,50 @@ void Vehicle::UpdateAdditionalAnimation()
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
             *curAnimation_state += _vehicleVelocityF64E08;
-            target_frame = (*curAnimation_state >> 18) & 2;
-            if (animation_frame != target_frame)
+            targetFrame = (*curAnimation_state >> 18) & 2;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = target_frame;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
             *curAnimation_state += _vehicleVelocityF64E08;
             eax = ((*curAnimation_state >> 13) & 0xFF) * 6;
-            target_frame = (eax >> 8) & 0xFF;
-            if (animation_frame != target_frame)
+            targetFrame = (eax >> 8) & 0xFF;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = target_frame;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
             *curAnimation_state += _vehicleVelocityF64E08;
             eax = ((*curAnimation_state >> 13) & 0xFF) * 7;
-            target_frame = (eax >> 8) & 0xFF;
-            if (animation_frame != target_frame)
+            targetFrame = (eax >> 8) & 0xFF;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = target_frame;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
             *curAnimation_state += _vehicleVelocityF64E08;
-            target_frame = (*curAnimation_state >> 19) & 1;
-            if (animation_frame != target_frame)
+            targetFrame = (*curAnimation_state >> 19) & 1;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = target_frame;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER: // loc_6D65C3
-            if (animation_state <= 0xCCCC)
+            if (animationState <= 0xCCCC)
             {
-                animation_state += 0x3333;
+                animationState += 0x3333;
             }
             else
             {
-                animation_state += 0x3333;
+                animationState += 0x3333;
                 animation_frame += 1;
                 animation_frame &= 7;
                 Invalidate();
@@ -7379,10 +7379,10 @@ void Vehicle::UpdateAdditionalAnimation()
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
             *curAnimation_state += _vehicleVelocityF64E08;
-            target_frame = (*curAnimation_state >> 18) & 3;
-            if (animation_frame != target_frame)
+            targetFrame = (*curAnimation_state >> 18) & 3;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = target_frame;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
@@ -7391,10 +7391,10 @@ void Vehicle::UpdateAdditionalAnimation()
             {
                 *curAnimation_state += _vehicleVelocityF64E08;
                 eax = ((*curAnimation_state >> 13) & 0xFF) << 2;
-                target_frame = (eax >> 8) & 0xFF;
-                if (animation_frame != target_frame)
+                targetFrame = (eax >> 8) & 0xFF;
+                if (animation_frame != targetFrame)
                 {
-                    animation_frame = target_frame;
+                    animation_frame = targetFrame;
                     Invalidate();
                 }
             }
@@ -7402,13 +7402,13 @@ void Vehicle::UpdateAdditionalAnimation()
         case VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER: // loc_6D65E1
             if (seat_rotation != target_seat_rotation)
             {
-                if (animation_state <= 0xCCCC)
+                if (animationState <= 0xCCCC)
                 {
-                    animation_state += 0x3333;
+                    animationState += 0x3333;
                 }
                 else
                 {
-                    animation_state += 0x3333;
+                    animationState += 0x3333;
 
                     if (seat_rotation >= target_seat_rotation)
                         seat_rotation--;
