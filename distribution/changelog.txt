@@ -14,7 +14,7 @@
 - Fix: [#15170] Plugin: incorrect label text alignment.
 - Fix: [#15184] Crash when hovering over water types in Object Selection.
 - Fix: [#15193] Crash when rides/stalls are demolished.
-- Fix: [#15255] Normal wall scenery would have the banner index 0 at all times.
+- Fix: [#15255] Tile Inspector shows banner information on walls that do not contain one.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
 - Change: [#8601] Revert ToonTower base block fix to re-enable support blocking.
 - Change: [#15174] [Plugin] Deprecate the type "peep" and add support to target a specific scripting api version.
