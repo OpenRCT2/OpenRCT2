@@ -7276,10 +7276,10 @@ void Vehicle::UpdateSpinningCar()
 void Vehicle::UpdateAdditionalAnimation()
 {
     uint8_t targetFrame{};
-    uint8_t steamFrame{};
+    uint8_t curFrame{};
     uint32_t eax{};
 
-    uint32_t* curAnimation_state = reinterpret_cast<uint32_t*>(&animationState);
+    uint32_t* curAnimationState = reinterpret_cast<uint32_t*>(&animationState);
     auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
@@ -7288,15 +7288,15 @@ void Vehicle::UpdateAdditionalAnimation()
     switch (vehicleEntry->animation)
     {
         case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
-            *curAnimation_state += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimation_state >> 20) & 3;
+            *curAnimationState += _vehicleVelocityF64E08;
+            targetFrame = (*curAnimationState >> 20) & 3;
             if (animation_frame != targetFrame)
             {
-                steamFrame = animation_frame;
+                curFrame = animation_frame;
                 animation_frame = targetFrame;
                 targetFrame &= 0x02;
-                steamFrame &= 0x02;
-                if (targetFrame != steamFrame)
+                curFrame &= 0x02;
+                if (targetFrame != curFrame)
                 {
                     auto curRide = GetRide();
                     if (curRide != nullptr)
@@ -7327,8 +7327,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
-            *curAnimation_state += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimation_state >> 18) & 2;
+            *curAnimationState += _vehicleVelocityF64E08;
+            targetFrame = (*curAnimationState >> 18) & 2;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
@@ -7336,8 +7336,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
-            *curAnimation_state += _vehicleVelocityF64E08;
-            eax = ((*curAnimation_state >> 13) & 0xFF) * 6;
+            *curAnimationState += _vehicleVelocityF64E08;
+            eax = ((*curAnimationState >> 13) & 0xFF) * 6;
             targetFrame = (eax >> 8) & 0xFF;
             if (animation_frame != targetFrame)
             {
@@ -7346,8 +7346,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
-            *curAnimation_state += _vehicleVelocityF64E08;
-            eax = ((*curAnimation_state >> 13) & 0xFF) * 7;
+            *curAnimationState += _vehicleVelocityF64E08;
+            eax = ((*curAnimationState >> 13) & 0xFF) * 7;
             targetFrame = (eax >> 8) & 0xFF;
             if (animation_frame != targetFrame)
             {
@@ -7356,8 +7356,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
-            *curAnimation_state += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimation_state >> 19) & 1;
+            *curAnimationState += _vehicleVelocityF64E08;
+            targetFrame = (*curAnimationState >> 19) & 1;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
@@ -7378,8 +7378,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
-            *curAnimation_state += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimation_state >> 18) & 3;
+            *curAnimationState += _vehicleVelocityF64E08;
+            targetFrame = (*curAnimationState >> 18) & 3;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
@@ -7389,8 +7389,8 @@ void Vehicle::UpdateAdditionalAnimation()
         case VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
             if (num_peeps != 0)
             {
-                *curAnimation_state += _vehicleVelocityF64E08;
-                eax = ((*curAnimation_state >> 13) & 0xFF) << 2;
+                *curAnimationState += _vehicleVelocityF64E08;
+                eax = ((*curAnimationState >> 13) & 0xFF) << 2;
                 targetFrame = (eax >> 8) & 0xFF;
                 if (animation_frame != targetFrame)
                 {
