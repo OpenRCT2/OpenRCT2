@@ -4587,7 +4587,7 @@ const static uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
 };
 
 /** rct2: 0x00999A94 */
-const uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][MaxSequencesPerPiece] = {
+const static uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][MaxSequencesPerPiece] = {
     { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Flat
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::EndStation
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BeginStation

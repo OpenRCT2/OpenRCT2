@@ -20,6 +20,7 @@
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 
+using namespace OpenRCT2::TrackMetaData;
 WallPlaceActionResult::WallPlaceActionResult()
     : GameActions::Result(GameActions::Status::Ok, STR_CANT_BUILD_THIS_HERE)
 {
@@ -592,7 +593,8 @@ bool WallPlaceAction::TrackIsAllowedWallEdges(
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_NO_WALLS))
     {
-        if (TrackSequenceElementAllowedWallEdges[trackType][trackSequence] & (1 << direction))
+        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+        if (teDescriptor.SequenceElementAllowedWallEdges[trackSequence] & (1 << direction))
         {
             return true;
         }

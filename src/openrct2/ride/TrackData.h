@@ -57,8 +57,6 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
     return { 0, 0, 0, 0 };
 }
 
-extern const uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][16];
-
 struct TrackElementDescriptor
 {
     rct_track_coordinates Coordinates;

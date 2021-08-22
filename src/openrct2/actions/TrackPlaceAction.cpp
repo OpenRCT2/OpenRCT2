@@ -400,11 +400,10 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
 
     uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
 
-    const uint8_t(*wallEdges)[16];
-    wallEdges = &TrackSequenceElementAllowedWallEdges[_trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
+    auto wallEdges = teDescriptor.SequenceElementAllowedWallEdges;
 
     money32 cost = 0;
-    const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
     const rct_preview_track* trackBlock = teDescriptor.Block;
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
@@ -452,7 +451,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             else
             {
                 // Remove walls in the directions this track intersects
-                uint8_t intersectingDirections = (*wallEdges)[blockIndex];
+                uint8_t intersectingDirections = wallEdges[blockIndex];
                 intersectingDirections ^= 0x0F;
                 intersectingDirections = rol4(intersectingDirections, _origin.direction);
                 for (int32_t i = 0; i < NumOrthogonalDirections; i++)
