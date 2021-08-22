@@ -29,43 +29,43 @@ struct ScreenCoordsXY
     int32_t x = 0;
     int32_t y = 0;
 
-    ScreenCoordsXY() = default;
+    constexpr ScreenCoordsXY() = default;
     constexpr ScreenCoordsXY(int32_t _x, int32_t _y)
         : x(_x)
         , y(_y)
     {
     }
 
-    const ScreenCoordsXY operator-(const ScreenCoordsXY& rhs) const
+    constexpr const ScreenCoordsXY operator-(const ScreenCoordsXY& rhs) const
     {
         return { x - rhs.x, y - rhs.y };
     }
 
-    ScreenCoordsXY& operator+=(const ScreenCoordsXY& rhs)
+    constexpr ScreenCoordsXY& operator+=(const ScreenCoordsXY& rhs)
     {
         x += rhs.x;
         y += rhs.y;
         return *this;
     }
 
-    ScreenCoordsXY& operator-=(const ScreenCoordsXY& rhs)
+    constexpr ScreenCoordsXY& operator-=(const ScreenCoordsXY& rhs)
     {
         x -= rhs.x;
         y -= rhs.y;
         return *this;
     }
 
-    const ScreenCoordsXY operator+(const ScreenCoordsXY& rhs) const
+    constexpr const ScreenCoordsXY operator+(const ScreenCoordsXY& rhs) const
     {
         return { x + rhs.x, y + rhs.y };
     }
 
-    bool operator==(const ScreenCoordsXY& other) const
+    constexpr bool operator==(const ScreenCoordsXY& other) const
     {
         return x == other.x && y == other.y;
     }
 
-    bool operator!=(const ScreenCoordsXY& other) const
+    constexpr bool operator!=(const ScreenCoordsXY& other) const
     {
         return !(*this == other);
     }
@@ -76,19 +76,19 @@ struct ScreenSize
     int32_t width{};
     int32_t height{};
 
-    ScreenSize() = default;
+    constexpr ScreenSize() = default;
     constexpr ScreenSize(int32_t _width, int32_t _height)
         : width(_width)
         , height(_height)
     {
     }
 
-    bool operator==(const ScreenSize& other) const
+    constexpr bool operator==(const ScreenSize& other) const
     {
         return width == other.width && height == other.height;
     }
 
-    bool operator!=(const ScreenSize& other) const
+    constexpr bool operator!=(const ScreenSize& other) const
     {
         return !(*this == other);
     }
@@ -103,7 +103,7 @@ struct CoordsXY
     int32_t x = 0;
     int32_t y = 0;
 
-    CoordsXY() = default;
+    constexpr CoordsXY() = default;
     constexpr CoordsXY(int32_t _x, int32_t _y)
         : x(_x)
         , y(_y)
@@ -231,7 +231,7 @@ struct CoordsXYZ : public CoordsXY
 {
     int32_t z = 0;
 
-    CoordsXYZ() = default;
+    constexpr CoordsXYZ() = default;
     constexpr CoordsXYZ(int32_t _x, int32_t _y, int32_t _z)
         : CoordsXY(_x, _y)
         , z(_z)
@@ -244,32 +244,32 @@ struct CoordsXYZ : public CoordsXY
     {
     }
 
-    const CoordsXYZ operator+(const CoordsXYZ& rhs) const
+    constexpr const CoordsXYZ operator+(const CoordsXYZ& rhs) const
     {
         return { x + rhs.x, y + rhs.y, z + rhs.z };
     }
 
-    const CoordsXYZ operator-(const CoordsXYZ& rhs) const
+    constexpr const CoordsXYZ operator-(const CoordsXYZ& rhs) const
     {
         return { x - rhs.x, y - rhs.y, z - rhs.z };
     }
 
-    bool operator==(const CoordsXYZ& other) const
+    constexpr bool operator==(const CoordsXYZ& other) const
     {
         return x == other.x && y == other.y && z == other.z;
     }
 
-    CoordsXYZ ToTileStart() const
+    constexpr CoordsXYZ ToTileStart() const
     {
         return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP), z };
     }
 
-    CoordsXYZ ToTileCentre() const
+    constexpr CoordsXYZ ToTileCentre() const
     {
         return ToTileStart() + CoordsXYZ{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE, 0 };
     }
 
-    void setNull()
+    constexpr void setNull()
     {
         CoordsXY::setNull();
         z = 0;
@@ -281,7 +281,7 @@ struct CoordsXYRangedZ : public CoordsXY
     int32_t baseZ = 0;
     int32_t clearanceZ = 0;
 
-    CoordsXYRangedZ() = default;
+    constexpr CoordsXYRangedZ() = default;
     constexpr CoordsXYRangedZ(int32_t _x, int32_t _y, int32_t _baseZ, int32_t _clearanceZ)
         : CoordsXY(_x, _y)
         , baseZ(_baseZ)
@@ -309,39 +309,39 @@ struct TileCoordsXY
     int32_t x = 0;
     int32_t y = 0;
 
-    TileCoordsXY() = default;
+    constexpr TileCoordsXY() = default;
     constexpr TileCoordsXY(int32_t x_, int32_t y_)
         : x(x_)
         , y(y_)
     {
     }
 
-    explicit TileCoordsXY(const CoordsXY& c)
+    constexpr explicit TileCoordsXY(const CoordsXY& c)
         : x(c.x / COORDS_XY_STEP)
         , y(c.y / COORDS_XY_STEP)
     {
     }
 
-    const TileCoordsXY operator+(const TileCoordsXY& rhs) const
+    constexpr const TileCoordsXY operator+(const TileCoordsXY& rhs) const
     {
         return { x + rhs.x, y + rhs.y };
     }
 
-    TileCoordsXY& operator+=(const TileCoordsXY& rhs)
+    constexpr TileCoordsXY& operator+=(const TileCoordsXY& rhs)
     {
         x += rhs.x;
         y += rhs.y;
         return *this;
     }
 
-    TileCoordsXY& operator-=(const TileCoordsXY& rhs)
+    constexpr TileCoordsXY& operator-=(const TileCoordsXY& rhs)
     {
         x -= rhs.x;
         y -= rhs.y;
         return *this;
     }
 
-    CoordsXY ToCoordsXY() const
+    constexpr CoordsXY ToCoordsXY() const
     {
         if (isNull())
         {
@@ -353,7 +353,7 @@ struct TileCoordsXY
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP };
     }
 
-    TileCoordsXY Rotate(int32_t direction) const
+    constexpr TileCoordsXY Rotate(int32_t direction) const
     {
         TileCoordsXY rotatedCoords;
         switch (direction & 3)
@@ -380,22 +380,22 @@ struct TileCoordsXY
         return rotatedCoords;
     }
 
-    bool operator==(const TileCoordsXY& other) const
+    constexpr bool operator==(const TileCoordsXY& other) const
     {
         return x == other.x && y == other.y;
     }
 
-    bool operator!=(const TileCoordsXY& other) const
+    constexpr bool operator!=(const TileCoordsXY& other) const
     {
         return !(*this == other);
     }
 
-    bool isNull() const
+    constexpr bool isNull() const
     {
         return x == COORDS_NULL;
     };
 
-    void setNull()
+    constexpr void setNull()
     {
         x = COORDS_NULL;
         y = 0;
@@ -406,56 +406,56 @@ struct TileCoordsXYZ : public TileCoordsXY
 {
     int32_t z = 0;
 
-    TileCoordsXYZ() = default;
+    constexpr TileCoordsXYZ() = default;
     constexpr TileCoordsXYZ(int32_t x_, int32_t y_, int32_t z_)
         : TileCoordsXY(x_, y_)
         , z(z_)
     {
     }
 
-    TileCoordsXYZ(const TileCoordsXY& c, int32_t z_)
+    constexpr TileCoordsXYZ(const TileCoordsXY& c, int32_t z_)
         : TileCoordsXY(c.x, c.y)
         , z(z_)
     {
     }
 
-    TileCoordsXYZ(const CoordsXY& c, int32_t z_)
+    constexpr TileCoordsXYZ(const CoordsXY& c, int32_t z_)
         : TileCoordsXY(c)
         , z(z_)
     {
     }
 
-    explicit TileCoordsXYZ(const CoordsXYZ& c)
+    constexpr explicit TileCoordsXYZ(const CoordsXYZ& c)
         : TileCoordsXY(c)
         , z(c.z / COORDS_Z_STEP)
     {
     }
 
-    TileCoordsXYZ& operator+=(const TileCoordsXY& rhs)
+    constexpr TileCoordsXYZ& operator+=(const TileCoordsXY& rhs)
     {
         x += rhs.x;
         y += rhs.y;
         return *this;
     }
 
-    TileCoordsXYZ& operator-=(const TileCoordsXY& rhs)
+    constexpr TileCoordsXYZ& operator-=(const TileCoordsXY& rhs)
     {
         x -= rhs.x;
         y -= rhs.y;
         return *this;
     }
 
-    bool operator==(const TileCoordsXYZ& other) const
+    constexpr bool operator==(const TileCoordsXYZ& other) const
     {
         return x == other.x && y == other.y && z == other.z;
     }
 
-    bool operator!=(const TileCoordsXYZ& other) const
+    constexpr bool operator!=(const TileCoordsXYZ& other) const
     {
         return !(*this == other);
     }
 
-    CoordsXYZ ToCoordsXYZ() const
+    constexpr CoordsXYZ ToCoordsXYZ() const
     {
         if (isNull())
         {
@@ -466,7 +466,7 @@ struct TileCoordsXYZ : public TileCoordsXY
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP };
     }
 
-    void setNull()
+    constexpr void setNull()
     {
         TileCoordsXY::setNull();
         z = 0;
@@ -549,7 +549,7 @@ struct CoordsXYZD : public CoordsXYZ
 {
     Direction direction = 0;
 
-    CoordsXYZD() = default;
+    constexpr CoordsXYZD() = default;
     constexpr CoordsXYZD(int32_t _x, int32_t _y, int32_t _z, Direction _d)
         : CoordsXYZ(_x, _y, _z)
         , direction(_d)
@@ -568,49 +568,49 @@ struct CoordsXYZD : public CoordsXYZ
     {
     }
 
-    bool operator==(const CoordsXYZD& other) const
+    constexpr bool operator==(const CoordsXYZD& other) const
     {
         return x == other.x && y == other.y && z == other.z && direction == other.direction;
     }
 
-    bool operator!=(const CoordsXYZD& other) const
+    constexpr bool operator!=(const CoordsXYZD& other) const
     {
         return !(*this == other);
     }
 
-    CoordsXYZD& operator+=(const CoordsXY& rhs)
+    constexpr CoordsXYZD& operator+=(const CoordsXY& rhs)
     {
         x += rhs.x;
         y += rhs.y;
         return *this;
     }
 
-    const CoordsXYZD operator+(const CoordsXY& rhs) const
+    constexpr const CoordsXYZD operator+(const CoordsXY& rhs) const
     {
         return { x + rhs.x, y + rhs.y, z, direction };
     }
 
-    const CoordsXYZD operator+(const CoordsXYZ& rhs) const
+    constexpr const CoordsXYZD operator+(const CoordsXYZ& rhs) const
     {
         return { x + rhs.x, y + rhs.y, z + rhs.z, direction };
     }
 
-    const CoordsXYZD operator-(const CoordsXY& rhs) const
+    constexpr const CoordsXYZD operator-(const CoordsXY& rhs) const
     {
         return { x - rhs.x, y - rhs.y, z, direction };
     }
 
-    const CoordsXYZD operator-(const CoordsXYZ& rhs) const
+    constexpr const CoordsXYZD operator-(const CoordsXYZ& rhs) const
     {
         return { x - rhs.x, y - rhs.y, z - rhs.z, direction };
     }
 
-    CoordsXYZD ToTileStart() const
+    constexpr CoordsXYZD ToTileStart() const
     {
         return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP), z, direction };
     }
 
-    CoordsXYZD ToTileCentre() const
+    constexpr CoordsXYZD ToTileCentre() const
     {
         return ToTileStart() + CoordsXYZD{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE, 0, 0 };
     }
@@ -620,44 +620,44 @@ struct TileCoordsXYZD : public TileCoordsXYZ
 {
     Direction direction;
 
-    TileCoordsXYZD() = default;
+    constexpr TileCoordsXYZD() = default;
     constexpr TileCoordsXYZD(int32_t x_, int32_t y_, int32_t z_, Direction d_)
         : TileCoordsXYZ(x_, y_, z_)
         , direction(d_)
     {
     }
 
-    TileCoordsXYZD(const TileCoordsXYZ& t_, Direction d_)
+    constexpr TileCoordsXYZD(const TileCoordsXYZ& t_, Direction d_)
         : TileCoordsXYZ(t_)
         , direction(d_)
     {
     }
 
-    TileCoordsXYZD(const TileCoordsXY& t_, int32_t z_, Direction d_)
+    constexpr TileCoordsXYZD(const TileCoordsXY& t_, int32_t z_, Direction d_)
         : TileCoordsXYZ(t_, z_)
         , direction(d_)
     {
     }
 
-    TileCoordsXYZD(const CoordsXY& c_, int32_t z_, Direction d_)
+    constexpr TileCoordsXYZD(const CoordsXY& c_, int32_t z_, Direction d_)
         : TileCoordsXYZ(c_, z_)
         , direction(d_)
     {
     }
 
-    TileCoordsXYZD(const CoordsXYZ& c_, Direction d_)
+    constexpr TileCoordsXYZD(const CoordsXYZ& c_, Direction d_)
         : TileCoordsXYZ(c_)
         , direction(d_)
     {
     }
 
-    TileCoordsXYZD(const CoordsXYZD& c_)
+    constexpr TileCoordsXYZD(const CoordsXYZD& c_)
         : TileCoordsXYZ(c_)
         , direction(c_.direction)
     {
     }
 
-    CoordsXYZD ToCoordsXYZD() const
+    constexpr CoordsXYZD ToCoordsXYZD() const
     {
         if (isNull())
         {
@@ -668,7 +668,7 @@ struct TileCoordsXYZD : public TileCoordsXYZ
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP, direction };
     }
 
-    void setNull()
+    constexpr void setNull()
     {
         TileCoordsXYZ::setNull();
         direction = INVALID_DIRECTION;
@@ -683,30 +683,30 @@ template<class T> struct CoordsRange
     T Point1{ 0, 0 };
     T Point2{ 0, 0 };
 
-    int32_t GetX1() const
+    constexpr int32_t GetX1() const
     {
         return Point1.x;
     }
-    int32_t GetY1() const
+    constexpr int32_t GetY1() const
     {
         return Point1.y;
     }
-    int32_t GetX2() const
+    constexpr int32_t GetX2() const
     {
         return Point2.x;
     }
-    int32_t GetY2() const
+    constexpr int32_t GetY2() const
     {
         return Point2.y;
     }
 
-    CoordsRange() = default;
-    CoordsRange(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
+    constexpr CoordsRange() = default;
+    constexpr CoordsRange(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
         : CoordsRange({ x1, y1 }, { x2, y2 })
     {
     }
 
-    CoordsRange(const T& pointOne, const T& pointTwo)
+    constexpr CoordsRange(const T& pointOne, const T& pointTwo)
         : Point1(pointOne)
         , Point2(pointTwo)
     {
@@ -717,29 +717,29 @@ template<class T> struct RectRange : public CoordsRange<T>
 {
     using CoordsRange<T>::CoordsRange;
 
-    int32_t GetLeft() const
+    constexpr int32_t GetLeft() const
     {
         return CoordsRange<T>::GetX1();
     }
-    int32_t GetTop() const
+    constexpr int32_t GetTop() const
     {
         return CoordsRange<T>::GetY1();
     }
-    int32_t GetRight() const
+    constexpr int32_t GetRight() const
     {
         return CoordsRange<T>::GetX2();
     }
-    int32_t GetBottom() const
+    constexpr int32_t GetBottom() const
     {
         return CoordsRange<T>::GetY2();
     }
 
-    RectRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
+    constexpr RectRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
         : RectRange({ left, top }, { right, bottom })
     {
     }
 
-    RectRange(const T& leftTop, const T& rightBottom)
+    constexpr RectRange(const T& leftTop, const T& rightBottom)
         : CoordsRange<T>(leftTop, rightBottom)
     {
     }
@@ -753,7 +753,7 @@ struct MapRange : public RectRange<CoordsXY>
 {
     using RectRange::RectRange;
 
-    MapRange Normalise() const
+    constexpr MapRange Normalise() const
     {
         auto result = MapRange(
             std::min(GetLeft(), GetRight()), std::min(GetTop(), GetBottom()), std::max(GetLeft(), GetRight()),
@@ -768,7 +768,7 @@ struct MapRange : public RectRange<CoordsXY>
 
 struct ScreenLine : public CoordsRange<ScreenCoordsXY>
 {
-    ScreenLine(const ScreenCoordsXY& leftTop, const ScreenCoordsXY& rightBottom)
+    constexpr ScreenLine(const ScreenCoordsXY& leftTop, const ScreenCoordsXY& rightBottom)
         : CoordsRange<ScreenCoordsXY>(leftTop, rightBottom)
     {
     }
@@ -782,15 +782,15 @@ struct ScreenRect : public RectRange<ScreenCoordsXY>
 {
     using RectRange::RectRange;
 
-    int32_t GetWidth() const
+    constexpr int32_t GetWidth() const
     {
         return GetRight() - GetLeft();
     }
-    int32_t GetHeight() const
+    constexpr int32_t GetHeight() const
     {
         return GetBottom() - GetTop();
     }
-    bool Contains(const ScreenCoordsXY& coords) const
+    constexpr bool Contains(const ScreenCoordsXY& coords) const
     {
         return coords.x >= GetLeft() && coords.x <= GetRight() && coords.y >= GetTop() && coords.y <= GetBottom();
     }
