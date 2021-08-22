@@ -4045,7 +4045,7 @@ const money32 TrackPricing[TrackElemType::Count] = {
 };
 
 /** rct2: 0x0099EA1C */
-const track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
+const static track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
     TrackElemType::Flat,
     TrackElemType::EndStation,
     TrackElemType::BeginStation,

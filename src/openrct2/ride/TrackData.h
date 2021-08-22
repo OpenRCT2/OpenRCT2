@@ -62,7 +62,6 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
         return { 4, 4, 59, 123 };
     return { 0, 0, 0, 0 };
 }
-extern const track_type_t TrackElementMirrorMap[TrackElemType::Count];
 
 extern const uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][16];
 
