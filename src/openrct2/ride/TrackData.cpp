@@ -2816,7 +2816,7 @@ const rct_preview_track *TrackBlocks[TrackElemType::Count] = {
     TrackBlocksFlatTrack3x3,
 };
 
-const uint8_t TrackPieceLengths[TrackElemType::Count] = {
+const static uint8_t TrackPieceLengths[TrackElemType::Count] = {
     32,     // TrackElemType::Flat
     32,     // TrackElemType::EndStation
     32,     // TrackElemType::BeginStation

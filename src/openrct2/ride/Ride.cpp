@@ -4909,7 +4909,8 @@ static int32_t ride_get_track_length(Ride* ride)
     while (track_circuit_iterator_next(&it))
     {
         trackType = it.current.element->AsTrack()->GetTrackType();
-        result += TrackPieceLengths[trackType];
+        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+        result += teDescriptor.PieceLength;
 
         moveSlowIt = !moveSlowIt;
         if (moveSlowIt)

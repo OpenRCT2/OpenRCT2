@@ -21,8 +21,6 @@ extern const uint8_t TrackSequenceProperties[TrackElemType::Count][MaxSequencesP
 
 extern const rct_preview_track* TrackBlocks[TrackElemType::Count];
 
-extern const uint8_t TrackPieceLengths[TrackElemType::Count];
-
 struct track_curve_chain
 {
     int32_t next;
