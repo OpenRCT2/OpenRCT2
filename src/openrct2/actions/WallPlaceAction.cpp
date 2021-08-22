@@ -441,7 +441,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     int32_t z;
     if (sequence == 0)
     {
-        if (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
+        if (teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
         {
             return false;
         }

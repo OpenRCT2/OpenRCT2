@@ -7933,7 +7933,8 @@ void Vehicle::Sub6DBF3E()
     }
 
     auto trackType = GetTrackType();
-    if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
     }
@@ -9208,7 +9209,8 @@ loc_6DCE02:
     }
     {
         auto trackType = GetTrackType();
-        if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+        if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
         {
             return;
         }

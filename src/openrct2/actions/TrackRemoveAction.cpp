@@ -203,7 +203,7 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
             return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
-        int32_t entranceDirections = TrackSequenceProperties[trackType][0];
+        int32_t entranceDirections = teDescriptor.TrackSequenceProperties[0];
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
@@ -378,7 +378,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
             return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
-        int32_t entranceDirections = TrackSequenceProperties[trackType][0];
+        int32_t entranceDirections = teDescriptor.TrackSequenceProperties[0];
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))

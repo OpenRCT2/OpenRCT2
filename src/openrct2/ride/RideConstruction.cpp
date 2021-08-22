@@ -43,6 +43,7 @@
 #include "TrainManager.h"
 #include "Vehicle.h"
 
+using namespace OpenRCT2::TrackMetaData;
 bool gGotoStartPlacementMode = false;
 
 money16 gTotalRideValueForMoney;
@@ -1253,7 +1254,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         {
             if (info.Element->AsTrack()->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
             {
-                if (TrackSequenceProperties[info.Element->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                const auto& teDescriptor = GetTrackElementDescriptor(info.Element->AsTrack()->GetTrackType());
+                if (teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                 {
                     if (info.Element->AsTrack()->GetTrackType() == TrackElemType::Maze)
                     {
@@ -1343,9 +1345,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
 
                     int32_t eax = (entranceExitCoords.direction + 2 - tileElement->GetDirection())
                         & TILE_ELEMENT_DIRECTION_MASK;
-                    if (TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()]
-                                               [tileElement->AsTrack()->GetSequenceIndex()]
-                        & (1 << eax))
+                    const auto& teDescriptor = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+                    if (teDescriptor.TrackSequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << eax))
                     {
                         entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
                         gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
@@ -1438,6 +1439,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
  */
 void sub_6CB945(Ride* ride)
 {
+    TrackElementDescriptor teDescriptor;
     if (ride->type != RIDE_TYPE_MAZE)
     {
         for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
@@ -1450,7 +1452,6 @@ void sub_6CB945(Ride* ride)
 
             bool specialTrack = false;
             TileElement* tileElement = nullptr;
-
             while (true)
             {
                 if (direction != INVALID_DIRECTION)
@@ -1473,7 +1474,9 @@ void sub_6CB945(Ride* ride)
                         continue;
                     if (tileElement->AsTrack()->GetSequenceIndex() != 0)
                         continue;
-                    if (!(TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+
+                    teDescriptor = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+                    if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1500,7 +1503,7 @@ void sub_6CB945(Ride* ride)
                 continue;
             }
 
-            const auto& teDescriptor = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+            teDescriptor = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
             const rct_preview_track* trackBlock = teDescriptor.Block;
             while ((++trackBlock)->index != 0xFF)
             {
@@ -1516,7 +1519,9 @@ void sub_6CB945(Ride* ride)
                         continue;
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;
-                    if (!(TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+
+                    teDescriptor = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+                    if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1611,7 +1616,8 @@ void sub_6CB945(Ride* ride)
 
                 Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;
 
-                if (!(TrackSequenceProperties[trackType][trackSequence] & (1 << direction)))
+                teDescriptor = GetTrackElementDescriptor(trackType);
+                if (!(teDescriptor.TrackSequenceProperties[trackSequence] & (1 << direction)))
                 {
                     continue;
                 }
