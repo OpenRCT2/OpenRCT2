@@ -3503,7 +3503,7 @@ const track_descriptor gTrackDescriptors[142] = {
 };
 
 /** rct2: 0x00993D1C */
-const track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
+const static track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
     TrackElemType::FlatCovered,                        // TrackElemType::Flat
     TrackElemType::None,
     TrackElemType::None,

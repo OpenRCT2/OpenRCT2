@@ -306,7 +306,8 @@ bool window_ride_construction_update_state(
         && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
     {
         auto availablePieces = rtd.CoveredTrackPieces;
-        auto alternativeType = AlternativeTrackTypes[trackType];
+        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+        auto alternativeType = teDescriptor.AlternativeType;
         if (alternativeType != TrackElemType::None && (availablePieces & (1ULL << trackType)))
         {
             trackType = alternativeType;
