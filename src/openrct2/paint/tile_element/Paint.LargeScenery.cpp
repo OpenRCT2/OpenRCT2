@@ -281,8 +281,8 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
         edi = rol16(edi, direction);
         esi = (edi & 0xF) | (edi >> 12);
     }
-    const CoordsXYZ bbLength = { s98E3C4[esi].offset, height };
-    const CoordsXYZ bbOffset = { s98E3C4[esi].length, boxlengthZ };
+    const CoordsXYZ bbOffset = { s98E3C4[esi].offset, height };
+    const CoordsXYZ bbLength = { s98E3C4[esi].length, boxlengthZ };
     PaintAddImageAsParent(session, image_id, { 0, 0, height }, bbLength, bbOffset);
     if (sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE || direction == 1 || direction == 2)
     {
