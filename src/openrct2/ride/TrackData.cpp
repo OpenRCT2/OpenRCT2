@@ -16,7 +16,7 @@
 #include <iterator>
 
 // clang-format off
-const rct_track_coordinates TrackCoordinates[TrackElemType::Count] = {
+const static rct_track_coordinates TrackCoordinates[TrackElemType::Count] = {
         { 0, 0, 0, 0, 0, 0 },       // ELEM_FLAT
         { 0, 0, 0, 0, 0, 0 },       // ELEM_END_STATION
         { 0, 0, 0, 0, 0, 0 },       // ELEM_BEGIN_STATION

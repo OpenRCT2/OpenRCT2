@@ -16,7 +16,6 @@
 constexpr const uint8_t MaxSequencesPerPiece = 16;
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
-extern const rct_track_coordinates TrackCoordinates[TrackElemType::Count];
 
 extern const uint8_t TrackSequenceProperties[TrackElemType::Count][MaxSequencesPerPiece];
 

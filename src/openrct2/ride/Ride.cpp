@@ -73,6 +73,7 @@
 #include <optional>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::TrackMetaData;
 
 RideMode& operator++(RideMode& d, int)
 {
@@ -478,11 +479,12 @@ bool track_block_get_next_from_zero(
         if (tileElement->IsGhost() != isGhost)
             continue;
 
+        const auto& teDescriptor = GetTrackElementDescriptor(trackElement->GetTrackType());
         auto nextTrackBlock = TrackBlocks[trackElement->GetTrackType()];
         if (nextTrackBlock == nullptr)
             continue;
 
-        auto nextTrackCoordinate = TrackCoordinates[trackElement->GetTrackType()];
+        auto nextTrackCoordinate = teDescriptor.Coordinates;
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotation_begin)
             | (nextTrackCoordinate.rotation_begin & TRACK_BLOCK_2);
 
@@ -519,6 +521,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
         return false;
 
     auto inputElement = input->element->AsTrack();
+    const auto& teDescriptor = GetTrackElementDescriptor(inputElement->GetTrackType());
     if (inputElement == nullptr)
         return false;
 
@@ -533,7 +536,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
 
     trackBlock += inputElement->GetSequenceIndex();
 
-    auto trackCoordinate = TrackCoordinates[inputElement->GetTrackType()];
+    auto trackCoordinate = teDescriptor.Coordinates;
 
     int32_t x = input->x;
     int32_t y = input->y;
@@ -599,7 +602,8 @@ bool track_block_get_previous_from_zero(
         if (nextTrackBlock == nullptr)
             continue;
 
-        auto nextTrackCoordinate = TrackCoordinates[trackElement->GetTrackType()];
+        const auto& teDesc = GetTrackElementDescriptor(trackElement->GetTrackType());
+        auto nextTrackCoordinate = teDesc.Coordinates;
 
         nextTrackBlock += trackElement->GetSequenceIndex();
         if ((nextTrackBlock + 1)->index != 255)
@@ -663,6 +667,7 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
         return false;
 
     auto trackElement = trackPos.element->AsTrack();
+    const auto& teDescriptor = GetTrackElementDescriptor(trackElement->GetTrackType());
     if (trackElement == nullptr)
         return false;
 
@@ -677,7 +682,7 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
 
     trackBlock += trackElement->GetSequenceIndex();
 
-    auto trackCoordinate = TrackCoordinates[trackElement->GetTrackType()];
+    auto trackCoordinate = teDescriptor.Coordinates;
 
     int32_t z = trackElement->GetBaseZ();
 
@@ -2857,7 +2862,8 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
     };
 
     trackType = returnPos.element->AsTrack()->GetTrackType();
-    int32_t elementReturnDirection = TrackCoordinates[trackType].rotation_begin;
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    int32_t elementReturnDirection = teDescriptor.Coordinates.rotation_begin;
     ride->boat_hire_return_direction = returnPos.element->GetDirectionWithOffset(elementReturnDirection);
     ride->boat_hire_return_position = TileCoordsXY{ returnPos };
 }

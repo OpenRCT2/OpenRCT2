@@ -594,7 +594,9 @@ static void window_track_place_draw_mini_preview_track(
 
         // Change rotation and next position based on track curvature
         curTrackRotation &= 3;
-        const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
+        using namespace OpenRCT2::TrackMetaData;
+        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+        const rct_track_coordinates* track_coordinate = &teDescriptor.Coordinates;
 
         curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
         curTrackRotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;

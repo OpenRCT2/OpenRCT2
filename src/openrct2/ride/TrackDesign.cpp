@@ -65,6 +65,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::TrackMetaData;
 
 bool gTrackDesignSceneryToggle;
 static CoordsXYZ _trackPreviewMin;
@@ -182,7 +183,8 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     trackElement.y = newCoords->y;
     z = newCoords->z;
 
-    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackElement.element->AsTrack()->GetTrackType()];
+    const auto& teDescriptor = GetTrackElementDescriptor(trackElement.element->AsTrack()->GetTrackType());
+    const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
     auto trackBlock = TrackBlocks[trackType];
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
@@ -1519,6 +1521,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
     for (const auto& track : td6->track_elements)
     {
         auto trackType = track.type;
+        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
 
         track_design_update_max_min_coordinates(newCoords);
 
@@ -1534,7 +1537,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
                 break;
             case PTD_OPERATION_REMOVE_GHOST:
             {
-                const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
+                const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
                 const rct_preview_track* trackBlock = TrackBlocks[trackType];
                 int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(
@@ -1549,7 +1552,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
             case PTD_OPERATION_PLACE_GHOST:
             case PTD_OPERATION_PLACE_TRACK_PREVIEW:
             {
-                const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
+                const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
 
                 // di
                 int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
@@ -1606,7 +1609,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
             }
             case PTD_OPERATION_GET_PLACE_Z:
             {
-                int32_t tempZ = newCoords.z - TrackCoordinates[trackType].z_begin;
+                int32_t tempZ = newCoords.z - teDescriptor.Coordinates.z_begin;
                 for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
@@ -1646,7 +1649,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
             }
         }
 
-        const rct_track_coordinates* track_coordinates = &TrackCoordinates[trackType];
+        const rct_track_coordinates* track_coordinates = &teDescriptor.Coordinates;
         auto offsetAndRotatedTrack = CoordsXY{ newCoords }
             + CoordsXY{ track_coordinates->x, track_coordinates->y }.Rotate(rotation);
 

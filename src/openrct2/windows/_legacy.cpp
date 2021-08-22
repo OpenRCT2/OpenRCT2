@@ -27,6 +27,7 @@
 #include <iterator>
 #include <tuple>
 
+using namespace OpenRCT2::TrackMetaData;
 bool gDisableErrorWindowSound = false;
 
 uint64_t _enabledRidePieces;
@@ -90,7 +91,8 @@ money32 place_provisional_track_piece(
             return result;
 
         int16_t z_begin, z_end;
-        const rct_track_coordinates& coords = TrackCoordinates[trackType];
+        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+        const rct_track_coordinates& coords = teDescriptor.Coordinates;
         if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             z_begin = coords.z_begin;
@@ -312,7 +314,8 @@ bool window_ride_construction_update_state(
         }
     }
 
-    const rct_track_coordinates& trackCoordinates = TrackCoordinates[trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    const rct_track_coordinates& trackCoordinates = teDescriptor.Coordinates;
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;

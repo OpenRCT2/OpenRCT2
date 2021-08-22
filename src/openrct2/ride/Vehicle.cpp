@@ -50,6 +50,7 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2::TrackMetaData;
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
@@ -7493,12 +7494,13 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
 void Vehicle::UpdateSceneryDoor() const
 {
     auto trackType = GetTrackType();
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
     while ((trackBlock + 1)->index != 255)
     {
         trackBlock++;
     }
-    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
+    const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
     auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_end) & 3;
 
@@ -7590,8 +7592,9 @@ static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement
 void Vehicle::UpdateSceneryDoorBackwards() const
 {
     auto trackType = GetTrackType();
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
-    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
+    const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
