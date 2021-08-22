@@ -324,6 +324,7 @@ private:
     void UpdateCrashSetup();
     void UpdateCollisionSetup();
     int32_t UpdateMotionDodgems();
+    void UpdateAnimationAnimalFlying();
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
     bool CurrentTowerElementIsTop();
@@ -472,7 +473,8 @@ enum
     VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER,
     VEHICLE_ENTRY_ANIMATION_HELICARS,
     VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES,
-    VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER
+    VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER,
+    VEHICLE_ENTRY_ANIMATION_ANIMAL_FLYING // OpenRCT2-specific feature
 };
 
 enum : uint32_t

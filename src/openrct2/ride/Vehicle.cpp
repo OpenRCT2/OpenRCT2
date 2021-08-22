@@ -1536,6 +1536,13 @@ bool Vehicle::OpenRestraints()
             restraintsOpen = false;
             continue;
         }
+        if (vehicleEntry->animation == VEHICLE_ENTRY_ANIMATION_ANIMAL_FLYING
+            && (vehicle->animation_frame != 0 || vehicle->animationState > 0))
+        {
+            vehicle->UpdateAnimationAnimalFlying();
+            restraintsOpen = false;
+            continue;
+        }
 
         if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR) && vehicle->restraints_position != 0xFF
             && (curRide->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_CLOSED
@@ -7269,6 +7276,40 @@ void Vehicle::UpdateSpinningCar()
     Invalidate();
 }
 
+void Vehicle::UpdateAnimationAnimalFlying()
+{
+    if (animationState > 0)
+    {
+        animationState--;
+        return;
+    }
+    else
+    {
+        constexpr std::array<uint8_t, 4> frameWaitTimes = { 5, 3, 5, 3 };
+
+        if (animation_frame == 0)
+        {
+            auto trackType = GetTrackType();
+            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
+            if (trackElement != nullptr && trackElement->AsTrack()->HasChain())
+            {
+                // start flapping, bird
+                animation_frame = 1;
+                animationState = 5;
+                Invalidate();
+            }
+        }
+        else
+        {
+            // continue flapping until reaching frame 0
+            animation_frame = (animation_frame + 1) % 4;
+            Invalidate();
+        }
+        // number of frames to skip before updating again
+        animationState = frameWaitTimes[animation_frame];
+    }
+}
+
 /**
  *
  *  rct2: 0x006D63D4
@@ -7420,6 +7461,12 @@ void Vehicle::UpdateAdditionalAnimation()
                     Invalidate();
                 }
             }
+            break;
+        case VEHICLE_ENTRY_ANIMATION_ANIMAL_FLYING:
+            UpdateAnimationAnimalFlying();
+            // makes animation play faster with vehicle speed
+            targetFrame = abs(_vehicleVelocityF64E08) >> 24;
+            animationState = std::max(animationState - targetFrame, 0);
             break;
     }
 }
