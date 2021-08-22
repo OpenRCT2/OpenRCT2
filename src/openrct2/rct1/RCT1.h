@@ -300,8 +300,7 @@ namespace RCT1
         uint8_t var_C4;
         uint8_t animation_frame;
         uint8_t pad_C6[0x2];
-        uint16_t animationState;
-        uint16_t var_CA;
+        uint32_t animationState;
         uint8_t scream_sound_id; // 0xCC
         uint8_t TrackSubposition;
         union

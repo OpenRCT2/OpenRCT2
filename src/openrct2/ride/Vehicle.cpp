@@ -3647,9 +3647,8 @@ void Vehicle::UpdateCollisionSetup()
 
         train->IsCrashedVehicle = true;
         train->animationState = scenario_rand();
-        train->var_CA = scenario_rand();
 
-        train->animation_frame = train->var_CA & 0x7;
+        train->animation_frame = (train->animationState >> 16) & 0x7;
         train->sprite_width = 13;
         train->sprite_height_negative = 45;
         train->sprite_height_positive = 5;

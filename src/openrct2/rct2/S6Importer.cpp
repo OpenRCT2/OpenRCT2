@@ -1664,7 +1664,6 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->dodgems_collision_direction = src->dodgems_collision_direction;
     dst->animation_frame = src->animation_frame;
     dst->animationState = src->animationState;
-    dst->var_CA = src->var_CA;
     dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
     dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
     dst->var_CE = src->var_CE;
