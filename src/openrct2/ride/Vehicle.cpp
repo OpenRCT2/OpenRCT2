@@ -5520,6 +5520,7 @@ void Vehicle::UpdateCrash()
                 curVehicle->Invalidate();
             }
             curVehicle->animationState += 7281;
+            curVehicle->animationState &= 0xFFFF;
             continue;
         }
 
@@ -7318,7 +7319,6 @@ void Vehicle::UpdateAdditionalAnimation()
     uint8_t curFrame{};
     uint32_t eax{};
 
-    uint32_t* curAnimationState = reinterpret_cast<uint32_t*>(&animationState);
     auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
@@ -7327,8 +7327,8 @@ void Vehicle::UpdateAdditionalAnimation()
     switch (vehicleEntry->animation)
     {
         case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
-            *curAnimationState += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimationState >> 20) & 3;
+            animationState += _vehicleVelocityF64E08;
+            targetFrame = (animationState >> 20) & 3;
             if (animation_frame != targetFrame)
             {
                 curFrame = animation_frame;
@@ -7366,8 +7366,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
-            *curAnimationState += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimationState >> 18) & 2;
+            animationState += _vehicleVelocityF64E08;
+            targetFrame = (animationState >> 18) & 2;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
@@ -7375,8 +7375,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
-            *curAnimationState += _vehicleVelocityF64E08;
-            eax = ((*curAnimationState >> 13) & 0xFF) * 6;
+            animationState += _vehicleVelocityF64E08;
+            eax = ((animationState >> 13) & 0xFF) * 6;
             targetFrame = (eax >> 8) & 0xFF;
             if (animation_frame != targetFrame)
             {
@@ -7385,8 +7385,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
-            *curAnimationState += _vehicleVelocityF64E08;
-            eax = ((*curAnimationState >> 13) & 0xFF) * 7;
+            animationState += _vehicleVelocityF64E08;
+            eax = ((animationState >> 13) & 0xFF) * 7;
             targetFrame = (eax >> 8) & 0xFF;
             if (animation_frame != targetFrame)
             {
@@ -7395,8 +7395,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
-            *curAnimationState += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimationState >> 19) & 1;
+            animationState += _vehicleVelocityF64E08;
+            targetFrame = (animationState >> 19) & 1;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
@@ -7417,8 +7417,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
-            *curAnimationState += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimationState >> 18) & 3;
+            animationState += _vehicleVelocityF64E08;
+            targetFrame = (animationState >> 18) & 3;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
@@ -7428,8 +7428,8 @@ void Vehicle::UpdateAdditionalAnimation()
         case VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
             if (num_peeps != 0)
             {
-                *curAnimationState += _vehicleVelocityF64E08;
-                eax = ((*curAnimationState >> 13) & 0xFF) << 2;
+                animationState += _vehicleVelocityF64E08;
+                eax = ((animationState >> 13) & 0xFF) << 2;
                 targetFrame = (eax >> 8) & 0xFF;
                 if (animation_frame != targetFrame)
                 {
