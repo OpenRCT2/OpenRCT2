@@ -1707,7 +1707,8 @@ void Vehicle::UpdateMeasurements()
                 }
         }
 
-        uint16_t trackFlags = TrackFlags[trackElemType];
+        const auto& teDescriptor = GetTrackElementDescriptor(trackElemType);
+        uint16_t trackFlags = teDescriptor.Flags;
 
         uint32_t testingFlags = curRide->testing_flags;
         if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
@@ -8545,7 +8546,8 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
             if (next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
                 trackType = tileElement->AsTrack()->GetTrackType();
-                if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_DOWN))
+                const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+                if (!(teDescriptor.Flags & TRACK_ELEM_FLAG_DOWN))
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }

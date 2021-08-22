@@ -68,8 +68,6 @@ extern const uint32_t TrackHeightMarkerPositions[TrackElemType::Count];
 
 extern const uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][16];
 
-extern const uint16_t TrackFlags[TrackElemType::Count];
-
 struct TrackElementDescriptor
 {
     rct_track_coordinates Coordinates;

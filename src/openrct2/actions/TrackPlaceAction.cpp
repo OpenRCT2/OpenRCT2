@@ -19,6 +19,7 @@
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
+using namespace OpenRCT2::TrackMetaData;
 TrackPlaceActionResult::TrackPlaceActionResult()
     : GameActions::Result(GameActions::Status::Ok, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
 {
@@ -146,7 +147,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED)
             && !ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_LIFT_HILL_STEEP) && !gCheatsEnableChainLiftOnAllTrack)
         {
-            if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_IS_STEEP_UP)
+            const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
+            if (teDescriptor.Flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
             {
                 return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Disallowed, STR_TOO_STEEP_FOR_LIFT_HILL);
             }
@@ -176,7 +178,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
     if (!gCheatsAllowTrackPlaceInvalidHeights)
     {
-        if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
+        const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
+        if (teDescriptor.Flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
         {
             if ((_origin.z & 0x0F) != 8)
             {
@@ -260,7 +263,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
 
         res->GroundFlags = mapGroundFlags;
 
-        if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
+        const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
+        if (teDescriptor.Flags & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
         {
             if (res->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
@@ -269,7 +273,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             }
         }
 
-        if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
+        if (teDescriptor.Flags & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
         { // No element has this flag
             if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER)
             {

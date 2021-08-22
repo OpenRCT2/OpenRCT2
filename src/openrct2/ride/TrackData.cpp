@@ -4858,7 +4858,7 @@ const uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][MaxSequ
 };
 
 /** rct2: 0x0099423C */
-const uint16_t TrackFlags[TrackElemType::Count] = {
+const static uint16_t TrackFlags[TrackElemType::Count] = {
     /* TrackElemType::Flat                                          */   TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
     /* TrackElemType::EndStation                                    */   0,
     /* TrackElemType::BeginStation                                  */   0,
