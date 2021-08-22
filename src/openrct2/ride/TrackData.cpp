@@ -12,6 +12,7 @@
 #include "Track.h"
 #include "TrackPaint.h"
 
+#include <cstdint>
 #include <iterator>
 
 // clang-format off
@@ -5127,3 +5128,41 @@ const uint16_t TrackFlags[TrackElemType::Count] = {
     /* TrackElemType::FlatTrack3x3                                  */   0,
 };
 // clang-format on
+
+namespace OpenRCT2
+{
+    namespace TrackMetaData
+    {
+        static std::vector<TrackElementDescriptor> _trackElementDescriptors;
+        void Init()
+        {
+            _trackElementDescriptors.clear();
+            _trackElementDescriptors.reserve(TrackElemType::Count);
+
+            TrackElementDescriptor desc;
+            for (int i = 0; i < TrackElemType::Count; i++)
+            {
+                desc.AlternativeType = AlternativeTrackTypes[i];
+                desc.Block = const_cast<rct_preview_track*>(TrackBlocks[i]);
+                desc.Coordinates = TrackCoordinates[i];
+                desc.CurveChain = gTrackCurveChain[i];
+                desc.Flags = TrackFlags[i];
+                desc.HeightMarkerPositions = TrackHeightMarkerPositions[i];
+                desc.MirrorMap = TrackElementMirrorMap[i];
+                desc.PieceLength = TrackPieceLengths[i];
+                desc.Pricing = TrackPricing[i];
+
+                for (uint8_t j = 0; j < MaxSequencesPerPiece; j++)
+                {
+                    desc.SequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
+                    desc.TrackSequenceProperties[j] = TrackSequenceProperties[i][j];
+                }
+                _trackElementDescriptors.push_back(desc);
+            }
+        }
+        const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t& type)
+        {
+            return _trackElementDescriptors[type];
+        }
+    } // namespace TrackMetaData
+} // namespace OpenRCT2

@@ -74,3 +74,29 @@ extern const uint32_t TrackHeightMarkerPositions[TrackElemType::Count];
 extern const uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][16];
 
 extern const uint16_t TrackFlags[TrackElemType::Count];
+
+struct TrackElementDescriptor
+{
+    rct_track_coordinates Coordinates;
+
+    rct_preview_track* Block;
+    uint8_t PieceLength;
+    track_curve_chain CurveChain;
+    track_type_t AlternativeType;
+    money32 Pricing;
+    track_type_t MirrorMap;
+    uint32_t HeightMarkerPositions;
+    uint16_t Flags;
+
+    std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
+    std::array<uint8_t, MaxSequencesPerPiece> TrackSequenceProperties;
+};
+
+namespace OpenRCT2
+{
+    namespace TrackMetaData
+    {
+        void Init();
+        const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t& type);
+    } // namespace TrackMetaData
+} // namespace OpenRCT2
