@@ -368,7 +368,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= TrackPricing[_trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
+    price *= teDescriptor.Pricing;
 
     price >>= 16;
     res->Cost = cost + ((price / 2) * 10);
@@ -656,7 +657,8 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= TrackPricing[_trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
+    price *= teDescriptor.Pricing;
 
     price >>= 16;
     res->Cost = cost + ((price / 2) * 10);

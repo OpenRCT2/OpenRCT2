@@ -3774,7 +3774,7 @@ const static track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
 };
 
 /** rct2: 0x0099DA34 */
-const money32 TrackPricing[TrackElemType::Count] = {
+const static money32 TrackPricing[TrackElemType::Count] = {
     65536,  // TrackElemType::Flat
     98304,  // TrackElemType::EndStation
     98304,  // TrackElemType::BeginStation

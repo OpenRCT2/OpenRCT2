@@ -19,6 +19,8 @@
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
+using namespace OpenRCT2::TrackMetaData;
+
 TrackRemoveAction::TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin)
     : _trackType(trackType)
     , _sequence(sequence)
@@ -226,7 +228,8 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= TrackPricing[trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    price *= teDescriptor.Pricing;
     price >>= 16;
     price = (price + cost) / 2;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
@@ -473,7 +476,8 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= TrackPricing[trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    price *= teDescriptor.Pricing;
     price >>= 16;
     price = (price + cost) / 2;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)

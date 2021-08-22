@@ -40,8 +40,6 @@ struct track_descriptor
 
 extern const track_descriptor gTrackDescriptors[142];
 
-extern const money32 TrackPricing[TrackElemType::Count];
-
 struct dodgems_track_size
 {
     uint8_t left;
