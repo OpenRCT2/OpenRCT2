@@ -87,6 +87,7 @@ RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
 Direction gRideEntranceExitPlaceDirection;
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::TrackMetaData;
 
 static int32_t ride_check_if_construction_allowed(Ride* ride)
 {
@@ -626,6 +627,8 @@ void ride_construction_set_default_next_piece()
     CoordsXYE xyElement;
     TileElement* tileElement;
     _currentTrackPrice = MONEY32_UNDEFINED;
+
+    TrackElementDescriptor teDescriptor;
     switch (_rideConstructionState)
     {
         case RideConstructionState::Front:
@@ -654,7 +657,8 @@ void ride_construction_set_default_next_piece()
                 }
             }
 
-            curve = gTrackCurveChain[trackType].next;
+            teDescriptor = GetTrackElementDescriptor(trackType);
+            curve = teDescriptor.CurveChain.next;
             bank = TrackDefinitions[trackType].bank_end;
             slope = TrackDefinitions[trackType].vangle_end;
 
@@ -699,7 +703,8 @@ void ride_construction_set_default_next_piece()
                 }
             }
 
-            curve = gTrackCurveChain[trackType].previous;
+            teDescriptor = GetTrackElementDescriptor(trackType);
+            curve = teDescriptor.CurveChain.previous;
             bank = TrackDefinitions[trackType].bank_start;
             slope = TrackDefinitions[trackType].vangle_start;
 

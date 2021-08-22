@@ -29,8 +29,6 @@ struct track_curve_chain
     int32_t previous;
 };
 
-extern const track_curve_chain gTrackCurveChain[TrackElemType::Count];
-
 struct track_descriptor
 {
     bool starts_diagonal;

@@ -3087,7 +3087,7 @@ const uint8_t TrackPieceLengths[TrackElemType::Count] = {
 };
 
 // rct2: 0x00998C95
-const track_curve_chain gTrackCurveChain[TrackElemType::Count] = {
+const static track_curve_chain gTrackCurveChain[TrackElemType::Count] = {
     { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
     { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
     { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
