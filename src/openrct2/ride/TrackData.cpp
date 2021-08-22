@@ -4316,7 +4316,7 @@ const track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
 };
 
 /** rct2: 0x00999694 */
-const uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
+const static uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
     (1 << 0), // TrackElemType::Flat
     (1 << 0), // TrackElemType::EndStation
     (1 << 0), // TrackElemType::BeginStation

@@ -64,8 +64,6 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
 }
 extern const track_type_t TrackElementMirrorMap[TrackElemType::Count];
 
-extern const uint32_t TrackHeightMarkerPositions[TrackElemType::Count];
-
 extern const uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][16];
 
 struct TrackElementDescriptor
