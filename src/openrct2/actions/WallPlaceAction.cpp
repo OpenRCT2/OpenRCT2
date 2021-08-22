@@ -452,7 +452,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
                 direction = direction_reverse(trackElement->GetDirection());
                 if (direction == _edge)
                 {
-                    const rct_preview_track* trackBlock = &TrackBlocks[trackType][sequence];
+                    const rct_preview_track* trackBlock = &teDescriptor.Block[sequence];
                     z = teDescriptor.Coordinates.z_begin;
                     z = trackElement->base_height + ((z - trackBlock->z) * 8);
                     if (z == z0)
@@ -464,7 +464,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         }
     }
 
-    const rct_preview_track* trackBlock = &TrackBlocks[trackType][sequence + 1];
+    const rct_preview_track* trackBlock = &teDescriptor.Block[sequence + 1];
     if (trackBlock->index != 0xFF)
     {
         return false;
@@ -487,7 +487,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    trackBlock = &TrackBlocks[trackType][sequence];
+    trackBlock = &teDescriptor.Block[sequence];
     z = teDescriptor.Coordinates.z_end;
     z = trackElement->base_height + ((z - trackBlock->z) * 8);
     return z == z0;

@@ -185,7 +185,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
 
     const auto& teDescriptor = GetTrackElementDescriptor(trackElement.element->AsTrack()->GetTrackType());
     const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
-    auto trackBlock = TrackBlocks[trackType];
+    auto trackBlock = teDescriptor.Block;
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
@@ -1529,7 +1529,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
         switch (_trackDesignPlaceOperation)
         {
             case PTD_OPERATION_DRAW_OUTLINES:
-                for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+                for (const rct_preview_track* trackBlock = teDescriptor.Block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     track_design_update_max_min_coordinates({ tile, newCoords.z });
@@ -1539,7 +1539,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
             case PTD_OPERATION_REMOVE_GHOST:
             {
                 const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
-                const rct_preview_track* trackBlock = TrackBlocks[trackType];
+                const rct_preview_track* trackBlock = teDescriptor.Block;
                 int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
@@ -1611,7 +1611,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
             case PTD_OPERATION_GET_PLACE_Z:
             {
                 int32_t tempZ = newCoords.z - teDescriptor.Coordinates.z_begin;
-                for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+                for (const rct_preview_track* trackBlock = teDescriptor.Block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     if (!map_is_location_valid(tile))

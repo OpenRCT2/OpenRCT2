@@ -32,6 +32,7 @@
 #include <vector>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::TrackMetaData;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
 static constexpr const int32_t WH = 124;
@@ -550,7 +551,8 @@ static void window_track_place_draw_mini_preview_track(
         }
 
         // Follow a single track piece shape
-        const rct_preview_track* trackBlock = TrackBlocks[trackType];
+        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+        const rct_preview_track* trackBlock = teDescriptor.Block;
         while (trackBlock->index != 255)
         {
             auto rotatedAndOffsetTrackBlock = curTrackStart + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(curTrackRotation);
@@ -594,8 +596,7 @@ static void window_track_place_draw_mini_preview_track(
 
         // Change rotation and next position based on track curvature
         curTrackRotation &= 3;
-        using namespace OpenRCT2::TrackMetaData;
-        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+
         const rct_track_coordinates* track_coordinate = &teDescriptor.Coordinates;
 
         curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);

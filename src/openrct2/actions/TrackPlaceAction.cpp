@@ -156,7 +156,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
 
     money32 cost = 0;
-    const rct_preview_track* trackBlock = TrackBlocks[_trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
+    const rct_preview_track* trackBlock = teDescriptor.Block;
     uint32_t numElements = 0;
     // First check if any of the track pieces are outside the park
     for (; trackBlock->index != 0xFF; trackBlock++)
@@ -176,9 +177,9 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         log_warning("Not enough free map elements to place track.");
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
+
     if (!gCheatsAllowTrackPlaceInvalidHeights)
     {
-        const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
         if (teDescriptor.Flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
         {
             if ((_origin.z & 0x0F) != 8)
@@ -198,7 +199,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
 
     // If that is not the case, then perform the remaining checks
-    trackBlock = TrackBlocks[_trackType];
+    trackBlock = teDescriptor.Block;
 
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
@@ -262,8 +263,6 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         }
 
         res->GroundFlags = mapGroundFlags;
-
-        const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
         if (teDescriptor.Flags & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
         {
             if (res->GroundFlags & ELEMENT_IS_UNDERGROUND)
@@ -368,7 +367,6 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
     price *= teDescriptor.Pricing;
 
     price >>= 16;
@@ -406,9 +404,8 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     wallEdges = &TrackSequenceElementAllowedWallEdges[_trackType];
 
     money32 cost = 0;
-    const rct_preview_track* trackBlock = TrackBlocks[_trackType];
-
-    trackBlock = TrackBlocks[_trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
+    const rct_preview_track* trackBlock = teDescriptor.Block;
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
@@ -657,7 +654,6 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
     price *= teDescriptor.Pricing;
 
     price >>= 16;
@@ -667,7 +663,8 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
 
 bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
 {
-    for (const rct_preview_track* trackBlock = TrackBlocks[_trackType]; trackBlock->index != 0xFF; trackBlock++)
+    const auto& teDescriptor = GetTrackElementDescriptor(_trackType);
+    for (const rct_preview_track* trackBlock = teDescriptor.Block; trackBlock->index != 0xFF; trackBlock++)
     {
         auto rotatedTrack = CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction);
 

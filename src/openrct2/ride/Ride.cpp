@@ -480,7 +480,7 @@ bool track_block_get_next_from_zero(
             continue;
 
         const auto& teDescriptor = GetTrackElementDescriptor(trackElement->GetTrackType());
-        auto nextTrackBlock = TrackBlocks[trackElement->GetTrackType()];
+        auto nextTrackBlock = teDescriptor.Block;
         if (nextTrackBlock == nullptr)
             continue;
 
@@ -530,7 +530,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     if (ride == nullptr)
         return false;
 
-    auto trackBlock = TrackBlocks[inputElement->GetTrackType()];
+    auto trackBlock = teDescriptor.Block;
     if (trackBlock == nullptr)
         return false;
 
@@ -598,11 +598,10 @@ bool track_block_get_previous_from_zero(
         if (trackElement->GetRideIndex() != ride->id)
             continue;
 
-        auto nextTrackBlock = TrackBlocks[trackElement->GetTrackType()];
+        const auto& teDesc = GetTrackElementDescriptor(trackElement->GetTrackType());
+        auto nextTrackBlock = teDesc.Block;
         if (nextTrackBlock == nullptr)
             continue;
-
-        const auto& teDesc = GetTrackElementDescriptor(trackElement->GetTrackType());
         auto nextTrackCoordinate = teDesc.Coordinates;
 
         nextTrackBlock += trackElement->GetSequenceIndex();
@@ -635,7 +634,8 @@ bool track_block_get_previous_from_zero(
 
         outTrackBeginEnd->begin_z = tileElement->GetBaseZ();
 
-        auto nextTrackBlock2 = TrackBlocks[trackElement->GetTrackType()];
+        const auto& teDescriptor = GetTrackElementDescriptor(trackElement->GetTrackType());
+        auto nextTrackBlock2 = teDescriptor.Block;
         if (nextTrackBlock2 == nullptr)
             continue;
 
@@ -676,7 +676,7 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
     if (ride == nullptr)
         return false;
 
-    auto trackBlock = TrackBlocks[trackElement->GetTrackType()];
+    auto trackBlock = teDescriptor.Block;
     if (trackBlock == nullptr)
         return false;
 

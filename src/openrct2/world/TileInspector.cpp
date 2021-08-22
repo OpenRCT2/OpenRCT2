@@ -37,6 +37,7 @@ TileCoordsXY windowTileInspectorTile;
 int32_t windowTileInspectorElementCount = 0;
 int32_t windowTileInspectorSelectedIndex;
 
+using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::TileInspector
 {
     static bool SwapTileElements(const CoordsXY& loc, int16_t first, int16_t second)
@@ -854,7 +855,8 @@ namespace OpenRCT2::TileInspector
             if (ride == nullptr)
                 return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
 
-            auto trackBlock = TrackBlocks[type];
+            const auto& teDescriptor = GetTrackElementDescriptor(type);
+            auto trackBlock = teDescriptor.Block;
             trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
             uint8_t originDirection = trackElement->GetDirection();
@@ -866,7 +868,7 @@ namespace OpenRCT2::TileInspector
             originY = static_cast<int16_t>(coords.y);
             originZ -= trackBlock->z;
 
-            trackBlock = TrackBlocks[type];
+            trackBlock = teDescriptor.Block;
             for (; trackBlock->index != 255; trackBlock++)
             {
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
@@ -937,7 +939,8 @@ namespace OpenRCT2::TileInspector
             if (ride == nullptr)
                 return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
 
-            auto trackBlock = TrackBlocks[type];
+            const auto& teDescriptor = GetTrackElementDescriptor(type);
+            auto trackBlock = teDescriptor.Block;
             trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
             uint8_t originDirection = trackElement->GetDirection();
@@ -949,7 +952,7 @@ namespace OpenRCT2::TileInspector
             originY = static_cast<int16_t>(coords.y);
             originZ -= trackBlock->z;
 
-            trackBlock = TrackBlocks[type];
+            trackBlock = teDescriptor.Block;
             for (; trackBlock->index != 255; trackBlock++)
             {
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };

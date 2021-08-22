@@ -393,7 +393,8 @@ std::optional<CoordsXYZ> sub_6C683D(
     }
 
     // Possibly z should be & 0xF8
-    auto trackBlock = TrackBlocks[type];
+    const auto& teDescriptor = GetTrackElementDescriptor(type);
+    auto trackBlock = teDescriptor.Block;
     if (trackBlock == nullptr)
         return std::nullopt;
 
@@ -1499,7 +1500,8 @@ void sub_6CB945(Ride* ride)
                 continue;
             }
 
-            const rct_preview_track* trackBlock = TrackBlocks[tileElement->AsTrack()->GetTrackType()];
+            const auto& teDescriptor = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+            const rct_preview_track* trackBlock = teDescriptor.Block;
             while ((++trackBlock)->index != 0xFF)
             {
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };

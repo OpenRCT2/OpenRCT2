@@ -7496,7 +7496,7 @@ void Vehicle::UpdateSceneryDoor() const
 {
     auto trackType = GetTrackType();
     const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-    const rct_preview_track* trackBlock = TrackBlocks[trackType];
+    const rct_preview_track* trackBlock = teDescriptor.Block;
     while ((trackBlock + 1)->index != 255)
     {
         trackBlock++;
@@ -7594,7 +7594,7 @@ void Vehicle::UpdateSceneryDoorBackwards() const
 {
     auto trackType = GetTrackType();
     const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-    const rct_preview_track* trackBlock = TrackBlocks[trackType];
+    const rct_preview_track* trackBlock = teDescriptor.Block;
     const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;

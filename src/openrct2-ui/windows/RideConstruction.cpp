@@ -42,6 +42,8 @@ static constexpr const int32_t WH = 394;
 static constexpr const int32_t WW = 166;
 static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
 
+using namespace OpenRCT2::TrackMetaData;
+
 #pragma region Widgets
 
 // clang-format off
@@ -1924,7 +1926,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
             return;
         }
 
-        const rct_preview_track* trackBlock = TrackBlocks[tileElement->AsTrack()->GetTrackType()];
+        const auto& teDescriptor = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+        const rct_preview_track* trackBlock = teDescriptor.Block;
         newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
         gGotoStartPlacementMode = true;
     }
@@ -2345,7 +2348,8 @@ static void window_ride_construction_draw_track_piece(
     if (ride == nullptr)
         return;
 
-    auto trackBlock = TrackBlocks[trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    auto trackBlock = teDescriptor.Block;
     while ((trackBlock + 1)->index != 0xFF)
         trackBlock++;
 
@@ -2399,7 +2403,8 @@ static void sub_6CBCE2(
 
     gMapSize = MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    auto trackBlock = TrackBlocks[trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    auto trackBlock = teDescriptor.Block;
     while (trackBlock->index != 255)
     {
         auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
@@ -3292,7 +3297,8 @@ static void window_ride_construction_select_map_tiles(
 
     const rct_preview_track* trackBlock;
 
-    trackBlock = TrackBlocks[trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    trackBlock = teDescriptor.Block;
     trackDirection &= 3;
     gMapSelectionTiles.clear();
     while (trackBlock->index != 255)
@@ -3469,7 +3475,8 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         // z = map_get_highest_z(x >> 5, y >> 5);
     }
     // loc_6CC91B:
-    trackBlock = TrackBlocks[trackType];
+    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    trackBlock = teDescriptor.Block;
     int32_t bx = 0;
     do
     {
@@ -3699,7 +3706,8 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
     if (_trackPlaceZ == 0)
     {
-        const rct_preview_track* trackBlock = TrackBlocks[_currentTrackPieceType];
+        const auto& teDescriptor = GetTrackElementDescriptor(_currentTrackPieceType);
+        const rct_preview_track* trackBlock = teDescriptor.Block;
         int32_t bx = 0;
         do
         {

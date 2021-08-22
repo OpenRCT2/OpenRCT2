@@ -19,8 +19,6 @@ constexpr const uint8_t MaxSequencesPerPiece = 16;
 
 extern const uint8_t TrackSequenceProperties[TrackElemType::Count][MaxSequencesPerPiece];
 
-extern const rct_preview_track* TrackBlocks[TrackElemType::Count];
-
 struct track_curve_chain
 {
     int32_t next;

@@ -2545,7 +2545,7 @@ static constexpr const rct_preview_track TrackBlocksFlatTrack3x3[] = {
 };
 
 // rct2: 0x00994638
-const rct_preview_track *TrackBlocks[TrackElemType::Count] = {
+const static rct_preview_track *TrackBlocks[TrackElemType::Count] = {
     TrackBlocks000,
     TrackBlocks001,
     TrackBlocks002,
