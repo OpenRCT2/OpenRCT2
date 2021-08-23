@@ -26,8 +26,8 @@ constexpr int32_t COORDS_NULL = 0xFFFF8000;
 
 struct ScreenCoordsXY
 {
-    int32_t x = 0;
-    int32_t y = 0;
+    int32_t x{};
+    int32_t y{};
 
     constexpr ScreenCoordsXY() = default;
     constexpr ScreenCoordsXY(int32_t _x, int32_t _y)
@@ -100,8 +100,8 @@ struct ScreenSize
  */
 struct CoordsXY
 {
-    int32_t x = 0;
-    int32_t y = 0;
+    int32_t x{};
+    int32_t y{};
 
     constexpr CoordsXY() = default;
     constexpr CoordsXY(int32_t _x, int32_t _y)
@@ -229,7 +229,7 @@ struct CoordsXY
 
 struct CoordsXYZ : public CoordsXY
 {
-    int32_t z = 0;
+    int32_t z{};
 
     constexpr CoordsXYZ() = default;
     constexpr CoordsXYZ(int32_t _x, int32_t _y, int32_t _z)
@@ -278,8 +278,8 @@ struct CoordsXYZ : public CoordsXY
 
 struct CoordsXYRangedZ : public CoordsXY
 {
-    int32_t baseZ = 0;
-    int32_t clearanceZ = 0;
+    int32_t baseZ{};
+    int32_t clearanceZ{};
 
     constexpr CoordsXYRangedZ() = default;
     constexpr CoordsXYRangedZ(int32_t _x, int32_t _y, int32_t _baseZ, int32_t _clearanceZ)
@@ -306,8 +306,8 @@ struct CoordsXYRangedZ : public CoordsXY
 
 struct TileCoordsXY
 {
-    int32_t x = 0;
-    int32_t y = 0;
+    int32_t x{};
+    int32_t y{};
 
     constexpr TileCoordsXY() = default;
     constexpr TileCoordsXY(int32_t x_, int32_t y_)
@@ -404,7 +404,7 @@ struct TileCoordsXY
 
 struct TileCoordsXYZ : public TileCoordsXY
 {
-    int32_t z = 0;
+    int32_t z{};
 
     constexpr TileCoordsXYZ() = default;
     constexpr TileCoordsXYZ(int32_t x_, int32_t y_, int32_t z_)
@@ -547,7 +547,7 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 
 struct CoordsXYZD : public CoordsXYZ
 {
-    Direction direction = 0;
+    Direction direction{};
 
     constexpr CoordsXYZD() = default;
     constexpr CoordsXYZD(int32_t _x, int32_t _y, int32_t _z, Direction _d)
@@ -618,7 +618,7 @@ struct CoordsXYZD : public CoordsXYZ
 
 struct TileCoordsXYZD : public TileCoordsXYZ
 {
-    Direction direction;
+    Direction direction{};
 
     constexpr TileCoordsXYZD() = default;
     constexpr TileCoordsXYZD(int32_t x_, int32_t y_, int32_t z_, Direction d_)
