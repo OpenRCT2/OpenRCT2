@@ -1522,16 +1522,16 @@ bool Vehicle::OpenRestraints()
         }
         if (vehicleEntry->animation == VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
         {
-            if (vehicle->animationState + 0x3333 < 0xFFFF)
+            if (vehicle->animationState <= 0xCCCC)
             {
-                vehicle->animationState = vehicle->animationState + 0x3333 - 0xFFFF;
-                vehicle->animation_frame++;
-                vehicle->animation_frame &= 7;
-                vehicle->Invalidate();
+                vehicle->animationState += 0x3333;
             }
             else
             {
-                vehicle->animationState += 0x3333;
+                vehicle->animationState = 0;
+                vehicle->animation_frame++;
+                vehicle->animation_frame &= 7;
+                vehicle->Invalidate();
             }
             restraintsOpen = false;
             continue;
@@ -5512,15 +5512,18 @@ void Vehicle::UpdateCrash()
                     ExplosionCloud::Create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
                 }
             }
-            if (curVehicle->animationState + 7281 > 0xFFFF)
+            if (curVehicle->animationState <= 58248)
             {
+                curVehicle->animationState += 7281;
+            }
+            else
+            {
+                curVehicle->animationState = 0;
                 curVehicle->animation_frame++;
                 if (curVehicle->animation_frame >= 8)
                     curVehicle->animation_frame = 0;
                 curVehicle->Invalidate();
             }
-            curVehicle->animationState += 7281;
-            curVehicle->animationState &= 0xFFFF;
             continue;
         }
 
@@ -7410,7 +7413,7 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             else
             {
-                animationState += 0x3333;
+                animationState = 0;
                 animation_frame += 1;
                 animation_frame &= 7;
                 Invalidate();
@@ -7447,7 +7450,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 }
                 else
                 {
-                    animationState += 0x3333;
+                    animationState = 0;
 
                     if (seat_rotation >= target_seat_rotation)
                         seat_rotation--;
