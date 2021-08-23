@@ -110,4 +110,4 @@ struct IGameStateSnapshots
     virtual std::string GetCompareDataText(const GameStateCompareData_t& cmpData) const = 0;
 };
 
-std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots();
+[[nodiscard]] std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots();

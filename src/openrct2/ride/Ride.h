@@ -450,7 +450,7 @@ public:
     static void UpdateAll();
     static bool NameExists(std::string_view name, ride_id_t excludeRideId = RIDE_ID_NULL);
 
-    std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
+    [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
 
     uint64_t GetAvailableModes() const;
     const RideTypeDescriptor& GetRideTypeDescriptor() const;

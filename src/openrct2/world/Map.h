@@ -242,10 +242,10 @@ using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coord
 
 int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
+[[nodiscard]] std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
     uint8_t crossingMode = CREATE_CROSSING_MODE_NONE, bool isTree = false);
-std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
+[[nodiscard]] std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 
 struct tile_element_iterator
 {

@@ -60,7 +60,7 @@ public:
 
     virtual void Listen(uint16_t port) abstract;
     virtual void Listen(const std::string& address, uint16_t port) abstract;
-    virtual std::unique_ptr<ITcpSocket> Accept() abstract;
+    [[nodiscard]] virtual std::unique_ptr<ITcpSocket> Accept() abstract;
 
     virtual void Connect(const std::string& address, uint16_t port) abstract;
     virtual void ConnectAsync(const std::string& address, uint16_t port) abstract;
@@ -98,9 +98,9 @@ public:
     virtual void Close() abstract;
 };
 
-std::unique_ptr<ITcpSocket> CreateTcpSocket();
-std::unique_ptr<IUdpSocket> CreateUdpSocket();
-std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses();
+[[nodiscard]] std::unique_ptr<ITcpSocket> CreateTcpSocket();
+[[nodiscard]] std::unique_ptr<IUdpSocket> CreateUdpSocket();
+[[nodiscard]] std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses();
 
 namespace Convert
 {

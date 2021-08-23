@@ -114,10 +114,10 @@ namespace OpenRCT2
     {
         virtual ~IContext() = default;
 
-        virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
-        virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
+        [[nodiscard]] virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
+        [[nodiscard]] virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
         virtual GameState* GetGameState() abstract;
-        virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
+        [[nodiscard]] virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager& GetObjectManager() abstract;
         virtual IObjectRepository& GetObjectRepository() abstract;
@@ -156,11 +156,11 @@ namespace OpenRCT2
         virtual float GetTimeScale() const abstract;
     };
 
-    std::unique_ptr<IContext> CreateContext();
-    std::unique_ptr<IContext> CreateContext(
+    [[nodiscard]] std::unique_ptr<IContext> CreateContext();
+    [[nodiscard]] std::unique_ptr<IContext> CreateContext(
         const std::shared_ptr<IPlatformEnvironment>& env, const std::shared_ptr<Audio::IAudioContext>& audioContext,
         const std::shared_ptr<Ui::IUiContext>& uiContext);
-    IContext* GetContext();
+    [[nodiscard]] IContext* GetContext();
 } // namespace OpenRCT2
 
 enum

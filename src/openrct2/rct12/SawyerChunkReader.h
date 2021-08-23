@@ -57,12 +57,12 @@ public:
     /**
      * Reads the next chunk from the stream.
      */
-    std::shared_ptr<SawyerChunk> ReadChunk();
+    [[nodiscard]] std::shared_ptr<SawyerChunk> ReadChunk();
 
     /**
      * As above but for chunks without a header
      */
-    std::shared_ptr<SawyerChunk> ReadChunkTrack();
+    [[nodiscard]] std::shared_ptr<SawyerChunk> ReadChunkTrack();
 
     /**
      * Reads the next chunk from the stream and copies it directly to the

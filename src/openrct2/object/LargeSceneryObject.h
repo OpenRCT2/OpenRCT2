@@ -43,9 +43,9 @@ public:
     const rct_large_scenery_tile* GetTileForSequence(uint8_t SequenceIndex) const;
 
 private:
-    static std::vector<rct_large_scenery_tile> ReadTiles(OpenRCT2::IStream* stream);
-    static std::vector<rct_large_scenery_tile> ReadJsonTiles(json_t& jTiles);
-    static std::unique_ptr<LargeSceneryText> ReadJson3dFont(json_t& j3dFont);
-    static std::vector<CoordsXY> ReadJsonOffsets(json_t& jOffsets);
-    static std::vector<rct_large_scenery_text_glyph> ReadJsonGlyphs(json_t& jGlyphs);
+    [[nodiscard]] static std::vector<rct_large_scenery_tile> ReadTiles(OpenRCT2::IStream* stream);
+    [[nodiscard]] static std::vector<rct_large_scenery_tile> ReadJsonTiles(json_t& jTiles);
+    [[nodiscard]] static std::unique_ptr<LargeSceneryText> ReadJson3dFont(json_t& j3dFont);
+    [[nodiscard]] static std::vector<CoordsXY> ReadJsonOffsets(json_t& jOffsets);
+    [[nodiscard]] static std::vector<rct_large_scenery_text_glyph> ReadJsonGlyphs(json_t& jGlyphs);
 };

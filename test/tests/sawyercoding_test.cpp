@@ -118,56 +118,64 @@ TEST_F(SawyerCodingTest, invalid1)
 {
     OpenRCT2::MemoryStream ms(invalid1, sizeof(invalid1));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid2)
 {
     OpenRCT2::MemoryStream ms(invalid2, sizeof(invalid2));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid3)
 {
     OpenRCT2::MemoryStream ms(invalid3, sizeof(invalid3));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid4)
 {
     OpenRCT2::MemoryStream ms(invalid4, sizeof(invalid4));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid5)
 {
     OpenRCT2::MemoryStream ms(invalid5, sizeof(invalid5));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid6)
 {
     OpenRCT2::MemoryStream ms(invalid6, sizeof(invalid6));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid7)
 {
     OpenRCT2::MemoryStream ms(invalid7, sizeof(invalid7));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, empty)
 {
     OpenRCT2::MemoryStream ms(empty, 0);
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), IOException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), IOException);
 }
 
 // 1024 bytes of random data

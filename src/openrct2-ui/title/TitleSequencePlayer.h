@@ -20,4 +20,4 @@ namespace OpenRCT2
     class GameState;
 }
 
-std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(OpenRCT2::GameState& gameState);
+[[nodiscard]] std::unique_ptr<ITitleSequencePlayer> CreateTitleSequencePlayer(OpenRCT2::GameState& gameState);
