@@ -545,6 +545,14 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
     }
 }
 
+/*
+ * Flips the X axis so 1 and 3 are swapped 0 and 2 will stay the same.
+ */
+inline constexpr Direction DirectionFlipXAxis(Direction direction)
+{
+    return (direction * 3) % 4;
+}
+
 struct CoordsXYZD : public CoordsXYZ
 {
     Direction direction{};

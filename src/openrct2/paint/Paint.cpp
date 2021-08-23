@@ -145,7 +145,7 @@ static paint_struct* CreateNormalPaintStruct(
         return nullptr;
     }
 
-    const uint8_t swappedRotation = (session->CurrentRotation * 3) % 4; // swaps 1 and 3
+    const auto swappedRotation = DirectionFlipXAxis(session->CurrentRotation);
     auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z };
     swappedRotCoord += session->SpritePosition;
 
