@@ -496,12 +496,12 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
  * Given a direction, return the direction that points the other way,
  * on the same axis.
  */
-[[maybe_unused]] static constexpr Direction direction_reverse(Direction dir)
+inline constexpr Direction direction_reverse(Direction dir)
 {
     return dir ^ 2;
 }
 
-[[maybe_unused]] static constexpr bool direction_valid(Direction dir)
+inline constexpr bool direction_valid(Direction dir)
 {
     return dir < NumOrthogonalDirections;
 }
@@ -510,7 +510,7 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
  * Given a direction, return the next cardinal direction, wrapping around if necessary.
  * (TODO: Figure out if this is CW or CCW)
  */
-[[maybe_unused]] static constexpr Direction direction_next(Direction dir)
+inline constexpr Direction direction_next(Direction dir)
 {
     return (dir + 1) & 0x03;
 }
@@ -519,7 +519,7 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
  * Given a direction, return the previous cardinal direction, wrapping around if necessary.
  * (TODO: Figure out if this is CW or CCW)
  */
-[[maybe_unused]] static constexpr Direction direction_prev(Direction dir)
+inline constexpr Direction direction_prev(Direction dir)
 {
     return (dir - 1) & 0x03;
 }
@@ -527,7 +527,7 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 /**
  * Given two positions, return the cardinal direction which is closest to the direction from 'from' to 'to'.
  */
-[[maybe_unused]] static constexpr Direction DirectionFromTo(const CoordsXY& from, const CoordsXY& to)
+inline constexpr Direction DirectionFromTo(const CoordsXY& from, const CoordsXY& to)
 {
     int16_t x_diff = to.x - from.x;
     int16_t y_diff = to.y - from.y;
