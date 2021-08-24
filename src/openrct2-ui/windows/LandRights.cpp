@@ -204,8 +204,8 @@ static void window_land_rights_textinput(rct_window* w, rct_widgetindex widgetIn
 static void window_land_rights_inputsize(rct_window* w)
 {
     Formatter ft;
-    ft.Add<int32_t>(MINIMUM_TOOL_SIZE);
-    ft.Add<int32_t>(MAXIMUM_TOOL_SIZE);
+    ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+    ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
     window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
 }
 

@@ -176,8 +176,8 @@ static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widg
     switch (widgetindex)
     {
         case WIDX_PREVIEW:
-            ft.Add<int32_t>(MINIMUM_TOOL_SIZE);
-            ft.Add<int32_t>(MAXIMUM_TOOL_SIZE);
+            ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+            ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
             maxlen = 3;
             break;
     }

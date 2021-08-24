@@ -60,8 +60,8 @@ private:
     void InputSize()
     {
         Formatter ft;
-        ft.Add<int32_t>(MINIMUM_TOOL_SIZE);
-        ft.Add<int32_t>(MAXIMUM_TOOL_SIZE);
+        ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+        ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
         window_text_input_open(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 
