@@ -178,9 +178,10 @@ static void window_clear_scenery_textinput(rct_window* w, rct_widgetindex widget
 
 static void window_clear_scenery_inputsize(rct_window* w)
 {
-    TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
-    TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
-    window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, 3);
+    Formatter ft;
+    ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+    ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+    window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
 }
 
 /**

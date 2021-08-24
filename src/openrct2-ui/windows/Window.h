@@ -154,10 +154,10 @@ void window_network_status_close();
 void window_text_input_key(rct_window* w, char keychar);
 void window_text_input_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength);
+    const Formatter& descriptionArgs, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength);
 void window_text_input_raw_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const_utf8string existing_text, int32_t maxLength);
+    const Formatter& descriptionArgs, const_utf8string existing_text, int32_t maxLength);
 
 void window_text_input_open(
     std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,

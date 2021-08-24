@@ -440,7 +440,7 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         {
             auto peepName = peep->GetName();
             window_text_input_raw_open(
-                w, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, peepName.c_str(), 32);
+                w, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, {}, peepName.c_str(), 32);
             break;
         }
     }

@@ -47,6 +47,7 @@ private:
 
     std::string _description;
     rct_string_id _descriptionStringId = STR_NONE;
+    Formatter _descriptionArgs;
 
     std::function<void(std::string_view)> _callback;
     std::function<void()> _cancelCallback;
@@ -89,10 +90,11 @@ public:
         }
     }
 
-    void SetTitle(rct_string_id title, rct_string_id description)
+    void SetTitle(rct_string_id title, rct_string_id description, const Formatter& decriptionArgs)
     {
         _titleStringId = title;
         _descriptionStringId = description;
+        _descriptionArgs = decriptionArgs;
     }
 
     void SetTitle(std::string_view title, std::string_view description)
@@ -209,10 +211,8 @@ public:
         }
         else
         {
-            auto ft = Formatter();
-            ft.Add<const char*>(TextInputDescriptionArgs);
             DrawTextWrapped(
-                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, ft,
+                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, _descriptionArgs,
                 { colours[1], TextAlignment::CENTRE });
         }
 
@@ -373,7 +373,7 @@ private:
 
 void window_text_input_raw_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const_utf8string existing_text, int32_t maxLength)
+    const Formatter& descriptionArgs, const_utf8string existing_text, int32_t maxLength)
 {
     window_close_by_class(WC_TEXTINPUT);
 
@@ -382,7 +382,7 @@ void window_text_input_raw_open(
     if (w != nullptr)
     {
         w->SetParentWindow(call_w, call_widget);
-        w->SetTitle(title, description);
+        w->SetTitle(title, description, descriptionArgs);
         w->SetText(existing_text, maxLength);
     }
 }
@@ -403,10 +403,10 @@ void window_text_input_open(
 
 void window_text_input_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
+    const Formatter& descriptionArgs, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     auto existingText = format_string(existing_text, &existing_args);
-    window_text_input_raw_open(call_w, call_widget, title, description, existingText.c_str(), maxLength);
+    window_text_input_raw_open(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
 }
 
 void window_text_input_key(rct_window* w, char keychar)

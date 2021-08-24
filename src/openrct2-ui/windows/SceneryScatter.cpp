@@ -171,15 +171,17 @@ static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widg
 static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widgetindex)
 {
     uint8_t maxlen = 0;
+    Formatter ft;
+
     switch (widgetindex)
     {
         case WIDX_PREVIEW:
-            TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
-            TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
+            ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+            ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
             maxlen = 3;
             break;
     }
-    window_text_input_open(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, maxlen);
+    window_text_input_open(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxlen);
 }
 
 static void window_scenery_scatter_invalidate(rct_window* w)

@@ -138,8 +138,8 @@ static void window_track_manage_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_RENAME:
             window_text_input_raw_open(
-                w, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, _trackDesignFileReference->name,
-                127);
+                w, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, {},
+                _trackDesignFileReference->name, 127);
             break;
         case WIDX_DELETE:
             window_track_delete_prompt_open();

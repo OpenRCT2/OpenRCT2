@@ -1719,7 +1719,7 @@ static void window_ride_rename(rct_window* w)
     {
         auto rideName = ride->GetName();
         window_text_input_raw_open(
-            w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, rideName.c_str(), 32);
+            w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, {}, rideName.c_str(), 32);
     }
 }
 
@@ -6433,7 +6433,8 @@ static void window_ride_income_mouseup(rct_window* w, rct_widgetindex widgetInde
             {
                 money_to_string(static_cast<money32>(ride->price[0]), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
                 window_text_input_raw_open(
-                    w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneyInputText, MONEY_STRING_MAXLENGTH);
+                    w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
+                    MONEY_STRING_MAXLENGTH);
             }
             break;
         }
@@ -6446,7 +6447,7 @@ static void window_ride_income_mouseup(rct_window* w, rct_widgetindex widgetInde
 
             money_to_string(price32, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
             window_text_input_raw_open(
-                w, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneyInputText, MONEY_STRING_MAXLENGTH);
+                w, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText, MONEY_STRING_MAXLENGTH);
         }
         break;
         case WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK:

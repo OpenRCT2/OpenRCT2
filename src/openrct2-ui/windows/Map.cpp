@@ -985,16 +985,18 @@ static void window_map_show_default_scenario_editor_buttons(rct_window* w)
 
 static void window_map_inputsize_land(rct_window* w)
 {
-    TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
-    TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
-    window_text_input_open(w, WIDX_LAND_TOOL, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, 3);
+    Formatter ft;
+    ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+    ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+    window_text_input_open(w, WIDX_LAND_TOOL, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
 }
 
 static void window_map_inputsize_map(rct_window* w)
 {
-    TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
-    TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
-    window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, STR_NONE, STR_NONE, 4);
+    Formatter ft;
+    ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
+    ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
+    window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_NONE, STR_NONE, 4);
 }
 
 static void window_map_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
