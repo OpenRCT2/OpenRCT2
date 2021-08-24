@@ -231,10 +231,7 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
 void PaintSessionGenerate(paint_session* session)
 {
     session->CurrentRotation = get_current_rotation();
-
-    // Extracted from viewport_coord_to_map_coord
-    constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
-    switch (inverseRotationMapping[session->CurrentRotation])
+    switch (DirectionFlipXAxis(session->CurrentRotation))
     {
         case 0:
             PaintSessionGenerateRotate<0>(session);
