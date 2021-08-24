@@ -3646,9 +3646,9 @@ void Vehicle::UpdateCollisionSetup()
         }
 
         train->IsCrashedVehicle = true;
-        train->animationState = scenario_rand();
+        train->animationState = scenario_rand() & 0xFFFF;
 
-        train->animation_frame = (train->animationState >> 16) & 0x7;
+        train->animation_frame = scenario_rand() & 0x7;
         train->sprite_width = 13;
         train->sprite_height_negative = 45;
         train->sprite_height_positive = 5;
@@ -5512,9 +5512,9 @@ void Vehicle::UpdateCrash()
                     ExplosionCloud::Create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
                 }
             }
-            if (curVehicle->animationState <= 58248)
+            if (curVehicle->animationState <= 0xe388)
             {
-                curVehicle->animationState += 7281;
+                curVehicle->animationState += 0x1c71;
             }
             else
             {
