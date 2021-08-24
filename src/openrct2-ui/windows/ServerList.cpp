@@ -194,7 +194,7 @@ static void window_server_list_mouseup(rct_window* w, rct_widgetindex widgetInde
             server_list_fetch_servers_begin();
             break;
         case WIDX_ADD_SERVER:
-            window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, STR_NONE, 0, 128);
+            window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, STR_NONE, 0, 128);
             break;
         case WIDX_START_SERVER:
             context_open_window(WC_SERVER_START);

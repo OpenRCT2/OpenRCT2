@@ -450,12 +450,12 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 
         case WIDX_NEW_FILE:
             window_text_input_open(
-                w, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, STR_STRING,
+                w, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, {}, STR_STRING,
                 reinterpret_cast<uintptr_t>(_defaultPath.c_str()), 64);
             break;
 
         case WIDX_NEW_FOLDER:
-            window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, "", 64);
+            window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
             break;
 
         case WIDX_BROWSE:

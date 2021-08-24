@@ -494,7 +494,7 @@ static void window_mapgen_base_mouseup(rct_window* w, rct_widgetindex widgetInde
     window_mapgen_shared_mouseup(w, widgetIndex);
 
     mapgen_settings mapgenSettings;
-
+    Formatter ft;
     switch (widgetIndex)
     {
         case WIDX_MAP_GENERATE:
@@ -508,22 +508,23 @@ static void window_mapgen_base_mouseup(rct_window* w, rct_widgetindex widgetInde
             gfx_invalidate_screen();
             break;
         case WIDX_MAP_SIZE:
-            TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
-            TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
+            ft.Add<int32_t>(MINIMUM_MAP_SIZE_PRACTICAL);
+            ft.Add<int32_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
-            window_text_input_open(w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, STR_FORMAT_INTEGER, _mapSize - 2, 4);
+            window_text_input_open(
+                w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
             break;
         case WIDX_BASE_HEIGHT:
-            TextInputDescriptionArgs[0] = static_cast<uint16_t>((BASESIZE_MIN - 12) / 2);
-            TextInputDescriptionArgs[1] = static_cast<uint16_t>((BASESIZE_MAX - 12) / 2);
+            ft.Add<int32_t>((BASESIZE_MIN - 12) / 2);
+            ft.Add<int32_t>((BASESIZE_MAX - 12) / 2);
             window_text_input_open(
-                w, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, STR_FORMAT_INTEGER, (_baseHeight - 12) / 2, 3);
+                w, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, ft, STR_FORMAT_INTEGER, (_baseHeight - 12) / 2, 3);
             break;
         case WIDX_WATER_LEVEL:
-            TextInputDescriptionArgs[0] = static_cast<uint16_t>((WATERLEVEL_MIN - 12) / 2);
-            TextInputDescriptionArgs[1] = static_cast<uint16_t>((WATERLEVEL_MAX - 12) / 2);
+            ft.Add<int32_t>((WATERLEVEL_MIN - 12) / 2);
+            ft.Add<int32_t>((WATERLEVEL_MAX - 12) / 2);
             window_text_input_open(
-                w, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, STR_FORMAT_INTEGER, (_waterLevel - 12) / 2, 3);
+                w, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER, (_waterLevel - 12) / 2, 3);
             break;
     }
 }
@@ -808,12 +809,15 @@ static void window_mapgen_simplex_mouseup(rct_window* w, rct_widgetindex widgetI
     switch (widgetIndex)
     {
         case WIDX_SIMPLEX_MAP_SIZE:
-            TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
-            TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
+        {
+            Formatter ft;
+            ft.Add<int32_t>(MINIMUM_MAP_SIZE_PRACTICAL);
+            ft.Add<int32_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
             window_text_input_open(
-                w, WIDX_SIMPLEX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, STR_FORMAT_INTEGER, _mapSize - 2, 4);
+                w, WIDX_SIMPLEX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
             break;
+        }
         case WIDX_SIMPLEX_GENERATE:
             mapgenSettings.mapSize = _mapSize;
 
