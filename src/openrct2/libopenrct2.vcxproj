@@ -474,7 +474,7 @@
     <ClInclude Include="world\ScenerySelection.h" />
     <ClInclude Include="world\SmallScenery.h" />
     <ClInclude Include="world\Sprite.h" />
-    <ClInclude Include="world\SpriteBase.h" />
+    <ClInclude Include="world\EntityBase.h" />
     <ClInclude Include="world\Surface.h" />
     <ClInclude Include="world\TileElement.h" />
     <ClInclude Include="world\TileElementsView.h" />
