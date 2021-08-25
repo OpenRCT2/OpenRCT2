@@ -25833,7 +25833,7 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoListReverserRCRear
 
 // rct2: 0x008B8F30
 constexpr const rct_vehicle_info_list * const * gTrackVehicleInfo[static_cast<uint8_t>(VehicleTrackSubposition::Count)] = {
-    TrackVehicleInfoListDefault,                     // VehicleTrackSubposition::Default
+    TrackVehicleInfoListDefault,                  // VehicleTrackSubposition::Default
     TrackVehicleInfoListChairliftGoingOut,        // VehicleTrackSubposition::ChairliftGoingOut
     TrackVehicleInfoListChairliftGoingBack,       // VehicleTrackSubposition::ChairliftGoingBack
     TrackVehicleInfoListChairliftEndBullwheel,    // VehicleTrackSubposition::ChairliftEndBullwheel
