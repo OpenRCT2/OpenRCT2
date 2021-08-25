@@ -1188,7 +1188,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpriteVehicle* dst, const Vehicle* 
     dst->lost_time_out = src->lost_time_out;
     dst->vertical_drop_countdown = src->vertical_drop_countdown;
     dst->var_D3 = src->var_D3;
-    dst->mini_golf_current_animation = src->mini_golf_current_animation;
+    dst->mini_golf_current_animation = EnumValue(src->mini_golf_current_animation);
     dst->mini_golf_flags = src->mini_golf_flags;
     dst->ride_subtype = OpenRCT2EntryIndexToRCTEntryIndex(src->ride_subtype);
     dst->colours_extended = src->colours_extended;

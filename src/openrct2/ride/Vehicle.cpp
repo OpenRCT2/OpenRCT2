@@ -8765,18 +8765,18 @@ loc_6DC462:
     goto loc_6DC985;
 
 loc_6DC476:
-    if (mini_golf_flags & (1 << 2))
+    if (mini_golf_flags & MiniGolfFlag::Flag2)
     {
         uint8_t nextFrame = animation_frame + 1;
-        if (nextFrame < mini_golf_peep_animation_lengths[mini_golf_current_animation])
+        if (nextFrame < mini_golf_peep_animation_lengths[EnumValue(mini_golf_current_animation)])
         {
             animation_frame = nextFrame;
             goto loc_6DC985;
         }
-        mini_golf_flags &= ~(1 << 2);
+        mini_golf_flags &= ~MiniGolfFlag::Flag2;
     }
 
-    if (mini_golf_flags & (1 << 0))
+    if (mini_golf_flags & MiniGolfFlag::Flag0)
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
         Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
@@ -8784,7 +8784,7 @@ loc_6DC476:
         {
             return;
         }
-        if (!(vEDI->mini_golf_flags & (1 << 0)) || (vEDI->mini_golf_flags & (1 << 2)))
+        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag0) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
             goto loc_6DC985;
         }
@@ -8792,11 +8792,11 @@ loc_6DC476:
         {
             goto loc_6DC985;
         }
-        vEDI->mini_golf_flags &= ~(1 << 0);
-        mini_golf_flags &= ~(1 << 0);
+        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag0;
+        mini_golf_flags &= ~MiniGolfFlag::Flag0;
     }
 
-    if (mini_golf_flags & (1 << 1))
+    if (mini_golf_flags & MiniGolfFlag::Flag1)
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
         Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
@@ -8804,7 +8804,7 @@ loc_6DC476:
         {
             return;
         }
-        if (!(vEDI->mini_golf_flags & (1 << 1)) || (vEDI->mini_golf_flags & (1 << 2)))
+        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag1) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
             goto loc_6DC985;
         }
@@ -8812,11 +8812,11 @@ loc_6DC476:
         {
             goto loc_6DC985;
         }
-        vEDI->mini_golf_flags &= ~(1 << 1);
-        mini_golf_flags &= ~(1 << 1);
+        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag1;
+        mini_golf_flags &= ~MiniGolfFlag::Flag1;
     }
 
-    if (mini_golf_flags & (1 << 3))
+    if (mini_golf_flags & MiniGolfFlag::Flag3)
     {
         Vehicle* vEDI = this;
 
@@ -8829,15 +8829,15 @@ loc_6DC476:
             }
             if (vEDI->IsHead())
                 continue;
-            if (!(vEDI->mini_golf_flags & (1 << 4)))
+            if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag4))
                 continue;
             if (vEDI->TrackLocation != TrackLocation)
                 continue;
             goto loc_6DC985;
         }
 
-        mini_golf_flags |= (1 << 4);
-        mini_golf_flags &= ~(1 << 3);
+        mini_golf_flags |= MiniGolfFlag::Flag4;
+        mini_golf_flags &= ~MiniGolfFlag::Flag3;
     }
 
     // There are two bytes before the move info list
@@ -8921,12 +8921,12 @@ loc_6DC743:
         {
             break;
         }
-        switch (moveInfo->y)
+        switch (MiniGolfState(moveInfo->y))
         {
-            case 0: // loc_6DC7B4
+            case MiniGolfState::Unk0: // loc_6DC7B4
                 if (!IsHead())
                 {
-                    mini_golf_flags |= (1 << 3);
+                    mini_golf_flags |= MiniGolfFlag::Flag3;
                 }
                 else
                 {
@@ -8944,53 +8944,56 @@ loc_6DC743:
                 }
                 track_progress++;
                 break;
-            case 1: // loc_6DC7ED
+            case MiniGolfState::Unk1: // loc_6DC7ED
+                log_error("Unused move info...");
+                assert(false);
                 var_D3 = static_cast<uint8_t>(moveInfo->z);
                 track_progress++;
                 break;
-            case 2: // loc_6DC800
-                mini_golf_flags |= (1 << 0);
+            case MiniGolfState::Unk2: // loc_6DC800
+                mini_golf_flags |= MiniGolfFlag::Flag0;
                 track_progress++;
                 break;
-            case 3: // loc_6DC810
-                mini_golf_flags |= (1 << 1);
+            case MiniGolfState::Unk3: // loc_6DC810
+                mini_golf_flags |= MiniGolfFlag::Flag1;
                 track_progress++;
                 break;
-            case 4: // loc_6DC820
-                trackPos.z = moveInfo->z;
+            case MiniGolfState::Unk4: // loc_6DC820
+            {
+                auto animation = MiniGolfAnimation(moveInfo->z);
                 // When the ride is closed occasionally the peep is removed
                 // but the vehicle is still on the track. This will prevent
                 // it from crashing in that situation.
-                if (peep[0] != SPRITE_INDEX_NULL)
+                auto* curPeep = TryGetEntity<Guest>(peep[0]);
+                if (curPeep != nullptr)
                 {
-                    if (trackPos.z == 2)
+                    if (animation == MiniGolfAnimation::SwingLeft)
                     {
-                        auto* curPeep = GetEntity<Guest>(peep[0]);
-                        if (curPeep != nullptr && curPeep->Id & 7)
+                        if (curPeep->Id & 7)
                         {
-                            trackPos.z = 7;
+                            animation = MiniGolfAnimation::Swing;
                         }
                     }
-                    if (trackPos.z == 6)
+                    if (animation == MiniGolfAnimation::PuttLeft)
                     {
-                        auto* curPeep = GetEntity<Guest>(peep[0]);
-                        if (curPeep != nullptr && curPeep->Id & 7)
+                        if (curPeep->Id & 7)
                         {
-                            trackPos.z = 8;
+                            animation = MiniGolfAnimation::Putt;
                         }
                     }
                 }
-                mini_golf_current_animation = static_cast<uint8_t>(trackPos.z);
+                mini_golf_current_animation = animation;
                 animation_frame = 0;
                 track_progress++;
                 break;
-            case 5: // loc_6DC87A
-                mini_golf_flags |= (1 << 2);
+            }
+            case MiniGolfState::Unk5: // loc_6DC87A
+                mini_golf_flags |= MiniGolfFlag::Flag2;
                 track_progress++;
                 break;
-            case 6: // loc_6DC88A
-                mini_golf_flags &= ~(1 << 4);
-                mini_golf_flags |= (1 << 5);
+            case MiniGolfState::Unk6: // loc_6DC88A
+                mini_golf_flags &= ~MiniGolfFlag::Flag4;
+                mini_golf_flags |= MiniGolfFlag::Flag5;
                 track_progress++;
                 break;
             default:

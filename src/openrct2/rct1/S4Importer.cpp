@@ -2771,7 +2771,7 @@ template<> void S4Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& srcBase
 
     SetVehicleColours(dst, src);
 
-    dst->mini_golf_current_animation = src->mini_golf_current_animation;
+    dst->mini_golf_current_animation = MiniGolfAnimation(src->mini_golf_current_animation);
     dst->mini_golf_flags = src->mini_golf_flags;
 
     dst->MoveTo({ src->x, src->y, src->z });

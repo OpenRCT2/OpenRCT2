@@ -393,7 +393,7 @@ static constexpr const uint8_t mini_golf_peep_animation_frames_swing_left[] = {
 };
 
 /** rct2: 0x0093348D */
-static constexpr const uint8_t mini_golf_peep_animation_frames_place_ball_upwards[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_pickup_ball[] = {
     12, 13, 14, 15, 14, 13, 12,
 };
 
@@ -403,17 +403,17 @@ static constexpr const uint8_t mini_golf_peep_animation_frames_jump[] = {
 };
 
 /** rct2: 0x009334A5 */
-static constexpr const uint8_t mini_golf_peep_animation_frames_pickup_ball[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_place_ball_upwards[] = {
     15, 14, 13, 12,
 };
 
 /** rct2: 0x009334C5 */
-static constexpr const uint8_t mini_golf_peep_animation_frames_put[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_putt[] = {
     35, 36, 36, 36, 36, 36, 35, 35, 35, 35,
 };
 
 /** rct2: 0x009334AA */
-static constexpr const uint8_t mini_golf_peep_animation_frames_put_left[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_putt_left[] = {
     10, 11, 11, 11, 11, 11, 10, 10, 10, 10,
 };
 
@@ -422,24 +422,24 @@ static constexpr const uint8_t* mini_golf_peep_animation_frames[] = {
     mini_golf_peep_animation_frames_walk,
     mini_golf_peep_animation_frames_place_ball_downwards,
     mini_golf_peep_animation_frames_swing_left,
-    mini_golf_peep_animation_frames_place_ball_upwards,
-    mini_golf_peep_animation_frames_jump,
     mini_golf_peep_animation_frames_pickup_ball,
-    mini_golf_peep_animation_frames_put_left,
+    mini_golf_peep_animation_frames_jump,
+    mini_golf_peep_animation_frames_place_ball_upwards,
+    mini_golf_peep_animation_frames_putt_left,
     mini_golf_peep_animation_frames_swing,
-    mini_golf_peep_animation_frames_put,
+    mini_golf_peep_animation_frames_putt,
 };
 
 const size_t mini_golf_peep_animation_lengths[] = {
     std::size(mini_golf_peep_animation_frames_walk),
     std::size(mini_golf_peep_animation_frames_place_ball_downwards),
     std::size(mini_golf_peep_animation_frames_swing_left),
-    std::size(mini_golf_peep_animation_frames_place_ball_upwards),
-    std::size(mini_golf_peep_animation_frames_jump),
     std::size(mini_golf_peep_animation_frames_pickup_ball),
-    std::size(mini_golf_peep_animation_frames_put_left),
+    std::size(mini_golf_peep_animation_frames_jump),
+    std::size(mini_golf_peep_animation_frames_place_ball_upwards),
+    std::size(mini_golf_peep_animation_frames_putt_left),
     std::size(mini_golf_peep_animation_frames_swing),
-    std::size(mini_golf_peep_animation_frames_put),
+    std::size(mini_golf_peep_animation_frames_putt),
 };
 // clang-format on
 
@@ -1237,7 +1237,7 @@ void vehicle_visual_mini_golf_player(
     if (peep == nullptr)
         return;
 
-    uint8_t frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->animation_frame];
+    uint8_t frame = mini_golf_peep_animation_frames[EnumValue(vehicle->mini_golf_current_animation)][vehicle->animation_frame];
     uint32_t ebx = (frame << 2) + (imageDirection >> 3);
 
     uint32_t image_id = rideEntry->vehicles[0].base_image_id + 1 + ebx;
@@ -1251,7 +1251,7 @@ void vehicle_visual_mini_golf_player(
 void vehicle_visual_mini_golf_ball(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
-    if (vehicle->mini_golf_current_animation != 1)
+    if (vehicle->mini_golf_current_animation != MiniGolfAnimation::PlaceBallDown)
     {
         return;
     }

@@ -51,6 +51,8 @@ struct SoundIdVolume;
 constexpr const uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
 constexpr const uint16_t VehicleTrackTypeMask = 0b1111111111111100;
 
+enum class MiniGolfAnimation : uint8_t;
+
 struct Vehicle : SpriteBase
 {
     static constexpr auto cEntityType = EntityType::Vehicle;
@@ -197,7 +199,7 @@ struct Vehicle : SpriteBase
     uint16_t lost_time_out;
     int8_t vertical_drop_countdown;
     uint8_t var_D3;
-    uint8_t mini_golf_current_animation;
+    MiniGolfAnimation mini_golf_current_animation;
     uint8_t mini_golf_flags;
     ObjectEntryIndex ride_subtype;
     uint8_t colours_extended;
@@ -373,6 +375,40 @@ struct train_ref
 {
     Vehicle* head;
     Vehicle* tail;
+};
+
+namespace MiniGolfFlag
+{
+    constexpr uint8_t Flag0 = (1 << 0);
+    constexpr uint8_t Flag1 = (1 << 1);
+    constexpr uint8_t Flag2 = (1 << 2);
+    constexpr uint8_t Flag3 = (1 << 3);
+    constexpr uint8_t Flag4 = (1 << 4);
+    constexpr uint8_t Flag5 = (1 << 5); // transitioning between hole
+} // namespace MiniGolfFlag
+
+enum class MiniGolfState : int16_t
+{
+    Unk0,
+    Unk1, // Unused
+    Unk2,
+    Unk3,
+    Unk4,
+    Unk5,
+    Unk6,
+};
+
+enum class MiniGolfAnimation : uint8_t
+{
+    Walk,
+    PlaceBallDown,
+    SwingLeft,
+    PickupBall,
+    Jump,
+    PlaceBallUp,
+    PuttLeft,
+    Swing,
+    Putt,
 };
 
 enum : uint32_t
