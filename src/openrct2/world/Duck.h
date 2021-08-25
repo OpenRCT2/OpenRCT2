@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "SpriteBase.h"
+#include "EntityBase.h"
 
 class DataSerialiser;
 struct CoordsXY;

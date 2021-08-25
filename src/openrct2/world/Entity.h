@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "SpriteBase.h"
+#include "EntityBase.h"
 
 constexpr uint16_t MAX_ENTITIES = 10000;
 

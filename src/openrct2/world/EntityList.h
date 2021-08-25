@@ -12,8 +12,8 @@
 #include "../common.h"
 #include "../rct12/RCT12.h"
 #include "Entity.h"
+#include "EntityBase.h"
 #include "Location.hpp"
-#include "SpriteBase.h"
 
 #include <list>
 #include <vector>

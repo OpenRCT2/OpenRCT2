@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "SpriteBase.h"
+#include "EntityBase.h"
 
 #include <vector>
 

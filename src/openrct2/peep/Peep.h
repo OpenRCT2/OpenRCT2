@@ -16,8 +16,8 @@
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
 #include "../util/Util.h"
+#include "../world/EntityBase.h"
 #include "../world/Location.hpp"
-#include "../world/SpriteBase.h"
 
 #include <algorithm>
 #include <bitset>

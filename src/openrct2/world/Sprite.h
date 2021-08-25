@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../common.h"
-#include "SpriteBase.h"
+#include "EntityBase.h"
 
 #include <array>
 
