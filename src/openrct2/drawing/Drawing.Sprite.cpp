@@ -575,19 +575,19 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     // Move the pointer to the start point of the destination
     dest_pointer += ((dpi->width / zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
 
-    DrawSpriteArgs args(dpi, imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
-    gfx_sprite_to_buffer(args);
+    DrawSpriteArgs args(imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
+    gfx_sprite_to_buffer(*dpi, args);
 }
 
-void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args)
+void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
 {
     if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
     {
-        gfx_rle_sprite_to_buffer(args);
+        gfx_rle_sprite_to_buffer(dpi, args);
     }
     else if (!(args.SourceImage.flags & G1_FLAG_1))
     {
-        gfx_bmp_sprite_to_buffer(args);
+        gfx_bmp_sprite_to_buffer(dpi, args);
     }
 }
 

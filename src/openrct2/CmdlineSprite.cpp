@@ -199,8 +199,8 @@ static bool SpriteImageExport(const rct_g1_element& spriteElement, const char* o
     dpi.zoom_level = 0;
 
     DrawSpriteArgs args(
-        &dpi, ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
-    gfx_sprite_to_buffer(args);
+        ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
+    gfx_sprite_to_buffer(dpi, args);
 
     auto const pixels8 = dpi.bits;
     auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
