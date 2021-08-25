@@ -548,7 +548,7 @@ public:
     }
 };
 
-struct Peep : SpriteBase
+struct Peep : EntityBase
 {
     char* Name;
     CoordsXYZ NextLoc;

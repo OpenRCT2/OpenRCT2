@@ -13,29 +13,29 @@
 
 constexpr uint16_t MAX_ENTITIES = 10000;
 
-SpriteBase* try_get_sprite(size_t spriteIndex);
-SpriteBase* get_sprite(size_t sprite_idx);
+EntityBase* try_get_sprite(size_t spriteIndex);
+EntityBase* get_sprite(size_t sprite_idx);
 
-template<typename T = SpriteBase> T* GetEntity(size_t sprite_idx)
+template<typename T = EntityBase> T* GetEntity(size_t sprite_idx)
 {
     auto spr = get_sprite(sprite_idx);
     return spr != nullptr ? spr->As<T>() : nullptr;
 }
 
-template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
+template<typename T = EntityBase> T* TryGetEntity(size_t sprite_idx)
 {
     auto spr = try_get_sprite(sprite_idx);
     return spr != nullptr ? spr->As<T>() : nullptr;
 }
 
-SpriteBase* CreateEntity(EntityType type);
+EntityBase* CreateEntity(EntityType type);
 template<typename T> T* CreateEntity()
 {
     return static_cast<T*>(CreateEntity(T::cEntityType));
 }
 
 // Use only with imports that must happen at a specified index
-SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type);
+EntityBase* CreateEntityAt(const uint16_t index, const EntityType type);
 // Use only with imports that must happen at a specified index
 template<typename T> T* CreateEntityAt(const uint16_t index)
 {

@@ -53,7 +53,7 @@ constexpr const uint16_t VehicleTrackTypeMask = 0b1111111111111100;
 
 enum class MiniGolfAnimation : uint8_t;
 
-struct Vehicle : SpriteBase
+struct Vehicle : EntityBase
 {
     static constexpr auto cEntityType = EntityType::Vehicle;
 

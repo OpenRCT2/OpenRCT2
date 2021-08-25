@@ -735,7 +735,7 @@ static const struct
 
 // clang-format on
 
-template<> bool SpriteBase::Is<Vehicle>() const
+template<> bool EntityBase::Is<Vehicle>() const
 {
     return Type == EntityType::Vehicle;
 }

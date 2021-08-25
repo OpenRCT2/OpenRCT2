@@ -57,7 +57,7 @@ void EntityTweener::PostTick()
     }
 }
 
-void EntityTweener::RemoveEntity(SpriteBase* entity)
+void EntityTweener::RemoveEntity(EntityBase* entity)
 {
     if (!entity->Is<Peep>() && !entity->Is<Vehicle>())
     {

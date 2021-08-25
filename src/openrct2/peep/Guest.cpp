@@ -429,7 +429,7 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags);
 bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
-template<> bool SpriteBase::Is<Guest>() const
+template<> bool EntityBase::Is<Guest>() const
 {
     return Type == EntityType::Guest;
 }

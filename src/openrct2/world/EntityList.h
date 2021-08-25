@@ -81,7 +81,7 @@ public:
     using iterator_category = std::forward_iterator_tag;
 };
 
-template<typename T = SpriteBase> class EntityTileList
+template<typename T = EntityBase> class EntityTileList
 {
 private:
     const std::vector<uint16_t>& vec;
@@ -153,7 +153,7 @@ public:
     using iterator_category = std::forward_iterator_tag;
 };
 
-template<typename T = SpriteBase> class EntityList
+template<typename T = EntityBase> class EntityList
 {
 private:
     using EntityListIterator_t = EntityListIterator<T>;

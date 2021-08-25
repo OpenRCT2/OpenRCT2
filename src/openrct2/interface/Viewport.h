@@ -24,7 +24,7 @@ struct Peep;
 struct TileElement;
 struct rct_window;
 union paint_entry;
-struct SpriteBase;
+struct EntityBase;
 
 enum
 {
@@ -77,7 +77,7 @@ struct InteractionInfo
     union
     {
         TileElement* Element = nullptr;
-        SpriteBase* Entity;
+        EntityBase* Entity;
     };
     ViewportInteractionItem SpriteType = ViewportInteractionItem::None;
 };

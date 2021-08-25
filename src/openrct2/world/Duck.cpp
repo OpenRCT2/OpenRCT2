@@ -67,7 +67,7 @@ static constexpr const uint8_t * DuckAnimations[] =
 };
 // clang-format on
 
-template<> bool SpriteBase::Is<Duck>() const
+template<> bool EntityBase::Is<Duck>() const
 {
     return Type == EntityType::Duck;
 }

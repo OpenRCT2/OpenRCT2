@@ -15,7 +15,7 @@ class DataSerialiser;
 struct CoordsXYZ;
 struct CoordsXYZD;
 
-struct Litter : SpriteBase
+struct Litter : EntityBase
 {
     enum class Type : uint8_t
     {

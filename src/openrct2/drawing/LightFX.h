@@ -18,7 +18,7 @@ struct Vehicle;
 struct rct_drawpixelinfo;
 struct GamePalette;
 struct CoordsXYZ;
-struct SpriteBase;
+struct EntityBase;
 
 enum class LightType : uint8_t
 {
@@ -60,7 +60,7 @@ void lightfx_update_viewport_settings();
 void* lightfx_get_front_buffer();
 const GamePalette& lightfx_get_palette();
 
-void LightfxAdd3DLight(const SpriteBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType);
+void LightfxAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType);
 
 void lightfx_add_3d_light_magic_from_drawing_tile(
     const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType);
