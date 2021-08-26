@@ -478,7 +478,7 @@ static void paint_car_ride_track_spinning_tunnel(
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);

@@ -731,7 +731,7 @@ static void paint_mini_golf_station(
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -832,7 +832,7 @@ static void paint_mini_golf_hole_ab(
     CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
-        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -904,7 +904,7 @@ static void paint_mini_golf_hole_c(
     CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
-        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -977,8 +977,7 @@ static void paint_mini_golf_hole_d(
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
         supportType = 1 - supportType;
-    bool drewSupports = wooden_a_supports_paint_setup(
-        session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    bool drewSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1071,8 +1070,7 @@ static void paint_mini_golf_hole_e(
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
         supportType = 1 - supportType;
-    bool drewSupports = wooden_a_supports_paint_setup(
-        session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    bool drewSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);

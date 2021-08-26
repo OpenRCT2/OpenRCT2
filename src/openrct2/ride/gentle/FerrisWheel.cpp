@@ -145,7 +145,7 @@ static void paint_ferris_wheel(
         edges = edges_1x4_ne_sw[relativeTrackSequence];
     }
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
     StationObject* stationObject = nullptr;
     if (ride != nullptr)

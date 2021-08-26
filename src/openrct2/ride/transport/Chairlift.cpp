@@ -187,7 +187,7 @@ static void chairlift_paint_station_ne_sw(
 
     auto stationObj = ride_get_station_object(ride);
 
-    wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_MISC]);
 
     if (!isStart && !isEnd)
     {
@@ -280,7 +280,7 @@ static void chairlift_paint_station_se_nw(
 
     auto stationObj = ride_get_station_object(ride);
 
-    wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
     if (!isStart && !isEnd)
     {

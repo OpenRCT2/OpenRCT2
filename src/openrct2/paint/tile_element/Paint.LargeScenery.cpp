@@ -52,7 +52,7 @@ static void large_scenery_paint_supports(
         supportImageColourFlags = dword_F4387C;
     }
 
-    wooden_b_supports_paint_setup(session, (direction & 1), ax, supportHeight, supportImageColourFlags, nullptr);
+    wooden_b_supports_paint_setup(session, (direction & 1), ax, supportHeight, supportImageColourFlags);
 
     int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
 

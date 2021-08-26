@@ -26,8 +26,7 @@ static void shop_paint_setup(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool hasSupports = wooden_a_supports_paint_setup(
-        session, direction & 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
+    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3]);
 
     if (ride == nullptr)
         return;

@@ -92,7 +92,7 @@ static void paint_observation_tower_base(
     int32_t edges = edges_3x3[trackSequence];
     CoordsXY position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
     uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });

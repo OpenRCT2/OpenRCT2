@@ -360,11 +360,11 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
             }
             if (direction & 1)
             {
-                wooden_b_supports_paint_setup(session, 1, ax, supportHeight, supportImageColourFlags, nullptr);
+                wooden_b_supports_paint_setup(session, 1, ax, supportHeight, supportImageColourFlags);
             }
             else
             {
-                wooden_b_supports_paint_setup(session, 0, ax, supportHeight, supportImageColourFlags, nullptr);
+                wooden_b_supports_paint_setup(session, 0, ax, supportHeight, supportImageColourFlags);
             }
         }
     }
