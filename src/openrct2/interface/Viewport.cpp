@@ -239,7 +239,12 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
         auto max = GetMapSizeMinus2();
         if (pos.x > max && pos.y > max)
         {
-            const CoordsXY corr[] = { { -1, -1 }, { 1, -1 }, { 1, 1 }, { -1, 1 } };
+            static constexpr CoordsXY corr[] = {
+                { -1, -1 },
+                { 1, -1 },
+                { 1, 1 },
+                { -1, 1 },
+            };
             pos.x += corr[rotation].x * height;
             pos.y += corr[rotation].y * height;
         }
