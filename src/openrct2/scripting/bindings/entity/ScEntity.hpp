@@ -190,7 +190,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        SpriteBase* GetEntity() const
+        EntityBase* GetEntity() const
         {
             return ::GetEntity(_id);
         }

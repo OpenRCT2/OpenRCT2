@@ -20,7 +20,7 @@
 
 static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
 
-template<> bool SpriteBase::Is<MoneyEffect>() const
+template<> bool EntityBase::Is<MoneyEffect>() const
 {
     return Type == EntityType::MoneyEffect;
 }

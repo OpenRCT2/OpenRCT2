@@ -9,13 +9,13 @@
 
 #pragma once
 
-#include "SpriteBase.h"
+#include "EntityBase.h"
 
 #include <vector>
 
 class EntityTweener
 {
-    std::vector<SpriteBase*> Entities;
+    std::vector<EntityBase*> Entities;
     std::vector<CoordsXYZ> PrePos;
     std::vector<CoordsXYZ> PostPos;
 
@@ -27,7 +27,7 @@ public:
 
     void PreTick();
     void PostTick();
-    void RemoveEntity(SpriteBase* entity);
+    void RemoveEntity(EntityBase* entity);
     void Tween(float alpha);
     void Restore();
     void Reset();

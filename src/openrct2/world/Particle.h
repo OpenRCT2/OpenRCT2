@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../ride/VehicleColour.h"
-#include "SpriteBase.h"
+#include "EntityBase.h"
 
 class DataSerialiser;
 struct CoordsXYZ;

@@ -44,7 +44,7 @@ constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
 static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
-static void FreeEntity(SpriteBase* entity);
+static void FreeEntity(EntityBase* entity);
 
 constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 {
@@ -67,12 +67,12 @@ constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 }
 
 // Required for GetEntity to return a default
-template<> bool SpriteBase::Is<SpriteBase>() const
+template<> bool EntityBase::Is<EntityBase>() const
 {
     return true;
 }
 
-template<> bool SpriteBase::Is<Litter>() const
+template<> bool EntityBase::Is<Litter>() const
 {
     return Type == EntityType::Litter;
 }
@@ -96,22 +96,22 @@ constexpr bool EntityTypeIsMiscEntity(const EntityType type)
     }
 }
 
-template<> bool SpriteBase::Is<MiscEntity>() const
+template<> bool EntityBase::Is<MiscEntity>() const
 {
     return EntityTypeIsMiscEntity(Type);
 }
 
-template<> bool SpriteBase::Is<SteamParticle>() const
+template<> bool EntityBase::Is<SteamParticle>() const
 {
     return Type == EntityType::SteamParticle;
 }
 
-template<> bool SpriteBase::Is<ExplosionFlare>() const
+template<> bool EntityBase::Is<ExplosionFlare>() const
 {
     return Type == EntityType::ExplosionFlare;
 }
 
-template<> bool SpriteBase::Is<ExplosionCloud>() const
+template<> bool EntityBase::Is<ExplosionCloud>() const
 {
     return Type == EntityType::ExplosionCloud;
 }
@@ -141,12 +141,12 @@ std::string rct_sprite_checksum::ToString() const
     return result;
 }
 
-SpriteBase* try_get_sprite(size_t spriteIndex)
+EntityBase* try_get_sprite(size_t spriteIndex)
 {
     return spriteIndex >= MAX_ENTITIES ? nullptr : &_spriteList[spriteIndex].base;
 }
 
-SpriteBase* get_sprite(size_t spriteIndex)
+EntityBase* get_sprite(size_t spriteIndex)
 {
     if (spriteIndex == SPRITE_INDEX_NULL)
     {
@@ -161,7 +161,7 @@ const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
     return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
 }
 
-void SpriteBase::Invalidate()
+void EntityBase::Invalidate()
 {
     if (sprite_left == LOCATION_NULL)
         return;
@@ -249,7 +249,7 @@ void reset_sprite_list()
     reset_sprite_spatial_index();
 }
 
-static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
+static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc);
 
 /**
  *
@@ -307,7 +307,7 @@ rct_sprite_checksum sprite_checksum()
 
 #endif // DISABLE_NETWORK
 
-static void sprite_reset(SpriteBase* sprite)
+static void sprite_reset(EntityBase* sprite)
 {
     // Need to retain how the sprite is linked in lists
     uint16_t sprite_index = sprite->sprite_index;
@@ -320,7 +320,7 @@ static void sprite_reset(SpriteBase* sprite)
 }
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
-static void AddToEntityList(SpriteBase* entity)
+static void AddToEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
     // Entity list must be in sprite_index order to prevent desync issues
@@ -333,7 +333,7 @@ static void AddToFreeList(uint16_t index)
     _freeIdList.insert(std::upper_bound(std::rbegin(_freeIdList), std::rend(_freeIdList), index).base(), index);
 }
 
-static void RemoveFromEntityList(SpriteBase* entity)
+static void RemoveFromEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
     auto ptr = std::lower_bound(std::begin(list), std::end(list), entity->sprite_index);
@@ -355,7 +355,7 @@ uint16_t GetMiscEntityCount()
     return count;
 }
 
-static void PrepareNewEntity(SpriteBase* base, const EntityType type)
+static void PrepareNewEntity(EntityBase* base, const EntityType type)
 {
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
@@ -375,7 +375,7 @@ static void PrepareNewEntity(SpriteBase* base, const EntityType type)
     SpriteSpatialInsert(base, { LOCATION_NULL, 0 });
 }
 
-SpriteBase* CreateEntity(EntityType type)
+EntityBase* CreateEntity(EntityType type)
 {
     if (_freeIdList.size() == 0)
     {
@@ -407,7 +407,7 @@ SpriteBase* CreateEntity(EntityType type)
     return entity;
 }
 
-SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type)
+EntityBase* CreateEntityAt(const uint16_t index, const EntityType type)
 {
     auto id = std::lower_bound(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
     if (id == std::rend(_freeIdList) || *id != index)
@@ -452,7 +452,7 @@ void sprite_misc_update_all()
 }
 
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
-static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
+static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
     auto& spatialVector = gSpriteSpatialIndex[newIndex];
@@ -460,7 +460,7 @@ static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
     spatialVector.insert(index, sprite->sprite_index);
 }
 
-static void SpriteSpatialRemove(SpriteBase* sprite)
+static void SpriteSpatialRemove(EntityBase* sprite)
 {
     size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
     auto& spatialVector = gSpriteSpatialIndex[currentIndex];
@@ -476,7 +476,7 @@ static void SpriteSpatialRemove(SpriteBase* sprite)
     }
 }
 
-static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
+static void SpriteSpatialMove(EntityBase* sprite, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
     size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
@@ -487,7 +487,7 @@ static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
     SpriteSpatialInsert(sprite, newLoc);
 }
 
-void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
+void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 {
     if (x != LOCATION_NULL)
     {
@@ -517,19 +517,19 @@ void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
     }
 }
 
-CoordsXYZ SpriteBase::GetLocation() const
+CoordsXYZ EntityBase::GetLocation() const
 {
     return { x, y, z };
 }
 
-void SpriteBase::SetLocation(const CoordsXYZ& newLocation)
+void EntityBase::SetLocation(const CoordsXYZ& newLocation)
 {
     x = static_cast<int16_t>(newLocation.x);
     y = static_cast<int16_t>(newLocation.y);
     z = static_cast<int16_t>(newLocation.z);
 }
 
-void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite)
+void sprite_set_coordinates(const CoordsXYZ& spritePos, EntityBase* sprite)
 {
     auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), spritePos);
 
@@ -545,7 +545,7 @@ void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite)
 /**
  * Frees any dynamically attached memory to the entity, such as peep name.
  */
-static void FreeEntity(SpriteBase* entity)
+static void FreeEntity(EntityBase* entity)
 {
     auto* guest = entity->As<Guest>();
     auto* staff = entity->As<Staff>();
@@ -565,7 +565,7 @@ static void FreeEntity(SpriteBase* entity)
  *
  *  rct2: 0x0069EDB6
  */
-void sprite_remove(SpriteBase* sprite)
+void sprite_remove(EntityBase* sprite)
 {
     FreeEntity(sprite);
 
@@ -605,13 +605,13 @@ uint16_t remove_floating_sprites()
     return removed;
 }
 
-void sprite_set_flashing(SpriteBase* sprite, bool flashing)
+void sprite_set_flashing(EntityBase* sprite, bool flashing)
 {
     assert(sprite->sprite_index < MAX_ENTITIES);
     _spriteFlashingList[sprite->sprite_index] = flashing;
 }
 
-bool sprite_get_flashing(SpriteBase* sprite)
+bool sprite_get_flashing(EntityBase* sprite)
 {
     assert(sprite->sprite_index < MAX_ENTITIES);
     return _spriteFlashingList[sprite->sprite_index];

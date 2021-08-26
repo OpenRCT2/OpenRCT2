@@ -1294,7 +1294,7 @@ namespace RCT1
             }
         }
 
-        void ImportEntityCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
+        void ImportEntityCommonProperties(EntityBase* dst, const RCT12SpriteBase* src)
         {
             dst->sprite_direction = src->sprite_direction;
             dst->sprite_width = src->sprite_width;

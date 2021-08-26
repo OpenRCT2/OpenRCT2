@@ -47,7 +47,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx);
 
     private:
-        DukValue GetEntityAsDukValue(const SpriteBase* sprite) const;
+        DukValue GetEntityAsDukValue(const EntityBase* sprite) const;
     };
 
 } // namespace OpenRCT2::Scripting

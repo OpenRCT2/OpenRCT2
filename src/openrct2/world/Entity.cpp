@@ -18,7 +18,7 @@
 #include "MoneyEffect.h"
 #include "Particle.h"
 
-static void EntityBaseSerialise(SpriteBase& base, DataSerialiser& stream)
+static void EntityBaseSerialise(EntityBase& base, DataSerialiser& stream)
 {
     stream << base.Type;
     stream << base.sprite_index;

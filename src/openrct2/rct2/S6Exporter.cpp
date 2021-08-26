@@ -1014,7 +1014,7 @@ void S6Exporter::RebuildEntityLinks()
     }
 }
 
-constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
+constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const EntityBase* src)
 {
     RCT12EntityLinkListOffset output = RCT12EntityLinkListOffset::Free;
     switch (src->Type)
@@ -1056,7 +1056,7 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
     return output;
 }
 
-constexpr RCT12SpriteIdentifier GetRCT2SpriteIdentifier(const SpriteBase* src)
+constexpr RCT12SpriteIdentifier GetRCT2SpriteIdentifier(const EntityBase* src)
 {
     RCT12SpriteIdentifier output = RCT12SpriteIdentifier::Null;
     switch (src->Type)
@@ -1088,7 +1088,7 @@ constexpr RCT12SpriteIdentifier GetRCT2SpriteIdentifier(const SpriteBase* src)
     return output;
 }
 
-void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
+void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const EntityBase* src)
 {
     dst->sprite_identifier = GetRCT2SpriteIdentifier(src);
     dst->linked_list_type_offset = GetRCT2LinkListOffset(src);

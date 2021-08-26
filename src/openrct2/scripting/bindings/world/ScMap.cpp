@@ -253,7 +253,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScMap::createEntity, "createEntity");
     }
 
-    DukValue ScMap::GetEntityAsDukValue(const SpriteBase* sprite) const
+    DukValue ScMap::GetEntityAsDukValue(const EntityBase* sprite) const
     {
         auto spriteId = sprite->sprite_index;
         switch (sprite->Type)

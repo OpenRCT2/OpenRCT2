@@ -1395,7 +1395,7 @@ public:
             return pos.x == 0xFF && pos.y == 0xFF && pos.z == 0xFF && pos.direction == INVALID_DIRECTION;
         };
 
-        ImportEntityCommonProperties(static_cast<SpriteBase*>(dst), src);
+        ImportEntityCommonProperties(static_cast<EntityBase*>(dst), src);
         if (is_user_string_id(src->name_string_idx))
         {
             dst->SetName(GetUserString(src->name_string_idx));
@@ -1520,7 +1520,7 @@ public:
         return output;
     }
 
-    void ImportEntityCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
+    void ImportEntityCommonProperties(EntityBase* dst, const RCT12SpriteBase* src)
     {
         dst->Type = GetEntityTypeFromRCT2Sprite(src);
         dst->sprite_height_negative = src->sprite_height_negative;
