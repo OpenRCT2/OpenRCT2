@@ -14,8 +14,6 @@
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
-#include "../rct12/RCT12.h"
-#include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideRatings.h"
 #include "../world/Banner.h"
@@ -25,34 +23,6 @@
 #include "../world/MapAnimation.h"
 
 using random_engine_t = Random::Rct2::Engine;
-
-enum class EditorStep : uint8_t;
-
-struct ParkLoadResult;
-
-#pragma pack(push, 1)
-
-enum class ScenarioSource : uint8_t
-{
-    RCT1,
-    RCT1_AA,
-    RCT1_LL,
-    RCT2,
-    RCT2_WW,
-    RCT2_TT,
-    Real,
-    Other
-};
-
-struct rct_stex_entry
-{
-    rct_string_id scenario_name; // 0x00
-    rct_string_id park_name;     // 0x02
-    rct_string_id details;       // 0x04
-    uint8_t var_06;
-};
-assert_struct_size(rct_stex_entry, 7);
-#pragma pack(pop)
 
 enum
 {

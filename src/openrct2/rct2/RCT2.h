@@ -1037,6 +1037,15 @@ struct rct_s6_data
     uint8_t pad_13CE778[434];
 };
 assert_struct_size(rct_s6_data, 0x46b44a);
+
+struct rct_stex_entry
+{
+    rct_string_id scenario_name; // 0x00
+    rct_string_id park_name;     // 0x02
+    rct_string_id details;       // 0x04
+    uint8_t var_06;
+};
+assert_struct_size(rct_stex_entry, 7);
 #pragma pack(pop)
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);

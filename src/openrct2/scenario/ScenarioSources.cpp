@@ -12,6 +12,7 @@
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
 #include "Scenario.h"
+#include "ScenarioRepository.h"
 
 #include <iterator>
 
