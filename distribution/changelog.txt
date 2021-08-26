@@ -1,5 +1,6 @@
 0.3.4.1+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#3868] Initial support for using TTF in OpenGL mode (still contains bugs).
 - Feature: [#15084] [Plugin] Add "vehicle.crash" hook.
 - Feature: [#15143] Added a shortcut key for Giant Screenshot.
 - Feature: [#15164] Highlight elements selected by the Tile Inspector, tracks are currently not supported.
