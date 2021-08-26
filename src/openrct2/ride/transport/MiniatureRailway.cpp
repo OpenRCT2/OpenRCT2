@@ -1927,7 +1927,7 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up_to_flat[direction];
     bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
 
-    const int8_t railOffsets[] = { +8, 0, +8, +8 };
+    static constexpr int8_t railOffsets[] = { +8, 0, +8, +8 };
 
     if (hasSupports)
     {
@@ -1995,7 +1995,7 @@ static void miniature_railway_track_diag_25_deg_down(
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up[(direction + 2) % 4];
     bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
-    const int8_t railOffsets[] = { 0, +8, +8, +8 };
+    static constexpr int8_t railOffsets[] = { 0, +8, +8, +8 };
 
     static constexpr int8_t offsetsB[4][4][2] = {
         { { 0, 0 }, { +8, +8 }, { +8, +8 }, { -8, -8 } },
@@ -2076,7 +2076,7 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up_to_flat[(direction + 2) % 4];
     bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
-    const int8_t railOffsets[] = { 0, +8, +8, +8 };
+    static constexpr int8_t railOffsets[] = { 0, +8, +8, +8 };
 
     if (hasSupports)
     {
