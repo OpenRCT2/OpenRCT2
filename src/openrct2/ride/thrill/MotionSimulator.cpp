@@ -147,7 +147,7 @@ static void paint_motionsimulator(
 
     int32_t edges = edges_2x2[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
     StationObject* stationObject = nullptr;
     if (ride != nullptr)

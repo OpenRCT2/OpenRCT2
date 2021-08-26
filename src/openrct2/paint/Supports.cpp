@@ -456,13 +456,8 @@ static constexpr const uint16_t word_97B3C4[] = {
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
 bool wooden_a_supports_paint_setup(
-    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags, bool* underground)
+    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
 {
-    if (underground != nullptr)
-    {
-        *underground = false;
-    }
-
     if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
@@ -477,10 +472,6 @@ bool wooden_a_supports_paint_setup(
     height -= z;
     if (height < 0)
     {
-        if (underground != nullptr)
-        {
-            *underground = true;
-        }
         return false;
     }
     height /= 16;
@@ -501,10 +492,6 @@ bool wooden_a_supports_paint_setup(
         height -= 2;
         if (height < 0)
         {
-            if (underground != nullptr)
-            {
-                *underground = true;
-            }
             return false;
         }
 
@@ -531,10 +518,6 @@ bool wooden_a_supports_paint_setup(
         height--;
         if (height < 0)
         {
-            if (underground != nullptr)
-            {
-                *underground = true;
-            }
             return false;
         }
 
@@ -636,21 +619,17 @@ bool wooden_a_supports_paint_setup(
  * @return (al) whether supports have been drawn
  */
 bool wooden_b_supports_paint_setup(
-    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags, bool* underground)
+    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
 {
     bool _9E32B1 = false;
 
     if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
-        if (underground != nullptr)
-            *underground = false; // AND
         return false;
     }
 
     if (!(session->Unk141E9DB & PaintSessionFlags::IsPassedSurface))
     {
-        if (underground != nullptr)
-            *underground = false; // AND
         return false;
     }
 
@@ -659,8 +638,6 @@ bool wooden_b_supports_paint_setup(
 
     if (supportLength < 0)
     {
-        if (underground != nullptr)
-            *underground = true; // STC
         return false;
     }
 
@@ -677,8 +654,6 @@ bool wooden_b_supports_paint_setup(
         heightSteps -= 2;
         if (heightSteps < 0)
         {
-            if (underground != nullptr)
-                *underground = true; // STC
             return false;
         }
 
@@ -708,8 +683,6 @@ bool wooden_b_supports_paint_setup(
         heightSteps -= 1;
         if (heightSteps < 0)
         {
-            if (underground != nullptr)
-                *underground = true; // STC
             return false;
         }
 
@@ -806,8 +779,6 @@ bool wooden_b_supports_paint_setup(
         }
     }
 
-    if (underground != nullptr)
-        *underground = false; // AND
     return _9E32B1;
 }
 

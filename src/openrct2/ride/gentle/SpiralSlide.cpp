@@ -198,7 +198,7 @@ static void paint_spiral_slide(
 
     int32_t edges = edges_2x2[trackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
     // Base
     uint32_t imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];

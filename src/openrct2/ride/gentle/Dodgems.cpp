@@ -45,7 +45,7 @@ static void paint_dodgems(
 
     int32_t edges = edges_4x4[relativeTrackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
     uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });

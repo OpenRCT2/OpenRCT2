@@ -56,7 +56,7 @@ static void maze_paint_setup(
     int32_t image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
     PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 32, 0 });
 
-    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
+    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
