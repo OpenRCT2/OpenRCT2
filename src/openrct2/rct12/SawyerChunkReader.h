@@ -43,10 +43,9 @@ class SawyerChunkReader final
 {
 private:
     OpenRCT2::IStream* const _stream = nullptr;
-    const bool _createsPersistentChunks = false;
 
 public:
-    explicit SawyerChunkReader(OpenRCT2::IStream* stream, bool persistentChunks = false);
+    explicit SawyerChunkReader(OpenRCT2::IStream* stream);
 
     /**
      * Skips the next chunk in the stream without decoding or reading its data
@@ -99,6 +98,5 @@ private:
     static size_t DecodeChunkRotate(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
 
     static void* AllocateLargeTempBuffer();
-    static void* FinaliseLargeTempBuffer(void* buffer, size_t len);
     static void FreeLargeTempBuffer(void* buffer);
 };

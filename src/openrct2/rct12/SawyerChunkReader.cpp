@@ -27,9 +27,8 @@ constexpr const char* EXCEPTION_MSG_DESTINATION_TOO_SMALL = "Chunk data larger t
 constexpr const char* EXCEPTION_MSG_INVALID_CHUNK_ENCODING = "Invalid chunk encoding.";
 constexpr const char* EXCEPTION_MSG_ZERO_SIZED_CHUNK = "Encountered zero-sized chunk.";
 
-SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream, bool persistentChunks)
+SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream)
     : _stream(stream)
-    , _createsPersistentChunks(persistentChunks)
 {
 }
 
@@ -79,10 +78,6 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
                     {
                         throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
                     }
-                    if (_createsPersistentChunks)
-                    {
-                        buffer = static_cast<uint8_t*>(FinaliseLargeTempBuffer(buffer, uncompressedLength));
-                    }
                     return std::make_shared<SawyerChunk>(
                         static_cast<SAWYER_ENCODING>(header.encoding), buffer, uncompressedLength);
                 }
@@ -129,10 +124,6 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
         if (uncompressedLength == 0)
         {
             throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
-        }
-        if (_createsPersistentChunks)
-        {
-            buffer = static_cast<uint8_t*>(FinaliseLargeTempBuffer(buffer, uncompressedLength));
         }
         return std::make_shared<SawyerChunk>(SAWYER_ENCODING::RLE, buffer, uncompressedLength);
     }
@@ -322,20 +313,6 @@ void* SawyerChunkReader::AllocateLargeTempBuffer()
         throw std::runtime_error("Unable to allocate large temporary buffer.");
     }
     return buffer;
-}
-
-void* SawyerChunkReader::FinaliseLargeTempBuffer(void* buffer, size_t len)
-{
-#ifdef __USE_HEAP_ALLOC__
-    auto finalBuffer = HeapReAlloc(GetProcessHeap(), 0, buffer, len);
-#else
-    auto finalBuffer = static_cast<uint8_t*>(std::realloc(buffer, len));
-#endif
-    if (finalBuffer == nullptr)
-    {
-        throw std::runtime_error("Unable to allocate final buffer.");
-    }
-    return finalBuffer;
 }
 
 void SawyerChunkReader::FreeLargeTempBuffer(void* buffer)
