@@ -82,15 +82,19 @@ static void looping_rc_track_station(
     paint_session* session, const Ride* ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const uint32_t stationTrackNESW = is_csg_loaded() ? LOOPING_RC_BOOSTER_NE_SW : 15016;
-    const uint32_t stationTrackNWSE = is_csg_loaded() ? LOOPING_RC_BOOSTER_NW_SE : 15017;
-
-    static const uint32_t imageIds[4][2] = {
-        { stationTrackNESW, SPR_STATION_BASE_B_SW_NE },
-        { stationTrackNWSE, SPR_STATION_BASE_B_NW_SE },
-        { stationTrackNESW, SPR_STATION_BASE_B_SW_NE },
-        { stationTrackNWSE, SPR_STATION_BASE_B_NW_SE },
+    static constexpr uint32_t imageIdsWithCsg[4][2] = {
+        { LOOPING_RC_BOOSTER_NE_SW, SPR_STATION_BASE_B_SW_NE },
+        { LOOPING_RC_BOOSTER_NW_SE, SPR_STATION_BASE_B_NW_SE },
+        { LOOPING_RC_BOOSTER_NE_SW, SPR_STATION_BASE_B_SW_NE },
+        { LOOPING_RC_BOOSTER_NW_SE, SPR_STATION_BASE_B_NW_SE },
     };
+    static constexpr uint32_t imageIdWithoutCsg[4][2] = {
+        { 15016, SPR_STATION_BASE_B_SW_NE },
+        { 15017, SPR_STATION_BASE_B_NW_SE },
+        { 15016, SPR_STATION_BASE_B_SW_NE },
+        { 15017, SPR_STATION_BASE_B_NW_SE },
+    };
+    const auto imageIds = is_csg_loaded() ? imageIdsWithCsg : imageIdWithoutCsg;
 
     PaintAddImageAsParentRotated(
         session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
