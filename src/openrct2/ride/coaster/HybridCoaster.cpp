@@ -447,13 +447,13 @@ namespace HybridRC
             { 24, 6, height + 8 },
             { 4, 6, height + 8 },
         };
-        static const CoordsXYZ boundBoxLengths[4] = {
+        static constexpr CoordsXYZ boundBoxLengths[4] = {
             { 2, 20, 31 },
             { 2, 20, 31 },
             { 2, 20, 31 },
             { 2, 20, 31 },
         };
-        static const uint32_t imageIds[4] = {
+        static constexpr uint32_t imageIds[4] = {
             SPR_G2_HYBRID_TRACK_VERTICAL + 8,
             SPR_G2_HYBRID_TRACK_VERTICAL + 9,
             SPR_G2_HYBRID_TRACK_VERTICAL + 10,
@@ -492,13 +492,13 @@ namespace HybridRC
             { 24, 6, height },
             { 0, 6, height },
         };
-        static const CoordsXYZ boundBoxLengths[4] = {
+        static constexpr CoordsXYZ boundBoxLengths[4] = {
             { 32, 20, 3 },
             { 2, 20, 55 },
             { 2, 20, 55 },
             { 32, 20, 3 },
         };
-        static const uint32_t imageIds[4] = {
+        static constexpr uint32_t imageIds[4] = {
             SPR_G2_HYBRID_TRACK_VERTICAL + 0,
             SPR_G2_HYBRID_TRACK_VERTICAL + 1,
             SPR_G2_HYBRID_TRACK_VERTICAL + 2,
@@ -543,13 +543,13 @@ namespace HybridRC
             { 24, 6, height + 8 },
             { 0, 6, height + 8 },
         };
-        static const CoordsXYZ boundBoxLengths[4] = {
+        static constexpr CoordsXYZ boundBoxLengths[4] = {
             { 32, 20, 3 },
             { 2, 20, 31 },
             { 2, 20, 31 },
             { 32, 20, 3 },
         };
-        static const uint32_t imageIds[4] = {
+        static constexpr uint32_t imageIds[4] = {
             SPR_G2_HYBRID_TRACK_VERTICAL + 4,
             SPR_G2_HYBRID_TRACK_VERTICAL + 5,
             SPR_G2_HYBRID_TRACK_VERTICAL + 6,
