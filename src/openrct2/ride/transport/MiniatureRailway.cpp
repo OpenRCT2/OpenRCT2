@@ -572,14 +572,18 @@ static uint32_t miniature_railway_track_to_grooved_indent(
 
     if (direction & 0x1)
     {
-        uint32_t imageIds[2][2] = { { SPR_G2_MINIATURE_RAILWAY_INSET_NW_SE, SPR_G2_MINIATURE_RAILWAY_INSET_END_NW },
-                                    { SPR_G2_MINIATURE_RAILWAY_INSET_END_SE, SPR_G2_MINIATURE_RAILWAY_INSET_END_NW_SE } };
+        static constexpr uint32_t imageIds[2][2] = {
+            { SPR_G2_MINIATURE_RAILWAY_INSET_NW_SE, SPR_G2_MINIATURE_RAILWAY_INSET_END_NW },
+            { SPR_G2_MINIATURE_RAILWAY_INSET_END_SE, SPR_G2_MINIATURE_RAILWAY_INSET_END_NW_SE },
+        };
         imageIdAlt = imageIds[(correctedEdges & 0x2) ? 0 : 1][(correctedEdges & 0x8) ? 0 : 1];
     }
     else
     {
-        uint32_t imageIds[2][2] = { { SPR_G2_MINIATURE_RAILWAY_INSET_SW_NE, SPR_G2_MINIATURE_RAILWAY_INSET_END_SW },
-                                    { SPR_G2_MINIATURE_RAILWAY_INSET_END_NE, SPR_G2_MINIATURE_RAILWAY_INSET_END_SW_NE } };
+        static constexpr uint32_t imageIds[2][2] = {
+            { SPR_G2_MINIATURE_RAILWAY_INSET_SW_NE, SPR_G2_MINIATURE_RAILWAY_INSET_END_SW },
+            { SPR_G2_MINIATURE_RAILWAY_INSET_END_NE, SPR_G2_MINIATURE_RAILWAY_INSET_END_SW_NE },
+        };
         imageIdAlt = imageIds[(correctedEdges & 0x1) ? 0 : 1][(correctedEdges & 0x4) ? 0 : 1];
     }
 
@@ -1411,7 +1415,12 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const uint8_t supportType[4][5] = { { 0, 0, 3, 5, 1 }, { 1, 1, 4, 2, 0 }, { 0, 0, 5, 3, 1 }, { 1, 1, 2, 4, 0 } };
+    static constexpr uint8_t supportType[4][5] = {
+        { 0, 0, 3, 5, 1 },
+        { 1, 1, 4, 2, 0 },
+        { 0, 0, 5, 3, 1 },
+        { 1, 1, 2, 4, 0 },
+    };
 
     bool isSupported = false;
     bool isRightEighthToOrthog = trackElement.GetTrackType() == TrackElemType::RightEighthToOrthogonal;
@@ -1547,7 +1556,12 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const uint8_t supportType[4][5] = { { 0, 0, 2, 4, 1 }, { 1, 1, 3, 5, 0 }, { 0, 0, 4, 2, 1 }, { 1, 1, 5, 3, 0 } };
+    static constexpr uint8_t supportType[4][5] = {
+        { 0, 0, 2, 4, 1 },
+        { 1, 1, 3, 5, 0 },
+        { 0, 0, 4, 2, 1 },
+        { 1, 1, 5, 3, 0 },
+    };
 
     bool isSupported = false;
     bool isLeftEighthToOrthog = trackElement.GetTrackType() == TrackElemType::LeftEighthToOrthogonal;
@@ -1752,7 +1766,7 @@ static void miniature_railway_track_diag_25_deg_up(
         supportFunction = WOOD_A;
     }
 
-    int8_t heightDiffs[] = { +8, -8, +8, -8 };
+    static constexpr int8_t heightDiffs[] = { +8, -8, +8, -8 };
     int8_t heightDiff = heightDiffs[direction];
     if (trackSequence == 3)
     {
@@ -1868,7 +1882,7 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const int8_t supportOffsets[][4] = {
+    static constexpr int8_t supportOffsets[][4] = {
         { 0, +8, +8, +8 },
         { 0, -8, -8, 0 },
         { 0, +8, +8, +8 },
@@ -1903,7 +1917,7 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(
         floorBoundOffset = CoordsXY(-16, -16);
     }
 
-    const int8_t offsetsB[4][4][2] = {
+    static constexpr int8_t offsetsB[4][4][2] = {
         { { 0, 0 }, { +8, +16 }, { +8, +8 }, { +8, +8 } },
         { { 0, 0 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
         { { 0, 0 }, { +8, +8 }, { +8, +16 }, { +8, +8 } },
@@ -1944,7 +1958,7 @@ static void miniature_railway_track_diag_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const int8_t supportOffsets[][4] = {
+    static constexpr int8_t supportOffsets[][4] = {
         { 0, +16, +16, 0 },
         { 0, -8, -8, 0 },
         { 0, +16, +16, 0 },
@@ -1983,7 +1997,7 @@ static void miniature_railway_track_diag_25_deg_down(
     bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
     const int8_t railOffsets[] = { 0, +8, +8, +8 };
 
-    const int8_t offsetsB[4][4][2] = {
+    static constexpr int8_t offsetsB[4][4][2] = {
         { { 0, 0 }, { +8, +8 }, { +8, +8 }, { -8, -8 } },
         { { 0, 0 }, { -8, -8 }, { -8, -8 }, { -8, 0 } },
         { { 0, 0 }, { +8, +8 }, { +8, +16 }, { -8, -8 } },
@@ -2019,7 +2033,7 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const int8_t supportOffsets[][4] = {
+    static constexpr int8_t supportOffsets[][4] = {
         { 0, +16, +16, 0 },
         { 0, -8, -8, -8 },
         { 0, +8, +8, 0 },
@@ -2053,7 +2067,7 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(
         floorBoundOffset = CoordsXY(-16, -16);
     }
 
-    const int8_t offsetsB[4][4][2] = {
+    static constexpr int8_t offsetsB[4][4][2] = {
         { { 0, 0 }, { +8, +8 }, { +8, +8 }, { -8, -8 } },
         { { 0, 0 }, { -8, -8 }, { -8, -8 }, { -8, 0 } },
         { { 0, 0 }, { +8, +8 }, { +8, +16 }, { -8, -8 } },
