@@ -35,20 +35,20 @@ namespace RCT1
     constexpr const uint32_t RCT1_NUM_TERRAIN_EDGES = 15;
 
 #pragma pack(push, 1)
-    struct rct1_entrance
+    struct Entrance
     {
         uint16_t x;
         uint16_t y;
         uint16_t z;
         uint8_t direction;
     };
-    assert_struct_size(rct1_entrance, 7);
+    assert_struct_size(Entrance, 7);
 
     /**
      * RCT1 ride structure
      * size: 0x260
      */
-    struct rct1_ride
+    struct Ride
     {
         uint8_t type;             // 0x000
         uint8_t vehicle_type;     // 0x001
@@ -207,9 +207,9 @@ namespace RCT1
         uint8_t entrance_style;                          // 0x179
         uint8_t unk_17A[230];                            // 0x17A
     };
-    assert_struct_size(rct1_ride, 0x260);
+    assert_struct_size(Ride, 0x260);
 
-    struct rct1_unk_sprite : RCT12SpriteBase
+    struct UnkEntity : RCT12SpriteBase
     {
         uint8_t pad_1F[3];             // 0x1f
         rct_string_id name_string_idx; // 0x22
@@ -221,7 +221,7 @@ namespace RCT1
         uint8_t var_71;
     };
 
-    struct rct1_vehicle : RCT12SpriteBase
+    struct Vehicle : RCT12SpriteBase
     {
         uint8_t Pitch;         // 0x1F
         uint8_t bank_rotation; // 0x20
@@ -333,7 +333,7 @@ namespace RCT1
         }
     };
 
-    struct rct1_peep : RCT12SpriteBase
+    struct Peep : RCT12SpriteBase
     {
         uint8_t pad_1F[3];
         rct_string_id name_string_idx; // 0x22
@@ -477,7 +477,7 @@ namespace RCT1
             return item_standard_flags;
         }
     };
-    assert_struct_size(rct1_peep, 0x100);
+    assert_struct_size(Peep, 0x100);
 
     enum RCT1_PEEP_SPRITE_TYPE
     {
@@ -511,12 +511,12 @@ namespace RCT1
         RCT1_PEEP_SPRITE_TYPE_TOFFEE_APPLE = 30
     };
 
-    union rct1_sprite
+    union Entity
     {
         uint8_t pad_00[0x100];
-        rct1_unk_sprite unknown;
-        rct1_vehicle vehicle;
-        rct1_peep peep;
+        UnkEntity unknown;
+        Vehicle vehicle;
+        Peep peep;
         RCT12SpriteLitter litter;
         RCT12SpriteBalloon balloon;
         RCT12SpriteDuck duck;
@@ -526,9 +526,9 @@ namespace RCT1
         RCT12SpriteCrashSplash crash_splash;
         RCT12SpriteSteamParticle steam_particle;
     };
-    assert_struct_size(rct1_sprite, 0x100);
+    assert_struct_size(Entity, 0x100);
 
-    struct rct1_research_item
+    struct ResearchItem
     {
         uint8_t item;
         uint8_t related_ride;
@@ -536,13 +536,13 @@ namespace RCT1
         uint8_t flags;
         uint8_t category;
     };
-    assert_struct_size(rct1_research_item, 5);
+    assert_struct_size(ResearchItem, 5);
 
     /**
      * RCT1,AA,LL scenario / saved game structure.
      * size: 0x1F850C
      */
-    struct rct1_s4
+    struct S4
     {
         uint16_t month;
         uint16_t day;
@@ -551,7 +551,7 @@ namespace RCT1
         uint32_t random_b;
         RCT12TileElement tile_elements[RCT1_MAX_TILE_ELEMENTS];
         uint32_t unk_counter;
-        rct1_sprite sprites[RCT1_MAX_SPRITES];
+        Entity sprites[RCT1_MAX_SPRITES];
         uint16_t next_sprite_index;
         uint16_t first_vehicle_sprite_index;
         uint16_t first_peep_sprite_index;
@@ -570,7 +570,7 @@ namespace RCT1
         money32 loan;
         uint32_t park_flags;
         money16 park_entrance_fee;
-        rct1_entrance park_entrance;
+        Entrance park_entrance;
         uint8_t unk_198849;
         rct12_peep_spawn peep_spawn[RCT12_MAX_PEEP_SPAWNS];
         uint8_t unk_198856;
@@ -600,7 +600,7 @@ namespace RCT1
         uint8_t last_research_ride;
         uint8_t last_research_type;
         uint8_t last_research_flags;
-        rct1_research_item research_items[200];
+        ResearchItem research_items[200];
         uint8_t next_research_item;
         uint8_t next_research_ride;
         uint8_t next_research_type;
@@ -668,12 +668,12 @@ namespace RCT1
         uint8_t unk_199C96[3];
         uint8_t water_colour;
         uint16_t unk_199C9A;
-        rct1_research_item research_items_LL[180];
+        ResearchItem research_items_LL[180];
         uint8_t unk_19A020[5468];
         RCT12Banner banners[RCT1_MAX_BANNERS];
         char string_table[RCT12_MAX_USER_STRINGS][RCT12_USER_STRING_MAX_LENGTH];
         uint32_t game_time_counter;
-        rct1_ride rides[RCT12_MAX_RIDES_IN_PARK];
+        Ride rides[RCT12_MAX_RIDES_IN_PARK];
         uint16_t unk_game_time_counter;
         int16_t view_x;
         int16_t view_y;
@@ -713,13 +713,13 @@ namespace RCT1
         uint8_t unk_1F8358[432];
         uint32_t expansion_pack_checksum;
     };
-    assert_struct_size(rct1_s4, 0x1F850C);
+    assert_struct_size(S4, 0x1F850C);
 
     /**
      * Track design structure. Only for base RCT1
      * size: 0x2006
      */
-    struct rct_track_td4
+    struct TD4
     {
         uint8_t type; // 0x00
         uint8_t vehicle_type;
@@ -761,13 +761,13 @@ namespace RCT1
         money16 upkeep_cost;         // 0x36
     };
 
-    assert_struct_size(rct_track_td4, 0x38);
+    assert_struct_size(TD4, 0x38);
 
     /**
      * Track design structure for Added Attractions / Loopy Landscapes
      * size: 0x2006
      */
-    struct rct_track_td4_aa : public rct_track_td4
+    struct TD4AA : public TD4
     {
         uint8_t track_spine_colour[RCT12_NUM_COLOUR_SCHEMES];   // 0x38
         uint8_t track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];    // 0x3C
@@ -777,7 +777,7 @@ namespace RCT1
         uint8_t pad_45[0x7F]; // 0x45
     };
 
-    assert_struct_size(rct_track_td4_aa, 0xC4);
+    assert_struct_size(TD4AA, 0xC4);
 #pragma pack(pop)
 
     enum
