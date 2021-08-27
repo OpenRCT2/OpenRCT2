@@ -2509,7 +2509,7 @@ void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
         junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[EnumValue(chainType)],
         junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
-    uint8_t supportSpecial[4] = { 8, 8, 8, 3 };
+    static constexpr uint8_t supportSpecial[4] = { 8, 8, 8, 3 };
     switch (trackSequence)
     {
         case 0:
@@ -2589,7 +2589,7 @@ void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
         junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[EnumValue(chainType)], defaultRightQuarterTurn5TilesOffsets,
         defaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
-    uint8_t supportSpecial[4] = { 11, 8, 8, 7 };
+    static constexpr uint8_t supportSpecial[4] = { 11, 8, 8, 7 };
     switch (trackSequence)
     {
         case 0:
@@ -2712,14 +2712,14 @@ static void junior_rc_s_bend_left_paint_setup(
         trackSequence = 3 - trackSequence;
     }
 
-    const CoordsXY offsetList[] = {
+    static constexpr CoordsXY offsetList[] = {
         { 0, 6 },
         { 0, 0 },
         { 0, 6 },
         { 0, 6 },
     };
 
-    const CoordsXY boundsList[] = {
+    static constexpr CoordsXY boundsList[] = {
         { 32, 20 },
         { 32, 26 },
         { 32, 26 },
@@ -2816,14 +2816,14 @@ static void junior_rc_s_bend_right_paint_setup(
         trackSequence = 3 - trackSequence;
     }
 
-    const CoordsXY offsetList[] = {
+    static constexpr CoordsXY offsetList[] = {
         { 0, 6 },
         { 0, 6 },
         { 0, 0 },
         { 0, 6 },
     };
 
-    const CoordsXY boundsList[] = {
+    static constexpr CoordsXY boundsList[] = {
         { 32, 20 },
         { 32, 26 },
         { 32, 26 },
@@ -2921,7 +2921,10 @@ static void junior_rc_right_quarter_turn_3_tiles_paint_setup(
         defaultRightQuarterTurn3TilesBoundLengths, nullptr);
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
-    uint8_t supportType[2][4] = { { 1, 0, 0, 2 }, { 2, 0, 0, 1 } };
+    static constexpr uint8_t supportType[2][4] = {
+        { 1, 0, 0, 2 },
+        { 2, 0, 0, 1 },
+    };
     switch (trackSequence)
     {
         case 0:
@@ -3009,7 +3012,12 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint8_t thickness[4][4] = { { 1, 1, 1, 1 }, { 1, 1, 1, 1 }, { 26, 1, 1, 26 }, { 1, 1, 1, 1 } };
+    static constexpr uint8_t thickness[4][4] = {
+        { 1, 1, 1, 1 },
+        { 1, 1, 1, 1 },
+        { 26, 1, 1, 26 },
+        { 1, 1, 1, 1 },
+    };
 
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, thickness[direction][trackSequence], height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
@@ -3187,7 +3195,10 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
         paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
     }
 
-    uint8_t supportType[2][4] = { { 1, 0, 0, 2 }, { 2, 0, 0, 1 } };
+    static constexpr uint8_t supportType[2][4] = {
+        { 1, 0, 0, 2 },
+        { 2, 0, 0, 1 },
+    };
     switch (trackSequence)
     {
         case 0:
@@ -3274,7 +3285,7 @@ static void junior_rc_right_half_banked_helix_up_small_paint_setup(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const int8_t thickness[2] = { 1, 26 };
+    static constexpr int8_t thickness[2] = { 1, 26 };
 
     if (trackSequence > 3)
     {
@@ -3342,7 +3353,7 @@ static void junior_rc_right_half_banked_helix_down_small_paint_setup(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const int8_t thickness[2] = { 1, 26 };
+    static constexpr int8_t thickness[2] = { 1, 26 };
 
     if (trackSequence > 3)
     {
@@ -3442,7 +3453,7 @@ static void junior_rc_right_half_banked_helix_up_large_paint_setup(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const int8_t thickness[2] = { 1, 26 };
+    static constexpr int8_t thickness[2] = { 1, 26 };
 
     if (trackSequence > 6)
     {
@@ -3528,7 +3539,7 @@ static void junior_rc_right_half_banked_helix_down_large_paint_setup(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const int8_t thickness[2] = { 1, 26 };
+    static constexpr int8_t thickness[2] = { 1, 26 };
 
     if (trackSequence > 6)
     {
@@ -4162,7 +4173,7 @@ static void junior_rc_left_eighth_to_orthogonal_bank_paint_setup(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const uint8_t map[] = { 4, 2, 3, 1, 0 };
+    static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
     trackSequence = map[trackSequence];
     junior_rc_right_eighth_to_diag_bank_paint_setup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
@@ -4172,7 +4183,7 @@ static void junior_rc_right_eighth_to_orthogonal_bank_paint_setup(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const uint8_t map[] = { 4, 2, 3, 1, 0 };
+    static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
     trackSequence = map[trackSequence];
     junior_rc_left_eighth_to_diag_bank_paint_setup(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
@@ -4978,7 +4989,7 @@ void junior_rc_paint_track_60_deg_up(
             break;
     }
 
-    int8_t support[4] = { 35, 29, 25, 32 };
+    static constexpr int8_t support[4] = { 35, 29, 25, 32 };
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(
@@ -5067,7 +5078,7 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
             break;
     }
 
-    int8_t support[4] = { 12, 12, 12, 14 };
+    static constexpr int8_t support[4] = { 12, 12, 12, 14 };
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(
@@ -5449,7 +5460,7 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
             break;
     }
 
-    int8_t support[4] = { 12, 12, 12, 14 };
+    static constexpr int8_t support[4] = { 12, 12, 12, 14 };
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(

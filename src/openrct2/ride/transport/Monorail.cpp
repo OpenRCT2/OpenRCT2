@@ -746,14 +746,14 @@ static void paint_monorail_track_s_bend_left(
         trackSequence = 3 - trackSequence;
     }
 
-    const CoordsXY offsetList[] = {
+    static constexpr CoordsXY offsetList[] = {
         { 0, 6 },
         { 0, 0 },
         { 0, 6 },
         { 0, 6 },
     };
 
-    const CoordsXY boundsList[] = {
+    static constexpr CoordsXY boundsList[] = {
         { 32, 20 },
         { 32, 26 },
         { 32, 26 },
@@ -850,14 +850,14 @@ static void paint_monorail_track_s_bend_right(
         trackSequence = 3 - trackSequence;
     }
 
-    const CoordsXY offsetList[] = {
+    static constexpr CoordsXY offsetList[] = {
         { 0, 6 },
         { 0, 6 },
         { 0, 0 },
         { 0, 6 },
     };
 
-    const CoordsXY boundsList[] = {
+    static constexpr CoordsXY boundsList[] = {
         { 32, 20 },
         { 32, 26 },
         { 32, 26 },
@@ -1133,7 +1133,7 @@ static void paint_monorail_track_left_eighth_to_orthogonal(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const uint8_t map[] = { 4, 2, 3, 1, 0 };
+    static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
     trackSequence = map[trackSequence];
     paint_monorail_track_right_eighth_to_diag(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
@@ -1143,7 +1143,7 @@ static void paint_monorail_track_right_eighth_to_orthogonal(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const uint8_t map[] = { 4, 2, 3, 1, 0 };
+    static constexpr uint8_t map[] = { 4, 2, 3, 1, 0 };
     trackSequence = map[trackSequence];
     paint_monorail_track_left_eighth_to_diag(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
