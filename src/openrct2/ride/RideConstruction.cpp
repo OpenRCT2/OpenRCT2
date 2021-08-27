@@ -395,7 +395,7 @@ std::optional<CoordsXYZ> sub_6C683D(
 
     // Possibly z should be & 0xF8
     const auto& teDescriptor = GetTrackElementDescriptor(type);
-    auto trackBlock = teDescriptor.Block;
+    const auto* trackBlock = teDescriptor.Block;
     if (trackBlock == nullptr)
         return std::nullopt;
 

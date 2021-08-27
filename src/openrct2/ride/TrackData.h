@@ -77,6 +77,6 @@ namespace OpenRCT2
     namespace TrackMetaData
     {
         void Init();
-        const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t& type);
+        const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type);
     } // namespace TrackMetaData
 } // namespace OpenRCT2

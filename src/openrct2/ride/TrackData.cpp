@@ -16,7 +16,7 @@
 #include <iterator>
 
 // clang-format off
-const static rct_track_coordinates TrackCoordinates[TrackElemType::Count] = {
+static constexpr rct_track_coordinates TrackCoordinates[TrackElemType::Count] = {
         { 0, 0, 0, 0, 0, 0 },       // ELEM_FLAT
         { 0, 0, 0, 0, 0, 0 },       // ELEM_END_STATION
         { 0, 0, 0, 0, 0, 0 },       // ELEM_BEGIN_STATION
@@ -287,7 +287,7 @@ const static rct_track_coordinates TrackCoordinates[TrackElemType::Count] = {
 };
 
 /** rct2: 0x0099BA64 */
-const static uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
+static constexpr uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
     { 0 },
     /* TrackElemType::EndStation */    { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     /* TrackElemType::BeginStation */  { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -559,7 +559,7 @@ const static uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
 
 #define TRACK_BLOCK_END { 255, 255, 255, 255, 255, {255, 255}, 255 }
 
-static constexpr const rct_preview_track TrackBlocks000[] = {
+static constexpr rct_preview_track TrackBlocks000[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END
 };
@@ -2545,7 +2545,7 @@ static constexpr const rct_preview_track TrackBlocksFlatTrack3x3[] = {
 };
 
 // rct2: 0x00994638
-const static rct_preview_track *TrackBlocks[TrackElemType::Count] = {
+static constexpr std::array<const rct_preview_track*, TrackElemType::Count> TrackBlocks = {
     TrackBlocks000,
     TrackBlocks001,
     TrackBlocks002,
@@ -2816,7 +2816,7 @@ const static rct_preview_track *TrackBlocks[TrackElemType::Count] = {
     TrackBlocksFlatTrack3x3,
 };
 
-const static uint8_t TrackPieceLengths[TrackElemType::Count] = {
+static constexpr uint8_t TrackPieceLengths[TrackElemType::Count] = {
     32,     // TrackElemType::Flat
     32,     // TrackElemType::EndStation
     32,     // TrackElemType::BeginStation
@@ -3087,7 +3087,7 @@ const static uint8_t TrackPieceLengths[TrackElemType::Count] = {
 };
 
 // rct2: 0x00998C95
-const static track_curve_chain gTrackCurveChain[TrackElemType::Count] = {
+static constexpr track_curve_chain gTrackCurveChain[TrackElemType::Count] = {
     { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
     { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
     { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
@@ -3503,7 +3503,7 @@ const track_descriptor gTrackDescriptors[142] = {
 };
 
 /** rct2: 0x00993D1C */
-const static track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
+static constexpr track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
     TrackElemType::FlatCovered,                        // TrackElemType::Flat
     TrackElemType::None,
     TrackElemType::None,
@@ -3774,7 +3774,7 @@ const static track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
 };
 
 /** rct2: 0x0099DA34 */
-const static money32 TrackPricing[TrackElemType::Count] = {
+static constexpr money32 TrackPricing[TrackElemType::Count] = {
     65536,  // TrackElemType::Flat
     98304,  // TrackElemType::EndStation
     98304,  // TrackElemType::BeginStation
@@ -4045,7 +4045,7 @@ const static money32 TrackPricing[TrackElemType::Count] = {
 };
 
 /** rct2: 0x0099EA1C */
-const static track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
+static constexpr track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
     TrackElemType::Flat,
     TrackElemType::EndStation,
     TrackElemType::BeginStation,
@@ -4316,7 +4316,7 @@ const static track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
 };
 
 /** rct2: 0x00999694 */
-const static uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
+static constexpr uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
     (1 << 0), // TrackElemType::Flat
     (1 << 0), // TrackElemType::EndStation
     (1 << 0), // TrackElemType::BeginStation
@@ -4587,7 +4587,7 @@ const static uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
 };
 
 /** rct2: 0x00999A94 */
-const static uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][MaxSequencesPerPiece] = {
+static constexpr uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][MaxSequencesPerPiece] = {
     { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Flat
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::EndStation
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BeginStation
@@ -4858,7 +4858,7 @@ const static uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][
 };
 
 /** rct2: 0x0099423C */
-const static uint16_t TrackFlags[TrackElemType::Count] = {
+static constexpr uint16_t TrackFlags[TrackElemType::Count] = {
     /* TrackElemType::Flat                                          */   TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
     /* TrackElemType::EndStation                                    */   0,
     /* TrackElemType::BeginStation                                  */   0,
@@ -5160,7 +5160,7 @@ namespace OpenRCT2
                 _trackElementDescriptors.push_back(desc);
             }
         }
-        const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t& type)
+        const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type)
         {
             return _trackElementDescriptors[type];
         }

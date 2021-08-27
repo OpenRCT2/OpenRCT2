@@ -856,7 +856,7 @@ namespace OpenRCT2::TileInspector
                 return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
 
             const auto& teDescriptor = GetTrackElementDescriptor(type);
-            auto trackBlock = teDescriptor.Block;
+            const auto* trackBlock = teDescriptor.Block;
             trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
             uint8_t originDirection = trackElement->GetDirection();

@@ -2349,7 +2349,7 @@ static void window_ride_construction_draw_track_piece(
         return;
 
     const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-    auto trackBlock = teDescriptor.Block;
+    const auto* trackBlock = teDescriptor.Block;
     while ((trackBlock + 1)->index != 0xFF)
         trackBlock++;
 
@@ -2404,7 +2404,7 @@ static void sub_6CBCE2(
     gMapSize = MAXIMUM_MAP_SIZE_TECHNICAL;
 
     const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-    auto trackBlock = teDescriptor.Block;
+    const auto* trackBlock = teDescriptor.Block;
     while (trackBlock->index != 255)
     {
         auto quarterTile = trackBlock->var_08.Rotate(trackDirection);

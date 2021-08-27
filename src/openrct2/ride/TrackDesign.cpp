@@ -185,7 +185,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
 
     const auto& teDescriptor = GetTrackElementDescriptor(trackElement.element->AsTrack()->GetTrackType());
     const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
-    auto trackBlock = teDescriptor.Block;
+    const auto* trackBlock = teDescriptor.Block;
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
@@ -1650,13 +1650,13 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
             }
         }
 
-        const rct_track_coordinates* track_coordinates = &teDescriptor.Coordinates;
+        const rct_track_coordinates& track_coordinates = teDescriptor.Coordinates;
         auto offsetAndRotatedTrack = CoordsXY{ newCoords }
-            + CoordsXY{ track_coordinates->x, track_coordinates->y }.Rotate(rotation);
+            + CoordsXY{ track_coordinates.x, track_coordinates.y }.Rotate(rotation);
 
-        newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates->z_begin + track_coordinates->z_end };
-        rotation = (rotation + track_coordinates->rotation_end - track_coordinates->rotation_begin) & 3;
-        if (track_coordinates->rotation_end & (1 << 2))
+        newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates.z_begin + track_coordinates.z_end };
+        rotation = (rotation + track_coordinates.rotation_end - track_coordinates.rotation_begin) & 3;
+        if (track_coordinates.rotation_end & (1 << 2))
         {
             rotation |= (1 << 2);
         }
