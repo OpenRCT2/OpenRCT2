@@ -887,8 +887,7 @@ static void peep_update_thoughts(Guest* peep)
                     // Clear top thought, push others up
                     if (i < PEEP_MAX_THOUGHTS - 2)
                     {
-                        memmove(
-                            &peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+                        memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
                     }
                     peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
                 }

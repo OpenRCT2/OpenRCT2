@@ -485,7 +485,7 @@ enum PeepRideDecision
     PEEP_RIDE_DECISION_THINKING = 1 << 2,
 };
 
-struct rct_peep_thought
+struct PeepThought
 {
     PeepThoughtType type;  // 0
     uint8_t item;          // 1
@@ -703,7 +703,7 @@ public:
     int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
     ride_id_t PreviousRide;
     uint16_t PreviousRideTimeOut;
-    std::array<rct_peep_thought, PEEP_MAX_THOUGHTS> Thoughts;
+    std::array<PeepThought, PEEP_MAX_THOUGHTS> Thoughts;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t LitterCount;
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
@@ -1002,7 +1002,7 @@ void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft);
+void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft);
 int32_t get_peep_face_sprite_small(Guest* peep);
 int32_t get_peep_face_sprite_large(Guest* peep);
 void peep_sprite_remove(Peep* peep);

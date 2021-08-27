@@ -3232,7 +3232,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
     // Remove the related thought
     for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        rct_peep_thought* thought = &Thoughts[i];
+        PeepThought* thought = &Thoughts[i];
 
         if (thought->type == PeepThoughtType::None)
             break;
@@ -3242,7 +3242,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
 
         if (i < PEEP_MAX_THOUGHTS - 1)
         {
-            memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+            memmove(thought, thought + 1, sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
         }
 
         Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
@@ -6774,7 +6774,7 @@ bool Guest::HeadingForRideOrParkExit() const
  * argument_1 (esi & ebx)
  * argument_2 (esi+2)
  */
-void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft)
+void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft)
 {
     ft.Add<rct_string_id>(PeepThoughts[EnumValue(thought->type)]);
 
@@ -6821,7 +6821,7 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgumen
 
     for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        rct_peep_thought* thought = &Thoughts[i];
+        PeepThought* thought = &Thoughts[i];
         // Remove the oldest thought by setting it to NONE.
         if (thought->type == PeepThoughtType::None)
             break;
@@ -6833,13 +6833,13 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgumen
             // existing thought and placing it at the top.
             if (i < PEEP_MAX_THOUGHTS - 2)
             {
-                memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+                memmove(thought, thought + 1, sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
             }
             break;
         }
     }
 
-    memmove(&Thoughts[1], &Thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
+    memmove(&Thoughts[1], &Thoughts[0], sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - 1));
 
     Thoughts[0].type = thoughtType;
     Thoughts[0].item = thoughtArguments;
