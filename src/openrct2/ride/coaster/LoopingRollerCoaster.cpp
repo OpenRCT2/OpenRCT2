@@ -18,8 +18,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-#define LOOPING_RC_BOOSTER_NE_SW (SPR_CSG_BEGIN + 55679)
-#define LOOPING_RC_BOOSTER_NW_SE (SPR_CSG_BEGIN + 55680)
+static constexpr auto SPR_LOOPING_RC_BOOSTER_NE_SW = (SPR_CSG_BEGIN + 55679);
+static constexpr auto SPR_LOOPING_RC_BOOSTER_NW_SE = (SPR_CSG_BEGIN + 55680);
 
 static constexpr auto SPR_LOOPING_RC_FLAT_CHAINED_SW_NE = 15016;
 static constexpr auto SPR_LOOPING_RC_FLAT_CHAINED_NW_SE = 15017;
@@ -86,10 +86,10 @@ static void looping_rc_track_station(
     const TrackElement& trackElement)
 {
     static constexpr uint32_t imageIdsWithCsg[4][2] = {
-        { LOOPING_RC_BOOSTER_NE_SW, SPR_STATION_BASE_B_SW_NE },
-        { LOOPING_RC_BOOSTER_NW_SE, SPR_STATION_BASE_B_NW_SE },
-        { LOOPING_RC_BOOSTER_NE_SW, SPR_STATION_BASE_B_SW_NE },
-        { LOOPING_RC_BOOSTER_NW_SE, SPR_STATION_BASE_B_NW_SE },
+        { SPR_LOOPING_RC_BOOSTER_NE_SW, SPR_STATION_BASE_B_SW_NE },
+        { SPR_LOOPING_RC_BOOSTER_NW_SE, SPR_STATION_BASE_B_NW_SE },
+        { SPR_LOOPING_RC_BOOSTER_NE_SW, SPR_STATION_BASE_B_SW_NE },
+        { SPR_LOOPING_RC_BOOSTER_NW_SE, SPR_STATION_BASE_B_NW_SE },
     };
     static constexpr uint32_t imageIdsWithoutCsg[4][2] = {
         { SPR_LOOPING_RC_FLAT_CHAINED_SW_NE, SPR_STATION_BASE_B_SW_NE },
@@ -9172,14 +9172,14 @@ static void looping_rc_track_booster(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | LOOPING_RC_BOOSTER_NE_SW, 0, 0, 32, 20, 3, height, 0,
-                6, height);
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_LOOPING_RC_BOOSTER_NE_SW, 0, 0, 32, 20, 3, height,
+                0, 6, height);
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | LOOPING_RC_BOOSTER_NW_SE, 0, 0, 32, 20, 3, height, 0,
-                6, height);
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_LOOPING_RC_BOOSTER_NW_SE, 0, 0, 32, 20, 3, height,
+                0, 6, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
