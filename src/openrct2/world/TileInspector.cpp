@@ -855,8 +855,8 @@ namespace OpenRCT2::TileInspector
             if (ride == nullptr)
                 return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
 
-            const auto& teDescriptor = GetTrackElementDescriptor(type);
-            const auto* trackBlock = teDescriptor.Block;
+            const auto& ted = GetTrackElementDescriptor(type);
+            const auto* trackBlock = ted.Block;
             trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
             uint8_t originDirection = trackElement->GetDirection();
@@ -868,7 +868,7 @@ namespace OpenRCT2::TileInspector
             originY = static_cast<int16_t>(coords.y);
             originZ -= trackBlock->z;
 
-            trackBlock = teDescriptor.Block;
+            trackBlock = ted.Block;
             for (; trackBlock->index != 255; trackBlock++)
             {
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
@@ -939,8 +939,8 @@ namespace OpenRCT2::TileInspector
             if (ride == nullptr)
                 return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
 
-            const auto& teDescriptor = GetTrackElementDescriptor(type);
-            auto trackBlock = teDescriptor.Block;
+            const auto& ted = GetTrackElementDescriptor(type);
+            auto trackBlock = ted.Block;
             trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
             uint8_t originDirection = trackElement->GetDirection();
@@ -952,7 +952,7 @@ namespace OpenRCT2::TileInspector
             originY = static_cast<int16_t>(coords.y);
             originZ -= trackBlock->z;
 
-            trackBlock = teDescriptor.Block;
+            trackBlock = ted.Block;
             for (; trackBlock->index != 255; trackBlock++)
             {
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };

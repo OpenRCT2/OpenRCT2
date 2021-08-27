@@ -551,8 +551,8 @@ static void window_track_place_draw_mini_preview_track(
         }
 
         // Follow a single track piece shape
-        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-        const rct_preview_track* trackBlock = teDescriptor.Block;
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        const rct_preview_track* trackBlock = ted.Block;
         while (trackBlock->index != 255)
         {
             auto rotatedAndOffsetTrackBlock = curTrackStart + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(curTrackRotation);
@@ -574,9 +574,8 @@ static void window_track_place_draw_mini_preview_track(
                     auto bits = trackBlock->var_08.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                     // Station track is a lighter colour
-                    uint8_t colour = (teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
-                        ? _PaletteIndexColourStation
-                        : _PaletteIndexColourTrack;
+                    uint8_t colour = (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN) ? _PaletteIndexColourStation
+                                                                                                   : _PaletteIndexColourTrack;
 
                     for (int32_t i = 0; i < 4; i++)
                     {
@@ -597,7 +596,7 @@ static void window_track_place_draw_mini_preview_track(
         // Change rotation and next position based on track curvature
         curTrackRotation &= 3;
 
-        const rct_track_coordinates* track_coordinate = &teDescriptor.Coordinates;
+        const rct_track_coordinates* track_coordinate = &ted.Coordinates;
 
         curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
         curTrackRotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;

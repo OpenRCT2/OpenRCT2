@@ -408,7 +408,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     track_type_t trackType = trackElement->GetTrackType();
 
     using namespace OpenRCT2::TrackMetaData;
-    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
+    const auto& ted = GetTrackElementDescriptor(trackType);
     int32_t sequence = trackElement->GetSequenceIndex();
     int32_t direction = (_edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
     auto ride = get_ride(trackElement->GetRideIndex());
@@ -441,20 +441,20 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     int32_t z;
     if (sequence == 0)
     {
-        if (teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
+        if (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
         {
             return false;
         }
 
         if (TrackDefinitions[trackType].bank_start == 0)
         {
-            if (!(teDescriptor.Coordinates.rotation_begin & 4))
+            if (!(ted.Coordinates.rotation_begin & 4))
             {
                 direction = direction_reverse(trackElement->GetDirection());
                 if (direction == _edge)
                 {
-                    const rct_preview_track* trackBlock = &teDescriptor.Block[sequence];
-                    z = teDescriptor.Coordinates.z_begin;
+                    const rct_preview_track* trackBlock = &ted.Block[sequence];
+                    z = ted.Coordinates.z_begin;
                     z = trackElement->base_height + ((z - trackBlock->z) * 8);
                     if (z == z0)
                     {
@@ -465,7 +465,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         }
     }
 
-    const rct_preview_track* trackBlock = &teDescriptor.Block[sequence + 1];
+    const rct_preview_track* trackBlock = &ted.Block[sequence + 1];
     if (trackBlock->index != 0xFF)
     {
         return false;
@@ -476,20 +476,20 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    direction = teDescriptor.Coordinates.rotation_end;
+    direction = ted.Coordinates.rotation_end;
     if (direction & 4)
     {
         return false;
     }
 
-    direction = (trackElement->GetDirection() + teDescriptor.Coordinates.rotation_end) & TILE_ELEMENT_DIRECTION_MASK;
+    direction = (trackElement->GetDirection() + ted.Coordinates.rotation_end) & TILE_ELEMENT_DIRECTION_MASK;
     if (direction != _edge)
     {
         return false;
     }
 
-    trackBlock = &teDescriptor.Block[sequence];
-    z = teDescriptor.Coordinates.z_end;
+    trackBlock = &ted.Block[sequence];
+    z = ted.Coordinates.z_end;
     z = trackElement->base_height + ((z - trackBlock->z) * 8);
     return z == z0;
 }
@@ -593,8 +593,8 @@ bool WallPlaceAction::TrackIsAllowedWallEdges(
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_NO_WALLS))
     {
-        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-        if (teDescriptor.SequenceElementAllowedWallEdges[trackSequence] & (1 << direction))
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        if (ted.SequenceElementAllowedWallEdges[trackSequence] & (1 << direction))
         {
             return true;
         }

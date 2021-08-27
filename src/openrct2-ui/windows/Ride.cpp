@@ -1369,8 +1369,8 @@ rct_window* window_ride_open_track(TileElement* tileElement)
                     // Open ride window in station view
                     auto trackElement = tileElement->AsTrack();
                     auto trackType = trackElement->GetTrackType();
-                    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-                    if (teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    const auto& ted = GetTrackElementDescriptor(trackType);
+                    if (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                     {
                         auto stationIndex = trackElement->GetStationIndex();
                         return window_ride_open_station(ride, stationIndex);

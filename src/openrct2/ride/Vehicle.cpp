@@ -1707,8 +1707,8 @@ void Vehicle::UpdateMeasurements()
                 }
         }
 
-        const auto& teDescriptor = GetTrackElementDescriptor(trackElemType);
-        uint16_t trackFlags = teDescriptor.Flags;
+        const auto& ted = GetTrackElementDescriptor(trackElemType);
+        uint16_t trackFlags = ted.Flags;
 
         uint32_t testingFlags = curRide->testing_flags;
         if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
@@ -7495,13 +7495,13 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
 void Vehicle::UpdateSceneryDoor() const
 {
     auto trackType = GetTrackType();
-    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-    const rct_preview_track* trackBlock = teDescriptor.Block;
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    const rct_preview_track* trackBlock = ted.Block;
     while ((trackBlock + 1)->index != 255)
     {
         trackBlock++;
     }
-    const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
+    const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
     auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_end) & 3;
 
@@ -7593,9 +7593,9 @@ static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement
 void Vehicle::UpdateSceneryDoorBackwards() const
 {
     auto trackType = GetTrackType();
-    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-    const rct_preview_track* trackBlock = teDescriptor.Block;
-    const rct_track_coordinates* trackCoordinates = &teDescriptor.Coordinates;
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    const rct_preview_track* trackBlock = ted.Block;
+    const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
@@ -7933,8 +7933,8 @@ void Vehicle::Sub6DBF3E()
     }
 
     auto trackType = GetTrackType();
-    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-    if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
     }
@@ -8547,8 +8547,8 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
             if (next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
                 trackType = tileElement->AsTrack()->GetTrackType();
-                const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-                if (!(teDescriptor.Flags & TRACK_ELEM_FLAG_DOWN))
+                const auto& ted = GetTrackElementDescriptor(trackType);
+                if (!(ted.Flags & TRACK_ELEM_FLAG_DOWN))
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }
@@ -9209,8 +9209,8 @@ loc_6DCE02:
     }
     {
         auto trackType = GetTrackType();
-        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-        if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
         {
             return;
         }

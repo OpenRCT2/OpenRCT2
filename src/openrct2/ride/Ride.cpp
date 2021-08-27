@@ -410,11 +410,11 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output)
         // Found a track piece for target ride
 
         // Check if it's not the station or ??? (but allow end piece of station)
-        const auto& teDescriptor = GetTrackElementDescriptor(it.element->AsTrack()->GetTrackType());
+        const auto& ted = GetTrackElementDescriptor(it.element->AsTrack()->GetTrackType());
         bool specialTrackPiece
             = (it.element->AsTrack()->GetTrackType() != TrackElemType::BeginStation
                && it.element->AsTrack()->GetTrackType() != TrackElemType::MiddleStation
-               && (teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN));
+               && (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN));
 
         // Set result tile to this track piece if first found track or a ???
         if (resultTileElement == nullptr || specialTrackPiece)
@@ -480,12 +480,12 @@ bool track_block_get_next_from_zero(
         if (tileElement->IsGhost() != isGhost)
             continue;
 
-        const auto& teDescriptor = GetTrackElementDescriptor(trackElement->GetTrackType());
-        auto nextTrackBlock = teDescriptor.Block;
+        const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
+        auto nextTrackBlock = ted.Block;
         if (nextTrackBlock == nullptr)
             continue;
 
-        auto nextTrackCoordinate = teDescriptor.Coordinates;
+        auto nextTrackCoordinate = ted.Coordinates;
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotation_begin)
             | (nextTrackCoordinate.rotation_begin & TRACK_BLOCK_2);
 
@@ -522,7 +522,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
         return false;
 
     auto inputElement = input->element->AsTrack();
-    const auto& teDescriptor = GetTrackElementDescriptor(inputElement->GetTrackType());
+    const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
     if (inputElement == nullptr)
         return false;
 
@@ -531,13 +531,13 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     if (ride == nullptr)
         return false;
 
-    const auto* trackBlock = teDescriptor.Block;
+    const auto* trackBlock = ted.Block;
     if (trackBlock == nullptr)
         return false;
 
     trackBlock += inputElement->GetSequenceIndex();
 
-    auto trackCoordinate = teDescriptor.Coordinates;
+    auto trackCoordinate = ted.Coordinates;
 
     int32_t x = input->x;
     int32_t y = input->y;
@@ -635,8 +635,8 @@ bool track_block_get_previous_from_zero(
 
         outTrackBeginEnd->begin_z = tileElement->GetBaseZ();
 
-        const auto& teDescriptor = GetTrackElementDescriptor(trackElement->GetTrackType());
-        const auto* nextTrackBlock2 = teDescriptor.Block;
+        const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
+        const auto* nextTrackBlock2 = ted.Block;
         if (nextTrackBlock2 == nullptr)
             continue;
 
@@ -668,7 +668,7 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
         return false;
 
     auto trackElement = trackPos.element->AsTrack();
-    const auto& teDescriptor = GetTrackElementDescriptor(trackElement->GetTrackType());
+    const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
     if (trackElement == nullptr)
         return false;
 
@@ -677,13 +677,13 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
     if (ride == nullptr)
         return false;
 
-    const auto* trackBlock = teDescriptor.Block;
+    const auto* trackBlock = ted.Block;
     if (trackBlock == nullptr)
         return false;
 
     trackBlock += trackElement->GetSequenceIndex();
 
-    auto trackCoordinate = teDescriptor.Coordinates;
+    auto trackCoordinate = ted.Coordinates;
 
     int32_t z = trackElement->GetBaseZ();
 
@@ -2229,8 +2229,8 @@ static void ride_shop_connected(Ride* ride)
         return;
     }
 
-    const auto& teDescriptor = GetTrackElementDescriptor(track_type);
-    uint8_t entrance_directions = teDescriptor.TrackSequenceProperties[0] & 0xF;
+    const auto& ted = GetTrackElementDescriptor(track_type);
+    uint8_t entrance_directions = ted.TrackSequenceProperties[0] & 0xF;
     uint8_t tile_direction = trackElement->GetDirection();
     entrance_directions = rol4(entrance_directions, tile_direction);
 
@@ -2665,8 +2665,8 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
     while (track_circuit_iterator_next(&it))
     {
         auto trackType = it.current.element->AsTrack()->GetTrackType();
-        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-        if (teDescriptor.Flags & TRACK_ELEM_FLAG_INVERSION_TO_NORMAL)
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        if (ted.Flags & TRACK_ELEM_FLAG_INVERSION_TO_NORMAL)
         {
             *output = it.current;
             return true;
@@ -2724,8 +2724,8 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
     while (track_circuit_iterator_next(&it))
     {
         auto trackType = output->element->AsTrack()->GetTrackType();
-        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-        if (teDescriptor.Flags & TRACK_ELEM_FLAG_BANKED)
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        if (ted.Flags & TRACK_ELEM_FLAG_BANKED)
         {
             *output = it.current;
             return true;
@@ -2774,8 +2774,8 @@ static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
 
     do
     {
-        const auto& teDescriptor = GetTrackElementDescriptor(output->element->AsTrack()->GetTrackType());
-        if (teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+        const auto& ted = GetTrackElementDescriptor(output->element->AsTrack()->GetTrackType());
+        if (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
         {
             num_station_elements++;
             last_good_station = *output;
@@ -2822,8 +2822,8 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     // Check back of the track
     track_get_back(input, &trackBack);
     auto trackType = trackBack.element->AsTrack()->GetTrackType();
-    auto teDescriptor = GetTrackElementDescriptor(trackType);
-    if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    auto ted = GetTrackElementDescriptor(trackType);
+    if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return false;
     }
@@ -2832,8 +2832,8 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     // Check front of the track
     track_get_front(input, &trackFront);
     trackType = trackFront.element->AsTrack()->GetTrackType();
-    teDescriptor = GetTrackElementDescriptor(trackType);
-    if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    ted = GetTrackElementDescriptor(trackType);
+    if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return false;
     }
@@ -2869,8 +2869,8 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
     };
 
     trackType = returnPos.element->AsTrack()->GetTrackType();
-    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-    int32_t elementReturnDirection = teDescriptor.Coordinates.rotation_begin;
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    int32_t elementReturnDirection = ted.Coordinates.rotation_begin;
     ride->boat_hire_return_direction = returnPos.element->GetDirectionWithOffset(elementReturnDirection);
     ride->boat_hire_return_position = TileCoordsXY{ returnPos };
 }
@@ -3544,8 +3544,8 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         if (tileElement->GetBaseZ() != location.z)
             continue;
 
-        const auto& teDescriptor = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-        if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+        if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
         {
             continue;
         }
@@ -3777,8 +3777,8 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
             continue;
 
         auto* trackElement = tileElement->AsTrack();
-        const auto& teDescriptor = GetTrackElementDescriptor(trackElement->GetTrackType());
-        if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
+        if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
             continue;
 
         if (trackElement->GetRideIndex() == id)
@@ -4884,8 +4884,8 @@ static int32_t ride_get_track_length(Ride* ride)
                 continue;
 
             trackType = tileElement->AsTrack()->GetTrackType();
-            const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-            if (!(teDescriptor.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+            const auto& ted = GetTrackElementDescriptor(trackType);
+            if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                 continue;
 
             if (tileElement->GetBaseZ() != trackStart.z)
@@ -4916,8 +4916,8 @@ static int32_t ride_get_track_length(Ride* ride)
     while (track_circuit_iterator_next(&it))
     {
         trackType = it.current.element->AsTrack()->GetTrackType();
-        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-        result += teDescriptor.PieceLength;
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        result += ted.PieceLength;
 
         moveSlowIt = !moveSlowIt;
         if (moveSlowIt)

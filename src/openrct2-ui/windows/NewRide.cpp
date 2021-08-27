@@ -943,10 +943,10 @@ static void window_new_ride_paint_ride_information(
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Get price of ride
-        int32_t unk2 = GetRideTypeDescriptor(item.Type).StartTrackPiece;
+        int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
         money64 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
-        const auto& teDescriptor = GetTrackElementDescriptor(unk2);
-        price *= teDescriptor.Pricing;
+        const auto& ted = GetTrackElementDescriptor(startPieceId);
+        price *= ted.Pricing;
         price = (price >> 17) * 10 * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
         //

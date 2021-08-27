@@ -91,8 +91,8 @@ money32 place_provisional_track_piece(
             return result;
 
         int16_t z_begin, z_end;
-        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-        const rct_track_coordinates& coords = teDescriptor.Coordinates;
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        const rct_track_coordinates& coords = ted.Coordinates;
         if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             z_begin = coords.z_begin;
@@ -306,8 +306,8 @@ bool window_ride_construction_update_state(
         && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
     {
         auto availablePieces = rtd.CoveredTrackPieces;
-        const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-        auto alternativeType = teDescriptor.AlternativeType;
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        auto alternativeType = ted.AlternativeType;
         if (alternativeType != TrackElemType::None && (availablePieces & (1ULL << trackType)))
         {
             trackType = alternativeType;
@@ -315,8 +315,8 @@ bool window_ride_construction_update_state(
         }
     }
 
-    const auto& teDescriptor = GetTrackElementDescriptor(trackType);
-    const rct_track_coordinates& trackCoordinates = teDescriptor.Coordinates;
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    const rct_track_coordinates& trackCoordinates = ted.Coordinates;
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;
@@ -349,13 +349,13 @@ bool window_ride_construction_update_state(
     bool turnOffLiftHill = false;
     if (!(_enabledRidePieces & (1ULL << TRACK_LIFT_HILL_CURVE)))
     {
-        if (teDescriptor.Flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
+        if (ted.Flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
         {
             turnOffLiftHill = true;
         }
     }
 
-    if (!(teDescriptor.Flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
+    if (!(ted.Flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
     {
         turnOffLiftHill = true;
     }
