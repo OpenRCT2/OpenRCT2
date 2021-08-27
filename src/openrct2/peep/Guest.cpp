@@ -6781,7 +6781,7 @@ void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft)
     PeepThoughtToActionFlag flags = PeepThoughtToActionMap[EnumValue(thought->type)].flags;
     if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)
     {
-        auto ride = get_ride(thought->item);
+        auto ride = get_ride(thought->rideId);
         if (ride != nullptr)
         {
             ride->FormatNameTo(ft);
@@ -6793,11 +6793,11 @@ void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft)
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR)
     {
-        ft.Add<rct_string_id>(GetShopItemDescriptor(ShopItem(thought->item)).Naming.Singular);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->shopItem).Naming.Singular);
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE)
     {
-        ft.Add<rct_string_id>(GetShopItemDescriptor(ShopItem(thought->item)).Naming.Indefinite);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->shopItem).Naming.Indefinite);
     }
 }
 
