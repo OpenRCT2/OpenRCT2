@@ -38,6 +38,7 @@ body:
     options:
       - The bug also exists in RCT2 (vanilla)
       - This bug is specific to multiplayer
+      - Building the game
   validations:
     required: false
 
