@@ -485,12 +485,19 @@ enum PeepRideDecision
     PEEP_RIDE_DECISION_THINKING = 1 << 2,
 };
 
+static constexpr uint16_t PeepThoughtItemNone = std::numeric_limits<uint16_t>::max();
+
 struct PeepThought
 {
-    PeepThoughtType type;  // 0
-    uint8_t item;          // 1
-    uint8_t freshness;     // 2 larger is less fresh
-    uint8_t fresh_timeout; // 3 updates every tick
+    PeepThoughtType type;
+    union
+    {
+        ride_id_t rideId;
+        ShopItem shopItem;
+        uint16_t item;
+    };
+    uint8_t freshness;     // larger is less fresh
+    uint8_t fresh_timeout; // updates every tick
 };
 
 struct Guest;
