@@ -1433,7 +1433,16 @@ int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
 {
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& execInfo = scriptEngine.GetExecInfo();
-    return execInfo.GetCurrentPlugin()->GetTargetAPIVersion();
+
+    // Commands from the in-game console do not have a plug-in set
+    auto plugin = execInfo.GetCurrentPlugin();
+    if (plugin == nullptr)
+    {
+        // For in-game console, default to the current API version
+        return OPENRCT2_PLUGIN_API_VERSION;
+    }
+
+    return plugin->GetTargetAPIVersion();
 }
 
 #endif
