@@ -1721,7 +1721,7 @@ template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
         auto srcThought = &src->thoughts[i];
         auto dstThought = &dst->Thoughts[i];
         dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-        if (srcThought->item == 0xFF)
+        if (srcThought->item == RCT12PeepThoughtItemNone)
             dstThought->item = PeepThoughtItemNone;
         else
             dstThought->item = srcThought->item;
