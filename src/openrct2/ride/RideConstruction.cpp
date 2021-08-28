@@ -630,7 +630,7 @@ void ride_construction_set_default_next_piece()
     TileElement* tileElement;
     _currentTrackPrice = MONEY32_UNDEFINED;
 
-    TrackElementDescriptor ted;
+    const TrackElementDescriptor* ted;
     switch (_rideConstructionState)
     {
         case RideConstructionState::Front:
@@ -659,8 +659,8 @@ void ride_construction_set_default_next_piece()
                 }
             }
 
-            ted = GetTrackElementDescriptor(trackType);
-            curve = ted.CurveChain.next;
+            ted = &GetTrackElementDescriptor(trackType);
+            curve = ted->CurveChain.next;
             bank = TrackDefinitions[trackType].bank_end;
             slope = TrackDefinitions[trackType].vangle_end;
 
@@ -705,8 +705,8 @@ void ride_construction_set_default_next_piece()
                 }
             }
 
-            ted = GetTrackElementDescriptor(trackType);
-            curve = ted.CurveChain.previous;
+            ted = &GetTrackElementDescriptor(trackType);
+            curve = ted->CurveChain.previous;
             bank = TrackDefinitions[trackType].bank_start;
             slope = TrackDefinitions[trackType].vangle_start;
 
@@ -1439,7 +1439,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
  */
 void sub_6CB945(Ride* ride)
 {
-    TrackElementDescriptor ted;
+    const TrackElementDescriptor* ted;
     if (ride->type != RIDE_TYPE_MAZE)
     {
         for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
@@ -1475,8 +1475,8 @@ void sub_6CB945(Ride* ride)
                     if (tileElement->AsTrack()->GetSequenceIndex() != 0)
                         continue;
 
-                    ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+                    if (!(ted->TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1503,8 +1503,8 @@ void sub_6CB945(Ride* ride)
                 continue;
             }
 
-            ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-            const rct_preview_track* trackBlock = ted.Block;
+            ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+            const rct_preview_track* trackBlock = ted->Block;
             while ((++trackBlock)->index != 0xFF)
             {
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };
@@ -1520,8 +1520,8 @@ void sub_6CB945(Ride* ride)
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;
 
-                    ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+                    if (!(ted->TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1616,8 +1616,8 @@ void sub_6CB945(Ride* ride)
 
                 Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;
 
-                ted = GetTrackElementDescriptor(trackType);
-                if (!(ted.TrackSequenceProperties[trackSequence] & (1 << direction)))
+                ted = &GetTrackElementDescriptor(trackType);
+                if (!(ted->TrackSequenceProperties[trackSequence] & (1 << direction)))
                 {
                     continue;
                 }

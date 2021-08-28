@@ -401,7 +401,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
 
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    auto wallEdges = ted.SequenceElementAllowedWallEdges;
+    const auto& wallEdges = ted.SequenceElementAllowedWallEdges;
 
     money32 cost = 0;
     const rct_preview_track* trackBlock = ted.Block;
