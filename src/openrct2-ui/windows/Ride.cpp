@@ -1370,7 +1370,7 @@ rct_window* window_ride_open_track(TileElement* tileElement)
                     auto trackElement = tileElement->AsTrack();
                     auto trackType = trackElement->GetTrackType();
                     const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                     {
                         auto stationIndex = trackElement->GetStationIndex();
                         return window_ride_open_station(ride, stationIndex);

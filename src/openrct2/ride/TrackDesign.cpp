@@ -771,7 +771,7 @@ static void track_design_mirror_ride(TrackDesign* td6)
     for (auto& track : td6->track_elements)
     {
         const auto& ted = GetTrackElementDescriptor(track.type);
-        track.type = ted.MirrorMap;
+        track.type = ted.MirrorElement;
     }
 
     for (auto& entrance : td6->entrance_elements)

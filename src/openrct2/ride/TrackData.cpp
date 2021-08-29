@@ -5148,14 +5148,14 @@ namespace OpenRCT2
                 desc.CurveChain = gTrackCurveChain[i];
                 desc.Flags = TrackFlags[i];
                 desc.HeightMarkerPositions = TrackHeightMarkerPositions[i];
-                desc.MirrorMap = TrackElementMirrorMap[i];
+                desc.MirrorElement = TrackElementMirrorMap[i];
                 desc.PieceLength = TrackPieceLengths[i];
-                desc.Pricing = TrackPricing[i];
+                desc.Price = TrackPricing[i];
 
                 for (uint8_t j = 0; j < MaxSequencesPerPiece; j++)
                 {
                     desc.SequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
-                    desc.TrackSequenceProperties[j] = TrackSequenceProperties[i][j];
+                    desc.SequenceProperties[j] = TrackSequenceProperties[i][j];
                 }
                 _trackElementDescriptors.push_back(desc);
             }

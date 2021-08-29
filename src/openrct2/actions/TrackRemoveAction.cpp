@@ -203,7 +203,7 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
             return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
-        int32_t entranceDirections = ted.TrackSequenceProperties[0];
+        int32_t entranceDirections = ted.SequenceProperties[0];
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
@@ -229,7 +229,7 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Pricing;
+    price *= ted.Price;
     price >>= 16;
     price = (price + cost) / 2;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
@@ -378,7 +378,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
             return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
-        int32_t entranceDirections = ted.TrackSequenceProperties[0];
+        int32_t entranceDirections = ted.SequenceProperties[0];
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
@@ -477,7 +477,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Pricing;
+    price *= ted.Price;
     price >>= 16;
     price = (price + cost) / 2;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)

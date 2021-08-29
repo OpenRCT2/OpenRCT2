@@ -946,7 +946,7 @@ static void window_new_ride_paint_ride_information(
         int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
         money64 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
         const auto& ted = GetTrackElementDescriptor(startPieceId);
-        price *= ted.Pricing;
+        price *= ted.Price;
         price = (price >> 17) * 10 * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
         //

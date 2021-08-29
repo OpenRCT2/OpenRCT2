@@ -574,8 +574,8 @@ static void window_track_place_draw_mini_preview_track(
                     auto bits = trackBlock->var_08.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                     // Station track is a lighter colour
-                    uint8_t colour = (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN) ? _PaletteIndexColourStation
-                                                                                                   : _PaletteIndexColourTrack;
+                    uint8_t colour = (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN) ? _PaletteIndexColourStation
+                                                                                              : _PaletteIndexColourTrack;
 
                     for (int32_t i = 0; i < 4; i++)
                     {

@@ -414,7 +414,7 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output)
         bool specialTrackPiece
             = (it.element->AsTrack()->GetTrackType() != TrackElemType::BeginStation
                && it.element->AsTrack()->GetTrackType() != TrackElemType::MiddleStation
-               && (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN));
+               && (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN));
 
         // Set result tile to this track piece if first found track or a ???
         if (resultTileElement == nullptr || specialTrackPiece)
@@ -2230,7 +2230,7 @@ static void ride_shop_connected(Ride* ride)
     }
 
     const auto& ted = GetTrackElementDescriptor(track_type);
-    uint8_t entrance_directions = ted.TrackSequenceProperties[0] & 0xF;
+    uint8_t entrance_directions = ted.SequenceProperties[0] & 0xF;
     uint8_t tile_direction = trackElement->GetDirection();
     entrance_directions = rol4(entrance_directions, tile_direction);
 
@@ -2775,7 +2775,7 @@ static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
     do
     {
         const auto& ted = GetTrackElementDescriptor(output->element->AsTrack()->GetTrackType());
-        if (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+        if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
         {
             num_station_elements++;
             last_good_station = *output;
@@ -2823,7 +2823,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     track_get_back(input, &trackBack);
     auto trackType = trackBack.element->AsTrack()->GetTrackType();
     const auto* ted = &GetTrackElementDescriptor(trackType);
-    if (!(ted->TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!(ted->SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return false;
     }
@@ -2833,7 +2833,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     track_get_front(input, &trackFront);
     trackType = trackFront.element->AsTrack()->GetTrackType();
     ted = &GetTrackElementDescriptor(trackType);
-    if (!(ted->TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!(ted->SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return false;
     }
@@ -3545,7 +3545,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
             continue;
 
         const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-        if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
         {
             continue;
         }
@@ -3778,7 +3778,7 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
 
         auto* trackElement = tileElement->AsTrack();
         const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-        if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
             continue;
 
         if (trackElement->GetRideIndex() == id)
@@ -4885,7 +4885,7 @@ static int32_t ride_get_track_length(Ride* ride)
 
             trackType = tileElement->AsTrack()->GetTrackType();
             const auto& ted = GetTrackElementDescriptor(trackType);
-            if (!(ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+            if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                 continue;
 
             if (tileElement->GetBaseZ() != trackStart.z)

@@ -1255,7 +1255,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             if (info.Element->AsTrack()->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
             {
                 const auto& ted = GetTrackElementDescriptor(info.Element->AsTrack()->GetTrackType());
-                if (ted.TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                 {
                     if (info.Element->AsTrack()->GetTrackType() == TrackElemType::Maze)
                     {
@@ -1346,7 +1346,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                     int32_t eax = (entranceExitCoords.direction + 2 - tileElement->GetDirection())
                         & TILE_ELEMENT_DIRECTION_MASK;
                     const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (ted.TrackSequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << eax))
+                    if (ted.SequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << eax))
                     {
                         entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
                         gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
@@ -1476,7 +1476,7 @@ void sub_6CB945(Ride* ride)
                         continue;
 
                     ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (!(ted->TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!(ted->SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1521,7 +1521,7 @@ void sub_6CB945(Ride* ride)
                         continue;
 
                     ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (!(ted->TrackSequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!(ted->SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1617,7 +1617,7 @@ void sub_6CB945(Ride* ride)
                 Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;
 
                 ted = &GetTrackElementDescriptor(trackType);
-                if (!(ted->TrackSequenceProperties[trackSequence] & (1 << direction)))
+                if (!(ted->SequenceProperties[trackSequence] & (1 << direction)))
                 {
                     continue;
                 }
