@@ -19,6 +19,7 @@
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
+using namespace OpenRCT2::TrackMetaData;
 TrackPlaceActionResult::TrackPlaceActionResult()
     : GameActions::Result(GameActions::Status::Ok, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
 {
@@ -146,7 +147,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED)
             && !ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_LIFT_HILL_STEEP) && !gCheatsEnableChainLiftOnAllTrack)
         {
-            if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_IS_STEEP_UP)
+            const auto& ted = GetTrackElementDescriptor(_trackType);
+            if (ted.Flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
             {
                 return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Disallowed, STR_TOO_STEEP_FOR_LIFT_HILL);
             }
@@ -154,7 +156,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
 
     money32 cost = 0;
-    const rct_preview_track* trackBlock = TrackBlocks[_trackType];
+    const auto& ted = GetTrackElementDescriptor(_trackType);
+    const rct_preview_track* trackBlock = ted.Block;
     uint32_t numElements = 0;
     // First check if any of the track pieces are outside the park
     for (; trackBlock->index != 0xFF; trackBlock++)
@@ -174,9 +177,10 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         log_warning("Not enough free map elements to place track.");
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
+
     if (!gCheatsAllowTrackPlaceInvalidHeights)
     {
-        if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
+        if (ted.Flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
         {
             if ((_origin.z & 0x0F) != 8)
             {
@@ -195,7 +199,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
 
     // If that is not the case, then perform the remaining checks
-    trackBlock = TrackBlocks[_trackType];
+    trackBlock = ted.Block;
 
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
@@ -259,8 +263,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         }
 
         res->GroundFlags = mapGroundFlags;
-
-        if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
+        if (ted.Flags & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
         {
             if (res->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
@@ -269,7 +272,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             }
         }
 
-        if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
+        if (ted.Flags & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
         { // No element has this flag
             if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER)
             {
@@ -315,7 +318,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             }
         }
 
-        int32_t entranceDirections = TrackSequenceProperties[_trackType][0];
+        int32_t entranceDirections = ted.SequenceProperties[0];
         if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
         {
             if (!track_add_station_element({ mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign))
@@ -364,7 +367,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= TrackPricing[_trackType];
+    price *= ted.Price;
 
     price >>= 16;
     res->Cost = cost + ((price / 2) * 10);
@@ -397,13 +400,11 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
 
     uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
 
-    const uint8_t(*wallEdges)[16];
-    wallEdges = &TrackSequenceElementAllowedWallEdges[_trackType];
+    const auto& ted = GetTrackElementDescriptor(_trackType);
+    const auto& wallEdges = ted.SequenceElementAllowedWallEdges;
 
     money32 cost = 0;
-    const rct_preview_track* trackBlock = TrackBlocks[_trackType];
-
-    trackBlock = TrackBlocks[_trackType];
+    const rct_preview_track* trackBlock = ted.Block;
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
@@ -450,7 +451,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             else
             {
                 // Remove walls in the directions this track intersects
-                uint8_t intersectingDirections = (*wallEdges)[blockIndex];
+                uint8_t intersectingDirections = wallEdges[blockIndex];
                 intersectingDirections ^= 0x0F;
                 intersectingDirections = rol4(intersectingDirections, _origin.direction);
                 for (int32_t i = 0; i < NumOrthogonalDirections; i++)
@@ -537,7 +538,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         {
             if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
             {
-                entranceDirections = TrackSequenceProperties[_trackType][0];
+                entranceDirections = ted.SequenceProperties[0];
             }
         }
 
@@ -596,7 +597,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         }
         trackElement->SetColourScheme(_colour);
 
-        entranceDirections = TrackSequenceProperties[_trackType][0];
+        entranceDirections = ted.SequenceProperties[0];
         if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
         {
             uint8_t availableDirections = entranceDirections & 0x0F;
@@ -652,7 +653,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= TrackPricing[_trackType];
+    price *= ted.Price;
 
     price >>= 16;
     res->Cost = cost + ((price / 2) * 10);
@@ -661,7 +662,8 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
 
 bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
 {
-    for (const rct_preview_track* trackBlock = TrackBlocks[_trackType]; trackBlock->index != 0xFF; trackBlock++)
+    const auto& ted = GetTrackElementDescriptor(_trackType);
+    for (const rct_preview_track* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
     {
         auto rotatedTrack = CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction);
 

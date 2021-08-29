@@ -53,6 +53,7 @@
 #include "platform/Crash.h"
 #include "platform/Platform2.h"
 #include "platform/platform.h"
+#include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
@@ -395,6 +396,7 @@ namespace OpenRCT2
                 }
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
+            TrackMetaData::Init();
 
             _objectRepository = CreateObjectRepository(_env);
             _objectManager = CreateObjectManager(*_objectRepository);
