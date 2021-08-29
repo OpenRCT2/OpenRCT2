@@ -157,10 +157,7 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
     // Close windows related to the demolished ride
-    if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
-    {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
-    }
+    window_close_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
     window_close_by_number(WC_RIDE, _rideIndex);
     window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
     window_close_by_class(WC_NEW_CAMPAIGN);
