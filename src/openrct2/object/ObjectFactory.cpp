@@ -24,6 +24,8 @@
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
 #include "FootpathObject.h"
+#include "FootpathRailingsObject.h"
+#include "FootpathSurfaceObject.h"
 #include "LargeSceneryObject.h"
 #include "MusicObject.h"
 #include "Object.h"
@@ -356,6 +358,12 @@ namespace ObjectFactory
             case ObjectType::Music:
                 result = std::make_unique<MusicObject>(entry);
                 break;
+            case ObjectType::FootpathSurface:
+                result = std::make_unique<FootpathSurfaceObject>(entry);
+                break;
+            case ObjectType::FootpathRailings:
+                result = std::make_unique<FootpathRailingsObject>(entry);
+                break;
             default:
                 throw std::runtime_error("Invalid object type");
         }
@@ -392,6 +400,10 @@ namespace ObjectFactory
             return ObjectType::Station;
         if (s == "music")
             return ObjectType::Music;
+        if (s == "footpath_surface")
+            return ObjectType::FootpathSurface;
+        if (s == "footpath_railings")
+            return ObjectType::FootpathRailings;
         return ObjectType::None;
     }
 
