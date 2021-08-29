@@ -62,7 +62,8 @@ void vehicle_visual_submarine(
 
     image_id = baseImage_id | imageFlags;
     paint_struct* ps = PaintAddImageAsParent(
-        session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z);
+        session, image_id, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
+        { bb.offset_x, bb.offset_y, bb.offset_z + z });
     if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
@@ -70,7 +71,7 @@ void vehicle_visual_submarine(
 
     image_id = (baseImage_id + 1) | imageFlags;
     ps = PaintAddImageAsParent(
-        session, image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10);
+        session, image_id, { 0, 0, z }, { bb.length_x, bb.length_y, 2 }, { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 });
     if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
@@ -94,7 +95,7 @@ static void submarine_ride_paint_track_station(
     if (direction & 1)
     {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower);
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
 
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
@@ -103,7 +104,7 @@ static void submarine_ride_paint_track_station(
     else
     {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower);
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
 
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
@@ -124,13 +125,13 @@ static void submarine_ride_paint_track_flat(
     if (direction & 1)
     {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower);
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
         paint_util_push_tunnel_right(session, heightLower, TUNNEL_0);
     }
     else
     {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower);
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
         paint_util_push_tunnel_left(session, heightLower, TUNNEL_0);
     }
 

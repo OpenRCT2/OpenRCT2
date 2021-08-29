@@ -393,7 +393,7 @@ static constexpr const uint8_t mini_golf_peep_animation_frames_swing_left[] = {
 };
 
 /** rct2: 0x0093348D */
-static constexpr const uint8_t mini_golf_peep_animation_frames_place_ball_upwards[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_pickup_ball[] = {
     12, 13, 14, 15, 14, 13, 12,
 };
 
@@ -403,17 +403,17 @@ static constexpr const uint8_t mini_golf_peep_animation_frames_jump[] = {
 };
 
 /** rct2: 0x009334A5 */
-static constexpr const uint8_t mini_golf_peep_animation_frames_pickup_ball[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_place_ball_upwards[] = {
     15, 14, 13, 12,
 };
 
 /** rct2: 0x009334C5 */
-static constexpr const uint8_t mini_golf_peep_animation_frames_put[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_putt[] = {
     35, 36, 36, 36, 36, 36, 35, 35, 35, 35,
 };
 
 /** rct2: 0x009334AA */
-static constexpr const uint8_t mini_golf_peep_animation_frames_put_left[] = {
+static constexpr const uint8_t mini_golf_peep_animation_frames_putt_left[] = {
     10, 11, 11, 11, 11, 11, 10, 10, 10, 10,
 };
 
@@ -422,24 +422,24 @@ static constexpr const uint8_t* mini_golf_peep_animation_frames[] = {
     mini_golf_peep_animation_frames_walk,
     mini_golf_peep_animation_frames_place_ball_downwards,
     mini_golf_peep_animation_frames_swing_left,
-    mini_golf_peep_animation_frames_place_ball_upwards,
-    mini_golf_peep_animation_frames_jump,
     mini_golf_peep_animation_frames_pickup_ball,
-    mini_golf_peep_animation_frames_put_left,
+    mini_golf_peep_animation_frames_jump,
+    mini_golf_peep_animation_frames_place_ball_upwards,
+    mini_golf_peep_animation_frames_putt_left,
     mini_golf_peep_animation_frames_swing,
-    mini_golf_peep_animation_frames_put,
+    mini_golf_peep_animation_frames_putt,
 };
 
 const size_t mini_golf_peep_animation_lengths[] = {
     std::size(mini_golf_peep_animation_frames_walk),
     std::size(mini_golf_peep_animation_frames_place_ball_downwards),
     std::size(mini_golf_peep_animation_frames_swing_left),
-    std::size(mini_golf_peep_animation_frames_place_ball_upwards),
-    std::size(mini_golf_peep_animation_frames_jump),
     std::size(mini_golf_peep_animation_frames_pickup_ball),
-    std::size(mini_golf_peep_animation_frames_put_left),
+    std::size(mini_golf_peep_animation_frames_jump),
+    std::size(mini_golf_peep_animation_frames_place_ball_upwards),
+    std::size(mini_golf_peep_animation_frames_putt_left),
     std::size(mini_golf_peep_animation_frames_swing),
-    std::size(mini_golf_peep_animation_frames_put),
+    std::size(mini_golf_peep_animation_frames_putt),
 };
 // clang-format on
 
@@ -451,13 +451,13 @@ static paint_struct* mini_golf_paint_util_7c(
     if (direction & 1)
     {
         return PaintAddImageAsParent(
-            session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
-            bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
+            session, image_id, { y_offset, x_offset, z_offset }, { bound_box_length_y, bound_box_length_x, bound_box_length_z },
+            { bound_box_offset_y, bound_box_offset_x, bound_box_offset_z });
     }
 
     return PaintAddImageAsParent(
-        session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
-        bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
+        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
 }
 
 static bool mini_golf_paint_util_should_draw_fence(paint_session* session, const TrackElement& trackElement)
@@ -691,7 +691,7 @@ static void paint_mini_golf_station(
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, -10, 0, 1, 32, 7, height, 0, 0, height + 2);
+            PaintAddImageAsParent(session, imageId, { -10, 0, height }, { 1, 32, 7 }, { 0, 0, height + 2 });
         }
 
         bool hasSWFence = track_paint_util_has_fence(
@@ -714,7 +714,7 @@ static void paint_mini_golf_station(
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, 0, -10, 32, 1, 7, height, 0, 0, height + 2);
+            PaintAddImageAsParent(session, imageId, { 0, -10, height }, { 32, 1, 7 }, { 0, 0, height + 2 });
         }
 
         bool hasSEFence = track_paint_util_has_fence(
@@ -731,7 +731,7 @@ static void paint_mini_golf_station(
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -832,7 +832,7 @@ static void paint_mini_golf_hole_ab(
     CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
-        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -859,13 +859,13 @@ static void paint_mini_golf_hole_ab(
 
     imageId = sprites[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(
-        session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24);
+        session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 0 }, { boundBoxOffset.x, boundBoxOffset.y, height + 24 });
 
     if (drewSupports)
     {
         imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
 
         imageId = sprites[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
@@ -875,7 +875,7 @@ static void paint_mini_golf_hole_ab(
     {
         imageId = sprites[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
 }
 
@@ -904,7 +904,7 @@ static void paint_mini_golf_hole_c(
     CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
-        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -943,7 +943,8 @@ static void paint_mini_golf_hole_c(
             break;
         default:
             PaintAddImageAsParent(
-                session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24);
+                session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 0 },
+                { boundBoxOffset.x, boundBoxOffset.y, height + 24 });
             break;
     }
 
@@ -951,7 +952,7 @@ static void paint_mini_golf_hole_c(
     {
         imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
 
         imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
@@ -961,7 +962,7 @@ static void paint_mini_golf_hole_c(
     {
         imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
 }
 
@@ -976,8 +977,7 @@ static void paint_mini_golf_hole_d(
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
         supportType = 1 - supportType;
-    bool drewSupports = wooden_a_supports_paint_setup(
-        session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    bool drewSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1026,7 +1026,8 @@ static void paint_mini_golf_hole_d(
             break;
         default:
             PaintAddImageAsParent(
-                session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24);
+                session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 0 },
+                { boundBoxOffset.x, boundBoxOffset.y, height + 24 });
             break;
     }
 
@@ -1044,7 +1045,7 @@ static void paint_mini_golf_hole_d(
     {
         imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
 
         imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
@@ -1054,7 +1055,7 @@ static void paint_mini_golf_hole_d(
     {
         imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
 }
 
@@ -1069,8 +1070,7 @@ static void paint_mini_golf_hole_e(
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
         supportType = 1 - supportType;
-    bool drewSupports = wooden_a_supports_paint_setup(
-        session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    bool drewSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1119,7 +1119,8 @@ static void paint_mini_golf_hole_e(
             break;
         default:
             PaintAddImageAsParent(
-                session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24);
+                session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 0 },
+                { boundBoxOffset.x, boundBoxOffset.y, height + 24 });
             break;
     }
 
@@ -1137,7 +1138,7 @@ static void paint_mini_golf_hole_e(
     {
         imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
 
         imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
@@ -1147,7 +1148,7 @@ static void paint_mini_golf_hole_e(
     {
         imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
 }
 
@@ -1234,12 +1235,12 @@ void vehicle_visual_mini_golf_player(
     if (peep == nullptr)
         return;
 
-    uint8_t frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->animation_frame];
+    uint8_t frame = mini_golf_peep_animation_frames[EnumValue(vehicle->mini_golf_current_animation)][vehicle->animation_frame];
     uint32_t ebx = (frame << 2) + (imageDirection >> 3);
 
     uint32_t image_id = rideEntry->vehicles[0].base_image_id + 1 + ebx;
     uint32_t peep_palette = peep->TshirtColour << 19 | peep->TrousersColour << 24 | 0x0A0000000;
-    PaintAddImageAsParent(session, image_id | peep_palette, 0, 0, 1, 1, 11, z, 0, 0, z + 5);
+    PaintAddImageAsParent(session, image_id | peep_palette, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
 }
 
 /**
@@ -1248,7 +1249,7 @@ void vehicle_visual_mini_golf_player(
 void vehicle_visual_mini_golf_ball(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
-    if (vehicle->mini_golf_current_animation != 1)
+    if (vehicle->mini_golf_current_animation != MiniGolfAnimation::PlaceBallDown)
     {
         return;
     }

@@ -239,7 +239,12 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
         auto max = GetMapSizeMinus2();
         if (pos.x > max && pos.y > max)
         {
-            const CoordsXY corr[] = { { -1, -1 }, { 1, -1 }, { 1, 1 }, { -1, 1 } };
+            static constexpr CoordsXY corr[] = {
+                { -1, -1 },
+                { 1, -1 },
+                { 1, 1 },
+                { -1, 1 },
+            };
             pos.x += corr[rotation].x * height;
             pos.y += corr[rotation].y * height;
         }
@@ -1148,11 +1153,9 @@ void rct_viewport::Invalidate() const
 
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
 {
-    constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
-
     // Reverse of translate_3d_to_2d_with_z
     CoordsXY ret = { coords.y - coords.x / 2 + z, coords.y + coords.x / 2 + z };
-    auto inverseRotation = inverseRotationMapping[get_current_rotation()];
+    auto inverseRotation = DirectionFlipXAxis(get_current_rotation());
     return ret.Rotate(inverseRotation);
 }
 

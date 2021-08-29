@@ -23,6 +23,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <utility>
 
 // clang-format off
 enum WINDOW_PLAYER_PAGE {
@@ -265,8 +266,9 @@ void window_player_overview_mouse_down(rct_window* w, rct_widgetindex widgetInde
 
 void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
-    if (player == -1)
+    const auto playerId = static_cast<uint8_t>(w->number);
+    const auto playerIdx = network_get_player_index(playerId);
+    if (playerIdx == -1)
     {
         return;
     }
@@ -274,12 +276,13 @@ void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     {
         return;
     }
-    int32_t group = network_get_group_id(dropdownIndex);
-    auto playerSetGroupAction = PlayerSetGroupAction(w->number, group);
-    playerSetGroupAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+    const auto groupId = network_get_group_id(dropdownIndex);
+    const auto windowHandle = std::make_pair(w->classification, w->number);
+    auto playerSetGroupAction = PlayerSetGroupAction(playerId, groupId);
+    playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error == GameActions::Status::Ok)
         {
-            w->Invalidate();
+            window_invalidate_by_number(windowHandle.first, windowHandle.second);
         }
     });
     GameActions::Execute(&playerSetGroupAction);

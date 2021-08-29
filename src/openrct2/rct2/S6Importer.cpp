@@ -1402,7 +1402,7 @@ public:
             return pos.x == 0xFF && pos.y == 0xFF && pos.z == 0xFF && pos.direction == INVALID_DIRECTION;
         };
 
-        ImportEntityCommonProperties(static_cast<SpriteBase*>(dst), src);
+        ImportEntityCommonProperties(static_cast<EntityBase*>(dst), src);
         if (is_user_string_id(src->name_string_idx))
         {
             dst->SetName(GetUserString(src->name_string_idx));
@@ -1527,7 +1527,7 @@ public:
         return output;
     }
 
-    void ImportEntityCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
+    void ImportEntityCommonProperties(EntityBase* dst, const RCT12SpriteBase* src)
     {
         dst->Type = GetEntityTypeFromRCT2Sprite(src);
         dst->sprite_height_negative = src->sprite_height_negative;
@@ -1745,7 +1745,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->powered_acceleration = src->powered_acceleration;
     dst->dodgems_collision_direction = src->dodgems_collision_direction;
     dst->animation_frame = src->animation_frame;
-    dst->var_C8 = src->var_C8;
+    dst->animationState = src->animationState;
     dst->var_CA = src->var_CA;
     dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
     dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
@@ -1754,7 +1754,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->lost_time_out = src->lost_time_out;
     dst->vertical_drop_countdown = src->vertical_drop_countdown;
     dst->var_D3 = src->var_D3;
-    dst->mini_golf_current_animation = src->mini_golf_current_animation;
+    dst->mini_golf_current_animation = MiniGolfAnimation(src->mini_golf_current_animation);
     dst->mini_golf_flags = src->mini_golf_flags;
     dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->ride_subtype);
     dst->colours_extended = src->colours_extended;

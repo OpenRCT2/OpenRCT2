@@ -79,7 +79,7 @@ namespace OpenRCT2::Drawing
         virtual ~IDrawingEngineFactory()
         {
         }
-        virtual std::unique_ptr<IDrawingEngine> Create(
+        [[nodiscard]] virtual std::unique_ptr<IDrawingEngine> Create(
             DrawingEngine type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
     };
 

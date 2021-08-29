@@ -145,7 +145,7 @@ static paint_struct* CreateNormalPaintStruct(
         return nullptr;
     }
 
-    const uint8_t swappedRotation = (session->CurrentRotation * 3) % 4; // swaps 1 and 3
+    const auto swappedRotation = DirectionFlipXAxis(session->CurrentRotation);
     auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z };
     swappedRotCoord += session->SpritePosition;
 
@@ -231,10 +231,7 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
 void PaintSessionGenerate(paint_session* session)
 {
     session->CurrentRotation = get_current_rotation();
-
-    // Extracted from viewport_coord_to_map_coord
-    constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
-    switch (inverseRotationMapping[session->CurrentRotation])
+    switch (DirectionFlipXAxis(session->CurrentRotation))
     {
         case 0:
             PaintSessionGenerateRotate<0>(session);
@@ -727,14 +724,6 @@ paint_struct* PaintAddImageAsParent(
     return PaintAddImageAsParent(session, image_id, offset, boundBoxSize, offset);
 }
 
-paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset)
-{
-    return PaintAddImageAsParent(
-        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z });
-}
-
 /**
  *  rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C
  *
@@ -769,16 +758,6 @@ paint_struct* PaintAddImageAsParent(
     return ps;
 }
 
-paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
-    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
-{
-    return PaintAddImageAsParent(
-        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
-        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
-}
-
 /**
  *
  *  rct2: 0x00686EF0, 0x00687056, 0x006871C8, 0x0068733C, 0x0098198C
@@ -801,9 +780,6 @@ paint_struct* PaintAddImageAsParent(
     int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
     int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
-    assert(bound_box_length_x > 0);
-    assert(bound_box_length_y > 0);
-
     session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
 
@@ -863,8 +839,6 @@ paint_struct* PaintAddImageAsChild(
     int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
     int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
-    /*assert(bound_box_length_x > 0);
-    assert(bound_box_length_y > 0);*/
     return PaintAddImageAsChild(
         session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
         { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });

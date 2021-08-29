@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _WINDOW_H_
-#define _WINDOW_H_
+#pragma once
 
 #include "../common.h"
 #include "../localisation/Formatter.h"
@@ -42,7 +41,6 @@ enum class RideConstructionState : uint8_t;
 #define TEXT_INPUT_SIZE 1024
 #define TOP_TOOLBAR_HEIGHT 27
 
-extern uint16_t TextInputDescriptionArgs[4];
 extern char gTextBoxInput[TEXT_INPUT_SIZE];
 extern int32_t gMaxTextBoxInputLength;
 extern int32_t gTextBoxFrameNo;
@@ -881,5 +879,3 @@ extern bool _deferClose;
 
 rct_window* window_get_listening();
 rct_windowclass window_get_classification(rct_window* window);
-
-#endif

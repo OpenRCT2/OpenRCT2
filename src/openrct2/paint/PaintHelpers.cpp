@@ -37,14 +37,45 @@ paint_struct* PaintAddImageAsParentRotated(
     if (direction & 1)
     {
         return PaintAddImageAsParent(
-            session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
-            bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
+            session, image_id, { y_offset, x_offset, z_offset }, { bound_box_length_y, bound_box_length_x, bound_box_length_z },
+            { bound_box_offset_y, bound_box_offset_x, bound_box_offset_z });
     }
     else
     {
         return PaintAddImageAsParent(
-            session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
-            bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+            session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
+            { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
+    }
+}
+
+paint_struct* PaintAddImageAsParentRotated(
+    paint_session* session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
+{
+    if (direction & 1)
+    {
+        return PaintAddImageAsParent(
+            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
+            { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
+    }
+    else
+    {
+        return PaintAddImageAsParent(session, image_id, offset, boundBoxSize, boundBoxOffset);
+    }
+}
+
+paint_struct* PaintAddImageAsParentRotated(
+    paint_session* session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize)
+{
+    if (direction & 1)
+    {
+        return PaintAddImageAsParent(
+            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z });
+    }
+    else
+    {
+        return PaintAddImageAsParent(session, image_id, offset, boundBoxSize);
     }
 }
 
@@ -64,6 +95,22 @@ paint_struct* PaintAddImageAsChildRotated(
         return PaintAddImageAsChild(
             session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
             bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+    }
+}
+
+paint_struct* PaintAddImageAsChildRotated(
+    paint_session* session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
+{
+    if (direction & 1)
+    {
+        return PaintAddImageAsChild(
+            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
+            { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
+    }
+    else
+    {
+        return PaintAddImageAsChild(session, image_id, offset, boundBoxSize, boundBoxOffset);
     }
 }
 

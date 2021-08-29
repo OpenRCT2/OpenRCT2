@@ -735,7 +735,7 @@ static const struct
 
 // clang-format on
 
-template<> bool SpriteBase::Is<Vehicle>() const
+template<> bool EntityBase::Is<Vehicle>() const
 {
     return Type == EntityType::Vehicle;
 }
@@ -1522,17 +1522,24 @@ bool Vehicle::OpenRestraints()
         }
         if (vehicleEntry->animation == VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
         {
-            if (vehicle->var_C8 + 0x3333 < 0xFFFF)
+            if (vehicle->animationState + 0x3333 < 0xFFFF)
             {
-                vehicle->var_C8 = vehicle->var_C8 + 0x3333 - 0xFFFF;
+                vehicle->animationState = vehicle->animationState + 0x3333 - 0xFFFF;
                 vehicle->animation_frame++;
                 vehicle->animation_frame &= 7;
                 vehicle->Invalidate();
             }
             else
             {
-                vehicle->var_C8 += 0x3333;
+                vehicle->animationState += 0x3333;
             }
+            restraintsOpen = false;
+            continue;
+        }
+        if (vehicleEntry->animation == VEHICLE_ENTRY_ANIMATION_ANIMAL_FLYING
+            && (vehicle->animation_frame != 0 || vehicle->animationState > 0))
+        {
+            vehicle->UpdateAnimationAnimalFlying();
             restraintsOpen = false;
             continue;
         }
@@ -3639,7 +3646,7 @@ void Vehicle::UpdateCollisionSetup()
         }
 
         train->IsCrashedVehicle = true;
-        train->var_C8 = scenario_rand();
+        train->animationState = scenario_rand();
         train->var_CA = scenario_rand();
 
         train->animation_frame = train->var_CA & 0x7;
@@ -5408,7 +5415,7 @@ void Vehicle::CrashOnLand()
 
     IsCrashedVehicle = true;
     animation_frame = 0;
-    var_C8 = 0;
+    animationState = 0;
     sprite_width = 13;
     sprite_height_negative = 45;
     sprite_height_positive = 5;
@@ -5475,7 +5482,7 @@ void Vehicle::CrashOnWater()
 
     IsCrashedVehicle = true;
     animation_frame = 0;
-    var_C8 = 0;
+    animationState = 0;
     sprite_width = 13;
     sprite_height_negative = 45;
     sprite_height_positive = 5;
@@ -5506,14 +5513,14 @@ void Vehicle::UpdateCrash()
                     ExplosionCloud::Create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
                 }
             }
-            if (curVehicle->var_C8 + 7281 > 0xFFFF)
+            if (curVehicle->animationState + 7281 > 0xFFFF)
             {
                 curVehicle->animation_frame++;
                 if (curVehicle->animation_frame >= 8)
                     curVehicle->animation_frame = 0;
                 curVehicle->Invalidate();
             }
-            curVehicle->var_C8 += 7281;
+            curVehicle->animationState += 7281;
             continue;
         }
 
@@ -7269,17 +7276,50 @@ void Vehicle::UpdateSpinningCar()
     Invalidate();
 }
 
+void Vehicle::UpdateAnimationAnimalFlying()
+{
+    if (animationState > 0)
+    {
+        animationState--;
+        return;
+    }
+    else
+    {
+        if (animation_frame == 0)
+        {
+            auto trackType = GetTrackType();
+            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
+            if (trackElement != nullptr && trackElement->AsTrack()->HasChain())
+            {
+                // start flapping, bird
+                animation_frame = 1;
+                animationState = 5;
+                Invalidate();
+            }
+        }
+        else
+        {
+            // continue flapping until reaching frame 0
+            animation_frame = (animation_frame + 1) % 4;
+            Invalidate();
+        }
+        // number of frames to skip before updating again
+        constexpr std::array<uint8_t, 4> frameWaitTimes = { 5, 3, 5, 3 };
+        animationState = frameWaitTimes[animation_frame];
+    }
+}
+
 /**
  *
  *  rct2: 0x006D63D4
  */
 void Vehicle::UpdateAdditionalAnimation()
 {
-    uint8_t al{};
-    uint8_t ah{};
+    uint8_t targetFrame{};
+    uint8_t curFrame{};
     uint32_t eax{};
 
-    uint32_t* curVar_C8 = reinterpret_cast<uint32_t*>(&var_C8);
+    uint32_t* curAnimationState = reinterpret_cast<uint32_t*>(&animationState);
     auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
@@ -7288,16 +7328,15 @@ void Vehicle::UpdateAdditionalAnimation()
     switch (vehicleEntry->animation)
     {
         case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
-            *curVar_C8 += _vehicleVelocityF64E08;
-            al = (*curVar_C8 >> 20) & 3;
-            if (animation_frame != al)
+            *curAnimationState += _vehicleVelocityF64E08;
+            targetFrame = (*curAnimationState >> 20) & 3;
+            if (animation_frame != targetFrame)
             {
-                ah = al;
-                al = animation_frame;
-                animation_frame = ah;
-                al &= 0x02;
-                ah &= 0x02;
-                if (al != ah)
+                curFrame = animation_frame;
+                animation_frame = targetFrame;
+                targetFrame &= 0x02;
+                curFrame &= 0x02;
+                if (targetFrame != curFrame)
                 {
                     auto curRide = GetRide();
                     if (curRide != nullptr)
@@ -7328,74 +7367,74 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
-            *curVar_C8 += _vehicleVelocityF64E08;
-            al = (*curVar_C8 >> 18) & 2;
-            if (animation_frame != al)
+            *curAnimationState += _vehicleVelocityF64E08;
+            targetFrame = (*curAnimationState >> 18) & 2;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = al;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
-            *curVar_C8 += _vehicleVelocityF64E08;
-            eax = ((*curVar_C8 >> 13) & 0xFF) * 6;
-            ah = (eax >> 8) & 0xFF;
-            if (animation_frame != ah)
+            *curAnimationState += _vehicleVelocityF64E08;
+            eax = ((*curAnimationState >> 13) & 0xFF) * 6;
+            targetFrame = (eax >> 8) & 0xFF;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = ah;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
-            *curVar_C8 += _vehicleVelocityF64E08;
-            eax = ((*curVar_C8 >> 13) & 0xFF) * 7;
-            ah = (eax >> 8) & 0xFF;
-            if (animation_frame != ah)
+            *curAnimationState += _vehicleVelocityF64E08;
+            eax = ((*curAnimationState >> 13) & 0xFF) * 7;
+            targetFrame = (eax >> 8) & 0xFF;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = ah;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
-            *curVar_C8 += _vehicleVelocityF64E08;
-            al = (*curVar_C8 >> 19) & 1;
-            if (animation_frame != al)
+            *curAnimationState += _vehicleVelocityF64E08;
+            targetFrame = (*curAnimationState >> 19) & 1;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = al;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER: // loc_6D65C3
-            if (var_C8 <= 0xCCCC)
+            if (animationState <= 0xCCCC)
             {
-                var_C8 += 0x3333;
+                animationState += 0x3333;
             }
             else
             {
-                var_C8 += 0x3333;
+                animationState += 0x3333;
                 animation_frame += 1;
                 animation_frame &= 7;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
-            *curVar_C8 += _vehicleVelocityF64E08;
-            al = (*curVar_C8 >> 18) & 3;
-            if (animation_frame != al)
+            *curAnimationState += _vehicleVelocityF64E08;
+            targetFrame = (*curAnimationState >> 18) & 3;
+            if (animation_frame != targetFrame)
             {
-                animation_frame = al;
+                animation_frame = targetFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
             if (num_peeps != 0)
             {
-                *curVar_C8 += _vehicleVelocityF64E08;
-                eax = ((*curVar_C8 >> 13) & 0xFF) << 2;
-                ah = (eax >> 8) & 0xFF;
-                if (animation_frame != ah)
+                *curAnimationState += _vehicleVelocityF64E08;
+                eax = ((*curAnimationState >> 13) & 0xFF) << 2;
+                targetFrame = (eax >> 8) & 0xFF;
+                if (animation_frame != targetFrame)
                 {
-                    animation_frame = ah;
+                    animation_frame = targetFrame;
                     Invalidate();
                 }
             }
@@ -7403,13 +7442,13 @@ void Vehicle::UpdateAdditionalAnimation()
         case VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER: // loc_6D65E1
             if (seat_rotation != target_seat_rotation)
             {
-                if (var_C8 <= 0xCCCC)
+                if (animationState <= 0xCCCC)
                 {
-                    var_C8 += 0x3333;
+                    animationState += 0x3333;
                 }
                 else
                 {
-                    var_C8 += 0x3333;
+                    animationState += 0x3333;
 
                     if (seat_rotation >= target_seat_rotation)
                         seat_rotation--;
@@ -7421,6 +7460,12 @@ void Vehicle::UpdateAdditionalAnimation()
                     Invalidate();
                 }
             }
+            break;
+        case VEHICLE_ENTRY_ANIMATION_ANIMAL_FLYING:
+            UpdateAnimationAnimalFlying();
+            // makes animation play faster with vehicle speed
+            targetFrame = abs(_vehicleVelocityF64E08) >> 24;
+            animationState = std::max(animationState - targetFrame, 0);
             break;
     }
 }
@@ -8766,18 +8811,18 @@ loc_6DC462:
     goto loc_6DC985;
 
 loc_6DC476:
-    if (mini_golf_flags & (1 << 2))
+    if (mini_golf_flags & MiniGolfFlag::Flag2)
     {
         uint8_t nextFrame = animation_frame + 1;
-        if (nextFrame < mini_golf_peep_animation_lengths[mini_golf_current_animation])
+        if (nextFrame < mini_golf_peep_animation_lengths[EnumValue(mini_golf_current_animation)])
         {
             animation_frame = nextFrame;
             goto loc_6DC985;
         }
-        mini_golf_flags &= ~(1 << 2);
+        mini_golf_flags &= ~MiniGolfFlag::Flag2;
     }
 
-    if (mini_golf_flags & (1 << 0))
+    if (mini_golf_flags & MiniGolfFlag::Flag0)
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
         Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
@@ -8785,7 +8830,7 @@ loc_6DC476:
         {
             return;
         }
-        if (!(vEDI->mini_golf_flags & (1 << 0)) || (vEDI->mini_golf_flags & (1 << 2)))
+        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag0) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
             goto loc_6DC985;
         }
@@ -8793,11 +8838,11 @@ loc_6DC476:
         {
             goto loc_6DC985;
         }
-        vEDI->mini_golf_flags &= ~(1 << 0);
-        mini_golf_flags &= ~(1 << 0);
+        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag0;
+        mini_golf_flags &= ~MiniGolfFlag::Flag0;
     }
 
-    if (mini_golf_flags & (1 << 1))
+    if (mini_golf_flags & MiniGolfFlag::Flag1)
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
         Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
@@ -8805,7 +8850,7 @@ loc_6DC476:
         {
             return;
         }
-        if (!(vEDI->mini_golf_flags & (1 << 1)) || (vEDI->mini_golf_flags & (1 << 2)))
+        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag1) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
             goto loc_6DC985;
         }
@@ -8813,11 +8858,11 @@ loc_6DC476:
         {
             goto loc_6DC985;
         }
-        vEDI->mini_golf_flags &= ~(1 << 1);
-        mini_golf_flags &= ~(1 << 1);
+        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag1;
+        mini_golf_flags &= ~MiniGolfFlag::Flag1;
     }
 
-    if (mini_golf_flags & (1 << 3))
+    if (mini_golf_flags & MiniGolfFlag::Flag3)
     {
         Vehicle* vEDI = this;
 
@@ -8830,15 +8875,15 @@ loc_6DC476:
             }
             if (vEDI->IsHead())
                 continue;
-            if (!(vEDI->mini_golf_flags & (1 << 4)))
+            if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag4))
                 continue;
             if (vEDI->TrackLocation != TrackLocation)
                 continue;
             goto loc_6DC985;
         }
 
-        mini_golf_flags |= (1 << 4);
-        mini_golf_flags &= ~(1 << 3);
+        mini_golf_flags |= MiniGolfFlag::Flag4;
+        mini_golf_flags &= ~MiniGolfFlag::Flag3;
     }
 
     // There are two bytes before the move info list
@@ -8922,12 +8967,12 @@ loc_6DC743:
         {
             break;
         }
-        switch (moveInfo->y)
+        switch (MiniGolfState(moveInfo->y))
         {
-            case 0: // loc_6DC7B4
+            case MiniGolfState::Unk0: // loc_6DC7B4
                 if (!IsHead())
                 {
-                    mini_golf_flags |= (1 << 3);
+                    mini_golf_flags |= MiniGolfFlag::Flag3;
                 }
                 else
                 {
@@ -8945,53 +8990,56 @@ loc_6DC743:
                 }
                 track_progress++;
                 break;
-            case 1: // loc_6DC7ED
+            case MiniGolfState::Unk1: // loc_6DC7ED
+                log_error("Unused move info...");
+                assert(false);
                 var_D3 = static_cast<uint8_t>(moveInfo->z);
                 track_progress++;
                 break;
-            case 2: // loc_6DC800
-                mini_golf_flags |= (1 << 0);
+            case MiniGolfState::Unk2: // loc_6DC800
+                mini_golf_flags |= MiniGolfFlag::Flag0;
                 track_progress++;
                 break;
-            case 3: // loc_6DC810
-                mini_golf_flags |= (1 << 1);
+            case MiniGolfState::Unk3: // loc_6DC810
+                mini_golf_flags |= MiniGolfFlag::Flag1;
                 track_progress++;
                 break;
-            case 4: // loc_6DC820
-                trackPos.z = moveInfo->z;
+            case MiniGolfState::Unk4: // loc_6DC820
+            {
+                auto animation = MiniGolfAnimation(moveInfo->z);
                 // When the ride is closed occasionally the peep is removed
                 // but the vehicle is still on the track. This will prevent
                 // it from crashing in that situation.
-                if (peep[0] != SPRITE_INDEX_NULL)
+                auto* curPeep = TryGetEntity<Guest>(peep[0]);
+                if (curPeep != nullptr)
                 {
-                    if (trackPos.z == 2)
+                    if (animation == MiniGolfAnimation::SwingLeft)
                     {
-                        auto* curPeep = GetEntity<Guest>(peep[0]);
-                        if (curPeep != nullptr && curPeep->Id & 7)
+                        if (curPeep->Id & 7)
                         {
-                            trackPos.z = 7;
+                            animation = MiniGolfAnimation::Swing;
                         }
                     }
-                    if (trackPos.z == 6)
+                    if (animation == MiniGolfAnimation::PuttLeft)
                     {
-                        auto* curPeep = GetEntity<Guest>(peep[0]);
-                        if (curPeep != nullptr && curPeep->Id & 7)
+                        if (curPeep->Id & 7)
                         {
-                            trackPos.z = 8;
+                            animation = MiniGolfAnimation::Putt;
                         }
                     }
                 }
-                mini_golf_current_animation = static_cast<uint8_t>(trackPos.z);
+                mini_golf_current_animation = animation;
                 animation_frame = 0;
                 track_progress++;
                 break;
-            case 5: // loc_6DC87A
-                mini_golf_flags |= (1 << 2);
+            }
+            case MiniGolfState::Unk5: // loc_6DC87A
+                mini_golf_flags |= MiniGolfFlag::Flag2;
                 track_progress++;
                 break;
-            case 6: // loc_6DC88A
-                mini_golf_flags &= ~(1 << 4);
-                mini_golf_flags |= (1 << 5);
+            case MiniGolfState::Unk6: // loc_6DC88A
+                mini_golf_flags &= ~MiniGolfFlag::Flag4;
+                mini_golf_flags |= MiniGolfFlag::Flag5;
                 track_progress++;
                 break;
             default:

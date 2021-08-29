@@ -1,10 +1,12 @@
 0.3.4.1+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#3868] Initial support for using TTF in OpenGL mode (still contains bugs).
 - Feature: [#15084] [Plugin] Add "vehicle.crash" hook.
 - Feature: [#15143] Added a shortcut key for Giant Screenshot.
 - Feature: [#15164] Highlight elements selected by the Tile Inspector, tracks are currently not supported.
 - Feature: [#15165] [Plugin] Add the ability to create entities using "map.createEntity".
 - Feature: [#15194] [Plugin] Add guest properties, ride downtime and park casualty penalty.
+- Feature: [#15294] New vehicle animation type: flying animal
 - Fix: [#13465] Creating a scenario based on a won save game results in a scenario that’s instantly won.
 - Fix: [#14316] Closing the Track Designs Manager window causes broken state.
 - Fix: [#14667] “Extreme Hawaiian Island” has unpurchaseable land tiles (original bug).
@@ -14,6 +16,7 @@
 - Fix: [#15170] Plugin: incorrect label text alignment.
 - Fix: [#15184] Crash when hovering over water types in Object Selection.
 - Fix: [#15193] Crash when rides/stalls are demolished.
+- Fix: [#15255] Tile Inspector shows banner information on walls that do not contain one.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
 - Change: [#8601] Revert ToonTower base block fix to re-enable support blocking.
 - Change: [#15174] [Plugin] Deprecate the type "peep" and add support to target a specific scripting api version.

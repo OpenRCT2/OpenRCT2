@@ -43,7 +43,8 @@ static void paint_circus_tent(
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
     }
 
-    PaintAddImageAsParent(session, imageId | imageColourFlags, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3);
+    PaintAddImageAsParent(
+        session, imageId | imageColourFlags, { al, cl, height + 3 }, { 24, 24, 47 }, { al + 16, cl + 16, height + 3 });
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType = ViewportInteractionItem::Ride;
@@ -59,7 +60,7 @@ static void paint_circus(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
     StationObject* stationObject = nullptr;
     if (ride != nullptr)

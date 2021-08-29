@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _PEEP_H_
-#define _PEEP_H_
+#pragma once
 
 #include "../common.h"
 #include "../management/Finance.h"
@@ -17,8 +16,8 @@
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
 #include "../util/Util.h"
+#include "../world/EntityBase.h"
 #include "../world/Location.hpp"
-#include "../world/SpriteBase.h"
 
 #include <algorithm>
 #include <bitset>
@@ -553,7 +552,7 @@ public:
     }
 };
 
-struct Peep : SpriteBase
+struct Peep : EntityBase
 {
     char* Name;
     CoordsXYZ NextLoc;
@@ -630,18 +629,18 @@ public: // Peep
     void UpdateCurrentActionSpriteType();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
-    uint8_t GetNextDirection() const;
+    [[nodiscard]] uint8_t GetNextDirection() const;
     bool GetNextIsSloped() const;
     bool GetNextIsSurface() const;
     void SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
     bool CanBePickedUp() const;
     void Pickup();
     void PickupAbort(int32_t old_x);
-    std::unique_ptr<GameActions::Result> Place(const TileCoordsXYZ& location, bool apply);
+    [[nodiscard]] std::unique_ptr<GameActions::Result> Place(const TileCoordsXYZ& location, bool apply);
     void RemoveFromRide();
     void FormatActionTo(Formatter&) const;
     void FormatNameTo(Formatter&) const;
-    std::string GetName() const;
+    [[nodiscard]] std::string GetName() const;
     bool SetName(std::string_view value);
     bool IsActionWalking() const;
     bool IsActionIdle() const;
@@ -653,16 +652,16 @@ public: // Peep
 
     void SetDestination(const CoordsXY& coords);
     void SetDestination(const CoordsXY& coords, int32_t tolerance);
-    CoordsXY GetDestination() const;
+    [[nodiscard]] CoordsXY GetDestination() const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep
-    bool CheckForPath();
+    [[nodiscard]] bool CheckForPath();
     void PerformNextAction(uint8_t& pathing_result);
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
-    int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
+    [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextActionSpriteType();
-    PeepActionSpriteType GetActionSpriteType();
+    [[nodiscard]] PeepActionSpriteType GetActionSpriteType();
 
 private:
     void UpdateFalling();
@@ -1060,5 +1059,3 @@ inline const rct_sprite_bounds& GetSpriteBounds(
 {
     return g_peep_animation_entries[EnumValue(spriteType)].sprite_bounds[EnumValue(actionSpriteType)];
 };
-
-#endif

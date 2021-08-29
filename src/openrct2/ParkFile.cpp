@@ -1271,7 +1271,7 @@ namespace OpenRCT2
 
         template<typename T> static void ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, T& entity);
 
-        static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, SpriteBase& entity)
+        static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, EntityBase& entity)
         {
             cs.ReadWrite(entity.sprite_index);
             cs.ReadWrite(entity.sprite_height_negative);
@@ -1744,7 +1744,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.powered_acceleration);
         cs.ReadWrite(entity.dodgems_collision_direction);
         cs.ReadWrite(entity.animation_frame);
-        cs.ReadWrite(entity.var_C8);
+        cs.ReadWrite(entity.animationState);
         cs.ReadWrite(entity.var_CA);
         cs.ReadWrite(entity.scream_sound_id);
         cs.ReadWrite(entity.TrackSubposition);

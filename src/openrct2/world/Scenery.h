@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _SCENERY_H_
-#define _SCENERY_H_
+#pragma once
 
 #include "../common.h"
 #include "../world/Location.hpp"
@@ -300,5 +299,3 @@ std::vector<ScenerySelection>& GetRestrictedScenery();
 
 ObjectType GetObjectTypeFromSceneryType(uint8_t type);
 uint8_t GetSceneryTypeFromObjectType(ObjectType type);
-
-#endif

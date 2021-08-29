@@ -185,7 +185,7 @@ bool SpriteFile::Save(const utf8* path)
 static bool SpriteImageExport(const rct_g1_element& spriteElement, const char* outPath)
 {
     const auto pixelBufferSize = spriteElement.width * spriteElement.height;
-    std::unique_ptr<uint8_t[]> pixelBuffer(new uint8_t[pixelBufferSize]);
+    auto pixelBuffer = std::make_unique<uint8_t[]>(pixelBufferSize);
     auto pixels = pixelBuffer.get();
     std::fill_n(pixels, pixelBufferSize, 0x00);
 
@@ -199,8 +199,8 @@ static bool SpriteImageExport(const rct_g1_element& spriteElement, const char* o
     dpi.zoom_level = 0;
 
     DrawSpriteArgs args(
-        &dpi, ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
-    gfx_sprite_to_buffer(args);
+        ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
+    gfx_sprite_to_buffer(dpi, args);
 
     auto const pixels8 = dpi.bits;
     auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;

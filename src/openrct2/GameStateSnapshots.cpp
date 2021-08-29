@@ -222,13 +222,13 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     }
 
     void CompareSpriteDataCommon(
-        const SpriteBase& spriteBase, const SpriteBase& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const EntityBase& spriteBase, const EntityBase& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(SpriteBase, Type);
-        COMPARE_FIELD(SpriteBase, sprite_index);
-        COMPARE_FIELD(SpriteBase, x);
-        COMPARE_FIELD(SpriteBase, y);
-        COMPARE_FIELD(SpriteBase, z);
+        COMPARE_FIELD(EntityBase, Type);
+        COMPARE_FIELD(EntityBase, sprite_index);
+        COMPARE_FIELD(EntityBase, x);
+        COMPARE_FIELD(EntityBase, y);
+        COMPARE_FIELD(EntityBase, z);
         /* Only relevant for rendering, does not affect game state.
         COMPARE_FIELD(SpriteBase, sprite_width);
         COMPARE_FIELD(SpriteBase, sprite_height_negative);
@@ -238,7 +238,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(SpriteBase, sprite_right);
         COMPARE_FIELD(SpriteBase, sprite_bottom);
         */
-        COMPARE_FIELD(SpriteBase, sprite_direction);
+        COMPARE_FIELD(EntityBase, sprite_direction);
     }
 
     void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange_t& changeData) const
@@ -426,7 +426,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         {
             COMPARE_FIELD(Vehicle, pad_C6[i]);
         }
-        COMPARE_FIELD(Vehicle, var_C8);
+        COMPARE_FIELD(Vehicle, animationState);
         COMPARE_FIELD(Vehicle, var_CA);
         COMPARE_FIELD(Vehicle, scream_sound_id);
         COMPARE_FIELD(Vehicle, TrackSubposition);

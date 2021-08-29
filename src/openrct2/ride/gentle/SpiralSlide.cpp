@@ -60,7 +60,7 @@ static void spiral_slide_paint_tile_right(
     if (direction == 3)
         image_id = SPIRAL_SLIDE_RIGHT_R3 | session->TrackColours[SCHEME_TRACK];
 
-    PaintAddImageAsParent(session, image_id, 16, 16, 16, 16, 108, height, 16, 0, height + 3);
+    PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 16, 16, 108 }, { 16, 0, height + 3 });
 }
 
 static void spiral_slide_paint_tile_left(
@@ -78,7 +78,7 @@ static void spiral_slide_paint_tile_left(
     if (direction == 3)
         image_id = SPIRAL_SLIDE_LEFT_R3 | session->TrackColours[SCHEME_TRACK];
 
-    PaintAddImageAsParent(session, image_id, 16, 16, 16, 16, 108, height, 0, 16, height + 3);
+    PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 16, 16, 108 }, { 0, 16, height + 3 });
 }
 
 static void spiral_slide_paint_tile_front(
@@ -93,33 +93,33 @@ static void spiral_slide_paint_tile_front(
     if (direction == 1)
     {
         image_id = SPIRAL_SLIDE_INSIDE_R1 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, image_id, 16, 16, 2, 16, 108, height, -12, 0, height + 3);
+        PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 2, 16, 108 }, { -12, 0, height + 3 });
     }
     else if (direction == 2)
     {
         image_id = SPIRAL_SLIDE_INSIDE_R2 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, image_id, 16, 16, 16, 2, 108, height, 0, -12, height + 3);
+        PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 16, 2, 108 }, { 0, -12, height + 3 });
     }
 
     if (direction == 0)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R0 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, image_id, 16, 16, 16, 8, 108, height, 0, 8, height + 3);
+        PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 16, 8, 108 }, { 0, 8, height + 3 });
     }
     else if (direction == 1)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R1 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, image_id, 16, 16, 2, 16, 108, height, 14, 0, height + 3);
+        PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 2, 16, 108 }, { 14, 0, height + 3 });
     }
     else if (direction == 2)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R2 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, image_id, 16, 16, 16, 2, 108, height, 0, 14, height + 3);
+        PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 16, 2, 108 }, { 0, 14, height + 3 });
     }
     else if (direction == 3)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R3 | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3);
+        PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 8, 16, 108 }, { 8, 0, height + 3 });
     }
 
     rct_drawpixelinfo* dpi = &session->DPI;
@@ -198,11 +198,11 @@ static void paint_spiral_slide(
 
     int32_t edges = edges_2x2[trackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
     // Base
     uint32_t imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];
-    PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
 
     if (ride != nullptr)
     {

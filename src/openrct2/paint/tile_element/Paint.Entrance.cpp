@@ -131,7 +131,7 @@ static void ride_entrance_exit_paint(
     int16_t lengthY = (direction & 1) ? 28 : 2;
     int16_t lengthX = (direction & 1) ? 2 : 28;
 
-    PaintAddImageAsParent(session, image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height);
+    PaintAddImageAsParent(session, image_id, { 0, 0, height }, { lengthX, lengthY, ah }, { 2, 2, height });
 
     if (transparant_image_id)
     {
@@ -150,7 +150,8 @@ static void ride_entrance_exit_paint(
     image_id += 4;
 
     PaintAddImageAsParent(
-        session, image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height);
+        session, image_id, { 0, 0, height }, { lengthX, lengthY, ah },
+        { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height });
 
     if (transparant_image_id)
     {
@@ -207,7 +208,7 @@ static void ride_entrance_exit_paint(
     {
         image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
@@ -259,7 +260,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
             {
                 auto footpathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
                 image_id = (footpathEntry->image + 5 * (1 + (direction & 1))) | ghost_id;
-                PaintAddImageAsParent(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height);
+                PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 0x1C, 0 }, { 0, 2, height });
             }
             else
             {
@@ -267,7 +268,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 if (footpathSurfaceObj != nullptr)
                 {
                     image_id = (footpathSurfaceObj->BaseImageId + 5 * (1 + (direction & 1))) | ghost_id;
-                    PaintAddImageAsParent(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height);
+                    PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 0x1C, 0 }, { 0, 2, height });
                 }
             }
 
@@ -277,7 +278,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 return;
             }
             image_id = (entrance->image_id + direction * 3) | ghost_id;
-            PaintAddImageAsParent(session, image_id, 0, 0, 0x1C, 0x1C, 0x2F, height, 2, 2, height + 32);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 0x1C, 0x1C, 0x2F }, { 2, 2, height + 32 });
 
             if ((direction + 1) & (1 << 1))
                 break;
@@ -331,7 +332,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 return;
             }
             image_id = (entrance->image_id + part_index + direction * 3) | ghost_id;
-            PaintAddImageAsParent(session, image_id, 0, 0, 0x1A, di, 0x4F, height, 3, 3, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 0x1A, di, 0x4F }, { 3, 3, height });
             break;
     }
 
@@ -340,7 +341,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     {
         image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 80, 0x20);
@@ -362,7 +363,7 @@ void PaintEntrance(paint_session* session, uint8_t direction, int32_t height, co
             uint32_t image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
             image_id -= gMapBaseZ;
 
-            PaintAddImageAsParent(session, image_id, 16, 16, 1, 1, 0, height, 31, 31, z + 64);
+            PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 1, 1, 0 }, { 31, 31, z + 64 });
         }
     }
 

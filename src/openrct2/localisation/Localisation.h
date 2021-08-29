@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef LOCALISATION_H
-#define LOCALISATION_H
+#pragma once
 
 #include "../management/Marketing.h"
 #include "Currency.h"
@@ -68,5 +67,3 @@ extern const rct_string_id PeepThoughts[174];
 extern const rct_string_id DateDayNames[31];
 extern const rct_string_id DateGameMonthNames[MONTH_COUNT];
 extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
-
-#endif

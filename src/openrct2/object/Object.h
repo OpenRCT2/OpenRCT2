@@ -225,9 +225,9 @@ public:
     {
     }
 
-    bool IsAvailable() const;
-    uint64_t GetSize() const;
-    std::unique_ptr<OpenRCT2::IStream> GetStream() const;
+    [[nodiscard]] bool IsAvailable() const;
+    [[nodiscard]] uint64_t GetSize() const;
+    [[nodiscard]] std::unique_ptr<OpenRCT2::IStream> GetStream() const;
 };
 
 struct IReadObjectContext

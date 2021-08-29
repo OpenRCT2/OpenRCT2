@@ -415,16 +415,18 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
 
         const utf8* name = network_get_server_name();
         {
-            screenCoords.y += DrawTextWrapped(
-                dpi, screenCoords, width, STR_STRING, static_cast<void*>(&name), { w->colours[1] });
+            auto ft = Formatter();
+            ft.Add<const char*>(name);
+            screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
         const utf8* description = network_get_server_description();
         if (!str_is_null_or_empty(description))
         {
-            screenCoords.y += DrawTextWrapped(
-                dpi, screenCoords, width, STR_STRING, static_cast<void*>(&description), { w->colours[1] });
+            auto ft = Formatter();
+            ft.Add<const char*>(description);
+            screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_STRING, ft, { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
@@ -698,7 +700,7 @@ static void window_multiplayer_groups_mouseup(rct_window* w, rct_widgetindex wid
         case WIDX_RENAME_GROUP:;
             int32_t groupIndex = network_get_group_index(_selectedGroup);
             const utf8* groupName = network_get_group_name(groupIndex);
-            window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, groupName, 32);
+            window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, {}, groupName, 32);
             break;
     }
 }

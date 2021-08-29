@@ -101,8 +101,8 @@ static void paint_swinging_inverter_ship_structure(
     if (direction & 2)
     {
         PaintAddImageAsParent(
-            session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-            boundBox.offset_y, height);
+            session, vehicleImageId, { xOffset, yOffset, height }, { boundBox.length_x, boundBox.length_y, 127 },
+            { boundBox.offset_x, boundBox.offset_y, height });
         PaintAddImageAsChild(
             session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);
@@ -110,8 +110,8 @@ static void paint_swinging_inverter_ship_structure(
     else
     {
         PaintAddImageAsParent(
-            session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-            boundBox.offset_y, height);
+            session, frameImageId, { xOffset, yOffset, height }, { boundBox.length_x, boundBox.length_y, 127 },
+            { boundBox.offset_x, boundBox.offset_y, height });
         PaintAddImageAsChild(
             session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);
@@ -143,17 +143,17 @@ static void paint_swinging_inverter_ship(
         }
 
         imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
         switch (direction)
         {
             case 0:
                 imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];
-                PaintAddImageAsParent(session, imageId, 0, 24, 32, 8, 1, height + 9);
+                PaintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
                 break;
             case 1:
                 imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_TRACK];
-                PaintAddImageAsParent(session, imageId, 24, 0, 8, 32, 1, height + 9);
+                PaintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
                 break;
             case 2:
                 imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];

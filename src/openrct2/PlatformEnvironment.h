@@ -84,7 +84,7 @@ namespace OpenRCT2
         virtual void SetBasePath(DIRBASE base, const std::string& path) abstract;
     };
 
-    std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths);
-    std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment();
+    [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths);
+    [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment();
 
 } // namespace OpenRCT2

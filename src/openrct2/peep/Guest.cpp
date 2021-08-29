@@ -429,7 +429,7 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags);
 bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
-template<> bool SpriteBase::Is<Guest>() const
+template<> bool EntityBase::Is<Guest>() const
 {
     return Type == EntityType::Guest;
 }
@@ -3899,7 +3899,7 @@ void Guest::UpdateRideFreeVehicleCheck()
 
     if (ride_entry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
     {
-        vehicle->mini_golf_flags &= ~(1 << 5);
+        vehicle->mini_golf_flags &= ~MiniGolfFlag::Flag5;
 
         for (size_t i = 0; i < ride->num_vehicles; ++i)
         {
@@ -3914,7 +3914,7 @@ void Guest::UpdateRideFreeVehicleCheck()
             if (second_vehicle->num_peeps == 0)
                 continue;
 
-            if (second_vehicle->mini_golf_flags & (1 << 5))
+            if (second_vehicle->mini_golf_flags & MiniGolfFlag::Flag5)
                 continue;
 
             return;

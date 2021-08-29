@@ -53,7 +53,7 @@ static void paint_enterprise_structure(
     }
 
     uint32_t imageId = (baseImageId + imageOffset) | imageColourFlags;
-    PaintAddImageAsParent(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
+    PaintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { 0, 0, height });
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
@@ -89,7 +89,7 @@ static void paint_enterprise(
 
     int32_t edges = edges_4x4[trackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
     StationObject* stationObject = ride_get_station_object(ride);
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);

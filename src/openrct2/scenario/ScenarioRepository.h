@@ -74,11 +74,13 @@ struct IScenarioRepository
         int32_t language, const utf8* scenarioFileName, money64 companyValue, const utf8* name) abstract;
 };
 
-std::unique_ptr<IScenarioRepository> CreateScenarioRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
-IScenarioRepository* GetScenarioRepository();
+[[nodiscard]] std::unique_ptr<IScenarioRepository> CreateScenarioRepository(
+    const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+[[nodiscard]] IScenarioRepository* GetScenarioRepository();
 
 void scenario_repository_scan();
-size_t scenario_repository_get_count();
-const scenario_index_entry* scenario_repository_get_by_index(size_t index);
-bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name);
+[[nodiscard]] size_t scenario_repository_get_count();
+[[nodiscard]] const scenario_index_entry* scenario_repository_get_by_index(size_t index);
+[[nodiscard]] bool scenario_repository_try_record_highscore(
+    const utf8* scenarioFileName, money64 companyValue, const utf8* name);
 void scenario_translate(scenario_index_entry* scenarioEntry);

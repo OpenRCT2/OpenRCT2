@@ -284,7 +284,7 @@ template<> struct DataSerializerTraits_t<OpenRCT2::MemoryStream>
         uint32_t length = 0;
         s.decode(stream, length);
 
-        std::unique_ptr<uint8_t[]> buf(new uint8_t[length]);
+        auto buf = std::make_unique<uint8_t[]>(length);
         stream->Read(buf.get(), length);
 
         val.Write(buf.get(), length);
@@ -581,34 +581,6 @@ template<> struct DataSerializerTraits_t<CoordsXYZD>
         char msg[128] = {};
         snprintf(
             msg, sizeof(msg), "CoordsXYZD(x = %d, y = %d, z = %d, direction = %d)", coord.x, coord.y, coord.z, coord.direction);
-        stream->Write(msg, strlen(msg));
-    }
-};
-template<> struct DataSerializerTraits_t<rct12_xyzd8>
-{
-    static void encode(OpenRCT2::IStream* stream, const rct12_xyzd8& coord)
-    {
-        stream->WriteValue(ByteSwapBE(coord.x));
-        stream->WriteValue(ByteSwapBE(coord.y));
-        stream->WriteValue(ByteSwapBE(coord.z));
-        stream->WriteValue(ByteSwapBE(coord.direction));
-    }
-
-    static void decode(OpenRCT2::IStream* stream, rct12_xyzd8& coord)
-    {
-        auto x = ByteSwapBE(stream->ReadValue<uint8_t>());
-        auto y = ByteSwapBE(stream->ReadValue<uint8_t>());
-        auto z = ByteSwapBE(stream->ReadValue<uint8_t>());
-        auto d = ByteSwapBE(stream->ReadValue<uint8_t>());
-        coord = rct12_xyzd8{ x, y, z, d };
-    }
-
-    static void log(OpenRCT2::IStream* stream, const rct12_xyzd8& coord)
-    {
-        char msg[128] = {};
-        snprintf(
-            msg, sizeof(msg), "rct12_xyzd8(x = %d, y = %d, z = %d, direction = %d)", coord.x, coord.y, coord.z,
-            coord.direction);
         stream->Write(msg, strlen(msg));
     }
 };

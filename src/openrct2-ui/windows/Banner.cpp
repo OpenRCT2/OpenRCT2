@@ -201,7 +201,7 @@ public:
             }
             case WIDX_BANNER_TEXT:
                 window_text_input_raw_open(
-                    this, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, banner->GetText().c_str(), 32);
+                    this, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, {}, banner->GetText().c_str(), 32);
                 break;
             case WIDX_BANNER_NO_ENTRY:
             {

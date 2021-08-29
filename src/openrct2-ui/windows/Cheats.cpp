@@ -867,7 +867,7 @@ private:
             case WIDX_MONEY_SPINNER:
                 money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
                 window_text_input_raw_open(
-                    this, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneySpinnerText,
+                    this, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneySpinnerText,
                     MONEY_STRING_MAXLENGTH);
                 break;
             case WIDX_SET_MONEY:

@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _RIDE_H_
-#define _RIDE_H_
+#pragma once
 
 #include "../common.h"
 #include "../localisation/Formatter.h"
@@ -452,7 +451,7 @@ public:
     static void UpdateAll();
     static bool NameExists(std::string_view name, ride_id_t excludeRideId = RIDE_ID_NULL);
 
-    std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
+    [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
 
     uint64_t GetAvailableModes() const;
     const RideTypeDescriptor& GetRideTypeDescriptor() const;
@@ -1260,5 +1259,3 @@ void ride_clear_leftover_entrances(Ride* ride);
 std::vector<ride_id_t> GetTracklessRides();
 
 void ride_remove_vehicles(Ride* ride);
-
-#endif

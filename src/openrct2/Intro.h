@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _INTRO_H_
-#define _INTRO_H_
+#pragma once
 
 #include "common.h"
 
@@ -34,5 +33,3 @@ extern IntroState gIntroState;
 
 void intro_update();
 void intro_draw(rct_drawpixelinfo* dpi);
-
-#endif

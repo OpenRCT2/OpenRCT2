@@ -1719,7 +1719,7 @@ static void window_ride_rename(rct_window* w)
     {
         auto rideName = ride->GetName();
         window_text_input_raw_open(
-            w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, rideName.c_str(), 32);
+            w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, {}, rideName.c_str(), 32);
     }
 }
 
@@ -2931,12 +2931,13 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 64 };
 
     // Description
-    screenCoords.y += DrawTextWrapped(
-        dpi, screenCoords, 300, STR_BLACK_STRING, &rideEntry->naming.Description, { TextAlignment::LEFT });
+    auto ft = Formatter();
+    ft.Add<rct_string_id>(rideEntry->naming.Description);
+    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::LEFT });
     screenCoords.y += 2;
 
     // Capacity
-    auto ft = Formatter();
+    ft = Formatter();
     ft.Add<rct_string_id>(rideEntry->capacity);
     DrawTextBasic(dpi, screenCoords, STR_CAPACITY, ft);
 
@@ -2946,7 +2947,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords.y += LIST_ROW_HEIGHT;
 
         ft = Formatter();
-        ft.Add<int16_t>(rideEntry->intensity_multiplier);
+        ft.Add<int16_t>(rideEntry->excitement_multiplier);
         DrawTextBasic(dpi, screenCoords, STR_EXCITEMENT_FACTOR, ft);
     }
 
@@ -6432,7 +6433,8 @@ static void window_ride_income_mouseup(rct_window* w, rct_widgetindex widgetInde
             {
                 money_to_string(static_cast<money32>(ride->price[0]), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
                 window_text_input_raw_open(
-                    w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneyInputText, MONEY_STRING_MAXLENGTH);
+                    w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
+                    MONEY_STRING_MAXLENGTH);
             }
             break;
         }
@@ -6445,7 +6447,7 @@ static void window_ride_income_mouseup(rct_window* w, rct_widgetindex widgetInde
 
             money_to_string(price32, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
             window_text_input_raw_open(
-                w, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneyInputText, MONEY_STRING_MAXLENGTH);
+                w, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText, MONEY_STRING_MAXLENGTH);
         }
         break;
         case WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK:
@@ -6941,7 +6943,9 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         queueTime = ride->GetMaxQueueTime();
         stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
-        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 308, stringId, &queueTime, { TextAlignment::LEFT });
+        ft = Formatter();
+        ft.Add<int32_t>(queueTime);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 308, stringId, ft, { TextAlignment::LEFT });
         screenCoords.y += 5;
     }
 

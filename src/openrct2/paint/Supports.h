@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _DRAWING_SUPPORTS_H_
-#define _DRAWING_SUPPORTS_H_
+#pragma once
 
 #include "../common.h"
 #include "../world/Footpath.h"
@@ -18,9 +17,9 @@ struct FootpathPaintInfo;
 constexpr const uint8_t NumVanillaWoodenSupportTypes = 49;
 
 bool wooden_a_supports_paint_setup(
-    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags, bool* underground);
+    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags);
 bool wooden_b_supports_paint_setup(
-    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags, bool* underground);
+    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags);
 bool metal_a_supports_paint_setup(
     paint_session* session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags);
 bool metal_b_supports_paint_setup(
@@ -56,5 +55,3 @@ enum
 {
     SUPPORTS_SLOPE_5 = 1 << 5
 };
-
-#endif

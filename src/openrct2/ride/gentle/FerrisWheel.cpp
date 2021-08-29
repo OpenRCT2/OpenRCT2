@@ -32,18 +32,16 @@ static constexpr const uint8_t edges_1x4_nw_se[] = {
 
 struct ferris_wheel_bound_box
 {
-    int16_t length_x;
-    int16_t length_y;
-    int16_t offset_x;
-    int16_t offset_y;
+    CoordsXY length;
+    CoordsXY offset;
 };
 
 /** rct2: 0x008A8CA8 */
-static ferris_wheel_bound_box ferris_wheel_data[] = {
-    { 31, 16, 1, 8 },
-    { 16, 31, 8, 1 },
-    { 31, 16, 1, 8 },
-    { 16, 31, 8, 1 },
+static constexpr ferris_wheel_bound_box ferris_wheel_data[] = {
+    { { 31, 16 }, { 1, 8 } },
+    { { 16, 31 }, { 8, 1 } },
+    { { 31, 16 }, { 1, 8 } },
+    { { 16, 31 }, { 8, 1 } },
 };
 
 /**
@@ -89,17 +87,16 @@ static void paint_ferris_wheel_structure(
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
     }
 
-    ferris_wheel_bound_box boundBox = ferris_wheel_data[direction];
+    const ferris_wheel_bound_box& boundBox = ferris_wheel_data[direction];
 
     imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(
-        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-        boundBox.offset_y, height);
+        session, imageId, { xOffset, yOffset, height }, { boundBox.length, 127 }, { boundBox.offset, height });
 
     imageId = (baseImageId + direction * 8 + imageOffset) | imageColourFlags;
     PaintAddImageAsChild(
-        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-        boundBox.offset_y, height);
+        session, imageId, xOffset, yOffset, boundBox.length.x, boundBox.length.y, 127, height, boundBox.offset.x,
+        boundBox.offset.y, height);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
@@ -115,15 +112,15 @@ static void paint_ferris_wheel_structure(
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
             imageId = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
             PaintAddImageAsChild(
-                session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-                boundBox.offset_y, height);
+                session, imageId, xOffset, yOffset, boundBox.length.x, boundBox.length.y, 127, height, boundBox.offset.x,
+                boundBox.offset.y, height);
         }
     }
 
     imageId = (22150 + (direction & 1) * 2 + 1) | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsChild(
-        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
-        boundBox.offset_y, height);
+        session, imageId, xOffset, yOffset, boundBox.length.x, boundBox.length.y, 127, height, boundBox.offset.x,
+        boundBox.offset.y, height);
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType = ViewportInteractionItem::Ride;
@@ -148,7 +145,7 @@ static void paint_ferris_wheel(
         edges = edges_1x4_ne_sw[relativeTrackSequence];
     }
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
@@ -175,12 +172,12 @@ static void paint_ferris_wheel(
         {
             // Bound box is slightly different from track_paint_util_paint_fences
             imageId = SPR_FENCE_ROPE_SE | colourFlags;
-            PaintAddImageAsParent(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
         }
         if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, rotation))
         {
             imageId = SPR_FENCE_ROPE_SW | colourFlags;
-            PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2);
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
         }
     }
 

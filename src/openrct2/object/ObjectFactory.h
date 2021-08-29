@@ -21,11 +21,12 @@ enum class ObjectType : uint8_t;
 
 namespace ObjectFactory
 {
-    std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path);
-    std::unique_ptr<Object> CreateObjectFromLegacyData(
+    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path);
+    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyData(
         IObjectRepository& objectRepository, const rct_object_entry* entry, const void* data, size_t dataSize);
-    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path);
-    std::unique_ptr<Object> CreateObject(ObjectType type);
+    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path);
+    [[nodiscard]] std::unique_ptr<Object> CreateObject(ObjectType type);
 
-    std::unique_ptr<Object> CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string& path);
+    [[nodiscard]] std::unique_ptr<Object> CreateObjectFromJsonFile(
+        IObjectRepository& objectRepository, const std::string& path);
 } // namespace ObjectFactory

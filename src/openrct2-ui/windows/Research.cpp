@@ -288,7 +288,6 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
 
     auto screenCoords = w->windowPos
         + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
-    rct_string_id stringId;
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
@@ -341,16 +340,20 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
                 }
             }
         }
-        DrawTextWrapped(dpi, screenCoords, 296, label, &strings);
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(strings[0]);
+        ft.Add<rct_string_id>(strings[1]);
+        DrawTextWrapped(dpi, screenCoords, 296, label, ft);
         screenCoords.y += 25;
 
         // Progress
-        stringId = ResearchStageNames[gResearchProgressStage];
-        DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, &stringId);
+        ft = Formatter();
+        ft.Add<rct_string_id>(ResearchStageNames[gResearchProgressStage]);
+        DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
         screenCoords.y += 15;
 
         // Expected
-        auto ft = Formatter();
+        ft = Formatter();
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH && gResearchExpectedDay != 255)
         {
             // TODO: Should probably use game date format setting
@@ -395,7 +398,10 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
             }
         }
 
-        DrawTextWrapped(dpi, screenCoords, 266, lastDevelopmentFormat, &strings);
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(strings[0]);
+        ft.Add<rct_string_id>(strings[1]);
+        DrawTextWrapped(dpi, screenCoords, 266, lastDevelopmentFormat, ft);
     }
 }
 

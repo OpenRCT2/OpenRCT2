@@ -54,7 +54,7 @@ Vehicle* cable_lift_segment_create(
     current->sound2_id = OpenRCT2::Audio::SoundId::Null;
     current->var_C4 = 0;
     current->animation_frame = 0;
-    current->var_C8 = 0;
+    current->animationState = 0;
     current->var_CA = 0;
     current->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
     current->Pitch = 0;

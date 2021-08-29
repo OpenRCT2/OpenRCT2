@@ -1933,6 +1933,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         _currentTrackPieceType, 0,
         { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, _currentTrackPieceDirection });
 
+    const auto rideId = w->number;
     trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
         {
@@ -1940,7 +1941,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         }
         else
         {
-            auto ride = get_ride(w->number);
+            auto ride = get_ride(rideId);
             if (ride != nullptr)
             {
                 _stationConstructed = ride->num_stations != 0;

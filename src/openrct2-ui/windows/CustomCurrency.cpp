@@ -134,7 +134,7 @@ static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widg
 
         case WIDX_SYMBOL_TEXT:
             window_text_input_raw_open(
-                w, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
+                w, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC, {},
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, CURRENCY_SYMBOL_MAX_SIZE);
             break;
     }
@@ -146,7 +146,7 @@ static void custom_currency_window_mouseup(rct_window* w, rct_widgetindex widget
     {
         case WIDX_RATE:
             window_text_input_open(
-                w, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, STR_FORMAT_INTEGER,
+                w, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, {}, STR_FORMAT_INTEGER,
                 static_cast<uint32_t>(CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate), CURRENCY_RATE_MAX_NUM_DIGITS);
             break;
     }

@@ -359,7 +359,7 @@ static void window_themes_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
             window_text_input_open(
-                w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING,
+                w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, {}, STR_STRING,
                 reinterpret_cast<uintptr_t>(activeThemeName), 64);
             break;
         case WIDX_THEMES_DELETE_BUTTON:
@@ -382,7 +382,7 @@ static void window_themes_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
                 activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
                 window_text_input_open(
-                    w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING,
+                    w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_THEMES_PROMPT_ENTER_THEME_NAME, {}, STR_STRING,
                     reinterpret_cast<uintptr_t>(activeThemeName), 64);
             }
             break;

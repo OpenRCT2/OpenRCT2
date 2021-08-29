@@ -280,14 +280,15 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (!commandEditorOpen)
             {
                 window_text_input_open(
-                    w, widgetIndex, STR_TITLE_EDITOR_ACTION_CREATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_NONE, 0, 64);
+                    w, widgetIndex, STR_TITLE_EDITOR_ACTION_CREATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, {}, STR_NONE, 0,
+                    64);
             }
             break;
         case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
             if (!commandEditorOpen && _editingTitleSequence != nullptr)
             {
                 window_text_input_open(
-                    w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING,
+                    w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, {}, STR_STRING,
                     reinterpret_cast<uintptr_t>(_sequenceName), 64);
             }
             break;
@@ -302,7 +303,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (window_title_editor_check_can_edit() && _editingTitleSequence != nullptr)
             {
                 window_text_input_open(
-                    w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING,
+                    w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, {}, STR_STRING,
                     reinterpret_cast<uintptr_t>(_sequenceName), 64);
             }
             break;
@@ -338,7 +339,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 if (w->selected_list_item != -1)
                 {
                     window_text_input_open(
-                        w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING,
+                        w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, {}, STR_STRING,
                         reinterpret_cast<uintptr_t>(_editingTitleSequence->Saves[w->selected_list_item].c_str()), 52 - 1);
                 }
             }
@@ -351,7 +352,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 try
                 {
                     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-                    auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(handle->HintPath));
+                    auto parkImporter = ParkImporter::Create(handle->HintPath);
                     auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
                     objectMgr.LoadObjects(result.RequiredObjects);
                     parkImporter->Import();
@@ -1140,7 +1141,7 @@ static void window_title_editor_add_park_callback(int32_t result, const utf8* pa
         _renameSavePath = _strdup(filename);
         rct_window* w = window_find_by_class(WC_TITLE_EDITOR);
         window_text_input_open(
-            w, WIDX_TITLE_EDITOR_RENAME_SAVE, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, STR_STRING,
+            w, WIDX_TITLE_EDITOR_RENAME_SAVE, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, {}, STR_STRING,
             reinterpret_cast<uintptr_t>(_renameSavePath), 52 - 1);
         return;
     }

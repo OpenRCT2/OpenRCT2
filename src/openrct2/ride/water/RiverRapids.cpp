@@ -229,7 +229,8 @@ void vehicle_visual_river_rapids(
         image_id |= CONSTRUCTION_MARKER;
     }
     PaintAddImageAsParent(
-        session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z);
+        session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+        { bb->offset_x, bb->offset_y, bb->offset_z + z });
 
     if (session->DPI.zoom_level < 2 && vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {
@@ -302,7 +303,7 @@ static void paint_river_rapids_track_flat(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 3 }, { 0, 27, height + 17 });
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     if (direction & 1)
     {
@@ -343,7 +344,7 @@ static void paint_river_rapids_track_25_deg(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_7);
             break;
 
@@ -355,7 +356,7 @@ static void paint_river_rapids_track_25_deg(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
             break;
 
@@ -367,7 +368,7 @@ static void paint_river_rapids_track_25_deg(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 34 }, { 0, 27, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
             break;
 
@@ -378,7 +379,7 @@ static void paint_river_rapids_track_25_deg(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 34 }, { 27, 0, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_7);
             break;
     }
@@ -402,7 +403,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 18 }, { 0, 27, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 0, 5, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 0, 5, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
 
@@ -414,7 +415,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 18 }, { 27, 0, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 1, 6, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 1, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
             break;
 
@@ -426,7 +427,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 18 }, { 0, 27, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 0, 7, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 0, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
             break;
 
@@ -437,7 +438,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 18 }, { 27, 0, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 1, 8, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 1, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
     }
@@ -461,7 +462,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 0, 1, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 0, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
@@ -473,7 +474,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 1, 2, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 1, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
             break;
 
@@ -485,7 +486,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 26 }, { 0, 27, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 0, 3, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 0, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
             break;
 
@@ -496,7 +497,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
             imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 26 }, { 27, 0, height + 16 });
 
-            wooden_a_supports_paint_setup(session, 1, 4, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 1, 4, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
@@ -606,7 +607,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
             break;
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -663,7 +664,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
             break;
     }
 
-    wooden_a_supports_paint_setup(session, 1 - (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, 1 - (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -716,7 +717,7 @@ static void paint_river_rapids_track_waterfall(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 1, 27 }, { 0, 27, height + 17 });
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     if (direction & 1)
     {
@@ -757,7 +758,7 @@ static void paint_river_rapids_track_rapids(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 11 }, { 0, 27, height + 17 });
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     if (direction & 1)
     {
@@ -818,7 +819,7 @@ static void paint_river_rapids_track_whirlpool(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 3 }, { 0, 27, height + 17 });
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     if (direction & 1)
     {

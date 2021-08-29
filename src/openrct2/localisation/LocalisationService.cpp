@@ -98,12 +98,11 @@ void LocalisationService::OpenLanguage(int32_t id)
     if (id != LANGUAGE_ENGLISH_UK)
     {
         filename = GetLanguagePath(LANGUAGE_ENGLISH_UK);
-        _languageFallback = std::unique_ptr<ILanguagePack>(
-            LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename.c_str()));
+        _languageFallback = LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename.c_str());
     }
 
     filename = GetLanguagePath(id);
-    _languageCurrent = std::unique_ptr<ILanguagePack>(LanguagePackFactory::FromFile(id, filename.c_str()));
+    _languageCurrent = LanguagePackFactory::FromFile(id, filename.c_str());
     if (_languageCurrent != nullptr)
     {
         _currentLanguage = id;

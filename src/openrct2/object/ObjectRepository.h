@@ -61,7 +61,7 @@ struct ObjectRepositoryItem
         uint8_t Flags{};
     } FootpathSurfaceInfo;
 
-    ObjectSourceGame GetFirstSourceGame() const
+    [[nodiscard]] ObjectSourceGame GetFirstSourceGame() const
     {
         if (Sources.empty())
             return ObjectSourceGame::Custom;
@@ -76,14 +76,14 @@ struct IObjectRepository
 
     virtual void LoadOrConstruct(int32_t language) abstract;
     virtual void Construct(int32_t language) abstract;
-    virtual size_t GetNumObjects() const abstract;
-    virtual const ObjectRepositoryItem* GetObjects() const abstract;
-    virtual const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const abstract;
-    virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const abstract;
-    virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
-    virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const abstract;
+    [[nodiscard]] virtual size_t GetNumObjects() const abstract;
+    [[nodiscard]] virtual const ObjectRepositoryItem* GetObjects() const abstract;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const abstract;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const abstract;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const abstract;
 
-    virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;
+    [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;
     virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
     virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
 
@@ -95,12 +95,13 @@ struct IObjectRepository
     virtual void WritePackedObjects(OpenRCT2::IStream* stream, std::vector<const ObjectRepositoryItem*>& objects) abstract;
 };
 
-std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+[[nodiscard]] std::unique_ptr<IObjectRepository> CreateObjectRepository(
+    const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 
-bool IsObjectCustom(const ObjectRepositoryItem* object);
+[[nodiscard]] bool IsObjectCustom(const ObjectRepositoryItem* object);
 
-size_t object_repository_get_items_count();
-const ObjectRepositoryItem* object_repository_get_items();
-const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_object_entry* entry);
-const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name);
-std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry);
+[[nodiscard]] size_t object_repository_get_items_count();
+[[nodiscard]] const ObjectRepositoryItem* object_repository_get_items();
+[[nodiscard]] const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_object_entry* entry);
+[[nodiscard]] const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name);
+[[nodiscard]] std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry);

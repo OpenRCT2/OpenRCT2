@@ -1396,13 +1396,13 @@ namespace RCT1
         };
         return map[sceneryType];
     }
+    // clang-format on
+
+    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType)
+    {
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+            return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
+
+        return origTrackType;
+    }
 } // namespace RCT1
-
-track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType)
-{
-    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
-        return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
-
-    return origTrackType;
-}
-// clang-format on

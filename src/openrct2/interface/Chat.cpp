@@ -189,9 +189,10 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         screenCoords.y = _chatBottom - inputLineHeight - 5;
 
         auto lineCh = lineBuffer.c_str();
+        auto ft = Formatter();
+        ft.Add<const char*>(lineCh);
         inputLineHeight = DrawTextWrapped(
-            dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, static_cast<void*>(&lineCh),
-            { TEXT_COLOUR_255 });
+            dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { TEXT_COLOUR_255 });
         gfx_set_dirty_blocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines

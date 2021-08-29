@@ -127,7 +127,7 @@ const bool gSpriteTypeToSlowWalkMap[] = {
 
 // clang-format on
 
-template<> bool SpriteBase::Is<Peep>() const
+template<> bool EntityBase::Is<Peep>() const
 {
     return Type == EntityType::Guest || Type == EntityType::Staff;
 }

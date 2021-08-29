@@ -376,10 +376,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     wallElement->SetAcrossTrack(wallAcrossTrack);
 
     wallElement->SetEntryIndex(_wallType);
-    if (banner != nullptr)
-    {
-        wallElement->SetBannerIndex(banner->id);
-    }
+    wallElement->SetBannerIndex(banner != nullptr ? banner->id : BANNER_INDEX_NULL);
 
     if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {

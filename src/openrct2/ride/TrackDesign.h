@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _TRACK_DESIGN_H_
-#define _TRACK_DESIGN_H_
+#pragma once
 
 #include "../common.h"
 #include "../object/Object.h"
@@ -204,7 +203,7 @@ extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;
 extern ride_id_t gTrackDesignSaveRideIndex;
 
-std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
+[[nodiscard]] std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
 
 void track_design_mirror(TrackDesign* td6);
 
@@ -229,5 +228,3 @@ bool track_design_are_entrance_and_exit_placed();
 
 extern std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 extern std::vector<const TileElement*> _trackSavedTileElements;
-
-#endif

@@ -23,7 +23,7 @@ enum class EntityType : uint8_t
     Null = 255
 };
 
-struct SpriteBase
+struct EntityBase
 {
     EntityType Type;
     uint16_t sprite_index;
@@ -74,7 +74,7 @@ struct SpriteBase
     }
 };
 
-struct MiscEntity : SpriteBase
+struct MiscEntity : EntityBase
 {
     uint16_t frame;
 };

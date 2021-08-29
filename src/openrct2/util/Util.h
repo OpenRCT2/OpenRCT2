@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _UTIL_H_
-#define _UTIL_H_
+#pragma once
 
 #include "../common.h"
 
@@ -90,5 +89,3 @@ template<typename TEnum> constexpr auto EnumValue(TEnum enumerator) noexcept
 {
     return static_cast<std::underlying_type_t<TEnum>>(enumerator);
 }
-
-#endif

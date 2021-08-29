@@ -684,7 +684,7 @@ static void LightfxAdd3DLight(const CoordsXYZ& loc, const LightType lightType)
     LightfxAdd3DLight(((loc.x << 16) | loc.y), LightFXQualifier::Map, loc.z, loc, lightType);
 }
 
-void LightfxAdd3DLight(const SpriteBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType)
+void LightfxAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType)
 {
     LightfxAdd3DLight(entity.sprite_index, LightFXQualifier::Entity, id, loc, lightType);
 }

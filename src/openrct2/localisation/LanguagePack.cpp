@@ -20,6 +20,7 @@
 #include "Localisation.h"
 
 #include <algorithm>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -62,7 +63,7 @@ private:
     ScenarioOverride* _currentScenarioOverride = nullptr;
 
 public:
-    static LanguagePack* FromFile(uint16_t id, const utf8* path)
+    static std::unique_ptr<LanguagePack> FromFile(uint16_t id, const utf8* path)
     {
         Guard::ArgumentNotNull(path);
 
@@ -90,15 +91,15 @@ public:
         }
 
         // Parse the memory as text
-        LanguagePack* result = FromText(id, fileData);
+        auto result = FromText(id, fileData);
 
         Memory::Free(fileData);
         return result;
     }
 
-    static LanguagePack* FromText(uint16_t id, const utf8* text)
+    static std::unique_ptr<LanguagePack> FromText(uint16_t id, const utf8* text)
     {
-        return new LanguagePack(id, text);
+        return std::make_unique<LanguagePack>(id, text);
     }
 
     LanguagePack(uint16_t id, const utf8* text)
@@ -579,13 +580,13 @@ private:
 
 namespace LanguagePackFactory
 {
-    ILanguagePack* FromFile(uint16_t id, const utf8* path)
+    std::unique_ptr<ILanguagePack> FromFile(uint16_t id, const utf8* path)
     {
         auto languagePack = LanguagePack::FromFile(id, path);
         return languagePack;
     }
 
-    ILanguagePack* FromText(uint16_t id, const utf8* text)
+    std::unique_ptr<ILanguagePack> FromText(uint16_t id, const utf8* text)
     {
         auto languagePack = LanguagePack::FromText(id, text);
         return languagePack;
