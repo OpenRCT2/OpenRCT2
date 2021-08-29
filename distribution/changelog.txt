@@ -6,6 +6,7 @@
 - Feature: [#15164] Highlight elements selected by the Tile Inspector, tracks are currently not supported.
 - Feature: [#15165] [Plugin] Add the ability to create entities using "map.createEntity".
 - Feature: [#15194] [Plugin] Add guest properties, ride downtime and park casualty penalty.
+- Feature: [#15294] New vehicle animation type: flying animal
 - Fix: [#13465] Creating a scenario based on a won save game results in a scenario that’s instantly won.
 - Fix: [#14316] Closing the Track Designs Manager window causes broken state.
 - Fix: [#14667] “Extreme Hawaiian Island” has unpurchaseable land tiles (original bug).
