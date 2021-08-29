@@ -7285,7 +7285,6 @@ void Vehicle::UpdateAnimationAnimalFlying()
     }
     else
     {
-
         if (animation_frame == 0)
         {
             auto trackType = GetTrackType();
