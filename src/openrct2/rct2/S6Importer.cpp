@@ -223,7 +223,7 @@ public:
 
         gDateMonthsElapsed = static_cast<int32_t>(_s6.elapsed_months);
         gDateMonthTicks = _s6.current_day;
-        gScenarioTicks = _s6.scenario_ticks;
+        gCurrentTicks = _s6.scenario_ticks;
 
         scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 

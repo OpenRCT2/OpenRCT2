@@ -367,7 +367,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::NetworkFlush);
 
     gCurrentTicks++;
-    gScenarioTicks++;
+    gCurrentTicks++;
     gSavedAge++;
 
 #ifdef ENABLE_SCRIPTING

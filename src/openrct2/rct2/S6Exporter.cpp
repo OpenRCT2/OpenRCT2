@@ -199,7 +199,7 @@ void S6Exporter::Export()
 
     _s6.elapsed_months = static_cast<uint16_t>(gDateMonthsElapsed);
     _s6.current_day = gDateMonthTicks;
-    _s6.scenario_ticks = gScenarioTicks;
+    _s6.scenario_ticks = gCurrentTicks;
 
     auto state = scenario_rand_state();
     _s6.scenario_srand_0 = state.s0;

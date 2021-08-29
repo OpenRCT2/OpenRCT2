@@ -39,7 +39,7 @@ ride_id_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
 uint8_t gClipHeight = 255;
 CoordsXY gClipSelectionA = { 0, 0 };
 CoordsXY gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
-uint32_t gScenarioTicks;
+uint32_t gCurrentTicks;
 uint8_t gCurrentRotation;
 
 // clang-format off

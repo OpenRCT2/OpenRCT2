@@ -470,7 +470,7 @@ int32_t Park::CalculateParkRating() const
         for (auto litter : EntityList<Litter>())
         {
             // Ignore recently dropped litter
-            if (litter->creationTick - gScenarioTicks >= 7680)
+            if (litter->creationTick - gCurrentTicks >= 7680)
             {
                 litterCount++;
             }

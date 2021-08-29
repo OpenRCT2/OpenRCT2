@@ -316,7 +316,7 @@ void research_update()
         return;
     }
 
-    if (gScenarioTicks % 32 != 0)
+    if (gCurrentTicks % 32 != 0)
     {
         return;
     }
