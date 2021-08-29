@@ -7285,7 +7285,6 @@ void Vehicle::UpdateAnimationAnimalFlying()
     }
     else
     {
-        constexpr std::array<uint8_t, 4> frameWaitTimes = { 5, 3, 5, 3 };
 
         if (animation_frame == 0)
         {
@@ -7306,6 +7305,7 @@ void Vehicle::UpdateAnimationAnimalFlying()
             Invalidate();
         }
         // number of frames to skip before updating again
+        constexpr std::array<uint8_t, 4> frameWaitTimes = { 5, 3, 5, 3 };
         animationState = frameWaitTimes[animation_frame];
     }
 }
