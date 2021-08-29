@@ -9,6 +9,7 @@
 
 #include "FileClassifier.h"
 
+#include "ParkFile.h"
 #include "core/Console.hpp"
 #include "core/FileStream.h"
 #include "core/Path.hpp"
@@ -76,7 +77,7 @@ static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* res
     try
     {
         auto magic = stream->ReadValue<uint32_t>();
-        if (magic == 0x4B524150)
+        if (magic == OpenRCT2::PARK_FILE_MAGIC)
         {
             result->Type = FILE_TYPE::PARK;
             result->Version = 0;

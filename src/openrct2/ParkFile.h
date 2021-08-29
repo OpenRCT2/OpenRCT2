@@ -7,8 +7,10 @@ struct ObjectRepositoryItem;
 
 namespace OpenRCT2
 {
+    constexpr uint32_t PARK_FILE_MAGIC = 0x4B524150; // PARK
+
     struct IStream;
-}
+} // namespace OpenRCT2
 
 class ParkFileExporter
 {

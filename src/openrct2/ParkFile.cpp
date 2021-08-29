@@ -71,8 +71,6 @@ static void UpdateFootpathsFromMapping(
 
 namespace OpenRCT2
 {
-    constexpr uint32_t PARK_FILE_MAGIC = 0x4B524150; // PARK
-
     // Current version that is saved.
     constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x3;
 
