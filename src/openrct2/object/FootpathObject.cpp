@@ -42,21 +42,21 @@ void FootpathObject::Load()
 
     _pathSurfaceEntry.string_idx = _legacyType.string_idx;
     _pathSurfaceEntry.image = _legacyType.image;
-    _pathSurfaceEntry.preview = _legacyType.image + 71;
+    _pathSurfaceEntry.preview = _legacyType.GetPreviewImage();
     _pathSurfaceEntry.flags = _legacyType.flags;
 
     _queueEntry.string_idx = _legacyType.string_idx;
-    _queueEntry.image = _legacyType.image + 51;
-    _queueEntry.preview = _legacyType.image + 72;
+    _queueEntry.image = _legacyType.GetQueueImage();
+    _queueEntry.preview = _legacyType.GetQueuePreviewImage();
     _queueEntry.flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
 
     _pathRailingsEntry.string_idx = _legacyType.string_idx;
     _pathRailingsEntry.bridge_image = _legacyType.bridge_image;
-    _pathRailingsEntry.preview = _legacyType.image + 71;
+    _pathRailingsEntry.preview = _legacyType.GetPreviewImage();
     _pathRailingsEntry.flags = _legacyType.flags;
     _pathRailingsEntry.scrolling_mode = _legacyType.scrolling_mode;
     _pathRailingsEntry.support_type = _legacyType.support_type;
-    _pathRailingsEntry.railings_image = _legacyType.image + 73;
+    _pathRailingsEntry.railings_image = _legacyType.GetRailingsImage();
 }
 
 void FootpathObject::Unload()
