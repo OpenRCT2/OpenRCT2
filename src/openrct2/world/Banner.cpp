@@ -21,6 +21,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
+#include "../world/TileElementsView.h"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
@@ -253,57 +254,50 @@ void fix_duplicated_banners()
 {
     // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
     std::vector<bool> activeBanners;
+    activeBanners.resize(MAX_BANNERS);
+
     for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
-            if (tileElement != nullptr)
+            const auto bannerPos = TileCoordsXY{ x, y }.ToCoordsXY();
+            for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(bannerPos))
             {
-                do
+                auto bannerIndex = bannerElement->GetIndex();
+                if (bannerIndex == BANNER_INDEX_NULL)
+                    continue;
+
+                if (activeBanners[bannerIndex])
                 {
-                    // TODO: Handle walls and large-scenery that use banner indices too. Large scenery can be tricky, as they
-                    // occupy multiple tiles that should both refer to the same banner index.
-                    if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
+                    log_info(
+                        "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", bannerIndex, x, y,
+                        bannerElement->base_height);
+
+                    // Banner index is already in use by another banner, so duplicate it
+                    auto newBanner = CreateBanner();
+                    if (newBanner == nullptr)
                     {
-                        auto bannerIndex = tileElement->AsBanner()->GetIndex();
-                        if (bannerIndex == BANNER_INDEX_NULL)
-                            continue;
-
-                        if (activeBanners.size() <= bannerIndex)
-                        {
-                            activeBanners.resize(bannerIndex + 1);
-                        }
-                        if (activeBanners[bannerIndex])
-                        {
-                            log_info(
-                                "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", bannerIndex, x, y,
-                                tileElement->base_height);
-
-                            // Banner index is already in use by another banner, so duplicate it
-                            auto newBanner = CreateBanner();
-                            if (newBanner == nullptr)
-                            {
-                                log_error("Failed to create new banner.");
-                                continue;
-                            }
-                            Guard::Assert(!activeBanners[newBanner->id]);
-
-                            // Copy over the original banner, but update the location
-                            auto oldBanner = GetBanner(bannerIndex);
-                            if (oldBanner != nullptr)
-                            {
-                                *newBanner = *oldBanner;
-                                newBanner->position = { x, y };
-                            }
-
-                            tileElement->AsBanner()->SetIndex(newBanner->id);
-                        }
-
-                        // Mark banner index as in-use
-                        activeBanners[bannerIndex] = true;
+                        log_error("Failed to create new banner.");
+                        continue;
                     }
-                } while (!(tileElement++)->IsLastForTile());
+                    Guard::Assert(!activeBanners[newBanner->id]);
+
+                    // Copy over the original banner, but update the location
+                    const auto* oldBanner = GetBanner(bannerIndex);
+                    if (oldBanner != nullptr)
+                    {
+                        auto newBannerId = newBanner->id;
+
+                        *newBanner = *oldBanner;
+                        newBanner->id = newBannerId;
+                        newBanner->position = { x, y };
+                    }
+
+                    bannerElement->SetIndex(newBanner->id);
+                }
+
+                // Mark banner index as in-use
+                activeBanners[bannerIndex] = true;
             }
         }
     }
