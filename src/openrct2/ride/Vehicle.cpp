@@ -7467,7 +7467,7 @@ void Vehicle::UpdateAdditionalAnimation()
             UpdateAnimationAnimalFlying();
             // makes animation play faster with vehicle speed
             targetFrame = abs(_vehicleVelocityF64E08) >> 24;
-            animationState = std::max(animationState - targetFrame, 0);
+            animationState = std::max(animationState - targetFrame, 0u);
             break;
     }
 }
