@@ -2846,7 +2846,10 @@ namespace RCT1
             auto srcThought = &src->thoughts[i];
             auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-            dstThought->item = srcThought->item;
+            if (srcThought->item == RCT12PeepThoughtItemNone)
+                dstThought->item = PeepThoughtItemNone;
+            else
+                dstThought->item = srcThought->item;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }

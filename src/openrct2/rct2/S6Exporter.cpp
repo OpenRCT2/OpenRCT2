@@ -1342,7 +1342,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Guest* src)
         auto srcThought = &src->Thoughts[i];
         auto dstThought = &dst->thoughts[i];
         dstThought->type = static_cast<uint8_t>(srcThought->type);
-        dstThought->item = srcThought->item;
+        dstThought->item = static_cast<uint8_t>(srcThought->item);
         dstThought->freshness = srcThought->freshness;
         dstThought->fresh_timeout = srcThought->fresh_timeout;
     }

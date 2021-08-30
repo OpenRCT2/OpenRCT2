@@ -24,7 +24,6 @@
 #include <optional>
 
 #define PEEP_MAX_THOUGHTS 5
-#define PEEP_THOUGHT_ITEM_NONE 255
 
 #define PEEP_HUNGER_WARNING_THRESHOLD 25
 #define PEEP_THIRST_WARNING_THRESHOLD 25
@@ -485,12 +484,19 @@ enum PeepRideDecision
     PEEP_RIDE_DECISION_THINKING = 1 << 2,
 };
 
-struct rct_peep_thought
+static constexpr uint16_t PeepThoughtItemNone = std::numeric_limits<uint16_t>::max();
+
+struct PeepThought
 {
-    PeepThoughtType type;  // 0
-    uint8_t item;          // 1
-    uint8_t freshness;     // 2 larger is less fresh
-    uint8_t fresh_timeout; // 3 updates every tick
+    PeepThoughtType type;
+    union
+    {
+        ride_id_t rideId;
+        ShopItem shopItem;
+        uint16_t item;
+    };
+    uint8_t freshness;     // larger is less fresh
+    uint8_t fresh_timeout; // updates every tick
 };
 
 struct Guest;
@@ -703,7 +709,7 @@ public:
     int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
     ride_id_t PreviousRide;
     uint16_t PreviousRideTimeOut;
-    std::array<rct_peep_thought, PEEP_MAX_THOUGHTS> Thoughts;
+    std::array<PeepThought, PEEP_MAX_THOUGHTS> Thoughts;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t LitterCount;
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
@@ -766,7 +772,9 @@ public:
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
     void UpdateEasterEggInteractions();
-    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
+    void InsertNewThought(PeepThoughtType thought_type);
+    void InsertNewThought(PeepThoughtType thought_type, ShopItem thought_arguments);
+    void InsertNewThought(PeepThoughtType thought_type, uint16_t thought_arguments);
     static Guest* Generate(const CoordsXYZ& coords);
     bool UpdateQueuePosition(PeepActionType previous_action);
     void RemoveFromQueue();
@@ -1002,7 +1010,7 @@ void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft);
+void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft);
 int32_t get_peep_face_sprite_small(Guest* peep);
 int32_t get_peep_face_sprite_large(Guest* peep);
 void peep_sprite_remove(Peep* peep);
