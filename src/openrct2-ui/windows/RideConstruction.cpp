@@ -3138,7 +3138,12 @@ static void window_ride_construction_update_widgets(rct_window* w)
         }
         if (brakesSelected || boosterTrackSelected)
         {
-            //TODO: move things around to make room for both brake speed and rotation
+            window_ride_construction_widgets[WIDX_BANK_LEFT].left -= 4;
+            window_ride_construction_widgets[WIDX_BANK_LEFT].right -= 8;
+            window_ride_construction_widgets[WIDX_BANK_STRAIGHT].left -= 8;
+            window_ride_construction_widgets[WIDX_BANK_STRAIGHT].right -= 8;
+            window_ride_construction_widgets[WIDX_BANK_RIGHT].left -= 8;
+            window_ride_construction_widgets[WIDX_BANK_RIGHT].right -= 8;
         }
     }
 
