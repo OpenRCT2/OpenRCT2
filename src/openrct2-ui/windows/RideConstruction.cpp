@@ -3121,9 +3121,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Empty;
-    if ((rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT)
-        && _selectedTrackType != TrackElemType::Brakes
-        && _currentTrackCurve != (RideConstructionSpecialPieceSelected | TrackElemType::Brakes))
+    if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT)
     {
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Groupbox;
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Spinner;
@@ -3137,6 +3135,10 @@ static void window_ride_construction_update_widgets(rct_window* w)
                 window_ride_construction_widgets[i].left -= 36;
                 window_ride_construction_widgets[i].right -= 36;
             }
+        }
+        if (brakesSelected || boosterTrackSelected)
+        {
+            //TODO: move things around to make room for both brake speed and rotation
         }
     }
 

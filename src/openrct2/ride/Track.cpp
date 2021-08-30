@@ -942,13 +942,13 @@ uint8_t TrackElement::GetSeatRotation() const
     if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         return DEFAULT_SEAT_ROTATION;
 
-    return ColourScheme >> 4;
+    return SeatRotation >> 4;
 }
 
 void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 {
-    ColourScheme &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
-    ColourScheme |= (newSeatRotation << 4);
+    SeatRotation &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
+    SeatRotation |= (newSeatRotation << 4);
 }
 
 bool TrackElement::IsTakingPhoto() const
