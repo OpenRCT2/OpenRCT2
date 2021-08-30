@@ -159,6 +159,102 @@ void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
     stream->WriteValue(checksum);
 }
 
+static void ride_all_has_any_track_elements(std::array<bool, RCT12_MAX_RIDES_IN_PARK>& rideIndexArray)
+{
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            continue;
+        if (it.element->IsGhost())
+            continue;
+
+        rideIndexArray[it.element->AsTrack()->GetRideIndex()] = true;
+    }
+}
+
+static void scenario_remove_trackless_rides(rct_s6_data* s6)
+{
+    std::array<bool, RCT12_MAX_RIDES_IN_PARK> rideHasTrack{};
+    ride_all_has_any_track_elements(rideHasTrack);
+    for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
+    {
+        auto ride = &s6->rides[i];
+        if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
+        {
+            continue;
+        }
+
+        ride->type = RIDE_TYPE_NULL;
+        if (is_user_string_id(ride->name))
+        {
+            s6->custom_strings[(ride->name % RCT12_MAX_USER_STRINGS)][0] = 0;
+        }
+    }
+}
+
+/**
+ * Modifies the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
+ */
+static void scenario_fix_ghosts(rct_s6_data* s6)
+{
+    // Build tile pointer cache (needed to get the first element at a certain location)
+    RCT12TileElement* tilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+    for (size_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    {
+        tilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
+    }
+
+    RCT12TileElement* tileElement = s6->tile_elements;
+    RCT12TileElement** tile = tilePointers;
+    for (size_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (size_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            *tile++ = tileElement;
+            while (!(tileElement++)->IsLastForTile())
+                ;
+        }
+    }
+
+    // Remove all ghost elements
+    RCT12TileElement* destinationElement = s6->tile_elements;
+
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            // This is the equivalent of map_get_first_element_at(x, y), but on S6 data.
+            RCT12TileElement* originalElement = tilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
+            do
+            {
+                if (originalElement->IsGhost())
+                {
+                    uint8_t bannerIndex = originalElement->GetBannerIndex();
+                    if (bannerIndex != RCT12_BANNER_INDEX_NULL)
+                    {
+                        auto banner = &s6->banners[bannerIndex];
+                        if (banner->type != RCT12_OBJECT_ENTRY_INDEX_NULL)
+                        {
+                            banner->type = RCT12_OBJECT_ENTRY_INDEX_NULL;
+                            if (is_user_string_id(banner->string_idx))
+                                s6->custom_strings[(banner->string_idx % RCT12_MAX_USER_STRINGS)][0] = 0;
+                        }
+                    }
+                }
+                else
+                {
+                    *destinationElement++ = *originalElement;
+                }
+            } while (!(originalElement++)->IsLastForTile());
+
+            // Set last element flag in case the original last element was never added
+            (destinationElement - 1)->flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+        }
+    }
+}
+
 void S6Exporter::Export()
 {
     _s6.info = {};

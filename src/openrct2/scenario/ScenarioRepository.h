@@ -24,6 +24,18 @@ struct scenario_highscore_entry
     datetime64 timestamp;
 };
 
+enum class ScenarioSource : uint8_t
+{
+    RCT1,
+    RCT1_AA,
+    RCT1_LL,
+    RCT2,
+    RCT2_WW,
+    RCT2_TT,
+    Real,
+    Other
+};
+
 struct scenario_index_entry
 {
     utf8 path[MAX_PATH];
