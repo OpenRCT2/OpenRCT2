@@ -70,6 +70,8 @@ enum
     CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
 };
 
+class NetworkBase;
+
 namespace OpenRCT2
 {
     class GameState;
@@ -131,7 +133,9 @@ namespace OpenRCT2
         virtual DrawingEngine GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
         virtual Paint::Painter* GetPainter() abstract;
-
+#ifndef DISABLE_NETWORK
+        virtual NetworkBase& GetNetwork() abstract;
+#endif
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 
         virtual bool Initialise() abstract;

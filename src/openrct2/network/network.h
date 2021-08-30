@@ -35,13 +35,6 @@ enum class ModifyGroupType : uint8_t;
 enum class PermissionState : uint8_t;
 enum class NetworkPermission : uint32_t;
 
-namespace OpenRCT2
-{
-    struct IPlatformEnvironment;
-}
-
-void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
-void network_close();
 void network_reconnect();
 void network_shutdown_client();
 int32_t network_begin_client(const std::string& host, int32_t port);
@@ -99,15 +92,12 @@ void network_set_pickup_peep(uint8_t playerid, Peep* peep);
 void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x);
 [[nodiscard]] int32_t network_get_pickup_peep_old_x(uint8_t playerid);
 
-void network_send_map();
 void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds = {});
 void network_send_game_action(const GameAction* action);
-void network_enqueue_game_action(const GameAction* action);
 void network_send_password(const std::string& password);
 
 void network_set_password(const char* password);
 
-void network_print_error();
 void network_append_chat_log(const utf8* text);
 void network_append_server_log(const utf8* text);
 [[nodiscard]] const utf8* network_get_server_name();

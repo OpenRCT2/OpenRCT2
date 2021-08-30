@@ -23,6 +23,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../network/NetworkBase.h"
 #include "../network/network.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
@@ -124,7 +125,9 @@ void TitleScreen::Load()
     gScreenAge = 0;
     gCurrentLoadedPath = "";
 
-    network_close();
+#ifndef DISABLE_NETWORK
+    GetContext()->GetNetwork().Close();
+#endif
     OpenRCT2::Audio::StopAll();
     GetContext()->GetGameState()->InitAll(150);
     viewport_init_all();
