@@ -773,7 +773,9 @@ public:
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
     void UpdateEasterEggInteractions();
-    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
+    void InsertNewThought(PeepThoughtType thought_type);
+    void InsertNewThought(PeepThoughtType thought_type, ShopItem thought_arguments);
+    void InsertNewThought(PeepThoughtType thought_type, uint16_t thought_arguments);
     static Guest* Generate(const CoordsXYZ& coords);
     bool UpdateQueuePosition(PeepActionType previous_action);
     void RemoveFromQueue();

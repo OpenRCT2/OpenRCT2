@@ -752,7 +752,7 @@ void Peep::UpdateFalling()
                         {
                             // Drop balloon if held
                             peep_release_balloon(guest, height);
-                            guest->InsertNewThought(PeepThoughtType::Drowning, PEEP_THOUGHT_ITEM_NONE);
+                            guest->InsertNewThought(PeepThoughtType::Drowning);
                         }
 
                         Action = PeepActionType::Drowning;
@@ -844,7 +844,7 @@ void Peep::UpdatePicked()
     auto* guest = As<Guest>();
     if (SubState == 13 && guest != nullptr)
     {
-        guest->InsertNewThought(PeepThoughtType::Help, PEEP_THOUGHT_ITEM_NONE);
+        guest->InsertNewThought(PeepThoughtType::Help);
     }
 }
 
@@ -1934,7 +1934,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
         {
             if ((scenario_rand() & 0xFFFF) <= 10922)
             {
-                guest->InsertNewThought(PeepThoughtType::Vandalism, PEEP_THOUGHT_ITEM_NONE);
+                guest->InsertNewThought(PeepThoughtType::Vandalism);
                 guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
             }
             vandalThoughtTimeout = 3;
@@ -1979,7 +1979,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
     if (crowded >= 10 && guest->State == PeepState::Walking && (scenario_rand() & 0xFFFF) <= 21845)
     {
-        guest->InsertNewThought(PeepThoughtType::Crowded, PEEP_THOUGHT_ITEM_NONE);
+        guest->InsertNewThought(PeepThoughtType::Crowded);
         guest->HappinessTarget = std::max(0, guest->HappinessTarget - 14);
     }
 
@@ -2005,7 +2005,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
         if (total_sick >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            guest->InsertNewThought(PeepThoughtType::PathDisgusting, PEEP_THOUGHT_ITEM_NONE);
+            guest->InsertNewThought(PeepThoughtType::PathDisgusting);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
             // Reset disgusting time
             guest->DisgustingCount |= 0xC0;
@@ -2031,7 +2031,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
         if (total_litter >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            guest->InsertNewThought(PeepThoughtType::BadLitter, PEEP_THOUGHT_ITEM_NONE);
+            guest->InsertNewThought(PeepThoughtType::BadLitter);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
             // Reset litter time
             guest->LitterCount |= 0xC0;
