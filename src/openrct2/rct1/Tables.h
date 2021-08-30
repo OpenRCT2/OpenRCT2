@@ -16,7 +16,7 @@
 
 namespace RCT1
 {
-    struct RCT1VehicleColourSchemeCopyDescriptor
+    struct VehicleColourSchemeCopyDescriptor
     {
         int8_t colour1, colour2, colour3;
     };
@@ -25,7 +25,7 @@ namespace RCT1
     PeepSpriteType GetPeepSpriteType(uint8_t rct1SpriteType);
 
     uint8_t GetRideType(uint8_t rideType, uint8_t vehicleType);
-    RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType);
+    VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType);
     bool RideTypeUsesVehicles(uint8_t rideType);
     bool PathIsQueue(uint8_t pathType);
     uint8_t NormalisePathAddition(uint8_t pathAdditionType);

@@ -279,7 +279,6 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << dodgems_collision_direction;
     stream << animation_frame;
     stream << animationState;
-    stream << var_CA;
     stream << scream_sound_id;
     stream << TrackSubposition;
     stream << var_CE;

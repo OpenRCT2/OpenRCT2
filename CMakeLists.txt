@@ -50,9 +50,9 @@ set(OBJECTS_VERSION "1.2.1")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
 set(OBJECTS_SHA1 "540e004abc683b3fe22211f5234e3d78ab023c5f")
 
-set(REPLAYS_VERSION "0.0.47")
+set(REPLAYS_VERSION "0.0.49")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "61CAB8A0AD0B057B13B003DF32748977C2B5975F")
+set(REPLAYS_SHA1 "004AE4D38D1326913AF5DE7A90E8AF31DD31BF94")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")

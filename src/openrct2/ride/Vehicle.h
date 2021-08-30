@@ -182,8 +182,7 @@ struct Vehicle : EntityBase
     };
     uint8_t animation_frame;
     uint8_t pad_C6[0x2];
-    uint16_t animationState;
-    uint16_t var_CA;
+    uint32_t animationState;
     OpenRCT2::Audio::SoundId scream_sound_id;
     VehicleTrackSubposition TrackSubposition;
     union

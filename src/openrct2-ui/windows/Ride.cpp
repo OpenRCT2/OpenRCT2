@@ -59,6 +59,7 @@
 #include <vector>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::TrackMetaData;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
 static constexpr const int32_t WH = 207;
@@ -1368,7 +1369,8 @@ rct_window* window_ride_open_track(TileElement* tileElement)
                     // Open ride window in station view
                     auto trackElement = tileElement->AsTrack();
                     auto trackType = trackElement->GetTrackType();
-                    if (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    const auto& ted = GetTrackElementDescriptor(trackType);
+                    if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                     {
                         auto stationIndex = trackElement->GetStationIndex();
                         return window_ride_open_station(ride, stationIndex);

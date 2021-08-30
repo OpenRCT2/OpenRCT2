@@ -90,6 +90,8 @@ constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 constexpr const uint16_t RCT12VehicleTrackDirectionMask = 0b0000000000000011;
 constexpr const uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
 
+constexpr const uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max();
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,

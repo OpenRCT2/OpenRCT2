@@ -12,6 +12,8 @@
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
 
+using namespace OpenRCT2::TrackMetaData;
+
 MazePlaceTrackAction::MazePlaceTrackAction(const CoordsXYZ& location, NetworkRideId_t rideIndex, uint16_t mazeEntry)
     : _loc(location)
     , _rideIndex(rideIndex)
@@ -113,7 +115,8 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
         return res;
     }
 
-    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
+    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
     res->Cost = canBuild->Cost + price / 2 * 10;
 
     return res;
@@ -154,7 +157,8 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
         return canBuild;
     }
 
-    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
+    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
     res->Cost = canBuild->Cost + price / 2 * 10;
 
     auto startLoc = _loc.ToTileStart();

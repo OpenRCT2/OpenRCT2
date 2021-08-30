@@ -1522,18 +1522,18 @@ namespace OpenRCT2
                     cs.ReadWrite(guest->RejoinQueueTimeout);
                     cs.ReadWrite(guest->PreviousRide);
                     cs.ReadWrite(guest->PreviousRideTimeOut);
-                    cs.ReadWriteArray(guest->Thoughts, [&cs](rct_peep_thought& thought) {
+                    cs.ReadWriteArray(guest->Thoughts, [&cs](PeepThought& thought) {
                         cs.ReadWrite(thought.type);
 
                         uint8_t item;
                         cs.ReadWrite(item);
                         if (item == 255)
                         {
-                            thought.argument = std::numeric_limits<uint32_t>::max();
+                            thought.item = PeepThoughtItemNone;
                         }
                         else
                         {
-                            thought.argument = item;
+                            thought.item = item;
                         }
 
                         cs.ReadWrite(thought.freshness);
@@ -1550,8 +1550,8 @@ namespace OpenRCT2
                     cs.Ignore<ride_id_t>();
                     cs.Ignore<uint16_t>();
 
-                    std::vector<rct_peep_thought> temp;
-                    cs.ReadWriteVector(temp, [&cs](rct_peep_thought& thought) {
+                    std::vector<PeepThought> temp;
+                    cs.ReadWriteVector(temp, [&cs](PeepThought& thought) {
                         cs.ReadWrite(thought.type);
                         cs.ReadWrite(thought.item);
                         cs.ReadWrite(thought.freshness);
@@ -1743,7 +1743,6 @@ namespace OpenRCT2
         cs.ReadWrite(entity.dodgems_collision_direction);
         cs.ReadWrite(entity.animation_frame);
         cs.ReadWrite(entity.animationState);
-        cs.ReadWrite(entity.var_CA);
         cs.ReadWrite(entity.scream_sound_id);
         cs.ReadWrite(entity.TrackSubposition);
         cs.ReadWrite(entity.var_CE);
@@ -1863,9 +1862,9 @@ namespace OpenRCT2
         cs.ReadWrite(guest.RejoinQueueTimeout);
         cs.ReadWrite(guest.PreviousRide);
         cs.ReadWrite(guest.PreviousRideTimeOut);
-        cs.ReadWriteArray(guest.Thoughts, [&cs](rct_peep_thought& thought) {
+        cs.ReadWriteArray(guest.Thoughts, [&cs](PeepThought& thought) {
             cs.ReadWrite(thought.type);
-            cs.ReadWrite(thought.argument);
+            cs.ReadWrite(thought.item);
             cs.ReadWrite(thought.freshness);
             cs.ReadWrite(thought.fresh_timeout);
             return true;

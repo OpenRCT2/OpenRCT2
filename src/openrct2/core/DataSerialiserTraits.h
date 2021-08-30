@@ -817,28 +817,28 @@ template<> struct DataSerializerTraits_t<IntensityRange>
     }
 };
 
-template<> struct DataSerializerTraits_t<rct_peep_thought>
+template<> struct DataSerializerTraits_t<PeepThought>
 {
-    static void encode(OpenRCT2::IStream* stream, const rct_peep_thought& val)
+    static void encode(OpenRCT2::IStream* stream, const PeepThought& val)
     {
         stream->Write(&val.type);
-        stream->Write(&val.argument);
+        stream->Write(&val.item);
         stream->Write(&val.freshness);
         stream->Write(&val.fresh_timeout);
     }
-    static void decode(OpenRCT2::IStream* stream, rct_peep_thought& val)
+    static void decode(OpenRCT2::IStream* stream, PeepThought& val)
     {
         stream->Read(&val.type);
-        stream->Read(&val.argument);
+        stream->Read(&val.item);
         stream->Read(&val.freshness);
         stream->Read(&val.fresh_timeout);
     }
-    static void log(OpenRCT2::IStream* stream, const rct_peep_thought& val)
+    static void log(OpenRCT2::IStream* stream, const PeepThought& val)
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "rct_peep_thought(type = %d, item = %u, freshness = %d, freshtimeout = %d)",
-            static_cast<int32_t>(val.type), val.argument, val.freshness, val.fresh_timeout);
+            msg, sizeof(msg), "PeepThought(type = %d, item = %u, freshness = %d, freshtimeout = %d)",
+            static_cast<int32_t>(val.type), val.item, val.freshness, val.fresh_timeout);
         stream->Write(msg, strlen(msg));
     }
 };

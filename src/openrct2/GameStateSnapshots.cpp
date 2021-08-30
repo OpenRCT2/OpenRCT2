@@ -337,7 +337,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
         {
             COMPARE_FIELD(Guest, Thoughts[i].type);
-            COMPARE_FIELD(Guest, Thoughts[i].argument);
+            COMPARE_FIELD(Guest, Thoughts[i].item);
             COMPARE_FIELD(Guest, Thoughts[i].freshness);
             COMPARE_FIELD(Guest, Thoughts[i].fresh_timeout);
         }
@@ -427,7 +427,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             COMPARE_FIELD(Vehicle, pad_C6[i]);
         }
         COMPARE_FIELD(Vehicle, animationState);
-        COMPARE_FIELD(Vehicle, var_CA);
         COMPARE_FIELD(Vehicle, scream_sound_id);
         COMPARE_FIELD(Vehicle, TrackSubposition);
         COMPARE_FIELD(Vehicle, num_laps);

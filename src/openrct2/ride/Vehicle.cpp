@@ -50,6 +50,7 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2::TrackMetaData;
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
@@ -1522,16 +1523,16 @@ bool Vehicle::OpenRestraints()
         }
         if (vehicleEntry->animation == VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
         {
-            if (vehicle->animationState + 0x3333 < 0xFFFF)
+            if (vehicle->animationState <= 0xCCCC)
             {
-                vehicle->animationState = vehicle->animationState + 0x3333 - 0xFFFF;
-                vehicle->animation_frame++;
-                vehicle->animation_frame &= 7;
-                vehicle->Invalidate();
+                vehicle->animationState += 0x3333;
             }
             else
             {
-                vehicle->animationState += 0x3333;
+                vehicle->animationState = 0;
+                vehicle->animation_frame++;
+                vehicle->animation_frame &= 7;
+                vehicle->Invalidate();
             }
             restraintsOpen = false;
             continue;
@@ -1713,7 +1714,8 @@ void Vehicle::UpdateMeasurements()
                 }
         }
 
-        uint16_t trackFlags = TrackFlags[trackElemType];
+        const auto& ted = GetTrackElementDescriptor(trackElemType);
+        uint16_t trackFlags = ted.Flags;
 
         uint32_t testingFlags = curRide->testing_flags;
         if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
@@ -3646,10 +3648,9 @@ void Vehicle::UpdateCollisionSetup()
         }
 
         train->IsCrashedVehicle = true;
-        train->animationState = scenario_rand();
-        train->var_CA = scenario_rand();
+        train->animationState = scenario_rand() & 0xFFFF;
 
-        train->animation_frame = train->var_CA & 0x7;
+        train->animation_frame = scenario_rand() & 0x7;
         train->sprite_width = 13;
         train->sprite_height_negative = 45;
         train->sprite_height_positive = 5;
@@ -5513,14 +5514,18 @@ void Vehicle::UpdateCrash()
                     ExplosionCloud::Create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
                 }
             }
-            if (curVehicle->animationState + 7281 > 0xFFFF)
+            if (curVehicle->animationState <= 0xe388)
             {
+                curVehicle->animationState += 0x1c71;
+            }
+            else
+            {
+                curVehicle->animationState = 0;
                 curVehicle->animation_frame++;
                 if (curVehicle->animation_frame >= 8)
                     curVehicle->animation_frame = 0;
                 curVehicle->Invalidate();
             }
-            curVehicle->animationState += 7281;
             continue;
         }
 
@@ -7319,7 +7324,6 @@ void Vehicle::UpdateAdditionalAnimation()
     uint8_t curFrame{};
     uint32_t eax{};
 
-    uint32_t* curAnimationState = reinterpret_cast<uint32_t*>(&animationState);
     auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
@@ -7328,8 +7332,8 @@ void Vehicle::UpdateAdditionalAnimation()
     switch (vehicleEntry->animation)
     {
         case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
-            *curAnimationState += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimationState >> 20) & 3;
+            animationState += _vehicleVelocityF64E08;
+            targetFrame = (animationState >> 20) & 3;
             if (animation_frame != targetFrame)
             {
                 curFrame = animation_frame;
@@ -7367,8 +7371,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
-            *curAnimationState += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimationState >> 18) & 2;
+            animationState += _vehicleVelocityF64E08;
+            targetFrame = (animationState >> 18) & 2;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
@@ -7376,8 +7380,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
-            *curAnimationState += _vehicleVelocityF64E08;
-            eax = ((*curAnimationState >> 13) & 0xFF) * 6;
+            animationState += _vehicleVelocityF64E08;
+            eax = ((animationState >> 13) & 0xFF) * 6;
             targetFrame = (eax >> 8) & 0xFF;
             if (animation_frame != targetFrame)
             {
@@ -7386,8 +7390,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
-            *curAnimationState += _vehicleVelocityF64E08;
-            eax = ((*curAnimationState >> 13) & 0xFF) * 7;
+            animationState += _vehicleVelocityF64E08;
+            eax = ((animationState >> 13) & 0xFF) * 7;
             targetFrame = (eax >> 8) & 0xFF;
             if (animation_frame != targetFrame)
             {
@@ -7396,8 +7400,8 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
-            *curAnimationState += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimationState >> 19) & 1;
+            animationState += _vehicleVelocityF64E08;
+            targetFrame = (animationState >> 19) & 1;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
@@ -7411,15 +7415,15 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             else
             {
-                animationState += 0x3333;
+                animationState = 0;
                 animation_frame += 1;
                 animation_frame &= 7;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
-            *curAnimationState += _vehicleVelocityF64E08;
-            targetFrame = (*curAnimationState >> 18) & 3;
+            animationState += _vehicleVelocityF64E08;
+            targetFrame = (animationState >> 18) & 3;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
@@ -7429,8 +7433,8 @@ void Vehicle::UpdateAdditionalAnimation()
         case VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
             if (num_peeps != 0)
             {
-                *curAnimationState += _vehicleVelocityF64E08;
-                eax = ((*curAnimationState >> 13) & 0xFF) << 2;
+                animationState += _vehicleVelocityF64E08;
+                eax = ((animationState >> 13) & 0xFF) << 2;
                 targetFrame = (eax >> 8) & 0xFF;
                 if (animation_frame != targetFrame)
                 {
@@ -7448,7 +7452,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 }
                 else
                 {
-                    animationState += 0x3333;
+                    animationState = 0;
 
                     if (seat_rotation >= target_seat_rotation)
                         seat_rotation--;
@@ -7465,7 +7469,7 @@ void Vehicle::UpdateAdditionalAnimation()
             UpdateAnimationAnimalFlying();
             // makes animation play faster with vehicle speed
             targetFrame = abs(_vehicleVelocityF64E08) >> 24;
-            animationState = std::max(animationState - targetFrame, 0);
+            animationState = std::max(animationState - targetFrame, 0u);
             break;
     }
 }
@@ -7538,12 +7542,13 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
 void Vehicle::UpdateSceneryDoor() const
 {
     auto trackType = GetTrackType();
-    const rct_preview_track* trackBlock = TrackBlocks[trackType];
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    const rct_preview_track* trackBlock = ted.Block;
     while ((trackBlock + 1)->index != 255)
     {
         trackBlock++;
     }
-    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
+    const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
     auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_end) & 3;
 
@@ -7635,8 +7640,9 @@ static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement
 void Vehicle::UpdateSceneryDoorBackwards() const
 {
     auto trackType = GetTrackType();
-    const rct_preview_track* trackBlock = TrackBlocks[trackType];
-    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    const rct_preview_track* trackBlock = ted.Block;
+    const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
@@ -7974,7 +7980,8 @@ void Vehicle::Sub6DBF3E()
     }
 
     auto trackType = GetTrackType();
-    if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
     }
@@ -8587,7 +8594,8 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
             if (next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
                 trackType = tileElement->AsTrack()->GetTrackType();
-                if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_DOWN))
+                const auto& ted = GetTrackElementDescriptor(trackType);
+                if (!(ted.Flags & TRACK_ELEM_FLAG_DOWN))
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }
@@ -9251,7 +9259,8 @@ loc_6DCE02:
     }
     {
         auto trackType = GetTrackType();
-        if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
         {
             return;
         }

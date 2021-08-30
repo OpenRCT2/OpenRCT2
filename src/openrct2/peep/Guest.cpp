@@ -3226,7 +3226,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
     // Remove the related thought
     for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        rct_peep_thought* thought = &Thoughts[i];
+        PeepThought* thought = &Thoughts[i];
 
         if (thought->type == PeepThoughtType::None)
             break;
@@ -3236,7 +3236,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
 
         if (i < PEEP_MAX_THOUGHTS - 1)
         {
-            memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+            memmove(thought, thought + 1, sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
         }
 
         Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
@@ -6768,14 +6768,14 @@ bool Guest::HeadingForRideOrParkExit() const
  * argument_1 (esi & ebx)
  * argument_2 (esi+2)
  */
-void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft)
+void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft)
 {
     ft.Add<rct_string_id>(PeepThoughts[EnumValue(thought->type)]);
 
     PeepThoughtToActionFlag flags = PeepThoughtToActionMap[EnumValue(thought->type)].flags;
     if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)
     {
-        auto ride = get_ride(thought->ride);
+        auto ride = get_ride(thought->rideId);
         if (ride != nullptr)
         {
             ride->FormatNameTo(ft);
@@ -6787,30 +6787,32 @@ void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR)
     {
-        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->item).Naming.Singular);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->shopItem).Naming.Singular);
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE)
     {
-        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->item).Naming.Indefinite);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(thought->shopItem).Naming.Indefinite);
     }
 }
 
-void Guest::InsertNewThought(PeepThoughtType thoughtType)
+void Guest::InsertNewThought(PeepThoughtType thought_type)
 {
-    InsertNewThought(thoughtType, std::numeric_limits<uint32_t>::max());
+    InsertNewThought(thought_type, PeepThoughtItemNone);
 }
 
-void Guest::InsertNewThought(PeepThoughtType thoughtType, ride_id_t ride)
+void Guest::InsertNewThought(PeepThoughtType thought_type, ShopItem shopItem)
 {
-    InsertNewThought(thoughtType, static_cast<uint32_t>(ride));
+    InsertNewThought(thought_type, static_cast<uint16_t>(shopItem));
 }
 
-void Guest::InsertNewThought(PeepThoughtType thoughtType, ShopItem item)
-{
-    InsertNewThought(thoughtType, static_cast<uint32_t>(item));
-}
-
-void Guest::InsertNewThought(PeepThoughtType thoughtType, uint32_t arg)
+/**
+ *
+ *  rct2: 0x699F5A
+ * al:thoughtType
+ * ah:thoughtArguments
+ * esi: peep
+ */
+void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArguments)
 {
     PeepActionType newAction = PeepThoughtToActionMap[EnumValue(thoughtType)].action;
     if (newAction != PeepActionType::Walking && IsActionInterruptable())
@@ -6823,28 +6825,28 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint32_t arg)
 
     for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        rct_peep_thought* thought = &Thoughts[i];
+        PeepThought* thought = &Thoughts[i];
         // Remove the oldest thought by setting it to NONE.
         if (thought->type == PeepThoughtType::None)
             break;
 
-        if (thought->type == thoughtType && thought->argument == arg)
+        if (thought->type == thoughtType && thought->item == thoughtArguments)
         {
             // If the thought type has not changed then we need to move
             // it to the top of the thought list. This is done by first removing the
             // existing thought and placing it at the top.
             if (i < PEEP_MAX_THOUGHTS - 2)
             {
-                memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+                memmove(thought, thought + 1, sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
             }
             break;
         }
     }
 
-    memmove(&Thoughts[1], &Thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
+    memmove(&Thoughts[1], &Thoughts[0], sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - 1));
 
     Thoughts[0].type = thoughtType;
-    Thoughts[0].argument = arg;
+    Thoughts[0].item = thoughtArguments;
     Thoughts[0].freshness = 0;
     Thoughts[0].fresh_timeout = 0;
 
@@ -7446,7 +7448,7 @@ void Guest::RemoveRideFromMemory(ride_id_t rideId)
             break;
 
         // Ride ids and shop item ids might have the same value, look only for ride thoughts.
-        if (IsThoughtShopItemRelated(entry.type) || entry.ride != rideId)
+        if (IsThoughtShopItemRelated(entry.type) || entry.rideId != rideId)
         {
             it++;
             continue;
@@ -7461,6 +7463,6 @@ void Guest::RemoveRideFromMemory(ride_id_t rideId)
         // Last slot is now free.
         auto& lastEntry = Thoughts.back();
         lastEntry.type = PeepThoughtType::None;
-        lastEntry.argument = 0;
+        lastEntry.item = PeepThoughtItemNone;
     }
 }

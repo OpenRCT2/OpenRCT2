@@ -119,7 +119,7 @@ namespace RCT1
     {
     private:
         std::string _s4Path;
-        rct1_s4 _s4 = {};
+        S4 _s4 = {};
         uint8_t _gameVersion = 0;
         uint8_t _parkValueConversionFactor = 0;
         bool _isScenario = false;
@@ -323,27 +323,27 @@ namespace RCT1
         }
 
     private:
-        std::unique_ptr<rct1_s4> ReadAndDecodeS4(IStream* stream, bool isScenario)
+        std::unique_ptr<S4> ReadAndDecodeS4(IStream* stream, bool isScenario)
         {
-            auto s4 = std::make_unique<rct1_s4>();
+            auto s4 = std::make_unique<S4>();
             size_t dataSize = stream->GetLength() - stream->GetPosition();
             auto data = stream->ReadArray<uint8_t>(dataSize);
-            auto decodedData = std::make_unique<uint8_t[]>(sizeof(rct1_s4));
+            auto decodedData = std::make_unique<uint8_t[]>(sizeof(S4));
 
             size_t decodedSize;
             int32_t fileType = sawyercoding_detect_file_type(data.get(), dataSize);
             if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
             {
-                decodedSize = sawyercoding_decode_sc4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+                decodedSize = sawyercoding_decode_sc4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
             else
             {
-                decodedSize = sawyercoding_decode_sv4(data.get(), decodedData.get(), dataSize, sizeof(rct1_s4));
+                decodedSize = sawyercoding_decode_sv4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
 
-            if (decodedSize == sizeof(rct1_s4))
+            if (decodedSize == sizeof(S4))
             {
-                std::memcpy(s4.get(), decodedData.get(), sizeof(rct1_s4));
+                std::memcpy(s4.get(), decodedData.get(), sizeof(S4));
                 return s4;
             }
             else
@@ -461,12 +461,12 @@ namespace RCT1
         void AddAvailableEntriesFromResearchList()
         {
             size_t researchListCount;
-            const rct1_research_item* researchList = GetResearchList(&researchListCount);
+            const ResearchItem* researchList = GetResearchList(&researchListCount);
             std::bitset<RCT1_RIDE_TYPE_COUNT> rideTypeInResearch = GetRideTypesPresentInResearchList(
                 researchList, researchListCount);
             for (size_t i = 0; i < researchListCount; i++)
             {
-                const rct1_research_item* researchItem = &researchList[i];
+                const ResearchItem* researchItem = &researchList[i];
 
                 if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
                 {
@@ -815,7 +815,7 @@ namespace RCT1
             }
         }
 
-        void ImportRide(Ride* dst, rct1_ride* src, ride_id_t rideIndex)
+        void ImportRide(::Ride* dst, RCT1::Ride* src, ride_id_t rideIndex)
         {
             *dst = {};
             dst->id = rideIndex;
@@ -1090,7 +1090,7 @@ namespace RCT1
             dst->music_tune_id = 255;
         }
 
-        void SetRideColourScheme(Ride* dst, rct1_ride* src)
+        void SetRideColourScheme(::Ride* dst, RCT1::Ride* src)
         {
             // Colours
             dst->colour_scheme_type = src->colour_scheme;
@@ -1145,8 +1145,7 @@ namespace RCT1
                 for (int i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
                 {
                     // RCT1 had no third colour
-                    RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::
-                        GetColourSchemeCopyDescriptor(src->vehicle_type);
+                    const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->vehicle_type);
                     if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                     {
                         dst->vehicle_colours[i].Body = RCT1::GetColour(src->vehicle_colours[i].body);
@@ -1243,11 +1242,11 @@ namespace RCT1
             }
         }
 
-        void SetVehicleColours(Vehicle* dst, const rct1_vehicle* src)
+        void SetVehicleColours(::Vehicle* dst, const RCT1::Vehicle* src)
         {
-            rct1_ride* srcRide = &_s4.rides[src->ride];
-            uint8_t vehicleTypeIndex = srcRide->vehicle_type;
-            RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
+            const auto& srcRide = _s4.rides[src->ride];
+            uint8_t vehicleTypeIndex = srcRide.vehicle_type;
+            RCT1::VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
                 vehicleTypeIndex);
 
             // RCT1 had no third colour
@@ -1291,7 +1290,7 @@ namespace RCT1
             }
         }
 
-        void ImportPeep(Peep* dst, const rct1_peep* src)
+        void ImportPeep(::Peep* dst, const RCT1::Peep* src)
         {
             // Peep vs. staff (including which kind)
             dst->SpriteType = RCT1::GetPeepSpriteType(src->sprite_type);
@@ -1881,7 +1880,7 @@ namespace RCT1
             research_reset_items();
 
             size_t researchListCount;
-            const rct1_research_item* researchList = GetResearchList(&researchListCount);
+            const RCT1::ResearchItem* researchList = GetResearchList(&researchListCount);
 
             // Initialise the "seen" tables
             _researchRideEntryUsed.reset();
@@ -1896,29 +1895,29 @@ namespace RCT1
             bool researched = true;
             std::bitset<RCT1_RIDE_TYPE_COUNT> rideTypeInResearch = GetRideTypesPresentInResearchList(
                 researchList, researchListCount);
-            std::vector<rct1_research_item> vehiclesWithMissingRideTypes;
+            std::vector<RCT1::ResearchItem> vehiclesWithMissingRideTypes;
             for (size_t i = 0; i < researchListCount; i++)
             {
-                const rct1_research_item* researchItem = &researchList[i];
-                if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
+                const auto& researchItem = researchList[i];
+                if (researchItem.flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
                 {
-                    if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE)
+                    if (researchItem.item == RCT1_RESEARCH_END_AVAILABLE)
                     {
                         researched = false;
                         continue;
                     }
                     // We don't import the random items yet.
-                    else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE || researchItem->item == RCT1_RESEARCH_END)
+                    else if (researchItem.item == RCT1_RESEARCH_END_RESEARCHABLE || researchItem.item == RCT1_RESEARCH_END)
                     {
                         break;
                     }
                 }
 
-                switch (researchItem->type)
+                switch (researchItem.type)
                 {
                     case RCT1_RESEARCH_TYPE_THEME:
                     {
-                        uint8_t rct1SceneryTheme = researchItem->item;
+                        uint8_t rct1SceneryTheme = researchItem.item;
                         auto sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
                         if (sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_IGNORE
                             && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
@@ -1929,7 +1928,7 @@ namespace RCT1
                     }
                     case RCT1_RESEARCH_TYPE_RIDE:
                     {
-                        uint8_t rct1RideType = researchItem->item;
+                        uint8_t rct1RideType = researchItem.item;
                         _researchRideTypeUsed[rct1RideType] = true;
 
                         auto ownRideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
@@ -1943,11 +1942,11 @@ namespace RCT1
                             // Add all vehicles for this ride type that are researched or before this research item
                             for (size_t j = 0; j < researchListCount; j++)
                             {
-                                const rct1_research_item* researchItem2 = &researchList[j];
-                                if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
+                                const auto& researchItem2 = researchList[j];
+                                if (researchItem2.flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
                                 {
-                                    if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE
-                                        || researchItem2->item == RCT1_RESEARCH_END)
+                                    if (researchItem2.item == RCT1_RESEARCH_END_RESEARCHABLE
+                                        || researchItem2.item == RCT1_RESEARCH_END)
                                     {
                                         break;
                                     }
@@ -1955,10 +1954,10 @@ namespace RCT1
                                     continue;
                                 }
 
-                                if (researchItem2->type == RCT1_RESEARCH_TYPE_VEHICLE
-                                    && researchItem2->related_ride == rct1RideType)
+                                if (researchItem2.type == RCT1_RESEARCH_TYPE_VEHICLE
+                                    && researchItem2.related_ride == rct1RideType)
                                 {
-                                    auto rideEntryIndex2 = _vehicleTypeToRideEntryMap[researchItem2->item];
+                                    auto rideEntryIndex2 = _vehicleTypeToRideEntryMap[researchItem2.item];
                                     bool isOwnType = (ownRideEntryIndex == rideEntryIndex2);
                                     if (isOwnType)
                                     {
@@ -1991,13 +1990,13 @@ namespace RCT1
                         // Only add vehicle if the related ride has been seen, this to make sure that vehicles
                         // are researched only after the ride has been researched. Otherwise, remove them from the research
                         // list, so that they are automatically co-invented when their master ride is invented.
-                        if (_researchRideTypeUsed[researchItem->related_ride])
+                        if (_researchRideTypeUsed[researchItem.related_ride])
                         {
                             InsertResearchVehicle(researchItem, researched);
                         }
-                        else if (!rideTypeInResearch[researchItem->related_ride] && _gameVersion == FILE_VERSION_RCT1_LL)
+                        else if (!rideTypeInResearch[researchItem.related_ride] && _gameVersion == FILE_VERSION_RCT1_LL)
                         {
-                            vehiclesWithMissingRideTypes.push_back(*researchItem);
+                            vehiclesWithMissingRideTypes.push_back(researchItem);
                         }
 
                         break;
@@ -2007,9 +2006,9 @@ namespace RCT1
                         break;
                 }
             }
-            for (const rct1_research_item& researchItem : vehiclesWithMissingRideTypes)
+            for (const auto& researchItem : vehiclesWithMissingRideTypes)
             {
-                InsertResearchVehicle(&researchItem, false);
+                InsertResearchVehicle(researchItem, false);
             }
 
             // Research funding / priority
@@ -2055,7 +2054,7 @@ namespace RCT1
             }
             else
             {
-                ResearchItem researchItem = {};
+                ::ResearchItem researchItem = {};
                 ConvertResearchEntry(&researchItem, _s4.last_research_item, _s4.last_research_type);
                 gResearchLastItem = researchItem;
             }
@@ -2068,45 +2067,44 @@ namespace RCT1
             }
             else
             {
-                ResearchItem researchItem = {};
+                ::ResearchItem researchItem = {};
                 ConvertResearchEntry(&researchItem, _s4.next_research_item, _s4.next_research_type);
                 gResearchNextItem = researchItem;
             }
         }
 
         static std::bitset<RCT1_RIDE_TYPE_COUNT> GetRideTypesPresentInResearchList(
-            const rct1_research_item* researchList, size_t researchListCount)
+            const RCT1::ResearchItem* researchList, size_t researchListCount)
         {
             std::bitset<RCT1_RIDE_TYPE_COUNT> ret = {};
 
             for (size_t i = 0; i < researchListCount; i++)
             {
-                const rct1_research_item* researchItem = &researchList[i];
-                if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
+                const auto& researchItem = researchList[i];
+                if (researchItem.flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
                 {
-                    if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE
-                        || researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE)
+                    if (researchItem.item == RCT1_RESEARCH_END_AVAILABLE || researchItem.item == RCT1_RESEARCH_END_RESEARCHABLE)
                     {
                         continue;
                     }
-                    else if (researchItem->item == RCT1_RESEARCH_END)
+                    else if (researchItem.item == RCT1_RESEARCH_END)
                     {
                         break;
                     }
                 }
 
-                if (researchItem->type == RCT1_RESEARCH_TYPE_RIDE)
+                if (researchItem.type == RCT1_RESEARCH_TYPE_RIDE)
                 {
-                    ret[researchItem->item] = true;
+                    ret[researchItem.item] = true;
                 }
             }
 
             return ret;
         }
 
-        void InsertResearchVehicle(const rct1_research_item* researchItem, bool researched)
+        void InsertResearchVehicle(const ResearchItem& researchItem, bool researched)
         {
-            uint8_t vehicle = researchItem->item;
+            uint8_t vehicle = researchItem.item;
             auto rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
 
             if (!_researchRideEntryUsed[rideEntryIndex])
@@ -2184,7 +2182,7 @@ namespace RCT1
                     uint8_t researchItem = src->Assoc & 0x000000FF;
                     uint8_t researchType = (src->Assoc & 0x00FF0000) >> 16;
 
-                    ResearchItem tmpResearchItem = {};
+                    ::ResearchItem tmpResearchItem = {};
                     ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
                     dst->Assoc = tmpResearchItem.rawValue;
                 }
@@ -2228,7 +2226,7 @@ namespace RCT1
             gTotalRideValueForMoney = _s4.total_ride_value_for_money;
         }
 
-        void ConvertResearchEntry(ResearchItem* dst, uint8_t srcItem, uint8_t srcType)
+        void ConvertResearchEntry(::ResearchItem* dst, uint8_t srcItem, uint8_t srcType)
         {
             dst->SetNull();
             if (srcType == RCT1_RESEARCH_TYPE_RIDE)
@@ -2463,7 +2461,7 @@ namespace RCT1
             return nullptr;
         }
 
-        const rct1_research_item* GetResearchList(size_t* count)
+        const RCT1::ResearchItem* GetResearchList(size_t* count)
         {
             // Loopy Landscapes stores research items in a different place
             if (_gameVersion == FILE_VERSION_RCT1_LL)
@@ -2626,7 +2624,7 @@ namespace RCT1
         ObjectEntryIndex GetBuildTheBestRideId()
         {
             size_t researchListCount;
-            const rct1_research_item* researchList = GetResearchList(&researchListCount);
+            const RCT1::ResearchItem* researchList = GetResearchList(&researchListCount);
             for (size_t i = 0; i < researchListCount; i++)
             {
                 if (researchList[i].flags == 0xFF)
@@ -2654,7 +2652,7 @@ namespace RCT1
                 output = EntityType::Vehicle;
                 break;
             case RCT12SpriteIdentifier::Peep:
-                if (RCT12PeepType(static_cast<const rct1_peep*>(&src)->type) == RCT12PeepType::Guest)
+                if (RCT12PeepType(static_cast<const RCT1::Peep*>(&src)->type) == RCT12PeepType::Guest)
                 {
                     output = EntityType::Guest;
                 }
@@ -2708,10 +2706,10 @@ namespace RCT1
         return output;
     }
 
-    template<> void S4Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& srcBase)
+    template<> void S4Importer::ImportEntity<::Vehicle>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Vehicle>(srcBase.sprite_index);
-        auto* src = static_cast<const rct1_vehicle*>(&srcBase);
+        auto* dst = CreateEntityAt<::Vehicle>(srcBase.sprite_index);
+        auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
         const auto* ride = get_ride(src->ride);
         if (ride == nullptr)
             return;
@@ -2722,7 +2720,7 @@ namespace RCT1
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;
-        dst->SubType = Vehicle::Type(src->type);
+        dst->SubType = ::Vehicle::Type(src->type);
         dst->var_44 = src->var_44;
         dst->remaining_distance = src->remaining_distance;
 
@@ -2759,7 +2757,6 @@ namespace RCT1
         dst->var_C4 = src->var_C4;
         dst->animation_frame = src->animation_frame;
         dst->animationState = src->animationState;
-        dst->var_CA = src->var_CA;
         dst->var_CE = src->var_CE;
         dst->var_D3 = src->var_D3;
         dst->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
@@ -2786,16 +2783,16 @@ namespace RCT1
             }
         }
 
-        Vehicle::Status statusSrc = Vehicle::Status::MovingToEndOfStation;
-        if (src->status <= static_cast<uint8_t>(Vehicle::Status::StoppedByBlockBrakes))
+        ::Vehicle::Status statusSrc = ::Vehicle::Status::MovingToEndOfStation;
+        if (src->status <= static_cast<uint8_t>(::Vehicle::Status::StoppedByBlockBrakes))
         {
-            statusSrc = static_cast<Vehicle::Status>(src->status);
+            statusSrc = static_cast<::Vehicle::Status>(src->status);
         }
         dst->status = statusSrc;
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
-        if (src->boat_location.isNull() || ride->mode != RideMode::BoatHire || statusSrc != Vehicle::Status::TravellingBoat)
+        if (src->boat_location.isNull() || ride->mode != RideMode::BoatHire || statusSrc != ::Vehicle::Status::TravellingBoat)
         {
             dst->BoatLocation.setNull();
             dst->SetTrackDirection(src->GetTrackDirection());
@@ -2827,7 +2824,7 @@ namespace RCT1
     template<> void S4Importer::ImportEntity<Guest>(const RCT12SpriteBase& srcBase)
     {
         auto* dst = CreateEntityAt<Guest>(srcBase.sprite_index);
-        auto* src = static_cast<const rct1_peep*>(&srcBase);
+        auto* src = static_cast<const RCT1::Peep*>(&srcBase);
         ImportPeep(dst, src);
 
         dst->OutsideOfPark = static_cast<bool>(src->outside_of_park);
@@ -2886,14 +2883,10 @@ namespace RCT1
             auto srcThought = &src->thoughts[i];
             auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-            if (srcThought->item == 255)
-            {
-                dstThought->argument = std::numeric_limits<uint32_t>::max();
-            }
+            if (srcThought->item == RCT12PeepThoughtItemNone)
+                dstThought->item = PeepThoughtItemNone;
             else
-            {
-                dstThought->argument = srcThought->item;
-            }
+                dstThought->item = srcThought->item;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
@@ -2931,7 +2924,7 @@ namespace RCT1
     template<> void S4Importer::ImportEntity<Staff>(const RCT12SpriteBase& srcBase)
     {
         auto* dst = CreateEntityAt<Staff>(srcBase.sprite_index);
-        auto* src = static_cast<const rct1_peep*>(&srcBase);
+        auto* src = static_cast<const RCT1::Peep*>(&srcBase);
         ImportPeep(dst, src);
         dst->AssignedStaffType = StaffType(src->staff_type);
         dst->MechanicTimeSinceCall = src->mechanic_time_since_call;
@@ -3050,7 +3043,7 @@ namespace RCT1
         switch (GetEntityTypeFromRCT1Sprite(src))
         {
             case EntityType::Vehicle:
-                ImportEntity<Vehicle>(src);
+                ImportEntity<::Vehicle>(src);
                 break;
             case EntityType::Guest:
                 ImportEntity<Guest>(src);

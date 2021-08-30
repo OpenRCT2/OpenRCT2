@@ -28,6 +28,8 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 
+using namespace OpenRCT2::TrackMetaData;
+
 // clang-format off
 /* rct2: 0x007667AC */
 static constexpr TileCoordsXY EntranceOffsetEdgeNE[] = {
@@ -1043,7 +1045,9 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
         CoordsXY boundsLength = boundsLengths[direction][index][1];
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][1]);
 
-        PaintAddImageAsParent(session, imageId, { offset, height }, { boundsLength, thickness[1] }, boundsOffset);
+        PaintAddImageAsParent(
+            session, imageId, { offset, height }, { boundsLength, thickness[1] },
+            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
     }
 }
 
@@ -1480,7 +1484,7 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_2(
     const sprite_bb* spriteBB = &sprites[direction][sprite];
     const uint32_t imageId = spriteBB->sprite_id | colourFlags;
     const auto& offset = spriteBB->offset;
-    const auto& bbOffset = spriteBB->offset;
+    const auto& bbOffset = spriteBB->bb_offset;
     PaintAddImageAsParent(
         session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size,
         { bbOffset.x, bbOffset.y, height + bbOffset.z });
@@ -2196,7 +2200,8 @@ void PaintTrack(paint_session* session, Direction direction, int32_t height, con
         if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_TRACK_HEIGHTS))
         {
             session->InteractionType = ViewportInteractionItem::None;
-            if (TrackHeightMarkerPositions[trackType] & (1 << trackSequence))
+            const auto& ted = GetTrackElementDescriptor(trackType);
+            if (ted.HeightMarkerPositions & (1 << trackSequence))
             {
                 uint16_t ax = ride->GetRideTypeDescriptor().Heights.VehicleZOffset;
                 // 0x1689 represents 0 height there are -127 to 128 heights above and below it

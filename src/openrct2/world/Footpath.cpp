@@ -40,6 +40,7 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2::TrackMetaData;
 void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElement* tileElement);
 
 FootpathSelection gFootpathSelection;
@@ -887,13 +888,15 @@ static void loc_6A6D7E(
 
                         const auto trackType = tileElement->AsTrack()->GetTrackType();
                         const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
-                        if (!(TrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
+                        const auto& ted = GetTrackElementDescriptor(trackType);
+                        if (!(ted.SequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
                         {
                             return;
                         }
                         uint16_t dx = direction_reverse(
                             (direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
-                        if (!(TrackSequenceProperties[trackType][trackSequence] & (1 << dx)))
+
+                        if (!(ted.SequenceProperties[trackSequence] & (1 << dx)))
                         {
                             return;
                         }
@@ -969,12 +972,13 @@ static void loc_6A6C85(
 
         const auto trackType = tileElementPos.element->AsTrack()->GetTrackType();
         const uint8_t trackSequence = tileElementPos.element->AsTrack()->GetSequenceIndex();
-        if (!(TrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        if (!(ted.SequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
         {
             return;
         }
         uint16_t dx = (direction - tileElementPos.element->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
-        if (!(TrackSequenceProperties[trackType][trackSequence] & (1 << dx)))
+        if (!(ted.SequenceProperties[trackSequence] & (1 << dx)))
         {
             return;
         }
@@ -2139,10 +2143,11 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
 
                     const auto trackType = tileElement->AsTrack()->GetTrackType();
                     const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
-                    if (TrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
+                    const auto& ted = GetTrackElementDescriptor(trackType);
+                    if (ted.SequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
                     {
                         uint16_t dx = ((coords.direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
-                        if (TrackSequenceProperties[trackType][trackSequence] & (1 << dx))
+                        if (ted.SequenceProperties[trackSequence] & (1 << dx))
                         {
                             // Track element has the flags required for the given direction
                             return true;

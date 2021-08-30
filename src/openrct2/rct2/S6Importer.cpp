@@ -1746,7 +1746,6 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->dodgems_collision_direction = src->dodgems_collision_direction;
     dst->animation_frame = src->animation_frame;
     dst->animationState = src->animationState;
-    dst->var_CA = src->var_CA;
     dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
     dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
     dst->var_CE = src->var_CE;
@@ -1804,14 +1803,10 @@ template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
         auto srcThought = &src->thoughts[i];
         auto dstThought = &dst->Thoughts[i];
         dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-        if (srcThought->item == 255)
-        {
-            dstThought->argument = std::numeric_limits<uint32_t>::max();
-        }
+        if (srcThought->item == RCT12PeepThoughtItemNone)
+            dstThought->item = PeepThoughtItemNone;
         else
-        {
-            dstThought->argument = srcThought->item;
-        }
+            dstThought->item = srcThought->item;
         dstThought->freshness = srcThought->freshness;
         dstThought->fresh_timeout = srcThought->fresh_timeout;
     }

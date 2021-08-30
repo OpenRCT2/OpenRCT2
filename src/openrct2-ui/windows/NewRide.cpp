@@ -33,6 +33,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2::TrackMetaData;
+
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 constexpr size_t AVAILABILITY_STRING_SIZE = 256;
 static constexpr const int32_t WH = 382;
@@ -941,9 +943,10 @@ static void window_new_ride_paint_ride_information(
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Get price of ride
-        int32_t unk2 = GetRideTypeDescriptor(item.Type).StartTrackPiece;
+        int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
         money64 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
-        price *= TrackPricing[unk2];
+        const auto& ted = GetTrackElementDescriptor(startPieceId);
+        price *= ted.Price;
         price = (price >> 17) * 10 * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
         //

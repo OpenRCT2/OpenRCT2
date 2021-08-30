@@ -440,6 +440,7 @@
     <ClInclude Include="scripting\bindings\network\ScSocket.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTile.hpp" />
     <ClInclude Include="sprites.h" />
+    <ClInclude Include="System.hpp" />
     <ClInclude Include="title\TitleScreen.h" />
     <ClInclude Include="title\TitleSequence.h" />
     <ClInclude Include="title\TitleSequenceManager.h" />

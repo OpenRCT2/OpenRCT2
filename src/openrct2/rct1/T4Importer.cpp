@@ -95,8 +95,8 @@ namespace RCT1
         std::unique_ptr<TrackDesign> ImportAA()
         {
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
-            rct_track_td4_aa td4aa{};
-            _stream.Read(&td4aa, sizeof(rct_track_td4_aa));
+            TD4AA td4aa{};
+            _stream.Read(&td4aa, sizeof(TD4AA));
 
             for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
             {
@@ -113,8 +113,8 @@ namespace RCT1
         std::unique_ptr<TrackDesign> ImportTD4()
         {
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
-            rct_track_td4 td4{};
-            _stream.Read(&td4, sizeof(rct_track_td4));
+            TD4 td4{};
+            _stream.Read(&td4, sizeof(TD4));
             for (int32_t i = 0; i < NUM_COLOUR_SCHEMES; i++)
             {
                 td->track_spine_colour[i] = RCT1::GetColour(td4.track_spine_colour_v0);
@@ -137,7 +137,7 @@ namespace RCT1
             return ImportTD4Base(std::move(td), td4);
         }
 
-        std::unique_ptr<TrackDesign> ImportTD4Base(std::unique_ptr<TrackDesign> td, rct_track_td4& td4Base)
+        std::unique_ptr<TrackDesign> ImportTD4Base(std::unique_ptr<TrackDesign> td, TD4& td4Base)
         {
             td->type = RCT1::GetRideType(td4Base.type, td4Base.vehicle_type);
 
@@ -169,7 +169,7 @@ namespace RCT1
             for (int32_t i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
             {
                 // RCT1 had no third colour
-                RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
+                RCT1::VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
                     td4Base.vehicle_type);
                 if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                 {
