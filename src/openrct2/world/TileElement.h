@@ -350,11 +350,7 @@ private:
         struct
         {
             uint8_t Sequence;
-            union
-            {
-                uint8_t ColourScheme;
-                uint8_t SeatRotation;
-            };
+            uint8_t ColourScheme;
             union
             {
                 // - Bits 3 and 4 are never set

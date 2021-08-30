@@ -938,17 +938,18 @@ bool TrackTypeHasSpeedSetting(track_type_t trackType)
 
 uint8_t TrackElement::GetSeatRotation() const
 {
+    // this field is shared with ghost train landscape doors
     const auto* ride = get_ride(GetRideIndex());
     if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         return DEFAULT_SEAT_ROTATION;
 
-    return SeatRotation >> 4;
+    return ColourScheme >> 4;
 }
 
 void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 {
-    SeatRotation &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
-    SeatRotation |= (newSeatRotation << 4);
+    ColourScheme &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
+    ColourScheme |= (newSeatRotation << 4);
 }
 
 bool TrackElement::IsTakingPhoto() const
