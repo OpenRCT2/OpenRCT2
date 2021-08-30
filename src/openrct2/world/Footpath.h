@@ -49,6 +49,23 @@ struct rct_footpath_entry
     RailingEntrySupportType support_type; // 0x0A
     uint8_t flags;                        // 0x0B
     uint8_t scrolling_mode;               // 0x0C
+
+    constexpr uint32_t GetQueueImage() const
+    {
+        return image + 51;
+    }
+    constexpr uint32_t GetPreviewImage() const
+    {
+        return image + 71;
+    }
+    constexpr uint32_t GetQueuePreviewImage() const
+    {
+        return image + 72;
+    }
+    constexpr uint32_t GetRailingsImage() const
+    {
+        return image + 73;
+    }
 };
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
@@ -117,6 +134,7 @@ enum
 {
     FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
     FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
+    FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS = (1 << 4),
 };
 
 enum

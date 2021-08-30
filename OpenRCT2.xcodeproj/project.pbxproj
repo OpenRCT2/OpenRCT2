@@ -60,6 +60,8 @@
 		4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */; };
 		4C91FD5F25AE476700CA5DA4 /* MusicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */; };
 		4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD6025AE483600CA5DA4 /* RideAudio.cpp */; };
+		4C976BC5263976F0002DEBD5 /* FootpathSurfaceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C976BC1263976F0002DEBD5 /* FootpathSurfaceObject.cpp */; };
+		4C976BC6263976F0002DEBD5 /* FootpathRailingsObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C976BC2263976F0002DEBD5 /* FootpathRailingsObject.cpp */; };
 		4CA23D64263C91D800077AA1 /* ChecksumStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA23D62263C91D700077AA1 /* ChecksumStream.cpp */; };
 		4CA23DB2263C920900077AA1 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA23DB1263C920900077AA1 /* Entity.cpp */; };
 		4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */; };
@@ -1189,6 +1191,10 @@
 		4C93F1B71F8E185600A9330D /* NewsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsItem.h; sourceTree = "<group>"; };
 		4C93F1B81F8E185600A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1B91F8E185600A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
+		4C976BC1263976F0002DEBD5 /* FootpathSurfaceObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathSurfaceObject.cpp; sourceTree = "<group>"; };
+		4C976BC2263976F0002DEBD5 /* FootpathRailingsObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathRailingsObject.cpp; sourceTree = "<group>"; };
+		4C976BC3263976F0002DEBD5 /* FootpathRailingsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathRailingsObject.h; sourceTree = "<group>"; };
+		4C976BC4263976F0002DEBD5 /* FootpathSurfaceObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathSurfaceObject.h; sourceTree = "<group>"; };
 		4CA23D62263C91D700077AA1 /* ChecksumStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChecksumStream.cpp; sourceTree = "<group>"; };
 		4CA23D63263C91D700077AA1 /* ChecksumStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecksumStream.h; sourceTree = "<group>"; };
 		4CA23DAF263C920900077AA1 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
@@ -2739,6 +2745,10 @@
 				F76C84171EC4E7CC00FA49E2 /* FootpathItemObject.h */,
 				F76C84181EC4E7CC00FA49E2 /* FootpathObject.cpp */,
 				F76C84191EC4E7CC00FA49E2 /* FootpathObject.h */,
+				4C976BC2263976F0002DEBD5 /* FootpathRailingsObject.cpp */,
+				4C976BC3263976F0002DEBD5 /* FootpathRailingsObject.h */,
+				4C976BC1263976F0002DEBD5 /* FootpathSurfaceObject.cpp */,
+				4C976BC4263976F0002DEBD5 /* FootpathSurfaceObject.h */,
 				F76C841A1EC4E7CC00FA49E2 /* ImageTable.cpp */,
 				F76C841B1EC4E7CC00FA49E2 /* ImageTable.h */,
 				F76C841C1EC4E7CC00FA49E2 /* LargeSceneryObject.cpp */,
@@ -3980,6 +3990,7 @@
 				4CA23DB2263C920900077AA1 /* Entity.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
 				C68878C720289B710084B384 /* OpenGLShaderProgram.cpp in Sources */,
+				4C976BC5263976F0002DEBD5 /* FootpathSurfaceObject.cpp in Sources */,
 				4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */,
 				93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
@@ -3993,6 +4004,7 @@
 				C68878C520289B710084B384 /* OpenGLDrawingEngine.cpp in Sources */,
 				C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */,
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
+				4C976BC6263976F0002DEBD5 /* FootpathRailingsObject.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
