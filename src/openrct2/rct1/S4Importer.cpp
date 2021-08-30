@@ -1029,8 +1029,7 @@ namespace RCT1
                 for (int i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
                 {
                     // RCT1 had no third colour
-                    RCT1::VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
-                        src->vehicle_type);
+                    const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->vehicle_type);
                     if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                     {
                         dst->vehicle_colours[i].Body = RCT1::GetColour(src->vehicle_colours[i].body);
