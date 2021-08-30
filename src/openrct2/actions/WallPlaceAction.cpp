@@ -443,7 +443,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
             return false;
         }
 
-        if (TrackDefinitions[trackType].bank_start == 0)
+        if (ted.Definition.bank_start == 0)
         {
             if (!(ted.Coordinates.rotation_begin & 4))
             {
@@ -468,7 +468,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    if (TrackDefinitions[trackType].bank_end != 0)
+    if (ted.Definition.bank_end != 0)
     {
         return false;
     }

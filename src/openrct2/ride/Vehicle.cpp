@@ -7599,7 +7599,8 @@ void Vehicle::UpdateLandscapeDoor() const
 static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
-    return PitchAndRoll{ TrackDefinitions[trackType].vangle_start, track_get_actual_bank_3(useInvertedSprites, tileElement) };
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    return PitchAndRoll{ ted.Definition.vangle_start, track_get_actual_bank_3(useInvertedSprites, tileElement) };
 }
 
 void Vehicle::UpdateGoKartAttemptSwitchLanes()
@@ -8473,8 +8474,8 @@ loc_6DAEB9:
 static PitchAndRoll PitchAndRollEnd(Ride* curRide, bool useInvertedSprites, uint16_t trackType, TileElement* tileElement)
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
-    return { TrackDefinitions[trackType].vangle_end,
-             track_get_actual_bank_2(curRide->type, isInverted, TrackDefinitions[trackType].bank_end) };
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    return { ted.Definition.vangle_end, track_get_actual_bank_2(curRide->type, isInverted, ted.Definition.bank_end) };
 }
 
 /**

@@ -70,6 +70,8 @@ struct TrackElementDescriptor
 
     std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
     std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;
+
+    rct_trackdefinition Definition;
 };
 
 namespace OpenRCT2

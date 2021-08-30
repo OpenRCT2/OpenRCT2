@@ -661,8 +661,8 @@ void ride_construction_set_default_next_piece()
 
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.next;
-            bank = TrackDefinitions[trackType].bank_end;
-            slope = TrackDefinitions[trackType].vangle_end;
+            bank = ted->Definition.bank_end;
+            slope = ted->Definition.vangle_end;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -707,8 +707,8 @@ void ride_construction_set_default_next_piece()
 
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.previous;
-            bank = TrackDefinitions[trackType].bank_start;
-            slope = TrackDefinitions[trackType].vangle_start;
+            bank = ted->Definition.bank_start;
+            slope = ted->Definition.vangle_start;
 
             // Set track curve
             _currentTrackCurve = curve;

@@ -2367,7 +2367,7 @@ static void window_ride_construction_draw_track_piece(
     mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
     mapCoords.z = 1024 + mapCoords.z;
 
-    int16_t previewZOffset = TrackDefinitions[trackType].preview_z_offset;
+    int16_t previewZOffset = ted.Definition.preview_z_offset;
     mapCoords.z -= previewZOffset;
 
     const ScreenCoordsXY rotatedScreenCoords = translate_3d_to_2d_with_z(get_current_rotation(), mapCoords);
@@ -2705,7 +2705,8 @@ static void window_ride_construction_update_possible_ride_configurations()
     _numCurrentPossibleSpecialTrackPieces = 0;
     for (trackType = 0; trackType < TrackElemType::Count; trackType++)
     {
-        int32_t trackTypeCategory = TrackDefinitions[trackType].type;
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        int32_t trackTypeCategory = ted.Definition.type;
 
         if (trackTypeCategory == TRACK_NONE)
             continue;
@@ -2718,13 +2719,13 @@ static void window_ride_construction_update_possible_ride_configurations()
         int32_t slope, bank;
         if (_rideConstructionState == RideConstructionState::Front || _rideConstructionState == RideConstructionState::Place)
         {
-            slope = TrackDefinitions[trackType].vangle_start;
-            bank = TrackDefinitions[trackType].bank_start;
+            slope = ted.Definition.vangle_start;
+            bank = ted.Definition.bank_start;
         }
         else if (_rideConstructionState == RideConstructionState::Back)
         {
-            slope = TrackDefinitions[trackType].vangle_end;
-            bank = TrackDefinitions[trackType].bank_end;
+            slope = ted.Definition.vangle_end;
+            bank = ted.Definition.bank_end;
         }
         else
         {
@@ -2733,7 +2734,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 
         if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
         {
-            if (TrackDefinitions[trackType].type == TRACK_HELIX_SMALL || TrackDefinitions[trackType].type == TRACK_HELIX_LARGE)
+            if (ted.Definition.type == TRACK_HELIX_SMALL || ted.Definition.type == TRACK_HELIX_LARGE)
             {
                 if (bank != _previousTrackBankEnd)
                 {
