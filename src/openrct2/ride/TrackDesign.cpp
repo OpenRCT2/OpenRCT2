@@ -197,7 +197,11 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
         track.type = trackElement.element->AsTrack()->GetTrackType();
 
         uint8_t trackFlags;
-        if (TrackTypeHasSpeedSetting(track.type))
+#ifdef EXPORT_AS_TD6
+        if (TrackTypeHasSpeedSetting(track.type) && track.type != TrackElemType::BlockBrakes)
+#else
+        if (TrackTypeHasSpeedSetting(track.type) && track.type)
+#endif
         {
             trackFlags = trackElement.element->AsTrack()->GetBrakeBoosterSpeed() >> 1;
         }
@@ -205,7 +209,6 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
         {
             trackFlags = trackElement.element->AsTrack()->GetSeatRotation();
         }
-
         if (trackElement.element->AsTrack()->HasChain())
             trackFlags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         trackFlags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
