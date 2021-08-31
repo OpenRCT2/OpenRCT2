@@ -8441,18 +8441,18 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
             }
         }
 
-    if (trackType == TrackElemType::Brakes)
-    {
-        auto trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
-        if (((trackElement != nullptr && trackElement->AsTrack()->GetBrakeClosed()) || trackElement == nullptr)
-            && -(brake_speed << 16) > _vehicleVelocityF64E08)
+        if (trackType == TrackElemType::Brakes)
         {
-            if (-(brake_speed << 16) > _vehicleVelocityF64E08)
+            auto trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
+            if (((trackElement != nullptr && trackElement->AsTrack()->GetBrakeClosed()) || trackElement == nullptr)
+                && -(brake_speed << 16) > _vehicleVelocityF64E08)
             {
-                acceleration = _vehicleVelocityF64E08 * -16;
+                if (-(brake_speed << 16) > _vehicleVelocityF64E08)
+                {
+                    acceleration = _vehicleVelocityF64E08 * -16;
+                }
             }
         }
-
         if (trackType == TrackElemType::Booster)
         {
             auto boosterSpeed = get_booster_speed(curRide->type, (brake_speed << 16));

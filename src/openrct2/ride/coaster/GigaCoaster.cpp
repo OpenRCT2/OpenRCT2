@@ -129,7 +129,7 @@ static void giga_rc_track_station(
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
-        bool isClosed = trackElement.BlockBrakeClosed();
+        bool isClosed = trackElement.GetBrakeClosed();
         PaintAddImageAsParentRotated(
             session, direction, _GigaCoasterBrakeImages[direction][isClosed][0] | session.TrackColours[SCHEME_TRACK], 0, 0, 32,
             20, 1, height, 0, 6, height + 3);
@@ -7617,7 +7617,7 @@ static void giga_rc_track_block_brakes(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool isClosed = trackElement.BlockBrakeClosed();
+    bool isClosed = trackElement.GetBrakeClosed();
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_TRACK] | _GigaCoasterBrakeImages[direction][isClosed][0], 0, 0, 32, 20,
         3, height, 0, 6, height);

@@ -478,8 +478,8 @@ static void wooden_rc_track_station(
     int32_t trackType = trackElement.GetTrackType();
     if (trackType == TrackElemType::EndStation)
     {
-        const auto brakeImg = trackElement.BlockBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
-                                                              : _wooden_rc_block_brakes_image_ids[direction][0];
+        const auto brakeImg = trackElement.GetBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
+                                                            : _wooden_rc_block_brakes_image_ids[direction][0];
         wooden_rc_track_paint(
             session, brakeImg, _wooden_rc_block_brakes_image_ids[direction][2], direction, 0, 2, 32, 27, 2, height, 0, 2,
             height);
@@ -11937,8 +11937,8 @@ static void wooden_rc_track_block_brakes(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const auto brakeImg = trackElement.BlockBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
-                                                          : _wooden_rc_block_brakes_image_ids[direction][0];
+    const auto brakeImg = trackElement.GetBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
+                                                        : _wooden_rc_block_brakes_image_ids[direction][0];
     wooden_rc_track_paint(
         session, brakeImg, _wooden_rc_block_brakes_image_ids[direction][2], direction, 0, 2, 32, 25, 2, height, 0, 3, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);

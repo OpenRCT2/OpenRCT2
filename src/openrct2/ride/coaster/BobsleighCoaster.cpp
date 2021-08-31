@@ -3449,7 +3449,7 @@ static void bobsleigh_rc_track_block_brakes(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool isClosed = trackElement.BlockBrakeClosed();
+    bool isClosed = trackElement.GetBrakeClosed();
     switch (direction)
     {
         case 0:
