@@ -119,12 +119,34 @@ const uint32_t floorSpritesCork[] = {
     SPR_FLOOR_CORK
 };
 
+const uint32_t floorSpritesMetal[] = {
+    SPR_FLOOR_METAL,
+    SPR_FLOOR_METAL,
+    SPR_FLOOR_METAL,
+    SPR_FLOOR_METAL
+};
+
+const uint32_t floorSpritesMetalB[] = {
+    SPR_FLOOR_METAL_B,
+    SPR_FLOOR_METAL_B,
+    SPR_FLOOR_METAL_B,
+    SPR_FLOOR_METAL_B
+};
+
 const uint32_t fenceSpritesRope[] = {
     SPR_FENCE_ROPE_NE,
     SPR_FENCE_ROPE_SE,
     SPR_FENCE_ROPE_SW,
     SPR_FENCE_ROPE_NW
 };
+
+const uint32_t fenceSpritesMetal[] = {
+    SPR_FENCE_METAL_NE,
+    SPR_FENCE_METAL_SE,
+    SPR_FENCE_METAL_SW,
+    SPR_FENCE_METAL_NW
+};
+
 
 const uint32_t fenceSpritesMetalB[] = {
     SPR_FENCE_METAL_B_NE,

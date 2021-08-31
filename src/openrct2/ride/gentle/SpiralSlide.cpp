@@ -12,6 +12,7 @@
 #include "../../paint/Supports.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../../object/StationObject.h"
 
 enum
 {
@@ -201,8 +202,16 @@ static void paint_spiral_slide(
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
     // Base
-    uint32_t imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
+    StationObject* stationObject = nullptr;
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
+
+    if(stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+    {
+        uint32_t imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A)
+            | session->TrackColours[SCHEME_SUPPORTS];
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
+    }
 
     if (ride != nullptr)
     {
