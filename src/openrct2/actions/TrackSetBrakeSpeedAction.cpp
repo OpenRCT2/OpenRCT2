@@ -73,11 +73,11 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
         tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Brakes)
         {
-            brakes_link_to_block_brake(_loc, tileElement);
+            brakeLinkToBlockBrake(_loc, tileElement);
         }
         else if (tileElement->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
         {
-            block_brakes_set_linked_brakes_closed(_loc, tileElement, tileElement->AsTrack()->GetBrakeClosed());
+            blockBrakeSetLinkedBrakesClosed(_loc, tileElement, tileElement->AsTrack()->GetBrakeClosed());
         }
     }
     return res;

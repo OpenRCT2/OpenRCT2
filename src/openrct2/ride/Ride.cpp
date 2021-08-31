@@ -2999,7 +2999,7 @@ static void RideOpenBlockBrakes(CoordsXYE* startElement)
         switch (trackType)
         {
             case TrackElemType::BlockBrakes:
-                block_brakes_set_linked_brakes_closed(
+                blockBrakeSetLinkedBrakesClosed(
                     CoordsXYZ(currentElement.x, currentElement.y, currentElement.element->GetBaseZ()), currentElement.element,
                     false);
                 [[fallthrough]];
@@ -3015,7 +3015,7 @@ static void RideOpenBlockBrakes(CoordsXYE* startElement)
     } while (track_block_get_next(&currentElement, &currentElement, nullptr, nullptr)
              && currentElement.element != startElement->element);
 }
-void brakes_link_to_block_brake(const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement)
+void brakeLinkToBlockBrake(const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement)
 {
     TrackElement* brake = tileElement->AsTrack();
     if (brake->GetTrackType() != TrackElemType::Brakes)
@@ -3046,7 +3046,7 @@ void brakes_link_to_block_brake(const CoordsXYZ& vehicleTrackLocation, TileEleme
     } while (track_block_get_next(&output, &output, &outputZ, nullptr));
 }
 
-void block_brakes_set_linked_brakes_closed(const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement, bool isClosed)
+void blockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement, bool isClosed)
 {
     TrackElement* blockBrake = tileElement->AsTrack();
     if (blockBrake->GetTrackType() != TrackElemType::BlockBrakes)
@@ -3645,7 +3645,7 @@ void Ride::MoveTrainsToBlockBrakes(CoordsXYE* currentElement)
                 break;
             }
             firstBlock->SetBrakeClosed(true);
-            block_brakes_set_linked_brakes_closed(
+            blockBrakeSetLinkedBrakesClosed(
                 CoordsXYZ(currentElement->x, currentElement->y, currentElement->element->GetBaseZ()), currentElement->element,
                 true);
 
