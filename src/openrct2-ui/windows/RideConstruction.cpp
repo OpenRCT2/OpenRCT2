@@ -2836,7 +2836,7 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     else
     {
         if (brakesSelected && _selectedTrackType == TrackElemType::BlockBrakes
-            ||  _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::BlockBrakes))
+            || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::BlockBrakes))
         {
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED;
             window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED_LIMIT_TIP;
