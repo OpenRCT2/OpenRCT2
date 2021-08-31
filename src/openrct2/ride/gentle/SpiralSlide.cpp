@@ -8,11 +8,11 @@
  *****************************************************************************/
 
 #include "../../interface/Viewport.h"
+#include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
-#include "../../object/StationObject.h"
 
 enum
 {
@@ -206,7 +206,7 @@ static void paint_spiral_slide(
     if (ride != nullptr)
         stationObject = ride_get_station_object(ride);
 
-    if(stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+    if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
         uint32_t imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A)
             | session->TrackColours[SCHEME_SUPPORTS];
