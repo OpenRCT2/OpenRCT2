@@ -1720,8 +1720,8 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
         viewLoc += myviewport->viewPos;
         if (myviewport->zoom > 0)
         {
-            viewLoc.x &= (0xFFFF * myviewport->zoom) & 0xFFFF;
-            viewLoc.y &= (0xFFFF * myviewport->zoom) & 0xFFFF;
+            viewLoc.x &= (0xFFFFFFFF * myviewport->zoom) & 0xFFFFFFFF;
+            viewLoc.y &= (0xFFFFFFFF * myviewport->zoom) & 0xFFFFFFFF;
         }
         rct_drawpixelinfo dpi;
         dpi.x = viewLoc.x;
