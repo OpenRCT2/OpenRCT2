@@ -54,7 +54,7 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 4, 3, 10 }),
     SET_FIELD(BuildCosts, { 40, 4, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo4),
     SET_FIELD(BonusValue, 55),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

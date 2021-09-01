@@ -800,7 +800,12 @@ public:
             }
         }
 
-        dst->music = src->music;
+        auto musicStyle = OBJECT_ENTRY_INDEX_NULL;
+        if (GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+        {
+            musicStyle = src->music;
+        }
+        dst->music = musicStyle;
 
         auto entranceStyle = src->entrance_style;
         // In SV7, "plain" entrances are invisible.

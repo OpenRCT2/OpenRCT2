@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor DrinkStallRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 500, 0, 1, }),
     SET_FIELD(DefaultPrices, { 0, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 15),
     SET_FIELD(ColourPresets, DEFAULT_STALL_COLOUR_PRESET),
