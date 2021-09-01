@@ -102,7 +102,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     // Find ferris wheel
     auto rideManager = GetRideManager();
     auto it = std::find_if(
-        rideManager.begin(), rideManager.end(), [](auto& ride) { return ride.type == RIDE_TYPE_FERRIS_WHEEL; });
+        rideManager.begin(), rideManager.end(), [](auto& ride) { return ride.type == RideType::FERRIS_WHEEL; });
     ASSERT_NE(it, rideManager.end());
     Ride& ferrisWheel = *it;
 
@@ -162,7 +162,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
 
     // Find car ride
     auto rideManager = GetRideManager();
-    auto it = std::find_if(rideManager.begin(), rideManager.end(), [](auto& ride) { return ride.type == RIDE_TYPE_CAR_RIDE; });
+    auto it = std::find_if(rideManager.begin(), rideManager.end(), [](auto& ride) { return ride.type == RideType::CAR_RIDE; });
     ASSERT_NE(it, rideManager.end());
     Ride& carRide = *it;
 

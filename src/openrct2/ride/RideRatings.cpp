@@ -199,7 +199,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
 {
     const ride_id_t rideIndex = state.CurrentRide;
     auto ride = get_ride(rideIndex);
-    if (ride == nullptr || ride->status == RideStatus::Closed || ride->type >= RIDE_TYPE_COUNT)
+    if (ride == nullptr || ride->status == RideStatus::Closed || ride->type >= RideType::COUNT)
     {
         state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -378,7 +378,7 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
         return;
     }
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         state.State = RIDE_RATINGS_STATE_CALCULATE;
         return;
@@ -903,7 +903,7 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, Ride* ride)
 
     // Add maintenance cost for reverser track pieces
     uint16_t reverserMaintenanceCost = 80;
-    if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER)
+    if (ride->type == RideType::REVERSER_ROLLER_COASTER)
     {
         reverserMaintenanceCost = 10;
     }
@@ -1214,11 +1214,11 @@ static RatingTuple get_inversions_ratings(uint16_t inversions)
     return rating;
 }
 
-static RatingTuple get_special_track_elements_rating(uint8_t type, Ride* ride)
+static RatingTuple get_special_track_elements_rating(RideType type, Ride* ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
 
-    if (type == RIDE_TYPE_GHOST_TRAIN)
+    if (type == RideType::GHOST_TRAIN)
     {
         if (ride->HasSpinningTunnel())
         {
@@ -1227,7 +1227,7 @@ static RatingTuple get_special_track_elements_rating(uint8_t type, Ride* ride)
             nausea += 55;
         }
     }
-    else if (type == RIDE_TYPE_LOG_FLUME)
+    else if (type == RideType::LOG_FLUME)
     {
         if (ride->HasLogReverser())
         {
@@ -1301,7 +1301,7 @@ static RatingTuple ride_ratings_get_turns_ratings(Ride* ride)
     intensity += slopedTurnsRating.Intensity;
     nausea += slopedTurnsRating.Nausea;
 
-    auto inversions = (ride->type == RIDE_TYPE_MINI_GOLF) ? ride->holes : ride->inversions;
+    auto inversions = (ride->type == RideType::MINI_GOLF) ? ride->holes : ride->inversions;
     RatingTuple inversionsRating = get_inversions_ratings(inversions);
     excitement += inversionsRating.Excitement;
     intensity += inversionsRating.Intensity;
@@ -1437,7 +1437,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         return 0;
     }
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         location = ride_get_entrance_location(ride, 0).ToCoordsXY();
     }
@@ -4442,7 +4442,7 @@ void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride, RideRatingUpd
 
 #pragma region Ride rating calculation function table
 
-ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
+ride_ratings_calculation ride_ratings_get_calculate_func(RideType rideType)
 {
     return GetRideTypeDescriptor(rideType).RatingsCalculationFunction;
 }

@@ -37,7 +37,7 @@ class ObjectManager final : public IObjectManager
 private:
     IObjectRepository& _objectRepository;
     std::vector<std::unique_ptr<Object>> _loadedObjects;
-    std::array<std::vector<ObjectEntryIndex>, RIDE_TYPE_COUNT> _rideTypeToObjectMap;
+    std::array<std::vector<ObjectEntryIndex>, static_cast<size_t>(RideType::COUNT)> _rideTypeToObjectMap;
 
     // Used to return a safe empty vector back from GetAllRideEntries, can be removed when std::span is available
     std::vector<ObjectEntryIndex> _nullRideTypeEntries;
@@ -314,14 +314,14 @@ public:
         }
     }
 
-    const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) override
+    const std::vector<ObjectEntryIndex>& GetAllRideEntries(RideType rideType) override
     {
-        if (rideType >= RIDE_TYPE_COUNT)
+        if (rideType >= RideType::COUNT)
         {
             // Return an empty vector
             return _nullRideTypeEntries;
         }
-        return _rideTypeToObjectMap[rideType];
+        return _rideTypeToObjectMap[static_cast<size_t>(rideType)];
     }
 
 private:
@@ -766,9 +766,9 @@ private:
                 {
                     for (auto rideType : entry->ride_type)
                     {
-                        if (rideType < _rideTypeToObjectMap.size())
+                        if (EnumValue(rideType) < _rideTypeToObjectMap.size())
                         {
-                            auto& v = _rideTypeToObjectMap[rideType];
+                            auto& v = _rideTypeToObjectMap[EnumValue(rideType)];
                             v.push_back(static_cast<ObjectEntryIndex>(i));
                         }
                     }

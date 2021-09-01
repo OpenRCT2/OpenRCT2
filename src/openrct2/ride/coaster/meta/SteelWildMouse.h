@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor SteelWildMouseRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL)
                                   | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_LONG)
@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor SteelWildMouseRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_WILD_MOUSE, STR_RIDE_DESCRIPTION_WILD_MOUSE }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_STEEL_WILD_MOUSE)),
+    SET_FIELD(EnumName, nameof(RideType::STEEL_WILD_MOUSE)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 16, 24, 4, 7, }),
     SET_FIELD(MaxMass, 4),

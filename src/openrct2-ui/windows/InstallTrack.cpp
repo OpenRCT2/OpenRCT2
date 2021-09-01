@@ -89,7 +89,7 @@ rct_window* window_install_track_open(const utf8* path)
     }
 
     object_manager_unload_all_objects();
-    if (_trackDesign->type == RIDE_TYPE_NULL)
+    if (_trackDesign->type == RideType::RIDE_TYPE_NULL)
     {
         log_error("Failed to load track (ride type null): %s", path);
         return nullptr;
@@ -282,9 +282,9 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos.y += LIST_ROW_HEIGHT + 4;
     }
 
-    if (td6->type != RIDE_TYPE_MAZE)
+    if (td6->type != RideType::MAZE)
     {
-        if (td6->type == RIDE_TYPE_MINI_GOLF)
+        if (td6->type == RideType::MINI_GOLF)
         {
             // Holes
             uint16_t holes = td6->holes & 0x1F;
@@ -372,7 +372,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
-    if (td6->type != RIDE_TYPE_MINI_GOLF)
+    if (td6->type != RideType::MINI_GOLF)
     {
         uint16_t inversions = td6->inversions & 0x1F;
         if (inversions != 0)

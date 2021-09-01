@@ -14,50 +14,50 @@
 
 #include <cstdint>
 
-ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry)
+RideType RCT2RideTypeToOpenRCT2RideType(RideType rct2RideType, const rct_ride_entry* rideEntry)
 {
     switch (rct2RideType)
     {
-        case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
+        case RideType::CORKSCREW_ROLLER_COASTER:
             if (rideEntry != nullptr && !(ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_VERTICAL_LOOP)))
-                return RIDE_TYPE_HYPERCOASTER;
+                return RideType::HYPERCOASTER;
             else
-                return RIDE_TYPE_CORKSCREW_ROLLER_COASTER;
-        case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
+                return RideType::CORKSCREW_ROLLER_COASTER;
+        case RideType::JUNIOR_ROLLER_COASTER:
             if (rideEntry != nullptr && ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP))
-                return RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER;
+                return RideType::CLASSIC_MINI_ROLLER_COASTER;
             else
-                return RIDE_TYPE_JUNIOR_ROLLER_COASTER;
-        case RIDE_TYPE_CAR_RIDE:
+                return RideType::JUNIOR_ROLLER_COASTER;
+        case RideType::CAR_RIDE:
             if (rideEntry != nullptr && ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP))
-                return RIDE_TYPE_MONSTER_TRUCKS;
+                return RideType::MONSTER_TRUCKS;
             else
-                return RIDE_TYPE_CAR_RIDE;
-        case RIDE_TYPE_TWISTER_ROLLER_COASTER:
+                return RideType::CAR_RIDE;
+        case RideType::TWISTER_ROLLER_COASTER:
             if (rideEntry != nullptr && rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
-                return RIDE_TYPE_HYPER_TWISTER;
+                return RideType::HYPER_TWISTER;
             else
-                return RIDE_TYPE_TWISTER_ROLLER_COASTER;
-        case RIDE_TYPE_STEEL_WILD_MOUSE:
+                return RideType::TWISTER_ROLLER_COASTER;
+        case RideType::STEEL_WILD_MOUSE:
             if (rideEntry != nullptr && !(ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP)))
-                return RIDE_TYPE_SPINNING_WILD_MOUSE;
+                return RideType::SPINNING_WILD_MOUSE;
             else
-                return RIDE_TYPE_STEEL_WILD_MOUSE;
+                return RideType::STEEL_WILD_MOUSE;
 
         default:
             return rct2RideType;
     }
 }
 
-bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType)
+bool RCT2RideTypeNeedsConversion(RideType rct2RideType)
 {
     switch (rct2RideType)
     {
-        case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
-        case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
-        case RIDE_TYPE_CAR_RIDE:
-        case RIDE_TYPE_TWISTER_ROLLER_COASTER:
-        case RIDE_TYPE_STEEL_WILD_MOUSE:
+        case RideType::CORKSCREW_ROLLER_COASTER:
+        case RideType::JUNIOR_ROLLER_COASTER:
+        case RideType::CAR_RIDE:
+        case RideType::TWISTER_ROLLER_COASTER:
+        case RideType::STEEL_WILD_MOUSE:
             return true;
 
         default:
@@ -65,20 +65,20 @@ bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType)
     }
 }
 
-uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type)
+RideType OpenRCT2RideTypeToRCT2RideType(RideType openrct2Type)
 {
     switch (openrct2Type)
     {
-        case RIDE_TYPE_HYPERCOASTER:
-            return RIDE_TYPE_CORKSCREW_ROLLER_COASTER;
-        case RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER:
-            return RIDE_TYPE_JUNIOR_ROLLER_COASTER;
-        case RIDE_TYPE_MONSTER_TRUCKS:
-            return RIDE_TYPE_CAR_RIDE;
-        case RIDE_TYPE_HYPER_TWISTER:
-            return RIDE_TYPE_TWISTER_ROLLER_COASTER;
-        case RIDE_TYPE_SPINNING_WILD_MOUSE:
-            return RIDE_TYPE_STEEL_WILD_MOUSE;
+        case RideType::HYPERCOASTER:
+            return RideType::CORKSCREW_ROLLER_COASTER;
+        case RideType::CLASSIC_MINI_ROLLER_COASTER:
+            return RideType::JUNIOR_ROLLER_COASTER;
+        case RideType::MONSTER_TRUCKS:
+            return RideType::CAR_RIDE;
+        case RideType::HYPER_TWISTER:
+            return RideType::TWISTER_ROLLER_COASTER;
+        case RideType::SPINNING_WILD_MOUSE:
+            return RideType::STEEL_WILD_MOUSE;
 
         default:
             return openrct2Type;
@@ -136,14 +136,14 @@ void rct2_ride::SetMaxCarsPerTrain(uint8_t newValue)
     min_max_cars_per_train |= newValue & 0x0F;
 }
 
-bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
+bool RCT2TrackTypeIsBooster(RideType rideType, uint16_t trackType)
 {
     // Boosters share their ID with the Spinning Control track.
-    return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE
+    return rideType != RideType::SPINNING_WILD_MOUSE && rideType != RideType::STEEL_WILD_MOUSE
         && trackType == TrackElemType::Booster;
 }
 
-track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType)
+track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, RideType rideType)
 {
     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
         return RCT12FlatTrackTypeToOpenRCT2(origTrackType);

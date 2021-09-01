@@ -133,7 +133,7 @@ struct UpkeepCostsDescriptor
 
 struct RideTypeDescriptor
 {
-    uint8_t AlternateType;
+    RideType AlternateType;
     uint8_t Category;
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
     uint64_t EnabledTrackPieces;
@@ -188,7 +188,7 @@ struct RideTypeDescriptor
 #    define SET_FIELD(fieldname, ...) .fieldname = __VA_ARGS__
 #endif
 
-extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
+extern const RideTypeDescriptor RideTypeDescriptors[static_cast<size_t>(RideType::COUNT)];
 
 enum
 {
@@ -320,7 +320,7 @@ extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 // clang-format off
 constexpr const RideTypeDescriptor DummyRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_NONE),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -352,15 +352,16 @@ constexpr const RideTypeDescriptor DummyRTD =
 };
 // clang-format on
 
-constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideType)
+constexpr const RideTypeDescriptor& GetRideTypeDescriptor(RideType rideType)
 {
-    if (rideType >= std::size(RideTypeDescriptors))
+    const auto rideTypeIndex = static_cast<size_t>(rideType);
+    if (rideTypeIndex >= std::size(RideTypeDescriptors))
         return DummyRTD;
 
-    return RideTypeDescriptors[rideType];
+    return RideTypeDescriptors[rideTypeIndex];
 }
 
-constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
+constexpr bool RideTypeIsValid(RideType rideType)
 {
-    return rideType < std::size(RideTypeDescriptors);
+    return static_cast<size_t>(rideType) < std::size(RideTypeDescriptors);
 }

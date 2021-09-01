@@ -207,7 +207,7 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_close(w);
 
             auto intent = Intent(WC_TRACK_DESIGN_LIST);
-            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
+            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, static_cast<uint32_t>(_window_track_list_item.Type));
             intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
             context_open_intent(&intent);
             break;
@@ -524,7 +524,7 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
             origin.y -= ((max.y + min.y) >> 6) * COORDS_XY_STEP;
         }
 
-        if (td6->type == RIDE_TYPE_MAZE)
+        if (td6->type == RideType::MAZE)
         {
             window_track_place_draw_mini_preview_maze(td6, pass, origin, min, max);
         }

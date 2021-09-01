@@ -2217,12 +2217,12 @@ void PaintTrack(paint_session* session, Direction direction, int32_t height, con
         if (lightfx_is_available())
         {
             uint8_t zOffset = 16;
-            if (ride->type == RIDE_TYPE_TOILETS || ride->type == RIDE_TYPE_FIRST_AID || ride->type == RIDE_TYPE_CASH_MACHINE)
+            if (ride->type == RideType::TOILETS || ride->type == RideType::FIRST_AID || ride->type == RideType::CASH_MACHINE)
                 zOffset = 23;
 
-            if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
+            if (ride->type == RideType::INFORMATION_KIOSK)
                 LightFxAddKioskLights(session->MapPosition, height, zOffset);
-            else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+            else if (RideTypeDescriptors[EnumValue(ride->type)].HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                 LightFxAddShopLights(session->MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 #endif
@@ -2250,7 +2250,7 @@ void PaintTrack(paint_session* session, Direction direction, int32_t height, con
             session->TrackColours[SCHEME_3] = ghost_id;
         }
 
-        if (ride->type >= RIDE_TYPE_COUNT)
+        if (ride->type >= RideType::COUNT)
         {
             return;
         }

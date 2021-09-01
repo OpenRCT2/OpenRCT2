@@ -249,7 +249,7 @@ namespace RCT1
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
             if (_s4.scenario_objective_type == OBJECTIVE_BUILD_THE_BEST)
             {
-                dst->objective_arg_3 = GetBuildTheBestRideId();
+                dst->objective_arg_3 = static_cast<int16_t>(GetBuildTheBestRideId());
             }
 
             auto name = rct2_to_utf8(_s4.scenario_name, RCT2LanguageId::EnglishUK);
@@ -609,7 +609,7 @@ namespace RCT1
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
                     _vehicleTypeToRideEntryMap[vehicleType] = entryIndex;
 
-                    if (rideType != RIDE_TYPE_NULL)
+                    if (rideType != RCT1_RIDE_TYPE_NULL)
                         AddEntryForRideType(rideType);
                 }
             }
@@ -712,7 +712,7 @@ namespace RCT1
         {
             for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
             {
-                if (_s4.rides[i].type != RIDE_TYPE_NULL)
+                if (_s4.rides[i].type != RCT1_RIDE_TYPE_NULL)
                 {
                     ImportRide(GetOrAllocateRide(i), &_s4.rides[i], i);
                 }
@@ -727,7 +727,7 @@ namespace RCT1
             // This is a peculiarity of this exact version number, which only Heide-Park seems to use.
             if (_s4.game_version == 110018 && src->type == RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER)
             {
-                dst->type = RIDE_TYPE_COMPACT_INVERTED_COASTER;
+                dst->type = RideType::COMPACT_INVERTED_COASTER;
             }
             else
             {
@@ -748,7 +748,7 @@ namespace RCT1
             if (rideEntry == nullptr)
             {
                 log_warning("Discarding ride with invalid ride entry");
-                dst->type = RIDE_TYPE_NULL;
+                dst->type = RideType::RIDE_TYPE_NULL;
                 return;
             }
 
@@ -926,7 +926,7 @@ namespace RCT1
             dst->drops = src->num_drops;
             dst->start_drop_height = src->start_drop_height / 2;
             dst->highest_drop_height = src->highest_drop_height / 2;
-            if (dst->type == RIDE_TYPE_MINI_GOLF)
+            if (dst->type == RideType::MINI_GOLF)
                 dst->holes = src->num_inversions & 0x1F;
             else
                 dst->inversions = src->num_inversions & 0x1F;
@@ -1018,7 +1018,7 @@ namespace RCT1
                 dst->entrance_style = src->entrance_style;
             }
 
-            if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND)
+            if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RideType::MERRY_GO_ROUND)
             {
                 // The merry-go-round in pre-LL versions was always yellow with red
                 dst->vehicle_colours[0].Body = COLOUR_YELLOW;
@@ -1073,7 +1073,7 @@ namespace RCT1
 
             // In RCT1 and AA, the maze was always hedges.
             // LL has 4 types, like RCT2. For LL, only guard against invalid values.
-            if (dst->type == RIDE_TYPE_MAZE)
+            if (dst->type == RideType::MAZE)
             {
                 if (_gameVersion < FILE_VERSION_RCT1_LL || src->track_colour_supports[0] > 3)
                     dst->track_colour[0].supports = MAZE_WALL_TYPE_HEDGE;
@@ -1639,9 +1639,9 @@ namespace RCT1
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
                     const auto* ride = get_ride(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
+                    auto rideType = (ride != nullptr) ? ride->type : RideType::RIDE_TYPE_NULL;
 
-                    dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
+                    dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), EnumValue(rideType)));
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     dst2->SetColourScheme(src2->GetColourScheme());
@@ -1651,7 +1651,7 @@ namespace RCT1
                     dst2->SetStationIndex(src2->GetStationIndex());
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     dst2->SetIsIndestructible(src2->IsIndestructible());
-                    if (rideType == RIDE_TYPE_GHOST_TRAIN)
+                    if (rideType == RideType::GHOST_TRAIN)
                     {
                         dst2->SetDoorAState(src2->GetDoorAState());
                         dst2->SetDoorBState(src2->GetDoorBState());
@@ -1673,7 +1673,7 @@ namespace RCT1
                     }
 
                     // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-                    if (rideType == RIDE_TYPE_MAZE)
+                    if (rideType == RideType::MAZE)
                     {
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }
@@ -2309,7 +2309,10 @@ namespace RCT1
 
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
             if (_s4.scenario_objective_type == OBJECTIVE_BUILD_THE_BEST)
-                gScenarioObjective.RideId = GetBuildTheBestRideId();
+            {
+                // FIXME: This is terrible.
+                gScenarioObjective.RideId = static_cast<rct_string_id>(GetBuildTheBestRideId());
+            }
         }
 
         void ImportSavedView()
@@ -2584,7 +2587,7 @@ namespace RCT1
             }
         }
 
-        ObjectEntryIndex GetBuildTheBestRideId()
+        RideType GetBuildTheBestRideId()
         {
             size_t researchListCount;
             const RCT1::ResearchItem* researchList = GetResearchList(&researchListCount);
@@ -2601,7 +2604,7 @@ namespace RCT1
                 }
             }
 
-            return RIDE_TYPE_NULL;
+            return RideType::RIDE_TYPE_NULL;
         }
     };
 
@@ -2759,7 +2762,7 @@ namespace RCT1
         {
             dst->BoatLocation.setNull();
             dst->SetTrackDirection(src->GetTrackDirection());
-            dst->SetTrackType(RCT1TrackTypeToOpenRCT2(src->GetTrackType(), ride->type));
+            dst->SetTrackType(RCT1TrackTypeToOpenRCT2(src->GetTrackType(), EnumValue(ride->type)));
         }
         else
         {

@@ -22,9 +22,11 @@ struct Ride;
 struct paint_session;
 struct TrackElement;
 
+enum class RideType : uint8_t;
+
 void junior_rc_paint_station(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,
-    const TrackElement& trackElement, uint8_t rideType);
+    const TrackElement& trackElement, RideType rideType);
 
 void junior_rc_paint_track_flat(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, uint16_t height,

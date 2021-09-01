@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor BoatHireRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_CURVE_VERY_SMALL)),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -32,7 +32,7 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE }),
     SET_FIELD(NameConvention, { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_BOAT_HIRE)),
+    SET_FIELD(EnumName, nameof(RideType::BOAT_HIRE)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 255, 16, 0, 3, }),
     SET_FIELD(MaxMass, 255),

@@ -80,7 +80,7 @@ enum class RideMode : uint8_t;
 
 struct TrackDesign
 {
-    uint8_t type;
+    RideType type;
     uint8_t vehicle_type;
     money32 cost;
     uint32_t flags;

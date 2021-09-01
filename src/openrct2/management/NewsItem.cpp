@@ -383,7 +383,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             if (item.type == Research::EntryType::Ride)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
-                intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
+                intent.putExtra(INTENT_EXTRA_RIDE_TYPE, static_cast<uint32_t>(item.baseRideType));
                 intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entryIndex);
                 context_open_intent(&intent);
                 break;

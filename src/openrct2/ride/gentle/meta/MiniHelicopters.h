@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor MiniHelicoptersRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL)),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor MiniHelicoptersRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MINI_HELICOPTERS, STR_RIDE_DESCRIPTION_MINI_HELICOPTERS }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_MINI_HELICOPTERS)),
+    SET_FIELD(EnumName, nameof(RideType::MINI_HELICOPTERS)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 7, 24, 4, 7, }),
     SET_FIELD(MaxMass, 2),

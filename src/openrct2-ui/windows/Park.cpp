@@ -1482,8 +1482,8 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
     {
         rct_string_id rideTypeString = STR_NONE;
-        auto rideTypeId = gScenarioObjective.RideId;
-        if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
+        auto rideTypeId = static_cast<RideType>(gScenarioObjective.RideId);
+        if (rideTypeId != RideType::RIDE_TYPE_NULL && rideTypeId < RideType::COUNT)
         {
             rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
         }

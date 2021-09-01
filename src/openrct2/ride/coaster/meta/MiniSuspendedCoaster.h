@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE)),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MINI_SUSPENDED_COASTER, STR_RIDE_DESCRIPTION_MINI_SUSPENDED_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_MINI_SUSPENDED_COASTER)),
+    SET_FIELD(EnumName, nameof(RideType::MINI_SUSPENDED_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 10, 24, 24, 8, }),
     SET_FIELD(MaxMass, 3),

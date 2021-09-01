@@ -16,7 +16,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor InformationKioskRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_SHOP),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -31,7 +31,7 @@ constexpr const RideTypeDescriptor InformationKioskRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_INFORMATION_KIOSK, STR_RIDE_DESCRIPTION_INFORMATION_KIOSK }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_INFORMATION_KIOSK)),
+    SET_FIELD(EnumName, nameof(RideType::INFORMATION_KIOSK)),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 12, 48, 0, 0, }),
     SET_FIELD(MaxMass, 255),

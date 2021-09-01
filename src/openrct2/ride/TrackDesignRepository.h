@@ -27,14 +27,16 @@ namespace OpenRCT2
     struct IPlatformEnvironment;
 }
 
+enum class RideType : uint8_t;
+
 struct ITrackDesignRepository
 {
     virtual ~ITrackDesignRepository() = default;
 
     [[nodiscard]] virtual size_t GetCount() const abstract;
-    [[nodiscard]] virtual size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const abstract;
+    [[nodiscard]] virtual size_t GetCountForObjectEntry(RideType rideType, const std::string& entry) const abstract;
     [[nodiscard]] virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(
-        uint8_t rideType, const std::string& entry) const abstract;
+        RideType rideType, const std::string& entry) const abstract;
 
     virtual void Scan(int32_t language) abstract;
     virtual bool Delete(const std::string& path) abstract;

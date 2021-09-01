@@ -395,7 +395,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        auto rideType = arg1;
+                        auto rideType = static_cast<RideType>(arg1);
                         auto price = console_parse_int(argv[4], &int_valid[1]);
 
                         if (int_valid[0] && int_valid[1])
@@ -1100,15 +1100,12 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         if (objectType == ObjectType::Ride)
         {
             // Automatically research the ride so it's supported by the game.
-            rct_ride_entry* rideEntry;
-            int32_t rideType;
-
-            rideEntry = get_ride_entry(groupIndex);
+            rct_ride_entry* rideEntry = get_ride_entry(groupIndex);
 
             for (int32_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
             {
-                rideType = rideEntry->ride_type[j];
-                if (rideType != RIDE_TYPE_NULL)
+                auto rideType = rideEntry->ride_type[j];
+                if (rideType != RideType::RIDE_TYPE_NULL)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                     research_insert_ride_entry(rideType, groupIndex, category, true);

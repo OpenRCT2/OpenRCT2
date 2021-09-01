@@ -44,7 +44,7 @@ static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
     for (auto i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         auto oldRideType = rideEntry->ride_type[i];
-        if (oldRideType != RIDE_TYPE_NULL)
+        if (oldRideType != RideType::RIDE_TYPE_NULL)
         {
             rideEntry->ride_type[i] = RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
         }
@@ -57,9 +57,9 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.flags = stream->ReadValue<uint32_t>();
     for (auto& rideType : _legacyType.ride_type)
     {
-        rideType = stream->ReadValue<uint8_t>();
+        rideType = stream->ReadValue<RideType>();
         if (!RideTypeIsValid(rideType))
-            rideType = RIDE_TYPE_NULL;
+            rideType = RideType::RIDE_TYPE_NULL;
     }
     _legacyType.min_cars_in_train = stream->ReadValue<uint8_t>();
     _legacyType.max_cars_in_train = stream->ReadValue<uint8_t>();
@@ -116,7 +116,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         _presetColours.count = 1;
         _presetColours.list[0] = { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED };
 
-        if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL || _legacyType.ride_type[0] == RIDE_TYPE_DRINK_STALL)
+        if (_legacyType.ride_type[0] == RideType::FOOD_STALL || _legacyType.ride_type[0] == RideType::DRINK_STALL)
         {
             // In RCT2, no food or drink stall could be recoloured.
             _legacyType.flags |= RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB;
@@ -138,7 +138,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         if (_legacyType.vehicles[i].flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS)
         {
             _legacyType.vehicles[i].peep_loading_waypoint_segments = stream->ReadValue<int8_t>() == 0 ? 0 : 4;
-            if (_legacyType.ride_type[0] == RIDE_TYPE_ENTERPRISE)
+            if (_legacyType.ride_type[0] == RideType::ENTERPRISE)
             {
                 _legacyType.vehicles[i].peep_loading_waypoint_segments = 8;
             }
@@ -385,7 +385,7 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
 
     for (auto rideType : _legacyType.ride_type)
     {
-        if (rideType != RIDE_TYPE_NULL)
+        if (rideType != RideType::RIDE_TYPE_NULL)
             break;
         else
             imageId++;
@@ -407,7 +407,7 @@ std::string RideObject::GetCapacity() const
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
     // Find the first non-null ride type, to be used when checking the ride group and determining the category.
-    uint8_t firstRideType = ride_entry_get_first_non_null_ride_type(&_legacyType);
+    auto firstRideType = ride_entry_get_first_non_null_ride_type(&_legacyType);
     uint8_t category = GetRideTypeDescriptor(firstRideType).Category;
 
     for (int32_t i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
@@ -543,13 +543,13 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
-            ObjectEntryIndex rideType = RIDE_TYPE_NULL;
+            auto rideType = RideType::RIDE_TYPE_NULL;
 
             if (i < numRideTypes)
             {
                 rideType = ParseRideType(Json::GetString(rideTypes[i]));
 
-                if (rideType == RIDE_TYPE_NULL)
+                if (rideType == RideType::RIDE_TYPE_NULL)
                 {
                     context->LogError(ObjectError::InvalidProperty, "Unknown ride type");
                 }
@@ -953,116 +953,116 @@ std::vector<vehicle_colour> RideObject::ReadJsonColourConfiguration(json_t& jCol
     return config;
 }
 
-bool RideObject::IsRideTypeShopOrFacility(uint8_t rideType)
+bool RideObject::IsRideTypeShopOrFacility(RideType rideType)
 {
     switch (rideType)
     {
-        case RIDE_TYPE_TOILETS:
-        case RIDE_TYPE_SHOP:
-        case RIDE_TYPE_DRINK_STALL:
-        case RIDE_TYPE_FOOD_STALL:
-        case RIDE_TYPE_INFORMATION_KIOSK:
-        case RIDE_TYPE_CASH_MACHINE:
-        case RIDE_TYPE_FIRST_AID:
+        case RideType::TOILETS:
+        case RideType::SHOP:
+        case RideType::DRINK_STALL:
+        case RideType::FOOD_STALL:
+        case RideType::INFORMATION_KIOSK:
+        case RideType::CASH_MACHINE:
+        case RideType::FIRST_AID:
             return true;
         default:
             return false;
     }
 }
 
-static const EnumMap<uint8_t> RideTypeLookupTable{
-    { "spiral_rc", RIDE_TYPE_SPIRAL_ROLLER_COASTER },
-    { "stand_up_rc", RIDE_TYPE_STAND_UP_ROLLER_COASTER },
-    { "suspended_swinging_rc", RIDE_TYPE_SUSPENDED_SWINGING_COASTER },
-    { "inverted_rc", RIDE_TYPE_INVERTED_ROLLER_COASTER },
-    { "junior_rc", RIDE_TYPE_JUNIOR_ROLLER_COASTER },
-    { "miniature_railway", RIDE_TYPE_MINIATURE_RAILWAY },
-    { "monorail", RIDE_TYPE_MONORAIL },
-    { "mini_suspended_rc", RIDE_TYPE_MINI_SUSPENDED_COASTER },
-    { "boat_hire", RIDE_TYPE_BOAT_HIRE },
-    { "wooden_wild_mouse", RIDE_TYPE_WOODEN_WILD_MOUSE },
-    { "steeplechase", RIDE_TYPE_STEEPLECHASE },
-    { "car_ride", RIDE_TYPE_CAR_RIDE },
-    { "launched_freefall", RIDE_TYPE_LAUNCHED_FREEFALL },
-    { "bobsleigh_rc", RIDE_TYPE_BOBSLEIGH_COASTER },
-    { "observation_tower", RIDE_TYPE_OBSERVATION_TOWER },
-    { "looping_rc", RIDE_TYPE_LOOPING_ROLLER_COASTER },
-    { "dinghy_slide", RIDE_TYPE_DINGHY_SLIDE },
-    { "mine_train_rc", RIDE_TYPE_MINE_TRAIN_COASTER },
-    { "chairlift", RIDE_TYPE_CHAIRLIFT },
-    { "corkscrew_rc", RIDE_TYPE_CORKSCREW_ROLLER_COASTER },
-    { "maze", RIDE_TYPE_MAZE },
-    { "spiral_slide", RIDE_TYPE_SPIRAL_SLIDE },
-    { "go_karts", RIDE_TYPE_GO_KARTS },
-    { "log_flume", RIDE_TYPE_LOG_FLUME },
-    { "river_rapids", RIDE_TYPE_RIVER_RAPIDS },
-    { "dodgems", RIDE_TYPE_DODGEMS },
-    { "swinging_ship", RIDE_TYPE_SWINGING_SHIP },
-    { "swinging_inverter_ship", RIDE_TYPE_SWINGING_INVERTER_SHIP },
-    { "food_stall", RIDE_TYPE_FOOD_STALL },
-    { "drink_stall", RIDE_TYPE_DRINK_STALL },
-    { "shop", RIDE_TYPE_SHOP },
-    { "merry_go_round", RIDE_TYPE_MERRY_GO_ROUND },
-    { "information_kiosk", RIDE_TYPE_INFORMATION_KIOSK },
-    { "toilets", RIDE_TYPE_TOILETS },
-    { "ferris_wheel", RIDE_TYPE_FERRIS_WHEEL },
-    { "motion_simulator", RIDE_TYPE_MOTION_SIMULATOR },
-    { "3d_cinema", RIDE_TYPE_3D_CINEMA },
-    { "top_spin", RIDE_TYPE_TOP_SPIN },
-    { "space_rings", RIDE_TYPE_SPACE_RINGS },
-    { "reverse_freefall_rc", RIDE_TYPE_REVERSE_FREEFALL_COASTER },
-    { "lift", RIDE_TYPE_LIFT },
-    { "vertical_drop_rc", RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER },
-    { "cash_machine", RIDE_TYPE_CASH_MACHINE },
-    { "twist", RIDE_TYPE_TWIST },
-    { "haunted_house", RIDE_TYPE_HAUNTED_HOUSE },
-    { "first_aid", RIDE_TYPE_FIRST_AID },
-    { "circus", RIDE_TYPE_CIRCUS },
-    { "ghost_train", RIDE_TYPE_GHOST_TRAIN },
-    { "twister_rc", RIDE_TYPE_TWISTER_ROLLER_COASTER },
-    { "wooden_rc", RIDE_TYPE_WOODEN_ROLLER_COASTER },
-    { "side_friction_rc", RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER },
-    { "steel_wild_mouse", RIDE_TYPE_STEEL_WILD_MOUSE },
-    { "multi_dimension_rc", RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER },
-    { "flying_rc", RIDE_TYPE_FLYING_ROLLER_COASTER },
-    { "virginia_reel", RIDE_TYPE_VIRGINIA_REEL },
-    { "splash_boats", RIDE_TYPE_SPLASH_BOATS },
-    { "mini_helicopters", RIDE_TYPE_MINI_HELICOPTERS },
-    { "lay_down_rc", RIDE_TYPE_LAY_DOWN_ROLLER_COASTER },
-    { "suspended_monorail", RIDE_TYPE_SUSPENDED_MONORAIL },
-    { "reverser_rc", RIDE_TYPE_REVERSER_ROLLER_COASTER },
-    { "heartline_twister_rc", RIDE_TYPE_HEARTLINE_TWISTER_COASTER },
-    { "mini_golf", RIDE_TYPE_MINI_GOLF },
-    { "giga_rc", RIDE_TYPE_GIGA_COASTER },
-    { "roto_drop", RIDE_TYPE_ROTO_DROP },
-    { "flying_saucers", RIDE_TYPE_FLYING_SAUCERS },
-    { "crooked_house", RIDE_TYPE_CROOKED_HOUSE },
-    { "monorail_cycles", RIDE_TYPE_MONORAIL_CYCLES },
-    { "compact_inverted_rc", RIDE_TYPE_COMPACT_INVERTED_COASTER },
-    { "water_coaster", RIDE_TYPE_WATER_COASTER },
-    { "air_powered_vertical_rc", RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER },
-    { "inverted_hairpin_rc", RIDE_TYPE_INVERTED_HAIRPIN_COASTER },
-    { "magic_carpet", RIDE_TYPE_MAGIC_CARPET },
-    { "submarine_ride", RIDE_TYPE_SUBMARINE_RIDE },
-    { "river_rafts", RIDE_TYPE_RIVER_RAFTS },
-    { "enterprise", RIDE_TYPE_ENTERPRISE },
-    { "inverted_impulse_rc", RIDE_TYPE_INVERTED_IMPULSE_COASTER },
-    { "mini_rc", RIDE_TYPE_MINI_ROLLER_COASTER },
-    { "mine_ride", RIDE_TYPE_MINE_RIDE },
-    { "lim_launched_rc", RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
-    { "hypercoaster", RIDE_TYPE_HYPERCOASTER },
-    { "hyper_twister", RIDE_TYPE_HYPER_TWISTER },
-    { "monster_trucks", RIDE_TYPE_MONSTER_TRUCKS },
-    { "spinning_wild_mouse", RIDE_TYPE_SPINNING_WILD_MOUSE },
-    { "classic_mini_rc", RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER },
-    { "hybrid_rc", RIDE_TYPE_HYBRID_COASTER },
-    { "single_rail_rc", RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER },
+static const EnumMap<RideType> RideTypeLookupTable{
+    { "spiral_rc", RideType::SPIRAL_ROLLER_COASTER },
+    { "stand_up_rc", RideType::STAND_UP_ROLLER_COASTER },
+    { "suspended_swinging_rc", RideType::SUSPENDED_SWINGING_COASTER },
+    { "inverted_rc", RideType::INVERTED_ROLLER_COASTER },
+    { "junior_rc", RideType::JUNIOR_ROLLER_COASTER },
+    { "miniature_railway", RideType::MINIATURE_RAILWAY },
+    { "monorail", RideType::MONORAIL },
+    { "mini_suspended_rc", RideType::MINI_SUSPENDED_COASTER },
+    { "boat_hire", RideType::BOAT_HIRE },
+    { "wooden_wild_mouse", RideType::WOODEN_WILD_MOUSE },
+    { "steeplechase", RideType::STEEPLECHASE },
+    { "car_ride", RideType::CAR_RIDE },
+    { "launched_freefall", RideType::LAUNCHED_FREEFALL },
+    { "bobsleigh_rc", RideType::BOBSLEIGH_COASTER },
+    { "observation_tower", RideType::OBSERVATION_TOWER },
+    { "looping_rc", RideType::LOOPING_ROLLER_COASTER },
+    { "dinghy_slide", RideType::DINGHY_SLIDE },
+    { "mine_train_rc", RideType::MINE_TRAIN_COASTER },
+    { "chairlift", RideType::CHAIRLIFT },
+    { "corkscrew_rc", RideType::CORKSCREW_ROLLER_COASTER },
+    { "maze", RideType::MAZE },
+    { "spiral_slide", RideType::SPIRAL_SLIDE },
+    { "go_karts", RideType::GO_KARTS },
+    { "log_flume", RideType::LOG_FLUME },
+    { "river_rapids", RideType::RIVER_RAPIDS },
+    { "dodgems", RideType::DODGEMS },
+    { "swinging_ship", RideType::SWINGING_SHIP },
+    { "swinging_inverter_ship", RideType::SWINGING_INVERTER_SHIP },
+    { "food_stall", RideType::FOOD_STALL },
+    { "drink_stall", RideType::DRINK_STALL },
+    { "shop", RideType::SHOP },
+    { "merry_go_round", RideType::MERRY_GO_ROUND },
+    { "information_kiosk", RideType::INFORMATION_KIOSK },
+    { "toilets", RideType::TOILETS },
+    { "ferris_wheel", RideType::FERRIS_WHEEL },
+    { "motion_simulator", RideType::MOTION_SIMULATOR },
+    { "3d_cinema", RideType::_3D_CINEMA },
+    { "top_spin", RideType::TOP_SPIN },
+    { "space_rings", RideType::SPACE_RINGS },
+    { "reverse_freefall_rc", RideType::REVERSE_FREEFALL_COASTER },
+    { "lift", RideType::LIFT },
+    { "vertical_drop_rc", RideType::VERTICAL_DROP_ROLLER_COASTER },
+    { "cash_machine", RideType::CASH_MACHINE },
+    { "twist", RideType::TWIST },
+    { "haunted_house", RideType::HAUNTED_HOUSE },
+    { "first_aid", RideType::FIRST_AID },
+    { "circus", RideType::CIRCUS },
+    { "ghost_train", RideType::GHOST_TRAIN },
+    { "twister_rc", RideType::TWISTER_ROLLER_COASTER },
+    { "wooden_rc", RideType::WOODEN_ROLLER_COASTER },
+    { "side_friction_rc", RideType::SIDE_FRICTION_ROLLER_COASTER },
+    { "steel_wild_mouse", RideType::STEEL_WILD_MOUSE },
+    { "multi_dimension_rc", RideType::MULTI_DIMENSION_ROLLER_COASTER },
+    { "flying_rc", RideType::FLYING_ROLLER_COASTER },
+    { "virginia_reel", RideType::VIRGINIA_REEL },
+    { "splash_boats", RideType::SPLASH_BOATS },
+    { "mini_helicopters", RideType::MINI_HELICOPTERS },
+    { "lay_down_rc", RideType::LAY_DOWN_ROLLER_COASTER },
+    { "suspended_monorail", RideType::SUSPENDED_MONORAIL },
+    { "reverser_rc", RideType::REVERSER_ROLLER_COASTER },
+    { "heartline_twister_rc", RideType::HEARTLINE_TWISTER_COASTER },
+    { "mini_golf", RideType::MINI_GOLF },
+    { "giga_rc", RideType::GIGA_COASTER },
+    { "roto_drop", RideType::ROTO_DROP },
+    { "flying_saucers", RideType::FLYING_SAUCERS },
+    { "crooked_house", RideType::CROOKED_HOUSE },
+    { "monorail_cycles", RideType::MONORAIL_CYCLES },
+    { "compact_inverted_rc", RideType::COMPACT_INVERTED_COASTER },
+    { "water_coaster", RideType::WATER_COASTER },
+    { "air_powered_vertical_rc", RideType::AIR_POWERED_VERTICAL_COASTER },
+    { "inverted_hairpin_rc", RideType::INVERTED_HAIRPIN_COASTER },
+    { "magic_carpet", RideType::MAGIC_CARPET },
+    { "submarine_ride", RideType::SUBMARINE_RIDE },
+    { "river_rafts", RideType::RIVER_RAFTS },
+    { "enterprise", RideType::ENTERPRISE },
+    { "inverted_impulse_rc", RideType::INVERTED_IMPULSE_COASTER },
+    { "mini_rc", RideType::MINI_ROLLER_COASTER },
+    { "mine_ride", RideType::MINE_RIDE },
+    { "lim_launched_rc", RideType::LIM_LAUNCHED_ROLLER_COASTER },
+    { "hypercoaster", RideType::HYPERCOASTER },
+    { "hyper_twister", RideType::HYPER_TWISTER },
+    { "monster_trucks", RideType::MONSTER_TRUCKS },
+    { "spinning_wild_mouse", RideType::SPINNING_WILD_MOUSE },
+    { "classic_mini_rc", RideType::CLASSIC_MINI_ROLLER_COASTER },
+    { "hybrid_rc", RideType::HYBRID_COASTER },
+    { "single_rail_rc", RideType::SINGLE_RAIL_ROLLER_COASTER },
 };
 
-uint8_t RideObject::ParseRideType(const std::string& s)
+RideType RideObject::ParseRideType(const std::string& s)
 {
     auto result = RideTypeLookupTable.find(s);
-    return (result != RideTypeLookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_TYPE_NULL);
+    return (result != RideTypeLookupTable.end()) ? result->second : RideType::RIDE_TYPE_NULL;
 }
 
 static const EnumMap<uint8_t> RideCategoryLookupTable{

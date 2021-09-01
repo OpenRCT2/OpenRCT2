@@ -149,7 +149,7 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
     flags = 0;
     flags2 = 0;
 
-    if (type == RIDE_TYPE_MAZE)
+    if (type == RideType::MAZE)
     {
         return CreateTrackDesignMaze(ride);
     }
@@ -825,7 +825,7 @@ static void track_design_mirror_maze(TrackDesign* td6)
  */
 void track_design_mirror(TrackDesign* td6)
 {
-    if (td6->type == RIDE_TYPE_MAZE)
+    if (td6->type == RideType::MAZE)
     {
         track_design_mirror_maze(td6);
     }
@@ -1810,7 +1810,7 @@ money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
 
     _trackDesignPlaceSceneryZ = 0;
     std::optional<money32> trackPlaceCost;
-    if (td6->type == RIDE_TYPE_MAZE)
+    if (td6->type == RideType::MAZE)
     {
         trackPlaceCost = track_design_place_maze(td6, coords, ride);
     }
@@ -1850,7 +1850,7 @@ money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
     return trackPlaceCost.has_value() ? trackPlaceCost.value() : MONEY32_UNDEFINED;
 }
 
-static money32 track_design_ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
+static money32 track_design_ride_create_command(RideType type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
     auto gameAction = RideCreateAction(type, subType, 0, 0);

@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor SpiralSlideRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
     SET_FIELD(OperatingSettings, { 1, 5, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Building, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_SPIRAL_SLIDE)),
+    SET_FIELD(EnumName, nameof(RideType::SPIRAL_SLIDE)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 15, 128, 0, 2, }),
     SET_FIELD(MaxMass, 255),

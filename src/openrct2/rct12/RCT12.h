@@ -911,7 +911,7 @@ struct RCT12ResearchItem
         struct
         {
             RCT12ObjectEntryIndex entryIndex;
-            uint8_t baseRideType;
+            RideType baseRideType;
             uint8_t type; // 0: scenery entry, 1: ride entry
             uint8_t flags;
         };
@@ -943,14 +943,14 @@ static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
 money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
 money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue);
 
-template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
+template<typename T> std::vector<RideType> RCT12GetRideTypesBeenOn(T* srcPeep)
 {
-    std::vector<uint16_t> ridesTypesBeenOn;
+    std::vector<RideType> ridesTypesBeenOn;
     for (uint16_t i = 0; i < RCT12_MAX_RIDE_OBJECTS; i++)
     {
         if (srcPeep->ride_types_been_on[i / 8] & (1 << (i % 8)))
         {
-            ridesTypesBeenOn.push_back(i);
+            ridesTypesBeenOn.push_back(static_cast<RideType>(i));
         }
     }
     return ridesTypesBeenOn;

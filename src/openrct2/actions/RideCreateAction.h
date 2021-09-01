@@ -30,7 +30,7 @@ private:
 
 public:
     RideCreateAction() = default;
-    RideCreateAction(int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2);
+    RideCreateAction(RideType rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 

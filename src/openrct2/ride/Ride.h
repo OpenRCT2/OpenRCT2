@@ -45,7 +45,6 @@ constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_V
 #define CUSTOMER_HISTORY_SIZE 10
 #define MAX_STATIONS 4
 #define MAX_RIDES 255
-#define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
 constexpr uint16_t const MAX_STATION_LOCATIONS = MAX_STATIONS * 2; // Entrance and exit per station
@@ -106,7 +105,7 @@ struct rct_ride_entry
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
     uint32_t flags;
-    uint8_t ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+    RideType ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];
     uint8_t min_cars_in_train;
     uint8_t max_cars_in_train;
     uint8_t cars_per_flat_ride;
@@ -211,7 +210,7 @@ enum class RideStatus : uint8_t;
 struct Ride
 {
     ride_id_t id = RIDE_ID_NULL;
-    uint8_t type = RIDE_TYPE_NULL;
+    RideType type = RideType::RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
     ObjectEntryIndex subtype;
@@ -560,110 +559,6 @@ enum
     RIDE_TESTING_DROP_DOWN = (1 << 5),
     RIDE_TESTING_POWERED_LIFT = (1 << 6),
     RIDE_TESTING_DROP_UP = (1 << 7),
-};
-
-enum
-{
-    RIDE_TYPE_SPIRAL_ROLLER_COASTER = 0,
-    RIDE_TYPE_STAND_UP_ROLLER_COASTER,
-    RIDE_TYPE_SUSPENDED_SWINGING_COASTER,
-    RIDE_TYPE_INVERTED_ROLLER_COASTER,
-    RIDE_TYPE_JUNIOR_ROLLER_COASTER,
-    RIDE_TYPE_MINIATURE_RAILWAY,
-    RIDE_TYPE_MONORAIL,
-    RIDE_TYPE_MINI_SUSPENDED_COASTER,
-    RIDE_TYPE_BOAT_HIRE,
-    RIDE_TYPE_WOODEN_WILD_MOUSE,
-    RIDE_TYPE_STEEPLECHASE = 10,
-    RIDE_TYPE_CAR_RIDE,
-    RIDE_TYPE_LAUNCHED_FREEFALL,
-    RIDE_TYPE_BOBSLEIGH_COASTER,
-    RIDE_TYPE_OBSERVATION_TOWER,
-    RIDE_TYPE_LOOPING_ROLLER_COASTER,
-    RIDE_TYPE_DINGHY_SLIDE,
-    RIDE_TYPE_MINE_TRAIN_COASTER,
-    RIDE_TYPE_CHAIRLIFT,
-    RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
-    RIDE_TYPE_MAZE = 20,
-    RIDE_TYPE_SPIRAL_SLIDE,
-    RIDE_TYPE_GO_KARTS,
-    RIDE_TYPE_LOG_FLUME,
-    RIDE_TYPE_RIVER_RAPIDS,
-    RIDE_TYPE_DODGEMS,
-    RIDE_TYPE_SWINGING_SHIP,
-    RIDE_TYPE_SWINGING_INVERTER_SHIP,
-    RIDE_TYPE_FOOD_STALL,
-    RIDE_TYPE_1D,
-    RIDE_TYPE_DRINK_STALL = 30,
-    RIDE_TYPE_1F,
-    RIDE_TYPE_SHOP,
-    RIDE_TYPE_MERRY_GO_ROUND,
-    RIDE_TYPE_22,
-    RIDE_TYPE_INFORMATION_KIOSK,
-    RIDE_TYPE_TOILETS,
-    RIDE_TYPE_FERRIS_WHEEL,
-    RIDE_TYPE_MOTION_SIMULATOR,
-    RIDE_TYPE_3D_CINEMA,
-    RIDE_TYPE_TOP_SPIN = 40,
-    RIDE_TYPE_SPACE_RINGS,
-    RIDE_TYPE_REVERSE_FREEFALL_COASTER,
-    RIDE_TYPE_LIFT,
-    RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER,
-    RIDE_TYPE_CASH_MACHINE,
-    RIDE_TYPE_TWIST,
-    RIDE_TYPE_HAUNTED_HOUSE,
-    RIDE_TYPE_FIRST_AID,
-    RIDE_TYPE_CIRCUS,
-    RIDE_TYPE_GHOST_TRAIN = 50,
-    RIDE_TYPE_TWISTER_ROLLER_COASTER,
-    RIDE_TYPE_WOODEN_ROLLER_COASTER,
-    RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER,
-    RIDE_TYPE_STEEL_WILD_MOUSE,
-    RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER,
-    RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT,
-    RIDE_TYPE_FLYING_ROLLER_COASTER,
-    RIDE_TYPE_FLYING_ROLLER_COASTER_ALT,
-    RIDE_TYPE_VIRGINIA_REEL,
-    RIDE_TYPE_SPLASH_BOATS = 60,
-    RIDE_TYPE_MINI_HELICOPTERS,
-    RIDE_TYPE_LAY_DOWN_ROLLER_COASTER,
-    RIDE_TYPE_SUSPENDED_MONORAIL,
-    RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT,
-    RIDE_TYPE_REVERSER_ROLLER_COASTER,
-    RIDE_TYPE_HEARTLINE_TWISTER_COASTER,
-    RIDE_TYPE_MINI_GOLF,
-    RIDE_TYPE_GIGA_COASTER,
-    RIDE_TYPE_ROTO_DROP,
-    RIDE_TYPE_FLYING_SAUCERS = 70,
-    RIDE_TYPE_CROOKED_HOUSE,
-    RIDE_TYPE_MONORAIL_CYCLES,
-    RIDE_TYPE_COMPACT_INVERTED_COASTER,
-    RIDE_TYPE_WATER_COASTER,
-    RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER,
-    RIDE_TYPE_INVERTED_HAIRPIN_COASTER,
-    RIDE_TYPE_MAGIC_CARPET,
-    RIDE_TYPE_SUBMARINE_RIDE,
-    RIDE_TYPE_RIVER_RAFTS,
-    RIDE_TYPE_50 = 80,
-    RIDE_TYPE_ENTERPRISE,
-    RIDE_TYPE_52,
-    RIDE_TYPE_53,
-    RIDE_TYPE_54,
-    RIDE_TYPE_55,
-    RIDE_TYPE_INVERTED_IMPULSE_COASTER,
-    RIDE_TYPE_MINI_ROLLER_COASTER,
-    RIDE_TYPE_MINE_RIDE,
-    RIDE_TYPE_59,
-    RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER = 90,
-    RIDE_TYPE_HYPERCOASTER,
-    RIDE_TYPE_HYPER_TWISTER,
-    RIDE_TYPE_MONSTER_TRUCKS,
-    RIDE_TYPE_SPINNING_WILD_MOUSE,
-    RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,
-    RIDE_TYPE_HYBRID_COASTER,
-    RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER,
-
-    RIDE_TYPE_COUNT
 };
 
 enum class RideStatus : uint8_t
@@ -1156,9 +1051,9 @@ TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);
 void ride_set_status(Ride* ride, RideStatus status);
 void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 int32_t ride_get_refund_price(const Ride* ride);
-int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
+int32_t ride_get_random_colour_preset_index(RideType ride_type);
 money32 ride_get_common_price(Ride* forRide);
-RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
+RideNaming get_ride_naming(const RideType rideType, rct_ride_entry* rideEntry);
 
 void ride_clear_for_construction(Ride* ride);
 void ride_entrance_exit_place_provisional_ghost();
@@ -1241,12 +1136,12 @@ bool ride_has_adjacent_station(Ride* ride);
 bool ride_has_station_shelter(Ride* ride);
 bool ride_has_ratings(const Ride* ride);
 
-uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
-int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed);
+RideType ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
+int32_t get_booster_speed(RideType rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 
-int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
+int32_t ride_get_entry_index(RideType rideType, int32_t rideSubType);
 StationObject* ride_get_station_object(const Ride* ride);
 
 void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);

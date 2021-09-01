@@ -521,7 +521,7 @@ public:
         for (uint8_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
         {
             auto src = &_s6.rides[index];
-            if (src->type != RIDE_TYPE_NULL)
+            if (src->type != EnumValue(RideType::RIDE_TYPE_NULL))
             {
                 auto dst = GetOrAllocateRide(index);
                 ImportRide(dst, src, index);
@@ -534,18 +534,18 @@ public:
         *dst = {};
         dst->id = rideIndex;
 
-        ObjectEntryIndex rideType = src->type;
+        auto rideType = static_cast<RideType>(src->type);
         auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
-        if (RCT2RideTypeNeedsConversion(src->type))
+        if (RCT2RideTypeNeedsConversion(rideType))
         {
             auto* rideEntry = get_ride_entry(subtype);
             if (rideEntry != nullptr)
             {
-                rideType = RCT2RideTypeToOpenRCT2RideType(src->type, rideEntry);
+                rideType = RCT2RideTypeToOpenRCT2RideType(rideType, rideEntry);
             }
         }
 
-        if (rideType >= RIDE_TYPE_COUNT)
+        if (rideType >= RideType::COUNT)
         {
             log_error("Invalid ride type for a ride in this save.");
             throw UnsupportedRideTypeException(rideType);
@@ -689,7 +689,7 @@ public:
         dst->turn_count_default = src->turn_count_default;
         dst->turn_count_banked = src->turn_count_banked;
         dst->turn_count_sloped = src->turn_count_sloped;
-        if (dst->type == RIDE_TYPE_MINI_GOLF)
+        if (dst->type == RideType::MINI_GOLF)
             dst->holes = src->inversions & 0x1F;
         else
             dst->inversions = src->inversions & 0x1F;
@@ -791,7 +791,7 @@ public:
             dst->track_colour[i].supports = src->track_colour_supports[i];
         }
         // This stall was not colourable in RCT2.
-        if (dst->type == RIDE_TYPE_FOOD_STALL)
+        if (dst->type == RideType::FOOD_STALL)
         {
             auto object = object_entry_get_object(ObjectType::Ride, dst->subtype);
             if (object != nullptr && object->GetIdentifier() == "rct2.icecr1")
@@ -840,7 +840,8 @@ public:
         dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.current_ride);
         dst.State = src.state;
         if (src.current_ride < RCT12_MAX_RIDES_IN_PARK && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors))
-            dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type);
+            dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
+                src.proximity_track_type, static_cast<RideType>(_s6.rides[src.current_ride].type));
         else
             dst.ProximityTrackType = 0xFF;
         dst.ProximityBaseHeight = src.proximity_base_height;
@@ -898,7 +899,7 @@ public:
             bool invented = (_s6.researched_ride_types[quadIndex] & (1UL << bitIndex));
 
             if (invented)
-                ride_type_set_invented(rideType);
+                ride_type_set_invented(static_cast<RideType>(rideType));
         }
     }
 
@@ -1179,10 +1180,10 @@ public:
                 auto dst2 = dst->AsTrack();
                 auto src2 = src->AsTrack();
 
-                auto rideType = _s6.rides[src2->GetRideIndex()].type;
+                auto rideType = static_cast<RideType>(_s6.rides[src2->GetRideIndex()].type);
                 track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
 
-                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, _s6.rides[src2->GetRideIndex()].type));
+                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, rideType));
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetColourScheme(src2->GetColourScheme());
@@ -1205,11 +1206,11 @@ public:
                 }
 
                 // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-                if (rideType == RIDE_TYPE_MAZE)
+                if (rideType == RideType::MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
-                else if (rideType == RIDE_TYPE_GHOST_TRAIN)
+                else if (rideType == RideType::GHOST_TRAIN)
                 {
                     dst2->SetDoorAState(src2->GetDoorAState());
                     dst2->SetDoorBState(src2->GetDoorBState());
@@ -1598,7 +1599,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
         dst->SetTrackType(src->GetTrackType());
         // RotationControlToggle and Booster are saved as the same track piece ID
         // Which one the vehicle is using must be determined
-        if (GetRideTypeDescriptor(ride.type).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (GetRideTypeDescriptor(static_cast<RideType>(ride.type)).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             dst->SetTrackType(RCT12FlatTrackTypeToOpenRCT2(src->GetTrackType()));
         }

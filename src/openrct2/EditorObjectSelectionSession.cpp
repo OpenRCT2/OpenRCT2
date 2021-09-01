@@ -90,9 +90,9 @@ static void setup_track_designer_objects()
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
-            for (uint8_t rideType : item->RideInfo.RideType)
+            for (auto rideType : item->RideInfo.RideType)
             {
-                if (rideType != RIDE_TYPE_NULL)
+                if (rideType != RideType::RIDE_TYPE_NULL)
                 {
                     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER))
                     {

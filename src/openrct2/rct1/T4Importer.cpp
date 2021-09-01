@@ -150,7 +150,7 @@ namespace RCT1
 
             // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
             rct_object_entry vehicleObject = { 0x80, "        " };
-            if (td4Base.type == RIDE_TYPE_MAZE)
+            if (static_cast<RideType>(td4Base.type) == RideType::MAZE)
             {
                 const char* vehObjName = RCT1::GetRideTypeObject(td4Base.type);
                 assert(vehObjName != nullptr);
@@ -234,7 +234,7 @@ namespace RCT1
             td->max_negative_vertical_g = td4Base.max_negative_vertical_g;
             td->max_lateral_g = td4Base.max_lateral_g;
 
-            if (td->type == RIDE_TYPE_MINI_GOLF)
+            if (td->type == RideType::MINI_GOLF)
             {
                 td->holes = td4Base.num_holes;
             }
@@ -255,7 +255,7 @@ namespace RCT1
             td->num_circuits = 0;
             td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
-            if (td->type == RIDE_TYPE_MAZE)
+            if (td->type == RideType::MAZE)
             {
                 rct_td46_maze_element t4MazeElement{};
                 t4MazeElement.all = !0;
@@ -281,7 +281,7 @@ namespace RCT1
                     _stream.SetPosition(_stream.GetPosition() - 1);
                     _stream.Read(&t4TrackElement, sizeof(rct_td46_track_element));
                     TrackDesignTrackElement trackElement{};
-                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.type, td->type);
+                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.type, static_cast<uint8_t>(td->type));
                     trackElement.flags = t4TrackElement.flags;
                     td->track_elements.push_back(trackElement);
                 }

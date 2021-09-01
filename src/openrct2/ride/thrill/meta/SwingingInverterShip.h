@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor SwingingInverterShipRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(OperatingSettings, { 7, 15, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SWINGING_INVERTER_SHIP, STR_RIDE_DESCRIPTION_SWINGING_INVERTER_SHIP }),
     SET_FIELD(NameConvention, { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_SWINGING_INVERTER_SHIP)),
+    SET_FIELD(EnumName, nameof(RideType::SWINGING_INVERTER_SHIP)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 15, 176, 7, 11, }),
     SET_FIELD(MaxMass, 255),

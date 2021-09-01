@@ -1343,10 +1343,10 @@ static void window_editor_object_selection_manage_tracks()
         ;
 
     rct_ride_entry* ride_entry = get_ride_entry(entry_index);
-    uint8_t ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
+    auto ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
 
     auto intent = Intent(WC_TRACK_DESIGN_LIST);
-    intent.putExtra(INTENT_EXTRA_RIDE_TYPE, ride_type);
+    intent.putExtra(INTENT_EXTRA_RIDE_TYPE, static_cast<uint32_t>(ride_type));
     intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
     context_open_intent(&intent);
 }
@@ -1381,7 +1381,7 @@ static void editor_load_selected_objects()
                     if (objectType == ObjectType::Ride)
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
-                        uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                         research_insert_ride_entry(rideType, entryIndex, category, true);
                     }
@@ -1540,10 +1540,10 @@ static bool filter_chunks(const ObjectRepositoryItem* item)
 {
     if (item->ObjectEntry.GetType() == ObjectType::Ride)
     {
-        uint8_t rideType = 0;
+        RideType rideType = RideType::RIDE_TYPE_NULL;
         for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
-            if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
+            if (item->RideInfo.RideType[i] != RideType::RIDE_TYPE_NULL)
             {
                 rideType = item->RideInfo.RideType[i];
                 break;
@@ -1580,8 +1580,8 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem* item)
     rct_string_id result = STR_NONE;
     for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        uint8_t rideType = item->RideInfo.RideType[i];
-        if (rideType != RIDE_TYPE_NULL)
+        const auto rideType = item->RideInfo.RideType[i];
+        if (rideType != RideType::RIDE_TYPE_NULL)
         {
             result = GetRideTypeDescriptor(rideType).Naming.Name;
             break;

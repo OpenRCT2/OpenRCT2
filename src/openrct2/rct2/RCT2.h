@@ -1048,11 +1048,11 @@ assert_struct_size(rct_stex_entry, 7);
 #pragma pack(pop)
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);
-ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
-bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType);
-bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
-uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
-track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
+RideType RCT2RideTypeToOpenRCT2RideType(RideType rct2RideType, const rct_ride_entry* rideEntry);
+bool RCT2TrackTypeIsBooster(RideType rideType, uint16_t trackType);
+bool RCT2RideTypeNeedsConversion(RideType rct2RideType);
+RideType OpenRCT2RideTypeToRCT2RideType(RideType openrct2Type);
+track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, RideType rideType);
 RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType);
 
 /**

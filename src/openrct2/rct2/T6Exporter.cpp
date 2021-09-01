@@ -48,7 +48,7 @@ bool T6Exporter::SaveTrack(const utf8* path)
 bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
 {
     OpenRCT2::MemoryStream tempStream;
-    tempStream.WriteValue<uint8_t>(_trackDesign->type);
+    tempStream.WriteValue<RideType>(_trackDesign->type);
     tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_type);
     tempStream.WriteValue<uint32_t>(_trackDesign->flags);
     tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
@@ -69,7 +69,7 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     tempStream.WriteValue<uint8_t>(_trackDesign->max_positive_vertical_g);
     tempStream.WriteValue<int8_t>(_trackDesign->max_negative_vertical_g);
     tempStream.WriteValue<uint8_t>(_trackDesign->max_lateral_g);
-    tempStream.WriteValue<uint8_t>(_trackDesign->type == RIDE_TYPE_MINI_GOLF ? _trackDesign->holes : _trackDesign->inversions);
+    tempStream.WriteValue<uint8_t>(_trackDesign->type == RideType::MINI_GOLF ? _trackDesign->holes : _trackDesign->inversions);
     tempStream.WriteValue<uint8_t>(_trackDesign->drops);
     tempStream.WriteValue<uint8_t>(_trackDesign->highest_drop_height);
     tempStream.WriteValue<uint8_t>(_trackDesign->excitement);
@@ -86,7 +86,7 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     tempStream.WriteArray(_trackDesign->vehicle_additional_colour, RCT2_MAX_CARS_PER_TRAIN);
     tempStream.WriteValue<uint8_t>(_trackDesign->lift_hill_speed | (_trackDesign->num_circuits << 5));
 
-    if (_trackDesign->type == RIDE_TYPE_MAZE)
+    if (_trackDesign->type == RideType::MAZE)
     {
         for (const auto& mazeElement : _trackDesign->maze_elements)
         {

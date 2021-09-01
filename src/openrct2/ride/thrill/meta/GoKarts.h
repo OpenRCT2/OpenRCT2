@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor GoKartsRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_CURVE_VERY_SMALL)),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -32,7 +32,7 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     SET_FIELD(OperatingSettings, { 1, 10, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_GO_KARTS, STR_RIDE_DESCRIPTION_GO_KARTS }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_GO_KARTS)),
+    SET_FIELD(EnumName, nameof(RideType::GO_KARTS)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 7, 24, 2, 1, }),
     SET_FIELD(MaxMass, 255),

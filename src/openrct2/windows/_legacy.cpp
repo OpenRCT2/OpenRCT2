@@ -52,7 +52,7 @@ money32 place_provisional_track_piece(
 
     money32 result;
     ride_construction_remove_ghosts();
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST; // 105

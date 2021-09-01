@@ -181,12 +181,12 @@ static void scenario_remove_trackless_rides(rct_s6_data* s6)
     for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {
         auto ride = &s6->rides[i];
-        if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
+        if (rideHasTrack[i] || ride->type == EnumValue(RideType::RIDE_TYPE_NULL))
         {
             continue;
         }
 
-        ride->type = RIDE_TYPE_NULL;
+        ride->type = EnumValue(RideType::RIDE_TYPE_NULL);
         if (is_user_string_id(ride->name))
         {
             s6->custom_strings[(ride->name % RCT12_MAX_USER_STRINGS)][0] = 0;
@@ -324,8 +324,9 @@ void S6Exporter::Export()
     // Not used by OpenRCT2 any more, but left in to keep RCT2 export working.
     for (uint8_t i = 0; i < std::size(RideTypeDescriptors); i++)
     {
-        researchedTrackPiecesA[i] = (GetRideTypeDescriptor(i).EnabledTrackPieces) & 0xFFFFFFFFULL;
-        researchedTrackPiecesB[i] = (GetRideTypeDescriptor(i).EnabledTrackPieces >> 32ULL) & 0xFFFFFFFFULL;
+        const auto rideType = static_cast<RideType>(i);
+        researchedTrackPiecesA[i] = (GetRideTypeDescriptor(rideType).EnabledTrackPieces) & 0xFFFFFFFFULL;
+        researchedTrackPiecesB[i] = (GetRideTypeDescriptor(rideType).EnabledTrackPieces >> 32ULL) & 0xFFFFFFFFULL;
     }
     std::memcpy(_s6.researched_track_types_a, researchedTrackPiecesA, sizeof(_s6.researched_track_types_a));
     std::memcpy(_s6.researched_track_types_b, researchedTrackPiecesB, sizeof(_s6.researched_track_types_b));
@@ -607,9 +608,9 @@ void S6Exporter::ExportRides()
         }
         auto dst = &_s6.rides[index];
         *dst = {};
-        if (src->type == RIDE_TYPE_NULL)
+        if (src->type == RideType::RIDE_TYPE_NULL)
         {
-            dst->type = RIDE_TYPE_NULL;
+            dst->type = EnumValue(RideType::RIDE_TYPE_NULL);
         }
         else
         {
@@ -622,7 +623,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 {
     std::memset(dst, 0, sizeof(rct2_ride));
 
-    dst->type = OpenRCT2RideTypeToRCT2RideType(src->type);
+    dst->type = EnumValue(OpenRCT2RideTypeToRCT2RideType(src->type));
     dst->subtype = OpenRCT2EntryIndexToRCTEntryIndex(src->subtype);
     // pad_002;
     dst->mode = static_cast<uint8_t>(src->mode);
@@ -765,7 +766,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->turn_count_default = src->turn_count_default;
     dst->turn_count_banked = src->turn_count_banked;
     dst->turn_count_sloped = src->turn_count_sloped;
-    if (dst->type == RIDE_TYPE_MINI_GOLF)
+    if (dst->type == EnumValue(RideType::MINI_GOLF))
         dst->inversions = static_cast<uint8_t>(std::min(src->holes, RCT12_MAX_GOLF_HOLES));
     else
         dst->inversions = static_cast<uint8_t>(std::min(src->inversions, RCT12_MAX_INVERSIONS));
@@ -978,7 +979,7 @@ void S6Exporter::ExportResearchedRideTypes()
 
     for (int32_t rideType = 0; rideType < RCT2_RIDE_TYPE_COUNT; rideType++)
     {
-        if (ride_type_is_invented(rideType))
+        if (ride_type_is_invented(static_cast<RideType>(rideType)))
         {
             int32_t quadIndex = rideType >> 5;
             int32_t bitIndex = rideType & 0x1F;
@@ -1313,7 +1314,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Guest* src)
     {
         for (auto typeId : *typeHistory)
         {
-            dst->ride_types_been_on[typeId / 8] |= (1 << (typeId % 8));
+            dst->ride_types_been_on[EnumValue(typeId) / 8] |= (1 << (EnumValue(typeId) % 8));
         }
     }
     auto* rideHistory = OpenRCT2::RideUse::GetHistory().GetAll(src->sprite_index);
@@ -1834,11 +1835,11 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, const TileElement* src
             auto ride = get_ride(dst2->GetRideIndex());
             if (ride)
             {
-                if (ride->type == RIDE_TYPE_MAZE)
+                if (ride->type == RideType::MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
-                else if (ride->type == RIDE_TYPE_GHOST_TRAIN)
+                else if (ride->type == RideType::GHOST_TRAIN)
                 {
                     dst2->SetDoorAState(src2->GetDoorAState());
                     dst2->SetDoorBState(src2->GetDoorBState());

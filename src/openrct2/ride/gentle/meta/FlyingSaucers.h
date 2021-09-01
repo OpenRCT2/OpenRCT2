@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor FlyingSaucersRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -34,7 +34,7 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
     SET_FIELD(OperatingSettings, { 20, 180, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FLYING_SAUCERS, STR_RIDE_DESCRIPTION_FLYING_SAUCERS }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_FLYING_SAUCERS)),
+    SET_FIELD(EnumName, nameof(RideType::FLYING_SAUCERS)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 9, 48, 2, 2, }),
     SET_FIELD(MaxMass, 255),

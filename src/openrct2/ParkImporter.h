@@ -87,12 +87,14 @@ public:
     }
 };
 
+enum class RideType : uint8_t;
+
 class UnsupportedRideTypeException : public std::exception
 {
 public:
-    ObjectEntryIndex const Type;
+    RideType const Type;
 
-    explicit UnsupportedRideTypeException(ObjectEntryIndex type)
+    explicit UnsupportedRideTypeException(RideType type)
         : Type(type)
     {
     }

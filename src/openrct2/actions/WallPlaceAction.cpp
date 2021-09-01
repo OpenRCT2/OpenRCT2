@@ -586,7 +586,7 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
 }
 
 bool WallPlaceAction::TrackIsAllowedWallEdges(
-    uint8_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction)
+    RideType rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_NO_WALLS))
     {

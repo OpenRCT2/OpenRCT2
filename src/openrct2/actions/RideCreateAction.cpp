@@ -35,8 +35,8 @@ RideCreateGameActionResult::RideCreateGameActionResult(GameActions::Status error
 {
 }
 
-RideCreateAction::RideCreateAction(int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2)
-    : _rideType(rideType)
+RideCreateAction::RideCreateAction(RideType rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2)
+    : _rideType(static_cast<ObjectEntryIndex>(rideType))
     , _subType(subType)
     , _colour1(colour1)
     , _colour2(colour2)
@@ -82,18 +82,19 @@ GameActions::Result::Ptr RideCreateAction::Query() const
         return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_RIDES);
     }
 
-    if (_rideType >= RIDE_TYPE_COUNT)
+    const auto rideType = static_cast<RideType>(_rideType);
+    if (!RideTypeIsValid(rideType))
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_RIDE_TYPE);
     }
 
-    int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
+    int32_t rideEntryIndex = ride_get_entry_index(rideType, _subType);
     if (rideEntryIndex >= MAX_RIDE_OBJECTS)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_RIDE_TYPE);
     }
 
-    const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;
+    const auto& colourPresets = GetRideTypeDescriptor(rideType).ColourPresets;
     if (_colour1 >= colourPresets.count)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
@@ -119,7 +120,9 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     rct_ride_entry* rideEntry;
     auto res = MakeResult();
 
-    int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
+    const auto rideType = static_cast<RideType>(_rideType);
+
+    int32_t rideEntryIndex = ride_get_entry_index(rideType, _subType);
     auto rideIndex = GetNextFreeRideId();
 
     res->rideIndex = rideIndex;
@@ -135,7 +138,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     }
 
     ride->id = rideIndex;
-    ride->type = _rideType;
+    ride->type = rideType;
     ride->subtype = rideEntryIndex;
     ride->SetColourPreset(_colour1);
     ride->overall_view.setNull();
@@ -217,7 +220,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
             ride->price[0] = 0;
         }
 
-        if (ride->type == RIDE_TYPE_TOILETS)
+        if (ride->type == RideType::TOILETS)
         {
             if (shop_item_has_common_price(ShopItem::Admission))
             {

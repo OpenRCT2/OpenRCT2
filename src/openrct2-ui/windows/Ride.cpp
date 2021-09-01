@@ -910,7 +910,7 @@ static constexpr auto RIDE_G_FORCES_RED_LATERAL = FIXED_2DP(2, 80);
 // Used for sorting the ride type cheat dropdown.
 struct RideTypeLabel
 {
-    uint8_t ride_type_id;
+    RideType ride_type_id;
     rct_string_id label_id;
     const char* label_string;
 };
@@ -1117,7 +1117,7 @@ static void window_ride_disable_tabs(rct_window* w)
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
         disabled_tabs |= (1ULL << WIDX_TAB_8); // 0x800
 
-    if (ride->type == RIDE_TYPE_MINI_GOLF)
+    if (ride->type == RideType::MINI_GOLF)
         disabled_tabs |= (1ULL << WIDX_TAB_2 | 1ULL << WIDX_TAB_3 | 1ULL << WIDX_TAB_4); // 0xE0
 
     if (rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
@@ -1138,7 +1138,7 @@ static void window_ride_disable_tabs(rct_window* w)
         disabled_tabs |= (1ULL << WIDX_TAB_6); // 0x200
     }
 
-    if (ride->type == RIDE_TYPE_CASH_MACHINE || ride->type == RIDE_TYPE_FIRST_AID || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
+    if (ride->type == RideType::CASH_MACHINE || ride->type == RideType::FIRST_AID || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
         disabled_tabs |= (1ULL << WIDX_TAB_9); // 0x1000
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
@@ -1259,7 +1259,7 @@ static rct_window* window_ride_open(Ride* ride)
  */
 rct_window* window_ride_main_open(Ride* ride)
 {
-    if (ride->type >= RIDE_TYPE_COUNT)
+    if (ride->type >= RideType::COUNT)
     {
         return nullptr;
     }
@@ -1299,7 +1299,7 @@ rct_window* window_ride_main_open(Ride* ride)
  */
 static rct_window* window_ride_open_station(Ride* ride, StationIndex stationIndex)
 {
-    if (ride->type >= RIDE_TYPE_COUNT)
+    if (ride->type >= RideType::COUNT)
         return nullptr;
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
@@ -1979,27 +1979,27 @@ static void window_ride_show_open_dropdown(rct_window* w, rct_widget* widget)
     gDropdownDefaultIndex = info.DefaultIndex;
 }
 
-static rct_string_id get_ride_type_name_for_dropdown(uint8_t rideType)
+static rct_string_id get_ride_type_name_for_dropdown(RideType rideType)
 {
     switch (rideType)
     {
-        case RIDE_TYPE_1D:
+        case RideType::_1D:
             return STR_RIDE_NAME_1D;
-        case RIDE_TYPE_1F:
+        case RideType::_1F:
             return STR_RIDE_NAME_1F;
-        case RIDE_TYPE_22:
+        case RideType::_22:
             return STR_RIDE_NAME_22;
-        case RIDE_TYPE_50:
+        case RideType::_50:
             return STR_RIDE_NAME_50;
-        case RIDE_TYPE_52:
+        case RideType::_52:
             return STR_RIDE_NAME_52;
-        case RIDE_TYPE_53:
+        case RideType::_53:
             return STR_RIDE_NAME_53;
-        case RIDE_TYPE_54:
+        case RideType::_54:
             return STR_RIDE_NAME_54;
-        case RIDE_TYPE_55:
+        case RideType::_55:
             return STR_RIDE_NAME_55;
-        case RIDE_TYPE_59:
+        case RideType::_59:
             return STR_RIDE_NAME_59;
         default:
             return GetRideTypeDescriptor(rideType).Naming.Name;
@@ -2014,10 +2014,11 @@ static void populate_ride_type_dropdown()
 
     RideDropdownData.clear();
 
-    for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
+    for (int32_t i = 0; i < static_cast<int32_t>(RideType::COUNT); i++)
     {
-        auto name = get_ride_type_name_for_dropdown(i);
-        RideDropdownData.push_back({ i, name, ls.GetString(name) });
+        const auto rideType = static_cast<RideType>(i);
+        auto name = get_ride_type_name_for_dropdown(rideType);
+        RideDropdownData.push_back({ rideType, name, ls.GetString(name) });
     }
 
     std::sort(RideDropdownData.begin(), RideDropdownData.end(), [](auto& a, auto& b) {
@@ -2044,11 +2045,11 @@ static void window_ride_show_ride_type_dropdown(rct_window* w, rct_widget* widge
     rct_widget* dropdownWidget = widget - 1;
     WindowDropdownShowText(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], Dropdown::Flag::StayOpen, RIDE_TYPE_COUNT);
+        w->colours[1], Dropdown::Flag::StayOpen, static_cast<int32_t>(RideType::COUNT));
 
     // Find the current ride type in the ordered list.
     uint8_t pos = 0;
-    for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
+    for (int32_t i = 0; i < static_cast<int32_t>(RideType::COUNT); i++)
     {
         if (RideDropdownData[i].ride_type_id == ride->type)
         {
@@ -2071,18 +2072,18 @@ static void populate_vehicle_type_dropdown(Ride* ride)
     int32_t rideTypeIterator, rideTypeIteratorMax;
     if (gCheatsShowVehiclesFromOtherTrackTypes
         && !(
-            ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-            || ride->type == RIDE_TYPE_MINI_GOLF))
+            ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RideType::MAZE
+            || ride->type == RideType::MINI_GOLF))
     {
         selectionShouldBeExpanded = true;
         rideTypeIterator = 0;
-        rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
+        rideTypeIteratorMax = static_cast<int32_t>(RideType::COUNT) - 1;
     }
     else
     {
         selectionShouldBeExpanded = false;
-        rideTypeIterator = ride->type;
-        rideTypeIteratorMax = ride->type;
+        rideTypeIterator = static_cast<int32_t>(ride->type);
+        rideTypeIteratorMax = static_cast<int32_t>(ride->type);
     }
 
     // Don't repopulate the list if we just did.
@@ -2095,12 +2096,14 @@ static void populate_vehicle_type_dropdown(Ride* ride)
 
     for (; rideTypeIterator <= rideTypeIteratorMax; rideTypeIterator++)
     {
-        if (selectionShouldBeExpanded && GetRideTypeDescriptor(rideTypeIterator).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        const auto rideType = static_cast<RideType>(rideTypeIterator);
+
+        if (selectionShouldBeExpanded && GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             continue;
-        if (selectionShouldBeExpanded && (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
+        if (selectionShouldBeExpanded && (rideType == RideType::MAZE || rideType == RideType::MINI_GOLF))
             continue;
 
-        auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
+        auto& rideEntries = objManager.GetAllRideEntries(rideType);
         for (auto rideEntryIndex : rideEntries)
         {
             auto currentRideEntry = get_ride_entry(rideEntryIndex);
@@ -2244,13 +2247,14 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
             break;
         }
         case WIDX_RIDE_TYPE_DROPDOWN:
-            if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
+            if (dropdownIndex != -1 && dropdownIndex < EnumValue(RideType::COUNT))
             {
-                uint8_t rideLabelId = std::clamp(dropdownIndex, 0, RIDE_TYPE_COUNT - 1);
-                uint8_t rideType = RideDropdownData[rideLabelId].ride_type_id;
-                if (rideType < RIDE_TYPE_COUNT)
+                uint8_t rideLabelId = std::clamp(dropdownIndex, 0, EnumValue(RideType::COUNT) - 1);
+                const auto rideType = RideDropdownData[rideLabelId].ride_type_id;
+                if (rideType < RideType::COUNT)
                 {
-                    auto rideSetSetting = RideSetSettingAction(w->number, RideSetSetting::RideType, rideType);
+                    auto rideSetSetting = RideSetSettingAction(
+                        w->number, RideSetSetting::RideType, static_cast<uint8_t>(rideType));
                     rideSetSetting.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                         // Reset ghost track if ride construction window is open, prevents a crash
                         // Will get set to the correct Alternative variable during set_default_next_piece.
@@ -2519,7 +2523,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter& ft
         }
     }
 
-    if (ride->type == RIDE_TYPE_MINI_GOLF)
+    if (ride->type == RideType::MINI_GOLF)
         return STR_EMPTY;
 
     auto stringId = VehicleStatusNames[static_cast<size_t>(vehicle->status)];
@@ -3065,7 +3069,7 @@ static void window_ride_vehicle_scrollpaint(rct_window* w, rct_drawpixelinfo* dp
             y -= (rideVehicleEntry->spacing / 2) / 17432;
         }
 
-        if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER)
+        if (ride->type == RideType::REVERSER_ROLLER_COASTER)
         {
             rct_vehicle_paintinfo tmp = *(nextSpriteToDraw - 1);
             *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
@@ -3621,7 +3625,7 @@ static void window_ride_operating_invalidate(rct_window* w)
 
     if (format != 0)
     {
-        if (ride->type == RIDE_TYPE_TWIST)
+        if (ride->type == RideType::TWIST)
         {
             ft = Formatter::Common();
             ft.Increment(18);
@@ -3811,7 +3815,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             num_items = 1;
             for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
             {
-                if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
+                if (rideEntry->ride_type[j] != RideType::RIDE_TYPE_NULL)
                     break;
             }
             gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
@@ -3954,7 +3958,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                 int32_t j;
                 for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
                 {
-                    if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
+                    if (rideEntry->ride_type[j] != RideType::RIDE_TYPE_NULL)
                         break;
                 }
                 int32_t i;
@@ -4580,7 +4584,7 @@ static void window_ride_colour_invalidate(rct_window* w)
     trackColour = ride_get_track_colour(ride, colourScheme);
 
     // Maze style
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         window_ride_colour_widgets[WIDX_MAZE_STYLE].type = WindowWidgetType::DropdownMenu;
         window_ride_colour_widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WindowWidgetType::Button;
@@ -4630,7 +4634,7 @@ static void window_ride_colour_invalidate(rct_window* w)
     }
 
     // Track supports colour
-    if (window_ride_has_track_colour(ride, 2) && ride->type != RIDE_TYPE_MAZE)
+    if (window_ride_has_track_colour(ride, 2) && ride->type != RideType::MAZE)
     {
         window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WindowWidgetType::ColourBtn;
         window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].image = window_ride_get_colour_button_image(trackColour.supports);
@@ -4813,7 +4817,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
         // Track
-        if (ride->type == RIDE_TYPE_MAZE)
+        if (ride->type == RideType::MAZE)
         {
             gfx_draw_sprite(dpi, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
         }
@@ -5621,7 +5625,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
 
             if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_NO_RAW_STATS))
             {
-                if (ride->type == RIDE_TYPE_MINI_GOLF)
+                if (ride->type == RideType::MINI_GOLF)
                 {
                     // Holes
                     ft = Formatter();
@@ -5767,7 +5771,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
-                if (ride->type != RIDE_TYPE_MINI_GOLF)
+                if (ride->type != RideType::MINI_GOLF)
                 {
                     // Inversions
                     if (ride->inversions != 0)
@@ -6252,7 +6256,7 @@ static void window_ride_income_toggle_primary_price(rct_window* w)
         return;
 
     ShopItem shop_item;
-    if (ride->type == RIDE_TYPE_TOILETS)
+    if (ride->type == RideType::TOILETS)
     {
         shop_item = ShopItem::Admission;
     }
@@ -6370,7 +6374,7 @@ static bool window_ride_income_can_modify_primary_price(rct_window* w)
         return false;
 
     auto rideEntry = ride->GetRideEntry();
-    return park_ride_prices_unlocked() || ride->type == RIDE_TYPE_TOILETS
+    return park_ride_prices_unlocked() || ride->type == RideType::TOILETS
         || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
 }
 
@@ -6569,7 +6573,7 @@ static void window_ride_income_invalidate(rct_window* w)
     window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_NONE;
 
     // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
-    if (!park_ride_prices_unlocked() && rideEntry->shop_item[0] == ShopItem::None && ride->type != RIDE_TYPE_TOILETS)
+    if (!park_ride_prices_unlocked() && rideEntry->shop_item[0] == ShopItem::None && ride->type != RideType::TOILETS)
     {
         w->disabled_widgets |= (1ULL << WIDX_PRIMARY_PRICE);
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
@@ -6588,7 +6592,7 @@ static void window_ride_income_invalidate(rct_window* w)
         window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
     ShopItem primaryItem = ShopItem::Admission;
-    if (ride->type == RIDE_TYPE_TOILETS || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
+    if (ride->type == RideType::TOILETS || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
     {
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Checkbox;
 

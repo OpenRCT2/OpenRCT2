@@ -722,7 +722,7 @@ namespace OpenRCT2::Scripting
             {
                 for (auto rideType : entry->ride_type)
                 {
-                    result.push_back(rideType);
+                    result.push_back(EnumValue(rideType));
                 }
             }
             return result;

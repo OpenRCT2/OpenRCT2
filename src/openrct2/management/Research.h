@@ -53,7 +53,7 @@ struct ResearchItem
         struct
         {
             ObjectEntryIndex entryIndex;
-            uint8_t baseRideType;
+            RideType baseRideType;
             Research::EntryType type; // 0: scenery entry, 1: ride entry
         };
     };
@@ -77,7 +77,7 @@ struct ResearchItem
     {
     }
     ResearchItem(
-        Research::EntryType _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, ResearchCategory _category,
+        Research::EntryType _type, ObjectEntryIndex _entryIndex, RideType _baseRideType, ResearchCategory _category,
         uint8_t _flags)
         : entryIndex(_entryIndex)
         , baseRideType(_baseRideType)
@@ -177,15 +177,15 @@ void research_finish_item(ResearchItem* researchItem);
 void research_insert(ResearchItem&& item, bool researched);
 void research_remove(ResearchItem* researchItem);
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
+bool research_insert_ride_entry(RideType rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
 bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 
-void ride_type_set_invented(uint32_t rideType);
+void ride_type_set_invented(RideType rideType);
 void ride_entry_set_invented(int32_t rideEntryIndex);
 void scenery_set_invented(const ScenerySelection& sceneryItem);
 void scenery_set_not_invented(const ScenerySelection& sceneryItem);
-bool ride_type_is_invented(uint32_t rideType);
+bool ride_type_is_invented(RideType rideType);
 bool ride_entry_is_invented(int32_t rideEntryIndex);
 bool scenery_group_is_invented(int32_t sgIndex);
 void scenery_group_set_invented(int32_t sgIndex);

@@ -16,7 +16,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor TwistRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -32,7 +32,7 @@ constexpr const RideTypeDescriptor TwistRTD =
     SET_FIELD(OperatingSettings, { 3, 6, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_TWIST, STR_RIDE_DESCRIPTION_TWIST }),
     SET_FIELD(NameConvention, { RideComponentType::Structure, RideComponentType::Structure, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_TWIST)),
+    SET_FIELD(EnumName, nameof(RideType::TWIST)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 12, 64, 3, 2, }),
     SET_FIELD(MaxMass, 255),

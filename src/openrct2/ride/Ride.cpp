@@ -109,7 +109,7 @@ size_t RideManager::size() const
     size_t count = 0;
     for (size_t i = 0; i < _rides.size(); i++)
     {
-        if (_rides[i].type != RIDE_TYPE_NULL)
+        if (_rides[i].type != RideType::RIDE_TYPE_NULL)
         {
             count++;
         }
@@ -132,7 +132,7 @@ ride_id_t GetNextFreeRideId()
     size_t result = _rides.size();
     for (size_t i = 0; i < _rides.size(); i++)
     {
-        if (_rides[i].type == RIDE_TYPE_NULL)
+        if (_rides[i].type == RideType::RIDE_TYPE_NULL)
         {
             result = i;
             break;
@@ -162,7 +162,7 @@ Ride* get_ride(ride_id_t index)
     if (index < _rides.size())
     {
         auto& ride = _rides[index];
-        if (ride.type != RIDE_TYPE_NULL)
+        if (ride.type != RideType::RIDE_TYPE_NULL)
         {
             assert(ride.id == index);
             return &ride;
@@ -214,11 +214,11 @@ int32_t ride_get_count()
 size_t Ride::GetNumPrices() const
 {
     size_t result = 0;
-    if (type == RIDE_TYPE_CASH_MACHINE || type == RIDE_TYPE_FIRST_AID)
+    if (type == RideType::CASH_MACHINE || type == RideType::FIRST_AID)
     {
         result = 0;
     }
-    else if (type == RIDE_TYPE_TOILETS)
+    else if (type == RideType::TOILETS)
     {
         result = 1;
     }
@@ -715,7 +715,7 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
         || input->element->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return 0;
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         return 0;
     }
@@ -983,7 +983,7 @@ void Ride::Update()
     ride_music_update(this);
 
     // Update stations
-    if (type != RIDE_TYPE_MAZE)
+    if (type != RideType::MAZE)
         for (int32_t i = 0; i < MAX_STATIONS; i++)
             ride_update_station(this, i);
 
@@ -1013,9 +1013,9 @@ void Ride::Update()
     }
 
     // Ride specific updates
-    if (type == RIDE_TYPE_CHAIRLIFT)
+    if (type == RideType::CHAIRLIFT)
         UpdateChairlift();
-    else if (type == RIDE_TYPE_SPIRAL_SLIDE)
+    else if (type == RideType::SPIRAL_SLIDE)
         UpdateSpiralSlide();
 
     ride_breakdown_update(this);
@@ -1766,7 +1766,7 @@ static void ride_music_update(Ride* ride)
         return;
     }
 
-    if (ride->type == RIDE_TYPE_CIRCUS)
+    if (ride->type == RideType::CIRCUS)
     {
         Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr && vehicle->status != Vehicle::Status::DoingCircusShow)
@@ -2458,7 +2458,7 @@ static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
         }
     }
 
-    if (ride->type == RIDE_TYPE_GO_KARTS || ride->type == RIDE_TYPE_MINI_GOLF)
+    if (ride->type == RideType::GO_KARTS || ride->type == RideType::MINI_GOLF)
     {
         if (numStations <= 1)
             return 1;
@@ -2483,7 +2483,7 @@ static StationIndex ride_mode_check_station_present(Ride* ride)
         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
             return STATION_INDEX_NULL;
 
-        if (ride->type == RIDE_TYPE_MAZE)
+        if (ride->type == RideType::MAZE)
             return STATION_INDEX_NULL;
 
         gGameCommandErrorText = STR_REQUIRES_A_STATION_PLATFORM;
@@ -2648,7 +2648,7 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
 
     ride_id_t rideIndex = trackElement->GetRideIndex();
     auto ride = get_ride(rideIndex);
-    if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
+    if (ride != nullptr && ride->type == RideType::MAZE)
         return true;
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -2707,7 +2707,7 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
     if (ride == nullptr)
         return false;
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
         return true;
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -2965,10 +2965,10 @@ static void ride_set_start_finish_points(ride_id_t rideIndex, CoordsXYE* startEl
 
     switch (ride->type)
     {
-        case RIDE_TYPE_BOAT_HIRE:
+        case RideType::BOAT_HIRE:
             ride_set_boat_hire_return_point(ride, startElement);
             break;
-        case RIDE_TYPE_MAZE:
+        case RideType::MAZE:
             ride_set_maze_entrance_exit_points(ride);
             break;
     }
@@ -3159,7 +3159,7 @@ static Vehicle* vehicle_create_car(
         int32_t direction = trackElement->GetDirection();
         vehicle->sprite_direction = direction << 3;
 
-        if (ride->type == RIDE_TYPE_SPACE_RINGS)
+        if (ride->type == RideType::SPACE_RINGS)
         {
             direction = 4;
         }
@@ -3171,7 +3171,7 @@ static Vehicle* vehicle_create_car(
                 {
                     if (ride->GetRideTypeDescriptor().StartTrackPiece != TrackElemType::FlatTrack1x4A)
                     {
-                        if (ride->type == RIDE_TYPE_ENTERPRISE)
+                        if (ride->type == RideType::ENTERPRISE)
                         {
                             direction += 5;
                         }
@@ -3433,7 +3433,7 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
     }
 
     //
-    if (type != RIDE_TYPE_SPACE_RINGS && !GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+    if (type != RideType::SPACE_RINGS && !GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
     {
         if (IsBlockSectioned())
         {
@@ -3727,7 +3727,7 @@ void Ride::ConstructMissingEntranceOrExit() const
     if (entranceOrExit == -1)
         return;
 
-    if (type != RIDE_TYPE_MAZE)
+    if (type != RideType::MAZE)
     {
         auto location = stations[i].GetStart();
         window_scroll_to_location(w, location);
@@ -3792,7 +3792,7 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
 {
     CoordsXYE trackElement, problematicTrackElement = {};
 
-    if (type == RIDE_TYPE_NULL)
+    if (type == RideType::RIDE_TYPE_NULL)
     {
         log_warning("Invalid ride type for ride %u", id);
         return false;
@@ -3824,7 +3824,7 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
     if (trackElement.element == nullptr)
     {
         // Maze is strange, station start is 0... investigation required
-        if (type != RIDE_TYPE_MAZE)
+        if (type != RideType::MAZE)
             return false;
     }
 
@@ -3958,7 +3958,7 @@ bool Ride::Open(bool isApplying)
     if (trackElement.element == nullptr)
     {
         // Maze is strange, station start is 0... investigation required
-        if (type != RIDE_TYPE_MAZE)
+        if (type != RideType::MAZE)
             return false;
     }
 
@@ -4116,7 +4116,7 @@ RideMode Ride::GetDefaultMode() const
     return GetRideTypeDescriptor().DefaultMode;
 }
 
-static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour* colours)
+static bool ride_with_colour_config_exists(RideType ride_type, const TrackColour* colours)
 {
     for (auto& ride : GetRideManager())
     {
@@ -4157,9 +4157,9 @@ bool Ride::NameExists(std::string_view name, ride_id_t excludeRideId)
  *
  *  Based on rct2: 0x006B4776
  */
-int32_t ride_get_random_colour_preset_index(uint8_t ride_type)
+int32_t ride_get_random_colour_preset_index(RideType ride_type)
 {
-    if (ride_type >= std::size(RideTypeDescriptors))
+    if (!RideTypeIsValid(ride_type))
     {
         return 0;
     }
@@ -4243,7 +4243,7 @@ void Ride::SetNameToDefault()
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
+RideNaming get_ride_naming(const RideType rideType, rct_ride_entry* rideEntry)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
@@ -4677,7 +4677,7 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor)
  */
 void ride_update_vehicle_colours(Ride* ride)
 {
-    if (ride->type == RIDE_TYPE_SPACE_RINGS || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+    if (ride->type == RideType::SPACE_RINGS || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
     {
         gfx_invalidate_screen();
     }
@@ -5203,7 +5203,7 @@ void Ride::Delete()
 {
     custom_name = {};
     measurement = {};
-    type = RIDE_TYPE_NULL;
+    type = RideType::RIDE_TYPE_NULL;
 }
 
 void Ride::Renew()
@@ -5217,21 +5217,21 @@ RideClassification Ride::GetClassification() const
 {
     switch (type)
     {
-        case RIDE_TYPE_FOOD_STALL:
-        case RIDE_TYPE_1D:
-        case RIDE_TYPE_DRINK_STALL:
-        case RIDE_TYPE_1F:
-        case RIDE_TYPE_SHOP:
-        case RIDE_TYPE_22:
-        case RIDE_TYPE_50:
-        case RIDE_TYPE_52:
-        case RIDE_TYPE_53:
-        case RIDE_TYPE_54:
+        case RideType::FOOD_STALL:
+        case RideType::_1D:
+        case RideType::DRINK_STALL:
+        case RideType::_1F:
+        case RideType::SHOP:
+        case RideType::_22:
+        case RideType::_50:
+        case RideType::_52:
+        case RideType::_53:
+        case RideType::_54:
             return RideClassification::ShopOrStall;
-        case RIDE_TYPE_INFORMATION_KIOSK:
-        case RIDE_TYPE_TOILETS:
-        case RIDE_TYPE_CASH_MACHINE:
-        case RIDE_TYPE_FIRST_AID:
+        case RideType::INFORMATION_KIOSK:
+        case RideType::TOILETS:
+        case RideType::CASH_MACHINE:
+        case RideType::FIRST_AID:
             return RideClassification::KioskOrFacility;
         default:
             return RideClassification::Ride;
@@ -5376,19 +5376,19 @@ bool ride_has_ratings(const Ride* ride)
  *  Searches for a non-null ride type in a ride entry.
  *  If none is found, it will still return RIDE_TYPE_NULL.
  */
-uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
+RideType ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
 {
     for (uint8_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        if (rideEntry->ride_type[i] != RIDE_TYPE_NULL)
+        if (rideEntry->ride_type[i] != RideType::RIDE_TYPE_NULL)
         {
             return rideEntry->ride_type[i];
         }
     }
-    return RIDE_TYPE_NULL;
+    return RideType::RIDE_TYPE_NULL;
 }
 
-int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed)
+int32_t get_booster_speed(RideType rideType, int32_t rawSpeed)
 {
     int8_t shiftFactor = GetRideTypeDescriptor(rideType).OperatingSettings.BoosterSpeedFactor;
     if (shiftFactor == 0)
@@ -5445,7 +5445,7 @@ bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category)
     return GetRideTypeDescriptor(rideType).Category == category;
 }
 
-int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
+int32_t ride_get_entry_index(RideType rideType, int32_t rideSubType)
 {
     int32_t subType = rideSubType;
 

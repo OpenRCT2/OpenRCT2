@@ -56,7 +56,7 @@ std::vector<ResearchItem> gResearchItemsInvented;
 // 0x00EE787C
 uint8_t gResearchUncompletedCategories;
 
-static bool _researchedRideTypes[RIDE_TYPE_COUNT];
+static bool _researchedRideTypes[static_cast<size_t>(RideType::COUNT)];
 static bool _researchedRideEntries[MAX_RIDE_OBJECTS];
 static bool _researchedSceneryItems[SCENERY_TYPE_COUNT][UINT16_MAX];
 
@@ -194,11 +194,11 @@ void research_finish_item(ResearchItem* researchItem)
     if (researchItem->type == Research::EntryType::Ride)
     {
         // Ride
-        uint32_t base_ride_type = researchItem->baseRideType;
+        auto base_ride_type = researchItem->baseRideType;
         ObjectEntryIndex rideEntryIndex = researchItem->entryIndex;
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
-        if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
+        if (rideEntry != nullptr && base_ride_type != RideType::RIDE_TYPE_NULL)
         {
             if (!RideTypeIsValid(base_ride_type))
             {
@@ -470,7 +470,7 @@ void research_populate_list_random()
         int32_t researched = (scenario_rand() & 0xFF) > 128;
         for (auto rideType : rideEntry->ride_type)
         {
-            if (rideType != RIDE_TYPE_NULL)
+            if (rideType != RideType::RIDE_TYPE_NULL)
             {
                 ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                 research_insert_ride_entry(rideType, i, category, researched);
@@ -492,9 +492,9 @@ void research_populate_list_random()
     }
 }
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
+bool research_insert_ride_entry(RideType rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
 {
-    if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
+    if (rideType != RideType::RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto tmpItem = ResearchItem(Research::EntryType::Ride, entryIndex, rideType, category, 0);
         research_insert(std::move(tmpItem), researched);
@@ -512,7 +512,7 @@ void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
 
     for (auto rideType : rideEntry->ride_type)
     {
-        if (rideType != RIDE_TYPE_NULL)
+        if (rideType != RideType::RIDE_TYPE_NULL)
         {
             ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
             research_insert_ride_entry(rideType, entryIndex, category, researched);
@@ -525,28 +525,28 @@ bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool resea
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto tmpItem = ResearchItem(
-            Research::EntryType::Scenery, entryIndex, RIDE_TYPE_NULL, ResearchCategory::SceneryGroup, 0);
+            Research::EntryType::Scenery, entryIndex, RideType::RIDE_TYPE_NULL, ResearchCategory::SceneryGroup, 0);
         research_insert(std::move(tmpItem), researched);
         return true;
     }
     return false;
 }
 
-bool ride_type_is_invented(uint32_t rideType)
+bool ride_type_is_invented(RideType rideType)
 {
-    return RideTypeIsValid(rideType) ? _researchedRideTypes[rideType] : false;
+    return RideTypeIsValid(rideType) ? _researchedRideTypes[static_cast<size_t>(rideType)] : false;
 }
 
-bool ride_entry_is_invented(int32_t rideEntryIndex)
+bool ride_entry_is_invented(ObjectEntryIndex rideEntryIndex)
 {
     return _researchedRideEntries[rideEntryIndex];
 }
 
-void ride_type_set_invented(uint32_t rideType)
+void ride_type_set_invented(RideType rideType)
 {
     if (RideTypeIsValid(rideType))
     {
-        _researchedRideTypes[rideType] = true;
+        _researchedRideTypes[static_cast<size_t>(rideType)] = true;
     }
 }
 
@@ -814,8 +814,8 @@ void research_fix()
 
                 for (uint8_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
                 {
-                    uint32_t rideType = rideEntry->ride_type[j];
-                    if (rideType != RIDE_TYPE_NULL)
+                    const auto rideType = rideEntry->ride_type[j];
+                    if (rideType != RideType::RIDE_TYPE_NULL)
                     {
                         ride_type_set_invented(rideEntry->ride_type[j]);
                     }
@@ -935,7 +935,7 @@ rct_string_id ResearchItem::GetCategoryName() const
     return _researchCategoryNames[categoryValue];
 }
 
-static std::bitset<RIDE_TYPE_COUNT> _seenRideType = {};
+static std::bitset<static_cast<size_t>(RideType::COUNT)> _seenRideType = {};
 
 static void research_update_first_of_type(ResearchItem* researchItem)
 {
@@ -946,7 +946,7 @@ static void research_update_first_of_type(ResearchItem* researchItem)
         return;
 
     auto rideType = researchItem->baseRideType;
-    if (rideType >= RIDE_TYPE_COUNT)
+    if (rideType >= RideType::COUNT)
     {
         log_error("Research item has non-existent ride type index %d", rideType);
         return;
@@ -959,17 +959,17 @@ static void research_update_first_of_type(ResearchItem* researchItem)
         return;
     }
 
-    if (!_seenRideType[rideType])
+    if (!_seenRideType[static_cast<size_t>(rideType)])
         researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
 }
 
 static void research_mark_ride_type_as_seen(const ResearchItem& researchItem)
 {
     auto rideType = researchItem.baseRideType;
-    if (rideType >= RIDE_TYPE_COUNT)
+    if (rideType >= RideType::COUNT)
         return;
 
-    _seenRideType[rideType] = true;
+    _seenRideType[static_cast<size_t>(rideType)] = true;
 }
 
 void research_determine_first_of_type()
@@ -982,7 +982,7 @@ void research_determine_first_of_type()
             continue;
 
         auto rideType = researchItem.baseRideType;
-        if (rideType >= RIDE_TYPE_COUNT)
+        if (rideType >= RideType::COUNT)
             continue;
 
         const auto& rtd = GetRideTypeDescriptor(rideType);

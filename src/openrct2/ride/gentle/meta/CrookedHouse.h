@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor CrookedHouseRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE }),
     SET_FIELD(NameConvention, { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_CROOKED_HOUSE)),
+    SET_FIELD(EnumName, nameof(RideType::CROOKED_HOUSE)),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 16, 96, 3, 2, }),
     SET_FIELD(MaxMass, 255),

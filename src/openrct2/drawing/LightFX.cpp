@@ -713,14 +713,14 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
 
     switch (ride->type)
     {
-        case RIDE_TYPE_OBSERVATION_TOWER:
+        case RideType::OBSERVATION_TOWER:
             LightfxAdd3DLight(*vehicle, 0, { vehicle->x, vehicle->y + 16, vehicle->z }, LightType::Spot3);
             LightfxAdd3DLight(*vehicle, 1, { vehicle->x + 16, vehicle->y, vehicle->z }, LightType::Spot3);
             LightfxAdd3DLight(*vehicle, 2, { vehicle->x - 16, vehicle->y, vehicle->z }, LightType::Spot3);
             LightfxAdd3DLight(*vehicle, 3, { vehicle->x, vehicle->y - 16, vehicle->z }, LightType::Spot3);
             break;
-        case RIDE_TYPE_MINE_TRAIN_COASTER:
-        case RIDE_TYPE_GHOST_TRAIN:
+        case RideType::MINE_TRAIN_COASTER:
+        case RideType::GHOST_TRAIN:
             if (vehicle == vehicle->TrainHead())
             {
                 int16_t place_x = vehicle->x - offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
@@ -728,19 +728,19 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
                 LightfxAdd3DLight(*vehicle, 0, { place_x, place_y, vehicle->z }, LightType::Spot3);
             }
             break;
-        case RIDE_TYPE_CHAIRLIFT:
+        case RideType::CHAIRLIFT:
             LightfxAdd3DLight(*vehicle, 0, { vehicle->x, vehicle->y, vehicle->z - 16 }, LightType::Lantern2);
             break;
-        case RIDE_TYPE_BOAT_HIRE:
-        case RIDE_TYPE_CAR_RIDE:
-        case RIDE_TYPE_MONSTER_TRUCKS:
-        case RIDE_TYPE_GO_KARTS:
-        case RIDE_TYPE_DODGEMS:
-        case RIDE_TYPE_MINI_HELICOPTERS:
-        case RIDE_TYPE_MONORAIL_CYCLES:
-        case RIDE_TYPE_SUBMARINE_RIDE:
-        case RIDE_TYPE_SPLASH_BOATS:
-        case RIDE_TYPE_WATER_COASTER:
+        case RideType::BOAT_HIRE:
+        case RideType::CAR_RIDE:
+        case RideType::MONSTER_TRUCKS:
+        case RideType::GO_KARTS:
+        case RideType::DODGEMS:
+        case RideType::MINI_HELICOPTERS:
+        case RideType::MONORAIL_CYCLES:
+        case RideType::SUBMARINE_RIDE:
+        case RideType::SPLASH_BOATS:
+        case RideType::WATER_COASTER:
         {
             Vehicle* vehicle_draw = vehicle->TrainHead();
             auto nextVeh = GetEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
@@ -758,7 +758,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
             LightfxAdd3DLight(*vehicle, 1, { place_x, place_y, vehicle_draw->z }, LightType::Spot2);
             break;
         }
-        case RIDE_TYPE_MONORAIL:
+        case RideType::MONORAIL:
         {
             LightfxAdd3DLight(*vehicle, 0, { vehicle->x, vehicle->y, vehicle->z + 12 }, LightType::Spot2);
             int16_t place_x = vehicle->x;
@@ -783,7 +783,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
             }
             break;
         }
-        case RIDE_TYPE_MINIATURE_RAILWAY:
+        case RideType::MINIATURE_RAILWAY:
             if (vehicle == vehicle->TrainHead())
             {
                 int16_t place_x = vehicle->x - offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;

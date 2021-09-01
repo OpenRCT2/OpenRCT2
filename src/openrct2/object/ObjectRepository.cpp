@@ -141,7 +141,7 @@ protected:
             case ObjectType::Ride:
                 ds << item.RideInfo.RideFlags;
                 ds << item.RideInfo.RideCategory;
-                ds << item.RideInfo.RideType;
+                ds << reinterpret_cast<uint8_t&>(item.RideInfo.RideType);
                 break;
             case ObjectType::SceneryGroup:
             {

@@ -35,7 +35,7 @@ struct TrackRepositoryItem
 {
     std::string Name;
     std::string Path;
-    uint8_t RideType = RIDE_TYPE_NULL;
+    RideType RideType = RideType::RIDE_TYPE_NULL;
     std::string ObjectEntry;
     uint32_t Flags = 0;
 };
@@ -138,7 +138,7 @@ public:
      * @param entry The entry name to count the track list of. Leave empty to count track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const override
+    size_t GetCountForObjectEntry(RideType rideType, const std::string& entry) const override
     {
         size_t count = 0;
         const auto& repo = GetContext()->GetObjectRepository();
@@ -172,7 +172,7 @@ public:
      * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8_t rideType, const std::string& entry) const override
+    std::vector<track_design_file_ref> GetItemsForObjectEntry(RideType rideType, const std::string& entry) const override
     {
         std::vector<track_design_file_ref> refs;
         const auto& repo = GetContext()->GetObjectRepository();

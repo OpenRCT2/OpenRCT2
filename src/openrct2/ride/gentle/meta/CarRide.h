@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor CarRideRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE)
                                   | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_SPINNING_TUNNEL)),
@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor CarRideRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CAR_RIDE, STR_RIDE_DESCRIPTION_CAR_RIDE }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_CAR_RIDE)),
+    SET_FIELD(EnumName, nameof(RideType::CAR_RIDE)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 6, 24, 4, 7, }),
     SET_FIELD(MaxMass, 2),

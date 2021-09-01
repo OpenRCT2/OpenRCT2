@@ -213,32 +213,34 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
 
     if (gCheatsShowVehiclesFromOtherTrackTypes
         && !(
-            ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-            || ride->type == RIDE_TYPE_MINI_GOLF))
+            ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RideType::MAZE
+            || ride->type == RideType::MINI_GOLF))
     {
         selectionShouldBeExpanded = true;
         rideTypeIterator = 0;
-        rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
+        rideTypeIteratorMax = static_cast<int32_t>(RideType::COUNT) - 1;
     }
     else
     {
         selectionShouldBeExpanded = false;
-        rideTypeIterator = ride->type;
-        rideTypeIteratorMax = ride->type;
+        rideTypeIterator = static_cast<int32_t>(ride->type);
+        rideTypeIteratorMax = static_cast<int32_t>(ride->type);
     }
 
     for (; rideTypeIterator <= rideTypeIteratorMax; rideTypeIterator++)
     {
+        const auto rideType = static_cast<RideType>(rideTypeIterator);
+
         if (selectionShouldBeExpanded)
         {
-            if (GetRideTypeDescriptor(rideTypeIterator).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                 continue;
-            if (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF)
+            if (rideType == RideType::MAZE || rideType == RideType::MINI_GOLF)
                 continue;
         }
 
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
+        auto& rideEntries = objManager.GetAllRideEntries(rideType);
         for (auto rideEntryIndex : rideEntries)
         {
             if (rideEntryIndex == _value)

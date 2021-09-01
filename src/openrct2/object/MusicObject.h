@@ -32,10 +32,12 @@ public:
     size_t Size;
 };
 
+enum class RideType : uint8_t;
+
 class MusicObject final : public Object
 {
 private:
-    std::vector<uint8_t> _rideTypes;
+    std::vector<RideType> _rideTypes;
     std::vector<MusicObjectTrack> _tracks;
     std::optional<uint8_t> _originalStyleId;
 
@@ -54,7 +56,7 @@ public:
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
     std::optional<uint8_t> GetOriginalStyleId() const;
-    bool SupportsRideType(uint8_t rideType);
+    bool SupportsRideType(RideType rideType);
     size_t GetTrackCount() const;
     const MusicObjectTrack* GetTrack(size_t trackIndex) const;
 

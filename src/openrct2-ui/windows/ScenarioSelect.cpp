@@ -521,8 +521,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (scenario->objective_type == OBJECTIVE_BUILD_THE_BEST)
     {
         rct_string_id rideTypeString = STR_NONE;
-        auto rideTypeId = scenario->objective_arg_3;
-        if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
+        auto rideTypeId = static_cast<RideType>(scenario->objective_arg_3);
+        if (rideTypeId != RideType::RIDE_TYPE_NULL && rideTypeId < RideType::COUNT)
         {
             rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
         }

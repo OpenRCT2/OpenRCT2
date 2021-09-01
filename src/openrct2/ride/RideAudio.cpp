@@ -177,7 +177,7 @@ namespace OpenRCT2::RideAudio
     {
         // Create new music channel
         auto ride = get_ride(instance.RideId);
-        if (ride->type == RIDE_TYPE_CIRCUS)
+        if (ride->type == RideType::CIRCUS)
         {
             auto channel = Mixer_Play_Music(PATH_ID_CSS24, MIXER_LOOP_NONE, true);
             if (channel != nullptr)
@@ -268,7 +268,7 @@ namespace OpenRCT2::RideAudio
 
     static std::pair<size_t, size_t> RideMusicGetTrackOffsetLength(const Ride& ride)
     {
-        if (ride.type == RIDE_TYPE_CIRCUS)
+        if (ride.type == RideType::CIRCUS)
         {
             return { 1378, 12427456 };
         }

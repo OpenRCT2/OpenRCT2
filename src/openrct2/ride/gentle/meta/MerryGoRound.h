@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor MerryGoRoundRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor MerryGoRoundRTD =
     SET_FIELD(OperatingSettings, { 4, 25, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MERRY_GO_ROUND, STR_RIDE_DESCRIPTION_MERRY_GO_ROUND }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_MERRY_GO_ROUND)),
+    SET_FIELD(EnumName, nameof(RideType::MERRY_GO_ROUND)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE)),
     SET_FIELD(Heights, { 12, 64, 3, 2, }),
     SET_FIELD(MaxMass, 255),

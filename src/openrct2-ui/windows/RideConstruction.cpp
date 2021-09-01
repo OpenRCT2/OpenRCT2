@@ -488,7 +488,7 @@ static bool is_track_enabled(int32_t trackFlagIndex)
     return (_enabledRidePieces & (1ULL << trackFlagIndex)) != 0;
 }
 
-static int32_t ride_get_alternative_type(Ride* ride)
+static RideType ride_get_alternative_type(Ride* ride)
 {
     return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride->GetRideTypeDescriptor().AlternateType
                                                                          : ride->type;
@@ -518,7 +518,7 @@ rct_window* window_ride_construction_open()
     _stationConstructed = ride->num_stations != 0;
     _deferClose = false;
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         return context_open_window_view(WV_MAZE_CONSTRUCTION);
     }
@@ -697,7 +697,7 @@ static void window_ride_construction_resize(rct_window* w)
     if (ride == nullptr)
         return;
 
-    int32_t rideType = ride_get_alternative_type(ride);
+    const auto rideType = ride_get_alternative_type(ride);
 
     uint64_t disabledWidgets = 0;
 
@@ -2251,7 +2251,7 @@ static void window_ride_construction_invalidate(rct_window* w)
     if (_currentTrackCurve & RideConstructionSpecialPieceSelected)
     {
         stringId = RideConfigurationStringIds[_currentTrackCurve & ~RideConstructionSpecialPieceSelected];
-        if (stringId == STR_RAPIDS && (ride->type == RIDE_TYPE_MONSTER_TRUCKS || ride->type == RIDE_TYPE_CAR_RIDE))
+        if (stringId == STR_RAPIDS && (ride->type == RideType::MONSTER_TRUCKS || ride->type == RideType::CAR_RIDE))
         {
             stringId = STR_LOG_BUMPS;
         }
@@ -2519,7 +2519,7 @@ void window_ride_construction_update_enabled_track_pieces()
     if (rideEntry == nullptr)
         return;
 
-    int32_t rideType = ride_get_alternative_type(ride);
+    const auto rideType = ride_get_alternative_type(ride);
     _enabledRidePieces = GetRideTypeDescriptor(rideType).GetAvailableTrackPieces();
 }
 
@@ -2773,7 +2773,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     if (ride == nullptr)
         return;
 
-    int32_t rideType = ride_get_alternative_type(ride);
+    const auto rideType = ride_get_alternative_type(ride);
 
     w->hold_down_widgets = 0;
     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP) || !_stationConstructed)
@@ -2893,7 +2893,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
         {
             // Enable helix
             window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-            if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
+            if (rideType != RideType::SPLASH_BOATS && rideType != RideType::RIVER_RAFTS)
                 window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
         }
     }
@@ -2901,7 +2901,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     if (is_track_enabled(TRACK_SLOPE_STEEP))
     {
         window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-        if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
+        if (rideType != RideType::SPLASH_BOATS && rideType != RideType::RIVER_RAFTS)
             window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
     }
 
@@ -3053,7 +3053,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
         }
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
         {
-            if (rideType == RIDE_TYPE_WATER_COASTER)
+            if (rideType == RideType::WATER_COASTER)
             {
                 window_ride_construction_widgets[WIDX_U_TRACK].image = SPR_RIDE_CONSTRUCTION_RC_TRACK;
                 window_ride_construction_widgets[WIDX_O_TRACK].image = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL;
@@ -3126,7 +3126,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Empty;
-    if ((rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT)
+    if ((rideType == RideType::MULTI_DIMENSION_ROLLER_COASTER || rideType == RideType::MULTI_DIMENSION_ROLLER_COASTER_ALT)
         && _selectedTrackType != TrackElemType::Brakes
         && _currentTrackCurve != (RideConstructionSpecialPieceSelected | TrackElemType::Brakes))
     {
@@ -3326,7 +3326,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
         if (trackPieceStringId == STR_RAPIDS)
         {
             auto ride = get_ride(_currentRideIndex);
-            if (ride != nullptr && (ride->type == RIDE_TYPE_MONSTER_TRUCKS || ride->type == RIDE_TYPE_CAR_RIDE))
+            if (ride != nullptr && (ride->type == RideType::MONSTER_TRUCKS || ride->type == RideType::CAR_RIDE))
                 trackPieceStringId = STR_LOG_BUMPS;
         }
         gDropdownItemsFormat[i] = trackPieceStringId;
@@ -3500,7 +3500,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     // search for appropriate z value for ghost, up to max ride height
     int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         for (int zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
         {
@@ -3731,7 +3731,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
     // search for z value to build at, up to max ride height
     int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / COORDS_Z_STEP + 1) : 2);
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
         {

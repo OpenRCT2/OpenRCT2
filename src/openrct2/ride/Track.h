@@ -572,7 +572,7 @@ bool track_element_is_covered(track_type_t trackElementType);
 bool track_type_is_station(track_type_t trackType);
 
 roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank);
-roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank);
+roll_type_t track_get_actual_bank_2(RideType rideType, bool isInverted, roll_type_t bank);
 roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement);
 
 bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flags, bool fromTrackDesign);

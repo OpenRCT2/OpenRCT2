@@ -506,7 +506,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
                     RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
-                    if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
+                    if (ride->type == RideType::LIM_LAUNCHED_ROLLER_COASTER)
                         newMode = RideMode::PoweredLaunchBlockSectioned;
 
                     auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));

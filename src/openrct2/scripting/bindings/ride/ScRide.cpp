@@ -47,7 +47,7 @@ namespace OpenRCT2::Scripting
     int32_t ScRide::type_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->type : 0;
+        return ride != nullptr ? EnumValue(ride->type) : 0;
     }
 
     std::string ScRide::classification_get() const

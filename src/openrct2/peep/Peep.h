@@ -746,7 +746,7 @@ public:
     void OnExitRide(Ride* ride);
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
-    void StopPurchaseThought(uint8_t ride_type);
+    void StopPurchaseThought(RideType ride_type);
     void TryGetUpFromSitting();
     void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
@@ -760,8 +760,8 @@ public:
     void SpendMoney(money32 amount, ExpenditureType type);
     void SetHasRidden(const Ride* ride);
     bool HasRidden(const Ride* ride) const;
-    void SetHasRiddenRideType(int32_t rideType);
-    bool HasRiddenRideType(int32_t rideType) const;
+    void SetHasRiddenRideType(RideType rideType);
+    bool HasRiddenRideType(RideType rideType) const;
     void SetParkEntryTime(int32_t entryTime);
     int32_t GetParkEntryTime() const;
     void CheckIfLost();

@@ -491,7 +491,7 @@ void ride_remove_provisional_track_piece()
     int32_t x = _unkF440C5.x;
     int32_t y = _unkF440C5.y;
     int32_t z = _unkF440C5.z;
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST;
@@ -1016,7 +1016,7 @@ bool ride_modify(CoordsXYE* input)
 
     ride_create_or_find_construction_window(rideIndex);
 
-    if (ride->type == RIDE_TYPE_MAZE)
+    if (ride->type == RideType::MAZE)
     {
         return ride_modify_maze(tileElement);
     }
@@ -1291,7 +1291,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
 
     entranceExitCoords = { coords->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
 
-    if (ride->type == RIDE_TYPE_NULL)
+    if (ride->type == RideType::RIDE_TYPE_NULL)
     {
         entranceExitCoords.setNull();
         return entranceExitCoords;
@@ -1440,7 +1440,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
 void sub_6CB945(Ride* ride)
 {
     const TrackElementDescriptor* ted;
-    if (ride->type != RIDE_TYPE_MAZE)
+    if (ride->type != RideType::MAZE)
     {
         for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
         {

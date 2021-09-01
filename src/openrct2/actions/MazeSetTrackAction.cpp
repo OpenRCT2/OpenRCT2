@@ -89,7 +89,7 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        if (heightDifference > GetRideTypeDescriptor(RIDE_TYPE_MAZE).Heights.MaxHeight)
+        if (heightDifference > GetRideTypeDescriptor(RideType::MAZE).Heights.MaxHeight)
         {
             res->Error = GameActions::Status::TooHigh;
             res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
@@ -129,7 +129,7 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
         }
 
         auto ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
+        if (ride == nullptr || ride->type == RideType::SPIRAL_ROLLER_COASTER)
         {
             res->Error = GameActions::Status::NoClearance;
             res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;

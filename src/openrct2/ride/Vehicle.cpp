@@ -1686,7 +1686,7 @@ void Vehicle::UpdateMeasurements()
             curRide->testing_flags &= ~RIDE_TESTING_POWERED_LIFT;
         }
 
-        if (curRide->type == RIDE_TYPE_WATER_COASTER)
+        if (curRide->type == RideType::WATER_COASTER)
         {
             if (trackElemType >= TrackElemType::FlatCovered && trackElemType <= TrackElemType::RightQuarterTurn3TilesCovered)
             {
@@ -1854,7 +1854,7 @@ void Vehicle::UpdateMeasurements()
             curRide->start_drop_height = z / COORDS_Z_STEP;
         }
 
-        if (curRide->type == RIDE_TYPE_MINI_GOLF)
+        if (curRide->type == RideType::MINI_GOLF)
         {
             if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
             {
@@ -2001,7 +2001,7 @@ static SoundIdVolume sub_6D7AC0(
 void Vehicle::GetLiftHillSound(Ride* curRide, SoundIdVolume& curSound)
 {
     scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    if (curRide->type < std::size(RideTypeDescriptors))
+    if (RideTypeIsValid(curRide->type))
     {
         // Get lift hill sound
         curSound.id = GetRideTypeDescriptor(curRide->type).LiftData.sound_id;
@@ -2032,7 +2032,7 @@ void Vehicle::Update()
     if (curRide == nullptr)
         return;
 
-    if (curRide->type >= RIDE_TYPE_COUNT)
+    if (curRide->type >= RideType::COUNT)
         return;
 
     if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING))
@@ -2261,7 +2261,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     {
         // Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a
         // Boat Hire with passengers on it.
-        if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
+        if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && curRide->type != RideType::BOAT_HIRE))
         {
             curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
             sub_state = 2;
@@ -3320,7 +3320,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::PoweredLaunchBlockSectioned:
         case RideMode::LimPoweredLaunch:
         case RideMode::UpwardLaunch:
-            if (curRide->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)
+            if (curRide->type == RideType::AIR_POWERED_VERTICAL_COASTER)
             {
                 if ((curRide->launch_speed << 16) > velocity)
                 {
@@ -3548,7 +3548,7 @@ void Vehicle::CheckIfMissing()
     if (curRide->lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE)
         return;
 
-    uint16_t limit = curRide->type == RIDE_TYPE_BOAT_HIRE ? 15360 : 9600;
+    uint16_t limit = curRide->type == RideType::BOAT_HIRE ? 15360 : 9600;
 
     if (lost_time_out <= limit)
         return;
@@ -5038,7 +5038,7 @@ void Vehicle::UpdateRotating()
         if (curRide->status != RideStatus::Closed)
         {
             sprite = var_CE + 1;
-            if (curRide->type == RIDE_TYPE_ENTERPRISE)
+            if (curRide->type == RideType::ENTERPRISE)
                 sprite += 9;
 
             if (sprite < curRide->rotations)
@@ -5059,7 +5059,7 @@ void Vehicle::UpdateRotating()
         }
     }
 
-    if (curRide->type == RIDE_TYPE_ENTERPRISE && sub_state == 2)
+    if (curRide->type == RideType::ENTERPRISE && sub_state == 2)
     {
         SetState(Vehicle::Status::Arriving);
         var_C0 = 0;
@@ -6304,7 +6304,7 @@ GForces Vehicle::GetGForces() const
 void Vehicle::SetMapToolbar() const
 {
     auto curRide = GetRide();
-    if (curRide != nullptr && curRide->type < RIDE_TYPE_COUNT)
+    if (curRide != nullptr && curRide->type < RideType::COUNT)
     {
         const Vehicle* vehicle = GetHead();
 
@@ -8164,7 +8164,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         {
-            int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
+            auto rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
             if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
                 if (tileElement->AsTrack()->IsInverted())
@@ -8296,7 +8296,7 @@ loc_6DAEB9:
         }
     }
 
-    if ((trackType == TrackElemType::Flat && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+    if ((trackType == TrackElemType::Flat && curRide->type == RideType::REVERSE_FREEFALL_COASTER)
         || (trackType == TrackElemType::PoweredLift))
     {
         acceleration = GetRideTypeDescriptor(curRide->type).OperatingSettings.PoweredLiftAcceleration << 16;
@@ -8645,7 +8645,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
     while (true)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::Flat && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+        if (trackType == TrackElemType::Flat && curRide->type == RideType::REVERSE_FREEFALL_COASTER)
         {
             int32_t unkVelocity = _vehicleVelocityF64E08;
             if (unkVelocity < -524288)
@@ -8926,7 +8926,7 @@ loc_6DC476:
     }
 
     {
-        int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
+        const auto rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {
@@ -9140,7 +9140,7 @@ loc_6DCA9A:
     }
 
     {
-        int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
+        auto rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {

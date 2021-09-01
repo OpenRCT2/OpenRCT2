@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor LaunchedFreefallRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
     SET_FIELD(OperatingSettings, { 10, 40, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_LAUNCHED_FREEFALL, STR_RIDE_DESCRIPTION_LAUNCHED_FREEFALL }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_LAUNCHED_FREEFALL)),
+    SET_FIELD(EnumName, nameof(RideType::LAUNCHED_FREEFALL)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 255, 32, 3, 2, }),
     SET_FIELD(MaxMass, 15),

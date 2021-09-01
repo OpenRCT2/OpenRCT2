@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_VERTICAL) | (1ULL << TRACK_CURVE_VERTICAL)),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -32,7 +32,7 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(OperatingSettings, { 10, 33, 30, 25, 25, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_INVERTED_IMPULSE_COASTER, STR_RIDE_DESCRIPTION_INVERTED_IMPULSE_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_INVERTED_IMPULSE_COASTER)),
+    SET_FIELD(EnumName, nameof(RideType::INVERTED_IMPULSE_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 45, 40, 29, 8, }),
     SET_FIELD(MaxMass, 23),

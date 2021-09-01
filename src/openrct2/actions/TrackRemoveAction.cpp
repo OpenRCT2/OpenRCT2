@@ -131,7 +131,7 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
     }
 
-    if (ride->type >= RIDE_TYPE_COUNT)
+    if (ride->type >= RideType::COUNT)
     {
         log_warning("Ride type not found. ride type = %d.", ride->type);
         return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
@@ -449,7 +449,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
                 {
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
                     RideMode newMode = RideMode::ContinuousCircuit;
-                    if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
+                    if (ride->type == RideType::LIM_LAUNCHED_ROLLER_COASTER)
                     {
                         newMode = RideMode::PoweredLaunch;
                     }

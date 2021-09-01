@@ -175,100 +175,100 @@ namespace RCT1
         return object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(selectedEdge));
     }
 
-    uint8_t GetRideType(uint8_t rideType, uint8_t vehicleType)
+    RideType GetRideType(uint8_t rideType, uint8_t vehicleType)
     {
         if (rideType == RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER && vehicleType == RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN)
-            return RIDE_TYPE_HYPER_TWISTER;
+            return RideType::HYPER_TWISTER;
         if (rideType == RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER && vehicleType == RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN)
-            return RIDE_TYPE_HYPERCOASTER;
+            return RideType::HYPERCOASTER;
 
-        static uint8_t map[] =
+        static RideType map[] =
         {
-            RIDE_TYPE_WOODEN_ROLLER_COASTER,        // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
-            RIDE_TYPE_STAND_UP_ROLLER_COASTER,      // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
-            RIDE_TYPE_SUSPENDED_SWINGING_COASTER,   // RCT1_RIDE_TYPE_SUSPENDED_ROLLER_COASTER
-            RIDE_TYPE_INVERTED_ROLLER_COASTER,      // RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER
-            RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,  // RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER
-            RIDE_TYPE_MINIATURE_RAILWAY,            // RCT1_RIDE_TYPE_MINIATURE_RAILWAY
-            RIDE_TYPE_MONORAIL,                     // RCT1_RIDE_TYPE_MONORAIL
-            RIDE_TYPE_MINI_SUSPENDED_COASTER,       // RCT1_RIDE_TYPE_SUSPENDED_SINGLE_RAIL_ROLLER_COASTER
-            RIDE_TYPE_BOAT_HIRE,                    // RCT1_RIDE_TYPE_BOAT_HIRE
-            RIDE_TYPE_WOODEN_WILD_MOUSE,            // RCT1_RIDE_TYPE_WOODEN_CRAZY_RODENT_ROLLER_COASTER
-            RIDE_TYPE_STEEPLECHASE,                 // RCT1_RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER
-            RIDE_TYPE_CAR_RIDE,                     // RCT1_RIDE_TYPE_CAR_RIDE
-            RIDE_TYPE_LAUNCHED_FREEFALL,            // RCT1_RIDE_TYPE_LAUNCHED_FREEFALL
-            RIDE_TYPE_BOBSLEIGH_COASTER,            // RCT1_RIDE_TYPE_BOBSLED_ROLLER_COASTER
-            RIDE_TYPE_OBSERVATION_TOWER,            // RCT1_RIDE_TYPE_OBSERVATION_TOWER
-            RIDE_TYPE_LOOPING_ROLLER_COASTER,       // RCT1_RIDE_TYPE_STEEL_ROLLER_COASTER
-            RIDE_TYPE_DINGHY_SLIDE,                 // RCT1_RIDE_TYPE_WATER_SLIDE
-            RIDE_TYPE_MINE_TRAIN_COASTER,           // RCT1_RIDE_TYPE_MINE_TRAIN_ROLLER_COASTER
-            RIDE_TYPE_CHAIRLIFT,                    // RCT1_RIDE_TYPE_CHAIRLIFT
-            RIDE_TYPE_CORKSCREW_ROLLER_COASTER,     // RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER
-            RIDE_TYPE_MAZE,                         // RCT1_RIDE_TYPE_HEDGE_MAZE
-            RIDE_TYPE_SPIRAL_SLIDE,                 // RCT1_RIDE_TYPE_SPIRAL_SLIDE
-            RIDE_TYPE_GO_KARTS,                     // RCT1_RIDE_TYPE_GO_KARTS
-            RIDE_TYPE_LOG_FLUME,                    // RCT1_RIDE_TYPE_LOG_FLUME
-            RIDE_TYPE_RIVER_RAPIDS,                 // RCT1_RIDE_TYPE_RIVER_RAPIDS
-            RIDE_TYPE_DODGEMS,                      // RCT1_RIDE_TYPE_DODGEMS
-            RIDE_TYPE_SWINGING_SHIP,                // RCT1_RIDE_TYPE_SWINGING_SHIP
-            RIDE_TYPE_SWINGING_INVERTER_SHIP,       // RCT1_RIDE_TYPE_SWINGING_INVERTER_SHIP
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_ICE_CREAM_STALL
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_CHIPS_STALL
-            RIDE_TYPE_DRINK_STALL,                  // RCT1_RIDE_TYPE_DRINK_STALL
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_CANDYFLOSS_STALL
-            RIDE_TYPE_SHOP,                         // RCT1_RIDE_TYPE_BURGER_BAR
-            RIDE_TYPE_MERRY_GO_ROUND,               // RCT1_RIDE_TYPE_MERRY_GO_ROUND
-            RIDE_TYPE_SHOP,                         // RCT1_RIDE_TYPE_BALLOON_STALL
-            RIDE_TYPE_INFORMATION_KIOSK,            // RCT1_RIDE_TYPE_INFORMATION_KIOSK
-            RIDE_TYPE_TOILETS,                      // RCT1_RIDE_TYPE_TOILETS
-            RIDE_TYPE_FERRIS_WHEEL,                 // RCT1_RIDE_TYPE_FERRIS_WHEEL
-            RIDE_TYPE_MOTION_SIMULATOR,             // RCT1_RIDE_TYPE_MOTION_SIMULATOR
-            RIDE_TYPE_3D_CINEMA,                    // RCT1_RIDE_TYPE_3D_CINEMA
-            RIDE_TYPE_TOP_SPIN,                     // RCT1_RIDE_TYPE_TOP_SPIN
-            RIDE_TYPE_SPACE_RINGS,                  // RCT1_RIDE_TYPE_SPACE_RINGS
-            RIDE_TYPE_REVERSE_FREEFALL_COASTER,     // RCT1_RIDE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER
-            RIDE_TYPE_SHOP,                         // RCT1_RIDE_TYPE_SOUVENIR_STALL
-            RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER, // RCT1_RIDE_TYPE_VERTICAL_ROLLER_COASTER
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_PIZZA_STALL
-            RIDE_TYPE_TWIST,                        // RCT1_RIDE_TYPE_TWIST
-            RIDE_TYPE_HAUNTED_HOUSE,                // RCT1_RIDE_TYPE_HAUNTED_HOUSE
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_POPCORN_STALL
-            RIDE_TYPE_CIRCUS,                       // RCT1_RIDE_TYPE_CIRCUS
-            RIDE_TYPE_GHOST_TRAIN,                  // RCT1_RIDE_TYPE_GHOST_TRAIN
-            RIDE_TYPE_TWISTER_ROLLER_COASTER,       // RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER
-            RIDE_TYPE_WOODEN_ROLLER_COASTER,        // RCT1_RIDE_TYPE_WOODEN_TWISTER_ROLLER_COASTER
-            RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER, // RCT1_RIDE_TYPE_WOODEN_SIDE_FRICTION_ROLLER_COASTER
-            RIDE_TYPE_STEEL_WILD_MOUSE,             // RCT1_RIDE_TYPE_STEEL_WILD_MOUSE_ROLLER_COASTER
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_HOT_DOG_STALL
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL
-            RIDE_TYPE_SHOP,                         // RCT1_RIDE_TYPE_HAT_STALL
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL
-            RIDE_TYPE_VIRGINIA_REEL,                // RCT1_RIDE_TYPE_VIRGINIA_REEL
-            RIDE_TYPE_SPLASH_BOATS,                 // RCT1_RIDE_TYPE_RIVER_RIDE
-            RIDE_TYPE_MINI_HELICOPTERS,             // RCT1_RIDE_TYPE_CYCLE_MONORAIL
-            RIDE_TYPE_LAY_DOWN_ROLLER_COASTER,      // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
-            RIDE_TYPE_SUSPENDED_MONORAIL,           // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
-            RIDE_TYPE_NULL,                         // RCT1_RIDE_TYPE_40
-            RIDE_TYPE_REVERSER_ROLLER_COASTER,      // RCT1_RIDE_TYPE_WOODEN_REVERSER_ROLLER_COASTER
-            RIDE_TYPE_HEARTLINE_TWISTER_COASTER,    // RCT1_RIDE_TYPE_HEARTLINE_TWISTER_ROLLER_COASTER
-            RIDE_TYPE_MINI_GOLF,                    // RCT1_RIDE_TYPE_MINIATURE_GOLF
-            RIDE_TYPE_NULL,                         // RCT1_RIDE_TYPE_44
-            RIDE_TYPE_ROTO_DROP,                    // RCT1_RIDE_TYPE_ROTO_DROP
-            RIDE_TYPE_FLYING_SAUCERS,               // RCT1_RIDE_TYPE_FLYING_SAUCERS
-            RIDE_TYPE_CROOKED_HOUSE,                // RCT1_RIDE_TYPE_CROOKED_HOUSE
-            RIDE_TYPE_MONORAIL_CYCLES,              // RCT1_RIDE_TYPE_CYCLE_RAILWAY
-            RIDE_TYPE_COMPACT_INVERTED_COASTER,     // RCT1_RIDE_TYPE_SUSPENDED_LOOPING_ROLLER_COASTER
-            RIDE_TYPE_WATER_COASTER,                // RCT1_RIDE_TYPE_WATER_COASTER
-            RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER, // RCT1_RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
-            RIDE_TYPE_INVERTED_HAIRPIN_COASTER,     // RCT1_RIDE_TYPE_INVERTED_WILD_MOUSE_COASTER
-            RIDE_TYPE_BOAT_HIRE,                    // RCT1_RIDE_TYPE_JET_SKIS
-            RIDE_TYPE_SHOP,                         // RCT1_RIDE_TYPE_T_SHIRT_STALL
-            RIDE_TYPE_RIVER_RAFTS,                  // RCT1_RIDE_TYPE_RAFT_RIDE
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_DOUGHNUT_SHOP
-            RIDE_TYPE_ENTERPRISE,                   // RCT1_RIDE_TYPE_ENTERPRISE
-            RIDE_TYPE_DRINK_STALL,                  // RCT1_RIDE_TYPE_COFFEE_SHOP
-            RIDE_TYPE_FOOD_STALL,                   // RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL
-            RIDE_TYPE_DRINK_STALL,                  // RCT1_RIDE_TYPE_LEMONADE_STALL
+            RideType::WOODEN_ROLLER_COASTER,        // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
+            RideType::STAND_UP_ROLLER_COASTER,      // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
+            RideType::SUSPENDED_SWINGING_COASTER,   // RCT1_RIDE_TYPE_SUSPENDED_ROLLER_COASTER
+            RideType::INVERTED_ROLLER_COASTER,      // RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER
+            RideType::CLASSIC_MINI_ROLLER_COASTER,  // RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER
+            RideType::MINIATURE_RAILWAY,            // RCT1_RIDE_TYPE_MINIATURE_RAILWAY
+            RideType::MONORAIL,                     // RCT1_RIDE_TYPE_MONORAIL
+            RideType::MINI_SUSPENDED_COASTER,       // RCT1_RIDE_TYPE_SUSPENDED_SINGLE_RAIL_ROLLER_COASTER
+            RideType::BOAT_HIRE,                    // RCT1_RIDE_TYPE_BOAT_HIRE
+            RideType::WOODEN_WILD_MOUSE,            // RCT1_RIDE_TYPE_WOODEN_CRAZY_RODENT_ROLLER_COASTER
+            RideType::STEEPLECHASE,                 // RCT1_RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER
+            RideType::CAR_RIDE,                     // RCT1_RIDE_TYPE_CAR_RIDE
+            RideType::LAUNCHED_FREEFALL,            // RCT1_RIDE_TYPE_LAUNCHED_FREEFALL
+            RideType::BOBSLEIGH_COASTER,            // RCT1_RIDE_TYPE_BOBSLED_ROLLER_COASTER
+            RideType::OBSERVATION_TOWER,            // RCT1_RIDE_TYPE_OBSERVATION_TOWER
+            RideType::LOOPING_ROLLER_COASTER,       // RCT1_RIDE_TYPE_STEEL_ROLLER_COASTER
+            RideType::DINGHY_SLIDE,                 // RCT1_RIDE_TYPE_WATER_SLIDE
+            RideType::MINE_TRAIN_COASTER,           // RCT1_RIDE_TYPE_MINE_TRAIN_ROLLER_COASTER
+            RideType::CHAIRLIFT,                    // RCT1_RIDE_TYPE_CHAIRLIFT
+            RideType::CORKSCREW_ROLLER_COASTER,     // RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER
+            RideType::MAZE,                         // RCT1_RIDE_TYPE_HEDGE_MAZE
+            RideType::SPIRAL_SLIDE,                 // RCT1_RIDE_TYPE_SPIRAL_SLIDE
+            RideType::GO_KARTS,                     // RCT1_RIDE_TYPE_GO_KARTS
+            RideType::LOG_FLUME,                    // RCT1_RIDE_TYPE_LOG_FLUME
+            RideType::RIVER_RAPIDS,                 // RCT1_RIDE_TYPE_RIVER_RAPIDS
+            RideType::DODGEMS,                      // RCT1_RIDE_TYPE_DODGEMS
+            RideType::SWINGING_SHIP,                // RCT1_RIDE_TYPE_SWINGING_SHIP
+            RideType::SWINGING_INVERTER_SHIP,       // RCT1_RIDE_TYPE_SWINGING_INVERTER_SHIP
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_ICE_CREAM_STALL
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_CHIPS_STALL
+            RideType::DRINK_STALL,                  // RCT1_RIDE_TYPE_DRINK_STALL
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_CANDYFLOSS_STALL
+            RideType::SHOP,                         // RCT1_RIDE_TYPE_BURGER_BAR
+            RideType::MERRY_GO_ROUND,               // RCT1_RIDE_TYPE_MERRY_GO_ROUND
+            RideType::SHOP,                         // RCT1_RIDE_TYPE_BALLOON_STALL
+            RideType::INFORMATION_KIOSK,            // RCT1_RIDE_TYPE_INFORMATION_KIOSK
+            RideType::TOILETS,                      // RCT1_RIDE_TYPE_TOILETS
+            RideType::FERRIS_WHEEL,                 // RCT1_RIDE_TYPE_FERRIS_WHEEL
+            RideType::MOTION_SIMULATOR,             // RCT1_RIDE_TYPE_MOTION_SIMULATOR
+            RideType::_3D_CINEMA,                    // RCT1_RIDE_TYPE_3D_CINEMA
+            RideType::TOP_SPIN,                     // RCT1_RIDE_TYPE_TOP_SPIN
+            RideType::SPACE_RINGS,                  // RCT1_RIDE_TYPE_SPACE_RINGS
+            RideType::REVERSE_FREEFALL_COASTER,     // RCT1_RIDE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER
+            RideType::SHOP,                         // RCT1_RIDE_TYPE_SOUVENIR_STALL
+            RideType::VERTICAL_DROP_ROLLER_COASTER, // RCT1_RIDE_TYPE_VERTICAL_ROLLER_COASTER
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_PIZZA_STALL
+            RideType::TWIST,                        // RCT1_RIDE_TYPE_TWIST
+            RideType::HAUNTED_HOUSE,                // RCT1_RIDE_TYPE_HAUNTED_HOUSE
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_POPCORN_STALL
+            RideType::CIRCUS,                       // RCT1_RIDE_TYPE_CIRCUS
+            RideType::GHOST_TRAIN,                  // RCT1_RIDE_TYPE_GHOST_TRAIN
+            RideType::TWISTER_ROLLER_COASTER,       // RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER
+            RideType::WOODEN_ROLLER_COASTER,        // RCT1_RIDE_TYPE_WOODEN_TWISTER_ROLLER_COASTER
+            RideType::SIDE_FRICTION_ROLLER_COASTER, // RCT1_RIDE_TYPE_WOODEN_SIDE_FRICTION_ROLLER_COASTER
+            RideType::STEEL_WILD_MOUSE,             // RCT1_RIDE_TYPE_STEEL_WILD_MOUSE_ROLLER_COASTER
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_HOT_DOG_STALL
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL
+            RideType::SHOP,                         // RCT1_RIDE_TYPE_HAT_STALL
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL
+            RideType::VIRGINIA_REEL,                // RCT1_RIDE_TYPE_VIRGINIA_REEL
+            RideType::SPLASH_BOATS,                 // RCT1_RIDE_TYPE_RIVER_RIDE
+            RideType::MINI_HELICOPTERS,             // RCT1_RIDE_TYPE_CYCLE_MONORAIL
+            RideType::LAY_DOWN_ROLLER_COASTER,      // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
+            RideType::SUSPENDED_MONORAIL,           // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
+            RideType::RIDE_TYPE_NULL,                         // RCT1_RIDE_TYPE_40
+            RideType::REVERSER_ROLLER_COASTER,      // RCT1_RIDE_TYPE_WOODEN_REVERSER_ROLLER_COASTER
+            RideType::HEARTLINE_TWISTER_COASTER,    // RCT1_RIDE_TYPE_HEARTLINE_TWISTER_ROLLER_COASTER
+            RideType::MINI_GOLF,                    // RCT1_RIDE_TYPE_MINIATURE_GOLF
+            RideType::RIDE_TYPE_NULL,                         // RCT1_RIDE_TYPE_44
+            RideType::ROTO_DROP,                    // RCT1_RIDE_TYPE_ROTO_DROP
+            RideType::FLYING_SAUCERS,               // RCT1_RIDE_TYPE_FLYING_SAUCERS
+            RideType::CROOKED_HOUSE,                // RCT1_RIDE_TYPE_CROOKED_HOUSE
+            RideType::MONORAIL_CYCLES,              // RCT1_RIDE_TYPE_CYCLE_RAILWAY
+            RideType::COMPACT_INVERTED_COASTER,     // RCT1_RIDE_TYPE_SUSPENDED_LOOPING_ROLLER_COASTER
+            RideType::WATER_COASTER,                // RCT1_RIDE_TYPE_WATER_COASTER
+            RideType::AIR_POWERED_VERTICAL_COASTER, // RCT1_RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
+            RideType::INVERTED_HAIRPIN_COASTER,     // RCT1_RIDE_TYPE_INVERTED_WILD_MOUSE_COASTER
+            RideType::BOAT_HIRE,                    // RCT1_RIDE_TYPE_JET_SKIS
+            RideType::SHOP,                         // RCT1_RIDE_TYPE_T_SHIRT_STALL
+            RideType::RIVER_RAFTS,                  // RCT1_RIDE_TYPE_RAFT_RIDE
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_DOUGHNUT_SHOP
+            RideType::ENTERPRISE,                   // RCT1_RIDE_TYPE_ENTERPRISE
+            RideType::DRINK_STALL,                  // RCT1_RIDE_TYPE_COFFEE_SHOP
+            RideType::FOOD_STALL,                   // RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL
+            RideType::DRINK_STALL,                  // RCT1_RIDE_TYPE_LEMONADE_STALL
         };
 
         Guard::ArgumentInRange<size_t>(rideType, 0, std::size(map), "Unsupported RCT1 ride type.");
@@ -1398,7 +1398,7 @@ namespace RCT1
     }
     // clang-format on
 
-    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType)
+    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, RideType rideType)
     {
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             return RCT12FlatTrackTypeToOpenRCT2(origTrackType);

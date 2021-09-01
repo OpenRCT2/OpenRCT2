@@ -273,7 +273,7 @@ public:
             case WC_TRACK_DESIGN_LIST:
             {
                 RideSelection rideItem;
-                rideItem.Type = intent->GetUIntExtra(INTENT_EXTRA_RIDE_TYPE);
+                rideItem.Type = static_cast<RideType>(intent->GetUIntExtra(INTENT_EXTRA_RIDE_TYPE));
                 rideItem.EntryIndex = intent->GetUIntExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX);
                 return window_track_list_open(rideItem);
             }
@@ -291,7 +291,7 @@ public:
 
                 // Switch to right tab and scroll to ride location
                 RideSelection rideItem;
-                rideItem.Type = intent->GetUIntExtra(INTENT_EXTRA_RIDE_TYPE);
+                rideItem.Type = static_cast<RideType>(intent->GetUIntExtra(INTENT_EXTRA_RIDE_TYPE));
                 rideItem.EntryIndex = intent->GetUIntExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX);
                 window_new_ride_focus(rideItem);
 

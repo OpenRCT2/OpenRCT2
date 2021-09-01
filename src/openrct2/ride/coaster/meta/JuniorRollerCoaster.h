@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor JuniorRollerCoasterRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL)
                                   | (1ULL << TRACK_LIFT_HILL_CURVE) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE)
@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor JuniorRollerCoasterRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 17, 16, -1 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_JUNIOR_ROLLER_COASTER, STR_RIDE_DESCRIPTION_JUNIOR_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_JUNIOR_ROLLER_COASTER)),
+    SET_FIELD(EnumName, nameof(RideType::JUNIOR_ROLLER_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 12, 24, 4, 7, }),
     SET_FIELD(MaxMass, 18),

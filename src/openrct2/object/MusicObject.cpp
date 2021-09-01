@@ -90,7 +90,7 @@ void MusicObject::ParseRideTypes(const json_t& jRideTypes)
         if (!szRideType.empty())
         {
             auto rideType = RideObject::ParseRideType(szRideType);
-            if (rideType != RIDE_TYPE_NULL)
+            if (rideType != RideType::RIDE_TYPE_NULL)
             {
                 _rideTypes.push_back(rideType);
             }
@@ -126,12 +126,12 @@ std::optional<uint8_t> MusicObject::GetOriginalStyleId() const
     return _originalStyleId;
 }
 
-bool MusicObject::SupportsRideType(uint8_t rideType)
+bool MusicObject::SupportsRideType(RideType rideType)
 {
     if (_rideTypes.size() == 0)
     {
         // Default behaviour for music is to only exclude from merry-go-round
-        return rideType != RIDE_TYPE_MERRY_GO_ROUND;
+        return rideType != RideType::MERRY_GO_ROUND;
     }
     else
     {

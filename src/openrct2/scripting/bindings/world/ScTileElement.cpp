@@ -370,7 +370,7 @@ namespace OpenRCT2::Scripting
             case TILE_ELEMENT_TYPE_TRACK:
             {
                 auto el = _element->AsTrack();
-                if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+                if (get_ride(el->GetRideIndex())->type != RideType::MAZE)
                     duk_push_int(ctx, el->GetSequenceIndex());
                 else
                     duk_push_null(ctx);
@@ -405,7 +405,7 @@ namespace OpenRCT2::Scripting
             case TILE_ELEMENT_TYPE_TRACK:
             {
                 auto el = _element->AsTrack();
-                if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+                if (get_ride(el->GetRideIndex())->type != RideType::MAZE)
                 {
                     el->SetSequenceIndex(value);
                     Invalidate();
@@ -579,7 +579,7 @@ namespace OpenRCT2::Scripting
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsTrack();
-        if (el != nullptr && get_ride(el->GetRideIndex())->type == RIDE_TYPE_MAZE)
+        if (el != nullptr && get_ride(el->GetRideIndex())->type == RideType::MAZE)
             duk_push_int(ctx, el->GetMazeEntry());
         else
             duk_push_null(ctx);
@@ -590,7 +590,7 @@ namespace OpenRCT2::Scripting
         ThrowIfGameStateNotMutable();
         auto el = _element->AsTrack();
         if (el != nullptr)
-            if (get_ride(el->GetRideIndex())->type == RIDE_TYPE_MAZE)
+            if (get_ride(el->GetRideIndex())->type == RideType::MAZE)
             {
                 el->SetMazeEntry(value);
                 Invalidate();
@@ -601,7 +601,7 @@ namespace OpenRCT2::Scripting
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsTrack();
-        if (el != nullptr && get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+        if (el != nullptr && get_ride(el->GetRideIndex())->type != RideType::MAZE)
             duk_push_int(ctx, el->GetColourScheme());
         else
             duk_push_null(ctx);
@@ -612,7 +612,7 @@ namespace OpenRCT2::Scripting
         ThrowIfGameStateNotMutable();
         auto el = _element->AsTrack();
         if (el != nullptr)
-            if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+            if (get_ride(el->GetRideIndex())->type != RideType::MAZE)
             {
                 el->SetColourScheme(value);
                 Invalidate();
@@ -623,7 +623,7 @@ namespace OpenRCT2::Scripting
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsTrack();
-        if (el != nullptr && get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+        if (el != nullptr && get_ride(el->GetRideIndex())->type != RideType::MAZE)
             duk_push_int(ctx, el->GetSeatRotation());
         else
             duk_push_null(ctx);
@@ -634,7 +634,7 @@ namespace OpenRCT2::Scripting
         ThrowIfGameStateNotMutable();
         auto el = _element->AsTrack();
         if (el != nullptr)
-            if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+            if (get_ride(el->GetRideIndex())->type != RideType::MAZE)
             {
                 el->SetSeatRotation(value);
                 Invalidate();

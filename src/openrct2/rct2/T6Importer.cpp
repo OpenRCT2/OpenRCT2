@@ -78,7 +78,7 @@ public:
         // Rework td6 so that it is just the fields
         _stream.Read(&td6, 0xA3);
 
-        td->type = td6.type; // 0x00
+        td->type = static_cast<RideType>(td6.type); // 0x00
         td->vehicle_type = td6.vehicle_type;
 
         td->cost = 0;
@@ -106,7 +106,7 @@ public:
         td->max_negative_vertical_g = td6.max_negative_vertical_g;
         td->max_lateral_g = td6.max_lateral_g;
 
-        if (td->type == RIDE_TYPE_MINI_GOLF)
+        if (td->type == RideType::MINI_GOLF)
         {
             td->holes = td6.holes;
         }
@@ -143,7 +143,7 @@ public:
 
         td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
-        if (td->type == RIDE_TYPE_MAZE)
+        if (td->type == RideType::MAZE)
         {
             rct_td46_maze_element t6MazeElement{};
             t6MazeElement.all = !0;

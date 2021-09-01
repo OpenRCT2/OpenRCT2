@@ -18,6 +18,8 @@ struct IObjectRepository;
 class Object;
 struct ObjectRepositoryItem;
 
+enum class RideType : uint8_t;
+
 struct IObjectManager
 {
     virtual ~IObjectManager()
@@ -40,7 +42,7 @@ struct IObjectManager
     virtual void ResetObjects() abstract;
 
     virtual std::vector<const ObjectRepositoryItem*> GetPackableObjects() abstract;
-    virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) abstract;
+    virtual const std::vector<ObjectEntryIndex>& GetAllRideEntries(RideType rideType) abstract;
 };
 
 [[nodiscard]] std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);

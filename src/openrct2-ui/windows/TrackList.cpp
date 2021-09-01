@@ -609,9 +609,9 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Information for tracked rides.
     if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
-        if (_loadedTrackDesign->type != RIDE_TYPE_MAZE)
+        if (_loadedTrackDesign->type != RideType::MAZE)
         {
-            if (_loadedTrackDesign->type == RIDE_TYPE_MINI_GOLF)
+            if (_loadedTrackDesign->type == RideType::MINI_GOLF)
             {
                 // Holes
                 ft = Formatter();
@@ -687,7 +687,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
-        if (_loadedTrackDesign->type != RIDE_TYPE_MINI_GOLF)
+        if (_loadedTrackDesign->type != RideType::MINI_GOLF)
         {
             uint16_t inversions = _loadedTrackDesign->inversions & 0x1F;
             if (inversions != 0)
@@ -798,7 +798,7 @@ static void track_list_load_designs(RideSelection item)
 {
     auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
     std::string entryName;
-    if (item.Type < 0x80)
+    if (item.Type < static_cast<RideType>(0x80))
     {
         if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {

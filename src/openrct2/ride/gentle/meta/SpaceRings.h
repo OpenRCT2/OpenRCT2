@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor SpaceRingsRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, 0),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SPACE_RINGS, STR_RIDE_DESCRIPTION_SPACE_RINGS }),
     SET_FIELD(NameConvention, { RideComponentType::Ring, RideComponentType::Structure, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_SPACE_RINGS)),
+    SET_FIELD(EnumName, nameof(RideType::SPACE_RINGS)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 16, 48, 3, 2, }),
     SET_FIELD(MaxMass, 255),

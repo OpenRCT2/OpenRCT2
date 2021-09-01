@@ -17,7 +17,7 @@
 // clang-format off
 constexpr const RideTypeDescriptor RiverRapidsRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
+    SET_FIELD(AlternateType, RideType::RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_RAPIDS) | (1ULL << TRACK_WATERFALL) | (1ULL << TRACK_WHIRLPOOL)),
     SET_FIELD(ExtraTrackPieces, 0),
@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_RIVER_RAPIDS, STR_RIDE_DESCRIPTION_RIVER_RAPIDS }),
     SET_FIELD(NameConvention, { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_RIVER_RAPIDS)),
+    SET_FIELD(EnumName, nameof(RideType::RIVER_RAPIDS)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE)),
     SET_FIELD(Heights, { 9, 32, 14, 15, }),
     SET_FIELD(MaxMass, 255),

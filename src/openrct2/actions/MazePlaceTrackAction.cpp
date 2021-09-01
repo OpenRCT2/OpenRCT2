@@ -77,7 +77,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        if (heightDifference > GetRideTypeDescriptor(RIDE_TYPE_MAZE).Heights.MaxHeight)
+        if (heightDifference > GetRideTypeDescriptor(RideType::MAZE).Heights.MaxHeight)
         {
             res->Error = GameActions::Status::TooHigh;
             res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
@@ -108,7 +108,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
     }
 
     auto ride = get_ride(_rideIndex);
-    if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+    if (ride == nullptr || ride->type == RideType::RIDE_TYPE_NULL)
     {
         res->Error = GameActions::Status::InvalidParameters;
         res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
