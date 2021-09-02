@@ -331,7 +331,7 @@ static void window_maze_construction_update(rct_window* w)
         default:
             break;
     }
-    sub_6C94D8();
+    updateGhostTrackAndArrow();
 }
 
 /**

@@ -466,7 +466,7 @@ static void window_ride_construction_select_map_tiles(
     Ride* ride, int32_t trackType, int32_t trackDirection, const CoordsXY& tileCoords);
 static void window_ride_construction_show_special_track_dropdown(rct_window* w, rct_widget* widget);
 static void ride_selected_track_set_seat_rotation(int32_t seatRotation);
-static void loc_6C7502(int32_t al);
+static void UpdateLiftHillSelected(int32_t slope);
 static void ride_construction_set_brakes_speed(int32_t brakesSpeed);
 static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& screenCoords);
 
@@ -1376,11 +1376,11 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             }
             if (w->widgets[WIDX_SLOPE_DOWN_STEEP].tooltip == STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP)
             {
-                loc_6C7502(8);
+                UpdateLiftHillSelected(TRACK_SLOPE_DOWN_60);
             }
             else
             {
-                loc_6C7502(10);
+                UpdateLiftHillSelected(TRACK_SLOPE_UP_90);
             }
             break;
         case WIDX_SLOPE_DOWN:
@@ -1389,7 +1389,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             {
                 _currentTrackBankEnd = TRACK_BANK_NONE;
             }
-            loc_6C7502(6);
+            UpdateLiftHillSelected(TRACK_SLOPE_DOWN_25);
             break;
         case WIDX_LEVEL:
             ride_construction_invalidate_current_track();
@@ -1415,7 +1415,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                     _currentTrackBankEnd = TRACK_BANK_RIGHT;
                 }
             }
-            loc_6C7502(0);
+            UpdateLiftHillSelected(TRACK_SLOPE_NONE);
             break;
         case WIDX_SLOPE_UP:
             ride_construction_invalidate_current_track();
@@ -1433,7 +1433,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             }
             else
             {
-                loc_6C7502(2);
+                UpdateLiftHillSelected(TRACK_SLOPE_UP_25);
             }
             break;
         case WIDX_SLOPE_UP_STEEP:
@@ -1508,11 +1508,11 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             }
             if (w->widgets[WIDX_SLOPE_UP_STEEP].tooltip == STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP)
             {
-                loc_6C7502(4);
+                UpdateLiftHillSelected(TRACK_SLOPE_UP_60);
             }
             else
             {
-                loc_6C7502(18);
+                UpdateLiftHillSelected(TRACK_SLOPE_DOWN_90);
             }
             break;
         case WIDX_CHAIN_LIFT:
@@ -1888,7 +1888,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     // Invalidate the selected track element or make sure it's at origin???
     direction = _currentTrackPieceDirection;
     track_type_t type = _currentTrackPieceType;
-    auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+    auto newCoords = GetTrackElementOriginAndApplyChanges(
+        { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
     if (newCoords == std::nullopt)
     {
         window_ride_construction_update_active_elements();
@@ -1918,7 +1919,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     {
         direction = _currentTrackPieceDirection;
         type = _currentTrackPieceType;
-        newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+        newCoords = GetTrackElementOriginAndApplyChanges(
+            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
 
         if (newCoords == std::nullopt)
         {
@@ -2089,7 +2091,7 @@ static void window_ride_construction_update(rct_window* w)
             break;
     }
 
-    sub_6C94D8();
+    updateGhostTrackAndArrow();
 }
 
 /**
@@ -2489,7 +2491,7 @@ void window_ride_construction_update_active_elements_impl()
     _selectedTrackType = TrackElemType::None;
     if (_rideConstructionState == RideConstructionState::Selected)
     {
-        if (sub_6C683D(
+        if (GetTrackElementOriginAndApplyChanges(
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
                 &tileElement, 0)
             != std::nullopt)
@@ -2527,7 +2529,7 @@ void window_ride_construction_update_enabled_track_pieces()
  *
  *  rct2: 0x006C94D8
  */
-void sub_6C94D8()
+void updateGhostTrackAndArrow()
 {
     ride_id_t rideIndex;
     int32_t direction, type, liftHillAndAlternativeState;
@@ -2551,6 +2553,7 @@ void sub_6C94D8()
         case RideConstructionState::Front:
         case RideConstructionState::Back:
         {
+            // place ghost piece
             if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
             {
                 if (window_ride_construction_update_state(
@@ -2565,7 +2568,7 @@ void sub_6C94D8()
                     window_ride_construction_update_active_elements();
                 }
             }
-
+            // update flashing arrow
             auto curTime = platform_get_ticks();
             if (_rideConstructionNextArrowPulse >= curTime)
                 break;
@@ -2575,6 +2578,7 @@ void sub_6C94D8()
             trackPos = _currentTrackBegin;
             direction = _currentTrackPieceDirection;
             type = _currentTrackPieceType;
+            // diagonal pieces trigger this
             if (direction >= 4)
                 direction += 4;
             if (_rideConstructionState == RideConstructionState::Back)
@@ -2599,7 +2603,8 @@ void sub_6C94D8()
             type = _currentTrackPieceType;
             uint16_t flags = _currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW ? TRACK_ELEMENT_SET_HIGHLIGHT_TRUE
                                                                                       : TRACK_ELEMENT_SET_HIGHLIGHT_FALSE;
-            auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction) }, type, 0, nullptr, flags);
+            auto newCoords = GetTrackElementOriginAndApplyChanges(
+                { _currentTrackBegin, static_cast<Direction>(direction) }, type, 0, nullptr, flags);
             if (newCoords == std::nullopt)
             {
                 ride_construction_remove_ghosts();
@@ -3356,7 +3361,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
  */
 static void ride_selected_track_set_seat_rotation(int32_t seatRotation)
 {
-    sub_6C683D(
+    GetTrackElementOriginAndApplyChanges(
         { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, seatRotation,
         nullptr, TRACK_ELEMENT_SET_SEAT_ROTATION);
     window_ride_construction_update_active_elements();
@@ -3366,15 +3371,21 @@ static void ride_selected_track_set_seat_rotation(int32_t seatRotation)
  *
  *  rct2: 0x006C7502
  */
-static void loc_6C7502(int32_t al)
+static void UpdateLiftHillSelected(int32_t slope)
 {
-    _currentTrackSlopeEnd = al;
+    _currentTrackSlopeEnd = slope;
     _currentTrackPrice = MONEY32_UNDEFINED;
     if (_rideConstructionState == RideConstructionState::Front)
     {
-        if (al != 2 && al != 4 && al != 0)
+        switch (slope)
         {
-            _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+            case TRACK_SLOPE_NONE:
+            case TRACK_SLOPE_UP_25:
+            case TRACK_SLOPE_UP_60:
+                break;
+            default:
+                _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+                break;
         }
     }
     window_ride_construction_update_active_elements();
@@ -3388,7 +3399,7 @@ static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
 {
     TileElement* tileElement;
 
-    if (sub_6C683D(
+    if (GetTrackElementOriginAndApplyChanges(
             { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
             &tileElement, 0)
         != std::nullopt)

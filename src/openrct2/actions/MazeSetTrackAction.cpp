@@ -293,7 +293,7 @@ GameActions::Result::Ptr MazeSetTrackAction::Execute() const
     if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
     {
         tile_element_remove(tileElement);
-        sub_6CB945(ride);
+        ride->ValidateStations();
         ride->maze_tiles--;
     }
 

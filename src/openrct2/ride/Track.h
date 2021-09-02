@@ -526,10 +526,10 @@ namespace TrackElemType
 
 enum
 {
-    TRACK_SEQUENCE_FLAG_DIRECTION_0 = (1 << 0),
-    TRACK_SEQUENCE_FLAG_DIRECTION_1 = (1 << 1),
-    TRACK_SEQUENCE_FLAG_DIRECTION_2 = (1 << 2),
-    TRACK_SEQUENCE_FLAG_DIRECTION_3 = (1 << 3),
+    TRACK_SEQUENCE_FLAG_DIRECTION_0 = (1 << 0),      // Huts/path connect to front
+    TRACK_SEQUENCE_FLAG_DIRECTION_1 = (1 << 1),      // Huts/path connect to right
+    TRACK_SEQUENCE_FLAG_DIRECTION_2 = (1 << 2),      // Huts/path connect to back
+    TRACK_SEQUENCE_FLAG_DIRECTION_3 = (1 << 3),      // Huts/path connect to left
     TRACK_SEQUENCE_FLAG_ORIGIN = (1 << 4),           // 0x10
     TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH = (1 << 5), // 0x20
     TRACK_SEQUENCE_FLAG_DISALLOW_DOORS = (1 << 6),   // 0x40

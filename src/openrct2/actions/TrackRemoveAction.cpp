@@ -426,7 +426,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
             footpath_remove_edges_at(mapLoc, tileElement);
         }
         tile_element_remove(tileElement);
-        sub_6CB945(ride);
+        ride->ValidateStations();
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             ride->UpdateMaxVehicles();
