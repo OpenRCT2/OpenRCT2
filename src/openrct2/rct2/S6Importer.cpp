@@ -88,7 +88,7 @@ private:
     rct_s6_data _s6{};
     uint8_t _gameVersion = 0;
     bool _isSV7 = false;
-    std::bitset<RCT12_MAX_RIDES_IN_PARK> _isFlatRide{};
+    std::bitset<RCT2::Limits::MaxRidesInPark> _isFlatRide{};
     ObjectEntryIndex _pathToSurfaceMap[16];
     ObjectEntryIndex _pathToQueueSurfaceMap[16];
     ObjectEntryIndex _pathToRailingMap[16];
@@ -264,9 +264,9 @@ public:
         gNumGuestsInPark = _s6.guests_in_park;
         gNumGuestsHeadingForPark = _s6.guests_heading_for_park;
 
-        for (size_t i = 0; i < RCT12::Limits::ExpenditureTableMonthCount; i++)
+        for (size_t i = 0; i < RCT2::Limits::ExpenditureTableMonthCount; i++)
         {
-            for (size_t j = 0; j < RCT12::Limits::ExpenditureTypeCount; j++)
+            for (size_t j = 0; j < RCT2::Limits::ExpenditureTypeCount; j++)
             {
                 gExpenditureTable[i][j] = ToMoney64(_s6.expenditure_table[i][j]);
             }
@@ -335,7 +335,7 @@ public:
 
         gParkValue = ToMoney64(_s6.park_value);
 
-        for (size_t i = 0; i < RCT12::Limits::FinanceGraphSize; i++)
+        for (size_t i = 0; i < RCT2::Limits::FinanceGraphSize; i++)
         {
             gCashHistory[i] = ToMoney64(_s6.balance_history[i]);
             gWeeklyProfitHistory[i] = ToMoney64(_s6.weekly_profit_history[i]);
@@ -349,7 +349,7 @@ public:
         std::memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
 
         // Awards
-        for (int32_t i = 0; i < RCT12::Limits::MaxAwards; i++)
+        for (int32_t i = 0; i < RCT2::Limits::MaxAwards; i++)
         {
             rct12_award* src = &_s6.awards[i];
             Award* dst = &gCurrentAwards[i];
@@ -386,7 +386,7 @@ public:
         // pad_0135934B
         // Preserve compatibility with vanilla RCT2's save format.
         gParkEntrances.clear();
-        for (uint8_t i = 0; i < RCT12::Limits::MaxParkEntrances; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::MaxParkEntrances; i++)
         {
             if (_s6.park_entrance_x[i] != LOCATION_NULL)
             {
@@ -442,7 +442,7 @@ public:
 
         // News items
         News::InitQueue();
-        for (size_t i = 0; i < RCT12::Limits::MaxNewsItems; i++)
+        for (size_t i = 0; i < RCT2::Limits::MaxNewsItems; i++)
         {
             const rct12_news_item* src = &_s6.news_items[i];
             News::Item* dst = &gNewsItems[i];
@@ -536,7 +536,7 @@ public:
 
     void ImportRides()
     {
-        for (uint8_t index = 0; index < RCT12::Limits::MaxRidesInPark; index++)
+        for (uint8_t index = 0; index < RCT2::Limits::MaxRidesInPark; index++)
         {
             auto src = &_s6.rides[index];
             if (src->type != RIDE_TYPE_NULL)
@@ -561,7 +561,7 @@ public:
      */
     void DetermineFlatRideStatus()
     {
-        for (uint8_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
+        for (uint8_t index = 0; index < RCT2::Limits::MaxRidesInPark; index++)
         {
             auto src = &_s6.rides[index];
             if (src->type == RIDE_TYPE_NULL)
@@ -622,7 +622,7 @@ public:
         dst->mode = static_cast<RideMode>(src->mode);
         dst->colour_scheme_type = src->colour_scheme_type;
 
-        for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN; i++)
         {
             dst->vehicle_colours[i].Body = src->vehicle_colours[i].body_colour;
             dst->vehicle_colours[i].Trim = src->vehicle_colours[i].trim_colour;
@@ -651,7 +651,7 @@ public:
             dst->overall_view = tileLoc.ToCoordsXY();
         }
 
-        for (int32_t i = 0; i < RCT12::Limits::MaxStationsPerRide; i++)
+        for (int32_t i = 0; i < RCT2::Limits::MaxStationsPerRide; i++)
         {
             if (src->station_starts[i].IsNull())
             {
@@ -688,7 +688,7 @@ public:
             dst->stations[i].QueueLength = src->queue_length[i];
         }
         // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-        for (int32_t i = RCT12::Limits::MaxStationsPerRide; i < MAX_STATIONS; i++)
+        for (int32_t i = RCT2::Limits::MaxStationsPerRide; i < MAX_STATIONS; i++)
         {
             dst->stations[i].Start.SetNull();
             dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
@@ -697,11 +697,11 @@ public:
             dst->stations[i].LastPeepInQueue = SPRITE_INDEX_NULL;
         }
 
-        for (int32_t i = 0; i <= RCT2_MAX_VEHICLES_PER_RIDE; i++)
+        for (int32_t i = 0; i <= RCT2::Limits::RCT2_MAX_VEHICLES_PER_RIDE; i++)
         {
             dst->vehicles[i] = src->vehicles[i];
         }
-        for (int32_t i = RCT2_MAX_VEHICLES_PER_RIDE; i <= MAX_VEHICLES_PER_RIDE; i++)
+        for (int32_t i = RCT2::Limits::RCT2_MAX_VEHICLES_PER_RIDE; i <= MAX_VEHICLES_PER_RIDE; i++)
         {
             dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
@@ -770,7 +770,7 @@ public:
         dst->cur_num_customers = src->cur_num_customers;
         dst->num_customers_timeout = src->num_customers_timeout;
 
-        for (uint8_t i = 0; i < RCT2_CUSTOMER_HISTORY_SIZE; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::RCT2_CUSTOMER_HISTORY_SIZE; i++)
         {
             dst->num_customers[i] = src->num_customers[i];
         }
@@ -834,7 +834,7 @@ public:
         dst->inspection_interval = src->inspection_interval;
         dst->last_inspection = src->last_inspection;
 
-        for (uint8_t i = 0; i < RCT2_DOWNTIME_HISTORY_SIZE; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::RCT2_DOWNTIME_HISTORY_SIZE; i++)
         {
             dst->downtime_history[i] = src->downtime_history[i];
         }
@@ -850,7 +850,7 @@ public:
         dst->income_per_hour = ToMoney64(src->income_per_hour);
         dst->profit = ToMoney64(src->profit);
 
-        for (uint8_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::NumColourSchemes; i++)
         {
             dst->track_colour[i].main = src->track_colour_main[i];
             dst->track_colour[i].additional = src->track_colour_additional[i];
@@ -887,7 +887,7 @@ public:
         dst->guests_favourite = src->guests_favourite;
         dst->lifecycle_flags = src->lifecycle_flags;
 
-        for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN; i++)
         {
             dst->vehicle_colours[i].Ternary = src->vehicle_colours_extended[i];
         }
@@ -911,7 +911,7 @@ public:
         dst.ProximityStart = { src.proximity_start_x, src.proximity_start_y, src.proximity_start_z };
         dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.current_ride);
         dst.State = src.state;
-        if (src.current_ride < RCT12::Limits::MaxRidesInPark
+        if (src.current_ride < RCT2::Limits::MaxRidesInPark
             && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors)) dst.ProximityTrackType
             = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type, IsFlatRide(src.current_ride));
         else
@@ -1052,7 +1052,7 @@ public:
         }
 
         gPeepSpawns.clear();
-        for (size_t i = 0; i < RCT12::Limits::MaxPeepSpawns; i++)
+        for (size_t i = 0; i < RCT2::Limits::MaxPeepSpawns; i++)
         {
             if (_s6.peep_spawns[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
             {
@@ -1086,12 +1086,12 @@ public:
     {
         // Build tile pointer cache (needed to get the first element at a certain location)
         auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
-            RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements, std::size(_s6.tile_elements));
+            RCT2::Limits::RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements, std::size(_s6.tile_elements));
 
         std::vector<TileElement> tileElements;
         bool nextElementInvisible = false;
         bool restOfTileInvisible = false;
-        const auto maxSize = std::min(RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.map_size);
+        const auto maxSize = std::min(RCT2::Limits::RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.map_size);
         for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
             for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
@@ -1107,7 +1107,7 @@ public:
                     {
                         do
                         {
-                            if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+                            if (srcElement->base_height == RCT12::Limits::MaxElementHeight)
                             {
                                 continue;
                             }
@@ -1458,8 +1458,8 @@ public:
         {
             return;
         }
-        int32_t peepOffset = staffId * RCT12_PATROL_AREA_SIZE;
-        for (int32_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
+        int32_t peepOffset = staffId * RCT2::Limits::PatrolAreaSize;
+        for (int32_t i = 0; i < RCT2::Limits::PatrolAreaSize; i++)
         {
             if (_s6.patrol_areas[peepOffset + i] == 0)
             {
@@ -1489,7 +1489,7 @@ public:
 
     void ImportEntities()
     {
-        for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
+        for (int32_t i = 0; i < RCT2::Limits::RCT2_MAX_SPRITES; i++)
         {
             ImportEntity(_s6.sprites[i].unknown);
         }

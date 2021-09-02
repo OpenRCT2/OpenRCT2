@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../rct2/RCT2.h"
+#include "../rct2/Limits.h"
 #include "RideColour.h"
 #include "ShopItem.h"
 #include "VehicleEntry.h"
@@ -50,7 +50,7 @@ struct rct_ride_entry
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
     uint32_t flags;
-    uint8_t ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+    uint8_t ride_type[RCT2::Limits::RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];
     uint8_t min_cars_in_train;
     uint8_t max_cars_in_train;
     uint8_t cars_per_flat_ride;
@@ -65,7 +65,7 @@ struct rct_ride_entry
     uint8_t rear_vehicle;
     uint8_t third_vehicle;
     uint8_t BuildMenuPriority;
-    rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY];
+    rct_ride_entry_vehicle vehicles[RCT2::Limits::RCT2_MAX_VEHICLES_PER_RIDE_ENTRY];
     vehicle_colour_preset_list* vehicle_preset_list;
     int8_t excitement_multiplier;
     int8_t intensity_multiplier;

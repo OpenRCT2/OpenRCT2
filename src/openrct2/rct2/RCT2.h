@@ -16,78 +16,42 @@
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../ride/VehicleColour.h"
+#include "Limits.h"
 
 #include <tuple>
 #include <vector>
 
-constexpr const uint8_t RCT2_MAX_STAFF = 200;
-constexpr const uint8_t RCT2_MAX_BANNERS_IN_PARK = 250;
-constexpr const uint8_t RCT2_MAX_VEHICLES_PER_RIDE = 31;
-constexpr const uint8_t RCT2_MAX_CARS_PER_TRAIN = 32;
-constexpr const uint8_t RCT2_MAX_CATEGORIES_PER_RIDE = 2;
-constexpr const uint8_t RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY = 3;
-constexpr const uint8_t RCT2_MAX_VEHICLES_PER_RIDE_ENTRY = 4;
-constexpr const uint8_t RCT2_DOWNTIME_HISTORY_SIZE = 8;
-constexpr const uint8_t RCT2_CUSTOMER_HISTORY_SIZE = 10;
-constexpr const uint16_t RCT2_MAX_SPRITES = 10000;
-constexpr const uint32_t RCT2_MAX_TILE_ELEMENTS = 0x30000;
-constexpr const uint16_t RCT2_MAX_ANIMATED_OBJECTS = 2000;
-constexpr const uint8_t RCT2_MAX_RESEARCHED_RIDE_TYPE_QUADS = 8;  // With 32 bits per uint32_t, this means there is room for 256
-                                                                  // types.
-constexpr const uint8_t RCT2_MAX_RESEARCHED_RIDE_ENTRY_QUADS = 8; // With 32 bits per uint32_t, this means there is room for 256
-                                                                  // entries.
-constexpr const uint8_t RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS = 56;
-constexpr const uint16_t RCT2_MAX_RESEARCHED_SCENERY_ITEMS = (RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS * 32); // There are 32 bits
-                                                                                                            // per quad.
-constexpr const uint16_t RCT2_MAX_RESEARCH_ITEMS = 500;
-
-constexpr uint16_t TD6MaxTrackElements = 8192;
-
-constexpr const uint8_t RCT2_MAX_SMALL_SCENERY_OBJECTS = 252;
-constexpr const uint8_t RCT2_MAX_LARGE_SCENERY_OBJECTS = 128;
-constexpr const uint8_t RCT2_MAX_WALL_SCENERY_OBJECTS = 128;
-constexpr const uint8_t RCT2_MAX_BANNER_OBJECTS = 32;
-constexpr const uint8_t RCT2_MAX_PATH_OBJECTS = 16;
-constexpr const uint8_t RCT2_MAX_PATH_ADDITION_OBJECTS = 15;
-constexpr const uint8_t RCT2_MAX_SCENERY_GROUP_OBJECTS = 19;
-constexpr const uint8_t RCT2_MAX_PARK_ENTRANCE_OBJECTS = 1;
-constexpr const uint8_t RCT2_MAX_WATER_OBJECTS = 1;
-constexpr const uint8_t RCT2_MAX_SCENARIO_TEXT_OBJECTS = 1;
-constexpr const uint8_t RCT2_RIDE_TYPE_COUNT = 91;
-
 constexpr const rct_string_id RCT2_RIDE_STRING_START = 2;
-
-constexpr const uint16_t RCT2_MAXIMUM_MAP_SIZE_TECHNICAL = 256;
 
 // clang-format off
 constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
-    RCT12::Limits::MaxRideObject +
-    RCT2_MAX_SMALL_SCENERY_OBJECTS +
-    RCT2_MAX_LARGE_SCENERY_OBJECTS +
-    RCT2_MAX_WALL_SCENERY_OBJECTS +
-    RCT2_MAX_BANNER_OBJECTS +
-    RCT2_MAX_PATH_OBJECTS +
-    RCT2_MAX_PATH_ADDITION_OBJECTS +
-    RCT2_MAX_SCENERY_GROUP_OBJECTS +
-    RCT2_MAX_PARK_ENTRANCE_OBJECTS +
-    RCT2_MAX_WATER_OBJECTS +
-    RCT2_MAX_SCENARIO_TEXT_OBJECTS;
+    RCT2::Limits::MaxRideObject +
+    RCT2::Limits::RCT2_MAX_SMALL_SCENERY_OBJECTS +
+    RCT2::Limits::RCT2_MAX_LARGE_SCENERY_OBJECTS +
+    RCT2::Limits::RCT2_MAX_WALL_SCENERY_OBJECTS +
+    RCT2::Limits::RCT2_MAX_BANNER_OBJECTS +
+    RCT2::Limits::RCT2_MAX_PATH_OBJECTS +
+    RCT2::Limits::RCT2_MAX_PATH_ADDITION_OBJECTS +
+    RCT2::Limits::RCT2_MAX_SCENERY_GROUP_OBJECTS +
+    RCT2::Limits::RCT2_MAX_PARK_ENTRANCE_OBJECTS +
+    RCT2::Limits::RCT2_MAX_WATER_OBJECTS +
+    RCT2::Limits::RCT2_MAX_SCENARIO_TEXT_OBJECTS;
 // clang-format on
 static_assert(RCT2_OBJECT_ENTRY_COUNT == 721);
 
 // clang-format off
 constexpr const int32_t rct2_object_entry_group_counts[] = {
-    RCT12::Limits::MaxRideObject,
-    RCT2_MAX_SMALL_SCENERY_OBJECTS,
-    RCT2_MAX_LARGE_SCENERY_OBJECTS,
-    RCT2_MAX_WALL_SCENERY_OBJECTS,
-    RCT2_MAX_BANNER_OBJECTS,
-    RCT2_MAX_PATH_OBJECTS,
-    RCT2_MAX_PATH_ADDITION_OBJECTS,
-    RCT2_MAX_SCENERY_GROUP_OBJECTS,
-    RCT2_MAX_PARK_ENTRANCE_OBJECTS,
-    RCT2_MAX_WATER_OBJECTS,
-    RCT2_MAX_SCENARIO_TEXT_OBJECTS,
+    RCT2::Limits::MaxRideObject,
+    RCT2::Limits::RCT2_MAX_SMALL_SCENERY_OBJECTS,
+    RCT2::Limits::RCT2_MAX_LARGE_SCENERY_OBJECTS,
+    RCT2::Limits::RCT2_MAX_WALL_SCENERY_OBJECTS,
+    RCT2::Limits::RCT2_MAX_BANNER_OBJECTS,
+    RCT2::Limits::RCT2_MAX_PATH_OBJECTS,
+    RCT2::Limits::RCT2_MAX_PATH_ADDITION_OBJECTS,
+    RCT2::Limits::RCT2_MAX_SCENERY_GROUP_OBJECTS,
+    RCT2::Limits::RCT2_MAX_PARK_ENTRANCE_OBJECTS,
+    RCT2::Limits::RCT2_MAX_WATER_OBJECTS,
+    RCT2::Limits::RCT2_MAX_SCENARIO_TEXT_OBJECTS,
 };
 // clang-format on
 
@@ -108,7 +72,7 @@ struct rct2_ride
     uint16_t pad_002;                                            // 0x002
     uint8_t mode;                                                // 0x004
     uint8_t colour_scheme_type;                                  // 0x005
-    rct_vehicle_colour vehicle_colours[RCT2_MAX_CARS_PER_TRAIN]; // 0x006
+    rct_vehicle_colour vehicle_colours[RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN]; // 0x006
     uint8_t pad_046[0x03];                                       // 0x046, Used to be track colours in RCT1 without expansions
     // 0 = closed, 1 = open, 2 = test
     uint8_t status;     // 0x049
@@ -123,19 +87,19 @@ struct rct2_ride
         };
     };
     RCT12xy8 overall_view;                                      // 0x050
-    RCT12xy8 station_starts[RCT12::Limits::MaxStationsPerRide]; // 0x052
-    uint8_t station_heights[RCT12::Limits::MaxStationsPerRide]; // 0x05A
-    uint8_t station_length[RCT12::Limits::MaxStationsPerRide];  // 0x05E
-    uint8_t station_depart[RCT12::Limits::MaxStationsPerRide];  // 0x062
+    RCT12xy8 station_starts[RCT2::Limits::MaxStationsPerRide]; // 0x052
+    uint8_t station_heights[RCT2::Limits::MaxStationsPerRide]; // 0x05A
+    uint8_t station_length[RCT2::Limits::MaxStationsPerRide];  // 0x05E
+    uint8_t station_depart[RCT2::Limits::MaxStationsPerRide];  // 0x062
     // ride->vehicle index for current train waiting for passengers
     // at station
-    uint8_t train_at_station[RCT12::Limits::MaxStationsPerRide];    // 0x066
-    RCT12xy8 entrances[RCT12::Limits::MaxStationsPerRide];          // 0x06A
-    RCT12xy8 exits[RCT12::Limits::MaxStationsPerRide];              // 0x072
-    uint16_t last_peep_in_queue[RCT12::Limits::MaxStationsPerRide]; // 0x07A
-    uint8_t pad_082[RCT12::Limits::MaxStationsPerRide]; // 0x082, Used to be number of peeps in queue in RCT1, but this
+    uint8_t train_at_station[RCT2::Limits::MaxStationsPerRide];    // 0x066
+    RCT12xy8 entrances[RCT2::Limits::MaxStationsPerRide];          // 0x06A
+    RCT12xy8 exits[RCT2::Limits::MaxStationsPerRide];              // 0x072
+    uint16_t last_peep_in_queue[RCT2::Limits::MaxStationsPerRide]; // 0x07A
+    uint8_t pad_082[RCT2::Limits::MaxStationsPerRide]; // 0x082, Used to be number of peeps in queue in RCT1, but this
                                                         // has moved.
-    uint16_t vehicles[RCT2_MAX_VEHICLES_PER_RIDE + 1];  // 0x086, Points to the first car in the train
+    uint16_t vehicles[RCT2::Limits::RCT2_MAX_VEHICLES_PER_RIDE + 1]; // 0x086, Points to the first car in the train
     uint8_t depart_flags;                               // 0x0C6
 
     // Not sure if these should be uint or sint.
@@ -174,8 +138,8 @@ struct rct2_ride
     uint8_t current_test_segment;                      // 0x0E0
     uint8_t average_speed_test_timeout;                // 0x0E1
     uint8_t pad_0E2[0x2];                              // 0x0E2
-    int32_t length[RCT12::Limits::MaxStationsPerRide]; // 0x0E4
-    uint16_t time[RCT12::Limits::MaxStationsPerRide];  // 0x0F4
+    int32_t length[RCT2::Limits::MaxStationsPerRide]; // 0x0E4
+    uint16_t time[RCT2::Limits::MaxStationsPerRide];  // 0x0F4
     fixed16_2dp max_positive_vertical_g;               // 0x0FC
     fixed16_2dp max_negative_vertical_g;               // 0x0FE
     fixed16_2dp max_lateral_g;                         // 0x100
@@ -213,7 +177,7 @@ struct rct2_ride
     // Counts ticks to update customer intervals, resets each 960 game ticks.
     uint16_t num_customers_timeout; // 0x122
     // Customer count in the last 10 * 960 game ticks (sliding window)
-    uint16_t num_customers[RCT2_CUSTOMER_HISTORY_SIZE]; // 0x124
+    uint16_t num_customers[RCT2::Limits::RCT2_CUSTOMER_HISTORY_SIZE]; // 0x124
     money16 price;                                      // 0x138
     RCT12xy8 chairlift_bullwheel_location[2];           // 0x13A
     uint8_t chairlift_bullwheel_z[2];                   // 0x13E
@@ -282,7 +246,7 @@ struct rct2_ride
     uint8_t downtime;                                     // 0x199
     uint8_t inspection_interval;                          // 0x19A
     uint8_t last_inspection;                              // 0x19B
-    uint8_t downtime_history[RCT2_DOWNTIME_HISTORY_SIZE]; // 0x19C
+    uint8_t downtime_history[RCT2::Limits::RCT2_DOWNTIME_HISTORY_SIZE]; // 0x19C
     uint32_t no_primary_items_sold;                       // 0x1A4
     uint32_t no_secondary_items_sold;                     // 0x1A8
     uint8_t breakdown_sound_modifier;                     // 0x1AC
@@ -293,10 +257,10 @@ struct rct2_ride
     uint8_t connected_message_throttle;                               // 0x1AF
     money32 income_per_hour;                                          // 0x1B0
     money32 profit;                                                   // 0x1B4
-    uint8_t queue_time[RCT12::Limits::MaxStationsPerRide];            // 0x1B8
-    uint8_t track_colour_main[RCT12::Limits::NumColourSchemes];       // 0x1BC
-    uint8_t track_colour_additional[RCT12::Limits::NumColourSchemes]; // 0x1C0
-    uint8_t track_colour_supports[RCT12::Limits::NumColourSchemes];   // 0x1C4
+    uint8_t queue_time[RCT2::Limits::MaxStationsPerRide];            // 0x1B8
+    uint8_t track_colour_main[RCT2::Limits::NumColourSchemes];       // 0x1BC
+    uint8_t track_colour_additional[RCT2::Limits::NumColourSchemes]; // 0x1C0
+    uint8_t track_colour_supports[RCT2::Limits::NumColourSchemes];   // 0x1C4
     uint8_t music;                                                    // 0x1C8
     uint8_t entrance_style;                                           // 0x1C9
     uint16_t vehicle_change_timeout;                                  // 0x1CA
@@ -304,7 +268,7 @@ struct rct2_ride
     uint8_t lift_hill_speed;                                          // 0x1CD
     uint16_t guests_favourite;                                        // 0x1CE
     uint32_t lifecycle_flags;                                         // 0x1D0
-    uint8_t vehicle_colours_extended[RCT2_MAX_CARS_PER_TRAIN];        // 0x1D4
+    uint8_t vehicle_colours_extended[RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN]; // 0x1D4
     uint16_t total_air_time;                                          // 0x1F4
     uint8_t current_test_station;                                     // 0x1F6
     uint8_t num_circuits;                                             // 0x1F7
@@ -313,7 +277,7 @@ struct rct2_ride
     uint8_t cable_lift_z;                                             // 0x1FC
     uint8_t pad_1FD;                                                  // 0x1FD
     uint16_t cable_lift;                                              // 0x1FE
-    uint16_t queue_length[RCT12::Limits::MaxStationsPerRide];         // 0x200
+    uint16_t queue_length[RCT2::Limits::MaxStationsPerRide];         // 0x200
     uint8_t pad_208[0x58];                                            // 0x208
 
     uint8_t GetMinCarsPerTrain() const;
@@ -369,7 +333,7 @@ struct rct_track_td6
         uint8_t track_flags; // 0x06
     };
     uint8_t version_and_colour_scheme;                           // 0x07 0b0000_VVCC
-    rct_vehicle_colour vehicle_colours[RCT2_MAX_CARS_PER_TRAIN]; // 0x08
+    rct_vehicle_colour vehicle_colours[RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN]; // 0x08
     union
     {
         uint8_t pad_48;
@@ -408,14 +372,14 @@ struct rct_track_td6
     uint8_t intensity;                                             // 0x5C
     uint8_t nausea;                                                // 0x5D
     money16 upkeep_cost;                                           // 0x5E
-    uint8_t track_spine_colour[RCT12::Limits::NumColourSchemes];   // 0x60
-    uint8_t track_rail_colour[RCT12::Limits::NumColourSchemes];    // 0x64
-    uint8_t track_support_colour[RCT12::Limits::NumColourSchemes]; // 0x68
+    uint8_t track_spine_colour[RCT2::Limits::NumColourSchemes];   // 0x60
+    uint8_t track_rail_colour[RCT2::Limits::NumColourSchemes];    // 0x64
+    uint8_t track_support_colour[RCT2::Limits::NumColourSchemes]; // 0x68
     uint32_t flags2;                                               // 0x6C
     rct_object_entry vehicle_object;                               // 0x70
     uint8_t space_required_x;                                      // 0x80
     uint8_t space_required_y;                                      // 0x81
-    uint8_t vehicle_additional_colour[RCT2_MAX_CARS_PER_TRAIN];    // 0x82
+    uint8_t vehicle_additional_colour[RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN]; // 0x82
     uint8_t lift_hill_speed_num_circuits;                          // 0xA2 0bCCCL_LLLL
     // 0xA3 (data starts here in file)
 };
@@ -679,7 +643,7 @@ struct RCT2SpritePeep : RCT12SpriteBase
     int8_t rejoin_queue_timeout;                               // 0xAC
     RCT12RideId previous_ride;                                 // 0xAD
     uint16_t previous_ride_time_out;                           // 0xAE
-    RCT12PeepThought thoughts[RCT12::Limits::MaxPeepThoughts]; // 0xB0
+    RCT12PeepThought thoughts[RCT2::Limits::MaxPeepThoughts]; // 0xB0
     uint8_t path_check_optimisation;                           // 0xC4
     union
     {
@@ -872,11 +836,11 @@ struct rct_s6_data
     uint32_t scenario_srand_1;
 
     // SC6[5]
-    RCT12TileElement tile_elements[RCT2_MAX_TILE_ELEMENTS];
+    RCT12TileElement tile_elements[RCT2::Limits::RCT2_MAX_TILE_ELEMENTS];
 
     // SC6[6]
     uint32_t next_free_tile_element_pointer_index;
-    RCT2Sprite sprites[RCT2_MAX_SPRITES];
+    RCT2Sprite sprites[RCT2::Limits::RCT2_MAX_SPRITES];
     uint16_t sprite_lists_head[static_cast<uint8_t>(EntityListId::Count)];
     uint16_t sprite_lists_count[static_cast<uint8_t>(EntityListId::Count)];
     rct_string_id park_name;
@@ -891,12 +855,12 @@ struct rct_s6_data
     uint8_t pad_013573EE[2];
     uint8_t rct1_park_entrance_z;
     uint8_t pad_013573F1;
-    rct12_peep_spawn peep_spawns[RCT12::Limits::MaxPeepSpawns];
+    rct12_peep_spawn peep_spawns[RCT2::Limits::MaxPeepSpawns];
     uint8_t guest_count_change_modifier;
     uint8_t current_research_level;
     uint8_t pad_01357400[4];
-    uint32_t researched_ride_types[RCT2_MAX_RESEARCHED_RIDE_TYPE_QUADS];
-    uint32_t researched_ride_entries[RCT2_MAX_RESEARCHED_RIDE_ENTRY_QUADS];
+    uint32_t researched_ride_types[RCT2::Limits::RCT2_MAX_RESEARCHED_RIDE_TYPE_QUADS];
+    uint32_t researched_ride_entries[RCT2::Limits::RCT2_MAX_RESEARCHED_RIDE_ENTRY_QUADS];
     uint32_t researched_track_types_a[128];
     uint32_t researched_track_types_b[128];
 
@@ -905,7 +869,7 @@ struct rct_s6_data
     uint16_t guests_heading_for_park;
 
     // Ignored in scenario
-    money32 expenditure_table[RCT12::Limits::ExpenditureTableMonthCount][RCT12::Limits::ExpenditureTypeCount];
+    money32 expenditure_table[RCT2::Limits::ExpenditureTableMonthCount][RCT2::Limits::ExpenditureTypeCount];
 
     // SC6[8]
     uint16_t last_guests_in_park;
@@ -915,7 +879,7 @@ struct rct_s6_data
     uint8_t security_colour;
 
     // Ignored in scenario
-    uint32_t researched_scenery_items[RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS];
+    uint32_t researched_scenery_items[RCT2::Limits::RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS];
 
     // SC6[9]
     uint16_t park_rating;
@@ -951,7 +915,7 @@ struct rct_s6_data
     uint8_t campaign_ride_index[22];
 
     // Ignored in scenario
-    money32 balance_history[RCT12::Limits::FinanceGraphSize];
+    money32 balance_history[RCT2::Limits::FinanceGraphSize];
 
     // SC6[11]
     money32 current_expenditure;
@@ -961,13 +925,13 @@ struct rct_s6_data
     uint8_t pad_0135833A[2];
 
     // Ignored in scenario
-    money32 weekly_profit_history[RCT12::Limits::FinanceGraphSize];
+    money32 weekly_profit_history[RCT2::Limits::FinanceGraphSize];
 
     // SC6[12]
     money32 park_value;
 
     // Ignored in scenario
-    money32 park_value_history[RCT12::Limits::FinanceGraphSize];
+    money32 park_value_history[RCT2::Limits::FinanceGraphSize];
 
     // SC6[13]
     money32 completed_company_value;
@@ -975,7 +939,7 @@ struct rct_s6_data
     money32 income_from_admissions;
     money32 company_value;
     uint8_t peep_warning_throttle[16];
-    rct12_award awards[RCT12::Limits::MaxAwards];
+    rct12_award awards[RCT2::Limits::MaxAwards];
     money16 land_price;
     money16 construction_rights_price;
     uint16_t word_01358774;
@@ -1003,29 +967,29 @@ struct rct_s6_data
     uint8_t last_entrance_style;
     uint8_t rct1_water_colour;
     uint8_t pad_01358842[2];
-    RCT12ResearchItem research_items[RCT2_MAX_RESEARCH_ITEMS];
+    RCT12ResearchItem research_items[RCT2::Limits::RCT2_MAX_RESEARCH_ITEMS];
     uint16_t map_base_z;
     char scenario_name[64];
     char scenario_description[256];
     uint8_t current_interest_rate;
     uint8_t pad_0135934B;
     uint32_t same_price_throughout_extended;
-    int16_t park_entrance_x[RCT12::Limits::MaxParkEntrances];
-    int16_t park_entrance_y[RCT12::Limits::MaxParkEntrances];
-    int16_t park_entrance_z[RCT12::Limits::MaxParkEntrances];
-    uint8_t park_entrance_direction[RCT12::Limits::MaxParkEntrances];
+    int16_t park_entrance_x[RCT2::Limits::MaxParkEntrances];
+    int16_t park_entrance_y[RCT2::Limits::MaxParkEntrances];
+    int16_t park_entrance_z[RCT2::Limits::MaxParkEntrances];
+    uint8_t park_entrance_direction[RCT2::Limits::MaxParkEntrances];
     char scenario_filename[256];
     uint8_t saved_expansion_pack_names[3256];
-    RCT12Banner banners[RCT2_MAX_BANNERS_IN_PARK];
-    char custom_strings[RCT12::Limits::MaxUserStrings][RCT12::Limits::MaxUserStringLength];
+    RCT12Banner banners[RCT2::Limits::RCT2_MAX_BANNERS_IN_PARK];
+    char custom_strings[RCT2::Limits::MaxUserStrings][RCT2::Limits::MaxUserStringLength];
     uint32_t game_ticks_1;
-    rct2_ride rides[RCT12::Limits::MaxRidesInPark];
+    rct2_ride rides[RCT2::Limits::MaxRidesInPark];
     uint16_t saved_age;
     int16_t saved_view_x;
     int16_t saved_view_y;
     uint8_t saved_view_zoom;
     uint8_t saved_view_rotation;
-    RCT12MapAnimation map_animations[RCT2_MAX_ANIMATED_OBJECTS];
+    RCT12MapAnimation map_animations[RCT2::Limits::RCT2_MAX_ANIMATED_OBJECTS];
     uint16_t num_map_animations;
     uint8_t pad_0138B582[2];
     RCT2RideRatingCalculationData ride_ratings_calc_data;
@@ -1033,8 +997,8 @@ struct rct_s6_data
     RCT12RideMeasurement ride_measurements[8];
     uint32_t next_guest_index;
     uint16_t grass_and_scenery_tilepos;
-    uint32_t patrol_areas[(RCT2_MAX_STAFF + RCT12::Limits::StaffTypeCount) * RCT12::Limits::PatrolAreaSize];
-    RCT2StaffMode staff_modes[RCT2_MAX_STAFF + RCT12::Limits::StaffTypeCount];
+    uint32_t patrol_areas[(RCT2::Limits::RCT2_MAX_STAFF + RCT2::Limits::StaffTypeCount) * RCT2::Limits::PatrolAreaSize];
+    RCT2StaffMode staff_modes[RCT2::Limits::RCT2_MAX_STAFF + RCT2::Limits::StaffTypeCount];
     uint8_t pad_13CA73E;
     uint8_t pad_13CA73F;
     uint8_t byte_13CA740;
@@ -1053,7 +1017,7 @@ struct rct_s6_data
     uint8_t next_weather_gloom;
     uint8_t current_weather_level;
     uint8_t next_weather_level;
-    rct12_news_item news_items[RCT12::Limits::MaxNewsItems];
+    rct12_news_item news_items[RCT2::Limits::MaxNewsItems];
     char rct1_scenario_name[62];       // Unused in RCT2
     uint16_t rct1_scenario_slot_index; // Unused in RCT2
     uint32_t rct1_scenario_flags;      // Unused in RCT2

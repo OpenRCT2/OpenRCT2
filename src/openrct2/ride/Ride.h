@@ -11,8 +11,7 @@
 
 #include "../common.h"
 #include "../localisation/Formatter.h"
-#include "../rct12/Limits.h"
-#include "../rct2/RCT2.h"
+#include "../rct2/Limits.h"
 #include "../world/Map.h"
 #include "RideColour.h"
 #include "RideRatings.h"

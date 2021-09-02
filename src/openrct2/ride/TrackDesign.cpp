@@ -98,7 +98,7 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     ride_mode = ride.mode;
     colour_scheme = ride.colour_scheme_type & 3;
 
-    for (int32_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
+    for (int32_t i = 0; i < RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN; i++)
     {
         vehicle_colours[i].body_colour = ride.vehicle_colours[i].Body;
         vehicle_colours[i].trim_colour = ride.vehicle_colours[i].Trim;
@@ -238,7 +238,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
         trackElement.x = newCoords->x;
         trackElement.y = newCoords->y;
 
-        if (track_elements.size() > TD6MaxTrackElements)
+        if (track_elements.size() > RCT2::Limits::TD6MaxTrackElements)
         {
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         }

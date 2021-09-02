@@ -53,7 +53,7 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     tempStream.WriteValue<uint32_t>(_trackDesign->flags);
     tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
     tempStream.WriteValue<uint8_t>((_trackDesign->colour_scheme & 0x3) | (2 << 2));
-    tempStream.WriteArray(_trackDesign->vehicle_colours.data(), RCT12::Limits::MaxVehicleColours);
+    tempStream.WriteArray(_trackDesign->vehicle_colours.data(), RCT2::Limits::MaxVehicleColours);
     tempStream.WriteValue<uint8_t>(0);
     tempStream.WriteValue<uint8_t>(_trackDesign->entrance_style);
     tempStream.WriteValue<uint8_t>(_trackDesign->total_air_time);
@@ -76,14 +76,14 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     tempStream.WriteValue<uint8_t>(_trackDesign->intensity);
     tempStream.WriteValue<uint8_t>(_trackDesign->nausea);
     tempStream.WriteValue<money16>(_trackDesign->upkeep_cost);
-    tempStream.WriteArray(_trackDesign->track_spine_colour, RCT12::Limits::NumColourSchemes);
-    tempStream.WriteArray(_trackDesign->track_rail_colour, RCT12::Limits::NumColourSchemes);
-    tempStream.WriteArray(_trackDesign->track_support_colour, RCT12::Limits::NumColourSchemes);
+    tempStream.WriteArray(_trackDesign->track_spine_colour, RCT2::Limits::NumColourSchemes);
+    tempStream.WriteArray(_trackDesign->track_rail_colour, RCT2::Limits::NumColourSchemes);
+    tempStream.WriteArray(_trackDesign->track_support_colour, RCT2::Limits::NumColourSchemes);
     tempStream.WriteValue<uint32_t>(_trackDesign->flags2);
     tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(rct_object_entry));
     tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
     tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
-    tempStream.WriteArray(_trackDesign->vehicle_additional_colour, RCT2_MAX_CARS_PER_TRAIN);
+    tempStream.WriteArray(_trackDesign->vehicle_additional_colour, RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN);
     tempStream.WriteValue<uint8_t>(_trackDesign->lift_hill_speed | (_trackDesign->num_circuits << 5));
 
     if (_trackDesign->type == RIDE_TYPE_MAZE)
