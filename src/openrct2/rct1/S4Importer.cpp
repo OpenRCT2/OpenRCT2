@@ -804,7 +804,7 @@ namespace RCT1
 
         void ImportRides()
         {
-            for (int32_t i = 0; i < RCT12::Limits::RCT12_MAX_RIDES_IN_PARK; i++)
+            for (int32_t i = 0; i < RCT12::Limits::MaxRidesInPark; i++)
             {
                 if (_s4.rides[i].type != RideType::Null)
                 {
@@ -875,7 +875,7 @@ namespace RCT1
                 dst->overall_view = TileCoordsXY{ src->overall_view.x, src->overall_view.y }.ToCoordsXY();
             }
 
-            for (int32_t i = 0; i < RCT12::Limits::RCT12_MAX_STATIONS_PER_RIDE; i++)
+            for (int32_t i = 0; i < RCT12::Limits::MaxStationsPerRide; i++)
             {
                 if (src->station_starts[i].IsNull())
                 {
@@ -912,7 +912,7 @@ namespace RCT1
                 dst->stations[i].SegmentLength = src->length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = RCT12::Limits::RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
+            for (int32_t i = RCT12::Limits::MaxStationsPerRide; i < MAX_STATIONS; i++)
             {
                 dst->stations[i].Start.SetNull();
                 dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
@@ -1111,7 +1111,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < RCT12::Limits::RCT12_NUM_COLOUR_SCHEMES; i++)
+                for (int i = 0; i < RCT12::Limits::NumColourSchemes; i++)
                 {
                     dst->track_colour[i].main = RCT1::GetColour(src->track_colour_main[i]);
                     dst->track_colour[i].additional = RCT1::GetColour(src->track_colour_additional[i]);
@@ -1368,8 +1368,8 @@ namespace RCT1
             //                                          index in the array ----^     ^--- bit position in the 8-bit value
             // We do the opposite in this function to recover the x and y values.
 
-            int32_t peepOffset = staffId * RCT12::Limits::RCT12_PATROL_AREA_SIZE;
-            for (int32_t i = 0; i < RCT12::Limits::RCT12_PATROL_AREA_SIZE; i++)
+            int32_t peepOffset = staffId * RCT12::Limits::PatrolAreaSize;
+            for (int32_t i = 0; i < RCT12::Limits::PatrolAreaSize; i++)
             {
                 if (_s4.patrol_areas[peepOffset + i] == 0)
                 {
@@ -1411,7 +1411,7 @@ namespace RCT1
         void ImportPeepSpawns()
         {
             gPeepSpawns.clear();
-            for (size_t i = 0; i < RCT12::Limits::RCT12_MAX_PEEP_SPAWNS; i++)
+            for (size_t i = 0; i < RCT12::Limits::MaxPeepSpawns; i++)
             {
                 if (_s4.peep_spawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
@@ -1439,16 +1439,16 @@ namespace RCT1
             gParkValue = ToMoney64(CorrectRCT1ParkValue(_s4.park_value));
             gCurrentProfit = ToMoney64(_s4.profit);
 
-            for (size_t i = 0; i < RCT12::Limits::RCT12_FINANCE_GRAPH_SIZE; i++)
+            for (size_t i = 0; i < RCT12::Limits::FinanceGraphSize; i++)
             {
                 gCashHistory[i] = ToMoney64(_s4.cash_history[i]);
                 gParkValueHistory[i] = ToMoney64(CorrectRCT1ParkValue(_s4.park_value_history[i]));
                 gWeeklyProfitHistory[i] = ToMoney64(_s4.weekly_profit_history[i]);
             }
 
-            for (size_t i = 0; i < RCT12::Limits::RCT12_EXPENDITURE_TABLE_MONTH_COUNT; i++)
+            for (size_t i = 0; i < RCT12::Limits::ExpenditureTableMonthCount; i++)
             {
-                for (size_t j = 0; j < RCT12::Limits::RCT12_EXPENDITURE_TYPE_COUNT; j++)
+                for (size_t j = 0; j < RCT12::Limits::ExpenditureTypeCount; j++)
                 {
                     gExpenditureTable[i][j] = ToMoney64(_s4.expenditure[i][j]);
                 }
@@ -1552,7 +1552,7 @@ namespace RCT1
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                         do
                         {
-                            if (srcElement->base_height == RCT12::Limits::RCT12_MAX_ELEMENT_HEIGHT)
+                            if (srcElement->base_height == RCT12::Limits::MaxElementHeight)
                                 continue;
 
                             // Reserve 8 elements for import
@@ -2166,7 +2166,7 @@ namespace RCT1
             }
 
             // Awards
-            for (int32_t i = 0; i < RCT12::Limits::RCT12_MAX_AWARDS; i++)
+            for (int32_t i = 0; i < RCT12::Limits::MaxAwards; i++)
             {
                 rct12_award* src = &_s4.awards[i];
                 Award* dst = &gCurrentAwards[i];
@@ -2185,7 +2185,7 @@ namespace RCT1
             }
 
             // News items
-            for (size_t i = 0; i < RCT12::Limits::RCT12_MAX_NEWS_ITEMS; i++)
+            for (size_t i = 0; i < RCT12::Limits::MaxNewsItems; i++)
             {
                 const rct12_news_item* src = &_s4.messages[i];
                 News::Item* dst = &gNewsItems[i];
@@ -2439,7 +2439,7 @@ namespace RCT1
             gParkEntrances.clear();
             tile_element_iterator it;
             tile_element_iterator_begin(&it);
-            while (tile_element_iterator_next(&it) && gParkEntrances.size() < RCT12::Limits::RCT12_MAX_PARK_ENTRANCES)
+            while (tile_element_iterator_next(&it) && gParkEntrances.size() < RCT12::Limits::MaxParkEntrances)
             {
                 TileElement* element = it.element;
 

@@ -838,17 +838,17 @@ assert_struct_size(RCT12PeepThought, 4);
 
 struct RCT12RideMeasurement
 {
-    uint8_t ride_index;                                 // 0x0000
-    uint8_t flags;                                      // 0x0001
-    uint32_t last_use_tick;                             // 0x0002
-    uint16_t num_items;                                 // 0x0006
-    uint16_t current_item;                              // 0x0008
-    uint8_t vehicle_index;                              // 0x000A
-    uint8_t current_station;                            // 0x000B
-    int8_t vertical[RCT12::Limits::RCT12_RIDE_MEASUREMENT_MAX_ITEMS];  // 0x000C
-    int8_t lateral[RCT12::Limits::RCT12_RIDE_MEASUREMENT_MAX_ITEMS];  // 0x12CC
-    uint8_t velocity[RCT12::Limits::RCT12_RIDE_MEASUREMENT_MAX_ITEMS]; // 0x258C
-    uint8_t altitude[RCT12::Limits::RCT12_RIDE_MEASUREMENT_MAX_ITEMS]; // 0x384C
+    uint8_t ride_index;                                       // 0x0000
+    uint8_t flags;                                            // 0x0001
+    uint32_t last_use_tick;                                   // 0x0002
+    uint16_t num_items;                                       // 0x0006
+    uint16_t current_item;                                    // 0x0008
+    uint8_t vehicle_index;                                    // 0x000A
+    uint8_t current_station;                                  // 0x000B
+    int8_t vertical[RCT12::Limits::RideMeasurementMaxItems];  // 0x000C
+    int8_t lateral[RCT12::Limits::RideMeasurementMaxItems];   // 0x12CC
+    uint8_t velocity[RCT12::Limits::RideMeasurementMaxItems]; // 0x258C
+    uint8_t altitude[RCT12::Limits::RideMeasurementMaxItems]; // 0x384C
 };
 assert_struct_size(RCT12RideMeasurement, 0x4B0C);
 
@@ -925,7 +925,7 @@ money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue);
 template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 {
     std::vector<uint16_t> ridesTypesBeenOn;
-    for (uint16_t i = 0; i < RCT12::Limits::RCT12_MAX_RIDE_OBJECTS; i++)
+    for (uint16_t i = 0; i < RCT12::Limits::MaxRideObject; i++)
     {
         if (srcPeep->ride_types_been_on[i / 8] & (1 << (i % 8)))
         {
@@ -937,7 +937,7 @@ template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 template<typename T> std::vector<ride_id_t> RCT12GetRidesBeenOn(T* srcPeep)
 {
     std::vector<ride_id_t> ridesBeenOn;
-    for (uint16_t i = 0; i < RCT12::Limits::RCT12_MAX_RIDES_IN_PARK; i++)
+    for (uint16_t i = 0; i < RCT12::Limits::MaxRidesInPark; i++)
     {
         if (srcPeep->rides_been_on[i / 8] & (1 << (i % 8)))
         {

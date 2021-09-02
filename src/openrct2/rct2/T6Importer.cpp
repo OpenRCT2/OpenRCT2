@@ -119,7 +119,7 @@ public:
         td->intensity = td6.intensity;
         td->nausea = td6.nausea;
         td->upkeep_cost = td6.upkeep_cost;
-        for (auto i = 0; i < RCT12::Limits::RCT12_NUM_COLOUR_SCHEMES; ++i)
+        for (auto i = 0; i < RCT12::Limits::NumColourSchemes; ++i)
         {
             td->track_spine_colour[i] = td6.track_spine_colour[i];
             td->track_rail_colour[i] = td6.track_rail_colour[i];

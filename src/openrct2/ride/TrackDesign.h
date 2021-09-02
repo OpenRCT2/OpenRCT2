@@ -129,9 +129,9 @@ struct TrackDesign
     uint8_t intensity;
     uint8_t nausea;
     money16 upkeep_cost;
-    uint8_t track_spine_colour[RCT12::Limits::RCT12_NUM_COLOUR_SCHEMES];
-    uint8_t track_rail_colour[RCT12::Limits::RCT12_NUM_COLOUR_SCHEMES];
-    uint8_t track_support_colour[RCT12::Limits::RCT12_NUM_COLOUR_SCHEMES];
+    uint8_t track_spine_colour[RCT12::Limits::NumColourSchemes];
+    uint8_t track_rail_colour[RCT12::Limits::NumColourSchemes];
+    uint8_t track_support_colour[RCT12::Limits::NumColourSchemes];
     uint32_t flags2;
     ObjectEntryDescriptor vehicle_object;
     uint8_t space_required_x;
