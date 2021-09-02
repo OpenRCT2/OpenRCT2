@@ -14,6 +14,7 @@
 #include "../common.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"
+#include "Limits.h"
 
 #include <string>
 #include <string_view>
@@ -29,39 +30,10 @@ constexpr uint8_t RCT2_STRING_FORMAT_ARG_END = 141;
 constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_START = 142;
 constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_END = 156;
 
-constexpr const uint8_t RCT12_MAX_RIDE_OBJECTS = 128;
-
-constexpr const uint8_t RCT12_MAX_RIDES_IN_PARK = 255;
-constexpr const uint8_t RCT12_MAX_AWARDS = 4;
-constexpr const uint8_t RCT12_MAX_NEWS_ITEMS = 61;
-constexpr const uint8_t RCT12_MAX_STATIONS_PER_RIDE = 4;
-constexpr const uint8_t RCT12_MAX_PEEP_SPAWNS = 2;
-constexpr const uint8_t RCT12_MAX_PARK_ENTRANCES = 4;
-// The number of elements in the patrol_areas array per staff member. Every bit in the array represents a 4x4 square.
-// In RCT1, that's an 8-bit array. 8 * 128 = 1024 bits, which is also the number of 4x4 squares on a 128x128 map.
-// For RCT2, it's a 32-bit array. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
-constexpr const uint8_t RCT12_PATROL_AREA_SIZE = 128;
-constexpr const uint8_t RCT12_STAFF_TYPE_COUNT = 4;
-constexpr const uint8_t RCT12_NUM_COLOUR_SCHEMES = 4;
-constexpr const uint8_t RCT12_MAX_VEHICLE_COLOURS = 32;
 constexpr const uint8_t RCT12_SOUND_ID_NULL = 0xFF;
-
-constexpr const uint8_t RCT12_EXPENDITURE_TABLE_MONTH_COUNT = 16;
-constexpr const uint8_t RCT12_EXPENDITURE_TYPE_COUNT = 14;
-constexpr const uint8_t RCT12_FINANCE_GRAPH_SIZE = 128;
-
-constexpr const uint16_t RCT12_MAX_USER_STRINGS = 1024;
-constexpr const uint8_t RCT12_USER_STRING_MAX_LENGTH = 32;
-
-constexpr const uint8_t RCT12_PEEP_MAX_THOUGHTS = 5;
 
 using RCT12RideId = uint8_t;
 constexpr const RCT12RideId RCT12_RIDE_ID_NULL = 255;
-constexpr const uint16_t RCT12_RIDE_MEASUREMENT_MAX_ITEMS = 4800;
-
-constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
-constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
-constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
 constexpr uint8_t RCT12_BANNER_INDEX_NULL = std::numeric_limits<uint8_t>::max();
 
@@ -82,8 +54,6 @@ constexpr const uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
 constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
 // Extra end of list entry. Leftover from RCT1.
 constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
-
-constexpr const uint8_t RCT12_MAX_ELEMENT_HEIGHT = 255;
 
 constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 
@@ -875,10 +845,10 @@ struct RCT12RideMeasurement
     uint16_t current_item;                              // 0x0008
     uint8_t vehicle_index;                              // 0x000A
     uint8_t current_station;                            // 0x000B
-    int8_t vertical[RCT12_RIDE_MEASUREMENT_MAX_ITEMS];  // 0x000C
-    int8_t lateral[RCT12_RIDE_MEASUREMENT_MAX_ITEMS];   // 0x12CC
-    uint8_t velocity[RCT12_RIDE_MEASUREMENT_MAX_ITEMS]; // 0x258C
-    uint8_t altitude[RCT12_RIDE_MEASUREMENT_MAX_ITEMS]; // 0x384C
+    int8_t vertical[RCT12::Limits::RCT12_RIDE_MEASUREMENT_MAX_ITEMS];  // 0x000C
+    int8_t lateral[RCT12::Limits::RCT12_RIDE_MEASUREMENT_MAX_ITEMS];  // 0x12CC
+    uint8_t velocity[RCT12::Limits::RCT12_RIDE_MEASUREMENT_MAX_ITEMS]; // 0x258C
+    uint8_t altitude[RCT12::Limits::RCT12_RIDE_MEASUREMENT_MAX_ITEMS]; // 0x384C
 };
 assert_struct_size(RCT12RideMeasurement, 0x4B0C);
 
@@ -955,7 +925,7 @@ money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue);
 template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 {
     std::vector<uint16_t> ridesTypesBeenOn;
-    for (uint16_t i = 0; i < RCT12_MAX_RIDE_OBJECTS; i++)
+    for (uint16_t i = 0; i < RCT12::Limits::RCT12_MAX_RIDE_OBJECTS; i++)
     {
         if (srcPeep->ride_types_been_on[i / 8] & (1 << (i % 8)))
         {
@@ -967,7 +937,7 @@ template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 template<typename T> std::vector<ride_id_t> RCT12GetRidesBeenOn(T* srcPeep)
 {
     std::vector<ride_id_t> ridesBeenOn;
-    for (uint16_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
+    for (uint16_t i = 0; i < RCT12::Limits::RCT12_MAX_RIDES_IN_PARK; i++)
     {
         if (srcPeep->rides_been_on[i / 8] & (1 << (i % 8)))
         {

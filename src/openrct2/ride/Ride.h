@@ -11,7 +11,7 @@
 
 #include "../common.h"
 #include "../localisation/Formatter.h"
-#include "../rct12/RCT12.h"
+#include "../rct12/Limits.h"
 #include "../rct2/RCT2.h"
 #include "../world/Map.h"
 #include "RideColour.h"
@@ -44,9 +44,9 @@ constexpr const uint16_t MAX_RIDES = 1000;
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
 constexpr uint16_t const MAX_STATION_LOCATIONS = MAX_STATIONS * 2; // Entrance and exit per station
-constexpr uint16_t const MAX_INVERSIONS = RCT12_MAX_INVERSIONS;
-constexpr uint16_t const MAX_GOLF_HOLES = RCT12_MAX_GOLF_HOLES;
-constexpr uint16_t const MAX_HELICES = RCT12_MAX_HELICES;
+constexpr uint16_t const MAX_INVERSIONS = RCT12::Limits::RCT12_MAX_INVERSIONS;
+constexpr uint16_t const MAX_GOLF_HOLES = RCT12::Limits::RCT12_MAX_GOLF_HOLES;
+constexpr uint16_t const MAX_HELICES = RCT12::Limits::RCT12_MAX_HELICES;
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 

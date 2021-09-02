@@ -94,7 +94,7 @@ namespace RCT1
             TD4AA td4aa{};
             _stream.Read(&td4aa, sizeof(TD4AA));
 
-            for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+            for (int32_t i = 0; i < RCT12::Limits::RCT12_NUM_COLOUR_SCHEMES; i++)
             {
                 td->track_spine_colour[i] = RCT1::GetColour(td4aa.track_spine_colour[i]);
                 td->track_rail_colour[i] = RCT1::GetColour(td4aa.track_rail_colour[i]);

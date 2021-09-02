@@ -264,9 +264,9 @@ public:
         gNumGuestsInPark = _s6.guests_in_park;
         gNumGuestsHeadingForPark = _s6.guests_heading_for_park;
 
-        for (size_t i = 0; i < RCT12_EXPENDITURE_TABLE_MONTH_COUNT; i++)
+        for (size_t i = 0; i < RCT12::Limits::RCT12_EXPENDITURE_TABLE_MONTH_COUNT; i++)
         {
-            for (size_t j = 0; j < RCT12_EXPENDITURE_TYPE_COUNT; j++)
+            for (size_t j = 0; j < RCT12::Limits::RCT12_EXPENDITURE_TYPE_COUNT; j++)
             {
                 gExpenditureTable[i][j] = ToMoney64(_s6.expenditure_table[i][j]);
             }
@@ -335,7 +335,7 @@ public:
 
         gParkValue = ToMoney64(_s6.park_value);
 
-        for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
+        for (size_t i = 0; i < RCT12::Limits::RCT12_FINANCE_GRAPH_SIZE; i++)
         {
             gCashHistory[i] = ToMoney64(_s6.balance_history[i]);
             gWeeklyProfitHistory[i] = ToMoney64(_s6.weekly_profit_history[i]);
@@ -349,7 +349,7 @@ public:
         std::memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
 
         // Awards
-        for (int32_t i = 0; i < RCT12_MAX_AWARDS; i++)
+        for (int32_t i = 0; i < RCT12::Limits::RCT12_MAX_AWARDS; i++)
         {
             rct12_award* src = &_s6.awards[i];
             Award* dst = &gCurrentAwards[i];
@@ -386,7 +386,7 @@ public:
         // pad_0135934B
         // Preserve compatibility with vanilla RCT2's save format.
         gParkEntrances.clear();
-        for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
+        for (uint8_t i = 0; i < RCT12::Limits::RCT12_MAX_PARK_ENTRANCES; i++)
         {
             if (_s6.park_entrance_x[i] != LOCATION_NULL)
             {
@@ -442,7 +442,7 @@ public:
 
         // News items
         News::InitQueue();
-        for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
+        for (size_t i = 0; i < RCT12::Limits::RCT12_MAX_NEWS_ITEMS; i++)
         {
             const rct12_news_item* src = &_s6.news_items[i];
             News::Item* dst = &gNewsItems[i];
@@ -536,7 +536,7 @@ public:
 
     void ImportRides()
     {
-        for (uint8_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
+        for (uint8_t index = 0; index < RCT12::Limits::RCT12_MAX_RIDES_IN_PARK; index++)
         {
             auto src = &_s6.rides[index];
             if (src->type != RIDE_TYPE_NULL)
@@ -651,7 +651,7 @@ public:
             dst->overall_view = tileLoc.ToCoordsXY();
         }
 
-        for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+        for (int32_t i = 0; i < RCT12::Limits::RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
             if (src->station_starts[i].IsNull())
             {
@@ -688,7 +688,7 @@ public:
             dst->stations[i].QueueLength = src->queue_length[i];
         }
         // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-        for (int32_t i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
+        for (int32_t i = RCT12::Limits::RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
         {
             dst->stations[i].Start.SetNull();
             dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
@@ -850,7 +850,7 @@ public:
         dst->income_per_hour = ToMoney64(src->income_per_hour);
         dst->profit = ToMoney64(src->profit);
 
-        for (uint8_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+        for (uint8_t i = 0; i < RCT12::Limits::RCT12_NUM_COLOUR_SCHEMES; i++)
         {
             dst->track_colour[i].main = src->track_colour_main[i];
             dst->track_colour[i].additional = src->track_colour_additional[i];
@@ -911,9 +911,9 @@ public:
         dst.ProximityStart = { src.proximity_start_x, src.proximity_start_y, src.proximity_start_z };
         dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.current_ride);
         dst.State = src.state;
-        if (src.current_ride < RCT12_MAX_RIDES_IN_PARK && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors))
-            dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
-                src.proximity_track_type, _s6.rides[src.current_ride].type, IsFlatRide(src.current_ride));
+        if (src.current_ride < RCT12::Limits::RCT12_MAX_RIDES_IN_PARK
+            && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors)) dst.ProximityTrackType
+            = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type, IsFlatRide(src.current_ride));
         else
             dst.ProximityTrackType = 0xFF;
         dst.ProximityBaseHeight = src.proximity_base_height;
@@ -1052,7 +1052,7 @@ public:
         }
 
         gPeepSpawns.clear();
-        for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
+        for (size_t i = 0; i < RCT12::Limits::RCT12_MAX_PEEP_SPAWNS; i++)
         {
             if (_s6.peep_spawns[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
             {
