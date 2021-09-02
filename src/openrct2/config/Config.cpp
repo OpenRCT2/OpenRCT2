@@ -29,7 +29,7 @@
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform2.h"
 #include "../platform/platform.h"
-#include "../rct1/RCT1.h"
+#include "../rct1/Limits.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
@@ -1001,7 +1001,8 @@ bool RCT1DataPresentAtLocation(const utf8* path)
 
 bool CsgIsUsable(const rct_gx& csg)
 {
-    return csg.header.total_size == RCT1::RCT1_LL_CSG1_DAT_FILE_SIZE && csg.header.num_entries == RCT1::RCT1_NUM_LL_CSG_ENTRIES;
+    return csg.header.total_size == RCT1::Limits::RCT1_LL_CSG1_DAT_FILE_SIZE
+        && csg.header.num_entries == RCT1::Limits::RCT1_NUM_LL_CSG_ENTRIES;
 }
 
 bool CsgAtLocationIsUsable(const utf8* path)

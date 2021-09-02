@@ -317,6 +317,7 @@
     <ClInclude Include="rct12\SawyerChunkReader.h" />
     <ClInclude Include="rct12\SawyerChunkWriter.h" />
     <ClInclude Include="rct12\SawyerEncoding.h" />
+    <ClInclude Include="rct1\Limits.h" />
     <ClInclude Include="rct1\RCT1.h" />
     <ClInclude Include="rct1\Tables.h" />
     <ClInclude Include="rct2\RCT2.h" />
