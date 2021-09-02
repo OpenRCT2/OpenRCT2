@@ -138,7 +138,7 @@ namespace RCT1
         {
             colour_t body;
             colour_t trim;
-        } vehicle_colours[Limits::RCT1_MAX_TRAINS_PER_RIDE];     // 0x006
+        } vehicle_colours[Limits::MaxTrainsPerRide];             // 0x006
         colour_t track_primary_colour;                           // 0x01E
         colour_t track_secondary_colour;                         // 0x01F
         colour_t track_support_colour;                           // 0x020
@@ -156,7 +156,7 @@ namespace RCT1
         RCT12xy8 exit[Limits::MaxStationsPerRide];               // 0x04A
         uint16_t last_peep_in_queue[Limits::MaxStationsPerRide]; // 0x052
         uint8_t num_peeps_in_queue[Limits::MaxStationsPerRide];  // 0x05A
-        uint16_t vehicles[Limits::RCT1_MAX_TRAINS_PER_RIDE];     // 0x05E
+        uint16_t vehicles[Limits::MaxTrainsPerRide];             // 0x05E
         uint8_t depart_flags;                                    // 0x076
         uint8_t num_stations;                                    // 0x077
         uint8_t num_trains;                                      // 0x078
@@ -627,9 +627,9 @@ namespace RCT1
         uint32_t ticks;
         uint32_t random_a;
         uint32_t random_b;
-        RCT12TileElement tile_elements[Limits::RCT1_MAX_TILE_ELEMENTS];
+        RCT12TileElement tile_elements[Limits::MaxTileElements];
         uint32_t unk_counter;
-        Entity sprites[Limits::RCT1_MAX_SPRITES];
+        Entity sprites[Limits::MaxEntities];
         uint16_t next_sprite_index;
         uint16_t first_vehicle_sprite_index;
         uint16_t first_peep_sprite_index;
@@ -748,7 +748,7 @@ namespace RCT1
         uint16_t unk_199C9A;
         ResearchItem research_items_LL[180];
         uint8_t unk_19A020[5468];
-        RCT12Banner banners[Limits::RCT1_MAX_BANNERS];
+        RCT12Banner banners[Limits::MaxBanners];
         char string_table[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t game_time_counter;
         Ride rides[Limits::MaxRidesInPark];
@@ -757,7 +757,7 @@ namespace RCT1
         int16_t view_y;
         uint8_t view_zoom;
         uint8_t view_rotation;
-        RCT12MapAnimation map_animations[Limits::RCT1_MAX_ANIMATED_OBJECTS];
+        RCT12MapAnimation map_animations[Limits::MaxAnimatedObjects];
         uint32_t num_map_animations;
         uint8_t unk_1CADBC[12];
         uint16_t scrolling_text_step;
@@ -767,8 +767,8 @@ namespace RCT1
         RCT12RideMeasurement ride_measurements[8];
         uint32_t next_guest_index;
         uint16_t game_counter_5;
-        uint8_t patrol_areas[(Limits::RCT1_MAX_STAFF + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
-        uint8_t staff_modes[Limits::RCT1_MAX_STAFF];
+        uint8_t patrol_areas[(Limits::MaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
+        uint8_t staff_modes[Limits::MaxStaff];
         uint8_t unk_1F431E[4];
         uint8_t unk_1F4322[8];
         uint8_t climate;
@@ -801,18 +801,18 @@ namespace RCT1
     {
         RideType type; // 0x00
         uint8_t vehicle_type;
-        uint32_t flags;                                                       // 0x02
-        uint8_t mode;                                                         // 0x06
-        uint8_t version_and_colour_scheme;                                    // 0x07 0b0000_VVCC
-        rct_vehicle_colour vehicle_colours[Limits::RCT1_MAX_TRAINS_PER_RIDE]; // 0x08
-        uint8_t track_spine_colour_v0;                                        // 0x20
-        uint8_t track_rail_colour_v0;                                         // 0x21
-        uint8_t track_support_colour_v0;                                      // 0x22
-        uint8_t depart_flags;                                                 // 0x23
-        uint8_t number_of_trains;                                             // 0x24
-        uint8_t number_of_cars_per_train;                                     // 0x25
-        uint8_t min_waiting_time;                                             // 0x26
-        uint8_t max_waiting_time;                                             // 0x27
+        uint32_t flags;                                               // 0x02
+        uint8_t mode;                                                 // 0x06
+        uint8_t version_and_colour_scheme;                            // 0x07 0b0000_VVCC
+        rct_vehicle_colour vehicle_colours[Limits::MaxTrainsPerRide]; // 0x08
+        uint8_t track_spine_colour_v0;                                // 0x20
+        uint8_t track_rail_colour_v0;                                 // 0x21
+        uint8_t track_support_colour_v0;                              // 0x22
+        uint8_t depart_flags;                                         // 0x23
+        uint8_t number_of_trains;                                     // 0x24
+        uint8_t number_of_cars_per_train;                             // 0x25
+        uint8_t min_waiting_time;                                     // 0x26
+        uint8_t max_waiting_time;                                     // 0x27
         union
         {
             uint8_t operation_setting;

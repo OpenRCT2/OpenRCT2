@@ -355,7 +355,7 @@ namespace RCT1
             // Avoid reusing the value used for last import
             _parkValueConversionFactor = 0;
 
-            uint16_t mapSize = _s4.map_size == 0 ? Limits::RCT1_MAX_MAP_SIZE : _s4.map_size;
+            uint16_t mapSize = _s4.map_size == 0 ? Limits::MaxMapSize : _s4.map_size;
 
             gScenarioFileName = GetRCT1ScenarioName();
 
@@ -499,7 +499,7 @@ namespace RCT1
 
         void AddAvailableEntriesFromMap()
         {
-            size_t maxTiles = Limits::RCT1_MAX_MAP_SIZE * Limits::RCT1_MAX_MAP_SIZE;
+            size_t maxTiles = Limits::MaxMapSize * Limits::MaxMapSize;
             size_t tileIndex = 0;
             RCT12TileElement* tileElement = _s4.tile_elements;
 
@@ -886,7 +886,7 @@ namespace RCT1
                     auto tileStartLoc = TileCoordsXY{ src->station_starts[i].x, src->station_starts[i].y };
                     dst->stations[i].Start = tileStartLoc.ToCoordsXY();
                 }
-                dst->stations[i].SetBaseZ(src->station_height[i] * Limits::RCT1_COORDS_Z_STEP);
+                dst->stations[i].SetBaseZ(src->station_height[i] * Limits::CoordsZStep);
                 dst->stations[i].Length = src->station_length[i];
                 dst->stations[i].Depart = src->station_light[i];
 
@@ -924,11 +924,11 @@ namespace RCT1
             dst->num_stations = src->num_stations;
 
             // Vehicle links (indexes converted later)
-            for (int32_t i = 0; i < Limits::RCT1_MAX_TRAINS_PER_RIDE; i++)
+            for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = src->vehicles[i];
             }
-            for (int32_t i = Limits::RCT1_MAX_TRAINS_PER_RIDE; i <= MAX_VEHICLES_PER_RIDE; i++)
+            for (int32_t i = Limits::MaxTrainsPerRide; i <= MAX_VEHICLES_PER_RIDE; i++)
             {
                 dst->vehicles[i] = SPRITE_INDEX_NULL;
             }
@@ -1141,7 +1141,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < Limits::RCT1_MAX_TRAINS_PER_RIDE; i++)
+                for (int i = 0; i < Limits::MaxTrainsPerRide; i++)
                 {
                     // RCT1 had no third colour
                     const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->vehicle_type);
@@ -1235,7 +1235,7 @@ namespace RCT1
 
         void ImportSprites()
         {
-            for (int i = 0; i < Limits::RCT1_MAX_SPRITES; i++)
+            for (int i = 0; i < Limits::MaxEntities; i++)
             {
                 ImportEntity(_s4.sprites[i].unknown);
             }
@@ -1324,7 +1324,7 @@ namespace RCT1
 
             dst->State = static_cast<PeepState>(src->state);
             dst->SubState = src->sub_state;
-            dst->NextLoc = { src->next_x, src->next_y, src->next_z * Limits::RCT1_COORDS_Z_STEP };
+            dst->NextLoc = { src->next_x, src->next_y, src->next_z * Limits::CoordsZStep };
             dst->NextFlags = src->next_flags;
             dst->Var37 = src->var_37;
             dst->StepProgress = src->step_progress;
@@ -1537,10 +1537,10 @@ namespace RCT1
 
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
-                Limits::RCT1_MAX_MAP_SIZE, _s4.tile_elements, std::size(_s4.tile_elements));
+                Limits::MaxMapSize, _s4.tile_elements, std::size(_s4.tile_elements));
 
             std::vector<TileElement> tileElements;
-            const auto maxSize = _s4.map_size == 0 ? Limits::RCT1_MAX_MAP_SIZE : _s4.map_size;
+            const auto maxSize = _s4.map_size == 0 ? Limits::MaxMapSize : _s4.map_size;
             for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
             {
                 for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
@@ -1598,8 +1598,8 @@ namespace RCT1
             // This flag will be set by the caller.
             dst->SetLastForTile(false);
 
-            dst->SetBaseZ(src->base_height * Limits::RCT1_COORDS_Z_STEP);
-            dst->SetClearanceZ(src->clearance_height * Limits::RCT1_COORDS_Z_STEP);
+            dst->SetBaseZ(src->base_height * Limits::CoordsZStep);
+            dst->SetClearanceZ(src->clearance_height * Limits::CoordsZStep);
 
             switch (tileElementType)
             {
@@ -1800,8 +1800,8 @@ namespace RCT1
                         ConvertWall(type, &colourA, &colourB);
 
                         type = _wallTypeToEntryMap[type];
-                        auto baseZ = src->base_height * Limits::RCT1_COORDS_Z_STEP;
-                        auto clearanceZ = src->clearance_height * Limits::RCT1_COORDS_Z_STEP;
+                        auto baseZ = src->base_height * Limits::CoordsZStep;
+                        auto clearanceZ = src->clearance_height * Limits::CoordsZStep;
                         auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3];
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {
@@ -2588,9 +2588,9 @@ namespace RCT1
          */
         void CountBlockSections()
         {
-            for (int32_t x = 0; x < Limits::RCT1_MAX_MAP_SIZE; x++)
+            for (int32_t x = 0; x < Limits::MaxMapSize; x++)
             {
-                for (int32_t y = 0; y < Limits::RCT1_MAX_MAP_SIZE; y++)
+                for (int32_t y = 0; y < Limits::MaxMapSize; y++)
                 {
                     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
