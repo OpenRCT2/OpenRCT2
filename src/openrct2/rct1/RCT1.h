@@ -210,10 +210,10 @@ namespace RCT1
         int16_t unk_D0;           // 0x0D0
         int16_t unk_D2;           // 0x0D2
         // Customer count in the last 10 * 960 game ticks (sliding window)
-        uint16_t num_customers[RCT1_CUSTOMER_HISTORY_SIZE]; // 0xD4
-        money16 price;                                      // 0x0E8
-        RCT12xy8 chairlift_bullwheel_location[2];           // 0x0EA
-        uint8_t chairlift_bullwheel_z[2];                   // 0x0EE
+        uint16_t num_customers[Limits::CustomerHistorySize]; // 0xD4
+        money16 price;                                       // 0x0E8
+        RCT12xy8 chairlift_bullwheel_location[2];            // 0x0EA
+        uint8_t chairlift_bullwheel_z[2];                    // 0x0EE
         union
         {
             RatingTuple ratings;

@@ -43,4 +43,5 @@ namespace RCT12::Limits
     constexpr uint16_t const MaxGolfHoles = 31;
     constexpr uint16_t const MaxHelices = 31;
     constexpr const uint8_t MaxElementHeight = 255;
+    constexpr const uint8_t CustomerHistorySize = 10;
 } // namespace RCT12::Limits
