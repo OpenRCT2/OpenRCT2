@@ -622,7 +622,7 @@ public:
         dst->mode = static_cast<RideMode>(src->mode);
         dst->colour_scheme_type = src->colour_scheme_type;
 
-        for (uint8_t i = 0; i < RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::MaxTrainsPerRide; i++)
         {
             dst->vehicle_colours[i].Body = src->vehicle_colours[i].body_colour;
             dst->vehicle_colours[i].Trim = src->vehicle_colours[i].trim_colour;
@@ -697,11 +697,11 @@ public:
             dst->stations[i].LastPeepInQueue = SPRITE_INDEX_NULL;
         }
 
-        for (int32_t i = 0; i <= RCT2::Limits::RCT2_MAX_VEHICLES_PER_RIDE; i++)
+        for (int32_t i = 0; i < RCT2::Limits::MaxTrainsPerRide; i++)
         {
             dst->vehicles[i] = src->vehicles[i];
         }
-        for (int32_t i = RCT2::Limits::RCT2_MAX_VEHICLES_PER_RIDE; i <= MAX_VEHICLES_PER_RIDE; i++)
+        for (int32_t i = RCT2::Limits::MaxTrainsPerRide - 1; i <= MAX_VEHICLES_PER_RIDE; i++)
         {
             dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
@@ -770,7 +770,7 @@ public:
         dst->cur_num_customers = src->cur_num_customers;
         dst->num_customers_timeout = src->num_customers_timeout;
 
-        for (uint8_t i = 0; i < RCT2::Limits::RCT2_CUSTOMER_HISTORY_SIZE; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::CustomerHistorySize; i++)
         {
             dst->num_customers[i] = src->num_customers[i];
         }
@@ -834,7 +834,7 @@ public:
         dst->inspection_interval = src->inspection_interval;
         dst->last_inspection = src->last_inspection;
 
-        for (uint8_t i = 0; i < RCT2::Limits::RCT2_DOWNTIME_HISTORY_SIZE; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::DowntimeHistorySize; i++)
         {
             dst->downtime_history[i] = src->downtime_history[i];
         }
@@ -887,7 +887,7 @@ public:
         dst->guests_favourite = src->guests_favourite;
         dst->lifecycle_flags = src->lifecycle_flags;
 
-        for (uint8_t i = 0; i < RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN; i++)
+        for (uint8_t i = 0; i < RCT2::Limits::MaxTrainsPerRide; i++)
         {
             dst->vehicle_colours[i].Ternary = src->vehicle_colours_extended[i];
         }
@@ -912,8 +912,9 @@ public:
         dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.current_ride);
         dst.State = src.state;
         if (src.current_ride < RCT2::Limits::MaxRidesInPark
-            && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors)) dst.ProximityTrackType
-            = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type, IsFlatRide(src.current_ride));
+            && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors))
+            dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
+                src.proximity_track_type, _s6.rides[src.current_ride].type, IsFlatRide(src.current_ride));
         else
             dst.ProximityTrackType = 0xFF;
         dst.ProximityBaseHeight = src.proximity_base_height;
@@ -1086,12 +1087,12 @@ public:
     {
         // Build tile pointer cache (needed to get the first element at a certain location)
         auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
-            RCT2::Limits::RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements, std::size(_s6.tile_elements));
+            RCT2::Limits::MaxMapSize, _s6.tile_elements, std::size(_s6.tile_elements));
 
         std::vector<TileElement> tileElements;
         bool nextElementInvisible = false;
         bool restOfTileInvisible = false;
-        const auto maxSize = std::min(RCT2::Limits::RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.map_size);
+        const auto maxSize = std::min(RCT2::Limits::MaxMapSize, _s6.map_size);
         for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
             for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
@@ -1489,7 +1490,7 @@ public:
 
     void ImportEntities()
     {
-        for (int32_t i = 0; i < RCT2::Limits::RCT2_MAX_SPRITES; i++)
+        for (int32_t i = 0; i < RCT2::Limits::MaxEntities; i++)
         {
             ImportEntity(_s6.sprites[i].unknown);
         }

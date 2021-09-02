@@ -12,10 +12,6 @@
 #include "../common.h"
 #include "../object/ObjectLimits.h"
 #include "../rct2/RCT2.h"
-<<<<<<< HEAD
-=======
-#include "../ride/Ride.h"
->>>>>>> 50a2291fe... Add RCT2 limits file
 #include "../util/Util.h"
 
 #include <optional>

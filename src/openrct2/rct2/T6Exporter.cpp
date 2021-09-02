@@ -83,7 +83,7 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(rct_object_entry));
     tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
     tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
-    tempStream.WriteArray(_trackDesign->vehicle_additional_colour, RCT2::Limits::RCT2_MAX_CARS_PER_TRAIN);
+    tempStream.WriteArray(_trackDesign->vehicle_additional_colour, RCT2::Limits::MaxTrainsPerRide);
     tempStream.WriteValue<uint8_t>(_trackDesign->lift_hill_speed | (_trackDesign->num_circuits << 5));
 
     if (_trackDesign->type == RIDE_TYPE_MAZE)
