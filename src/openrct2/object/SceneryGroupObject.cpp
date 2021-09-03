@@ -81,7 +81,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
         if (ori->LoadedObject == nullptr)
             continue;
 
-        auto entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
+        auto entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject.get());
         Guard::Assert(entryIndex != OBJECT_ENTRY_INDEX_NULL, GUARD_LINE);
 
         auto sceneryType = ori->ObjectEntry.GetSceneryType();

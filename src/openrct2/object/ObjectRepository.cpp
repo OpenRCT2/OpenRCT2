@@ -266,18 +266,18 @@ public:
         }
     }
 
-    void RegisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) override
+    void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) override
     {
         ObjectRepositoryItem* item = &_items[ori->Id];
 
         Guard::Assert(item->LoadedObject == nullptr, GUARD_LINE);
-        item->LoadedObject = object;
+        item->LoadedObject = std::move(object);
     }
 
     void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) override
     {
         ObjectRepositoryItem* item = &_items[ori->Id];
-        if (item->LoadedObject == object)
+        if (item->LoadedObject.get() == object)
         {
             item->LoadedObject = nullptr;
         }
