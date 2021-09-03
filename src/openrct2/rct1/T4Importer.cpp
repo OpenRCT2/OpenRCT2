@@ -122,15 +122,14 @@ namespace RCT1
                 td->track_support_colour[i] = RCT1::GetColour(td4.track_support_colour_v0);
 
                 // Mazes were only hedges
-                switch (td4.type)
+                if (td4.type == RideType::HedgeMaze)
                 {
-                    case RideType::HedgeMaze:
-                        td->track_support_colour[i] = MAZE_WALL_TYPE_HEDGE;
-                        break;
-                    case RideType::RiverRapids:
-                        td->track_spine_colour[i] = COLOUR_WHITE;
-                        td->track_rail_colour[i] = COLOUR_WHITE;
-                        break;
+                    td->track_support_colour[i] = MAZE_WALL_TYPE_HEDGE;
+                }
+                else if (td4.type == RideType::RiverRapids)
+                {
+                    td->track_spine_colour[i] = COLOUR_WHITE;
+                    td->track_rail_colour[i] = COLOUR_WHITE;
                 }
             }
             td->flags2 = 0;
