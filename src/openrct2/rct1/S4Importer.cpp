@@ -2118,9 +2118,16 @@ namespace RCT1
 
             // Park rating
             gParkRating = _s4.park_rating;
-            for (size_t i = 0; i < 32; i++)
+
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            park.ResetHistories();
+            std::memcpy(gParkRatingHistory, _s4.park_rating_history, sizeof(_s4.park_rating_history));
+            for (size_t i = 0; i < std::size(_s4.guests_in_park_history); i++)
             {
-                gParkRatingHistory[i] = _s4.park_rating_history[i];
+                if (_s4.guests_in_park_history[i] != RCT12ParkHistoryUndefined)
+                {
+                    gGuestsInParkHistory[i] = _s4.guests_in_park_history[i] * RCT12GuestsInParkHistoryFactor;
+                }
             }
 
             // Awards
