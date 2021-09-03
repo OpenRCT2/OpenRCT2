@@ -90,6 +90,9 @@ constexpr const uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
 
 constexpr const uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max();
 
+constexpr const uint8_t RCT12GuestsInParkHistoryFactor = 20;
+constexpr const uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
