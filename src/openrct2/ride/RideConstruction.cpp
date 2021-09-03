@@ -1503,7 +1503,7 @@ void Ride::ValidateStations()
                 tileElement->AsTrack()->SetStationIndex(stationId);
                 direction = tileElement->GetDirection();
 
-                // TODO: update this to look at the ted sequence length
+                // In the future this could look at the TED and see if the station has a sequence longer than 1
                 // tower ride, flat ride, shop
                 if (GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
                 {
