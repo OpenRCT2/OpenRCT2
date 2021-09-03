@@ -469,16 +469,10 @@ private:
         log_verbose("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
     }
 
-    template<typename T> static void UpdateSceneryGroupIndexes(Object* object)
+    template<typename T> void UpdateSceneryGroupIndexes(Object* object)
     {
         auto* sceneryEntry = static_cast<T*>(object->GetLegacyData());
-        sceneryEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
-    }
-
-    template<> static void UpdateSceneryGroupIndexes<SceneryGroupObject>(Object* object)
-    {
-        auto sgObject = dynamic_cast<SceneryGroupObject*>(object);
-        sgObject->UpdateEntryIndexes();
+        sceneryEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(object);
     }
 
     void UpdateSceneryGroupIndexes()
@@ -507,8 +501,11 @@ private:
                     UpdateSceneryGroupIndexes<PathBitEntry>(loadedObject);
                     break;
                 case ObjectType::SceneryGroup:
-                    UpdateSceneryGroupIndexes<SceneryGroupObject>(loadedObject);
+                {
+                    auto sgObject = dynamic_cast<SceneryGroupObject*>(loadedObject);
+                    sgObject->UpdateEntryIndexes();
                     break;
+                }
                 default:
                     // This switch only handles scenery ObjectTypes.
                     break;
