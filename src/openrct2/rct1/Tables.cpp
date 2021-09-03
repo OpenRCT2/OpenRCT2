@@ -177,9 +177,9 @@ namespace RCT1
 
     uint8_t GetRideType(RideType rideType, uint8_t vehicleType)
     {
-        if (rideType == RideType::RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER && vehicleType == RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN)
+        if (rideType == RideType::SteelTwisterRollerCoaster && vehicleType == RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN)
             return RIDE_TYPE_HYPER_TWISTER;
-        if (rideType == RideType::RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER && vehicleType == RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN)
+        if (rideType == RideType::SteelCorkscrewRollerCoaster && vehicleType == RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN)
             return RIDE_TYPE_HYPERCOASTER;
 
         static uint8_t map[] =
@@ -379,30 +379,30 @@ namespace RCT1
     bool RideTypeUsesVehicles(RideType rideType)
     {
         switch (rideType) {
-        case RideType::RCT1_RIDE_TYPE_HEDGE_MAZE:
-        case RideType::RCT1_RIDE_TYPE_SPIRAL_SLIDE:
-        case RideType::RCT1_RIDE_TYPE_ICE_CREAM_STALL:
-        case RideType::RCT1_RIDE_TYPE_CHIPS_STALL:
-        case RideType::RCT1_RIDE_TYPE_DRINK_STALL:
-        case RideType::RCT1_RIDE_TYPE_CANDYFLOSS_STALL:
-        case RideType::RCT1_RIDE_TYPE_BURGER_BAR:
-        case RideType::RCT1_RIDE_TYPE_BALLOON_STALL:
-        case RideType::RCT1_RIDE_TYPE_INFORMATION_KIOSK:
-        case RideType::RCT1_RIDE_TYPE_TOILETS:
-        case RideType::RCT1_RIDE_TYPE_SOUVENIR_STALL:
-        case RideType::RCT1_RIDE_TYPE_PIZZA_STALL:
-        case RideType::RCT1_RIDE_TYPE_POPCORN_STALL:
-        case RideType::RCT1_RIDE_TYPE_HOT_DOG_STALL:
-        case RideType::RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL:
-        case RideType::RCT1_RIDE_TYPE_HAT_STALL:
-        case RideType::RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL:
-        case RideType::RCT1_RIDE_TYPE_40:
-        case RideType::RCT1_RIDE_TYPE_44:
-        case RideType::RCT1_RIDE_TYPE_T_SHIRT_STALL:
-        case RideType::RCT1_RIDE_TYPE_DOUGHNUT_SHOP:
-        case RideType::RCT1_RIDE_TYPE_COFFEE_SHOP:
-        case RideType::RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL:
-        case RideType::RCT1_RIDE_TYPE_LEMONADE_STALL:
+        case RideType::HedgeMaze:
+        case RideType::SpiralSlide:
+        case RideType::IceCreamStall:
+        case RideType::ChipsStall:
+        case RideType::DrinkStall:
+        case RideType::CandyflossStall:
+        case RideType::BurgerBar:
+        case RideType::BalloonStall:
+        case RideType::InformationKiosk:
+        case RideType::Toilets:
+        case RideType::SouvenirStall:
+        case RideType::PizzaStall:
+        case RideType::PopcornStall:
+        case RideType::HotDogStall:
+        case RideType::ExoticSeaFoodStall:
+        case RideType::HatStall:
+        case RideType::ToffeeAppleStall:
+        case RideType::_40:
+        case RideType::_44:
+        case RideType::TShirtStall:
+        case RideType::DoughnutShop:
+        case RideType::CoffeeShop:
+        case RideType::FriedChickenStall:
+        case RideType::LemonadeStall:
             return false;
         default:
             return true;
