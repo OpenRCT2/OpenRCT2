@@ -10,11 +10,13 @@
 #include "RideCreateAction.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/StringIds.h"
+#include "../object/ObjectManager.h"
 #include "../rct1/RCT1.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -167,16 +169,25 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     ride->min_waiting_time = 10;
     ride->max_waiting_time = 60;
     ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT))
-    {
-        ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
-    }
-    ride->music = ride->GetRideTypeDescriptor().DefaultMusic;
 
-    const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+    {
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        ride->music = objManager.GetLoadedObjectEntryIndex(rtd.DefaultMusic);
+        if (ride->music != OBJECT_ENTRY_INDEX_NULL)
+        {
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT))
+            {
+                ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+            }
+        }
+    }
+
+    const auto& operatingSettings = rtd.OperatingSettings;
     ride->operation_option = (operatingSettings.MinValue * 3 + operatingSettings.MaxValue) / 4;
 
-    ride->lift_hill_speed = ride->GetRideTypeDescriptor().LiftData.minimum_speed;
+    ride->lift_hill_speed = rtd.LiftData.minimum_speed;
 
     ride->measurement = {};
     ride->excitement = RIDE_RATING_UNDEFINED;
@@ -193,7 +204,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     {
         for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
         {
-            ride->price[i] = ride->GetRideTypeDescriptor().DefaultPrices[i];
+            ride->price[i] = rtd.DefaultPrices[i];
         }
 
         if (rideEntry->shop_item[0] == ShopItem::None)
@@ -245,7 +256,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
         }
 
         // Set the on-ride photo price, whether the ride has one or not (except shops).
-        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
         {
             money32 price = shop_item_get_common_price(ride, ShopItem::Photo);
             if (price != MONEY32_UNDEFINED)

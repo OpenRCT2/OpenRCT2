@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor WoodenRollerCoasterRTD =
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 75, 7, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_WILD_WEST),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_WILD_WEST),
     SET_FIELD(PhotoItem, ShopItem::Photo3),
     SET_FIELD(BonusValue, 105),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

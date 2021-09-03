@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(UpkeepCosts, { 44, 20, 80, 11, 3, 10 }),
     SET_FIELD(BuildCosts, { 120, 5, 42, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 95),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

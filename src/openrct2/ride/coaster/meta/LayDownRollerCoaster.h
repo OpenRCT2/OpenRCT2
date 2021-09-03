@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterRTD =
     SET_FIELD(UpkeepCosts, { 49, 20, 90, 11, 3, 15 }),
     SET_FIELD(BuildCosts, { 107, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 100),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
@@ -80,7 +80,7 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterAltRTD =
     SET_FIELD(UpkeepCosts, { 49, 20, 90, 11, 3, 15 }),
     SET_FIELD(BuildCosts, { 107, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 100),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

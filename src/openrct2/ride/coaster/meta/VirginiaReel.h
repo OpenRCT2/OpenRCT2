@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor VirginiaReelRTD =
     SET_FIELD(UpkeepCosts, { 39, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 53, 6, 25, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo3),
     SET_FIELD(BonusValue, 50),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
