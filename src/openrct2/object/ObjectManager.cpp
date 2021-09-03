@@ -119,10 +119,7 @@ public:
         auto requiredObjects = GetRequiredObjects(entries, count);
 
         // Load the required objects
-        {
-            auto loadedObjects = LoadObjects(requiredObjects);
-            SetNewLoadedObjectList(std::move(loadedObjects));
-        }
+        LoadObjects(requiredObjects);
 
         // Load defaults.
         LoadDefaultObjects();
@@ -162,7 +159,7 @@ public:
 
     void UnloadAll() override
     {
-        for (auto& object : _loadedObjects)
+        for (auto* object : _loadedObjects)
         {
             UnloadObject(object);
         }
@@ -357,7 +354,7 @@ private:
         }
         if (slot)
         {
-            auto object = GetOrLoadObject(ori);
+            auto* object = GetOrLoadObject(ori);
             if (object != nullptr)
             {
                 if (_loadedObjects.size() <= static_cast<size_t>(*slot))
@@ -398,25 +395,12 @@ private:
         Guard::ArgumentNotNull(object, GUARD_LINE);
 
         auto result = std::numeric_limits<size_t>().max();
-        auto it = std::find_if(_loadedObjects.begin(), _loadedObjects.end(), [object](auto& obj) { return obj == object; });
+        auto it = std::find(_loadedObjects.begin(), _loadedObjects.end(), object);
         if (it != _loadedObjects.end())
         {
             result = std::distance(_loadedObjects.begin(), it);
         }
         return result;
-    }
-
-    void SetNewLoadedObjectList(std::vector<Object*>&& newLoadedObjects)
-    {
-        if (newLoadedObjects.empty())
-        {
-            UnloadAll();
-        }
-        else
-        {
-            UnloadObjectsExcept(newLoadedObjects);
-        }
-        _loadedObjects = std::move(newLoadedObjects);
     }
 
     void UnloadObject(Object* object)
@@ -453,16 +437,16 @@ private:
         // Unload objects that are not in the hash set
         size_t totalObjectsLoaded = 0;
         size_t numObjectsUnloaded = 0;
-        for (auto& object : _loadedObjects)
+        for (auto* object : _loadedObjects)
         {
-            if (object != nullptr)
+            if (object == nullptr)
+                continue;
+
+            totalObjectsLoaded++;
+            if (exceptSet.find(object) == exceptSet.end())
             {
-                totalObjectsLoaded++;
-                if (exceptSet.find(object) == exceptSet.end())
-                {
-                    UnloadObject(object);
-                    numObjectsUnloaded++;
-                }
+                UnloadObject(object);
+                numObjectsUnloaded++;
             }
         }
 
@@ -477,7 +461,7 @@ private:
 
     void UpdateSceneryGroupIndexes()
     {
-        for (auto& loadedObject : _loadedObjects)
+        for (auto* loadedObject : _loadedObjects)
         {
             // The list can contain unused slots, skip them.
             if (loadedObject == nullptr)
@@ -519,7 +503,7 @@ private:
 
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
     {
-        auto sceneryObject = dynamic_cast<SceneryObject*>(loadedObject);
+        auto* sceneryObject = dynamic_cast<SceneryObject*>(loadedObject);
         const auto& primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object* sgObject = GetLoadedObject(primarySGEntry);
 
@@ -584,7 +568,7 @@ private:
         }
     }
 
-    std::vector<Object*> LoadObjects(std::vector<const ObjectRepositoryItem*>& requiredObjects)
+    void LoadObjects(std::vector<const ObjectRepositoryItem*>& requiredObjects)
     {
         std::vector<Object*> objects;
         std::vector<Object*> newLoadedObjects;
@@ -595,11 +579,11 @@ private:
         // Read objects
         std::mutex commonMutex;
         ParallelFor(requiredObjects, [this, &commonMutex, requiredObjects, &objects, &badObjects, &newLoadedObjects](size_t i) {
-            auto requiredObject = requiredObjects[i];
+            auto* requiredObject = requiredObjects[i];
             Object* object = nullptr;
             if (requiredObject != nullptr)
             {
-                auto loadedObject = requiredObject->LoadedObject.get();
+                auto* loadedObject = requiredObject->LoadedObject.get();
                 if (loadedObject == nullptr)
                 {
                     // Object requires to be loaded, if the object successfully loads it will register it
@@ -628,7 +612,7 @@ private:
         });
 
         // Load objects
-        for (auto obj : newLoadedObjects)
+        for (auto* obj : newLoadedObjects)
         {
             obj->Load();
         }
@@ -636,15 +620,26 @@ private:
         if (!badObjects.empty())
         {
             // Unload all the new objects we loaded
-            for (auto object : newLoadedObjects)
+            for (auto* object : newLoadedObjects)
             {
                 UnloadObject(object);
             }
             throw ObjectLoadException(std::move(badObjects));
         }
 
+        // Unload objects which are not in the required list.
+        if (objects.empty())
+        {
+            UnloadAll();
+        }
+        else
+        {
+            UnloadObjectsExcept(objects);
+        }
+
+        _loadedObjects = std::move(objects);
+
         log_verbose("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
-        return objects;
     }
 
     Object* GetOrLoadObject(const ObjectRepositoryItem* ori)
@@ -677,23 +672,23 @@ private:
         }
 
         // Build object lists
-        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[EnumValue(ObjectType::Ride)]);
+        const auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[EnumValue(ObjectType::Ride)]);
         for (size_t i = 0; i < maxRideObjects; i++)
         {
-            auto rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));
-            if (rideObject != nullptr)
+            auto* rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));
+            if (rideObject == nullptr)
+                continue;
+
+            const auto* entry = static_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+            if (entry == nullptr)
+                continue;
+
+            for (auto rideType : entry->ride_type)
             {
-                const auto entry = static_cast<rct_ride_entry*>(rideObject->GetLegacyData());
-                if (entry != nullptr)
+                if (rideType < _rideTypeToObjectMap.size())
                 {
-                    for (auto rideType : entry->ride_type)
-                    {
-                        if (rideType < _rideTypeToObjectMap.size())
-                        {
-                            auto& v = _rideTypeToObjectMap[rideType];
-                            v.push_back(static_cast<ObjectEntryIndex>(i));
-                        }
-                    }
+                    auto& v = _rideTypeToObjectMap[rideType];
+                    v.push_back(static_cast<ObjectEntryIndex>(i));
                 }
             }
         }
