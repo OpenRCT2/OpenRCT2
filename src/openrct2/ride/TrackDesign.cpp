@@ -1161,11 +1161,7 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
                 z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
                 if (mode == 0)
                 {
-                    if (scenery.flags & (1 << 7))
-                    {
-                        // dh
-                        entry_index |= (1 << 7);
-                    }
+                    auto isQueue = scenery.IsQueue();
 
                     uint8_t bh = ((scenery.flags & 0xF) << rotation);
                     flags = bh >> 4;
@@ -1195,8 +1191,12 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
                     }
                     uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
                     uint8_t edges = bh & 0xF;
+                    PathConstructFlags constructFlags = PathConstructFlag::IsLegacyPathObject;
+                    if (isQueue)
+                        constructFlags |= PathConstructFlag::IsQueue;
                     auto footpathPlaceAction = FootpathPlaceFromTrackAction(
-                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entry_index, edges);
+                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entry_index, OBJECT_ENTRY_INDEX_NULL, edges,
+                        constructFlags);
                     footpathPlaceAction.SetFlags(flags);
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
                                                                : GameActions::QueryNested(&footpathPlaceAction);

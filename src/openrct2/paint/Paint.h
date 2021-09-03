@@ -20,6 +20,7 @@
 #include <thread>
 
 struct TileElement;
+enum class RailingEntrySupportType : uint8_t;
 enum class ViewportInteractionItem : uint8_t;
 
 struct attached_paint_struct
@@ -249,6 +250,18 @@ struct paint_session : public PaintSessionCore
         }
         return nullptr;
     }
+};
+
+struct FootpathPaintInfo
+{
+    uint32_t SurfaceImageId{};
+    uint32_t BridgeImageId{};
+    uint32_t RailingsImageId{};
+    uint32_t SurfaceFlags{};
+    uint32_t RailingFlags{};
+    uint8_t ScrollingMode{};
+    RailingEntrySupportType SupportType{};
+    colour_t SupportColour = 255;
 };
 
 struct RecordedPaintSession

@@ -146,7 +146,14 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
         entranceElement->SetDirection(_loc.direction);
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
-        entranceElement->SetLegacyPathEntryIndex(_pathType);
+        if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+        {
+            entranceElement->SetSurfaceEntryIndex(gFootpathSelection.NormalSurface);
+        }
+        else
+        {
+            entranceElement->SetLegacyPathEntryIndex(gFootpathSelection.LegacyPath);
+        }
 
         if (!entranceElement->IsGhost())
         {

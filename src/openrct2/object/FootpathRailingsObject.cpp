@@ -31,6 +31,7 @@ void FootpathRailingsObject::Load()
     _descriptor.Flags = Flags;
     _descriptor.ScrollingMode = ScrollingMode;
     _descriptor.SupportType = SupportType;
+    _descriptor.SupportColour = Colour;
     _descriptor.RailingsImage = RailingsImageId;
 }
 

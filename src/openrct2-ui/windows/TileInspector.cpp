@@ -19,6 +19,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>

@@ -39,6 +39,11 @@ struct TrackDesignSceneryElement
     uint8_t flags;                   // 0x13 direction quadrant tertiary colour
     uint8_t primary_colour;          // 0x14
     uint8_t secondary_colour;        // 0x15
+
+    bool IsQueue() const
+    {
+        return (flags & (1 << 7)) != 0;
+    }
 };
 
 /**

@@ -293,6 +293,9 @@ public:
     const PathSurfaceDescriptor* GetSurfaceDescriptor() const;
     const PathRailingsDescriptor* GetRailingsDescriptor() const;
 
+    bool ShouldDrawPathOverSupports() const;
+    void SetShouldDrawPathOverSupports(bool on);
+
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
 
@@ -340,9 +343,6 @@ public:
 
     uint8_t GetAdditionStatus() const;
     void SetAdditionStatus(uint8_t newStatus);
-
-    bool ShouldDrawPathOverSupports() const;
-    void SetShouldDrawPathOverSupports(bool on);
 
     bool IsLevelCrossing(const CoordsXY& coords) const;
 };

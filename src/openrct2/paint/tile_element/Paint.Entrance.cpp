@@ -14,6 +14,8 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/FootpathObject.h"
+#include "../../object/FootpathSurfaceObject.h"
 #include "../../object/StationObject.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
@@ -260,6 +262,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     switch (part_index)
     {
         case 0:
+        {
             if (surfaceDescriptor != nullptr)
             {
                 image_id = (surfaceDescriptor->Image + 5 * (1 + (direction & 1))) | ghost_id;
@@ -317,6 +320,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 PaintAddImageAsChild(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height);
             }
             break;
+        }
         case 1:
         case 2:
             entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(ObjectType::ParkEntrance, 0));
