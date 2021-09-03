@@ -124,10 +124,10 @@ namespace RCT1
                 // Mazes were only hedges
                 switch (td4.type)
                 {
-                    case RCT1_RIDE_TYPE_HEDGE_MAZE:
+                    case RideType::RCT1_RIDE_TYPE_HEDGE_MAZE:
                         td->track_support_colour[i] = MAZE_WALL_TYPE_HEDGE;
                         break;
-                    case RCT1_RIDE_TYPE_RIVER_RAPIDS:
+                    case RideType::RCT1_RIDE_TYPE_RIVER_RAPIDS:
                         td->track_spine_colour[i] = COLOUR_WHITE;
                         td->track_rail_colour[i] = COLOUR_WHITE;
                         break;
@@ -150,7 +150,7 @@ namespace RCT1
 
             // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
             rct_object_entry vehicleObject = { 0x80, "        " };
-            if (td4Base.type == RIDE_TYPE_MAZE)
+            if (td4Base.type == RideType::RCT1_RIDE_TYPE_HEDGE_MAZE)
             {
                 const char* vehObjName = RCT1::GetRideTypeObject(td4Base.type);
                 assert(vehObjName != nullptr);
