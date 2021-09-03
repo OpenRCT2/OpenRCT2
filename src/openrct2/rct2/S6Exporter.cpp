@@ -351,7 +351,7 @@ void S6Exporter::Export()
 
     _s6.park_rating = gParkRating;
 
-    std::memcpy(_s6.park_rating_history, gParkRatingHistory, sizeof(_s6.park_rating_history));
+    std::copy(std::begin(gParkRatingHistory), std::end(gParkRatingHistory), _s6.park_rating_history);
     std::fill(std::begin(_s6.guests_in_park_history), std::end(_s6.guests_in_park_history), RCT12ParkHistoryUndefined);
     for (size_t i = 0; i < std::size(gGuestsInParkHistory); i++)
     {
