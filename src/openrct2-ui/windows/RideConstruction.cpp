@@ -2091,7 +2091,7 @@ static void window_ride_construction_update(rct_window* w)
             break;
     }
 
-    updateGhostTrackAndArrow();
+    UpdateGhostTrackAndArrow();
 }
 
 /**
@@ -2529,7 +2529,7 @@ void window_ride_construction_update_enabled_track_pieces()
  *
  *  rct2: 0x006C94D8
  */
-void updateGhostTrackAndArrow()
+void UpdateGhostTrackAndArrow()
 {
     ride_id_t rideIndex;
     int32_t direction, type, liftHillAndAlternativeState;

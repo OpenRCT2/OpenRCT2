@@ -1219,7 +1219,7 @@ enum class RideSetSetting : uint8_t;
 money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t value);
 money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
 
-void updateGhostTrackAndArrow();
+void UpdateGhostTrackAndArrow();
 
 void ride_reset_all_names();
 
