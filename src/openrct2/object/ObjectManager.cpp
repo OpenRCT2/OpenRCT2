@@ -469,6 +469,18 @@ private:
         log_verbose("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
     }
 
+    template<typename T> static void UpdateSceneryGroupIndexes(Object* object)
+    {
+        auto* sceneryEntry = static_cast<T*>(object->GetLegacyData());
+        sceneryEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+    }
+
+    template<> static void UpdateSceneryGroupIndexes<SceneryGroupObject>(Object* object)
+    {
+        auto sgObject = dynamic_cast<SceneryGroupObject*>(object);
+        sgObject->UpdateEntryIndexes();
+    }
+
     void UpdateSceneryGroupIndexes()
     {
         for (auto& loadedObject : _loadedObjects)
@@ -480,41 +492,23 @@ private:
             switch (loadedObject->GetObjectType())
             {
                 case ObjectType::SmallScenery:
-                {
-                    auto* sceneryEntry = static_cast<SmallSceneryEntry*>(loadedObject->GetLegacyData());
-                    sceneryEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                    UpdateSceneryGroupIndexes<SmallSceneryEntry>(loadedObject);
                     break;
-                }
                 case ObjectType::LargeScenery:
-                {
-                    auto* sceneryEntry = static_cast<LargeSceneryEntry*>(loadedObject->GetLegacyData());
-                    sceneryEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                    UpdateSceneryGroupIndexes<LargeSceneryEntry>(loadedObject);
                     break;
-                }
                 case ObjectType::Walls:
-                {
-                    auto* wallEntry = static_cast<WallSceneryEntry*>(loadedObject->GetLegacyData());
-                    wallEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                    UpdateSceneryGroupIndexes<WallSceneryEntry>(loadedObject);
                     break;
-                }
                 case ObjectType::Banners:
-                {
-                    auto* bannerEntry = static_cast<BannerSceneryEntry*>(loadedObject->GetLegacyData());
-                    bannerEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                    UpdateSceneryGroupIndexes<BannerSceneryEntry>(loadedObject);
                     break;
-                }
                 case ObjectType::PathBits:
-                {
-                    auto* pathBitEntry = static_cast<PathBitEntry*>(loadedObject->GetLegacyData());
-                    pathBitEntry->scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                    UpdateSceneryGroupIndexes<PathBitEntry>(loadedObject);
                     break;
-                }
                 case ObjectType::SceneryGroup:
-                {
-                    auto sgObject = dynamic_cast<SceneryGroupObject*>(loadedObject);
-                    sgObject->UpdateEntryIndexes();
+                    UpdateSceneryGroupIndexes<SceneryGroupObject>(loadedObject);
                     break;
-                }
                 default:
                     // This switch only handles scenery ObjectTypes.
                     break;
