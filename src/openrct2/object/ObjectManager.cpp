@@ -119,14 +119,17 @@ public:
         auto requiredObjects = GetRequiredObjects(entries, count);
 
         // Load the required objects
-        size_t numNewLoadedObjects = 0;
-        auto loadedObjects = LoadObjects(requiredObjects, &numNewLoadedObjects);
+        {
+            auto loadedObjects = LoadObjects(requiredObjects);
+            SetNewLoadedObjectList(std::move(loadedObjects));
+        }
 
-        SetNewLoadedObjectList(std::move(loadedObjects));
+        // Load defaults.
         LoadDefaultObjects();
+
+        // Update indices.
         UpdateSceneryGroupIndexes();
         ResetTypeToRideEntryIndexMap();
-        log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
     }
 
     void UnloadObjects(const std::vector<rct_object_entry>& entries) override
@@ -644,7 +647,7 @@ private:
         }
     }
 
-    std::vector<Object*> LoadObjects(std::vector<const ObjectRepositoryItem*>& requiredObjects, size_t* outNewObjectsLoaded)
+    std::vector<Object*> LoadObjects(std::vector<const ObjectRepositoryItem*>& requiredObjects)
     {
         std::vector<Object*> objects;
         std::vector<Object*> newLoadedObjects;
@@ -703,10 +706,7 @@ private:
             throw ObjectLoadException(std::move(badObjects));
         }
 
-        if (outNewObjectsLoaded != nullptr)
-        {
-            *outNewObjectsLoaded = newLoadedObjects.size();
-        }
+        log_verbose("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
         return objects;
     }
 
