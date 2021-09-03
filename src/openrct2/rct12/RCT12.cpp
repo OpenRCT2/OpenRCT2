@@ -1463,3 +1463,49 @@ money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue)
 
     return ToMoney32(origValue);
 }
+
+static constexpr std::string_view _musicStyles[] = {
+    "rct2.music.dodgems",
+    "rct2.music.fairground",
+    "rct2.music.roman",
+    "rct2.music.oriental",
+    "rct2.music.martian",
+    "rct2.music.jungle",
+    "rct2.music.egyptian",
+    "rct2.music.toyland",
+    "", // CIRCUS
+    "rct2.music.space",
+    "rct2.music.horror",
+    "rct2.music.techno",
+    "rct2.music.gentle",
+    "rct2.music.summer",
+    "rct2.music.water",
+    "rct2.music.wildwest",
+    "rct2.music.jurassic",
+    "rct2.music.rock1",
+    "rct2.music.ragtime",
+    "rct2.music.fantasy",
+    "rct2.music.rock2",
+    "rct2.music.ice",
+    "rct2.music.snow",
+    "rct2.music.custom1",
+    "rct2.music.custom2",
+    "rct2.music.medieval",
+    "rct2.music.urban",
+    "rct2.music.organ",
+    "rct2.music.mechanical",
+    "rct2.music.modern",
+    "rct2.music.pirate",
+    "rct2.music.rock3",
+    "rct2.music.candy",
+};
+
+std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
+{
+    auto it = std::find(std::begin(_musicStyles), std::end(_musicStyles), identifier);
+    if (it != std::end(_musicStyles))
+    {
+        return std::distance(std::begin(_musicStyles), it);
+    }
+    return {};
+}
