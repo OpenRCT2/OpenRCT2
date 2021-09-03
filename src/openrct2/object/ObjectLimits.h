@@ -26,6 +26,8 @@ constexpr const uint16_t MAX_TERRAIN_SURFACE_OBJECTS = 18;
 constexpr const uint16_t MAX_TERRAIN_EDGE_OBJECTS = 255;
 constexpr const uint16_t MAX_STATION_OBJECTS = 255;
 constexpr const uint16_t MAX_MUSIC_OBJECTS = 255;
+constexpr const uint16_t MAX_FOOTPATH_SURFACE_OBJECTS = 255;
+constexpr const uint16_t MAX_FOOTPATH_RAILINGS_OBJECTS = 255;
 
 // clang-format off
 constexpr const uint16_t OBJECT_ENTRY_COUNT =
@@ -39,7 +41,13 @@ constexpr const uint16_t OBJECT_ENTRY_COUNT =
     MAX_SCENERY_GROUP_OBJECTS +
     MAX_PARK_ENTRANCE_OBJECTS +
     MAX_WATER_OBJECTS +
-    MAX_SCENARIO_TEXT_OBJECTS;
+    MAX_SCENARIO_TEXT_OBJECTS +
+    MAX_TERRAIN_SURFACE_OBJECTS +
+    MAX_TERRAIN_EDGE_OBJECTS +
+    MAX_STATION_OBJECTS +
+    MAX_MUSIC_OBJECTS +
+    MAX_FOOTPATH_SURFACE_OBJECTS +
+    MAX_FOOTPATH_RAILINGS_OBJECTS;
 // clang-format on
 
 constexpr const uint8_t DAT_NAME_LENGTH = 8;
