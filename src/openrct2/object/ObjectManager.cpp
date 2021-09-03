@@ -534,60 +534,6 @@ private:
         return entryIndex;
     }
 
-    rct_object_entry* DuplicateObjectEntry(const rct_object_entry* original)
-    {
-        rct_object_entry* duplicate = Memory::Allocate<rct_object_entry>(sizeof(rct_object_entry));
-        duplicate->checksum = original->checksum;
-        strncpy(duplicate->name, original->name, 8);
-        duplicate->flags = original->flags;
-        return duplicate;
-    }
-
-    std::vector<rct_object_entry> GetInvalidObjects(const rct_object_entry* entries) override
-    {
-        std::vector<rct_object_entry> invalidEntries;
-        invalidEntries.reserve(OBJECT_ENTRY_COUNT);
-        for (int32_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
-        {
-            auto entry = entries[i];
-            const ObjectRepositoryItem* ori = nullptr;
-            if (object_entry_is_empty(&entry))
-            {
-                entry = {};
-                continue;
-            }
-
-            ori = _objectRepository.FindObject(&entry);
-            if (ori == nullptr)
-            {
-                if (entry.GetType() != ObjectType::ScenarioText)
-                {
-                    invalidEntries.push_back(entry);
-                    ReportMissingObject(&entry);
-                }
-                else
-                {
-                    entry = {};
-                    continue;
-                }
-            }
-            else
-            {
-                auto* loadedObject = ori->LoadedObject.get();
-                if (loadedObject == nullptr)
-                {
-                    auto object = _objectRepository.LoadObject(ori);
-                    if (object == nullptr)
-                    {
-                        invalidEntries.push_back(entry);
-                        ReportObjectLoadProblem(&entry);
-                    }
-                }
-            }
-        }
-        return invalidEntries;
-    }
-
     std::vector<const ObjectRepositoryItem*> GetRequiredObjects(const rct_object_entry* entries, size_t count)
     {
         std::vector<const ObjectRepositoryItem*> requiredObjects;
@@ -785,13 +731,6 @@ private:
 std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository)
 {
     return std::make_unique<ObjectManager>(objectRepository);
-}
-
-Object* object_manager_get_loaded_object_by_index(size_t index)
-{
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* loadedObject = objectManager.GetLoadedObject(index);
-    return loadedObject;
 }
 
 Object* object_manager_get_loaded_object(const ObjectEntryDescriptor& entry)
