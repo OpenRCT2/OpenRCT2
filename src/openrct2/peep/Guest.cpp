@@ -6811,6 +6811,10 @@ void Guest::InsertNewThought(PeepThoughtType thought_type, ShopItem shopItem)
     InsertNewThought(thought_type, static_cast<uint16_t>(shopItem));
 }
 
+void Guest::InsertNewThought(PeepThoughtType thought_type, ride_id_t ride)
+{
+    InsertNewThought(thought_type, static_cast<uint16_t>(ride));
+}
 /**
  *
  *  rct2: 0x699F5A
