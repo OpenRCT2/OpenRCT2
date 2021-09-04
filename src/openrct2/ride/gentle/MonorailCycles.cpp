@@ -636,6 +636,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_monorail_cycles(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::Flat:
+        case TrackElemType::Booster:
             return paint_monorail_cycles_track_flat;
 
         case TrackElemType::EndStation:

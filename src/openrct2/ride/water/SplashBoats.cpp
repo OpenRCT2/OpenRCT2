@@ -1211,6 +1211,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
 
         // Originally taken from River Rafts
         case TrackElemType::Flat:
+        case TrackElemType::Booster:
             return paint_splash_boats_track_flat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:

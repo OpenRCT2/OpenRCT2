@@ -20,7 +20,7 @@ constexpr const RideTypeDescriptor LogFlumeRTD =
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_LOG_FLUME_REVERSER)),
-    SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_BOOSTER)),
     SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_log_flume),
@@ -54,6 +54,6 @@ constexpr const RideTypeDescriptor LogFlumeRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_TRACK, SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(TrackBehaviours,{RideBoosterBehaviour::SpeedController,RideRapidsBehaviour::Rapids})
+    SET_FIELD(TrackBehaviours,{TrackElemTypeAlternateName::SpeedController,TrackElemTypeAlternateName::Default})
 };
 // clang-format on

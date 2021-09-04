@@ -2252,33 +2252,16 @@ static void window_ride_construction_invalidate(rct_window* w)
     if (_currentTrackCurve & RideConstructionSpecialPieceSelected)
     {
         stringId = RideConfigurationStringIds[_currentTrackCurve & ~RideConstructionSpecialPieceSelected];
-        if (stringId == STR_RAPIDS)
+        if (stringId == STR_RAPIDS
+            && RideTypeDescriptors[ride->type].TrackBehaviours.RapidsBehaviour == TrackElemTypeAlternateName::LogBumps)
         {
-            switch (RideTypeDescriptors[ride->type].TrackBehaviours.RapidsBehaviour)
-            {
-                case RideRapidsBehaviour::Rapids:
-                    stringId = STR_RAPIDS;
-                    break;
-                case RideRapidsBehaviour::LogBumps:
-                    stringId = STR_LOG_BUMPS;
-                    break;
-            }
+            stringId = STR_LOG_BUMPS;
         }
-        else if (stringId == STR_BOOSTER)
+        else if (
+            stringId == STR_BOOSTER
+            && RideTypeDescriptors[ride->type].TrackBehaviours.BoosterBehaviour == TrackElemTypeAlternateName::SpeedController)
         {
-            switch (RideTypeDescriptors[ride->type].TrackBehaviours.BoosterBehaviour)
-            {
-                case RideBoosterBehaviour::Booster:
-                    stringId = STR_BOOSTER;
-                    break;
-                case RideBoosterBehaviour::SpeedController:
-                    stringId = STR_SPEED_CONTROL;
-                    break;
-                default:
-                {
-                    // to make the build systems happy
-                }
-            }
+            stringId = STR_SPEED_CONTROL;
         }
     }
     auto ft = Formatter::Common();
@@ -3120,7 +3103,8 @@ static void window_ride_construction_update_widgets(rct_window* w)
             window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
             window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
         }
-        else if (RideTypeDescriptors[ride->type].TrackBehaviours.BoosterBehaviour == RideBoosterBehaviour::SpeedController)
+        else if (
+            RideTypeDescriptors[ride->type].TrackBehaviours.BoosterBehaviour == TrackElemTypeAlternateName::SpeedController)
         {
             // Speed controller speed control
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_SPEED_CONTROL;
@@ -3363,33 +3347,16 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
         track_type_t trackPiece = _currentPossibleRideConfigurations[i];
         rct_string_id trackPieceStringId = RideConfigurationStringIds[trackPiece];
         auto ride = get_ride(_currentRideIndex);
-        if (trackPieceStringId == STR_RAPIDS && ride != nullptr)
+        if (trackPieceStringId == STR_RAPIDS && ride != nullptr
+            && RideTypeDescriptors[ride->type].TrackBehaviours.RapidsBehaviour == TrackElemTypeAlternateName::LogBumps)
         {
-            switch (RideTypeDescriptors[ride->type].TrackBehaviours.RapidsBehaviour)
-            {
-                case RideRapidsBehaviour::Rapids:
-                    trackPieceStringId = STR_RAPIDS;
-                    break;
-                case RideRapidsBehaviour::LogBumps:
-                    trackPieceStringId = STR_LOG_BUMPS;
-                    break;
-            }
+            trackPieceStringId = STR_LOG_BUMPS;
         }
-        if (trackPieceStringId == STR_BOOSTER && ride != nullptr)
+        else if (
+            trackPieceStringId == STR_BOOSTER && ride != nullptr
+            && RideTypeDescriptors[ride->type].TrackBehaviours.BoosterBehaviour == TrackElemTypeAlternateName::SpeedController)
         {
-            switch (RideTypeDescriptors[ride->type].TrackBehaviours.BoosterBehaviour)
-            {
-                case RideBoosterBehaviour::Booster:
-                    trackPieceStringId = STR_BOOSTER;
-                    break;
-                case RideBoosterBehaviour::SpeedController:
-                    trackPieceStringId = STR_SPEED_CONTROL;
-                    break;
-                default:
-                {
-                    // to make build systems happy
-                }
-            }
+            trackPieceStringId = STR_SPEED_CONTROL;
         }
         gDropdownItemsFormat[i] = trackPieceStringId;
         if ((trackPiece | RideConstructionSpecialPieceSelected) == _currentTrackCurve)

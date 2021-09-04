@@ -47,6 +47,6 @@ constexpr const RideTypeDescriptor FoodStallRTD =
     SET_FIELD(ColourPresets, DEFAULT_STALL_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Food),
-    SET_FIELD(TrackBehaviours,{RideBoosterBehaviour::SpeedController,RideRapidsBehaviour::LogBumps})
+    SET_FIELD(TrackBehaviours,{TrackElemTypeAlternateName::SpeedController,TrackElemTypeAlternateName::LogBumps})
 };
 // clang-format on
