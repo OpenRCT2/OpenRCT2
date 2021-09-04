@@ -133,7 +133,7 @@ namespace RCT1
         EntryList _waterEntry;
 
         // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
-        ObjectEntryIndex _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT]{};
+        ObjectEntryIndex _rideTypeToRideEntryMap[EnumValue(RideType::Count)]{};
         ObjectEntryIndex _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT]{};
         ObjectEntryIndex _smallSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _largeSceneryTypeToEntryMap[256]{};
@@ -144,7 +144,7 @@ namespace RCT1
 
         // Research
         std::bitset<MAX_RIDE_OBJECTS> _researchRideEntryUsed{};
-        std::bitset<RCT1_RIDE_TYPE_COUNT> _researchRideTypeUsed{};
+        std::bitset<EnumValue(RideType::Count)> _researchRideTypeUsed{};
 
         // Scenario repository - used for determining scenario name
         IScenarioRepository* _scenarioRepository = GetScenarioRepository();
@@ -425,7 +425,7 @@ namespace RCT1
         {
             size_t researchListCount;
             const ResearchItem* researchList = GetResearchList(&researchListCount);
-            std::bitset<RCT1_RIDE_TYPE_COUNT> rideTypeInResearch = GetRideTypesPresentInResearchList(
+            std::bitset<EnumValue(RideType::Count)> rideTypeInResearch = GetRideTypesPresentInResearchList(
                 researchList, researchListCount);
             for (size_t i = 0; i < researchListCount; i++)
             {
@@ -450,14 +450,14 @@ namespace RCT1
                         AddEntriesForSceneryTheme(researchItem->item);
                         break;
                     case RCT1_RESEARCH_TYPE_RIDE:
-                        AddEntryForRideType(researchItem->item);
+                        AddEntryForRideType(static_cast<RideType>(researchItem->item));
                         break;
                     case RCT1_RESEARCH_TYPE_VEHICLE:
                         // For some bizarre reason, RCT1 research lists contain vehicles that aren't actually researched.
                         // Extra bizarrely, this does not seem to apply to Loopy Landscapes saves/scenarios.
                         if (rideTypeInResearch[researchItem->related_ride] || _gameVersion == FILE_VERSION_RCT1_LL)
                         {
-                            AddEntryForVehicleType(researchItem->related_ride, researchItem->item);
+                            AddEntryForVehicleType(static_cast<RideType>(researchItem->related_ride), researchItem->item);
                         }
                         break;
                 }
@@ -516,7 +516,7 @@ namespace RCT1
             for (size_t i = 0; i < std::size(_s4.rides); i++)
             {
                 auto ride = &_s4.rides[i];
-                if (ride->type != RCT1_RIDE_TYPE_NULL)
+                if (ride->type != RideType::Null)
                 {
                     if (RCT1::RideTypeUsesVehicles(ride->type))
                         AddEntryForVehicleType(ride->type, ride->vehicle_type);
@@ -584,23 +584,25 @@ namespace RCT1
             _waterEntry.GetOrAddEntry(entryName);
         }
 
-        void AddEntryForRideType(uint8_t rideType)
+        void AddEntryForRideType(RideType rideType)
         {
-            assert(rideType < std::size(_rideTypeToRideEntryMap));
-            if (_rideTypeToRideEntryMap[rideType] == OBJECT_ENTRY_INDEX_NULL)
+            Guard::Assert(EnumValue(rideType) < std::size(_rideTypeToRideEntryMap));
+
+            if (_rideTypeToRideEntryMap[EnumValue(rideType)] == OBJECT_ENTRY_INDEX_NULL)
             {
                 const char* entryName = RCT1::GetRideTypeObject(rideType);
                 if (!String::Equals(entryName, "        "))
                 {
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
-                    _rideTypeToRideEntryMap[rideType] = entryIndex;
+                    _rideTypeToRideEntryMap[EnumValue(rideType)] = entryIndex;
                 }
             }
         }
 
-        void AddEntryForVehicleType(uint8_t rideType, uint8_t vehicleType)
+        void AddEntryForVehicleType(RideType rideType, uint8_t vehicleType)
         {
-            assert(vehicleType < std::size(_vehicleTypeToRideEntryMap));
+            Guard::Assert(EnumValue(rideType) < std::size(_rideTypeToRideEntryMap));
+
             if (_vehicleTypeToRideEntryMap[vehicleType] == OBJECT_ENTRY_INDEX_NULL)
             {
                 const char* entryName = RCT1::GetVehicleObject(vehicleType);
@@ -609,7 +611,7 @@ namespace RCT1
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
                     _vehicleTypeToRideEntryMap[vehicleType] = entryIndex;
 
-                    if (rideType != RIDE_TYPE_NULL)
+                    if (rideType != RideType::Null)
                         AddEntryForRideType(rideType);
                 }
             }
@@ -712,7 +714,7 @@ namespace RCT1
         {
             for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
             {
-                if (_s4.rides[i].type != RIDE_TYPE_NULL)
+                if (_s4.rides[i].type != RideType::Null)
                 {
                     ImportRide(GetOrAllocateRide(i), &_s4.rides[i], i);
                 }
@@ -725,7 +727,7 @@ namespace RCT1
             dst->id = rideIndex;
 
             // This is a peculiarity of this exact version number, which only Heide-Park seems to use.
-            if (_s4.game_version == 110018 && src->type == RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER)
+            if (_s4.game_version == 110018 && src->type == RideType::InvertedRollerCoaster)
             {
                 dst->type = RIDE_TYPE_COMPACT_INVERTED_COASTER;
             }
@@ -740,7 +742,7 @@ namespace RCT1
             }
             else
             {
-                dst->subtype = _rideTypeToRideEntryMap[src->type];
+                dst->subtype = _rideTypeToRideEntryMap[EnumValue(src->type)];
             }
 
             rct_ride_entry* rideEntry = get_ride_entry(dst->subtype);
@@ -873,7 +875,7 @@ namespace RCT1
 
                     // Only merry-go-round and dodgems had music and used
                     // the same flag as synchronise stations for the option to enable it
-                    if (src->type == RCT1_RIDE_TYPE_MERRY_GO_ROUND || src->type == RCT1_RIDE_TYPE_DODGEMS)
+                    if (src->type == RideType::MerryGoRound || src->type == RideType::Dodgems)
                     {
                         if (src->depart_flags & RCT1_RIDE_DEPART_PLAY_MUSIC)
                         {
@@ -1005,11 +1007,11 @@ namespace RCT1
                 dst->track_colour[0].supports = RCT1::GetColour(src->track_support_colour);
 
                 // Balloons were always blue in the original RCT.
-                if (src->type == RCT1_RIDE_TYPE_BALLOON_STALL)
+                if (src->type == RideType::BalloonStall)
                 {
                     dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
                 }
-                else if (src->type == RCT1_RIDE_TYPE_RIVER_RAPIDS)
+                else if (src->type == RideType::RiverRapids)
                 {
                     dst->track_colour[0].main = COLOUR_WHITE;
                 }
@@ -1871,8 +1873,7 @@ namespace RCT1
             }
 
             bool researched = true;
-            std::bitset<RCT1_RIDE_TYPE_COUNT> rideTypeInResearch = GetRideTypesPresentInResearchList(
-                researchList, researchListCount);
+            auto rideTypeInResearch = GetRideTypesPresentInResearchList(researchList, researchListCount);
             std::vector<RCT1::ResearchItem> vehiclesWithMissingRideTypes;
             for (size_t i = 0; i < researchListCount; i++)
             {
@@ -1906,10 +1907,10 @@ namespace RCT1
                     }
                     case RCT1_RESEARCH_TYPE_RIDE:
                     {
-                        uint8_t rct1RideType = researchItem.item;
-                        _researchRideTypeUsed[rct1RideType] = true;
+                        const auto rct1RideType = static_cast<RideType>(researchItem.item);
+                        _researchRideTypeUsed[EnumValue(rct1RideType)] = true;
 
-                        auto ownRideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
+                        auto ownRideEntryIndex = _rideTypeToRideEntryMap[EnumValue(rct1RideType)];
                         Guard::Assert(
                             ownRideEntryIndex != OBJECT_ENTRY_INDEX_NULL, "ownRideEntryIndex was OBJECT_ENTRY_INDEX_NULL");
 
@@ -1933,7 +1934,7 @@ namespace RCT1
                                 }
 
                                 if (researchItem2.type == RCT1_RESEARCH_TYPE_VEHICLE
-                                    && researchItem2.related_ride == rct1RideType)
+                                    && static_cast<RideType>(researchItem2.related_ride) == rct1RideType)
                                 {
                                     auto rideEntryIndex2 = _vehicleTypeToRideEntryMap[researchItem2.item];
                                     bool isOwnType = (ownRideEntryIndex == rideEntryIndex2);
@@ -2051,10 +2052,10 @@ namespace RCT1
             }
         }
 
-        static std::bitset<RCT1_RIDE_TYPE_COUNT> GetRideTypesPresentInResearchList(
+        static std::bitset<EnumValue(RideType::Count)> GetRideTypesPresentInResearchList(
             const RCT1::ResearchItem* researchList, size_t researchListCount)
         {
-            std::bitset<RCT1_RIDE_TYPE_COUNT> ret = {};
+            std::bitset<EnumValue(RideType::Count)> ret = {};
 
             for (size_t i = 0; i < researchListCount; i++)
             {
@@ -2612,7 +2613,7 @@ namespace RCT1
 
                 if (researchList[i].type == RCT1_RESEARCH_TYPE_RIDE)
                 {
-                    return RCT1::GetRideType(researchList[i].item, 0);
+                    return RCT1::GetRideType(static_cast<RideType>(researchList[i].item), 0);
                 }
             }
 
