@@ -1192,12 +1192,13 @@ static void window_ride_update_overall_view(Ride* ride)
         maxz = std::max(maxz, clearZ);
     }
 
-    if (static_cast<int32_t>(ride->id) >= ride_overall_views.size())
+    const auto rideIndex = EnumValue(ride->id);
+    if (rideIndex >= ride_overall_views.size())
     {
-        ride_overall_views.resize(static_cast<int32_t>(ride->id) + 1);
+        ride_overall_views.resize(rideIndex + 1);
     }
 
-    auto& view = ride_overall_views[static_cast<size_t>(ride->id)];
+    auto& view = ride_overall_views[rideIndex];
     view.x = (minx + maxx) / 2 + 16;
     view.y = (miny + maxy) / 2 + 16;
     view.z = (minz + maxz) / 2 - 8;
