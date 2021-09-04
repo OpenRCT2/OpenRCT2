@@ -1202,7 +1202,8 @@ money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, u
     return res->Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
 }
 
-// for a 3xN or nx3 grid, find the direction that faces the inside.
+// Finds the direction a station should face for an NxN station when called with an N+2xN+2 grid size.
+// Direction is valid only if the tile in question is on the outer tiles of the grid
 static Direction GetEntranceExitDirection(
     int16_t mapX, int16_t mapY, int16_t entranceMinX, int16_t entranceMinY, int16_t entranceMaxX, int16_t entranceMaxY)
 {
@@ -1354,8 +1355,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                     const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
                     if (ted.SequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << direction))
                     {
-                        // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from the
-                        // station
+                        // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
+                        // the station
                         entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
                         gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
                         return entranceExitCoords;
