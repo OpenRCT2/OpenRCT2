@@ -207,9 +207,9 @@ public:
                 else
                 {
                     int32_t numItems = 0;
-                    for (auto rideId : RideList)
+                    for (auto rideIndex : RideList)
                     {
-                        auto curRide = get_ride(rideId);
+                        auto curRide = get_ride(rideIndex);
                         if (curRide != nullptr)
                         {
                             // HACK until dropdown items have longer argument buffers

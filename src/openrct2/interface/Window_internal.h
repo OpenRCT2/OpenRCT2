@@ -45,7 +45,11 @@ struct rct_window
     int16_t max_width{};
     int16_t min_height{};
     int16_t max_height{};
-    rct_windownumber number{};
+    union
+    {
+        rct_windownumber number{};
+        ride_id_t rideId;
+    };
     uint16_t flags{};
     rct_scroll scrolls[3];
     uint32_t list_item_positions[1024]{};

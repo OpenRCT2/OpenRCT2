@@ -1937,7 +1937,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         _currentTrackPieceType, 0,
         { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, _currentTrackPieceDirection });
 
-    const auto rideId = static_cast<ride_id_t>(w->number);
+    const auto rideId = w->rideId;
     trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
         {
@@ -1987,7 +1987,7 @@ static void window_ride_construction_entrance_click(rct_window* w)
     else
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
-        gRideEntranceExitPlaceRideIndex = static_cast<ride_id_t>(w->number);
+        gRideEntranceExitPlaceRideIndex = w->rideId;
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();
@@ -2017,7 +2017,7 @@ static void window_ride_construction_exit_click(rct_window* w)
     else
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
-        gRideEntranceExitPlaceRideIndex = static_cast<ride_id_t>(w->number);
+        gRideEntranceExitPlaceRideIndex = w->rideId;
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();
