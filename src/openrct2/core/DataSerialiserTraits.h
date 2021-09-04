@@ -231,7 +231,7 @@ template<> struct DataSerializerTraits_t<NetworkRideId_t>
     static void log(OpenRCT2::IStream* stream, const NetworkRideId_t& val)
     {
         char rideId[28] = {};
-        snprintf(rideId, sizeof(rideId), "%u", val);
+        snprintf(rideId, sizeof(rideId), "%u", EnumValue(val));
 
         stream->Write(rideId, strlen(rideId));
 
