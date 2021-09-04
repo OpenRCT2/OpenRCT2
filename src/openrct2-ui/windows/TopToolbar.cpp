@@ -423,60 +423,55 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
  */
 static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    int32_t numItems;
+    int32_t numItems = 0;
 
     switch (widgetIndex)
     {
         case WIDX_FILE_MENU:
             if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
             {
-                gDropdownItemsFormat[0] = STR_ABOUT;
-                gDropdownItemsFormat[1] = STR_OPTIONS;
-                gDropdownItemsFormat[2] = STR_SCREENSHOT;
-                gDropdownItemsFormat[3] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[4] = STR_EMPTY;
-                gDropdownItemsFormat[5] = STR_QUIT_TRACK_DESIGNS_MANAGER;
-                gDropdownItemsFormat[6] = STR_EXIT_OPENRCT2;
+                gDropdownItemsFormat[numItems++] = STR_ABOUT;
+                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
+                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_QUIT_TRACK_DESIGNS_MANAGER;
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
 
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    gDropdownItemsFormat[5] = STR_QUIT_ROLLERCOASTER_DESIGNER;
-
-                numItems = 7;
+                    gDropdownItemsFormat[numItems++] = STR_QUIT_ROLLERCOASTER_DESIGNER;
             }
             else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
-                gDropdownItemsFormat[0] = STR_LOAD_LANDSCAPE;
-                gDropdownItemsFormat[1] = STR_SAVE_LANDSCAPE;
-                gDropdownItemsFormat[2] = STR_EMPTY;
-                gDropdownItemsFormat[3] = STR_ABOUT;
-                gDropdownItemsFormat[4] = STR_OPTIONS;
-                gDropdownItemsFormat[5] = STR_SCREENSHOT;
-                gDropdownItemsFormat[6] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[7] = STR_EMPTY;
-                gDropdownItemsFormat[8] = STR_QUIT_SCENARIO_EDITOR;
-                gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
-                numItems = 10;
+                gDropdownItemsFormat[numItems++] = STR_LOAD_LANDSCAPE;
+                gDropdownItemsFormat[numItems++] = STR_SAVE_LANDSCAPE;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_ABOUT;
+                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
+                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_QUIT_SCENARIO_EDITOR;
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
             }
             else
             {
-                gDropdownItemsFormat[0] = STR_NEW_GAME;
-                gDropdownItemsFormat[1] = STR_LOAD_GAME;
-                gDropdownItemsFormat[2] = STR_SAVE_GAME;
-                gDropdownItemsFormat[3] = STR_SAVE_GAME_AS;
-                gDropdownItemsFormat[4] = STR_EMPTY;
-                gDropdownItemsFormat[5] = STR_ABOUT;
-                gDropdownItemsFormat[6] = STR_OPTIONS;
-                gDropdownItemsFormat[7] = STR_SCREENSHOT;
-                gDropdownItemsFormat[8] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[9] = STR_EMPTY;
-                gDropdownItemsFormat[10] = STR_QUIT_TO_MENU;
-                gDropdownItemsFormat[11] = STR_EXIT_OPENRCT2;
-                numItems = 12;
+                gDropdownItemsFormat[numItems++] = STR_NEW_GAME;
+                gDropdownItemsFormat[numItems++] = STR_LOAD_GAME;
+                gDropdownItemsFormat[numItems++] = STR_SAVE_GAME;
+                gDropdownItemsFormat[numItems++] = STR_SAVE_GAME_AS;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_ABOUT;
+                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
+                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
                 if (OpenRCT2::GetContext()->HasNewVersionInfo())
                 {
-                    gDropdownItemsFormat[12] = STR_EMPTY;
-                    gDropdownItemsFormat[13] = STR_UPDATE_AVAILABLE;
-                    numItems += 2;
+                    gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
                 }
             }
             WindowDropdownShowText(
