@@ -1349,12 +1349,12 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                     // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
                     // entrance can be placed on that side
 
-                    // get the exit hut side relative to the TrackElement
+                    // get the ride entrance's side relative to the TrackElement
                     Direction direction = (direction_reverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
                     const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
                     if (ted.SequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << direction))
                     {
-                        // if that side of the TrackElement supports stations, the entrance hut is valid and faces away from the
+                        // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from the
                         // station
                         entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
                         gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
@@ -1369,8 +1369,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     {
         // create a 2-point rectangle. The rectangle will have a width or height of 0 depending on station direction or length
         // (if the station is 0) The 2-point rectangle is ballooned on all four sides by 1 tile for a 3xN or Nx3 rectangle.
-        // Whatever edge the entrance hut is on, rotate it outward to get entrance direction.
-        CoordsXY nextLocation = { stationStart.x, stationStart.y };
+        // Whatever edge the ride entrance is on, rotate it outward to get entrance direction.
+        CoordsXY nextLocation = { stationStart };
         CoordsXY entranceMin = { nextLocation };
         CoordsXY entranceMax = { nextLocation };
 
@@ -1578,8 +1578,8 @@ void Ride::ValidateStations()
     for (const TileCoordsXYZD& locationCoords : locations)
     {
         auto locationList = ++locationListIter;
-        // determine if there's another hut at this location later in the array
-        // if there is, skip it. The last hut in the array at the location is not skipped
+        // determine if there's another ride entrance at this location later in the array
+        // if there is, skip it. The last ride entrance in the array at the location is not skipped
         bool duplicateLocation = false;
         while (locationList != locations.cend())
         {
@@ -1594,7 +1594,7 @@ void Ride::ValidateStations()
 
         if (duplicateLocation)
         {
-            // if it's a duplicate continue to the next hut
+            // if it's a duplicate continue to the next ride entrance
             continue;
         }
         // if it's not a duplicate location
@@ -1615,12 +1615,12 @@ void Ride::ValidateStations()
             if (tileElement->AsEntrance()->GetEntranceType() > ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
-            // find the station that's connected to this hut
+            // find the station that's connected to this ride entrance
             CoordsXY nextLocation = location;
             nextLocation.x += CoordsDirectionDelta[tileElement->GetDirection()].x;
             nextLocation.y += CoordsDirectionDelta[tileElement->GetDirection()].y;
 
-            // if there's no connected station, remove the hut (see below)
+            // if there's no connected station, remove the ride entrance (see below)
             bool shouldRemove = true;
             TileElement* trackElement = map_get_first_element_at(nextLocation);
             if (trackElement == nullptr)
@@ -1637,10 +1637,10 @@ void Ride::ValidateStations()
                 auto trackType = trackElement->AsTrack()->GetTrackType();
                 uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
-                // determine where the hut is relative to the station track
+                // determine where the ride entrance is relative to the station track
                 Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;
 
-                // if the hut is not on a valid side, remove the hut
+                // if the ride entrance is not on a valid side, remove it
                 ted = &GetTrackElementDescriptor(trackType);
                 if (!(ted->SequenceProperties[trackSequence] & (1 << direction)))
                 {
@@ -1657,7 +1657,7 @@ void Ride::ValidateStations()
                     // if the location is already set for this station, big problem!
                     if (!ride_get_exit_location(this, stationId).isNull())
                         break;
-                    // set the station's exit hut location to this hut
+                    // set the station's exit location to this one
                     CoordsXYZD loc = { location, stations[stationId].GetBaseZ(), tileElement->GetDirection() };
                     ride_set_exit_location(this, stationId, TileCoordsXYZD{ loc });
                 }
@@ -1666,16 +1666,16 @@ void Ride::ValidateStations()
                     // if the location is already set for this station, big problem!
                     if (!ride_get_entrance_location(this, stationId).isNull())
                         break;
-                    // set the station's entrance hut location to this hut
+                    // set the station's entrance location to this one
                     CoordsXYZD loc = { location, stations[stationId].GetBaseZ(), tileElement->GetDirection() };
                     ride_set_entrance_location(this, stationId, TileCoordsXYZD{ loc });
                 }
-                // set the hut's StationIndex as this station
+                // set the entrance's StationIndex as this station
                 tileElement->AsEntrance()->SetStationIndex(stationId);
                 shouldRemove = false;
             } while (!(trackElement++)->IsLastForTile());
 
-            // remove the hut and clean up if necessary
+            // remove the ride entrance and clean up if necessary
             if (shouldRemove)
             {
                 footpath_queue_chain_reset();
