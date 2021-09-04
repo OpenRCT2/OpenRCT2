@@ -53,6 +53,6 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_DODGEMS_TRACK, SPR_RIDE_DESIGN_PREVIEW_DODGEMS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(TrackBehaviours,{TrackElemTypeAlternateName::SpeedController,TrackElemTypeAlternateName::LogBumps})
+    SET_FIELD(TrackBehaviours, _defaultTrackBehaviour)
 };
 // clang-format on

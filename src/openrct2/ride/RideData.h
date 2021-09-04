@@ -345,6 +345,9 @@ extern const uint16_t RideFilmLength[3];
 
 extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 
+constexpr RideTrackBehaviours _defaultTrackBehaviour = { TrackElemTypeAlternateName::Default,
+                                                         TrackElemTypeAlternateName::LogBumps };
+
 // clang-format off
 constexpr const RideTypeDescriptor DummyRTD =
 {
@@ -377,7 +380,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(TrackBehaviours,{TrackElemTypeAlternateName::Default,TrackElemTypeAlternateName::LogBumps})
+    SET_FIELD(TrackBehaviours, _defaultTrackBehaviour)
 };
 // clang-format on
 

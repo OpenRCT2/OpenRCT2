@@ -53,6 +53,6 @@ constexpr const RideTypeDescriptor WoodenWildMouseRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_WOODEN_WILD_MOUSE_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_WILD_MOUSE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(TrackBehaviours,{TrackElemTypeAlternateName::Default,TrackElemTypeAlternateName::LogBumps})
+    SET_FIELD(TrackBehaviours, _defaultTrackBehaviour)
 };
 // clang-format on

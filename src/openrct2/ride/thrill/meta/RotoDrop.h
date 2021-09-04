@@ -53,6 +53,6 @@ constexpr const RideTypeDescriptor RotoDropRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(TrackBehaviours,{TrackElemTypeAlternateName::SpeedController,TrackElemTypeAlternateName::LogBumps})
+    SET_FIELD(TrackBehaviours, _defaultTrackBehaviour)
 };
 // clang-format on

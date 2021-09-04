@@ -54,7 +54,7 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(TrackBehaviours,{TrackElemTypeAlternateName::Default,TrackElemTypeAlternateName::LogBumps})
+    SET_FIELD(TrackBehaviours, _defaultTrackBehaviour)
 };
 
 // Inverted variant
@@ -95,6 +95,6 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterAltRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(TrackBehaviours,{TrackElemTypeAlternateName::Default,TrackElemTypeAlternateName::LogBumps})
+    SET_FIELD(TrackBehaviours, _defaultTrackBehaviour)
 };
 // clang-format on

@@ -53,6 +53,6 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_RIVER_RAFTS_TRACK, SPR_RIDE_DESIGN_PREVIEW_RIVER_RAFTS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(TrackBehaviours,{TrackElemTypeAlternateName::SpeedController,TrackElemTypeAlternateName::Default})
+    SET_FIELD(TrackBehaviours, { TrackElemTypeAlternateName::SpeedController, TrackElemTypeAlternateName::Default })
 };
 // clang-format on
