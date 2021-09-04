@@ -716,7 +716,8 @@ namespace RCT1
             {
                 if (_s4.rides[i].type != RideType::Null)
                 {
-                    ImportRide(GetOrAllocateRide(i), &_s4.rides[i], i);
+                    const auto rideId = static_cast<ride_id_t>(i);
+                    ImportRide(GetOrAllocateRide(rideId), &_s4.rides[i], rideId);
                 }
             }
         }
@@ -2482,10 +2483,12 @@ namespace RCT1
         {
             if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
             {
+                const auto firstRideId = static_cast<ride_id_t>(0);
+
                 // First, make the queuing peep exit
                 for (auto peep : EntityList<Guest>())
                 {
-                    if (peep->State == PeepState::QueuingFront && peep->CurrentRide == 0)
+                    if (peep->State == PeepState::QueuingFront && peep->CurrentRide == firstRideId)
                     {
                         peep->RemoveFromQueue();
                         peep->SetState(PeepState::Falling);
@@ -2494,7 +2497,7 @@ namespace RCT1
                 }
 
                 // Now, swap the entrance and exit.
-                auto ride = get_ride(0);
+                auto ride = get_ride(firstRideId);
                 if (ride != nullptr)
                 {
                     auto entranceCoords = ride->stations[0].Exit;
@@ -2666,13 +2669,13 @@ namespace RCT1
     {
         auto* dst = CreateEntityAt<::Vehicle>(srcBase.sprite_index);
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
-        const auto* ride = get_ride(src->ride);
+        const auto* ride = get_ride(static_cast<ride_id_t>(src->ride));
         if (ride == nullptr)
             return;
 
         uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
-        dst->ride = src->ride;
+        dst->ride = static_cast<ride_id_t>(src->ride);
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;
