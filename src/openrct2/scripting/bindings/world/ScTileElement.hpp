@@ -85,7 +85,7 @@ namespace OpenRCT2::Scripting
         void sequence_set(uint8_t value);
 
         DukValue ride_get() const;
-        void ride_set(ride_id_t value);
+        void ride_set(int32_t value);
 
         DukValue station_get() const;
         void station_set(uint8_t value);

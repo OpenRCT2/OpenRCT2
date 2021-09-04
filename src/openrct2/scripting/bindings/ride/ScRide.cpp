@@ -27,7 +27,7 @@ namespace OpenRCT2::Scripting
 
     int32_t ScRide::id_get() const
     {
-        return _rideId;
+        return EnumValue(_rideId);
     }
 
     std::shared_ptr<ScRideObject> ScRide::object_get()

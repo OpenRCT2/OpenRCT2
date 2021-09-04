@@ -966,7 +966,7 @@ template<typename T> std::vector<ride_id_t> RCT12GetRidesBeenOn(T* srcPeep)
     {
         if (srcPeep->rides_been_on[i / 8] & (1 << (i % 8)))
         {
-            ridesBeenOn.push_back(i);
+            ridesBeenOn.push_back(static_cast<ride_id_t>(i));
         }
     }
     return ridesBeenOn;

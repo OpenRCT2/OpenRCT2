@@ -1822,7 +1822,8 @@ Ride* Guest::FindBestRideToGoOn()
     Ride* mostExcitingRide = nullptr;
     for (auto& ride : GetRideManager())
     {
-        if (rideConsideration.size() > ride.id && rideConsideration[ride.id])
+        const auto rideIndex = EnumValue(ride.id);
+        if (rideConsideration.size() > rideIndex && rideConsideration[rideIndex])
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
@@ -1853,7 +1854,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
         {
             if (!HasRidden(&ride))
             {
-                rideConsideration[ride.id] = true;
+                rideConsideration[EnumValue(ride.id)] = true;
             }
         }
     }
@@ -1874,7 +1875,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
                 for (auto* trackElement : TileElementsView<TrackElement>(location))
                 {
                     auto rideIndex = trackElement->GetRideIndex();
-                    rideConsideration[rideIndex] = true;
+                    rideConsideration[EnumValue(rideIndex)] = true;
                 }
             }
         }
@@ -1884,7 +1885,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
         {
             if (ride.highest_drop_height > 66 || ride.excitement >= RIDE_RATING(8, 00))
             {
-                rideConsideration[ride.id] = true;
+                rideConsideration[EnumValue(ride.id)] = true;
             }
         }
     }
@@ -3105,7 +3106,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         {
             if (predicate(ride))
             {
-                rideConsideration[ride.id] = true;
+                rideConsideration[EnumValue(ride.id)] = true;
             }
         }
     }
@@ -3133,18 +3134,18 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
                     if (!predicate(*ride))
                         continue;
 
-                    rideConsideration[rideIndex] = true;
+                    rideConsideration[EnumValue(ride->id)] = true;
                 }
             }
         }
     }
 
     // Filter the considered rides
-    uint8_t potentialRides[MAX_RIDES];
+    ride_id_t potentialRides[MAX_RIDES];
     size_t numPotentialRides = 0;
     for (auto& ride : GetRideManager())
     {
-        if (rideConsideration[ride.id])
+        if (rideConsideration[EnumValue(ride.id)])
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
@@ -3657,7 +3658,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->FormatNameTo(ft);
                 if (gConfigNotifications.ride_warnings)
                 {
-                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide, ft);
+                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, EnumValue(CurrentRide), ft);
                 }
             }
 
@@ -3811,7 +3812,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     if (queueTime != ride->stations[CurrentRideStation].QueueTime)
     {
         ride->stations[CurrentRideStation].QueueTime = queueTime;
-        window_invalidate_by_number(WC_RIDE, CurrentRide);
+        window_invalidate_by_number(WC_RIDE, EnumValue(CurrentRide));
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -7458,7 +7459,7 @@ void Guest::RemoveRideFromMemory(ride_id_t rideId)
             break;
 
         // Ride ids and shop item ids might have the same value, look only for ride thoughts.
-        if (IsThoughtShopItemRelated(entry.type) || entry.item != rideId)
+        if (IsThoughtShopItemRelated(entry.type) || entry.rideId != rideId)
         {
             it++;
             continue;

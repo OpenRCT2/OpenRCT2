@@ -170,7 +170,7 @@ static void ride_all_has_any_track_elements(std::array<bool, RCT12_MAX_RIDES_IN_
         if (it.element->IsGhost())
             continue;
 
-        rideIndexArray[it.element->AsTrack()->GetRideIndex()] = true;
+        rideIndexArray[EnumValue(it.element->AsTrack()->GetRideIndex())] = true;
     }
 }
 
@@ -1330,7 +1330,8 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Guest* src)
     {
         for (auto rideId : *rideHistory)
         {
-            dst->rides_been_on[rideId / 8] |= (1 << (rideId % 8));
+            const auto rideIndex = EnumValue(rideId);
+            dst->rides_been_on[rideIndex / 8] |= (1 << (rideIndex % 8));
         }
     }
     dst->item_extra_flags = static_cast<uint32_t>(src->GetItemFlags() >> 32);
