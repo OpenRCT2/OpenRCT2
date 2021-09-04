@@ -43,7 +43,7 @@ struct ObjectRepositoryItem
     std::string Name;
     std::vector<std::string> Authors;
     std::vector<ObjectSourceGame> Sources;
-    Object* LoadedObject{};
+    std::shared_ptr<Object> LoadedObject{};
     struct
     {
         uint8_t RideFlags;
@@ -82,7 +82,7 @@ struct IObjectRepository
     [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const abstract;
 
     [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;
-    virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
+    virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) abstract;
     virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
 
     virtual void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) abstract;
