@@ -226,7 +226,7 @@ int32_t ImageImporter::CalculatePaletteIndex(
             auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].Green);
             auto db = rgbaSrc[2] - static_cast<int16_t>(palette[paletteIndex].Blue);
 
-            // We don't want to dither remappable colors with nonremappable colors, etc
+            // We don't want to dither remappable colours with nonremappable colours, etc
             PaletteIndexType thisIndexType = GetPaletteIndexType(paletteIndex);
 
             if (x + 1 < width)
