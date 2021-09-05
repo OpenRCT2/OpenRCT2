@@ -16,9 +16,9 @@ class FootpathObject final : public Object
 {
 private:
     rct_footpath_entry _legacyType = {};
-    PathSurfaceEntry _pathSurfaceEntry = {};
-    PathSurfaceEntry _queueEntry = {};
-    PathRailingsEntry _pathRailingsEntry = {};
+    PathSurfaceDescriptor _pathSurfaceEntry = {};
+    PathSurfaceDescriptor _queueEntry = {};
+    PathRailingsDescriptor _pathRailingsEntry = {};
 
 public:
     explicit FootpathObject(const rct_object_entry& entry)
@@ -31,17 +31,17 @@ public:
         return &_legacyType;
     }
 
-    PathSurfaceEntry* GetPathSurfaceEntry()
+    PathSurfaceDescriptor* GetPathSurfaceEntry()
     {
         return &_pathSurfaceEntry;
     }
 
-    PathSurfaceEntry* GetQueueEntry()
+    PathSurfaceDescriptor* GetQueueEntry()
     {
         return &_queueEntry;
     }
 
-    PathRailingsEntry* GetPathRailingsEntry()
+    PathRailingsDescriptor* GetPathRailingsEntry()
     {
         return &_pathRailingsEntry;
     }

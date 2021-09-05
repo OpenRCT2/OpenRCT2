@@ -70,23 +70,23 @@ struct rct_footpath_entry
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
-struct PathSurfaceEntry
+struct PathSurfaceDescriptor
 {
-    rct_string_id string_idx;
-    uint32_t image;
-    uint32_t preview;
-    uint8_t flags;
+    rct_string_id Name;
+    uint32_t Image;
+    uint32_t PreviewImage;
+    uint8_t Flags;
 };
 
-struct PathRailingsEntry
+struct PathRailingsDescriptor
 {
-    rct_string_id string_idx;
-    uint32_t preview;
-    uint32_t bridge_image;
-    uint32_t railings_image;
-    RailingEntrySupportType support_type;
-    uint8_t flags;
-    uint8_t scrolling_mode;
+    rct_string_id Name;
+    uint32_t PreviewImage;
+    uint32_t BridgeImage;
+    uint32_t RailingsImage;
+    RailingEntrySupportType SupportType;
+    uint8_t Flags;
+    uint8_t ScrollingMode;
 };
 
 struct ProvisionalFootpath
@@ -215,8 +215,8 @@ bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
 void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
 
-PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex);
-PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex);
+PathSurfaceDescriptor* get_path_surface_entry(PathSurfaceIndex entryIndex);
+PathRailingsDescriptor* get_path_railings_entry(PathRailingsIndex entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);

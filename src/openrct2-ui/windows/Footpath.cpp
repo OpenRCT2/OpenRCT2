@@ -187,8 +187,8 @@ static bool footpath_select_default();
 rct_window* window_footpath_open()
 {
     // If a restricted path was selected when the game is no longer in Sandbox mode, reset it
-    PathSurfaceEntry* pathEntry = get_path_surface_entry(gFootpathSelectedId);
-    if (pathEntry != nullptr && (pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+    PathSurfaceDescriptor* pathEntry = get_path_surface_entry(gFootpathSelectedId);
+    if (pathEntry != nullptr && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
         pathEntry = nullptr;
     }
@@ -369,12 +369,12 @@ static void window_footpath_dropdown(rct_window* w, rct_widgetindex widgetIndex,
         int32_t i = 0, j = 0;
         for (; i < MAX_PATH_OBJECTS; i++)
         {
-            PathSurfaceEntry* pathType = get_path_surface_entry(i);
+            PathSurfaceDescriptor* pathType = get_path_surface_entry(i);
             if (pathType == nullptr)
             {
                 continue;
             }
-            if ((pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !showEditorPaths)
+            if ((pathType->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !showEditorPaths)
             {
                 continue;
             }
@@ -577,9 +577,9 @@ static void window_footpath_invalidate(rct_window* w)
     auto pathEntry = get_path_surface_entry(gFootpathSelectedId);
     if (pathEntry != nullptr)
     {
-        pathImage = pathEntry->preview;
+        pathImage = pathEntry->PreviewImage;
         // Editor-only paths might lack a queue image
-        queueImage = (pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) ? pathImage : pathImage + 1;
+        queueImage = (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) ? pathImage : pathImage + 1;
     }
     window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
     window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
@@ -610,8 +610,8 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
         int32_t image = ConstructionPreviewImages[slope][direction];
 
         int32_t selectedPath = gFootpathSelectedId + (MAX_PATH_OBJECTS * _footpathSelectedType);
-        PathSurfaceEntry* pathType = get_path_surface_entry(selectedPath);
-        image += pathType->image;
+        PathSurfaceDescriptor* pathType = get_path_surface_entry(selectedPath);
+        image += pathType->Image;
 
         // Draw construction image
         screenCoords = w->windowPos
@@ -647,7 +647,7 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
 static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget* widget, bool showQueues)
 {
     int32_t i, image;
-    PathSurfaceEntry* pathType;
+    PathSurfaceDescriptor* pathType;
 
     uint32_t numPathTypes = 0;
     // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
@@ -660,14 +660,14 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
         {
             continue;
         }
-        if ((pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !showEditorPaths)
+        if ((pathType->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !showEditorPaths)
         {
             continue;
         }
 
-        image = pathType->preview;
+        image = pathType->PreviewImage;
         // Editor-only paths usually lack queue images. In this case, use the main path image
-        if (showQueues && !(pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
+        if (showQueues && !(pathType->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
         {
             image++;
         }
@@ -1227,13 +1227,13 @@ static bool footpath_select_default()
     int32_t footpathId = -1;
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::Paths)]; i++)
     {
-        PathSurfaceEntry* pathEntry = get_path_surface_entry(i);
+        PathSurfaceDescriptor* pathEntry = get_path_surface_entry(i);
         if (pathEntry != nullptr)
         {
             footpathId = i;
 
             // Prioritise non-restricted path
-            if (!(pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
+            if (!(pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
             {
                 break;
             }

@@ -874,7 +874,7 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
         }
 
         entry_index = 0;
-        for (PathSurfaceEntry* path = get_path_surface_entry(0);
+        for (PathSurfaceDescriptor* path = get_path_surface_entry(0);
              entry_index < object_entry_group_counts[EnumValue(ObjectType::Paths)];
              path = get_path_surface_entry(entry_index), entry_index++)
         {
@@ -882,7 +882,7 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
             {
                 return true;
             }
-            if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+            if (path->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
             {
                 return true;
             }

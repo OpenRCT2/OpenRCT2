@@ -282,11 +282,11 @@ private:
 
 public:
     PathSurfaceIndex GetSurfaceEntryIndex() const;
-    PathSurfaceEntry* GetSurfaceEntry() const;
+    PathSurfaceDescriptor* GetSurfaceEntry() const;
     void SetSurfaceEntryIndex(PathSurfaceIndex newIndex);
 
     PathRailingsIndex GetRailingEntryIndex() const;
-    PathRailingsEntry* GetRailingEntry() const;
+    PathRailingsDescriptor* GetRailingEntry() const;
     void SetRailingEntryIndex(PathRailingsIndex newIndex);
 
     uint8_t GetQueueBannerDirection() const;

@@ -1652,7 +1652,7 @@ PathRailingsIndex PathElement::GetRailingEntryIndex() const
     return GetSurfaceEntryIndex();
 }
 
-PathSurfaceEntry* PathElement::GetSurfaceEntry() const
+PathSurfaceDescriptor* PathElement::GetSurfaceEntry() const
 {
     if (!IsQueue())
         return get_path_surface_entry(GetSurfaceEntryIndex());
@@ -1660,7 +1660,7 @@ PathSurfaceEntry* PathElement::GetSurfaceEntry() const
         return get_path_surface_entry(GetSurfaceEntryIndex() + MAX_PATH_OBJECTS);
 }
 
-PathRailingsEntry* PathElement::GetRailingEntry() const
+PathRailingsDescriptor* PathElement::GetRailingEntry() const
 {
     return get_path_railings_entry(GetRailingEntryIndex());
 }
@@ -1688,7 +1688,7 @@ void PathElement::SetQueueBannerDirection(uint8_t direction)
 
 bool PathElement::ShouldDrawPathOverSupports() const
 {
-    return (GetRailingEntry()->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
+    return (GetRailingEntry()->Flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
 }
 
 void PathElement::SetShouldDrawPathOverSupports(bool on)
@@ -2247,9 +2247,9 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
         tileElement->AsPath()->SetEdgesAndCorners(0);
 }
 
-PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
+PathSurfaceDescriptor* get_path_surface_entry(PathSurfaceIndex entryIndex)
 {
-    PathSurfaceEntry* result = nullptr;
+    PathSurfaceDescriptor* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     // TODO: Change when moving to the new save format.
     auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex % MAX_PATH_OBJECTS);
@@ -2263,9 +2263,9 @@ PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
     return result;
 }
 
-PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex)
+PathRailingsDescriptor* get_path_railings_entry(PathRailingsIndex entryIndex)
 {
-    PathRailingsEntry* result = nullptr;
+    PathRailingsDescriptor* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
     if (obj != nullptr)
