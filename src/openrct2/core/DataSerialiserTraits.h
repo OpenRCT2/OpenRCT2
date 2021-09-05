@@ -38,19 +38,23 @@ template<typename T> struct DataSerializerTraits_t
 
 template<typename T> struct DataSerializerTraits_enum
 {
+    using TUnderlying = std::underlying_type_t<T>;
+
     static void encode(OpenRCT2::IStream* stream, const T& val)
     {
-        stream->Write(&val);
+        TUnderlying temp = ByteSwapBE(static_cast<TUnderlying>(val));
+        stream->Write(&temp);
     }
     static void decode(OpenRCT2::IStream* stream, T& val)
     {
-        stream->Read(&val);
+        TUnderlying temp;
+        stream->Read(&temp);
+        val = static_cast<T>(ByteSwapBE(temp));
     }
     static void log(OpenRCT2::IStream* stream, const T& val)
     {
-        using underlying = std::underlying_type_t<T>;
         std::stringstream ss;
-        ss << std::hex << std::setw(sizeof(underlying) * 2) << std::setfill('0') << static_cast<underlying>(val);
+        ss << std::hex << std::setw(sizeof(TUnderlying) * 2) << std::setfill('0') << static_cast<TUnderlying>(val);
 
         std::string str = ss.str();
         stream->Write(str.c_str(), str.size());
