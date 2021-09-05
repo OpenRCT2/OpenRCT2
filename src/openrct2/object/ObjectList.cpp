@@ -18,6 +18,7 @@
 #include "ObjectRepository.h"
 
 #include <algorithm>
+#include <array>
 #include <cstring>
 
 // 98DA00
@@ -41,6 +42,7 @@ int32_t object_entry_group_counts[] = {
     MAX_FOOTPATH_SURFACE_OBJECTS,
     MAX_FOOTPATH_RAILINGS_OBJECTS,
 };
+static_assert(std::size(object_entry_group_counts) == EnumValue(ObjectType::Count));
 
 // 98DA2C
 int32_t object_entry_group_encoding[] = {
