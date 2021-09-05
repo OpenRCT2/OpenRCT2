@@ -45,6 +45,8 @@ namespace OpenRCT2::TileInspector
     GameActionResultPtr TrackSetBlockBrake(const CoordsXY& loc, int32_t elementIndex, bool blockBrake, bool isExecuting);
     GameActionResultPtr TrackSetIndestructible(
         const CoordsXY& loc, int32_t elementIndex, bool isIndestructible, bool isExecuting);
+    GameActionResultPtr TrackSetSupportBlock(
+        const CoordsXY& loc, int32_t elementIndex, bool isSupportBlocked, bool isExecuting);
     GameActionResultPtr TrackSetChain(
         const CoordsXY& loc, int32_t elementIndex, bool entireTrackBlock, bool setChain, bool isExecuting);
     GameActionResultPtr ScenerySetQuarterLocation(

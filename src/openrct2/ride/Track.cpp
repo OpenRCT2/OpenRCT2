@@ -1167,3 +1167,15 @@ void TrackElement::SetHighlight(bool on)
     if (on)
         Flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
 }
+
+bool TrackElement::IsSupportBlocked() const
+{
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_BLOCK_SUPPORTS);
+}
+
+void TrackElement::SetSupportBlocked(bool on)
+{
+    Flags2 &= ~TRACK_ELEMENT_FLAGS2_BLOCK_SUPPORTS;
+    if (on)
+        Flags2 |= TRACK_ELEMENT_FLAGS2_BLOCK_SUPPORTS;
+}

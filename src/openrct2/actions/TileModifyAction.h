@@ -34,6 +34,7 @@ enum class TileModifyType : uint8_t
     TrackSetChainBlock,
     TrackSetBlockBrake,
     TrackSetIndestructible,
+    TrackSetSupportBlocked,
     ScenerySetQuarterLocation,
     ScenerySetQuarterCollision,
     BannerToggleBlockingEdge,

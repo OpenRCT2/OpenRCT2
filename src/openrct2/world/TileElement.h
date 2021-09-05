@@ -433,6 +433,9 @@ public:
     bool IsHighlighted() const;
     void SetHighlight(bool on);
 
+    bool IsSupportBlocked() const;
+    void SetSupportBlocked(bool on);
+
     // Used by ghost train, RCT1 feature, will be reintroduced at some point.
     // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
     uint8_t GetDoorAState() const;

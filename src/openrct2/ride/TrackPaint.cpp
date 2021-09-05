@@ -2249,6 +2249,7 @@ void PaintTrack(paint_session* session, Direction direction, int32_t height, con
             session->TrackColours[SCHEME_MISC] = ghost_id;
             session->TrackColours[SCHEME_3] = ghost_id;
         }
+        session->BlockSupports = trackElement.IsSupportBlocked();
 
         if (ride->type >= RIDE_TYPE_COUNT)
         {

@@ -189,6 +189,13 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::TrackSetIndestructible(_loc, elementIndex, isIndestructible, isExecuting);
             break;
         }
+        case TileModifyType::TrackSetSupportBlocked:
+        {
+            const auto elementIndex = _value1;
+            const bool isSupportBlocked = _value2;
+            res = TileInspector::TrackSetSupportBlock(_loc, elementIndex, isSupportBlocked, isExecuting);
+            break;
+        }
         case TileModifyType::ScenerySetQuarterLocation:
         {
             const auto elementIndex = _value1;

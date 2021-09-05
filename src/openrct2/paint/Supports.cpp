@@ -458,6 +458,10 @@ static constexpr const uint16_t word_97B3C4[] = {
 bool wooden_a_supports_paint_setup(
     paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
 {
+    if (session->BlockSupports)
+    {
+        return false;
+    }
     if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
@@ -623,6 +627,10 @@ bool wooden_b_supports_paint_setup(
 {
     bool _9E32B1 = false;
 
+    if (session->BlockSupports)
+    {
+        return false;
+    }
     if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
@@ -795,7 +803,10 @@ bool metal_a_supports_paint_setup(
     paint_session* session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags)
 {
     support_height* supportSegments = session->SupportSegments;
-
+    if (session->BlockSupports)
+    {
+        return false;
+    }
     if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
@@ -994,7 +1005,10 @@ bool metal_b_supports_paint_setup(
 {
     support_height* supportSegments = session->SupportSegments;
     uint8_t originalSegment = segment;
-
+    if (session->BlockSupports)
+    {
+        return false;
+    }
     if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false; // AND

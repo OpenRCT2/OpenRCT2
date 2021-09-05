@@ -194,6 +194,7 @@ struct PaintSessionCore
     uint8_t RightTunnelCount;
     uint8_t VerticalTunnelHeight;
     bool DidPassSurface;
+    bool BlockSupports;
     uint8_t Unk141E9DB;
     uint16_t WaterHeight;
     uint32_t TrackColours[4];

@@ -1036,6 +1036,28 @@ namespace OpenRCT2::TileInspector
         return std::make_unique<GameActions::Result>();
     }
 
+    GameActionResultPtr TrackSetSupportBlock(const CoordsXY& loc, int32_t elementIndex, bool isSupportBlocked, bool isExecuting)
+    {
+        TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
+
+        if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+
+        if (isExecuting)
+        {
+            trackElement->AsTrack()->SetSupportBlocked(isSupportBlocked);
+
+            map_invalidate_tile_full(loc);
+
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
+        }
+
+        return std::make_unique<GameActions::Result>();
+    }
+
     GameActionResultPtr ScenerySetQuarterLocation(
         const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting)
     {
