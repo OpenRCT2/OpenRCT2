@@ -24,10 +24,10 @@ bool metal_b_supports_paint_setup(
     paint_session* session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, uint32_t imageColourFlags);
 bool path_a_supports_paint_setup(
     paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags,
-    PathRailingsDescriptor* railingEntry, bool* underground);
+    const PathRailingsDescriptor* railingsDescriptor, bool* underground);
 bool path_b_supports_paint_setup(
     paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags,
-    PathRailingsDescriptor* railingEntry);
+    const PathRailingsDescriptor* railingsDescriptor);
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:
 // https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png

@@ -296,7 +296,7 @@ static void track_design_save_add_wall(const CoordsXY& loc, WallElement* wallEle
 
 static void track_design_save_add_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
-    int32_t entryType = pathElement->GetSurfaceEntryIndex();
+    int32_t entryType = pathElement->GetLegacyPathEntryIndex();
     auto entry = object_entry_get_object(ObjectType::Paths, entryType);
 
     uint8_t flags = 0;
@@ -473,7 +473,7 @@ static void track_design_save_remove_wall(const CoordsXY& loc, WallElement* wall
 
 static void track_design_save_remove_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
-    int32_t entryType = pathElement->GetSurfaceEntryIndex();
+    int32_t entryType = pathElement->GetLegacyPathEntryIndex();
     auto entry = object_entry_get_object(ObjectType::Paths, entryType);
 
     uint8_t flags = 0;

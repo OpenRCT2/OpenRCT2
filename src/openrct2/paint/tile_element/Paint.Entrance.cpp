@@ -245,12 +245,14 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     // Index to which part of the entrance
     // Middle, left, right
     uint8_t part_index = tile_element.GetSequenceIndex();
-    PathSurfaceDescriptor* path_entry = nullptr;
+    const PathSurfaceDescriptor* surfaceDescriptor = nullptr;
 
     // The left and right of the park entrance often have this set to 127.
     // So only attempt to get the footpath type if we're dealing with the middle bit of the entrance.
     if (part_index == 0)
-        path_entry = get_path_surface_entry(tile_element.GetPathType());
+    {
+        surfaceDescriptor = tile_element.GetPathSurfaceDescriptor();
+    }
 
     rct_entrance_type* entrance;
     uint8_t di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;
@@ -258,9 +260,9 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     switch (part_index)
     {
         case 0:
-            if (path_entry != nullptr)
+            if (surfaceDescriptor != nullptr)
             {
-                image_id = (path_entry->Image + 5 * (1 + (direction & 1))) | ghost_id;
+                image_id = (surfaceDescriptor->Image + 5 * (1 + (direction & 1))) | ghost_id;
                 PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 0x1C, 0 }, { 0, 2, height });
             }
 

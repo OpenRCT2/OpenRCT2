@@ -16,9 +16,9 @@ class FootpathObject final : public Object
 {
 private:
     rct_footpath_entry _legacyType = {};
-    PathSurfaceDescriptor _pathSurfaceEntry = {};
-    PathSurfaceDescriptor _queueEntry = {};
-    PathRailingsDescriptor _pathRailingsEntry = {};
+    PathSurfaceDescriptor _pathSurfaceDescriptor = {};
+    PathSurfaceDescriptor _queueSurfaceDescriptor = {};
+    PathRailingsDescriptor _pathRailingsDescriptor = {};
 
 public:
     explicit FootpathObject(const rct_object_entry& entry)
@@ -31,19 +31,19 @@ public:
         return &_legacyType;
     }
 
-    PathSurfaceDescriptor* GetPathSurfaceEntry()
+    const PathSurfaceDescriptor& GetPathSurfaceDescriptor() const
     {
-        return &_pathSurfaceEntry;
+        return _pathSurfaceDescriptor;
     }
 
-    PathSurfaceDescriptor* GetQueueEntry()
+    const PathSurfaceDescriptor& GetQueueSurfaceDescriptor() const
     {
-        return &_queueEntry;
+        return _queueSurfaceDescriptor;
     }
 
-    PathRailingsDescriptor* GetPathRailingsEntry()
+    const PathRailingsDescriptor& GetPathRailingsDescriptor() const
     {
-        return &_pathRailingsEntry;
+        return _pathRailingsDescriptor;
     }
 
     void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;

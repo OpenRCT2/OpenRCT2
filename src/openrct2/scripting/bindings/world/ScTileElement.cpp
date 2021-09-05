@@ -713,7 +713,7 @@ namespace OpenRCT2::Scripting
             case TILE_ELEMENT_TYPE_PATH:
             {
                 auto el = _element->AsPath();
-                duk_push_int(ctx, el->GetSurfaceEntryIndex());
+                duk_push_int(ctx, el->GetLegacyPathEntryIndex());
                 break;
             }
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
@@ -756,7 +756,7 @@ namespace OpenRCT2::Scripting
             case TILE_ELEMENT_TYPE_PATH:
             {
                 auto el = _element->AsPath();
-                el->SetSurfaceEntryIndex(value & 0xFF);
+                el->SetLegacyPathEntryIndex(value & 0xFF);
                 Invalidate();
                 break;
             }
@@ -1397,7 +1397,7 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsEntrance();
         if (el != nullptr)
-            duk_push_int(ctx, el->GetPathType());
+            duk_push_int(ctx, el->GetLegacyPathEntryIndex());
         else
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
@@ -1408,7 +1408,7 @@ namespace OpenRCT2::Scripting
         auto el = _element->AsEntrance();
         if (el != nullptr)
         {
-            el->SetPathType(value);
+            el->SetLegacyPathEntryIndex(value);
             Invalidate();
         }
     }

@@ -1599,36 +1599,13 @@ namespace RCT1
                     dst2->SetIsBroken(false);
                     dst2->SetIsBlockedByVehicle(false);
 
-                    dst2->SetSurfaceEntryIndex(entryIndex);
+                    dst2->SetLegacyPathEntryIndex(entryIndex);
                     dst2->SetShouldDrawPathOverSupports(true);
                     if (RCT1::PathIsQueue(pathType))
                     {
                         dst2->SetIsQueue(true);
                     }
-                    if (_gameVersion != FILE_VERSION_RCT1_LL)
-                    {
-                        dst2->SetRailingEntryIndex(0);
-                    }
-                    else
-                    {
-                        ObjectEntryIndex railingsEntryIndex;
-                        switch (src2->GetRCT1SupportType())
-                        {
-                            case RCT1_PATH_SUPPORT_TYPE_COATED_WOOD:
-                                railingsEntryIndex = 3;
-                                break;
-                            case RCT1_PATH_SUPPORT_TYPE_SPACE:
-                                railingsEntryIndex = 4;
-                                break;
-                            case RCT1_PATH_SUPPORT_TYPE_BAMBOO:
-                                railingsEntryIndex = 5;
-                                break;
-                            case RCT1_PATH_SUPPORT_TYPE_TRUSS:
-                            default:
-                                railingsEntryIndex = 0;
-                        }
-                        dst2->SetRailingEntryIndex(railingsEntryIndex);
-                    }
+                    // TODO: Set railings type
 
                     // Additions
                     ObjectEntryIndex additionType = dst2->GetAddition();
@@ -1743,7 +1720,7 @@ namespace RCT1
                             pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
                         }
                         auto entryIndex = _pathTypeToEntryMap[pathType];
-                        dst2->SetPathType(entryIndex & 0x7F);
+                        dst2->SetLegacyPathEntryIndex(entryIndex & 0x7F);
                     }
 
                     return 1;
