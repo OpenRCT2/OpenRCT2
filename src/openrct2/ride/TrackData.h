@@ -34,6 +34,23 @@ struct track_descriptor
     uint8_t track_element;
 };
 
+enum
+{
+    NO_SPIN,
+    L8_SPIN,
+    R8_SPIN,
+    LR_SPIN,
+    RL_SPIN,
+    L7_SPIN,
+    R7_SPIN,
+    L5_SPIN,
+    R5_SPIN,
+    RC_SPIN, // Rotation Control Spin
+    SP_SPIN, // Special rapids Spin
+    L9_SPIN,
+    R9_SPIN
+};
+
 extern const track_descriptor gTrackDescriptors[142];
 
 struct dodgems_track_size
@@ -70,6 +87,9 @@ struct TrackElementDescriptor
 
     std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
     std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;
+
+    rct_trackdefinition Definition;
+    uint8_t SpinFunction;
 };
 
 namespace OpenRCT2
