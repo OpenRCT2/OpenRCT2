@@ -1518,10 +1518,8 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
         case WIDX_CHAIN_LIFT:
             ride_construction_invalidate_current_track();
             _currentTrackLiftHill ^= CONSTRUCTION_LIFT_HILL_SELECTED;
-            if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
-            {
+            if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED) && !gCheatsEnableChainLiftOnAllTrack)
                 _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
-            }
             _currentTrackPrice = MONEY32_UNDEFINED;
             window_ride_construction_update_active_elements();
             break;
@@ -1599,7 +1597,8 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
         case WIDX_O_TRACK:
             ride_construction_invalidate_current_track();
             _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
-            _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+            if (!gCheatsEnableChainLiftOnAllTrack)
+                _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
             _currentTrackPrice = MONEY32_UNDEFINED;
             window_ride_construction_update_active_elements();
             break;
