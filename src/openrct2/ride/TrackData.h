@@ -72,6 +72,13 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
     return { 0, 0, 0, 0 };
 }
 
+class TrackElementFunction
+{
+public:
+    virtual int32_t evaluate(const uint16_t progress) = 0;
+    virtual ~TrackElementFunction(){};
+};
+
 struct TrackElementDescriptor
 {
     rct_track_coordinates Coordinates;
@@ -87,10 +94,9 @@ struct TrackElementDescriptor
 
     std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
     std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;
-
-    rct_trackdefinition Definition;
+	rct_trackdefinition Definition;
     uint8_t SpinFunction;
-};
+	std::shared_ptr<TrackElementFunction> VerticalFactor;};
 
 namespace OpenRCT2
 {

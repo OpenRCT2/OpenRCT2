@@ -5882,7 +5882,7 @@ GForces Vehicle::GetGForces() const
         case TrackElemType::FlatToRightBankedUp25:
         case TrackElemType::LeftBankedDown25ToFlat:
         case TrackElemType::RightBankedDown25ToFlat:
-            vertFactor = 103;
+            //vertFactor = 103;
             // 6d7509
             break;
         case TrackElemType::Up25ToFlat:   //
@@ -5902,21 +5902,21 @@ GForces Vehicle::GetGForces() const
         case TrackElemType::RightBankedUp25ToFlat:
         case TrackElemType::FlatToLeftBankedDown25:
         case TrackElemType::FlatToRightBankedDown25:
-            vertFactor = -103;
+            //vertFactor = -103;
             // 6d7569
             break;
         case TrackElemType::Up25ToUp60:     //
         case TrackElemType::Down60ToDown25: //
         case TrackElemType::Up25ToUp60Covered:
         case TrackElemType::Down60ToDown25Covered:
-            vertFactor = 82;
+            //vertFactor = 82;
             // 6d7545
             break;
         case TrackElemType::Up60ToUp25:     //
         case TrackElemType::Down25ToDown60: //
         case TrackElemType::Up60ToUp25Covered:
         case TrackElemType::Down25ToDown60Covered:
-            vertFactor = -82;
+            //vertFactor = -82;
             // 6d7551
             break;
         case TrackElemType::LeftQuarterTurn5Tiles: //
@@ -5952,7 +5952,7 @@ GForces Vehicle::GetGForces() const
         case TrackElemType::LeftHalfBankedHelixDownLarge:
         case TrackElemType::LeftQuarterBankedHelixLargeUp:
         case TrackElemType::LeftQuarterBankedHelixLargeDown:
-            vertFactor = 200;
+            //vertFactor = 200;
             lateralFactor = 160;
             // 6d75E1
             break;
@@ -5961,7 +5961,7 @@ GForces Vehicle::GetGForces() const
         case TrackElemType::RightHalfBankedHelixDownLarge:
         case TrackElemType::RightQuarterBankedHelixLargeUp:
         case TrackElemType::RightQuarterBankedHelixLargeDown:
-            vertFactor = 200;
+            //vertFactor = 200;
             lateralFactor = -160;
             // 6d75F0
             break;
@@ -5977,7 +5977,7 @@ GForces Vehicle::GetGForces() const
             break;
         case TrackElemType::LeftVerticalLoop:
         case TrackElemType::RightVerticalLoop:
-            vertFactor = (abs(track_progress - 155) / 2) + 28;
+            //vertFactor = (abs(track_progress - 155) / 2) + 28;
             // 6d7690
             break;
         case TrackElemType::LeftQuarterTurn3Tiles:
@@ -5999,14 +5999,14 @@ GForces Vehicle::GetGForces() const
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
         case TrackElemType::LeftHalfBankedHelixUpSmall:
         case TrackElemType::LeftHalfBankedHelixDownSmall:
-            vertFactor = 100;
+            //vertFactor = 100;
             lateralFactor = 100;
             // 6d7782
             break;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
         case TrackElemType::RightHalfBankedHelixUpSmall:
         case TrackElemType::RightHalfBankedHelixDownSmall:
-            vertFactor = 100;
+            //vertFactor = 100;
             lateralFactor = -100;
             // 6d778E
             break;
@@ -6020,19 +6020,19 @@ GForces Vehicle::GetGForces() const
             break;
         case TrackElemType::HalfLoopUp:
         case TrackElemType::FlyerHalfLoopUp:
-            vertFactor = ((static_cast<uint16_t>(-(track_progress - 155))) / 2) + 28;
+            //vertFactor = ((static_cast<uint16_t>(-(track_progress - 155))) / 2) + 28;
             // 6d763E
             break;
         case TrackElemType::HalfLoopDown:
         case TrackElemType::FlyerHalfLoopDown:
-            vertFactor = (track_progress / 2) + 28;
+            //vertFactor = (track_progress / 2) + 28;
             // 6d7656
             break;
         case TrackElemType::LeftCorkscrewUp:
         case TrackElemType::RightCorkscrewDown:
         case TrackElemType::LeftFlyerCorkscrewUp:
         case TrackElemType::RightFlyerCorkscrewDown:
-            vertFactor = 52;
+            //vertFactor = 52;
             lateralFactor = 70;
             // 6d76AA
             break;
@@ -6040,19 +6040,19 @@ GForces Vehicle::GetGForces() const
         case TrackElemType::LeftCorkscrewDown:
         case TrackElemType::RightFlyerCorkscrewUp:
         case TrackElemType::LeftFlyerCorkscrewDown:
-            vertFactor = 52;
+            //vertFactor = 52;
             lateralFactor = -70;
             // 6d76B9
             break;
         case TrackElemType::FlatToUp60:
         case TrackElemType::Down60ToFlat:
-            vertFactor = 56;
+            //vertFactor = 56;
             // 6d747C
             break;
         case TrackElemType::Up60ToFlat:
         case TrackElemType::FlatToDown60:
         case TrackElemType::BrakeForDrop:
-            vertFactor = -56;
+            //vertFactor = -56;
             // 6d7488
             break;
         case TrackElemType::LeftQuarterTurn1TileUp60:
@@ -6066,44 +6066,44 @@ GForces Vehicle::GetGForces() const
             // 6d7779
             break;
         case TrackElemType::Watersplash:
-            vertFactor = -150;
+            //vertFactor = -150;
             if (track_progress < 32)
                 break;
-            vertFactor = 150;
+            //vertFactor = 150;
             if (track_progress < 64)
                 break;
-            vertFactor = 0;
+            //vertFactor = 0;
             if (track_progress < 96)
                 break;
-            vertFactor = 150;
+            //vertFactor = 150;
             if (track_progress < 128)
                 break;
-            vertFactor = -150;
+            //vertFactor = -150;
             // 6d7408
             break;
         case TrackElemType::FlatToUp60LongBase:
         case TrackElemType::Down60ToFlatLongBase:
-            vertFactor = 160;
+            //vertFactor = 160;
             // 6d74F1
             break;
         case TrackElemType::Up60ToFlatLongBase:
         case TrackElemType::FlatToDown60LongBase:
-            vertFactor = -160;
+            //vertFactor = -160;
             // 6d74FD
             break;
         case TrackElemType::ReverseFreefallSlope:
         case TrackElemType::AirThrustVerticalDownToLevel:
-            vertFactor = 120;
+            //vertFactor = 120;
             // 6d7458
             break;
         case TrackElemType::Up60ToUp90:
         case TrackElemType::Down90ToDown60:
-            vertFactor = 110;
+            //vertFactor = 110;
             // 6d7515
             break;
         case TrackElemType::Up90ToUp60:
         case TrackElemType::Down60ToDown90:
-            vertFactor = -110;
+            //vertFactor = -110;
             // 6d7521
             break;
         case TrackElemType::LeftEighthToDiag:
@@ -6118,13 +6118,13 @@ GForces Vehicle::GetGForces() const
             break;
         case TrackElemType::LeftEighthBankToDiag:
         case TrackElemType::LeftEighthBankToOrthogonal:
-            vertFactor = 270;
+            //vertFactor = 270;
             lateralFactor = 200;
             // 6d75C3
             break;
         case TrackElemType::RightEighthBankToDiag:
         case TrackElemType::RightEighthBankToOrthogonal:
-            vertFactor = 270;
+            //vertFactor = 270;
             lateralFactor = -200;
             // 6d75D2
             break;
@@ -6134,7 +6134,7 @@ GForces Vehicle::GetGForces() const
         case TrackElemType::DiagRightBankToUp25:
         case TrackElemType::DiagDown25ToLeftBank:
         case TrackElemType::DiagDown25ToRightBank:
-            vertFactor = 113;
+            //vertFactor = 113;
             // 6d7494
             break;
         case TrackElemType::DiagUp25ToFlat:
@@ -6143,147 +6143,148 @@ GForces Vehicle::GetGForces() const
         case TrackElemType::DiagUp25ToRightBank:
         case TrackElemType::DiagLeftBankToDown25:
         case TrackElemType::DiagRightBankToDown25:
-            vertFactor = -113;
+            //vertFactor = -113;
             // 6d755D
             break;
         case TrackElemType::DiagUp25ToUp60:
         case TrackElemType::DiagDown60ToDown25:
-            vertFactor = 95;
+            //vertFactor = 95;
             // 6D752D
             break;
         case TrackElemType::DiagUp60ToUp25:
         case TrackElemType::DiagDown25ToDown60:
-            vertFactor = -95;
+            //vertFactor = -95;
             // 6D7539
             break;
         case TrackElemType::DiagFlatToUp60:
         case TrackElemType::DiagDown60ToFlat:
-            vertFactor = 60;
+            //vertFactor = 60;
             // 6D7464
             break;
         case TrackElemType::DiagUp60ToFlat:
         case TrackElemType::DiagFlatToDown60:
-            vertFactor = -60;
+            //vertFactor = -60;
             // 6d7470
             break;
         case TrackElemType::LeftBarrelRollUpToDown:
         case TrackElemType::LeftBarrelRollDownToUp:
-            vertFactor = 170;
+            //vertFactor = 170;
             lateralFactor = 115;
             // 6d7581
             break;
         case TrackElemType::RightBarrelRollUpToDown:
         case TrackElemType::RightBarrelRollDownToUp:
-            vertFactor = 170;
+            //vertFactor = 170;
             lateralFactor = -115;
             // 6d75A8
             break;
         case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-            vertFactor = -(track_progress / 2) + 134;
+            //vertFactor = -(track_progress / 2) + 134;
             lateralFactor = 90;
             // 6d771C
             break;
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-            vertFactor = -(track_progress / 2) + 134;
+            //vertFactor = -(track_progress / 2) + 134;
             lateralFactor = -90;
             // 6D7746
             break;
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-            vertFactor = -(track_progress / 2) + 134;
+            //vertFactor = -(track_progress / 2) + 134;
             lateralFactor = 90;
             // 6D7731 identical to 6d771c
             break;
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
-            vertFactor = -(track_progress / 2) + 134;
+            //vertFactor = -(track_progress / 2) + 134;
             lateralFactor = -90;
             // 6D775B identical to 6d7746
             break;
         case TrackElemType::LeftLargeHalfLoopUp:
         case TrackElemType::RightLargeHalfLoopUp:
-            vertFactor = ((static_cast<uint16_t>(-(track_progress - 311))) / 4) + 46;
+            //vertFactor = ((static_cast<uint16_t>(-(track_progress - 311))) / 4) + 46;
             // 6d7666
             break;
         case TrackElemType::RightLargeHalfLoopDown:
         case TrackElemType::LeftLargeHalfLoopDown:
-            vertFactor = (track_progress / 4) + 46;
+            //vertFactor = (track_progress / 4) + 46;
             // 6d767F
             break;
         case TrackElemType::HeartLineTransferUp:
-            vertFactor = 103;
+            //vertFactor = 103;
             if (track_progress < 32)
                 break;
-            vertFactor = -103;
+            //vertFactor = -103;
             if (track_progress < 64)
                 break;
-            vertFactor = 0;
+            //vertFactor = 0;
             if (track_progress < 96)
                 break;
-            vertFactor = 103;
+            //vertFactor = 103;
             if (track_progress < 128)
                 break;
-            vertFactor = -103;
+            //vertFactor = -103;
             // 6d74A0
             break;
         case TrackElemType::HeartLineTransferDown:
-            vertFactor = -103;
+            //vertFactor = -103;
             if (track_progress < 32)
                 break;
-            vertFactor = 103;
+            //vertFactor = 103;
             if (track_progress < 64)
                 break;
-            vertFactor = 0;
+            //vertFactor = 0;
             if (track_progress < 96)
                 break;
-            vertFactor = -103;
+            //vertFactor = -103;
             if (track_progress < 128)
                 break;
-            vertFactor = 103;
+            //vertFactor = 103;
             // 6D74CA
             break;
         case TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop:
         case TrackElemType::InvertedFlatToDown90QuarterLoop:
         case TrackElemType::MultiDimFlatToDown90QuarterLoop:
-            vertFactor = (track_progress / 4) + 55;
+            //vertFactor = (track_progress / 4) + 55;
             // 6d762D
             break;
         case TrackElemType::Up90ToInvertedFlatQuarterLoop:
         case TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop:
         case TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop:
-            vertFactor = ((static_cast<uint16_t>(-(track_progress - 137))) / 4) + 55;
+            //vertFactor = ((static_cast<uint16_t>(-(track_progress - 137))) / 4) + 55;
             // 6D7614
             break;
         case TrackElemType::AirThrustTopCap:
-            vertFactor = -60;
+            //vertFactor = -60;
             // 6D744C
             break;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-            vertFactor = 200;
+            //vertFactor = 200;
             lateralFactor = 100;
             // 6d76C8
             break;
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
         case TrackElemType::RightBankedQuarterTurn3TileDown25:
-            vertFactor = 200;
+            //vertFactor = 200;
             lateralFactor = -100;
             // 6d76d7
             break;
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-            vertFactor = 200;
+            //vertFactor = 200;
             lateralFactor = 160;
             // 6D76E6
             break;
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
-            vertFactor = 200;
+            //vertFactor = 200;
             lateralFactor = -160;
             // 6d76F5
             break;
     }
 
     int32_t gForceLateral = 0;
-
+    const auto& ted = GetTrackElementDescriptor(GetTrackType());
+    vertFactor = ted.VerticalFactor->evaluate(track_progress);
     if (vertFactor != 0)
     {
         gForceVert += abs(velocity) * 98 / vertFactor;
