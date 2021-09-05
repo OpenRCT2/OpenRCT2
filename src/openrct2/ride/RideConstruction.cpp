@@ -454,6 +454,18 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         {
             trackElement->SetHasCableLift(false);
         }
+        if (flags & TRACK_ELEMENT_SET_HAS_SUPPORT_TRUE)
+        {
+            trackElement->SetHasSupport(true);
+        }
+        if (flags & TRACK_ELEMENT_SET_HAS_SUPPORT_FALSE)
+        {
+            trackElement->SetHasSupport(false);
+        }
+        if (flags & TRACK_ELEMENT_SET_HAS_SUPPORT_DEFAULT)
+        {
+            trackElement->SetHasSupport(trackElement->DetermineSupportState(cur,  false));
+        }
     }
     return retCoordsXYZ;
 }

@@ -957,7 +957,10 @@ enum
     TRACK_ELEMENT_SET_COLOUR_SCHEME = (1 << 2),
     TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE = (1 << 3),
     TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE = (1 << 4),
-    TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5)
+    TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5),
+    TRACK_ELEMENT_SET_HAS_SUPPORT_TRUE = (1 << 6),
+    TRACK_ELEMENT_SET_HAS_SUPPORT_FALSE = (1 << 7),
+    TRACK_ELEMENT_SET_HAS_SUPPORT_DEFAULT = (1 << 8)
 };
 
 struct RideOperatingSettings
@@ -985,6 +988,7 @@ struct RideOperatingSettings
 
 constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
 constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
+constexpr uint32_t CONSTRUCTION_BUILD_SUPPORTS = 1 << 2;
 
 Ride* get_ride(ride_id_t index);
 

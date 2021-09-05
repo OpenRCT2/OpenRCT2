@@ -259,6 +259,7 @@ bool window_ride_construction_update_state(
     track_type_t trackType = std::get<1>(updated_element);
     liftHillAndInvertedState = 0;
     rideIndex = _currentRideIndex;
+    liftHillAndInvertedState = CONSTRUCTION_BUILD_SUPPORTS;
     if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
     {
         liftHillAndInvertedState |= CONSTRUCTION_LIFT_HILL_SELECTED;

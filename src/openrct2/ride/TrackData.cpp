@@ -5427,6 +5427,278 @@ constexpr static uint8_t TrackTypeToSpinFunction[TrackElemType::Count] = {
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN
 };
 
+// clang-format off
+constexpr uint8_t TrackSupportsBehaviour[TrackElemType::Count][MaxSequencesPerPiece] = {
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                           // TrackElemType::Flat
+    { TRACK_SUPPORT_HAS_SUPPORT | TRACK_SUPPORT_CHAIRLIFT_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::EndStation
+    { TRACK_SUPPORT_HAS_SUPPORT | TRACK_SUPPORT_CHAIRLIFT_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::BeginStation
+    { TRACK_SUPPORT_HAS_SUPPORT | TRACK_SUPPORT_CHAIRLIFT_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::MiddleStation
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                   // TrackElemType::Up25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                   // TrackElemType::Up60
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_CHAIRLIFT_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                   // TrackElemType::Up25ToUp60
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                   // TrackElemType::Up60ToUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_CHAIRLIFT_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Up25ToFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                   // TrackElemType::Down25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                   // TrackElemType::Down60
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_CHAIRLIFT_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                   // TrackElemType::Down25ToDown60
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                   // TrackElemType::Down60ToDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_CHAIRLIFT_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Down25ToFlat
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn5Tiles
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn5Tiles
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::FlatToLeftBank
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::FlatToRightBank
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::LeftBankToFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::RightBankToFlat
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::BankedRightQuarterTurn5Tiles
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::LeftBankToUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::RightBankToUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Up25ToLeftBank
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Up25ToRightBank
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::LeftBankToDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::RightBankToDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Down25ToLeftBank
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Down25ToRightBank
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::LeftBank
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::RightBank
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn5TilesUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn5TilesUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn5TilesDown25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn5TilesDown25
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::SBendLeft
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::SBendRight
+    { TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_B, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_C, 0, 0, 0, 0, TRACK_SUPPORT_LOOP_C, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_B, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftVerticalLoop
+    { TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_B, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_C, 0, 0, 0, 0, TRACK_SUPPORT_LOOP_C, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_B, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightVerticalLoop
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn3Tiles
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn3Tiles
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedQuarterTurn3Tiles
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn3TilesUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn3TilesUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn3TilesDown25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn3TilesDown25
+    { TRACK_SUPPORT_HAS_SUPPORT | TRACK_SUPPORT_CHAIRLIFT_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::LeftQuarterTurn1Tile
+    { TRACK_SUPPORT_HAS_SUPPORT | TRACK_SUPPORT_CHAIRLIFT_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::RightQuarterTurn1Tile
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftTwistDownToUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightTwistDownToUp
+    { TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftTwistUpToDown
+    { TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightTwistUpToDown
+    { TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_B, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_C, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::HalfLoopUp
+    { 0, TRACK_SUPPORT_LOOP_C, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_B, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::HalfLoopDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftCorkscrewUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightCorkscrewUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftCorkscrewDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightCorkscrewDown
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToUp60
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Up60ToFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToDown60
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Down60ToFlat
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::TowerBase
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                                         // TrackElemType::TowerSection
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::FlatCovered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Up25Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Up60Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::FlatToUp25Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Up25ToUp60Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Up60ToUp25Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Up25ToFlatCovered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Down25Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Down60Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::FlatToDown25Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Down25ToDown60Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Down60ToDown25Covered
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT | TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },   // TrackElemType::Down25ToFlatCovered
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn5TilesCovered
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn5TilesCovered
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                     // TrackElemType::SBendLeftCovered
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                     // TrackElemType::SBendRightCovered
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn3TilesCovered
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn3TilesCovered
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftHalfBankedHelixUpSmall
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightHalfBankedHelixUpSmall
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftHalfBankedHelixDownSmall
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightHalfBankedHelixDownSmall
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0 }, // TrackElemType::LeftHalfBankedHelixUpLarge
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0 }, // TrackElemType::RightHalfBankedHelixUpLarge
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0 }, // TrackElemType::LeftHalfBankedHelixDownLarge
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0 }, // TrackElemType::RightHalfBankedHelixDownLarge
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::LeftQuarterTurn1TileUp60
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::RightQuarterTurn1TileUp60
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::LeftQuarterTurn1TileDown60
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::RightQuarterTurn1TileDown60
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Brakes
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Booster
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // TrackElemType::Maze
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterBankedHelixLargeUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterBankedHelixLargeUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterBankedHelixLargeDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterBankedHelixLargeDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterHelixLargeUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterHelixLargeUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterHelixLargeDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterHelixLargeDown
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Up25LeftBanked
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Up25RightBanked
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // TrackElemType::Waterfall
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // TrackElemType::Rapids
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // TrackElemType::OnRidePhoto
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Down25LeftBanked
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::Down25RightBanked
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },         // TrackElemType::Watersplash
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToUp60LongBase
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Up60ToFlatLongBase
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Whirlpool
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Down60ToFlatLongBase
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToDown60LongBase
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::CableLiftHill
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::ReverseFreefallSlope
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::ReverseFreefallVertical
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::Up90
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::Down90
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::Up60ToUp90
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::Down90ToDown60
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::Up90ToUp60
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::Down60ToDown90
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // TrackElemType::BrakeForDrop
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftEighthToDiag
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightEighthToDiag
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftEighthToOrthogonal
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightEighthToOrthogonal
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftEighthBankToDiag
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightEighthBankToDiag
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftEighthBankToOrthogonal
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightEighthBankToOrthogonal
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagFlat
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagUp25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagUp60
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagFlatToUp25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagUp25ToUp60
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagUp60ToUp25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagUp25ToFlat
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagDown25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagDown60
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagFlatToDown25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagDown25ToDown60
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagDown60ToDown25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagDown25ToFlat
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagFlatToUp60
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagUp60ToFlat
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagFlatToDown60
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagDown60ToFlat
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagFlatToLeftBank
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagFlatToRightBank
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagLeftBankToFlat
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagRightBankToFlat
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagLeftBankToUp25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagRightBankToUp25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagUp25ToLeftBank
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagUp25ToRightBank
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagLeftBankToDown25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagRightBankToDown25
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagDown25ToLeftBank
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagDown25ToRightBank
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagLeftBank
+    { 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::DiagRightBank
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LogFlumeReverser
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::SpinningTunnel
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBarrelRollUpToDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBarrelRollUpToDown
+    { TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBarrelRollDownToUp
+    { TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBarrelRollDownToUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankToRightQuarterTurn3TilesUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn3TilesDown25ToRightBank
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::PoweredLift
+    { TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_A, 0, TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_C, 0, 0, TRACK_SUPPORT_LOOP_B, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftLargeHalfLoopUp
+    { TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_A, 0, TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_C, 0, 0, TRACK_SUPPORT_LOOP_B, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightLargeHalfLoopUp
+    { TRACK_SUPPORT_LOOP_B, 0, 0, TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_C, 0, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_A, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightLargeHalfLoopDown
+    { TRACK_SUPPORT_LOOP_B, 0, 0, TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_C, 0, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_A, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftLargeHalfLoopDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftFlyerTwistUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightFlyerTwistUp
+    { TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftFlyerTwistDown
+    { TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightFlyerTwistDown
+    { TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_B, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_C, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlyerHalfLoopUp
+    { 0, TRACK_SUPPORT_LOOP_C, TRACK_SUPPORT_LOOP_A, TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_B, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlyerHalfLoopDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // TrackElemType::LeftFlyerCorkscrewUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // TrackElemType::RightFlyerCorkscrewUp
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // TrackElemType::LeftFlyerCorkscrewDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                         // TrackElemType::RightFlyerCorkscrewDown
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::HeartLineTransferUp
+    { 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::HeartLineTransferDown
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftHeartLineRoll
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightHeartLineRoll
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::MinigolfHoleA
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::MinigolfHoleB
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::MinigolfHoleC
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::MinigolfHoleD
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::MinigolfHoleE
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::Up90ToInvertedFlatQuarterLoop
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::InvertedFlatToDown90QuarterLoop
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftCurvedLiftHill
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightCurvedLiftHill
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftReverser
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightReverser
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::AirThrustTopCap
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                                                 // TrackElemType::AirThrustVerticalDown
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::AirThrustVerticalDownToLevel
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },                 // TrackElemType::BlockBrakes
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Up25ToLeftBankedUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Up25ToRightBankedUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedUp25ToUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedUp25ToUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Down25ToLeftBankedDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::Down25ToRightBankedDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedDown25ToDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedDown25ToDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedFlatToRightBankedUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedFlatToRightBankedDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToLeftBankedUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToRightBankedUp25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedUp25ToFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedUp25ToFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToLeftBankedDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatToRightBankedDown25
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftBankedDown25ToFlat
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightBankedDown25ToFlat
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn1TileUp90
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn1TileUp90
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::LeftQuarterTurn1TileDown90
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RightQuarterTurn1TileDown90
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::MultiDimFlatToDown90QuarterLoop
+    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop
+    { TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::RotationControlToggle
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatTrack1x4A
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatTrack2x2
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT }, // TrackElemType::FlatTrack4x4
+    { TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatTrack2x4
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatTrack1x5
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatTrack1x1A
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatTrack1x4B
+    { TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatTrack1x1B
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatTrack1x4C
+    { TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, TRACK_SUPPORT_HAS_SUPPORT, 0, 0, 0, 0, 0, 0, 0 }, // TrackElemType::FlatTrack3x3
+};
+// clang-format on
+
 namespace OpenRCT2
 {
     namespace TrackMetaData
@@ -5456,6 +5728,7 @@ namespace OpenRCT2
                 {
                     desc.SequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
                     desc.SequenceProperties[j] = TrackSequenceProperties[i][j];
+                    desc.SequenceSupportBehaviour[j] = TrackSupportsBehaviour[i][j];
                 }
                 _trackElementDescriptors.push_back(desc);
             }

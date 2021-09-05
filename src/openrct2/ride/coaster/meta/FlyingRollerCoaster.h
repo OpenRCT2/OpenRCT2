@@ -54,6 +54,7 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(SupportsBehaviour, _defaultCoasterSupports | RideSupportsBehaviour::InversionExtraSupports),
 };
 
 // Inverted variant
@@ -94,5 +95,6 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterAltRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_FLYING_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(SupportsBehaviour, RideSupportsBehaviour::ShouldHaveSupports | RideSupportsBehaviour::LoopBSupports | RideSupportsBehaviour::InversionExtraSupports),
 };
 // clang-format on

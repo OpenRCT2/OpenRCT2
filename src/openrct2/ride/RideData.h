@@ -175,6 +175,7 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+    uint8_t SupportsBehaviour;
 
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
@@ -331,6 +332,22 @@ extern const uint16_t RideFilmLength[3];
 
 extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 
+namespace RideSupportsBehaviour
+{
+    constexpr uint8_t AlwaysHasSupports = 1 << 0;
+    constexpr uint8_t ChairliftSupports = 1 << 1;
+    constexpr uint8_t ShouldHaveSupports = 1 << 2;
+    constexpr uint8_t RCT1ExtraSupports = 1 << 3;
+    constexpr uint8_t CoveredExtraSupports = 1 << 4;
+    constexpr uint8_t InversionExtraSupports = 1 << 5;
+    // LoopASupports is implied
+    constexpr uint8_t LoopBSupports = 1 << 6;
+    constexpr uint8_t LoopCSupports = 1 << 7;
+
+}; // namespace RideSupportsBehaviour
+
+const uint8_t _defaultCoasterSupports = RideSupportsBehaviour::ShouldHaveSupports;
+
 // clang-format off
 constexpr const RideTypeDescriptor DummyRTD =
 {
@@ -362,7 +379,8 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
-    SET_FIELD(ColourKey, RideColourKey::Ride)
+    SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(SupportsBehaviour, RideSupportsBehaviour::AlwaysHasSupports),
 };
 // clang-format on
 

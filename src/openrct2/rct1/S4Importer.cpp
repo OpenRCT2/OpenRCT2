@@ -1523,6 +1523,13 @@ namespace RCT1
                             tileElements.resize(originalSize + 16);
                             auto dstElement = tileElements.data() + originalSize;
                             auto numAddedElements = ImportTileElement(dstElement, srcElement);
+                            if (dstElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+                            {
+                                const auto* ride = get_ride(RCT12RideIdToOpenRCT2RideId(srcElement->AsTrack()->GetRideIndex()));
+                                auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
+                                dstElement->AsTrack()->SetHasSupport(
+                                    dstElement->AsTrack()->DetermineSupportState(coords.ToCoordsXY(), rideType, true));
+                            }
                             tileElements.resize(originalSize + numAddedElements);
                         } while (!(srcElement++)->IsLastForTile());
 

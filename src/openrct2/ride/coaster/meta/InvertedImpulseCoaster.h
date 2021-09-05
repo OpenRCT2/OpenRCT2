@@ -52,5 +52,6 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(SupportsBehaviour, RideSupportsBehaviour::ShouldHaveSupports | RideSupportsBehaviour::LoopBSupports | RideSupportsBehaviour::ChairliftSupports),
 };
 // clang-format on

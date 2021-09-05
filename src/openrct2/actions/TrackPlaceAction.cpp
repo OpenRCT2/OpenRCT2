@@ -561,6 +561,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetTrackType(_trackType);
         trackElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+        trackElement->SetHasSupport((_trackPlaceFlags & CONSTRUCTION_BUILD_SUPPORTS) && trackElement->DetermineSupportState(mapLoc, false));
 
         switch (_trackType)
         {

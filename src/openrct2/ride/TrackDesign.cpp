@@ -1563,7 +1563,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
                 uint32_t brakeSpeed = (track.flags & 0x0F) * 2;
                 uint32_t seatRotation = track.flags & 0x0F;
 
-                int32_t liftHillAndAlternativeState = 0;
+                int32_t liftHillAndAlternativeState = CONSTRUCTION_BUILD_SUPPORTS;
                 if (track.flags & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
                 {
                     liftHillAndAlternativeState |= 1;

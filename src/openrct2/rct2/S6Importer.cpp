@@ -1116,7 +1116,12 @@ public:
                             || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
                             std::memcpy(&dstElement, srcElement, sizeof(*srcElement));
                         else
+                        {
                             ImportTileElement(&dstElement, srcElement);
+                            if (dstElement.GetType() == TILE_ELEMENT_TYPE_TRACK)
+                                dstElement.AsTrack()->SetHasSupport(dstElement.AsTrack()->DetermineSupportState(
+                                    coords.ToCoordsXY(), _s6.rides[srcElement->AsTrack()->GetRideIndex()].type, false));
+                        }
                     }
                 } while (!(srcElement++)->IsLastForTile());
 
@@ -1192,6 +1197,7 @@ public:
                 auto src2 = src->AsTrack();
 
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
+                auto rtd = GetRideTypeDescriptor(rideType);
                 track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
 
                 dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, _s6.rides[src2->GetRideIndex()].type));

@@ -899,3 +899,114 @@ void TrackElement::SetHighlight(bool on)
     if (on)
         Flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
 }
+
+bool TrackSupportsHasFlag(uint8_t queryFlag, uint8_t sequenceFlags)
+{
+    switch (queryFlag)
+    {
+        case TRACK_SUPPORT_HAS_SUPPORT:
+        case TRACK_SUPPORT_RCT1_EXTRA_SUPPORT:
+        case TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT:
+        case TRACK_SUPPORT_COVERED_EXTRA_SUPPORT:
+        case TRACK_SUPPORT_SHOULD_HAVE_SUPPORT:
+            return sequenceFlags & queryFlag;
+        case TRACK_SUPPORT_LOOP_A:
+        case TRACK_SUPPORT_LOOP_B:
+        case TRACK_SUPPORT_LOOP_C:
+            return (sequenceFlags & TRACK_SUPPORT_CHAIRLIFT_SUPPORT) != TRACK_SUPPORT_CHAIRLIFT_SUPPORT
+                && sequenceFlags & queryFlag;
+        case TRACK_SUPPORT_CHAIRLIFT_SUPPORT:
+            return (sequenceFlags & TRACK_SUPPORT_CHAIRLIFT_SUPPORT) == TRACK_SUPPORT_CHAIRLIFT_SUPPORT;
+        default:
+            return false;
+    }
+}
+
+bool TrackSupportDefaultState(
+    RideTypeDescriptor rtd, CoordsXY position, track_type_t trackType, uint8_t sequence, bool RCT1SupportsOverride)
+{
+    if (rtd.SupportsBehaviour & RideSupportsBehaviour::AlwaysHasSupports)
+    {
+        return true;
+    }
+    else
+    {
+        Guard::Assert(sequence < MaxSequencesPerPiece);
+        auto ted = GetTrackElementDescriptor(trackType);
+        // if it is only a chairlift, only give chairlift supports
+        if (rtd.SupportsBehaviour == RideSupportsBehaviour::ChairliftSupports)
+        {
+            return TrackSupportsHasFlag(TRACK_SUPPORT_CHAIRLIFT_SUPPORT, sequence);
+        }
+        bool shouldDraw = shouldDraw = TrackSupportsHasFlag(TRACK_SUPPORT_HAS_SUPPORT, ted.SequenceSupportBehaviour[sequence]);
+        if (TrackSupportsHasFlag(TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, ted.SequenceSupportBehaviour[sequence]))
+        {
+            // nominally any place RCT2 supports show up every other tile, RCT1 supports always show up
+            if (rtd.SupportsBehaviour & RideSupportsBehaviour::ShouldHaveSupports && !RCT1SupportsOverride)
+                shouldDraw |= ((position.x & (1 << 5)) == (position.y & (1 << 5)))
+                    || ((!(position.x & (1 << 5))) && (!(position.y & (1 << 5))));
+            else
+                shouldDraw = true;
+        }
+        // Inverted Impulse coaster always draws supports on FlatToUp25, Up25ToFlat, FlatToDown25, Down25ToFlat.
+        if (rtd.SupportsBehaviour & RideSupportsBehaviour::ChairliftSupports)
+            shouldDraw |= TrackSupportsHasFlag(TRACK_SUPPORT_CHAIRLIFT_SUPPORT, ted.SequenceSupportBehaviour[sequence]);
+
+        // Extra supports for RCT1 behaviour
+        if (RCT1SupportsOverride || (rtd.SupportsBehaviour & RideSupportsBehaviour::RCT1ExtraSupports))
+            shouldDraw |= TrackSupportsHasFlag(TRACK_SUPPORT_RCT1_EXTRA_SUPPORT, ted.SequenceSupportBehaviour[sequence]);
+
+        // B&M coasters always draw supports on FlatToUp60, Up60ToFlat, FlatToDown60, Down60ToFlat.
+        // Coaster Boats always draws supports on "covered" track pieces
+        if (rtd.SupportsBehaviour & RideSupportsBehaviour::CoveredExtraSupports)
+            shouldDraw |= TrackSupportsHasFlag(TRACK_SUPPORT_COVERED_EXTRA_SUPPORT, ted.SequenceSupportBehaviour[sequence]);
+
+        // Upright coasters (LIM-Launched, Single-Rail, Twister) have only 2 supports per full roll while inverted coasters
+        // (Lay-down, Flying, Compact Inverted, Inverted) have 4.
+        if (rtd.SupportsBehaviour & RideSupportsBehaviour::InversionExtraSupports)
+            shouldDraw |= TrackSupportsHasFlag(TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT, ted.SequenceSupportBehaviour[sequence]);
+
+        // Most coasters have A supports. Suspended tracks and LIM-Launched have B supports. Looping Coaster has C supports.
+        if (rtd.SupportsBehaviour & RideSupportsBehaviour::LoopBSupports)
+            shouldDraw |= TrackSupportsHasFlag(TRACK_SUPPORT_LOOP_B, ted.SequenceSupportBehaviour[sequence]);
+        else if (rtd.SupportsBehaviour & RideSupportsBehaviour::LoopCSupports)
+            shouldDraw |= TrackSupportsHasFlag(TRACK_SUPPORT_LOOP_C, ted.SequenceSupportBehaviour[sequence]);
+        else
+            shouldDraw |= TrackSupportsHasFlag(TRACK_SUPPORT_LOOP_A, ted.SequenceSupportBehaviour[sequence]);
+
+        return shouldDraw;
+    }
+}
+
+bool TrackSupportDefaultState(
+    uint8_t rideType, CoordsXY position, track_type_t trackType, uint8_t sequence, bool RCT1SupportsOverride)
+{
+    return TrackSupportDefaultState(GetRideTypeDescriptor(rideType), position, trackType, sequence, RCT1SupportsOverride);
+}
+
+bool TrackElement::DetermineSupportState(CoordsXY position, bool RCT1SupportsOverride) const
+{
+    auto ride = get_ride(GetRideIndex());
+    if (ride == nullptr)
+        return true;
+    auto rtd = ride->GetRideTypeDescriptor();
+    return TrackSupportDefaultState(rtd, position, GetTrackType(), GetSequenceIndex(), RCT1SupportsOverride);
+}
+
+bool TrackElement::DetermineSupportState(CoordsXY position, uint8_t rideType, bool RCT1SupportsOverride) const
+{
+    return TrackSupportDefaultState(
+        GetRideTypeDescriptor(rideType), position, GetTrackType(), GetSequenceIndex(), RCT1SupportsOverride);
+}
+
+bool TrackElement::HasSupport() const
+{
+    return Flags2 & TRACK_ELEMENT_FLAGS2_HAS_SUPPORT;
+}
+
+void TrackElement::SetHasSupport(bool hasSupport)
+{
+    Flags2 &= ~TRACK_ELEMENT_FLAGS2_HAS_SUPPORT;
+    if (hasSupport)
+        Flags2 |= TRACK_ELEMENT_FLAGS2_HAS_SUPPORT;
+}

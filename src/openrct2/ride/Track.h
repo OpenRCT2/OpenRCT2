@@ -91,6 +91,7 @@ enum
     TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,
     TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED = 1 << 5,
     TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE = 1 << 6,
+    TRACK_ELEMENT_FLAGS2_HAS_SUPPORT = 1 << 7
 };
 
 enum
@@ -233,6 +234,20 @@ enum
     TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT = (1 << 13),
     TRACK_ELEM_FLAG_INVERSION_TO_NORMAL = (1 << 14),
     TRACK_ELEM_FLAG_BANKED = (1 << 15), // Also set on Spinning Tunnel and Log Flume reverser, probably to save a flag.
+};
+
+enum
+{
+    TRACK_SUPPORT_HAS_SUPPORT = 1 << 0,
+    TRACK_SUPPORT_SHOULD_HAVE_SUPPORT = 1 << 1,
+    TRACK_SUPPORT_INVERSION_EXTRA_SUPPORT = 1 << 2,
+    TRACK_SUPPORT_COVERED_EXTRA_SUPPORT = 1 << 3,
+    TRACK_SUPPORT_RCT1_EXTRA_SUPPORT = 1 << 4,
+    TRACK_SUPPORT_LOOP_A = 1 << 5,
+    TRACK_SUPPORT_LOOP_B = 1 << 6,
+    TRACK_SUPPORT_LOOP_C = 1 << 7,
+    TRACK_SUPPORT_CHAIRLIFT_SUPPORT = 0b11100000 // TRACK_SUPPORT_LOOP_A | TRACK_SUPPORT_LOOP_B | TRACK_SUPPORT_LOOP_C must be
+                                                 // notated as TRACK_SUPPORT_HAS_SUPPORT
 };
 
 namespace TrackElemType
@@ -566,6 +581,8 @@ bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const 
 void track_get_back(CoordsXYE* input, CoordsXYE* output);
 void track_get_front(CoordsXYE* input, CoordsXYE* output);
 
+bool trackShouldHaveSupports(const CoordsXY& position, RideTypeDescriptor rtd, track_type_t trackType, uint8_t sequence);
+
 bool track_element_is_covered(track_type_t trackElementType);
 bool track_type_is_station(track_type_t trackType);
 
@@ -581,3 +598,5 @@ money32 maze_set_track(
     uint8_t mode);
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
+
+bool TrackSupportDefaultState(uint8_t rideType, CoordsXY position, track_type_t trackType, uint8_t sequence, bool RCT1StyleSupports);
