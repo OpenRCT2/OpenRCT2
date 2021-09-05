@@ -629,7 +629,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             {
                 track_add_station_element({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
             }
-            sub_6CB945(ride);
+            ride->ValidateStations();
             ride->UpdateMaxVehicles();
         }
 

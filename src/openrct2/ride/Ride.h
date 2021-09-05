@@ -424,6 +424,7 @@ public:
     bool SupportsStatus(RideStatus s) const;
 
     void StopGuestsQueuing();
+    void ValidateStations();
 
     bool Open(bool isApplying);
     bool Test(RideStatus newStatus, bool isApplying);
@@ -1147,7 +1148,7 @@ void ride_breakdown_add_news_item(Ride* ride);
 Staff* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
-std::optional<CoordsXYZ> sub_6C683D(
+std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
@@ -1218,9 +1219,7 @@ enum class RideSetSetting : uint8_t;
 money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t value);
 money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
 
-void sub_6CB945(Ride* ride);
-
-void sub_6C94D8();
+void UpdateGhostTrackAndArrow();
 
 void ride_reset_all_names();
 

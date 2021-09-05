@@ -173,7 +173,8 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     auto trackType = trackElement.element->AsTrack()->GetTrackType();
     uint8_t direction = trackElement.element->GetDirection();
     _saveDirection = direction;
-    auto newCoords = sub_6C683D({ trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+    auto newCoords = GetTrackElementOriginAndApplyChanges(
+        { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
     if (newCoords == std::nullopt)
     {
@@ -229,7 +230,8 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         z = trackElement.element->GetBaseZ();
         direction = trackElement.element->GetDirection();
         trackType = trackElement.element->AsTrack()->GetTrackType();
-        newCoords = sub_6C683D({ trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+        newCoords = GetTrackElementOriginAndApplyChanges(
+            { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
         if (newCoords == std::nullopt)
         {
@@ -1769,7 +1771,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST)
     {
-        sub_6CB945(ride);
+        ride->ValidateStations();
         ride->Delete();
     }
     return totalCost;

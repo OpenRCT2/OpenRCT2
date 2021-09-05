@@ -2863,7 +2863,8 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
         auto trackCoords = CoordsXYZ{ trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         int32_t direction = trackBeginEnd.begin_direction;
         trackType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
-        auto newCoords = sub_6C683D({ trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnPos.element, 0);
+        auto newCoords = GetTrackElementOriginAndApplyChanges(
+            { trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnPos.element, 0);
         returnPos = newCoords == std::nullopt ? CoordsXYE{ trackCoords, returnPos.element }
                                               : CoordsXYE{ *newCoords, returnPos.element };
     };
@@ -3610,7 +3611,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
             auto tmpLoc = CoordsXYZ{ it.current, tileElement->GetBaseZ() };
             auto direction = tileElement->GetDirection();
             trackType = tileElement->AsTrack()->GetTrackType();
-            sub_6C683D({ tmpLoc, direction }, trackType, 0, &tileElement, flags);
+            GetTrackElementOriginAndApplyChanges({ tmpLoc, direction }, trackType, 0, &tileElement, flags);
         }
     }
     return true;

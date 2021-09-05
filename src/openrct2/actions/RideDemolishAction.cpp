@@ -129,7 +129,7 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     ride_remove_peeps(ride);
     ride->StopGuestsQueuing();
 
-    sub_6CB945(ride);
+    ride->ValidateStations();
     ride_clear_leftover_entrances(ride);
     News::DisableNewsItems(News::ItemType::Ride, _rideIndex);
 
