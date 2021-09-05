@@ -26,6 +26,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/Version.h>
 #include <openrct2/actions/BannerPlaceAction.h>
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/ClearAction.h>
@@ -54,6 +55,7 @@
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -119,10 +121,12 @@ enum FILE_MENU_DDIDX {
     DDIDX_SCREENSHOT = 7,
     DDIDX_GIANT_SCREENSHOT = 8,
     // separator
-    DDIDX_QUIT_TO_MENU = 10,
-    DDIDX_EXIT_OPENRCT2 = 11,
+    DDIDX_FILE_BUG_ON_GITHUB = 10,
     // separator
-    DDIDX_UPDATE_AVAILABLE = 13,
+    DDIDX_QUIT_TO_MENU = 12,
+    DDIDX_EXIT_OPENRCT2 = 13,
+    // separator
+    DDIDX_UPDATE_AVAILABLE = 15,
 };
 
 enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
@@ -435,6 +439,8 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_TRACK_DESIGNS_MANAGER;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
 
@@ -451,6 +457,8 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_SCENARIO_EDITOR;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
             }
@@ -465,6 +473,8 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_OPTIONS;
                 gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
@@ -577,6 +587,15 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 case DDIDX_GIANT_SCREENSHOT:
                     screenshot_giant();
                     break;
+                case DDIDX_FILE_BUG_ON_GITHUB:
+                {
+                    std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/"
+                                      "new?assignees=&labels=bug&template=bug_report.yaml";
+                    auto versionStr = String::URLEncode(gVersionInfoFull);
+                    url.append("&openrct2_build=" + versionStr);
+                    OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
+                }
+                break;
                 case DDIDX_QUIT_TO_MENU:
                 {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
