@@ -50,6 +50,15 @@ namespace OpenRCT2::Drawing
             IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
 
     private:
+        enum class PaletteIndexType : uint8_t
+        {
+            Normal,
+            PrimaryRemap,
+            SecondaryRemap,
+            TertiaryRemap,
+            Special,
+        };
+
         static std::vector<int32_t> GetPixels(
             const uint8_t* pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode);
         static std::vector<uint8_t> EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height);
@@ -59,16 +68,18 @@ namespace OpenRCT2::Drawing
             IMPORT_MODE mode, int16_t* rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height);
         static int32_t GetPaletteIndex(const GamePalette& palette, int16_t* colour);
         static bool IsTransparentPixel(const int16_t* colour);
+        static bool IsInPalette(const GamePalette& palette, int16_t* colour);
         static bool IsChangablePixel(int32_t paletteIndex);
+        static PaletteIndexType GetPaletteIndexType(int32_t paletteIndex);
         static int32_t GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour);
     };
 } // namespace OpenRCT2::Drawing
 
 constexpr const GamePalette StandardPalette = { {
-    // 0 (unused)
+    // 0 (Unused/Transparent)
     { 0, 0, 0, 255 },
 
-    // 1 - 9 (misc. e.g. font and water)
+    // 1 - 9 (Misc. e.g. font, water, chain lift)
     { 1, 1, 1, 255 },
     { 2, 2, 2, 255 },
     { 3, 3, 3, 255 },
@@ -79,7 +90,7 @@ constexpr const GamePalette StandardPalette = { {
     { 8, 8, 8, 255 },
     { 9, 9, 9, 255 },
 
-    //
+    // 10 - 21 (Grey)
     { 35, 35, 23, 255 },
     { 51, 51, 35, 255 },
     { 67, 67, 47, 255 },
@@ -92,6 +103,8 @@ constexpr const GamePalette StandardPalette = { {
     { 195, 195, 183, 255 },
     { 219, 219, 211, 255 },
     { 243, 243, 239, 255 },
+
+    // 22 - 33 (Olive)
     { 0, 47, 51, 255 },
     { 0, 59, 63, 255 },
     { 11, 75, 79, 255 },
@@ -104,6 +117,8 @@ constexpr const GamePalette StandardPalette = { {
     { 115, 191, 187, 255 },
     { 139, 207, 203, 255 },
     { 163, 227, 223, 255 },
+
+    // 34 - 45 (Light Brown)
     { 7, 43, 67, 255 },
     { 11, 59, 87, 255 },
     { 23, 75, 111, 255 },
@@ -116,6 +131,8 @@ constexpr const GamePalette StandardPalette = { {
     { 135, 199, 219, 255 },
     { 163, 219, 231, 255 },
     { 195, 239, 247, 255 },
+
+    // 46 - 57 (Yellow, also used for tertiary remap)
     { 0, 27, 71, 255 },
     { 0, 43, 95, 255 },
     { 0, 63, 119, 255 },
@@ -128,6 +145,8 @@ constexpr const GamePalette StandardPalette = { {
     { 95, 243, 255, 255 },
     { 143, 251, 255, 255 },
     { 195, 255, 255, 255 },
+
+    // 58 - 69 (Indian Red)
     { 0, 0, 35, 255 },
     { 0, 0, 79, 255 },
     { 7, 7, 95, 255 },
@@ -140,6 +159,8 @@ constexpr const GamePalette StandardPalette = { {
     { 127, 127, 215, 255 },
     { 159, 159, 235, 255 },
     { 191, 191, 255, 255 },
+
+    // 70 - 81 (Grass Green)
     { 19, 51, 27, 255 },
     { 23, 63, 35, 255 },
     { 31, 79, 47, 255 },
@@ -152,6 +173,8 @@ constexpr const GamePalette StandardPalette = { {
     { 83, 187, 147, 255 },
     { 95, 203, 163, 255 },
     { 103, 219, 183, 255 },
+
+    // 82 - 93 (Olive Green)
     { 27, 55, 31, 255 },
     { 35, 71, 47, 255 },
     { 43, 83, 59, 255 },
@@ -164,6 +187,8 @@ constexpr const GamePalette StandardPalette = { {
     { 147, 219, 195, 255 },
     { 167, 231, 207, 255 },
     { 191, 247, 223, 255 },
+
+    // 94 - 105 (Green)
     { 0, 63, 15, 255 },
     { 0, 83, 19, 255 },
     { 0, 103, 23, 255 },
@@ -176,6 +201,8 @@ constexpr const GamePalette StandardPalette = { {
     { 115, 223, 139, 255 },
     { 143, 239, 163, 255 },
     { 179, 255, 195, 255 },
+
+    // 106 - 117 (Tan)
     { 19, 43, 79, 255 },
     { 27, 55, 99, 255 },
     { 43, 71, 119, 255 },
@@ -188,6 +215,8 @@ constexpr const GamePalette StandardPalette = { {
     { 151, 191, 239, 255 },
     { 171, 207, 247, 255 },
     { 195, 227, 255, 255 },
+
+    // 118 - 129 (Indigo)
     { 55, 19, 15, 255 },
     { 87, 43, 39, 255 },
     { 103, 55, 51, 255 },
@@ -200,6 +229,8 @@ constexpr const GamePalette StandardPalette = { {
     { 223, 183, 183, 255 },
     { 239, 211, 211, 255 },
     { 255, 239, 239, 255 },
+
+    // 130 - 141 (Blue)
     { 111, 27, 0, 255 },
     { 151, 39, 0, 255 },
     { 167, 51, 7, 255 },
@@ -212,6 +243,8 @@ constexpr const GamePalette StandardPalette = { {
     { 243, 211, 143, 255 },
     { 251, 231, 175, 255 },
     { 255, 247, 215, 255 },
+
+    // 142 - 153 (Sea Green)
     { 15, 43, 11, 255 },
     { 23, 55, 15, 255 },
     { 31, 71, 23, 255 },
@@ -224,6 +257,8 @@ constexpr const GamePalette StandardPalette = { {
     { 167, 199, 147, 255 },
     { 195, 219, 175, 255 },
     { 223, 243, 207, 255 },
+
+    // 154 - 165 (Purple)
     { 95, 0, 63, 255 },
     { 115, 7, 75, 255 },
     { 127, 15, 83, 255 },
@@ -236,6 +271,8 @@ constexpr const GamePalette StandardPalette = { {
     { 231, 155, 191, 255 },
     { 243, 195, 215, 255 },
     { 255, 235, 243, 255 },
+
+    // 166 - 177 (Red)
     { 0, 0, 63, 255 },
     { 0, 0, 87, 255 },
     { 0, 0, 115, 255 },
@@ -248,6 +285,8 @@ constexpr const GamePalette StandardPalette = { {
     { 115, 123, 255, 255 },
     { 163, 171, 255, 255 },
     { 215, 219, 255, 255 },
+
+    // 178 - 189 (Orange)
     { 0, 39, 79, 255 },
     { 0, 51, 111, 255 },
     { 0, 63, 147, 255 },
@@ -260,6 +299,8 @@ constexpr const GamePalette StandardPalette = { {
     { 107, 183, 255, 255 },
     { 135, 203, 255, 255 },
     { 163, 219, 255, 255 },
+
+    // 190 - 201 (Water Blue)
     { 47, 51, 0, 255 },
     { 55, 63, 0, 255 },
     { 67, 75, 0, 255 },
@@ -273,7 +314,7 @@ constexpr const GamePalette StandardPalette = { {
     { 231, 231, 171, 255 },
     { 255, 255, 207, 255 },
 
-    // 202 - 213 (Secondary remap)
+    // 202 - 213 (Pink, also used for secondary remap)
     { 27, 0, 63, 255 },
     { 51, 0, 103, 255 },
     { 63, 11, 123, 255 },
@@ -301,27 +342,29 @@ constexpr const GamePalette StandardPalette = { {
     { 195, 219, 231, 255 },
     { 223, 243, 255, 255 },
 
-    // 226 (unknown)
+    // 226 (Extra grey)
     { 75, 75, 55, 255 },
 
-    // 227 - 229 (tertiary remap)
+    // 227 - 229 (Extra yellows)
     { 0, 183, 255, 255 },
     { 0, 219, 255, 255 },
     { 0, 255, 255, 255 },
 
-    // 230 - 239 (water)
+    // 230 - 234 (Water waves)
     { 99, 107, 7, 255 },
     { 99, 107, 7, 255 },
     { 135, 143, 39, 255 },
     { 123, 131, 27, 255 },
     { 99, 107, 7, 255 },
+
+    // 235 - 249 (Water sparkles)
     { 151, 155, 55, 255 },
     { 151, 155, 55, 255 },
     { 227, 227, 155, 255 },
     { 203, 203, 115, 255 },
     { 151, 155, 55, 255 },
 
-    // 240 - 242 (chain lift)
+    // 240 - 242 (Extra grey)
     { 91, 91, 67, 255 },
     { 107, 107, 83, 255 },
     { 123, 123, 99, 255 },
@@ -331,7 +374,7 @@ constexpr const GamePalette StandardPalette = { {
     // { 47, 47, 47, 255 },
     // { 47, 71, 87, 255 },
 
-    // 243 to 254 (primary remap)
+    // 243 to 254 (Primary remap)
     { 47, 51, 111, 255 },
     { 47, 55, 131, 255 },
     { 51, 63, 151, 255 },
@@ -345,6 +388,6 @@ constexpr const GamePalette StandardPalette = { {
     { 63, 183, 255, 255 },
     { 75, 207, 255, 255 },
 
-    // 255 (unused?)
-    { 0, 0, 0, 255 },
+    // 255 (Used in a small number of cases for pure white)
+    { 255, 255, 255, 255 },
 } };

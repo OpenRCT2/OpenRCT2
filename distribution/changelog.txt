@@ -10,6 +10,7 @@
 - Feature: [#15294] New vehicle animation type: flying animal.
 - Fix: [#13465] Creating a scenario based on a won save game results in a scenario that’s instantly won.
 - Fix: [#14316] Closing the Track Designs Manager window causes broken state.
+- Fix: [#14649] ImageImporter incorrectly remaps colours outside the RCT2 palette.
 - Fix: [#14667] “Extreme Hawaiian Island” has unpurchaseable land tiles (original bug).
 - Fix: [#15096] Crash when placing entrances in the scenario editor near the map corner.
 - Fix: [#15142] ToonTowner's mine roofs were moved into the pirate theme scenery group instead of the mine theme scenery group.
