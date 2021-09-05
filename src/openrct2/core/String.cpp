@@ -14,7 +14,10 @@
 #endif // __MINGW32__
 
 #include <algorithm>
+#include <cctype>
 #include <cwctype>
+#include <iomanip>
+#include <sstream>
 #include <stdexcept>
 #include <vector>
 #ifndef _WIN32
@@ -822,6 +825,31 @@ namespace String
         }
 
         return trunc;
+    }
+
+    std::string URLEncode(std::string_view value)
+    {
+        std::ostringstream escaped;
+        escaped.fill('0');
+        escaped << std::hex;
+
+        for (auto c : value)
+        {
+            // Keep alphanumeric and other accepted characters intact
+            if (std::isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~')
+            {
+                escaped << c;
+            }
+            else
+            {
+                // Any other characters are percent-escaped
+                escaped << std::uppercase;
+                escaped << '%' << std::setw(2) << int32_t(static_cast<unsigned char>(c));
+                escaped << std::nouppercase;
+            }
+        }
+
+        return escaped.str();
     }
 } // namespace String
 
