@@ -178,6 +178,8 @@ namespace String
      */
     std::string_view UTF8Truncate(std::string_view v, size_t size);
 
+    // Escapes special characters in a string to the percentage equivalent that can be used in URLs.
+    std::string URLEncode(std::string_view value);
 } // namespace String
 
 class CodepointView

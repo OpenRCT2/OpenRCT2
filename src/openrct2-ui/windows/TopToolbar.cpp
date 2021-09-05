@@ -26,6 +26,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/Version.h>
 #include <openrct2/actions/BannerPlaceAction.h>
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/ClearAction.h>
@@ -54,6 +55,7 @@
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -119,10 +121,12 @@ enum FILE_MENU_DDIDX {
     DDIDX_SCREENSHOT = 7,
     DDIDX_GIANT_SCREENSHOT = 8,
     // separator
-    DDIDX_QUIT_TO_MENU = 10,
-    DDIDX_EXIT_OPENRCT2 = 11,
+    DDIDX_FILE_BUG_ON_GITHUB = 10,
     // separator
-    DDIDX_UPDATE_AVAILABLE = 13,
+    DDIDX_QUIT_TO_MENU = 12,
+    DDIDX_EXIT_OPENRCT2 = 13,
+    // separator
+    DDIDX_UPDATE_AVAILABLE = 15,
 };
 
 enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
@@ -423,60 +427,61 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
  */
 static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    int32_t numItems;
+    int32_t numItems = 0;
 
     switch (widgetIndex)
     {
         case WIDX_FILE_MENU:
             if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
             {
-                gDropdownItemsFormat[0] = STR_ABOUT;
-                gDropdownItemsFormat[1] = STR_OPTIONS;
-                gDropdownItemsFormat[2] = STR_SCREENSHOT;
-                gDropdownItemsFormat[3] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[4] = STR_EMPTY;
-                gDropdownItemsFormat[5] = STR_QUIT_TRACK_DESIGNS_MANAGER;
-                gDropdownItemsFormat[6] = STR_EXIT_OPENRCT2;
+                gDropdownItemsFormat[numItems++] = STR_ABOUT;
+                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
+                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_QUIT_TRACK_DESIGNS_MANAGER;
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
 
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    gDropdownItemsFormat[5] = STR_QUIT_ROLLERCOASTER_DESIGNER;
-
-                numItems = 7;
+                    gDropdownItemsFormat[numItems++] = STR_QUIT_ROLLERCOASTER_DESIGNER;
             }
             else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
-                gDropdownItemsFormat[0] = STR_LOAD_LANDSCAPE;
-                gDropdownItemsFormat[1] = STR_SAVE_LANDSCAPE;
-                gDropdownItemsFormat[2] = STR_EMPTY;
-                gDropdownItemsFormat[3] = STR_ABOUT;
-                gDropdownItemsFormat[4] = STR_OPTIONS;
-                gDropdownItemsFormat[5] = STR_SCREENSHOT;
-                gDropdownItemsFormat[6] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[7] = STR_EMPTY;
-                gDropdownItemsFormat[8] = STR_QUIT_SCENARIO_EDITOR;
-                gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
-                numItems = 10;
+                gDropdownItemsFormat[numItems++] = STR_LOAD_LANDSCAPE;
+                gDropdownItemsFormat[numItems++] = STR_SAVE_LANDSCAPE;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_ABOUT;
+                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
+                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_QUIT_SCENARIO_EDITOR;
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
             }
             else
             {
-                gDropdownItemsFormat[0] = STR_NEW_GAME;
-                gDropdownItemsFormat[1] = STR_LOAD_GAME;
-                gDropdownItemsFormat[2] = STR_SAVE_GAME;
-                gDropdownItemsFormat[3] = STR_SAVE_GAME_AS;
-                gDropdownItemsFormat[4] = STR_EMPTY;
-                gDropdownItemsFormat[5] = STR_ABOUT;
-                gDropdownItemsFormat[6] = STR_OPTIONS;
-                gDropdownItemsFormat[7] = STR_SCREENSHOT;
-                gDropdownItemsFormat[8] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[9] = STR_EMPTY;
-                gDropdownItemsFormat[10] = STR_QUIT_TO_MENU;
-                gDropdownItemsFormat[11] = STR_EXIT_OPENRCT2;
-                numItems = 12;
+                gDropdownItemsFormat[numItems++] = STR_NEW_GAME;
+                gDropdownItemsFormat[numItems++] = STR_LOAD_GAME;
+                gDropdownItemsFormat[numItems++] = STR_SAVE_GAME;
+                gDropdownItemsFormat[numItems++] = STR_SAVE_GAME_AS;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_ABOUT;
+                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
+                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
                 if (OpenRCT2::GetContext()->HasNewVersionInfo())
                 {
-                    gDropdownItemsFormat[12] = STR_EMPTY;
-                    gDropdownItemsFormat[13] = STR_UPDATE_AVAILABLE;
-                    numItems += 2;
+                    gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
                 }
             }
             WindowDropdownShowText(
@@ -582,6 +587,15 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 case DDIDX_GIANT_SCREENSHOT:
                     screenshot_giant();
                     break;
+                case DDIDX_FILE_BUG_ON_GITHUB:
+                {
+                    std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/"
+                                      "new?assignees=&labels=bug&template=bug_report.yaml";
+                    auto versionStr = String::URLEncode(gVersionInfoFull);
+                    url.append("&openrct2_build=" + versionStr);
+                    OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
+                }
+                break;
                 case DDIDX_QUIT_TO_MENU:
                 {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
