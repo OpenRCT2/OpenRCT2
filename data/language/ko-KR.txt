@@ -3963,8 +3963,8 @@ STR_DTLS    :파라다이스 부두는 바다 위의 산책로를 확장했습�
 
 <Dragon's Cove>
 STR_SCNR    :Dragon’s Cove
-STR_PARK    :용의 동굴
-STR_DTLS    :이번 롤러코스터 건설 도전에서는 해안 동굴이 무대가 됩니다.
+STR_PARK    :용의 만
+STR_DTLS    :이번 롤러코스터 건설 도전에서는 바닷가 근처의 만이 무대가 됩니다.
 
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
