@@ -63,7 +63,7 @@ struct Vehicle : EntityBase
         Tail,
     };
 
-    enum class Status
+    enum class Status : uint8_t
     {
         MovingToEndOfStation,
         WaitingForPassengers,
