@@ -51,4 +51,5 @@ private:
     bool ride_is_valid_num_circuits() const;
     bool ride_is_valid_operation_option(Ride * ride) const;
     rct_string_id GetOperationErrorMessage(Ride * ride) const;
+    void UpdateSupports(bool RCT1SupportsOverride); const
 };

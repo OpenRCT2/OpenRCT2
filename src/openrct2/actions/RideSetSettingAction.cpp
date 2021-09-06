@@ -223,6 +223,7 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
             break;
         case RideSetSetting::RideType:
             ride->type = _value;
+            UpdateSupports(false);
             gfx_invalidate_screen();
             break;
     }
@@ -296,4 +297,31 @@ rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
                 return STR_CANT_CHANGE_LAUNCH_SPEED;
             }
     }
+}
+
+
+void RideSetSettingAction::UpdateSupports(bool RCT1SupportsOverride) const
+{
+
+    uint8_t oldpaused = gGamePaused;
+    gGamePaused = 0;
+
+    tile_element_iterator it;
+
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            continue;
+
+        if (it.element->AsTrack()->GetRideIndex() != static_cast<ride_id_t>(_rideIndex))
+            continue;
+
+        it.element->AsTrack()->SetHasSupport(
+            it.element->AsTrack()->DetermineSupportState({ it.x, it.y }, RCT1SupportsOverride));
+
+        tile_element_iterator_restart_for_tile(&it);
+    }
+
+    gGamePaused = oldpaused;
 }
