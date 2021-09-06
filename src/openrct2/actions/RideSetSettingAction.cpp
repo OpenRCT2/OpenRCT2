@@ -299,10 +299,8 @@ rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
     }
 }
 
-
 void RideSetSettingAction::UpdateSupports(bool RCT1SupportsOverride) const
 {
-
     uint8_t oldpaused = gGamePaused;
     gGamePaused = 0;
 
