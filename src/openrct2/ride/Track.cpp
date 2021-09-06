@@ -938,7 +938,7 @@ bool TrackSupportDefaultState(
         {
             return TrackSupportsHasFlag(TRACK_SUPPORT_CHAIRLIFT_SUPPORT, sequence);
         }
-        bool shouldDraw = shouldDraw = TrackSupportsHasFlag(TRACK_SUPPORT_HAS_SUPPORT, ted.SequenceSupportBehaviour[sequence]);
+        bool shouldDraw = TrackSupportsHasFlag(TRACK_SUPPORT_HAS_SUPPORT, ted.SequenceSupportBehaviour[sequence]);
         if (TrackSupportsHasFlag(TRACK_SUPPORT_SHOULD_HAVE_SUPPORT, ted.SequenceSupportBehaviour[sequence]))
         {
             // nominally any place RCT2 supports show up every other tile, RCT1 supports always show up
