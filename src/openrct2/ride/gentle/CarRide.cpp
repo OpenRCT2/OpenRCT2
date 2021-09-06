@@ -167,8 +167,8 @@ static void paint_car_ride_track_flat(
     {
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
-    if (trackElement.HasSupport())
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -206,8 +206,7 @@ static void paint_car_ride_track_25_deg_up(
             break;
     }
 
-    if (trackElement.HasSupport())
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
@@ -245,8 +244,7 @@ static void paint_car_ride_track_flat_to_25_deg_up(
             break;
     }
 
-    if (trackElement.HasSupport())
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -284,8 +282,7 @@ static void paint_car_ride_track_25_deg_up_to_flat(
             break;
     }
 
-    if (trackElement.HasSupport())
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 40, 0x20);
@@ -352,12 +349,12 @@ static void paint_car_ride_station(
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    if ((direction == 0 || direction == 2) && trackElement.HasSupport())
+    if (direction == 0 || direction == 2)
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
-    else if (trackElement.HasSupport())
+    else
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -384,10 +381,7 @@ static void paint_car_ride_track_right_quarter_turn_3_tiles(
     {
         case 0:
         case 3:
-
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -441,8 +435,7 @@ static void paint_car_ride_track_left_quarter_turn_1_tile(
             break;
     }
 
-    if (trackElement.HasSupport())
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
     track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
 
@@ -485,8 +478,7 @@ static void paint_car_ride_track_spinning_tunnel(
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
-    if (trackElement.HasSupport())
-        wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -531,8 +523,10 @@ static void paint_car_ride_track_60_deg_up(
             break;
     }
 
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 32, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
 
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -585,8 +579,10 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(
             break;
     }
 
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 12, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
 
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -639,8 +635,10 @@ static void paint_car_ride_track_60_deg_up_to_25_deg_up(
             break;
     }
 
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 20, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
 
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -696,8 +694,7 @@ static void paint_car_ride_track_log_bumps(
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
-    if (trackElement.HasSupport())
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);

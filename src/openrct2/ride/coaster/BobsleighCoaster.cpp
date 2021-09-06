@@ -54,8 +54,10 @@ static void bobsleigh_rc_track_flat(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 14579, 0, 0, 32, 1, 26, height, 0, 27, height);
                 break;
         }
-        if (trackElement.HasSupport())
+        if (track_paint_util_should_paint_supports(session->MapPosition))
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        }
     }
     else
     {
@@ -76,8 +78,10 @@ static void bobsleigh_rc_track_flat(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 14575, 0, 0, 32, 1, 26, height, 0, 27, height);
                 break;
         }
-        if (trackElement.HasSupport())
+        if (track_paint_util_should_paint_supports(session->MapPosition))
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        }
     }
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(
@@ -101,8 +105,7 @@ static void bobsleigh_rc_track_station(
         height + 3);
     PaintAddImageAsParentRotated(
         session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
-    if (trackElement.HasSupport())
-        track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
+    track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -143,8 +146,10 @@ static void bobsleigh_rc_track_25_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 14641, 0, 0, 32, 1, 50, height, 0, 27, height);
                 break;
         }
-        if (trackElement.HasSupport())
+        if (track_paint_util_should_paint_supports(session->MapPosition))
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+        }
     }
     else
     {
@@ -175,8 +180,10 @@ static void bobsleigh_rc_track_25_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 14617, 0, 0, 32, 1, 50, height, 0, 27, height);
                 break;
         }
-        if (trackElement.HasSupport())
+        if (track_paint_util_should_paint_supports(session->MapPosition))
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+        }
     }
     if (direction == 0 || direction == 3)
     {
@@ -225,8 +232,10 @@ static void bobsleigh_rc_track_flat_to_25_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 14625, 0, 0, 32, 1, 42, height, 0, 27, height);
                 break;
         }
-        if (trackElement.HasSupport())
+        if (track_paint_util_should_paint_supports(session->MapPosition))
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+        }
     }
     else
     {
@@ -257,8 +266,10 @@ static void bobsleigh_rc_track_flat_to_25_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 14601, 0, 0, 32, 1, 42, height, 0, 27, height);
                 break;
         }
-        if (trackElement.HasSupport())
+        if (track_paint_util_should_paint_supports(session->MapPosition))
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+        }
     }
     if (direction == 0 || direction == 3)
     {
@@ -307,8 +318,10 @@ static void bobsleigh_rc_track_25_deg_up_to_flat(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 14633, 0, 0, 32, 1, 34, height, 0, 27, height);
                 break;
         }
-        if (trackElement.HasSupport())
+        if (track_paint_util_should_paint_supports(session->MapPosition))
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+        }
     }
     else
     {
@@ -339,8 +352,10 @@ static void bobsleigh_rc_track_25_deg_up_to_flat(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 14609, 0, 0, 32, 1, 34, height, 0, 27, height);
                 break;
         }
-        if (trackElement.HasSupport())
+        if (track_paint_util_should_paint_supports(session->MapPosition))
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+        }
     }
     if (direction == 0 || direction == 3)
     {
@@ -418,9 +433,7 @@ static void bobsleigh_rc_track_left_quarter_turn_5(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -588,9 +601,7 @@ static void bobsleigh_rc_track_left_quarter_turn_5(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -648,8 +659,10 @@ static void bobsleigh_rc_track_flat_to_left_bank(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14649, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -688,8 +701,10 @@ static void bobsleigh_rc_track_flat_to_right_bank(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14657, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -728,8 +743,10 @@ static void bobsleigh_rc_track_left_bank_to_flat(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14655, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -768,8 +785,10 @@ static void bobsleigh_rc_track_right_bank_to_flat(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14647, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -815,9 +834,7 @@ static void bobsleigh_rc_track_banked_left_quarter_turn_5(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -985,9 +1002,7 @@ static void bobsleigh_rc_track_banked_left_quarter_turn_5(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -1045,8 +1060,10 @@ static void bobsleigh_rc_track_left_bank_to_25_deg_up(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14681, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     if (direction == 0 || direction == 3)
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -1092,8 +1109,10 @@ static void bobsleigh_rc_track_right_bank_to_25_deg_up(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14689, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     if (direction == 0 || direction == 3)
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -1139,8 +1158,10 @@ static void bobsleigh_rc_track_25_deg_up_to_left_bank(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14665, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     if (direction == 0 || direction == 3)
     {
         paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
@@ -1186,8 +1207,10 @@ static void bobsleigh_rc_track_25_deg_up_to_right_bank(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14673, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     if (direction == 0 || direction == 3)
     {
         paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
@@ -1265,8 +1288,10 @@ static void bobsleigh_rc_track_left_bank(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14697, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -1320,9 +1345,7 @@ static void bobsleigh_rc_track_s_bend_left(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -1340,9 +1363,8 @@ static void bobsleigh_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 14843, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
-                    if (trackElement.HasSupport())
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    metal_a_supports_paint_setup(
+                        session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1350,9 +1372,8 @@ static void bobsleigh_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 14847, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
-                    if (trackElement.HasSupport())
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    metal_a_supports_paint_setup(
+                        session, METAL_SUPPORTS_TUBES, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1399,9 +1420,8 @@ static void bobsleigh_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 14843, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
-                    if (trackElement.HasSupport())
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    metal_a_supports_paint_setup(
+                        session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1409,9 +1429,8 @@ static void bobsleigh_rc_track_s_bend_left(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 14847, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
-                    if (trackElement.HasSupport())
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    metal_a_supports_paint_setup(
+                        session, METAL_SUPPORTS_TUBES, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -1453,9 +1472,7 @@ static void bobsleigh_rc_track_s_bend_left(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 1:
@@ -1511,9 +1528,7 @@ static void bobsleigh_rc_track_s_bend_right(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -1531,9 +1546,8 @@ static void bobsleigh_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 14851, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
-                    if (trackElement.HasSupport())
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    metal_a_supports_paint_setup(
+                        session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1541,9 +1555,8 @@ static void bobsleigh_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 14855, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
-                    if (trackElement.HasSupport())
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    metal_a_supports_paint_setup(
+                        session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1590,9 +1603,8 @@ static void bobsleigh_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 14851, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
-                    if (trackElement.HasSupport())
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    metal_a_supports_paint_setup(
+                        session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1600,9 +1612,8 @@ static void bobsleigh_rc_track_s_bend_right(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 14855, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
-                    if (trackElement.HasSupport())
-                        metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    metal_a_supports_paint_setup(
+                        session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -1644,9 +1655,7 @@ static void bobsleigh_rc_track_s_bend_right(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 1:
@@ -1702,9 +1711,7 @@ static void bobsleigh_rc_track_left_quarter_turn_3(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -1787,9 +1794,7 @@ static void bobsleigh_rc_track_left_quarter_turn_3(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -1854,9 +1859,7 @@ static void bobsleigh_rc_track_left_quarter_turn_3_bank(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -1939,9 +1942,7 @@ static void bobsleigh_rc_track_left_quarter_turn_3_bank(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -2006,9 +2007,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_small(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -2092,9 +2091,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_small(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -2141,9 +2138,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_small(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
@@ -2232,9 +2227,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_small(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
@@ -2286,9 +2279,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_small(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -2372,9 +2363,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_small(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
@@ -2421,9 +2410,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_small(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -2512,9 +2499,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_small(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
@@ -2595,9 +2580,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_large(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -2766,9 +2749,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_large(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -2815,9 +2796,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_large(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
@@ -2991,9 +2970,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_large(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
@@ -3045,9 +3022,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_large(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -3216,9 +3191,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_large(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
@@ -3265,9 +3238,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_large(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -3441,9 +3412,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_large(
                         height + 27);
                     break;
             }
-            if (trackElement.HasSupport())
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
@@ -3507,8 +3476,10 @@ static void bobsleigh_rc_track_brakes(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14585, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3540,8 +3511,10 @@ static void bobsleigh_rc_track_block_brakes(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14591, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
     }
-    if (trackElement.HasSupport())
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3555,46 +3528,27 @@ static void bobsleigh_rc_track_on_ride_photo(
     switch (direction)
     {
         case 0:
-            if (trackElement.HasSupport())
-            {
-                PaintAddImageAsParentRotated(
-                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-            }
+            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14572, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14574, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             break;
         case 1:
-
-            if (trackElement.HasSupport())
-            {
-                PaintAddImageAsParentRotated(
-                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-            }
+            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14573, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14575, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             break;
         case 2:
-            if (trackElement.HasSupport())
-            {
-                PaintAddImageAsParentRotated(
-                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-            }
+            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14572, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             PaintAddImageAsParentRotated(
@@ -3602,15 +3556,9 @@ static void bobsleigh_rc_track_on_ride_photo(
 
             break;
         case 3:
-            if (trackElement.HasSupport())
-            {
-                PaintAddImageAsParentRotated(
-                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-                metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-            }
+            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14573, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             PaintAddImageAsParentRotated(
