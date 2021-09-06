@@ -900,7 +900,7 @@ void TrackElement::SetHighlight(bool on)
         Flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
 }
 
-bool TrackSupportsHasFlag(uint8_t queryFlag, uint8_t sequenceFlags)
+static bool TrackSupportsHasFlag(uint8_t queryFlag, uint8_t sequenceFlags)
 {
     switch (queryFlag)
     {

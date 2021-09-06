@@ -598,4 +598,6 @@ money32 maze_set_track(
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
 
 bool TrackSupportDefaultState(
+    RideTypeDescriptor rtd, CoordsXY position, track_type_t trackType, uint8_t sequence, bool RCT1SupportsOverride);
+bool TrackSupportDefaultState(
     uint8_t rideType, CoordsXY position, track_type_t trackType, uint8_t sequence, bool RCT1StyleSupports);
