@@ -3650,6 +3650,8 @@ STR_6457    :Report a bug on GitHub
 STR_6458    :Follow this on Main View
 STR_6460    :D
 STR_6461    :Direction
+STR_6462    :Keep disconnected ride entrances
+STR_6463    :Disconnected ride entrances are not removed when constructing a ride
 
 #############
 # Scenarios #

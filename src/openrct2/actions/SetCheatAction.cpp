@@ -240,6 +240,9 @@ GameActions::Result SetCheatAction::Execute() const
         case CheatType::AllowTrackPlaceInvalidHeights:
             gCheatsAllowTrackPlaceInvalidHeights = _param1 != 0;
             break;
+        case CheatType::KeepDisconnectedRideEntrances:
+            gCheatsKeepDisconnectedRideEntrances = _param1 != 0;
+            break;
         default:
         {
             log_error("Unabled cheat: %d", _cheatType.id);

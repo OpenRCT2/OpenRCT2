@@ -1450,14 +1450,14 @@ void Ride::ValidateStations()
     for (StationIndex stationId = 0; stationId < OpenRCT2::Limits::MaxStationsPerRide; ++stationId)
     {
         auto entrance = ride_get_entrance_location(this, stationId);
-        if (!entrance.IsNull())
+        if (!entrance.IsNull() && !gCheatsKeepDisconnectedRideEntrances)
         {
             locations.push_back(entrance);
             ride_clear_entrance_location(this, stationId);
         }
 
         auto exit = ride_get_exit_location(this, stationId);
-        if (!exit.IsNull())
+        if (!exit.IsNull() && !gCheatsKeepDisconnectedRideEntrances)
         {
             locations.push_back(exit);
             ride_clear_exit_location(this, stationId);
@@ -1507,8 +1507,7 @@ void Ride::ValidateStations()
 
             // find the station that's connected to this ride entrance
             CoordsXY nextLocation = location;
-            nextLocation.x += CoordsDirectionDelta[tileElement->GetDirection()].x;
-            nextLocation.y += CoordsDirectionDelta[tileElement->GetDirection()].y;
+            nextLocation += CoordsDirectionDelta[tileElement->GetDirection()];
 
             // if there's no connected station, remove the ride entrance (see below)
             bool shouldRemove = true;
@@ -1546,7 +1545,7 @@ void Ride::ValidateStations()
                 }
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
                 {
-                    // if the location is already set for this station, big problem!
+                    // if the location is already set for this station, stop looking for this entrance and remove
                     if (!ride_get_exit_location(this, stationId).IsNull())
                         break;
                     // set the station's exit location to this one
@@ -1555,7 +1554,7 @@ void Ride::ValidateStations()
                 }
                 else
                 {
-                    // if the location is already set for this station, big problem!
+                    // if the location is already set for this station, stop looking for this entrance and remove
                     if (!ride_get_entrance_location(this, stationId).IsNull())
                         break;
                     // set the station's entrance location to this one

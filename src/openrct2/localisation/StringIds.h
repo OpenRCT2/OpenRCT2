@@ -3917,6 +3917,10 @@ enum : uint16_t
     STR_TILE_INSPECTOR_DIRECTION_SHORT = 6460,
     STR_TILE_INSPECTOR_DIRECTION = 6461,
 
+
+    STR_CHEAT_KEEP_DISCONNECTED_RIDE_ENTRANCES = 6462,
+    STR_CHEAT_KEEP_DISCONNECTED_RIDE_ENTRANCES_TIP = 6463,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
