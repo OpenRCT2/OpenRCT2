@@ -1197,7 +1197,6 @@ public:
                 auto src2 = src->AsTrack();
 
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
-                auto rtd = GetRideTypeDescriptor(rideType);
                 track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
 
                 dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, _s6.rides[src2->GetRideIndex()].type));
