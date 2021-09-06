@@ -404,6 +404,38 @@ namespace RCT1
         }
     };
 
+    enum class PeepSpriteType : uint8_t
+    {
+        Normal = 0,
+        Handyman = 1,
+        Mechanic = 2,
+        Security = 3,
+        EntertainerPanda = 4,
+        EntertainerTiger = 5,
+        EntertainerElephant = 6,
+        EntertainerRoman = 7,
+        EntertainerGorilla = 8,
+        EntertainerSnowman = 9,
+        EntertainerKnight = 10,
+        EntertainerAstronaut = 11,
+
+        Balloon = 16,
+        Candyfloss = 17,
+        Umbrella = 18,
+        Pizza = 19,       // Unsure
+        SecurityAlt = 20, // Unknown
+        Popcorn = 21,
+        ArmsCrossed = 22,
+        HeadDown = 23,
+        Nauseous = 24,
+        VeryNauseous = 25,
+        RequireToilet = 26,
+        Hat = 27,
+        Burger = 28,
+        Tentacle = 29,
+        ToffeeApple = 30
+    };
+
     struct Peep : RCT12SpriteBase
     {
         uint8_t pad_1F[3];
@@ -415,7 +447,7 @@ namespace RCT1
         uint8_t outside_of_park;       // 0x2A
         uint8_t state;                 // 0x2B
         uint8_t sub_state;             // 0x2C
-        uint8_t sprite_type;           // 0x2D
+        PeepSpriteType sprite_type;    // 0x2D
         uint8_t type;                  // 0x2E
         union
         {
@@ -549,38 +581,6 @@ namespace RCT1
         }
     };
     assert_struct_size(Peep, 0x100);
-
-    enum class PeepSpriteType : uint8_t
-    {
-        Normal = 0,
-        Handyman = 1,
-        Mechanic = 2,
-        Security = 3,
-        EntertainerPanda = 4,
-        EntertainerTiger = 5,
-        EntertainerElephant = 6,
-        EntertainerRoman = 7,
-        EntertainerGorilla = 8,
-        EntertainerSnowman = 9,
-        EntertainerKnight = 10,
-        EntertainerAstronaut = 11,
-
-        Balloon = 16,
-        Candyfloss = 17,
-        Umbrella = 18,
-        Pizza = 19,       // Unsure
-        SecurityAlt = 20, // Unknown
-        Popcorn = 21,
-        ArmsCrossed = 22,
-        HeadDown = 23,
-        Nauseous = 24,
-        VeryNauseous = 25,
-        RequireToilet = 26,
-        Hat = 27,
-        Burger = 28,
-        Tentacle = 29,
-        ToffeeApple = 30
-    };
 
     union Entity
     {
