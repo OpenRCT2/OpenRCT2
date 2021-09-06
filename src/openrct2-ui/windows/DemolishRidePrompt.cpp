@@ -84,7 +84,7 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     w->widgets = window_ride_demolish_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_DEMOLISH);
     WindowInitScrollWidgets(w);
-    w->number = static_cast<int32_t>(ride->id);
+    w->rideId = ride->id;
     _demolishRideCost = -ride_get_refund_price(ride);
 
     return w;
@@ -109,7 +109,7 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
     w->widgets = window_ride_refurbish_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_REFURBISH);
     WindowInitScrollWidgets(w);
-    w->number = static_cast<int32_t>(ride->id);
+    w->rideId = ride->id;
     _demolishRideCost = -ride_get_refund_price(ride);
 
     return w;

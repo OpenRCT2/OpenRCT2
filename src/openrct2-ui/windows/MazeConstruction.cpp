@@ -130,7 +130,7 @@ rct_window* window_maze_construction_open()
 
     WindowInitScrollWidgets(w);
 
-    w->number = static_cast<int32_t>(_currentRideIndex);
+    w->rideId = _currentRideIndex;
 
     window_push_others_right(w);
     show_gridlines();
