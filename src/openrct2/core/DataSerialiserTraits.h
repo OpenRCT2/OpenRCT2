@@ -214,39 +214,6 @@ template<> struct DataSerializerTraits_t<NetworkPlayerId_t>
     }
 };
 
-template<> struct DataSerializerTraits_t<NetworkRideId_t>
-{
-    static void encode(OpenRCT2::IStream* stream, const NetworkRideId_t& val)
-    {
-        uint32_t temp = static_cast<uint32_t>(val);
-        temp = ByteSwapBE(temp);
-        stream->Write(&temp);
-    }
-    static void decode(OpenRCT2::IStream* stream, NetworkRideId_t& val)
-    {
-        uint32_t temp;
-        stream->Read(&temp);
-        val = static_cast<NetworkRideId_t>(ByteSwapBE(temp));
-    }
-    static void log(OpenRCT2::IStream* stream, const NetworkRideId_t& val)
-    {
-        char rideId[28] = {};
-        snprintf(rideId, sizeof(rideId), "%u", EnumValue(val));
-
-        stream->Write(rideId, strlen(rideId));
-
-        auto ride = get_ride(val);
-        if (ride != nullptr)
-        {
-            auto rideName = ride->GetName();
-
-            stream->Write(" \"", 2);
-            stream->Write(rideName.c_str(), rideName.size());
-            stream->Write("\"", 1);
-        }
-    }
-};
-
 template<typename T> struct DataSerializerTraits_t<DataSerialiserTag<T>>
 {
     static void encode(OpenRCT2::IStream* stream, const DataSerialiserTag<T>& tag)
