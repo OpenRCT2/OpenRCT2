@@ -464,7 +464,7 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         }
         if (flags & TRACK_ELEMENT_SET_HAS_SUPPORT_DEFAULT)
         {
-            trackElement->SetHasSupport(trackElement->DetermineSupportState(cur,  false));
+            trackElement->SetHasSupport(trackElement->DetermineSupportState(cur, false));
         }
     }
     return retCoordsXYZ;
