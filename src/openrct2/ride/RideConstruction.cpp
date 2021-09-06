@@ -1202,35 +1202,36 @@ money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, u
     return res->Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
 }
 
-// Finds the direction a station should face for an NxN station when called with an N+2xN+2 grid size.
-// Direction is valid only if the tile in question is on the outer tiles of the grid
-static Direction GetEntranceExitDirection(
-    int16_t mapX, int16_t mapY, int16_t entranceMinX, int16_t entranceMinY, int16_t entranceMaxX, int16_t entranceMaxY)
+// Finds the direction a ride entrance should face for an NxN station.
+// Direction is valid if queryLocation is directly adjacent to this station.
+static Direction GetRideEntranceDirection(CoordsXY& queryLocation, CoordsXY& entranceMin, CoordsXY& entranceMax)
 {
-    if (mapX == entranceMinX)
+    entranceMin -= CoordsXY(32, 32);
+    entranceMax += CoordsXY(32, 32);
+    if (queryLocation.x == entranceMax.x)
     {
-        if (mapY > entranceMinY && mapY < entranceMaxY)
+        if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
         {
             return 0;
         }
     }
-    if (mapY == entranceMaxY)
+    if (queryLocation.y == entranceMax.y)
     {
-        if (mapX > entranceMinX && mapX < entranceMaxX)
+        if (queryLocation.x > entranceMin.x && queryLocation.x < entranceMax.x)
         {
             return 1;
         }
     }
-    if (mapX == entranceMaxX)
+    if (queryLocation.x == entranceMin.x)
     {
-        if (mapY > entranceMinY && mapY < entranceMaxY)
+        if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
         {
             return 2;
         }
     }
-    if (mapY == entranceMinY)
+    if (queryLocation.y == entranceMin.y)
     {
-        if (mapX > entranceMinX && mapX < entranceMaxX)
+        if (queryLocation.x > entranceMin.x && queryLocation.x < entranceMax.x)
         {
             return 3;
         }
@@ -1322,8 +1323,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             entranceExitCoords.direction = (startDirection + directionIncrement) & 3;
             // search for TrackElement one tile over, shifted in the search direction
             auto nextLocation = entranceExitCoords;
-            nextLocation.x += CoordsDirectionDelta[entranceExitCoords.direction].x;
-            nextLocation.y += CoordsDirectionDelta[entranceExitCoords.direction].y;
+            nextLocation += CoordsDirectionDelta[entranceExitCoords.direction];
             if (map_is_location_valid(nextLocation))
             {
                 // iterate over every element in the tile until we find what we want
@@ -1366,14 +1366,12 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         }
         gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
     }
+    // tracked rides excluding tower rides
     else
     {
-        // create a 2-point rectangle. The rectangle will have a width or height of 0 depending on station direction or length
-        // (if the station is 0) The 2-point rectangle is ballooned on all four sides by 1 tile for a 3xN or Nx3 rectangle.
-        // Whatever edge the ride entrance is on, rotate it outward to get entrance direction.
-        CoordsXY nextLocation = { stationStart };
-        CoordsXY entranceMin = { nextLocation };
-        CoordsXY entranceMax = { nextLocation };
+        // create a 2-point rectangle. The rectangle will have a width or height of 0 depending on station direction
+        CoordsXY entranceMin = { stationStart };
+        CoordsXY entranceMax = { stationStart };
 
         // get the beginning of the station TrackElement
         auto tileElement = ride_get_station_start_track_element(ride, gRideEntranceExitPlaceStationIndex);
@@ -1382,16 +1380,13 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             entranceExitCoords.setNull();
             return entranceExitCoords;
         }
-        entranceExitCoords.direction = tileElement->GetDirection();
-        auto stationDirection = entranceExitCoords.direction;
+        auto stationDirection = tileElement->GetDirection();
 
         // find additional station TrackElements and extend the line of valid entrance locations
         while (true)
         {
-            entranceMax = { nextLocation };
-            nextLocation.x -= CoordsDirectionDelta[entranceExitCoords.direction].x;
-            nextLocation.y -= CoordsDirectionDelta[entranceExitCoords.direction].y;
-            tileElement = map_get_first_element_at(nextLocation);
+            entranceMax -= CoordsDirectionDelta[stationDirection];
+            tileElement = map_get_first_element_at(entranceMax);
             if (tileElement == nullptr)
                 break;
             bool goToNextTile = false;
@@ -1414,24 +1409,17 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             if (!goToNextTile)
                 break;
         }
+        // entranceMax increments before the check
+        entranceMax += CoordsDirectionDelta[stationDirection];
         // swap variables for valid ranges
-        nextLocation.x = entranceMin.x;
-        if (nextLocation.x > entranceMax.x)
-        {
-            entranceMin.x = entranceMax.x;
-            entranceMax.x = nextLocation.x;
-        }
+        if (entranceMin.x > entranceMax.x)
+            std::swap(entranceMin.x, entranceMax.x);
+        if (entranceMin.y > entranceMax.y)
+            std::swap(entranceMin.y, entranceMax.y);
 
-        nextLocation.y = entranceMin.y;
-        if (nextLocation.y > entranceMax.y)
-        {
-            entranceMin.y = entranceMax.y;
-            entranceMax.y = nextLocation.y;
-        }
-        // for a 3xN or Nx3 grid, determine the direction toward the center
-        auto direction = GetEntranceExitDirection(
-            entranceExitCoords.x, entranceExitCoords.y, entranceMin.x - 32, entranceMin.y - 32, entranceMax.x + 32,
-            entranceMax.y + 32);
+        // get the station direction from its position
+        auto direction = GetRideEntranceDirection(entranceExitCoords, entranceMin, entranceMax);
+
         if (direction != INVALID_DIRECTION && direction != stationDirection && direction != direction_reverse(stationDirection))
         {
             entranceExitCoords.direction = direction;
