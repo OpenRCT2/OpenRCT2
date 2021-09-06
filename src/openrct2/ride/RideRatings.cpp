@@ -591,7 +591,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
                 break;
             case TILE_ELEMENT_TYPE_PATH:
                 // Bonus for normal path
-                if (tileElement->AsPath()->GetSurfaceEntryIndex() != 0)
+                if (tileElement->AsPath()->GetLegacyPathEntryIndex() != 0)
                 {
                     if (tileElement->GetClearanceZ() == inputTileElement->GetBaseZ())
                     {

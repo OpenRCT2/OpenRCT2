@@ -122,7 +122,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->GetPathType() == (_type & 0xF))
+        if (entranceElement->GetLegacyPathEntryIndex() == (_type & 0xF))
             entranceIsSamePath = true;
         else
             res->Cost -= MONEY(6, 00);
@@ -189,7 +189,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->GetPathType() == (_type & 0xF))
+        if (entranceElement->GetLegacyPathEntryIndex() == (_type & 0xF))
             entranceIsSamePath = true;
         else
             res->Cost -= MONEY(6, 00);
@@ -223,7 +223,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
         {
             // Set the path type but make sure it's not a queue as that will not show up
-            entranceElement->SetPathType(_type & 0x7F);
+            entranceElement->SetLegacyPathEntryIndex(_type & 0x7F);
             map_invalidate_tile_full(_loc);
         }
     }
@@ -233,7 +233,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         Guard::Assert(pathElement != nullptr);
 
         pathElement->SetClearanceZ(zHigh);
-        pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
+        pathElement->SetLegacyPathEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
         pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
         pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
         pathElement->SetIsQueue(_type & FOOTPATH_ELEMENT_INSERT_QUEUE);

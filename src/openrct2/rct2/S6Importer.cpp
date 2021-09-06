@@ -1167,7 +1167,7 @@ public:
                 auto dst2 = dst->AsPath();
                 auto src2 = src->AsPath();
 
-                dst2->SetSurfaceEntryIndex(src2->GetEntryIndex());
+                dst2->SetLegacyPathEntryIndex(src2->GetEntryIndex());
                 dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
                 dst2->SetSloped(src2->IsSloped());
                 dst2->SetSlopeDirection(src2->GetSlopeDirection());
@@ -1257,7 +1257,7 @@ public:
                 dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                dst2->SetPathType(src2->GetPathType());
+                dst2->SetLegacyPathEntryIndex(src2->GetPathType());
 
                 break;
             }

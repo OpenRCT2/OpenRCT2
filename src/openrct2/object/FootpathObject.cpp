@@ -40,23 +40,23 @@ void FootpathObject::Load()
     _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.bridge_image = _legacyType.image + 109;
 
-    _pathSurfaceEntry.string_idx = _legacyType.string_idx;
-    _pathSurfaceEntry.image = _legacyType.image;
-    _pathSurfaceEntry.preview = _legacyType.GetPreviewImage();
-    _pathSurfaceEntry.flags = _legacyType.flags;
+    _pathSurfaceDescriptor.Name = _legacyType.string_idx;
+    _pathSurfaceDescriptor.Image = _legacyType.image;
+    _pathSurfaceDescriptor.PreviewImage = _legacyType.GetPreviewImage();
+    _pathSurfaceDescriptor.Flags = _legacyType.flags;
 
-    _queueEntry.string_idx = _legacyType.string_idx;
-    _queueEntry.image = _legacyType.GetQueueImage();
-    _queueEntry.preview = _legacyType.GetQueuePreviewImage();
-    _queueEntry.flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
+    _queueSurfaceDescriptor.Name = _legacyType.string_idx;
+    _queueSurfaceDescriptor.Image = _legacyType.GetQueueImage();
+    _queueSurfaceDescriptor.PreviewImage = _legacyType.GetQueuePreviewImage();
+    _queueSurfaceDescriptor.Flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
 
-    _pathRailingsEntry.string_idx = _legacyType.string_idx;
-    _pathRailingsEntry.bridge_image = _legacyType.bridge_image;
-    _pathRailingsEntry.preview = _legacyType.GetPreviewImage();
-    _pathRailingsEntry.flags = _legacyType.flags;
-    _pathRailingsEntry.scrolling_mode = _legacyType.scrolling_mode;
-    _pathRailingsEntry.support_type = _legacyType.support_type;
-    _pathRailingsEntry.railings_image = _legacyType.GetRailingsImage();
+    _pathRailingsDescriptor.Name = _legacyType.string_idx;
+    _pathRailingsDescriptor.BridgeImage = _legacyType.bridge_image;
+    _pathRailingsDescriptor.PreviewImage = _legacyType.GetPreviewImage();
+    _pathRailingsDescriptor.Flags = _legacyType.flags;
+    _pathRailingsDescriptor.ScrollingMode = _legacyType.scrolling_mode;
+    _pathRailingsDescriptor.SupportType = _legacyType.support_type;
+    _pathRailingsDescriptor.RailingsImage = _legacyType.GetRailingsImage();
 }
 
 void FootpathObject::Unload()
@@ -71,8 +71,8 @@ void FootpathObject::Unload()
 void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    gfx_draw_sprite(dpi, _pathSurfaceEntry.preview, screenCoords - ScreenCoordsXY{ 49, 17 }, 0);
-    gfx_draw_sprite(dpi, _queueEntry.preview, screenCoords + ScreenCoordsXY{ 4, -17 }, 0);
+    gfx_draw_sprite(dpi, _pathSurfaceDescriptor.PreviewImage, screenCoords - ScreenCoordsXY{ 49, 17 }, 0);
+    gfx_draw_sprite(dpi, _queueSurfaceDescriptor.PreviewImage, screenCoords + ScreenCoordsXY{ 4, -17 }, 0);
 }
 
 static RailingEntrySupportType ParseSupportType(const std::string& s)

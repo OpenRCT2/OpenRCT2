@@ -24,6 +24,11 @@ void FootpathSurfaceObject::Load()
         PreviewImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
         BaseImageId = PreviewImageId + 1;
     }
+
+    _descriptor.Name = NameStringId;
+    _descriptor.Image = BaseImageId;
+    _descriptor.PreviewImage = PreviewImageId;
+    _descriptor.Flags = Flags;
 }
 
 void FootpathSurfaceObject::Unload()

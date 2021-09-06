@@ -146,7 +146,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
         entranceElement->SetDirection(_loc.direction);
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
-        entranceElement->SetPathType(_pathType);
+        entranceElement->SetLegacyPathEntryIndex(_pathType);
 
         if (!entranceElement->IsGhost())
         {

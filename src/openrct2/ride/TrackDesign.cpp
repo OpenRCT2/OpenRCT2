@@ -39,6 +39,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
@@ -874,15 +875,15 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
         }
 
         entry_index = 0;
-        for (PathSurfaceEntry* path = get_path_surface_entry(0);
-             entry_index < object_entry_group_counts[EnumValue(ObjectType::Paths)];
-             path = get_path_surface_entry(entry_index), entry_index++)
+        for (; entry_index < object_entry_group_counts[EnumValue(ObjectType::Paths)]; entry_index++)
         {
-            if (path == nullptr)
+            const auto* legacyPathEntry = GetLegacyFootpathEntry(entry_index);
+            if (legacyPathEntry == nullptr)
             {
                 return true;
             }
-            if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+            const auto& surfaceDescriptor = legacyPathEntry->GetPathSurfaceDescriptor();
+            if (surfaceDescriptor.IsEditorOnly())
             {
                 return true;
             }

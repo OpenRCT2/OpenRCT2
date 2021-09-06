@@ -1642,37 +1642,40 @@ void PathElement::SetAdditionIsGhost(bool isGhost)
         Flags2 |= FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST;
 }
 
-PathSurfaceIndex PathElement::GetSurfaceEntryIndex() const
+ObjectEntryIndex PathElement::GetLegacyPathEntryIndex() const
 {
     return SurfaceIndex;
 }
 
-PathRailingsIndex PathElement::GetRailingEntryIndex() const
+const FootpathObject* PathElement::GetLegacyPathEntry() const
 {
-    return GetSurfaceEntryIndex();
+    return GetLegacyFootpathEntry(GetLegacyPathEntryIndex());
 }
 
-PathSurfaceEntry* PathElement::GetSurfaceEntry() const
+const PathSurfaceDescriptor* PathElement::GetSurfaceDescriptor() const
 {
-    if (!IsQueue())
-        return get_path_surface_entry(GetSurfaceEntryIndex());
-    else
-        return get_path_surface_entry(GetSurfaceEntryIndex() + MAX_PATH_OBJECTS);
+    const auto* legacyPathEntry = GetLegacyPathEntry();
+    if (legacyPathEntry == nullptr)
+        return nullptr;
+
+    if (IsQueue())
+        return &legacyPathEntry->GetQueueSurfaceDescriptor();
+
+    return &legacyPathEntry->GetPathSurfaceDescriptor();
 }
 
-PathRailingsEntry* PathElement::GetRailingEntry() const
+const PathRailingsDescriptor* PathElement::GetRailingsDescriptor() const
 {
-    return get_path_railings_entry(GetRailingEntryIndex());
+    const auto* legacyPathEntry = GetLegacyPathEntry();
+    if (legacyPathEntry == nullptr)
+        return nullptr;
+
+    return &legacyPathEntry->GetPathRailingsDescriptor();
 }
 
-void PathElement::SetSurfaceEntryIndex(PathSurfaceIndex newIndex)
+void PathElement::SetLegacyPathEntryIndex(ObjectEntryIndex newIndex)
 {
     SurfaceIndex = newIndex & ~FOOTPATH_ELEMENT_INSERT_QUEUE;
-}
-
-void PathElement::SetRailingEntryIndex(PathRailingsIndex newEntryIndex)
-{
-    log_verbose("Setting railing entry index to %d", newEntryIndex);
 }
 
 uint8_t PathElement::GetQueueBannerDirection() const
@@ -1688,7 +1691,7 @@ void PathElement::SetQueueBannerDirection(uint8_t direction)
 
 bool PathElement::ShouldDrawPathOverSupports() const
 {
-    return (GetRailingEntry()->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
+    return (GetRailingsDescriptor()->Flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
 }
 
 void PathElement::SetShouldDrawPathOverSupports(bool on)
@@ -2247,32 +2250,15 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
         tileElement->AsPath()->SetEdgesAndCorners(0);
 }
 
-PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
+const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
-    PathSurfaceEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    // TODO: Change when moving to the new save format.
-    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex % MAX_PATH_OBJECTS);
-    if (obj != nullptr)
-    {
-        if (entryIndex < MAX_PATH_OBJECTS)
-            result = (static_cast<FootpathObject*>(obj))->GetPathSurfaceEntry();
-        else
-            result = (static_cast<FootpathObject*>(obj))->GetQueueEntry();
-    }
-    return result;
-}
-
-PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex)
-{
-    PathRailingsEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
-    if (obj != nullptr)
-    {
-        result = (static_cast<FootpathObject*>(obj))->GetPathRailingsEntry();
-    }
-    return result;
+    if (obj == nullptr)
+        return nullptr;
+
+    const FootpathObject* footpathObject = (static_cast<FootpathObject*>(obj));
+    return footpathObject;
 }
 
 ride_id_t PathElement::GetRideIndex() const

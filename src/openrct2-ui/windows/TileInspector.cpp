@@ -1886,7 +1886,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Details
                 // Path name
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(tileElement->AsPath()->GetSurfaceEntry()->string_idx);
+                ft.Add<rct_string_id>(tileElement->AsPath()->GetSurfaceDescriptor()->Name);
                 DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, ft, { COLOUR_WHITE });
 
                 // Path addition

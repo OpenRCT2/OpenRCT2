@@ -24,6 +24,14 @@ void FootpathRailingsObject::Load()
         BridgeImageId = PreviewImageId + 37;
         RailingsImageId = PreviewImageId + 1;
     }
+
+    _descriptor.Name = NameStringId;
+    _descriptor.BridgeImage = BridgeImageId;
+    _descriptor.PreviewImage = PreviewImageId;
+    _descriptor.Flags = Flags;
+    _descriptor.ScrollingMode = ScrollingMode;
+    _descriptor.SupportType = SupportType;
+    _descriptor.RailingsImage = RailingsImageId;
 }
 
 void FootpathRailingsObject::Unload()

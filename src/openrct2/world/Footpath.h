@@ -27,17 +27,20 @@ constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
 
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 
-using PathSurfaceIndex = uint16_t;
-constexpr PathSurfaceIndex PATH_SURFACE_INDEX_NULL = static_cast<PathSurfaceIndex>(-1);
-
-using PathRailingsIndex = uint8_t;
-constexpr PathRailingsIndex PATH_RAILINGS_INDEX_NULL = static_cast<PathRailingsIndex>(-1);
+class FootpathObject;
 
 enum class RailingEntrySupportType : uint8_t
 {
     Box = 0,
     Pole = 1,
     Count
+};
+
+enum
+{
+    FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
+    FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
+    FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS = (1 << 4),
 };
 
 #pragma pack(push, 1)
@@ -60,6 +63,12 @@ struct rct_footpath_entry
     }
     constexpr uint32_t GetQueuePreviewImage() const
     {
+        // Editor-only paths usually lack queue images. In this case, use the main path image.
+        if (flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+        {
+            return GetPreviewImage();
+        }
+
         return image + 72;
     }
     constexpr uint32_t GetRailingsImage() const
@@ -70,23 +79,28 @@ struct rct_footpath_entry
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
-struct PathSurfaceEntry
+struct PathSurfaceDescriptor
 {
-    rct_string_id string_idx;
-    uint32_t image;
-    uint32_t preview;
-    uint8_t flags;
+    rct_string_id Name;
+    uint32_t Image;
+    uint32_t PreviewImage;
+    uint8_t Flags;
+
+    inline constexpr bool IsEditorOnly() const
+    {
+        return Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR;
+    }
 };
 
-struct PathRailingsEntry
+struct PathRailingsDescriptor
 {
-    rct_string_id string_idx;
-    uint32_t preview;
-    uint32_t bridge_image;
-    uint32_t railings_image;
-    RailingEntrySupportType support_type;
-    uint8_t flags;
-    uint8_t scrolling_mode;
+    rct_string_id Name;
+    uint32_t PreviewImage;
+    uint32_t BridgeImage;
+    uint32_t RailingsImage;
+    RailingEntrySupportType SupportType;
+    uint8_t Flags;
+    uint8_t ScrollingMode;
 };
 
 struct ProvisionalFootpath
@@ -128,13 +142,6 @@ enum
     FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST = (1 << 2),
     FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE = (1 << 3),
     FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN = (1 << 4),
-};
-
-enum
-{
-    FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
-    FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
-    FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS = (1 << 4),
 };
 
 enum
@@ -215,8 +222,7 @@ bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
 void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
 
-PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex);
-PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex);
+const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);

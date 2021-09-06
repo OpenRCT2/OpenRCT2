@@ -86,11 +86,11 @@ static constexpr const uint8_t byte_98D8A4[] = {
 // clang-format on
 
 void path_paint_box_support(
-    paint_session* session, const PathElement& pathElement, int32_t height, PathSurfaceEntry* footpathEntry,
-    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
+    paint_session* session, const PathElement& pathElement, int32_t height, const PathSurfaceDescriptor* footpathEntry,
+    const PathRailingsDescriptor* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 void path_paint_pole_support(
-    paint_session* session, const PathElement& pathElement, int16_t height, PathSurfaceEntry* footpathEntry,
-    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
+    paint_session* session, const PathElement& pathElement, int16_t height, const PathSurfaceDescriptor* surfaceDescriptor,
+    const PathRailingsDescriptor* railingsDescriptor, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(
@@ -326,9 +326,9 @@ static void path_bit_jumping_fountains_paint(
  */
 static void sub_6A4101(
     paint_session* session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool word_F3F038,
-    PathRailingsEntry* railingEntry, uint32_t imageFlags)
+    const PathRailingsDescriptor* railingsDescriptor, uint32_t imageFlags)
 {
-    uint32_t base_image_id = railingEntry->railings_image | imageFlags;
+    uint32_t base_image_id = railingsDescriptor->RailingsImage | imageFlags;
 
     if (pathElement.IsQueue())
     {
@@ -447,7 +447,7 @@ static void sub_6A4101(
         auto ride = get_ride(pathElement.GetRideIndex());
         if (direction < 2 && ride != nullptr && imageFlags == 0)
         {
-            uint16_t scrollingMode = railingEntry->scrolling_mode;
+            uint16_t scrollingMode = railingsDescriptor->ScrollingMode;
             scrollingMode += direction;
 
             auto ft = Formatter();
@@ -663,13 +663,13 @@ static void sub_6A4101(
  * @param pathElement (esp[0])
  * @param connectedEdges (bp) (relative to the camera's rotation)
  * @param height (dx)
- * @param railingEntry (0x00F3EF6C)
+ * @param railingsDescriptor (0x00F3EF6C)
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
 static void sub_6A3F61(
     paint_session* session, const PathElement& pathElement, uint16_t connectedEdges, uint16_t height,
-    PathRailingsEntry* railingEntry, uint32_t imageFlags, uint32_t sceneryImageFlags, bool word_F3F038)
+    const PathRailingsDescriptor* railingsDescriptor, uint32_t imageFlags, uint32_t sceneryImageFlags, bool word_F3F038)
 {
     // eax --
     // ebx --
@@ -749,7 +749,7 @@ static void sub_6A3F61(
         // Redundant zoom-level check removed
 
         if (paintScenery)
-            sub_6A4101(session, pathElement, height, connectedEdges, word_F3F038, railingEntry, imageFlags);
+            sub_6A4101(session, pathElement, height, connectedEdges, word_F3F038, railingsDescriptor, imageFlags);
     }
 
     // This is about tunnel drawing
@@ -943,20 +943,22 @@ void PaintPath(paint_session* session, uint16_t height, const PathElement& tileE
         PaintAddImageAsParent(session, imageId, { 16, 16, heightMarkerBaseZ }, { 1, 1, 0 });
     }
 
-    PathSurfaceEntry* footpathEntry = tileElement.GetSurfaceEntry();
-    PathRailingsEntry* railingEntry = tileElement.GetRailingEntry();
+    const PathSurfaceDescriptor* surfaceDescriptor = tileElement.GetSurfaceDescriptor();
+    const PathRailingsDescriptor* railingsDescriptor = tileElement.GetRailingsDescriptor();
 
-    if (footpathEntry != nullptr && railingEntry != nullptr)
+    if (surfaceDescriptor != nullptr && railingsDescriptor != nullptr)
     {
-        if (railingEntry->support_type == RailingEntrySupportType::Pole)
+        if (railingsDescriptor->SupportType == RailingEntrySupportType::Pole)
         {
             path_paint_pole_support(
-                session, tileElement, height, footpathEntry, railingEntry, hasSupports, imageFlags, sceneryImageFlags);
+                session, tileElement, height, surfaceDescriptor, railingsDescriptor, hasSupports, imageFlags,
+                sceneryImageFlags);
         }
         else
         {
             path_paint_box_support(
-                session, tileElement, height, footpathEntry, railingEntry, hasSupports, imageFlags, sceneryImageFlags);
+                session, tileElement, height, surfaceDescriptor, railingsDescriptor, hasSupports, imageFlags,
+                sceneryImageFlags);
         }
     }
 
@@ -993,8 +995,8 @@ void PaintPath(paint_session* session, uint16_t height, const PathElement& tileE
 }
 
 void path_paint_box_support(
-    paint_session* session, const PathElement& pathElement, int32_t height, PathSurfaceEntry* footpathEntry,
-    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
+    paint_session* session, const PathElement& pathElement, int32_t height, const PathSurfaceDescriptor* footpathEntry,
+    const PathRailingsDescriptor* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     // Rol edges around rotation
     uint8_t edges = ((pathElement.GetEdges() << session->CurrentRotation) & 0xF)
@@ -1019,7 +1021,7 @@ void path_paint_box_support(
         imageId = byte_98D6E0[edi];
     }
 
-    imageId += footpathEntry->image;
+    imageId += footpathEntry->Image;
 
     if (!session->DidPassSurface)
     {
@@ -1054,11 +1056,11 @@ void path_paint_box_support(
         if (pathElement.IsSloped())
         {
             image_id = ((pathElement.GetSlopeDirection() + session->CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
-                + railingEntry->bridge_image + 51;
+                + railingEntry->BridgeImage + 51;
         }
         else
         {
-            image_id = byte_98D8A4[edges] + railingEntry->bridge_image + 49;
+            image_id = byte_98D8A4[edges] + railingEntry->BridgeImage + 49;
         }
 
         PaintAddImageAsParent(
@@ -1139,8 +1141,8 @@ void path_paint_box_support(
 }
 
 void path_paint_pole_support(
-    paint_session* session, const PathElement& pathElement, int16_t height, PathSurfaceEntry* footpathEntry,
-    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
+    paint_session* session, const PathElement& pathElement, int16_t height, const PathSurfaceDescriptor* surfaceDescriptor,
+    const PathRailingsDescriptor* railingsDescriptor, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     // Rol edges around rotation
     uint8_t edges = ((pathElement.GetEdges() << session->CurrentRotation) & 0xF)
@@ -1165,7 +1167,7 @@ void path_paint_pole_support(
         imageId = byte_98D6E0[edi];
     }
 
-    imageId += footpathEntry->image;
+    imageId += surfaceDescriptor->Image;
 
     // Below Surface
     if (!session->DidPassSurface)
@@ -1202,11 +1204,11 @@ void path_paint_pole_support(
         {
             bridgeImage = ((pathElement.GetSlopeDirection() + session->CurrentRotation)
                            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
-                + railingEntry->bridge_image + 16;
+                + railingsDescriptor->BridgeImage + 16;
         }
         else
         {
-            bridgeImage = edges + railingEntry->bridge_image;
+            bridgeImage = edges + railingsDescriptor->BridgeImage;
             bridgeImage |= imageFlags;
         }
 
@@ -1223,7 +1225,8 @@ void path_paint_pole_support(
         }
     }
 
-    sub_6A3F61(session, pathElement, edi, height, railingEntry, imageFlags, sceneryImageFlags, hasSupports); // TODO: arguments
+    sub_6A3F61(
+        session, pathElement, edi, height, railingsDescriptor, imageFlags, sceneryImageFlags, hasSupports); // TODO: arguments
 
     uint16_t ax = 0;
     if (pathElement.IsSloped())
@@ -1242,7 +1245,7 @@ void path_paint_pole_support(
     {
         if (!(edges & (1 << i)))
         {
-            path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags, railingEntry);
+            path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags, railingsDescriptor);
         }
     }
 

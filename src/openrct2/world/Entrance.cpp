@@ -18,6 +18,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathObject.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "Footpath.h"
@@ -254,12 +255,21 @@ void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
     SequenceIndex |= (newSequenceIndex & 0xF);
 }
 
-PathSurfaceIndex EntranceElement::GetPathType() const
+ObjectEntryIndex EntranceElement::GetLegacyPathEntryIndex() const
 {
     return PathType;
 }
 
-void EntranceElement::SetPathType(PathSurfaceIndex newPathType)
+void EntranceElement::SetLegacyPathEntryIndex(ObjectEntryIndex newPathType)
 {
     PathType = newPathType;
+}
+
+const PathSurfaceDescriptor* EntranceElement::GetPathSurfaceDescriptor() const
+{
+    const auto* legacyPathEntry = GetLegacyFootpathEntry(PathType);
+    if (legacyPathEntry == nullptr)
+        return nullptr;
+
+    return &legacyPathEntry->GetPathSurfaceDescriptor();
 }

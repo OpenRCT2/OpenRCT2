@@ -140,7 +140,7 @@ void setup_in_use_selection_flags()
             case TILE_ELEMENT_TYPE_TRACK:
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                type = iter.element->AsPath()->GetSurfaceEntryIndex();
+                type = iter.element->AsPath()->GetLegacyPathEntryIndex();
                 assert(type < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
                 Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
 
@@ -164,7 +164,7 @@ void setup_in_use_selection_flags()
 
                 Editor::SetSelectedObject(ObjectType::ParkEntrance, 0, OBJECT_SELECTION_FLAG_SELECTED);
 
-                type = iter.element->AsEntrance()->GetPathType();
+                type = iter.element->AsEntrance()->GetLegacyPathEntryIndex();
                 assert(type < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
                 Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
