@@ -581,8 +581,6 @@ bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const 
 void track_get_back(CoordsXYE* input, CoordsXYE* output);
 void track_get_front(CoordsXYE* input, CoordsXYE* output);
 
-bool trackShouldHaveSupports(const CoordsXY& position, RideTypeDescriptor rtd, track_type_t trackType, uint8_t sequence);
-
 bool track_element_is_covered(track_type_t trackElementType);
 bool track_type_is_station(track_type_t trackType);
 
