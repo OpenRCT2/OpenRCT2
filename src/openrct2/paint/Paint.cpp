@@ -56,7 +56,7 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
 static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
 
-static constexpr int32_t CalculatePositionHash(const paint_struct& ps, uint8_t rotation)
+static constexpr uint32_t CalculatePositionHash(const paint_struct& ps, uint8_t rotation)
 {
     auto pos = CoordsXY{ ps.bounds.x, ps.bounds.y }.Rotate(rotation);
     switch (rotation)
@@ -72,13 +72,13 @@ static constexpr int32_t CalculatePositionHash(const paint_struct& ps, uint8_t r
             break;
     }
 
-    return pos.x + pos.y;
+    return static_cast<uint32_t>(pos.x + pos.y);
 }
 
 static void PaintSessionAddPSToQuadrant(paint_session* session, paint_struct* ps)
 {
     auto positionHash = CalculatePositionHash(*ps, session->CurrentRotation);
-    uint32_t paintQuadrantIndex = std::clamp(positionHash / 32, 0, MAX_PAINT_QUADRANTS - 1);
+    uint32_t paintQuadrantIndex = (positionHash / 32) % MAX_PAINT_QUADRANTS;
     ps->quadrant_index = paintQuadrantIndex;
     ps->next_quadrant_ps = session->Quadrants[paintQuadrantIndex];
     session->Quadrants[paintQuadrantIndex] = ps;
