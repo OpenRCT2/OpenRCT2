@@ -1897,7 +1897,7 @@ void Vehicle::UpdateMeasurements()
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
-        auto tileElement = map_get_first_element_at({ x, y });
+        auto tileElement = map_get_first_element_at(CoordsXY{ x, y });
         if (tileElement == nullptr)
             return;
 

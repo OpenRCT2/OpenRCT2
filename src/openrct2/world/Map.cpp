@@ -243,7 +243,7 @@ void tile_element_iterator_begin(tile_element_iterator* it)
 {
     it->x = 0;
     it->y = 0;
-    it->element = map_get_first_element_at({ 0, 0 });
+    it->element = map_get_first_element_at(TileCoordsXY{ 0, 0 });
 }
 
 int32_t tile_element_iterator_next(tile_element_iterator* it)
