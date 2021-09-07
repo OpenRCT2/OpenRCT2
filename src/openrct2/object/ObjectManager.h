@@ -25,7 +25,7 @@ struct IObjectManager
     }
 
     virtual Object* GetLoadedObject(size_t index) abstract;
-    virtual Object* GetLoadedObject(ObjectType objectType, size_t index) abstract;
+    virtual Object* GetLoadedObject(ObjectType objectType, ObjectEntryIndex index) abstract;
     virtual Object* GetLoadedObject(const ObjectEntryDescriptor& entry) abstract;
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(std::string_view identifier) abstract;
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(const ObjectEntryDescriptor& descriptor) abstract;

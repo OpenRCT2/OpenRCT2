@@ -32,6 +32,50 @@
 #include <thread>
 #include <unordered_set>
 
+enum class ObjectTypeEntryIndex : int32_t
+{
+    Rides = 0,
+    SmallScenery = Rides + MAX_RIDE_OBJECTS,
+    LargeScenery = SmallScenery + MAX_SMALL_SCENERY_OBJECTS,
+    WallScenery = LargeScenery + MAX_LARGE_SCENERY_OBJECTS,
+    Banners = WallScenery + MAX_WALL_SCENERY_OBJECTS,
+    Paths = Banners + MAX_BANNER_OBJECTS,
+    PathAdditions = Paths + MAX_PATH_OBJECTS,
+    SceneryGroups = PathAdditions + MAX_PATH_ADDITION_OBJECTS,
+    ParkEntrances = SceneryGroups + MAX_SCENERY_GROUP_OBJECTS,
+    Water = ParkEntrances + MAX_PARK_ENTRANCE_OBJECTS,
+    ScenarioTexts = Water + MAX_WATER_OBJECTS,
+    TerrainSurfaces = ScenarioTexts + MAX_SCENARIO_TEXT_OBJECTS,
+    TerrainEdges = TerrainSurfaces + MAX_TERRAIN_SURFACE_OBJECTS,
+    Stations = TerrainEdges + MAX_TERRAIN_EDGE_OBJECTS,
+    Music = Stations + MAX_STATION_OBJECTS,
+    FootpathSurfaces = Music + MAX_FOOTPATH_SURFACE_OBJECTS,
+    FootpathRailings = FootpathSurfaces + MAX_FOOTPATH_SURFACE_OBJECTS,
+    End = FootpathRailings + MAX_FOOTPATH_RAILINGS_OBJECTS,
+};
+static_assert(EnumValue(ObjectTypeEntryIndex::End) == OBJECT_ENTRY_COUNT);
+
+static constexpr ObjectTypeEntryIndex ObjectTypeEntryIndices[] = {
+    ObjectTypeEntryIndex::Rides,
+    ObjectTypeEntryIndex::SmallScenery,
+    ObjectTypeEntryIndex::LargeScenery,
+    ObjectTypeEntryIndex::WallScenery,
+    ObjectTypeEntryIndex::Banners,
+    ObjectTypeEntryIndex::Paths,
+    ObjectTypeEntryIndex::PathAdditions,
+    ObjectTypeEntryIndex::SceneryGroups,
+    ObjectTypeEntryIndex::ParkEntrances,
+    ObjectTypeEntryIndex::Water,
+    ObjectTypeEntryIndex::ScenarioTexts,
+    ObjectTypeEntryIndex::TerrainSurfaces,
+    ObjectTypeEntryIndex::TerrainEdges,
+    ObjectTypeEntryIndex::Stations,
+    ObjectTypeEntryIndex::Music,
+    ObjectTypeEntryIndex::FootpathSurfaces,
+    ObjectTypeEntryIndex::FootpathRailings,
+};
+static_assert(std::size(ObjectTypeEntryIndices) == EnumValue(ObjectType::Count));
+
 class ObjectManager final : public IObjectManager
 {
 private:
@@ -67,7 +111,7 @@ public:
         return _loadedObjects[index];
     }
 
-    Object* GetLoadedObject(ObjectType objectType, size_t index) override
+    Object* GetLoadedObject(ObjectType objectType, ObjectEntryIndex index) override
     {
         if (index >= static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]))
         {
@@ -692,8 +736,8 @@ private:
         }
 
         // Build object lists
-        const auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[EnumValue(ObjectType::Ride)]);
-        for (size_t i = 0; i < maxRideObjects; i++)
+        const auto maxRideObjects = object_entry_group_counts[EnumValue(ObjectType::Ride)];
+        for (ObjectEntryIndex i = 0; i < maxRideObjects; i++)
         {
             auto* rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));
             if (rideObject == nullptr)
@@ -728,15 +772,10 @@ private:
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 
-    static int32_t GetIndexFromTypeEntry(ObjectType objectType, size_t entryIndex)
+    static int32_t GetIndexFromTypeEntry(ObjectType objectType, ObjectEntryIndex entryIndex)
     {
-        int32_t result = 0;
-        for (int32_t i = 0; i < EnumValue(objectType); i++)
-        {
-            result += object_entry_group_counts[i];
-        }
-        result += static_cast<int32_t>(entryIndex);
-        return result;
+        auto typeEntryIndex = ObjectTypeEntryIndices[EnumValue(objectType)];
+        return EnumValue(typeEntryIndex) + entryIndex;
     }
 };
 

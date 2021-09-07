@@ -293,7 +293,7 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
 };
 // clang-format on
 
-static const TerrainSurfaceObject* get_surface_object(size_t index)
+static const TerrainSurfaceObject* get_surface_object(ObjectEntryIndex index)
 {
     TerrainSurfaceObject* result{};
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
