@@ -3661,6 +3661,7 @@ STR_6453    :Copier les informations de version
 STR_6454    :Impossible de renommer la bannière…
 STR_6455    :Impossible de renommer le panneau…
 STR_6456    :Capture d’écran géante
+STR_6457    :Signaler un bug sur GitHub
 
 #############
 # Scenarios #
