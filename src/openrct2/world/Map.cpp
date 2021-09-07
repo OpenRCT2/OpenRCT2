@@ -283,15 +283,26 @@ void tile_element_iterator_restart_for_tile(tile_element_iterator* it)
     it->element = nullptr;
 }
 
-TileElement* map_get_first_element_at(const CoordsXY& elementPos)
+static bool IsTileLocationValid(const TileCoordsXY& coords)
 {
-    if (!map_is_location_valid(elementPos))
+    const bool is_x_valid = coords.x < MAXIMUM_MAP_SIZE_TECHNICAL && coords.x >= 0;
+    const bool is_y_valid = coords.y < MAXIMUM_MAP_SIZE_TECHNICAL && coords.y >= 0;
+    return is_x_valid && is_y_valid;
+}
+
+TileElement* map_get_first_element_at(const TileCoordsXY& tilePos)
+{
+    if (!IsTileLocationValid(tilePos))
     {
         log_verbose("Trying to access element outside of range");
         return nullptr;
     }
-    auto tileElementPos = TileCoordsXY{ elementPos };
-    return _tileIndex.GetFirstElementAt(tileElementPos);
+    return _tileIndex.GetFirstElementAt(tilePos);
+}
+
+TileElement* map_get_first_element_at(const CoordsXY& elementPos)
+{
+    return map_get_first_element_at(TileCoordsXY{ elementPos });
 }
 
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
