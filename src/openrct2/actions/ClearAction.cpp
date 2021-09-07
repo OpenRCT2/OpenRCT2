@@ -214,7 +214,7 @@ void ClearAction::ResetClearLargeSceneryFlag()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
             do
             {
                 if (tileElement == nullptr)

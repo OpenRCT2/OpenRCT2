@@ -159,7 +159,7 @@ static void ReorganiseTileElements(size_t capacity)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y });
             if (element == nullptr)
             {
                 auto& newElement = newElements.emplace_back();
@@ -250,7 +250,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
 {
     if (it->element == nullptr)
     {
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -263,7 +263,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     if (it->x < (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
     {
         it->x++;
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -271,7 +271,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     {
         it->x = 0;
         it->y++;
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -649,7 +649,7 @@ int16_t tile_element_water_height(const CoordsXY& loc)
  */
 bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
 {
-    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(loc);
 
     if (tileElement == nullptr)
         return false;
