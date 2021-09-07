@@ -675,19 +675,33 @@ static void window_top_toolbar_invalidate(rct_window* w)
     window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::TrnBtn;
 
     if (!gConfigInterface.toolbar_show_mute)
-    {
         window_top_toolbar_widgets[WIDX_MUTE].type = WindowWidgetType::Empty;
-    }
 
     if (!gConfigInterface.toolbar_show_chat)
-    {
         window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
+
+    if (!gConfigInterface.toolbar_show_research)
+        window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
+
+    if (!gConfigInterface.toolbar_show_cheats)
+        window_top_toolbar_widgets[WIDX_CHEATS].type = WindowWidgetType::Empty;
+
+    if (!gConfigInterface.toolbar_show_news)
+        window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
+
+    if (!gConfigInterface.toolbar_show_zoom)
+    {
+        window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
     }
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR || gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
     }
+
+    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.toolbar_show_finances)
+        window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
@@ -725,39 +739,19 @@ static void window_top_toolbar_invalidate(rct_window* w)
             window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WindowWidgetType::Empty;
         }
     }
-    else
+
+    switch (network_get_mode())
     {
-        if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.toolbar_show_finances)
-            window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
-
-        if (!gConfigInterface.toolbar_show_research)
-            window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
-
-        if (!gConfigInterface.toolbar_show_cheats)
-            window_top_toolbar_widgets[WIDX_CHEATS].type = WindowWidgetType::Empty;
-
-        if (!gConfigInterface.toolbar_show_news)
-            window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
-
-        if (!gConfigInterface.toolbar_show_zoom)
-        {
-            window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
-            window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
-        }
-
-        switch (network_get_mode())
-        {
-            case NETWORK_MODE_NONE:
-                window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
-                window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
-                break;
-            case NETWORK_MODE_CLIENT:
-                window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
-                [[fallthrough]];
-            case NETWORK_MODE_SERVER:
-                window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
-                break;
-        }
+        case NETWORK_MODE_NONE:
+            window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
+            break;
+        case NETWORK_MODE_CLIENT:
+            window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
+            [[fallthrough]];
+        case NETWORK_MODE_SERVER:
+            window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
+            break;
     }
 
     enabledWidgets = 0;
