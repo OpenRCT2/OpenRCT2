@@ -113,7 +113,10 @@ struct tunnel_entry
     uint8_t type;
 };
 
-#define MAX_PAINT_QUADRANTS 512
+// NOTE: This should be preferably a prime number. This is the amount of
+// buckets used with the position hash, so the bucket is hash % max.
+#define MAX_PAINT_QUADRANTS 521
+
 #define TUNNEL_MAX_COUNT 65
 
 /**
