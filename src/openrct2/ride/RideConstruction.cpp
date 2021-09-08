@@ -1204,11 +1204,11 @@ money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, u
 
 // Finds the direction a ride entrance should face for an NxN station.
 // Direction is valid if queryLocation is directly adjacent to this station.
-static Direction GetRideEntranceDirection(CoordsXY& queryLocation, CoordsXY& entranceMin, CoordsXY& entranceMax)
+static Direction GetRideEntranceDirection(const CoordsXY& queryLocation, CoordsXY entranceMin, CoordsXY entranceMax)
 {
     entranceMin -= CoordsXY(32, 32);
     entranceMax += CoordsXY(32, 32);
-    if (queryLocation.x == entranceMax.x)
+    if (queryLocation.x == entranceMin.x)
     {
         if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
         {
@@ -1222,7 +1222,7 @@ static Direction GetRideEntranceDirection(CoordsXY& queryLocation, CoordsXY& ent
             return 1;
         }
     }
-    if (queryLocation.x == entranceMin.x)
+    if (queryLocation.x == entranceMax.x)
     {
         if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
         {
@@ -1381,12 +1381,15 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             return entranceExitCoords;
         }
         auto stationDirection = tileElement->GetDirection();
+        entranceExitCoords.direction = stationDirection;
 
+        auto next = entranceMax;
         // find additional station TrackElements and extend the line of valid entrance locations
         while (true)
         {
-            entranceMax -= CoordsDirectionDelta[stationDirection];
-            tileElement = map_get_first_element_at(entranceMax);
+            entranceMax = next;
+            next -= CoordsDirectionDelta[stationDirection];
+            tileElement = map_get_first_element_at(next);
             if (tileElement == nullptr)
                 break;
             bool goToNextTile = false;
@@ -1409,8 +1412,6 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             if (!goToNextTile)
                 break;
         }
-        // entranceMax increments before the check
-        entranceMax += CoordsDirectionDelta[stationDirection];
         // swap variables for valid ranges
         if (entranceMin.x > entranceMax.x)
             std::swap(entranceMin.x, entranceMax.x);
