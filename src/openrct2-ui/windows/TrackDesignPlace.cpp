@@ -269,8 +269,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     if (mapCoords == _windowTrackPlaceLast)
     {
         place_virtual_track(
-            _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(static_cast<ride_id_t>(0)),
-            { mapCoords, 0 });
+            _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { mapCoords, 0 });
         return;
     }
 
@@ -310,8 +309,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(
-        _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(static_cast<ride_id_t>(0)), trackLoc);
+    place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), trackLoc);
 }
 
 /**
@@ -474,7 +472,7 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc)
 
     return z
         + place_virtual_track(
-               _trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(static_cast<ride_id_t>(0)), { loc, z });
+               _trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(PreviewRideId), { loc, z });
 }
 
 /**

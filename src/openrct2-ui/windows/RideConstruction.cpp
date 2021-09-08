@@ -495,9 +495,9 @@ static int32_t ride_get_alternative_type(Ride* ride)
 }
 
 /* move to ride.c */
-static void close_ride_window_for_construction(rct_windownumber number)
+static void close_ride_window_for_construction(ride_id_t rideId)
 {
-    rct_window* w = window_find_by_number(WC_RIDE, number);
+    rct_window* w = window_find_by_number(WC_RIDE, EnumValue(rideId));
     if (w != nullptr && w->page == 1)
         window_close(w);
 }
@@ -509,7 +509,7 @@ static void close_ride_window_for_construction(rct_windownumber number)
 rct_window* window_ride_construction_open()
 {
     ride_id_t rideIndex = _currentRideIndex;
-    close_ride_window_for_construction(EnumValue(rideIndex));
+    close_ride_window_for_construction(rideIndex);
 
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)

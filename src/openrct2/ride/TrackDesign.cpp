@@ -57,6 +57,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackDesign.h"
 #include "TrackDesignRepository.h"
 #include "Vehicle.h"
 
@@ -319,8 +320,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         }
     }
 
-    place_virtual_track(
-        this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(static_cast<ride_id_t>(0)), { 4096, 4096, 0 });
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
 
     // Resave global vars for scenery reasons.
     _trackPreviewOrigin = startPos;
@@ -439,8 +439,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = _trackPreviewOrigin.z;
-    place_virtual_track(
-        this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(static_cast<ride_id_t>(0)), { 4096, 4096, 0 });
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
     _trackPreviewOrigin = { startLoc.x, startLoc.y, startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -1934,7 +1933,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 
     _currentTrackPieceDirection = 0;
     int32_t z = place_virtual_track(
-        td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(static_cast<ride_id_t>(0)), { mapSize, mapSize, 16 });
+        td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(PreviewRideId), { mapSize, mapSize, 16 });
 
     if (_trackDesignPlaceStateHasScenery)
     {

@@ -2483,12 +2483,12 @@ namespace RCT1
         {
             if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
             {
-                const auto firstRideId = static_cast<ride_id_t>(0);
+                const auto merryGoRoundId = static_cast<ride_id_t>(0);
 
                 // First, make the queuing peep exit
                 for (auto peep : EntityList<Guest>())
                 {
-                    if (peep->State == PeepState::QueuingFront && peep->CurrentRide == firstRideId)
+                    if (peep->State == PeepState::QueuingFront && peep->CurrentRide == merryGoRoundId)
                     {
                         peep->RemoveFromQueue();
                         peep->SetState(PeepState::Falling);
@@ -2497,7 +2497,7 @@ namespace RCT1
                 }
 
                 // Now, swap the entrance and exit.
-                auto ride = get_ride(firstRideId);
+                auto ride = get_ride(merryGoRoundId);
                 if (ride != nullptr)
                 {
                     auto entranceCoords = ride->stations[0].Exit;
