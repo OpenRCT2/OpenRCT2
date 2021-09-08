@@ -255,6 +255,24 @@ static void scenario_fix_ghosts(rct_s6_data* s6)
     }
 }
 
+template<typename T> static void ExportObjectList(IObjectManager& objMgr, T& objects, ObjectType type, size_t maxEntries)
+{
+    for (size_t i = 0; i < maxEntries; i++)
+    {
+        auto& dst = objects[i];
+
+        auto* object = objMgr.GetLoadedObject(type, i);
+        if (object == nullptr || object->GetObjectEntry() == nullptr)
+        {
+            std::memset(&dst, 0xFF, sizeof(dst));
+        }
+        else
+        {
+            dst = *object->GetObjectEntry();
+        }
+    }
+}
+
 void S6Exporter::Export()
 {
     _s6.info = {};
@@ -278,20 +296,18 @@ void S6Exporter::Export()
     uint32_t researchedTrackPiecesA[128] = {};
     uint32_t researchedTrackPiecesB[128] = {};
 
-    for (int32_t i = 0; i < RCT2_OBJECT_ENTRY_COUNT; i++)
-    {
-        const rct_object_entry* entry = get_loaded_object_entry(i);
-        void* entryData = get_loaded_object_chunk(i);
-        // RCT2 uses (void *)-1 to mark NULL. Make sure it's written in a vanilla-compatible way.
-        if (entry == nullptr || entryData == nullptr || entryData == reinterpret_cast<void*>(-1))
-        {
-            std::memset(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
-        }
-        else
-        {
-            _s6.objects[i] = *entry;
-        }
-    }
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    ExportObjectList(objectMgr, _s6.rideObjects, ObjectType::Ride, RCT12_MAX_RIDE_OBJECTS);
+    ExportObjectList(objectMgr, _s6.sceneryObjects, ObjectType::SmallScenery, RCT2_MAX_SMALL_SCENERY_OBJECTS);
+    ExportObjectList(objectMgr, _s6.largeSceneryObjects, ObjectType::LargeScenery, RCT2_MAX_LARGE_SCENERY_OBJECTS);
+    ExportObjectList(objectMgr, _s6.wallSceneryObjects, ObjectType::Walls, RCT2_MAX_WALL_SCENERY_OBJECTS);
+    ExportObjectList(objectMgr, _s6.bannerObjects, ObjectType::Banners, RCT2_MAX_BANNER_OBJECTS);
+    ExportObjectList(objectMgr, _s6.pathObjects, ObjectType::Paths, RCT2_MAX_PATH_OBJECTS);
+    ExportObjectList(objectMgr, _s6.pathAdditionObjects, ObjectType::PathBits, RCT2_MAX_PATH_ADDITION_OBJECTS);
+    ExportObjectList(objectMgr, _s6.sceneryGroupObjects, ObjectType::SceneryGroup, RCT2_MAX_SCENERY_GROUP_OBJECTS);
+    ExportObjectList(objectMgr, _s6.parkEntranceObjects, ObjectType::ParkEntrance, RCT2_MAX_PARK_ENTRANCE_OBJECTS);
+    ExportObjectList(objectMgr, _s6.waterObjects, ObjectType::Water, RCT2_MAX_WATER_OBJECTS);
+    ExportObjectList(objectMgr, _s6.scenarioTextObjects, ObjectType::ScenarioText, RCT2_MAX_SCENARIO_TEXT_OBJECTS);
 
     _s6.elapsed_months = static_cast<uint16_t>(gDateMonthsElapsed);
     _s6.current_day = gDateMonthTicks;
