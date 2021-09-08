@@ -1660,6 +1660,7 @@ const FootpathObject* PathElement::GetLegacyPathEntry() const
 void PathElement::SetLegacyPathEntryIndex(ObjectEntryIndex newIndex)
 {
     SurfaceIndex = newIndex & ~FOOTPATH_ELEMENT_INSERT_QUEUE;
+    RailingsIndex = OBJECT_ENTRY_INDEX_NULL;
     Flags2 |= FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
