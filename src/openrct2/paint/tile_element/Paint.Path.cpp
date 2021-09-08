@@ -325,7 +325,7 @@ static void path_bit_jumping_fountains_paint(
  * @param tile_element (esi)
  */
 static void sub_6A4101(
-    paint_session* session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool word_F3F038,
+    paint_session* session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
     const PathRailingsDescriptor* railingsDescriptor, uint32_t imageFlags)
 {
     uint32_t base_image_id = railingsDescriptor->RailingsImage | imageFlags;
@@ -519,7 +519,7 @@ static void sub_6A4101(
     }
     else
     {
-        if (!word_F3F038)
+        if (!hasSupports)
         {
             return;
         }
@@ -669,7 +669,7 @@ static void sub_6A4101(
  */
 static void sub_6A3F61(
     paint_session* session, const PathElement& pathElement, uint16_t connectedEdges, uint16_t height,
-    const PathRailingsDescriptor* railingsDescriptor, uint32_t imageFlags, uint32_t sceneryImageFlags, bool word_F3F038)
+    const PathRailingsDescriptor* railingsDescriptor, uint32_t imageFlags, uint32_t sceneryImageFlags, bool hasSupports)
 {
     // eax --
     // ebx --
@@ -749,7 +749,7 @@ static void sub_6A3F61(
         // Redundant zoom-level check removed
 
         if (paintScenery)
-            sub_6A4101(session, pathElement, height, connectedEdges, word_F3F038, railingsDescriptor, imageFlags);
+            sub_6A4101(session, pathElement, height, connectedEdges, hasSupports, railingsDescriptor, imageFlags);
     }
 
     // This is about tunnel drawing
