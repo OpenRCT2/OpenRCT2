@@ -972,7 +972,7 @@ static void window_editor_objective_options_rides_update(rct_window* w)
     {
         if (ride.IsRide())
         {
-            w->list_item_positions[numItems] = static_cast<uint32_t>(ride.id);
+            w->list_item_positions[numItems] = EnumValue(ride.id);
             numItems++;
         }
     }

@@ -959,7 +959,7 @@ void S6Exporter::ExportRideMeasurements()
 
         auto rideId = src->id;
         dst.ride_index = static_cast<uint8_t>(rideId);
-        _s6.rides[static_cast<uint8_t>(rideId)].measurement_index = i;
+        _s6.rides[dst.ride_index].measurement_index = i;
         i++;
     }
 }

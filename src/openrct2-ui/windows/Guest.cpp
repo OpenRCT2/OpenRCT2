@@ -1456,7 +1456,7 @@ void window_guest_rides_update(rct_window* w)
     {
         if (ride.IsRide() && guest->HasRidden(&ride))
         {
-            w->list_item_positions[curr_list_position] = static_cast<uint32_t>(ride.id);
+            w->list_item_positions[curr_list_position] = EnumValue(ride.id);
             curr_list_position++;
         }
     }

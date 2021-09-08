@@ -1505,7 +1505,7 @@ void ride_breakdown_add_news_item(Ride* ride)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, static_cast<uint32_t>(ride->id), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, EnumValue(ride->id), ft);
     }
 }
 
@@ -1532,7 +1532,7 @@ static void ride_breakdown_status_update(Ride* ride)
             {
                 Formatter ft;
                 ride->FormatNameTo(ft);
-                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, static_cast<uint32_t>(ride->id), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, EnumValue(ride->id), ft);
             }
         }
     }
@@ -2183,7 +2183,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, static_cast<uint32_t>(ride->id), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, EnumValue(ride->id), ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -2195,7 +2195,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, static_cast<uint32_t>(ride->id), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, EnumValue(ride->id), ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -2264,7 +2264,7 @@ static void ride_shop_connected(Ride* ride)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, static_cast<uint32_t>(ride->id), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, EnumValue(ride->id), ft);
     }
 
     ride->connected_message_throttle = 3;
@@ -3797,13 +3797,13 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
 
     if (type == RIDE_TYPE_NULL)
     {
-        log_warning("Invalid ride type for ride %u", static_cast<uint32_t>(id));
+        log_warning("Invalid ride type for ride %u", EnumValue(id));
         return false;
     }
 
     if (newStatus != RideStatus::Simulating)
     {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, static_cast<uint32_t>(id));
+        window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(id));
     }
 
     StationIndex stationIndex = ride_mode_check_station_present(this);
@@ -3930,10 +3930,10 @@ bool Ride::Open(bool isApplying)
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification
-        && static_cast<uint32_t>(id) == gCurrentToolWidget.window_number && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification && EnumValue(id) == gCurrentToolWidget.window_number
+        && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
     {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, static_cast<uint32_t>(id));
+        window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(id));
     }
 
     StationIndex stationIndex = ride_mode_check_station_present(this);
@@ -5089,7 +5089,7 @@ void Ride::UpdateMaxVehicles()
     {
         num_cars_per_train = numCarsPerTrain;
         num_vehicles = numVehicles;
-        window_invalidate_by_number(WC_RIDE, static_cast<uint32_t>(id));
+        window_invalidate_by_number(WC_RIDE, EnumValue(id));
     }
 }
 
@@ -5158,7 +5158,7 @@ void Ride::Crash(uint8_t vehicleIndex)
     {
         Formatter ft;
         FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, static_cast<uint32_t>(id), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, EnumValue(id), ft);
     }
 }
 

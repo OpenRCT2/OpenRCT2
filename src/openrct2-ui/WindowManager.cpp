@@ -396,7 +396,7 @@ public:
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
                 auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                auto w = window_find_by_number(WC_RIDE, static_cast<int32_t>(vehicle->ride));
+                auto w = window_find_by_number(WC_RIDE, EnumValue(vehicle->ride));
                 if (w == nullptr)
                     return;
 

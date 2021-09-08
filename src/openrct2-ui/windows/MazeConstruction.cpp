@@ -169,7 +169,7 @@ static void window_maze_construction_close(rct_window* w)
         else
         {
             auto intent = Intent(WC_RIDE);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(ride->id));
+            intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(ride->id));
             context_open_intent(&intent);
         }
     }

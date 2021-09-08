@@ -274,7 +274,7 @@ GameActions::Result::Ptr RideDemolishAction::RefurbishRide(Ride* ride) const
         res->Position = { location, tile_element_height(location) };
     }
 
-    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, static_cast<int32_t>(_rideIndex));
+    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, EnumValue(_rideIndex));
 
     return res;
 }

@@ -54,7 +54,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid game command for ride %d", EnumValue(_rideIndex));
         return MakeResult(GameActions::Status::InvalidParameters, errorTitle);
     }
 
@@ -132,7 +132,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid game command for ride %d", EnumValue(_rideIndex));
         return MakeResult(GameActions::Status::InvalidParameters, errorTitle);
     }
 

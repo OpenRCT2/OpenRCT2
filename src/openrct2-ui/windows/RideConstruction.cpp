@@ -509,7 +509,7 @@ static void close_ride_window_for_construction(rct_windownumber number)
 rct_window* window_ride_construction_open()
 {
     ride_id_t rideIndex = _currentRideIndex;
-    close_ride_window_for_construction(static_cast<int32_t>(rideIndex));
+    close_ride_window_for_construction(EnumValue(rideIndex));
 
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -543,7 +543,7 @@ rct_window* window_ride_construction_open()
     w->colours[1] = COLOUR_DARK_BROWN;
     w->colours[2] = COLOUR_DARK_BROWN;
 
-    w->number = static_cast<int32_t>(rideIndex);
+    w->rideId = rideIndex;
 
     window_push_others_right(w);
     show_gridlines();
@@ -620,7 +620,7 @@ static void window_ride_construction_close(rct_window* w)
 
         ride->SetToDefaultInspectionInterval();
         auto intent = Intent(WC_RIDE);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(ride->id));
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(ride->id));
         context_open_intent(&intent);
     }
     else

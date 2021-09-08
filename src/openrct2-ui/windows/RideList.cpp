@@ -443,7 +443,7 @@ static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex,
     else
     {
         auto intent = Intent(WC_RIDE);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(rideIndex));
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(rideIndex));
         context_open_intent(&intent);
     }
 }

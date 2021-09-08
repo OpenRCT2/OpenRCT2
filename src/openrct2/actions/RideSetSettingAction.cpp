@@ -45,7 +45,7 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride: #%d.", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride: #%d.", EnumValue(_rideIndex));
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
     }
 
@@ -153,7 +153,7 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride: #%d.", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride: #%d.", EnumValue(_rideIndex));
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
     }
 
@@ -233,7 +233,7 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };
     }
-    window_invalidate_by_number(WC_RIDE, static_cast<int32_t>(_rideIndex));
+    window_invalidate_by_number(WC_RIDE, EnumValue(_rideIndex));
     return res;
 }
 

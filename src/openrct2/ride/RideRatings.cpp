@@ -159,7 +159,7 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
 {
     ride_id_t currentRide = state.CurrentRide;
 
-    currentRide = static_cast<ride_id_t>(static_cast<uint32_t>(currentRide) + 1);
+    currentRide = static_cast<ride_id_t>(EnumValue(currentRide) + 1);
     if (currentRide >= static_cast<ride_id_t>(MAX_RIDES))
     {
         currentRide = {};
@@ -285,7 +285,7 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
     ride_ratings_calculate(state, ride);
     ride_ratings_calculate_value(ride);
 
-    window_invalidate_by_number(WC_RIDE, static_cast<int32_t>(state.CurrentRide));
+    window_invalidate_by_number(WC_RIDE, EnumValue(state.CurrentRide));
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
@@ -753,7 +753,7 @@ static void ride_ratings_calculate(RideRatingUpdateState& state, Ride* ride)
 
         // Create event args object
         auto obj = DukObject(ctx);
-        obj.Set("rideId", static_cast<int32_t>(ride->id));
+        obj.Set("rideId", EnumValue(ride->id));
         obj.Set("excitement", originalExcitement);
         obj.Set("intensity", originalIntensity);
         obj.Set("nausea", originalNausea);
