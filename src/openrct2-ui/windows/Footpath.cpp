@@ -184,7 +184,7 @@ static void window_footpath_construct();
 static void window_footpath_remove();
 static void window_footpath_set_enabled_and_pressed_widgets();
 static void footpath_get_next_path_info(ObjectEntryIndex* type, CoordsXYZ& footpathLoc, int32_t* slope);
-static bool footpath_select_default();
+static bool FootpathSelectDefault();
 
 /**
  *
@@ -192,7 +192,7 @@ static bool footpath_select_default();
  */
 rct_window* window_footpath_open()
 {
-    if (!footpath_select_default())
+    if (!FootpathSelectDefault())
     {
         // No path objects to select from, don't open window
         return nullptr;
@@ -440,8 +440,6 @@ static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, c
  */
 static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* w)
 {
-    int32_t slope;
-
     if (_footpathConstructionMode != PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
     {
         return;
@@ -461,6 +459,7 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
         ObjectEntryIndex railings = gFootpathSelection.Railings;
 
         CoordsXYZ footpathLoc;
+        int32_t slope;
         footpath_get_next_path_info(&type, footpathLoc, &slope);
         PathConstructFlags pathConstructFlags = 0;
         if (gFootpathSelection.IsQueueSelected)
@@ -484,6 +483,7 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
 
         gProvisionalFootpath.Flags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
         CoordsXYZ footpathLoc;
+        int32_t slope;
         footpath_get_next_path_info(nullptr, footpathLoc, &slope);
         gMapSelectArrowPosition = footpathLoc;
         gMapSelectArrowDirection = _footpathConstructDirection;
@@ -1331,7 +1331,7 @@ static void footpath_get_next_path_info(ObjectEntryIndex* type, CoordsXYZ& footp
     }
 }
 
-static ObjectEntryIndex footpath_get_default_surface(bool queue)
+static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
 {
     bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
     for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
@@ -1352,7 +1352,7 @@ static ObjectEntryIndex footpath_get_default_surface(bool queue)
     return OBJECT_ENTRY_INDEX_NULL;
 }
 
-static ObjectEntryIndex footpath_get_default_railing()
+static ObjectEntryIndex FootpathGetDefaultRailings()
 {
     for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
     {
@@ -1365,7 +1365,7 @@ static ObjectEntryIndex footpath_get_default_railing()
     return OBJECT_ENTRY_INDEX_NULL;
 }
 
-static bool footpath_is_surface_okay(ObjectEntryIndex index, bool queue)
+static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
 {
     auto pathEntry = GetPathSurfaceEntry(index);
     if (pathEntry != nullptr)
@@ -1383,7 +1383,7 @@ static bool footpath_is_surface_okay(ObjectEntryIndex index, bool queue)
     return false;
 }
 
-static bool footpath_is_legacy_path_okay(ObjectEntryIndex index)
+static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
 {
     bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
@@ -1396,11 +1396,11 @@ static bool footpath_is_legacy_path_okay(ObjectEntryIndex index)
     return false;
 }
 
-static ObjectEntryIndex footpath_get_default_legacy_path()
+static ObjectEntryIndex FootpathGetDefaultLegacyPath()
 {
     for (ObjectEntryIndex i = 0; i < MAX_PATH_OBJECTS; i++)
     {
-        if (footpath_is_legacy_path_okay(i))
+        if (FootpathIsLegacyPathEntryOkay(i))
         {
             return i;
         }
@@ -1408,24 +1408,24 @@ static ObjectEntryIndex footpath_get_default_legacy_path()
     return OBJECT_ENTRY_INDEX_NULL;
 }
 
-static bool footpath_select_default()
+static bool FootpathSelectDefault()
 {
     // Select default footpath
-    auto surfaceIndex = footpath_get_default_surface(false);
-    if (footpath_is_surface_okay(gFootpathSelection.NormalSurface, false))
+    auto surfaceIndex = FootpathGetDefaultSurface(false);
+    if (FootpathIsSurfaceEntryOkay(gFootpathSelection.NormalSurface, false))
     {
         surfaceIndex = gFootpathSelection.NormalSurface;
     }
 
     // Select default queue
-    auto queueIndex = footpath_get_default_surface(true);
-    if (footpath_is_surface_okay(gFootpathSelection.QueueSurface, true))
+    auto queueIndex = FootpathGetDefaultSurface(true);
+    if (FootpathIsSurfaceEntryOkay(gFootpathSelection.QueueSurface, true))
     {
         queueIndex = gFootpathSelection.QueueSurface;
     }
 
     // Select default railing
-    auto railingIndex = footpath_get_default_railing();
+    auto railingIndex = FootpathGetDefaultRailings();
     const auto* railingEntry = GetPathRailingsEntry(gFootpathSelection.Railings);
     if (railingEntry != nullptr)
     {
@@ -1433,10 +1433,10 @@ static bool footpath_select_default()
     }
 
     // Select default legacy path
-    auto legacyPathIndex = footpath_get_default_legacy_path();
+    auto legacyPathIndex = FootpathGetDefaultLegacyPath();
     if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
     {
-        if (footpath_is_legacy_path_okay(gFootpathSelection.LegacyPath))
+        if (FootpathIsLegacyPathEntryOkay(gFootpathSelection.LegacyPath))
         {
             // Keep legacy path selected
             legacyPathIndex = gFootpathSelection.LegacyPath;
@@ -1563,7 +1563,7 @@ void window_footpath_keyboard_shortcut_build_current()
     window_event_mouse_up_call(w, WIDX_CONSTRUCT);
 }
 
-void window_footpath_reset_selected_path()
+void WindowFootpathResetSelectedPath()
 {
     gFootpathSelection = {};
 }

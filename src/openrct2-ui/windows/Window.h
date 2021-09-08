@@ -47,7 +47,7 @@ rct_window* window_editor_main_open();
 rct_window* window_editor_objective_options_open();
 rct_window* window_editor_scenario_options_open();
 rct_window* window_footpath_open();
-void window_footpath_reset_selected_path();
+void WindowFootpathResetSelectedPath();
 rct_window* window_guest_open(Peep* peep);
 rct_window* window_land_open();
 rct_window* window_land_rights_open();
