@@ -41,6 +41,8 @@ static uint8_t _footpathConstructionMode;
 
 static std::vector<std::pair<ObjectType, ObjectEntryIndex>> _dropdownEntries;
 
+static PathConstructFlags FootpathCreateConstructFlags(ObjectEntryIndex& type);
+
 // clang-format off
 enum
 {
@@ -461,14 +463,7 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
         CoordsXYZ footpathLoc;
         int32_t slope;
         footpath_get_next_path_info(&type, footpathLoc, &slope);
-        PathConstructFlags pathConstructFlags = 0;
-        if (gFootpathSelection.IsQueueSelected)
-            pathConstructFlags |= PathConstructFlag::IsQueue;
-        if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
-        {
-            pathConstructFlags |= PathConstructFlag::IsLegacyPathObject;
-            type = gFootpathSelection.LegacyPath;
-        }
+        auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
         _window_footpath_cost = footpath_provisional_set(type, railings, footpathLoc, slope, pathConstructFlags);
         widget_invalidate(w, WIDX_CONSTRUCT);
@@ -854,17 +849,8 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
             z += PATH_HEIGHT_STEP;
         }
 
-        PathConstructFlags constructFlags = 0;
         auto pathType = gFootpathSelection.GetSelectedSurface();
-        if (gFootpathSelection.IsQueueSelected)
-        {
-            constructFlags |= PathConstructFlag::IsQueue;
-        }
-        if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
-        {
-            constructFlags |= PathConstructFlag::IsLegacyPathObject;
-            pathType = gFootpathSelection.LegacyPath;
-        }
+        auto constructFlags = FootpathCreateConstructFlags(pathType);
         _window_footpath_cost = footpath_provisional_set(
             pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
         window_invalidate_by_class(WC_FOOTPATH);
@@ -963,16 +949,8 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
     auto selectedType = gFootpathSelection.GetSelectedSurface();
-    PathConstructFlags constructFlags = 0;
-    if (gFootpathSelection.IsQueueSelected)
-    {
-        constructFlags |= PathConstructFlag::IsQueue;
-    }
-    if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
-    {
-        constructFlags |= PathConstructFlag::IsLegacyPathObject;
-        selectedType = gFootpathSelection.LegacyPath;
-    }
+    PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
+
     auto footpathPlaceAction = FootpathPlaceAction(
         { info.Loc, z }, slope, selectedType, gFootpathSelection.Railings, INVALID_DIRECTION, constructFlags);
     footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
@@ -1064,14 +1042,8 @@ static void window_footpath_construct()
     footpath_get_next_path_info(&type, footpathLoc, &slope);
 
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    PathConstructFlags constructFlags = 0;
-    if (gFootpathSelection.IsQueueSelected)
-        constructFlags |= PathConstructFlag::IsQueue;
-    if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
-    {
-        constructFlags |= PathConstructFlag::IsLegacyPathObject;
-        type = gFootpathSelection.LegacyPath;
-    }
+    PathConstructFlags constructFlags = FootpathCreateConstructFlags(type);
+
     auto footpathPlaceAction = FootpathPlaceAction(
         footpathLoc, slope, type, gFootpathSelection.Railings, _footpathConstructDirection, constructFlags);
     footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
@@ -1466,6 +1438,19 @@ static bool FootpathSelectDefault()
     gFootpathSelection.QueueSurface = queueIndex;
     gFootpathSelection.Railings = railingIndex;
     return true;
+}
+
+static PathConstructFlags FootpathCreateConstructFlags(ObjectEntryIndex& type)
+{
+    PathConstructFlags pathConstructFlags = 0;
+    if (gFootpathSelection.IsQueueSelected)
+        pathConstructFlags |= PathConstructFlag::IsQueue;
+    if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
+    {
+        pathConstructFlags |= PathConstructFlag::IsLegacyPathObject;
+        type = gFootpathSelection.LegacyPath;
+    }
+    return pathConstructFlags;
 }
 
 void window_footpath_keyboard_shortcut_turn_left()
