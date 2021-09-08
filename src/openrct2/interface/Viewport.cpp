@@ -669,40 +669,34 @@ void viewport_update_sprite_follow(rct_window* window)
 void viewport_update_smart_sprite_follow(rct_window* window)
 {
     auto entity = TryGetEntity(window->viewport_smart_follow_sprite);
-    if (entity == nullptr)
+    if (entity == nullptr || entity->Type == EntityType::Null)
     {
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        return;
     }
-    else if (entity->Type == EntityType::Guest || entity->Type == EntityType::Staff)
+
+    switch (entity->Type)
     {
-        Peep* peep = TryGetEntity<Peep>(window->viewport_smart_follow_sprite);
-        if (peep == nullptr)
+        case EntityType::Vehicle:
+            viewport_update_smart_vehicle_follow(window);
+            break;
+
+        case EntityType::Guest:
+        case EntityType::Staff:
         {
-            // will never happen
-            window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-            window->viewport_target_sprite = SPRITE_INDEX_NULL;
-            return;
+            Peep* peep = static_cast<Peep*>(entity);
+            if (peep->Is<Guest>())
+                viewport_update_smart_guest_follow(window, peep);
+            else if (peep->Is<Staff>())
+                viewport_update_smart_staff_follow(window, peep);
+            break;
         }
 
-        if (peep->Is<Guest>())
-            viewport_update_smart_guest_follow(window, peep);
-        else if (peep->Is<Staff>())
-            viewport_update_smart_staff_follow(window, peep);
-    }
-    else if (entity->Type == EntityType::Vehicle)
-    {
-        viewport_update_smart_vehicle_follow(window);
-    }
-    else if (entity->Type != EntityType::Null)
-    {
-        window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
-        window->viewport_target_sprite = window->viewport_smart_follow_sprite;
-    }
-    else
-    {
-        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        default: // All other types don't need any "smart" following; steam particle, duck, money effect, etc.
+            window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
+            window->viewport_target_sprite = window->viewport_smart_follow_sprite;
+            break;
     }
 }
 
@@ -719,47 +713,46 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
         return focus;
     }
-    else
+
+    bool overallFocus = true;
+    if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide
+        || (peep->State == PeepState::LeavingRide && peep->x == LOCATION_NULL))
     {
-        bool overallFocus = true;
-        if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide
-            || (peep->State == PeepState::LeavingRide && peep->x == LOCATION_NULL))
+        auto ride = get_ride(peep->CurrentRide);
+        if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         {
-            auto ride = get_ride(peep->CurrentRide);
-            if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+            auto train = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
+            if (train != nullptr)
             {
-                auto train = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
-                if (train != nullptr)
+                const auto car = train->GetCar(peep->CurrentCar);
+                if (car != nullptr)
                 {
-                    const auto car = train->GetCar(peep->CurrentCar);
-                    if (car != nullptr)
-                    {
-                        focus.sprite.sprite_id = car->sprite_index;
-                        overallFocus = false;
-                    }
+                    focus.sprite.sprite_id = car->sprite_index;
+                    overallFocus = false;
                 }
             }
         }
-        if (peep->x == LOCATION_NULL && overallFocus)
-        {
-            auto ride = get_ride(peep->CurrentRide);
-            if (ride != nullptr)
-            {
-                auto xy = ride->overall_view.ToTileCentre();
-                focus.type = VIEWPORT_FOCUS_TYPE_COORDINATE;
-                focus.coordinate.x = xy.x;
-                focus.coordinate.y = xy.y;
-                focus.coordinate.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
-                focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
-            }
-        }
-        else
-        {
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-            focus.sprite.pad_486 &= 0xFFFF;
-        }
-        focus.coordinate.rotation = get_current_rotation();
     }
+
+    if (peep->x == LOCATION_NULL && overallFocus)
+    {
+        auto ride = get_ride(peep->CurrentRide);
+        if (ride != nullptr)
+        {
+            auto xy = ride->overall_view.ToTileCentre();
+            focus.type = VIEWPORT_FOCUS_TYPE_COORDINATE;
+            focus.coordinate.x = xy.x;
+            focus.coordinate.y = xy.y;
+            focus.coordinate.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+        }
+    }
+    else
+    {
+        focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+        focus.sprite.pad_486 &= 0xFFFF;
+    }
+    focus.coordinate.rotation = get_current_rotation();
 
     window->viewport_focus_sprite = focus.sprite;
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
@@ -774,15 +767,12 @@ void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
 
     if (peep->State == PeepState::Picked)
     {
-        // focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
         return;
     }
-    else
-    {
-        focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-    }
+
+    focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
 
     window->viewport_focus_sprite = focus;
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
@@ -790,9 +780,7 @@ void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
 
 void viewport_update_smart_vehicle_follow(rct_window* window)
 {
-    // Can be expanded in the future if needed
     sprite_focus focus = {};
-
     focus.sprite_id = window->viewport_smart_follow_sprite;
 
     window->viewport_focus_sprite = focus;
