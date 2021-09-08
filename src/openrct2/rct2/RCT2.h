@@ -836,7 +836,24 @@ struct rct_s6_data
     // packed objects
 
     // SC6[3]
-    rct_object_entry objects[RCT2_OBJECT_ENTRY_COUNT];
+    union
+    {
+        rct_object_entry objects[RCT2_OBJECT_ENTRY_COUNT];
+        struct
+        {
+            rct_object_entry rideObjects[RCT12_MAX_RIDE_OBJECTS];
+            rct_object_entry sceneryObjects[RCT2_MAX_SMALL_SCENERY_OBJECTS];
+            rct_object_entry largeSceneryObjects[RCT2_MAX_LARGE_SCENERY_OBJECTS];
+            rct_object_entry wallSceneryObjects[RCT2_MAX_WALL_SCENERY_OBJECTS];
+            rct_object_entry bannerObjects[RCT2_MAX_BANNER_OBJECTS];
+            rct_object_entry pathObjects[RCT2_MAX_PATH_OBJECTS];
+            rct_object_entry pathAdditionObjects[RCT2_MAX_PATH_ADDITION_OBJECTS];
+            rct_object_entry sceneryGroupObjects[RCT2_MAX_SCENERY_GROUP_OBJECTS];
+            rct_object_entry parkEntranceObjects[RCT2_MAX_PARK_ENTRANCE_OBJECTS];
+            rct_object_entry waterObjects[RCT2_MAX_WATER_OBJECTS];
+            rct_object_entry scenarioTextObjects[RCT2_MAX_SCENARIO_TEXT_OBJECTS];
+        };
+    };
 
     // SC6[4]
     uint16_t elapsed_months;
