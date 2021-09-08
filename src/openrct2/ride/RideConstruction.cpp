@@ -1208,7 +1208,7 @@ static Direction GetRideEntranceDirection(CoordsXY& queryLocation, CoordsXY& ent
 {
     entranceMin -= CoordsXY(32, 32);
     entranceMax += CoordsXY(32, 32);
-    if (queryLocation.x == entranceMax.x)
+    if (queryLocation.x == entranceMin.x)
     {
         if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
         {
@@ -1222,7 +1222,7 @@ static Direction GetRideEntranceDirection(CoordsXY& queryLocation, CoordsXY& ent
             return 1;
         }
     }
-    if (queryLocation.x == entranceMin.x)
+    if (queryLocation.x == entranceMax.x)
     {
         if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
         {
