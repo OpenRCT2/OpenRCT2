@@ -76,7 +76,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
 
     const auto location = _isExit ? ride_get_exit_location(ride, _stationNum) : ride_get_entrance_location(ride, _stationNum);
 
-    if (!location.isNull())
+    if (!location.IsNull())
     {
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
         rideEntranceExitRemove.SetFlags(GetFlags());
@@ -143,7 +143,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
     }
 
     const auto location = _isExit ? ride_get_exit_location(ride, _stationNum) : ride_get_entrance_location(ride, _stationNum);
-    if (!location.isNull())
+    if (!location.IsNull())
     {
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
         rideEntranceExitRemove.SetFlags(GetFlags());

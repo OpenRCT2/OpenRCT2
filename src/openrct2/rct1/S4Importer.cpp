@@ -773,9 +773,9 @@ namespace RCT1
             }
 
             // Station
-            if (src->overall_view.isNull())
+            if (src->overall_view.IsNull())
             {
-                dst->overall_view.setNull();
+                dst->overall_view.SetNull();
             }
             else
             {
@@ -784,9 +784,9 @@ namespace RCT1
 
             for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
             {
-                if (src->station_starts[i].isNull())
+                if (src->station_starts[i].IsNull())
                 {
-                    dst->stations[i].Start.setNull();
+                    dst->stations[i].Start.SetNull();
                 }
                 else
                 {
@@ -800,13 +800,13 @@ namespace RCT1
                 dst->stations[i].TrainAtStation = src->station_depart[i];
 
                 // Direction is fixed later.
-                if (src->entrance[i].isNull())
+                if (src->entrance[i].IsNull())
                     ride_clear_entrance_location(dst, i);
                 else
                     ride_set_entrance_location(
                         dst, i, { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2, 0 });
 
-                if (src->exit[i].isNull())
+                if (src->exit[i].IsNull())
                     ride_clear_exit_location(dst, i);
                 else
                     ride_set_exit_location(dst, i, { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 });
@@ -821,7 +821,7 @@ namespace RCT1
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
             for (int32_t i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
             {
-                dst->stations[i].Start.setNull();
+                dst->stations[i].Start.SetNull();
                 dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
                 ride_clear_entrance_location(dst, i);
                 ride_clear_exit_location(dst, i);
@@ -951,9 +951,9 @@ namespace RCT1
                                                        src->chairlift_bullwheel_z[i] / 2 };
             }
 
-            if (src->cur_test_track_location.isNull())
+            if (src->cur_test_track_location.IsNull())
             {
-                dst->CurTestTrackLocation.setNull();
+                dst->CurTestTrackLocation.SetNull();
             }
             else
             {
@@ -2748,9 +2748,9 @@ namespace RCT1
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
-        if (src->boat_location.isNull() || ride->mode != RideMode::BoatHire || statusSrc != ::Vehicle::Status::TravellingBoat)
+        if (src->boat_location.IsNull() || ride->mode != RideMode::BoatHire || statusSrc != ::Vehicle::Status::TravellingBoat)
         {
-            dst->BoatLocation.setNull();
+            dst->BoatLocation.SetNull();
             dst->SetTrackDirection(src->GetTrackDirection());
             dst->SetTrackType(RCT1TrackTypeToOpenRCT2(src->GetTrackType(), ride->type));
         }

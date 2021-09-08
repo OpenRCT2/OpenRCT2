@@ -246,7 +246,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY position{};
-        position.setNull();
+        position.SetNull();
         return position;
     }
     auto viewport = window->viewport;
@@ -259,7 +259,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
         if (info.SpriteType == ViewportInteractionItem::None)
         {
             auto position = info.Loc;
-            position.setNull();
+            position.SetNull();
             return position;
         }
     }
@@ -344,7 +344,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY ret{};
-        ret.setNull();
+        ret.SetNull();
         return ret;
     }
     auto viewport = window->viewport;
@@ -1221,7 +1221,7 @@ void footpath_update_queue_chains()
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {
             TileCoordsXYZD location = ride_get_entrance_location(ride, i);
-            if (location.isNull())
+            if (location.IsNull())
                 continue;
 
             TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());

@@ -147,7 +147,7 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     res->Expenditure = ExpenditureType::RideConstruction;
     res->Cost = refundPrice;
 
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto xy = ride->overall_view.ToTileCentre();
         res->Position = { xy, tile_element_height(xy) };
@@ -266,7 +266,7 @@ GameActions::Result::Ptr RideDemolishAction::RefurbishRide(Ride* ride) const
 
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };

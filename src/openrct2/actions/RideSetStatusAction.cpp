@@ -131,7 +131,7 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
     Formatter ft(res->ErrorMessageArgs.data());
     ft.Increment(6);
     ride->FormatNameTo(ft);
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };

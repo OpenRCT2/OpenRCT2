@@ -552,7 +552,7 @@ private:
         int32_t direction{};
         TileElement* tileElement{};
         auto footpathCoords = footpath_get_coordinates_from_pos(screenCoords, &direction, &tileElement);
-        if (footpathCoords.isNull())
+        if (footpathCoords.IsNull())
             return nullptr;
 
         auto isPatrolAreaSet = staff_is_patrol_area_set_for_type(GetSelectedStaffType(), footpathCoords);

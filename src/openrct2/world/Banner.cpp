@@ -221,7 +221,7 @@ ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
             continue;
 
         auto rideCoords = ride.overall_view;
-        if (rideCoords.isNull())
+        if (rideCoords.IsNull())
             continue;
 
         int32_t distance = abs(mapPos.x - rideCoords.x) + abs(mapPos.y - rideCoords.y);

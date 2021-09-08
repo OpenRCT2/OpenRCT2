@@ -582,9 +582,9 @@ public:
             dst->default_name_number = src->name_arguments_number;
         }
 
-        if (src->overall_view.isNull())
+        if (src->overall_view.IsNull())
         {
-            dst->overall_view.setNull();
+            dst->overall_view.SetNull();
         }
         else
         {
@@ -594,9 +594,9 @@ public:
 
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
-            if (src->station_starts[i].isNull())
+            if (src->station_starts[i].IsNull())
             {
-                dst->stations[i].Start.setNull();
+                dst->stations[i].Start.SetNull();
             }
             else
             {
@@ -609,12 +609,12 @@ public:
             dst->stations[i].TrainAtStation = src->train_at_station[i];
             // Direction is fixed later.
 
-            if (src->entrances[i].isNull())
+            if (src->entrances[i].IsNull())
                 ride_clear_entrance_location(dst, i);
             else
                 ride_set_entrance_location(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
 
-            if (src->exits[i].isNull())
+            if (src->exits[i].IsNull())
                 ride_clear_exit_location(dst, i);
             else
                 ride_set_exit_location(dst, i, { src->exits[i].x, src->exits[i].y, src->station_heights[i], 0 });
@@ -631,7 +631,7 @@ public:
         // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
         for (int32_t i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
         {
-            dst->stations[i].Start.setNull();
+            dst->stations[i].Start.SetNull();
             dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
             ride_clear_entrance_location(dst, i);
             ride_clear_exit_location(dst, i);
@@ -683,9 +683,9 @@ public:
         // pad_106[0x2];
         dst->testing_flags = src->testing_flags;
 
-        if (src->cur_test_track_location.isNull())
+        if (src->cur_test_track_location.IsNull())
         {
-            dst->CurTestTrackLocation.setNull();
+            dst->CurTestTrackLocation.SetNull();
         }
         else
         {
@@ -1445,7 +1445,7 @@ public:
         dst->PeepFlags = src->peep_flags;
         if (isNullLocation(src->pathfind_goal))
         {
-            dst->PathfindGoal.setNull();
+            dst->PathfindGoal.SetNull();
             dst->PathfindGoal.direction = INVALID_DIRECTION;
         }
         else
@@ -1457,7 +1457,7 @@ public:
         {
             if (isNullLocation(src->pathfind_history[i]))
             {
-                dst->PathfindHistory[i].setNull();
+                dst->PathfindHistory[i].SetNull();
                 dst->PathfindHistory[i].direction = INVALID_DIRECTION;
             }
             else
@@ -1602,10 +1602,10 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
     dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
-    if (src->boat_location.isNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
+    if (src->boat_location.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
         || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
     {
-        dst->BoatLocation.setNull();
+        dst->BoatLocation.SetNull();
         dst->SetTrackDirection(src->GetTrackDirection());
         dst->SetTrackType(src->GetTrackType());
         // RotationControlToggle and Booster are saved as the same track piece ID

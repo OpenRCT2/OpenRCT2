@@ -878,7 +878,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
     {
         obj.Set("cost", result->Cost);
     }
-    if (!result->Position.isNull())
+    if (!result->Position.IsNull())
     {
         obj.Set("position", ToDuk(_context, result->Position));
     }

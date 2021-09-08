@@ -29,7 +29,7 @@ static void ride_invalidate_station_start(Ride* ride, StationIndex stationIndex,
  */
 void ride_update_station(Ride* ride, StationIndex stationIndex)
 {
-    if (ride->stations[stationIndex].Start.isNull())
+    if (ride->stations[stationIndex].Start.IsNull())
         return;
 
     switch (ride->mode)
@@ -367,7 +367,7 @@ StationIndex ride_get_first_valid_station_exit(Ride* ride)
 {
     for (StationIndex i = 0; i < MAX_STATIONS; i++)
     {
-        if (!ride->stations[i].Exit.isNull())
+        if (!ride->stations[i].Exit.IsNull())
         {
             return i;
         }
@@ -379,7 +379,7 @@ StationIndex ride_get_first_valid_station_start(const Ride* ride)
 {
     for (StationIndex i = 0; i < MAX_STATIONS; i++)
     {
-        if (!ride->stations[i].Start.isNull())
+        if (!ride->stations[i].Start.IsNull())
         {
             return i;
         }
@@ -391,7 +391,7 @@ StationIndex ride_get_first_empty_station_start(const Ride* ride)
 {
     for (StationIndex i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.isNull())
+        if (ride->stations[i].Start.IsNull())
         {
             return i;
         }
@@ -411,12 +411,12 @@ TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stati
 
 void ride_clear_entrance_location(Ride* ride, const StationIndex stationIndex)
 {
-    ride->stations[stationIndex].Entrance.setNull();
+    ride->stations[stationIndex].Entrance.SetNull();
 }
 
 void ride_clear_exit_location(Ride* ride, const StationIndex stationIndex)
 {
-    ride->stations[stationIndex].Exit.setNull();
+    ride->stations[stationIndex].Exit.SetNull();
 }
 
 void ride_set_entrance_location(Ride* ride, const StationIndex stationIndex, const TileCoordsXYZD& location)

@@ -265,7 +265,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
                 location = ride_get_exit_location(&ride, station_index);
             }
 
-            if (location.isNull())
+            if (location.IsNull())
             {
                 continue;
             }
@@ -379,7 +379,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     }
 
     auto location = ride_get_entrance_location(&ride, 0);
-    if (location.isNull())
+    if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
@@ -408,7 +408,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     maze_elements.push_back(mazeEntrance);
 
     location = ride_get_exit_location(&ride, 0);
-    if (location.isNull())
+    if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }

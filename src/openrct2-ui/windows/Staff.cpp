@@ -415,7 +415,7 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         {
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
-            nullLoc.setNull();
+            nullLoc.SetNull();
             PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
@@ -1138,7 +1138,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
-    if (!mapCoords.isNull())
+    if (!mapCoords.IsNull())
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
@@ -1185,7 +1185,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         TileElement* tileElement;
         auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
-        if (destCoords.isNull())
+        if (destCoords.IsNull())
             return;
 
         PeepPickupAction pickupAction{
@@ -1203,7 +1203,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     {
         auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-        if (destCoords.isNull())
+        if (destCoords.IsNull())
             return;
 
         auto staff = TryGetEntity<Staff>(w->number);
@@ -1239,7 +1239,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
 
     auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-    if (destCoords.isNull())
+    if (destCoords.IsNull())
         return;
 
     auto staff = TryGetEntity<Staff>(w->number);

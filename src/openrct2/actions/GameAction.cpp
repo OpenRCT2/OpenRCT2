@@ -492,7 +492,7 @@ namespace GameActions
                         network_add_player_money_spent(playerIndex, result->Cost);
                     }
 
-                    if (!result->Position.isNull())
+                    if (!result->Position.IsNull())
                     {
                         network_set_player_last_action_coord(playerIndex, result->Position);
                     }

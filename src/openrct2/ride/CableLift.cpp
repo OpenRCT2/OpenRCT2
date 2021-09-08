@@ -77,7 +77,7 @@ Vehicle* cable_lift_segment_create(
     current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
-    current->BoatLocation.setNull();
+    current->BoatLocation.SetNull();
     current->IsCrashedVehicle = false;
     return current;
 }

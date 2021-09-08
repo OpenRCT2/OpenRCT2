@@ -670,9 +670,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
         dst->name_arguments_number = src->default_name_number;
     }
 
-    if (src->overall_view.isNull())
+    if (src->overall_view.IsNull())
     {
-        dst->overall_view.setNull();
+        dst->overall_view.SetNull();
     }
     else
     {
@@ -682,9 +682,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
     {
-        if (src->stations[i].Start.isNull())
+        if (src->stations[i].Start.IsNull())
         {
-            dst->station_starts[i].setNull();
+            dst->station_starts[i].SetNull();
         }
         else
         {
@@ -697,14 +697,14 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
         dst->train_at_station[i] = src->stations[i].TrainAtStation;
 
         TileCoordsXYZD entrance = ride_get_entrance_location(src, i);
-        if (entrance.isNull())
-            dst->entrances[i].setNull();
+        if (entrance.IsNull())
+            dst->entrances[i].SetNull();
         else
             dst->entrances[i] = { static_cast<uint8_t>(entrance.x), static_cast<uint8_t>(entrance.y) };
 
         TileCoordsXYZD exit = ride_get_exit_location(src, i);
-        if (exit.isNull())
-            dst->exits[i].setNull();
+        if (exit.IsNull())
+            dst->exits[i].SetNull();
         else
             dst->exits[i] = { static_cast<uint8_t>(exit.x), static_cast<uint8_t>(exit.y) };
 
@@ -760,9 +760,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     // pad_106[0x2];
     dst->testing_flags = src->testing_flags;
 
-    if (src->CurTestTrackLocation.isNull())
+    if (src->CurTestTrackLocation.IsNull())
     {
-        dst->cur_test_track_location.setNull();
+        dst->cur_test_track_location.SetNull();
     }
     else
     {
@@ -1230,9 +1230,9 @@ template<> void S6Exporter::ExportEntity(RCT2SpriteVehicle* dst, const Vehicle* 
     dst->track_progress = src->track_progress;
     if (ride != nullptr && ride->mode == RideMode::BoatHire && src->status == Vehicle::Status::TravellingBoat)
     {
-        if (src->BoatLocation.isNull())
+        if (src->BoatLocation.IsNull())
         {
-            dst->boat_location.setNull();
+            dst->boat_location.SetNull();
         }
         else
         {
@@ -1473,7 +1473,7 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     dst->id = src->Id;
     dst->path_check_optimisation = src->PathCheckOptimisation;
     dst->peep_flags = src->PeepFlags;
-    if (src->PathfindGoal.isNull())
+    if (src->PathfindGoal.IsNull())
     {
         dst->pathfind_goal = { 0xFF, 0xFF, 0xFF, INVALID_DIRECTION };
     }
@@ -1484,7 +1484,7 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     }
     for (size_t i = 0; i < std::size(src->PathfindHistory); i++)
     {
-        if (src->PathfindHistory[i].isNull())
+        if (src->PathfindHistory[i].IsNull())
         {
             dst->pathfind_history[i] = { 0xFF, 0xFF, 0xFF, INVALID_DIRECTION };
         }

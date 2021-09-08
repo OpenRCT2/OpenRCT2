@@ -1607,7 +1607,7 @@ void Vehicle::UpdateMeasurements()
     if (curRide->current_test_station == STATION_INDEX_NULL)
         return;
 
-    if (!ride_get_entrance_location(curRide, curRide->current_test_station).isNull())
+    if (!ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
     {
         uint8_t test_segment = curRide->current_test_segment;
 
@@ -1666,7 +1666,7 @@ void Vehicle::UpdateMeasurements()
     {
         curRide->CurTestTrackLocation = curTrackLoc;
 
-        if (ride_get_entrance_location(curRide, curRide->current_test_station).isNull())
+        if (ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
             return;
 
         auto trackElemType = GetTrackType();
@@ -1882,7 +1882,7 @@ void Vehicle::UpdateMeasurements()
         }
     }
 
-    if (ride_get_entrance_location(curRide, curRide->current_test_station).isNull())
+    if (ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
         return;
 
     if (x == LOCATION_NULL)
@@ -2332,7 +2332,7 @@ void Vehicle::UpdateWaitingForPassengers()
         if (!OpenRestraints())
             return;
 
-        if (ride_get_entrance_location(curRide, current_station).isNull())
+        if (ride_get_entrance_location(curRide, current_station).IsNull())
         {
             curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
             sub_state = 2;
@@ -2568,7 +2568,7 @@ void Vehicle::UpdateWaitingToDepart()
             }
             else
             {
-                if (!ride_get_exit_location(curRide, current_station).isNull())
+                if (!ride_get_exit_location(curRide, current_station).IsNull())
                 {
                     SetState(Vehicle::Status::UnloadingPassengers);
                     return;
@@ -2582,7 +2582,7 @@ void Vehicle::UpdateWaitingToDepart()
             {
                 if (trainCar->num_peeps != 0)
                 {
-                    if (!ride_get_exit_location(curRide, current_station).isNull())
+                    if (!ride_get_exit_location(curRide, current_station).IsNull())
                     {
                         SetState(Vehicle::Status::UnloadingPassengers);
                         return;
@@ -3144,7 +3144,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.previous_vertical_g = 0;
     ride.previous_lateral_g = 0;
     ride.testing_flags = 0;
-    ride.CurTestTrackLocation.setNull();
+    ride.CurTestTrackLocation.SetNull();
     ride.turn_count_default = 0;
     ride.turn_count_banked = 0;
     ride.turn_count_sloped = 0;
@@ -4200,7 +4200,7 @@ void Vehicle::UpdateUnloadingPassengers()
     }
     else
     {
-        if (ride_get_exit_location(curRide, current_station).isNull())
+        if (ride_get_exit_location(curRide, current_station).IsNull())
         {
             if (sub_state != 1)
                 return;
@@ -4388,7 +4388,7 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
         {
             SetTrackType(trackElement->GetTrackType());
             SetTrackDirection(curRide->boat_hire_return_direction);
-            BoatLocation.setNull();
+            BoatLocation.SetNull();
         }
 
         track_progress = 0;

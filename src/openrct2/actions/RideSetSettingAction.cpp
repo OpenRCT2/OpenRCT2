@@ -228,7 +228,7 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
     }
 
     auto res = std::make_unique<GameActions::Result>();
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };

@@ -66,7 +66,7 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool verti
 void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
 {
     auto offsetLoc = loc;
-    if (loc.isNull())
+    if (loc.IsNull())
     {
         // If game actions return no valid location of the action we can not use the screen
         // coordinates as every client will have different ones.

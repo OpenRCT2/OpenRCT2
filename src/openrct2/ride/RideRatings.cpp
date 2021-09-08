@@ -237,7 +237,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
             {
                 int32_t entranceIndex = tileElement->AsTrack()->GetStationIndex();
                 state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (ride_get_entrance_location(ride, entranceIndex).isNull())
+                if (ride_get_entrance_location(ride, entranceIndex).IsNull())
                 {
                     state.StationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
@@ -386,10 +386,10 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (!ride->stations[i].Start.isNull())
+        if (!ride->stations[i].Start.IsNull())
         {
             state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride_get_entrance_location(ride, i).isNull())
+            if (ride_get_entrance_location(ride, i).IsNull())
             {
                 state.StationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }

@@ -2159,7 +2159,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     if (!_trackPlaceCtrlState)
     {
         mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
-        if (mapCoords.isNull())
+        if (mapCoords.IsNull())
             return std::nullopt;
 
         _trackPlaceZ = 0;
