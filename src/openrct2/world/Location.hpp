@@ -215,12 +215,12 @@ struct CoordsXY
         return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP) };
     }
 
-    constexpr bool isNull() const
+    constexpr bool IsNull() const
     {
         return x == COORDS_NULL;
     };
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
         x = COORDS_NULL;
         y = 0;
@@ -269,9 +269,9 @@ struct CoordsXYZ : public CoordsXY
         return ToTileStart() + CoordsXYZ{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE, 0 };
     }
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
-        CoordsXY::setNull();
+        CoordsXY::SetNull();
         z = 0;
     }
 };
@@ -343,10 +343,10 @@ struct TileCoordsXY
 
     constexpr CoordsXY ToCoordsXY() const
     {
-        if (isNull())
+        if (IsNull())
         {
             CoordsXY ret{};
-            ret.setNull();
+            ret.SetNull();
             return ret;
         }
 
@@ -390,12 +390,12 @@ struct TileCoordsXY
         return !(*this == other);
     }
 
-    constexpr bool isNull() const
+    constexpr bool IsNull() const
     {
         return x == COORDS_NULL;
     };
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
         x = COORDS_NULL;
         y = 0;
@@ -457,18 +457,18 @@ struct TileCoordsXYZ : public TileCoordsXY
 
     constexpr CoordsXYZ ToCoordsXYZ() const
     {
-        if (isNull())
+        if (IsNull())
         {
             CoordsXYZ ret{};
-            ret.setNull();
+            ret.SetNull();
             return ret;
         }
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP };
     }
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
-        TileCoordsXY::setNull();
+        TileCoordsXY::SetNull();
         z = 0;
     }
 };
@@ -667,18 +667,18 @@ struct TileCoordsXYZD : public TileCoordsXYZ
 
     constexpr CoordsXYZD ToCoordsXYZD() const
     {
-        if (isNull())
+        if (IsNull())
         {
             CoordsXYZD ret{};
-            ret.setNull();
+            ret.SetNull();
             return ret;
         }
         return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP, direction };
     }
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
-        TileCoordsXYZ::setNull();
+        TileCoordsXYZ::SetNull();
         direction = INVALID_DIRECTION;
     }
 };

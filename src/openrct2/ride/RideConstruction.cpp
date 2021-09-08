@@ -258,7 +258,7 @@ void ride_remove_peeps(Ride* ride)
     if (stationIndex != STATION_INDEX_NULL)
     {
         auto location = ride_get_exit_location(ride, stationIndex).ToCoordsXYZD();
-        if (!location.isNull())
+        if (!location.IsNull())
         {
             auto direction = direction_reverse(location.direction);
             exitPosition = location;
@@ -1274,7 +1274,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     auto ride = get_ride(gRideEntranceExitPlaceRideIndex);
     if (ride == nullptr)
     {
-        entranceExitCoords.setNull();
+        entranceExitCoords.SetNull();
         return entranceExitCoords;
     }
 
@@ -1283,7 +1283,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     auto coordsAtHeight = screen_get_map_xy_with_z(screenCoords, stationBaseZ);
     if (!coordsAtHeight)
     {
-        entranceExitCoords.setNull();
+        entranceExitCoords.SetNull();
         return entranceExitCoords;
     }
 
@@ -1291,14 +1291,14 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
 
     if (ride->type == RIDE_TYPE_NULL)
     {
-        entranceExitCoords.setNull();
+        entranceExitCoords.SetNull();
         return entranceExitCoords;
     }
 
     auto stationStart = ride->stations[gRideEntranceExitPlaceStationIndex].Start;
-    if (stationStart.isNull())
+    if (stationStart.IsNull())
     {
-        entranceExitCoords.setNull();
+        entranceExitCoords.SetNull();
         return entranceExitCoords;
     }
 
@@ -1377,7 +1377,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         auto tileElement = ride_get_station_start_track_element(ride, gRideEntranceExitPlaceStationIndex);
         if (tileElement == nullptr)
         {
-            entranceExitCoords.setNull();
+            entranceExitCoords.SetNull();
             return entranceExitCoords;
         }
         auto stationDirection = tileElement->GetDirection();
@@ -1443,7 +1443,7 @@ void Ride::ValidateStations()
         // find the stations of the ride to begin stepping over track elements from
         for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
         {
-            if (stations[stationId].Start.isNull())
+            if (stations[stationId].Start.IsNull())
                 continue;
 
             CoordsXYZ location = stations[stationId].GetStart();
@@ -1550,14 +1550,14 @@ void Ride::ValidateStations()
     for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
     {
         auto entrance = ride_get_entrance_location(this, stationId);
-        if (!entrance.isNull())
+        if (!entrance.IsNull())
         {
             locations.push_back(entrance);
             ride_clear_entrance_location(this, stationId);
         }
 
         auto exit = ride_get_exit_location(this, stationId);
-        if (!exit.isNull())
+        if (!exit.IsNull())
         {
             locations.push_back(exit);
             ride_clear_exit_location(this, stationId);
@@ -1645,7 +1645,7 @@ void Ride::ValidateStations()
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
                 {
                     // if the location is already set for this station, big problem!
-                    if (!ride_get_exit_location(this, stationId).isNull())
+                    if (!ride_get_exit_location(this, stationId).IsNull())
                         break;
                     // set the station's exit location to this one
                     CoordsXYZD loc = { location, stations[stationId].GetBaseZ(), tileElement->GetDirection() };
@@ -1654,7 +1654,7 @@ void Ride::ValidateStations()
                 else
                 {
                     // if the location is already set for this station, big problem!
-                    if (!ride_get_entrance_location(this, stationId).isNull())
+                    if (!ride_get_entrance_location(this, stationId).IsNull())
                         break;
                     // set the station's entrance location to this one
                     CoordsXYZD loc = { location, stations[stationId].GetBaseZ(), tileElement->GetDirection() };
@@ -1738,16 +1738,16 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride* ride)
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.isNull())
+        if (ride->stations[i].Start.IsNull())
         {
             continue;
         }
-        if (ride_get_entrance_location(ride, i).isNull())
+        if (ride_get_entrance_location(ride, i).IsNull())
         {
             gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
             return false;
         }
-        if (ride_get_exit_location(ride, i).isNull())
+        if (ride_get_exit_location(ride, i).IsNull())
         {
             gGameCommandErrorText = STR_EXIT_NOT_YET_BUILT;
             return false;

@@ -199,12 +199,12 @@ struct RCT12xy8
         uint16_t xy;
     };
 
-    bool isNull() const
+    bool IsNull() const
     {
         return xy == RCT12_XY8_UNDEFINED;
     }
 
-    void setNull()
+    void SetNull()
     {
         xy = RCT12_XY8_UNDEFINED;
     }

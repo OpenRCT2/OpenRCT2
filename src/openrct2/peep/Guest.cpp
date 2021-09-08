@@ -2460,7 +2460,7 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
 void Guest::GoToRideEntrance(Ride* ride)
 {
     TileCoordsXYZD tileLocation = ride_get_entrance_location(ride, CurrentRideStation);
-    if (tileLocation.isNull())
+    if (tileLocation.IsNull())
     {
         RemoveFromQueue();
         return;
@@ -3550,7 +3550,7 @@ static uint8_t peep_get_waypointed_seat_location(
 static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
 {
     TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, peep->CurrentRideStation);
-    Guard::Assert(!entranceLocation.isNull());
+    Guard::Assert(!entranceLocation.IsNull());
     uint8_t direction_entrance = entranceLocation.direction;
 
     CoordsXY waypoint = ride->stations[peep->CurrentRideStation].Start.ToTileCentre();
@@ -3632,7 +3632,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
     {
         auto entranceLocation = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXYZD();
-        Guard::Assert(!entranceLocation.isNull());
+        Guard::Assert(!entranceLocation.IsNull());
 
         if (ride->type == RIDE_TYPE_MAZE)
         {
@@ -3744,7 +3744,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
 
     Guard::Assert(peep->CurrentRideStation < MAX_STATIONS);
     auto exit = ride_get_exit_location(ride, peep->CurrentRideStation);
-    Guard::Assert(!exit.isNull());
+    Guard::Assert(!exit.IsNull());
     x = exit.x;
     y = exit.y;
     x *= 32;
@@ -4210,7 +4210,7 @@ void Guest::UpdateRideLeaveVehicle()
     }
 
     auto exitLocation = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXYZD();
-    Guard::Assert(!exitLocation.isNull());
+    Guard::Assert(!exitLocation.IsNull());
 
     auto waypointLoc = CoordsXYZ{ ride->stations[CurrentRideStation].Start.ToTileCentre(),
                                   exitLocation.z + ride->GetRideTypeDescriptor().Heights.PlatformHeight };

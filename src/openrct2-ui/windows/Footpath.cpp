@@ -798,7 +798,7 @@ static void window_footpath_set_selection_start_bridge_at_point(const ScreenCoor
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
-    if (mapCoords.isNull())
+    if (mapCoords.IsNull())
     {
         return;
     }
@@ -904,7 +904,7 @@ static void window_footpath_start_bridge_at_point(const ScreenCoordsXY& screenCo
     TileElement* tileElement;
 
     auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
-    if (mapCoords.isNull())
+    if (mapCoords.IsNull())
     {
         return;
     }

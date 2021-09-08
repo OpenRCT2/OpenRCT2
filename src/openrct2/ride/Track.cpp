@@ -100,7 +100,7 @@ static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
         auto stationStart = ride->stations[i].GetStart();
         if (stationStart == location)
         {
-            ride->stations[i].Start.setNull();
+            ride->stations[i].Start.SetNull();
             ride->num_stations--;
             break;
         }

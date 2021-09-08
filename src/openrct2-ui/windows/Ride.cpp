@@ -1334,7 +1334,7 @@ static rct_window* window_ride_open_station(Ride* ride, StationIndex stationInde
     // View
     for (int32_t i = stationIndex; i >= 0; i--)
     {
-        if (ride->stations[i].Start.isNull())
+        if (ride->stations[i].Start.IsNull())
         {
             stationIndex--;
         }
@@ -1564,7 +1564,7 @@ static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_wi
     for (StationIndex index = 0; index < sizeof(ride->stations); ++index)
     {
         const auto& station = ride->stations[index];
-        if (!station.Start.isNull())
+        if (!station.Start.IsNull())
         {
             if (viewSelectionIndex-- == 0)
             {
@@ -1688,7 +1688,7 @@ static void window_ride_init_viewport(rct_window* w)
     w->viewport_focus_coordinates.height = w->height;
 
     // rct2: 0x006aec9c only used here so brought it into the function
-    if (!w->viewport && !ride->overall_view.isNull())
+    if (!w->viewport && !ride->overall_view.IsNull())
     {
         rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
@@ -2558,14 +2558,14 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
     // Entrance / exit
     if (ride->status == RideStatus::Closed)
     {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
+        if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).IsNull())
             stringId = STR_NO_ENTRANCE;
-        else if (ride_get_exit_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
+        else if (ride_get_exit_location(ride, static_cast<uint8_t>(*stationIndex)).IsNull())
             stringId = STR_NO_EXIT;
     }
     else
     {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).isNull())
+        if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).IsNull())
             stringId = STR_EXIT_ONLY;
     }
     // Queue length

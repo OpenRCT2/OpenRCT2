@@ -1241,7 +1241,7 @@ static void sub_6E1F34_small_scenery(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1269,7 +1269,7 @@ static void sub_6E1F34_small_scenery(
             auto gridCoords = screen_get_map_xy_quadrant(screenPos, &quadrant);
             if (!gridCoords)
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
             gridPos = *gridCoords;
@@ -1283,7 +1283,7 @@ static void sub_6E1F34_small_scenery(
 
                 if (surfaceElement == nullptr)
                 {
-                    gridPos.setNull();
+                    gridPos.SetNull();
                     return;
                 }
 
@@ -1302,7 +1302,7 @@ static void sub_6E1F34_small_scenery(
             auto mapCoords = screen_get_map_xy_quadrant_with_z(screenPos, z, &quadrant);
             if (!mapCoords)
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
             gridPos = *mapCoords;
@@ -1318,7 +1318,7 @@ static void sub_6E1F34_small_scenery(
             gSceneryPlaceZ = z;
         }
 
-        if (gridPos.isNull())
+        if (gridPos.IsNull())
             return;
 
         uint8_t rotation = gWindowSceneryRotation;
@@ -1352,7 +1352,7 @@ static void sub_6E1F34_small_scenery(
 
         if (info.SpriteType == ViewportInteractionItem::None)
         {
-            gridPos.setNull();
+            gridPos.SetNull();
             return;
         }
 
@@ -1366,7 +1366,7 @@ static void sub_6E1F34_small_scenery(
 
             if (surfaceElement == nullptr)
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
 
@@ -1388,7 +1388,7 @@ static void sub_6E1F34_small_scenery(
         }
         else
         {
-            gridPos.setNull();
+            gridPos.SetNull();
         }
         // If SHIFT pressed
         if (gSceneryShiftPressed)
@@ -1401,7 +1401,7 @@ static void sub_6E1F34_small_scenery(
         gSceneryPlaceZ = z;
     }
 
-    if (gridPos.isNull())
+    if (gridPos.IsNull())
         return;
 
     gridPos = gridPos.ToTileStart();
@@ -1431,7 +1431,7 @@ static void sub_6E1F34_path_item(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1445,7 +1445,7 @@ static void sub_6E1F34_path_item(
 
     if (info.SpriteType == ViewportInteractionItem::None)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1464,7 +1464,7 @@ static void sub_6E1F34_wall(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1487,7 +1487,7 @@ static void sub_6E1F34_wall(
         auto gridCoords = screen_get_map_xy_side(screenPos, &edge);
         if (!gridCoords)
         {
-            gridPos.setNull();
+            gridPos.SetNull();
             return;
         }
         gridPos = *gridCoords;
@@ -1501,7 +1501,7 @@ static void sub_6E1F34_wall(
 
             if (surfaceElement == nullptr)
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
 
@@ -1519,7 +1519,7 @@ static void sub_6E1F34_wall(
         auto mapCoords = screen_get_map_xy_side_with_z(screenPos, z, &edge);
         if (!mapCoords)
         {
-            gridPos.setNull();
+            gridPos.SetNull();
             return;
         }
         gridPos = *mapCoords;
@@ -1535,7 +1535,7 @@ static void sub_6E1F34_wall(
         gSceneryPlaceZ = z;
     }
 
-    if (gridPos.isNull())
+    if (gridPos.IsNull())
         return;
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
@@ -1553,7 +1553,7 @@ static void sub_6E1F34_large_scenery(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1580,7 +1580,7 @@ static void sub_6E1F34_large_scenery(
         const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenPos);
         gridPos = mapCoords;
 
-        if (gridPos.isNull())
+        if (gridPos.IsNull())
             return;
 
         gSceneryPlaceZ = 0;
@@ -1592,7 +1592,7 @@ static void sub_6E1F34_large_scenery(
 
             if (surfaceElement == nullptr)
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
 
@@ -1614,7 +1614,7 @@ static void sub_6E1F34_large_scenery(
         }
         else
         {
-            gridPos.setNull();
+            gridPos.SetNull();
         }
 
         // If SHIFT pressed
@@ -1628,7 +1628,7 @@ static void sub_6E1F34_large_scenery(
         gSceneryPlaceZ = z;
     }
 
-    if (gridPos.isNull())
+    if (gridPos.IsNull())
         return;
 
     gridPos = gridPos.ToTileStart();
@@ -1653,7 +1653,7 @@ static void sub_6E1F34_banner(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1667,7 +1667,7 @@ static void sub_6E1F34_banner(
 
     if (info.SpriteType == ViewportInteractionItem::None)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1728,7 +1728,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             uint8_t quadrant;
             Direction rotation;
             sub_6E1F34_small_scenery(windowPos, selectedScenery, gridPos, &quadrant, &rotation);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             int32_t quantity = 1;
@@ -1848,7 +1848,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         {
             int32_t z;
             sub_6E1F34_path_item(windowPos, selectedScenery, gridPos, &z);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery + 1);
@@ -1867,7 +1867,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         {
             uint8_t edges;
             sub_6E1F34_wall(windowPos, selectedScenery, gridPos, &edges);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             uint8_t zAttemptRange = 1;
@@ -1919,7 +1919,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         {
             Direction direction;
             sub_6E1F34_large_scenery(windowPos, selectedScenery, gridPos, &direction);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             uint8_t zAttemptRange = 1;
@@ -1977,7 +1977,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             int32_t z;
             Direction direction;
             sub_6E1F34_banner(windowPos, selectedScenery, gridPos, &z, &direction);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             CoordsXYZD loc{ gridPos, z, direction };
@@ -2628,7 +2628,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_small_scenery(screenPos, selection.EntryIndex, mapTile, &quadrant, &rotation);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;
@@ -2706,7 +2706,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_path_item(screenPos, selection.EntryIndex, mapTile, &z);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;
@@ -2741,7 +2741,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_wall(screenPos, selection.EntryIndex, mapTile, &edge);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;
@@ -2796,7 +2796,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_large_scenery(screenPos, selection.EntryIndex, mapTile, &direction);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;
@@ -2863,7 +2863,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_banner(screenPos, selection.EntryIndex, mapTile, &z, &direction);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;

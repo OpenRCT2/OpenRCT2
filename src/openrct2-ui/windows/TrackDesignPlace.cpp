@@ -152,7 +152,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
     window_push_others_right(w);
     show_gridlines();
     _window_track_place_last_cost = MONEY32_UNDEFINED;
-    _windowTrackPlaceLast.setNull();
+    _windowTrackPlaceLast.SetNull();
     _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 
     window_track_place_clear_mini_preview();
@@ -193,14 +193,14 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_track_place_clear_provisional();
             _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
             w->Invalidate();
-            _windowTrackPlaceLast.setNull();
+            _windowTrackPlaceLast.SetNull();
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_MIRROR:
             track_design_mirror(_trackDesign.get());
             _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
             w->Invalidate();
-            _windowTrackPlaceLast.setNull();
+            _windowTrackPlaceLast.SetNull();
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_SELECT_DIFFERENT_DESIGN:
@@ -259,7 +259,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
 
     // Get the tool map position
     CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
-    if (mapCoords.isNull())
+    if (mapCoords.IsNull())
     {
         window_track_place_clear_provisional();
         return;
@@ -324,7 +324,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
-    if (mapCoords.isNull())
+    if (mapCoords.IsNull())
         return;
 
     // Try increasing Z until a feasible placement is found

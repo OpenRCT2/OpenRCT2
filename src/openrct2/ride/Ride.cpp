@@ -251,7 +251,7 @@ int32_t Ride::GetTotalQueueLength() const
 {
     int32_t i, queueLength = 0;
     for (i = 0; i < MAX_STATIONS; i++)
-        if (!ride_get_entrance_location(this, i).isNull())
+        if (!ride_get_entrance_location(this, i).IsNull())
             queueLength += stations[i].QueueLength;
     return queueLength;
 }
@@ -260,7 +260,7 @@ int32_t Ride::GetMaxQueueTime() const
 {
     uint8_t i, queueTime = 0;
     for (i = 0; i < MAX_STATIONS; i++)
-        if (!ride_get_entrance_location(this, i).isNull())
+        if (!ride_get_entrance_location(this, i).IsNull())
             queueTime = std::max(queueTime, stations[i].QueueTime);
     return static_cast<int32_t>(queueTime);
 }
@@ -1166,7 +1166,7 @@ void Ride::UpdateSpiralSlide()
     // Invalidate something related to station start
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (stations[i].Start.isNull())
+        if (stations[i].Start.IsNull())
             continue;
 
         auto startLoc = stations[i].Start;
@@ -1647,10 +1647,10 @@ Staff* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
     // Get either exit position or entrance position if there is no exit
     auto stationIndex = ride->inspection_station;
     TileCoordsXYZD location = ride_get_exit_location(ride, stationIndex);
-    if (location.isNull())
+    if (location.IsNull())
     {
         location = ride_get_entrance_location(ride, stationIndex);
-        if (location.isNull())
+        if (location.IsNull())
             return nullptr;
     }
 
@@ -2155,7 +2155,7 @@ void ride_check_all_reachable()
  */
 static bool ride_entrance_exit_is_reachable(const TileCoordsXYZD& coordinates)
 {
-    if (coordinates.isNull())
+    if (coordinates.IsNull())
         return true;
 
     TileCoordsXYZ loc{ coordinates.x, coordinates.y, coordinates.z };
@@ -2172,9 +2172,9 @@ static void ride_entrance_exit_connected(Ride* ride)
         auto entrance = ride_get_entrance_location(ride, i);
         auto exit = ride_get_exit_location(ride, i);
 
-        if (station_start.isNull())
+        if (station_start.IsNull())
             continue;
-        if (!entrance.isNull() && !ride_entrance_exit_is_reachable(entrance))
+        if (!entrance.IsNull() && !ride_entrance_exit_is_reachable(entrance))
         {
             // name of ride is parameter of the format string
             Formatter ft;
@@ -2186,7 +2186,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             ride->connected_message_throttle = 3;
         }
 
-        if (!exit.isNull() && !ride_entrance_exit_is_reachable(exit))
+        if (!exit.IsNull() && !ride_entrance_exit_is_reachable(exit))
         {
             // name of ride is parameter of the format string
             Formatter ft;
@@ -2203,7 +2203,7 @@ static void ride_entrance_exit_connected(Ride* ride)
 static void ride_shop_connected(Ride* ride)
 {
     auto shopLoc = TileCoordsXY(ride->stations[0].Start);
-    if (shopLoc.isNull())
+    if (shopLoc.IsNull())
         return;
 
     TrackElement* trackElement = nullptr;
@@ -2312,7 +2312,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
     {
         auto stationIndex = tileElement->AsTrack()->GetStationIndex();
         for (int32_t i = stationIndex; i >= 0; i--)
-            if (ride->stations[i].Start.isNull())
+            if (ride->stations[i].Start.IsNull())
                 stationIndex--;
 
         auto ft = Formatter();
@@ -2337,14 +2337,14 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
         // Get the station
         auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
         for (int32_t i = stationIndex; i >= 0; i--)
-            if (ride->stations[i].Start.isNull())
+            if (ride->stations[i].Start.IsNull())
                 stationIndex--;
 
         if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
         {
             // Get the queue length
             int32_t queueLength = 0;
-            if (!ride_get_entrance_location(ride, stationIndex).isNull())
+            if (!ride_get_entrance_location(ride, stationIndex).IsNull())
                 queueLength = ride->stations[stationIndex].QueueLength;
 
             auto ft = Formatter();
@@ -2378,7 +2378,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
             // Get the station
             stationIndex = tileElement->AsEntrance()->GetStationIndex();
             for (int32_t i = stationIndex; i >= 0; i--)
-                if (ride->stations[i].Start.isNull())
+                if (ride->stations[i].Start.IsNull())
                     stationIndex--;
 
             auto ft = Formatter();
@@ -2430,7 +2430,7 @@ static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
     uint16_t numStations = 0;
     for (StationIndex stationIndex = 0; stationIndex < MAX_STATIONS; ++stationIndex)
     {
-        if (!ride->stations[stationIndex].Start.isNull())
+        if (!ride->stations[stationIndex].Start.IsNull())
         {
             numStations++;
         }
@@ -2510,22 +2510,22 @@ static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
     uint8_t exit = 0;
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.isNull())
+        if (ride->stations[i].Start.IsNull())
             continue;
 
-        if (!ride_get_entrance_location(ride, i).isNull())
+        if (!ride_get_entrance_location(ride, i).IsNull())
         {
             entrance = 1;
         }
 
-        if (!ride_get_exit_location(ride, i).isNull())
+        if (!ride_get_exit_location(ride, i).IsNull())
         {
             exit = 1;
         }
 
         // If station start and no entrance/exit
         // Sets same error message as no entrance
-        if (ride_get_exit_location(ride, i).isNull() && ride_get_entrance_location(ride, i).isNull())
+        if (ride_get_exit_location(ride, i).IsNull() && ride_get_entrance_location(ride, i).IsNull())
         {
             entrance = 0;
             break;
@@ -2556,7 +2556,7 @@ void Ride::ChainQueues() const
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
         auto location = ride_get_entrance_location(this, i);
-        if (location.isNull())
+        if (location.IsNull())
             continue;
 
         auto mapLocation = location.ToCoordsXYZ();
@@ -2892,19 +2892,19 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
         const auto entrance = ride_get_entrance_location(ride, i);
         const auto exit = ride_get_exit_location(ride, i);
 
-        if (!entrance.isNull())
+        if (!entrance.IsNull())
         {
             *position++ = entrance;
         }
-        if (!exit.isNull())
+        if (!exit.IsNull())
         {
             *position++ = exit;
         }
     }
-    (*position++).setNull();
+    (*position++).SetNull();
 
     // Enumerate entrance and exit positions
-    for (position = positions; !(*position).isNull(); position++)
+    for (position = positions; !(*position).IsNull(); position++)
     {
         auto entranceExitMapPos = position->ToCoordsXYZ();
 
@@ -3211,7 +3211,7 @@ static Vehicle* vehicle_create_car(
     // loc_6DDD5E:
     vehicle->num_peeps = 0;
     vehicle->next_free_seat = 0;
-    vehicle->BoatLocation.setNull();
+    vehicle->BoatLocation.SetNull();
     vehicle->IsCrashedVehicle = false;
     return vehicle;
 }
@@ -3525,7 +3525,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
     for (StationIndex stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
     {
         location = ride->stations[stationIndex].GetStart();
-        if (!location.isNull())
+        if (!location.IsNull())
             break;
         if (stationIndex == (MAX_STATIONS - 1))
         {
@@ -3709,16 +3709,16 @@ void Ride::ConstructMissingEntranceOrExit() const
     int32_t i;
     for (i = 0; i < MAX_STATIONS; i++)
     {
-        if (stations[i].Start.isNull())
+        if (stations[i].Start.IsNull())
             continue;
 
-        if (ride_get_entrance_location(this, i).isNull())
+        if (ride_get_entrance_location(this, i).IsNull())
         {
             entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE;
             break;
         }
 
-        if (ride_get_exit_location(this, i).isNull())
+        if (ride_get_exit_location(this, i).IsNull())
         {
             entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_EXIT;
             break;
@@ -4848,7 +4848,7 @@ static std::optional<int32_t> ride_get_smallest_station_length(Ride* ride)
     std::optional<int32_t> result;
     for (const auto& station : ride->stations)
     {
-        if (!station.Start.isNull())
+        if (!station.Start.IsNull())
         {
             if (!result.has_value() || station.Length < *result)
             {
@@ -4873,7 +4873,7 @@ static int32_t ride_get_track_length(Ride* ride)
     for (int32_t i = 0; i < MAX_STATIONS && !foundTrack; i++)
     {
         trackStart = ride->stations[i].GetStart();
-        if (trackStart.isNull())
+        if (trackStart.IsNull())
             continue;
 
         tileElement = map_get_first_element_at(trackStart);
@@ -5334,7 +5334,7 @@ bool ride_has_adjacent_station(Ride* ride)
     for (StationIndex stationNum = 0; stationNum < MAX_STATIONS; stationNum++)
     {
         auto stationStart = ride->stations[stationNum].GetStart();
-        if (!stationStart.isNull())
+        if (!stationStart.IsNull())
         {
             /* Get the map element for the station start. */
             TileElement* stationElement = get_station_platform({ stationStart, stationStart.z + 0 });
@@ -5509,7 +5509,7 @@ void determine_ride_entrance_and_exit_locations()
             bool fixExit = false;
 
             // Skip if the station has no entrance
-            if (!entranceLoc.isNull())
+            if (!entranceLoc.IsNull())
             {
                 const EntranceElement* entranceElement = map_get_ride_entrance_element_at(entranceLoc.ToCoordsXYZD(), false);
 
@@ -5524,7 +5524,7 @@ void determine_ride_entrance_and_exit_locations()
                 }
             }
 
-            if (!exitLoc.isNull())
+            if (!exitLoc.IsNull())
             {
                 const EntranceElement* entranceElement = map_get_ride_exit_element_at(exitLoc.ToCoordsXYZD(), false);
 

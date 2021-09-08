@@ -534,7 +534,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         }
 
         int32_t entranceDirections = 0;
-        if (!ride->overall_view.isNull())
+        if (!ride->overall_view.IsNull())
         {
             if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
             {
@@ -542,7 +542,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             }
         }
 
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.isNull())
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.IsNull())
         {
             ride->overall_view = mapLoc;
         }

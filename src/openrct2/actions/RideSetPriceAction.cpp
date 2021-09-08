@@ -87,7 +87,7 @@ GameActions::Result::Ptr RideSetPriceAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };
