@@ -169,7 +169,7 @@ public:
             _isSV7 = _stricmp(extension, ".sv7") == 0;
         }
 
-        chunkReader.ReadChunk(&_s6.objects, sizeof(_s6.objects));
+        chunkReader.ReadChunk(&_s6.Objects, sizeof(_s6.Objects));
 
         if (isScenario)
         {
@@ -1586,17 +1586,17 @@ public:
     {
         std::vector<rct_object_entry> result;
 
-        AddRequiredObjects(result, _s6.rideObjects, MAX_RIDE_OBJECTS);
-        AddRequiredObjects(result, _s6.sceneryObjects, MAX_SMALL_SCENERY_OBJECTS);
-        AddRequiredObjects(result, _s6.largeSceneryObjects, MAX_LARGE_SCENERY_OBJECTS);
-        AddRequiredObjects(result, _s6.wallSceneryObjects, MAX_WALL_SCENERY_OBJECTS);
-        AddRequiredObjects(result, _s6.bannerObjects, MAX_BANNER_OBJECTS);
-        AddRequiredObjects(result, _s6.pathObjects, MAX_PATH_OBJECTS);
-        AddRequiredObjects(result, _s6.pathAdditionObjects, MAX_PATH_ADDITION_OBJECTS);
-        AddRequiredObjects(result, _s6.sceneryGroupObjects, MAX_SCENERY_GROUP_OBJECTS);
-        AddRequiredObjects(result, _s6.parkEntranceObjects, MAX_PARK_ENTRANCE_OBJECTS);
-        AddRequiredObjects(result, _s6.waterObjects, MAX_WATER_OBJECTS);
-        AddRequiredObjects(result, _s6.scenarioTextObjects, MAX_SCENARIO_TEXT_OBJECTS);
+        AddRequiredObjects(result, _s6.RideObjects, MAX_RIDE_OBJECTS);
+        AddRequiredObjects(result, _s6.SceneryObjects, MAX_SMALL_SCENERY_OBJECTS);
+        AddRequiredObjects(result, _s6.LargeSceneryObjects, MAX_LARGE_SCENERY_OBJECTS);
+        AddRequiredObjects(result, _s6.WallSceneryObjects, MAX_WALL_SCENERY_OBJECTS);
+        AddRequiredObjects(result, _s6.BannerObjects, MAX_BANNER_OBJECTS);
+        AddRequiredObjects(result, _s6.PathObjects, MAX_PATH_OBJECTS);
+        AddRequiredObjects(result, _s6.PathAdditionObjects, MAX_PATH_ADDITION_OBJECTS);
+        AddRequiredObjects(result, _s6.SceneryGroupObjects, MAX_SCENERY_GROUP_OBJECTS);
+        AddRequiredObjects(result, _s6.ParkEntranceObjects, MAX_PARK_ENTRANCE_OBJECTS);
+        AddRequiredObjects(result, _s6.WaterObjects, MAX_WATER_OBJECTS);
+        AddRequiredObjects(result, _s6.ScenarioTextObjects, MAX_SCENARIO_TEXT_OBJECTS);
 
         return result;
     }
