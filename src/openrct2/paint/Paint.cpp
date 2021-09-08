@@ -56,21 +56,19 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
 static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
 
+static constexpr int32_t _PositionHashExtendsX[] = {
+    -0x2000,
+    0x2000,
+    0x4000,
+    0x2000,
+};
+
 static constexpr uint32_t CalculatePositionHash(const paint_struct& ps, uint8_t rotation)
 {
     auto pos = CoordsXY{ ps.bounds.x, ps.bounds.y }.Rotate(rotation);
-    switch (rotation)
-    {
-        case 0:
-            break;
-        case 1:
-        case 3:
-            pos.x += 0x2000;
-            break;
-        case 2:
-            pos.x += 0x4000;
-            break;
-    }
+
+    // For corners to fall into the right buckets this extends the X axis.
+    pos.x += _PositionHashExtendsX[rotation];
 
     return static_cast<uint32_t>(pos.x + pos.y);
 }
