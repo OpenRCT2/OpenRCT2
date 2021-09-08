@@ -10,6 +10,7 @@
 #include "Entrance.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../actions/ParkEntranceRemoveAction.h"
@@ -19,6 +20,8 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/FootpathObject.h"
+#include "../object/FootpathSurfaceObject.h"
+#include "../object/ObjectManager.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "Footpath.h"
@@ -255,21 +258,65 @@ void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
     SequenceIndex |= (newSequenceIndex & 0xF);
 }
 
+bool EntranceElement::HasLegacyPathEntry() const
+{
+    return (flags2 & ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
+}
+
 ObjectEntryIndex EntranceElement::GetLegacyPathEntryIndex() const
 {
-    return PathType;
+    if (HasLegacyPathEntry())
+        return PathType;
+    else
+        return OBJECT_ENTRY_INDEX_NULL;
+}
+
+const FootpathObject* EntranceElement::GetLegacyPathEntry() const
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathObject*>(objMgr.GetLoadedObject(ObjectType::Paths, GetLegacyPathEntryIndex()));
 }
 
 void EntranceElement::SetLegacyPathEntryIndex(ObjectEntryIndex newPathType)
 {
     PathType = newPathType;
+    flags2 |= ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+}
+
+ObjectEntryIndex EntranceElement::GetSurfaceEntryIndex() const
+{
+    if (HasLegacyPathEntry())
+        return OBJECT_ENTRY_INDEX_NULL;
+    else
+        return PathType;
+}
+
+const FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
+}
+
+void EntranceElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
+{
+    PathType = newIndex;
+    flags2 &= ~ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
 const PathSurfaceDescriptor* EntranceElement::GetPathSurfaceDescriptor() const
 {
-    const auto* legacyPathEntry = GetLegacyFootpathEntry(PathType);
-    if (legacyPathEntry == nullptr)
+    if (HasLegacyPathEntry())
+    {
+        const auto* legacyPathEntry = GetLegacyPathEntry();
+        if (legacyPathEntry == nullptr)
+            return nullptr;
+
+        return &legacyPathEntry->GetPathSurfaceDescriptor();
+    }
+
+    const auto* surfaceEntry = GetSurfaceEntry();
+    if (surfaceEntry == nullptr)
         return nullptr;
 
-    return &legacyPathEntry->GetPathSurfaceDescriptor();
+    return &surfaceEntry->GetDescriptor();
 }

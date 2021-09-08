@@ -20,6 +20,8 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/FootpathObject.h"
+#include "../object/FootpathRailingsObject.h"
+#include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../paint/VirtualFloor.h"
@@ -1644,7 +1646,10 @@ void PathElement::SetAdditionIsGhost(bool isGhost)
 
 ObjectEntryIndex PathElement::GetLegacyPathEntryIndex() const
 {
-    return SurfaceIndex;
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
+        return SurfaceIndex;
+    else
+        return OBJECT_ENTRY_INDEX_NULL;
 }
 
 const FootpathObject* PathElement::GetLegacyPathEntry() const
@@ -1652,30 +1657,95 @@ const FootpathObject* PathElement::GetLegacyPathEntry() const
     return GetLegacyFootpathEntry(GetLegacyPathEntryIndex());
 }
 
+void PathElement::SetLegacyPathEntryIndex(ObjectEntryIndex newIndex)
+{
+    SurfaceIndex = newIndex & ~FOOTPATH_ELEMENT_INSERT_QUEUE;
+    RailingsIndex = OBJECT_ENTRY_INDEX_NULL;
+    Flags2 |= FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+}
+
+bool PathElement::HasLegacyPathEntry() const
+{
+    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
+}
+
 const PathSurfaceDescriptor* PathElement::GetSurfaceDescriptor() const
 {
-    const auto* legacyPathEntry = GetLegacyPathEntry();
-    if (legacyPathEntry == nullptr)
+    if (HasLegacyPathEntry())
+    {
+        const auto* legacyPathEntry = GetLegacyPathEntry();
+        if (legacyPathEntry == nullptr)
+            return nullptr;
+
+        if (IsQueue())
+            return &legacyPathEntry->GetQueueSurfaceDescriptor();
+
+        return &legacyPathEntry->GetPathSurfaceDescriptor();
+    }
+
+    const auto* surfaceEntry = GetSurfaceEntry();
+    if (surfaceEntry == nullptr)
         return nullptr;
 
-    if (IsQueue())
-        return &legacyPathEntry->GetQueueSurfaceDescriptor();
-
-    return &legacyPathEntry->GetPathSurfaceDescriptor();
+    return &surfaceEntry->GetDescriptor();
 }
 
 const PathRailingsDescriptor* PathElement::GetRailingsDescriptor() const
 {
-    const auto* legacyPathEntry = GetLegacyPathEntry();
-    if (legacyPathEntry == nullptr)
+    if (HasLegacyPathEntry())
+    {
+        const auto* legacyPathEntry = GetLegacyPathEntry();
+        if (legacyPathEntry == nullptr)
+            return nullptr;
+
+        return &legacyPathEntry->GetPathRailingsDescriptor();
+    }
+
+    const auto* railingsEntry = GetRailingsEntry();
+    if (railingsEntry == nullptr)
         return nullptr;
 
-    return &legacyPathEntry->GetPathRailingsDescriptor();
+    return &railingsEntry->GetDescriptor();
 }
 
-void PathElement::SetLegacyPathEntryIndex(ObjectEntryIndex newIndex)
+ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 {
-    SurfaceIndex = newIndex & ~FOOTPATH_ELEMENT_INSERT_QUEUE;
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
+        return OBJECT_ENTRY_INDEX_NULL;
+    else
+        return SurfaceIndex;
+}
+
+const FootpathSurfaceObject* PathElement::GetSurfaceEntry() const
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
+}
+
+void PathElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
+{
+    SurfaceIndex = newIndex;
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+}
+
+ObjectEntryIndex PathElement::GetRailingsEntryIndex() const
+{
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
+        return OBJECT_ENTRY_INDEX_NULL;
+    else
+        return RailingsIndex;
+}
+
+const FootpathRailingsObject* PathElement::GetRailingsEntry() const
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathRailingsObject*>(objMgr.GetLoadedObject(ObjectType::FootpathRailings, GetRailingsEntryIndex()));
+}
+
+void PathElement::SetRailingsEntryIndex(ObjectEntryIndex newEntryIndex)
+{
+    RailingsIndex = newEntryIndex;
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
 uint8_t PathElement::GetQueueBannerDirection() const
