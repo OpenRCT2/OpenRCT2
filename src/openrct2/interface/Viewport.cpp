@@ -700,7 +700,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     }
 }
 
-viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep)
+viewport_focus viewport_update_smart_guest_follow(rct_window* window, const Peep* peep)
 {
     viewport_focus focus{};
     focus.type = VIEWPORT_FOCUS_TYPE_SPRITE;
@@ -759,7 +759,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
     return focus;
 }
 
-void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
+void viewport_update_smart_staff_follow(rct_window* window, const Peep* peep)
 {
     sprite_focus focus = {};
 
