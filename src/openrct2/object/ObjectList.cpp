@@ -160,20 +160,13 @@ void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_obje
 
 void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index)
 {
-    ObjectEntryIndex objectIndex = index;
-    for (int32_t i = 0; i < EnumValue(objectType); i++)
-    {
-        objectIndex += object_entry_group_counts[i];
-    }
-
-    void* result = nullptr;
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr.GetLoadedObject(objectIndex);
-    if (obj != nullptr)
+    auto* object = objectMgr.GetLoadedObject(objectType, index);
+    if (object != nullptr)
     {
-        result = obj->GetLegacyData();
+        return object->GetLegacyData();
     }
-    return result;
+    return nullptr;
 }
 
 const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index)
