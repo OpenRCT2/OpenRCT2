@@ -151,14 +151,6 @@ const rct_object_entry* get_loaded_object_entry(size_t index)
     return obj->GetObjectEntry();
 }
 
-void* get_loaded_object_chunk(size_t index)
-{
-    ObjectType objectType;
-    ObjectEntryIndex entryIndex;
-    get_type_entry_index(index, &objectType, &entryIndex);
-    return object_entry_get_chunk(objectType, entryIndex);
-}
-
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry)
 {
     bufferSize = std::min(static_cast<size_t>(DAT_NAME_LENGTH) + 1, bufferSize);
