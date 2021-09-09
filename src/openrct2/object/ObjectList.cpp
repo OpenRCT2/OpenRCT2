@@ -137,20 +137,6 @@ void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIn
         *outEntryIndex = static_cast<ObjectEntryIndex>(index);
 }
 
-const rct_object_entry* get_loaded_object_entry(size_t index)
-{
-    ObjectType objectType;
-    ObjectEntryIndex entryIndex;
-    get_type_entry_index(index, &objectType, &entryIndex);
-    auto obj = object_entry_get_object(objectType, entryIndex);
-    if (obj == nullptr)
-    {
-        return nullptr;
-    }
-
-    return obj->GetObjectEntry();
-}
-
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry)
 {
     bufferSize = std::min(static_cast<size_t>(DAT_NAME_LENGTH) + 1, bufferSize);
