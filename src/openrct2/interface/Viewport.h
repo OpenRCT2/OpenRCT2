@@ -20,11 +20,12 @@ struct paint_session;
 struct RecordedPaintSession;
 struct paint_struct;
 struct rct_drawpixelinfo;
-struct Peep;
 struct TileElement;
 struct rct_window;
-union paint_entry;
 struct EntityBase;
+struct Guest;
+struct Staff;
+union paint_entry;
 
 enum
 {
@@ -111,8 +112,8 @@ void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bott
 void viewport_update_position(rct_window* window);
 void viewport_update_sprite_follow(rct_window* window);
 void viewport_update_smart_sprite_follow(rct_window* window);
-viewport_focus viewport_update_smart_guest_follow(rct_window* window, const Peep* peep);
-void viewport_update_smart_staff_follow(rct_window* window, const Peep* peep);
+viewport_focus viewport_update_smart_guest_follow(rct_window* window, const Guest* peep);
+void viewport_update_smart_staff_follow(rct_window* window, const Staff* peep);
 void viewport_update_smart_vehicle_follow(rct_window* window);
 void viewport_render(
     rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,

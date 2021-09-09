@@ -683,15 +683,12 @@ void viewport_update_smart_sprite_follow(rct_window* window)
             break;
 
         case EntityType::Guest:
-        case EntityType::Staff:
-        {
-            Peep* peep = static_cast<Peep*>(entity);
-            if (peep->Is<Guest>())
-                viewport_update_smart_guest_follow(window, peep);
-            else if (peep->Is<Staff>())
-                viewport_update_smart_staff_follow(window, peep);
+            viewport_update_smart_guest_follow(window, entity->As<Guest>());
             break;
-        }
+
+        case EntityType::Staff:
+            viewport_update_smart_staff_follow(window, entity->As<Staff>());
+            break;
 
         default: // All other types don't need any "smart" following; steam particle, duck, money effect, etc.
             window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
@@ -700,7 +697,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     }
 }
 
-viewport_focus viewport_update_smart_guest_follow(rct_window* window, const Peep* peep)
+viewport_focus viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
 {
     viewport_focus focus{};
     focus.type = VIEWPORT_FOCUS_TYPE_SPRITE;
@@ -759,7 +756,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, const Peep
     return focus;
 }
 
-void viewport_update_smart_staff_follow(rct_window* window, const Peep* peep)
+void viewport_update_smart_staff_follow(rct_window* window, const Staff* peep)
 {
     sprite_focus focus = {};
 
