@@ -1805,10 +1805,9 @@ static void ride_music_update(Ride* ride)
             }
         }
     }
-
+    // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
     if (ride->music_tune_id == 255)
     {
-        // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
         auto& objManager = GetContext()->GetObjectManager();
         auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
         if (musicObj != nullptr)
@@ -1817,6 +1816,7 @@ static void ride_music_update(Ride* ride)
             ride->music_tune_id = static_cast<uint8_t>(util_rand() % numTracks);
             ride->music_position = 0;
         }
+        return;
     }
 
     CoordsXYZ rideCoords = ride->stations[0].GetStart().ToTileCentre();
