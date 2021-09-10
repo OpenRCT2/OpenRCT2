@@ -130,7 +130,7 @@ rct_window* window_maze_construction_open()
 
     WindowInitScrollWidgets(w);
 
-    w->number = _currentRideIndex;
+    w->rideId = _currentRideIndex;
 
     window_push_others_right(w);
     show_gridlines();
@@ -169,7 +169,7 @@ static void window_maze_construction_close(rct_window* w)
         else
         {
             auto intent = Intent(WC_RIDE);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
+            intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(ride->id));
             context_open_intent(&intent);
         }
     }
@@ -181,7 +181,7 @@ static void window_maze_construction_entrance_mouseup(rct_window* w, rct_widgeti
         return;
 
     gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
-    gRideEntranceExitPlaceRideIndex = static_cast<uint8_t>(w->number);
+    gRideEntranceExitPlaceRideIndex = w->rideId;
     gRideEntranceExitPlaceStationIndex = 0;
     input_set_flag(INPUT_FLAG_6, true);
 

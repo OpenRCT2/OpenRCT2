@@ -35,8 +35,8 @@ namespace OpenRCT2::Scripting
         uint8_t spriteType_get() const;
         void spriteType_set(uint8_t value);
 
-        ride_id_t ride_get() const;
-        void ride_set(ride_id_t value);
+        int32_t ride_get() const;
+        void ride_set(int32_t value);
 
         uint8_t numSeats_get() const;
         void numSeats_set(uint8_t value);

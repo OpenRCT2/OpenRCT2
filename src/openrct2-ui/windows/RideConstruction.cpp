@@ -495,9 +495,9 @@ static int32_t ride_get_alternative_type(Ride* ride)
 }
 
 /* move to ride.c */
-static void close_ride_window_for_construction(rct_windownumber number)
+static void close_ride_window_for_construction(ride_id_t rideId)
 {
-    rct_window* w = window_find_by_number(WC_RIDE, number);
+    rct_window* w = window_find_by_number(WC_RIDE, EnumValue(rideId));
     if (w != nullptr && w->page == 1)
         window_close(w);
 }
@@ -543,7 +543,7 @@ rct_window* window_ride_construction_open()
     w->colours[1] = COLOUR_DARK_BROWN;
     w->colours[2] = COLOUR_DARK_BROWN;
 
-    w->number = rideIndex;
+    w->rideId = rideIndex;
 
     window_push_others_right(w);
     show_gridlines();
@@ -620,7 +620,7 @@ static void window_ride_construction_close(rct_window* w)
 
         ride->SetToDefaultInspectionInterval();
         auto intent = Intent(WC_RIDE);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(ride->id));
         context_open_intent(&intent);
     }
     else
@@ -1937,7 +1937,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         _currentTrackPieceType, 0,
         { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, _currentTrackPieceDirection });
 
-    const auto rideId = w->number;
+    const auto rideId = w->rideId;
     trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
         {
@@ -1987,7 +1987,7 @@ static void window_ride_construction_entrance_click(rct_window* w)
     else
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
-        gRideEntranceExitPlaceRideIndex = static_cast<ride_id_t>(w->number);
+        gRideEntranceExitPlaceRideIndex = w->rideId;
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();
@@ -2017,7 +2017,7 @@ static void window_ride_construction_exit_click(rct_window* w)
     else
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
-        gRideEntranceExitPlaceRideIndex = w->number & 0xFF;
+        gRideEntranceExitPlaceRideIndex = w->rideId;
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();

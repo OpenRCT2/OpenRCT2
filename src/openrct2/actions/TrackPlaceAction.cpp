@@ -85,13 +85,13 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride for track placement, rideIndex = %d", EnumValue(_rideIndex));
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_NONE);
     }
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride subtype for track placement, rideIndex = %d", EnumValue(_rideIndex));
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
@@ -379,14 +379,14 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride for track placement, rideIndex = %d", EnumValue(_rideIndex));
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride subtype for track placement, rideIndex = %d", EnumValue(_rideIndex));
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
@@ -550,7 +550,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         auto* trackElement = TileElementInsert<TrackElement>(mapLoc, quarterTile.GetBaseQuarterOccupied());
         if (trackElement == nullptr)
         {
-            log_warning("Cannot create track element for ride = %d", static_cast<int32_t>(_rideIndex));
+            log_warning("Cannot create track element for ride = %d", EnumValue(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements);
         }
 

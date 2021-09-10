@@ -147,21 +147,23 @@ ride_id_t GetNextFreeRideId()
 
 Ride* GetOrAllocateRide(ride_id_t index)
 {
-    if (_rides.size() <= index)
+    const auto idx = static_cast<size_t>(index);
+    if (_rides.size() <= idx)
     {
-        _rides.resize(index + 1);
+        _rides.resize(idx + 1);
     }
 
-    auto result = &_rides[index];
+    auto result = &_rides[idx];
     result->id = index;
     return result;
 }
 
 Ride* get_ride(ride_id_t index)
 {
-    if (index < _rides.size())
+    const auto idx = static_cast<size_t>(index);
+    if (idx < _rides.size())
     {
-        auto& ride = _rides[index];
+        auto& ride = _rides[idx];
         if (ride.type != RIDE_TYPE_NULL)
         {
             assert(ride.id == index);
@@ -1503,7 +1505,7 @@ void ride_breakdown_add_news_item(Ride* ride)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, ride->id, ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, EnumValue(ride->id), ft);
     }
 }
 
@@ -1530,7 +1532,7 @@ static void ride_breakdown_status_update(Ride* ride)
             {
                 Formatter ft;
                 ride->FormatNameTo(ft);
-                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, ride->id, ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, EnumValue(ride->id), ft);
             }
         }
     }
@@ -2181,7 +2183,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id, ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, EnumValue(ride->id), ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -2193,7 +2195,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, ride->id, ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, EnumValue(ride->id), ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -2262,7 +2264,7 @@ static void ride_shop_connected(Ride* ride)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id, ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, EnumValue(ride->id), ft);
     }
 
     ride->connected_message_throttle = 3;
@@ -3795,13 +3797,13 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
 
     if (type == RIDE_TYPE_NULL)
     {
-        log_warning("Invalid ride type for ride %u", id);
+        log_warning("Invalid ride type for ride %u", EnumValue(id));
         return false;
     }
 
     if (newStatus != RideStatus::Simulating)
     {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, id);
+        window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(id));
     }
 
     StationIndex stationIndex = ride_mode_check_station_present(this);
@@ -3928,9 +3930,11 @@ bool Ride::Open(bool isApplying)
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification && id == gCurrentToolWidget.window_number
+    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification && EnumValue(id) == gCurrentToolWidget.window_number
         && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
-        window_close_by_number(WC_RIDE_CONSTRUCTION, id);
+    {
+        window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(id));
+    }
 
     StationIndex stationIndex = ride_mode_check_station_present(this);
     if (stationIndex == STATION_INDEX_NULL)
@@ -4637,7 +4641,7 @@ void invalidate_test_results(Ride* ride)
             }
         }
     }
-    window_invalidate_by_number(WC_RIDE, ride->id);
+    window_invalidate_by_number(WC_RIDE, static_cast<uint32_t>(ride->id));
 }
 
 /**
@@ -5085,7 +5089,7 @@ void Ride::UpdateMaxVehicles()
     {
         num_cars_per_train = numCarsPerTrain;
         num_vehicles = numVehicles;
-        window_invalidate_by_number(WC_RIDE, id);
+        window_invalidate_by_number(WC_RIDE, EnumValue(id));
     }
 }
 
@@ -5154,7 +5158,7 @@ void Ride::Crash(uint8_t vehicleIndex)
     {
         Formatter ft;
         FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, id, ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, EnumValue(id), ft);
     }
 }
 

@@ -191,6 +191,8 @@ enum
     MAZE_ELEMENT_TYPE_EXIT = (1 << 7)
 };
 
+static constexpr ride_id_t PreviewRideId = static_cast<ride_id_t>(0);
+
 extern bool gTrackDesignSceneryToggle;
 
 extern bool _trackDesignDrawingPreview;

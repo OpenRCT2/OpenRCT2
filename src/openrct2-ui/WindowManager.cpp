@@ -184,9 +184,9 @@ public:
             case WD_BANNER:
                 return window_banner_open(id);
             case WD_DEMOLISH_RIDE:
-                return window_ride_demolish_prompt_open(get_ride(id));
+                return window_ride_demolish_prompt_open(get_ride(static_cast<ride_id_t>(id)));
             case WD_REFURBISH_RIDE:
-                return window_ride_refurbish_prompt_open(get_ride(id));
+                return window_ride_refurbish_prompt_open(get_ride(static_cast<ride_id_t>(id)));
             case WD_NEW_CAMPAIGN:
                 return window_new_campaign_open(id);
             case WD_SIGN:
@@ -264,7 +264,8 @@ public:
             }
             case WC_RIDE:
             {
-                auto ride = get_ride(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+                const auto rideId = static_cast<ride_id_t>(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+                auto ride = get_ride(rideId);
                 return ride == nullptr ? nullptr : window_ride_main_open(ride);
             }
             case WC_TRACK_DESIGN_PLACE:
@@ -343,13 +344,13 @@ public:
                 if (w == nullptr || w->number != rideIndex)
                 {
                     window_close_construction_windows();
-                    _currentRideIndex = rideIndex;
+                    _currentRideIndex = static_cast<ride_id_t>(rideIndex);
                     w = OpenWindow(WC_RIDE_CONSTRUCTION);
                 }
                 else
                 {
                     ride_construction_invalidate_current_track();
-                    _currentRideIndex = rideIndex;
+                    _currentRideIndex = static_cast<ride_id_t>(rideIndex);
                 }
                 break;
             }
@@ -395,7 +396,7 @@ public:
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
                 auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                auto w = window_find_by_number(WC_RIDE, vehicle->ride);
+                auto w = window_find_by_number(WC_RIDE, EnumValue(vehicle->ride));
                 if (w == nullptr)
                     return;
 

@@ -74,7 +74,7 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride id %d for entrance/exit removal", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride id %d for entrance/exit removal", EnumValue(_rideIndex));
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
@@ -99,8 +99,8 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Query() const
     if (entranceElement == nullptr)
     {
         log_warning(
-            "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
-            static_cast<int32_t>(_rideIndex), _stationNum);
+            "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, EnumValue(_rideIndex),
+            _stationNum);
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
@@ -112,7 +112,7 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride id %d for entrance/exit removal", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride id %d for entrance/exit removal", EnumValue(_rideIndex));
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
@@ -130,8 +130,8 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Execute() const
     if (entranceElement == nullptr)
     {
         log_warning(
-            "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
-            static_cast<int32_t>(_rideIndex), _stationNum);
+            "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, EnumValue(_rideIndex),
+            _stationNum);
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 

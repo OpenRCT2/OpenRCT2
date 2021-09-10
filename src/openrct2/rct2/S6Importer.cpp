@@ -530,8 +530,9 @@ public:
             auto src = &_s6.rides[index];
             if (src->type != RIDE_TYPE_NULL)
             {
-                auto dst = GetOrAllocateRide(index);
-                ImportRide(dst, src, index);
+                const auto rideId = static_cast<ride_id_t>(index);
+                auto dst = GetOrAllocateRide(rideId);
+                ImportRide(dst, src, rideId);
             }
         }
     }
@@ -872,7 +873,8 @@ public:
         {
             if (src.ride_index != RCT12_RIDE_ID_NULL)
             {
-                auto ride = get_ride(src.ride_index);
+                const auto rideId = static_cast<ride_id_t>(src.ride_index);
+                auto ride = get_ride(rideId);
                 if (ride != nullptr)
                 {
                     ride->measurement = std::make_unique<RideMeasurement>();
@@ -1061,7 +1063,7 @@ public:
         {
             if (sprite.unknown.sprite_identifier == RCT12SpriteIdentifier::Peep)
             {
-                if (sprite.peep.current_ride == rideIndex
+                if (sprite.peep.current_ride == static_cast<RCT12RideId>(rideIndex)
                     && (static_cast<PeepState>(sprite.peep.state) == PeepState::OnRide
                         || static_cast<PeepState>(sprite.peep.state) == PeepState::EnteringRide))
                 {
@@ -1597,7 +1599,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->remaining_distance = src->remaining_distance;
     dst->velocity = src->velocity;
     dst->acceleration = src->acceleration;
-    dst->ride = src->ride;
+    dst->ride = static_cast<ride_id_t>(src->ride);
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;

@@ -135,18 +135,18 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    ride_id_t ScVehicle::ride_get() const
+    int32_t ScVehicle::ride_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->ride : 0;
+        return EnumValue(vehicle != nullptr ? vehicle->ride : RIDE_ID_NULL);
     }
-    void ScVehicle::ride_set(ride_id_t value)
+    void ScVehicle::ride_set(int32_t value)
     {
         ThrowIfGameStateNotMutable();
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->ride = value;
+            vehicle->ride = static_cast<ride_id_t>(value);
         }
     }
 

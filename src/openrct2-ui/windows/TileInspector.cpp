@@ -1931,7 +1931,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Details
                 // Ride
                 auto trackElement = tileElement->AsTrack();
-                int16_t rideId = trackElement->GetRideIndex();
+                ride_id_t rideId = trackElement->GetRideIndex();
                 auto ride = get_ride(rideId);
                 if (ride != nullptr)
                 {

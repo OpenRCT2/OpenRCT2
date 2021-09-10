@@ -211,7 +211,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
     {
         case News::ItemType::Ride:
         {
-            Ride* ride = get_ride(subject);
+            Ride* ride = get_ride(static_cast<ride_id_t>(subject));
             if (ride == nullptr || ride->overall_view.IsNull())
             {
                 break;

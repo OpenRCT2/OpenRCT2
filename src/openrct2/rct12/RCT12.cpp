@@ -1046,7 +1046,7 @@ ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId)
     if (rideId == RCT12_RIDE_ID_NULL)
         return RIDE_ID_NULL;
 
-    return rideId;
+    return static_cast<ride_id_t>(rideId);
 }
 
 RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId)
@@ -1054,7 +1054,7 @@ RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId)
     if (rideId == RIDE_ID_NULL)
         return RCT12_RIDE_ID_NULL;
 
-    return rideId;
+    return static_cast<RCT12RideId>(rideId);
 }
 
 static bool RCT12IsFormatChar(codepoint_t c)
