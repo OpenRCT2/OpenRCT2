@@ -1658,9 +1658,9 @@ ObjectEntryIndex PathElement::GetLegacyPathEntryIndex() const
 }
 
 const FootpathObject* PathElement::GetLegacyPathEntry() const
-    {
+{
     return GetLegacyFootpathEntry(GetLegacyPathEntryIndex());
-    }
+}
 
 void PathElement::SetLegacyPathEntryIndex(ObjectEntryIndex newIndex)
 {
@@ -2343,7 +2343,7 @@ const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
     auto obj = objMgr.GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
     if (obj == nullptr)
         return nullptr;
-    
+
     return static_cast<FootpathSurfaceObject*>(obj);
 }
 
