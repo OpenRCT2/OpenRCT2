@@ -56,27 +56,39 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
 static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
 
-static constexpr int32_t _PositionHashExtendsX[] = {
-    -0x2000,
-    0x2000,
-    0x4000,
-    0x2000,
-};
-
-static constexpr uint32_t CalculatePositionHash(const paint_struct& ps, uint8_t rotation)
+static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
-    auto pos = CoordsXY{ ps.bounds.x, ps.bounds.y }.Rotate(rotation);
+    constexpr auto MapRangeMax = MaxPaintQuadrants * COORDS_XY_STEP;
+    constexpr auto MapRangeCenter = MapRangeMax / 2;
 
-    // For corners to fall into the right buckets this extends the X axis.
-    pos.x += _PositionHashExtendsX[rotation];
-
-    return static_cast<uint32_t>(pos.x + pos.y);
+    const auto x = ps.bounds.x;
+    const auto y = ps.bounds.y;
+    // NOTE: We are not calling CoordsXY::Rotate on purpose to mix in the additional
+    // value without a secondary switch.
+    switch (rotation & 3)
+    {
+        case 0:
+            return x + y;
+        case 1:
+            // Because one component may be the maximum we add the center to be a positive value.
+            return (y - x) + MapRangeCenter;
+        case 2:
+            // If both components would be the maximum it would be the negative xy, to be positive add max.
+            return (-(y + x)) + MapRangeMax;
+        case 3:
+            // Same as 1 but inverted.
+            return (x - y) + MapRangeCenter;
+    }
+    return 0;
 }
 
 static void PaintSessionAddPSToQuadrant(paint_session* session, paint_struct* ps)
 {
-    auto positionHash = CalculatePositionHash(*ps, session->CurrentRotation);
-    uint32_t paintQuadrantIndex = (positionHash / 32) % MAX_PAINT_QUADRANTS;
+    const auto positionHash = RemapPositionToQuadrant(*ps, session->CurrentRotation);
+
+    // Values below zero or above MaxPaintQuadrants are void, corners also share the same quadrant as void.
+    const uint32_t paintQuadrantIndex = std::clamp(positionHash / COORDS_XY_STEP, 0, MaxPaintQuadrants);
+
     ps->quadrant_index = paintQuadrantIndex;
     ps->next_quadrant_ps = session->Quadrants[paintQuadrantIndex];
     session->Quadrants[paintQuadrantIndex] = ps;
