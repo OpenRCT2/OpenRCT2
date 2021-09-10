@@ -87,7 +87,7 @@ static void PaintSessionAddPSToQuadrant(paint_session* session, paint_struct* ps
     const auto positionHash = RemapPositionToQuadrant(*ps, session->CurrentRotation);
 
     // Values below zero or above MaxPaintQuadrants are void, corners also share the same quadrant as void.
-    const uint32_t paintQuadrantIndex = std::clamp(positionHash / COORDS_XY_STEP, 0, MaxPaintQuadrants);
+    const uint32_t paintQuadrantIndex = std::clamp(positionHash / COORDS_XY_STEP, 0, MaxPaintQuadrants - 1);
 
     ps->quadrant_index = paintQuadrantIndex;
     ps->next_quadrant_ps = session->Quadrants[paintQuadrantIndex];
