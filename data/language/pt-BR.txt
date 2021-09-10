@@ -3654,6 +3654,7 @@ STR_6453    :Copiar informações da versão
 STR_6454    :Não é possível renomear o banner…
 STR_6455    :Não é possível renomear a placa…
 STR_6456    :Captura Gigante de Tela
+STR_6457    :Relatar um problema pelo GitHub
 
 #############
 # Scenarios #
