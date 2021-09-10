@@ -26,8 +26,9 @@ namespace OpenRCT2
 struct Litter;
 struct ObjectRepositoryItem;
 struct RCT12SpriteBase;
-union rct_sprite;
 struct EntityBase;
+struct Peep;
+union rct_sprite;
 
 /**
  * Class to export RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
