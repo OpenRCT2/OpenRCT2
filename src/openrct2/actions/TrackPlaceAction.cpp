@@ -9,6 +9,7 @@
 
 #include "TrackPlaceAction.h"
 
+#include "../core/Numerics.hpp"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -453,7 +454,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
                 // Remove walls in the directions this track intersects
                 uint8_t intersectingDirections = wallEdges[blockIndex];
                 intersectingDirections ^= 0x0F;
-                intersectingDirections = rol4(intersectingDirections, _origin.direction);
+                intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
                 for (int32_t i = 0; i < NumOrthogonalDirections; i++)
                 {
                     if (intersectingDirections & (1 << i))

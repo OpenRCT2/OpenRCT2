@@ -16,6 +16,7 @@
 #include "FileScanner.h"
 #include "FileStream.h"
 #include "JobPool.h"
+#include "Numerics.hpp"
 #include "Path.hpp"
 
 #include <chrono>
@@ -156,7 +157,7 @@ private:
                 stats.TotalFileSize += fileInfo->Size;
                 stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo->LastModified >> 32)
                     ^ static_cast<uint32_t>(fileInfo->LastModified & 0xFFFFFFFF);
-                stats.FileDateModifiedChecksum = ror32(stats.FileDateModifiedChecksum, 5);
+                stats.FileDateModifiedChecksum = Numerics::ror32(stats.FileDateModifiedChecksum, 5);
                 stats.PathChecksum += GetPathChecksum(path);
 
                 files.push_back(std::move(path));

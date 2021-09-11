@@ -12,6 +12,7 @@
 #include "../../Game.h"
 #include "../../Input.h"
 #include "../../config/Config.h"
+#include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
@@ -427,7 +428,7 @@ void paint_util_set_segment_support_height(paint_session* session, int32_t segme
 uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation)
 {
     uint8_t temp = segments & 0xFF;
-    temp = rol8(temp, rotation * 2);
+    temp = Numerics::rol8(temp, rotation * 2);
 
     return (segments & 0xFF00) | temp;
 }

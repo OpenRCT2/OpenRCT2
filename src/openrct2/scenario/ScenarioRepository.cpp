@@ -19,6 +19,7 @@
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
+#include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
@@ -526,7 +527,7 @@ private:
         // Rotate each byte of mp.dat left by 4 bits to convert
         for (size_t i = 0; i < mpdat.size(); i++)
         {
-            mpdat[i] = rol8(mpdat[i], 4);
+            mpdat[i] = Numerics::rol8(mpdat[i], 4);
         }
 
         File::WriteAllBytes(dstPath, mpdat.data(), mpdat.size());

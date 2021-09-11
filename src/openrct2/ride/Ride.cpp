@@ -24,6 +24,7 @@
 #include "../config/Config.h"
 #include "../core/FixedVector.h"
 #include "../core/Guard.hpp"
+#include "../core/Numerics.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -2234,7 +2235,7 @@ static void ride_shop_connected(Ride* ride)
     const auto& ted = GetTrackElementDescriptor(track_type);
     uint8_t entrance_directions = ted.SequenceProperties[0] & 0xF;
     uint8_t tile_direction = trackElement->GetDirection();
-    entrance_directions = rol4(entrance_directions, tile_direction);
+    entrance_directions = Numerics::rol4(entrance_directions, tile_direction);
 
     // Now each bit in entrance_directions stands for an entrance direction to check
     if (entrance_directions == 0)
@@ -3043,7 +3044,7 @@ static Vehicle* vehicle_create_car(
 
     vehicle->vehicle_type = vehicleEntryIndex;
     vehicle->SubType = carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail;
-    vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
+    vehicle->var_44 = Numerics::ror32(vehicleEntry->spacing, 10) & 0xFFFF;
     auto edx = vehicleEntry->spacing >> 1;
     *remainingDistance -= edx;
     vehicle->remaining_distance = *remainingDistance;
@@ -3666,9 +3667,9 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
     uint32_t ebx = 0;
     for (int32_t i = 0; i < 5; i++)
     {
-        uint32_t edx = ror32(0x15478, 10);
+        uint32_t edx = Numerics::ror32(0x15478, 10);
         uint16_t var_44 = edx & 0xFFFF;
-        edx = rol32(edx, 10) >> 1;
+        edx = Numerics::rol32(edx, 10) >> 1;
         ebx -= edx;
         int32_t remaining_distance = ebx;
         ebx -= edx;

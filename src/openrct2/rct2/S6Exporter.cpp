@@ -18,6 +18,7 @@
 #include "../config/Config.h"
 #include "../core/FileStream.h"
 #include "../core/IStream.hpp"
+#include "../core/Numerics.hpp"
 #include "../core/String.hpp"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
@@ -63,6 +64,8 @@
 #include <functional>
 #include <iterator>
 #include <optional>
+
+#define ENCRYPT_MONEY(money) (static_cast<money32>(Numerics::ror32((money), 13) ^ 0xF4EC9621))
 
 S6Exporter::S6Exporter()
 {
@@ -597,11 +600,11 @@ uint32_t S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32_t
 {
     int32_t value = 0x70093A;
     value -= initialCash;
-    value = ror32(value, 5);
+    value = Numerics::ror32(value, 5);
     value -= bankLoan;
-    value = ror32(value, 7);
+    value = Numerics::ror32(value, 7);
     value += maxBankLoan;
-    value = ror32(value, 3);
+    value = Numerics::ror32(value, 3);
     return value;
 }
 

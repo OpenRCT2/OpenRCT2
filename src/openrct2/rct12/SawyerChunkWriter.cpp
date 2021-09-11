@@ -10,6 +10,7 @@
 #include "SawyerChunkWriter.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Numerics.hpp"
 #include "../util/SawyerCoding.h"
 
 // Maximum buffer size to store compressed data, maximum of 16 MiB
@@ -99,7 +100,7 @@ void SawyerChunkWriter::WriteChunkTrack(const void* src, size_t length)
     {
         uint8_t newByte = ((checksum & 0xFF) + data[i]) & 0xFF;
         checksum = (checksum & 0xFFFFFF00) + newByte;
-        checksum = rol32(checksum, 3);
+        checksum = Numerics::rol32(checksum, 3);
     }
     checksum -= 0x1D4C1;
 
