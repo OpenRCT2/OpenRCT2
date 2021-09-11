@@ -169,9 +169,10 @@ public:
             _isSV7 = _stricmp(extension, ".sv7") == 0;
         }
 
+        chunkReader.ReadChunk(&_s6.Objects, sizeof(_s6.Objects));
+
         if (isScenario)
         {
-            chunkReader.ReadChunk(&_s6.objects, sizeof(_s6.objects));
             chunkReader.ReadChunk(&_s6.elapsed_months, 16);
             chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
             chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 2560076);
@@ -185,7 +186,6 @@ public:
         }
         else
         {
-            chunkReader.ReadChunk(&_s6.objects, sizeof(_s6.objects));
             chunkReader.ReadChunk(&_s6.elapsed_months, 16);
             chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
             chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 3048816);
@@ -1563,24 +1563,40 @@ public:
         return justText.data();
     }
 
-    std::vector<rct_object_entry> GetRequiredObjects()
+    template<size_t TInternalLimit, typename T>
+    static void AddRequiredObjects(std::vector<rct_object_entry>& required, const T& list)
     {
-        std::vector<rct_object_entry> result;
         rct_object_entry nullEntry = {};
         std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
 
-        int objectIt = 0;
-        for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
+        for (const auto& entry : list)
         {
-            for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
-            {
-                result.push_back(_s6.objects[objectIt]);
-            }
-            for (int16_t i = rct2_object_entry_group_counts[objectType]; i < object_entry_group_counts[objectType]; i++)
-            {
-                result.push_back(nullEntry);
-            }
+            required.push_back(entry);
         }
+
+        // NOTE: The segment of this object type needs to be filled to the internal limit
+        // the object manager currently expects this.
+        for (size_t i = std::size(list); i < TInternalLimit; i++)
+        {
+            required.push_back(nullEntry);
+        }
+    }
+
+    std::vector<rct_object_entry> GetRequiredObjects()
+    {
+        std::vector<rct_object_entry> result;
+
+        AddRequiredObjects<MAX_RIDE_OBJECTS>(result, _s6.RideObjects);
+        AddRequiredObjects<MAX_SMALL_SCENERY_OBJECTS>(result, _s6.SceneryObjects);
+        AddRequiredObjects<MAX_LARGE_SCENERY_OBJECTS>(result, _s6.LargeSceneryObjects);
+        AddRequiredObjects<MAX_WALL_SCENERY_OBJECTS>(result, _s6.WallSceneryObjects);
+        AddRequiredObjects<MAX_BANNER_OBJECTS>(result, _s6.BannerObjects);
+        AddRequiredObjects<MAX_PATH_OBJECTS>(result, _s6.PathObjects);
+        AddRequiredObjects<MAX_PATH_ADDITION_OBJECTS>(result, _s6.PathAdditionObjects);
+        AddRequiredObjects<MAX_SCENERY_GROUP_OBJECTS>(result, _s6.SceneryGroupObjects);
+        AddRequiredObjects<MAX_PARK_ENTRANCE_OBJECTS>(result, _s6.ParkEntranceObjects);
+        AddRequiredObjects<MAX_WATER_OBJECTS>(result, _s6.WaterObjects);
+        AddRequiredObjects<MAX_SCENARIO_TEXT_OBJECTS>(result, _s6.ScenarioTextObjects);
 
         return result;
     }

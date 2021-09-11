@@ -120,7 +120,7 @@ void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
     }
 
     // 3: Write available objects chunk
-    chunkWriter.WriteChunk(_s6.objects, sizeof(_s6.objects), SAWYER_ENCODING::ROTATE);
+    chunkWriter.WriteChunk(_s6.Objects, sizeof(_s6.Objects), SAWYER_ENCODING::ROTATE);
 
     // 4: Misc fields (data, rand...) chunk
     chunkWriter.WriteChunk(&_s6.elapsed_months, 16, SAWYER_ENCODING::RLECOMPRESSED);
@@ -255,6 +255,26 @@ static void scenario_fix_ghosts(rct_s6_data* s6)
     }
 }
 
+template<ObjectType TObjectType, size_t TMaxEntries, typename T>
+static void ExportObjectList(IObjectManager& objMgr, T& objects)
+{
+    for (size_t i = 0; i < TMaxEntries; i++)
+    {
+        auto& dst = objects[i];
+
+        const auto* object = objMgr.GetLoadedObject(TObjectType, i);
+        if (object == nullptr || object->GetObjectEntry() == nullptr)
+        {
+            // The sv6 format expects null/invalid entries to be filled with 0xFF.
+            std::memset(&dst, 0xFF, sizeof(dst));
+        }
+        else
+        {
+            dst = *object->GetObjectEntry();
+        }
+    }
+}
+
 void S6Exporter::Export()
 {
     _s6.info = {};
@@ -278,20 +298,18 @@ void S6Exporter::Export()
     uint32_t researchedTrackPiecesA[128] = {};
     uint32_t researchedTrackPiecesB[128] = {};
 
-    for (int32_t i = 0; i < RCT2_OBJECT_ENTRY_COUNT; i++)
-    {
-        const rct_object_entry* entry = get_loaded_object_entry(i);
-        void* entryData = get_loaded_object_chunk(i);
-        // RCT2 uses (void *)-1 to mark NULL. Make sure it's written in a vanilla-compatible way.
-        if (entry == nullptr || entryData == nullptr || entryData == reinterpret_cast<void*>(-1))
-        {
-            std::memset(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
-        }
-        else
-        {
-            _s6.objects[i] = *entry;
-        }
-    }
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    ExportObjectList<ObjectType::Ride, RCT12_MAX_RIDE_OBJECTS>(objectMgr, _s6.RideObjects);
+    ExportObjectList<ObjectType::SmallScenery, RCT2_MAX_SMALL_SCENERY_OBJECTS>(objectMgr, _s6.SceneryObjects);
+    ExportObjectList<ObjectType::LargeScenery, RCT2_MAX_LARGE_SCENERY_OBJECTS>(objectMgr, _s6.LargeSceneryObjects);
+    ExportObjectList<ObjectType::Walls, RCT2_MAX_WALL_SCENERY_OBJECTS>(objectMgr, _s6.WallSceneryObjects);
+    ExportObjectList<ObjectType::Banners, RCT2_MAX_BANNER_OBJECTS>(objectMgr, _s6.BannerObjects);
+    ExportObjectList<ObjectType::Paths, RCT2_MAX_PATH_OBJECTS>(objectMgr, _s6.PathObjects);
+    ExportObjectList<ObjectType::PathBits, RCT2_MAX_PATH_ADDITION_OBJECTS>(objectMgr, _s6.PathAdditionObjects);
+    ExportObjectList<ObjectType::SceneryGroup, RCT2_MAX_SCENERY_GROUP_OBJECTS>(objectMgr, _s6.SceneryGroupObjects);
+    ExportObjectList<ObjectType::ParkEntrance, RCT2_MAX_PARK_ENTRANCE_OBJECTS>(objectMgr, _s6.ParkEntranceObjects);
+    ExportObjectList<ObjectType::Water, RCT2_MAX_WATER_OBJECTS>(objectMgr, _s6.WaterObjects);
+    ExportObjectList<ObjectType::ScenarioText, RCT2_MAX_SCENARIO_TEXT_OBJECTS>(objectMgr, _s6.ScenarioTextObjects);
 
     _s6.elapsed_months = static_cast<uint16_t>(gDateMonthsElapsed);
     _s6.current_day = gDateMonthTicks;
