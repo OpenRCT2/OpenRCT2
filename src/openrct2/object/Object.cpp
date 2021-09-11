@@ -14,7 +14,7 @@
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../core/Zip.h"
+#include "../core/ZipStream.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
@@ -170,74 +170,6 @@ std::optional<uint8_t> rct_object_entry::GetSceneryType() const
             return std::nullopt;
     }
 }
-
-/**
- * Couples a zip archive and a zip item stream to ensure the lifetime of the zip archive is maintained
- * for the lifetime of the stream.
- */
-class ZipStreamWrapper final : public IStream
-{
-private:
-    std::unique_ptr<IZipArchive> _zipArchive;
-    std::unique_ptr<IStream> _base;
-
-public:
-    ZipStreamWrapper(std::unique_ptr<IZipArchive> zipArchive, std::unique_ptr<IStream> base)
-        : _zipArchive(std::move(zipArchive))
-        , _base(std::move(base))
-    {
-    }
-
-    bool CanRead() const override
-    {
-        return _base->CanRead();
-    }
-
-    bool CanWrite() const override
-    {
-        return _base->CanWrite();
-    }
-
-    uint64_t GetLength() const override
-    {
-        return _base->GetLength();
-    }
-
-    uint64_t GetPosition() const override
-    {
-        return _base->GetPosition();
-    }
-
-    void SetPosition(uint64_t position) override
-    {
-        _base->SetPosition(position);
-    }
-
-    void Seek(int64_t offset, int32_t origin) override
-    {
-        _base->Seek(offset, origin);
-    }
-
-    void Read(void* buffer, uint64_t length) override
-    {
-        _base->Read(buffer, length);
-    }
-
-    void Write(const void* buffer, uint64_t length) override
-    {
-        _base->Write(buffer, length);
-    }
-
-    uint64_t TryRead(void* buffer, uint64_t length) override
-    {
-        return _base->TryRead(buffer, length);
-    }
-
-    const void* GetData() const override
-    {
-        return _base->GetData();
-    }
-};
 
 bool ObjectAsset::IsAvailable() const
 {
