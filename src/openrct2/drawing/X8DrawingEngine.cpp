@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../Intro.h"
 #include "../config/Config.h"
+#include "../core/Numerics.hpp"
 #include "../interface/Screenshot.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
@@ -583,7 +584,7 @@ void X8DrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, int3
         for (int32_t i = 0; i < height; i++)
         {
             uint8_t* nextdst = dst + dpi->width + dpi->pitch;
-            uint32_t p = ror32(crossPattern, 1);
+            uint32_t p = Numerics::ror32(crossPattern, 1);
             p = (p & 0xFFFF0000) | width;
 
             // Fill every other pixel with the colour

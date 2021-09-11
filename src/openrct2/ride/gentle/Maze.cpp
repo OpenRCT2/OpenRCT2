@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../core/Numerics.hpp"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
@@ -49,7 +50,7 @@ static void maze_paint_setup(
     const TrackElement& trackElement)
 {
     uint16_t maze_entry = trackElement.GetMazeEntry();
-    maze_entry = rol16(maze_entry, direction * 4);
+    maze_entry = Numerics::rol16(maze_entry, direction * 4);
 
     uint32_t rotation = session->CurrentRotation;
     // draw ground

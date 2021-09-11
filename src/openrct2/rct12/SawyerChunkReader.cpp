@@ -10,6 +10,7 @@
 #include "SawyerChunkReader.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Numerics.hpp"
 
 // malloc is very slow for large allocations in MSVC debug builds as it allocates
 // memory on a special debug heap and then initialises all the memory to 0xCC.
@@ -295,7 +296,7 @@ size_t SawyerChunkReader::DecodeChunkRotate(void* dst, size_t dstCapacity, const
     uint8_t code = 1;
     for (size_t i = 0; i < srcLength; i++)
     {
-        dst8[i] = ror8(src8[i], code);
+        dst8[i] = Numerics::ror8(src8[i], code);
         code = (code + 2) % 8;
     }
     return srcLength;

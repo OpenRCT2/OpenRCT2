@@ -13,6 +13,7 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../core/Numerics.hpp"
 #include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -6001,7 +6002,7 @@ bool Guest::UpdateWalkingFindBin()
     uint8_t bin_quantities = pathElement->GetAdditionStatus();
 
     // Rotate the bin to the correct edge. Makes it easier for next calc.
-    bin_quantities = ror8(ror8(bin_quantities, chosen_edge), chosen_edge);
+    bin_quantities = Numerics::ror8(Numerics::ror8(bin_quantities, chosen_edge), chosen_edge);
 
     for (uint8_t free_edge = 4; free_edge != 0; free_edge--)
     {
@@ -6012,7 +6013,7 @@ bool Guest::UpdateWalkingFindBin()
                 break;
         }
         chosen_edge = (chosen_edge + 1) & 0x3;
-        bin_quantities = ror8(bin_quantities, 2);
+        bin_quantities = Numerics::ror8(bin_quantities, 2);
         if ((free_edge - 1) == 0)
             return 0;
     }

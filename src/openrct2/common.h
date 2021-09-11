@@ -19,14 +19,11 @@
 #endif
 
 #include "Diagnostic.h"
-#include "core/Numerics.hpp"
 
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <stdexcept>
-
-using namespace Numerics;
 
 using utf8 = char;
 using utf8string = utf8*;
@@ -40,15 +37,6 @@ using const_utf8string = const utf8*;
 
 using codepoint_t = uint32_t;
 using colour_t = uint8_t;
-
-const constexpr auto rol8 = rol<uint8_t>;
-const constexpr auto ror8 = ror<uint8_t>;
-const constexpr auto rol16 = rol<uint16_t>;
-const constexpr auto ror16 = ror<uint16_t>;
-const constexpr auto rol32 = rol<uint32_t>;
-const constexpr auto ror32 = ror<uint32_t>;
-const constexpr auto rol64 = rol<uint64_t>;
-const constexpr auto ror64 = ror<uint64_t>;
 
 namespace
 {

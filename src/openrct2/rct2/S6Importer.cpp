@@ -18,6 +18,7 @@
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
 #include "../core/IStream.hpp"
+#include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
 #include "../core/String.hpp"
@@ -69,6 +70,8 @@
 #include "../world/Surface.h"
 
 #include <algorithm>
+
+#define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
 
 /**
  * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).

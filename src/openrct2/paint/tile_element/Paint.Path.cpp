@@ -9,6 +9,7 @@
 
 #include "../../Game.h"
 #include "../../config/Config.h"
+#include "../../core/Numerics.hpp"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
@@ -174,7 +175,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(pathElement.GetAdditionStatus() & ror8(0x3, (2 * session->CurrentRotation)));
+            binIsFull = !(pathElement.GetAdditionStatus() & Numerics::ror8(0x3, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -195,7 +196,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(pathElement.GetAdditionStatus() & ror8(0xC, (2 * session->CurrentRotation)));
+            binIsFull = !(pathElement.GetAdditionStatus() & Numerics::ror8(0xC, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -217,7 +218,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(pathElement.GetAdditionStatus() & ror8(0x30, (2 * session->CurrentRotation)));
+            binIsFull = !(pathElement.GetAdditionStatus() & Numerics::ror8(0x30, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -239,7 +240,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(pathElement.GetAdditionStatus() & ror8(0xC0, (2 * session->CurrentRotation)));
+            binIsFull = !(pathElement.GetAdditionStatus() & Numerics::ror8(0xC0, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }

@@ -9,6 +9,7 @@
 
 #include "../../Game.h"
 #include "../../config/Config.h"
+#include "../../core/Numerics.hpp"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/LargeSceneryObject.h"
@@ -278,7 +279,7 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
     if (edi & 0xF00)
     {
         edi &= 0xF000;
-        edi = rol16(edi, direction);
+        edi = Numerics::rol16(edi, direction);
         esi = (edi & 0xF) | (edi >> 12);
     }
     const CoordsXYZ bbOffset = { s98E3C4[esi].offset, height };

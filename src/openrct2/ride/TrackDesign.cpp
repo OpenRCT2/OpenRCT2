@@ -33,6 +33,7 @@
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
+#include "../core/Numerics.hpp"
 #include "../core/String.hpp"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
@@ -1420,7 +1421,7 @@ static std::optional<money32> track_design_place_maze(TrackDesign* td6, const Co
                     }
                     break;
                 default:
-                    maze_entry = rol16(maze_element.maze_entry, rotation * 4);
+                    maze_entry = Numerics::rol16(maze_element.maze_entry, rotation * 4);
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                     {

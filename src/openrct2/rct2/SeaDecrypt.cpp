@@ -9,6 +9,7 @@
 
 #include "../common.h"
 #include "../core/File.h"
+#include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "RCT2.h"
 
@@ -53,8 +54,8 @@ static std::vector<uint8_t> CreateMask(const EncryptionKey& key)
     {
         uint32_t s0 = seed0;
         uint32_t s1 = seed1 ^ 0xF7654321;
-        seed0 = rol32(s1, 25) + s0;
-        seed1 = rol32(s0, 29);
+        seed0 = Numerics::rol32(s1, 25) + s0;
+        seed1 = Numerics::rol32(s0, 29);
         result[i + 0] = (s0 >> 3) & 0xFF;
         result[i + 1] = (s0 >> 11) & 0xFF;
         result[i + 2] = (s0 >> 19) & 0xFF;
