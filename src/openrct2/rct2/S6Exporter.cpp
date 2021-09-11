@@ -255,15 +255,17 @@ static void scenario_fix_ghosts(rct_s6_data* s6)
     }
 }
 
-template<typename T> static void ExportObjectList(IObjectManager& objMgr, T& objects, ObjectType type, size_t maxEntries)
+template<ObjectType TObjectType, size_t TMaxEntries, typename T>
+static void ExportObjectList(IObjectManager& objMgr, T& objects)
 {
-    for (size_t i = 0; i < maxEntries; i++)
+    for (size_t i = 0; i < TMaxEntries; i++)
     {
         auto& dst = objects[i];
 
-        auto* object = objMgr.GetLoadedObject(type, i);
+        const auto* object = objMgr.GetLoadedObject(TObjectType, i);
         if (object == nullptr || object->GetObjectEntry() == nullptr)
         {
+            // The sv6 format expects null/invalid entries to be filled with 0xFF.
             std::memset(&dst, 0xFF, sizeof(dst));
         }
         else
@@ -297,17 +299,17 @@ void S6Exporter::Export()
     uint32_t researchedTrackPiecesB[128] = {};
 
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    ExportObjectList(objectMgr, _s6.RideObjects, ObjectType::Ride, RCT12_MAX_RIDE_OBJECTS);
-    ExportObjectList(objectMgr, _s6.SceneryObjects, ObjectType::SmallScenery, RCT2_MAX_SMALL_SCENERY_OBJECTS);
-    ExportObjectList(objectMgr, _s6.LargeSceneryObjects, ObjectType::LargeScenery, RCT2_MAX_LARGE_SCENERY_OBJECTS);
-    ExportObjectList(objectMgr, _s6.WallSceneryObjects, ObjectType::Walls, RCT2_MAX_WALL_SCENERY_OBJECTS);
-    ExportObjectList(objectMgr, _s6.BannerObjects, ObjectType::Banners, RCT2_MAX_BANNER_OBJECTS);
-    ExportObjectList(objectMgr, _s6.PathObjects, ObjectType::Paths, RCT2_MAX_PATH_OBJECTS);
-    ExportObjectList(objectMgr, _s6.PathAdditionObjects, ObjectType::PathBits, RCT2_MAX_PATH_ADDITION_OBJECTS);
-    ExportObjectList(objectMgr, _s6.SceneryGroupObjects, ObjectType::SceneryGroup, RCT2_MAX_SCENERY_GROUP_OBJECTS);
-    ExportObjectList(objectMgr, _s6.ParkEntranceObjects, ObjectType::ParkEntrance, RCT2_MAX_PARK_ENTRANCE_OBJECTS);
-    ExportObjectList(objectMgr, _s6.WaterObjects, ObjectType::Water, RCT2_MAX_WATER_OBJECTS);
-    ExportObjectList(objectMgr, _s6.ScenarioTextObjects, ObjectType::ScenarioText, RCT2_MAX_SCENARIO_TEXT_OBJECTS);
+    ExportObjectList<ObjectType::Ride, RCT12_MAX_RIDE_OBJECTS>(objectMgr, _s6.RideObjects);
+    ExportObjectList<ObjectType::SmallScenery, RCT2_MAX_SMALL_SCENERY_OBJECTS>(objectMgr, _s6.SceneryObjects);
+    ExportObjectList<ObjectType::LargeScenery, RCT2_MAX_LARGE_SCENERY_OBJECTS>(objectMgr, _s6.LargeSceneryObjects);
+    ExportObjectList<ObjectType::Walls, RCT2_MAX_WALL_SCENERY_OBJECTS>(objectMgr, _s6.WallSceneryObjects);
+    ExportObjectList<ObjectType::Banners, RCT2_MAX_BANNER_OBJECTS>(objectMgr, _s6.BannerObjects);
+    ExportObjectList<ObjectType::Paths, RCT2_MAX_PATH_OBJECTS>(objectMgr, _s6.PathObjects);
+    ExportObjectList<ObjectType::PathBits, RCT2_MAX_PATH_ADDITION_OBJECTS>(objectMgr, _s6.PathAdditionObjects);
+    ExportObjectList<ObjectType::SceneryGroup, RCT2_MAX_SCENERY_GROUP_OBJECTS>(objectMgr, _s6.SceneryGroupObjects);
+    ExportObjectList<ObjectType::ParkEntrance, RCT2_MAX_PARK_ENTRANCE_OBJECTS>(objectMgr, _s6.ParkEntranceObjects);
+    ExportObjectList<ObjectType::Water, RCT2_MAX_WATER_OBJECTS>(objectMgr, _s6.WaterObjects);
+    ExportObjectList<ObjectType::ScenarioText, RCT2_MAX_SCENARIO_TEXT_OBJECTS>(objectMgr, _s6.ScenarioTextObjects);
 
     _s6.elapsed_months = static_cast<uint16_t>(gDateMonthsElapsed);
     _s6.current_day = gDateMonthTicks;

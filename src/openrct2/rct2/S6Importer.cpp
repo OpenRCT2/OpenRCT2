@@ -1563,8 +1563,8 @@ public:
         return justText.data();
     }
 
-    template<typename T>
-    static void AddRequiredObjects(std::vector<rct_object_entry>& required, const T& list, size_t internalLimit)
+    template<size_t TInternalLimit, typename T>
+    static void AddRequiredObjects(std::vector<rct_object_entry>& required, const T& list)
     {
         rct_object_entry nullEntry = {};
         std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
@@ -1576,7 +1576,7 @@ public:
 
         // NOTE: The segment of this object type needs to be filled to the internal limit
         // the object manager currently expects this.
-        for (size_t i = std::size(list); i < internalLimit; i++)
+        for (size_t i = std::size(list); i < TInternalLimit; i++)
         {
             required.push_back(nullEntry);
         }
@@ -1586,17 +1586,17 @@ public:
     {
         std::vector<rct_object_entry> result;
 
-        AddRequiredObjects(result, _s6.RideObjects, MAX_RIDE_OBJECTS);
-        AddRequiredObjects(result, _s6.SceneryObjects, MAX_SMALL_SCENERY_OBJECTS);
-        AddRequiredObjects(result, _s6.LargeSceneryObjects, MAX_LARGE_SCENERY_OBJECTS);
-        AddRequiredObjects(result, _s6.WallSceneryObjects, MAX_WALL_SCENERY_OBJECTS);
-        AddRequiredObjects(result, _s6.BannerObjects, MAX_BANNER_OBJECTS);
-        AddRequiredObjects(result, _s6.PathObjects, MAX_PATH_OBJECTS);
-        AddRequiredObjects(result, _s6.PathAdditionObjects, MAX_PATH_ADDITION_OBJECTS);
-        AddRequiredObjects(result, _s6.SceneryGroupObjects, MAX_SCENERY_GROUP_OBJECTS);
-        AddRequiredObjects(result, _s6.ParkEntranceObjects, MAX_PARK_ENTRANCE_OBJECTS);
-        AddRequiredObjects(result, _s6.WaterObjects, MAX_WATER_OBJECTS);
-        AddRequiredObjects(result, _s6.ScenarioTextObjects, MAX_SCENARIO_TEXT_OBJECTS);
+        AddRequiredObjects<MAX_RIDE_OBJECTS>(result, _s6.RideObjects);
+        AddRequiredObjects<MAX_SMALL_SCENERY_OBJECTS>(result, _s6.SceneryObjects);
+        AddRequiredObjects<MAX_LARGE_SCENERY_OBJECTS>(result, _s6.LargeSceneryObjects);
+        AddRequiredObjects<MAX_WALL_SCENERY_OBJECTS>(result, _s6.WallSceneryObjects);
+        AddRequiredObjects<MAX_BANNER_OBJECTS>(result, _s6.BannerObjects);
+        AddRequiredObjects<MAX_PATH_OBJECTS>(result, _s6.PathObjects);
+        AddRequiredObjects<MAX_PATH_ADDITION_OBJECTS>(result, _s6.PathAdditionObjects);
+        AddRequiredObjects<MAX_SCENERY_GROUP_OBJECTS>(result, _s6.SceneryGroupObjects);
+        AddRequiredObjects<MAX_PARK_ENTRANCE_OBJECTS>(result, _s6.ParkEntranceObjects);
+        AddRequiredObjects<MAX_WATER_OBJECTS>(result, _s6.WaterObjects);
+        AddRequiredObjects<MAX_SCENARIO_TEXT_OBJECTS>(result, _s6.ScenarioTextObjects);
 
         return result;
     }
