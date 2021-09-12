@@ -61,7 +61,6 @@ static constexpr uint32_t MaxPacketsPerUpdate = 100;
 #    include "../core/Console.hpp"
 #    include "../core/FileStream.h"
 #    include "../core/MemoryStream.h"
-#    include "../core/Nullable.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../interface/Chat.h"
@@ -912,9 +911,9 @@ uint8_t NetworkBase::GetGroupIDByHash(const std::string& keyhash)
     const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
 
     uint8_t groupId = GetDefaultGroup();
-    if (networkUser != nullptr && networkUser->GroupId.HasValue())
+    if (networkUser != nullptr && networkUser->GroupId.has_value())
     {
-        const uint8_t assignedGroup = networkUser->GroupId.GetValue();
+        const uint8_t assignedGroup = *networkUser->GroupId;
         if (GetGroupByID(assignedGroup) != nullptr)
         {
             groupId = assignedGroup;
@@ -2058,7 +2057,7 @@ NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string
             }
             else
             {
-                player->Group = networkUser->GroupId.GetValueOrDefault(GetDefaultGroup());
+                player->Group = networkUser->GroupId.has_value() ? *networkUser->GroupId : GetDefaultGroup();
                 player->SetName(networkUser->Name);
             }
 
