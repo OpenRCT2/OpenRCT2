@@ -52,9 +52,9 @@ json_t NetworkUser::ToJson() const
     jsonData["name"] = Name;
 
     json_t jsonGroupId;
-    if (GroupId.HasValue())
+    if (GroupId.has_value())
     {
-        jsonGroupId = GroupId.GetValue();
+        jsonGroupId = *GroupId;
     }
     jsonData["groupId"] = jsonGroupId;
 
@@ -172,9 +172,9 @@ void NetworkUserManager::UnsetUsersOfGroup(uint8_t groupId)
     for (const auto& kvp : _usersByHash)
     {
         NetworkUser* networkUser = kvp.second;
-        if (networkUser->GroupId.HasValue() && networkUser->GroupId.GetValue() == groupId)
+        if (networkUser->GroupId.has_value() && *networkUser->GroupId == groupId)
         {
-            networkUser->GroupId = nullptr;
+            networkUser->GroupId = std::nullopt;
         }
     }
 }

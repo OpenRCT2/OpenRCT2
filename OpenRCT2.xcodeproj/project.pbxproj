@@ -1685,7 +1685,6 @@
 		F76C838B1EC4E7CC00FA49E2 /* Memory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Memory.hpp; sourceTree = "<group>"; };
 		F76C838C1EC4E7CC00FA49E2 /* MemoryStream.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryStream.cpp; sourceTree = "<group>"; };
 		F76C838D1EC4E7CC00FA49E2 /* MemoryStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryStream.h; sourceTree = "<group>"; };
-		F76C838E1EC4E7CC00FA49E2 /* Nullable.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Nullable.hpp; sourceTree = "<group>"; };
 		F76C838F1EC4E7CC00FA49E2 /* Path.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
 		F76C83901EC4E7CC00FA49E2 /* Path.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Path.hpp; sourceTree = "<group>"; };
 		F76C83921EC4E7CC00FA49E2 /* String.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
