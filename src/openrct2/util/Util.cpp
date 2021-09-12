@@ -566,7 +566,7 @@ constexpr int32_t MAX_ZLIB_REALLOC = 4 * 1024 * 1024;
  * @return Returns a pointer to memory holding decompressed data or NULL on failure.
  * @note It is caller's responsibility to free() the returned pointer once done with it.
  */
-uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_size)
+uint8_t* util_zlib_inflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size)
 {
     int32_t ret = Z_OK;
     uLongf out_size = static_cast<uLong>(*data_out_size);
