@@ -6121,6 +6121,8 @@ GForces Vehicle::GetGForces() const
             // 6d76F5
             break;
     }
+    const auto& ted = GetTrackElementDescriptor(GetTrackType());
+    vertFactor = ted.VerticalFactor(track_progress);
 
     int32_t gForceLateral = 0;
 

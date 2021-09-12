@@ -91,6 +91,8 @@ struct TrackElementDescriptor
 
     rct_trackdefinition Definition;
     uint8_t SpinFunction;
+
+    std::function<int32_t(const int16_t)> VerticalFactor;
 };
 
 namespace OpenRCT2
