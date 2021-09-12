@@ -93,6 +93,7 @@ struct TrackElementDescriptor
     uint8_t SpinFunction;
 
     std::function<int32_t(const int16_t)> VerticalFactor;
+    std::function<int32_t(const int16_t)> LateralFactor;
 };
 
 namespace OpenRCT2
