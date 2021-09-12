@@ -60,7 +60,7 @@ namespace OpenRCT2::Scripting
 
         static std::string_view ObjectTypeToString(uint8_t type)
         {
-            static const char* Types[] = {
+            static constexpr std::string_view Types[] = {
                 "ride",
                 "small_scenery",
                 "large_scenery",
