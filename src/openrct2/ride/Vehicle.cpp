@@ -1350,23 +1350,23 @@ bool Vehicle::OpenRestraints()
                 continue;
             }
         }
-        if (carEntry.animation == CAR_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
+        if (carEntry.animation == CarEntryAnimation::ObservationTower && vehicle->animation_frame != 0)
         {
             if (vehicle->animationState <= 0xCCCC)
             {
-                vehicle->animationState += 0x3333;
+                vehicle->animationState += carEntry.AnimationSpeed;
             }
             else
             {
                 vehicle->animationState = 0;
                 vehicle->animation_frame++;
-                vehicle->animation_frame &= 7;
+                vehicle->animation_frame %= carEntry.AnimationFrames;
                 vehicle->Invalidate();
             }
             restraintsOpen = false;
             continue;
         }
-        if (carEntry.animation == CAR_ENTRY_ANIMATION_ANIMAL_FLYING
+        if (carEntry.animation == CarEntryAnimation::AnimalFlying
             && (vehicle->animation_frame != 0 || vehicle->animationState > 0))
         {
             vehicle->UpdateAnimationAnimalFlying();
@@ -6636,6 +6636,20 @@ void Vehicle::UpdateAnimationAnimalFlying()
     constexpr std::array frameWaitTimes = { 5, 3, 5, 3 };
     animationState = frameWaitTimes[animation_frame];
 }
+/**
+ * Get the frame of animation for the current animationState based on animation speed and animation frames
+ */
+static uint8_t GetTargetFrame(const CarEntry& carEntry, uint32_t animationState)
+{
+    if (carEntry.AnimationSpeed == 0)
+        return 0;
+    auto targetFrame = animationState / (carEntry.AnimationSpeed << 2);
+    // mask of 0xFF
+    targetFrame &= std::numeric_limits<uint8_t>::max();
+    // multiply by number of frames. After the bitshift 8, the range will be 0 to AnimationFrames - 1
+    targetFrame *= carEntry.AnimationFrames;
+    return targetFrame >> std::numeric_limits<uint8_t>::digits;
+}
 
 /**
  *
@@ -6644,26 +6658,23 @@ void Vehicle::UpdateAnimationAnimalFlying()
 void Vehicle::UpdateAdditionalAnimation()
 {
     uint8_t targetFrame{};
-    uint8_t curFrame{};
-    uint32_t eax{};
-
     auto carEntry = Entry();
     if (carEntry == nullptr)
     {
         return;
     }
+    if (carEntry->AnimationFrames == 0)
+        return;
     switch (carEntry->animation)
     {
-        case CAR_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // Loc6D652B
+        // similar to a normal animation but produces steam
+        case CarEntryAnimation::SteamLocomotive: // loc_6D652B
             animationState += _vehicleVelocityF64E08;
-            targetFrame = (animationState >> 20) & 3;
+            targetFrame = GetTargetFrame(*carEntry, animationState);
             if (animation_frame != targetFrame)
             {
-                curFrame = animation_frame;
                 animation_frame = targetFrame;
-                targetFrame &= 0x02;
-                curFrame &= 0x02;
-                if (targetFrame != curFrame)
+                if ((targetFrame & 0x01) == 0) // every even frame create a steam particle
                 {
                     auto curRide = GetRide();
                     if (curRide != nullptr)
@@ -6693,72 +6704,34 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_SWAN: // Loc6D6424
+            // similar to a normal animation but skips a frame
+        case CarEntryAnimation::SwanBoat: // loc_6D6424
+            // The animation of swan boats places frames at 0 and 2 instead of 0 and 1 like Water Tricycles due to the second
+            // pair of peeps. The animation technically uses 4 frames, but ignores frames 1 and 3.
             animationState += _vehicleVelocityF64E08;
-            targetFrame = (animationState >> 18) & 2;
+            targetFrame = GetTargetFrame(*carEntry, animationState) * 2;
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_CANOES: // Loc6D6482
+            // regular animation types
+        case CarEntryAnimation::SimpleVehicle:
             animationState += _vehicleVelocityF64E08;
-            eax = ((animationState >> 13) & 0xFF) * 6;
-            targetFrame = (eax >> 8) & 0xFF;
+            targetFrame = GetTargetFrame(*carEntry, animationState);
             if (animation_frame != targetFrame)
             {
                 animation_frame = targetFrame;
                 Invalidate();
             }
             break;
-        case CAR_ENTRY_ANIMATION_ROW_BOATS: // Loc6D64F7
-            animationState += _vehicleVelocityF64E08;
-            eax = ((animationState >> 13) & 0xFF) * 7;
-            targetFrame = (eax >> 8) & 0xFF;
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_WATER_TRICYCLES: // Loc6D6453
-            animationState += _vehicleVelocityF64E08;
-            targetFrame = (animationState >> 19) & 1;
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_OBSERVATION_TOWER: // Loc6D65C3
-            if (animationState <= 0xCCCC)
-            {
-                animationState += 0x3333;
-            }
-            else
-            {
-                animationState = 0;
-                animation_frame += 1;
-                animation_frame &= 7;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_HELICARS: // Loc6D63F5
-            animationState += _vehicleVelocityF64E08;
-            targetFrame = (animationState >> 18) & 3;
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
-            break;
-        case CAR_ENTRY_ANIMATION_MONORAIL_CYCLES: // Loc6D64B6
+            // similar to a normal animation but only animates when a rider is present
+        case CarEntryAnimation::MonorailCycle: // loc_6D64B6
             if (num_peeps != 0)
             {
                 animationState += _vehicleVelocityF64E08;
-                eax = ((animationState >> 13) & 0xFF) << 2;
-                targetFrame = (eax >> 8) & 0xFF;
+                targetFrame = GetTargetFrame(*carEntry, animationState);
                 if (animation_frame != targetFrame)
                 {
                     animation_frame = targetFrame;
@@ -6766,12 +6739,25 @@ void Vehicle::UpdateAdditionalAnimation()
                 }
             }
             break;
-        case CAR_ENTRY_ANIMATION_MULTI_DIM_COASTER: // Loc6D65E1
+        case CarEntryAnimation::ObservationTower: // loc_6D65C3
+            if (animationState <= 0xCCCC)
+            {
+                animationState += carEntry->AnimationSpeed;
+            }
+            else
+            {
+                animationState = 0;
+                animation_frame += 1;
+                animation_frame %= carEntry->AnimationFrames;
+                Invalidate();
+            }
+            break;
+        case CarEntryAnimation::MultiDimCoaster: // loc_6D65E1
             if (seat_rotation != target_seat_rotation)
             {
                 if (animationState <= 0xCCCC)
                 {
-                    animationState += 0x3333;
+                    animationState += carEntry->AnimationSpeed;
                 }
                 else
                 {
@@ -6779,20 +6765,29 @@ void Vehicle::UpdateAdditionalAnimation()
 
                     if (seat_rotation >= target_seat_rotation)
                         seat_rotation--;
-
                     else
                         seat_rotation++;
 
-                    animation_frame = (seat_rotation - 4) & 7;
-                    Invalidate();
+                    int8_t targetSeatRotation = (seat_rotation - 4);
+                    if (targetSeatRotation != animation_frame)
+                    {
+                        while (targetSeatRotation >= carEntry->AnimationFrames)
+                            targetSeatRotation -= carEntry->AnimationFrames;
+                        while (targetSeatRotation < 0)
+                            targetSeatRotation += carEntry->AnimationFrames;
+                        animation_frame = targetSeatRotation;
+                        Invalidate();
+                    }
                 }
             }
             break;
-        case CAR_ENTRY_ANIMATION_ANIMAL_FLYING:
+        case CarEntryAnimation::AnimalFlying:
             UpdateAnimationAnimalFlying();
             // makes animation play faster with vehicle speed
-            targetFrame = abs(_vehicleVelocityF64E08) >> 24;
+            targetFrame = abs(_vehicleVelocityF64E08) >> carEntry->AnimationSpeed;
             animationState = std::max(animationState - targetFrame, 0u);
+            break;
+        default:
             break;
     }
 }

@@ -23,6 +23,19 @@ namespace OpenRCT2::Audio
     enum class SoundId : uint8_t;
 }
 
+enum class CarEntryAnimation : uint8_t
+{
+    None = 0,
+    SimpleVehicle,
+    SteamLocomotive,
+    SwanBoat,
+    MonorailCycle,
+    MultiDimCoaster,
+    ObservationTower,
+    AnimalFlying,
+    Count,
+};
+
 enum : uint32_t
 {
     CAR_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1
@@ -166,7 +179,7 @@ struct CarEntry
     uint8_t sprite_width;
     uint8_t sprite_height_negative;
     uint8_t sprite_height_positive;
-    uint8_t animation;
+    CarEntryAnimation animation;
     uint32_t flags;
     uint16_t base_num_frames; // The number of sprites of animation or swinging per rotation frame
     uint32_t base_image_id;
@@ -187,6 +200,8 @@ struct CarEntry
     uint8_t num_vertical_frames_override; // A custom number that can be used rather than letting RCT2 determine it.
                                           // Needs the CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8_t peep_loading_waypoint_segments;
+    uint16_t AnimationSpeed;
+    uint8_t AnimationFrames;
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {};
 

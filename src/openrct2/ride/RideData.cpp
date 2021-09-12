@@ -133,7 +133,7 @@ const CarEntry CableLiftVehicle = {
     /* .sprite_width = */ 0,
     /* .sprite_height_negative = */ 0,
     /* .sprite_height_positive = */ 0,
-    /* .animation = */ 0,
+    /* .animation = */ CarEntryAnimation::None,
     /* .flags = */ 0,
     /* .base_num_frames = */ 1,
     /* .base_image_id = */ 29110,
@@ -184,7 +184,9 @@ const CarEntry CableLiftVehicle = {
     /* .effect_visual = */ 1,
     /* .draw_order = */ 14,
     /* .num_vertical_frames_override = */ 0,
-    /* .peep_loading_positions = */ 0
+    /* .peep_loading_positions = */ 0,
+    /* .AnimationExponent = */ 0,
+    /* .AnimationFrames = */ 0
 };
 
 /* rct2: 0x009A0AA0 */
