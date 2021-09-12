@@ -35,6 +35,11 @@ file(GLOB_RECURSE OPENRCT2_UI_HEADERS
 if (APPLE)
     file(GLOB_RECURSE OPENRCT2_UI_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.mm")
     set_source_files_properties(${OPENRCT2_UI_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
+    if ("${CMAKE_OSX_ARCHITECTURES}" MATCHES "arm64")
+        # cross-compilation workaround for SDL2
+        set(SDL_DISABLE_IMMINTRIN_H "-DSDL_DISABLE_IMMINTRIN_H")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SDL_DISABLE_IMMINTRIN_H}")
+    endif ()
 endif ()
 
 # Outputs
@@ -141,7 +146,6 @@ if(MACOS_BUNDLE)
     target_sources(${PROJECT_NAME}
         PUBLIC ${ROOT_DIR}/distribution/readme.txt
         PUBLIC ${ROOT_DIR}/distribution/changelog.txt
-        PUBLIC ${CMAKE_BINARY_DIR}/g2.dat
         PUBLIC ${ROOT_DIR}/resources/mac/openrct2.icns
         )
 
@@ -149,9 +153,15 @@ if(MACOS_BUNDLE)
     set(BUNDLE_RESOURCES
         ${ROOT_DIR}/distribution/readme.txt
         ${ROOT_DIR}/distribution/changelog.txt
-        ${CMAKE_BINARY_DIR}/g2.dat
         ${ROOT_DIR}/resources/mac/openrct2.icns
         )
+
+    if (CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_ARCH}")
+        target_sources(${PROJECT_NAME}
+        PUBLIC ${CMAKE_BINARY_DIR}/g2.dat
+        )
+        list(APPEND BUNDLE_RESOURCES ${CMAKE_BINARY_DIR}/g2.dat)
+    endif()
 
 
     if(${OPENRCT2_BRANCH} EQUAL master)
