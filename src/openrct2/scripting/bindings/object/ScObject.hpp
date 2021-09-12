@@ -60,9 +60,25 @@ namespace OpenRCT2::Scripting
 
         static std::string_view ObjectTypeToString(uint8_t type)
         {
-            static const char* Types[] = { "ride",     "small_scenery",     "large_scenery", "wall",          "banner",
-                                           "footpath", "footpath_addition", "scenery_group", "park_entrance", "water",
-                                           "stex",     "terrain_surface",   "terrain_edge",  "station",       "music" };
+            static constexpr std::string_view Types[] = {
+                "ride",
+                "small_scenery",
+                "large_scenery",
+                "wall",
+                "banner",
+                "footpath",
+                "footpath_addition",
+                "scenery_group",
+                "park_entrance",
+                "water",
+                "stex",
+                "terrain_surface",
+                "terrain_edge",
+                "station",
+                "music",
+                "footpath_surface",
+                "footpath_railings",
+            };
             if (type >= std::size(Types))
                 return "unknown";
             return Types[type];

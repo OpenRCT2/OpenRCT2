@@ -44,7 +44,7 @@ constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
 static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
-static void FreeEntity(EntityBase* entity);
+static void FreeEntity(EntityBase& entity);
 
 constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 {
@@ -238,7 +238,7 @@ void reset_sprite_list()
         {
             continue;
         }
-        FreeEntity(spr);
+        FreeEntity(*spr);
         spr->Type = EntityType::Null;
         spr->sprite_index = i;
 
@@ -545,10 +545,10 @@ void sprite_set_coordinates(const CoordsXYZ& spritePos, EntityBase* sprite)
 /**
  * Frees any dynamically attached memory to the entity, such as peep name.
  */
-static void FreeEntity(EntityBase* entity)
+static void FreeEntity(EntityBase& entity)
 {
-    auto* guest = entity->As<Guest>();
-    auto* staff = entity->As<Staff>();
+    auto* guest = entity.As<Guest>();
+    auto* staff = entity.As<Staff>();
     if (staff != nullptr)
     {
         staff->SetName({});
@@ -567,7 +567,7 @@ static void FreeEntity(EntityBase* entity)
  */
 void sprite_remove(EntityBase* sprite)
 {
-    FreeEntity(sprite);
+    FreeEntity(*sprite);
 
     EntityTweener::Get().RemoveEntity(sprite);
     RemoveFromEntityList(sprite); // remove from existing list
