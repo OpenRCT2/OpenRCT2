@@ -509,29 +509,15 @@ static void ShortcutIncreaseElementHeight()
         int action = -1;
         switch (w->tileInspectorPage)
         {
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
-                action = WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_INCREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH:
-                action = WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_INCREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK:
-                action = WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_INCREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY:
-                action = WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_INCREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE:
-                action = WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL:
-                action = WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_INCREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY:
-                action = WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
-                action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE;
+            case TileInspectorPage::Surface:
+            case TileInspectorPage::Path:
+            case TileInspectorPage::Track:
+            case TileInspectorPage::Scenery:
+            case TileInspectorPage::Entrance:
+            case TileInspectorPage::Wall:
+            case TileInspectorPage::LargeScenery:
+            case TileInspectorPage::Banner:
+                action = WC_TILE_INSPECTOR__WIDX_HEIGHT_INCREASE;
                 break;
             case TileInspectorPage::Default:
                 break;
@@ -550,29 +536,15 @@ static void ShortcutDecreaseElementHeight()
         int action = -1;
         switch (w->tileInspectorPage)
         {
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
-                action = WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_DECREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH:
-                action = WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_DECREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK:
-                action = WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_DECREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY:
-                action = WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_DECREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE:
-                action = WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL:
-                action = WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_DECREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY:
-                action = WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
-                action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE;
+            case TileInspectorPage::Surface:
+            case TileInspectorPage::Path:
+            case TileInspectorPage::Track:
+            case TileInspectorPage::Scenery:
+            case TileInspectorPage::Entrance:
+            case TileInspectorPage::Wall:
+            case TileInspectorPage::LargeScenery:
+            case TileInspectorPage::Banner:
+                action = WC_TILE_INSPECTOR__WIDX_HEIGHT_DECREASE;
                 break;
             case TileInspectorPage::Default:
                 break;
