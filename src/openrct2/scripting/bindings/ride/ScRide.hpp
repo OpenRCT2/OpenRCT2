@@ -109,13 +109,13 @@ namespace OpenRCT2::Scripting
 
         void colourSchemes_set(const std::vector<DukValue>& value);
 
-        uint8_t stationStyle_get() const;
+        ObjectEntryIndex stationStyle_get() const;
 
-        void stationStyle_set(uint8_t value);
+        void stationStyle_set(ObjectEntryIndex value);
 
-        uint8_t music_get() const;
+        ObjectEntryIndex music_get() const;
 
-        void music_set(uint8_t value);
+        void music_set(ObjectEntryIndex value);
 
         std::vector<std::shared_ptr<ScRideStation>> stations_get() const;
 
