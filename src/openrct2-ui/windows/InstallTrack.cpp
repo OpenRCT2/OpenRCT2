@@ -94,7 +94,7 @@ rct_window* window_install_track_open(const utf8* path)
         log_error("Failed to load track (ride type null): %s", path);
         return nullptr;
     }
-    if (object_manager_load_object(&_trackDesign->vehicle_object) == nullptr)
+    if (object_manager_load_object(&_trackDesign->vehicle_object.Entry) == nullptr)
     {
         log_error("Failed to load track (vehicle load fail): %s", path);
         return nullptr;
@@ -242,7 +242,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
 
-        const auto* objectEntry = object_manager_load_object(&td6->vehicle_object);
+        const auto* objectEntry = object_manager_load_object(&td6->vehicle_object.Entry);
         if (objectEntry != nullptr)
         {
             auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);

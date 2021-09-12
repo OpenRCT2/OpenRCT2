@@ -266,14 +266,14 @@ static void ExportObjectList(IObjectManager& objMgr, T& objects)
         auto& dst = objects[i];
 
         const auto* object = objMgr.GetLoadedObject(TObjectType, i);
-        if (object == nullptr || object->GetObjectEntry() == nullptr)
+        if (object == nullptr || object->GetGeneration() != ObjectGeneration::DAT)
         {
             // The sv6 format expects null/invalid entries to be filled with 0xFF.
             std::memset(&dst, 0xFF, sizeof(dst));
         }
         else
         {
-            dst = *object->GetObjectEntry();
+            dst = object->GetObjectEntry();
         }
     }
 }

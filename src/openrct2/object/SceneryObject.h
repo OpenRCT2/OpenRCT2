@@ -19,10 +19,6 @@ private:
     ObjectEntryDescriptor _primarySceneryGroupEntry = {};
 
 public:
-    explicit SceneryObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
     virtual ~SceneryObject() = default;
 
     const ObjectEntryDescriptor& GetPrimarySceneryGroup() const
