@@ -4414,12 +4414,12 @@ void Vehicle::UpdateMotionBoatHire()
     _vehicleVelocityF64E08 = velocity;
     _vehicleVelocityF64E0C = (velocity >> 10) * 42;
 
+    Vehicle::UpdateSpeedShift();
     auto vehicleEntry = Entry();
     if (vehicleEntry == nullptr)
     {
         return;
     }
-    Vehicle::UpdateSpeedShift();
     if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION | VEHICLE_ENTRY_FLAG_RIDER_ANIMATION))
     {
         UpdateAdditionalAnimation();
@@ -9454,12 +9454,12 @@ void Vehicle::UpdateSpeedShift()
     auto vehicleEntry = Entry();
     if (vehicleEntry->SpeedShift.UpperVehicle != vehicle_type)
     {
-        if (vehicleEntry->SpeedShift.UpperBound << 16 < abs(_vehicleVelocityF64E08))
+        if ((0x1000 + (vehicleEntry->SpeedShift.UpperBound << 16)) < abs(_vehicleVelocityF64E08))
             vehicle_type = vehicleEntry->SpeedShift.UpperVehicle;
     }
     if (vehicleEntry->SpeedShift.LowerVehicle != vehicle_type)
     {
-        if (vehicleEntry->SpeedShift.LowerBound << 16 > abs(_vehicleVelocityF64E08))
+        if ((0x1000 + (vehicleEntry->SpeedShift.LowerBound << 16)) > abs(_vehicleVelocityF64E08))
             vehicle_type = vehicleEntry->SpeedShift.UpperVehicle;
     }
 }
