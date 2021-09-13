@@ -236,21 +236,19 @@ std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t bind
     {
         return std::nullopt;
     }
-    else
-    {
-        ShortcutInput result;
-        result.Kind = InputDeviceKind::Keyboard;
-        if (binding & shift)
-            result.Modifiers |= KMOD_SHIFT;
-        if (binding & ctrl)
-            result.Modifiers |= KMOD_CTRL;
-        if (binding & alt)
-            result.Modifiers |= KMOD_ALT;
-        if (binding & cmd)
-            result.Modifiers |= KMOD_GUI;
-        result.Button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF));
-        return result;
-    }
+
+    ShortcutInput result;
+    result.Kind = InputDeviceKind::Keyboard;
+    if (binding & shift)
+        result.Modifiers |= KMOD_SHIFT;
+    if (binding & ctrl)
+        result.Modifiers |= KMOD_CTRL;
+    if (binding & alt)
+        result.Modifiers |= KMOD_ALT;
+    if (binding & cmd)
+        result.Modifiers |= KMOD_GUI;
+    result.Button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF));
+    return result;
 }
 
 void ShortcutManager::LoadLegacyBindings(const fs::path& path)
