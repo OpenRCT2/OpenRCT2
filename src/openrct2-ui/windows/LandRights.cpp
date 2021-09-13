@@ -286,7 +286,7 @@ static void window_land_rights_tool_update_land_rights(const ScreenCoordsXY& scr
 
     auto mapTile = screen_get_map_xy(screenCoords, nullptr);
 
-    if (!mapTile)
+    if (!mapTile.has_value())
     {
         if (_landRightsCost != MONEY32_UNDEFINED)
         {

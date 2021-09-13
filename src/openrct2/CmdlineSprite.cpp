@@ -545,7 +545,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
 
         auto importResult = SpriteImageImport(imagePath, x_offset, y_offset, false, false, gSpriteMode);
-        if (importResult == std::nullopt)
+        if (!importResult.has_value())
             return -1;
 
         auto spriteFile = SpriteFile::Open(spriteFilePath);

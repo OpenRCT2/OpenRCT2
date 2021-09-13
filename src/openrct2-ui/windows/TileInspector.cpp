@@ -1232,10 +1232,10 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     if (clickedElement == nullptr)
     {
         auto mouseCoords = screen_pos_to_map_pos(screenCoords, nullptr);
-        if (mouseCoords)
+        if (mouseCoords.has_value())
         {
             mouseOnViewport = true;
-            mapCoords = *mouseCoords;
+            mapCoords = mouseCoords.value();
         }
     }
 
@@ -1285,12 +1285,12 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, const Scre
     {
         auto mouseCoords = screen_pos_to_map_pos(screenCoords, nullptr);
 
-        if (!mouseCoords)
+        if (!mouseCoords.has_value())
         {
             return;
         }
 
-        mapCoords = *mouseCoords;
+        mapCoords = mouseCoords.value();
         // Tile is already selected
         if (windowTileInspectorTileSelected && mapCoords.x == windowTileInspectorToolMap.x
             && mapCoords.y == windowTileInspectorToolMap.y)

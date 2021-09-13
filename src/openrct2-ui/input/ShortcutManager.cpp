@@ -167,10 +167,10 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
         if (shortcut != nullptr && shortcut->IsSuitableInputEvent(e))
         {
             auto shortcutInput = ShortcutInput::FromInputEvent(e);
-            if (shortcutInput)
+            if (shortcutInput.has_value())
             {
                 shortcut->Current.clear();
-                shortcut->Current.push_back(std::move(*shortcutInput));
+                shortcut->Current.push_back(std::move(shortcutInput.value()));
             }
             _pendingShortcutChange.clear();
             window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
@@ -273,9 +273,9 @@ void ShortcutManager::LoadLegacyBindings(const fs::path& path)
                 {
                     shortcut->Current.clear();
                     auto input = ConvertLegacyBinding(value);
-                    if (input)
+                    if (input.has_value())
                     {
-                        shortcut->Current.push_back(std::move(*input));
+                        shortcut->Current.push_back(std::move(input.value()));
                     }
                 }
             }

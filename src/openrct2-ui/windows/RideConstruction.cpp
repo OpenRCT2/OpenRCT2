@@ -1889,7 +1889,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     track_type_t type = _currentTrackPieceType;
     auto newCoords = GetTrackElementOriginAndApplyChanges(
         { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
-    if (newCoords == std::nullopt)
+    if (!newCoords.has_value())
     {
         window_ride_construction_update_active_elements();
         return;
@@ -1921,7 +1921,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         newCoords = GetTrackElementOriginAndApplyChanges(
             { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
 
-        if (newCoords == std::nullopt)
+        if (!newCoords.has_value())
         {
             window_ride_construction_update_active_elements();
             return;
@@ -2178,9 +2178,9 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     {
         auto mapZ = _trackPlaceCtrlZ;
         auto mapXYCoords = screen_get_map_xy_with_z(screenCoords, mapZ);
-        if (mapXYCoords)
+        if (mapXYCoords.has_value())
         {
-            mapCoords = *mapXYCoords;
+            mapCoords = mapXYCoords.value();
         }
         else
         {
@@ -2604,7 +2604,7 @@ void UpdateGhostTrackAndArrow()
                                                                                       : TRACK_ELEMENT_SET_HIGHLIGHT_FALSE;
             auto newCoords = GetTrackElementOriginAndApplyChanges(
                 { _currentTrackBegin, static_cast<Direction>(direction) }, type, 0, nullptr, flags);
-            if (newCoords == std::nullopt)
+            if (!newCoords.has_value())
             {
                 ride_construction_remove_ghosts();
                 _rideConstructionState = RideConstructionState::State0;

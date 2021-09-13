@@ -152,11 +152,11 @@ ShortcutInput::ShortcutInput(std::string_view value)
         else
         {
             auto number = String::Parse<int32_t>(rem);
-            if (number)
+            if (number.has_value())
             {
                 Kind = InputDeviceKind::JoyButton;
                 Modifiers = modifiers;
-                Button = *number - 1;
+                Button = number.value() - 1;
             }
         }
     }

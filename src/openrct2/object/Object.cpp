@@ -196,9 +196,9 @@ uint64_t ObjectAsset::GetSize() const
         if (zipArchive != nullptr)
         {
             auto index = zipArchive->GetIndexFromPath(_path);
-            if (index)
+            if (index.has_value())
             {
-                auto size = zipArchive->GetFileSize(*index);
+                auto size = zipArchive->GetFileSize(index.value());
                 return size;
             }
         }

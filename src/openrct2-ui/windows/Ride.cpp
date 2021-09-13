@@ -5009,9 +5009,9 @@ static std::optional<size_t> GetMusicStyleOrder(ObjectEntryIndex musicObjectInde
 
     // Get the index in the order list
     auto originalStyleId = musicObj->GetOriginalStyleId();
-    if (originalStyleId)
+    if (originalStyleId.has_value())
     {
-        auto it = std::find(std::begin(MusicStyleOrder), std::end(MusicStyleOrder), *originalStyleId);
+        auto it = std::find(std::begin(MusicStyleOrder), std::end(MusicStyleOrder), originalStyleId.value());
         if (it != std::end(MusicStyleOrder))
         {
             return std::distance(std::begin(MusicStyleOrder), it);
@@ -5046,7 +5046,8 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
         {
             // Hide custom music if the WAV file does not exist
             auto originalStyleId = musicObj->GetOriginalStyleId();
-            if (originalStyleId == MUSIC_STYLE_CUSTOM_MUSIC_1 || originalStyleId == MUSIC_STYLE_CUSTOM_MUSIC_2)
+            if (originalStyleId.has_value()
+                && (originalStyleId == MUSIC_STYLE_CUSTOM_MUSIC_1 || originalStyleId == MUSIC_STYLE_CUSTOM_MUSIC_2))
             {
                 auto numTracks = musicObj->GetTrackCount();
                 if (numTracks != 0)

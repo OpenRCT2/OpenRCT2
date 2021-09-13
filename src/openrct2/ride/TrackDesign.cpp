@@ -179,7 +179,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     auto newCoords = GetTrackElementOriginAndApplyChanges(
         { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
-    if (newCoords == std::nullopt)
+    if (!newCoords.has_value())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
@@ -236,7 +236,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         newCoords = GetTrackElementOriginAndApplyChanges(
             { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
-        if (newCoords == std::nullopt)
+        if (!newCoords.has_value())
         {
             break;
         }

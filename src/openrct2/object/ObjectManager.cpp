@@ -372,17 +372,17 @@ private:
         {
             slot = FindSpareSlot(objectType);
         }
-        if (slot)
+        if (slot.has_value())
         {
             auto* object = GetOrLoadObject(ori);
             if (object != nullptr)
             {
                 if (_loadedObjects.size() <= static_cast<size_t>(*slot))
                 {
-                    _loadedObjects.resize(*slot + 1);
+                    _loadedObjects.resize(slot.value() + 1);
                 }
                 loadedObject = object;
-                _loadedObjects[*slot] = object;
+                _loadedObjects[slot.value()] = object;
                 UpdateSceneryGroupIndexes();
                 ResetTypeToRideEntryIndexMap();
             }

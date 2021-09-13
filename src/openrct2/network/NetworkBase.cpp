@@ -1416,7 +1416,7 @@ std::vector<uint8_t> NetworkBase::save_for_network(const std::vector<const Objec
     int32_t size = ms.GetLength();
 
     auto compressed = util_zlib_deflate(static_cast<const uint8_t*>(data), size);
-    if (compressed != std::nullopt)
+    if (compressed.has_value())
     {
         std::string headerString = "open2_sv6_zlib";
         header.resize(headerString.size() + 1 + compressed->size());

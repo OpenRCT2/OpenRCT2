@@ -57,7 +57,7 @@ int32_t gfx_get_string_width_new_lined(std::string_view text, FontSpriteBase fon
         if (token.kind == FormatToken::Newline || token.kind == FormatToken::NewlineSmall)
         {
             auto width = gfx_get_string_width(buffer, fontSpriteBase);
-            if (!maxWidth || maxWidth > width)
+            if (!maxWidth.has_value() || maxWidth.value() > width)
             {
                 maxWidth = width;
             }
@@ -68,11 +68,11 @@ int32_t gfx_get_string_width_new_lined(std::string_view text, FontSpriteBase fon
             buffer.append(token.text);
         }
     }
-    if (!maxWidth)
+    if (!maxWidth.has_value())
     {
         maxWidth = gfx_get_string_width(buffer, fontSpriteBase);
     }
-    return *maxWidth;
+    return maxWidth.value();
 }
 
 /**
@@ -829,11 +829,11 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
             auto codepoint = *it;
             if (ShouldUseSpriteForCodepoint(codepoint))
             {
-                if (ttfRunIndex)
+                if (ttfRunIndex.has_value())
                 {
                     // Draw the TTF run
-                    auto len = it.GetIndex() - *ttfRunIndex;
-                    ttf_draw_string_raw_ttf(dpi, text.substr(*ttfRunIndex, len), info);
+                    auto len = it.GetIndex() - ttfRunIndex.value();
+                    ttf_draw_string_raw_ttf(dpi, text.substr(ttfRunIndex.value(), len), info);
                     ttfRunIndex = std::nullopt;
                 }
 
@@ -842,18 +842,18 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
             }
             else
             {
-                if (!ttfRunIndex)
+                if (!ttfRunIndex.has_value())
                 {
                     ttfRunIndex = it.GetIndex();
                 }
             }
         }
 
-        if (ttfRunIndex)
+        if (ttfRunIndex.has_value())
         {
             // Final TTF run
             auto len = text.size() - *ttfRunIndex;
-            ttf_draw_string_raw_ttf(dpi, text.substr(*ttfRunIndex, len), info);
+            ttf_draw_string_raw_ttf(dpi, text.substr(ttfRunIndex.value(), len), info);
         }
     }
 #endif // NO_TTF
