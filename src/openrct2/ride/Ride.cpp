@@ -2868,8 +2868,8 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
         trackType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
         auto newCoords = GetTrackElementOriginAndApplyChanges(
             { trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnPos.element, 0);
-        returnPos = !newCoords.has_value() ? CoordsXYE{ trackCoords, returnPos.element }
-                                           : CoordsXYE{ *newCoords, returnPos.element };
+        returnPos = newCoords.has_value() ? CoordsXYE{ newCoords.value(), returnPos.element }
+                                          : CoordsXYE{ trackCoords, returnPos.element };
     };
 
     trackType = returnPos.element->AsTrack()->GetTrackType();
