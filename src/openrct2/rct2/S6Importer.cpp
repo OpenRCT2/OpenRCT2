@@ -1603,9 +1603,18 @@ public:
         AddRequiredObjects<MAX_SCENARIO_TEXT_OBJECTS>(result, _s6.ScenarioTextObjects);
 
         ObjectList objectList;
-        for (rct_object_entry entry : result)
+        for (size_t i = 0; i < result.size(); i++)
         {
-            objectList.Add(ObjectEntryDescriptor(entry));
+            ObjectType objectType;
+            ObjectEntryIndex entryIndex;
+            get_type_entry_index(i, &objectType, &entryIndex);
+
+            auto desc = ObjectEntryDescriptor(result[i]);
+            if (desc.HasValue())
+            {
+                assert(desc.GetType() == objectType);
+                objectList.SetObject(entryIndex, desc);
+            }
         }
 
         return objectList;
