@@ -4419,6 +4419,7 @@ void Vehicle::UpdateMotionBoatHire()
     {
         return;
     }
+    Vehicle::UpdateSpeedShift();
     if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_VEHICLE_ANIMATION | VEHICLE_ENTRY_FLAG_RIDER_ANIMATION))
     {
         UpdateAdditionalAnimation();
@@ -9448,6 +9449,21 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     return _vehicleMotionTrackFlags;
 }
 
+void Vehicle::UpdateSpeedShift()
+{
+    auto vehicleEntry = Entry();
+    if (vehicleEntry->SpeedShift.UpperVehicle != vehicle_type)
+    {
+        if (vehicleEntry->SpeedShift.UpperBound << 16 < abs(_vehicleVelocityF64E08))
+            vehicle_type = vehicleEntry->SpeedShift.UpperVehicle;
+    }
+    if (vehicleEntry->SpeedShift.LowerVehicle != vehicle_type)
+    {
+        if (vehicleEntry->SpeedShift.LowerBound << 16 > abs(_vehicleVelocityF64E08))
+            vehicle_type = vehicleEntry->SpeedShift.UpperVehicle;
+    }
+}
+
 /**
  *
  *  rct2: 0x006DC1E4
@@ -9604,6 +9620,9 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         {
             break;
         }
+        // update speed shift before getting the entry so it doens't have to be modified later
+        car->UpdateSpeedShift();
+
         vehicleEntry = car->Entry();
         if (vehicleEntry == nullptr)
         {

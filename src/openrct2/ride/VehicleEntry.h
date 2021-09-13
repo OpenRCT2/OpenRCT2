@@ -15,6 +15,14 @@
 #include <array>
 #include <vector>
 
+struct SpeedShiftVehicle
+{
+    uint8_t UpperBound;
+    uint8_t UpperVehicle;
+    uint8_t LowerBound;
+    uint8_t LowerVehicle;
+};
+
 #ifdef __TESTPAINT__
 #    pragma pack(push, 1)
 #endif // __TESTPAINT__
@@ -72,7 +80,8 @@ struct rct_ride_entry_vehicle
     uint8_t num_vertical_frames_override; // A custom number that can be used rather than letting RCT2 determine it.
                                           // Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8_t peep_loading_waypoint_segments;
-    uint8_t pad_62[6] = {};
+    SpeedShiftVehicle SpeedShift; // OpenRCT2-specific behaviour
+    uint8_t pad_62[2] = {};
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {};
 };

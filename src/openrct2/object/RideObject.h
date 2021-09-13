@@ -53,7 +53,7 @@ private:
 
     void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
     std::vector<rct_ride_entry_vehicle> ReadJsonCars(json_t& jCars);
-    rct_ride_entry_vehicle ReadJsonCar(json_t& jCar);
+    rct_ride_entry_vehicle ReadJsonCar(json_t& jCar, uint8_t carIndex);
     vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
     std::vector<vehicle_colour> ReadJsonColourConfiguration(json_t& jColourConfig);
 

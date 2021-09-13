@@ -453,6 +453,8 @@ void RideObject::ReadLegacyVehicle(
     vehicle->draw_order = stream->ReadValue<uint8_t>();
     vehicle->num_vertical_frames_override = stream->ReadValue<uint8_t>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
+    // OpenRCT2-Specific behaviour below
+    vehicle->SpeedShift = { 0, 0, 0, 0 };
 }
 
 uint8_t RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle* vehicleEntry)
@@ -701,19 +703,19 @@ std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(json_t& jCars)
         {
             if (jCar.is_object())
             {
-                cars.push_back(ReadJsonCar(jCar));
+                cars.push_back(ReadJsonCar(jCar, static_cast<uint8_t>(std::size(cars))));
             }
         }
     }
     else if (jCars.is_object())
     {
-        cars.push_back(ReadJsonCar(jCars));
+        cars.push_back(ReadJsonCar(jCars, static_cast<uint8_t>(std::size(cars))));
     }
 
     return cars;
 }
 
-rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
+rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar, uint8_t carIndex)
 {
     Guard::Assert(jCar.is_object(), "RideObject::ReadJsonCar expects parameter jCar to be object");
 
@@ -747,6 +749,23 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
     car.effect_visual = Json::GetNumber<uint8_t>(jCar["effectVisual"], 1);
     car.draw_order = Json::GetNumber<uint8_t>(jCar["drawOrder"]);
     car.num_vertical_frames_override = Json::GetNumber<uint8_t>(jCar["numVerticalFramesOverride"]);
+
+    // OpenRCT2-specific feature
+    auto jSpeedShift = jCar["speedShift"];
+    if (jSpeedShift.is_object())
+    {
+        car.SpeedShift.LowerBound = Json::GetNumber<uint8_t>(jSpeedShift["shiftDownSpeed"]);
+        car.SpeedShift.UpperBound = Json::GetNumber<uint8_t>(jSpeedShift["shiftUpSpeed"]);
+        car.SpeedShift.LowerVehicle = Json::GetNumber<uint8_t>(jSpeedShift["shiftUpVehicle"], carIndex);
+        car.SpeedShift.UpperVehicle = Json::GetNumber<uint8_t>(jSpeedShift["shiftDownVehicle"], carIndex);
+    }
+    else
+    {
+        car.SpeedShift.LowerBound = 0;
+        car.SpeedShift.UpperBound = 0;
+        car.SpeedShift.UpperVehicle = carIndex;
+        car.SpeedShift.LowerVehicle = carIndex;
+    }
 
     auto jLoadingPositions = jCar["loadingPositions"];
     if (jLoadingPositions.is_array())

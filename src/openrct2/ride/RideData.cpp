@@ -163,7 +163,11 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     /* .effect_visual = */ 1,
     /* .draw_order = */ 14,
     /* .num_vertical_frames_override = */ 0,
-    /* .peep_loading_positions = */ 0
+    /* .peep_loading_positions = */ 0,
+    /* .SpeedShift.UpperBound = */ 0,
+    /* .SpeedShift.UpperVehicle = */ 0,
+    /* .SpeedShift.LowerBound = */ 0,
+    /* .SpeedShift.LowerVehicle = */ 0
 };
 
 /* rct2: 0x009A0AA0 */
