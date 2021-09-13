@@ -23,6 +23,10 @@ union rct_sprite
 {
     uint8_t pad_00[0x200];
     EntityBase base;
+    rct_sprite()
+        : pad_00()
+    {
+    }
 };
 assert_struct_size(rct_sprite, 0x200);
 

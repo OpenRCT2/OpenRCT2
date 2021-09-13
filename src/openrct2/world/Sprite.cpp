@@ -163,7 +163,7 @@ const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
 
 void EntityBase::Invalidate()
 {
-    if (sprite_left == LOCATION_NULL)
+    if (x == LOCATION_NULL)
         return;
 
     int32_t maxZoom = 0;
@@ -196,7 +196,7 @@ void EntityBase::Invalidate()
             break;
     }
 
-    viewports_invalidate(sprite_left, sprite_top, sprite_right, sprite_bottom, maxZoom);
+    viewports_invalidate(SpriteRect.GetLeft(), SpriteRect.GetTop(), SpriteRect.GetRight(), SpriteRect.GetBottom(), maxZoom);
 }
 
 static void ResetEntityLists()
@@ -370,7 +370,7 @@ static void PrepareNewEntity(EntityBase* base, const EntityType type)
     base->sprite_width = 0x10;
     base->sprite_height_negative = 0x14;
     base->sprite_height_positive = 0x8;
-    base->sprite_left = LOCATION_NULL;
+    base->SpriteRect = {};
 
     SpriteSpatialInsert(base, { LOCATION_NULL, 0 });
 }
@@ -505,7 +505,6 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 
     if (loc.x == LOCATION_NULL)
     {
-        sprite_left = LOCATION_NULL;
         x = loc.x;
         y = loc.y;
         z = loc.z;
@@ -533,10 +532,9 @@ void sprite_set_coordinates(const CoordsXYZ& spritePos, EntityBase* sprite)
 {
     auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), spritePos);
 
-    sprite->sprite_left = screenCoords.x - sprite->sprite_width;
-    sprite->sprite_right = screenCoords.x + sprite->sprite_width;
-    sprite->sprite_top = screenCoords.y - sprite->sprite_height_negative;
-    sprite->sprite_bottom = screenCoords.y + sprite->sprite_height_positive;
+    sprite->SpriteRect = ScreenRect(
+        screenCoords.x - sprite->sprite_width, screenCoords.y - sprite->sprite_height_negative,
+        screenCoords.x + sprite->sprite_width, screenCoords.y + sprite->sprite_height_positive);
     sprite->x = spritePos.x;
     sprite->y = spritePos.y;
     sprite->z = spritePos.z;

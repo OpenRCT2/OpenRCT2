@@ -713,11 +713,11 @@ PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t 
 {
     for (auto peep : EntityList<T>())
     {
-        if (peep->sprite_left == LOCATION_NULL)
+        if (peep->x == LOCATION_NULL)
             continue;
 
-        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - viewportCoords.x)
-            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - viewportCoords.y);
+        auto distance = abs(((peep->SpriteRect.GetLeft() + peep->SpriteRect.GetRight()) / 2) - viewportCoords.x)
+            + abs(((peep->SpriteRect.GetTop() + peep->SpriteRect.GetBottom()) / 2) - viewportCoords.y);
         if (distance > maxDistance)
             continue;
 
