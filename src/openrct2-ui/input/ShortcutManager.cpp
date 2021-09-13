@@ -234,7 +234,7 @@ std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t bind
 
     if (binding == nullBinding)
     {
-        return {};
+        return std::nullopt;
     }
     else
     {
