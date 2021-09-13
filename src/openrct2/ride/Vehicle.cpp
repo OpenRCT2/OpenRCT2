@@ -1485,6 +1485,8 @@ bool Vehicle::OpenRestraints()
         auto curRide = vehicle->GetRide();
         if (curRide == nullptr)
             continue;
+        while (ForceShiftDown())
+            ;
 
         auto rideEntry = vehicle->GetRideEntry();
         if (rideEntry == nullptr)
@@ -9449,19 +9451,41 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     return _vehicleMotionTrackFlags;
 }
 
-void Vehicle::UpdateSpeedShift()
+bool Vehicle::UpdateSpeedShift()
 {
     auto vehicleEntry = Entry();
+    if (vehicleEntry == nullptr)
+        return false;
     if (vehicleEntry->SpeedShift.UpperVehicle != vehicle_type)
     {
-        if ((0x1000 + (vehicleEntry->SpeedShift.UpperBound << 16)) < abs(_vehicleVelocityF64E08))
+        if ((0x10000 + (vehicleEntry->SpeedShift.UpperBound << 14)) > abs(_vehicleVelocityF64E08))
+        {
             vehicle_type = vehicleEntry->SpeedShift.UpperVehicle;
+            return true;
+        }
     }
     if (vehicleEntry->SpeedShift.LowerVehicle != vehicle_type)
     {
-        if ((0x1000 + (vehicleEntry->SpeedShift.LowerBound << 16)) > abs(_vehicleVelocityF64E08))
-            vehicle_type = vehicleEntry->SpeedShift.UpperVehicle;
+        if ((0x10000 + (vehicleEntry->SpeedShift.LowerBound << 14)) > abs(_vehicleVelocityF64E08))
+        {
+            vehicle_type = vehicleEntry->SpeedShift.LowerVehicle;
+            return true;
+        }
     }
+    return false;
+}
+
+bool Vehicle::ForceShiftDown()
+{
+    auto vehicleEntry = Entry();
+    if (vehicleEntry == nullptr)
+        return true;
+    if (vehicleEntry->SpeedShift.LowerVehicle != vehicle_type)
+    {
+        vehicle_type = vehicleEntry->SpeedShift.LowerVehicle;
+        return true;
+    }
+    return false;
 }
 
 /**

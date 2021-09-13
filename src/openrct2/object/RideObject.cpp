@@ -756,8 +756,8 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar, uint8_t carIndex)
     {
         car.SpeedShift.LowerBound = Json::GetNumber<uint8_t>(jSpeedShift["shiftDownSpeed"]);
         car.SpeedShift.UpperBound = Json::GetNumber<uint8_t>(jSpeedShift["shiftUpSpeed"]);
-        car.SpeedShift.LowerVehicle = Json::GetNumber<uint8_t>(jSpeedShift["shiftUpVehicle"], carIndex);
-        car.SpeedShift.UpperVehicle = Json::GetNumber<uint8_t>(jSpeedShift["shiftDownVehicle"], carIndex);
+        car.SpeedShift.UpperVehicle = Json::GetNumber<uint8_t>(jSpeedShift["shiftUpVehicle"], carIndex);
+        car.SpeedShift.LowerVehicle = Json::GetNumber<uint8_t>(jSpeedShift["shiftDownVehicle"], carIndex);
     }
     else
     {
