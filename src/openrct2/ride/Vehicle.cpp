@@ -1486,9 +1486,9 @@ bool Vehicle::OpenRestraints()
         if (curRide == nullptr)
             continue;
 
-        int currentVehicleIndex = vehicle->vehicle_type;
-        while (vehicle->ForceShiftDown() && vehicle->vehicle_type != currentVehicleIndex)
-            ;
+        uint8_t shiftCount = 0;
+        while (vehicle->ForceShiftDown() && shiftCount < 255)
+            shiftCount++;
 
         auto rideEntry = vehicle->GetRideEntry();
         if (rideEntry == nullptr)
