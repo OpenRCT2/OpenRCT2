@@ -1548,11 +1548,6 @@ bool Vehicle::OpenRestraints()
             restraintsOpen = false;
             continue;
         }
-        if (vehicleEntry->animation == VEHICLE_ENTRY_ANIMATION_ANIMAL_RUNNING && vehicle->animation_frame != 0)
-        {
-            vehicle->animation_frame = 0;
-            vehicle->Invalidate();
-        }
 
         if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR) && vehicle->restraints_position != 0xFF
             && (curRide->breakdown_reason_pending == BREAKDOWN_RESTRAINTS_STUCK_CLOSED
@@ -7439,40 +7434,6 @@ void Vehicle::UpdateAdditionalAnimation()
             // makes animation play faster with vehicle speed
             targetFrame = abs(_vehicleVelocityF64E08) >> 24;
             animationState = std::max(animationState - targetFrame, 0u);
-            break;
-        case VEHICLE_ENTRY_ANIMATION_ANIMAL_RUNNING:
-            animationState += _vehicleVelocityF64E08;
-            // animal is galloping: optional 8 frame cycle
-            if (abs(_vehicleVelocityF64E08) >= 0x50000 && vehicleEntry->base_num_frames >= 25)
-            {
-                targetFrame = 17 + (animationState >> 19) % 8;
-            }
-            // animal is galloping: optional 6 frame cycle
-            else if (abs(_vehicleVelocityF64E08) >= 0x50000 && vehicleEntry->base_num_frames >= 23)
-            {
-                targetFrame = 17 + (animationState >> 19) % 6;
-            }
-            // animal is trotting: optional 8 frame cycle
-            else if (abs(_vehicleVelocityF64E08) >= 0x25000 && vehicleEntry->base_num_frames >= 17)
-            {
-                targetFrame = 9 + (animationState >> 19) % 8;
-            }
-            // animal is walking: optional 8 frame cycle
-            else if (abs(_vehicleVelocityF64E08) >= 0x1000 && vehicleEntry->base_num_frames >= 9)
-            {
-                targetFrame = 1 + (animationState >> 19) % 8;
-            }
-            // animal is standing
-            else
-            {
-                targetFrame = 0;
-                animationState = 0;
-            }
-            if (animation_frame != targetFrame)
-            {
-                animation_frame = targetFrame;
-                Invalidate();
-            }
             break;
     }
 }
