@@ -561,6 +561,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         trackElement->SetSequenceIndex(trackBlock->index);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetTrackType(_trackType);
+        trackElement->SetRideType(ride->type);
         trackElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
         switch (_trackType)

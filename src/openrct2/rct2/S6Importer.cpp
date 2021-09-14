@@ -1198,7 +1198,8 @@ public:
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
                 track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
 
-                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, _s6.rides[src2->GetRideIndex()].type));
+                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, rideType));
+                dst2->SetRideType(rideType);
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetColourScheme(src2->GetColourScheme());

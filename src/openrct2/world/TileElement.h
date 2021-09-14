@@ -380,12 +380,17 @@ private:
     ride_id_t RideIndex;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad[2];
+    // uint8_t pad[2];
+    uint8_t RideType;
+    uint8_t pad;
 #pragma clang diagnostic pop
 
 public:
     track_type_t GetTrackType() const;
     void SetTrackType(track_type_t newEntryIndex);
+
+    uint8_t GetRideType() const;
+    void SetRideType(const uint8_t rideType);
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);

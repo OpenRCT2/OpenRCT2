@@ -2444,6 +2444,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.SetBaseZ(baseZ);
         _tempTrackTileElement.SetClearanceZ(clearanceZ);
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
+        _tempTrackTileElement.AsTrack()->SetRideType(ride->type);
         _tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
         _tempTrackTileElement.AsTrack()->SetHasCableLift(false);
         _tempTrackTileElement.AsTrack()->SetInverted((liftHillAndInvertedState & CONSTRUCTION_INVERTED_TRACK_SELECTED) != 0);

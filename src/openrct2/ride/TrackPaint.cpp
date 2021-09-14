@@ -2276,7 +2276,9 @@ void PaintTrack(paint_session* session, Direction direction, int32_t height, con
         {
             return;
         }
-        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = ride->GetRideTypeDescriptor().TrackPaintFunction;
+
+        const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
+        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = rtd.TrackPaintFunction;
         if (paintFunctionGetter != nullptr)
         {
             TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);

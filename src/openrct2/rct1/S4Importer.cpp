@@ -1631,6 +1631,7 @@ namespace RCT1
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
 
                     dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
+                    dst2->SetRideType(rideType);
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     dst2->SetColourScheme(src2->GetColourScheme());
