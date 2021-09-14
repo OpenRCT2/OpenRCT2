@@ -1485,7 +1485,9 @@ bool Vehicle::OpenRestraints()
         auto curRide = vehicle->GetRide();
         if (curRide == nullptr)
             continue;
-        while (ForceShiftDown())
+
+        int currentVehicleIndex = vehicle->vehicle_type;
+        while (vehicle->ForceShiftDown() && vehicle->vehicle_type != currentVehicleIndex)
             ;
 
         auto rideEntry = vehicle->GetRideEntry();
@@ -9458,7 +9460,7 @@ bool Vehicle::UpdateSpeedShift()
         return false;
     if (vehicleEntry->SpeedShift.UpperVehicle != vehicle_type)
     {
-        if ((0x10000 + (vehicleEntry->SpeedShift.UpperBound << 14)) > abs(_vehicleVelocityF64E08))
+        if (abs(_vehicleVelocityF64E08) > (0x10000 + (vehicleEntry->SpeedShift.UpperBound << 14)))
         {
             vehicle_type = vehicleEntry->SpeedShift.UpperVehicle;
             return true;
@@ -9466,7 +9468,7 @@ bool Vehicle::UpdateSpeedShift()
     }
     if (vehicleEntry->SpeedShift.LowerVehicle != vehicle_type)
     {
-        if ((0x10000 + (vehicleEntry->SpeedShift.LowerBound << 14)) > abs(_vehicleVelocityF64E08))
+        if (abs(_vehicleVelocityF64E08) < (0x10000 + (vehicleEntry->SpeedShift.LowerBound << 14)))
         {
             vehicle_type = vehicleEntry->SpeedShift.LowerVehicle;
             return true;
