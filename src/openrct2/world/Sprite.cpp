@@ -324,7 +324,8 @@ static void sprite_reset(EntityBase* sprite)
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
-    std::memset(sprite, 0, sizeof(rct_sprite));
+    rct_sprite* spr = reinterpret_cast<rct_sprite*>(sprite);
+    *spr = rct_sprite();
 
     sprite->sprite_index = sprite_index;
     sprite->Type = EntityType::Null;
