@@ -821,7 +821,7 @@ namespace String
             {
                 return trunc.substr(0, i);
             }
-            i += *length;
+            i += length.value();
         }
 
         return trunc;

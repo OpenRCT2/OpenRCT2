@@ -612,9 +612,9 @@ void S6Exporter::ExportParkName()
 {
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
     auto stringId = AllocateUserString(park.Name);
-    if (stringId != std::nullopt)
+    if (stringId.has_value())
     {
-        _s6.park_name = *stringId;
+        _s6.park_name = stringId.value();
         _s6.park_name_args = 0;
     }
     else
@@ -672,9 +672,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     {
         // Custom name, allocate user string for ride
         auto stringId = AllocateUserString(src->custom_name);
-        if (stringId != std::nullopt)
+        if (stringId.has_value())
         {
-            dst->name = *stringId;
+            dst->name = stringId.value();
             dst->name_arguments = 0;
             useDefaultName = false;
         }
@@ -1426,9 +1426,9 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     if (src->Name != nullptr)
     {
         auto stringId = AllocateUserString(src->Name);
-        if (stringId != std::nullopt)
+        if (stringId.has_value())
         {
-            dst->name_string_idx = *stringId;
+            dst->name_string_idx = stringId.value();
             generateName = false;
         }
         else
@@ -1718,9 +1718,9 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         bannerText.append(src.text);
 
         auto stringId = AllocateUserString(bannerText);
-        if (stringId != std::nullopt)
+        if (stringId.has_value())
         {
-            dst.string_idx = *stringId;
+            dst.string_idx = stringId.value();
         }
 
         if (src.flags & BANNER_FLAG_LINKED_TO_RIDE)

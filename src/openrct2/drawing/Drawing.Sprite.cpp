@@ -378,25 +378,27 @@ static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId im
         {
             paletteMap = PaletteMap(gOtherPalette);
             auto tertiaryPaletteMap = GetPaletteMapForColour(imageId.GetTertiary());
-            if (tertiaryPaletteMap)
+            if (tertiaryPaletteMap.has_value())
             {
                 paletteMap.Copy(
-                    PALETTE_OFFSET_REMAP_TERTIARY, *tertiaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
+                    PALETTE_OFFSET_REMAP_TERTIARY, tertiaryPaletteMap.value(), PALETTE_OFFSET_REMAP_PRIMARY,
+                    PALETTE_LENGTH_REMAP);
             }
         }
 
         auto primaryPaletteMap = GetPaletteMapForColour(imageId.GetPrimary());
-        if (primaryPaletteMap)
+        if (primaryPaletteMap.has_value())
         {
             paletteMap.Copy(
-                PALETTE_OFFSET_REMAP_PRIMARY, *primaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
+                PALETTE_OFFSET_REMAP_PRIMARY, primaryPaletteMap.value(), PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
         }
 
         auto secondaryPaletteMap = GetPaletteMapForColour(imageId.GetSecondary());
-        if (secondaryPaletteMap)
+        if (secondaryPaletteMap.has_value())
         {
             paletteMap.Copy(
-                PALETTE_OFFSET_REMAP_SECONDARY, *secondaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
+                PALETTE_OFFSET_REMAP_SECONDARY, secondaryPaletteMap.value(), PALETTE_OFFSET_REMAP_PRIMARY,
+                PALETTE_LENGTH_REMAP);
         }
 
         return paletteMap;

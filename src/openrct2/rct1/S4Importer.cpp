@@ -869,9 +869,9 @@ namespace RCT1
                 {
                     // Original RCT had no music settings, take default style
                     auto style = GetStyleFromMusicIdentifier(GetRideTypeDescriptor(dst->type).DefaultMusic);
-                    if (style)
+                    if (style.has_value())
                     {
-                        dst->music = *style;
+                        dst->music = style.value();
                     }
 
                     // Only merry-go-round and dodgems had music and used

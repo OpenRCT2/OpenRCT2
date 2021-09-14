@@ -610,7 +610,7 @@ static void window_player_update_viewport(rct_window* w, bool scroll)
         if (coord.x != 0 || coord.y != 0 || coord.z != 0)
         {
             auto centreLoc = centre_2d_coordinates(coord, viewport);
-            if (!centreLoc)
+            if (!centreLoc.has_value())
             {
                 return;
             }
@@ -620,13 +620,13 @@ static void window_player_update_viewport(rct_window* w, bool scroll)
                 scroll = false;
             }
 
-            if (!scroll || w->savedViewPos != centreLoc)
+            if (!scroll || w->savedViewPos != centreLoc.value())
             {
                 w->flags |= WF_SCROLLING_TO_LOCATION;
-                w->savedViewPos = *centreLoc;
+                w->savedViewPos = centreLoc.value();
                 if (!scroll)
                 {
-                    w->viewport->viewPos = *centreLoc;
+                    w->viewport->viewPos = centreLoc.value();
                 }
                 widget_invalidate(w, WIDX_VIEWPORT);
             }

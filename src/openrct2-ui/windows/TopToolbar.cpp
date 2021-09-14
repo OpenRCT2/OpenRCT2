@@ -1267,12 +1267,12 @@ static void sub_6E1F34_small_scenery(
         if (!gSceneryCtrlPressed)
         {
             auto gridCoords = screen_get_map_xy_quadrant(screenPos, &quadrant);
-            if (!gridCoords)
+            if (!gridCoords.has_value())
             {
                 gridPos.SetNull();
                 return;
             }
-            gridPos = *gridCoords;
+            gridPos = gridCoords.value();
 
             gSceneryPlaceZ = 0;
 
@@ -1300,12 +1300,12 @@ static void sub_6E1F34_small_scenery(
             int16_t z = gSceneryCtrlPressZ;
 
             auto mapCoords = screen_get_map_xy_quadrant_with_z(screenPos, z, &quadrant);
-            if (!mapCoords)
+            if (!mapCoords.has_value())
             {
                 gridPos.SetNull();
                 return;
             }
-            gridPos = *mapCoords;
+            gridPos = mapCoords.value();
 
             // If SHIFT pressed
             if (gSceneryShiftPressed)
@@ -1382,7 +1382,7 @@ static void sub_6E1F34_small_scenery(
     {
         int16_t z = gSceneryCtrlPressZ;
         auto coords = screen_get_map_xy_with_z(screenPos, z);
-        if (coords)
+        if (coords.has_value())
         {
             gridPos = *coords;
         }
@@ -1485,12 +1485,12 @@ static void sub_6E1F34_wall(
     if (!gSceneryCtrlPressed)
     {
         auto gridCoords = screen_get_map_xy_side(screenPos, &edge);
-        if (!gridCoords)
+        if (!gridCoords.has_value())
         {
             gridPos.SetNull();
             return;
         }
-        gridPos = *gridCoords;
+        gridPos = gridCoords.value();
 
         gSceneryPlaceZ = 0;
 
@@ -1517,12 +1517,12 @@ static void sub_6E1F34_wall(
     {
         int16_t z = gSceneryCtrlPressZ;
         auto mapCoords = screen_get_map_xy_side_with_z(screenPos, z, &edge);
-        if (!mapCoords)
+        if (!mapCoords.has_value())
         {
             gridPos.SetNull();
             return;
         }
-        gridPos = *mapCoords;
+        gridPos = mapCoords.value();
 
         // If SHIFT pressed
         if (gSceneryShiftPressed)
@@ -1608,7 +1608,7 @@ static void sub_6E1F34_large_scenery(
     {
         int16_t z = gSceneryCtrlPressZ;
         auto coords = screen_get_map_xy_with_z(screenPos, z);
-        if (coords)
+        if (coords.has_value())
         {
             gridPos = *coords;
         }
@@ -2005,7 +2005,7 @@ static uint8_t top_toolbar_tool_update_land_paint(const ScreenCoordsXY& screenPo
 
     auto mapTile = screen_get_map_xy(screenPos, nullptr);
 
-    if (!mapTile)
+    if (!mapTile.has_value())
     {
         if (gClearSceneryCost != MONEY64_UNDEFINED)
         {
@@ -2124,7 +2124,7 @@ static void top_toolbar_tool_update_land(const ScreenCoordsXY& screenPos)
         screen_pos_to_map_pos(screenPos, &selectionType);
         mapTile = screen_get_map_xy_side(screenPos, &side);
 
-        if (!mapTile)
+        if (!mapTile.has_value())
         {
             money64 lower_cost = MONEY64_UNDEFINED;
             money64 raise_cost = MONEY64_UNDEFINED;
@@ -2201,7 +2201,7 @@ static void top_toolbar_tool_update_land(const ScreenCoordsXY& screenPos)
     // Get map coordinates and the side of the tile that is being hovered over
     mapTile = screen_get_map_xy_side(screenPos, &side);
 
-    if (!mapTile)
+    if (!mapTile.has_value())
     {
         money64 lower_cost = MONEY64_UNDEFINED;
         money64 raise_cost = MONEY64_UNDEFINED;

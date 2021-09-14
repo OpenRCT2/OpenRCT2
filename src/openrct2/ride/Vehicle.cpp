@@ -2340,7 +2340,7 @@ void Vehicle::UpdateWaitingForPassengers()
         }
 
         auto trainIndex = ride_get_train_index_from_vehicle(curRide, sprite_index);
-        if (!trainIndex)
+        if (!trainIndex.has_value())
         {
             return;
         }
@@ -2348,7 +2348,7 @@ void Vehicle::UpdateWaitingForPassengers()
         if (curRide->stations[current_station].TrainAtStation != RideStation::NO_TRAIN)
             return;
 
-        curRide->stations[current_station].TrainAtStation = *trainIndex;
+        curRide->stations[current_station].TrainAtStation = trainIndex.value();
         sub_state = 1;
         time_waiting = 0;
 
@@ -3607,12 +3607,12 @@ void Vehicle::UpdateCollisionSetup()
     {
         auto frontVehicle = GetHead();
         auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
-        if (!trainIndex)
+        if (!trainIndex.has_value())
         {
             return;
         }
 
-        curRide->Crash(*trainIndex);
+        curRide->Crash(trainIndex.value());
 
         if (curRide->status != RideStatus::Closed)
         {
@@ -5382,12 +5382,12 @@ void Vehicle::CrashOnLand()
     {
         auto frontVehicle = GetHead();
         auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
-        if (!trainIndex)
+        if (!trainIndex.has_value())
         {
             return;
         }
 
-        curRide->Crash(*trainIndex);
+        curRide->Crash(trainIndex.value());
 
         if (curRide->status != RideStatus::Closed)
         {
@@ -5448,12 +5448,12 @@ void Vehicle::CrashOnWater()
     {
         auto frontVehicle = GetHead();
         auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
-        if (!trainIndex)
+        if (!trainIndex.has_value())
         {
             return;
         }
 
-        curRide->Crash(*trainIndex);
+        curRide->Crash(trainIndex.value());
 
         if (curRide->status != RideStatus::Closed)
         {

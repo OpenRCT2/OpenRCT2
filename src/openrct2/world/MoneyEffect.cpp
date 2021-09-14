@@ -83,10 +83,10 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
         rct_viewport* mainViewport = window_get_viewport(mainWindow);
         auto mapPositionXY = screen_get_map_xy(
             { mainViewport->pos.x + (mainViewport->width / 2), mainViewport->pos.y + (mainViewport->height / 2) }, nullptr);
-        if (!mapPositionXY)
+        if (!mapPositionXY.has_value())
             return;
 
-        offsetLoc = { *mapPositionXY, tile_element_height(*mapPositionXY) };
+        offsetLoc = { mapPositionXY.value(), tile_element_height(*mapPositionXY) };
     }
     offsetLoc.z += 10;
     CreateAt(-value, offsetLoc, false);

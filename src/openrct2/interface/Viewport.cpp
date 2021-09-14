@@ -186,7 +186,7 @@ void viewport_create(
     }
 
     auto centreLoc = centre_2d_coordinates(centrePos, viewport);
-    if (!centreLoc)
+    if (!centreLoc.has_value())
     {
         log_error("Invalid location for viewport.");
         return;
@@ -598,9 +598,9 @@ void viewport_update_position(rct_window* window)
     if (at_map_edge)
     {
         auto centreLoc = centre_2d_coordinates({ mapCoord, 0 }, viewport);
-        if (centreLoc)
+        if (centreLoc.has_value())
         {
-            window->savedViewPos = *centreLoc;
+            window->savedViewPos = centreLoc.value();
         }
     }
 
@@ -659,7 +659,7 @@ void viewport_update_sprite_follow(rct_window* window)
         viewport_set_underground_flag(underground, window, window->viewport);
 
         auto centreLoc = centre_2d_coordinates({ sprite->x, sprite->y, sprite->z }, window->viewport);
-        if (centreLoc)
+        if (centreLoc.has_value())
         {
             window->savedViewPos = *centreLoc;
             viewport_move(*centreLoc, window, window->viewport);
@@ -1081,7 +1081,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
 std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords, int32_t* direction)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     int32_t my_direction;
@@ -1614,9 +1614,9 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, c
         {
             index &= 0x1F;
         }
-        if (auto pm = GetPaletteMapForColour(index))
+        if (auto pm = GetPaletteMapForColour(index); pm.has_value())
         {
-            paletteMap = *pm;
+            paletteMap = pm.value();
         }
     }
     else
@@ -1866,7 +1866,7 @@ std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoo
 std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenCoords, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *quadrant = map_get_tile_quadrant(*mapCoords);
@@ -1880,7 +1880,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenC
 std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *quadrant = map_get_tile_quadrant(*mapCoords);
@@ -1894,7 +1894,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& 
 std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoords, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *side = map_get_tile_side(*mapCoords);
@@ -1908,7 +1908,7 @@ std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoord
 std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *side = map_get_tile_side(*mapCoords);

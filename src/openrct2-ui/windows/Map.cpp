@@ -1187,7 +1187,7 @@ static void window_map_set_land_rights_tool_update(const ScreenCoordsXY& screenC
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     auto mapCoords = screen_get_map_xy(screenCoords, &viewport);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return;
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;

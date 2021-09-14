@@ -1150,10 +1150,10 @@ void Staff::UpdateMowing()
 
     while (true)
     {
-        if (auto loc = UpdateAction())
+        if (auto loc = UpdateAction(); loc.has_value())
         {
             int16_t checkZ = tile_element_height(*loc);
-            MoveTo({ *loc, checkZ });
+            MoveTo({ loc.value(), checkZ });
             return;
         }
 
@@ -1348,10 +1348,10 @@ void Staff::UpdateSweeping()
         StaffLitterSwept++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         int16_t actionZ = GetZOnSlope((*loc).x, (*loc).y);
-        MoveTo({ *loc, actionZ });
+        MoveTo({ loc.value(), actionZ });
         return;
     }
 
@@ -1453,7 +1453,7 @@ void Staff::UpdateHeadingToInspect()
     }
 
     int16_t delta_y = abs(GetLocation().y - GetDestination().y);
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
 
@@ -1462,7 +1462,7 @@ void Staff::UpdateHeadingToInspect()
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, newZ });
+        MoveTo({ loc.value(), newZ });
         return;
     }
 
@@ -1562,7 +1562,7 @@ void Staff::UpdateAnswering()
     }
 
     int16_t delta_y = abs(y - GetDestination().y);
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
 
@@ -1571,7 +1571,7 @@ void Staff::UpdateAnswering()
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, newZ });
+        MoveTo({ loc.value(), newZ });
         return;
     }
 
@@ -2155,9 +2155,9 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride)
         SetDestination(destination, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
 
@@ -2305,9 +2305,9 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
         SetDestination(stationPos, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
 
@@ -2411,9 +2411,9 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
         SetDestination(destination, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
 
@@ -2524,9 +2524,9 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
         SetDestination(stationPosition, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
     else
@@ -2608,7 +2608,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
     }
 
     int16_t xy_distance;
-    if (auto loc = UpdateAction(xy_distance))
+    if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
         uint16_t stationHeight = ride->stations[CurrentRideStation].GetBaseZ();
 
@@ -2617,7 +2617,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
             stationHeight += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, stationHeight });
+        MoveTo({ loc.value(), stationHeight });
         return false;
     }
     SetState(PeepState::Falling);

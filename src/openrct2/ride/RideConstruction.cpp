@@ -752,7 +752,7 @@ void ride_select_next_section()
         TileElement* tileElement;
         auto newCoords = GetTrackElementOriginAndApplyChanges(
             { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
-        if (newCoords == std::nullopt)
+        if (!newCoords.has_value())
         {
             _rideConstructionState = RideConstructionState::State0;
             window_ride_construction_update_active_elements();
@@ -1037,12 +1037,12 @@ bool ride_modify(CoordsXYE* input)
     auto direction = tileElement.element->GetDirection();
     auto type = tileElement.element->AsTrack()->GetTrackType();
     auto newCoords = GetTrackElementOriginAndApplyChanges({ tileCoords, direction }, type, 0, nullptr, 0);
-    if (newCoords == std::nullopt)
+    if (!newCoords.has_value())
         return false;
 
     _currentRideIndex = rideIndex;
     _rideConstructionState = RideConstructionState::Selected;
-    _currentTrackBegin = *newCoords;
+    _currentTrackBegin = newCoords.value();
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags = 0;
@@ -1281,7 +1281,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     auto stationBaseZ = ride->stations[gRideEntranceExitPlaceStationIndex].GetBaseZ();
 
     auto coordsAtHeight = screen_get_map_xy_with_z(screenCoords, stationBaseZ);
-    if (!coordsAtHeight)
+    if (!coordsAtHeight.has_value())
     {
         entranceExitCoords.SetNull();
         return entranceExitCoords;

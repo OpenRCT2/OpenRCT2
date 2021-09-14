@@ -2868,8 +2868,8 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
         trackType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
         auto newCoords = GetTrackElementOriginAndApplyChanges(
             { trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnPos.element, 0);
-        returnPos = newCoords == std::nullopt ? CoordsXYE{ trackCoords, returnPos.element }
-                                              : CoordsXYE{ *newCoords, returnPos.element };
+        returnPos = newCoords.has_value() ? CoordsXYE{ newCoords.value(), returnPos.element }
+                                          : CoordsXYE{ trackCoords, returnPos.element };
     };
 
     trackType = returnPos.element->AsTrack()->GetTrackType();
@@ -4855,7 +4855,7 @@ static std::optional<int32_t> ride_get_smallest_station_length(Ride* ride)
     {
         if (!station.Start.IsNull())
         {
-            if (!result.has_value() || station.Length < *result)
+            if (!result.has_value() || station.Length < result.value())
             {
                 result = station.Length;
             }
@@ -4968,7 +4968,7 @@ void Ride::UpdateMaxVehicles()
         if (!stationNumTiles.has_value())
             return;
 
-        auto stationLength = (*stationNumTiles * 0x44180) - 0x16B2A;
+        auto stationLength = (stationNumTiles.value() * 0x44180) - 0x16B2A;
         int32_t maxMass = GetRideTypeDescriptor().MaxMass << 8;
         int32_t maxCarsPerTrain = 1;
         for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
