@@ -1556,12 +1556,12 @@ static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_wi
 {
     const auto* ride = get_ride(static_cast<ride_id_t>(w.number));
     if (ride == nullptr)
-        return {};
+        return std::nullopt;
 
     int32_t viewSelectionIndex = w.ride.view - 1 - ride->num_vehicles;
     if (viewSelectionIndex < 0)
     {
-        return {};
+        return std::nullopt;
     }
 
     for (StationIndex index = 0; index < sizeof(ride->stations); ++index)
@@ -1575,7 +1575,7 @@ static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_wi
             }
         }
     }
-    return {};
+    return std::nullopt;
 }
 
 /**

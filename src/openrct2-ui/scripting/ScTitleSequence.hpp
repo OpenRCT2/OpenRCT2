@@ -248,7 +248,7 @@ namespace OpenRCT2::Scripting
                     return i;
                 }
             }
-            return {};
+            return std::nullopt;
         }
     };
 
@@ -489,7 +489,7 @@ namespace OpenRCT2::Scripting
                     return i;
                 }
             }
-            return {};
+            return std::nullopt;
         }
 
         const TitleSequenceManagerItem* GetItem() const
