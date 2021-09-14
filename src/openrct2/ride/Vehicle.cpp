@@ -9446,6 +9446,12 @@ bool Vehicle::ForceShiftDown()
     if (vehicleEntry->SpeedShift.LowerVehicle != vehicle_type)
     {
         vehicle_type = vehicleEntry->SpeedShift.LowerVehicle;
+        vehicleEntry = Entry();
+        if (vehicleEntry == nullptr)
+        {
+            // if (animation_frame >= vehicleEntry->AnimationFrames)
+            //    animation_frame = 0;
+        }
         return true;
     }
     return false;
