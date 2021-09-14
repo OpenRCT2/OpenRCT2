@@ -228,7 +228,19 @@ const std::list<uint16_t>& GetEntityList(const EntityType id)
 void reset_sprite_list()
 {
     gSavedAge = 0;
-    std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
+
+    // Free all associated Entity pointers prior to zeroing memory
+    for (int32_t i = 0; i < MAX_ENTITIES; ++i)
+    {
+        auto* spr = GetEntity(i);
+        if (spr == nullptr)
+        {
+            continue;
+        }
+        FreeEntity(*spr);
+    }
+
+    std::fill(std::begin(_spriteList), std::end(_spriteList), rct_sprite());
     OpenRCT2::RideUse::GetHistory().Clear();
     OpenRCT2::RideUse::GetTypeHistory().Clear();
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)
@@ -238,7 +250,6 @@ void reset_sprite_list()
         {
             continue;
         }
-        FreeEntity(*spr);
         spr->Type = EntityType::Null;
         spr->sprite_index = i;
 

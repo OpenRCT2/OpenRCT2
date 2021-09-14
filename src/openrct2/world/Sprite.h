@@ -23,6 +23,7 @@ union rct_sprite
 {
     uint8_t pad_00[0x200];
     EntityBase base;
+    // Provide a constructor as EntityBase is not trivialy constructable
     rct_sprite()
         : pad_00()
     {
