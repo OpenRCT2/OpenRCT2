@@ -9460,7 +9460,7 @@ bool Vehicle::UpdateSpeedShift()
         return false;
     if (vehicleEntry->SpeedShift.UpperVehicle != vehicle_type)
     {
-        if (abs(_vehicleVelocityF64E08) > (0x10000 + (vehicleEntry->SpeedShift.UpperBound << 14)))
+        if (abs(_vehicleVelocityF64E08) > (vehicleEntry->SpeedShift.UpperBound << 14))
         {
             vehicle_type = vehicleEntry->SpeedShift.UpperVehicle;
             return true;
@@ -9468,7 +9468,7 @@ bool Vehicle::UpdateSpeedShift()
     }
     if (vehicleEntry->SpeedShift.LowerVehicle != vehicle_type)
     {
-        if (abs(_vehicleVelocityF64E08) < (0x10000 + (vehicleEntry->SpeedShift.LowerBound << 14)))
+        if (abs(_vehicleVelocityF64E08) < (vehicleEntry->SpeedShift.LowerBound << 14))
         {
             vehicle_type = vehicleEntry->SpeedShift.LowerVehicle;
             return true;
