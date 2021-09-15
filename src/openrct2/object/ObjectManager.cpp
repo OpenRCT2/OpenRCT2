@@ -381,7 +381,7 @@ private:
         }
         if (slot.has_value())
         {
-            auto object = GetOrLoadObject(ori);
+            auto* object = GetOrLoadObject(ori);
             if (object != nullptr)
             {
                 if (_loadedObjects.size() <= static_cast<size_t>(*slot))
@@ -389,7 +389,7 @@ private:
                     _loadedObjects.resize(slot.value() + 1);
                 }
                 loadedObject = object;
-                _loadedObjects[slot.value()] = std::move(object);
+                _loadedObjects[slot.value()] = object;
                 UpdateSceneryGroupIndexes();
                 ResetTypeToRideEntryIndexMap();
             }
