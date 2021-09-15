@@ -421,7 +421,7 @@ NetworkAuth NetworkBase::GetAuthStatus()
     {
         return _serverConnection->AuthStatus;
     }
-    else if (GetMode() == NETWORK_MODE_SERVER)
+    if (GetMode() == NETWORK_MODE_SERVER)
     {
         return NetworkAuth::Ok;
     }
@@ -858,10 +858,8 @@ std::string NetworkBase::GetMasterServerUrl()
     {
         return OPENRCT2_MASTER_SERVER_URL;
     }
-    else
-    {
-        return gConfigNetwork.master_server_url;
-    }
+
+    return gConfigNetwork.master_server_url;
 }
 
 NetworkGroup* NetworkBase::AddGroup()
@@ -3742,10 +3740,8 @@ rct_string_id network_get_action_name_string_id(uint32_t index)
     {
         return NetworkActions::Actions[index].Name;
     }
-    else
-    {
-        return STR_NONE;
-    }
+
+    return STR_NONE;
 }
 
 int32_t network_can_perform_action(uint32_t groupindex, NetworkPermission index)
@@ -3788,15 +3784,13 @@ Peep* network_get_pickup_peep(uint8_t playerid)
     {
         return _pickup_peep;
     }
-    else
+
+    NetworkPlayer* player = network.GetPlayerByID(playerid);
+    if (player)
     {
-        NetworkPlayer* player = network.GetPlayerByID(playerid);
-        if (player)
-        {
-            return player->PickupPeep;
-        }
-        return nullptr;
+        return player->PickupPeep;
     }
+    return nullptr;
 }
 
 void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x)
@@ -3823,15 +3817,13 @@ int32_t network_get_pickup_peep_old_x(uint8_t playerid)
     {
         return _pickup_peep_old_x;
     }
-    else
+
+    NetworkPlayer* player = network.GetPlayerByID(playerid);
+    if (player)
     {
-        NetworkPlayer* player = network.GetPlayerByID(playerid);
-        if (player)
-        {
-            return player->PickupPeepOldX;
-        }
-        return -1;
+        return player->PickupPeepOldX;
     }
+    return -1;
 }
 
 int32_t network_get_current_player_group_index()

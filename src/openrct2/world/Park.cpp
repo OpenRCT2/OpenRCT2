@@ -88,10 +88,8 @@ static PeepSpawn* get_random_peep_spawn()
     {
         return &gPeepSpawns[scenario_rand() % gPeepSpawns.size()];
     }
-    else
-    {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 void park_set_open(bool open)

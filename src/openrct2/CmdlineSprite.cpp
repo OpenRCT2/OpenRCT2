@@ -267,7 +267,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             fprintf(stdout, "usage: sprite details <spritefile> [idx]\n");
             return -1;
         }
-        else if (argc == 2)
+
+        if (argc == 2)
         {
             const char* spriteFilePath = argv[1];
             auto spriteFile = SpriteFile::Open(spriteFilePath);
@@ -281,33 +282,32 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             printf("data size: %u\n", spriteFile->Header.total_size);
             return 1;
         }
-        else
+
+        const char* spriteFilePath = argv[1];
+        int32_t spriteIndex = atoi(argv[2]);
+        auto spriteFile = SpriteFile::Open(spriteFilePath);
+        if (!spriteFile.has_value())
         {
-            const char* spriteFilePath = argv[1];
-            int32_t spriteIndex = atoi(argv[2]);
-            auto spriteFile = SpriteFile::Open(spriteFilePath);
-            if (!spriteFile.has_value())
-            {
-                fprintf(stderr, "Unable to open input sprite file.\n");
-                return -1;
-            }
-
-            if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.num_entries))
-            {
-                fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
-                return -1;
-            }
-
-            rct_g1_element* g1 = &spriteFile->Entries[spriteIndex];
-            printf("width: %d\n", g1->width);
-            printf("height: %d\n", g1->height);
-            printf("x offset: %d\n", g1->x_offset);
-            printf("y offset: %d\n", g1->y_offset);
-            printf("data offset: %p\n", g1->offset);
-            return 1;
+            fprintf(stderr, "Unable to open input sprite file.\n");
+            return -1;
         }
+
+        if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.num_entries))
+        {
+            fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
+            return -1;
+        }
+
+        rct_g1_element* g1 = &spriteFile->Entries[spriteIndex];
+        printf("width: %d\n", g1->width);
+        printf("height: %d\n", g1->height);
+        printf("x offset: %d\n", g1->x_offset);
+        printf("y offset: %d\n", g1->y_offset);
+        printf("data offset: %p\n", g1->offset);
+        return 1;
     }
-    else if (_strcmpi(argv[0], "export") == 0)
+
+    if (_strcmpi(argv[0], "export") == 0)
     {
         if (argc < 4)
         {
@@ -339,7 +339,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
         return 1;
     }
-    else if (_strcmpi(argv[0], "exportall") == 0)
+
+    if (_strcmpi(argv[0], "exportall") == 0)
     {
         if (argc < 3)
         {
@@ -409,7 +410,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
         return 1;
     }
-    else if (_strcmpi(argv[0], "exportalldat") == 0)
+
+    if (_strcmpi(argv[0], "exportalldat") == 0)
     {
         if (argc < 3)
         {
@@ -498,7 +500,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
         return 1;
     }
-    else if (_strcmpi(argv[0], "create") == 0)
+
+    if (_strcmpi(argv[0], "create") == 0)
     {
         if (argc < 2)
         {
@@ -512,7 +515,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         spriteFile.Save(spriteFilePath);
         return 1;
     }
-    else if (_strcmpi(argv[0], "append") == 0)
+
+    if (_strcmpi(argv[0], "append") == 0)
     {
         if (argc != 3 && argc != 5)
         {
@@ -562,7 +566,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         return 1;
     }
-    else if (_strcmpi(argv[0], "build") == 0)
+
+    if (_strcmpi(argv[0], "build") == 0)
     {
         if (argc < 3)
         {
@@ -650,9 +655,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         fprintf(stdout, "Finished\n");
         return 1;
     }
-    else
-    {
-        fprintf(stderr, "Unknown sprite command.\n");
-        return 1;
-    }
+
+    fprintf(stderr, "Unknown sprite command.\n");
+    return 1;
 }

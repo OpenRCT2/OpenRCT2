@@ -198,7 +198,8 @@ rct_string_id LandSetHeightAction::CheckParameters() const
     {
         return STR_TOO_HIGH;
     }
-    else if (_height > MAXIMUM_LAND_HEIGHT - 2 && (_style & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
+
+    if (_height > MAXIMUM_LAND_HEIGHT - 2 && (_style & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
     {
         return STR_TOO_HIGH;
     }

@@ -133,11 +133,9 @@ bool MusicObject::SupportsRideType(uint8_t rideType)
         // Default behaviour for music is to only exclude from merry-go-round
         return rideType != RIDE_TYPE_MERRY_GO_ROUND;
     }
-    else
-    {
-        auto it = std::find(_rideTypes.begin(), _rideTypes.end(), rideType);
-        return it != _rideTypes.end();
-    }
+
+    auto it = std::find(_rideTypes.begin(), _rideTypes.end(), rideType);
+    return it != _rideTypes.end();
 }
 
 size_t MusicObject::GetTrackCount() const
@@ -163,8 +161,6 @@ ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view 
         auto path2 = Path::Combine(dir, std::string(path.substr(11)));
         return ObjectAsset(path2);
     }
-    else
-    {
-        return context.GetAsset(path);
-    }
+
+    return context.GetAsset(path);
 }

@@ -281,18 +281,14 @@ bool FootpathPlaceFromTrackAction::IsSameAsEntranceElement(const EntranceElement
         {
             return entranceElement.GetLegacyPathEntryIndex() == _type;
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 
     if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
     {
         return false;
     }
-    else
-    {
-        return entranceElement.GetSurfaceEntryIndex() == _type;
-    }
+
+    return entranceElement.GetSurfaceEntryIndex() == _type;
 }

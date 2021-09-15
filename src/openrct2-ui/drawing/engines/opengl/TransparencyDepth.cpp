@@ -57,8 +57,8 @@ static inline SweepLine CreateXList(const RectCommandBatch& transparent)
     std::sort(x_sweep.begin(), x_sweep.end(), [](const XData& a, const XData& b) -> bool {
         if (a.xposition != b.xposition)
             return a.xposition < b.xposition;
-        else
-            return !a.begin && b.begin;
+
+        return !a.begin && b.begin;
     });
 
     return x_sweep;

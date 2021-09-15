@@ -386,8 +386,8 @@ namespace OpenRCT2::Scripting
         {
             if (_class == WC_MAIN_WINDOW)
                 return window_get_main();
-            else
-                return window_find_by_number(_class, _number);
+
+            return window_find_by_number(_class, _number);
         }
 
         rct_widget* GetWidget() const

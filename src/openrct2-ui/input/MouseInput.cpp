@@ -145,12 +145,10 @@ static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords)
         screenCoords = cursorState->position;
         return MouseState::Released;
     }
-    else
-    {
-        screenCoords.x = input->x;
-        screenCoords.y = input->y;
-        return input->state;
-    }
+
+    screenCoords.x = input->x;
+    screenCoords.y = input->y;
+    return input->state;
 }
 
 /**
@@ -164,12 +162,10 @@ static RCTMouseData* GetMouseInput()
     {
         return nullptr;
     }
-    else
-    {
-        RCTMouseData* result = &_mouseInputQueue[_mouseInputQueueReadIndex];
-        _mouseInputQueueReadIndex = (_mouseInputQueueReadIndex + 1) % std::size(_mouseInputQueue);
-        return result;
-    }
+
+    RCTMouseData* result = &_mouseInputQueue[_mouseInputQueueReadIndex];
+    _mouseInputQueueReadIndex = (_mouseInputQueueReadIndex + 1) % std::size(_mouseInputQueue);
+    return result;
 }
 
 /**

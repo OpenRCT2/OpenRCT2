@@ -50,11 +50,9 @@ void StdInOutConsole::Start()
                     openrct2_finish();
                     break;
                 }
-                else
-                {
-                    lastPromptQuit = true;
-                    std::puts("(To exit, press ^C again)");
-                }
+
+                lastPromptQuit = true;
+                std::puts("(To exit, press ^C again)");
             }
             else
             {

@@ -414,7 +414,7 @@ private:
                 _loadedObjects.resize(i + 1);
                 return static_cast<int32_t>(i);
             }
-            else if (_loadedObjects[i] == nullptr)
+            if (_loadedObjects[i] == nullptr)
             {
                 return static_cast<int32_t>(i);
             }

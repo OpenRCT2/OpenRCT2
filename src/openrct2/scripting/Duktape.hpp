@@ -244,12 +244,10 @@ namespace OpenRCT2::Scripting
         {
             return DukValue::take_from_stack(ctx);
         }
-        else
-        {
-            // Pop error off stack
-            duk_pop(ctx);
-            return std::nullopt;
-        }
+
+        // Pop error off stack
+        duk_pop(ctx);
+        return std::nullopt;
     }
 
     std::string ProcessString(const DukValue& value);
@@ -345,14 +343,12 @@ namespace OpenRCT2::Scripting
         {
             return ToDuk(ctx, nullptr);
         }
-        else
-        {
-            DukObject dukCoords(ctx);
-            dukCoords.Set("x", value.x);
-            dukCoords.Set("y", value.y);
-            dukCoords.Set("z", value.z);
-            return dukCoords.Take();
-        }
+
+        DukObject dukCoords(ctx);
+        dukCoords.Set("x", value.x);
+        dukCoords.Set("y", value.y);
+        dukCoords.Set("z", value.z);
+        return dukCoords.Take();
     }
 
     template<> inline CoordsXYZ FromDuk(const DukValue& value)
@@ -377,15 +373,13 @@ namespace OpenRCT2::Scripting
         {
             return ToDuk(ctx, nullptr);
         }
-        else
-        {
-            DukObject dukCoords(ctx);
-            dukCoords.Set("x", value.x);
-            dukCoords.Set("y", value.y);
-            dukCoords.Set("z", value.z);
-            dukCoords.Set("direction", value.direction);
-            return dukCoords.Take();
-        }
+
+        DukObject dukCoords(ctx);
+        dukCoords.Set("x", value.x);
+        dukCoords.Set("y", value.y);
+        dukCoords.Set("z", value.z);
+        dukCoords.Set("direction", value.direction);
+        return dukCoords.Take();
     }
 
     template<> inline DukValue ToDuk(duk_context* ctx, const GForces& value)

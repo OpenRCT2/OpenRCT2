@@ -89,7 +89,8 @@ GameActions::Result::Ptr RideSetStatusAction::Query() const
             res->ErrorMessage = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
             return res;
         }
-        else if (_status == RideStatus::Testing || _status == RideStatus::Simulating)
+
+        if (_status == RideStatus::Testing || _status == RideStatus::Simulating)
         {
             if (!ride->Test(_status, false))
             {

@@ -337,10 +337,8 @@ static bool map_animation_invalidate_track_onridephoto(const CoordsXYZ& loc)
                 tileElement->AsTrack()->DecrementPhotoTimeout();
                 return false;
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
     } while (!(tileElement++)->IsLastForTile());
 

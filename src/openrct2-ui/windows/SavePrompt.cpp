@@ -208,38 +208,36 @@ static void window_save_prompt_mouseup(rct_window* w, rct_widgetindex widgetInde
         }
         return;
     }
-    else
-    {
-        switch (widgetIndex)
-        {
-            case WIDX_SAVE:
-            {
-                Intent* intent;
 
-                if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
-                {
-                    intent = new Intent(WC_LOADSAVE);
-                    intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                    intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
-                }
-                else
-                {
-                    intent = static_cast<Intent*>(create_save_game_as_intent());
-                }
-                window_close(w);
-                intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_save_prompt_callback));
-                context_open_intent(intent);
-                delete intent;
-                break;
+    switch (widgetIndex)
+    {
+        case WIDX_SAVE:
+        {
+            Intent* intent;
+
+            if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
+            {
+                intent = new Intent(WC_LOADSAVE);
+                intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
             }
-            case WIDX_DONT_SAVE:
-                game_load_or_quit_no_save_prompt();
-                return;
-            case WIDX_CLOSE:
-            case WIDX_CANCEL:
-                window_close(w);
-                return;
+            else
+            {
+                intent = static_cast<Intent*>(create_save_game_as_intent());
+            }
+            window_close(w);
+            intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_save_prompt_callback));
+            context_open_intent(intent);
+            delete intent;
+            break;
         }
+        case WIDX_DONT_SAVE:
+            game_load_or_quit_no_save_prompt();
+            return;
+        case WIDX_CLOSE:
+        case WIDX_CANCEL:
+            window_close(w);
+            return;
     }
 }
 

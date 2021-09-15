@@ -79,11 +79,9 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
     {
         if (info.SpriteType == ViewportInteractionItem::Entity && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
             return info;
-        else
-        {
-            info.SpriteType = ViewportInteractionItem::None;
-            return info;
-        }
+
+        info.SpriteType = ViewportInteractionItem::None;
+        return info;
     }
 
     switch (info.SpriteType)

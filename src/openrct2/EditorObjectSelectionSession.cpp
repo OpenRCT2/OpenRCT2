@@ -503,12 +503,14 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
         {
             return true;
         }
-        else if (*selectionFlags & OBJECT_SELECTION_FLAG_IN_USE)
+
+        if (*selectionFlags & OBJECT_SELECTION_FLAG_IN_USE)
         {
             set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE);
             return false;
         }
-        else if (*selectionFlags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED)
+
+        if (*selectionFlags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED)
         {
             set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_ALWAYS_REQUIRED);
             return false;
@@ -527,66 +529,65 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
         *selectionFlags &= ~OBJECT_SELECTION_FLAG_SELECTED;
         return true;
     }
-    else
+
+    if (isMasterObject == 0)
     {
-        if (isMasterObject == 0)
+        if (flags & INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED)
         {
-            if (flags & INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED)
-            {
-                *selectionFlags |= OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED;
-            }
+            *selectionFlags |= OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED;
         }
-        if (*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED)
-        {
-            return true;
-        }
+    }
 
-        ObjectType objectType = item->Type;
-        uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
-
-        if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
-        {
-            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
-            return false;
-        }
-
-        if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
-        {
-            for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
-            {
-                if (!window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry))
-                {
-                    _maxObjectsWasHit = true;
-                }
-            }
-        }
-        else if (objectType == ObjectType::Water)
-        {
-            // Replace old palette with newly selected palette immediately.
-            ReplaceSelectedWaterPalette(item);
-        }
-
-        if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
-        {
-            char objectName[64];
-            object_create_identifier_name(objectName, 64, &item->ObjectEntry);
-            auto ft = Formatter::Common();
-            ft.Add<const char*>(objectName);
-            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
-            return false;
-        }
-
-        if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
-        {
-            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
-            return false;
-        }
-
-        _numSelectedObjectsForType[EnumValue(objectType)]++;
-
-        *selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
+    if (*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED)
+    {
         return true;
     }
+
+    ObjectType objectType = item->Type;
+    uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
+
+    if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
+    {
+        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
+        return false;
+    }
+
+    if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
+    {
+        for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
+        {
+            if (!window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry))
+            {
+                _maxObjectsWasHit = true;
+            }
+        }
+    }
+    else if (objectType == ObjectType::Water)
+    {
+        // Replace old palette with newly selected palette immediately.
+        ReplaceSelectedWaterPalette(item);
+    }
+
+    if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
+    {
+        char objectName[64];
+        object_create_identifier_name(objectName, 64, &item->ObjectEntry);
+        auto ft = Formatter::Common();
+        ft.Add<const char*>(objectName);
+        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
+        return false;
+    }
+
+    if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
+    {
+        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
+        return false;
+    }
+
+    _numSelectedObjectsForType[EnumValue(objectType)]++;
+
+    *selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
+    return true;
 }
 
 bool window_editor_object_selection_select_object(

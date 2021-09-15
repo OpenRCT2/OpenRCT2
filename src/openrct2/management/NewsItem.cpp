@@ -62,8 +62,8 @@ const News::Item& News::ItemQueues::operator[](size_t index) const
 {
     if (index < Recent.capacity())
         return Recent[index];
-    else
-        return Archived[index - Recent.capacity()];
+
+    return Archived[index - Recent.capacity()];
 }
 
 News::Item* News::ItemQueues::At(int32_t index)
@@ -77,10 +77,8 @@ const News::Item* News::ItemQueues::At(int32_t index) const
     {
         return &(*this)[index];
     }
-    else
-    {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 bool News::IsQueueEmpty()

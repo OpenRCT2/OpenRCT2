@@ -354,17 +354,15 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return &Desc.Widgets[widgetDescIndex];
                 }
-                else
+
+                auto page = static_cast<size_t>(w->page);
+                if (Desc.Tabs.size() > page)
                 {
-                    auto page = static_cast<size_t>(w->page);
-                    if (Desc.Tabs.size() > page)
+                    auto& widgets = Desc.Tabs[page].Widgets;
+                    auto tabWidgetIndex = widgetDescIndex - Desc.Widgets.size();
+                    if (tabWidgetIndex < widgets.size())
                     {
-                        auto& widgets = Desc.Tabs[page].Widgets;
-                        auto tabWidgetIndex = widgetDescIndex - Desc.Widgets.size();
-                        if (tabWidgetIndex < widgets.size())
-                        {
-                            return &widgets[widgetDescIndex];
-                        }
+                        return &widgets[widgetDescIndex];
                     }
                 }
             }

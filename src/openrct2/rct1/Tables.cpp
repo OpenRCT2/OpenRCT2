@@ -1252,8 +1252,8 @@ namespace RCT1
         };
         if (wallType < std::size(map))
             return map[wallType];
-        else
-            return map[0];
+
+        return map[0];
     }
 
     const char * GetPathObject(uint8_t pathType)

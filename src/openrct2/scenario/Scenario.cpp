@@ -609,7 +609,8 @@ ObjectiveStatus Objective::CheckGuestsBy() const
         {
             return ObjectiveStatus::Success;
         }
-        else if (currentMonthYear == MONTH_COUNT * Year)
+
+        if (currentMonthYear == MONTH_COUNT * Year)
         {
             return ObjectiveStatus::Failure;
         }
@@ -630,7 +631,8 @@ ObjectiveStatus Objective::CheckParkValueBy() const
         {
             return ObjectiveStatus::Success;
         }
-        else if (currentMonthYear == MONTH_COUNT * Year)
+
+        if (currentMonthYear == MONTH_COUNT * Year)
         {
             return ObjectiveStatus::Failure;
         }

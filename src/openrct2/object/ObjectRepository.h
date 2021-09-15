@@ -65,8 +65,8 @@ struct ObjectRepositoryItem
     {
         if (Sources.empty())
             return ObjectSourceGame::Custom;
-        else
-            return static_cast<ObjectSourceGame>(Sources[0]);
+
+        return static_cast<ObjectSourceGame>(Sources[0]);
     }
 };
 

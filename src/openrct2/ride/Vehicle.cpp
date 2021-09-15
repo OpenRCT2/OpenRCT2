@@ -1983,12 +1983,10 @@ static SoundIdVolume sub_6D7AC0(
             currentVolume = std::min<int32_t>(currentVolume + 15, targetVolume);
             return { currentSoundId, currentVolume };
         }
-        else
-        {
-            currentVolume -= 9;
-            if (currentVolume >= 80)
-                return { currentSoundId, currentVolume };
-        }
+
+        currentVolume -= 9;
+        if (currentVolume >= 80)
+            return { currentSoundId, currentVolume };
     }
 
     // Begin sound at quarter volume
@@ -2307,7 +2305,7 @@ static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, uin
             // track type to, e.g., Crooked House
             break;
         }
-        else if (trainIndex >= std::size(ride->vehicles))
+        if (trainIndex >= std::size(ride->vehicles))
         {
             return std::nullopt;
         }
@@ -2355,7 +2353,7 @@ void Vehicle::UpdateWaitingForPassengers()
         Invalidate();
         return;
     }
-    else if (sub_state == 1)
+    if (sub_state == 1)
     {
         if (time_waiting != 0xFFFF)
             time_waiting++;
@@ -3030,13 +3028,11 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                          * trains can depart! */
                         return false;
                     }
-                    else
-                    {
-                        /* Sync exception - train is not arriving at the station
-                         * and there are less than half the trains for the ride
-                         * travelling. */
-                        continue;
-                    }
+
+                    /* Sync exception - train is not arriving at the station
+                     * and there are less than half the trains for the ride
+                     * travelling. */
+                    continue;
                 }
             }
         }
@@ -3377,13 +3373,13 @@ void Vehicle::UpdateDeparting()
             UpdateDepartingBoatHire();
             return;
         }
-        else if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle)
+        if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle)
         {
             velocity = -velocity;
             FinishDeparting();
             return;
         }
-        else if (curRide->mode == RideMode::Shuttle)
+        if (curRide->mode == RideMode::Shuttle)
         {
             update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
             velocity = 0;
@@ -3827,7 +3823,7 @@ void Vehicle::UpdateTravelling()
                 UpdateTravellingBoatHireSetup();
                 return;
             }
-            else if (curRide->mode == RideMode::Shuttle)
+            if (curRide->mode == RideMode::Shuttle)
             {
                 update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
                 velocity = 0;
@@ -6922,10 +6918,7 @@ int32_t Vehicle::GetSwingAmount() const
             {
                 return 14;
             }
-            else
-            {
-                return -15;
-            }
+            return -15;
 
         case TrackElemType::SBendRight:
         case TrackElemType::SBendRightCovered:
@@ -6934,10 +6927,7 @@ int32_t Vehicle::GetSwingAmount() const
             {
                 return -14;
             }
-            else
-            {
-                return 15;
-            }
+            return 15;
 
         case TrackElemType::LeftQuarterTurn3Tiles:
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
@@ -7002,32 +6992,32 @@ static uint8_t GetSwingSprite(int16_t swingPosition)
 {
     if (swingPosition < -10012)
         return 11;
-    else if (swingPosition > 10012)
+    if (swingPosition > 10012)
         return 12;
 
     if (swingPosition < -8191)
         return 9;
-    else if (swingPosition > 8191)
+    if (swingPosition > 8191)
         return 10;
 
     if (swingPosition < -6371)
         return 7;
-    else if (swingPosition > 6371)
+    if (swingPosition > 6371)
         return 8;
 
     if (swingPosition < -4550)
         return 5;
-    else if (swingPosition > 4550)
+    if (swingPosition > 4550)
         return 6;
 
     if (swingPosition < -2730)
         return 3;
-    else if (swingPosition > 2730)
+    if (swingPosition > 2730)
         return 4;
 
     if (swingPosition < -910)
         return 1;
-    else if (swingPosition > 910)
+    if (swingPosition > 910)
         return 2;
 
     return 0;
@@ -7247,30 +7237,28 @@ void Vehicle::UpdateAnimationAnimalFlying()
         animationState--;
         return;
     }
-    else
+
+    if (animation_frame == 0)
     {
-        if (animation_frame == 0)
+        auto trackType = GetTrackType();
+        TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
+        if (trackElement != nullptr && trackElement->AsTrack()->HasChain())
         {
-            auto trackType = GetTrackType();
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
-            if (trackElement != nullptr && trackElement->AsTrack()->HasChain())
-            {
-                // start flapping, bird
-                animation_frame = 1;
-                animationState = 5;
-                Invalidate();
-            }
-        }
-        else
-        {
-            // continue flapping until reaching frame 0
-            animation_frame = (animation_frame + 1) % 4;
+            // start flapping, bird
+            animation_frame = 1;
+            animationState = 5;
             Invalidate();
         }
-        // number of frames to skip before updating again
-        constexpr std::array<uint8_t, 4> frameWaitTimes = { 5, 3, 5, 3 };
-        animationState = frameWaitTimes[animation_frame];
     }
+    else
+    {
+        // continue flapping until reaching frame 0
+        animation_frame = (animation_frame + 1) % 4;
+        Invalidate();
+    }
+    // number of frames to skip before updating again
+    constexpr std::array<uint8_t, 4> frameWaitTimes = { 5, 3, 5, 3 };
+    animationState = frameWaitTimes[animation_frame];
 }
 
 /**
@@ -9276,10 +9264,8 @@ static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const 
     {
         return accelerationDecrease2 / totalMass;
     }
-    else
-    {
-        return accelerationDecrease2;
-    }
+
+    return accelerationDecrease2;
 }
 
 int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const rct_ride_entry_vehicle& vehicleEntry)
@@ -9610,16 +9596,14 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
                 {
                     break;
                 }
-                else
+
+                if (car->remaining_distance < 0x368A)
                 {
-                    if (car->remaining_distance < 0x368A)
-                    {
-                        break;
-                    }
-                    car->acceleration += dword_9A2970[car->Pitch];
-                    _vehicleUnkF64E10++;
-                    continue;
+                    break;
                 }
+                car->acceleration += dword_9A2970[car->Pitch];
+                _vehicleUnkF64E10++;
+                continue;
             }
             if (car->remaining_distance < 0x368A)
             {
@@ -9630,16 +9614,14 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             {
                 break;
             }
-            else
+
+            if (car->remaining_distance >= 0)
             {
-                if (car->remaining_distance >= 0)
-                {
-                    break;
-                }
-                car->acceleration = dword_9A2970[car->Pitch];
-                _vehicleUnkF64E10++;
-                continue;
+                break;
             }
+            car->acceleration = dword_9A2970[car->Pitch];
+            _vehicleUnkF64E10++;
+            continue;
         }
         // loc_6DBF20
         car->MoveTo(unk_F64E20);

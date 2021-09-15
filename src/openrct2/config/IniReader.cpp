@@ -327,7 +327,8 @@ private:
             {
                 return s.substr(0, i);
             }
-            else if (c == inQuotes && !escaped)
+
+            if (c == inQuotes && !escaped)
             {
                 inQuotes = 0;
             }

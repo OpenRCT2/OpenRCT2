@@ -588,15 +588,13 @@ namespace OpenRCT2
                     }
                     return true;
                 }
-                else
+
+                auto fs = FileStream(path, FILE_MODE_OPEN);
+                if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
                 {
-                    auto fs = FileStream(path, FILE_MODE_OPEN);
-                    if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
-                    {
-                        return false;
-                    }
-                    return true;
+                    return false;
                 }
+                return true;
             }
             catch (const std::exception& e)
             {

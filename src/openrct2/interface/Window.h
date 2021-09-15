@@ -130,8 +130,8 @@ struct rct_widget
     {
         if (height() >= 10)
             return std::max<int32_t>(top, top + (height() / 2) - 5);
-        else
-            return top - 1;
+
+        return top - 1;
     }
 
     bool IsVisible() const

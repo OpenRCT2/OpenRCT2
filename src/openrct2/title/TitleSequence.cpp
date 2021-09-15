@@ -425,7 +425,7 @@ static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
             parts[part * 128 + cindex] = 0;
             return;
         }
-        else if (c == '#')
+        if (c == '#')
         {
             parts[part * 128 + cindex] = 0;
             comment = 1;

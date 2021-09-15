@@ -1495,7 +1495,7 @@ void Staff::UpdateAnswering()
         peep_window_state_update(this);
         return;
     }
-    else if (SubState == 1)
+    if (SubState == 1)
     {
         if (IsActionWalking())
         {
@@ -1509,7 +1509,7 @@ void Staff::UpdateAnswering()
         Invalidate();
         return;
     }
-    else if (SubState <= 3)
+    if (SubState <= 3)
     {
         MechanicTimeSinceCall++;
         if (MechanicTimeSinceCall > 2500)
@@ -2529,10 +2529,8 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
         MoveTo({ loc.value(), z });
         return false;
     }
-    else
-    {
-        return true;
-    }
+
+    return true;
 }
 
 /**

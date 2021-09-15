@@ -50,10 +50,8 @@ uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
     {
         return toolSizeSpriteIndices[size];
     }
-    else
-    {
-        return 0xFFFFFFFF;
-    }
+
+    return 0xFFFFFFFF;
 }
 
 void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentSurfaceType)

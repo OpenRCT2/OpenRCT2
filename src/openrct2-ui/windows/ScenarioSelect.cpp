@@ -147,8 +147,8 @@ static int32_t ScenarioSelectGetWindowWidth()
     // Shrink the window if we're showing scenarios by difficulty level.
     if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && !_titleEditor)
         return 610;
-    else
-        return WW;
+
+    return WW;
 }
 
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor)

@@ -376,7 +376,8 @@ int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase)
                     height += 10;
                     break;
                 }
-                else if (fontBase == FontSpriteBase::TINY)
+
+                if (fontBase == FontSpriteBase::TINY)
                 {
                     height += 6;
                     break;
@@ -389,7 +390,8 @@ int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase)
                     height += 5;
                     break;
                 }
-                else if (fontBase == FontSpriteBase::TINY)
+
+                if (fontBase == FontSpriteBase::TINY)
                 {
                     height += 3;
                     break;
@@ -546,163 +548,160 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, std::string_view tex
         info->x += ttf_getwidth_cache_get_or_add(fontDesc->font, text);
         return;
     }
-    else
+
+    uint8_t colour = info->palette[1];
+    TTFSurface* surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
+    if (surface == nullptr)
+        return;
+
+    int32_t drawX = info->x + fontDesc->offset_x;
+    int32_t drawY = info->y + fontDesc->offset_y;
+    int32_t width = surface->w;
+    int32_t height = surface->h;
+
+    if (OpenRCT2::GetContext()->GetDrawingEngineType() == DrawingEngine::OpenGL)
     {
-        uint8_t colour = info->palette[1];
-        TTFSurface* surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
-        if (surface == nullptr)
-            return;
-
-        int32_t drawX = info->x + fontDesc->offset_x;
-        int32_t drawY = info->y + fontDesc->offset_y;
-        int32_t width = surface->w;
-        int32_t height = surface->h;
-
-        if (OpenRCT2::GetContext()->GetDrawingEngineType() == DrawingEngine::OpenGL)
+        auto pixels = reinterpret_cast<uint8_t*>(const_cast<void*>(surface->pixels));
+        auto pixelsLen = static_cast<size_t>(surface->pitch) * surface->h;
+        for (size_t pp = 0; pp < pixelsLen; pp++)
         {
-            auto pixels = reinterpret_cast<uint8_t*>(const_cast<void*>(surface->pixels));
-            auto pixelsLen = static_cast<size_t>(surface->pitch) * surface->h;
-            for (size_t pp = 0; pp < pixelsLen; pp++)
+            if (pixels[pp] != 0)
             {
-                if (pixels[pp] != 0)
-                {
-                    pixels[pp] = colour;
-                }
-                else
-                {
-                    pixels[pp] = PALETTE_INDEX_0;
-                }
+                pixels[pp] = colour;
             }
-
-            auto baseId = uint32_t(0x7FFFF) - 1024;
-            auto imageId = baseId + _ttfGlId;
-            auto drawingEngine = dpi->DrawingEngine;
-            auto drawingContext = drawingEngine->GetDrawingContext(dpi);
-            drawingEngine->InvalidateImage(imageId);
-            drawingContext->DrawBitmap(imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY);
-
-            _ttfGlId++;
-            if (_ttfGlId >= 1023)
+            else
             {
-                _ttfGlId = 0;
+                pixels[pp] = PALETTE_INDEX_0;
             }
-            return;
         }
 
-        int32_t overflowX = (dpi->x + dpi->width) - (drawX + width);
-        int32_t overflowY = (dpi->y + dpi->height) - (drawY + height);
-        if (overflowX < 0)
-            width += overflowX;
-        if (overflowY < 0)
-            height += overflowY;
-        int32_t skipX = drawX - dpi->x;
-        int32_t skipY = drawY - dpi->y;
-        info->x += width;
+        auto baseId = uint32_t(0x7FFFF) - 1024;
+        auto imageId = baseId + _ttfGlId;
+        auto drawingEngine = dpi->DrawingEngine;
+        auto drawingContext = drawingEngine->GetDrawingContext(dpi);
+        drawingEngine->InvalidateImage(imageId);
+        drawingContext->DrawBitmap(imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY);
 
-        auto src = static_cast<const uint8_t*>(surface->pixels);
-        uint8_t* dst = dpi->bits;
-
-        if (skipX < 0)
+        _ttfGlId++;
+        if (_ttfGlId >= 1023)
         {
-            width += skipX;
-            src += -skipX;
-            skipX = 0;
+            _ttfGlId = 0;
         }
-        if (skipY < 0)
+        return;
+    }
+
+    int32_t overflowX = (dpi->x + dpi->width) - (drawX + width);
+    int32_t overflowY = (dpi->y + dpi->height) - (drawY + height);
+    if (overflowX < 0)
+        width += overflowX;
+    if (overflowY < 0)
+        height += overflowY;
+    int32_t skipX = drawX - dpi->x;
+    int32_t skipY = drawY - dpi->y;
+    info->x += width;
+
+    auto src = static_cast<const uint8_t*>(surface->pixels);
+    uint8_t* dst = dpi->bits;
+
+    if (skipX < 0)
+    {
+        width += skipX;
+        src += -skipX;
+        skipX = 0;
+    }
+    if (skipY < 0)
+    {
+        height += skipY;
+        src += (-skipY * surface->pitch);
+        skipY = 0;
+    }
+
+    dst += skipX;
+    dst += skipY * (dpi->width + dpi->pitch);
+
+    int32_t srcScanSkip = surface->pitch - width;
+    int32_t dstScanSkip = dpi->width + dpi->pitch - width;
+    uint8_t* dst_orig = dst;
+    const uint8_t* src_orig = src;
+
+    // Draw shadow/outline
+    if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+    {
+        for (int32_t yy = 0; yy < height - 0; yy++)
         {
-            height += skipY;
-            src += (-skipY * surface->pitch);
-            skipY = 0;
-        }
-
-        dst += skipX;
-        dst += skipY * (dpi->width + dpi->pitch);
-
-        int32_t srcScanSkip = surface->pitch - width;
-        int32_t dstScanSkip = dpi->width + dpi->pitch - width;
-        uint8_t* dst_orig = dst;
-        const uint8_t* src_orig = src;
-
-        // Draw shadow/outline
-        if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
-        {
-            for (int32_t yy = 0; yy < height - 0; yy++)
+            for (int32_t xx = 0; xx < width - 0; xx++)
             {
-                for (int32_t xx = 0; xx < width - 0; xx++)
+                if (*src != 0)
                 {
-                    if (*src != 0)
+                    // right
+                    if (xx + skipX < dpi->width + dpi->pitch - 1)
                     {
-                        // right
-                        if (xx + skipX < dpi->width + dpi->pitch - 1)
-                        {
-                            *(dst + 1) = info->palette[3];
-                        }
-                        // left
-                        if (xx + skipX > 1)
-                        {
-                            *(dst - 1) = info->palette[3];
-                        }
-                        // top
-                        if (yy + skipY > 1)
-                        {
-                            *(dst - width - dstScanSkip) = info->palette[3];
-                        }
-                        // bottom
-                        if (yy + skipY < dpi->height - 1)
-                        {
-                            *(dst + width + dstScanSkip) = info->palette[3];
-                        }
+                        *(dst + 1) = info->palette[3];
                     }
-                    src++;
-                    dst++;
-                }
-                // Skip any remaining bits
-                src += srcScanSkip;
-                dst += dstScanSkip;
-            }
-        }
-        {
-            dst = dst_orig;
-            src = src_orig;
-            bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold > 0;
-            for (int32_t yy = 0; yy < height; yy++)
-            {
-                for (int32_t xx = 0; xx < width; xx++)
-                {
-                    if (*src != 0)
+                    // left
+                    if (xx + skipX > 1)
                     {
-                        if (info->flags & TEXT_DRAW_FLAG_INSET)
-                        {
-                            *(dst + width + dstScanSkip + 1) = info->palette[3];
-                        }
-
-                        if (*src > 180 || !use_hinting)
-                        {
-                            // Centre of the glyph: use full colour.
-                            *dst = colour;
-                        }
-                        else if (use_hinting && *src > fontDesc->hinting_threshold)
-                        {
-                            // Simulate font hinting by shading the background colour instead.
-                            if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
-                            {
-                                // As outlines are black, these texts should always use a darker shade
-                                // of the foreground colour for font hinting.
-                                *dst = blendColours(colour, PALETTE_INDEX_0);
-                            }
-                            else
-                            {
-                                *dst = blendColours(colour, *dst);
-                            }
-                        }
+                        *(dst - 1) = info->palette[3];
                     }
-                    src++;
-                    dst++;
+                    // top
+                    if (yy + skipY > 1)
+                    {
+                        *(dst - width - dstScanSkip) = info->palette[3];
+                    }
+                    // bottom
+                    if (yy + skipY < dpi->height - 1)
+                    {
+                        *(dst + width + dstScanSkip) = info->palette[3];
+                    }
                 }
-                src += srcScanSkip;
-                dst += dstScanSkip;
+                src++;
+                dst++;
             }
+            // Skip any remaining bits
+            src += srcScanSkip;
+            dst += dstScanSkip;
         }
+    }
+
+    dst = dst_orig;
+    src = src_orig;
+    bool use_hinting = gConfigFonts.enable_hinting && fontDesc->hinting_threshold > 0;
+    for (int32_t yy = 0; yy < height; yy++)
+    {
+        for (int32_t xx = 0; xx < width; xx++)
+        {
+            if (*src != 0)
+            {
+                if (info->flags & TEXT_DRAW_FLAG_INSET)
+                {
+                    *(dst + width + dstScanSkip + 1) = info->palette[3];
+                }
+
+                if (*src > 180 || !use_hinting)
+                {
+                    // Centre of the glyph: use full colour.
+                    *dst = colour;
+                }
+                else if (use_hinting && *src > fontDesc->hinting_threshold)
+                {
+                    // Simulate font hinting by shading the background colour instead.
+                    if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+                    {
+                        // As outlines are black, these texts should always use a darker shade
+                        // of the foreground colour for font hinting.
+                        *dst = blendColours(colour, PALETTE_INDEX_0);
+                    }
+                    else
+                    {
+                        *dst = blendColours(colour, *dst);
+                    }
+                }
+            }
+            src++;
+            dst++;
+        }
+        src += srcScanSkip;
+        dst += dstScanSkip;
     }
 }
 
