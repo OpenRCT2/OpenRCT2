@@ -69,6 +69,12 @@ public:
 
     Object* GetLoadedObject(ObjectType objectType, size_t index) override
     {
+        // This is sometimes done deliberately (to avoid boilerplate), so no need to log_warn for this.
+        if (index == OBJECT_ENTRY_INDEX_NULL)
+        {
+            return nullptr;
+        }
+
         if (index >= static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]))
         {
 #ifdef DEBUG
