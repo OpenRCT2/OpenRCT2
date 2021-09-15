@@ -47,7 +47,7 @@ rct_window* window_editor_main_open()
     gShowGridLinesRefCount = 0;
     gShowLandRightsRefCount = 0;
     gShowConstuctionRightsRefCount = 0;
-    window_footpath_reset_selected_path();
+    WindowFootpathResetSelectedPath();
 
     context_open_window(WC_TOP_TOOLBAR);
     context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
