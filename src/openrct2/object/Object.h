@@ -15,6 +15,7 @@
 #include "ImageTable.h"
 #include "StringTable.h"
 
+#include <limits>
 #include <memory>
 #include <optional>
 #include <string_view>
