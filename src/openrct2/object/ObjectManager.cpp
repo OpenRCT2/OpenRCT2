@@ -213,6 +213,7 @@ public:
         size_t numObjects = _objectRepository.GetNumObjects();
         for (size_t i = 0; i < numObjects; i++)
         {
+            // TODO: remove ObjectGeneration::DAT check when the NSF is here
             const ObjectRepositoryItem* item = &_objectRepository.GetObjects()[i];
             if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr
                 && item->LoadedObject->GetGeneration() == ObjectGeneration::DAT)
@@ -377,14 +378,14 @@ private:
                 {
                     slot = FindSpareSlot(objectType);
                 }
-        if (slot.has_value())
+                if (slot.has_value())
                 {
                     auto object = GetOrLoadObject(ori);
                     if (object != nullptr)
                     {
                         if (_loadedObjects.size() <= static_cast<size_t>(*slot))
                         {
-                    _loadedObjects.resize(slot.value() + 1);
+                            _loadedObjects.resize(slot.value() + 1);
                         }
                         loadedObject = object;
                         _loadedObjects[slot.value()] = std::move(object);
