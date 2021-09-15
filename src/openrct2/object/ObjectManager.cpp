@@ -359,40 +359,39 @@ private:
 
     Object* RepositoryItemToObject(const ObjectRepositoryItem* ori, std::optional<int32_t> slot = {})
     {
-        Object* loadedObject = nullptr;
-        if (ori != nullptr)
+        if (ori == nullptr)
+            return nullptr;
+
+        Object* loadedObject = ori->LoadedObject.get();
+        if (loadedObject != nullptr)
+            return loadedObject;
+
+        ObjectType objectType = ori->Type;
+        if (slot)
         {
-            loadedObject = ori->LoadedObject.get();
-            if (loadedObject == nullptr)
+            if (_loadedObjects.size() > static_cast<size_t>(*slot) && _loadedObjects[*slot] != nullptr)
             {
-                ObjectType objectType = ori->Type;
-                if (slot)
+                // Slot already taken
+                return nullptr;
+            }
+        }
+        else
+        {
+            slot = FindSpareSlot(objectType);
+        }
+        if (slot.has_value())
+        {
+            auto object = GetOrLoadObject(ori);
+            if (object != nullptr)
+            {
+                if (_loadedObjects.size() <= static_cast<size_t>(*slot))
                 {
-                    if (_loadedObjects.size() > static_cast<size_t>(*slot) && _loadedObjects[*slot] != nullptr)
-                    {
-                        // Slot already taken
-                        return nullptr;
-                    }
+                    _loadedObjects.resize(slot.value() + 1);
                 }
-                else
-                {
-                    slot = FindSpareSlot(objectType);
-                }
-                if (slot.has_value())
-                {
-                    auto object = GetOrLoadObject(ori);
-                    if (object != nullptr)
-                    {
-                        if (_loadedObjects.size() <= static_cast<size_t>(*slot))
-                        {
-                            _loadedObjects.resize(slot.value() + 1);
-                        }
-                        loadedObject = object;
-                        _loadedObjects[slot.value()] = std::move(object);
-                        UpdateSceneryGroupIndexes();
-                        ResetTypeToRideEntryIndexMap();
-                    }
-                }
+                loadedObject = object;
+                _loadedObjects[slot.value()] = std::move(object);
+                UpdateSceneryGroupIndexes();
+                ResetTypeToRideEntryIndexMap();
             }
         }
         return loadedObject;
