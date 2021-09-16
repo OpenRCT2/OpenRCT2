@@ -1410,5 +1410,5 @@ std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
     {
         return std::distance(std::begin(_musicStyles), it);
     }
-    return {};
+    return std::nullopt;
 }

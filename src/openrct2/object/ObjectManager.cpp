@@ -419,7 +419,7 @@ private:
                 return static_cast<int32_t>(i);
             }
         }
-        return {};
+        return std::nullopt;
     }
 
     size_t GetLoadedObjectIndex(const Object* object)
