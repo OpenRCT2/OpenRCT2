@@ -1983,11 +1983,12 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             CoordsXYZD loc{ gridPos, z, direction };
             auto primaryColour = gWindowSceneryPrimaryColour;
             auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, primaryColour);
-            bannerPlaceAction.SetCallback([=](const GameAction* ga, const BannerPlaceActionResult* result) {
+            bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
+                    auto data = result->GetData<BannerPlaceActionResult>();
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                    context_open_detail_window(WD_BANNER, result->bannerId);
+                    context_open_detail_window(WD_BANNER, data.bannerId);
                 }
             });
             GameActions::Execute(&bannerPlaceAction);
