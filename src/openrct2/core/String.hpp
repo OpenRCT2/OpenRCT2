@@ -169,7 +169,7 @@ namespace String
         {
             return { 4 };
         }
-        return {};
+        return std::nullopt;
     }
 
     /**
