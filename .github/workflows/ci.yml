@@ -146,16 +146,18 @@ jobs:
               echo 'Not going to push build'
           fi
   macos-cmake:
-    name: macOS using CMake
+    name: macOS (${{ matrix.arch }}) using CMake
     runs-on: macos-latest
     needs: check-code-formatting
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86_64, arm64]
+        arch: [x64, arm64]
         include:
-          - arch: x86_64
+          - arch: x64
             cache_key: macos-x64
+            # Note: only build/run tests on the native architecture of the CI agent
+            # Github macos-latest agents are currently all Intel
             build_flags: -DARCH="x86_64" -DWITH_TESTS=on
             run_tests: true
           - arch: arm64
@@ -200,7 +202,7 @@ jobs:
       - name: download x64 app bundle
         uses: actions/download-artifact@v2
         with:
-          name: OpenRCT2-${{ runner.os }}-x86_64-cmake
+          name: OpenRCT2-${{ runner.os }}-x64-cmake
           path: macos_universal/x64
       - name: download arm64 app bundle
         uses: actions/download-artifact@v2
