@@ -56,11 +56,6 @@ public:
 
     uint32_t NumImagesLoaded{};
 
-    explicit TerrainSurfaceObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;

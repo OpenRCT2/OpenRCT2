@@ -128,7 +128,7 @@ public:
             td->track_support_colour[i] = td6.track_support_colour[i];
         }
         td->flags2 = td6.flags2;
-        td->vehicle_object = td6.vehicle_object;
+        td->vehicle_object = ObjectEntryDescriptor(td6.vehicle_object);
         td->space_required_x = td6.space_required_x;
         td->space_required_y = td6.space_required_y;
         td->lift_hill_speed = td6.lift_hill_speed_num_circuits & 0b00011111;
@@ -224,7 +224,7 @@ public:
         if (RCT2RideTypeNeedsConversion(td->type))
         {
             std::scoped_lock<std::mutex> lock(_objectLookupMutex);
-            auto rawObject = object_repository_load_object(&td->vehicle_object);
+            auto rawObject = object_repository_load_object(&td->vehicle_object.Entry);
             if (rawObject != nullptr)
             {
                 const auto* rideEntry = static_cast<const rct_ride_entry*>(

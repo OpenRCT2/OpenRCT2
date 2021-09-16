@@ -694,7 +694,7 @@ static void window_editor_object_selection_scroll_mousedown(
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        if (!window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->entry))
+        if (!window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem))
             return;
 
         // Close any other open windows such as options/colour schemes to prevent a crash.
@@ -712,7 +712,7 @@ static void window_editor_object_selection_scroll_mousedown(
         flags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
     _maxObjectsWasHit = false;
-    if (!window_editor_object_selection_select_object(0, flags, listItem->entry))
+    if (!window_editor_object_selection_select_object(0, flags, listItem->repositoryItem))
     {
         rct_string_id error_title = (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
                                                                               : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;

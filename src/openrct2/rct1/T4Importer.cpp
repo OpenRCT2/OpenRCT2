@@ -161,7 +161,7 @@ namespace RCT1
                 assert(vehObjName != nullptr);
                 std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
             }
-            std::memcpy(&td->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
+            td->vehicle_object = ObjectEntryDescriptor(vehicleObject);
             td->vehicle_type = td4Base.vehicle_type;
 
             td->flags = td4Base.flags;

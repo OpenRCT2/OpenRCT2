@@ -193,11 +193,11 @@ static void track_design_save_push_tile_element(const CoordsXY& loc, TileElement
  *  rct2: 0x006D2FA7
  */
 static void track_design_save_push_tile_element_desc(
-    const rct_object_entry* entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
+    const rct_object_entry& entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
     auto tileLoc = TileCoordsXYZ(loc);
     TrackDesignSceneryElement item{};
-    item.scenery_object = *entry;
+    item.scenery_object = entry;
     item.x = tileLoc.x;
     item.y = tileLoc.y;
     item.z = tileLoc.z;
@@ -370,7 +370,7 @@ static void track_design_save_pop_tile_element(const CoordsXY& loc, TileElement*
  *
  *  rct2: 0x006D2FDD
  */
-static void track_design_save_pop_tile_element_desc(const rct_object_entry* entry, const CoordsXYZ& loc, uint8_t flags)
+static void track_design_save_pop_tile_element_desc(const rct_object_entry& entry, const CoordsXYZ& loc, uint8_t flags)
 {
     size_t removeIndex = SIZE_MAX;
     auto tileLoc = TileCoordsXYZ(loc);
@@ -385,7 +385,7 @@ static void track_design_save_pop_tile_element_desc(const rct_object_entry* entr
             continue;
         if (item->flags != flags)
             continue;
-        if (!object_entry_compare(&item->scenery_object, entry))
+        if (item->scenery_object != entry)
             continue;
 
         removeIndex = i;

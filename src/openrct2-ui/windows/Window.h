@@ -163,7 +163,7 @@ void window_text_input_open(
     std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
     std::function<void(std::string_view)> okCallback, std::function<void()> cancelCallback);
 
-rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects);
+rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects);
 
 rct_window* window_ride_construction_open();
 void window_ride_construction_update_active_elements_impl();

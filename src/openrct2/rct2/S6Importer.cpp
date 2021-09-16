@@ -32,6 +32,7 @@
 #include "../management/Research.h"
 #include "../network/network.h"
 #include "../object/ObjectLimits.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/Peep.h"
@@ -1585,7 +1586,7 @@ public:
         }
     }
 
-    std::vector<rct_object_entry> GetRequiredObjects()
+    ObjectList GetRequiredObjects()
     {
         std::vector<rct_object_entry> result;
 
@@ -1601,7 +1602,22 @@ public:
         AddRequiredObjects<MAX_WATER_OBJECTS>(result, _s6.WaterObjects);
         AddRequiredObjects<MAX_SCENARIO_TEXT_OBJECTS>(result, _s6.ScenarioTextObjects);
 
-        return result;
+        ObjectList objectList;
+        for (size_t i = 0; i < result.size(); i++)
+        {
+            ObjectType objectType;
+            ObjectEntryIndex entryIndex;
+            get_type_entry_index(i, &objectType, &entryIndex);
+
+            auto desc = ObjectEntryDescriptor(result[i]);
+            if (desc.HasValue())
+            {
+                assert(desc.GetType() == objectType);
+                objectList.SetObject(entryIndex, desc);
+            }
+        }
+
+        return objectList;
     }
 };
 
@@ -1987,7 +2003,7 @@ void load_from_sv6(const char* path)
     {
         auto& objectMgr = context->GetObjectManager();
         auto result = s6Importer->LoadSavedGame(path);
-        objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+        objectMgr.LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();
@@ -2027,7 +2043,7 @@ void load_from_sc6(const char* path)
     try
     {
         auto result = s6Importer->LoadScenario(path);
-        objManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+        objManager.LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();

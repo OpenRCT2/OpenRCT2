@@ -60,17 +60,134 @@ int32_t object_entry_group_encoding[] = {
 };
 // clang-format on
 
-bool object_entry_is_empty(const rct_object_entry* entry)
+ObjectList::const_iterator::const_iterator(const ObjectList* parent, bool end)
 {
-    uint64_t a, b;
-    std::memcpy(&a, reinterpret_cast<const uint8_t*>(entry), 8);
-    std::memcpy(&b, reinterpret_cast<const uint8_t*>(entry) + 8, 8);
+    _parent = parent;
+    _subList = _parent->_subLists.size();
+    _index = 0;
+}
 
-    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF)
-        return true;
-    if (a == 0 && b == 0)
-        return true;
-    return false;
+void ObjectList::const_iterator::MoveToNextEntry()
+{
+    do
+    {
+        if (_subList < _parent->_subLists.size())
+        {
+            auto subListSize = _parent->_subLists[_subList].size();
+            if (_index < subListSize)
+            {
+                _index++;
+                if (_index == subListSize)
+                {
+                    _subList++;
+                    _index = 0;
+                }
+            }
+        }
+        else
+        {
+            break;
+        }
+    } while (!_parent->_subLists[_subList][_index].HasValue());
+}
+
+ObjectList::const_iterator& ObjectList::const_iterator::operator++()
+{
+    MoveToNextEntry();
+    return *this;
+}
+
+ObjectList::const_iterator ObjectList::const_iterator::operator++(int)
+{
+    return *this;
+}
+
+const ObjectEntryDescriptor& ObjectList::const_iterator::operator*()
+{
+    return _parent->_subLists[_subList][_index];
+}
+
+bool ObjectList::const_iterator::operator==(const_iterator& rhs)
+{
+    return _parent == rhs._parent && _subList == rhs._subList && _index == rhs._index;
+}
+
+bool ObjectList::const_iterator::operator!=(const_iterator& rhs)
+{
+    return !(*this == rhs);
+}
+
+ObjectList::const_iterator ObjectList::begin() const
+{
+    return const_iterator(this, false);
+}
+
+ObjectList::const_iterator ObjectList::end() const
+{
+    return const_iterator(this, true);
+}
+
+std::vector<ObjectEntryDescriptor>& ObjectList::GetList(ObjectType type)
+{
+    auto index = static_cast<size_t>(type);
+    while (_subLists.size() <= index)
+    {
+        _subLists.resize(static_cast<size_t>(index) + 1);
+    }
+    return _subLists[index];
+}
+
+std::vector<ObjectEntryDescriptor>& ObjectList::GetList(ObjectType type) const
+{
+    return const_cast<ObjectList*>(this)->GetList(type);
+}
+
+const ObjectEntryDescriptor& ObjectList::GetObject(ObjectType type, ObjectEntryIndex index) const
+{
+    const auto& subList = GetList(type);
+    if (subList.size() > index)
+    {
+        return subList[index];
+    }
+
+    static ObjectEntryDescriptor placeholder;
+    return placeholder;
+}
+
+void ObjectList::Add(const ObjectEntryDescriptor& entry)
+{
+    auto& subList = GetList(entry.GetType());
+    subList.push_back(entry);
+}
+
+void ObjectList::SetObject(ObjectEntryIndex index, const ObjectEntryDescriptor& entry)
+{
+    auto& subList = GetList(entry.GetType());
+    if (subList.size() <= index)
+    {
+        subList.resize(static_cast<size_t>(index) + 1);
+    }
+    subList[index] = entry;
+}
+
+void ObjectList::SetObject(ObjectType type, ObjectEntryIndex index, std::string_view identifier)
+{
+    auto entry = ObjectEntryDescriptor(identifier);
+    entry.Type = type;
+    SetObject(index, entry);
+}
+
+ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier)
+{
+    auto& subList = GetList(type);
+    for (size_t i = 0; i < subList.size(); i++)
+    {
+        if (subList[i].Identifier == identifier)
+        {
+            return static_cast<ObjectEntryIndex>(i);
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
 }
 
 /**
@@ -104,7 +221,7 @@ bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry
         if (loadedObj != nullptr)
         {
             auto thisEntry = object_entry_get_object(objectType, i)->GetObjectEntry();
-            if (object_entry_compare(thisEntry, entry))
+            if (thisEntry == *entry)
             {
                 *entry_type = objectType;
                 *entryIndex = i;

@@ -55,8 +55,7 @@ static void setup_track_manager_objects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        ObjectType object_type = item->ObjectEntry.GetType();
-        if (object_type == ObjectType::Ride)
+        if (item->Type == ObjectType::Ride)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
@@ -85,8 +84,7 @@ static void setup_track_designer_objects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        ObjectType objectType = item->ObjectEntry.GetType();
-        if (objectType == ObjectType::Ride)
+        if (item->Type == ObjectType::Ride)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
@@ -259,7 +257,7 @@ void sub_6AB211()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        ObjectType objectType = items[i].ObjectEntry.GetType();
+        ObjectType objectType = items[i].Type;
         _numAvailableObjectsForType[EnumValue(objectType)]++;
     }
 
@@ -302,32 +300,39 @@ void editor_object_flags_free()
  *
  *  rct2: 0x00685791
  */
-static void remove_selected_objects_from_research(const rct_object_entry* installedObject)
+static void remove_selected_objects_from_research(ObjectEntryDescriptor& descriptor)
 {
-    ObjectType entry_type;
-    ObjectEntryIndex entry_index;
-    if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
-        return;
-
-    if (entry_type == ObjectType::Ride)
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objManager.GetLoadedObject(descriptor);
+    if (obj != nullptr)
     {
-        auto rideEntry = get_ride_entry(entry_index);
-
-        for (auto rideType : rideEntry->ride_type)
+        auto entryIndex = objManager.GetLoadedObjectEntryIndex(obj);
+        switch (obj->GetObjectType())
         {
-            ResearchItem tmp = {};
-            tmp.type = Research::EntryType::Ride;
-            tmp.entryIndex = entry_index;
-            tmp.baseRideType = rideType;
-            research_remove(&tmp);
+            case ObjectType::Ride:
+            {
+                auto rideEntry = get_ride_entry(entryIndex);
+                for (auto rideType : rideEntry->ride_type)
+                {
+                    ResearchItem tmp = {};
+                    tmp.type = Research::EntryType::Ride;
+                    tmp.entryIndex = entryIndex;
+                    tmp.baseRideType = rideType;
+                    research_remove(&tmp);
+                }
+                break;
+            }
+            case ObjectType::SceneryGroup:
+            {
+                ResearchItem tmp = {};
+                tmp.type = Research::EntryType::Scenery;
+                tmp.entryIndex = entryIndex;
+                research_remove(&tmp);
+                break;
+            }
+            default:
+                break;
         }
-    }
-    else if (entry_type == ObjectType::SceneryGroup)
-    {
-        ResearchItem tmp = {};
-        tmp.type = Research::EntryType::Scenery;
-        tmp.entryIndex = entry_index;
-        research_remove(&tmp);
     }
 }
 
@@ -337,18 +342,17 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
  */
 void unload_unselected_objects()
 {
-    int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
-    std::vector<rct_object_entry> objectsToUnload;
+    auto numItems = static_cast<int32_t>(object_repository_get_items_count());
+    const auto* items = object_repository_get_items();
+    std::vector<ObjectEntryDescriptor> objectsToUnload;
 
     for (int32_t i = 0; i < numItems; i++)
     {
         if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED))
         {
-            const rct_object_entry* entry = &items[i].ObjectEntry;
-
-            remove_selected_objects_from_research(entry);
-            objectsToUnload.push_back(*entry);
+            auto descriptor = ObjectEntryDescriptor(items[i]);
+            remove_selected_objects_from_research(descriptor);
+            objectsToUnload.push_back(descriptor);
         }
     }
     object_manager_unload_objects(objectsToUnload);
@@ -368,7 +372,7 @@ static void window_editor_object_selection_select_default_objects()
                 0,
                 INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
                     | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
-                defaultSelectedObject);
+                ObjectEntryDescriptor(defaultSelectedObject));
         }
     }
 }
@@ -383,7 +387,7 @@ static void SelectDesignerObjects()
                 0,
                 INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
                     | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
-                designerSelectedObject);
+                ObjectEntryDescriptor(designerSelectedObject));
         }
     }
 }
@@ -394,24 +398,22 @@ static void SelectDesignerObjects()
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* oldPalette = objectManager.GetLoadedObject(ObjectType::Water, 0);
+    auto* oldPalette = objectManager.GetLoadedObject(ObjectType::Water, 0);
 
     if (oldPalette != nullptr)
     {
-        const std::vector<rct_object_entry> oldEntries = { *(oldPalette->GetObjectEntry()) };
+        const std::vector<ObjectEntryDescriptor> oldEntries = { oldPalette->GetDescriptor() };
         objectManager.UnloadObjects(oldEntries);
     }
 
-    const rct_object_entry& newPaletteEntry = item->ObjectEntry;
-
-    if (objectManager.GetLoadedObject(ObjectEntryDescriptor(newPaletteEntry)) != nullptr
-        || objectManager.LoadObject(&newPaletteEntry) != nullptr)
+    auto newPaletteEntry = ObjectEntryDescriptor(*item);
+    if (objectManager.GetLoadedObject(newPaletteEntry) != nullptr || objectManager.LoadObject(newPaletteEntry) != nullptr)
     {
         load_palette();
     }
     else
     {
-        log_error("Failed to load selected palette %.8s", newPaletteEntry.name);
+        log_error("Failed to load selected palette %s", std::string(newPaletteEntry.GetName()).c_str());
     }
 }
 
@@ -430,7 +432,7 @@ void reset_selected_object_count_and_size()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        ObjectType objectType = items[i].ObjectEntry.GetType();
+        ObjectType objectType = items[i].Type;
         if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
         {
             _numSelectedObjectsForType[EnumValue(objectType)]++;
@@ -512,7 +514,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             return false;
         }
 
-        ObjectType objectType = item->ObjectEntry.GetType();
+        ObjectType objectType = item->Type;
         if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
@@ -539,7 +541,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             return true;
         }
 
-        ObjectType objectType = item->ObjectEntry.GetType();
+        ObjectType objectType = item->Type;
         uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
 
         if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
@@ -587,25 +589,12 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
     }
 }
 
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, std::string_view identifier)
+bool window_editor_object_selection_select_object(
+    uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& descriptor)
 {
     auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
-    const auto* item = objectRepository.FindObject(identifier);
+    const auto* item = objectRepository.FindObject(descriptor);
     return window_editor_object_selection_select_object(isMasterObject, flags, item);
-}
-
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const rct_object_entry* entry)
-{
-    const ObjectRepositoryItem* item = object_repository_find_object_by_entry(entry);
-    return window_editor_object_selection_select_object(isMasterObject, flags, item);
-}
-
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& entry)
-{
-    if (entry.Generation == ObjectGeneration::DAT)
-        return window_editor_object_selection_select_object(isMasterObject, flags, &entry.Entry);
-
-    return window_editor_object_selection_select_object(isMasterObject, flags, entry.Identifier);
 }
 
 bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)
@@ -615,8 +604,25 @@ bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)
 
     for (size_t i = 0; i < numObjects; i++)
     {
-        ObjectType objectType = items[i].ObjectEntry.GetType();
+        auto objectType = items[i].Type;
         if (checkObjectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool editor_check_object_group_at_least_one_surface_selected(bool queue)
+{
+    auto numObjects = std::min(object_repository_get_items_count(), _objectSelectionFlags.size());
+    const auto* items = object_repository_get_items();
+    for (size_t i = 0; i < numObjects; i++)
+    {
+        const auto& ori = items[i];
+        auto isQueue = (ori.FootpathSurfaceInfo.Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0;
+        if (ori.Type == ObjectType::FootpathSurface && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
+            && queue == isQueue)
         {
             return true;
         }
@@ -641,7 +647,7 @@ int32_t editor_remove_unused_objects()
                 && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
             {
                 const ObjectRepositoryItem* item = &items[i];
-                ObjectType objectType = item->ObjectEntry.GetType();
+                ObjectType objectType = item->Type;
 
                 if (objectType >= ObjectType::SceneryGroup)
                 {

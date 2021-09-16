@@ -1464,7 +1464,7 @@ namespace RCT1
             }
         }
 
-        std::vector<rct_object_entry> GetRequiredObjects()
+        ObjectList GetRequiredObjects()
         {
             std::vector<rct_object_entry> result;
             AppendRequiredObjects(result, ObjectType::Ride, _rideEntries);
@@ -1489,7 +1489,14 @@ namespace RCT1
                 }));
             AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
             AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
-            return result;
+
+            ObjectList objectList;
+            for (rct_object_entry entry : result)
+            {
+                objectList.Add(ObjectEntryDescriptor(entry));
+            }
+
+            return objectList;
         }
 
         void ImportTileElements()
@@ -3056,7 +3063,7 @@ void load_from_sv4(const utf8* path)
     auto& objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<RCT1::S4Importer>();
     auto result = s4Importer->LoadSavedGame(path);
-    objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+    objectMgr.LoadObjects(result.RequiredObjects);
     s4Importer->Import();
 }
 
@@ -3065,6 +3072,6 @@ void load_from_sc4(const utf8* path)
     auto& objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<RCT1::S4Importer>();
     auto result = s4Importer->LoadScenario(path);
-    objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+    objectMgr.LoadObjects(result.RequiredObjects);
     s4Importer->Import();
 }
