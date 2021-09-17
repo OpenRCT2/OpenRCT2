@@ -140,12 +140,12 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     ride->type = _rideType;
     ride->subtype = rideEntryIndex;
     ride->SetColourPreset(_colour1);
-    ride->overall_view.setNull();
+    ride->overall_view.SetNull();
     ride->SetNameToDefault();
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        ride->stations[i].Start.setNull();
+        ride->stations[i].Start.SetNull();
         ride_clear_entrance_location(ride, i);
         ride_clear_exit_location(ride, i);
         ride->stations[i].TrainAtStation = RideStation::NO_TRAIN;

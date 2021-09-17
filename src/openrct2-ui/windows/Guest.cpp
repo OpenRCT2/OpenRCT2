@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -148,6 +149,8 @@ static void window_guest_common_invalidate(rct_window* w);
 static void window_guest_overview_close(rct_window *w);
 static void window_guest_overview_resize(rct_window *w);
 static void window_guest_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
+static void window_guest_overview_mouse_down(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void window_guest_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_guest_overview_invalidate(rct_window *w);
 static void window_guest_overview_viewport_rotate(rct_window *w);
@@ -156,6 +159,8 @@ static void window_guest_overview_text_input(rct_window *w, rct_widgetindex widg
 static void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_guest_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
+static void window_guest_follow(rct_window *w);
+static void window_guest_show_locate_dropdown(rct_window* w, rct_widget* widget);
 
 static void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
 
@@ -186,6 +191,8 @@ static rct_window_event_list window_guest_overview_events([](auto& events)
 {
     events.close = &window_guest_overview_close;
     events.mouse_up = &window_guest_overview_mouse_up;
+    events.mouse_down = &window_guest_overview_mouse_down;
+    events.dropdown = &window_guest_overview_dropdown;
     events.resize = &window_guest_overview_resize;
     events.update = &window_guest_overview_update;
     events.tool_update = &window_guest_overview_tool_update;
@@ -585,7 +592,7 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             }
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
-            nullLoc.setNull();
+            nullLoc.SetNull();
             PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
@@ -606,9 +613,6 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
                 w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, {}, peepName.c_str(), 32);
             break;
         }
-        case WIDX_LOCATE:
-            w->ScrollToViewport();
-            break;
         case WIDX_TRACK:
         {
             uint32_t flags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
@@ -618,6 +622,51 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
         }
         break;
     }
+}
+
+static void window_guest_overview_mouse_down(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_LOCATE:
+            window_guest_show_locate_dropdown(w, widget);
+            break;
+    }
+}
+
+static void window_guest_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_LOCATE:
+        {
+            if (dropdownIndex == 0)
+            {
+                w->ScrollToViewport();
+            }
+            else if (dropdownIndex == 1)
+            {
+                window_guest_follow(w);
+            }
+            break;
+        }
+    }
+}
+
+static void window_guest_show_locate_dropdown(rct_window* w, rct_widget* widget)
+{
+    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+
+    WindowDropdownShowText(
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
+    gDropdownDefaultIndex = 0;
+}
+
+static void window_guest_follow(rct_window* w)
+{
+    rct_window* w_main = window_get_main();
+    window_follow_sprite(w_main, w->number);
 }
 
 /**
@@ -1130,7 +1179,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
-    if (!mapCoords.isNull())
+    if (!mapCoords.IsNull())
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
@@ -1178,7 +1227,7 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     TileElement* tileElement;
     auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
-    if (destCoords.isNull())
+    if (destCoords.IsNull())
         return;
 
     PeepPickupAction pickupAction{
@@ -1454,7 +1503,7 @@ void window_guest_rides_update(rct_window* w)
     {
         if (ride.IsRide() && guest->HasRidden(&ride))
         {
-            w->list_item_positions[curr_list_position] = ride.id;
+            w->list_item_positions[curr_list_position] = EnumValue(ride.id);
             curr_list_position++;
         }
     }
@@ -1605,7 +1654,8 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
 
-        auto ride = get_ride(w->list_item_positions[list_index]);
+        const auto rideId = static_cast<ride_id_t>(w->list_item_positions[list_index]);
+        auto ride = get_ride(rideId);
         if (ride != nullptr)
         {
             auto ft = Formatter();

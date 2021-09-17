@@ -909,7 +909,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 
     // other != viewport probably triggers on viewports in ride or guest window?
     // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
-    if (!mapXYCoords || other != viewport)
+    if (!mapXYCoords.has_value() || other != viewport)
     {
         auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
 
@@ -926,9 +926,9 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 
     auto centreLoc = centre_2d_coordinates(coords, viewport);
 
-    if (centreLoc)
+    if (centreLoc.has_value())
     {
-        w->savedViewPos = *centreLoc;
+        w->savedViewPos = centreLoc.value();
         viewport->viewPos = *centreLoc;
     }
 
@@ -976,7 +976,7 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int32_t map_x, int
     int32_t z = tile_element_height({ map_x, map_y });
     auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w->viewport);
 
-    if (!centreLoc)
+    if (!centreLoc.has_value())
     {
         log_error("Invalid location.");
         return;

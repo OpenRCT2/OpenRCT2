@@ -221,10 +221,10 @@ void TextureCache::GeneratePaletteTexture()
         GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
 
         auto g1Index = GetPaletteG1Index(i);
-        if (g1Index)
+        if (g1Index.has_value())
         {
-            auto element = gfx_get_g1_element(*g1Index);
-            gfx_draw_sprite_software(&dpi, ImageId(*g1Index), { -element->x_offset, y - element->y_offset });
+            auto element = gfx_get_g1_element(g1Index.value());
+            gfx_draw_sprite_software(&dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
         }
     }
 

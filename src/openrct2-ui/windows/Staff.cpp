@@ -134,6 +134,8 @@ static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetI
 static void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_staff_overview_viewport_rotate(rct_window *w);
+static void window_staff_follow(rct_window *w);
+static void window_staff_show_locate_dropdown(rct_window* w, rct_widget* widget);
 
 static void window_staff_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_options_update(rct_window* w);
@@ -408,14 +410,11 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_TAB_3:
             window_staff_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
-        case WIDX_LOCATE:
-            w->ScrollToViewport();
-            break;
         case WIDX_PICKUP:
         {
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
-            nullLoc.setNull();
+            nullLoc.SetNull();
             PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
@@ -509,30 +508,34 @@ void window_staff_overview_resize(rct_window* w)
  */
 void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    if (widgetIndex != WIDX_PATROL)
+    switch (widgetIndex)
     {
-        return;
-    }
+        case WIDX_LOCATE:
+            window_staff_show_locate_dropdown(w, widget);
+            break;
+        case WIDX_PATROL:
+        {
+            // Dropdown names
+            gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
+            gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
 
-    // Dropdown names
-    gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
-    gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
+            auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
+            int32_t extray = widget->height() + 1;
+            WindowDropdownShowText(dropdownPos, extray, w->colours[1], 0, 2);
+            gDropdownDefaultIndex = 0;
 
-    auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
-    int32_t extray = widget->height() + 1;
-    WindowDropdownShowText(dropdownPos, extray, w->colours[1], 0, 2);
-    gDropdownDefaultIndex = 0;
+            const auto peep = GetStaff(w);
+            if (peep == nullptr)
+            {
+                return;
+            }
 
-    const auto peep = GetStaff(w);
-    if (peep == nullptr)
-    {
-        return;
-    }
-
-    // Disable clear patrol area if no area is set.
-    if (!peep->HasPatrolArea())
-    {
-        Dropdown::SetDisabled(1, true);
+            // Disable clear patrol area if no area is set.
+            if (!peep->HasPatrolArea())
+            {
+                Dropdown::SetDisabled(1, true);
+            }
+        }
     }
 }
 
@@ -542,31 +545,61 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
  */
 void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    if (widgetIndex != WIDX_PATROL)
+    switch (widgetIndex)
     {
-        return;
+        case WIDX_LOCATE:
+        {
+            if (dropdownIndex == 0)
+            {
+                w->ScrollToViewport();
+            }
+            else if (dropdownIndex == 1)
+            {
+                window_staff_follow(w);
+            }
+            break;
+        }
+        case WIDX_PATROL:
+        {
+            // Clear patrol
+            if (dropdownIndex == 1)
+            {
+                const auto staff = GetStaff(w);
+                if (staff != nullptr)
+                {
+                    staff->ClearPatrolArea();
+                    gfx_invalidate_screen();
+                    staff_update_greyed_patrol_areas();
+                }
+            }
+            else
+            {
+                if (!tool_set(w, widgetIndex, Tool::WalkDown))
+                {
+                    show_gridlines();
+                    gStaffDrawPatrolAreas = w->number;
+                    gfx_invalidate_screen();
+                }
+            }
+            break;
+        }
     }
+}
 
-    // Clear patrol
-    if (dropdownIndex == 1)
-    {
-        const auto staff = GetStaff(w);
-        if (staff != nullptr)
-        {
-            staff->ClearPatrolArea();
-            gfx_invalidate_screen();
-            staff_update_greyed_patrol_areas();
-        }
-    }
-    else
-    {
-        if (!tool_set(w, widgetIndex, Tool::WalkDown))
-        {
-            show_gridlines();
-            gStaffDrawPatrolAreas = w->number;
-            gfx_invalidate_screen();
-        }
-    }
+static void window_staff_show_locate_dropdown(rct_window* w, rct_widget* widget)
+{
+    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+
+    WindowDropdownShowText(
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
+    gDropdownDefaultIndex = 0;
+}
+
+static void window_staff_follow(rct_window* w)
+{
+    rct_window* w_main = window_get_main();
+    window_follow_sprite(w_main, w->number);
 }
 
 /**
@@ -1131,7 +1164,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
-    if (!mapCoords.isNull())
+    if (!mapCoords.IsNull())
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
@@ -1178,7 +1211,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         TileElement* tileElement;
         auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
-        if (destCoords.isNull())
+        if (destCoords.IsNull())
             return;
 
         PeepPickupAction pickupAction{
@@ -1196,7 +1229,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     {
         auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-        if (destCoords.isNull())
+        if (destCoords.IsNull())
             return;
 
         auto staff = TryGetEntity<Staff>(w->number);
@@ -1232,7 +1265,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
 
     auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-    if (destCoords.isNull())
+    if (destCoords.IsNull())
         return;
 
     auto staff = TryGetEntity<Staff>(w->number);

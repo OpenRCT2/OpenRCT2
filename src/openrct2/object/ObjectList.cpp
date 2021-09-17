@@ -18,6 +18,7 @@
 #include "ObjectRepository.h"
 
 #include <algorithm>
+#include <array>
 #include <cstring>
 
 // 98DA00
@@ -41,6 +42,7 @@ int32_t object_entry_group_counts[] = {
     MAX_FOOTPATH_SURFACE_OBJECTS,
     MAX_FOOTPATH_RAILINGS_OBJECTS,
 };
+static_assert(std::size(object_entry_group_counts) == EnumValue(ObjectType::Count));
 
 // 98DA2C
 int32_t object_entry_group_encoding[] = {
@@ -87,6 +89,8 @@ void ObjectList::const_iterator::MoveToNextEntry()
             break;
         }
     } while (!_parent->_subLists[_subList][_index].HasValue());
+<<<<<<< HEAD
+=======
 }
 
 ObjectList::const_iterator& ObjectList::const_iterator::operator++()
@@ -186,6 +190,116 @@ ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier)
         }
     }
     return OBJECT_ENTRY_INDEX_NULL;
+>>>>>>> upstream/develop
+}
+
+ObjectList::const_iterator& ObjectList::const_iterator::operator++()
+{
+    MoveToNextEntry();
+    return *this;
+}
+
+ObjectList::const_iterator ObjectList::const_iterator::operator++(int)
+{
+    return *this;
+}
+
+const ObjectEntryDescriptor& ObjectList::const_iterator::operator*()
+{
+    return _parent->_subLists[_subList][_index];
+}
+
+bool ObjectList::const_iterator::operator==(const_iterator& rhs)
+{
+    return _parent == rhs._parent && _subList == rhs._subList && _index == rhs._index;
+}
+
+bool ObjectList::const_iterator::operator!=(const_iterator& rhs)
+{
+    return !(*this == rhs);
+}
+
+ObjectList::const_iterator ObjectList::begin() const
+{
+    return const_iterator(this, false);
+}
+
+ObjectList::const_iterator ObjectList::end() const
+{
+    return const_iterator(this, true);
+}
+
+std::vector<ObjectEntryDescriptor>& ObjectList::GetList(ObjectType type)
+{
+    auto index = static_cast<size_t>(type);
+    while (_subLists.size() <= index)
+    {
+        _subLists.resize(static_cast<size_t>(index) + 1);
+    }
+    return _subLists[index];
+}
+
+std::vector<ObjectEntryDescriptor>& ObjectList::GetList(ObjectType type) const
+{
+    return const_cast<ObjectList*>(this)->GetList(type);
+}
+
+const ObjectEntryDescriptor& ObjectList::GetObject(ObjectType type, ObjectEntryIndex index) const
+{
+    const auto& subList = GetList(type);
+    if (subList.size() > index)
+    {
+        return subList[index];
+    }
+
+    static ObjectEntryDescriptor placeholder;
+    return placeholder;
+}
+
+void ObjectList::Add(const ObjectEntryDescriptor& entry)
+{
+    auto& subList = GetList(entry.GetType());
+    subList.push_back(entry);
+}
+
+void ObjectList::SetObject(ObjectEntryIndex index, const ObjectEntryDescriptor& entry)
+{
+    auto& subList = GetList(entry.GetType());
+    if (subList.size() <= index)
+    {
+        subList.resize(static_cast<size_t>(index) + 1);
+    }
+    subList[index] = entry;
+}
+
+void ObjectList::SetObject(ObjectType type, ObjectEntryIndex index, std::string_view identifier)
+{
+    auto entry = ObjectEntryDescriptor(identifier);
+    entry.Type = type;
+    SetObject(index, entry);
+}
+
+ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier)
+{
+    auto& subList = GetList(type);
+    for (size_t i = 0; i < subList.size(); i++)
+    {
+        if (subList[i].Identifier == identifier)
+        {
+<<<<<<< HEAD
+            return static_cast<ObjectEntryIndex>(i);
+=======
+            auto thisEntry = object_entry_get_object(objectType, i)->GetObjectEntry();
+            if (thisEntry == *entry)
+            {
+                *entry_type = objectType;
+                *entryIndex = i;
+                return true;
+            }
+>>>>>>> upstream/develop
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
 }
 
 /**
@@ -219,6 +333,7 @@ void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIn
         *outEntryIndex = static_cast<ObjectEntryIndex>(index);
 }
 
+<<<<<<< HEAD
 void* get_loaded_object_chunk(size_t index)
 {
     ObjectType objectType;
@@ -227,6 +342,8 @@ void* get_loaded_object_chunk(size_t index)
     return object_entry_get_chunk(objectType, entryIndex);
 }
 
+=======
+>>>>>>> upstream/develop
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry)
 {
     bufferSize = std::min(static_cast<size_t>(DAT_NAME_LENGTH) + 1, bufferSize);
@@ -236,20 +353,13 @@ void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_obje
 
 void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index)
 {
-    ObjectEntryIndex objectIndex = index;
-    for (int32_t i = 0; i < EnumValue(objectType); i++)
-    {
-        objectIndex += object_entry_group_counts[i];
-    }
-
-    void* result = nullptr;
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr.GetLoadedObject(objectIndex);
-    if (obj != nullptr)
+    auto* object = objectMgr.GetLoadedObject(objectType, index);
+    if (object != nullptr)
     {
-        result = obj->GetLegacyData();
+        return object->GetLegacyData();
     }
-    return result;
+    return nullptr;
 }
 
 const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index)

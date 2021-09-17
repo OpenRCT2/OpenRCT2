@@ -23,6 +23,7 @@ public:
     uint8_t Flags{};
     uint8_t ScrollingMode{};
     colour_t Colour{};
+    PathRailingsDescriptor _descriptor = {};
 
 public:
     void ReadJson(IReadObjectContext* context, json_t& root) override;
@@ -30,6 +31,11 @@ public:
     void Unload() override;
 
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+
+    const PathRailingsDescriptor& GetDescriptor() const
+    {
+        return _descriptor;
+    }
 
 private:
     RailingEntrySupportType ParseSupportType(std::string_view s);

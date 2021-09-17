@@ -240,8 +240,11 @@ enum
 };
 
 extern const uint32_t floorSpritesCork[];
+extern const uint32_t floorSpritesMetal[];
+extern const uint32_t floorSpritesMetalB[];
 
 extern const uint32_t fenceSpritesRope[];
+extern const uint32_t fenceSpritesMetal[];
 extern const uint32_t fenceSpritesMetalB[];
 
 extern const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3];

@@ -1187,7 +1187,7 @@ static void window_map_set_land_rights_tool_update(const ScreenCoordsXY& screenC
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     auto mapCoords = screen_get_map_xy(screenCoords, &viewport);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return;
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1216,13 +1216,13 @@ static CoordsXYZD place_park_entrance_get_map_position(const ScreenCoordsXY& scr
     CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, INVALID_DIRECTION };
     const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
     parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, INVALID_DIRECTION };
-    if (parkEntranceMapPosition.isNull())
+    if (parkEntranceMapPosition.IsNull())
         return parkEntranceMapPosition;
 
     auto surfaceElement = map_get_surface_element_at(mapCoords);
     if (surfaceElement == nullptr)
     {
-        parkEntranceMapPosition.setNull();
+        parkEntranceMapPosition.SetNull();
         return parkEntranceMapPosition;
     }
 
@@ -1257,7 +1257,7 @@ static void window_map_place_park_entrance_tool_update(const ScreenCoordsXY& scr
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
-    if (parkEntrancePosition.isNull())
+    if (parkEntrancePosition.IsNull())
     {
         park_entrance_remove_ghost();
         return;
@@ -1298,7 +1298,7 @@ static void window_map_set_peep_spawn_tool_update(const ScreenCoordsXY& screenCo
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
-    if (mapCoords.isNull())
+    if (mapCoords.IsNull())
         return;
 
     mapZ = tileElement->GetBaseZ();
@@ -1329,7 +1329,7 @@ static void window_map_place_park_entrance_tool_down(const ScreenCoordsXY& scree
     park_entrance_remove_ghost();
 
     CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
-    if (!parkEntrancePosition.isNull())
+    if (!parkEntrancePosition.IsNull())
     {
         auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
         auto result = GameActions::Execute(&gameAction);
@@ -1351,7 +1351,7 @@ static void window_map_set_peep_spawn_tool_down(const ScreenCoordsXY& screenCoor
 
     // Verify footpath exists at location, and retrieve coordinates
     auto mapCoords = footpath_get_coordinates_from_pos(screenCoords, &direction, &tileElement);
-    if (mapCoords.isNull())
+    if (mapCoords.IsNull())
         return;
 
     mapZ = tileElement->GetBaseZ();

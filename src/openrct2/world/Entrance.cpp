@@ -275,35 +275,40 @@ void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
     SequenceIndex |= (newSequenceIndex & 0xF);
 }
 
-FootpathObject* EntranceElement::GetPathEntry() const
+bool EntranceElement::HasLegacyPathEntry() const
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathObject*>(objMgr.GetLoadedObject(ObjectType::Paths, GetPathEntryIndex()));
+    return (flags2 & ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
 }
 
-ObjectEntryIndex EntranceElement::GetPathEntryIndex() const
+ObjectEntryIndex EntranceElement::GetLegacyPathEntryIndex() const
 {
-    if (flags2 & ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY)
+    if (HasLegacyPathEntry())
         return PathType;
     else
         return OBJECT_ENTRY_INDEX_NULL;
 }
 
-void EntranceElement::SetPathEntryIndex(ObjectEntryIndex newIndex)
+const FootpathObject* EntranceElement::GetLegacyPathEntry() const
 {
-    PathType = newIndex;
-    flags2 |= ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY;
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathObject*>(objMgr.GetLoadedObject(ObjectType::Paths, GetLegacyPathEntryIndex()));
+}
+
+void EntranceElement::SetLegacyPathEntryIndex(ObjectEntryIndex newPathType)
+{
+    PathType = newPathType;
+    flags2 |= ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
 ObjectEntryIndex EntranceElement::GetSurfaceEntryIndex() const
 {
-    if (flags2 & ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY)
+    if (HasLegacyPathEntry())
         return OBJECT_ENTRY_INDEX_NULL;
     else
         return PathType;
 }
 
-FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const
+const FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
@@ -312,5 +317,23 @@ FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const
 void EntranceElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
 {
     PathType = newIndex;
-    flags2 &= ~ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY;
+    flags2 &= ~ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+}
+
+const PathSurfaceDescriptor* EntranceElement::GetPathSurfaceDescriptor() const
+{
+    if (HasLegacyPathEntry())
+    {
+        const auto* legacyPathEntry = GetLegacyPathEntry();
+        if (legacyPathEntry == nullptr)
+            return nullptr;
+
+        return &legacyPathEntry->GetPathSurfaceDescriptor();
+    }
+
+    const auto* surfaceEntry = GetSurfaceEntry();
+    if (surfaceEntry == nullptr)
+        return nullptr;
+
+    return &surfaceEntry->GetDescriptor();
 }

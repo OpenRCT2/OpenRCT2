@@ -16,6 +16,8 @@
 
 extern thread_local uint8_t gCommonFormatArgs[80];
 
+enum class ride_id_t : uint16_t;
+
 class Formatter
 {
     std::array<uint8_t, 80> Buffer{};
@@ -83,6 +85,7 @@ public:
             std::is_same_v<typename std::remove_cv<TSpecified>::type, int32_t> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, money32> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, money64> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, ride_id_t> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, rct_string_id> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, uint16_t> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, uint32_t> ||
@@ -92,7 +95,7 @@ public:
         // clang-format on
 
         uint64_t convertedValue;
-        if constexpr (std::is_integral_v<TSpecified>)
+        if constexpr (std::is_integral_v<TSpecified> || std::is_enum_v<TSpecified>)
         {
             convertedValue = static_cast<uint64_t>(value);
         }

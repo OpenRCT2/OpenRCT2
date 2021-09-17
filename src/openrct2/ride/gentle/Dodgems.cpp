@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../interface/Viewport.h"
+#include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../util/Util.h"
@@ -47,45 +48,52 @@ static void paint_dodgems(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
-    uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });
-
+    StationObject* stationObject = nullptr;
     if (ride != nullptr)
-    {
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
-            dodgems_fence_sprites, session->CurrentRotation);
-    }
+        stationObject = ride_get_station_object(ride);
 
-    switch (direction)
+    if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
-        case 2:
-            trackSequence = 15 - trackSequence;
-            [[fallthrough]];
-        case 0:
-            if ((trackSequence / 4) & 1)
-            {
-                paint_dodgems_roof(session, height + 30, 0);
-            }
-            else
-            {
-                paint_dodgems_roof(session, height + 30, 2);
-            }
-            break;
+        uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });
 
-        case 3:
-            trackSequence = 15 - trackSequence;
-            [[fallthrough]];
-        case 1:
-            if ((trackSequence / 4) & 1)
-            {
-                paint_dodgems_roof(session, height + 30, 1);
-            }
-            else
-            {
-                paint_dodgems_roof(session, height + 30, 3);
-            }
-            break;
+        if (ride != nullptr)
+        {
+            track_paint_util_paint_fences(
+                session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
+                dodgems_fence_sprites, session->CurrentRotation);
+        }
+
+        switch (direction)
+        {
+            case 2:
+                trackSequence = 15 - trackSequence;
+                [[fallthrough]];
+            case 0:
+                if ((trackSequence / 4) & 1)
+                {
+                    paint_dodgems_roof(session, height + 30, 0);
+                }
+                else
+                {
+                    paint_dodgems_roof(session, height + 30, 2);
+                }
+                break;
+
+            case 3:
+                trackSequence = 15 - trackSequence;
+                [[fallthrough]];
+            case 1:
+                if ((trackSequence / 4) & 1)
+                {
+                    paint_dodgems_roof(session, height + 30, 1);
+                }
+                else
+                {
+                    paint_dodgems_roof(session, height + 30, 3);
+                }
+                break;
+        }
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, height + 36, 0x20);

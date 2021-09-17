@@ -26,6 +26,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/Version.h>
 #include <openrct2/actions/BannerPlaceAction.h>
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/ClearAction.h>
@@ -54,6 +55,7 @@
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -119,10 +121,12 @@ enum FILE_MENU_DDIDX {
     DDIDX_SCREENSHOT = 7,
     DDIDX_GIANT_SCREENSHOT = 8,
     // separator
-    DDIDX_QUIT_TO_MENU = 10,
-    DDIDX_EXIT_OPENRCT2 = 11,
+    DDIDX_FILE_BUG_ON_GITHUB = 10,
     // separator
-    DDIDX_UPDATE_AVAILABLE = 13,
+    DDIDX_QUIT_TO_MENU = 12,
+    DDIDX_EXIT_OPENRCT2 = 13,
+    // separator
+    DDIDX_UPDATE_AVAILABLE = 15,
 };
 
 enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
@@ -423,60 +427,61 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
  */
 static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    int32_t numItems;
+    int32_t numItems = 0;
 
     switch (widgetIndex)
     {
         case WIDX_FILE_MENU:
             if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
             {
-                gDropdownItemsFormat[0] = STR_ABOUT;
-                gDropdownItemsFormat[1] = STR_OPTIONS;
-                gDropdownItemsFormat[2] = STR_SCREENSHOT;
-                gDropdownItemsFormat[3] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[4] = STR_EMPTY;
-                gDropdownItemsFormat[5] = STR_QUIT_TRACK_DESIGNS_MANAGER;
-                gDropdownItemsFormat[6] = STR_EXIT_OPENRCT2;
+                gDropdownItemsFormat[numItems++] = STR_ABOUT;
+                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
+                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_QUIT_TRACK_DESIGNS_MANAGER;
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
 
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    gDropdownItemsFormat[5] = STR_QUIT_ROLLERCOASTER_DESIGNER;
-
-                numItems = 7;
+                    gDropdownItemsFormat[numItems++] = STR_QUIT_ROLLERCOASTER_DESIGNER;
             }
             else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
-                gDropdownItemsFormat[0] = STR_LOAD_LANDSCAPE;
-                gDropdownItemsFormat[1] = STR_SAVE_LANDSCAPE;
-                gDropdownItemsFormat[2] = STR_EMPTY;
-                gDropdownItemsFormat[3] = STR_ABOUT;
-                gDropdownItemsFormat[4] = STR_OPTIONS;
-                gDropdownItemsFormat[5] = STR_SCREENSHOT;
-                gDropdownItemsFormat[6] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[7] = STR_EMPTY;
-                gDropdownItemsFormat[8] = STR_QUIT_SCENARIO_EDITOR;
-                gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
-                numItems = 10;
+                gDropdownItemsFormat[numItems++] = STR_LOAD_LANDSCAPE;
+                gDropdownItemsFormat[numItems++] = STR_SAVE_LANDSCAPE;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_ABOUT;
+                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
+                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_QUIT_SCENARIO_EDITOR;
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
             }
             else
             {
-                gDropdownItemsFormat[0] = STR_NEW_GAME;
-                gDropdownItemsFormat[1] = STR_LOAD_GAME;
-                gDropdownItemsFormat[2] = STR_SAVE_GAME;
-                gDropdownItemsFormat[3] = STR_SAVE_GAME_AS;
-                gDropdownItemsFormat[4] = STR_EMPTY;
-                gDropdownItemsFormat[5] = STR_ABOUT;
-                gDropdownItemsFormat[6] = STR_OPTIONS;
-                gDropdownItemsFormat[7] = STR_SCREENSHOT;
-                gDropdownItemsFormat[8] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[9] = STR_EMPTY;
-                gDropdownItemsFormat[10] = STR_QUIT_TO_MENU;
-                gDropdownItemsFormat[11] = STR_EXIT_OPENRCT2;
-                numItems = 12;
+                gDropdownItemsFormat[numItems++] = STR_NEW_GAME;
+                gDropdownItemsFormat[numItems++] = STR_LOAD_GAME;
+                gDropdownItemsFormat[numItems++] = STR_SAVE_GAME;
+                gDropdownItemsFormat[numItems++] = STR_SAVE_GAME_AS;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_ABOUT;
+                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
+                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
                 if (OpenRCT2::GetContext()->HasNewVersionInfo())
                 {
-                    gDropdownItemsFormat[12] = STR_EMPTY;
-                    gDropdownItemsFormat[13] = STR_UPDATE_AVAILABLE;
-                    numItems += 2;
+                    gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
                 }
             }
             WindowDropdownShowText(
@@ -582,6 +587,15 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 case DDIDX_GIANT_SCREENSHOT:
                     screenshot_giant();
                     break;
+                case DDIDX_FILE_BUG_ON_GITHUB:
+                {
+                    std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/"
+                                      "new?assignees=&labels=bug&template=bug_report.yaml";
+                    auto versionStr = String::URLEncode(gVersionInfoFull);
+                    url.append("&openrct2_build=" + versionStr);
+                    OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
+                }
+                break;
                 case DDIDX_QUIT_TO_MENU:
                 {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
@@ -661,19 +675,33 @@ static void window_top_toolbar_invalidate(rct_window* w)
     window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::TrnBtn;
 
     if (!gConfigInterface.toolbar_show_mute)
-    {
         window_top_toolbar_widgets[WIDX_MUTE].type = WindowWidgetType::Empty;
-    }
 
     if (!gConfigInterface.toolbar_show_chat)
-    {
         window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
+
+    if (!gConfigInterface.toolbar_show_research)
+        window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
+
+    if (!gConfigInterface.toolbar_show_cheats)
+        window_top_toolbar_widgets[WIDX_CHEATS].type = WindowWidgetType::Empty;
+
+    if (!gConfigInterface.toolbar_show_news)
+        window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
+
+    if (!gConfigInterface.toolbar_show_zoom)
+    {
+        window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
     }
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR || gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
     }
+
+    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.toolbar_show_finances)
+        window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
@@ -711,39 +739,19 @@ static void window_top_toolbar_invalidate(rct_window* w)
             window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WindowWidgetType::Empty;
         }
     }
-    else
+
+    switch (network_get_mode())
     {
-        if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.toolbar_show_finances)
-            window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
-
-        if (!gConfigInterface.toolbar_show_research)
-            window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
-
-        if (!gConfigInterface.toolbar_show_cheats)
-            window_top_toolbar_widgets[WIDX_CHEATS].type = WindowWidgetType::Empty;
-
-        if (!gConfigInterface.toolbar_show_news)
-            window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
-
-        if (!gConfigInterface.toolbar_show_zoom)
-        {
-            window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
-            window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
-        }
-
-        switch (network_get_mode())
-        {
-            case NETWORK_MODE_NONE:
-                window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
-                window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
-                break;
-            case NETWORK_MODE_CLIENT:
-                window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
-                [[fallthrough]];
-            case NETWORK_MODE_SERVER:
-                window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
-                break;
-        }
+        case NETWORK_MODE_NONE:
+            window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
+            break;
+        case NETWORK_MODE_CLIENT:
+            window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
+            [[fallthrough]];
+        case NETWORK_MODE_SERVER:
+            window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
+            break;
     }
 
     enabledWidgets = 0;
@@ -1233,7 +1241,7 @@ static void sub_6E1F34_small_scenery(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1259,12 +1267,12 @@ static void sub_6E1F34_small_scenery(
         if (!gSceneryCtrlPressed)
         {
             auto gridCoords = screen_get_map_xy_quadrant(screenPos, &quadrant);
-            if (!gridCoords)
+            if (!gridCoords.has_value())
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
-            gridPos = *gridCoords;
+            gridPos = gridCoords.value();
 
             gSceneryPlaceZ = 0;
 
@@ -1275,7 +1283,7 @@ static void sub_6E1F34_small_scenery(
 
                 if (surfaceElement == nullptr)
                 {
-                    gridPos.setNull();
+                    gridPos.SetNull();
                     return;
                 }
 
@@ -1292,12 +1300,12 @@ static void sub_6E1F34_small_scenery(
             int16_t z = gSceneryCtrlPressZ;
 
             auto mapCoords = screen_get_map_xy_quadrant_with_z(screenPos, z, &quadrant);
-            if (!mapCoords)
+            if (!mapCoords.has_value())
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
-            gridPos = *mapCoords;
+            gridPos = mapCoords.value();
 
             // If SHIFT pressed
             if (gSceneryShiftPressed)
@@ -1310,7 +1318,7 @@ static void sub_6E1F34_small_scenery(
             gSceneryPlaceZ = z;
         }
 
-        if (gridPos.isNull())
+        if (gridPos.IsNull())
             return;
 
         uint8_t rotation = gWindowSceneryRotation;
@@ -1344,7 +1352,7 @@ static void sub_6E1F34_small_scenery(
 
         if (info.SpriteType == ViewportInteractionItem::None)
         {
-            gridPos.setNull();
+            gridPos.SetNull();
             return;
         }
 
@@ -1358,7 +1366,7 @@ static void sub_6E1F34_small_scenery(
 
             if (surfaceElement == nullptr)
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
 
@@ -1374,13 +1382,13 @@ static void sub_6E1F34_small_scenery(
     {
         int16_t z = gSceneryCtrlPressZ;
         auto coords = screen_get_map_xy_with_z(screenPos, z);
-        if (coords)
+        if (coords.has_value())
         {
             gridPos = *coords;
         }
         else
         {
-            gridPos.setNull();
+            gridPos.SetNull();
         }
         // If SHIFT pressed
         if (gSceneryShiftPressed)
@@ -1393,7 +1401,7 @@ static void sub_6E1F34_small_scenery(
         gSceneryPlaceZ = z;
     }
 
-    if (gridPos.isNull())
+    if (gridPos.IsNull())
         return;
 
     gridPos = gridPos.ToTileStart();
@@ -1423,7 +1431,7 @@ static void sub_6E1F34_path_item(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1437,7 +1445,7 @@ static void sub_6E1F34_path_item(
 
     if (info.SpriteType == ViewportInteractionItem::None)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1456,7 +1464,7 @@ static void sub_6E1F34_wall(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1477,12 +1485,12 @@ static void sub_6E1F34_wall(
     if (!gSceneryCtrlPressed)
     {
         auto gridCoords = screen_get_map_xy_side(screenPos, &edge);
-        if (!gridCoords)
+        if (!gridCoords.has_value())
         {
-            gridPos.setNull();
+            gridPos.SetNull();
             return;
         }
-        gridPos = *gridCoords;
+        gridPos = gridCoords.value();
 
         gSceneryPlaceZ = 0;
 
@@ -1493,7 +1501,7 @@ static void sub_6E1F34_wall(
 
             if (surfaceElement == nullptr)
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
 
@@ -1509,12 +1517,12 @@ static void sub_6E1F34_wall(
     {
         int16_t z = gSceneryCtrlPressZ;
         auto mapCoords = screen_get_map_xy_side_with_z(screenPos, z, &edge);
-        if (!mapCoords)
+        if (!mapCoords.has_value())
         {
-            gridPos.setNull();
+            gridPos.SetNull();
             return;
         }
-        gridPos = *mapCoords;
+        gridPos = mapCoords.value();
 
         // If SHIFT pressed
         if (gSceneryShiftPressed)
@@ -1527,7 +1535,7 @@ static void sub_6E1F34_wall(
         gSceneryPlaceZ = z;
     }
 
-    if (gridPos.isNull())
+    if (gridPos.IsNull())
         return;
 
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
@@ -1545,7 +1553,7 @@ static void sub_6E1F34_large_scenery(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1572,7 +1580,7 @@ static void sub_6E1F34_large_scenery(
         const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenPos);
         gridPos = mapCoords;
 
-        if (gridPos.isNull())
+        if (gridPos.IsNull())
             return;
 
         gSceneryPlaceZ = 0;
@@ -1584,7 +1592,7 @@ static void sub_6E1F34_large_scenery(
 
             if (surfaceElement == nullptr)
             {
-                gridPos.setNull();
+                gridPos.SetNull();
                 return;
             }
 
@@ -1600,13 +1608,13 @@ static void sub_6E1F34_large_scenery(
     {
         int16_t z = gSceneryCtrlPressZ;
         auto coords = screen_get_map_xy_with_z(screenPos, z);
-        if (coords)
+        if (coords.has_value())
         {
             gridPos = *coords;
         }
         else
         {
-            gridPos.setNull();
+            gridPos.SetNull();
         }
 
         // If SHIFT pressed
@@ -1620,7 +1628,7 @@ static void sub_6E1F34_large_scenery(
         gSceneryPlaceZ = z;
     }
 
-    if (gridPos.isNull())
+    if (gridPos.IsNull())
         return;
 
     gridPos = gridPos.ToTileStart();
@@ -1645,7 +1653,7 @@ static void sub_6E1F34_banner(
 
     if (w == nullptr)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1659,7 +1667,7 @@ static void sub_6E1F34_banner(
 
     if (info.SpriteType == ViewportInteractionItem::None)
     {
-        gridPos.setNull();
+        gridPos.SetNull();
         return;
     }
 
@@ -1718,7 +1726,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             uint8_t quadrant;
             Direction rotation;
             sub_6E1F34_small_scenery(windowPos, selectedScenery, gridPos, &quadrant, &rotation);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             int32_t quantity = 1;
@@ -1838,7 +1846,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         {
             int32_t z;
             sub_6E1F34_path_item(windowPos, selectedScenery, gridPos, &z);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery + 1);
@@ -1857,7 +1865,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         {
             uint8_t edges;
             sub_6E1F34_wall(windowPos, selectedScenery, gridPos, &edges);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             uint8_t zAttemptRange = 1;
@@ -1909,7 +1917,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         {
             Direction direction;
             sub_6E1F34_large_scenery(windowPos, selectedScenery, gridPos, &direction);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             uint8_t zAttemptRange = 1;
@@ -1967,17 +1975,18 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             int32_t z;
             Direction direction;
             sub_6E1F34_banner(windowPos, selectedScenery, gridPos, &z, &direction);
-            if (gridPos.isNull())
+            if (gridPos.IsNull())
                 return;
 
             CoordsXYZD loc{ gridPos, z, direction };
             auto primaryColour = gWindowSceneryPrimaryColour;
             auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, primaryColour);
-            bannerPlaceAction.SetCallback([=](const GameAction* ga, const BannerPlaceActionResult* result) {
+            bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
+                    auto data = result->GetData<BannerPlaceActionResult>();
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                    context_open_detail_window(WD_BANNER, result->bannerId);
+                    context_open_detail_window(WD_BANNER, data.bannerId);
                 }
             });
             GameActions::Execute(&bannerPlaceAction);
@@ -1995,7 +2004,7 @@ static uint8_t top_toolbar_tool_update_land_paint(const ScreenCoordsXY& screenPo
 
     auto mapTile = screen_get_map_xy(screenPos, nullptr);
 
-    if (!mapTile)
+    if (!mapTile.has_value())
     {
         if (gClearSceneryCost != MONEY64_UNDEFINED)
         {
@@ -2114,7 +2123,7 @@ static void top_toolbar_tool_update_land(const ScreenCoordsXY& screenPos)
         screen_pos_to_map_pos(screenPos, &selectionType);
         mapTile = screen_get_map_xy_side(screenPos, &side);
 
-        if (!mapTile)
+        if (!mapTile.has_value())
         {
             money64 lower_cost = MONEY64_UNDEFINED;
             money64 raise_cost = MONEY64_UNDEFINED;
@@ -2191,7 +2200,7 @@ static void top_toolbar_tool_update_land(const ScreenCoordsXY& screenPos)
     // Get map coordinates and the side of the tile that is being hovered over
     mapTile = screen_get_map_xy_side(screenPos, &side);
 
-    if (!mapTile)
+    if (!mapTile.has_value())
     {
         money64 lower_cost = MONEY64_UNDEFINED;
         money64 raise_cost = MONEY64_UNDEFINED;
@@ -2623,7 +2632,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_small_scenery(screenPos, selection.EntryIndex, mapTile, &quadrant, &rotation);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;
@@ -2701,7 +2710,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_path_item(screenPos, selection.EntryIndex, mapTile, &z);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;
@@ -2736,7 +2745,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_wall(screenPos, selection.EntryIndex, mapTile, &edge);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;
@@ -2791,7 +2800,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_large_scenery(screenPos, selection.EntryIndex, mapTile, &direction);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;
@@ -2858,7 +2867,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             sub_6E1F34_banner(screenPos, selection.EntryIndex, mapTile, &z, &direction);
 
-            if (mapTile.isNull())
+            if (mapTile.IsNull())
             {
                 scenery_remove_ghost_tool_placement();
                 return;

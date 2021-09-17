@@ -152,7 +152,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
     window_push_others_right(w);
     show_gridlines();
     _window_track_place_last_cost = MONEY32_UNDEFINED;
-    _windowTrackPlaceLast.setNull();
+    _windowTrackPlaceLast.SetNull();
     _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 
     window_track_place_clear_mini_preview();
@@ -193,14 +193,14 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_track_place_clear_provisional();
             _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
             w->Invalidate();
-            _windowTrackPlaceLast.setNull();
+            _windowTrackPlaceLast.SetNull();
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_MIRROR:
             track_design_mirror(_trackDesign.get());
             _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
             w->Invalidate();
-            _windowTrackPlaceLast.setNull();
+            _windowTrackPlaceLast.SetNull();
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_SELECT_DIFFERENT_DESIGN:
@@ -259,7 +259,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
 
     // Get the tool map position
     CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
-    if (mapCoords.isNull())
+    if (mapCoords.IsNull())
     {
         window_track_place_clear_provisional();
         return;
@@ -268,7 +268,8 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     // Check if tool map position has changed since last update
     if (mapCoords == _windowTrackPlaceLast)
     {
-        place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { mapCoords, 0 });
+        place_virtual_track(
+            _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { mapCoords, 0 });
         return;
     }
 
@@ -308,7 +309,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), trackLoc);
+    place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), trackLoc);
 }
 
 /**
@@ -324,7 +325,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
-    if (mapCoords.isNull())
+    if (mapCoords.IsNull())
         return;
 
     // Try increasing Z until a feasible placement is found
@@ -348,7 +349,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
                     if (track_design_are_entrance_and_exit_placed())
                     {
                         auto intent = Intent(WC_RIDE);
-                        intent.putExtra(INTENT_EXTRA_RIDE_ID, result->rideIndex);
+                        intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(result->rideIndex));
                         context_open_intent(&intent);
                         auto wnd = window_find_by_class(WC_TRACK_DESIGN_PLACE);
                         window_close(wnd);
@@ -469,7 +470,9 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc)
     if (surfaceElement->GetWaterHeight() > 0)
         z = std::max(z, surfaceElement->GetWaterHeight());
 
-    return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), { loc, z });
+    return z
+        + place_virtual_track(
+               _trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(PreviewRideId), { loc, z });
 }
 
 /**

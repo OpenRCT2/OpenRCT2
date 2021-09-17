@@ -283,7 +283,7 @@ static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& 
 
         auto sceneryOrigin = map_large_scenery_get_origin(
             { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
-        if (!sceneryOrigin)
+        if (!sceneryOrigin.has_value())
         {
             return TrackDesignAddStatus::Success();
         }

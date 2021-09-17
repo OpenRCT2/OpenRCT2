@@ -163,11 +163,11 @@ namespace RCT1
         return terrainEdge < std::size(map) ? map[terrainEdge] : map[0];
     }
 
-    uint8_t GetRideType(uint8_t rideType, uint8_t vehicleType)
+    uint8_t GetRideType(RideType rideType, uint8_t vehicleType)
     {
-        if (rideType == RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER && vehicleType == RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN)
+        if (rideType == RideType::SteelTwisterRollerCoaster && vehicleType == RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN)
             return RIDE_TYPE_HYPER_TWISTER;
-        if (rideType == RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER && vehicleType == RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN)
+        if (rideType == RideType::SteelCorkscrewRollerCoaster && vehicleType == RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN)
             return RIDE_TYPE_HYPERCOASTER;
 
         static uint8_t map[] =
@@ -259,8 +259,10 @@ namespace RCT1
             RIDE_TYPE_DRINK_STALL,                  // RCT1_RIDE_TYPE_LEMONADE_STALL
         };
 
-        Guard::ArgumentInRange<size_t>(rideType, 0, std::size(map), "Unsupported RCT1 ride type.");
-        return map[rideType];
+        const auto index = EnumValue(rideType);
+        Guard::ArgumentInRange<size_t>(index, 0, std::size(map), "Unsupported RCT1 ride type.");
+
+        return map[index];
     }
 
     VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType)
@@ -362,33 +364,33 @@ namespace RCT1
         return map[vehicleType];
     }
 
-    bool RideTypeUsesVehicles(uint8_t rideType)
+    bool RideTypeUsesVehicles(RideType rideType)
     {
         switch (rideType) {
-        case RCT1_RIDE_TYPE_HEDGE_MAZE:
-        case RCT1_RIDE_TYPE_SPIRAL_SLIDE:
-        case RCT1_RIDE_TYPE_ICE_CREAM_STALL:
-        case RCT1_RIDE_TYPE_CHIPS_STALL:
-        case RCT1_RIDE_TYPE_DRINK_STALL:
-        case RCT1_RIDE_TYPE_CANDYFLOSS_STALL:
-        case RCT1_RIDE_TYPE_BURGER_BAR:
-        case RCT1_RIDE_TYPE_BALLOON_STALL:
-        case RCT1_RIDE_TYPE_INFORMATION_KIOSK:
-        case RCT1_RIDE_TYPE_TOILETS:
-        case RCT1_RIDE_TYPE_SOUVENIR_STALL:
-        case RCT1_RIDE_TYPE_PIZZA_STALL:
-        case RCT1_RIDE_TYPE_POPCORN_STALL:
-        case RCT1_RIDE_TYPE_HOT_DOG_STALL:
-        case RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL:
-        case RCT1_RIDE_TYPE_HAT_STALL:
-        case RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL:
-        case RCT1_RIDE_TYPE_40:
-        case RCT1_RIDE_TYPE_44:
-        case RCT1_RIDE_TYPE_T_SHIRT_STALL:
-        case RCT1_RIDE_TYPE_DOUGHNUT_SHOP:
-        case RCT1_RIDE_TYPE_COFFEE_SHOP:
-        case RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL:
-        case RCT1_RIDE_TYPE_LEMONADE_STALL:
+        case RideType::HedgeMaze:
+        case RideType::SpiralSlide:
+        case RideType::IceCreamStall:
+        case RideType::ChipsStall:
+        case RideType::DrinkStall:
+        case RideType::CandyflossStall:
+        case RideType::BurgerBar:
+        case RideType::BalloonStall:
+        case RideType::InformationKiosk:
+        case RideType::Toilets:
+        case RideType::SouvenirStall:
+        case RideType::PizzaStall:
+        case RideType::PopcornStall:
+        case RideType::HotDogStall:
+        case RideType::ExoticSeaFoodStall:
+        case RideType::HatStall:
+        case RideType::ToffeeAppleStall:
+        case RideType::_40:
+        case RideType::_44:
+        case RideType::TShirtStall:
+        case RideType::DoughnutShop:
+        case RideType::CoffeeShop:
+        case RideType::FriedChickenStall:
+        case RideType::LemonadeStall:
             return false;
         default:
             return true;
@@ -684,7 +686,7 @@ namespace RCT1
         return map[vehicleSubEntry];
     }
 
-    std::string_view GetRideTypeObject(uint8_t rideType)
+    std::string_view GetRideTypeObject(RideType rideType)
     {
         static constexpr const char * map[] =
         {
@@ -775,8 +777,10 @@ namespace RCT1
             "rct2.ride.lemst",   // RCT1_RIDE_TYPE_LEMONADE_STALL
         };
 
-        Guard::ArgumentInRange<size_t>(rideType, 0, std::size(map), "Unsupported RCT1 ride type.");
-        return map[rideType];
+        const auto index = EnumValue(rideType);
+        Guard::ArgumentInRange<size_t>(index, 0, std::size(map), "Unsupported RCT1 ride type.");
+
+        return map[index];
     }
 
     std::string_view GetVehicleObject(uint8_t vehicleType)
@@ -1249,10 +1253,10 @@ namespace RCT1
             "rct1aa.footpath_surface.queue_yellow",       // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
             "rct1aa.footpath_surface.queue_green",        // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
 
-            "rct1.footpath_surface.tarmac",             // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
-            "rct1aa.footpath_surface.tarmac_red",           // RCT1_FOOTPATH_TYPE_TARMAC_RED
-            "rct1aa.footpath_surface.tarmac_brown",    // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
-            "rct1aa.footpath_surface.tarmac_green",    // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
+            "TARMAC  ",  // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
+            "PATHSPCE",  // RCT1_FOOTPATH_TYPE_TARMAC_RED
+            "TARMACB ",  // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
+            "TARMACG ",  // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
 
             "rct1.footpath_surface.dirt",               // RCT1_FOOTPATH_TYPE_DIRT_RED
             "rct1aa.footpath_surface.ash",             // RCT1_FOOTPATH_TYPE_DIRT_BLACK

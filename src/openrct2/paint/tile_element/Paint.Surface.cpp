@@ -14,6 +14,7 @@
 #include "../../OpenRCT2.h"
 #include "../../config/Config.h"
 #include "../../core/Guard.hpp"
+#include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
@@ -950,7 +951,7 @@ static std::pair<int32_t, int32_t> surface_get_height_above_water(
             }
             else
             {
-                localSurfaceShape = ror4(surfaceShape ^ TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK, 2);
+                localSurfaceShape = Numerics::ror4(surfaceShape ^ TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK, 2);
             }
         }
     }
@@ -1340,7 +1341,7 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         // Owned land boundary fences
         session->InteractionType = ViewportInteractionItem::ParkEntrance;
 
-        uint8_t rotatedFences = rol4(tileElement.GetParkFences(), rotation);
+        uint8_t rotatedFences = Numerics::rol4(tileElement.GetParkFences(), rotation);
 
         for (const auto& fenceData : _tileSurfaceBoundaries)
         {

@@ -40,7 +40,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "7"
+#define NETWORK_STREAM_VERSION "9"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -64,7 +64,6 @@ static constexpr uint32_t MaxPacketsPerUpdate = 100;
 #    include "../core/Console.hpp"
 #    include "../core/FileStream.h"
 #    include "../core/MemoryStream.h"
-#    include "../core/Nullable.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../interface/Chat.h"
@@ -914,9 +913,9 @@ uint8_t NetworkBase::GetGroupIDByHash(const std::string& keyhash)
     const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
 
     uint8_t groupId = GetDefaultGroup();
-    if (networkUser != nullptr && networkUser->GroupId.HasValue())
+    if (networkUser != nullptr && networkUser->GroupId.has_value())
     {
-        const uint8_t assignedGroup = networkUser->GroupId.GetValue();
+        const uint8_t assignedGroup = *networkUser->GroupId;
         if (GetGroupByID(assignedGroup) != nullptr)
         {
             groupId = assignedGroup;
@@ -1426,7 +1425,22 @@ std::vector<uint8_t> NetworkBase::save_for_network(const std::vector<const Objec
 {
     std::vector<uint8_t> result;
     auto ms = OpenRCT2::MemoryStream();
+<<<<<<< HEAD
     if (SaveMap(&ms, objects))
+=======
+    if (!SaveMap(&ms, objects))
+    {
+        log_warning("Failed to export map.");
+        return header;
+    }
+    gUseRLE = RLEState;
+
+    const void* data = ms.GetData();
+    int32_t size = ms.GetLength();
+
+    auto compressed = util_zlib_deflate(static_cast<const uint8_t*>(data), size);
+    if (compressed.has_value())
+>>>>>>> upstream/develop
     {
         result.resize(ms.GetLength());
         std::memcpy(result.data(), ms.GetData(), result.size());
@@ -2062,7 +2076,7 @@ NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string
             }
             else
             {
-                player->Group = networkUser->GroupId.GetValueOrDefault(GetDefaultGroup());
+                player->Group = networkUser->GroupId.has_value() ? *networkUser->GroupId : GetDefaultGroup();
                 player->SetName(networkUser->Name);
             }
 

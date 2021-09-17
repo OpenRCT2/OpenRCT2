@@ -45,10 +45,14 @@ struct rct_window
     int16_t max_width{};
     int16_t min_height{};
     int16_t max_height{};
-    rct_windownumber number{};
+    union
+    {
+        rct_windownumber number{};
+        ride_id_t rideId;
+    };
     uint16_t flags{};
     rct_scroll scrolls[3];
-    uint8_t list_item_positions[1024]{};
+    uint32_t list_item_positions[1024]{};
     uint16_t no_list_items{};     // 0 for no items
     int16_t selected_list_item{}; // -1 for none selected
     coordinate_focus viewport_focus_coordinates;

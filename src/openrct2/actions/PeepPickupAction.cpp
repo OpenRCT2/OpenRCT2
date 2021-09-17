@@ -43,7 +43,7 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);
     }
 
-    if (!_loc.isNull() && !LocationValid(_loc))
+    if (!_loc.IsNull() && !LocationValid(_loc))
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);
     }

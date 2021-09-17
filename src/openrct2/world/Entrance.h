@@ -30,7 +30,7 @@ struct TileElement;
 
 enum
 {
-    ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY = (1 << 0),
+    ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 0),
 };
 
 constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;

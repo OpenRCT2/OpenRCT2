@@ -303,12 +303,12 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
 
     int32_t direction;
     auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
-    if (mapCoords)
+    if (mapCoords.has_value())
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         map_invalidate_tile_full(gMapSelectPositionA);
-        gMapSelectPositionA = gMapSelectPositionB = *mapCoords;
-        map_invalidate_tile_full(*mapCoords);
+        gMapSelectPositionA = gMapSelectPositionB = mapCoords.value();
+        map_invalidate_tile_full(mapCoords.value());
         gMapSelectType = MAP_SELECT_TYPE_FULL;
     }
 }
@@ -317,10 +317,10 @@ static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widget
 {
     int32_t direction;
     auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
-    if (mapCoords)
+    if (mapCoords.has_value())
     {
         _dragging = true;
-        _selectionStart = *mapCoords;
+        _selectionStart = mapCoords.value();
     }
 }
 

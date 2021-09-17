@@ -54,7 +54,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid game command for ride %d", EnumValue(_rideIndex));
         return MakeResult(GameActions::Status::InvalidParameters, errorTitle);
     }
 
@@ -76,7 +76,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
 
     const auto location = _isExit ? ride_get_exit_location(ride, _stationNum) : ride_get_entrance_location(ride, _stationNum);
 
-    if (!location.isNull())
+    if (!location.IsNull())
     {
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
         rideEntranceExitRemove.SetFlags(GetFlags());
@@ -132,7 +132,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid game command for ride %d", EnumValue(_rideIndex));
         return MakeResult(GameActions::Status::InvalidParameters, errorTitle);
     }
 
@@ -143,7 +143,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
     }
 
     const auto location = _isExit ? ride_get_exit_location(ride, _stationNum) : ride_get_entrance_location(ride, _stationNum);
-    if (!location.isNull())
+    if (!location.IsNull())
     {
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
         rideEntranceExitRemove.SetFlags(GetFlags());

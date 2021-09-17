@@ -100,13 +100,13 @@ void SceneryGroupObject::UpdateEntryIndexes()
         if (ori->LoadedObject == nullptr)
             continue;
 
-        auto entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
+        auto entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject.get());
         Guard::Assert(entryIndex != OBJECT_ENTRY_INDEX_NULL, GUARD_LINE);
 
         auto sceneryType = GetSceneryType(ori->Type);
-        if (sceneryType != std::nullopt)
+        if (sceneryType.has_value())
         {
-            _legacyType.scenery_entries[_legacyType.entry_count] = { *sceneryType, entryIndex };
+            _legacyType.scenery_entries[_legacyType.entry_count] = { sceneryType.value(), entryIndex };
             _legacyType.entry_count++;
         }
     }

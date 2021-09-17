@@ -18,26 +18,6 @@
 
 using namespace OpenRCT2;
 
-BannerPlaceActionResult::BannerPlaceActionResult()
-    : GameActions::Result(GameActions::Status::Ok, STR_CANT_POSITION_THIS_HERE)
-{
-}
-
-BannerPlaceActionResult::BannerPlaceActionResult(GameActions::Status err)
-    : GameActions::Result(err, STR_CANT_POSITION_THIS_HERE)
-{
-}
-
-BannerPlaceActionResult::BannerPlaceActionResult(GameActions::Status err, rct_string_id msg)
-    : GameActions::Result(err, STR_CANT_POSITION_THIS_HERE, msg)
-{
-}
-
-BannerPlaceActionResult::BannerPlaceActionResult(GameActions::Status err, rct_string_id title, rct_string_id message)
-    : GameActions::Result(err, title, message)
-{
-}
-
 BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour)
     : _loc(loc)
     , _bannerType(bannerType)
@@ -117,6 +97,7 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
     }
     res->Cost = bannerEntry->price;
+
     return res;
 }
 
@@ -155,8 +136,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     banner->colour = _primaryColour;
     banner->position = TileCoordsXY(_loc);
 
-    res->bannerId = banner->id;
-
+    res->SetData(BannerPlaceActionResult{ banner->id });
     auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
     Guard::Assert(bannerElement != nullptr);
 

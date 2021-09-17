@@ -27,7 +27,6 @@ public:
     FootpathPlaceAction(
         const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
         Direction direction = INVALID_DIRECTION, PathConstructFlags constructFlags = 0);
-
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
     uint16_t GetActionFlags() const override;
@@ -45,4 +44,5 @@ private:
     void RemoveIntersectingWalls(PathElement * pathElement) const;
     PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const;
     bool IsSameAsPathElement(const PathElement* pathElement) const;
+    bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
 };

@@ -3654,6 +3654,7 @@ STR_6453    :Kopii informojn de versio
 STR_6454    :Ne povas renomi rubandon…
 STR_6455    :Ne povas renomi surskribaĵon…
 STR_6456    :Giganta Ekrankopio
+STR_6457    :Raporti cimon sur GitHub
 
 #############
 # Scenarios #

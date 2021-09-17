@@ -1600,14 +1600,14 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
-        window_invalidate_by_number(WC_RIDE, ride);
+        window_invalidate_by_number(WC_RIDE, EnumValue(ride));
         return;
     }
 
     if (curRide->current_test_station == STATION_INDEX_NULL)
         return;
 
-    if (!ride_get_entrance_location(curRide, curRide->current_test_station).isNull())
+    if (!ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
     {
         uint8_t test_segment = curRide->current_test_segment;
 
@@ -1666,7 +1666,7 @@ void Vehicle::UpdateMeasurements()
     {
         curRide->CurTestTrackLocation = curTrackLoc;
 
-        if (ride_get_entrance_location(curRide, curRide->current_test_station).isNull())
+        if (ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
             return;
 
         auto trackElemType = GetTrackType();
@@ -1882,7 +1882,7 @@ void Vehicle::UpdateMeasurements()
         }
     }
 
-    if (ride_get_entrance_location(curRide, curRide->current_test_station).isNull())
+    if (ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
         return;
 
     if (x == LOCATION_NULL)
@@ -2332,7 +2332,7 @@ void Vehicle::UpdateWaitingForPassengers()
         if (!OpenRestraints())
             return;
 
-        if (ride_get_entrance_location(curRide, current_station).isNull())
+        if (ride_get_entrance_location(curRide, current_station).IsNull())
         {
             curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
             sub_state = 2;
@@ -2340,7 +2340,7 @@ void Vehicle::UpdateWaitingForPassengers()
         }
 
         auto trainIndex = ride_get_train_index_from_vehicle(curRide, sprite_index);
-        if (!trainIndex)
+        if (!trainIndex.has_value())
         {
             return;
         }
@@ -2348,7 +2348,7 @@ void Vehicle::UpdateWaitingForPassengers()
         if (curRide->stations[current_station].TrainAtStation != RideStation::NO_TRAIN)
             return;
 
-        curRide->stations[current_station].TrainAtStation = *trainIndex;
+        curRide->stations[current_station].TrainAtStation = trainIndex.value();
         sub_state = 1;
         time_waiting = 0;
 
@@ -2568,7 +2568,7 @@ void Vehicle::UpdateWaitingToDepart()
             }
             else
             {
-                if (!ride_get_exit_location(curRide, current_station).isNull())
+                if (!ride_get_exit_location(curRide, current_station).IsNull())
                 {
                     SetState(Vehicle::Status::UnloadingPassengers);
                     return;
@@ -2582,7 +2582,7 @@ void Vehicle::UpdateWaitingToDepart()
             {
                 if (trainCar->num_peeps != 0)
                 {
-                    if (!ride_get_exit_location(curRide, current_station).isNull())
+                    if (!ride_get_exit_location(curRide, current_station).IsNull())
                     {
                         SetState(Vehicle::Status::UnloadingPassengers);
                         return;
@@ -3114,7 +3114,7 @@ static void test_finish(Ride& ride)
 
     totalTime = std::max(totalTime, 1u);
     ride.average_speed = ride.average_speed / totalTime;
-    window_invalidate_by_number(WC_RIDE, ride.id);
+    window_invalidate_by_number(WC_RIDE, EnumValue(ride.id));
 }
 
 void Vehicle::UpdateTestFinish()
@@ -3144,7 +3144,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.previous_vertical_g = 0;
     ride.previous_lateral_g = 0;
     ride.testing_flags = 0;
-    ride.CurTestTrackLocation.setNull();
+    ride.CurTestTrackLocation.SetNull();
     ride.turn_count_default = 0;
     ride.turn_count_banked = 0;
     ride.turn_count_sloped = 0;
@@ -3164,7 +3164,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     }
     ride.total_air_time = 0;
     ride.current_test_station = curStation;
-    window_invalidate_by_number(WC_RIDE, ride.id);
+    window_invalidate_by_number(WC_RIDE, EnumValue(ride.id));
 }
 
 void Vehicle::TestReset()
@@ -3570,7 +3570,7 @@ void Vehicle::CheckIfMissing()
         curRide->FormatNameTo(ft);
         ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.station).singular);
 
-        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride, ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, EnumValue(ride), ft);
     }
 }
 
@@ -3607,12 +3607,12 @@ void Vehicle::UpdateCollisionSetup()
     {
         auto frontVehicle = GetHead();
         auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
-        if (!trainIndex)
+        if (!trainIndex.has_value())
         {
             return;
         }
 
-        curRide->Crash(*trainIndex);
+        curRide->Crash(trainIndex.value());
 
         if (curRide->status != RideStatus::Closed)
         {
@@ -4200,7 +4200,7 @@ void Vehicle::UpdateUnloadingPassengers()
     }
     else
     {
-        if (ride_get_exit_location(curRide, current_station).isNull())
+        if (ride_get_exit_location(curRide, current_station).IsNull())
         {
             if (sub_state != 1)
                 return;
@@ -4388,7 +4388,7 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
         {
             SetTrackType(trackElement->GetTrackType());
             SetTrackDirection(curRide->boat_hire_return_direction);
-            BoatLocation.setNull();
+            BoatLocation.SetNull();
         }
 
         track_progress = 0;
@@ -5305,7 +5305,8 @@ static void ride_train_crash(Ride* ride, uint16_t numFatalities)
         {
             ride->FormatNameTo(ft);
             News::AddItemToQueue(
-                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride->id, ft);
+                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, EnumValue(ride->id),
+                ft);
         }
 
         if (gParkRatingCasualtyPenalty < 500)
@@ -5381,12 +5382,12 @@ void Vehicle::CrashOnLand()
     {
         auto frontVehicle = GetHead();
         auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
-        if (!trainIndex)
+        if (!trainIndex.has_value())
         {
             return;
         }
 
-        curRide->Crash(*trainIndex);
+        curRide->Crash(trainIndex.value());
 
         if (curRide->status != RideStatus::Closed)
         {
@@ -5447,12 +5448,12 @@ void Vehicle::CrashOnWater()
     {
         auto frontVehicle = GetHead();
         auto trainIndex = ride_get_train_index_from_vehicle(curRide, frontVehicle->sprite_index);
-        if (!trainIndex)
+        if (!trainIndex.has_value())
         {
             return;
         }
 
-        curRide->Crash(*trainIndex);
+        curRide->Crash(trainIndex.value());
 
         if (curRide->status != RideStatus::Closed)
         {
@@ -7124,50 +7125,6 @@ void Vehicle::UpdateSwingingCar()
     }
 }
 
-#pragma region TrackTypeToSpinFunction
-
-enum
-{
-    NO_SPIN,
-    L8_SPIN,
-    R8_SPIN,
-    LR_SPIN,
-    RL_SPIN,
-    L7_SPIN,
-    R7_SPIN,
-    L5_SPIN,
-    R5_SPIN,
-    RC_SPIN, // Rotation Control Spin
-    SP_SPIN, // Special rapids Spin
-    L9_SPIN,
-    R9_SPIN
-};
-
-static const uint8_t TrackTypeToSpinFunction[TrackElemType::Count] = {
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, LR_SPIN,
-    RL_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L5_SPIN, R5_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, LR_SPIN, RL_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
-    L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, L5_SPIN, R5_SPIN, L5_SPIN, R5_SPIN, NO_SPIN, RC_SPIN, NO_SPIN, L8_SPIN, R8_SPIN,
-    L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, SP_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, R5_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, L7_SPIN, R7_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
-    L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN
-};
-
-#pragma endregion
-
 /**
  *
  *  rct2: 0x006D661F
@@ -7192,7 +7149,9 @@ void Vehicle::UpdateSpinningCar()
     // An L spin adds to the spin speed, R does the opposite
     // The number indicates how much right shift of the velocity will become spin
     // The bigger the number the less change in spin.
-    switch (TrackTypeToSpinFunction[trackType])
+
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    switch (ted.SpinFunction)
     {
         case RC_SPIN:
             // On a rotation control track element
@@ -7601,7 +7560,8 @@ void Vehicle::UpdateLandscapeDoor() const
 static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
-    return PitchAndRoll{ TrackDefinitions[trackType].vangle_start, track_get_actual_bank_3(useInvertedSprites, tileElement) };
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    return PitchAndRoll{ ted.Definition.vangle_start, track_get_actual_bank_3(useInvertedSprites, tileElement) };
 }
 
 void Vehicle::UpdateGoKartAttemptSwitchLanes()
@@ -8475,8 +8435,8 @@ loc_6DAEB9:
 static PitchAndRoll PitchAndRollEnd(Ride* curRide, bool useInvertedSprites, uint16_t trackType, TileElement* tileElement)
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
-    return { TrackDefinitions[trackType].vangle_end,
-             track_get_actual_bank_2(curRide->type, isInverted, TrackDefinitions[trackType].bank_end) };
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    return { ted.Definition.vangle_end, track_get_actual_bank_2(curRide->type, isInverted, ted.Definition.bank_end) };
 }
 
 /**

@@ -247,6 +247,14 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     // Index to which part of the entrance
     // Middle, left, right
     uint8_t part_index = tile_element.GetSequenceIndex();
+    const PathSurfaceDescriptor* surfaceDescriptor = nullptr;
+
+    // The left and right of the park entrance often have this set to 127.
+    // So only attempt to get the footpath type if we're dealing with the middle bit of the entrance.
+    if (part_index == 0)
+    {
+        surfaceDescriptor = tile_element.GetPathSurfaceDescriptor();
+    }
 
     rct_entrance_type* entrance;
     uint8_t di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;
@@ -254,22 +262,10 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     switch (part_index)
     {
         case 0:
-        {
-            auto footpathObj = tile_element.GetPathEntry();
-            if (footpathObj != nullptr)
+            if (surfaceDescriptor != nullptr)
             {
-                auto footpathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
-                image_id = (footpathEntry->image + 5 * (1 + (direction & 1))) | ghost_id;
+                image_id = (surfaceDescriptor->Image + 5 * (1 + (direction & 1))) | ghost_id;
                 PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 0x1C, 0 }, { 0, 2, height });
-            }
-            else
-            {
-                auto footpathSurfaceObj = tile_element.GetSurfaceEntry();
-                if (footpathSurfaceObj != nullptr)
-                {
-                    image_id = (footpathSurfaceObj->BaseImageId + 5 * (1 + (direction & 1))) | ghost_id;
-                    PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 0x1C, 0 }, { 0, 2, height });
-                }
             }
 
             entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(ObjectType::ParkEntrance, 0));
@@ -323,7 +319,6 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 PaintAddImageAsChild(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height);
             }
             break;
-        }
         case 1:
         case 2:
             entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(ObjectType::ParkEntrance, 0));

@@ -263,29 +263,32 @@ private:
     ObjectEntryIndex SurfaceIndex;  // 5
     ObjectEntryIndex RailingsIndex; // 7
     uint8_t Additions;              // 9 (0 means no addition)
-    uint8_t EdgesAndCorners;        // 11 (edges in lower 4 bits, corners in upper 4)
-    uint8_t Flags2;                 // 12
-    uint8_t SlopeDirection;         // 13
+    uint8_t EdgesAndCorners;        // 10 (edges in lower 4 bits, corners in upper 4)
+    uint8_t Flags2;                 // 11
+    uint8_t SlopeDirection;         // 12
     union
     {
-        uint8_t AdditionStatus; // 14, only used for litter bins
-        ride_id_t rideIndex;    // 14
+        uint8_t AdditionStatus; // 13, only used for litter bins
+        ride_id_t rideIndex;    // 13
     };
     ::StationIndex StationIndex; // 15
 
 public:
-    FootpathObject* GetPathEntry() const;
-    ObjectEntryIndex GetPathEntryIndex() const;
-    void SetPathEntryIndex(ObjectEntryIndex newIndex);
+    ObjectEntryIndex GetLegacyPathEntryIndex() const;
+    const FootpathObject* GetLegacyPathEntry() const;
+    void SetLegacyPathEntryIndex(ObjectEntryIndex newIndex);
     bool HasLegacyPathEntry() const;
 
     ObjectEntryIndex GetSurfaceEntryIndex() const;
-    FootpathSurfaceObject* GetSurfaceEntry() const;
+    const FootpathSurfaceObject* GetSurfaceEntry() const;
     void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
 
-    ObjectEntryIndex GetRailingEntryIndex() const;
-    FootpathRailingsObject* GetRailingEntry() const;
-    void SetRailingEntryIndex(ObjectEntryIndex newIndex);
+    ObjectEntryIndex GetRailingsEntryIndex() const;
+    const FootpathRailingsObject* GetRailingsEntry() const;
+    void SetRailingsEntryIndex(ObjectEntryIndex newIndex);
+
+    const PathSurfaceDescriptor* GetSurfaceDescriptor() const;
+    const PathRailingsDescriptor* GetRailingsDescriptor() const;
 
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
@@ -334,6 +337,9 @@ public:
 
     uint8_t GetAdditionStatus() const;
     void SetAdditionStatus(uint8_t newStatus);
+
+    bool ShouldDrawPathOverSupports() const;
+    void SetShouldDrawPathOverSupports(bool on);
 
     bool IsLevelCrossing(const CoordsXY& coords) const;
 };
@@ -569,7 +575,7 @@ private:
     uint8_t flags2;            // C
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0C[3];
+    uint8_t pad_0D[3];
 #pragma clang diagnostic pop
 
 public:
@@ -585,13 +591,17 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    FootpathObject* GetPathEntry() const;
-    ObjectEntryIndex GetPathEntryIndex() const;
-    void SetPathEntryIndex(ObjectEntryIndex newIndex);
+    bool HasLegacyPathEntry() const;
+
+    ObjectEntryIndex GetLegacyPathEntryIndex() const;
+    const FootpathObject* GetLegacyPathEntry() const;
+    void SetLegacyPathEntryIndex(ObjectEntryIndex newPathType);
 
     ObjectEntryIndex GetSurfaceEntryIndex() const;
-    FootpathSurfaceObject* GetSurfaceEntry() const;
+    const FootpathSurfaceObject* GetSurfaceEntry() const;
     void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
+
+    const PathSurfaceDescriptor* GetPathSurfaceDescriptor() const;
 
     int32_t GetDirections() const;
 };

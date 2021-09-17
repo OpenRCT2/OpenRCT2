@@ -14,7 +14,7 @@
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../core/Zip.h"
+#include "../core/ZipStream.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
@@ -237,6 +237,7 @@ std::optional<uint8_t> rct_object_entry::GetSceneryType() const
 }
 
 bool rct_object_entry::IsEmpty() const
+<<<<<<< HEAD
 {
     uint64_t a, b;
     std::memcpy(&a, reinterpret_cast<const uint8_t*>(this), 8);
@@ -296,68 +297,61 @@ bool rct_object_entry::operator!=(const rct_object_entry& rhs) const
  * for the lifetime of the stream.
  */
 class ZipStreamWrapper final : public IStream
+=======
+>>>>>>> upstream/develop
 {
-private:
-    std::unique_ptr<IZipArchive> _zipArchive;
-    std::unique_ptr<IStream> _base;
+    uint64_t a, b;
+    std::memcpy(&a, reinterpret_cast<const uint8_t*>(this), 8);
+    std::memcpy(&b, reinterpret_cast<const uint8_t*>(this) + 8, 8);
 
-public:
-    ZipStreamWrapper(std::unique_ptr<IZipArchive> zipArchive, std::unique_ptr<IStream> base)
-        : _zipArchive(std::move(zipArchive))
-        , _base(std::move(base))
-    {
-    }
+    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF)
+        return true;
+    if (a == 0 && b == 0)
+        return true;
+    return false;
+}
 
-    bool CanRead() const override
-    {
-        return _base->CanRead();
-    }
+bool rct_object_entry::operator==(const rct_object_entry& rhs) const
+{
+    const auto a = this;
+    const auto b = &rhs;
 
-    bool CanWrite() const override
+    // If an official object don't bother checking checksum
+    if ((a->flags & 0xF0) || (b->flags & 0xF0))
     {
-        return _base->CanWrite();
+        if (a->GetType() != b->GetType())
+        {
+            return false;
+        }
+        int32_t match = memcmp(a->name, b->name, 8);
+        if (match)
+        {
+            return false;
+        }
     }
+    else
+    {
+        if (a->flags != b->flags)
+        {
+            return false;
+        }
+        int32_t match = memcmp(a->name, b->name, 8);
+        if (match)
+        {
+            return false;
+        }
+        if (a->checksum != b->checksum)
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
-    uint64_t GetLength() const override
-    {
-        return _base->GetLength();
-    }
-
-    uint64_t GetPosition() const override
-    {
-        return _base->GetPosition();
-    }
-
-    void SetPosition(uint64_t position) override
-    {
-        _base->SetPosition(position);
-    }
-
-    void Seek(int64_t offset, int32_t origin) override
-    {
-        _base->Seek(offset, origin);
-    }
-
-    void Read(void* buffer, uint64_t length) override
-    {
-        _base->Read(buffer, length);
-    }
-
-    void Write(const void* buffer, uint64_t length) override
-    {
-        _base->Write(buffer, length);
-    }
-
-    uint64_t TryRead(void* buffer, uint64_t length) override
-    {
-        return _base->TryRead(buffer, length);
-    }
-
-    const void* GetData() const override
-    {
-        return _base->GetData();
-    }
-};
+bool rct_object_entry::operator!=(const rct_object_entry& rhs) const
+{
+    return !(*this == rhs);
+}
 
 bool ObjectAsset::IsAvailable() const
 {
@@ -384,9 +378,9 @@ uint64_t ObjectAsset::GetSize() const
         if (zipArchive != nullptr)
         {
             auto index = zipArchive->GetIndexFromPath(_path);
-            if (index)
+            if (index.has_value())
             {
-                auto size = zipArchive->GetFileSize(*index);
+                auto size = zipArchive->GetFileSize(index.value());
                 return size;
             }
         }

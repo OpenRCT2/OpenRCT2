@@ -750,9 +750,9 @@ std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
 {
     auto g1Index = GetPaletteG1Index(paletteId);
-    if (g1Index)
+    if (g1Index.has_value())
     {
-        auto g1 = gfx_get_g1_element(*g1Index);
+        auto g1 = gfx_get_g1_element(g1Index.value());
         if (g1 != nullptr)
         {
             return PaletteMap(g1->offset, g1->height, g1->width);

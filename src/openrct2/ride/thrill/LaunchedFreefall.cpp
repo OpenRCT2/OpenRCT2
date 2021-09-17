@@ -24,9 +24,6 @@ enum
     SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP = 14566,
 };
 
-static constexpr const uint32_t launched_freefall_fence_sprites[] = { SPR_FENCE_METAL_NE, SPR_FENCE_METAL_SE,
-                                                                      SPR_FENCE_METAL_SW, SPR_FENCE_METAL_NW };
-
 /**
  *
  *  rct2: 0x006D5FAB
@@ -96,19 +93,23 @@ static void paint_launched_freefall_base(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    uint32_t imageId = SPR_FLOOR_METAL | session->TrackColours[SCHEME_SUPPORTS];
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
+    StationObject* stationObject = nullptr;
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
+
+    track_paint_util_paint_floor(
+        session, edges, session->TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetal, stationObject);
 
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
             session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
-            launched_freefall_fence_sprites, session->CurrentRotation);
+            fenceSpritesMetal, session->CurrentRotation);
     }
 
     if (trackSequence == 0)
     {
-        imageId = SPR_LAUNCHED_FREEFALL_TOWER_BASE | session->TrackColours[SCHEME_TRACK];
+        uint32_t imageId = SPR_LAUNCHED_FREEFALL_TOWER_BASE | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 8, 8, height + 3 });
 
         height += 32;

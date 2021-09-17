@@ -33,12 +33,14 @@
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
+#include "../core/Numerics.hpp"
 #include "../core/String.hpp"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
@@ -57,6 +59,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackDesign.h"
 #include "TrackDesignRepository.h"
 #include "Vehicle.h"
 
@@ -181,9 +184,10 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     auto trackType = trackElement.element->AsTrack()->GetTrackType();
     uint8_t direction = trackElement.element->GetDirection();
     _saveDirection = direction;
-    auto newCoords = sub_6C683D({ trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+    auto newCoords = GetTrackElementOriginAndApplyChanges(
+        { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
-    if (newCoords == std::nullopt)
+    if (!newCoords.has_value())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
@@ -237,9 +241,10 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         z = trackElement.element->GetBaseZ();
         direction = trackElement.element->GetDirection();
         trackType = trackElement.element->AsTrack()->GetTrackType();
-        newCoords = sub_6C683D({ trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+        newCoords = GetTrackElementOriginAndApplyChanges(
+            { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
-        if (newCoords == std::nullopt)
+        if (!newCoords.has_value())
         {
             break;
         }
@@ -270,7 +275,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
                 location = ride_get_exit_location(&ride, station_index);
             }
 
-            if (location.isNull())
+            if (location.IsNull())
             {
                 continue;
             }
@@ -324,7 +329,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         }
     }
 
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { 4096, 4096, 0 });
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
 
     // Resave global vars for scenery reasons.
     _trackPreviewOrigin = startPos;
@@ -384,7 +389,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     }
 
     auto location = ride_get_entrance_location(&ride, 0);
-    if (location.isNull())
+    if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
@@ -413,7 +418,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     maze_elements.push_back(mazeEntrance);
 
     location = ride_get_exit_location(&ride, 0);
-    if (location.isNull())
+    if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
@@ -443,7 +448,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = _trackPreviewOrigin.z;
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { 4096, 4096, 0 });
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
     _trackPreviewOrigin = { startLoc.x, startLoc.y, startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -1219,7 +1224,8 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
                 z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
                 if (mode == 0)
                 {
-                    auto isQueue = (scenery.flags & (1 << 7)) != 0;
+                    auto isQueue = scenery.IsQueue();
+
                     uint8_t bh = ((scenery.flags & 0xF) << rotation);
                     flags = bh >> 4;
                     bh = (bh | flags) & 0xF;
@@ -1480,7 +1486,7 @@ static std::optional<money32> track_design_place_maze(TrackDesign* td6, const Co
                     }
                     break;
                 default:
-                    maze_entry = rol16(maze_element.maze_entry, rotation * 4);
+                    maze_entry = Numerics::rol16(maze_element.maze_entry, rotation * 4);
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                     {
@@ -1833,7 +1839,7 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST)
     {
-        sub_6CB945(ride);
+        ride->ValidateStations();
         ride->Delete();
     }
     return totalCost;
@@ -1994,7 +2000,8 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     int32_t mapSize = gMapSize << 4;
 
     _currentTrackPieceDirection = 0;
-    int32_t z = place_virtual_track(td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), { mapSize, mapSize, 16 });
+    int32_t z = place_virtual_track(
+        td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(PreviewRideId), { mapSize, mapSize, 16 });
 
     if (_trackDesignPlaceStateHasScenery)
     {

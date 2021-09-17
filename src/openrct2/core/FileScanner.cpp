@@ -25,6 +25,7 @@
 
 #include "FileScanner.h"
 #include "Memory.hpp"
+#include "Numerics.hpp"
 #include "Path.hpp"
 #include "String.hpp"
 
@@ -363,7 +364,7 @@ void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& patte
         result->TotalFileSize += fileInfo->Size;
         result->FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo->LastModified >> 32)
             ^ static_cast<uint32_t>(fileInfo->LastModified & 0xFFFFFFFF);
-        result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
+        result->FileDateModifiedChecksum = Numerics::ror32(result->FileDateModifiedChecksum, 5);
         result->PathChecksum += GetPathChecksum(path);
     }
 }

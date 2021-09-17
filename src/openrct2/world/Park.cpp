@@ -743,8 +743,8 @@ template<typename T, size_t TSize> static void HistoryPushRecord(T history[TSize
 
 void Park::ResetHistories()
 {
-    std::fill(std::begin(gParkRatingHistory), std::end(gParkRatingHistory), std::numeric_limits<uint8_t>::max());
-    std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), std::numeric_limits<uint32_t>::max());
+    std::fill(std::begin(gParkRatingHistory), std::end(gParkRatingHistory), ParkRatingHistoryUndefined);
+    std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), GuestsInParkHistoryUndefined);
 }
 
 void Park::UpdateHistories()

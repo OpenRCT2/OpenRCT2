@@ -92,6 +92,9 @@ constexpr const uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
 
 constexpr const uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max();
 
+constexpr const uint8_t RCT12GuestsInParkHistoryFactor = 20;
+constexpr const uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
@@ -198,12 +201,12 @@ struct RCT12xy8
         uint16_t xy;
     };
 
-    bool isNull() const
+    bool IsNull() const
     {
         return xy == RCT12_XY8_UNDEFINED;
     }
 
-    void setNull()
+    void SetNull()
     {
         xy = RCT12_XY8_UNDEFINED;
     }
@@ -968,7 +971,7 @@ template<typename T> std::vector<ride_id_t> RCT12GetRidesBeenOn(T* srcPeep)
     {
         if (srcPeep->rides_been_on[i / 8] & (1 << (i % 8)))
         {
-            ridesBeenOn.push_back(i);
+            ridesBeenOn.push_back(static_cast<ride_id_t>(i));
         }
     }
     return ridesBeenOn;

@@ -11,18 +11,12 @@
 
 #include "GameAction.h"
 
-class BannerPlaceActionResult final : public GameActions::Result
+struct BannerPlaceActionResult
 {
-public:
-    BannerPlaceActionResult();
-    BannerPlaceActionResult(GameActions::Status err);
-    BannerPlaceActionResult(GameActions::Status err, rct_string_id msg);
-    BannerPlaceActionResult(GameActions::Status err, rct_string_id title, rct_string_id message);
-
     BannerIndex bannerId = BANNER_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(BannerPlaceAction, GameCommand::PlaceBanner, BannerPlaceActionResult)
+DEFINE_GAME_ACTION(BannerPlaceAction, GameCommand::PlaceBanner, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;

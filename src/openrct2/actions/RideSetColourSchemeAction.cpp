@@ -61,7 +61,7 @@ GameActions::Result::Ptr RideSetColourSchemeAction::Execute() const
     res->Expenditure = ExpenditureType::RideConstruction;
     res->ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
-    sub_6C683D(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
+    GetTrackElementOriginAndApplyChanges(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
 
     return res;
 }

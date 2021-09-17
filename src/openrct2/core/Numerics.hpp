@@ -68,4 +68,13 @@ namespace Numerics
         return (x >> shift | x << (4 - shift)) & 0x0F;
     }
 
+    const constexpr auto rol8 = rol<uint8_t>;
+    const constexpr auto ror8 = ror<uint8_t>;
+    const constexpr auto rol16 = rol<uint16_t>;
+    const constexpr auto ror16 = ror<uint16_t>;
+    const constexpr auto rol32 = rol<uint32_t>;
+    const constexpr auto ror32 = ror<uint32_t>;
+    const constexpr auto rol64 = rol<uint64_t>;
+    const constexpr auto ror64 = ror<uint64_t>;
+
 } // namespace Numerics

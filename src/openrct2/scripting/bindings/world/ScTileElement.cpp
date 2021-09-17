@@ -427,7 +427,7 @@ namespace OpenRCT2::Scripting
             {
                 auto el = _element->AsPath();
                 if (el->IsQueue() && el->GetRideIndex() != RIDE_ID_NULL)
-                    duk_push_int(ctx, el->GetRideIndex());
+                    duk_push_int(ctx, EnumValue(el->GetRideIndex()));
                 else
                     duk_push_null(ctx);
                 break;
@@ -435,13 +435,13 @@ namespace OpenRCT2::Scripting
             case TILE_ELEMENT_TYPE_TRACK:
             {
                 auto el = _element->AsTrack();
-                duk_push_int(ctx, el->GetRideIndex());
+                duk_push_int(ctx, EnumValue(el->GetRideIndex()));
                 break;
             }
             case TILE_ELEMENT_TYPE_ENTRANCE:
             {
                 auto el = _element->AsEntrance();
-                duk_push_int(ctx, el->GetRideIndex());
+                duk_push_int(ctx, EnumValue(el->GetRideIndex()));
                 break;
             }
             default:
@@ -452,7 +452,7 @@ namespace OpenRCT2::Scripting
         }
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::ride_set(ride_id_t value)
+    void ScTileElement::ride_set(int32_t value)
     {
         ThrowIfGameStateNotMutable();
         switch (_element->GetType())
@@ -462,7 +462,7 @@ namespace OpenRCT2::Scripting
                 auto el = _element->AsPath();
                 if (!el->HasAddition())
                 {
-                    el->SetRideIndex(value);
+                    el->SetRideIndex(static_cast<ride_id_t>(value));
                     Invalidate();
                 }
                 break;
@@ -470,14 +470,14 @@ namespace OpenRCT2::Scripting
             case TILE_ELEMENT_TYPE_TRACK:
             {
                 auto el = _element->AsTrack();
-                el->SetRideIndex(value);
+                el->SetRideIndex(static_cast<ride_id_t>(value));
                 Invalidate();
                 break;
             }
             case TILE_ELEMENT_TYPE_ENTRANCE:
             {
                 auto el = _element->AsEntrance();
-                el->SetRideIndex(value);
+                el->SetRideIndex(static_cast<ride_id_t>(value));
                 Invalidate();
                 break;
             }
@@ -709,7 +709,7 @@ namespace OpenRCT2::Scripting
             case TILE_ELEMENT_TYPE_PATH:
             {
                 auto el = _element->AsPath();
-                duk_push_int(ctx, el->GetPathEntryIndex());
+                duk_push_int(ctx, el->GetLegacyPathEntryIndex());
                 break;
             }
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
@@ -755,7 +755,7 @@ namespace OpenRCT2::Scripting
             case TILE_ELEMENT_TYPE_PATH:
             {
                 auto el = _element->AsPath();
-                el->SetPathEntryIndex(index);
+                el->SetLegacyPathEntryIndex(index);
                 Invalidate();
                 break;
             }
@@ -1401,7 +1401,7 @@ namespace OpenRCT2::Scripting
         auto el = _element->AsEntrance();
         if (el != nullptr)
         {
-            auto index = el->GetPathEntryIndex();
+            auto index = el->GetLegacyPathEntryIndex();
             if (index != OBJECT_ENTRY_INDEX_NULL)
             {
                 duk_push_int(ctx, index);
@@ -1423,7 +1423,7 @@ namespace OpenRCT2::Scripting
         auto el = _element->AsEntrance();
         if (el != nullptr)
         {
-            el->SetPathEntryIndex(FromDuk<ObjectEntryIndex>(value));
+            el->SetLegacyPathEntryIndex(FromDuk<ObjectEntryIndex>(value));
             Invalidate();
         }
     }

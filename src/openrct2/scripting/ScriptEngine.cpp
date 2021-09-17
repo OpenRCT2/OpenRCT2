@@ -878,7 +878,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
     {
         obj.Set("cost", result->Cost);
     }
-    if (!result->Position.isNull())
+    if (!result->Position.IsNull())
     {
         obj.Set("position", ToDuk(_context, result->Position));
     }
@@ -893,7 +893,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
         auto& rideCreateResult = static_cast<RideCreateGameActionResult&>(*result.get());
         if (rideCreateResult.rideIndex != RIDE_ID_NULL)
         {
-            obj.Set("ride", rideCreateResult.rideIndex);
+            obj.Set("ride", EnumValue(rideCreateResult.rideIndex));
         }
     }
     else if (action.GetType() == GameCommand::HireNewStaffMember)

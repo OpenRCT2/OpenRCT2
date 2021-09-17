@@ -21,6 +21,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
+#include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Localisation.h"
@@ -273,18 +274,18 @@ public:
         }
     }
 
-    void RegisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) override
+    void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) override
     {
         ObjectRepositoryItem* item = &_items[ori->Id];
 
         Guard::Assert(item->LoadedObject == nullptr, GUARD_LINE);
-        item->LoadedObject = object;
+        item->LoadedObject = std::move(object);
     }
 
     void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) override
     {
         ObjectRepositoryItem* item = &_items[ori->Id];
-        if (item->LoadedObject == object)
+        if (item->LoadedObject.get() == object)
         {
             item->LoadedObject = nullptr;
         }
@@ -751,11 +752,11 @@ int32_t object_calculate_checksum(const rct_object_entry* entry, const void* dat
 
     uint32_t checksum = 0xF369A75B;
     checksum ^= entryBytePtr[0];
-    checksum = rol32(checksum, 11);
+    checksum = Numerics::rol32(checksum, 11);
     for (int32_t i = 4; i < 12; i++)
     {
         checksum ^= entryBytePtr[i];
-        checksum = rol32(checksum, 11);
+        checksum = Numerics::rol32(checksum, 11);
     }
 
     const uint8_t* dataBytes = reinterpret_cast<const uint8_t*>(data);
@@ -766,12 +767,12 @@ int32_t object_calculate_checksum(const rct_object_entry* entry, const void* dat
         {
             checksum ^= dataBytes[j];
         }
-        checksum = rol32(checksum, 11);
+        checksum = Numerics::rol32(checksum, 11);
     }
     for (size_t i = dataLength32; i < dataLength; i++)
     {
         checksum ^= dataBytes[i];
-        checksum = rol32(checksum, 11);
+        checksum = Numerics::rol32(checksum, 11);
     }
 
     return static_cast<int32_t>(checksum);

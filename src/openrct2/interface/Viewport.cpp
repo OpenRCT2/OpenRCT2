@@ -106,7 +106,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
     // If the start location was invalid
     // propagate the invalid location to the output.
     // This fixes a bug that caused the game to enter an infinite loop.
-    if (loc.isNull())
+    if (loc.IsNull())
     {
         return std::nullopt;
     }
@@ -186,7 +186,7 @@ void viewport_create(
     }
 
     auto centreLoc = centre_2d_coordinates(centrePos, viewport);
-    if (!centreLoc)
+    if (!centreLoc.has_value())
     {
         log_error("Invalid location for viewport.");
         return;
@@ -519,7 +519,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
 // rct2: 0x006E7A15
 static void viewport_set_underground_flag(int32_t underground, rct_window* window, rct_viewport* viewport)
 {
-    if (window->classification != WC_MAIN_WINDOW)
+    if (window->classification != WC_MAIN_WINDOW
+        || (window->classification == WC_MAIN_WINDOW && window->viewport_smart_follow_sprite != SPRITE_INDEX_NULL))
     {
         if (!underground)
         {
@@ -597,9 +598,9 @@ void viewport_update_position(rct_window* window)
     if (at_map_edge)
     {
         auto centreLoc = centre_2d_coordinates({ mapCoord, 0 }, viewport);
-        if (centreLoc)
+        if (centreLoc.has_value())
         {
-            window->savedViewPos = *centreLoc;
+            window->savedViewPos = centreLoc.value();
         }
     }
 
@@ -658,7 +659,7 @@ void viewport_update_sprite_follow(rct_window* window)
         viewport_set_underground_flag(underground, window, window->viewport);
 
         auto centreLoc = centre_2d_coordinates({ sprite->x, sprite->y, sprite->z }, window->viewport);
-        if (centreLoc)
+        if (centreLoc.has_value())
         {
             window->savedViewPos = *centreLoc;
             viewport_move(*centreLoc, window, window->viewport);
@@ -669,44 +670,35 @@ void viewport_update_sprite_follow(rct_window* window)
 void viewport_update_smart_sprite_follow(rct_window* window)
 {
     auto entity = TryGetEntity(window->viewport_smart_follow_sprite);
-    if (entity == nullptr)
+    if (entity == nullptr || entity->Type == EntityType::Null)
     {
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        return;
     }
-    else if (entity->Type == EntityType::Guest || entity->Type == EntityType::Staff)
-    {
-        Peep* peep = TryGetEntity<Peep>(window->viewport_smart_follow_sprite);
-        if (peep == nullptr)
-        {
-            // will never happen
-            window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-            window->viewport_target_sprite = SPRITE_INDEX_NULL;
-            return;
-        }
 
-        if (peep->Is<Guest>())
-            viewport_update_smart_guest_follow(window, peep);
-        else if (peep->Is<Staff>())
-            viewport_update_smart_staff_follow(window, peep);
-    }
-    else if (entity->Type == EntityType::Vehicle)
+    switch (entity->Type)
     {
-        viewport_update_smart_vehicle_follow(window);
-    }
-    else if (entity->Type != EntityType::Null)
-    {
-        window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
-        window->viewport_target_sprite = window->viewport_smart_follow_sprite;
-    }
-    else
-    {
-        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        case EntityType::Vehicle:
+            viewport_update_smart_vehicle_follow(window);
+            break;
+
+        case EntityType::Guest:
+            viewport_update_smart_guest_follow(window, entity->As<Guest>());
+            break;
+
+        case EntityType::Staff:
+            viewport_update_smart_staff_follow(window, entity->As<Staff>());
+            break;
+
+        default: // All other types don't need any "smart" following; steam particle, duck, money effect, etc.
+            window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
+            window->viewport_target_sprite = window->viewport_smart_follow_sprite;
+            break;
     }
 }
 
-viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep)
+viewport_focus viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
 {
     viewport_focus focus{};
     focus.type = VIEWPORT_FOCUS_TYPE_SPRITE;
@@ -719,54 +711,53 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
         return focus;
     }
-    else
+
+    bool overallFocus = true;
+    if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide
+        || (peep->State == PeepState::LeavingRide && peep->x == LOCATION_NULL))
     {
-        bool overallFocus = true;
-        if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide
-            || (peep->State == PeepState::LeavingRide && peep->x == LOCATION_NULL))
+        auto ride = get_ride(peep->CurrentRide);
+        if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         {
-            auto ride = get_ride(peep->CurrentRide);
-            if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+            auto train = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
+            if (train != nullptr)
             {
-                auto train = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
-                if (train != nullptr)
+                const auto car = train->GetCar(peep->CurrentCar);
+                if (car != nullptr)
                 {
-                    const auto car = train->GetCar(peep->CurrentCar);
-                    if (car != nullptr)
-                    {
-                        focus.sprite.sprite_id = car->sprite_index;
-                        overallFocus = false;
-                    }
+                    focus.sprite.sprite_id = car->sprite_index;
+                    overallFocus = false;
                 }
             }
         }
-        if (peep->x == LOCATION_NULL && overallFocus)
-        {
-            auto ride = get_ride(peep->CurrentRide);
-            if (ride != nullptr)
-            {
-                auto xy = ride->overall_view.ToTileCentre();
-                focus.type = VIEWPORT_FOCUS_TYPE_COORDINATE;
-                focus.coordinate.x = xy.x;
-                focus.coordinate.y = xy.y;
-                focus.coordinate.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
-                focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
-            }
-        }
-        else
-        {
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-            focus.sprite.pad_486 &= 0xFFFF;
-        }
-        focus.coordinate.rotation = get_current_rotation();
     }
+
+    if (peep->x == LOCATION_NULL && overallFocus)
+    {
+        auto ride = get_ride(peep->CurrentRide);
+        if (ride != nullptr)
+        {
+            auto xy = ride->overall_view.ToTileCentre();
+            focus.type = VIEWPORT_FOCUS_TYPE_COORDINATE;
+            focus.coordinate.x = xy.x;
+            focus.coordinate.y = xy.y;
+            focus.coordinate.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+        }
+    }
+    else
+    {
+        focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+        focus.sprite.pad_486 &= 0xFFFF;
+    }
+    focus.coordinate.rotation = get_current_rotation();
 
     window->viewport_focus_sprite = focus.sprite;
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
     return focus;
 }
 
-void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
+void viewport_update_smart_staff_follow(rct_window* window, const Staff* peep)
 {
     sprite_focus focus = {};
 
@@ -774,15 +765,12 @@ void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
 
     if (peep->State == PeepState::Picked)
     {
-        // focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
         return;
     }
-    else
-    {
-        focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-    }
+
+    focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
 
     window->viewport_focus_sprite = focus;
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
@@ -790,9 +778,7 @@ void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
 
 void viewport_update_smart_vehicle_follow(rct_window* window)
 {
-    // Can be expanded in the future if needed
     sprite_focus focus = {};
-
     focus.sprite_id = window->viewport_smart_follow_sprite;
 
     window->viewport_focus_sprite = focus;
@@ -1095,7 +1081,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
 std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords, int32_t* direction)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     int32_t my_direction;
@@ -1628,9 +1614,9 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, c
         {
             index &= 0x1F;
         }
-        if (auto pm = GetPaletteMapForColour(index))
+        if (auto pm = GetPaletteMapForColour(index); pm.has_value())
         {
-            paletteMap = *pm;
+            paletteMap = pm.value();
         }
     }
     else
@@ -1880,7 +1866,7 @@ std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoo
 std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenCoords, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *quadrant = map_get_tile_quadrant(*mapCoords);
@@ -1894,7 +1880,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenC
 std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *quadrant = map_get_tile_quadrant(*mapCoords);
@@ -1908,7 +1894,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& 
 std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoords, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *side = map_get_tile_side(*mapCoords);
@@ -1922,7 +1908,7 @@ std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoord
 std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *side = map_get_tile_side(*mapCoords);

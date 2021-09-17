@@ -106,8 +106,12 @@ static void paint_roto_drop_base(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
+    StationObject* stationObject = nullptr;
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
+
+    track_paint_util_paint_floor(
+        session, edges, session->TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
 
     if (ride != nullptr)
     {
@@ -118,7 +122,7 @@ static void paint_roto_drop_base(
 
     if (trackSequence == 0)
     {
-        imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE)
+        uint32_t imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE)
             | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 8, 8, height + 3 });
 

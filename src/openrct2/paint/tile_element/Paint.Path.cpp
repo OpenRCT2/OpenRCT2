@@ -10,6 +10,7 @@
 #include "../../Context.h"
 #include "../../Game.h"
 #include "../../config/Config.h"
+#include "../../core/Numerics.hpp"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
@@ -179,7 +180,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(pathElement.GetAdditionStatus() & ror8(0x3, (2 * session->CurrentRotation)));
+            binIsFull = !(pathElement.GetAdditionStatus() & Numerics::ror8(0x3, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -200,7 +201,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(pathElement.GetAdditionStatus() & ror8(0xC, (2 * session->CurrentRotation)));
+            binIsFull = !(pathElement.GetAdditionStatus() & Numerics::ror8(0xC, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -222,7 +223,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(pathElement.GetAdditionStatus() & ror8(0x30, (2 * session->CurrentRotation)));
+            binIsFull = !(pathElement.GetAdditionStatus() & Numerics::ror8(0x30, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -244,7 +245,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(pathElement.GetAdditionStatus() & ror8(0xC0, (2 * session->CurrentRotation)));
+            binIsFull = !(pathElement.GetAdditionStatus() & Numerics::ror8(0xC0, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -669,7 +670,7 @@ static void sub_6A4101(
  * @param pathElement (esp[0])
  * @param connectedEdges (bp) (relative to the camera's rotation)
  * @param height (dx)
- * @param railingEntry (0x00F3EF6C)
+ * @param pathPaintInfo (0x00F3EF6C)
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
@@ -808,46 +809,25 @@ static void sub_6A3F61(
 static FootpathPaintInfo GetFootpathPaintInfo(const PathElement& pathEl)
 {
     FootpathPaintInfo pathPaintInfo;
-    auto footpathObj = pathEl.GetPathEntry();
-    if (footpathObj != nullptr)
-    {
-        auto footpathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
-        if (pathEl.IsQueue())
-        {
-            pathPaintInfo.SurfaceImageId = footpathEntry->GetQueueImage();
-            pathPaintInfo.SurfaceFlags = footpathEntry->flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
-        }
-        else
-        {
-            pathPaintInfo.SurfaceImageId = footpathEntry->image;
-            pathPaintInfo.SurfaceFlags = footpathEntry->flags;
-        }
-        pathPaintInfo.ScrollingMode = footpathEntry->scrolling_mode;
-        pathPaintInfo.SupportType = footpathEntry->support_type;
-        pathPaintInfo.BridgeImageId = footpathEntry->bridge_image;
-        pathPaintInfo.RailingFlags = footpathEntry->flags;
-        pathPaintInfo.RailingsImageId = footpathEntry->GetRailingsImage();
-    }
-    else
-    {
-        auto footpathSurfaceObj = pathEl.GetSurfaceEntry();
-        if (footpathSurfaceObj != nullptr)
-        {
-            pathPaintInfo.SurfaceImageId = footpathSurfaceObj->BaseImageId;
-            pathPaintInfo.SurfaceFlags = footpathSurfaceObj->Flags;
 
-            auto railingObj = pathEl.GetRailingEntry();
-            if (railingObj != nullptr)
-            {
-                pathPaintInfo.BridgeImageId = railingObj->BridgeImageId;
-                pathPaintInfo.RailingsImageId = railingObj->RailingsImageId;
-                pathPaintInfo.RailingFlags = railingObj->Flags;
-                pathPaintInfo.ScrollingMode = railingObj->ScrollingMode;
-                pathPaintInfo.SupportType = railingObj->SupportType;
-                pathPaintInfo.SupportColour = railingObj->Colour;
-            }
-        }
+    const auto* surfaceDescriptor = pathEl.GetSurfaceDescriptor();
+    if (surfaceDescriptor != nullptr)
+    {
+        pathPaintInfo.SurfaceImageId = surfaceDescriptor->Image;
+        pathPaintInfo.SurfaceFlags = surfaceDescriptor->Flags;
     }
+
+    const auto* railingsDescriptor = pathEl.GetRailingsDescriptor();
+    if (railingsDescriptor != nullptr)
+    {
+        pathPaintInfo.BridgeImageId = railingsDescriptor->BridgeImage;
+        pathPaintInfo.RailingsImageId = railingsDescriptor->RailingsImage;
+        pathPaintInfo.RailingFlags = railingsDescriptor->Flags;
+        pathPaintInfo.ScrollingMode = railingsDescriptor->ScrollingMode;
+        pathPaintInfo.SupportType = railingsDescriptor->SupportType;
+        pathPaintInfo.SupportColour = railingsDescriptor->SupportColour;
+    }
+
     return pathPaintInfo;
 }
 

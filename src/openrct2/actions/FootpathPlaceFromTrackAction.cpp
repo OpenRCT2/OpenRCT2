@@ -126,7 +126,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->GetSurfaceEntryIndex() == _type)
+        if (IsSameAsEntranceElement(*entranceElement))
             entranceIsSamePath = true;
         else
             res->Cost -= MONEY(6, 00);
@@ -193,7 +193,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->GetSurfaceEntryIndex() == _type)
+        if (IsSameAsEntranceElement(*entranceElement))
             entranceIsSamePath = true;
         else
             res->Cost -= MONEY(6, 00);
@@ -226,9 +226,9 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     {
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
         {
-            if (_constructFlags & PathConstructFlag::IsPathObject)
+            if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
             {
-                entranceElement->SetPathEntryIndex(_type);
+                entranceElement->SetLegacyPathEntryIndex(_type);
             }
             else
             {
@@ -243,14 +243,14 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         Guard::Assert(pathElement != nullptr);
 
         pathElement->SetClearanceZ(zHigh);
-        if (_constructFlags & PathConstructFlag::IsPathObject)
+        if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
         {
-            pathElement->SetPathEntryIndex(_type);
+            pathElement->SetLegacyPathEntryIndex(_type);
         }
         else
         {
             pathElement->SetSurfaceEntryIndex(_type);
-            pathElement->SetRailingEntryIndex(_railingsType);
+            pathElement->SetRailingsEntryIndex(_railingsType);
         }
         pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
         pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
@@ -271,4 +271,28 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         res->Cost = 0;
 
     return res;
+}
+
+bool FootpathPlaceFromTrackAction::IsSameAsEntranceElement(const EntranceElement& entranceElement) const
+{
+    if (entranceElement.HasLegacyPathEntry())
+    {
+        if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
+        {
+            return entranceElement.GetLegacyPathEntryIndex() == _type;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
+    {
+        return false;
+    }
+    else
+    {
+        return entranceElement.GetSurfaceEntryIndex() == _type;
+    }
 }

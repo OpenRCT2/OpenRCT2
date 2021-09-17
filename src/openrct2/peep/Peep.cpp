@@ -2296,7 +2296,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     }
 
     std::optional<CoordsXY> loc;
-    if (!(loc = UpdateAction()))
+    if (loc = UpdateAction(); !loc.has_value())
     {
         pathing_result |= PATHING_DESTINATION_REACHED;
         uint8_t result = 0;
@@ -2314,7 +2314,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         if (result != 0)
             return;
 
-        if (!(loc = UpdateAction()))
+        if (loc = UpdateAction(); !loc.has_value())
             return;
     }
 

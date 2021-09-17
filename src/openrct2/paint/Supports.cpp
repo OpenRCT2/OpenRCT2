@@ -1162,7 +1162,7 @@ bool metal_b_supports_paint_setup(
  * @param special (ax)
  * @param height (dx)
  * @param imageColourFlags (ebp)
- * @param railingEntry (0x00F3EF6C)
+ * @param railingsDescriptor (0x00F3EF6C)
  * @param[out] underground (Carry Flag)
  *
  * @return Whether supports were drawn
@@ -1315,7 +1315,7 @@ bool path_a_supports_paint_setup(
  * @param special (ax)
  * @param height (dx)
  * @param imageColourFlags (ebp)
- * @param railingEntry (0x00F3EF6C)
+ * @param railingsDescriptor (0x00F3EF6C)
  *
  * @return Whether supports were drawn
  */

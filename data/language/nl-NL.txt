@@ -809,7 +809,7 @@ STR_1423    :Wachtrijpad
 STR_1424    :Voetpad
 STR_1425    :Voetpad
 STR_1426    :Wachtrij
-STR_1427    :{WINDOW_COLOUR_2}Passagiers: {BLACK}{COMMA32} per uur
+STR_1427    :{WINDOW_COLOUR_2}Bezoekers: {BLACK}{COMMA32} per uur
 STR_1428    :{WINDOW_COLOUR_2}Toegangsprijs:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratis
@@ -2969,9 +2969,9 @@ STR_5731    :Lineair
 STR_5734    :Rendering
 STR_5735    :Netwerkstatus
 STR_5736    :Speler
-STR_5737    :Gesloten, nog {COMMA16} passagier
-STR_5738    :Gesloten, nog {COMMA16} passagiers
-STR_5739    :{WINDOW_COLOUR_2}Huidig aantal passagiers: {BLACK}{COMMA16}
+STR_5737    :Gesloten, nog {COMMA16} bezoeker
+STR_5738    :Gesloten, nog {COMMA16} bezoekers
+STR_5739    :{WINDOW_COLOUR_2}Huidig aantal bezoekers: {BLACK}{COMMA16}
 STR_5740    :Oneindige marketingcampagnes
 STR_5741    :Marketingcampagnes verlopen nooit
 STR_5742    :Authenticeren…

@@ -341,7 +341,7 @@ namespace OpenRCT2::Scripting
 
     template<> inline DukValue ToDuk(duk_context* ctx, const CoordsXYZ& value)
     {
-        if (value.isNull())
+        if (value.IsNull())
         {
             return ToDuk(ctx, nullptr);
         }
@@ -366,14 +366,14 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            result.setNull();
+            result.SetNull();
         }
         return result;
     }
 
     template<> inline DukValue ToDuk(duk_context* ctx, const CoordsXYZD& value)
     {
-        if (value.isNull())
+        if (value.IsNull())
         {
             return ToDuk(ctx, nullptr);
         }
@@ -408,7 +408,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            result.setNull();
+            result.SetNull();
         }
         return result;
     }

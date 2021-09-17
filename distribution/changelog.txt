@@ -1,14 +1,19 @@
 0.3.4.1+ (in development)
 ------------------------------------------------------------------------
 - Feature: [#3868] Initial support for using TTF in OpenGL mode (still contains bugs).
+- Feature: [#7682] Follow ride/guest/staff in main window viewport.
+- Feature: [#13407] Allow building chain lifts on enclosed dinghy slide pieces when cheats are on.
 - Feature: [#15084] [Plugin] Add "vehicle.crash" hook.
 - Feature: [#15143] Added a shortcut key for Giant Screenshot.
 - Feature: [#15164] Highlight elements selected by the Tile Inspector, tracks are currently not supported.
 - Feature: [#15165] [Plugin] Add the ability to create entities using "map.createEntity".
 - Feature: [#15194] [Plugin] Add guest properties, ride downtime and park casualty penalty.
-- Feature: [#15294] New vehicle animation type: flying animal
+- Feature: [#15195] Added a bug-report item in file dropdown menu.
+- Feature: [#15294] New vehicle animation type: flying animal.
 - Fix: [#13465] Creating a scenario based on a won save game results in a scenario that’s instantly won.
+- Fix: [#13912] “Dome park” no longer renders dome correctly.
 - Fix: [#14316] Closing the Track Designs Manager window causes broken state.
+- Fix: [#14649] ImageImporter incorrectly remaps colours outside the RCT2 palette.
 - Fix: [#14667] “Extreme Hawaiian Island” has unpurchaseable land tiles (original bug).
 - Fix: [#15096] Crash when placing entrances in the scenario editor near the map corner.
 - Fix: [#15142] ToonTowner's mine roofs were moved into the pirate theme scenery group instead of the mine theme scenery group.
@@ -18,6 +23,7 @@
 - Fix: [#15193] Crash when rides/stalls are demolished.
 - Fix: [#15199] Construction window is not closed when a ride gets demolished.
 - Fix: [#15255] Tile Inspector shows banner information on walls that do not contain one.
+- Fix: [#15257] Chat icon shows in scenario/track editor. Other icons don't disable when deactivated in options menu.
 - Fix: [#15289] Unexpected behavior with duplicated banners which also caused desyncs in multiplayer.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
 - Change: [#8601] Revert ToonTower base block fix to re-enable support blocking.

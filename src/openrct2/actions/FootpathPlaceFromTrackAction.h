@@ -36,4 +36,5 @@ public:
 private:
     GameActions::Result::Ptr ElementInsertQuery(GameActions::Result::Ptr res) const;
     GameActions::Result::Ptr ElementInsertExecute(GameActions::Result::Ptr res) const;
+    bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
 };

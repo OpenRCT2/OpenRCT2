@@ -110,9 +110,9 @@ public:
         {
             static rct_window* _mainWindow;
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
-            if (subjectLoc != std::nullopt && (_mainWindow = window_get_main()) != nullptr)
+            if (subjectLoc.has_value() && (_mainWindow = window_get_main()) != nullptr)
             {
-                window_scroll_to_location(_mainWindow, *subjectLoc);
+                window_scroll_to_location(_mainWindow, subjectLoc.value());
             }
         }
     }

@@ -34,6 +34,98 @@ namespace RCT1
     constexpr const uint32_t RCT1_NUM_TERRAIN_SURFACES = 16;
     constexpr const uint32_t RCT1_NUM_TERRAIN_EDGES = 15;
 
+    enum class RideType : uint8_t
+    {
+        WoodenRollerCoaster = 0,
+        StandUpSteelRollerCoaster,
+        SuspendedRollerCoaster,
+        InvertedRollerCoaster,
+        SteelMiniRollerCoaster,
+        MiniatureRailway,
+        Monorail,
+        SuspendedSingleRailRollerCoaster,
+        BoatHire,
+        WoodenCrazyRodentRollerCoaster,
+        SingleRailRollerCoaster,
+        CarRide,
+        LaunchedFreefall,
+        BobsledRollerCoaster,
+        ObservationTower,
+        SteelRollerCoaster,
+        WaterSlide,
+        MineTrainRollerCoaster,
+        Chairlift,
+        SteelCorkscrewRollerCoaster,
+        HedgeMaze,
+        SpiralSlide,
+        GoKarts,
+        LogFlume,
+        RiverRapids,
+        Dodgems,
+        SwingingShip,
+        SwingingInverterShip,
+        IceCreamStall,
+        ChipsStall,
+        DrinkStall,
+        CandyflossStall,
+        BurgerBar,
+        MerryGoRound,
+        BalloonStall,
+        InformationKiosk,
+        Toilets,
+        FerrisWheel,
+        MotionSimulator,
+        _3DCinema,
+        TopSpin,
+        SpaceRings,
+        ReverseFreefallRollerCoaster,
+        SouvenirStall,
+        VerticalRollerCoaster,
+        PizzaStall,
+        Twist,
+        HauntedHouse,
+        PopcornStall,
+        Circus,
+        GhostTrain,
+        SteelTwisterRollerCoaster,
+        WoodenTwisterRollerCoaster,
+        WoodenSideFrictionRollerCoaster,
+        SteelWildMouseRollerCoaster,
+        HotDogStall,
+        ExoticSeaFoodStall,
+        HatStall,
+        ToffeeAppleStall,
+        VirginiaReel,
+        RiverRide,
+        CycleMonorail,
+        FlyingRollerCoaster,
+        SuspendedMonorail,
+        _40,
+        WoodenReverseRollerCoaster,
+        HeartlineTwisterRollerCoaster,
+        MiniatureGolf,
+        _44,
+        RotoDrop,
+        FlyingSaucers,
+        CrookedHouse,
+        CycleRailway,
+        SuspendedLoopingRollerCoaster,
+        WaterCoaster,
+        AirPoweredVerticalCoaster,
+        InvertedWildMouseCoaster,
+        JetSkis,
+        TShirtStall,
+        RaftRide,
+        DoughnutShop,
+        Enterprise,
+        CoffeeShop,
+        FriedChickenStall,
+        LemonadeStall,
+
+        Count,
+        Null = 255,
+    };
+
 #pragma pack(push, 1)
     struct Entrance
     {
@@ -50,7 +142,7 @@ namespace RCT1
      */
     struct Ride
     {
-        uint8_t type;             // 0x000
+        RideType type;            // 0x000
         uint8_t vehicle_type;     // 0x001
         uint16_t lifecycle_flags; // 0x002
         uint8_t operating_mode;   // 0x004
@@ -720,7 +812,7 @@ namespace RCT1
      */
     struct TD4
     {
-        uint8_t type; // 0x00
+        RideType type; // 0x00
         uint8_t vehicle_type;
         uint32_t flags;                                               // 0x02
         uint8_t mode;                                                 // 0x06
@@ -778,98 +870,6 @@ namespace RCT1
 
     assert_struct_size(TD4AA, 0xC4);
 #pragma pack(pop)
-
-    enum
-    {
-        RCT1_RIDE_TYPE_NULL = 255,
-        RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER = 0,
-        RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_SUSPENDED_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_MINIATURE_RAILWAY,
-        RCT1_RIDE_TYPE_MONORAIL,
-        RCT1_RIDE_TYPE_SUSPENDED_SINGLE_RAIL_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_BOAT_HIRE,
-        RCT1_RIDE_TYPE_WOODEN_CRAZY_RODENT_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_CAR_RIDE,
-        RCT1_RIDE_TYPE_LAUNCHED_FREEFALL,
-        RCT1_RIDE_TYPE_BOBSLED_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_OBSERVATION_TOWER,
-        RCT1_RIDE_TYPE_STEEL_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_WATER_SLIDE,
-        RCT1_RIDE_TYPE_MINE_TRAIN_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_CHAIRLIFT,
-        RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_HEDGE_MAZE,
-        RCT1_RIDE_TYPE_SPIRAL_SLIDE,
-        RCT1_RIDE_TYPE_GO_KARTS,
-        RCT1_RIDE_TYPE_LOG_FLUME,
-        RCT1_RIDE_TYPE_RIVER_RAPIDS,
-        RCT1_RIDE_TYPE_DODGEMS,
-        RCT1_RIDE_TYPE_SWINGING_SHIP,
-        RCT1_RIDE_TYPE_SWINGING_INVERTER_SHIP,
-        RCT1_RIDE_TYPE_ICE_CREAM_STALL,
-        RCT1_RIDE_TYPE_CHIPS_STALL,
-        RCT1_RIDE_TYPE_DRINK_STALL,
-        RCT1_RIDE_TYPE_CANDYFLOSS_STALL,
-        RCT1_RIDE_TYPE_BURGER_BAR,
-        RCT1_RIDE_TYPE_MERRY_GO_ROUND,
-        RCT1_RIDE_TYPE_BALLOON_STALL,
-        RCT1_RIDE_TYPE_INFORMATION_KIOSK,
-        RCT1_RIDE_TYPE_TOILETS,
-        RCT1_RIDE_TYPE_FERRIS_WHEEL,
-        RCT1_RIDE_TYPE_MOTION_SIMULATOR,
-        RCT1_RIDE_TYPE_3D_CINEMA,
-        RCT1_RIDE_TYPE_TOP_SPIN,
-        RCT1_RIDE_TYPE_SPACE_RINGS,
-        RCT1_RIDE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_SOUVENIR_STALL,
-        RCT1_RIDE_TYPE_VERTICAL_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_PIZZA_STALL,
-        RCT1_RIDE_TYPE_TWIST,
-        RCT1_RIDE_TYPE_HAUNTED_HOUSE,
-        RCT1_RIDE_TYPE_POPCORN_STALL,
-        RCT1_RIDE_TYPE_CIRCUS,
-        RCT1_RIDE_TYPE_GHOST_TRAIN,
-        RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_WOODEN_TWISTER_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_WOODEN_SIDE_FRICTION_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_STEEL_WILD_MOUSE_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_HOT_DOG_STALL,
-        RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL,
-        RCT1_RIDE_TYPE_HAT_STALL,
-        RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL,
-        RCT1_RIDE_TYPE_VIRGINIA_REEL,
-        RCT1_RIDE_TYPE_RIVER_RIDE,
-        RCT1_RIDE_TYPE_CYCLE_MONORAIL,
-        RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_SUSPENDED_MONORAIL,
-        RCT1_RIDE_TYPE_40,
-        RCT1_RIDE_TYPE_WOODEN_REVERSER_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_HEARTLINE_TWISTER_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_MINIATURE_GOLF,
-        RCT1_RIDE_TYPE_44,
-        RCT1_RIDE_TYPE_ROTO_DROP,
-        RCT1_RIDE_TYPE_FLYING_SAUCERS,
-        RCT1_RIDE_TYPE_CROOKED_HOUSE,
-        RCT1_RIDE_TYPE_CYCLE_RAILWAY,
-        RCT1_RIDE_TYPE_SUSPENDED_LOOPING_ROLLER_COASTER,
-        RCT1_RIDE_TYPE_WATER_COASTER,
-        RCT1_RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER,
-        RCT1_RIDE_TYPE_INVERTED_WILD_MOUSE_COASTER,
-        RCT1_RIDE_TYPE_JET_SKIS,
-        RCT1_RIDE_TYPE_T_SHIRT_STALL,
-        RCT1_RIDE_TYPE_RAFT_RIDE,
-        RCT1_RIDE_TYPE_DOUGHNUT_SHOP,
-        RCT1_RIDE_TYPE_ENTERPRISE,
-        RCT1_RIDE_TYPE_COFFEE_SHOP,
-        RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL,
-        RCT1_RIDE_TYPE_LEMONADE_STALL,
-
-        RCT1_RIDE_TYPE_COUNT
-    };
 
     enum
     {

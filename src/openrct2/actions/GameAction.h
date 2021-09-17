@@ -16,6 +16,7 @@
 #include "../localisation/StringIds.h"
 #include "../world/Map.h"
 
+#include <any>
 #include <array>
 #include <functional>
 #include <memory>
@@ -130,6 +131,7 @@ namespace GameActions
         CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
         money32 Cost = 0;
         ExpenditureType Expenditure = ExpenditureType::Count;
+        std::any ResultData;
 
         Result() = default;
         Result(GameActions::Status error, rct_string_id message);
@@ -140,6 +142,19 @@ namespace GameActions
 
         std::string GetErrorTitle() const;
         std::string GetErrorMessage() const;
+
+        // It is recommended to use strong types since a type alias such as 'using MyType = uint32_t'
+        // is still just uint32_t, this guarantees the data is associated with the correct type.
+        template<typename T> void SetData(const T&& data)
+        {
+            ResultData = std::forward<const T&&>(data);
+        }
+
+        // This function will throw std::bad_any_cast if the type mismatches.
+        template<typename T> T GetData() const
+        {
+            return std::any_cast<T>(ResultData);
+        }
     };
 
     class ConstructClearResult final : public Result

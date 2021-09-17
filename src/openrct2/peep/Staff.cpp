@@ -738,7 +738,7 @@ Direction Staff::MechanicDirectionSurface() const
     if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection) && (scenario_rand() & 1))
     {
         auto location = ride_get_exit_location(ride, CurrentRideStation);
-        if (location.isNull())
+        if (location.IsNull())
         {
             location = ride_get_entrance_location(ride, CurrentRideStation);
         }
@@ -819,12 +819,12 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
         TileCoordsXYZD location = ride_get_exit_location(ride, CurrentRideStation);
-        if (location.isNull())
+        if (location.IsNull())
         {
             location = ride_get_entrance_location(ride, CurrentRideStation);
 
             // If no entrance is present either. This is an incorrect state.
-            if (location.isNull())
+            if (location.IsNull())
             {
                 return MechanicDirectionPathRand(pathDirections);
             }
@@ -1176,10 +1176,10 @@ void Staff::UpdateMowing()
 
     while (true)
     {
-        if (auto loc = UpdateAction())
+        if (auto loc = UpdateAction(); loc.has_value())
         {
             int16_t checkZ = tile_element_height(*loc);
-            MoveTo({ *loc, checkZ });
+            MoveTo({ loc.value(), checkZ });
             return;
         }
 
@@ -1374,10 +1374,10 @@ void Staff::UpdateSweeping()
         StaffLitterSwept++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         int16_t actionZ = GetZOnSlope((*loc).x, (*loc).y);
-        MoveTo({ *loc, actionZ });
+        MoveTo({ loc.value(), actionZ });
         return;
     }
 
@@ -1406,7 +1406,7 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    if (ride_get_exit_location(ride, CurrentRideStation).isNull())
+    if (ride_get_exit_location(ride, CurrentRideStation).IsNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         SetState(PeepState::Falling);
@@ -1461,7 +1461,7 @@ void Staff::UpdateHeadingToInspect()
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exit_index).isNull())
+            if (!ride_get_exit_location(ride, exit_index).IsNull())
             {
                 return;
             }
@@ -1479,7 +1479,7 @@ void Staff::UpdateHeadingToInspect()
     }
 
     int16_t delta_y = abs(GetLocation().y - GetDestination().y);
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
 
@@ -1488,7 +1488,7 @@ void Staff::UpdateHeadingToInspect()
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, newZ });
+        MoveTo({ loc.value(), newZ });
         return;
     }
 
@@ -1568,7 +1568,7 @@ void Staff::UpdateAnswering()
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exit_index).isNull())
+            if (!ride_get_exit_location(ride, exit_index).IsNull())
             {
                 return;
             }
@@ -1588,7 +1588,7 @@ void Staff::UpdateAnswering()
     }
 
     int16_t delta_y = abs(y - GetDestination().y);
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
 
@@ -1597,7 +1597,7 @@ void Staff::UpdateAnswering()
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, newZ });
+        MoveTo({ loc.value(), newZ });
         return;
     }
 
@@ -2181,9 +2181,9 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride)
         SetDestination(destination, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
 
@@ -2301,7 +2301,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
         }
 
         auto stationPos = ride->stations[CurrentRideStation].GetStart();
-        if (stationPos.isNull())
+        if (stationPos.IsNull())
         {
             return true;
         }
@@ -2331,9 +2331,9 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
         SetDestination(stationPos, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
 
@@ -2387,7 +2387,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
         }
 
         auto stationPosition = ride->stations[CurrentRideStation].GetStart();
-        if (stationPosition.isNull())
+        if (stationPosition.IsNull())
         {
             return true;
         }
@@ -2437,9 +2437,9 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
         SetDestination(destination, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
 
@@ -2531,11 +2531,11 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
     if (!firstRun)
     {
         auto stationPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
-        if (stationPosition.isNull())
+        if (stationPosition.IsNull())
         {
             stationPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
 
-            if (stationPosition.isNull())
+            if (stationPosition.IsNull())
             {
                 return true;
             }
@@ -2550,9 +2550,9 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
         SetDestination(stationPosition, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
     else
@@ -2613,11 +2613,11 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
     if (!firstRun)
     {
         auto exitPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
-        if (exitPosition.isNull())
+        if (exitPosition.IsNull())
         {
             exitPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
 
-            if (exitPosition.isNull())
+            if (exitPosition.IsNull())
             {
                 SetState(PeepState::Falling);
                 return false;
@@ -2634,7 +2634,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
     }
 
     int16_t xy_distance;
-    if (auto loc = UpdateAction(xy_distance))
+    if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
         uint16_t stationHeight = ride->stations[CurrentRideStation].GetBaseZ();
 
@@ -2643,7 +2643,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
             stationHeight += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, stationHeight });
+        MoveTo({ loc.value(), stationHeight });
         return false;
     }
     SetState(PeepState::Falling);

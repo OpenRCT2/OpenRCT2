@@ -85,9 +85,9 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
     }
 
     auto assertMsg = Guard::GetLastAssertMessage();
-    if (assertMsg)
+    if (assertMsg.has_value())
     {
-        parameters[L"assert_failure"] = String::ToWideChar(*assertMsg);
+        parameters[L"assert_failure"] = String::ToWideChar(assertMsg.value());
     }
 
     int timeout = 10000;

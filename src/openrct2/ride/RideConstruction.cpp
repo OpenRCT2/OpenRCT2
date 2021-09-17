@@ -122,7 +122,7 @@ static rct_window* ride_create_or_find_construction_window(ride_id_t rideIndex)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
-    intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+    intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(rideIndex));
     windowManager->BroadcastIntent(intent);
     return window_find_by_class(WC_RIDE_CONSTRUCTION);
 }
@@ -239,7 +239,7 @@ void ride_clear_for_construction(Ride* ride)
     ride->RemoveVehicles();
     ride_clear_blocked_tiles(ride);
 
-    auto w = window_find_by_number(WC_RIDE, ride->id);
+    auto w = window_find_by_number(WC_RIDE, EnumValue(ride->id));
     if (w != nullptr)
         window_event_resize_call(w);
 }
@@ -258,7 +258,7 @@ void ride_remove_peeps(Ride* ride)
     if (stationIndex != STATION_INDEX_NULL)
     {
         auto location = ride_get_exit_location(ride, stationIndex).ToCoordsXYZD();
-        if (!location.isNull())
+        if (!location.IsNull())
         {
             auto direction = direction_reverse(location.direction);
             exitPosition = location;
@@ -379,7 +379,7 @@ void ride_clear_blocked_tiles(Ride* ride)
  * di : output_element
  * bp : flags
  */
-std::optional<CoordsXYZ> sub_6C683D(
+std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
@@ -549,7 +549,7 @@ void ride_construction_invalidate_current_track()
     switch (_rideConstructionState)
     {
         case RideConstructionState::Selected:
-            sub_6C683D(
+            GetTrackElementOriginAndApplyChanges(
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
                 nullptr, TRACK_ELEMENT_SET_HIGHLIGHT_FALSE);
             break;
@@ -661,8 +661,8 @@ void ride_construction_set_default_next_piece()
 
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.next;
-            bank = TrackDefinitions[trackType].bank_end;
-            slope = TrackDefinitions[trackType].vangle_end;
+            bank = ted->Definition.bank_end;
+            slope = ted->Definition.vangle_end;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -707,8 +707,8 @@ void ride_construction_set_default_next_piece()
 
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.previous;
-            bank = TrackDefinitions[trackType].bank_start;
-            slope = TrackDefinitions[trackType].vangle_start;
+            bank = ted->Definition.bank_start;
+            slope = ted->Definition.vangle_start;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -750,8 +750,9 @@ void ride_select_next_section()
         int32_t direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
         TileElement* tileElement;
-        auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
-        if (newCoords == std::nullopt)
+        auto newCoords = GetTrackElementOriginAndApplyChanges(
+            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+        if (!newCoords.has_value())
         {
             _rideConstructionState = RideConstructionState::State0;
             window_ride_construction_update_active_elements();
@@ -816,7 +817,8 @@ void ride_select_previous_section()
         int32_t direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
         TileElement* tileElement;
-        auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+        auto newCoords = GetTrackElementOriginAndApplyChanges(
+            { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
         if (newCoords == std::nullopt)
         {
             _rideConstructionState = RideConstructionState::State0;
@@ -1034,13 +1036,13 @@ bool ride_modify(CoordsXYE* input)
     auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->GetBaseZ() };
     auto direction = tileElement.element->GetDirection();
     auto type = tileElement.element->AsTrack()->GetTrackType();
-    auto newCoords = sub_6C683D({ tileCoords, direction }, type, 0, nullptr, 0);
-    if (newCoords == std::nullopt)
+    auto newCoords = GetTrackElementOriginAndApplyChanges({ tileCoords, direction }, type, 0, nullptr, 0);
+    if (!newCoords.has_value())
         return false;
 
     _currentRideIndex = rideIndex;
     _rideConstructionState = RideConstructionState::Selected;
-    _currentTrackBegin = *newCoords;
+    _currentTrackBegin = newCoords.value();
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags = 0;
@@ -1200,42 +1202,41 @@ money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, u
     return res->Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
 }
 
-static int32_t loc_6CD18E(
-    int16_t mapX, int16_t mapY, int16_t entranceMinX, int16_t entranceMinY, int16_t entranceMaxX, int16_t entranceMaxY)
+// Finds the direction a ride entrance should face for an NxN station.
+// Direction is valid if queryLocation is directly adjacent to this station.
+static Direction GetRideEntranceDirection(const CoordsXY& queryLocation, CoordsXY entranceMin, CoordsXY entranceMax)
 {
-    int32_t direction = 0;
-    if (mapX == entranceMinX)
+    entranceMin -= CoordsXY(32, 32);
+    entranceMax += CoordsXY(32, 32);
+    if (queryLocation.x == entranceMin.x)
     {
-        if (mapY > entranceMinY && mapY < entranceMaxY)
+        if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
         {
-            return direction;
+            return 0;
         }
     }
-    direction = 1;
-    if (mapY == entranceMaxY)
+    if (queryLocation.y == entranceMax.y)
     {
-        if (mapX > entranceMinX && mapX < entranceMaxX)
+        if (queryLocation.x > entranceMin.x && queryLocation.x < entranceMax.x)
         {
-            return direction;
+            return 1;
         }
     }
-    direction = 2;
-    if (mapX == entranceMaxX)
+    if (queryLocation.x == entranceMax.x)
     {
-        if (mapY > entranceMinY && mapY < entranceMaxY)
+        if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
         {
-            return direction;
+            return 2;
         }
     }
-    direction = 3;
-    if (mapY == entranceMinY)
+    if (queryLocation.y == entranceMin.y)
     {
-        if (mapX > entranceMinX && mapX < entranceMaxX)
+        if (queryLocation.x > entranceMin.x && queryLocation.x < entranceMax.x)
         {
-            return direction;
+            return 3;
         }
     }
-    return -1;
+    return INVALID_DIRECTION;
 }
 
 /**
@@ -1245,8 +1246,8 @@ static int32_t loc_6CD18E(
 CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenCoordsXY& screenCoords)
 {
     CoordsXYZD entranceExitCoords{};
-
     gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
+    // determine if the mouse is hovering over a station - that's the station to add the entrance to
     auto info = get_map_coordinates_from_pos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
     if (info.SpriteType != ViewportInteractionItem::None)
     {
@@ -1273,57 +1274,60 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     auto ride = get_ride(gRideEntranceExitPlaceRideIndex);
     if (ride == nullptr)
     {
-        entranceExitCoords.setNull();
+        entranceExitCoords.SetNull();
         return entranceExitCoords;
     }
 
     auto stationBaseZ = ride->stations[gRideEntranceExitPlaceStationIndex].GetBaseZ();
 
-    auto coords = screen_get_map_xy_with_z(screenCoords, stationBaseZ);
-    if (!coords)
+    auto coordsAtHeight = screen_get_map_xy_with_z(screenCoords, stationBaseZ);
+    if (!coordsAtHeight.has_value())
     {
-        entranceExitCoords.setNull();
+        entranceExitCoords.SetNull();
         return entranceExitCoords;
     }
 
-    auto word_F4418C = coords->x;
-    auto word_F4418E = coords->y;
-
-    entranceExitCoords = { coords->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
+    entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
 
     if (ride->type == RIDE_TYPE_NULL)
     {
-        entranceExitCoords.setNull();
+        entranceExitCoords.SetNull();
         return entranceExitCoords;
     }
 
     auto stationStart = ride->stations[gRideEntranceExitPlaceStationIndex].Start;
-    if (stationStart.isNull())
+    if (stationStart.IsNull())
     {
-        entranceExitCoords.setNull();
+        entranceExitCoords.SetNull();
         return entranceExitCoords;
     }
 
+    // flat rides
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
-        auto mapX = (word_F4418C & 0x1F) - 16;
-        auto mapY = (word_F4418E & 0x1F) - 16;
+        // find the quadrant the mouse is hovering over - that's the direction to start searching for a station TileElement
+        Direction startDirection = 0;
+        auto mapX = (coordsAtHeight->x & 0x1F) - 16;
+        auto mapY = (coordsAtHeight->y & 0x1F) - 16;
         if (std::abs(mapX) < std::abs(mapY))
         {
-            entranceExitCoords.direction = mapY < 0 ? 3 : 1;
+            startDirection = mapY < 0 ? 3 : 1;
         }
         else
         {
-            entranceExitCoords.direction = mapX < 0 ? 0 : 2;
+            startDirection = mapX < 0 ? 0 : 2;
         }
-
-        for (int32_t i = 0; i < MAX_STATIONS; i++)
+        // check all 4 directions, starting with the mouse's quadrant
+        for (uint8_t directionIncrement = 0; directionIncrement < 4; directionIncrement++)
         {
-            mapX = entranceExitCoords.x + CoordsDirectionDelta[entranceExitCoords.direction].x;
-            mapY = entranceExitCoords.y + CoordsDirectionDelta[entranceExitCoords.direction].y;
-            if (map_is_location_valid({ mapX, mapY }))
+            entranceExitCoords.direction = (startDirection + directionIncrement) & 3;
+            // search for TrackElement one tile over, shifted in the search direction
+            auto nextLocation = entranceExitCoords;
+            nextLocation += CoordsDirectionDelta[entranceExitCoords.direction];
+            if (map_is_location_valid(nextLocation))
             {
-                auto tileElement = map_get_first_element_at({ mapX, mapY });
+                // iterate over every element in the tile until we find what we want
+                auto tileElement = map_get_first_element_at(nextLocation);
                 if (tileElement == nullptr)
                     continue;
                 do
@@ -1336,53 +1340,56 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                         continue;
                     if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Maze)
                     {
+                        // if it's a maze, it can place the entrance and exit immediately
                         entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
                         gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
                         return entranceExitCoords;
                     }
                     if (tileElement->AsTrack()->GetStationIndex() != gRideEntranceExitPlaceStationIndex)
                         continue;
+                    // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
+                    // entrance can be placed on that side
 
-                    int32_t eax = (entranceExitCoords.direction + 2 - tileElement->GetDirection())
-                        & TILE_ELEMENT_DIRECTION_MASK;
+                    // get the ride entrance's side relative to the TrackElement
+                    Direction direction = (direction_reverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
                     const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (ted.SequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << eax))
+                    if (ted.SequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << direction))
                     {
+                        // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
+                        // the station
                         entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
                         gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
                         return entranceExitCoords;
                     }
                 } while (!(tileElement++)->IsLastForTile());
             }
-            entranceExitCoords.direction = (entranceExitCoords.direction + 1) & 3;
         }
         gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
     }
+    // tracked rides excluding tower rides
     else
     {
-        auto mapX = stationStart.x;
-        auto mapY = stationStart.y;
-        auto entranceMinX = mapX;
-        auto entranceMinY = mapY;
-        auto entranceMaxX = mapX;
-        auto entranceMaxY = mapY;
+        // create a 2-point rectangle. The rectangle will have a width or height of 0 depending on station direction
+        CoordsXY entranceMin = { stationStart };
+        CoordsXY entranceMax = { stationStart };
 
+        // get the beginning of the station TrackElement
         auto tileElement = ride_get_station_start_track_element(ride, gRideEntranceExitPlaceStationIndex);
         if (tileElement == nullptr)
         {
-            entranceExitCoords.setNull();
+            entranceExitCoords.SetNull();
             return entranceExitCoords;
         }
-        entranceExitCoords.direction = tileElement->GetDirection();
-        auto stationDirection = entranceExitCoords.direction;
+        auto stationDirection = tileElement->GetDirection();
+        entranceExitCoords.direction = stationDirection;
 
+        auto next = entranceMax;
+        // find additional station TrackElements and extend the line of valid entrance locations
         while (true)
         {
-            entranceMaxX = mapX;
-            entranceMaxY = mapY;
-            mapX -= CoordsDirectionDelta[entranceExitCoords.direction].x;
-            mapY -= CoordsDirectionDelta[entranceExitCoords.direction].y;
-            tileElement = map_get_first_element_at({ mapX, mapY });
+            entranceMax = next;
+            next -= CoordsDirectionDelta[stationDirection];
+            tileElement = map_get_first_element_at(next);
             if (tileElement == nullptr)
                 break;
             bool goToNextTile = false;
@@ -1405,25 +1412,16 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             if (!goToNextTile)
                 break;
         }
+        // swap variables for valid ranges
+        if (entranceMin.x > entranceMax.x)
+            std::swap(entranceMin.x, entranceMax.x);
+        if (entranceMin.y > entranceMax.y)
+            std::swap(entranceMin.y, entranceMax.y);
 
-        mapX = entranceMinX;
-        if (mapX > entranceMaxX)
-        {
-            entranceMinX = entranceMaxX;
-            entranceMaxX = mapX;
-        }
+        // get the station direction from its position
+        auto direction = GetRideEntranceDirection(entranceExitCoords, entranceMin, entranceMax);
 
-        mapY = entranceMinY;
-        if (mapY > entranceMaxY)
-        {
-            entranceMinY = entranceMaxY;
-            entranceMaxY = mapY;
-        }
-
-        auto direction = loc_6CD18E(
-            entranceExitCoords.x, entranceExitCoords.y, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32,
-            entranceMaxY + 32);
-        if (direction != -1 && direction != stationDirection && direction != direction_reverse(stationDirection))
+        if (direction != INVALID_DIRECTION && direction != stationDirection && direction != direction_reverse(stationDirection))
         {
             entranceExitCoords.direction = direction;
             gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
@@ -1437,23 +1435,25 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
  *
  *  rct2: 0x006CB945
  */
-void sub_6CB945(Ride* ride)
+void Ride::ValidateStations()
 {
     const TrackElementDescriptor* ted;
-    if (ride->type != RIDE_TYPE_MAZE)
+    if (type != RIDE_TYPE_MAZE)
     {
+        // find the stations of the ride to begin stepping over track elements from
         for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
         {
-            if (ride->stations[stationId].Start.isNull())
+            if (stations[stationId].Start.IsNull())
                 continue;
 
-            CoordsXYZ location = ride->stations[stationId].GetStart();
+            CoordsXYZ location = stations[stationId].GetStart();
             uint8_t direction = INVALID_DIRECTION;
 
             bool specialTrack = false;
             TileElement* tileElement = nullptr;
             while (true)
             {
+                // search backwards for the previous station TrackElement (only if the first station TrackElement is found)
                 if (direction != INVALID_DIRECTION)
                 {
                     location.x -= CoordsDirectionDelta[direction].x;
@@ -1463,6 +1463,7 @@ void sub_6CB945(Ride* ride)
                 if (tileElement == nullptr)
                     break;
 
+                // find the target TrackElement on the tile it's supposed to appear on
                 bool trackFound = false;
                 do
                 {
@@ -1470,12 +1471,13 @@ void sub_6CB945(Ride* ride)
                         continue;
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;
-                    if (tileElement->AsTrack()->GetRideIndex() != ride->id)
+                    if (tileElement->AsTrack()->GetRideIndex() != id)
                         continue;
                     if (tileElement->AsTrack()->GetSequenceIndex() != 0)
                         continue;
 
                     ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+                    // keep searching for a station piece (coaster station, tower ride base, shops, and flat ride base)
                     if (!(ted->SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
@@ -1487,22 +1489,26 @@ void sub_6CB945(Ride* ride)
                 {
                     break;
                 }
-
+                // update the StationIndex, get the TrackElement's rotation
                 tileElement->AsTrack()->SetStationIndex(stationId);
                 direction = tileElement->GetDirection();
 
-                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
+                // In the future this could look at the TED and see if the station has a sequence longer than 1
+                // tower ride, flat ride, shop
+                if (GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
                 {
+                    // if the track has multiple sequences, stop looking for the next one.
                     specialTrack = true;
                     break;
                 }
             }
 
+            // if the track piece is not a tower ride, flat ride, or shop, continue to the next StationIndex
             if (!specialTrack)
             {
                 continue;
             }
-
+            // update all the blocks with StationIndex
             ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
             const rct_preview_track* trackBlock = ted->Block;
             while ((++trackBlock)->index != 0xFF)
@@ -1513,6 +1519,7 @@ void sub_6CB945(Ride* ride)
                 tileElement = map_get_first_element_at(blockLocation);
                 if (tileElement == nullptr)
                     break;
+                // find the target TrackElement on the tile it's supposed to appear on
                 do
                 {
                     if (blockLocation.z != tileElement->GetBaseZ())
@@ -1530,6 +1537,7 @@ void sub_6CB945(Ride* ride)
 
                 if (!trackFound)
                 {
+                    // Critical error! Stop trying to find the next sequence to set StationIndex.
                     break;
                 }
 
@@ -1537,22 +1545,22 @@ void sub_6CB945(Ride* ride)
             }
         }
     }
-
+    // determine what entrances and exits exist
     FixedVector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
     for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
     {
-        auto entrance = ride_get_entrance_location(ride, stationId);
-        if (!entrance.isNull())
+        auto entrance = ride_get_entrance_location(this, stationId);
+        if (!entrance.IsNull())
         {
             locations.push_back(entrance);
-            ride_clear_entrance_location(ride, stationId);
+            ride_clear_entrance_location(this, stationId);
         }
 
-        auto exit = ride_get_exit_location(ride, stationId);
-        if (!exit.isNull())
+        auto exit = ride_get_exit_location(this, stationId);
+        if (!exit.IsNull())
         {
             locations.push_back(exit);
-            ride_clear_exit_location(ride, stationId);
+            ride_clear_exit_location(this, stationId);
         }
     }
 
@@ -1560,7 +1568,8 @@ void sub_6CB945(Ride* ride)
     for (const TileCoordsXYZD& locationCoords : locations)
     {
         auto locationList = ++locationListIter;
-
+        // determine if there's another ride entrance at this location later in the array
+        // if there is, skip it. The last ride entrance in the array at the location is not skipped
         bool duplicateLocation = false;
         while (locationList != locations.cend())
         {
@@ -1575,9 +1584,10 @@ void sub_6CB945(Ride* ride)
 
         if (duplicateLocation)
         {
+            // if it's a duplicate continue to the next ride entrance
             continue;
         }
-
+        // if it's not a duplicate location
         CoordsXY location = locationCoords.ToCoordsXY();
 
         TileElement* tileElement = map_get_first_element_at(location);
@@ -1589,15 +1599,18 @@ void sub_6CB945(Ride* ride)
                 continue;
             if (tileElement->base_height != locationCoords.z)
                 continue;
-            if (tileElement->AsEntrance()->GetRideIndex() != ride->id)
+            if (tileElement->AsEntrance()->GetRideIndex() != id)
                 continue;
+            // if it's a park entrance continue to the next tile element
             if (tileElement->AsEntrance()->GetEntranceType() > ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
+            // find the station that's connected to this ride entrance
             CoordsXY nextLocation = location;
             nextLocation.x += CoordsDirectionDelta[tileElement->GetDirection()].x;
             nextLocation.y += CoordsDirectionDelta[tileElement->GetDirection()].y;
 
+            // if there's no connected station, remove the ride entrance (see below)
             bool shouldRemove = true;
             TileElement* trackElement = map_get_first_element_at(nextLocation);
             if (trackElement == nullptr)
@@ -1606,7 +1619,7 @@ void sub_6CB945(Ride* ride)
             {
                 if (trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
-                if (trackElement->AsTrack()->GetRideIndex() != ride->id)
+                if (trackElement->AsTrack()->GetRideIndex() != id)
                     continue;
                 if (trackElement->base_height != tileElement->base_height)
                     continue;
@@ -1614,41 +1627,45 @@ void sub_6CB945(Ride* ride)
                 auto trackType = trackElement->AsTrack()->GetTrackType();
                 uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
+                // determine where the ride entrance is relative to the station track
                 Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;
 
+                // if the ride entrance is not on a valid side, remove it
                 ted = &GetTrackElementDescriptor(trackType);
                 if (!(ted->SequenceProperties[trackSequence] & (1 << direction)))
                 {
                     continue;
                 }
-
+                // get the StationIndex for the station
                 StationIndex stationId = 0;
                 if (trackType != TrackElemType::Maze)
                 {
                     stationId = trackElement->AsTrack()->GetStationIndex();
                 }
-
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
                 {
-                    if (!ride_get_exit_location(ride, stationId).isNull())
+                    // if the location is already set for this station, big problem!
+                    if (!ride_get_exit_location(this, stationId).IsNull())
                         break;
-
-                    CoordsXYZD loc = { location, ride->stations[stationId].GetBaseZ(), tileElement->GetDirection() };
-                    ride_set_exit_location(ride, stationId, TileCoordsXYZD{ loc });
+                    // set the station's exit location to this one
+                    CoordsXYZD loc = { location, stations[stationId].GetBaseZ(), tileElement->GetDirection() };
+                    ride_set_exit_location(this, stationId, TileCoordsXYZD{ loc });
                 }
                 else
                 {
-                    if (!ride_get_entrance_location(ride, stationId).isNull())
+                    // if the location is already set for this station, big problem!
+                    if (!ride_get_entrance_location(this, stationId).IsNull())
                         break;
-
-                    CoordsXYZD loc = { location, ride->stations[stationId].GetBaseZ(), tileElement->GetDirection() };
-                    ride_set_entrance_location(ride, stationId, TileCoordsXYZD{ loc });
+                    // set the station's entrance location to this one
+                    CoordsXYZD loc = { location, stations[stationId].GetBaseZ(), tileElement->GetDirection() };
+                    ride_set_entrance_location(this, stationId, TileCoordsXYZD{ loc });
                 }
-
+                // set the entrance's StationIndex as this station
                 tileElement->AsEntrance()->SetStationIndex(stationId);
                 shouldRemove = false;
             } while (!(trackElement++)->IsLastForTile());
 
+            // remove the ride entrance and clean up if necessary
             if (shouldRemove)
             {
                 footpath_queue_chain_reset();
@@ -1721,16 +1738,16 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride* ride)
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.isNull())
+        if (ride->stations[i].Start.IsNull())
         {
             continue;
         }
-        if (ride_get_entrance_location(ride, i).isNull())
+        if (ride_get_entrance_location(ride, i).IsNull())
         {
             gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
             return false;
         }
-        if (ride_get_exit_location(ride, i).isNull())
+        if (ride_get_exit_location(ride, i).IsNull())
         {
             gGameCommandErrorText = STR_EXIT_NOT_YET_BUILT;
             return false;

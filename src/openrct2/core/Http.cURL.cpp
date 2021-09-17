@@ -18,7 +18,7 @@
 #    include <stdexcept>
 #    include <thread>
 
-#    ifdef _WIN32
+#    if defined(_WIN32) && !defined(WIN32_LEAN_AND_MEAN)
 // cURL includes windows.h, but we don't need all of it.
 #        define WIN32_LEAN_AND_MEAN
 #    endif

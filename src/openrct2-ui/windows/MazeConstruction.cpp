@@ -130,7 +130,7 @@ rct_window* window_maze_construction_open()
 
     WindowInitScrollWidgets(w);
 
-    w->number = _currentRideIndex;
+    w->rideId = _currentRideIndex;
 
     window_push_others_right(w);
     show_gridlines();
@@ -159,7 +159,7 @@ static void window_maze_construction_close(rct_window* w)
     auto ride = get_ride(_currentRideIndex);
     if (ride != nullptr)
     {
-        if (ride->overall_view.isNull())
+        if (ride->overall_view.IsNull())
         {
             int32_t savedPausedState = gGamePaused;
             gGamePaused = 0;
@@ -169,7 +169,7 @@ static void window_maze_construction_close(rct_window* w)
         else
         {
             auto intent = Intent(WC_RIDE);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
+            intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(ride->id));
             context_open_intent(&intent);
         }
     }
@@ -181,7 +181,7 @@ static void window_maze_construction_entrance_mouseup(rct_window* w, rct_widgeti
         return;
 
     gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
-    gRideEntranceExitPlaceRideIndex = static_cast<uint8_t>(w->number);
+    gRideEntranceExitPlaceRideIndex = w->rideId;
     gRideEntranceExitPlaceStationIndex = 0;
     input_set_flag(INPUT_FLAG_6, true);
 
@@ -331,7 +331,7 @@ static void window_maze_construction_update(rct_window* w)
         default:
             break;
     }
-    sub_6C94D8();
+    UpdateGhostTrackAndArrow();
 }
 
 /**
@@ -366,7 +366,7 @@ static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& scr
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
-    if (entranceOrExitCoords.isNull())
+    if (entranceOrExitCoords.IsNull())
         return;
 
     if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)

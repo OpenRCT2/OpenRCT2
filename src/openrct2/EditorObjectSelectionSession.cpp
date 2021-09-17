@@ -149,11 +149,11 @@ void setup_in_use_selection_flags()
             case TILE_ELEMENT_TYPE_PATH:
             {
                 auto footpathEl = iter.element->AsPath();
-                auto legacyPathEntryIndex = footpathEl->GetPathEntryIndex();
+                auto legacyPathEntryIndex = footpathEl->GetLegacyPathEntryIndex();
                 if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
                 {
                     auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
-                    auto railingEntryIndex = footpathEl->GetRailingEntryIndex();
+                    auto railingEntryIndex = footpathEl->GetRailingsEntryIndex();
                     Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
                     Editor::SetSelectedObject(ObjectType::FootpathRailings, railingEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
                 }
@@ -184,7 +184,7 @@ void setup_in_use_selection_flags()
                 if (parkEntranceEl->GetSequenceIndex() != 0)
                     break;
 
-                auto legacyPathEntryIndex = parkEntranceEl->GetPathEntryIndex();
+                auto legacyPathEntryIndex = parkEntranceEl->GetLegacyPathEntryIndex();
                 if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
                 {
                     auto surfaceEntryIndex = parkEntranceEl->GetSurfaceEntryIndex();
@@ -217,15 +217,11 @@ void setup_in_use_selection_flags()
         }
     } while (tile_element_iterator_next(&iter));
 
-    for (ride_id_t ride_index = 0; ride_index < MAX_RIDES; ride_index++)
+    for (auto& ride : GetRideManager())
     {
-        auto ride = get_ride(ride_index);
-        if (ride != nullptr)
-        {
-            Editor::SetSelectedObject(ObjectType::Ride, ride->subtype, OBJECT_SELECTION_FLAG_SELECTED);
-            Editor::SetSelectedObject(ObjectType::Station, ride->entrance_style, OBJECT_SELECTION_FLAG_SELECTED);
-            Editor::SetSelectedObject(ObjectType::Music, ride->music, OBJECT_SELECTION_FLAG_SELECTED);
-        }
+        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED);
+        Editor::SetSelectedObject(ObjectType::Station, ride.entrance_style, OBJECT_SELECTION_FLAG_SELECTED);
+        Editor::SetSelectedObject(ObjectType::Music, ride.music, OBJECT_SELECTION_FLAG_SELECTED);
     }
 
     // Apply selected object status for hacked vehicles that may not have an associated ride
@@ -289,7 +285,7 @@ void sub_6AB211()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        auto objectType = items[i].Type;
+        ObjectType objectType = items[i].Type;
         _numAvailableObjectsForType[EnumValue(objectType)]++;
     }
 
@@ -431,6 +427,7 @@ static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     auto* oldPalette = objectManager.GetLoadedObject(ObjectType::Water, 0);
+
     if (oldPalette != nullptr)
     {
         const std::vector<ObjectEntryDescriptor> oldEntries = { oldPalette->GetDescriptor() };
@@ -463,7 +460,7 @@ void reset_selected_object_count_and_size()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        auto objectType = items[i].Type;
+        ObjectType objectType = items[i].Type;
         if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
         {
             _numSelectedObjectsForType[EnumValue(objectType)]++;

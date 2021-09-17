@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../interface/Viewport.h"
+#include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Entity.h"
@@ -237,9 +238,15 @@ static void paint_magic_carpet(
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             }
+            StationObject* stationObject = nullptr;
+            if (ride != nullptr)
+                stationObject = ride_get_station_object(ride);
 
-            uint32_t imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
+            if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+            {
+                uint32_t imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
+            }
             break;
     }
 

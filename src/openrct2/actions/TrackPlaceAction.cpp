@@ -9,6 +9,7 @@
 
 #include "TrackPlaceAction.h"
 
+#include "../core/Numerics.hpp"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -85,13 +86,13 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride for track placement, rideIndex = %d", EnumValue(_rideIndex));
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_NONE);
     }
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride subtype for track placement, rideIndex = %d", EnumValue(_rideIndex));
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
@@ -379,14 +380,14 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride for track placement, rideIndex = %d", EnumValue(_rideIndex));
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
+        log_warning("Invalid ride subtype for track placement, rideIndex = %d", EnumValue(_rideIndex));
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
@@ -453,7 +454,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
                 // Remove walls in the directions this track intersects
                 uint8_t intersectingDirections = wallEdges[blockIndex];
                 intersectingDirections ^= 0x0F;
-                intersectingDirections = rol4(intersectingDirections, _origin.direction);
+                intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
                 for (int32_t i = 0; i < NumOrthogonalDirections; i++)
                 {
                     if (intersectingDirections & (1 << i))
@@ -534,7 +535,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         }
 
         int32_t entranceDirections = 0;
-        if (!ride->overall_view.isNull())
+        if (!ride->overall_view.IsNull())
         {
             if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
             {
@@ -542,7 +543,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             }
         }
 
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.isNull())
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.IsNull())
         {
             ride->overall_view = mapLoc;
         }
@@ -550,7 +551,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         auto* trackElement = TileElementInsert<TrackElement>(mapLoc, quarterTile.GetBaseQuarterOccupied());
         if (trackElement == nullptr)
         {
-            log_warning("Cannot create track element for ride = %d", static_cast<int32_t>(_rideIndex));
+            log_warning("Cannot create track element for ride = %d", EnumValue(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements);
         }
 
@@ -629,7 +630,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             {
                 track_add_station_element({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
             }
-            sub_6CB945(ride);
+            ride->ValidateStations();
             ride->UpdateMaxVehicles();
         }
 

@@ -129,16 +129,18 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     ride_remove_peeps(ride);
     ride->StopGuestsQueuing();
 
-    sub_6CB945(ride);
+    ride->ValidateStations();
     ride_clear_leftover_entrances(ride);
-    News::DisableNewsItems(News::ItemType::Ride, _rideIndex);
 
-    UnlinkAllBannersForRide(_rideIndex);
+    const auto rideId = ride->id;
+    News::DisableNewsItems(News::ItemType::Ride, EnumValue(rideId));
 
-    RideUse::GetHistory().RemoveValue(_rideIndex);
+    UnlinkAllBannersForRide(ride->id);
+
+    RideUse::GetHistory().RemoveValue(ride->id);
     for (auto peep : EntityList<Guest>())
     {
-        peep->RemoveRideFromMemory(_rideIndex);
+        peep->RemoveRideFromMemory(ride->id);
     }
 
     MarketingCancelCampaignsForRide(_rideIndex);
@@ -147,7 +149,7 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     res->Expenditure = ExpenditureType::RideConstruction;
     res->Cost = refundPrice;
 
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto xy = ride->overall_view.ToTileCentre();
         res->Position = { xy, tile_element_height(xy) };
@@ -157,9 +159,9 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
     // Close windows related to the demolished ride
-    window_close_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
-    window_close_by_number(WC_RIDE, _rideIndex);
-    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
+    window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(rideId));
+    window_close_by_number(WC_RIDE, EnumValue(rideId));
+    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, EnumValue(rideId));
     window_close_by_class(WC_NEW_CAMPAIGN);
 
     // Refresh windows that display the ride name
@@ -266,13 +268,13 @@ GameActions::Result::Ptr RideDemolishAction::RefurbishRide(Ride* ride) const
 
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };
     }
 
-    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
+    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, EnumValue(_rideIndex));
 
     return res;
 }

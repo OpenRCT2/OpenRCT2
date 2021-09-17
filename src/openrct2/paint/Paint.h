@@ -14,6 +14,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
+#include "../world/Map.h"
 
 #include <mutex>
 #include <thread>
@@ -114,7 +115,10 @@ struct tunnel_entry
     uint8_t type;
 };
 
-#define MAX_PAINT_QUADRANTS 512
+// The maximum size must be MAXIMUM_MAP_SIZE_TECHNICAL multiplied by 2 because
+// the quadrant index is based on the x and y components combined.
+static constexpr int32_t MaxPaintQuadrants = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
+
 #define TUNNEL_MAX_COUNT 65
 
 /**
@@ -169,7 +173,7 @@ public:
 
 struct PaintSessionCore
 {
-    paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
+    paint_struct* Quadrants[MaxPaintQuadrants];
     paint_struct* LastPS;
     paint_string_struct* PSStringHead;
     paint_string_struct* LastPSString;

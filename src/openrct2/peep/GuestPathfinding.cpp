@@ -1400,7 +1400,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 
         // Clear pathfinding history
         TileCoordsXYZD nullPos;
-        nullPos.setNull();
+        nullPos.SetNull();
 
         std::fill(std::begin(peep->PathfindHistory), std::end(peep->PathfindHistory), nullPos);
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -1461,7 +1461,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 
             for (auto& entry : _peepPathFindHistory)
             {
-                entry.location.setNull();
+                entry.location.SetNull();
                 entry.direction = INVALID_DIRECTION;
             }
 
@@ -2095,8 +2095,8 @@ int32_t guest_path_finding(Guest* peep)
             if (!(adjustedEdges & (1 << chosenDirection)))
                 continue;
 
-            ride_id_t rideIndex, pathSearchResult;
-            pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
+            ride_id_t rideIndex = RIDE_ID_NULL;
+            auto pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
             switch (pathSearchResult)
             {
                 case PATH_SEARCH_DEAD_END:
@@ -2185,7 +2185,7 @@ int32_t guest_path_finding(Guest* peep)
     for (StationIndex stationNum = 0; stationNum < MAX_STATIONS; ++stationNum)
     {
         // Skip if stationNum has no entrance (so presumably an exit only station)
-        if (ride_get_entrance_location(ride, stationNum).isNull())
+        if (ride_get_entrance_location(ride, stationNum).IsNull())
             continue;
 
         numEntranceStations++;
@@ -2303,7 +2303,7 @@ void Peep::ResetPathfindGoal()
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-    PathfindGoal.setNull();
+    PathfindGoal.SetNull();
     PathfindGoal.direction = INVALID_DIRECTION;
 }
 

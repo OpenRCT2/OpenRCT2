@@ -175,7 +175,6 @@
     <ClInclude Include="core\Memory.hpp" />
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />
-    <ClInclude Include="core\Nullable.hpp" />
     <ClInclude Include="core\Numerics.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
@@ -185,6 +184,7 @@
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
     <ClInclude Include="core\Zip.h" />
+    <ClInclude Include="core\ZipStream.hpp" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="drawing\Drawing.h" />

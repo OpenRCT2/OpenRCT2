@@ -9,6 +9,7 @@
 
 #include "Addresses.h"
 
+#include <array>
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Colour.h>
@@ -72,18 +73,25 @@ uint8_t get_current_rotation()
 }
 
 int object_entry_group_counts[] = {
-    128, // rides
-    252, // small scenery
-    128, // large scenery
-    128, // walls
-    32,  // banners
-    16,  // paths
-    15,  // path bits
-    19,  // scenery sets
-    1,   // park entrance
-    1,   // water
-    1    // scenario text
+    128, // ObjectType::Ride
+    252, // ObjectType::SmallScenery
+    128, // ObjectType::LargeScenery
+    128, // ObjectType::Walls
+    32,  // ObjectType::Banners
+    16,  // ObjectType::Paths
+    15,  // ObjectType::PathBits
+    19,  // ObjectType::SceneryGroup
+    1,   // ObjectType::ParkEntrance
+    1,   // ObjectType::Water
+    1,   // ObjectType::ScenarioText
+    0,   // ObjectType::TerrainSurface
+    0,   // ObjectType::TerrainEdge
+    0,   // ObjectType::Station
+    0,   // ObjectType::Music
+    0,   // ObjectType::FootpathSurface
+    0,   // ObjectType::FootpathRailings
 };
+static_assert(std::size(object_entry_group_counts) == EnumValue(ObjectType::Count));
 
 GeneralConfiguration gConfigGeneral;
 uint16_t gMapSelectFlags;

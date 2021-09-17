@@ -13,6 +13,7 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../core/Numerics.hpp"
 #include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -1822,7 +1823,8 @@ Ride* Guest::FindBestRideToGoOn()
     Ride* mostExcitingRide = nullptr;
     for (auto& ride : GetRideManager())
     {
-        if (rideConsideration.size() > ride.id && rideConsideration[ride.id])
+        const auto rideIndex = EnumValue(ride.id);
+        if (rideConsideration.size() > rideIndex && rideConsideration[rideIndex])
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
@@ -1853,7 +1855,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
         {
             if (!HasRidden(&ride))
             {
-                rideConsideration[ride.id] = true;
+                rideConsideration[EnumValue(ride.id)] = true;
             }
         }
     }
@@ -1874,7 +1876,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
                 for (auto* trackElement : TileElementsView<TrackElement>(location))
                 {
                     auto rideIndex = trackElement->GetRideIndex();
-                    rideConsideration[rideIndex] = true;
+                    rideConsideration[EnumValue(rideIndex)] = true;
                 }
             }
         }
@@ -1884,7 +1886,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
         {
             if (ride.highest_drop_height > 66 || ride.excitement >= RIDE_RATING(8, 00))
             {
-                rideConsideration[ride.id] = true;
+                rideConsideration[EnumValue(ride.id)] = true;
             }
         }
     }
@@ -2454,7 +2456,7 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
 void Guest::GoToRideEntrance(Ride* ride)
 {
     TileCoordsXYZD tileLocation = ride_get_entrance_location(ride, CurrentRideStation);
-    if (tileLocation.isNull())
+    if (tileLocation.IsNull())
     {
         RemoveFromQueue();
         return;
@@ -3099,7 +3101,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         {
             if (predicate(ride))
             {
-                rideConsideration[ride.id] = true;
+                rideConsideration[EnumValue(ride.id)] = true;
             }
         }
     }
@@ -3127,18 +3129,18 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
                     if (!predicate(*ride))
                         continue;
 
-                    rideConsideration[rideIndex] = true;
+                    rideConsideration[EnumValue(ride->id)] = true;
                 }
             }
         }
     }
 
     // Filter the considered rides
-    uint8_t potentialRides[MAX_RIDES];
+    ride_id_t potentialRides[MAX_RIDES];
     size_t numPotentialRides = 0;
     for (auto& ride : GetRideManager())
     {
-        if (rideConsideration[ride.id])
+        if (rideConsideration[EnumValue(ride.id)])
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
@@ -3403,7 +3405,7 @@ void Guest::UpdateRideAtEntrance()
     if (DestinationTolerance != 0)
     {
         int16_t xy_distance;
-        if (auto loc = UpdateAction(xy_distance))
+        if (auto loc = UpdateAction(xy_distance); loc.has_value())
         {
             int16_t actionZ = z;
             if (xy_distance < 16)
@@ -3411,7 +3413,7 @@ void Guest::UpdateRideAtEntrance()
                 auto entrance = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXYZ();
                 actionZ = entrance.z + 2;
             }
-            MoveTo({ *loc, actionZ });
+            MoveTo({ loc.value(), actionZ });
         }
         else
         {
@@ -3544,7 +3546,7 @@ static uint8_t peep_get_waypointed_seat_location(
 static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
 {
     TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, peep->CurrentRideStation);
-    Guard::Assert(!entranceLocation.isNull());
+    Guard::Assert(!entranceLocation.IsNull());
     uint8_t direction_entrance = entranceLocation.direction;
 
     CoordsXY waypoint = ride->stations[peep->CurrentRideStation].Start.ToTileCentre();
@@ -3592,7 +3594,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
 
     auto ride_entry = ride->GetRideEntry();
 
-    if (auto loc = UpdateAction(xy_distance))
+    if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
         uint16_t distanceThreshold = 16;
         if (ride_entry != nullptr)
@@ -3618,7 +3620,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             actionZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, actionZ });
+        MoveTo({ loc.value(), actionZ });
         return;
     }
 
@@ -3626,7 +3628,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
     {
         auto entranceLocation = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXYZD();
-        Guard::Assert(!entranceLocation.isNull());
+        Guard::Assert(!entranceLocation.IsNull());
 
         if (ride->type == RIDE_TYPE_MAZE)
         {
@@ -3651,7 +3653,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->FormatNameTo(ft);
                 if (gConfigNotifications.ride_warnings)
                 {
-                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide, ft);
+                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, EnumValue(CurrentRide), ft);
                 }
             }
 
@@ -3738,7 +3740,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
 
     Guard::Assert(peep->CurrentRideStation < MAX_STATIONS);
     auto exit = ride_get_exit_location(ride, peep->CurrentRideStation);
-    Guard::Assert(!exit.isNull());
+    Guard::Assert(!exit.IsNull());
     x = exit.x;
     y = exit.y;
     x *= 32;
@@ -3805,7 +3807,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     if (queueTime != ride->stations[CurrentRideStation].QueueTime)
     {
         ride->stations[CurrentRideStation].QueueTime = queueTime;
-        window_invalidate_by_number(WC_RIDE, CurrentRide);
+        window_invalidate_by_number(WC_RIDE, EnumValue(CurrentRide));
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -3970,9 +3972,9 @@ void Guest::UpdateRideFreeVehicleCheck()
 
 void Guest::UpdateRideApproachVehicle()
 {
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
     RideSubState = PeepRideSubState::EnterVehicle;
@@ -4204,7 +4206,7 @@ void Guest::UpdateRideLeaveVehicle()
     }
 
     auto exitLocation = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXYZD();
-    Guard::Assert(!exitLocation.isNull());
+    Guard::Assert(!exitLocation.IsNull());
 
     auto waypointLoc = CoordsXYZ{ ride->stations[CurrentRideStation].Start.ToTileCentre(),
                                   exitLocation.z + ride->GetRideTypeDescriptor().Heights.PlatformHeight };
@@ -4302,9 +4304,9 @@ static void peep_update_ride_prepare_for_exit(Peep* peep)
  */
 void Guest::UpdateRideApproachExit()
 {
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
 
@@ -4323,19 +4325,19 @@ void Guest::UpdateRideInExit()
 
     int16_t xy_distance;
 
-    if (auto loc = UpdateAction(xy_distance))
+    if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
         if (xy_distance >= 16)
         {
             int16_t actionZ = ride->stations[CurrentRideStation].GetBaseZ();
 
             actionZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
-            MoveTo({ *loc, actionZ });
+            MoveTo({ loc.value(), actionZ });
             return;
         }
 
         SwitchToSpecialSprite(0);
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
     }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
@@ -4362,7 +4364,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     int16_t xy_distance;
     uint8_t waypoint = Var37 & 3;
 
-    if (auto loc = UpdateAction(xy_distance))
+    if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
         int16_t actionZ;
         // Motion simulators have steps this moves the peeps up the steps
@@ -4386,7 +4388,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         {
             actionZ = z;
         }
-        MoveTo({ *loc, actionZ });
+        MoveTo({ loc.value(), actionZ });
         return;
     }
 
@@ -4440,7 +4442,7 @@ void Guest::UpdateRideApproachExitWaypoints()
 
     int16_t xy_distance;
 
-    if (auto loc = UpdateAction(xy_distance))
+    if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
         int16_t actionZ;
         if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
@@ -4459,7 +4461,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         {
             actionZ = z;
         }
-        MoveTo({ *loc, actionZ });
+        MoveTo({ loc.value(), actionZ });
         return;
     }
 
@@ -4535,9 +4537,9 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (ride == nullptr)
         return;
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
 
@@ -4668,9 +4670,9 @@ void Guest::UpdateRideOnSpiralSlide()
         }
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
 
@@ -4694,9 +4696,9 @@ void Guest::UpdateRideLeaveSpiralSlide()
 {
     // Iterates through the spiral slide waypoints until it reaches
     // waypoint 0. Then it readies to leave the ride by the entrance.
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
 
@@ -4767,9 +4769,9 @@ static constexpr const uint8_t _MazeCurrentDirectionToOpenHedge[][4] = {
  */
 void Guest::UpdateRideMazePathfinding()
 {
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
 
@@ -4889,9 +4891,9 @@ void Guest::UpdateRideMazePathfinding()
             break;
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
 }
@@ -4904,11 +4906,11 @@ void Guest::UpdateRideLeaveExit()
 {
     auto ride = get_ride(CurrentRide);
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         if (ride != nullptr)
         {
-            MoveTo({ *loc, ride->stations[CurrentRideStation].GetBaseZ() });
+            MoveTo({ loc.value(), ride->stations[CurrentRideStation].GetBaseZ() });
         }
         return;
     }
@@ -4953,9 +4955,9 @@ void Guest::UpdateRideLeaveExit()
  */
 void Guest::UpdateRideShopApproach()
 {
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
 
@@ -5019,9 +5021,9 @@ void Guest::UpdateRideShopInteract()
  */
 void Guest::UpdateRideShopLeave()
 {
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
 
         if ((x & 0xFFE0) != NextLoc.x)
             return;
@@ -5569,9 +5571,9 @@ void Guest::UpdateEnteringPark()
         }
         return;
     }
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
     SetState(PeepState::Falling);
@@ -5600,9 +5602,9 @@ void Guest::UpdateLeavingPark()
         return;
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return;
     }
 
@@ -5994,7 +5996,7 @@ bool Guest::UpdateWalkingFindBin()
     uint8_t bin_quantities = pathElement->GetAdditionStatus();
 
     // Rotate the bin to the correct edge. Makes it easier for next calc.
-    bin_quantities = ror8(ror8(bin_quantities, chosen_edge), chosen_edge);
+    bin_quantities = Numerics::ror8(Numerics::ror8(bin_quantities, chosen_edge), chosen_edge);
 
     for (uint8_t free_edge = 4; free_edge != 0; free_edge--)
     {
@@ -6005,7 +6007,7 @@ bool Guest::UpdateWalkingFindBin()
                 break;
         }
         chosen_edge = (chosen_edge + 1) & 0x3;
-        bin_quantities = ror8(bin_quantities, 2);
+        bin_quantities = Numerics::ror8(bin_quantities, 2);
         if ((free_edge - 1) == 0)
             return 0;
     }
@@ -6805,6 +6807,10 @@ void Guest::InsertNewThought(PeepThoughtType thought_type, ShopItem shopItem)
     InsertNewThought(thought_type, static_cast<uint16_t>(shopItem));
 }
 
+void Guest::InsertNewThought(PeepThoughtType thought_type, ride_id_t rideId)
+{
+    InsertNewThought(thought_type, static_cast<uint16_t>(rideId));
+}
 /**
  *
  *  rct2: 0x699F5A

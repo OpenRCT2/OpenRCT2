@@ -18,6 +18,7 @@
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
 #include "../core/IStream.hpp"
+#include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
 #include "../core/String.hpp"
@@ -70,6 +71,8 @@
 #include "../world/Surface.h"
 
 #include <algorithm>
+
+#define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
 
 /**
  * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
@@ -173,9 +176,10 @@ public:
             _isSV7 = _stricmp(extension, ".sv7") == 0;
         }
 
+        chunkReader.ReadChunk(&_s6.Objects, sizeof(_s6.Objects));
+
         if (isScenario)
         {
-            chunkReader.ReadChunk(&_s6.objects, sizeof(_s6.objects));
             chunkReader.ReadChunk(&_s6.elapsed_months, 16);
             chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
             chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 2560076);
@@ -189,7 +193,6 @@ public:
         }
         else
         {
-            chunkReader.ReadChunk(&_s6.objects, sizeof(_s6.objects));
             chunkReader.ReadChunk(&_s6.elapsed_months, 16);
             chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
             chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 3048816);
@@ -270,14 +273,14 @@ public:
 
         gParkRating = _s6.park_rating;
 
-        std::memcpy(gParkRatingHistory, _s6.park_rating_history, sizeof(_s6.park_rating_history));
-
-        std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), std::numeric_limits<uint32_t>::max());
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        park.ResetHistories();
+        std::copy(std::begin(_s6.park_rating_history), std::end(_s6.park_rating_history), gParkRatingHistory);
         for (size_t i = 0; i < std::size(_s6.guests_in_park_history); i++)
         {
-            if (_s6.guests_in_park_history[i] != std::numeric_limits<uint8_t>::max())
+            if (_s6.guests_in_park_history[i] != RCT12ParkHistoryUndefined)
             {
-                gGuestsInParkHistory[i] = _s6.guests_in_park_history[i] * 20;
+                gGuestsInParkHistory[i] = _s6.guests_in_park_history[i] * RCT12GuestsInParkHistoryFactor;
             }
         }
 
@@ -468,7 +471,6 @@ public:
         map_count_remaining_land_rights();
         determine_ride_entrance_and_exit_locations();
 
-        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         park.Name = GetUserString(_s6.park_name);
 
         FixLandOwnership();
@@ -530,8 +532,9 @@ public:
             auto src = &_s6.rides[index];
             if (src->type != RIDE_TYPE_NULL)
             {
-                auto dst = GetOrAllocateRide(index);
-                ImportRide(dst, src, index);
+                const auto rideId = static_cast<ride_id_t>(index);
+                auto dst = GetOrAllocateRide(rideId);
+                ImportRide(dst, src, rideId);
             }
         }
     }
@@ -582,9 +585,9 @@ public:
             dst->default_name_number = src->name_arguments_number;
         }
 
-        if (src->overall_view.isNull())
+        if (src->overall_view.IsNull())
         {
-            dst->overall_view.setNull();
+            dst->overall_view.SetNull();
         }
         else
         {
@@ -594,9 +597,9 @@ public:
 
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
-            if (src->station_starts[i].isNull())
+            if (src->station_starts[i].IsNull())
             {
-                dst->stations[i].Start.setNull();
+                dst->stations[i].Start.SetNull();
             }
             else
             {
@@ -609,12 +612,12 @@ public:
             dst->stations[i].TrainAtStation = src->train_at_station[i];
             // Direction is fixed later.
 
-            if (src->entrances[i].isNull())
+            if (src->entrances[i].IsNull())
                 ride_clear_entrance_location(dst, i);
             else
                 ride_set_entrance_location(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
 
-            if (src->exits[i].isNull())
+            if (src->exits[i].IsNull())
                 ride_clear_exit_location(dst, i);
             else
                 ride_set_exit_location(dst, i, { src->exits[i].x, src->exits[i].y, src->station_heights[i], 0 });
@@ -631,7 +634,7 @@ public:
         // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
         for (int32_t i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
         {
-            dst->stations[i].Start.setNull();
+            dst->stations[i].Start.SetNull();
             dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
             ride_clear_entrance_location(dst, i);
             ride_clear_exit_location(dst, i);
@@ -683,9 +686,9 @@ public:
         // pad_106[0x2];
         dst->testing_flags = src->testing_flags;
 
-        if (src->cur_test_track_location.isNull())
+        if (src->cur_test_track_location.IsNull())
         {
-            dst->CurTestTrackLocation.setNull();
+            dst->CurTestTrackLocation.SetNull();
         }
         else
         {
@@ -873,7 +876,8 @@ public:
         {
             if (src.ride_index != RCT12_RIDE_ID_NULL)
             {
-                auto ride = get_ride(src.ride_index);
+                const auto rideId = static_cast<ride_id_t>(src.ride_index);
+                auto ride = get_ride(rideId);
                 if (ride != nullptr)
                 {
                     ride->measurement = std::make_unique<RideMeasurement>();
@@ -1010,7 +1014,7 @@ public:
         {
             if (sprite.unknown.sprite_identifier == RCT12SpriteIdentifier::Peep)
             {
-                if (sprite.peep.current_ride == rideIndex
+                if (sprite.peep.current_ride == static_cast<RCT12RideId>(rideIndex)
                     && (static_cast<PeepState>(sprite.peep.state) == PeepState::OnRide
                         || static_cast<PeepState>(sprite.peep.state) == PeepState::EnteringRide))
                 {
@@ -1136,13 +1140,13 @@ public:
                 if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
                 {
                     // Legacy footpath object
-                    dst2->SetPathEntryIndex(pathEntryIndex);
+                    dst2->SetLegacyPathEntryIndex(pathEntryIndex);
                 }
                 else
                 {
                     // Surface / railing
                     dst2->SetSurfaceEntryIndex(surfaceEntry);
-                    dst2->SetRailingEntryIndex(_pathToRailingMap[pathEntryIndex]);
+                    dst2->SetRailingsEntryIndex(_pathToRailingMap[pathEntryIndex]);
                 }
 
                 dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
@@ -1242,7 +1246,7 @@ public:
                     if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
                     {
                         // Legacy footpath object
-                        dst2->SetPathEntryIndex(pathEntryIndex);
+                        dst2->SetLegacyPathEntryIndex(pathEntryIndex);
                     }
                     else
                     {
@@ -1440,7 +1444,7 @@ public:
         dst->PeepFlags = src->peep_flags;
         if (isNullLocation(src->pathfind_goal))
         {
-            dst->PathfindGoal.setNull();
+            dst->PathfindGoal.SetNull();
             dst->PathfindGoal.direction = INVALID_DIRECTION;
         }
         else
@@ -1452,7 +1456,7 @@ public:
         {
             if (isNullLocation(src->pathfind_history[i]))
             {
-                dst->PathfindHistory[i].setNull();
+                dst->PathfindHistory[i].SetNull();
                 dst->PathfindHistory[i].direction = INVALID_DIRECTION;
             }
             else
@@ -1556,6 +1560,7 @@ public:
         return justText.data();
     }
 
+<<<<<<< HEAD
     ObjectList GetRequiredObjects()
     {
         std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
@@ -1651,6 +1656,59 @@ public:
             }
         }
         return area;
+=======
+    template<size_t TInternalLimit, typename T>
+    static void AddRequiredObjects(std::vector<rct_object_entry>& required, const T& list)
+    {
+        rct_object_entry nullEntry = {};
+        std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
+
+        for (const auto& entry : list)
+        {
+            required.push_back(entry);
+        }
+
+        // NOTE: The segment of this object type needs to be filled to the internal limit
+        // the object manager currently expects this.
+        for (size_t i = std::size(list); i < TInternalLimit; i++)
+        {
+            required.push_back(nullEntry);
+        }
+    }
+
+    ObjectList GetRequiredObjects()
+    {
+        std::vector<rct_object_entry> result;
+
+        AddRequiredObjects<MAX_RIDE_OBJECTS>(result, _s6.RideObjects);
+        AddRequiredObjects<MAX_SMALL_SCENERY_OBJECTS>(result, _s6.SceneryObjects);
+        AddRequiredObjects<MAX_LARGE_SCENERY_OBJECTS>(result, _s6.LargeSceneryObjects);
+        AddRequiredObjects<MAX_WALL_SCENERY_OBJECTS>(result, _s6.WallSceneryObjects);
+        AddRequiredObjects<MAX_BANNER_OBJECTS>(result, _s6.BannerObjects);
+        AddRequiredObjects<MAX_PATH_OBJECTS>(result, _s6.PathObjects);
+        AddRequiredObjects<MAX_PATH_ADDITION_OBJECTS>(result, _s6.PathAdditionObjects);
+        AddRequiredObjects<MAX_SCENERY_GROUP_OBJECTS>(result, _s6.SceneryGroupObjects);
+        AddRequiredObjects<MAX_PARK_ENTRANCE_OBJECTS>(result, _s6.ParkEntranceObjects);
+        AddRequiredObjects<MAX_WATER_OBJECTS>(result, _s6.WaterObjects);
+        AddRequiredObjects<MAX_SCENARIO_TEXT_OBJECTS>(result, _s6.ScenarioTextObjects);
+
+        ObjectList objectList;
+        for (size_t i = 0; i < result.size(); i++)
+        {
+            ObjectType objectType;
+            ObjectEntryIndex entryIndex;
+            get_type_entry_index(i, &objectType, &entryIndex);
+
+            auto desc = ObjectEntryDescriptor(result[i]);
+            if (desc.HasValue())
+            {
+                assert(desc.GetType() == objectType);
+                objectList.SetObject(entryIndex, desc);
+            }
+        }
+
+        return objectList;
+>>>>>>> upstream/develop
     }
 };
 
@@ -1667,15 +1725,15 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->remaining_distance = src->remaining_distance;
     dst->velocity = src->velocity;
     dst->acceleration = src->acceleration;
-    dst->ride = src->ride;
+    dst->ride = static_cast<ride_id_t>(src->ride);
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
     dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
-    if (src->boat_location.isNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
+    if (src->boat_location.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
         || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
     {
-        dst->BoatLocation.setNull();
+        dst->BoatLocation.SetNull();
         dst->SetTrackDirection(src->GetTrackDirection());
         dst->SetTrackType(src->GetTrackType());
         // RotationControlToggle and Booster are saved as the same track piece ID

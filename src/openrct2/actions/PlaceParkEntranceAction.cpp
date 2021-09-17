@@ -152,7 +152,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
         }
         else
         {
-            entranceElement->SetPathEntryIndex(gFootpathSelection.LegacyPath);
+            entranceElement->SetLegacyPathEntryIndex(gFootpathSelection.LegacyPath);
         }
 
         if (!entranceElement->IsGhost())
