@@ -740,13 +740,11 @@ static void window_park_init_viewport(rct_window* w)
     if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
         return;
 
-    Focus2 focus;
+    std::optional<Focus2> focus = std::nullopt;
     if (!gParkEntrances.empty())
     {
         const auto& entrance = gParkEntrances[0];
-        focus.type = Focus2::Type::Coordinate;
-        focus.data = CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 };
-        focus.rotation = get_current_rotation();
+        focus = Focus2(CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 });
     }
 
     if (w->viewport == nullptr)
@@ -764,7 +762,7 @@ static void window_park_init_viewport(rct_window* w)
 
     w->focus2 = focus;
 
-    if (focus.HasFocus())
+    if (focus.has_value())
     {
         // Create viewport
         if (w->viewport == nullptr)
@@ -772,7 +770,7 @@ static void window_park_init_viewport(rct_window* w)
             rct_widget* viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
             viewport_create(
                 w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                viewportWidget->width() - 1, viewportWidget->height() - 1, focus);
+                viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
             w->flags |= (1 << 2);
             w->Invalidate();
         }

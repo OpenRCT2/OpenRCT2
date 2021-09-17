@@ -1346,9 +1346,7 @@ void window_staff_viewport_init(rct_window* w)
     if (w->page != WINDOW_STAFF_OVERVIEW)
         return;
 
-    Focus2 focus = {};
-    focus.type = Focus2::Type::Entity;
-    focus.data = w->number;
+    std::optional<Focus2> focus;
 
     const auto peep = GetStaff(w);
     if (peep == nullptr)
@@ -1356,13 +1354,9 @@ void window_staff_viewport_init(rct_window* w)
         return;
     }
 
-    if (peep->State == PeepState::Picked)
+    if (peep->State != PeepState::Picked)
     {
-        focus.type = Focus2::Type::None;
-    }
-    else
-    {
-        focus.rotation = get_current_rotation();
+        focus = Focus2(peep->sprite_index);
     }
 
     uint16_t viewport_flags;
@@ -1396,7 +1390,7 @@ void window_staff_viewport_init(rct_window* w)
             int32_t width = view_widget->width() - 1;
             int32_t height = view_widget->height() - 1;
 
-            viewport_create(w, screenPos, width, height, focus);
+            viewport_create(w, screenPos, width, height, focus.value());
             w->flags |= WF_NO_SCROLLING;
             w->Invalidate();
         }

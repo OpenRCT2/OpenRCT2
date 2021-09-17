@@ -117,6 +117,31 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
     return { screenCoord };
 }
 
+CoordsXYZ Focus2::GetPos() const
+{
+    CoordsXYZ result;
+    std::visit(
+        [&result](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, Focus2::CoordinateFocus>)
+                result = arg;
+            else if constexpr (std::is_same_v<T, Focus2::EntityFocus>)
+            {
+                auto* centreEntity = GetEntity(arg);
+                if (centreEntity != nullptr)
+                {
+                    result = { centreEntity->x, centreEntity->y, centreEntity->z };
+                }
+                else
+                {
+                    log_error("Invalid entity for focus.");
+                }
+            }
+        },
+        data);
+    return result;
+}
+
 /**
  * Viewport will look at sprite or at coordinates as specified in flags 0b_1X
  * for sprite 0b_0X for coordinates
@@ -149,7 +174,7 @@ void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t 
     viewport->pos = screenCoords;
     viewport->width = width;
     viewport->height = height;
-    const auto zoom = focus.GetFocus() == Focus2::Type::Entity ? 0 : focus.zoom;
+    const auto zoom = focus.zoom;
 
     viewport->view_width = width << zoom;
     viewport->view_height = height << zoom;
@@ -160,26 +185,16 @@ void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t 
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
     w->viewport = viewport;
 
-    CoordsXYZ centrePos;
-    if (focus.GetFocus() == Focus2::Type::Entity)
-    {
-        w->viewport_target_sprite = std::get<Focus2::EntityFocus>(focus.data);
-        auto* centreEntity = GetEntity(w->viewport_target_sprite);
-        if (centreEntity != nullptr)
-        {
-            centrePos = { centreEntity->x, centreEntity->y, centreEntity->z };
-        }
-        else
-        {
-            log_error("Invalid entity for viewport.");
-            return;
-        }
-    }
-    else
-    {
-        centrePos = std::get<Focus2::CoordinateFocus>(focus.data);
-        w->viewport_target_sprite = SPRITE_INDEX_NULL;
-    }
+    CoordsXYZ centrePos = focus.GetPos();
+    std::visit(
+        [&w](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, Focus2::CoordinateFocus>)
+                w->viewport_target_sprite = SPRITE_INDEX_NULL;
+            else if constexpr (std::is_same_v<T, Focus2::EntityFocus>)
+                w->viewport_target_sprite = arg;
+        },
+        focus.data);
 
     auto centreLoc = centre_2d_coordinates(centrePos, viewport);
     if (!centreLoc.has_value())
@@ -688,8 +703,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
             break;
 
         default: // All other types don't need any "smart" following; steam particle, duck, money effect, etc.
-            window->focus2.type = Focus2::Type::Entity;
-            window->focus2.data = window->viewport_smart_follow_sprite;
+            window->focus2 = Focus2(window->viewport_smart_follow_sprite);
             window->viewport_target_sprite = window->viewport_smart_follow_sprite;
             break;
     }
@@ -697,16 +711,14 @@ void viewport_update_smart_sprite_follow(rct_window* window)
 
 void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
 {
-    Focus2 focus{};
-    focus.type = Focus2::Type::Entity;
-    focus.data = peep->sprite_index;
+    Focus2 focus = Focus2(peep->sprite_index);
     window->viewport_target_sprite = peep->sprite_index;
 
     if (peep->State == PeepState::Picked)
     {
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
-        window->focus2 = Focus2(); // No focus
+        window->focus2 = std::nullopt; // No focus
         return;
     }
 
@@ -723,7 +735,7 @@ void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
                 const auto car = train->GetCar(peep->CurrentCar);
                 if (car != nullptr)
                 {
-                    focus.data = car->sprite_index;
+                    focus = Focus2(car->sprite_index);
                     overallFocus = false;
                     window->viewport_target_sprite = car->sprite_index;
                 }
@@ -737,44 +749,35 @@ void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
         if (ride != nullptr)
         {
             auto xy = ride->overall_view.ToTileCentre();
-            focus.type = Focus2::Type::Coordinate;
             CoordsXYZ coordFocus;
             coordFocus.x = xy.x;
             coordFocus.y = xy.y;
             coordFocus.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
-            focus.data = coordFocus;
+            focus = Focus2(coordFocus);
             window->viewport_target_sprite = SPRITE_INDEX_NULL;
         }
     }
-    focus.rotation = get_current_rotation();
 
     window->focus2 = focus;
 }
 
 void viewport_update_smart_staff_follow(rct_window* window, const Staff* peep)
 {
-    Focus2 focus{};
-    focus.type = Focus2::Type::Entity;
-    focus.data = window->viewport_smart_follow_sprite;
-
     if (peep->State == PeepState::Picked)
     {
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        window->focus2 = std::nullopt;
         return;
     }
 
-    window->focus2 = focus;
+    window->focus2 = Focus2(window->viewport_smart_follow_sprite);
     window->viewport_target_sprite = window->viewport_smart_follow_sprite;
 }
 
 void viewport_update_smart_vehicle_follow(rct_window* window)
 {
-    Focus2 focus{};
-    focus.type = Focus2::Type::Entity;
-    focus.data = window->viewport_smart_follow_sprite;
-
-    window->focus2 = focus;
+    window->focus2 = Focus2(window->viewport_smart_follow_sprite);
     window->viewport_target_sprite = window->viewport_smart_follow_sprite;
 }
 

@@ -1593,8 +1593,7 @@ static void window_ride_init_viewport(rct_window* w)
 
     int32_t viewSelectionIndex = w->ride.view - 1;
 
-    Focus2 focus;
-    focus.rotation = get_current_rotation();
+    std::optional<Focus2> focus;
 
     if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
@@ -1614,8 +1613,7 @@ static void window_ride_init_viewport(rct_window* w)
         }
         if (vehId != SPRITE_INDEX_NULL)
         {
-            focus.type = Focus2::Type::Entity;
-            focus.data = vehId;
+            focus = Focus2(vehId);
         }
     }
     else if (viewSelectionIndex >= ride->num_vehicles && viewSelectionIndex < (ride->num_vehicles + ride->num_stations))
@@ -1623,9 +1621,8 @@ static void window_ride_init_viewport(rct_window* w)
         auto stationIndex = GetStationIndexFromViewSelection(*w);
         if (stationIndex)
         {
-            auto location = ride->stations[*stationIndex].GetStart();
-            focus.type = Focus2::Type::Coordinate;
-            focus.data = location;
+            const auto location = ride->stations[*stationIndex].GetStart();
+            focus = Focus2(location);
         }
     }
     else
@@ -1638,9 +1635,7 @@ static void window_ride_init_viewport(rct_window* w)
         {
             const auto& view = ride_overall_views[w->number];
             CoordsXYZ loc = { view.x, view.y, view.z };
-            focus.type = Focus2::Type::Coordinate;
-            focus.data = loc;
-            focus.zoom = view.zoom;
+            focus = Focus2(loc, view.zoom);
         }
     }
 
@@ -1672,7 +1667,7 @@ static void window_ride_init_viewport(rct_window* w)
         int32_t width = view_widget->width() - 1;
         int32_t height = view_widget->height() - 1;
 
-        viewport_create(w, screenPos, width, height, w->focus2);
+        viewport_create(w, screenPos, width, height, w->focus2.value());
 
         w->flags |= WF_NO_SCROLLING;
         w->Invalidate();

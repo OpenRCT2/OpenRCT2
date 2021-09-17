@@ -732,7 +732,7 @@ void window_guest_viewport_init(rct_window* w)
     uint16_t origViewportFlags{};
     if (w->viewport != nullptr)
     {
-        if (w->focus2.HasFocus())
+        if (w->focus2.has_value())
             return;
 
         origViewportFlags = w->viewport->flags;
@@ -750,7 +750,7 @@ void window_guest_viewport_init(rct_window* w)
         int32_t width = view_widget->width() - 1;
         int32_t height = view_widget->height() - 1;
 
-        viewport_create(w, screenPos, width, height, w->focus2);
+        viewport_create(w, screenPos, width, height, w->focus2.value());
         if (w->viewport != nullptr && reCreateViewport)
         {
             w->viewport->flags = origViewportFlags;

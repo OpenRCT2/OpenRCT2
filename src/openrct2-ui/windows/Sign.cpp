@@ -127,9 +127,7 @@ public:
 
         // Create viewport
         rct_widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
-        Focus2 focus;
-        focus.type = Focus2::Type::Coordinate;
-        focus.data = CoordsXYZ{ signViewPosition, viewZ };
+        const auto focus = Focus2(CoordsXYZ{ signViewPosition, viewZ });
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, focus);
@@ -302,9 +300,7 @@ public:
 
         // Create viewport
         rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
-        Focus2 focus;
-        focus.type = Focus2::Type::Coordinate;
-        focus.data = signViewPos;
+        const auto focus = Focus2(CoordsXYZ{ signViewPos });
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, focus);

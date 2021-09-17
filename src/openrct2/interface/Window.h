@@ -197,57 +197,32 @@ constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
 
 struct Focus2
 {
-    enum class Type
-    {
-        None,
-        Entity,
-        Coordinate,
-    };
     using CoordinateFocus = CoordsXYZ;
     using EntityFocus = uint16_t;
 
-    Type type = Type::None;
-    uint8_t rotation = 0;
     uint8_t zoom = 0;
-
     std::variant<CoordinateFocus, EntityFocus> data;
-    constexpr bool HasFocus() const
+
+    template<typename T> constexpr explicit Focus2(T newValue, uint8_t newZoom = 0)
     {
-        return type == Type::None;
+        data = newValue;
+        zoom = newZoom;
     }
-    constexpr Type GetFocus() const
-    {
-        return type;
-    }
+
+    CoordsXYZ GetPos() const;
+
     constexpr bool operator==(const Focus2& other) const
     {
-        if (type != other.type)
+        if (zoom != other.zoom)
         {
             return false;
         }
-        if (rotation != other.rotation || zoom != other.zoom)
-        {
-            return false;
-        }
-        if (type == Type::Coordinate)
-        {
-            const auto& thisCoordFocus = std::get<CoordinateFocus>(data);
-            const auto& otherCoordFocus = std::get<CoordinateFocus>(other.data);
-            return thisCoordFocus == otherCoordFocus;
-        }
-        else if (type == Type::Entity)
-        {
-            return std::get<EntityFocus>(data) == std::get<EntityFocus>(other.data);
-        }
-        return true;
+        return data == other.data;
     }
-};
-
-#define VIEWPORT_FOCUS_TYPE_MASK 0xC0
-enum VIEWPORT_FOCUS_TYPE : uint8_t
-{
-    VIEWPORT_FOCUS_TYPE_COORDINATE = (1 << 6),
-    VIEWPORT_FOCUS_TYPE_SPRITE = (1 << 7)
+    constexpr bool operator!=(const Focus2& other) const
+    {
+        return !(*this == other);
+    }
 };
 
 struct rct_window_event_list

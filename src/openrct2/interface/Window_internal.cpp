@@ -12,26 +12,10 @@ void rct_window::SetLocation(const CoordsXYZ& coords)
 
 void rct_window::ScrollToViewport()
 {
-    if (viewport == nullptr || !focus2.HasFocus())
+    if (viewport == nullptr || !focus2.has_value())
         return;
 
-    CoordsXYZ newCoords = {};
-    if (focus2.GetFocus() == Focus2::Type::Entity)
-    {
-        auto* sprite = GetEntity(std::get<Focus2::EntityFocus>(focus2.data));
-        if (sprite == nullptr)
-        {
-            return;
-        }
-        newCoords.x = sprite->x;
-        newCoords.y = sprite->y;
-        newCoords.z = sprite->z;
-    }
-    else
-    {
-        auto& coordFocus = std::get<Focus2::CoordinateFocus>(focus2.data);
-        newCoords = coordFocus;
-    }
+    CoordsXYZ newCoords = focus2.value().GetPos();
 
     auto mainWindow = window_get_main();
     if (mainWindow != nullptr)
