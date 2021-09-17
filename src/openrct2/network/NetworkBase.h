@@ -43,9 +43,9 @@ public: // Common
     void SetPassword(const char* password);
     uint8_t GetDefaultGroup();
     std::string BeginLog(const std::string& directory, const std::string& midName, const std::string& filenameFormat);
-    void AppendLog(std::ostream& fs, const std::string& s);
+    void AppendLog(std::ostream& fs, std::string_view s);
     void BeginChatLog();
-    void AppendChatLog(const std::string& s);
+    void AppendChatLog(std::string_view text);
     void CloseChatLog();
     NetworkStats_t GetStats() const;
     json_t GetServerInfoAsJson() const;
@@ -102,7 +102,7 @@ public: // Server
     void Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_HEARTBEAT(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Client_Joined(const char* name, const std::string& keyhash, NetworkConnection& connection);
+    void Server_Client_Joined(std::string_view name, const std::string& keyhash, NetworkConnection& connection);
     void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);

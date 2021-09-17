@@ -22,6 +22,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 struct GameAction;
@@ -98,7 +99,7 @@ void network_send_password(const std::string& password);
 
 void network_set_password(const char* password);
 
-void network_append_chat_log(const utf8* text);
+void network_append_chat_log(std::string_view text);
 void network_append_server_log(const utf8* text);
 [[nodiscard]] const utf8* network_get_server_name();
 [[nodiscard]] const utf8* network_get_server_description();
