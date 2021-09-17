@@ -619,6 +619,7 @@ namespace OpenRCT2
     template void FormatArgument(FormatBuffer&, FormatToken, uint32_t);
     template void FormatArgument(FormatBuffer&, FormatToken, uint64_t);
     template void FormatArgument(FormatBuffer&, FormatToken, const char*);
+    template void FormatArgument(FormatBuffer&, FormatToken, std::string_view);
 
     bool IsRealNameStringId(rct_string_id id)
     {

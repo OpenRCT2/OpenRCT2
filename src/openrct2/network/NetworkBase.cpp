@@ -19,6 +19,7 @@
 #include "../actions/PeepPickupAction.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
+#include "../localisation/Formatting.h"
 #include "../platform/Platform2.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
@@ -1064,7 +1065,7 @@ std::string NetworkBase::BeginLog(const std::string& directory, const std::strin
     return Path::Combine(directory, midName, filename);
 }
 
-void NetworkBase::AppendLog(std::ostream& fs, const std::string& s)
+void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
 {
     if (fs.fail())
     {
@@ -1079,7 +1080,7 @@ void NetworkBase::AppendLog(std::ostream& fs, const std::string& s)
         auto tmInfo = localtime(&timer);
         if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0)
         {
-            String::Append(buffer, sizeof(buffer), s.c_str());
+            String::Append(buffer, sizeof(buffer), std::string(s).c_str());
             String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
             fs.write(buffer, strlen(buffer));
@@ -1105,7 +1106,7 @@ void NetworkBase::BeginChatLog()
 #    endif
 }
 
-void NetworkBase::AppendChatLog(const std::string& s)
+void NetworkBase::AppendChatLog(std::string_view s)
 {
     if (gConfigNetwork.log_chat && _chat_log_fs.is_open())
     {
@@ -2230,8 +2231,9 @@ void NetworkBase::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             break;
         case NetworkAuth::BadVersion:
         {
-            const char* version = packet.ReadString();
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &version);
+            auto version = std::string(packet.ReadString());
+            auto versionp = version.c_str();
+            connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &versionp);
             connection.Disconnect();
             break;
         }
@@ -2261,9 +2263,9 @@ void NetworkBase::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacke
     }
 }
 
-void NetworkBase::Server_Client_Joined(const char* name, const std::string& keyhash, NetworkConnection& connection)
+void NetworkBase::Server_Client_Joined(std::string_view name, const std::string& keyhash, NetworkConnection& connection)
 {
-    auto player = AddPlayer(name, keyhash);
+    auto player = AddPlayer(std::string(name), keyhash);
     connection.Player = player;
     if (player != nullptr)
     {
@@ -2510,15 +2512,14 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
 {
     if (connection.AuthStatus != NetworkAuth::Ok)
     {
-        const char* hostName = connection.Socket->GetHostName();
-
-        const char* gameversion = packet.ReadString();
-        const char* name = packet.ReadString();
-        const char* password = packet.ReadString();
-        const char* pubkey = packet.ReadString();
+        auto* hostName = connection.Socket->GetHostName();
+        auto gameversion = packet.ReadString();
+        auto name = packet.ReadString();
+        auto password = packet.ReadString();
+        auto pubkey = packet.ReadString();
         uint32_t sigsize;
         packet >> sigsize;
-        if (pubkey == nullptr)
+        if (pubkey.empty())
         {
             connection.AuthStatus = NetworkAuth::VerificationFailure;
         }
@@ -2537,7 +2538,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
 
                 std::memcpy(signature.data(), signatureData, sigsize);
 
-                auto ms = MemoryStream(pubkey, strlen(pubkey));
+                auto ms = MemoryStream(pubkey.data(), pubkey.size());
                 if (!connection.Key.LoadPublic(&ms))
                 {
                     throw std::runtime_error("Failed to load public key.");
@@ -2577,24 +2578,24 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
             passwordless = group->CanPerformCommand(GameCommand::PasswordlessLogin);
         }
-        if (!gameversion || network_get_version() != gameversion)
+        if (gameversion != network_get_version())
         {
             connection.AuthStatus = NetworkAuth::BadVersion;
             log_info("Connection %s: Bad version.", hostName);
         }
-        else if (!name)
+        else if (name.empty())
         {
             connection.AuthStatus = NetworkAuth::BadName;
             log_info("Connection %s: Bad name.", connection.Socket->GetHostName());
         }
         else if (!passwordless)
         {
-            if ((!password || strlen(password) == 0) && !_password.empty())
+            if (password.empty() && !_password.empty())
             {
                 connection.AuthStatus = NetworkAuth::RequirePassword;
                 log_info("Connection %s: Requires password.", hostName);
             }
-            else if (password && _password != password)
+            else if (!password.empty() && _password != password)
             {
                 connection.AuthStatus = NetworkAuth::BadPassword;
                 log_info("Connection %s: Bad password.", hostName);
@@ -2830,10 +2831,10 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
 
 void NetworkBase::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
-    const char* text = packet.ReadString();
-    if (text)
+    auto text = packet.ReadString();
+    if (!text.empty())
     {
-        chat_history_add(text);
+        chat_history_add(std::string(text));
     }
 }
 
@@ -2876,7 +2877,7 @@ static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
     auto szText = packet.ReadString();
-    if (szText == nullptr || szText[0] == '\0')
+    if (szText.empty())
         return;
 
     if (connection.Player)
@@ -2888,7 +2889,7 @@ void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacke
         }
     }
 
-    std::string text = szText;
+    std::string text(szText);
     if (connection.Player != nullptr)
     {
         if (!ProcessChatMessagePluginHooks(connection.Player->Id, text))
@@ -3025,8 +3026,8 @@ void NetworkBase::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connect
 
     if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
     {
-        const char* text = packet.ReadString();
-        if (text != nullptr)
+        auto text = packet.ReadString();
+        if (!text.empty())
         {
             tickData.spriteHash = text;
         }
@@ -3110,12 +3111,10 @@ void NetworkBase::Client_Handle_PINGLIST([[maybe_unused]] NetworkConnection& con
 
 void NetworkBase::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet)
 {
-    static std::string msg;
-    const char* disconnectmsg = packet.ReadString();
-    if (disconnectmsg)
+    auto disconnectmsg = packet.ReadString();
+    if (!disconnectmsg.empty())
     {
-        msg = disconnectmsg;
-        connection.SetLastDisconnectReason(msg.c_str());
+        connection.SetLastDisconnectReason(disconnectmsg);
     }
 }
 
@@ -3147,32 +3146,31 @@ void NetworkBase::Client_Handle_GROUPLIST([[maybe_unused]] NetworkConnection& co
 
 void NetworkBase::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
-    char text[256];
     uint16_t eventType;
     packet >> eventType;
     switch (eventType)
     {
         case SERVER_EVENT_PLAYER_JOINED:
         {
-            const char* playerName = packet.ReadString();
-            format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &playerName);
-            chat_history_add(text);
+            auto playerName = packet.ReadString();
+            auto message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, playerName);
+            chat_history_add(message.c_str());
             break;
         }
         case SERVER_EVENT_PLAYER_DISCONNECTED:
         {
-            const char* playerName = packet.ReadString();
-            const char* reason = packet.ReadString();
-            const char* args[] = { playerName, reason };
-            if (str_is_null_or_empty(reason))
+            auto playerName = packet.ReadString();
+            auto reason = packet.ReadString();
+            std::string message;
+            if (reason.empty())
             {
-                format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, args);
+                message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, playerName);
             }
             else
             {
-                format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, args);
+                message = FormatStringId(STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, playerName, reason);
             }
-            chat_history_add(text);
+            chat_history_add(message.c_str());
             break;
         }
     }
@@ -3187,7 +3185,7 @@ void NetworkBase::Client_Send_GAMEINFO()
 
 void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
-    const char* jsonString = packet.ReadString();
+    auto jsonString = packet.ReadString();
     packet >> _serverState.gamestateSnapshotsEnabled;
 
     json_t jsonData = Json::FromString(jsonString);
@@ -3915,7 +3913,7 @@ void network_set_password(const char* password)
     network.SetPassword(password);
 }
 
-void network_append_chat_log(const utf8* text)
+void network_append_chat_log(std::string_view text)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     network.AppendChatLog(text);
@@ -4216,7 +4214,7 @@ int32_t network_get_current_player_group_index()
 {
     return 0;
 }
-void network_append_chat_log(const utf8* text)
+void network_append_chat_log(std::string_view)
 {
 }
 void network_append_server_log(const utf8* text)
