@@ -55,10 +55,8 @@ const char* LocalisationService::GetString(rct_string_id id) const
         {
             return _objectStrings[index].c_str();
         }
-        else
-        {
-            result = "(unallocated string)";
-        }
+
+        result = "(unallocated string)";
     }
     else if (id != STR_NONE)
     {

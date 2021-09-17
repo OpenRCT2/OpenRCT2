@@ -251,25 +251,23 @@ static bool map_check_free_elements_and_reorganise(size_t numElementsOnTile, siz
     {
         return true;
     }
-    else
-    {
-        // if space issue is due to fragmentation then Reorg Tiles without increasing capacity
-        if (_tileElements.size() > totalElementsRequired + _tileElementsInUse)
-        {
-            ReorganiseTileElements();
-            // This check is not expected to fail
-            freeElements = _tileElements.capacity() - _tileElements.size();
-            if (freeElements >= totalElementsRequired)
-            {
-                return true;
-            }
-        }
 
-        // Capacity must increase to handle the space (Note capacity can go above MAX_TILE_ELEMENTS)
-        auto newCapacity = _tileElements.capacity() * 2;
-        ReorganiseTileElements(newCapacity);
-        return true;
+    // if space issue is due to fragmentation then Reorg Tiles without increasing capacity
+    if (_tileElements.size() > totalElementsRequired + _tileElementsInUse)
+    {
+        ReorganiseTileElements();
+        // This check is not expected to fail
+        freeElements = _tileElements.capacity() - _tileElements.size();
+        if (freeElements >= totalElementsRequired)
+        {
+            return true;
+        }
     }
+
+    // Capacity must increase to handle the space (Note capacity can go above MAX_TILE_ELEMENTS)
+    auto newCapacity = _tileElements.capacity() * 2;
+    ReorganiseTileElements(newCapacity);
+    return true;
 }
 
 static size_t CountElementsOnTile(const CoordsXY& loc);

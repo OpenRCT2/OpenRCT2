@@ -103,8 +103,8 @@ static int32_t get_height(int32_t x, int32_t y)
 {
     if (x >= 0 && y >= 0 && x < _heightSize && y < _heightSize)
         return _height[x + y * _heightSize];
-    else
-        return 0;
+
+    return 0;
 }
 
 static void set_height(int32_t x, int32_t y, int32_t height)

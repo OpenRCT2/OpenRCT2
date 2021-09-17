@@ -51,8 +51,7 @@ static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
         return 1;
     if (categoryA < categoryB)
         return -1;
-    else
-        return 1;
+    return 1;
 }
 
 static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
@@ -97,23 +96,19 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& e
                 {
                     return scenario_index_entry_CompareByCategory(entryA, entryB);
                 }
-                else
-                {
-                    return ScenarioCategoryCompare(entryA.category, entryB.category);
-                }
+
+                return ScenarioCategoryCompare(entryA.category, entryB.category);
             }
-            else if (entryA.source_index == -1)
+            if (entryA.source_index == -1)
             {
                 return 1;
             }
-            else if (entryB.source_index == -1)
+            if (entryB.source_index == -1)
             {
                 return -1;
             }
-            else
-            {
-                return entryA.source_index - entryB.source_index;
-            }
+            return entryA.source_index - entryB.source_index;
+
         case ScenarioSource::Real:
             return scenario_index_entry_CompareByCategory(entryA, entryB);
     }
@@ -154,10 +149,8 @@ protected:
         {
             return std::make_tuple(true, entry);
         }
-        else
-        {
-            return std::make_tuple(true, scenario_index_entry());
-        }
+
+        return std::make_tuple(true, scenario_index_entry());
     }
 
     void Serialise(DataSerialiser& ds, scenario_index_entry& item) const override
@@ -225,7 +218,8 @@ private:
                 }
                 return result;
             }
-            else if (String::Equals(extension, ".sc4", true))
+
+            if (String::Equals(extension, ".sc4", true))
             {
                 // RCT1 scenario
                 bool result = false;
@@ -245,32 +239,28 @@ private:
                 }
                 return result;
             }
-            else
+
+            // RCT2 or RCTC scenario
+            auto stream = GetStreamFromRCT2Scenario(path);
+            auto chunkReader = SawyerChunkReader(stream.get());
+
+            rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
+            if (header.type == S6_TYPE_SCENARIO)
             {
-                // RCT2 or RCTC scenario
-                auto stream = GetStreamFromRCT2Scenario(path);
-                auto chunkReader = SawyerChunkReader(stream.get());
-
-                rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
-                if (header.type == S6_TYPE_SCENARIO)
+                rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
+                // If the name or the details contain a colour code, they might be in UTF-8 already.
+                // This is caused by a bug that was in OpenRCT2 for 3 years.
+                if (!IsLikelyUTF8(info.name) && !IsLikelyUTF8(info.details))
                 {
-                    rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
-                    // If the name or the details contain a colour code, they might be in UTF-8 already.
-                    // This is caused by a bug that was in OpenRCT2 for 3 years.
-                    if (!IsLikelyUTF8(info.name) && !IsLikelyUTF8(info.details))
-                    {
-                        rct2_to_utf8_self(info.name, sizeof(info.name));
-                        rct2_to_utf8_self(info.details, sizeof(info.details));
-                    }
+                    rct2_to_utf8_self(info.name, sizeof(info.name));
+                    rct2_to_utf8_self(info.details, sizeof(info.details));
+                }
 
-                    *entry = CreateNewScenarioEntry(path, timestamp, &info);
-                    return true;
-                }
-                else
-                {
-                    log_verbose("%s is not a scenario", path.c_str());
-                }
+                *entry = CreateNewScenarioEntry(path, timestamp, &info);
+                return true;
             }
+
+            log_verbose("%s is not a scenario", path.c_str());
         }
         catch (const std::exception&)
         {

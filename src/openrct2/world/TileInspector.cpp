@@ -439,17 +439,17 @@ namespace OpenRCT2::TileInspector
         {
             return std::make_unique<GameActions::Result>(GameActions::Status::TooLow, STR_CANT_LOWER_ELEMENT_HERE, STR_TOO_LOW);
         }
-        else if (newBaseHeight > MAX_ELEMENT_HEIGHT)
+        if (newBaseHeight > MAX_ELEMENT_HEIGHT)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::TooHigh, STR_CANT_RAISE_ELEMENT_HERE, STR_TOO_HIGH);
         }
-        else if (newClearanceHeight < 0)
+        if (newClearanceHeight < 0)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::NoClearance, STR_CANT_LOWER_ELEMENT_HERE, STR_NO_CLEARANCE);
         }
-        else if (newClearanceHeight > MAX_ELEMENT_HEIGHT)
+        if (newClearanceHeight > MAX_ELEMENT_HEIGHT)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::NoClearance, STR_CANT_RAISE_ELEMENT_HERE, STR_NO_CLEARANCE);

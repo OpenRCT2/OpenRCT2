@@ -1003,11 +1003,12 @@ private:
         {
             return;
         }
-        else if (widgetIndex == WIDX_WEATHER_DROPDOWN_BUTTON)
+
+        if (widgetIndex == WIDX_WEATHER_DROPDOWN_BUTTON)
         {
             CheatsSet(CheatType::ForceWeather, dropdownIndex);
         }
-        else if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
+        if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
         {
             int32_t speed = CHEATS_STAFF_FAST_SPEED;
             switch (dropdownIndex)

@@ -1553,9 +1553,9 @@ int TTF_GetFontHinting(const TTF_Font* font)
 {
     if (font->hinting == FT_LOAD_TARGET_ALT(FT_RENDER_MODE_LIGHT))
         return TTF_HINTING_LIGHT;
-    else if (font->hinting == FT_LOAD_TARGET_ALT(FT_RENDER_MODE_MONO))
+    if (font->hinting == FT_LOAD_TARGET_ALT(FT_RENDER_MODE_MONO))
         return TTF_HINTING_MONO;
-    else if (font->hinting == FT_LOAD_NO_HINTING)
+    if (font->hinting == FT_LOAD_NO_HINTING)
         return TTF_HINTING_NONE;
     return 0;
 }

@@ -1240,8 +1240,8 @@ namespace RCT1
         };
         if (wallType < std::size(map))
             return map[wallType];
-        else
-            return map[0];
+
+        return map[0];
     }
 
     std::string_view GetPathSurfaceObject(uint8_t pathType)

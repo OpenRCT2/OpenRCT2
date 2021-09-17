@@ -373,10 +373,8 @@ static TTFSurface* ttf_render(TTF_Font* font, std::string_view text)
     {
         return TTF_RenderUTF8_Shaded(font, buffer.c_str(), 0x000000FF, 0x000000FF);
     }
-    else
-    {
-        return TTF_RenderUTF8_Solid(font, buffer.c_str(), 0x000000FF);
-    }
+
+    return TTF_RenderUTF8_Solid(font, buffer.c_str(), 0x000000FF);
 }
 
 void ttf_free_surface(TTFSurface* surface)

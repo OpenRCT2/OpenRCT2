@@ -221,10 +221,8 @@ namespace OpenRCT2::RideAudio
                     {
                         return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+
+                    return false;
                 }),
             _musicChannels.end());
     }
@@ -272,18 +270,16 @@ namespace OpenRCT2::RideAudio
         {
             return { 1378, 12427456 };
         }
-        else
+
+        auto& objManager = GetContext()->GetObjectManager();
+        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride.music));
+        if (musicObj != nullptr)
         {
-            auto& objManager = GetContext()->GetObjectManager();
-            auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride.music));
-            if (musicObj != nullptr)
+            auto numTracks = musicObj->GetTrackCount();
+            if (ride.music_tune_id < numTracks)
             {
-                auto numTracks = musicObj->GetTrackCount();
-                if (ride.music_tune_id < numTracks)
-                {
-                    auto track = musicObj->GetTrack(ride.music_tune_id);
-                    return { track->BytesPerTick, track->Size };
-                }
+                auto track = musicObj->GetTrack(ride.music_tune_id);
+                return { track->BytesPerTick, track->Size };
             }
         }
         return { 0, 0 };

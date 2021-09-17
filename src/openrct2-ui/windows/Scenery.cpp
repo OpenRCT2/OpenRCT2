@@ -238,7 +238,7 @@ static void window_scenery_sort_tabs()
 
         if (a.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
             return false;
-        else if (b.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (b.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
             return true;
 
         auto entryA = a.GetSceneryGroupEntry();
@@ -916,15 +916,13 @@ OpenRCT2String window_scenery_tooltip(rct_window* w, const rct_widgetindex widge
                 ft.Add<rct_string_id>(STR_MISCELLANEOUS);
                 return { fallback, ft };
             }
-            else
+
+            auto sceneryEntry = tabInfo.GetSceneryGroupEntry();
+            if (sceneryEntry != nullptr)
             {
-                auto sceneryEntry = tabInfo.GetSceneryGroupEntry();
-                if (sceneryEntry != nullptr)
-                {
-                    auto ft = Formatter();
-                    ft.Add<rct_string_id>(sceneryEntry->name);
-                    return { fallback, ft };
-                }
+                auto ft = Formatter();
+                ft.Add<rct_string_id>(sceneryEntry->name);
+                return { fallback, ft };
             }
         }
     }

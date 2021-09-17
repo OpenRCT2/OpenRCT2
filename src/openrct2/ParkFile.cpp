@@ -702,10 +702,8 @@ namespace OpenRCT2
                         cs.ReadWrite(award.Type);
                         return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+
+                    return false;
                 });
 
                 cs.ReadWrite(gParkValue);
@@ -4505,10 +4503,8 @@ static const FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& de
             objectEntry.SetName(datPathName.value());
             return GetFootpathSurfaceId(ObjectEntryDescriptor(objectEntry));
         }
-        else
-        {
-            return nullptr;
-        }
+
+        return nullptr;
     }
 
     // Even old .park saves with DAT identifiers somehow exist.

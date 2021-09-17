@@ -170,10 +170,8 @@ std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
     {
         return path.value();
     }
-    else
-    {
-        return "";
-    }
+
+    return "";
 }
 
 std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pixels)
@@ -765,28 +763,26 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
         }
         return *path;
     }
-    else
+
+    auto screenshotDirectory = fs::u8path(screenshot_get_directory());
+    auto screenshotPath = fs::absolute(screenshotDirectory / filename);
+
+    // Check the filename isn't attempting to leave the screenshot directory for security
+    if (!IsPathChildOf(screenshotPath, screenshotDirectory))
     {
-        auto screenshotDirectory = fs::u8path(screenshot_get_directory());
-        auto screenshotPath = fs::absolute(screenshotDirectory / filename);
-
-        // Check the filename isn't attempting to leave the screenshot directory for security
-        if (!IsPathChildOf(screenshotPath, screenshotDirectory))
-        {
-            throw std::runtime_error("Filename is not a child of the screenshot directory.");
-        }
-
-        auto directory = screenshotPath.parent_path();
-        if (!fs::is_directory(directory))
-        {
-            if (!fs::create_directory(directory, screenshotDirectory))
-            {
-                throw std::runtime_error("Unable to create directory.");
-            }
-        }
-
-        return screenshotPath.string();
+        throw std::runtime_error("Filename is not a child of the screenshot directory.");
     }
+
+    auto directory = screenshotPath.parent_path();
+    if (!fs::is_directory(directory))
+    {
+        if (!fs::create_directory(directory, screenshotDirectory))
+        {
+            throw std::runtime_error("Unable to create directory.");
+        }
+    }
+
+    return screenshotPath.string();
 }
 
 void CaptureImage(const CaptureOptions& options)

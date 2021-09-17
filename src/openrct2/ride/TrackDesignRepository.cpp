@@ -90,10 +90,8 @@ public:
             }
             return std::make_tuple(true, item);
         }
-        else
-        {
-            return std::make_tuple(true, TrackRepositoryItem());
-        }
+
+        return std::make_tuple(true, TrackRepositoryItem());
     }
 
 protected:

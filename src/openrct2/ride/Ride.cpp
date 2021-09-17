@@ -2020,13 +2020,11 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     {
         return { measurement.get(), { STR_EMPTY, {} } };
     }
-    else
-    {
-        auto ft = Formatter();
-        ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.vehicle).singular);
-        ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.station).singular);
-        return { nullptr, { STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES, ft } };
-    }
+
+    auto ft = Formatter();
+    ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.vehicle).singular);
+    ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.station).singular);
+    return { nullptr, { STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES, ft } };
 }
 
 #pragma endregion
@@ -4260,10 +4258,8 @@ RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
     {
         return GetRideTypeDescriptor(rideType).Naming;
     }
-    else
-    {
-        return rideEntry->naming;
-    }
+
+    return rideEntry->naming;
 }
 
 /*
@@ -4746,22 +4742,20 @@ uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCa
     {
         return rideEntry->front_vehicle;
     }
-    else if (position == 1 && rideEntry->second_vehicle != 255)
+    if (position == 1 && rideEntry->second_vehicle != 255)
     {
         return rideEntry->second_vehicle;
     }
-    else if (position == 2 && rideEntry->third_vehicle != 255)
+    if (position == 2 && rideEntry->third_vehicle != 255)
     {
         return rideEntry->third_vehicle;
     }
-    else if (position == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255)
+    if (position == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255)
     {
         return rideEntry->rear_vehicle;
     }
-    else
-    {
-        return rideEntry->default_vehicle;
-    }
+
+    return rideEntry->default_vehicle;
 }
 
 // Finds track pieces that a given ride entry has sprites for
@@ -5406,16 +5400,14 @@ int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed)
     {
         return rawSpeed;
     }
-    else if (shiftFactor > 0)
+    if (shiftFactor > 0)
     {
         return (rawSpeed << shiftFactor);
     }
-    else
-    {
-        // Workaround for an issue with older compilers (GCC 6, Clang 4) which would fail the build
-        int8_t shiftFactorAbs = std::abs(shiftFactor);
-        return (rawSpeed >> shiftFactorAbs);
-    }
+
+    // Workaround for an issue with older compilers (GCC 6, Clang 4) which would fail the build
+    int8_t shiftFactorAbs = std::abs(shiftFactor);
+    return (rawSpeed >> shiftFactorAbs);
 }
 
 void fix_invalid_vehicle_sprite_sizes()

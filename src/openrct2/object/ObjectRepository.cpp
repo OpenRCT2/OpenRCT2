@@ -264,14 +264,12 @@ public:
         {
             return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path);
         }
-        else if (String::Equals(extension, ".parkobj", true))
+        if (String::Equals(extension, ".parkobj", true))
         {
             return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path);
         }
-        else
-        {
-            return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path.c_str());
-        }
+
+        return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path.c_str());
     }
 
     void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) override
@@ -447,12 +445,10 @@ private:
             }
             return true;
         }
-        else
-        {
-            Console::Error::WriteLine("Object conflict: '%s'", conflict->Path.c_str());
-            Console::Error::WriteLine("               : '%s'", item.Path.c_str());
-            return false;
-        }
+
+        Console::Error::WriteLine("Object conflict: '%s'", conflict->Path.c_str());
+        Console::Error::WriteLine("               : '%s'", item.Path.c_str());
+        return false;
     }
 
     void ScanObject(const std::string& path)
@@ -616,10 +612,8 @@ private:
             // Convert to UTF-8 filename
             return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
         }
-        else
-        {
-            return std::string(name);
-        }
+
+        return std::string(name);
     }
 
     void WritePackedObject(OpenRCT2::IStream* stream, const rct_object_entry* entry)

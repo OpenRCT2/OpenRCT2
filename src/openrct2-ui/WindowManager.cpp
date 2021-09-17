@@ -156,10 +156,7 @@ public:
                 {
                     return this->OpenWindow(WC_RESEARCH);
                 }
-                else
-                {
-                    return window_new_ride_open_research();
-                }
+                return window_new_ride_open_research();
             case WV_MAZE_CONSTRUCTION:
                 return window_maze_construction_open();
             case WV_NETWORK_PASSWORD:

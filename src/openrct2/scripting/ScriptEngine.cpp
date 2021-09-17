@@ -189,12 +189,10 @@ private:
                     }
                     break;
                 }
-                else
+
+                if (duk_get_prop_index(_context, -1, i))
                 {
-                    if (duk_get_prop_index(_context, -1, i))
-                    {
-                        Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
-                    }
+                    Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
                 }
             }
             _ss << " ]";
@@ -735,12 +733,10 @@ DukValue ScriptEngine::ExecutePluginCall(
         {
             return DukValue::take_from_stack(_context);
         }
-        else
-        {
-            auto message = duk_safe_to_string(_context, -1);
-            LogPluginInfo(plugin, message);
-            duk_pop(_context);
-        }
+
+        auto message = duk_safe_to_string(_context, -1);
+        LogPluginInfo(plugin, message);
+        duk_pop(_context);
     }
     return DukValue();
 }
@@ -798,13 +794,11 @@ std::unique_ptr<GameActions::Result> ScriptEngine::QueryOrExecuteCustomGameActio
         }
         return DukToGameActionResult(dukResult);
     }
-    else
-    {
-        auto action = std::make_unique<GameActions::Result>();
-        action->Error = GameActions::Status::Unknown;
-        action->ErrorTitle = "Unknown custom action";
-        return action;
-    }
+
+    auto action = std::make_unique<GameActions::Result>();
+    action->Error = GameActions::Status::Unknown;
+    action->ErrorTitle = "Unknown custom action";
+    return action;
 }
 
 std::unique_ptr<GameActions::Result> ScriptEngine::DukToGameActionResult(const DukValue& d)
@@ -1184,23 +1178,21 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
         }
         return action;
     }
+
+    // Serialise args to json so that it can be sent
+    auto ctx = args.context();
+    if (args.type() == DukValue::Type::OBJECT)
+    {
+        args.push();
+    }
     else
     {
-        // Serialise args to json so that it can be sent
-        auto ctx = args.context();
-        if (args.type() == DukValue::Type::OBJECT)
-        {
-            args.push();
-        }
-        else
-        {
-            duk_push_object(ctx);
-        }
-        auto jsonz = duk_json_encode(ctx, -1);
-        auto json = std::string(jsonz);
-        duk_pop(ctx);
-        return std::make_unique<CustomAction>(actionid, json);
+        duk_push_object(ctx);
     }
+    auto jsonz = duk_json_encode(ctx, -1);
+    auto json = std::string(jsonz);
+    duk_pop(ctx);
+    return std::make_unique<CustomAction>(actionid, json);
 }
 
 void ScriptEngine::InitSharedStorage()
@@ -1406,12 +1398,10 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
     {
         return true;
     }
-    else
-    {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto& execInfo = scriptEngine.GetExecInfo();
-        return execInfo.IsGameStateMutable();
-    }
+
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& execInfo = scriptEngine.GetExecInfo();
+    return execInfo.IsGameStateMutable();
 }
 
 void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()

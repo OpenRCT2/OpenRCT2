@@ -257,14 +257,13 @@ namespace Imaging
         {
             return IMAGE_FORMAT::PNG;
         }
-        else if (String::EndsWith(path, ".bmp", true))
+
+        if (String::EndsWith(path, ".bmp", true))
         {
             return IMAGE_FORMAT::BITMAP;
         }
-        else
-        {
-            return IMAGE_FORMAT::UNKNOWN;
-        }
+
+        return IMAGE_FORMAT::UNKNOWN;
     }
 
     static ImageReaderFunc GetReader(IMAGE_FORMAT format)

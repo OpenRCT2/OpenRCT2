@@ -194,22 +194,18 @@ namespace OpenRCT2
                     f(stream);
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
-            else
-            {
-                _currentChunk.Id = chunkId;
-                _currentChunk.Offset = _buffer.GetPosition();
-                _currentChunk.Length = 0;
-                ChunkStream stream(_buffer, _mode);
-                f(stream);
-                _currentChunk.Length = static_cast<uint64_t>(_buffer.GetPosition()) - _currentChunk.Offset;
-                _chunks.push_back(_currentChunk);
-                return true;
-            }
+
+            _currentChunk.Id = chunkId;
+            _currentChunk.Offset = _buffer.GetPosition();
+            _currentChunk.Length = 0;
+            ChunkStream stream(_buffer, _mode);
+            f(stream);
+            _currentChunk.Length = static_cast<uint64_t>(_buffer.GetPosition()) - _currentChunk.Offset;
+            _chunks.push_back(_currentChunk);
+            return true;
         }
 
     private:
@@ -519,12 +515,10 @@ namespace OpenRCT2
                         Read(&raw, sizeof(raw));
                         return static_cast<T>(raw);
                     }
-                    else
-                    {
-                        uint64_t raw{};
-                        Read(&raw, sizeof(raw));
-                        return static_cast<T>(raw);
-                    }
+
+                    uint64_t raw{};
+                    Read(&raw, sizeof(raw));
+                    return static_cast<T>(raw);
                 }
                 else
                 {
@@ -621,16 +615,14 @@ namespace OpenRCT2
                     arrayState.LastPos = _buffer.GetPosition();
                     return arrayState.Count;
                 }
-                else
-                {
-                    arrayState.Count = 0;
-                    arrayState.ElementSize = 0;
-                    arrayState.StartPos = _buffer.GetPosition();
-                    Write<uint32_t>(0);
-                    Write<uint32_t>(0);
-                    arrayState.LastPos = _buffer.GetPosition();
-                    return 0;
-                }
+
+                arrayState.Count = 0;
+                arrayState.ElementSize = 0;
+                arrayState.StartPos = _buffer.GetPosition();
+                Write<uint32_t>(0);
+                Write<uint32_t>(0);
+                arrayState.LastPos = _buffer.GetPosition();
+                return 0;
             }
 
             bool NextArrayElement()
@@ -650,24 +642,22 @@ namespace OpenRCT2
                     arrayState.Count--;
                     return arrayState.Count == 0;
                 }
-                else
+
+                auto lastElSize = static_cast<size_t>(_buffer.GetPosition()) - arrayState.LastPos;
+                if (arrayState.Count == 0)
                 {
-                    auto lastElSize = static_cast<size_t>(_buffer.GetPosition()) - arrayState.LastPos;
-                    if (arrayState.Count == 0)
-                    {
-                        // Set array element size based on first element size
-                        arrayState.ElementSize = lastElSize;
-                    }
-                    else if (arrayState.ElementSize != lastElSize)
-                    {
-                        // Array element size was different from first element so reset it
-                        // to dynamic
-                        arrayState.ElementSize = 0;
-                    }
-                    arrayState.Count++;
-                    arrayState.LastPos = _buffer.GetPosition();
-                    return true;
+                    // Set array element size based on first element size
+                    arrayState.ElementSize = lastElSize;
                 }
+                else if (arrayState.ElementSize != lastElSize)
+                {
+                    // Array element size was different from first element so reset it
+                    // to dynamic
+                    arrayState.ElementSize = 0;
+                }
+                arrayState.Count++;
+                arrayState.LastPos = _buffer.GetPosition();
+                return true;
             }
 
             void EndArray()

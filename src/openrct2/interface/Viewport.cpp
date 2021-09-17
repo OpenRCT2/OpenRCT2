@@ -1972,8 +1972,6 @@ ZoomLevel ZoomLevel::min()
     {
         return -2;
     }
-    else
-    {
-        return 0;
-    }
+
+    return 0;
 }

@@ -1450,14 +1450,12 @@ static bool filter_selected(uint8_t objectFlag)
     {
         return true;
     }
-    else if (_FILTER_NONSELECTED && !(objectFlag & OBJECT_SELECTION_FLAG_SELECTED))
+    if (_FILTER_NONSELECTED && !(objectFlag & OBJECT_SELECTION_FLAG_SELECTED))
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 static bool filter_string(const ObjectRepositoryItem* item)

@@ -291,9 +291,6 @@ rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
             {
                 return STR_CANT_CHANGE_THIS;
             }
-            else
-            {
-                return STR_CANT_CHANGE_LAUNCH_SPEED;
-            }
+            return STR_CANT_CHANGE_LAUNCH_SPEED;
     }
 }

@@ -49,10 +49,8 @@ public:
             auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
             return LoadFromStream(&fs);
         }
-        else
-        {
-            throw std::runtime_error("Invalid RCT2 track extension.");
-        }
+
+        throw std::runtime_error("Invalid RCT2 track extension.");
     }
 
     bool LoadFromStream(OpenRCT2::IStream* stream) override

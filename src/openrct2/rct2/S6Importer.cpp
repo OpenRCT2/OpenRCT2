@@ -103,14 +103,12 @@ public:
         {
             return LoadScenario(path);
         }
-        else if (String::Equals(extension, ".sv6", true))
+        if (String::Equals(extension, ".sv6", true))
         {
             return LoadSavedGame(path);
         }
-        else
-        {
-            throw std::runtime_error("Invalid RCT2 park extension.");
-        }
+
+        throw std::runtime_error("Invalid RCT2 park extension.");
     }
 
     ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
@@ -914,7 +912,7 @@ public:
                 invented = false;
                 continue;
             }
-            else if (researchItem.IsUninventedEndMarker() || researchItem.IsRandomEndMarker())
+            if (researchItem.IsUninventedEndMarker() || researchItem.IsRandomEndMarker())
             {
                 break;
             }

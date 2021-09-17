@@ -821,8 +821,8 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         {
             if (rideEntry->ride_type[i] == listItem->Type)
                 break;
-            else
-                imageId++;
+
+            imageId++;
         }
 
         gfx_draw_sprite_raw_masked(dpi, coords + ScreenCoordsXY{ 2, 2 }, SPR_NEW_RIDE_MASK, imageId);

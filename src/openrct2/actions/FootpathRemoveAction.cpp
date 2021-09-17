@@ -165,7 +165,8 @@ GameActions::Result::Ptr FootpathRemoveAction::RemoveBannersAtElement(const Coor
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
             return result;
-        else if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
+
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
             continue;
 
         auto bannerRemoveAction = BannerRemoveAction({ loc, tileElement->GetBaseZ(), tileElement->AsBanner()->GetPosition() });

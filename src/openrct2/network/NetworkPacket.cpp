@@ -78,12 +78,10 @@ const uint8_t* NetworkPacket::Read(size_t size)
     {
         return nullptr;
     }
-    else
-    {
-        const uint8_t* data = Data.data() + BytesRead;
-        BytesRead += size;
-        return data;
-    }
+
+    const uint8_t* data = Data.data() + BytesRead;
+    BytesRead += size;
+    return data;
 }
 
 std::string_view NetworkPacket::ReadString()

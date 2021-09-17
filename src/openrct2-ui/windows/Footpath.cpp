@@ -1215,7 +1215,7 @@ static TileElement* footpath_get_tile_element_to_remove()
 
                 return tileElement;
             }
-            else if (tileElement->GetBaseZ() == zLow)
+            if (tileElement->GetBaseZ() == zLow)
             {
                 if (!tileElement->AsPath()->IsSloped())
                 {
@@ -1478,11 +1478,9 @@ static bool FootpathSelectDefault()
             // No surfaces or legacy paths available
             return false;
         }
-        else
-        {
-            // No surfaces available, so default to legacy path
-            gFootpathSelection.LegacyPath = legacyPathIndex;
-        }
+
+        // No surfaces available, so default to legacy path
+        gFootpathSelection.LegacyPath = legacyPathIndex;
     }
 
     gFootpathSelection.NormalSurface = surfaceIndex;

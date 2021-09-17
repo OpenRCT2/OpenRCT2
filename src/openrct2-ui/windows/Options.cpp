@@ -2172,12 +2172,10 @@ static OpenRCT2String window_options_advanced_tooltip(
             // No tooltip if the path is empty
             return { STR_NONE, {} };
         }
-        else
-        {
-            auto ft = Formatter();
-            ft.Add<utf8*>(gConfigGeneral.rct1_path);
-            return { fallback, ft };
-        }
+
+        auto ft = Formatter();
+        ft.Add<utf8*>(gConfigGeneral.rct1_path);
+        return { fallback, ft };
     }
     return { fallback, {} };
 }

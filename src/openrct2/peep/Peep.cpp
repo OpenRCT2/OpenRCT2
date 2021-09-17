@@ -313,17 +313,16 @@ PeepActionSpriteType Peep::GetActionSpriteType()
     { // PeepActionType::None1 or PeepActionType::None2
         return PeepSpecialSpriteToSpriteTypeMap[SpecialSprite];
     }
-    else if (EnumValue(Action) < std::size(PeepActionToSpriteTypeMap))
+
+    if (EnumValue(Action) < std::size(PeepActionToSpriteTypeMap))
     {
         return PeepActionToSpriteTypeMap[EnumValue(Action)];
     }
-    else
-    {
-        openrct2_assert(
-            EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle,
-            "Invalid peep action %u", EnumValue(Action));
-        return PeepActionSpriteType::None;
-    }
+
+    openrct2_assert(
+        EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle, "Invalid peep action %u",
+        EnumValue(Action));
+    return PeepActionSpriteType::None;
 }
 
 /*
@@ -1512,17 +1511,15 @@ bool Peep::SetName(std::string_view value)
         Name = nullptr;
         return true;
     }
-    else
+
+    auto newNameMemory = static_cast<char*>(std::malloc(value.size() + 1));
+    if (newNameMemory != nullptr)
     {
-        auto newNameMemory = static_cast<char*>(std::malloc(value.size() + 1));
-        if (newNameMemory != nullptr)
-        {
-            std::memcpy(newNameMemory, value.data(), value.size());
-            newNameMemory[value.size()] = '\0';
-            std::free(Name);
-            Name = newNameMemory;
-            return true;
-        }
+        std::memcpy(newNameMemory, value.data(), value.size());
+        newNameMemory[value.size()] = '\0';
+        std::free(Name);
+        Name = newNameMemory;
+        return true;
     }
     return false;
 }
@@ -1834,15 +1831,13 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                     found = true;
                     break;
                 }
-                else
+
+                if (z != nextTileElement->base_height)
                 {
-                    if (z != nextTileElement->base_height)
-                    {
-                        continue;
-                    }
-                    found = true;
-                    break;
+                    continue;
                 }
+                found = true;
+                break;
             } while (!(nextTileElement++)->IsLastForTile());
         }
 
@@ -1962,7 +1957,8 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
             crowded++;
             continue;
         }
-        else if (auto litter = entity->As<Litter>(); litter != nullptr)
+
+        if (auto litter = entity->As<Litter>(); litter != nullptr)
         {
             if (abs(litter->z - guest->NextLoc.z) > 16)
                 continue;
@@ -2358,7 +2354,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             tile_result = tileElement;
             return;
         }
-        else if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
             if (peep_interact_with_shop(this, { newLoc, tileElement }))
             {

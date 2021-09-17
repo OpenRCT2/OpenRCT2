@@ -351,17 +351,15 @@ int32_t strlogicalcmp(const char* s1, const char* s2)
     {
         if (*s2 == '\0')
             return *s1 != '\0';
-        else if (*s1 == '\0')
+        if (*s1 == '\0')
             return -1;
-        else if (!(isdigit(*s1) && isdigit(*s2)))
+        if (!(isdigit(*s1) && isdigit(*s2)))
         {
             if (toupper(*s1) != toupper(*s2))
                 return toupper(*s1) - toupper(*s2);
-            else
-            {
-                ++s1;
-                ++s2;
-            }
+
+            ++s1;
+            ++s2;
         }
         else
         {
@@ -370,8 +368,9 @@ int32_t strlogicalcmp(const char* s1, const char* s2)
             unsigned long n2 = strtoul(s2, &lim2, 10);
             if (n1 > n2)
                 return 1;
-            else if (n1 < n2)
+            if (n1 < n2)
                 return -1;
+
             s1 = lim1;
             s2 = lim2;
         }
@@ -458,10 +457,8 @@ char* safe_strcat(char* destination, const char* source, size_t size)
         {
             break;
         }
-        else
-        {
-            destination++;
-        }
+
+        destination++;
     }
 
     bool terminated = false;

@@ -432,7 +432,8 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
         {
             break;
         }
-        else if (widget->type != WindowWidgetType::Empty && widget->IsVisible())
+
+        if (widget->type != WindowWidgetType::Empty && widget->IsVisible())
         {
             if (screenCoords.x >= w->windowPos.x + widget->left && screenCoords.x <= w->windowPos.x + widget->right
                 && screenCoords.y >= w->windowPos.y + widget->top && screenCoords.y <= w->windowPos.y + widget->bottom)
@@ -1337,10 +1338,8 @@ bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool)
             tool_cancel();
             return true;
         }
-        else
-        {
-            tool_cancel();
-        }
+
+        tool_cancel();
     }
 
     input_set_flag(INPUT_FLAG_TOOL_ACTIVE, true);
@@ -1580,14 +1579,13 @@ OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex wi
     {
         return w->OnTooltip(widgetIndex, fallback);
     }
-    else if (w->event_handlers->tooltip != nullptr)
+
+    if (w->event_handlers->tooltip != nullptr)
     {
         return w->event_handlers->tooltip(w, widgetIndex, fallback);
     }
-    else
-    {
-        return { fallback, {} };
-    }
+
+    return { fallback, {} };
 }
 
 CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)

@@ -528,19 +528,19 @@ ImageCatalogue ImageId::GetCatalogue() const
     {
         return ImageCatalogue::TEMPORARY;
     }
-    else if (index < SPR_RCTC_G1_END)
+    if (index < SPR_RCTC_G1_END)
     {
         return ImageCatalogue::G1;
     }
-    else if (index < SPR_G2_END)
+    if (index < SPR_G2_END)
     {
         return ImageCatalogue::G2;
     }
-    else if (index < SPR_CSG_END)
+    if (index < SPR_CSG_END)
     {
         return ImageCatalogue::CSG;
     }
-    else if (index < SPR_IMAGE_LIST_END)
+    if (index < SPR_IMAGE_LIST_END)
     {
         return ImageCatalogue::OBJECT;
     }

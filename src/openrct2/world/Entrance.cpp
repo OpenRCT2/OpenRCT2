@@ -284,8 +284,8 @@ ObjectEntryIndex EntranceElement::GetLegacyPathEntryIndex() const
 {
     if (HasLegacyPathEntry())
         return PathType;
-    else
-        return OBJECT_ENTRY_INDEX_NULL;
+
+    return OBJECT_ENTRY_INDEX_NULL;
 }
 
 const FootpathObject* EntranceElement::GetLegacyPathEntry() const
@@ -304,8 +304,8 @@ ObjectEntryIndex EntranceElement::GetSurfaceEntryIndex() const
 {
     if (HasLegacyPathEntry())
         return OBJECT_ENTRY_INDEX_NULL;
-    else
-        return PathType;
+
+    return PathType;
 }
 
 const FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const

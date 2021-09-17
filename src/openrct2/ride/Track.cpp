@@ -335,10 +335,8 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
             return false;
         }
-        else
-        {
-            return true;
-        }
+
+        return true;
     }
 
     currentLoc = stationFrontLoc;
@@ -432,31 +430,27 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it)
         it->first = it->current.element;
         return true;
     }
-    else
+
+    if (!it->firstIteration && it->first == it->current.element)
     {
-        if (!it->firstIteration && it->first == it->current.element)
-        {
-            it->looped = true;
-            return false;
-        }
-
-        it->firstIteration = false;
-        it->last = it->current;
-
-        if (track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
-        {
-            it->current.x = trackBeginEnd.end_x;
-            it->current.y = trackBeginEnd.end_y;
-            it->current.element = trackBeginEnd.begin_element;
-            it->currentZ = trackBeginEnd.begin_z;
-            it->currentDirection = trackBeginEnd.begin_direction;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        it->looped = true;
+        return false;
     }
+
+    it->firstIteration = false;
+    it->last = it->current;
+
+    if (track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
+    {
+        it->current.x = trackBeginEnd.end_x;
+        it->current.y = trackBeginEnd.end_y;
+        it->current.element = trackBeginEnd.begin_element;
+        it->currentZ = trackBeginEnd.begin_z;
+        it->currentDirection = trackBeginEnd.begin_direction;
+        return true;
+    }
+
+    return false;
 }
 
 bool track_circuit_iterator_next(track_circuit_iterator* it)
@@ -469,18 +463,16 @@ bool track_circuit_iterator_next(track_circuit_iterator* it)
         it->first = it->current.element;
         return true;
     }
-    else
-    {
-        if (!it->firstIteration && it->first == it->current.element)
-        {
-            it->looped = true;
-            return false;
-        }
 
-        it->firstIteration = false;
-        it->last = it->current;
-        return track_block_get_next(&it->last, &it->current, &it->currentZ, &it->currentDirection);
+    if (!it->firstIteration && it->first == it->current.element)
+    {
+        it->looped = true;
+        return false;
     }
+
+    it->firstIteration = false;
+    it->last = it->current;
+    return track_block_get_next(&it->last, &it->current, &it->currentZ, &it->currentDirection);
 }
 
 bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const track_circuit_iterator* secondIt)

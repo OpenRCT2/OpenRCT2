@@ -261,10 +261,8 @@ static TrackDesignAddStatus track_design_save_add_scenery(const CoordsXY& loc, S
             obj, { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
         return TrackDesignAddStatus::Success();
     }
-    else
-    {
-        return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
-    }
+
+    return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
 }
 
 static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& loc, LargeSceneryElement* tileElement)
@@ -313,10 +311,8 @@ static TrackDesignAddStatus track_design_save_add_large_scenery(const CoordsXY& 
         }
         return TrackDesignAddStatus::Success();
     }
-    else
-    {
-        return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
-    }
+
+    return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
 }
 
 static TrackDesignAddStatus track_design_save_add_wall(const CoordsXY& loc, WallElement* wallElement)
@@ -337,10 +333,8 @@ static TrackDesignAddStatus track_design_save_add_wall(const CoordsXY& loc, Wall
             obj, { loc.x, loc.y, wallElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
         return TrackDesignAddStatus::Success();
     }
-    else
-    {
-        return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
-    }
+
+    return TrackDesignAddStatus::Fail(STR_UNSUPPORTED_OBJECT_FORMAT);
 }
 
 static std::optional<rct_object_entry> track_design_save_footpath_get_best_entry(PathElement* pathElement)

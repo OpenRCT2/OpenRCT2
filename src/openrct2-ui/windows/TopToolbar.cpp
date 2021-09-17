@@ -1706,7 +1706,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         repaint_scenery_tool_down(windowPos, widgetIndex);
         return;
     }
-    else if (gWindowSceneryEyedropperEnabled)
+
+    if (gWindowSceneryEyedropperEnabled)
     {
         scenery_eyedropper_tool_down(windowPos, widgetIndex);
         return;
@@ -3012,16 +3013,14 @@ static money64 selection_raise_land(uint8_t flags)
                                                      : GameActions::Query(&landSmoothAction);
         return res->Error == GameActions::Status::Ok ? res->Cost : MONEY64_UNDEFINED;
     }
-    else
-    {
-        auto landRaiseAction = LandRaiseAction(
-            { centreX, centreY },
-            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
-                                                     : GameActions::Query(&landRaiseAction);
 
-        return res->Error == GameActions::Status::Ok ? res->Cost : MONEY64_UNDEFINED;
-    }
+    auto landRaiseAction = LandRaiseAction(
+        { centreX, centreY }, { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+        gMapSelectType);
+    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
+                                                 : GameActions::Query(&landRaiseAction);
+
+    return res->Error == GameActions::Status::Ok ? res->Cost : MONEY64_UNDEFINED;
 }
 
 /**
@@ -3045,16 +3044,14 @@ static money64 selection_lower_land(uint8_t flags)
                                                      : GameActions::Query(&landSmoothAction);
         return res->Error == GameActions::Status::Ok ? res->Cost : MONEY64_UNDEFINED;
     }
-    else
-    {
-        auto landLowerAction = LandLowerAction(
-            { centreX, centreY },
-            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
-        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
-                                                     : GameActions::Query(&landLowerAction);
 
-        return res->Error == GameActions::Status::Ok ? res->Cost : MONEY64_UNDEFINED;
-    }
+    auto landLowerAction = LandLowerAction(
+        { centreX, centreY }, { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+        gMapSelectType);
+    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
+                                                 : GameActions::Query(&landLowerAction);
+
+    return res->Error == GameActions::Status::Ok ? res->Cost : MONEY64_UNDEFINED;
 }
 
 /**

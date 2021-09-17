@@ -539,10 +539,8 @@ inline constexpr Direction DirectionFromTo(const CoordsXY& from, const CoordsXY&
     {
         return y_diff < 0 ? 3 : 1;
     }
-    else
-    {
-        return x_diff < 0 ? 0 : 2;
-    }
+
+    return x_diff < 0 ? 0 : 2;
 }
 
 /*
