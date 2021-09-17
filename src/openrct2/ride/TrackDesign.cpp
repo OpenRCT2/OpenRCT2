@@ -163,10 +163,8 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
     {
         return CreateTrackDesignMaze(ride);
     }
-    else
-    {
-        return CreateTrackDesignTrack(ride);
-    }
+
+    return CreateTrackDesignTrack(ride);
 }
 
 rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
@@ -1771,11 +1769,9 @@ static std::optional<money32> track_design_place_ride(TrackDesign* td6, const Co
                     {
                         return std::nullopt;
                     }
-                    else
-                    {
-                        totalCost += res->Cost;
-                        _trackDesignPlaceStateEntranceExitPlaced = true;
-                    }
+
+                    totalCost += res->Cost;
+                    _trackDesignPlaceStateEntranceExitPlaced = true;
                 }
                 break;
             }
@@ -1977,13 +1973,11 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         *outRide = ride;
         return true;
     }
-    else
-    {
-        _currentTrackPieceDirection = backup_rotation;
-        ride->Delete();
-        _trackDesignDrawingPreview = false;
-        return false;
-    }
+
+    _currentTrackPieceDirection = backup_rotation;
+    ride->Delete();
+    _trackDesignDrawingPreview = false;
+    return false;
 }
 
 #pragma region Track Design Preview

@@ -68,11 +68,9 @@ static exitcode_t HandleUriJoin(const std::vector<std::string>& args)
         gNetworkStartPort = port;
         return EXITCODE_CONTINUE;
     }
-    else
-    {
-        Console::Error::WriteLine("Expected hostname:port after join");
-        return EXITCODE_FAIL;
-    }
+
+    Console::Error::WriteLine("Expected hostname:port after join");
+    return EXITCODE_FAIL;
 }
 
 static bool TryParseHostnamePort(

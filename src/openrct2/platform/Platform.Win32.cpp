@@ -589,12 +589,10 @@ namespace Platform
         {
             return String::Set(buffer, bufferSize, relativePath);
         }
-        else
-        {
-            auto absolutePath = String::ToUtf8(absolutePathW);
-            String::Set(buffer, bufferSize, absolutePath.c_str());
-            return buffer;
-        }
+
+        auto absolutePath = String::ToUtf8(absolutePathW);
+        String::Set(buffer, bufferSize, absolutePath.c_str());
+        return buffer;
     }
 
     std::string ResolveCasing(const std::string& path, bool fileExists)

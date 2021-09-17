@@ -42,22 +42,16 @@ namespace Path
             {
                 return std::string(a) + std::string(b.substr(1));
             }
-            else
-            {
-                return std::string(a) + std::string(b);
-            }
+
+            return std::string(a) + std::string(b);
         }
-        else
+
+        if (Platform::IsPathSeparator(bBegin))
         {
-            if (Platform::IsPathSeparator(bBegin))
-            {
-                return std::string(a) + std::string(b);
-            }
-            else
-            {
-                return std::string(a) + PATH_SEPARATOR + std::string(b);
-            }
+            return std::string(a) + std::string(b);
         }
+
+        return std::string(a) + PATH_SEPARATOR + std::string(b);
     }
 
     std::string GetDirectory(const std::string& path)

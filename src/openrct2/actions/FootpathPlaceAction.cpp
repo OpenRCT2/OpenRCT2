@@ -106,10 +106,7 @@ GameActions::Result::Ptr FootpathPlaceAction::Query() const
     {
         return ElementInsertQuery(std::move(res));
     }
-    else
-    {
-        return ElementUpdateQuery(tileElement, std::move(res));
-    }
+    return ElementUpdateQuery(tileElement, std::move(res));
 }
 
 GameActions::Result::Ptr FootpathPlaceAction::Execute() const
@@ -150,10 +147,7 @@ GameActions::Result::Ptr FootpathPlaceAction::Execute() const
     {
         return ElementInsertExecute(std::move(res));
     }
-    else
-    {
-        return ElementUpdateExecute(tileElement, std::move(res));
-    }
+    return ElementUpdateExecute(tileElement, std::move(res));
 }
 
 bool FootpathPlaceAction::IsSameAsPathElement(const PathElement* pathElement) const
@@ -169,22 +163,16 @@ bool FootpathPlaceAction::IsSameAsPathElement(const PathElement* pathElement) co
         {
             return false;
         }
-        else
-        {
-            return pathElement->GetSurfaceEntryIndex() == _type && pathElement->GetRailingsEntryIndex() == _railingsType;
-        }
+
+        return pathElement->GetSurfaceEntryIndex() == _type && pathElement->GetRailingsEntryIndex() == _railingsType;
     }
-    else
+
+    if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
     {
-        if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
-        {
-            return pathElement->GetLegacyPathEntryIndex() == _type;
-        }
-        else
-        {
-            return false;
-        }
+        return pathElement->GetLegacyPathEntryIndex() == _type;
     }
+
+    return false;
 }
 
 bool FootpathPlaceAction::IsSameAsEntranceElement(const EntranceElement& entranceElement) const
@@ -195,20 +183,16 @@ bool FootpathPlaceAction::IsSameAsEntranceElement(const EntranceElement& entranc
         {
             return entranceElement.GetLegacyPathEntryIndex() == _type;
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 
     if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
     {
         return false;
     }
-    else
-    {
-        return entranceElement.GetSurfaceEntryIndex() == _type;
-    }
+
+    return entranceElement.GetSurfaceEntryIndex() == _type;
 }
 
 GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateQuery(PathElement* pathElement, GameActions::Result::Ptr res) const

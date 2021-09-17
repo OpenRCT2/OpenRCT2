@@ -139,12 +139,12 @@ public:
                     buttonIndex = 0;
                     break;
                 }
-                else if (mutableScreenCoords.x < 351 && newsItem.TypeHasSubject())
+                if (mutableScreenCoords.x < 351 && newsItem.TypeHasSubject())
                 {
                     buttonIndex = 1;
                     break;
                 }
-                else if (mutableScreenCoords.x < 376 && newsItem.TypeHasLocation())
+                if (mutableScreenCoords.x < 376 && newsItem.TypeHasLocation())
                 {
                     buttonIndex = 2;
                     break;

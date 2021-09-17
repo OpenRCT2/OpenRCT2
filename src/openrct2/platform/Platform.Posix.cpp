@@ -42,18 +42,14 @@ namespace Platform
         {
             return std::string();
         }
-        else
+
+        auto colon = std::strchr(value, ':');
+        if (colon == nullptr)
         {
-            auto colon = std::strchr(value, ':');
-            if (colon == nullptr)
-            {
-                return std::string(value);
-            }
-            else
-            {
-                return std::string(value, colon);
-            }
+            return std::string(value);
         }
+
+        return std::string(value, colon);
     }
 
     std::string GetHomePath()
@@ -207,12 +203,10 @@ namespace Platform
         {
             return String::Set(buffer, bufferSize, relativePath);
         }
-        else
-        {
-            String::Set(buffer, bufferSize, absolutePath);
-            Memory::Free(absolutePath);
-            return buffer;
-        }
+
+        String::Set(buffer, bufferSize, absolutePath);
+        Memory::Free(absolutePath);
+        return buffer;
     }
 
     std::string ResolveCasing(const std::string& path, bool fileExists)

@@ -906,10 +906,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 Remove();
                 return;
             }
-            else
-            {
-                PeepFlags &= ~PEEP_FLAGS_EXPLODE;
-            }
+
+            PeepFlags &= ~PEEP_FLAGS_EXPLODE;
         }
 
         if (PeepFlags & PEEP_FLAGS_HUNGER)
@@ -1478,7 +1476,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
             InsertNewThought(PeepThoughtType::HaventFinished, food);
             return false;
         }
-        else if (Nausea >= 145)
+
+        if (Nausea >= 145)
             return false;
     }
 
@@ -3641,30 +3640,28 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             peep_update_ride_leave_entrance_maze(this, ride, entranceLocation);
             return;
         }
-        else if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
+        if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
         {
             peep_update_ride_leave_entrance_spiral_slide(this, ride, entranceLocation);
             return;
         }
-        else
+
+        // If the ride type was changed guests will become stuck.
+        // Inform the player about this if its a new issue or hasn't been addressed within 120 seconds.
+        if ((ride->current_issues & RIDE_ISSUE_GUESTS_STUCK) == 0 || gCurrentTicks - ride->last_issue_time > 3000)
         {
-            // If the ride type was changed guests will become stuck.
-            // Inform the player about this if its a new issue or hasn't been addressed within 120 seconds.
-            if ((ride->current_issues & RIDE_ISSUE_GUESTS_STUCK) == 0 || gCurrentTicks - ride->last_issue_time > 3000)
+            ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
+            ride->last_issue_time = gCurrentTicks;
+
+            auto ft = Formatter();
+            ride->FormatNameTo(ft);
+            if (gConfigNotifications.ride_warnings)
             {
-                ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
-                ride->last_issue_time = gCurrentTicks;
-
-                auto ft = Formatter();
-                ride->FormatNameTo(ft);
-                if (gConfigNotifications.ride_warnings)
-                {
-                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, EnumValue(CurrentRide), ft);
-                }
+                News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, EnumValue(CurrentRide), ft);
             }
-
-            return;
         }
+
+        return;
     }
 
     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
@@ -4559,7 +4556,8 @@ void Guest::UpdateRideApproachSpiralSlide()
         MoveTo({ LOCATION_NULL, y, z });
         return;
     }
-    else if (waypoint == 2)
+
+    if (waypoint == 2)
     {
         bool lastRide = false;
         if (ride->status != RideStatus::Open)

@@ -157,14 +157,12 @@ namespace RCT1
             {
                 return LoadScenario(path);
             }
-            else if (String::Equals(extension, ".sv4", true))
+            if (String::Equals(extension, ".sv4", true))
             {
                 return LoadSavedGame(path);
             }
-            else
-            {
-                throw std::runtime_error("Invalid RCT1 park extension.");
-            }
+
+            throw std::runtime_error("Invalid RCT1 park extension.");
         }
 
         ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
@@ -333,10 +331,8 @@ namespace RCT1
                 std::memcpy(s4.get(), decodedData.get(), sizeof(S4));
                 return s4;
             }
-            else
-            {
-                throw std::runtime_error("Unable to decode park.");
-            }
+
+            throw std::runtime_error("Unable to decode park.");
         }
 
         void Initialise()
@@ -364,10 +360,8 @@ namespace RCT1
             {
                 return "";
             }
-            else
-            {
-                return path_get_filename(scenarioEntry->path);
-            }
+
+            return path_get_filename(scenarioEntry->path);
         }
 
         void InitialiseEntryMaps()
@@ -2051,7 +2045,7 @@ namespace RCT1
                     {
                         continue;
                     }
-                    else if (researchItem.item == RCT1_RESEARCH_END)
+                    if (researchItem.item == RCT1_RESEARCH_END)
                     {
                         break;
                     }
@@ -2433,11 +2427,9 @@ namespace RCT1
                 *count = std::size(_s4.research_items_LL);
                 return _s4.research_items_LL;
             }
-            else
-            {
-                *count = std::size(_s4.research_items);
-                return _s4.research_items;
-            }
+
+            *count = std::size(_s4.research_items);
+            return _s4.research_items;
         }
 
         std::string GetUserString(rct_string_id stringId)

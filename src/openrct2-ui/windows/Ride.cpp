@@ -1911,14 +1911,11 @@ static RideStatus window_ride_get_next_default_status(const Ride* ride)
             {
                 return RideStatus::Closed;
             }
-            else if (ride->SupportsStatus(RideStatus::Testing) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+            if (ride->SupportsStatus(RideStatus::Testing) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
             {
                 return RideStatus::Testing;
             }
-            else
-            {
-                return RideStatus::Open;
-            }
+            return RideStatus::Open;
         case RideStatus::Simulating:
             return RideStatus::Testing;
         case RideStatus::Testing:
@@ -6023,10 +6020,8 @@ static OpenRCT2String window_ride_graphs_tooltip(rct_window* w, const rct_widget
                 ft.Add<uint16_t>(measurement->vehicle_index + 1);
                 return { fallback, ft };
             }
-            else
-            {
-                return message;
-            }
+
+            return message;
         }
     }
     else

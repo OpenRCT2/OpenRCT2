@@ -404,31 +404,25 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                     {
                         break;
                     }
-                    else
-                    {
-                        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                        _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
-                        vehicle->remaining_distance = 13962;
-                        vehicle->acceleration += dword_9A2970[vehicle->Pitch];
-                        _vehicleUnkF64E10++;
-                        continue;
-                    }
+
+                    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                    _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
+                    vehicle->remaining_distance = 13962;
+                    vehicle->acceleration += dword_9A2970[vehicle->Pitch];
+                    _vehicleUnkF64E10++;
+                    continue;
                 }
-                else
+
+                if (vehicle->CableLiftUpdateTrackMotionForwards())
                 {
-                    if (vehicle->CableLiftUpdateTrackMotionForwards())
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                        _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
-                        vehicle->remaining_distance = -1;
-                        vehicle->acceleration += dword_9A2970[vehicle->Pitch];
-                        _vehicleUnkF64E10++;
-                    }
+                    break;
                 }
+
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
+                vehicle->remaining_distance = -1;
+                vehicle->acceleration += dword_9A2970[vehicle->Pitch];
+                _vehicleUnkF64E10++;
             }
             vehicle->MoveTo(unk_F64E20);
         }

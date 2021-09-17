@@ -186,7 +186,8 @@ bool virtual_floor_tile_is_floor(const CoordsXY& loc)
     {
         return true;
     }
-    else if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+
+    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
         // Check if we are anywhere near the selection tiles (larger scenery / rides)
         for (const auto& tile : gMapSelectionTiles)

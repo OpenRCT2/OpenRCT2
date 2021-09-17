@@ -445,8 +445,7 @@ money32 string_to_money(const char* string_to_monetise)
         {
             if (hasDecSep)
                 return MONEY32_UNDEFINED;
-            else
-                hasDecSep = true;
+            hasDecSep = true;
 
             // Replace localised decimal separator with an English one.
             *dst_ptr++ = '.';
@@ -457,8 +456,7 @@ money32 string_to_money(const char* string_to_monetise)
         {
             if (hasMinus)
                 return MONEY32_UNDEFINED;
-            else
-                hasMinus = true;
+            hasMinus = true;
         }
         else
         {

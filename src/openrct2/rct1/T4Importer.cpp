@@ -47,10 +47,8 @@ namespace RCT1
                 auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
                 return LoadFromStream(&fs);
             }
-            else
-            {
-                throw std::runtime_error("Invalid RCT1 track extension.");
-            }
+
+            throw std::runtime_error("Invalid RCT1 track extension.");
         }
 
         bool LoadFromStream(OpenRCT2::IStream* stream) override
@@ -85,10 +83,8 @@ namespace RCT1
             {
                 return ImportAA();
             }
-            else
-            {
-                return ImportTD4();
-            }
+
+            return ImportTD4();
         }
 
     private:

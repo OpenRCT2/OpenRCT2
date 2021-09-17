@@ -350,10 +350,8 @@ private:
             }
             return true;
         }
-        else
-        {
-            return group == groupFilter;
-        }
+
+        return group == groupFilter;
     }
 
     void InitialiseList()

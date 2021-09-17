@@ -1669,8 +1669,8 @@ static int32_t guest_path_find_entering_park(Peep* peep, uint8_t edges)
 
     if (chosenDirection == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
-    else
-        return peep_move_one_tile(chosenDirection, peep);
+
+    return peep_move_one_tile(chosenDirection, peep);
 }
 
 /**
@@ -1724,8 +1724,8 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
     direction = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
     if (direction == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
-    else
-        return peep_move_one_tile(direction, peep);
+
+    return peep_move_one_tile(direction, peep);
 }
 
 /**
@@ -1782,8 +1782,8 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
 
     if (chosenDirection == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
-    else
-        return peep_move_one_tile(chosenDirection, peep);
+
+    return peep_move_one_tile(chosenDirection, peep);
 }
 
 /**

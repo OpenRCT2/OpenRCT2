@@ -54,7 +54,7 @@ bool NetworkKey::LoadPrivate(OpenRCT2::IStream* stream)
         log_error("unknown size, refusing to load key");
         return false;
     }
-    else if (size > 4 * 1024 * 1024)
+    if (size > 4 * 1024 * 1024)
     {
         log_error("Key file suspiciously large, refusing to load it");
         return false;
@@ -86,7 +86,7 @@ bool NetworkKey::LoadPublic(OpenRCT2::IStream* stream)
         log_error("unknown size, refusing to load key");
         return false;
     }
-    else if (size > 4 * 1024 * 1024)
+    if (size > 4 * 1024 * 1024)
     {
         log_error("Key file suspiciously large, refusing to load it");
         return false;

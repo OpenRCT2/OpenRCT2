@@ -1452,14 +1452,12 @@ static bool filter_selected(uint8_t objectFlag)
     {
         return true;
     }
-    else if (_FILTER_NONSELECTED && !(objectFlag & OBJECT_SELECTION_FLAG_SELECTED))
+    if (_FILTER_NONSELECTED && !(objectFlag & OBJECT_SELECTION_FLAG_SELECTED))
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 static bool filter_string(const ObjectRepositoryItem* item)
@@ -1611,6 +1609,6 @@ static ObjectType get_selected_object_type(rct_window* w)
     auto tab = w->selected_tab;
     if (tab >= EnumValue(ObjectType::ScenarioText))
         return static_cast<ObjectType>(tab + 1);
-    else
-        return static_cast<ObjectType>(tab);
+
+    return static_cast<ObjectType>(tab);
 }

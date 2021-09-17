@@ -335,7 +335,7 @@ namespace GameActions
     {
         if (network_get_mode() == NETWORK_MODE_CLIENT)
             return "cl";
-        else if (network_get_mode() == NETWORK_MODE_SERVER)
+        if (network_get_mode() == NETWORK_MODE_SERVER)
             return "sv";
         return "sp";
     }

@@ -83,11 +83,11 @@ uint16_t platform_get_locale_language()
         {
             return LANGUAGE_ENGLISH_US;
         }
-        else if (!fnmatch(pattern, "zh_CN", 0))
+        if (!fnmatch(pattern, "zh_CN", 0))
         {
             return LANGUAGE_CHINESE_SIMPLIFIED;
         }
-        else if (!fnmatch(pattern, "zh_TW", 0))
+        if (!fnmatch(pattern, "zh_TW", 0))
         {
             return LANGUAGE_CHINESE_TRADITIONAL;
         }

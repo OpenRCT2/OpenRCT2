@@ -306,7 +306,8 @@ int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t c
         }
         return _additionalSpriteFontCharacterWidth[baseFontIndex][glyphIndex];
     }
-    else if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(FONT_SPRITE_GLYPH_COUNT))
+
+    if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(FONT_SPRITE_GLYPH_COUNT))
     {
         log_warning("Invalid glyph index %u", glyphIndex);
         glyphIndex = 0;
@@ -362,13 +363,8 @@ int32_t font_get_line_height(FontSpriteBase fontSpriteBase)
     {
         return gCurrentTTFFontSet->size[fontSize].line_height;
     }
-    else
-    {
 #endif // NO_TTF
-        return SpriteFontLineHeight[fontSize];
-#ifndef NO_TTF
-    }
-#endif // NO_TTF
+    return SpriteFontLineHeight[fontSize];
 }
 
 int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase)
@@ -434,8 +430,6 @@ bool font_supports_string(const utf8* text, int32_t fontSize)
     {
         return font_supports_string_ttf(text, fontSize);
     }
-    else
-    {
-        return font_supports_string_sprite(text);
-    }
+
+    return font_supports_string_sprite(text);
 }

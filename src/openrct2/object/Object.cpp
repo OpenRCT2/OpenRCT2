@@ -297,11 +297,9 @@ bool ObjectAsset::IsAvailable() const
     {
         return File::Exists(_path);
     }
-    else
-    {
-        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
-        return zipArchive != nullptr && zipArchive->Exists(_path);
-    }
+
+    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    return zipArchive != nullptr && zipArchive->Exists(_path);
 }
 
 uint64_t ObjectAsset::GetSize() const
@@ -310,17 +308,15 @@ uint64_t ObjectAsset::GetSize() const
     {
         return File::GetSize(_path);
     }
-    else
+
+    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    if (zipArchive != nullptr)
     {
-        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
-        if (zipArchive != nullptr)
+        auto index = zipArchive->GetIndexFromPath(_path);
+        if (index.has_value())
         {
-            auto index = zipArchive->GetIndexFromPath(_path);
-            if (index.has_value())
-            {
-                auto size = zipArchive->GetFileSize(index.value());
-                return size;
-            }
+            auto size = zipArchive->GetFileSize(index.value());
+            return size;
         }
     }
     return 0;
@@ -332,16 +328,14 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
     {
         return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
     }
-    else
+
+    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    if (zipArchive != nullptr)
     {
-        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
-        if (zipArchive != nullptr)
+        auto stream = zipArchive->GetFileStream(_path);
+        if (stream != nullptr)
         {
-            auto stream = zipArchive->GetFileStream(_path);
-            if (stream != nullptr)
-            {
-                return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
-            }
+            return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
         }
     }
     return {};

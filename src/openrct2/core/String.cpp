@@ -45,8 +45,8 @@ namespace String
     {
         if (str == nullptr)
             return std::string();
-        else
-            return std::string(str);
+
+        return std::string(str);
     }
 
     std::string StdFormat_VA(const utf8* format, va_list args)
@@ -138,10 +138,8 @@ namespace String
             {
                 break;
             }
-            else
-            {
-                len++;
-            }
+
+            len++;
         }
         return std::string_view(ch, len);
     }
@@ -168,10 +166,8 @@ namespace String
         {
             return _stricmp(a, b);
         }
-        else
-        {
-            return strcmp(a, b);
-        }
+
+        return strcmp(a, b);
     }
 
     bool Equals(std::string_view a, std::string_view b, bool ignoreCase)
@@ -189,15 +185,11 @@ namespace String
                 }
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
-        else
-        {
-            return a == b;
-        }
+
+        return a == b;
     }
 
     bool Equals(const std::string& a, const std::string& b, bool ignoreCase)
@@ -251,10 +243,8 @@ namespace String
         {
             return _stricmp(a, b) == 0;
         }
-        else
-        {
-            return strcmp(a, b) == 0;
-        }
+
+        return strcmp(a, b) == 0;
     }
 
     bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase)
@@ -306,10 +296,8 @@ namespace String
         {
             return -1;
         }
-        else
-        {
-            return lastOccurance - str;
-        }
+
+        return lastOccurance - str;
     }
 
     size_t LengthOf(const utf8* str)
@@ -791,10 +779,8 @@ namespace String
             log_warning("LCMapStringEx failed with %d", error);
             return std::string(src);
         }
-        else
-        {
-            return String::ToUtf8(dstW);
-        }
+
+        return String::ToUtf8(dstW);
 #    else
         std::string dst = std::string(src);
         std::transform(dst.begin(), dst.end(), dst.begin(), [](unsigned char c) { return std::toupper(c); });

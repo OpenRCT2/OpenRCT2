@@ -1403,19 +1403,15 @@ static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return 0;
     }
-    else
+
+    if (!argv.empty())
     {
-        if (!argv.empty())
-        {
-            network_send_chat(argv[0].c_str());
-            return 1;
-        }
-        else
-        {
-            console.WriteFormatLine("Input your message");
-            return 0;
-        }
+        network_send_chat(argv[0].c_str());
+        return 1;
     }
+
+    console.WriteFormatLine("Input your message");
+    return 0;
 }
 
 static int32_t cc_replay_startrecord(InteractiveConsole& console, const arguments_t& argv)

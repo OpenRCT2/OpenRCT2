@@ -263,7 +263,7 @@ namespace OpenRCT2::Scripting
         {
             if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED)
                 return "inProgress";
-            else if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+            if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
                 return "failed";
             return "completed";
         }

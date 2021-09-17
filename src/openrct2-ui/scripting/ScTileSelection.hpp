@@ -45,11 +45,9 @@ namespace OpenRCT2::Scripting
                 range.Set("rightBottom", rightBottom.Take());
                 return range.Take();
             }
-            else
-            {
-                duk_push_null(_ctx);
-                return DukValue::take_from_stack(_ctx);
-            }
+
+            duk_push_null(_ctx);
+            return DukValue::take_from_stack(_ctx);
         }
 
         void range_set(DukValue value)
