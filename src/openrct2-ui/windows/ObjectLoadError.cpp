@@ -285,10 +285,6 @@ static rct_widget window_object_load_error_widgets[] = {
     { WIDGETS_END },
 };
 
-<<<<<<< HEAD
-=======
-static rct_string_id get_object_type_string(ObjectType type);
->>>>>>> upstream/develop
 static void window_object_load_error_close(rct_window *w);
 static void window_object_load_error_update(rct_window *w);
 static void window_object_load_error_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -376,17 +372,6 @@ static rct_string_id get_object_type_string(ObjectType type)
  */
 static void copy_object_names_to_clipboard(rct_window* w)
 {
-<<<<<<< HEAD
-    std::stringstream ss;
-    for (uint16_t i = 0; i < w->no_list_items; i++)
-    {
-        const auto& entry = _invalid_entries[i];
-        ss << entry.GetName();
-        ss << PLATFORM_NEWLINE;
-    }
-
-    auto clip = ss.str();
-=======
     std::stringstream stream;
     for (uint16_t i = 0; i < w->no_list_items; i++)
     {
@@ -396,7 +381,6 @@ static void copy_object_names_to_clipboard(rct_window* w)
     }
 
     auto clip = stream.str();
->>>>>>> upstream/develop
     OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(clip.c_str());
 }
 

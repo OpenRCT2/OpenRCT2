@@ -1425,22 +1425,7 @@ std::vector<uint8_t> NetworkBase::save_for_network(const std::vector<const Objec
 {
     std::vector<uint8_t> result;
     auto ms = OpenRCT2::MemoryStream();
-<<<<<<< HEAD
     if (SaveMap(&ms, objects))
-=======
-    if (!SaveMap(&ms, objects))
-    {
-        log_warning("Failed to export map.");
-        return header;
-    }
-    gUseRLE = RLEState;
-
-    const void* data = ms.GetData();
-    int32_t size = ms.GetLength();
-
-    auto compressed = util_zlib_deflate(static_cast<const uint8_t*>(data), size);
-    if (compressed.has_value())
->>>>>>> upstream/develop
     {
         result.resize(ms.GetLength());
         std::memcpy(result.data(), ms.GetData(), result.size());
