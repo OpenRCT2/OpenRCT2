@@ -545,8 +545,8 @@ void sprite_set_coordinates(const CoordsXYZ& spritePos, EntityBase* sprite)
     auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), spritePos);
 
     sprite->SpriteRect = ScreenRect(
-        screenCoords.x - sprite->sprite_width, screenCoords.y - sprite->sprite_height_negative,
-        screenCoords.x + sprite->sprite_width, screenCoords.y + sprite->sprite_height_positive);
+        screenCoords - ScreenCoordsXY{ sprite->sprite_width, sprite->sprite_height_negative },
+        screenCoords + ScreenCoordsXY{ sprite->sprite_width, sprite->sprite_height_positive });
     sprite->x = spritePos.x;
     sprite->y = spritePos.y;
     sprite->z = spritePos.z;
