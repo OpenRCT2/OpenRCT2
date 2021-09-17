@@ -415,7 +415,6 @@ static rct_window* window_park_open()
     w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
     w->number = 0;
     w->page = WINDOW_PARK_PAGE_ENTRANCE;
-    w->viewport_focus_coordinates.y = 0;
     w->frame_no = 0;
     w->list_information_type = std::numeric_limits<uint16_t>::max();
     w->numberOfStaff = -1;
@@ -459,8 +458,6 @@ rct_window* window_park_entrance_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.y = -1;
-        window->viewport_focus_coordinates.x = -1;
     }
 
     window->page = WINDOW_PARK_PAGE_ENTRANCE;
@@ -738,22 +735,18 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_park_init_viewport(rct_window* w)
 {
-    int32_t x, y, z, r, xy, zr, viewportFlags;
-    x = y = z = r = xy = zr = 0;
+    int32_t viewportFlags;
 
     if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
         return;
 
+    Focus2 focus;
     if (!gParkEntrances.empty())
     {
         const auto& entrance = gParkEntrances[0];
-        x = entrance.x + 16;
-        y = entrance.y + 16;
-        z = entrance.z + 32;
-        r = get_current_rotation();
-
-        xy = IMAGE_TYPE_TRANSPARENT | (y << 16) | x;
-        zr = (z << 16) | (r << 8);
+        focus.type = Focus2::Type::Coordinate;
+        focus.data = CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 };
+        focus.rotation = get_current_rotation();
     }
 
     if (w->viewport == nullptr)
@@ -769,13 +762,9 @@ static void window_park_init_viewport(rct_window* w)
     // Call invalidate event
     window_event_invalidate_call(w);
 
-    w->viewport_focus_coordinates.x = x;
-    w->viewport_focus_coordinates.y = y;
-    w->viewport_focus_sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
-    w->viewport_focus_coordinates.z = z;
-    w->viewport_focus_coordinates.rotation = r;
+    w->focus2 = focus;
 
-    if (zr != 0xFFFF)
+    if (focus.HasFocus())
     {
         // Create viewport
         if (w->viewport == nullptr)
@@ -783,8 +772,8 @@ static void window_park_init_viewport(rct_window* w)
             rct_widget* viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
             viewport_create(
                 w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                viewportWidget->width() - 1, viewportWidget->height() - 1, 0, { x, y, z },
-                w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, SPRITE_INDEX_NULL);
+                viewportWidget->width() - 1, viewportWidget->height() - 1, 0, std::get<Focus2::CoordinateFocus>(focus.data),
+                VIEWPORT_FOCUS_TYPE_COORDINATE, SPRITE_INDEX_NULL);
             w->flags |= (1 << 2);
             w->Invalidate();
         }
@@ -811,8 +800,6 @@ rct_window* window_park_rating_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.x = -1;
-        window->viewport_focus_coordinates.y = -1;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
@@ -947,8 +934,6 @@ rct_window* window_park_guests_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.x = -1;
-        window->viewport_focus_coordinates.y = -1;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
@@ -1356,8 +1341,6 @@ rct_window* window_park_objective_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.x = -1;
-        window->viewport_focus_coordinates.y = -1;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
@@ -1549,8 +1532,6 @@ rct_window* window_park_awards_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.x = -1;
-        window->viewport_focus_coordinates.y = -1;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))

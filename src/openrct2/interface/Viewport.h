@@ -112,7 +112,7 @@ void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bott
 void viewport_update_position(rct_window* window);
 void viewport_update_sprite_follow(rct_window* window);
 void viewport_update_smart_sprite_follow(rct_window* window);
-viewport_focus viewport_update_smart_guest_follow(rct_window* window, const Guest* peep);
+void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep);
 void viewport_update_smart_staff_follow(rct_window* window, const Staff* peep);
 void viewport_update_smart_vehicle_follow(rct_window* window);
 void viewport_render(

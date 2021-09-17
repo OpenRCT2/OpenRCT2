@@ -196,7 +196,6 @@ rct_window* window_scenarioselect_open(std::function<void(std::string_view)> cal
     initialise_list_items(window);
 
     WindowInitScrollWidgets(window);
-    window->viewport_focus_coordinates.var_480 = -1;
     window->highlighted_scenario = nullptr;
 
     return window;

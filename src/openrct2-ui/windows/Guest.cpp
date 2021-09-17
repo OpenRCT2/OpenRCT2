@@ -730,16 +730,12 @@ void window_guest_viewport_init(rct_window* w)
         return;
     }
 
-    auto focus = viewport_update_smart_guest_follow(w, peep);
+    viewport_update_smart_guest_follow(w, peep);
     bool reCreateViewport = false;
     uint16_t origViewportFlags{};
     if (w->viewport != nullptr)
     {
-        // Check all combos, for now skipping y and rot
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x
-            && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
-            && focus.coordinate.z == w->viewport_focus_coordinates.z
-            && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation)
+        if (w->focus2.HasFocus())
             return;
 
         origViewportFlags = w->viewport->flags;
@@ -750,11 +746,6 @@ void window_guest_viewport_init(rct_window* w)
 
     window_event_invalidate_call(w);
 
-    w->viewport_focus_coordinates.x = focus.coordinate.x;
-    w->viewport_focus_coordinates.y = focus.coordinate.y;
-    w->viewport_focus_coordinates.z = focus.coordinate.z;
-    w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
-
     if (peep->State != PeepState::Picked && w->viewport == nullptr)
     {
         auto view_widget = &w->widgets[WIDX_VIEWPORT];
@@ -762,10 +753,17 @@ void window_guest_viewport_init(rct_window* w)
         int32_t width = view_widget->width() - 1;
         int32_t height = view_widget->height() - 1;
 
-        viewport_create(
-            w, screenPos, width, height, 0,
-            { focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, focus.coordinate.z },
-            focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
+        if (w->focus2.GetFocus() == Focus2::Type::Coordinate)
+        {
+            viewport_create(
+                w, screenPos, width, height, 0, std::get<Focus2::CoordinateFocus>(w->focus2.data),
+                VIEWPORT_FOCUS_TYPE_COORDINATE, SPRITE_INDEX_NULL);
+        }
+        else
+        {
+            viewport_create(
+                w, screenPos, width, height, 0, {}, VIEWPORT_FOCUS_TYPE_SPRITE, std::get<Focus2::EntityFocus>(w->focus2.data));
+        }
         if (w->viewport != nullptr && reCreateViewport)
         {
             w->viewport->flags = origViewportFlags;

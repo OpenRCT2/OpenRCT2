@@ -155,7 +155,6 @@ rct_window* window_player_open(uint8_t id)
         window = WindowCreateAutoPos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
         window->number = id;
         window->page = 0;
-        window->viewport_focus_coordinates.y = 0;
         window->frame_no = 0;
         window->list_information_type = 0;
         window->picked_peep_frame = 0;
@@ -166,8 +165,6 @@ rct_window* window_player_open(uint8_t id)
         window->max_height = 450;
         window->no_list_items = 0;
         window->selected_list_item = -1;
-
-        window->viewport_focus_coordinates.y = -1;
     }
 
     window->page = 0;

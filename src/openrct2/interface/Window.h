@@ -20,6 +20,7 @@
 #include <limits>
 #include <list>
 #include <memory>
+#include <variant>
 
 struct rct_drawpixelinfo;
 struct rct_window;
@@ -221,6 +222,54 @@ struct sprite_focus
     uint16_t pad_486;
     uint8_t rotation; // 0x488
     uint8_t zoom;     // 0x489
+};
+
+struct Focus2
+{
+    enum class Type
+    {
+        None,
+        Entity,
+        Coordinate,
+    };
+    using CoordinateFocus = CoordsXYZ;
+    using EntityFocus = uint16_t;
+
+    Type type = Type::None;
+    uint8_t rotation = 0;
+    uint8_t zoom = 0;
+
+    std::variant<CoordinateFocus, EntityFocus> data;
+    constexpr bool HasFocus() const
+    {
+        return type == Type::None;
+    }
+    constexpr Type GetFocus() const
+    {
+        return type;
+    }
+    constexpr bool operator==(const Focus2& other) const
+    {
+        if (type != other.type)
+        {
+            return false;
+        }
+        if (rotation != other.rotation || zoom != other.zoom)
+        {
+            return false;
+        }
+        if (type == Type::Coordinate)
+        {
+            const auto& thisCoordFocus = std::get<CoordinateFocus>(data);
+            const auto& otherCoordFocus = std::get<CoordinateFocus>(other.data);
+            return thisCoordFocus == otherCoordFocus;
+        }
+        else if (type == Type::Entity)
+        {
+            return std::get<EntityFocus>(data) == std::get<EntityFocus>(other.data);
+        }
+        return true;
+    }
 };
 
 #define VIEWPORT_FOCUS_TYPE_MASK 0xC0

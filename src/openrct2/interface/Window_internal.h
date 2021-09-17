@@ -55,10 +55,9 @@ struct rct_window
     uint32_t list_item_positions[1024]{};
     uint16_t no_list_items{};     // 0 for no items
     int16_t selected_list_item{}; // -1 for none selected
+    Focus2 focus2;
     union
     {
-        coordinate_focus viewport_focus_coordinates;
-        sprite_focus viewport_focus_sprite;
         campaign_variables campaign;
         new_ride_variables new_ride;
         news_variables news;
