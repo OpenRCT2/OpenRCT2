@@ -1396,9 +1396,7 @@ void window_staff_viewport_init(rct_window* w)
             int32_t width = view_widget->width() - 1;
             int32_t height = view_widget->height() - 1;
 
-            viewport_create(
-                w, screenPos, width, height, 0, { 0, 0, 0 }, VIEWPORT_FOCUS_TYPE_SPRITE,
-                std::get<Focus2::EntityFocus>(focus.data));
+            viewport_create(w, screenPos, width, height, focus);
             w->flags |= WF_NO_SCROLLING;
             w->Invalidate();
         }

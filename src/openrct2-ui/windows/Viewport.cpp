@@ -76,7 +76,10 @@ public:
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE);
 
         // Create viewport
-        viewport_create(this, windowPos, width, height, 0, TileCoordsXYZ(128, 128, 0).ToCoordsXYZ(), 1, SPRITE_INDEX_NULL);
+        Focus2 focus;
+        focus.type = Focus2::Type::Coordinate;
+        focus.data = TileCoordsXYZ(128, 128, 0).ToCoordsXYZ();
+        viewport_create(this, windowPos, width, height, focus);
         if (viewport == nullptr)
         {
             Close();

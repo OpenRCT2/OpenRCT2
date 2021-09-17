@@ -79,9 +79,12 @@ private:
     void CreateViewport()
     {
         rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
+        Focus2 focus;
+        focus.type = Focus2::Type::Coordinate;
+        focus.data = _bannerViewPos;
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-            (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, 0, _bannerViewPos, 0, SPRITE_INDEX_NULL);
+            (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, focus);
 
         if (viewport != nullptr)
             viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;

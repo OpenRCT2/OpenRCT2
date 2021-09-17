@@ -772,8 +772,7 @@ static void window_park_init_viewport(rct_window* w)
             rct_widget* viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
             viewport_create(
                 w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                viewportWidget->width() - 1, viewportWidget->height() - 1, 0, std::get<Focus2::CoordinateFocus>(focus.data),
-                VIEWPORT_FOCUS_TYPE_COORDINATE, SPRITE_INDEX_NULL);
+                viewportWidget->width() - 1, viewportWidget->height() - 1, focus);
             w->flags |= (1 << 2);
             w->Invalidate();
         }

@@ -750,17 +750,7 @@ void window_guest_viewport_init(rct_window* w)
         int32_t width = view_widget->width() - 1;
         int32_t height = view_widget->height() - 1;
 
-        if (w->focus2.GetFocus() == Focus2::Type::Coordinate)
-        {
-            viewport_create(
-                w, screenPos, width, height, 0, std::get<Focus2::CoordinateFocus>(w->focus2.data),
-                VIEWPORT_FOCUS_TYPE_COORDINATE, SPRITE_INDEX_NULL);
-        }
-        else
-        {
-            viewport_create(
-                w, screenPos, width, height, 0, {}, VIEWPORT_FOCUS_TYPE_SPRITE, std::get<Focus2::EntityFocus>(w->focus2.data));
-        }
+        viewport_create(w, screenPos, width, height, w->focus2);
         if (w->viewport != nullptr && reCreateViewport)
         {
             w->viewport->flags = origViewportFlags;

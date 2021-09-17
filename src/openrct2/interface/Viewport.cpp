@@ -134,9 +134,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
  *  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
  *  w:      esi
  */
-void viewport_create(
-    rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, int32_t zoom, CoordsXYZ centrePos,
-    char flags, uint16_t sprite)
+void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus2& focus)
 {
     rct_viewport* viewport = nullptr;
     if (_viewports.size() >= MAX_VIEWPORT_COUNT)
@@ -151,11 +149,7 @@ void viewport_create(
     viewport->pos = screenCoords;
     viewport->width = width;
     viewport->height = height;
-
-    if (!(flags & VIEWPORT_FOCUS_TYPE_COORDINATE))
-    {
-        zoom = 0;
-    }
+    const auto zoom = focus.GetFocus() == Focus2::Type::Entity ? 0 : focus.zoom;
 
     viewport->view_width = width << zoom;
     viewport->view_height = height << zoom;
@@ -166,10 +160,11 @@ void viewport_create(
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
     w->viewport = viewport;
 
-    if (flags & VIEWPORT_FOCUS_TYPE_SPRITE)
+    CoordsXYZ centrePos;
+    if (focus.GetFocus() == Focus2::Type::Entity)
     {
-        w->viewport_target_sprite = sprite;
-        auto* centreEntity = GetEntity(sprite);
+        w->viewport_target_sprite = std::get<Focus2::EntityFocus>(focus.data);
+        auto* centreEntity = GetEntity(w->viewport_target_sprite);
         if (centreEntity != nullptr)
         {
             centrePos = { centreEntity->x, centreEntity->y, centreEntity->z };
@@ -182,6 +177,7 @@ void viewport_create(
     }
     else
     {
+        centrePos = std::get<Focus2::CoordinateFocus>(focus.data);
         w->viewport_target_sprite = SPRITE_INDEX_NULL;
     }
 
