@@ -895,7 +895,7 @@ namespace OpenRCT2
                                     auto* pathElement = it.element->AsPath();
                                     if (pathElement->HasLegacyPathEntry())
                                     {
-                                        auto pathEntryIndex = pathElement->GetPathEntryIndex();
+                                        auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
                                         if (pathToRailingsMap[pathEntryIndex] != OBJECT_ENTRY_INDEX_NULL)
                                         {
                                             if (pathElement->IsQueue())
@@ -903,7 +903,7 @@ namespace OpenRCT2
                                             else
                                                 pathElement->SetSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
 
-                                            pathElement->SetRailingEntryIndex(pathToRailingsMap[pathEntryIndex]);
+                                            pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
                                         }
                                     }
                                 }
@@ -1300,7 +1300,7 @@ namespace OpenRCT2
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {
-                    ridesBeenOn.push_back(i);
+                    ridesBeenOn.push_back(static_cast<ride_id_t>(i));
                 }
             }
             return ridesBeenOn;

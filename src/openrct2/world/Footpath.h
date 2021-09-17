@@ -125,27 +125,6 @@ struct FootpathSelection
     }
 };
 
-using PathConstructFlags = uint8_t;
-namespace PathConstructFlag
-{
-    constexpr PathConstructFlags IsQueue = 1 << 0;
-    constexpr PathConstructFlags IsPathObject = 1 << 1;
-} // namespace PathConstructFlag
-
-struct FootpathSelection
-{
-    ObjectEntryIndex LegacyPath = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex NormalSurface = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex QueueSurface = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex Railings = OBJECT_ENTRY_INDEX_NULL;
-    bool IsQueueSelected{};
-
-    ObjectEntryIndex GetSelectedSurface() const
-    {
-        return IsQueueSelected ? QueueSurface : NormalSurface;
-    }
-};
-
 struct ProvisionalFootpath
 {
     ObjectEntryIndex Type;

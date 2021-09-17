@@ -237,68 +237,6 @@ std::optional<uint8_t> rct_object_entry::GetSceneryType() const
 }
 
 bool rct_object_entry::IsEmpty() const
-<<<<<<< HEAD
-{
-    uint64_t a, b;
-    std::memcpy(&a, reinterpret_cast<const uint8_t*>(this), 8);
-    std::memcpy(&b, reinterpret_cast<const uint8_t*>(this) + 8, 8);
-
-    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF)
-        return true;
-    if (a == 0 && b == 0)
-        return true;
-    return false;
-}
-
-bool rct_object_entry::operator==(const rct_object_entry& rhs) const
-{
-    const auto a = this;
-    const auto b = &rhs;
-
-    // If an official object don't bother checking checksum
-    if ((a->flags & 0xF0) || (b->flags & 0xF0))
-    {
-        if (a->GetType() != b->GetType())
-        {
-            return false;
-        }
-        int32_t match = memcmp(a->name, b->name, 8);
-        if (match)
-        {
-            return false;
-        }
-    }
-    else
-    {
-        if (a->flags != b->flags)
-        {
-            return false;
-        }
-        int32_t match = memcmp(a->name, b->name, 8);
-        if (match)
-        {
-            return false;
-        }
-        if (a->checksum != b->checksum)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool rct_object_entry::operator!=(const rct_object_entry& rhs) const
-{
-    return !(*this == rhs);
-}
-
-/**
- * Couples a zip archive and a zip item stream to ensure the lifetime of the zip archive is maintained
- * for the lifetime of the stream.
- */
-class ZipStreamWrapper final : public IStream
-=======
->>>>>>> upstream/develop
 {
     uint64_t a, b;
     std::memcpy(&a, reinterpret_cast<const uint8_t*>(this), 8);

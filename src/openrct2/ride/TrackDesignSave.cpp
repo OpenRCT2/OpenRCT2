@@ -346,7 +346,7 @@ static TrackDesignAddStatus track_design_save_add_wall(const CoordsXY& loc, Wall
 static std::optional<rct_object_entry> track_design_save_footpath_get_best_entry(PathElement* pathElement)
 {
     rct_object_entry pathEntry;
-    auto legacyPathObj = pathElement->GetPathEntry();
+    auto legacyPathObj = pathElement->GetLegacyPathEntry();
     if (legacyPathObj != nullptr)
     {
         pathEntry = legacyPathObj->GetObjectEntry();
@@ -361,7 +361,7 @@ static std::optional<rct_object_entry> track_design_save_footpath_get_best_entry
         if (surfaceEntry != nullptr)
         {
             auto surfaceId = surfaceEntry->GetIdentifier();
-            auto railingsEntry = pathElement->GetRailingEntry();
+            auto railingsEntry = pathElement->GetRailingsEntry();
             auto railingsId = railingsEntry == nullptr ? "" : railingsEntry->GetIdentifier();
             return GetBestObjectEntryForSurface(surfaceId, railingsId);
         }

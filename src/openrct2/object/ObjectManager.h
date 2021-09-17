@@ -31,19 +31,12 @@ struct IObjectManager
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(std::string_view identifier) abstract;
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(const ObjectEntryDescriptor& descriptor) abstract;
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) abstract;
-<<<<<<< HEAD
     virtual ObjectList GetLoadedObjects() abstract;
-=======
->>>>>>> upstream/develop
 
     virtual Object* LoadObject(std::string_view identifier) abstract;
     virtual Object* LoadObject(const rct_object_entry* entry) abstract;
     virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor) abstract;
     virtual void LoadObjects(const ObjectList& entries) abstract;
-<<<<<<< HEAD
-=======
-    virtual void LoadDefaultObjects() abstract;
->>>>>>> upstream/develop
     virtual void UnloadObjects(const std::vector<ObjectEntryDescriptor>& entries) abstract;
     virtual void UnloadAll() abstract;
 

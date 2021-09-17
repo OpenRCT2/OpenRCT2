@@ -174,14 +174,7 @@ public:
         // Load the required objects
         LoadObjects(requiredObjects);
 
-<<<<<<< HEAD
-        SetNewLoadedObjectList(std::move(loadedObjects));
-=======
-        // Load defaults.
-        LoadDefaultObjects();
-
         // Update indices.
->>>>>>> upstream/develop
         UpdateSceneryGroupIndexes();
         ResetTypeToRideEntryIndexMap();
     }
@@ -198,11 +191,7 @@ public:
             const auto* ori = _objectRepository.FindObject(descriptor);
             if (ori != nullptr)
             {
-<<<<<<< HEAD
-                auto* loadedObject = ori->LoadedObject;
-=======
                 auto* loadedObject = ori->LoadedObject.get();
->>>>>>> upstream/develop
                 if (loadedObject != nullptr)
                 {
                     UnloadObject(loadedObject);
@@ -250,12 +239,7 @@ public:
         {
             // TODO: remove ObjectGeneration::DAT check when the NSF is here
             const ObjectRepositoryItem* item = &_objectRepository.GetObjects()[i];
-<<<<<<< HEAD
-            if (item->LoadedObject != nullptr && IsObjectCustom(item))
-=======
-            if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr
-                && item->LoadedObject->GetGeneration() == ObjectGeneration::DAT)
->>>>>>> upstream/develop
+            if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr)
             {
                 objects.push_back(item);
             }
@@ -317,22 +301,6 @@ private:
         {
             if (_loadedObjects.size() > static_cast<size_t>(*slot) && _loadedObjects[*slot] != nullptr)
             {
-<<<<<<< HEAD
-                ObjectType objectType = ori->Type;
-                if (slot)
-                {
-                    if (_loadedObjects.size() > static_cast<size_t>(*slot) && _loadedObjects[*slot] != nullptr)
-                    {
-                        // Slot already taken
-                        return nullptr;
-                    }
-                }
-                else
-                {
-                    slot = FindSpareSlot(objectType);
-                }
-                if (slot)
-=======
                 // Slot already taken
                 return nullptr;
             }
@@ -347,7 +315,6 @@ private:
             if (object != nullptr)
             {
                 if (_loadedObjects.size() <= static_cast<size_t>(*slot))
->>>>>>> upstream/develop
                 {
                     _loadedObjects.resize(slot.value() + 1);
                 }
@@ -397,27 +364,18 @@ private:
         if (object == nullptr)
             return;
 
-<<<<<<< HEAD
+        object->Unload();
+
         // TODO try to prevent doing a repository search
         const auto* ori = _objectRepository.FindObject(object->GetDescriptor());
         if (ori != nullptr)
         {
             _objectRepository.UnregisterLoadedObject(ori, object);
-            }
-=======
-        object->Unload();
->>>>>>> upstream/develop
+        }
 
-            // TODO try to prevent doing a repository search
-            const auto* ori = _objectRepository.FindObject(object->GetDescriptor());
-            if (ori != nullptr)
-            {
-                _objectRepository.UnregisterLoadedObject(ori, object);
-            }
-
-            // Because it's possible to have the same loaded object for multiple
-            // slots, we have to make sure find and set all of them to nullptr
-            std::replace(_loadedObjects.begin(), _loadedObjects.end(), object, static_cast<Object*>(nullptr));
+        // Because it's possible to have the same loaded object for multiple
+        // slots, we have to make sure find and set all of them to nullptr
+        std::replace(_loadedObjects.begin(), _loadedObjects.end(), object, static_cast<Object*>(nullptr));
     }
 
     void UnloadObjectsExcept(const std::vector<Object*>& newLoadedObjects)
@@ -518,40 +476,32 @@ private:
         std::vector<const ObjectRepositoryItem*> requiredObjects;
         std::vector<ObjectEntryDescriptor> missingObjects;
 
-<<<<<<< HEAD
-        std::vector<const ObjectRepositoryItem*> GetRequiredObjects(const ObjectList& objectList)
+        for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
         {
-            std::vector<const ObjectRepositoryItem*> requiredObjects;
-            std::vector<ObjectEntryDescriptor> missingObjects;
-
-=======
->>>>>>> upstream/develop
-            for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+            auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+            for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
             {
-                auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
-                for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
+                const ObjectRepositoryItem* ori = nullptr;
+                const auto& entry = objectList.GetObject(objectType, i);
+                if (entry.HasValue())
                 {
-                    const ObjectRepositoryItem* ori = nullptr;
-                    const auto& entry = objectList.GetObject(objectType, i);
-                    if (entry.HasValue())
+                    ori = _objectRepository.FindObject(entry);
+                    if (ori == nullptr && entry.GetType() != ObjectType::ScenarioText)
                     {
-                        ori = _objectRepository.FindObject(entry);
-                        if (ori == nullptr && entry.GetType() != ObjectType::ScenarioText)
-                        {
-                            missingObjects.push_back(entry);
-                            ReportMissingObject(entry);
-                        }
+                        missingObjects.push_back(entry);
+                        ReportMissingObject(entry);
                     }
-                    requiredObjects.push_back(ori);
                 }
+                requiredObjects.push_back(ori);
             }
+        }
 
-            if (!missingObjects.empty())
-            {
-                throw ObjectLoadException(std::move(missingObjects));
-            }
+        if (!missingObjects.empty())
+        {
+            throw ObjectLoadException(std::move(missingObjects));
+        }
 
-            return requiredObjects;
+        return requiredObjects;
     }
 
     template<typename T, typename TFunc> static void ParallelFor(const std::vector<T>& items, TFunc func)
@@ -578,15 +528,10 @@ private:
         }
     }
 
-    void LoadObjects(std::vector<const ObjectRepositoryItem*> & requiredObjects)
+    void LoadObjects(std::vector<const ObjectRepositoryItem*>& requiredObjects)
     {
-<<<<<<< HEAD
-        std::vector<std::unique_ptr<Object>> objects;
-        std::vector<Object*> loadedObjects;
-=======
         std::vector<Object*> objects;
         std::vector<Object*> newLoadedObjects;
->>>>>>> upstream/develop
         std::vector<ObjectEntryDescriptor> badObjects;
         objects.resize(OBJECT_ENTRY_COUNT);
         newLoadedObjects.reserve(OBJECT_ENTRY_COUNT);

@@ -670,7 +670,7 @@ static ObjectEntryIndex TrackDesignGetDefaultSurfaceIndex(bool isQueue)
 {
     for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
     {
-        auto footpathSurfaceObj = get_path_surface_entry(i);
+        auto footpathSurfaceObj = GetPathSurfaceEntry(i);
         if (footpathSurfaceObj != nullptr)
         {
             if (footpathSurfaceObj->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
@@ -693,7 +693,7 @@ static ObjectEntryIndex TrackDesignGetDefaultRailingIndex()
 {
     for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
     {
-        auto footpathRailingsObj = get_path_railings_entry(i);
+        auto footpathRailingsObj = GetPathRailingsEntry(i);
         if (footpathRailingsObj != nullptr)
         {
             return i;
@@ -1258,7 +1258,7 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
                     if (isQueue)
                         constructFlags |= PathConstructFlag::IsQueue;
                     if (entryInfo->Type == ObjectType::Paths)
-                        constructFlags |= PathConstructFlag::IsPathObject;
+                        constructFlags |= PathConstructFlag::IsLegacyPathObject;
                     auto footpathPlaceAction = FootpathPlaceFromTrackAction(
                         { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entryInfo->Index, entryInfo->SecondaryIndex,
                         edges, constructFlags);

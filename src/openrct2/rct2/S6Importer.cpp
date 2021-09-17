@@ -1560,7 +1560,6 @@ public:
         return justText.data();
     }
 
-<<<<<<< HEAD
     ObjectList GetRequiredObjects()
     {
         std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
@@ -1575,7 +1574,7 @@ public:
         {
             for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
             {
-                auto entry = ObjectEntryDescriptor(_s6.objects[objectIt]);
+                auto entry = ObjectEntryDescriptor(_s6.Objects[objectIt]);
                 if (entry.HasValue())
                 {
                     if (objectType == EnumValue(ObjectType::Paths))
@@ -1656,59 +1655,6 @@ public:
             }
         }
         return area;
-=======
-    template<size_t TInternalLimit, typename T>
-    static void AddRequiredObjects(std::vector<rct_object_entry>& required, const T& list)
-    {
-        rct_object_entry nullEntry = {};
-        std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
-
-        for (const auto& entry : list)
-        {
-            required.push_back(entry);
-        }
-
-        // NOTE: The segment of this object type needs to be filled to the internal limit
-        // the object manager currently expects this.
-        for (size_t i = std::size(list); i < TInternalLimit; i++)
-        {
-            required.push_back(nullEntry);
-        }
-    }
-
-    ObjectList GetRequiredObjects()
-    {
-        std::vector<rct_object_entry> result;
-
-        AddRequiredObjects<MAX_RIDE_OBJECTS>(result, _s6.RideObjects);
-        AddRequiredObjects<MAX_SMALL_SCENERY_OBJECTS>(result, _s6.SceneryObjects);
-        AddRequiredObjects<MAX_LARGE_SCENERY_OBJECTS>(result, _s6.LargeSceneryObjects);
-        AddRequiredObjects<MAX_WALL_SCENERY_OBJECTS>(result, _s6.WallSceneryObjects);
-        AddRequiredObjects<MAX_BANNER_OBJECTS>(result, _s6.BannerObjects);
-        AddRequiredObjects<MAX_PATH_OBJECTS>(result, _s6.PathObjects);
-        AddRequiredObjects<MAX_PATH_ADDITION_OBJECTS>(result, _s6.PathAdditionObjects);
-        AddRequiredObjects<MAX_SCENERY_GROUP_OBJECTS>(result, _s6.SceneryGroupObjects);
-        AddRequiredObjects<MAX_PARK_ENTRANCE_OBJECTS>(result, _s6.ParkEntranceObjects);
-        AddRequiredObjects<MAX_WATER_OBJECTS>(result, _s6.WaterObjects);
-        AddRequiredObjects<MAX_SCENARIO_TEXT_OBJECTS>(result, _s6.ScenarioTextObjects);
-
-        ObjectList objectList;
-        for (size_t i = 0; i < result.size(); i++)
-        {
-            ObjectType objectType;
-            ObjectEntryIndex entryIndex;
-            get_type_entry_index(i, &objectType, &entryIndex);
-
-            auto desc = ObjectEntryDescriptor(result[i]);
-            if (desc.HasValue())
-            {
-                assert(desc.GetType() == objectType);
-                objectList.SetObject(entryIndex, desc);
-            }
-        }
-
-        return objectList;
->>>>>>> upstream/develop
     }
 };
 

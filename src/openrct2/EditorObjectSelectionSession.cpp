@@ -253,7 +253,7 @@ void setup_in_use_selection_flags()
         if (item->LoadedObject != nullptr)
         {
             auto objectType = item->LoadedObject->GetObjectType();
-            auto entryIndex = objectMgr.GetLoadedObjectEntryIndex(item->LoadedObject);
+            auto entryIndex = objectMgr.GetLoadedObjectEntryIndex(item->LoadedObject.get());
             auto flags = Editor::GetSelectedObjectFlags(objectType, entryIndex);
             if (flags & OBJECT_SELECTION_FLAG_SELECTED)
             {

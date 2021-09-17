@@ -1271,7 +1271,7 @@ namespace OpenRCT2::Scripting
         if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
             auto el = _element->AsPath();
-            auto index = el->GetRailingEntryIndex();
+            auto index = el->GetRailingsEntryIndex();
             if (index != OBJECT_ENTRY_INDEX_NULL)
             {
                 duk_push_int(ctx, index);
@@ -1294,7 +1294,7 @@ namespace OpenRCT2::Scripting
         if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
             auto el = _element->AsPath();
-            el->SetRailingEntryIndex(FromDuk<ObjectEntryIndex>(value));
+            el->SetRailingsEntryIndex(FromDuk<ObjectEntryIndex>(value));
             Invalidate();
         }
     }

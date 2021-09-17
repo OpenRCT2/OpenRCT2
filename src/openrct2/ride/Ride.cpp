@@ -1028,7 +1028,7 @@ void Ride::Update()
     {
         // Breakdown updates are distributed, only one ride can update the breakdown status per tick.
         const auto updatingRideId = (gCurrentTicks / 2) % MAX_RIDES;
-        if (updatingRideId == id)
+        if (static_cast<ride_id_t>(updatingRideId) == id)
             ride_breakdown_status_update(this);
     }
 
@@ -5757,7 +5757,7 @@ std::vector<ride_id_t> GetTracklessRides()
         auto trackEl = it.element->AsTrack();
         if (trackEl != nullptr && !trackEl->IsGhost())
         {
-            auto rideId = trackEl->GetRideIndex();
+            auto rideId = static_cast<size_t>(trackEl->GetRideIndex());
             if (rideId >= seen.size())
             {
                 seen.resize(rideId + 1);
@@ -5771,7 +5771,7 @@ std::vector<ride_id_t> GetTracklessRides()
     std::vector<ride_id_t> result;
     for (const auto& ride : rideManager)
     {
-        if (seen.size() <= ride.id || !seen[ride.id])
+        if (seen.size() <= static_cast<size_t>(ride.id) || !seen[static_cast<size_t>(ride.id)])
         {
             result.push_back(ride.id);
         }

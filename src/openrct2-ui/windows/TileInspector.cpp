@@ -1838,7 +1838,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 auto pathEl = tileElement->AsPath();
-                auto footpathObj = pathEl->GetPathEntry();
+                auto footpathObj = pathEl->GetLegacyPathEntry();
                 if (footpathObj == nullptr)
                 {
                     // Surface name
@@ -1851,7 +1851,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     }
 
                     // Railings name
-                    auto railingsObj = pathEl->GetRailingEntry();
+                    auto railingsObj = pathEl->GetRailingsEntry();
                     if (railingsObj != nullptr)
                     {
                         auto ft = Formatter();
@@ -1864,7 +1864,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 else
                 {
                     // Legacy path name
-                    auto footpathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
+                    auto footpathEntry = reinterpret_cast<const rct_footpath_entry*>(footpathObj->GetLegacyData());
                     auto ft = Formatter();
                     ft.Add<rct_string_id>(footpathEntry->string_idx);
                     DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, ft, { COLOUR_WHITE });

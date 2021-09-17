@@ -1497,24 +1497,7 @@ namespace RCT1
 
         ObjectList GetRequiredObjects()
         {
-            AppendRequiredObjects(entries, objectType, entryList.GetEntries());
-        }
-
-        void AppendRequiredObjects(
-            std::vector<rct_object_entry>& entries, ObjectType objectType, const std::vector<const char*>& objectNames)
-        {
-            for (const auto objectName : objectNames)
-            {
-                rct_object_entry entry{};
-                entry.flags = ((static_cast<uint8_t>(ObjectSourceGame::RCT2) << 4) & 0xF0) | (EnumValue(objectType) & 0x0F);
-                entry.SetName(objectName);
-                entries.push_back(entry);
-            }
-        }
-
-        std::vector<rct_object_entry> GetRequiredObjects()
-        {
-            std::vector<rct_object_entry> result;
+            ObjectList result;
             AppendRequiredObjects(result, ObjectType::Ride, _rideEntries);
             AppendRequiredObjects(result, ObjectType::SmallScenery, _smallSceneryEntries);
             AppendRequiredObjects(result, ObjectType::LargeScenery, _largeSceneryEntries);
@@ -1537,6 +1520,11 @@ namespace RCT1
                 }));
             AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.park_entrance.pkent1" }));
             AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
+            AppendRequiredObjects(result, ObjectType::TerrainSurface, _terrainSurfaceEntries);
+            AppendRequiredObjects(result, ObjectType::TerrainEdge, _terrainEdgeEntries);
+            AppendRequiredObjects(result, ObjectType::FootpathSurface, _footpathSurfaceEntries);
+            AppendRequiredObjects(result, ObjectType::FootpathRailings, _footpathRailingsEntries);
+            RCT12AddDefaultObjects(result);
             return result;
         }
 
