@@ -195,35 +195,6 @@ struct rct_scroll
 
 constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
 
-/**
- * Viewport focus structure.
- * size: 0xA
- * Use sprite.type to work out type.
- */
-struct coordinate_focus
-{
-    int16_t var_480;
-    int16_t x;        // 0x482
-    int16_t y;        // 0x484 & VIEWPORT_FOCUS_Y_MASK
-    int16_t z;        // 0x486
-    uint8_t rotation; // 0x488
-    uint8_t zoom;     // 0x489
-    int16_t width;
-    int16_t height;
-};
-
-// Type is viewport_target_sprite_id & 0x80000000 != 0
-struct sprite_focus
-{
-    int16_t var_480;
-    uint16_t sprite_id; // 0x482
-    uint8_t pad_484;
-    uint8_t type; // 0x485 & VIEWPORT_FOCUS_TYPE_MASK
-    uint16_t pad_486;
-    uint8_t rotation; // 0x488
-    uint8_t zoom;     // 0x489
-};
-
 struct Focus2
 {
     enum class Type
@@ -277,17 +248,6 @@ enum VIEWPORT_FOCUS_TYPE : uint8_t
 {
     VIEWPORT_FOCUS_TYPE_COORDINATE = (1 << 6),
     VIEWPORT_FOCUS_TYPE_SPRITE = (1 << 7)
-};
-#define VIEWPORT_FOCUS_Y_MASK 0x3FFF
-
-struct viewport_focus
-{
-    VIEWPORT_FOCUS_TYPE type{};
-    union
-    {
-        sprite_focus sprite;
-        coordinate_focus coordinate;
-    };
 };
 
 struct rct_window_event_list
