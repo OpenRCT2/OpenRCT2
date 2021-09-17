@@ -104,7 +104,7 @@ std::string_view NetworkPacket::ReadString()
     // Skip null terminator.
     BytesRead++;
 
-    return str;
+    return std::string_view(str, stringLen);
 }
 
 #endif

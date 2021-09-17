@@ -4171,7 +4171,7 @@ int32_t network_get_current_player_group_index()
 {
     return 0;
 }
-void network_append_chat_log(std::string_view text)
+void network_append_chat_log(std::string_view)
 {
 }
 void network_append_server_log(const utf8* text)

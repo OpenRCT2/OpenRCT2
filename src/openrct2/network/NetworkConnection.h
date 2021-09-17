@@ -18,6 +18,7 @@
 
 #    include <deque>
 #    include <memory>
+#    include <string_view>
 #    include <vector>
 
 class NetworkPlayer;

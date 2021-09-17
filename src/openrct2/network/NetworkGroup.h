@@ -15,6 +15,7 @@
 
 #include <array>
 #include <string>
+#include <string_view>
 
 enum class NetworkPermission : uint32_t;
 
