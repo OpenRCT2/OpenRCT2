@@ -225,7 +225,7 @@ public:
 
         gDateMonthsElapsed = static_cast<int32_t>(_s6.elapsed_months);
         gDateMonthTicks = _s6.current_day;
-        gScenarioTicks = _s6.scenario_ticks;
+        gCurrentTicks = _s6.game_ticks_1;
 
         scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
@@ -401,7 +401,6 @@ public:
             String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
         }
         std::memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
-        gCurrentTicks = _s6.game_ticks_1;
         gCurrentRealTimeTicks = 0;
 
         ImportRides();
@@ -480,6 +479,7 @@ public:
 
         research_determine_first_of_type();
     }
+
     void FixLandOwnership() const
     {
         if (String::Equals(_s6.scenario_filename, "Europe - European Cultural Festival.SC6"))
@@ -1727,6 +1727,15 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->IsCrashedVehicle = src->flags & RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
 }
 
+static uint32_t AdjustScenarioToCurrentTicks(const rct_s6_data& s6, uint32_t tick)
+{
+    // Previously gScenarioTicks was used as a time point, now it's gCurrentTicks.
+    // gCurrentTicks and gScenarioTicks are now exported as the same, older saves that have a different
+    // scenario tick must account for the difference between the two.
+    uint32_t ticksElapsed = s6.scenario_ticks - tick;
+    return s6.game_ticks_1 - ticksElapsed;
+}
+
 template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
 {
     auto dst = CreateEntityAt<Guest>(baseSrc.sprite_index);
@@ -1759,7 +1768,7 @@ template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
     dst->TimeInQueue = src->time_in_queue;
     dst->CashInPocket = src->cash_in_pocket;
     dst->CashSpent = src->cash_spent;
-    dst->ParkEntryTime = src->park_entry_time;
+    dst->ParkEntryTime = AdjustScenarioToCurrentTicks(_s6, src->park_entry_time);
     dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
     dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->previous_ride);
     dst->PreviousRideTimeOut = src->previous_ride_time_out;
@@ -1809,6 +1818,7 @@ template<> void S6Importer::ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
 
     dst->AssignedStaffType = StaffType(src->staff_type);
     dst->MechanicTimeSinceCall = src->mechanic_time_since_call;
+
     dst->HireDate = src->park_entry_time;
     dst->StaffId = src->staff_id;
     dst->StaffOrders = src->staff_orders;
@@ -1927,7 +1937,7 @@ template<> void S6Importer::ImportEntity<Litter>(const RCT12SpriteBase& baseSrc)
     auto src = static_cast<const RCT12SpriteLitter*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->SubType = Litter::Type(src->type);
-    dst->creationTick = src->creationTick;
+    dst->creationTick = AdjustScenarioToCurrentTicks(_s6, src->creationTick);
 }
 
 void S6Importer::ImportEntity(const RCT12SpriteBase& src)

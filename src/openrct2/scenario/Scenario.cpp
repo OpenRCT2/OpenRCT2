@@ -68,7 +68,6 @@ bool gFirstTimeSaving = true;
 uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
-uint32_t gScenarioTicks;
 random_engine_t gScenarioRand;
 
 Objective gScenarioObjective;

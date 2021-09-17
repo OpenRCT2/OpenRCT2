@@ -9,6 +9,7 @@
 
 #include "Weather.h"
 
+#include "../Game.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../ride/TrackDesign.h"
@@ -77,15 +78,15 @@ void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
  */
 static void DrawLightRain(IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    int32_t x_start = -static_cast<int32_t>(gScenarioTicks) + 8;
-    int32_t y_start = (gScenarioTicks * 3) + 7;
+    int32_t x_start = -static_cast<int32_t>(gCurrentTicks) + 8;
+    int32_t y_start = (gCurrentTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     weatherDrawer->Draw(left, top, width, height, x_start, y_start, RainPattern);
 
-    x_start = -static_cast<int32_t>(gScenarioTicks) + 0x18;
-    y_start = (gScenarioTicks * 4) + 0x0D;
+    x_start = -static_cast<int32_t>(gCurrentTicks) + 0x18;
+    y_start = (gCurrentTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
     y_start += top;
@@ -98,29 +99,29 @@ static void DrawLightRain(IWeatherDrawer* weatherDrawer, int32_t left, int32_t t
  */
 static void DrawHeavyRain(IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    int32_t x_start = -static_cast<int32_t>(gScenarioTicks);
-    int32_t y_start = gScenarioTicks * 5;
+    int32_t x_start = -static_cast<int32_t>(gCurrentTicks);
+    int32_t y_start = gCurrentTicks * 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     weatherDrawer->Draw(left, top, width, height, x_start, y_start, RainPattern);
 
-    x_start = -static_cast<int32_t>(gScenarioTicks) + 0x10;
-    y_start = (gScenarioTicks * 6) + 5;
+    x_start = -static_cast<int32_t>(gCurrentTicks) + 0x10;
+    y_start = (gCurrentTicks * 6) + 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     weatherDrawer->Draw(left, top, width, height, x_start, y_start, RainPattern);
 
-    x_start = -static_cast<int32_t>(gScenarioTicks) + 8;
-    y_start = (gScenarioTicks * 3) + 7;
+    x_start = -static_cast<int32_t>(gCurrentTicks) + 8;
+    y_start = (gCurrentTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     weatherDrawer->Draw(left, top, width, height, x_start, y_start, RainPattern);
 
-    x_start = -static_cast<int32_t>(gScenarioTicks) + 0x18;
-    y_start = (gScenarioTicks * 4) + 0x0D;
+    x_start = -static_cast<int32_t>(gCurrentTicks) + 0x18;
+    y_start = (gCurrentTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
     y_start += top;
@@ -129,9 +130,9 @@ static void DrawHeavyRain(IWeatherDrawer* weatherDrawer, int32_t left, int32_t t
 
 static void DrawLightSnow(IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    const uint32_t t = gScenarioTicks / 2;
+    const uint32_t t = gCurrentTicks / 2;
     const int32_t negT = -static_cast<int32_t>(t);
-    const double cosTick = static_cast<double>(gScenarioTicks) * 0.05;
+    const double cosTick = static_cast<double>(gCurrentTicks) * 0.05;
 
     int32_t x_start = negT + 1 + (cos(1.0 + cosTick) * 6);
     int32_t y_start = t + 1;
@@ -150,29 +151,29 @@ static void DrawLightSnow(IWeatherDrawer* weatherDrawer, int32_t left, int32_t t
 
 static void DrawHeavySnow(IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    int32_t x_start = -static_cast<int32_t>(gScenarioTicks * 3) + 1;
-    int32_t y_start = gScenarioTicks + 23;
+    int32_t x_start = -static_cast<int32_t>(gCurrentTicks * 3) + 1;
+    int32_t y_start = gCurrentTicks + 23;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     weatherDrawer->Draw(left, top, width, height, x_start, y_start, SnowPattern);
 
-    x_start = -static_cast<int32_t>(gScenarioTicks * 4) + 6;
-    y_start = gScenarioTicks + 5;
+    x_start = -static_cast<int32_t>(gCurrentTicks * 4) + 6;
+    y_start = gCurrentTicks + 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     weatherDrawer->Draw(left, top, width, height, x_start, y_start, SnowPattern);
 
-    x_start = -static_cast<int32_t>(gScenarioTicks * 2) + 11;
-    y_start = gScenarioTicks + 18;
+    x_start = -static_cast<int32_t>(gCurrentTicks * 2) + 11;
+    y_start = gCurrentTicks + 18;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     weatherDrawer->Draw(left, top, width, height, x_start, y_start, SnowPattern);
 
-    x_start = -static_cast<int32_t>(gScenarioTicks * 3) + 17;
-    y_start = gScenarioTicks + 11;
+    x_start = -static_cast<int32_t>(gCurrentTicks * 3) + 17;
+    y_start = gCurrentTicks + 11;
     y_start = -y_start;
     x_start += left;
     y_start += top;

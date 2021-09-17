@@ -9,6 +9,7 @@
 
 #include "TrackPaint.h"
 
+#include "../Game.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
@@ -2048,7 +2049,7 @@ void track_paint_util_left_quarter_turn_1_tile_tunnel(
 
 void track_paint_util_spinning_tunnel_paint(paint_session* session, int8_t thickness, int16_t height, Direction direction)
 {
-    int32_t frame = gScenarioTicks >> 2 & 3;
+    int32_t frame = gCurrentTicks >> 2 & 3;
     uint32_t colourFlags = session->TrackColours[SCHEME_SUPPORTS];
 
     uint32_t colourFlags2 = session->TrackColours[SCHEME_TRACK];
