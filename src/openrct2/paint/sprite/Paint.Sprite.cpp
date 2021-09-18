@@ -87,8 +87,8 @@ void sprite_paint_setup(paint_session* session, int32_t x, int32_t y)
 
         dpi = &session->DPI;
 
-        if (dpi->y + dpi->height <= spr->sprite_top || spr->sprite_bottom <= dpi->y || dpi->x + dpi->width <= spr->sprite_left
-            || spr->sprite_right <= dpi->x)
+        if (dpi->y + dpi->height <= spr->SpriteRect.GetTop() || spr->SpriteRect.GetBottom() <= dpi->y
+            || dpi->x + dpi->width <= spr->SpriteRect.GetLeft() || spr->SpriteRect.GetRight() <= dpi->x)
         {
             continue;
         }
