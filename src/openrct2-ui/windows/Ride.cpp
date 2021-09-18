@@ -1200,7 +1200,7 @@ static void window_ride_update_overall_view(Ride* ride)
     }
 
     auto& view = ride_overall_views[rideIndex];
-    view.loc = CoordsXYZ{ (minx + maxx) / 2, (miny + maxy) / 2, (minz + maxz) / 2 } + CoordsXYZ{ 16, 16, -8 };
+    view.loc = CoordsXYZ{ (min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2 } + CoordsXYZ{ 16, 16, -8 };
 
     // Calculate size to determine from how far away to view the ride
     const auto diff = max - min;
