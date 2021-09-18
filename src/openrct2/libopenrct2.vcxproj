@@ -598,6 +598,7 @@
     <ClCompile Include="core\ChecksumStream.cpp" />
     <ClCompile Include="core\Console.cpp" />
     <ClCompile Include="core\Crypt.CNG.cpp" />
+    <ClCompile Include="core\Crypt.OpenRCT2.cpp" />
     <ClCompile Include="core\Crypt.OpenSSL.cpp" />
     <ClCompile Include="core\Diagnostics.cpp" />
     <ClCompile Include="core\File.cpp" />
