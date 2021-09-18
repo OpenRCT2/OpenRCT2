@@ -1253,10 +1253,10 @@ namespace RCT1
             "rct1aa.footpath_surface.queue_yellow",       // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
             "rct1aa.footpath_surface.queue_green",        // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
 
-            "TARMAC  ",  // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
-            "PATHSPCE",  // RCT1_FOOTPATH_TYPE_TARMAC_RED
-            "TARMACB ",  // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
-            "TARMACG ",  // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
+            "rct1.footpath_surface.tarmac",  // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
+            "rct1aa.footpath_surface.tarmac_red",  // RCT1_FOOTPATH_TYPE_TARMAC_RED
+            "rct1aa.footpath_surface.tarmac_brown",  // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
+            "rct1aa.footpath_surface.tarmac_green",  // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
 
             "rct1.footpath_surface.dirt",               // RCT1_FOOTPATH_TYPE_DIRT_RED
             "rct1aa.footpath_surface.ash",             // RCT1_FOOTPATH_TYPE_DIRT_BLACK
