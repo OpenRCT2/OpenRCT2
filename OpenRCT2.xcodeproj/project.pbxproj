@@ -803,6 +803,7 @@
 		E6C71B6165224F65AA87E65B /* RideUseSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DA720D496604387806AC168 /* RideUseSystem.h */; };
 		C8D612EB56BD4214BEC0F7FF /* GroupVector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F4D523B8782E4C458AF1490D /* GroupVector.hpp */; };
 		B2F44E535BD14A03BE8B9D14 /* ZipStream.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F28A181D311D4E078FDB090C /* ZipStream.hpp */; };
+		7CDC7EE9B12E40FB9FE78546 /* Crypt.OpenRCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4248E4E4394842D4AF6119DA /* Crypt.OpenRCT2.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1909,6 +1910,7 @@
 		2DA720D496604387806AC168 /* RideUseSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RideUseSystem.h; path = src/openrct2/peep/RideUseSystem.h; sourceTree = SOURCE_ROOT; };
 		F4D523B8782E4C458AF1490D /* GroupVector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GroupVector.hpp; path = src/openrct2/core/GroupVector.hpp; sourceTree = SOURCE_ROOT; };
 		F28A181D311D4E078FDB090C /* ZipStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ZipStream.hpp; path = src/openrct2/core/ZipStream.hpp; sourceTree = SOURCE_ROOT; };
+		4248E4E4394842D4AF6119DA /* Crypt.OpenRCT2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Crypt.OpenRCT2.cpp; path = src/openrct2/core/Crypt.OpenRCT2.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2583,6 +2585,7 @@
 				BA2317BF6FB54E328DEB7055 /* EnumMap.hpp */,
 				F4D523B8782E4C458AF1490D /* GroupVector.hpp */,
 				F28A181D311D4E078FDB090C /* ZipStream.hpp */,
+				4248E4E4394842D4AF6119DA /* Crypt.OpenRCT2.cpp */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -4488,6 +4491,7 @@
 				5B6E418A2F264952BA0CC2F2 /* ScTileElement.cpp in Sources */,
 				6C90BE01D190493295071B23 /* ScTile.cpp in Sources */,
 				258C212125F84FA2B4C3BCAE /* RideUseSystem.cpp in Sources */,
+				7CDC7EE9B12E40FB9FE78546 /* Crypt.OpenRCT2.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
