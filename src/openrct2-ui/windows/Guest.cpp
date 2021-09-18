@@ -398,7 +398,6 @@ rct_window* window_guest_open(Peep* peep)
         window->enabled_widgets = window_guest_page_enabled_widgets[0];
         window->number = peep->sprite_index;
         window->page = 0;
-        window->viewport_focus_coordinates.y = 0;
         window->frame_no = 0;
         window->list_information_type = 0;
         window->picked_peep_frame = 0;
@@ -410,8 +409,6 @@ rct_window* window_guest_open(Peep* peep)
         window->max_height = 450;
         window->no_list_items = 0;
         window->selected_list_item = -1;
-
-        window->viewport_focus_coordinates.y = -1;
     }
 
     window->page = 0;
@@ -730,16 +727,12 @@ void window_guest_viewport_init(rct_window* w)
         return;
     }
 
-    auto focus = viewport_update_smart_guest_follow(w, peep);
+    viewport_update_smart_guest_follow(w, peep);
     bool reCreateViewport = false;
     uint16_t origViewportFlags{};
     if (w->viewport != nullptr)
     {
-        // Check all combos, for now skipping y and rot
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x
-            && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
-            && focus.coordinate.z == w->viewport_focus_coordinates.z
-            && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation)
+        if (w->focus2.has_value())
             return;
 
         origViewportFlags = w->viewport->flags;
@@ -750,11 +743,6 @@ void window_guest_viewport_init(rct_window* w)
 
     window_event_invalidate_call(w);
 
-    w->viewport_focus_coordinates.x = focus.coordinate.x;
-    w->viewport_focus_coordinates.y = focus.coordinate.y;
-    w->viewport_focus_coordinates.z = focus.coordinate.z;
-    w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
-
     if (peep->State != PeepState::Picked && w->viewport == nullptr)
     {
         auto view_widget = &w->widgets[WIDX_VIEWPORT];
@@ -762,10 +750,7 @@ void window_guest_viewport_init(rct_window* w)
         int32_t width = view_widget->width() - 1;
         int32_t height = view_widget->height() - 1;
 
-        viewport_create(
-            w, screenPos, width, height, 0,
-            { focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, focus.coordinate.z },
-            focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
+        viewport_create(w, screenPos, width, height, w->focus2.value());
         if (w->viewport != nullptr && reCreateViewport)
         {
             w->viewport->flags = origViewportFlags;

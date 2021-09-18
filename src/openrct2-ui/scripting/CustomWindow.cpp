@@ -786,12 +786,8 @@ namespace OpenRCT2::Ui::Windows
                     auto wheight = viewportWidget->height() - 1;
                     if (viewport == nullptr)
                     {
-                        auto mapX = 0;
-                        auto mapY = 0;
-                        auto mapZ = 0;
-                        viewport_create(
-                            this, { left, top }, wwidth, wheight, 0, { mapX, mapY, mapZ }, VIEWPORT_FOCUS_TYPE_COORDINATE,
-                            SPRITE_INDEX_NULL);
+                        const auto focus = Focus2(CoordsXYZ(0, 0, 0));
+                        viewport_create(this, { left, top }, wwidth, wheight, focus);
                         flags |= WF_NO_SCROLLING;
                         Invalidate();
                     }

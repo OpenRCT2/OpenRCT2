@@ -274,11 +274,7 @@ rct_window* WindowCreate(
     w->min_height = height;
     w->max_height = height;
 
-    w->viewport_focus_coordinates.var_480 = 0;
-    w->viewport_focus_coordinates.x = 0;
-    w->viewport_focus_coordinates.y = 0;
-    w->viewport_focus_coordinates.z = 0;
-    w->viewport_focus_coordinates.rotation = 0;
+    w->focus2 = std::nullopt;
     w->page = 0;
     w->var_48C = 0;
     w->var_492 = 0;

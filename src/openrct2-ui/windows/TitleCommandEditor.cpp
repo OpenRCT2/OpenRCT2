@@ -227,9 +227,10 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     WindowInitScrollWidgets(window);
 
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
+    const auto focus = Focus2(CoordsXYZ{ 0, 0, 0 });
     viewport_create(
         window, window->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-        viewportWidget->width() - 1, viewportWidget->height() - 1, 0, { 0, 0, 0 }, 0, SPRITE_INDEX_NULL);
+        viewportWidget->width() - 1, viewportWidget->height() - 1, focus);
 
     _window_title_command_editor_index = index;
     _window_title_command_editor_insert = insert;
@@ -476,7 +477,8 @@ static void window_title_command_editor_dropdown(rct_window* w, rct_widgetindex 
                     _command.SpriteIndex = SPRITE_INDEX_NULL;
                     _command.SpriteName[0] = '\0';
                     window_unfollow_sprite(w);
-                    w->viewport->flags &= ~VIEWPORT_FOCUS_TYPE_SPRITE;
+                    // This is incorrect
+                    w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
                     break;
                 case TitleScript::Speed:
                     _command.Speed = 1;
