@@ -967,7 +967,7 @@ bool Vehicle::SoundCanPlay() const
     if (sound1_id == OpenRCT2::Audio::SoundId::Null && sound2_id == OpenRCT2::Audio::SoundId::Null)
         return false;
 
-    if (sprite_left == LOCATION_NULL)
+    if (x == LOCATION_NULL)
         return false;
 
     if (g_music_tracking_viewport == nullptr)
@@ -984,7 +984,7 @@ bool Vehicle::SoundCanPlay() const
         bottom -= quarter_h;
     }
 
-    if (left >= sprite_right || bottom >= sprite_bottom)
+    if (left >= SpriteRect.GetRight() || bottom >= SpriteRect.GetBottom())
         return false;
 
     int16_t right = g_music_tracking_viewport->view_width + left;
@@ -996,7 +996,7 @@ bool Vehicle::SoundCanPlay() const
         top += quarter_h + quarter_h;
     }
 
-    if (right < sprite_left || top < sprite_top)
+    if (right < SpriteRect.GetRight() || top < SpriteRect.GetTop())
         return false;
 
     return true;
@@ -1026,7 +1026,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
 {
     OpenRCT2::Audio::VehicleSoundParams param;
     param.priority = priority;
-    int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->viewPos.x;
+    int32_t panX = (SpriteRect.GetLeft() / 2) + (SpriteRect.GetRight() / 2) - g_music_tracking_viewport->viewPos.x;
     panX = panX / g_music_tracking_viewport->zoom;
     panX += g_music_tracking_viewport->pos.x;
 
@@ -1037,7 +1037,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     }
     param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
-    int32_t panY = (sprite_top / 2) + (sprite_bottom / 2) - g_music_tracking_viewport->viewPos.y;
+    int32_t panY = (SpriteRect.GetTop() / 2) + (SpriteRect.GetBottom() / 2) - g_music_tracking_viewport->viewPos.y;
     panY = panY / g_music_tracking_viewport->zoom;
     panY += g_music_tracking_viewport->pos.y;
 

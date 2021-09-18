@@ -1177,15 +1177,15 @@ void peep_update_crowd_noise()
 
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->sprite_left == LOCATION_NULL)
+        if (peep->x == LOCATION_NULL)
             continue;
-        if (viewport->viewPos.x > peep->sprite_right)
+        if (viewport->viewPos.x > peep->SpriteRect.GetRight())
             continue;
-        if (viewport->viewPos.x + viewport->view_width < peep->sprite_left)
+        if (viewport->viewPos.x + viewport->view_width < peep->SpriteRect.GetLeft())
             continue;
-        if (viewport->viewPos.y > peep->sprite_bottom)
+        if (viewport->viewPos.y > peep->SpriteRect.GetBottom())
             continue;
-        if (viewport->viewPos.y + viewport->view_height < peep->sprite_top)
+        if (viewport->viewPos.y + viewport->view_height < peep->SpriteRect.GetTop())
             continue;
 
         visiblePeeps += peep->State == PeepState::Queuing ? 1 : 2;

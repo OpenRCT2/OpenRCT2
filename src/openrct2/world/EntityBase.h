@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../common.h"
-
-struct CoordsXYZ;
+#include "../world/Location.hpp"
 
 enum class EntityType : uint8_t
 {
@@ -37,10 +36,7 @@ struct EntityBase
     // Height from centre of sprite to top
     uint8_t sprite_height_positive;
     // Screen Coordinates of sprite
-    int16_t sprite_left;
-    int16_t sprite_top;
-    int16_t sprite_right;
-    int16_t sprite_bottom;
+    ScreenRect SpriteRect;
 
     uint8_t sprite_direction;
 
