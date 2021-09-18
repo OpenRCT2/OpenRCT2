@@ -186,13 +186,13 @@ void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t 
     w->viewport = viewport;
 
     CoordsXYZ centrePos = focus.GetPos();
-    std::visit(
-        [&w](auto&& arg) {
+    w->viewport_target_sprite = std::visit(
+        [](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, Focus2::CoordinateFocus>)
-                w->viewport_target_sprite = SPRITE_INDEX_NULL;
+                return SPRITE_INDEX_NULL;
             else if constexpr (std::is_same_v<T, Focus2::EntityFocus>)
-                w->viewport_target_sprite = arg;
+                return arg;
         },
         focus.data);
 
