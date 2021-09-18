@@ -119,27 +119,26 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
 
 CoordsXYZ Focus2::GetPos() const
 {
-    CoordsXYZ result;
-    std::visit(
-        [&result](auto&& arg) {
+    return std::visit(
+        [](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, Focus2::CoordinateFocus>)
-                result = arg;
+                return arg;
             else if constexpr (std::is_same_v<T, Focus2::EntityFocus>)
             {
                 auto* centreEntity = GetEntity(arg);
                 if (centreEntity != nullptr)
                 {
-                    result = { centreEntity->x, centreEntity->y, centreEntity->z };
+                    return CoordsXYZ{ centreEntity->x, centreEntity->y, centreEntity->z };
                 }
                 else
                 {
                     log_error("Invalid entity for focus.");
+                    return CoordsXYZ{};
                 }
             }
         },
         data);
-    return result;
 }
 
 /**
