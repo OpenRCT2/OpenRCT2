@@ -41,7 +41,8 @@ rct_window* window_main_open()
         WF_STICK_TO_BACK);
     window->widgets = window_main_widgets;
 
-    viewport_create(window, window->windowPos, window->width, window->height, 0, { 0x0FFF, 0x0FFF, 0 }, 0x1, SPRITE_INDEX_NULL);
+    const auto focus = Focus2(CoordsXYZ(0x0FFF, 0x0FFF, 0));
+    viewport_create(window, window->windowPos, window->width, window->height, focus);
     window->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
     gCurrentRotation = 0;
     gShowGridLinesRefCount = 0;

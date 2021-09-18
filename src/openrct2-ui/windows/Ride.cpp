@@ -1270,12 +1270,12 @@ rct_window* window_ride_main_open(Ride* ride)
     if (w == nullptr)
     {
         w = window_ride_open(ride);
-        w->viewport_focus_coordinates.x = -1;
-        w->viewport_focus_coordinates.var_480 = 0;
+        w->ride.var_482 = -1;
+        w->ride.view = 0;
     }
-    else if (w->viewport_focus_coordinates.var_480 >= (1 + ride->num_vehicles + ride->num_stations))
+    else if (w->ride.view >= (1 + ride->num_vehicles + ride->num_stations))
     {
-        w->viewport_focus_coordinates.var_480 = 0;
+        w->ride.view = 0;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
@@ -1311,7 +1311,7 @@ static rct_window* window_ride_open_station(Ride* ride, StationIndex stationInde
     if (w == nullptr)
     {
         w = window_ride_open(ride);
-        w->viewport_focus_coordinates.x = -1;
+        w->ride.var_482 = -1;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
@@ -1342,7 +1342,7 @@ static rct_window* window_ride_open_station(Ride* ride, StationIndex stationInde
         }
     }
 
-    w->viewport_focus_coordinates.var_480 = 1 + ride->num_vehicles + stationIndex;
+    w->ride.view = 1 + ride->num_vehicles + stationIndex;
     window_ride_init_viewport(w);
 
     return w;
@@ -1421,7 +1421,7 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
         }
 
         int32_t openedPeepWindow = 0;
-        if (w->viewport_focus_coordinates.var_480 == view)
+        if (w->ride.view == view)
         {
             int32_t numPeepsLeft = vehicle->num_peeps;
             for (int32_t i = 0; i < 32 && numPeepsLeft > 0; i++)
@@ -1451,7 +1451,7 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
     if (w == nullptr)
     {
         w = window_ride_open(ride);
-        w->viewport_focus_coordinates.x = -1;
+        w->ride.var_482 = -1;
     }
 
     w->page = WINDOW_RIDE_PAGE_MAIN;
@@ -1467,7 +1467,7 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
     window_ride_disable_tabs(w);
     WindowInitScrollWidgets(w);
 
-    w->viewport_focus_coordinates.var_480 = view;
+    w->ride.view = view;
     window_ride_init_viewport(w);
     w->Invalidate();
 
@@ -1558,7 +1558,7 @@ static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_wi
     if (ride == nullptr)
         return std::nullopt;
 
-    int32_t viewSelectionIndex = w.viewport_focus_coordinates.var_480 - 1 - ride->num_vehicles;
+    int32_t viewSelectionIndex = w.ride.view - 1 - ride->num_vehicles;
     if (viewSelectionIndex < 0)
     {
         return std::nullopt;
@@ -1591,42 +1591,29 @@ static void window_ride_init_viewport(rct_window* w)
     if (ride == nullptr)
         return;
 
-    int32_t viewSelectionIndex = w->viewport_focus_coordinates.var_480 - 1;
+    int32_t viewSelectionIndex = w->ride.view - 1;
 
-    struct
-    {
-        sprite_focus sprite{};
-        coordinate_focus coordinate{};
-    } focus;
-
-    focus.coordinate.x = 0;
-    focus.coordinate.y = 0;
-    focus.coordinate.z = 0;
-    focus.sprite.sprite_id = SPRITE_INDEX_NULL;
-    focus.coordinate.zoom = 0;
-    focus.coordinate.rotation = get_current_rotation();
-    focus.coordinate.width = 0;
-    focus.coordinate.height = 0;
+    std::optional<Focus2> focus;
 
     if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        focus.sprite.sprite_id = ride->vehicles[viewSelectionIndex];
+        uint16_t vehId = ride->vehicles[viewSelectionIndex];
         rct_ride_entry* ride_entry = ride->GetRideEntry();
         if (ride_entry && ride_entry->tab_vehicle != 0)
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(focus.sprite.sprite_id);
+            Vehicle* vehicle = GetEntity<Vehicle>(vehId);
             if (vehicle == nullptr)
             {
-                focus.sprite.sprite_id = SPRITE_INDEX_NULL;
+                vehId = SPRITE_INDEX_NULL;
             }
             else if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
             {
-                focus.sprite.sprite_id = vehicle->next_vehicle_on_train;
+                vehId = vehicle->next_vehicle_on_train;
             }
         }
-        if (focus.sprite.sprite_id != SPRITE_INDEX_NULL)
+        if (vehId != SPRITE_INDEX_NULL)
         {
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE;
+            focus = Focus2(vehId);
         }
     }
     else if (viewSelectionIndex >= ride->num_vehicles && viewSelectionIndex < (ride->num_vehicles + ride->num_stations))
@@ -1634,40 +1621,28 @@ static void window_ride_init_viewport(rct_window* w)
         auto stationIndex = GetStationIndexFromViewSelection(*w);
         if (stationIndex)
         {
-            auto location = ride->stations[*stationIndex].GetStart();
-            focus.coordinate.x = location.x;
-            focus.coordinate.y = location.y;
-            focus.coordinate.z = location.z;
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            const auto location = ride->stations[*stationIndex].GetStart();
+            focus = Focus2(location);
         }
     }
     else
     {
         if (viewSelectionIndex > 0)
         {
-            w->viewport_focus_coordinates.var_480 = 0;
+            w->ride.view = 0;
         }
         if (w->number < ride_overall_views.size())
         {
             const auto& view = ride_overall_views[w->number];
-            focus.coordinate.x = view.x;
-            focus.coordinate.y = view.y;
-            focus.coordinate.z = view.z;
-            focus.coordinate.zoom = view.zoom;
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            CoordsXYZ loc = { view.x, view.y, view.z };
+            focus = Focus2(loc, view.zoom);
         }
     }
-    focus.coordinate.var_480 = w->viewport_focus_coordinates.var_480;
 
     uint16_t viewport_flags = 0;
-
     if (w->viewport != nullptr)
     {
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x && focus.coordinate.y == w->viewport_focus_coordinates.y
-            && focus.coordinate.z == w->viewport_focus_coordinates.z
-            && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation
-            && focus.coordinate.zoom == w->viewport_focus_coordinates.zoom && focus.coordinate.width == w->width
-            && focus.coordinate.height == w->height)
+        if (focus == w->focus2)
         {
             return;
         }
@@ -1681,15 +1656,7 @@ static void window_ride_init_viewport(rct_window* w)
 
     window_event_invalidate_call(w);
 
-    w->viewport_focus_coordinates.x = focus.coordinate.x;
-    w->viewport_focus_coordinates.y = focus.coordinate.y;
-    w->viewport_focus_coordinates.z = focus.coordinate.z;
-    w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
-    w->viewport_focus_coordinates.zoom = focus.coordinate.zoom;
-    w->viewport_focus_coordinates.width = w->width;
-    w->viewport_focus_coordinates.height = w->height;
-    w->viewport_focus_sprite.sprite_id = focus.sprite.sprite_id;
-    w->viewport_focus_sprite.type = focus.sprite.type;
+    w->focus2 = focus;
 
     // rct2: 0x006aec9c only used here so brought it into the function
     if (!w->viewport && !ride->overall_view.IsNull())
@@ -1699,9 +1666,8 @@ static void window_ride_init_viewport(rct_window* w)
         auto screenPos = w->windowPos + ScreenCoordsXY{ view_widget->left + 1, view_widget->top + 1 };
         int32_t width = view_widget->width() - 1;
         int32_t height = view_widget->height() - 1;
-        viewport_create(
-            w, screenPos, width, height, focus.coordinate.zoom, { focus.coordinate.x, focus.coordinate.y, focus.coordinate.z },
-            focus.sprite.type, focus.sprite.sprite_id);
+
+        viewport_create(w, screenPos, width, height, w->focus2.value());
 
         w->flags |= WF_NO_SCROLLING;
         w->Invalidate();
@@ -1897,7 +1863,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     }
 
     // Set checked item
-    Dropdown::SetChecked(w->viewport_focus_coordinates.var_480, true);
+    Dropdown::SetChecked(w->ride.view, true);
 }
 
 static RideStatus window_ride_get_next_default_status(const Ride* ride)
@@ -2085,11 +2051,11 @@ static void window_ride_main_follow_ride(rct_window* w)
     {
         if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN))
         {
-            if (w->viewport_focus_coordinates.var_480 > 0)
+            if (w->ride.view > 0)
             {
-                if (w->viewport_focus_coordinates.var_480 <= ride->num_vehicles)
+                if (w->ride.view <= ride->num_vehicles)
                 {
-                    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->viewport_focus_coordinates.var_480 - 1]);
+                    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
                     if (vehicle != nullptr)
                     {
                         uint16_t headVehicleSpriteIndex = vehicle->sprite_index;
@@ -2234,7 +2200,7 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_VIEW_DROPDOWN:
             if (dropdownIndex == -1)
             {
-                dropdownIndex = w->viewport_focus_coordinates.var_480 + 1;
+                dropdownIndex = w->ride.view + 1;
                 auto ride = get_ride(w->rideId);
                 if (ride != nullptr)
                 {
@@ -2250,7 +2216,7 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                 }
             }
 
-            w->viewport_focus_coordinates.var_480 = dropdownIndex;
+            w->ride.view = dropdownIndex;
             window_ride_init_viewport(w);
             w->Invalidate();
             break;
@@ -2337,12 +2303,12 @@ static void window_ride_main_update(rct_window* w)
     {
         if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN))
         {
-            if (w->viewport_focus_coordinates.var_480 == 0)
+            if (w->ride.view == 0)
                 return;
 
-            if (w->viewport_focus_coordinates.var_480 <= ride->num_vehicles)
+            if (w->ride.view <= ride->num_vehicles)
             {
-                Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->viewport_focus_coordinates.var_480 - 1]);
+                Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
                 if (vehicle == nullptr
                     || (vehicle->status != Vehicle::Status::Travelling
                         && vehicle->status != Vehicle::Status::TravellingCableLift
@@ -2556,7 +2522,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter& ft
     if (ride == nullptr)
         return STR_EMPTY;
 
-    auto vehicle = GetEntity<Vehicle>(ride->vehicles[w->viewport_focus_coordinates.var_480 - 1]);
+    auto vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
     if (vehicle == nullptr)
         return STR_EMPTY;
 
@@ -2652,9 +2618,9 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft
 static rct_string_id window_ride_get_status(rct_window* w, Formatter& ft)
 {
     auto ride = get_ride(w->rideId);
-    if (w->viewport_focus_coordinates.var_480 == 0)
+    if (w->ride.view == 0)
         return window_ride_get_status_overall_view(w, ft);
-    if (ride != nullptr && w->viewport_focus_coordinates.var_480 <= ride->num_vehicles)
+    if (ride != nullptr && w->ride.view <= ride->num_vehicles)
         return window_ride_get_status_vehicle(w, ft);
     if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
         return window_ride_get_status_overall_view(w, ft);
@@ -2686,17 +2652,17 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     auto ft = Formatter();
-    if (w->viewport_focus_coordinates.var_480 != 0)
+    if (w->ride.view != 0)
     {
-        if (w->viewport_focus_coordinates.var_480 > ride->num_vehicles)
+        if (w->ride.view > ride->num_vehicles)
         {
             ft.Add<rct_string_id>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).number);
-            ft.Add<uint16_t>(w->viewport_focus_coordinates.var_480 - ride->num_vehicles);
+            ft.Add<uint16_t>(w->ride.view - ride->num_vehicles);
         }
         else
         {
             ft.Add<rct_string_id>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).number);
-            ft.Add<uint16_t>(w->viewport_focus_coordinates.var_480);
+            ft.Add<uint16_t>(w->ride.view);
         }
     }
     else

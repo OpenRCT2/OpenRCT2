@@ -55,14 +55,14 @@ struct rct_window
     uint32_t list_item_positions[1024]{};
     uint16_t no_list_items{};     // 0 for no items
     int16_t selected_list_item{}; // -1 for none selected
-    coordinate_focus viewport_focus_coordinates;
-    sprite_focus viewport_focus_sprite;
+    std::optional<Focus2> focus2;
     union
     {
         campaign_variables campaign;
         new_ride_variables new_ride;
         news_variables news;
         map_variables map;
+        ride_variables ride;
         track_list_variables track_list;
         error_variables error;
         void* custom_info;

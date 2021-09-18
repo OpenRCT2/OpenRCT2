@@ -267,7 +267,6 @@ rct_window* window_staff_open(Peep* peep)
 
         w->number = peep->sprite_index;
         w->page = 0;
-        w->viewport_focus_coordinates.y = 0;
         w->frame_no = 0;
         w->highlighted_item = 0;
 
@@ -1340,9 +1339,7 @@ void window_staff_viewport_init(rct_window* w)
     if (w->page != WINDOW_STAFF_OVERVIEW)
         return;
 
-    sprite_focus focus = {};
-
-    focus.sprite_id = w->number;
+    std::optional<Focus2> focus;
 
     const auto peep = GetStaff(w);
     if (peep == nullptr)
@@ -1350,23 +1347,16 @@ void window_staff_viewport_init(rct_window* w)
         return;
     }
 
-    if (peep->State == PeepState::Picked)
+    if (peep->State != PeepState::Picked)
     {
-        focus.sprite_id = SPRITE_INDEX_NULL;
-    }
-    else
-    {
-        focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-        focus.rotation = get_current_rotation();
+        focus = Focus2(peep->sprite_index);
     }
 
     uint16_t viewport_flags;
 
     if (w->viewport)
     {
-        // Check all combos, for now skipping y and rot
-        if (focus.sprite_id == w->viewport_focus_sprite.sprite_id && focus.type == w->viewport_focus_sprite.type
-            && focus.rotation == w->viewport_focus_sprite.rotation)
+        if (focus == w->focus2)
             return;
 
         viewport_flags = w->viewport->flags;
@@ -1381,9 +1371,7 @@ void window_staff_viewport_init(rct_window* w)
 
     window_event_invalidate_call(w);
 
-    w->viewport_focus_sprite.sprite_id = focus.sprite_id;
-    w->viewport_focus_sprite.type = focus.type;
-    w->viewport_focus_sprite.rotation = focus.rotation;
+    w->focus2 = focus;
 
     if (peep->State != PeepState::Picked)
     {
@@ -1395,7 +1383,7 @@ void window_staff_viewport_init(rct_window* w)
             int32_t width = view_widget->width() - 1;
             int32_t height = view_widget->height() - 1;
 
-            viewport_create(w, screenPos, width, height, 0, { 0, 0, 0 }, focus.type, focus.sprite_id);
+            viewport_create(w, screenPos, width, height, focus.value());
             w->flags |= WF_NO_SCROLLING;
             w->Invalidate();
         }

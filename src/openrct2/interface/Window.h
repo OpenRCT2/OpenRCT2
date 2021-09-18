@@ -20,6 +20,7 @@
 #include <limits>
 #include <list>
 #include <memory>
+#include <variant>
 
 struct rct_drawpixelinfo;
 struct rct_window;
@@ -194,49 +195,34 @@ struct rct_scroll
 
 constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
 
-/**
- * Viewport focus structure.
- * size: 0xA
- * Use sprite.type to work out type.
- */
-struct coordinate_focus
+struct Focus2
 {
-    int16_t var_480;
-    int32_t x;        // 0x482
-    int32_t y;        // 0x484
-    int32_t z;        // 0x486
-    uint8_t rotation; // 0x488
-    uint8_t zoom;     // 0x489
-    int16_t width;
-    int16_t height;
-};
+    using CoordinateFocus = CoordsXYZ;
+    using EntityFocus = uint16_t;
 
-// Type is viewport_target_sprite_id & 0x80000000 != 0
-struct sprite_focus
-{
-    int16_t var_480;
-    uint16_t sprite_id; // 0x482
-    uint8_t pad_484;
-    uint8_t type; // 0x485
-    uint16_t pad_486;
-    uint8_t rotation; // 0x488
-    uint8_t zoom;     // 0x489
-};
+    uint8_t zoom = 0;
+    std::variant<CoordinateFocus, EntityFocus> data;
 
-enum VIEWPORT_FOCUS_TYPE : uint8_t
-{
-    VIEWPORT_FOCUS_TYPE_COORDINATE = (1 << 6),
-    VIEWPORT_FOCUS_TYPE_SPRITE = (1 << 7)
-};
-
-struct viewport_focus
-{
-    VIEWPORT_FOCUS_TYPE type{};
-    union
+    template<typename T> constexpr explicit Focus2(T newValue, uint8_t newZoom = 0)
     {
-        sprite_focus sprite;
-        coordinate_focus coordinate;
-    };
+        data = newValue;
+        zoom = newZoom;
+    }
+
+    CoordsXYZ GetPos() const;
+
+    constexpr bool operator==(const Focus2& other) const
+    {
+        if (zoom != other.zoom)
+        {
+            return false;
+        }
+        return data == other.data;
+    }
+    constexpr bool operator!=(const Focus2& other) const
+    {
+        return !(*this == other);
+    }
 };
 
 struct rct_window_event_list
@@ -314,6 +300,13 @@ struct map_variables
     uint16_t var_484;
     uint16_t var_486;
     uint16_t var_488;
+};
+
+struct ride_variables
+{
+    int16_t view;
+    int32_t var_482;
+    int32_t var_486;
 };
 
 struct track_list_variables
