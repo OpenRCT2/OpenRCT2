@@ -226,7 +226,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
 
         gStaffModes[staffIndex] = StaffMode::Walk;
 
-        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+        for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
         {
             gStaffPatrolAreas[staffIndex * STAFF_PATROL_AREA_SIZE + i] = 0;
         }

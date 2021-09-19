@@ -151,6 +151,10 @@ void staff_update_greyed_patrol_areas()
 
         for (auto peep : EntityList<Staff>())
         {
+            if (!peep->HasPatrolArea())
+            {
+                continue;
+            }
             if (static_cast<uint8_t>(peep->AssignedStaffType) == staff_type)
             {
                 const size_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
