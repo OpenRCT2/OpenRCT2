@@ -652,6 +652,7 @@ void peep_sprite_remove(Peep* peep)
     }
     else
     {
+        staff->ClearPatrolArea();
         gStaffModes[staff->StaffId] = StaffMode::None;
         staff_update_greyed_patrol_areas();
 
