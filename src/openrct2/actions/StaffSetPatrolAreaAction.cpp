@@ -63,14 +63,13 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    int32_t patrolOffset = staff->StaffId * STAFF_PATROL_AREA_SIZE;
-
-    staff_toggle_patrol_area(staff->StaffId, _loc);
+    staff->TogglePatrolArea(_loc);
 
     bool isPatrolling = false;
-    for (int32_t i = 0; i < 128; i++)
+    const auto peepOffset = staff->StaffId * STAFF_PATROL_AREA_SIZE;
+    for (int32_t i = peepOffset; i < peepOffset + STAFF_PATROL_AREA_SIZE; i++)
     {
-        if (gStaffPatrolAreas[patrolOffset + i])
+        if (gStaffPatrolAreas[i] != 0)
         {
             isPatrolling = true;
             break;

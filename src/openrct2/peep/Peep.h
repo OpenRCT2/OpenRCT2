@@ -881,6 +881,11 @@ public:
     static void ResetStats();
     void Serialise(DataSerialiser& stream);
 
+    void ClearPatrolArea();
+    void TogglePatrolArea(const CoordsXY& coords);
+    void SetPatrolArea(const CoordsXY& coords, bool value);
+    bool HasPatrolArea() const;
+
 private:
     void UpdatePatrolling();
     void UpdateMowing();

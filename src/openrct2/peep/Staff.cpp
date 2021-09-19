@@ -174,7 +174,7 @@ bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
         return false;
 
     // Check if staff has patrol area
-    if (gStaffModes[StaffId] != StaffMode::Patrol)
+    if (!HasPatrolArea())
         return true;
 
     return IsPatrolAreaSet(loc);
@@ -392,9 +392,9 @@ bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords)
     return staff_is_patrol_area_set(STAFF_MAX_COUNT + static_cast<uint8_t>(type), coords);
 }
 
-void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value)
+void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
 {
-    int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
+    int32_t peepOffset = StaffId * STAFF_PATROL_AREA_SIZE;
     auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
     uint32_t* addr = &gStaffPatrolAreas[peepOffset + offset];
     if (value)
@@ -407,11 +407,36 @@ void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool valu
     }
 }
 
-void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords)
+void Staff::ClearPatrolArea()
 {
-    int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
+    const auto peepOffset = StaffId * STAFF_PATROL_AREA_SIZE;
+    std::fill_n(&gStaffPatrolAreas[peepOffset], STAFF_PATROL_AREA_SIZE, 0);
+    gStaffModes[StaffId] = StaffMode::Walk;
+}
+
+void Staff::TogglePatrolArea(const CoordsXY& coords)
+{
+    int32_t peepOffset = StaffId * STAFF_PATROL_AREA_SIZE;
     auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
     gStaffPatrolAreas[peepOffset + offset] ^= (1 << bitIndex);
+}
+
+bool Staff::HasPatrolArea() const
+{
+    if (gStaffModes[StaffId] != StaffMode::Patrol)
+    {
+        return false;
+    }
+
+    const auto peepOffset = StaffId * STAFF_PATROL_AREA_SIZE;
+    for (int32_t i = peepOffset; i < peepOffset + STAFF_PATROL_AREA_SIZE; i++)
+    {
+        if (gStaffPatrolAreas[i] != 0)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
