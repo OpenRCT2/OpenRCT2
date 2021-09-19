@@ -567,11 +567,10 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                 {
                     return;
                 }
-                // TODO: THIS SHOULD BE NETWORKED
-                peep->ClearPatrolArea();
 
-                gfx_invalidate_screen();
-                staff_update_greyed_patrol_areas();
+                auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
+                    peep->sprite_index, {}, StaffSetPatrolAreaMode::ClearAll);
+                GameActions::Execute(&staffSetPatrolAreaAction);
             }
             else
             {
@@ -1241,7 +1240,9 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
         }
-        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, destCoords);
+        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
+            w->number, destCoords,
+            _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
         GameActions::Execute(&staffSetPatrolAreaAction);
     }
 }
@@ -1275,7 +1276,9 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && !patrolAreaValue)
         return; // Since area is already the value we want, skip...
 
-    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, destCoords);
+    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
+        w->number, destCoords,
+        _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
     GameActions::Execute(&staffSetPatrolAreaAction);
 }
 
