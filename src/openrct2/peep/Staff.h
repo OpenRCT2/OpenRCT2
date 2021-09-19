@@ -65,8 +65,6 @@ void staff_set_name(uint16_t spriteIndex, const char* name);
 bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerType);
 void staff_update_greyed_patrol_areas();
 bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords);
-void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value);
-void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords);
 colour_t staff_get_colour(StaffType staffType);
 bool staff_set_colour(StaffType staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();
