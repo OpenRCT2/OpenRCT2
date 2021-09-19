@@ -1947,7 +1947,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 }
 
                 // Ride type. Individual pieces may be of a different ride type from the ride it belongs to.
-                auto rtd = GetRideTypeDescriptor(trackElement->GetRideType());
+                const auto& rtd = GetRideTypeDescriptor(trackElement->GetRideType());
                 ft = Formatter();
                 ft.Add<rct_string_id>(rtd.Naming.Name);
                 DrawTextBasic(
