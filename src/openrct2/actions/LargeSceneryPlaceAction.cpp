@@ -211,7 +211,6 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
     }
 
-    uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->tiles);
     int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
 
     if (_loc.z != 0)
@@ -220,12 +219,6 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
     }
 
     res->Position.z = maxHeight;
-
-    if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
-    {
-        log_error("No free map elements available");
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
-    }
 
     // Allocate banner
     Banner* banner = nullptr;
