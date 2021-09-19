@@ -475,7 +475,7 @@ namespace Config
         }
     }
 
-    static void ReadWriteNotificationsChunk(IIniWriter* writer)
+    static void WriteNotificationsChunk(IIniWriter* writer)
     {
         auto model = &gConfigNotifications;
         writer->WriteSection("notifications");
@@ -613,7 +613,7 @@ namespace Config
             WriteInterface(writer.get());
             WriteSound(writer.get());
             WriteNetwork(writer.get());
-            ReadWriteNotificationsChunk(writer.get());
+            WriteNotificationsChunk(writer.get());
             WriteFont(writer.get());
             WritePlugin(writer.get());
             return true;
