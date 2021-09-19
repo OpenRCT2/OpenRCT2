@@ -365,8 +365,13 @@ void Staff::ResetStats()
 static std::pair<int32_t, int32_t> getPatrolAreaOffsetIndex(const CoordsXY& coords)
 {
     // Patrol areas are 4 * 4 tiles (32 * 4) = 128 = 2^^7
-    auto hash = ((coords.x & 0x1F80) >> 7) | ((coords.y & 0x1F80) >> 1);
-    return { hash >> 5, hash & 0x1F };
+    auto tilePos = TileCoordsXY(coords);
+    auto x = tilePos.x / 4;
+    auto y = tilePos.y / 4;
+    auto bitIndex = (y * STAFF_PATROL_AREA_BLOCKS_PER_LINE) + x;
+    auto byteIndex = int32_t(bitIndex / 32);
+    auto byteBitIndex = int32_t(bitIndex % 32);
+    return { byteIndex, byteBitIndex };
 }
 
 static bool staff_is_patrol_area_set(int32_t staffIndex, const CoordsXY& coords)
@@ -423,20 +428,7 @@ void Staff::TogglePatrolArea(const CoordsXY& coords)
 
 bool Staff::HasPatrolArea() const
 {
-    if (gStaffModes[StaffId] != StaffMode::Patrol)
-    {
-        return false;
-    }
-
-    const auto peepOffset = StaffId * STAFF_PATROL_AREA_SIZE;
-    for (int32_t i = peepOffset; i < peepOffset + STAFF_PATROL_AREA_SIZE; i++)
-    {
-        if (gStaffPatrolAreas[i] != 0)
-        {
-            return true;
-        }
-    }
-    return false;
+    return gStaffModes[StaffId] == StaffMode::Patrol;
 }
 
 /**
