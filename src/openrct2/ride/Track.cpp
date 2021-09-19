@@ -732,12 +732,12 @@ void TrackElement::SetTrackType(uint16_t newType)
     TrackType = newType;
 }
 
-uint8_t TrackElement::GetRideType() const
+ride_type_t TrackElement::GetRideType() const
 {
     return RideType;
 }
 
-void TrackElement::SetRideType(const uint8_t rideType)
+void TrackElement::SetRideType(const ride_type_t rideType)
 {
     RideType = rideType;
 }
