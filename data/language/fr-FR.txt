@@ -413,7 +413,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} voitures par train
 STR_1024    :{COMMA16} voiture par train
 STR_1025    :{COMMA16} voitures par train
 STR_1026    :Le quai est trop long !
-STR_1027    :Localiser sur la vue générale
+STR_1027    :Localiser sur la vue principale
 STR_1028    :En dehors de la carte !
 STR_1029    :Impossible de construire à la fois au-dessus et en-dessous de l’eau !
 STR_1030    :Ne peut être construit que sous l’eau !
@@ -3662,6 +3662,7 @@ STR_6454    :Impossible de renommer la bannière…
 STR_6455    :Impossible de renommer le panneau…
 STR_6456    :Capture d’écran géante
 STR_6457    :Signaler un bug sur GitHub
+STR_6458    :Suivre sur la vue principale
 
 #############
 # Scenarios #
