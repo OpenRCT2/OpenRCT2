@@ -781,7 +781,7 @@ static std::unique_ptr<TrackDesign> _trackDesign;
 // Cached overall view for each ride
 // (Re)calculated when the ride window is opened
 struct ride_overall_view {
-    int32_t x, y, z;
+    CoordsXYZ loc;
     uint8_t zoom;
 };
 
@@ -1167,10 +1167,10 @@ static void window_ride_update_overall_view(Ride* ride)
 
     tile_element_iterator_begin(&it);
 
-    int32_t minx = std::numeric_limits<int32_t>::max(), miny = std::numeric_limits<int32_t>::max(),
-            minz = std::numeric_limits<int32_t>::max();
-    int32_t maxx = std::numeric_limits<int32_t>::min(), maxy = std::numeric_limits<int32_t>::min(),
-            maxz = std::numeric_limits<int32_t>::min();
+    CoordsXYZ min = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max(),
+                      std::numeric_limits<int32_t>::max() };
+    CoordsXYZ max = { std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::min(),
+                      std::numeric_limits<int32_t>::min() };
 
     while (tile_element_iterator_next(&it))
     {
@@ -1184,13 +1184,13 @@ static void window_ride_update_overall_view(Ride* ride)
         int32_t baseZ = it.element->GetBaseZ();
         int32_t clearZ = it.element->GetClearanceZ();
 
-        minx = std::min(minx, location.x);
-        miny = std::min(miny, location.y);
-        minz = std::min(minz, baseZ);
+        min.x = std::min(min.x, location.x);
+        min.y = std::min(min.y, location.y);
+        min.z = std::min(min.z, baseZ);
 
-        maxx = std::max(maxx, location.x);
-        maxy = std::max(maxy, location.y);
-        maxz = std::max(maxz, clearZ);
+        max.x = std::max(max.x, location.x);
+        max.y = std::max(max.y, location.y);
+        max.z = std::max(max.z, clearZ);
     }
 
     const auto rideIndex = EnumValue(ride->id);
@@ -1200,16 +1200,12 @@ static void window_ride_update_overall_view(Ride* ride)
     }
 
     auto& view = ride_overall_views[rideIndex];
-    view.x = (minx + maxx) / 2 + 16;
-    view.y = (miny + maxy) / 2 + 16;
-    view.z = (minz + maxz) / 2 - 8;
+    view.loc = CoordsXYZ{ (min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2 } + CoordsXYZ{ 16, 16, -8 };
 
     // Calculate size to determine from how far away to view the ride
-    int32_t dx = maxx - minx;
-    int32_t dy = maxy - miny;
-    int32_t dz = maxz - minz;
+    const auto diff = max - min;
 
-    int32_t size = static_cast<int32_t>(std::sqrt(dx * dx + dy * dy + dz * dz));
+    const int32_t size = static_cast<int32_t>(std::sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z));
 
     if (size >= 80)
     {
@@ -1634,8 +1630,7 @@ static void window_ride_init_viewport(rct_window* w)
         if (w->number < ride_overall_views.size())
         {
             const auto& view = ride_overall_views[w->number];
-            CoordsXYZ loc = { view.x, view.y, view.z };
-            focus = Focus2(loc, view.zoom);
+            focus = Focus2(view.loc, view.zoom);
         }
     }
 
