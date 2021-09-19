@@ -67,7 +67,7 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
 
     bool isPatrolling = false;
     const auto peepOffset = staff->StaffId * STAFF_PATROL_AREA_SIZE;
-    for (int32_t i = peepOffset; i < peepOffset + STAFF_PATROL_AREA_SIZE; i++)
+    for (size_t i = peepOffset; i < peepOffset + STAFF_PATROL_AREA_SIZE; i++)
     {
         if (gStaffPatrolAreas[i] != 0)
         {

@@ -143,8 +143,8 @@ void staff_update_greyed_patrol_areas()
 {
     for (int32_t staff_type = 0; staff_type < static_cast<uint8_t>(StaffType::Count); ++staff_type)
     {
-        int32_t staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
-        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+        const size_t staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
+        for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
         {
             gStaffPatrolAreas[staffPatrolOffset + i] = 0;
         }
@@ -153,8 +153,8 @@ void staff_update_greyed_patrol_areas()
         {
             if (static_cast<uint8_t>(peep->AssignedStaffType) == staff_type)
             {
-                int32_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
-                for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+                const size_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
+                for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
                 {
                     gStaffPatrolAreas[staffPatrolOffset + i] |= gStaffPatrolAreas[peepPatrolOffset + i];
                 }
