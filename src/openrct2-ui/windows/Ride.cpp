@@ -1796,7 +1796,7 @@ static void window_ride_main_resize(rct_window* w)
 
     w->flags |= WF_RESIZABLE;
     window_set_resize(w, 316, minHeight, 500, 450);
-    // Unlike other windows the focus needs to be recentered so its best to just reset it.
+    // Unlike with other windows, the focus needs to be recentred so it’s best to just reset it.
     w->focus = std::nullopt;
     window_ride_init_viewport(w);
 }
