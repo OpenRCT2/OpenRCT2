@@ -127,10 +127,9 @@ public:
 
         // Create viewport
         rct_widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
-        const auto focus = Focus(CoordsXYZ{ signViewPosition, viewZ });
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
-            viewportWidget.height() - 1, focus);
+            viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
         viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
@@ -300,10 +299,9 @@ public:
 
         // Create viewport
         rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
-        const auto focus = Focus(CoordsXYZ{ signViewPos });
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
-            viewportWidget->height() - 1, focus);
+            viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
         if (viewport != nullptr)
             viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
