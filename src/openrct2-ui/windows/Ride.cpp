@@ -1589,7 +1589,7 @@ static void window_ride_init_viewport(rct_window* w)
 
     int32_t viewSelectionIndex = w->ride.view - 1;
 
-    std::optional<Focus2> focus;
+    std::optional<Focus> focus;
 
     if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
@@ -1609,7 +1609,7 @@ static void window_ride_init_viewport(rct_window* w)
         }
         if (vehId != SPRITE_INDEX_NULL)
         {
-            focus = Focus2(vehId);
+            focus = Focus(vehId);
         }
     }
     else if (viewSelectionIndex >= ride->num_vehicles && viewSelectionIndex < (ride->num_vehicles + ride->num_stations))
@@ -1618,7 +1618,7 @@ static void window_ride_init_viewport(rct_window* w)
         if (stationIndex)
         {
             const auto location = ride->stations[*stationIndex].GetStart();
-            focus = Focus2(location);
+            focus = Focus(location);
         }
     }
     else
@@ -1630,14 +1630,14 @@ static void window_ride_init_viewport(rct_window* w)
         if (w->number < ride_overall_views.size())
         {
             const auto& view = ride_overall_views[w->number];
-            focus = Focus2(view.loc, view.zoom);
+            focus = Focus(view.loc, view.zoom);
         }
     }
 
     uint16_t viewport_flags = 0;
     if (w->viewport != nullptr)
     {
-        if (focus == w->focus2)
+        if (focus == w->focus)
         {
             return;
         }
@@ -1651,7 +1651,7 @@ static void window_ride_init_viewport(rct_window* w)
 
     window_event_invalidate_call(w);
 
-    w->focus2 = focus;
+    w->focus = focus;
 
     // rct2: 0x006aec9c only used here so brought it into the function
     if (!w->viewport && !ride->overall_view.IsNull())
@@ -1662,7 +1662,7 @@ static void window_ride_init_viewport(rct_window* w)
         int32_t width = view_widget->width() - 1;
         int32_t height = view_widget->height() - 1;
 
-        viewport_create(w, screenPos, width, height, w->focus2.value());
+        viewport_create(w, screenPos, width, height, w->focus.value());
 
         w->flags |= WF_NO_SCROLLING;
         w->Invalidate();
@@ -1796,6 +1796,8 @@ static void window_ride_main_resize(rct_window* w)
 
     w->flags |= WF_RESIZABLE;
     window_set_resize(w, 316, minHeight, 500, 450);
+    // Unlike other windows the focus needs to be recentered so its best to just reset it.
+    w->focus = std::nullopt;
     window_ride_init_viewport(w);
 }
 

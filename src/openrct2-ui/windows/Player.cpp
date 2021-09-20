@@ -547,7 +547,7 @@ static void window_player_set_page(rct_window* w, int32_t page)
     {
         if (w->viewport == nullptr)
         {
-            const auto focus = Focus2(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
+            const auto focus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
             viewport_create(w, w->windowPos, w->width, w->height, focus);
             w->flags |= WF_NO_SCROLLING;
             window_event_invalidate_call(w);

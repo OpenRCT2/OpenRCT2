@@ -76,7 +76,7 @@ public:
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE);
 
         // Create viewport
-        const auto focus = Focus2(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
+        const auto focus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
         viewport_create(this, windowPos, width, height, focus);
         if (viewport == nullptr)
         {

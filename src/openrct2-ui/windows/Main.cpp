@@ -41,7 +41,7 @@ rct_window* window_main_open()
         WF_STICK_TO_BACK);
     window->widgets = window_main_widgets;
 
-    const auto focus = Focus2(CoordsXYZ(0x0FFF, 0x0FFF, 0));
+    const auto focus = Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0));
     viewport_create(window, window->windowPos, window->width, window->height, focus);
     window->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
     gCurrentRotation = 0;
