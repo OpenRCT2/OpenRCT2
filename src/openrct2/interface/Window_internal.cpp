@@ -12,10 +12,10 @@ void rct_window::SetLocation(const CoordsXYZ& coords)
 
 void rct_window::ScrollToViewport()
 {
-    if (viewport == nullptr || !focus2.has_value())
+    if (viewport == nullptr || !focus.has_value())
         return;
 
-    CoordsXYZ newCoords = focus2.value().GetPos();
+    CoordsXYZ newCoords = focus.value().GetPos();
 
     auto mainWindow = window_get_main();
     if (mainWindow != nullptr)

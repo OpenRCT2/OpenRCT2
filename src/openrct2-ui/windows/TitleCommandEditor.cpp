@@ -227,7 +227,7 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     WindowInitScrollWidgets(window);
 
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
-    const auto focus = Focus2(CoordsXYZ{ 0, 0, 0 });
+    const auto focus = Focus(CoordsXYZ{ 0, 0, 0 });
     viewport_create(
         window, window->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
         viewportWidget->width() - 1, viewportWidget->height() - 1, focus);

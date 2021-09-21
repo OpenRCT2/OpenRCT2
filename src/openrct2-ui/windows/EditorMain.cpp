@@ -40,8 +40,7 @@ rct_window* window_editor_main_open()
         &window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
     window->widgets = window_editor_main_widgets;
 
-    const auto focus = Focus2(CoordsXYZ(0x0FFF, 0x0FFF, 0));
-    viewport_create(window, window->windowPos, window->width, window->height, focus);
+    viewport_create(window, window->windowPos, window->width, window->height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
     window->viewport->flags |= 0x0400;
 
     gCurrentRotation = 0;

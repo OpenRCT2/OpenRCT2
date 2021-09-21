@@ -274,7 +274,7 @@ rct_window* WindowCreate(
     w->min_height = height;
     w->max_height = height;
 
-    w->focus2 = std::nullopt;
+    w->focus = std::nullopt;
     w->page = 0;
     w->var_48C = 0;
     w->var_492 = 0;
