@@ -96,7 +96,7 @@ private:
             return nullptr;
         }
 
-        TileElement* tileElement = map_get_first_element_at(banner->position.ToCoordsXY().ToTileCentre());
+        TileElement* tileElement = map_get_first_element_at(banner->position);
         if (tileElement == nullptr)
         {
             return nullptr;

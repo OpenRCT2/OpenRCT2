@@ -159,7 +159,7 @@ static void ReorganiseTileElements(size_t capacity)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y });
             if (element == nullptr)
             {
                 auto& newElement = newElements.emplace_back();
@@ -241,14 +241,14 @@ void tile_element_iterator_begin(tile_element_iterator* it)
 {
     it->x = 0;
     it->y = 0;
-    it->element = map_get_first_element_at({ 0, 0 });
+    it->element = map_get_first_element_at(TileCoordsXY{ 0, 0 });
 }
 
 int32_t tile_element_iterator_next(tile_element_iterator* it)
 {
     if (it->element == nullptr)
     {
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -261,7 +261,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     if (it->x < (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
     {
         it->x++;
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -269,7 +269,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     {
         it->x = 0;
         it->y++;
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -281,15 +281,26 @@ void tile_element_iterator_restart_for_tile(tile_element_iterator* it)
     it->element = nullptr;
 }
 
-TileElement* map_get_first_element_at(const CoordsXY& elementPos)
+static bool IsTileLocationValid(const TileCoordsXY& coords)
 {
-    if (!map_is_location_valid(elementPos))
+    const bool is_x_valid = coords.x < MAXIMUM_MAP_SIZE_TECHNICAL && coords.x >= 0;
+    const bool is_y_valid = coords.y < MAXIMUM_MAP_SIZE_TECHNICAL && coords.y >= 0;
+    return is_x_valid && is_y_valid;
+}
+
+TileElement* map_get_first_element_at(const TileCoordsXY& tilePos)
+{
+    if (!IsTileLocationValid(tilePos))
     {
         log_verbose("Trying to access element outside of range");
         return nullptr;
     }
-    auto tileElementPos = TileCoordsXY{ elementPos };
-    return _tileIndex.GetFirstElementAt(tileElementPos);
+    return _tileIndex.GetFirstElementAt(tilePos);
+}
+
+TileElement* map_get_first_element_at(const CoordsXY& elementPos)
+{
+    return map_get_first_element_at(TileCoordsXY{ elementPos });
 }
 
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
@@ -636,7 +647,7 @@ int16_t tile_element_water_height(const CoordsXY& loc)
  */
 bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
 {
-    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(loc);
 
     if (tileElement == nullptr)
         return false;
