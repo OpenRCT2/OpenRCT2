@@ -65,16 +65,18 @@ namespace Editor
 
     static void object_list_load()
     {
+        auto* context = GetContext();
+
+        // Unload objects first, the repository is re-populated which owns the objects.
+        auto& objectManager = context->GetObjectManager();
+        objectManager.UnloadAll();
+
         // Scan objects if necessary
-        auto context = GetContext();
         const auto& localisationService = context->GetLocalisationService();
         auto& objectRepository = context->GetObjectRepository();
         objectRepository.LoadOrConstruct(localisationService.GetCurrentLanguage());
 
         // Reset loaded objects to just defaults
-        auto& objectManager = context->GetObjectManager();
-        objectManager.UnloadAll();
-
         // Load minimum required objects (like surface and edge)
         for (const auto& entry : MinimumRequiredObjects)
         {

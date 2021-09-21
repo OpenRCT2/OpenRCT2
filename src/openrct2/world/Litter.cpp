@@ -121,7 +121,7 @@ static const rct_string_id litterNames[12] = {
 
 rct_string_id Litter::GetName() const
 {
-    if (EnumValue(SubType) >= sizeof(litterNames))
+    if (EnumValue(SubType) >= std::size(litterNames))
         return STR_NONE;
     return litterNames[EnumValue(SubType)];
 }
