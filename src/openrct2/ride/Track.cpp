@@ -244,7 +244,6 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
                     targetTrackType = TrackElemType::MiddleStation;
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
-                stationElement->AsTrack()->SetRideType(ride->type);
 
                 map_invalidate_element(loc, stationElement);
 
@@ -390,7 +389,6 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
                     }
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
-                stationElement->AsTrack()->SetRideType(ride->type);
 
                 map_invalidate_element(currentLoc, stationElement);
             }
