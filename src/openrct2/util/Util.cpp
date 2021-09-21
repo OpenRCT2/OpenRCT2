@@ -693,6 +693,96 @@ bool util_gzip_compress(FILE* source, FILE* dest)
     return true;
 }
 
+std::vector<uint8_t> Gzip(const void* data, size_t dataLen)
+{
+    assert(data != nullptr);
+
+    std::vector<uint8_t> output;
+    z_stream strm{};
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    auto ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 | 16, 8, Z_DEFAULT_STRATEGY);
+    if (ret != Z_OK)
+    {
+        throw std::runtime_error("deflateInit2 failed with error " + std::to_string(ret));
+    }
+
+    int flush;
+    const auto* src = static_cast<const Bytef*>(data);
+    size_t srcRemaining = dataLen;
+    do
+    {
+        auto nextBlockSize = std::min(srcRemaining, CHUNK);
+        srcRemaining -= nextBlockSize;
+
+        flush = srcRemaining == 0 ? Z_FINISH : Z_NO_FLUSH;
+        strm.avail_in = static_cast<uInt>(nextBlockSize);
+        strm.next_in = const_cast<Bytef*>(src);
+        do
+        {
+            output.resize(output.size() + nextBlockSize);
+            strm.avail_out = static_cast<uInt>(nextBlockSize);
+            strm.next_out = &output[output.size() - nextBlockSize];
+            ret = deflate(&strm, flush);
+            if (ret == Z_STREAM_ERROR)
+            {
+                throw std::runtime_error("deflate failed with error " + std::to_string(ret));
+            }
+            output.resize(output.size() - strm.avail_out);
+        } while (strm.avail_out == 0);
+
+        src += nextBlockSize;
+    } while (flush != Z_FINISH);
+    deflateEnd(&strm);
+    return output;
+}
+
+std::vector<uint8_t> Ungzip(const void* data, size_t dataLen)
+{
+    assert(data != nullptr);
+
+    std::vector<uint8_t> output;
+    z_stream strm{};
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    auto ret = inflateInit2(&strm, 15 | 16);
+    if (ret != Z_OK)
+    {
+        throw std::runtime_error("inflateInit2 failed with error " + std::to_string(ret));
+    }
+
+    int flush;
+    const auto* src = static_cast<const Bytef*>(data);
+    size_t srcRemaining = dataLen;
+    do
+    {
+        auto nextBlockSize = std::min(srcRemaining, CHUNK);
+        srcRemaining -= nextBlockSize;
+
+        flush = srcRemaining == 0 ? Z_FINISH : Z_NO_FLUSH;
+        strm.avail_in = static_cast<uInt>(nextBlockSize);
+        strm.next_in = const_cast<Bytef*>(src);
+        do
+        {
+            output.resize(output.size() + nextBlockSize);
+            strm.avail_out = static_cast<uInt>(nextBlockSize);
+            strm.next_out = &output[output.size() - nextBlockSize];
+            ret = inflate(&strm, flush);
+            if (ret == Z_STREAM_ERROR)
+            {
+                throw std::runtime_error("deflate failed with error " + std::to_string(ret));
+            }
+            output.resize(output.size() - strm.avail_out);
+        } while (strm.avail_out == 0);
+
+        src += nextBlockSize;
+    } while (flush != Z_FINISH);
+    deflateEnd(&strm);
+    return output;
+}
+
 // Type-independent code left as macro to reduce duplicate code.
 #define add_clamp_body(value, value_to_add, min_cap, max_cap)                                                                  \
     if ((value_to_add > 0) && (value > (max_cap - (value_to_add))))                                                            \
