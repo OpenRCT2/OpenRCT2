@@ -550,12 +550,12 @@ static void Flush_Glyph(c_glyph* glyph)
 {
     glyph->stored = 0;
     glyph->index = 0;
-    if (glyph->bitmap.buffer)
+    if (glyph->bitmap.buffer != nullptr)
     {
         free(glyph->bitmap.buffer);
         glyph->bitmap.buffer = 0;
     }
-    if (glyph->pixmap.buffer)
+    if (glyph->pixmap.buffer != nullptr)
     {
         free(glyph->pixmap.buffer);
         glyph->pixmap.buffer = 0;
@@ -754,7 +754,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
         if (dst->rows != 0)
         {
             dst->buffer = static_cast<unsigned char*>(malloc(dst->pitch * dst->rows));
-            if (!dst->buffer)
+            if (dst->buffer == nullptr)
             {
                 return FT_Err_Out_Of_Memory;
             }
@@ -1236,12 +1236,12 @@ int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
     }
 
     /* Fill the bounds rectangle */
-    if (w)
+    if (w != nullptr)
     {
         /* Add outline extra width */
         *w = (maxx - minx) + outline_delta;
     }
-    if (h)
+    if (h != nullptr)
     {
         /* Some fonts descend below font height (FletcherGothicFLF) */
         /* Add outline extra height */

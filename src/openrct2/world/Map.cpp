@@ -1691,7 +1691,7 @@ void map_extend_boundary_surface()
         existingTileElement = map_get_surface_element_at(TileCoordsXY{ x, y - 1 }.ToCoordsXY());
         newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
-        if (existingTileElement && newTileElement)
+        if (existingTileElement != nullptr && newTileElement != nullptr)
         {
             map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
@@ -1705,7 +1705,7 @@ void map_extend_boundary_surface()
         existingTileElement = map_get_surface_element_at(TileCoordsXY{ x - 1, y }.ToCoordsXY());
         newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
-        if (existingTileElement && newTileElement)
+        if (existingTileElement != nullptr && newTileElement != nullptr)
         {
             map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }

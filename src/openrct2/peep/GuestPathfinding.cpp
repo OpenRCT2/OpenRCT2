@@ -88,7 +88,7 @@ static TileElement* get_banner_on_path(TileElement* path_element)
         if (bannerElement->IsLastForTile())
             return nullptr;
 
-    } while (bannerElement++);
+    } while (bannerElement++ != nullptr);
 
     return nullptr;
 }

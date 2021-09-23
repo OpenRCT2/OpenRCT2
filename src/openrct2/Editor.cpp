@@ -377,12 +377,12 @@ namespace Editor
         switch (gEditorStep)
         {
             case EditorStep::ObjectSelection:
-                if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))
+                if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION) != nullptr)
                 {
                     return;
                 }
 
-                if (window_find_by_class(WC_INSTALL_TRACK))
+                if (window_find_by_class(WC_INSTALL_TRACK) != nullptr)
                 {
                     return;
                 }
@@ -395,7 +395,7 @@ namespace Editor
                 context_open_window(WC_EDITOR_OBJECT_SELECTION);
                 break;
             case EditorStep::InventionsListSetUp:
-                if (window_find_by_class(WC_EDITOR_INVENTION_LIST))
+                if (window_find_by_class(WC_EDITOR_INVENTION_LIST) != nullptr)
                 {
                     return;
                 }
@@ -403,7 +403,7 @@ namespace Editor
                 context_open_window(WC_EDITOR_INVENTION_LIST);
                 break;
             case EditorStep::OptionsSelection:
-                if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS))
+                if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS) != nullptr)
                 {
                     return;
                 }
@@ -411,7 +411,7 @@ namespace Editor
                 context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
                 break;
             case EditorStep::ObjectiveSelection:
-                if (window_find_by_class(WC_EDITOR_OBJECTIVE_OPTIONS))
+                if (window_find_by_class(WC_EDITOR_OBJECTIVE_OPTIONS) != nullptr)
                 {
                     return;
                 }

@@ -1407,7 +1407,7 @@ void Guest::CheckCantFindRide()
     GuestHeadingToRideId = RIDE_ID_NULL;
     rct_window* w = window_find_by_number(WC_PEEP, sprite_index);
 
-    if (w)
+    if (w != nullptr)
     {
         window_event_invalidate_call(w);
     }

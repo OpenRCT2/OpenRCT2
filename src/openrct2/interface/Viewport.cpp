@@ -559,7 +559,7 @@ void viewport_update_position(rct_window* window)
     window_event_resize_call(window);
 
     rct_viewport* viewport = window->viewport;
-    if (!viewport)
+    if (viewport == nullptr)
         return;
 
     if (window->viewport_smart_follow_sprite != SPRITE_INDEX_NULL)
@@ -656,7 +656,7 @@ void viewport_update_position(rct_window* window)
 
 void viewport_update_sprite_follow(rct_window* window)
 {
-    if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport)
+    if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport != nullptr)
     {
         auto* sprite = GetEntity(window->viewport_target_sprite);
         if (sprite == nullptr)
