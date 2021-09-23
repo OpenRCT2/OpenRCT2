@@ -246,7 +246,6 @@ namespace OpenRCT2
                 auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
                 auto* pathToRailingsMap = _pathToRailingsMap;
                 const auto version = os.GetHeader().TargetVersion;
-                log_error("version %d", version);
 
                 ObjectList requiredObjects;
                 os.ReadWriteChunk(
