@@ -56,6 +56,7 @@ GameState::GameState()
 void GameState::InitAll(int32_t mapSize)
 {
     gInMapInitCode = true;
+    gCurrentTicks = 0;
 
     gCurrentTicks = 0;
     map_init(mapSize);

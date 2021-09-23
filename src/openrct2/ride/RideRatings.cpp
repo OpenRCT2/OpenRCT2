@@ -1463,7 +1463,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
              xx++)
         {
             // Count scenery items on this tile
-            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy }.ToCoordsXY());
+            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy });
             if (tileElement == nullptr)
                 continue;
             do

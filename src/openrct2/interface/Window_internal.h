@@ -55,7 +55,7 @@ struct rct_window
     uint32_t list_item_positions[1024]{};
     uint16_t no_list_items{};     // 0 for no items
     int16_t selected_list_item{}; // -1 for none selected
-    std::optional<Focus2> focus2;
+    std::optional<Focus> focus;
     union
     {
         campaign_variables campaign;

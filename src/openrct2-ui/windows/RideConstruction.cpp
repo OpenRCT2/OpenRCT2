@@ -2424,11 +2424,11 @@ static void sub_6CBCE2(
         auto southTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_SOUTH];
 
         // Replace map elements with temporary ones containing track
-        _backupTileElementArrays[0] = map_get_first_element_at(centreTileCoords.ToCoordsXY());
-        _backupTileElementArrays[1] = map_get_first_element_at(eastTileCoords.ToCoordsXY());
-        _backupTileElementArrays[2] = map_get_first_element_at(westTileCoords.ToCoordsXY());
-        _backupTileElementArrays[3] = map_get_first_element_at(northTileCoords.ToCoordsXY());
-        _backupTileElementArrays[4] = map_get_first_element_at(southTileCoords.ToCoordsXY());
+        _backupTileElementArrays[0] = map_get_first_element_at(centreTileCoords);
+        _backupTileElementArrays[1] = map_get_first_element_at(eastTileCoords);
+        _backupTileElementArrays[2] = map_get_first_element_at(westTileCoords);
+        _backupTileElementArrays[3] = map_get_first_element_at(northTileCoords);
+        _backupTileElementArrays[4] = map_get_first_element_at(southTileCoords);
         map_set_tile_element(centreTileCoords, &_tempTrackTileElement);
         map_set_tile_element(eastTileCoords, &_tempSideTrackTileElement);
         map_set_tile_element(westTileCoords, &_tempSideTrackTileElement);

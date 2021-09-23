@@ -359,7 +359,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     {
         for (; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
         {
-            auto tileElement = map_get_first_element_at({ x, y });
+            auto tileElement = map_get_first_element_at(CoordsXY{ x, y });
             do
             {
                 if (tileElement == nullptr)
@@ -465,7 +465,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
     {
         for (tile.x = 0; tile.x < MAXIMUM_MAP_SIZE_BIG; tile.x += COORDS_XY_STEP)
         {
-            tile.element = map_get_first_element_at({ tile.x, tile.y });
+            tile.element = map_get_first_element_at(CoordsXY{ tile.x, tile.y });
             do
             {
                 if (tile.element == nullptr)

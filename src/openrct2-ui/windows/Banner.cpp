@@ -79,10 +79,9 @@ private:
     void CreateViewport()
     {
         rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
-        const auto focus = Focus2(_bannerViewPos);
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-            (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, focus);
+            (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, Focus(_bannerViewPos));
 
         if (viewport != nullptr)
             viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
@@ -97,7 +96,7 @@ private:
             return nullptr;
         }
 
-        TileElement* tileElement = map_get_first_element_at(banner->position.ToCoordsXY().ToTileCentre());
+        TileElement* tileElement = map_get_first_element_at(banner->position);
         if (tileElement == nullptr)
         {
             return nullptr;

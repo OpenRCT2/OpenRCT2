@@ -2213,7 +2213,7 @@ static void ride_shop_connected(Ride* ride)
         return;
 
     TrackElement* trackElement = nullptr;
-    TileElement* tileElement = map_get_first_element_at(shopLoc.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(shopLoc);
     do
     {
         if (tileElement == nullptr)
@@ -2569,7 +2569,7 @@ void Ride::ChainQueues() const
 
         // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
         // the ride or not.
-        TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
+        TileElement* tileElement = map_get_first_element_at(location);
         if (tileElement != nullptr)
         {
             do
@@ -2914,7 +2914,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
     {
         auto entranceExitMapPos = position->ToCoordsXYZ();
 
-        TileElement* tileElement = map_get_first_element_at(position->ToCoordsXY());
+        TileElement* tileElement = map_get_first_element_at(*position);
         do
         {
             if (tileElement == nullptr)
@@ -5554,7 +5554,7 @@ void determine_ride_entrance_and_exit_locations()
             {
                 for (int32_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
 
                     if (tileElement != nullptr)
                     {

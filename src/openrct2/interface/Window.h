@@ -195,7 +195,7 @@ struct rct_scroll
 
 constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
 
-struct Focus2
+struct Focus
 {
     using CoordinateFocus = CoordsXYZ;
     using EntityFocus = uint16_t;
@@ -203,7 +203,7 @@ struct Focus2
     uint8_t zoom = 0;
     std::variant<CoordinateFocus, EntityFocus> data;
 
-    template<typename T> constexpr explicit Focus2(T newValue, uint8_t newZoom = 0)
+    template<typename T> constexpr explicit Focus(T newValue, uint8_t newZoom = 0)
     {
         data = newValue;
         zoom = newZoom;
@@ -211,7 +211,7 @@ struct Focus2
 
     CoordsXYZ GetPos() const;
 
-    constexpr bool operator==(const Focus2& other) const
+    constexpr bool operator==(const Focus& other) const
     {
         if (zoom != other.zoom)
         {
@@ -219,7 +219,7 @@ struct Focus2
         }
         return data == other.data;
     }
-    constexpr bool operator!=(const Focus2& other) const
+    constexpr bool operator!=(const Focus& other) const
     {
         return !(*this == other);
     }

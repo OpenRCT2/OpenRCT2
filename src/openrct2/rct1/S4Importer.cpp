@@ -2575,7 +2575,7 @@ namespace RCT1
             {
                 for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
                         continue;
                     do

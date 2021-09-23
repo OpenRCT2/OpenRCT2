@@ -347,7 +347,7 @@ void ride_clear_blocked_tiles(Ride* ride)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto element = map_get_first_element_at(TileCoordsXY{ x, y });
             if (element != nullptr)
             {
                 do

@@ -1226,7 +1226,7 @@ void footpath_update_queue_chains()
             if (location.IsNull())
                 continue;
 
-            TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
+            TileElement* tileElement = map_get_first_element_at(location);
             if (tileElement != nullptr)
             {
                 do
@@ -2143,7 +2143,7 @@ static void footpath_remove_edges_towards(const CoordsXYRangedZ& footPathPos, in
 // entrances and exits, shops, paths).
 bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved)
 {
-    TileElement* tileElement = map_get_first_element_at(coords.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(coords);
     if (tileElement == nullptr)
         return false;
     do

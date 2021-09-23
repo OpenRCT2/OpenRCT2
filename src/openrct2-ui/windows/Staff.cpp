@@ -1339,7 +1339,7 @@ void window_staff_viewport_init(rct_window* w)
     if (w->page != WINDOW_STAFF_OVERVIEW)
         return;
 
-    std::optional<Focus2> focus;
+    std::optional<Focus> focus;
 
     const auto peep = GetStaff(w);
     if (peep == nullptr)
@@ -1349,14 +1349,14 @@ void window_staff_viewport_init(rct_window* w)
 
     if (peep->State != PeepState::Picked)
     {
-        focus = Focus2(peep->sprite_index);
+        focus = Focus(peep->sprite_index);
     }
 
     uint16_t viewport_flags;
 
     if (w->viewport)
     {
-        if (focus == w->focus2)
+        if (focus == w->focus)
             return;
 
         viewport_flags = w->viewport->flags;
@@ -1371,7 +1371,7 @@ void window_staff_viewport_init(rct_window* w)
 
     window_event_invalidate_call(w);
 
-    w->focus2 = focus;
+    w->focus = focus;
 
     if (peep->State != PeepState::Picked)
     {
