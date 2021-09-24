@@ -748,7 +748,7 @@ static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetInd
 {
     rct_widget* widget = &w->widgets[widgetIndex];
 
-    if (window_find_by_number(w->classification, w->number))
+    if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         int32_t newLeft;
         newLeft = w->scrolls[scroll_id].h_right;
@@ -787,7 +787,7 @@ static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetInd
     assert(w != nullptr);
     rct_widget* widget = &w->widgets[widgetIndex];
 
-    if (window_find_by_number(w->classification, w->number))
+    if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         int32_t newTop;
         newTop = w->scrolls[scroll_id].v_bottom;
@@ -824,7 +824,7 @@ static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetInd
 static void InputScrollPartUpdateHLeft(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id)
 {
     assert(w != nullptr);
-    if (window_find_by_number(w->classification, w->number))
+    if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         w->scrolls[scroll_id].flags |= HSCROLLBAR_LEFT_PRESSED;
         if (w->scrolls[scroll_id].h_left >= 3)
@@ -842,7 +842,7 @@ static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetInd
 {
     assert(w != nullptr);
     rct_widget* widget = &w->widgets[widgetIndex];
-    if (window_find_by_number(w->classification, w->number))
+    if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         w->scrolls[scroll_id].flags |= HSCROLLBAR_RIGHT_PRESSED;
         w->scrolls[scroll_id].h_left += 3;
@@ -867,7 +867,7 @@ static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetInd
 static void InputScrollPartUpdateVTop(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id)
 {
     assert(w != nullptr);
-    if (window_find_by_number(w->classification, w->number))
+    if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         w->scrolls[scroll_id].flags |= VSCROLLBAR_UP_PRESSED;
         if (w->scrolls[scroll_id].v_top >= 3)
@@ -885,7 +885,7 @@ static void InputScrollPartUpdateVBottom(rct_window* w, rct_widgetindex widgetIn
 {
     assert(w != nullptr);
     rct_widget* widget = &w->widgets[widgetIndex];
-    if (window_find_by_number(w->classification, w->number))
+    if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         w->scrolls[scroll_id].flags |= VSCROLLBAR_DOWN_PRESSED;
         w->scrolls[scroll_id].v_top += 3;
@@ -1170,7 +1170,7 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
     {
         rct_window* w = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
 
-        if (!w)
+        if (w == nullptr)
             tool_cancel();
         else
             window_event_tool_update_call(w, gCurrentToolWidget.widget_index, screenCoords);
@@ -1200,7 +1200,8 @@ void InputStateWidgetPressed(
     switch (state)
     {
         case MouseState::Released:
-            if (!w || cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
+            if (w == nullptr || cursor_w_class != w->classification || cursor_w_number != w->number
+                || widgetIndex != cursor_widgetIndex)
                 break;
 
             if (w->disabled_widgets & (1ULL << widgetIndex))
@@ -1237,7 +1238,7 @@ void InputStateWidgetPressed(
         case MouseState::RightPress:
             if (_inputState == InputState::DropdownActive)
             {
-                if (w)
+                if (w != nullptr)
                 {
                     auto wClass = w->classification;
                     auto wNumber = w->number;
@@ -1317,10 +1318,10 @@ void InputStateWidgetPressed(
             gTooltipTimeout = 0;
             gTooltipWidget.widget_index = cursor_widgetIndex;
 
-            if (!w)
+            if (w == nullptr)
                 break;
 
-            if (!widget)
+            if (widget == nullptr)
                 break;
 
             {

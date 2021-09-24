@@ -357,7 +357,7 @@ void window_staff_set_page(rct_window* w, int32_t page)
     }
 
     int32_t listen = 0;
-    if (page == WINDOW_STAFF_OVERVIEW && w->page == WINDOW_STAFF_OVERVIEW && w->viewport)
+    if (page == WINDOW_STAFF_OVERVIEW && w->page == WINDOW_STAFF_OVERVIEW && w->viewport != nullptr)
     {
         if (!(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
             listen = 1;
@@ -383,7 +383,7 @@ void window_staff_set_page(rct_window* w, int32_t page)
     WindowInitScrollWidgets(w);
     w->Invalidate();
 
-    if (listen && w->viewport)
+    if (listen && w->viewport != nullptr)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
 
@@ -419,7 +419,7 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 if (result->Error != GameActions::Status::Ok)
                     return;
                 rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
-                if (wind)
+                if (wind != nullptr)
                 {
                     tool_set(wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
                 }
@@ -482,8 +482,7 @@ void window_staff_overview_resize(rct_window* w)
     }
 
     rct_viewport* viewport = w->viewport;
-
-    if (viewport)
+    if (viewport != nullptr)
     {
         int32_t new_width = w->width - 30;
         int32_t new_height = w->height - 62;
@@ -954,7 +953,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_staff_stats_tab_paint(w, dpi);
 
     // Draw the viewport no sound sprite
-    if (w->viewport)
+    if (w->viewport != nullptr)
     {
         window_draw_viewport(dpi, w);
         rct_viewport* viewport = w->viewport;
@@ -1361,7 +1360,7 @@ void window_staff_viewport_init(rct_window* w)
 
     uint16_t viewport_flags;
 
-    if (w->viewport)
+    if (w->viewport != nullptr)
     {
         if (focus == w->focus)
             return;
@@ -1382,7 +1381,7 @@ void window_staff_viewport_init(rct_window* w)
 
     if (peep->State != PeepState::Picked)
     {
-        if (!(w->viewport))
+        if (w->viewport == nullptr)
         {
             rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
@@ -1396,7 +1395,7 @@ void window_staff_viewport_init(rct_window* w)
         }
     }
 
-    if (w->viewport)
+    if (w->viewport != nullptr)
         w->viewport->flags = viewport_flags;
     w->Invalidate();
 }

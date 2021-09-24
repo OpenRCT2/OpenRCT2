@@ -175,7 +175,7 @@ public:
                 Close();
                 break;
             case WIDX_OPEN_URL:
-                if (_newVersionInfo)
+                if (_newVersionInfo != nullptr)
                 {
                     GetContext()->GetUiContext()->OpenURL(_newVersionInfo->url);
                 }

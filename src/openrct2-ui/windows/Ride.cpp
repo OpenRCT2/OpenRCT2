@@ -1485,7 +1485,7 @@ static void window_ride_set_page(rct_window* w, int32_t page)
     if (page == WINDOW_RIDE_PAGE_VEHICLE)
     {
         auto constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
-        if (constructionWindow && constructionWindow->number == w->number)
+        if (constructionWindow != nullptr && constructionWindow->number == w->number)
         {
             window_close_by_class(WC_RIDE_CONSTRUCTION);
             // Closing the construction window sets the tab to the first page, which we don't want here,
@@ -1595,7 +1595,7 @@ static void window_ride_init_viewport(rct_window* w)
     {
         uint16_t vehId = ride->vehicles[viewSelectionIndex];
         rct_ride_entry* ride_entry = ride->GetRideEntry();
-        if (ride_entry && ride_entry->tab_vehicle != 0)
+        if (ride_entry != nullptr && ride_entry->tab_vehicle != 0)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(vehId);
             if (vehicle == nullptr)
@@ -1654,7 +1654,7 @@ static void window_ride_init_viewport(rct_window* w)
     w->focus = focus;
 
     // rct2: 0x006aec9c only used here so brought it into the function
-    if (!w->viewport && !ride->overall_view.IsNull())
+    if (w->viewport == nullptr && !ride->overall_view.IsNull())
     {
         rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
@@ -1667,7 +1667,7 @@ static void window_ride_init_viewport(rct_window* w)
         w->flags |= WF_NO_SCROLLING;
         w->Invalidate();
     }
-    if (w->viewport)
+    if (w->viewport != nullptr)
     {
         w->viewport->flags = viewport_flags;
         w->Invalidate();
@@ -5225,8 +5225,7 @@ static void cancel_scenery_selection()
     OpenRCT2::Audio::Resume();
 
     rct_window* main_w = window_get_main();
-
-    if (main_w)
+    if (main_w != nullptr)
     {
         main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
     }
@@ -5258,8 +5257,7 @@ static void setup_scenery_selection(rct_window* w)
     OpenRCT2::Audio::StopAll();
 
     rct_window* w_main = window_get_main();
-
-    if (w_main)
+    if (w_main != nullptr)
     {
         w_main->viewport->flags |= (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
     }

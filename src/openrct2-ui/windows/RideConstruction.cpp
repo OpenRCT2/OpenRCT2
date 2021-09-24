@@ -2139,7 +2139,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
             auto* mainWnd = window_get_main();
-            if (mainWnd && mainWnd->viewport)
+            if (mainWnd != nullptr && mainWnd->viewport != nullptr)
             {
                 _trackPlaceShiftZ = _trackPlaceShiftZ * mainWnd->viewport->zoom;
             }
@@ -3566,17 +3566,18 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         {
             pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z });
 
-            if (pathsByDir[i] && (pathsByDir[i])->AsPath()->IsSloped() && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
+            if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsSloped()
+                && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
             {
                 pathsByDir[i] = nullptr;
             }
 
             // Sloped path on the level below
-            if (!pathsByDir[i])
+            if (pathsByDir[i] == nullptr)
             {
                 pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
 
-                if (pathsByDir[i]
+                if (pathsByDir[i] != nullptr
                     && (!(pathsByDir[i])->AsPath()->IsSloped()
                         || (pathsByDir[i])->AsPath()->GetSlopeDirection() != direction_reverse(i)))
                 {
@@ -3584,12 +3585,12 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
                 }
             }
 
-            if (pathsByDir[i] && (pathsByDir[i])->AsPath()->IsQueue())
+            if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsQueue())
             {
                 pathsByDir[i] = nullptr;
             }
 
-            if (pathsByDir[i] && i == _currentTrackPieceDirection)
+            if (pathsByDir[i] != nullptr && i == _currentTrackPieceDirection)
             {
                 keepOrientation = true;
                 break;
@@ -3600,7 +3601,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         {
             for (int8_t i = 0; i < 4; i++)
             {
-                if (pathsByDir[i])
+                if (pathsByDir[i] != nullptr)
                 {
                     _currentTrackPieceDirection = i;
 
