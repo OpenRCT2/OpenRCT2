@@ -3416,7 +3416,6 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
         trackElement = map_get_track_element_at(vehiclePos);
 
         vehiclePos.z = trackElement->GetBaseZ();
-        direction = trackElement->GetDirection();
     }
 
     if (!vehicle_create_trains(id, vehiclePos, trackElement))

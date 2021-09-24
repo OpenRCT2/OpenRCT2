@@ -211,8 +211,6 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 #endif // __TESTPAINT__
 
     dx -= max_height + 32;
-
-    element = tile_element; // pop tile_element
     dx -= dpi->height;
     if (dx >= dpi->y)
         return;

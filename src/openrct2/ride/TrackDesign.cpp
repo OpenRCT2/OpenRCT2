@@ -247,7 +247,6 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         }
         trackElement.x = newCoords->x;
         trackElement.y = newCoords->y;
-        z = newCoords->z;
 
         if (track_elements.size() > TD6MaxTrackElements)
         {
