@@ -4731,7 +4731,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
         SetDestination(targetLoc);
         return;
     }
-    waypoint = 3;
+
     // Actually force the final waypoint
     Var37 |= 3;
 

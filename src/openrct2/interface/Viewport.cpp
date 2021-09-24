@@ -958,8 +958,6 @@ void viewport_paint(
     height &= bitmask;
     left &= bitmask;
     top &= bitmask;
-    right = left + width;
-    bottom = top + height;
 
     auto x = left - static_cast<int32_t>(viewport->viewPos.x & bitmask);
     x = x / viewport->zoom;

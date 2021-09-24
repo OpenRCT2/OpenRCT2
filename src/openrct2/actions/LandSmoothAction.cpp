@@ -542,17 +542,9 @@ GameActions::Result::Ptr LandSmoothAction::SmoothLand(bool isExecuting) const
                 break;
             uint8_t newBaseZ = surfaceElement->base_height;
             uint8_t oldSlope = surfaceElement->GetSlope();
-            uint8_t newSlope = oldSlope;
             int32_t rowIndex = selectionType - (MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1);
-
-            if (raiseLand)
-            {
-                newSlope = tile_element_raise_styles[rowIndex][oldSlope];
-            }
-            else
-            {
-                newSlope = tile_element_lower_styles[rowIndex][oldSlope];
-            }
+            uint8_t newSlope = raiseLand ? tile_element_raise_styles[rowIndex][oldSlope]
+                                         : tile_element_lower_styles[rowIndex][oldSlope];
 
             const bool changeBaseHeight = newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT;
             if (changeBaseHeight)
