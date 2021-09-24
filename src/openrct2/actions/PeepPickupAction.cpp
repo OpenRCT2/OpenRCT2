@@ -67,7 +67,7 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
                 return MakeResult(GameActions::Status::Disallowed, STR_ERR_CANT_PLACE_PERSON_HERE);
             }
             Peep* existing = network_get_pickup_peep(_owner);
-            if (existing)
+            if (existing != nullptr)
             {
                 // already picking up a peep
                 PeepPickupAction existingPickupAction{
@@ -122,7 +122,7 @@ GameActions::Result::Ptr PeepPickupAction::Execute() const
             res->Position = { peep->x, peep->y, peep->z };
 
             Peep* existing = network_get_pickup_peep(_owner);
-            if (existing)
+            if (existing != nullptr)
             {
                 // already picking up a peep
                 PeepPickupAction existingPickupAction{
@@ -151,7 +151,7 @@ GameActions::Result::Ptr PeepPickupAction::Execute() const
             res->Position = { peep->x, peep->y, peep->z };
 
             Peep* const pickedUpPeep = network_get_pickup_peep(_owner);
-            if (pickedUpPeep)
+            if (pickedUpPeep != nullptr)
             {
                 pickedUpPeep->PickupAbort(_loc.x);
             }

@@ -17,7 +17,7 @@
 static uint8_t getBaseHeightOrZero(int32_t x, int32_t y)
 {
     auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
-    return surfaceElement ? surfaceElement->base_height : 0;
+    return surfaceElement != nullptr ? surfaceElement->base_height : 0;
 }
 
 /**

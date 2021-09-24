@@ -806,7 +806,7 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
 {
     assert(w != nullptr);
     window_unfollow_sprite(w);
-    if (w->viewport)
+    if (w->viewport != nullptr)
     {
         int16_t height = tile_element_height(coords);
         if (coords.z < height - 16)

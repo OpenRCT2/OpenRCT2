@@ -700,7 +700,7 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
     static std::string formatted;
     formatted.clear();
     formatted += "{OUTLINE}";
-    if (fromplayer)
+    if (fromplayer != nullptr)
     {
         formatted += "{BABYBLUE}";
         formatted += fromplayer->Name;
@@ -934,7 +934,7 @@ uint8_t NetworkBase::GetDefaultGroup()
 
 void NetworkBase::SetDefaultGroup(uint8_t id)
 {
-    if (GetGroupByID(id))
+    if (GetGroupByID(id) != nullptr)
     {
         default_group = id;
     }
@@ -1336,7 +1336,7 @@ NetworkStats_t NetworkBase::GetStats() const
 void NetworkBase::Server_Send_AUTH(NetworkConnection& connection)
 {
     uint8_t new_playerid = 0;
-    if (connection.Player)
+    if (connection.Player != nullptr)
     {
         new_playerid = connection.Player->Id;
     }
@@ -1356,7 +1356,7 @@ void NetworkBase::Server_Send_AUTH(NetworkConnection& connection)
 void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
 {
     std::vector<const ObjectRepositoryItem*> objects;
-    if (connection)
+    if (connection != nullptr)
     {
         objects = connection->RequestedObjects;
     }
@@ -1372,7 +1372,7 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
     auto header = save_for_network(objects);
     if (header.empty())
     {
-        if (connection)
+        if (connection != nullptr)
         {
             connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
             connection->Disconnect();
@@ -1386,7 +1386,7 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
         NetworkPacket packet(NetworkCommand::Map);
         packet << static_cast<uint32_t>(header.size()) << static_cast<uint32_t>(i);
         packet.Write(&header[i], datasize);
-        if (connection)
+        if (connection != nullptr)
         {
             connection->QueuePacket(std::move(packet));
         }
@@ -1844,7 +1844,7 @@ void NetworkBase::ProcessPlayerList()
                 {
                     // Add new player.
                     player = AddPlayer("", "");
-                    if (player)
+                    if (player != nullptr)
                     {
                         *player = pendingPlayer;
                         if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
@@ -1965,7 +1965,7 @@ void NetworkBase::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& c
         connection_player->Name.c_str(),
         connection->GetLastDisconnectReason(),
     };
-    if (has_disconnected_args[1])
+    if (has_disconnected_args[1] != nullptr)
     {
         format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
     }
@@ -1976,7 +1976,7 @@ void NetworkBase::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& c
 
     chat_history_add(text);
     Peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
-    if (pickup_peep)
+    if (pickup_peep != nullptr)
     {
         PeepPickupAction pickupAction{ PeepPickupType::Cancel,
                                        pickup_peep->sprite_index,
@@ -2181,7 +2181,7 @@ void NetworkBase::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection,
     IGameStateSnapshots* snapshots = GetContext().GetGameStateSnapshots();
 
     const GameStateSnapshot_t* snapshot = snapshots->GetLinkedSnapshot(tick);
-    if (snapshot)
+    if (snapshot != nullptr)
     {
         MemoryStream snapshotMemory;
         DataSerialiser ds(true, snapshotMemory);
@@ -2426,7 +2426,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
         snapshots->SerialiseSnapshot(serverSnapshot, ds);
 
         const GameStateSnapshot_t* desyncSnapshot = snapshots->GetLinkedSnapshot(tick);
-        if (desyncSnapshot)
+        if (desyncSnapshot != nullptr)
         {
             GameStateCompareData_t cmpData = snapshots->Compare(serverSnapshot, *desyncSnapshot);
 
@@ -2468,7 +2468,7 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_CLIENT_INVALID_REQUEST);
         connection.Disconnect();
         std::string playerName = "(unknown)";
-        if (connection.Player)
+        if (connection.Player != nullptr)
         {
             playerName = connection.Player->Name;
         }
@@ -2880,10 +2880,10 @@ void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacke
     if (szText.empty())
         return;
 
-    if (connection.Player)
+    if (connection.Player != nullptr)
     {
         NetworkGroup* group = GetGroupByID(connection.Player->Group);
-        if (!group || !group->CanPerformCommand(GameCommand::Chat))
+        if (group == nullptr || !group->CanPerformCommand(GameCommand::Chat))
         {
             return;
         }
@@ -3084,7 +3084,7 @@ void NetworkBase::Server_Handle_PING(NetworkConnection& connection, [[maybe_unus
     {
         ping = 0;
     }
-    if (connection.Player)
+    if (connection.Player != nullptr)
     {
         connection.Player->Ping = ping;
         window_invalidate_by_number(WC_PLAYER, connection.Player->Id);
@@ -3101,7 +3101,7 @@ void NetworkBase::Client_Handle_PINGLIST([[maybe_unused]] NetworkConnection& con
         uint16_t ping;
         packet >> id >> ping;
         NetworkPlayer* player = GetPlayerByID(id);
-        if (player)
+        if (player != nullptr)
         {
             player->Ping = ping;
         }
@@ -3510,7 +3510,7 @@ GameActions::Result::Ptr network_set_player_group(
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS);
     }
 
-    if (!network.GetGroupByID(groupId))
+    if (network.GetGroupByID(groupId) == nullptr)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS);
     }
@@ -3521,7 +3521,7 @@ GameActions::Result::Ptr network_set_player_group(
             GameActions::Status::InvalidParameters, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
     }
 
-    if (groupId == 0 && fromgroup && fromgroup->Id != 0)
+    if (groupId == 0 && fromgroup != nullptr && fromgroup->Id != 0)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_SET_TO_THIS_GROUP);
     }
@@ -3701,7 +3701,7 @@ GameActions::Result::Ptr network_kick_player(NetworkPlayerId_t playerId, bool is
         return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
     }
 
-    if (player && player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
+    if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_CANT_KICK_THE_HOST);
     }
@@ -3768,7 +3768,7 @@ void network_set_pickup_peep(uint8_t playerid, Peep* peep)
     else
     {
         NetworkPlayer* player = network.GetPlayerByID(playerid);
-        if (player)
+        if (player != nullptr)
         {
             player->PickupPeep = peep;
         }
@@ -3784,7 +3784,7 @@ Peep* network_get_pickup_peep(uint8_t playerid)
     }
 
     NetworkPlayer* player = network.GetPlayerByID(playerid);
-    if (player)
+    if (player != nullptr)
     {
         return player->PickupPeep;
     }
@@ -3801,7 +3801,7 @@ void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x)
     else
     {
         NetworkPlayer* player = network.GetPlayerByID(playerid);
-        if (player)
+        if (player != nullptr)
         {
             player->PickupPeepOldX = x;
         }
@@ -3817,7 +3817,7 @@ int32_t network_get_pickup_peep_old_x(uint8_t playerid)
     }
 
     NetworkPlayer* player = network.GetPlayerByID(playerid);
-    if (player)
+    if (player != nullptr)
     {
         return player->PickupPeepOldX;
     }
@@ -3828,7 +3828,7 @@ int32_t network_get_current_player_group_index()
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     NetworkPlayer* player = network.GetPlayerByID(network.GetPlayerID());
-    if (player)
+    if (player != nullptr)
     {
         return network_get_group_index(player->Group);
     }

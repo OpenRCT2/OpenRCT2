@@ -1148,7 +1148,7 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const EntityBase* src)
         case EntityType::Vehicle:
         {
             auto veh = src->As<Vehicle>();
-            if (veh && veh->IsHead())
+            if (veh != nullptr && veh->IsHead())
             {
                 output = RCT12EntityLinkListOffset::TrainHead;
             }
@@ -1863,7 +1863,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, const TileElement* src
 
             // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
             auto ride = get_ride(static_cast<ride_id_t>(dst2->GetRideIndex()));
-            if (ride)
+            if (ride != nullptr)
             {
                 if (ride->type == RIDE_TYPE_MAZE)
                 {
