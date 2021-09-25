@@ -1754,7 +1754,7 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
  */
 static void ride_music_update(Ride* ride)
 {
-    // Circus does not have "music." Music is a sound effect
+    // The circus does not have music in the normal sense - its “music” is a sound effect.
     if (ride->type == RIDE_TYPE_CIRCUS)
     {
         Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
