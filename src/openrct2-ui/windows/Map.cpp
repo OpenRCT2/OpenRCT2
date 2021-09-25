@@ -1463,7 +1463,7 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
         if (tileElement->IsGhost())
         {
             colour = MapColour(PALETTE_INDEX_21);
-            break;
+            continue;
         }
 
         int32_t tileElementType = tileElement->GetType() >> 2;
@@ -1494,7 +1494,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
         if (tileElement->IsGhost())
         {
             colourA = MapColour(PALETTE_INDEX_21);
-            break;
+            continue;
         }
 
         switch (tileElement->GetType())
