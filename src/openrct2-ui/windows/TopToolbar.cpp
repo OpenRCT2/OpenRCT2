@@ -1215,7 +1215,7 @@ static void sub_6E1F34_update_screen_coords_and_buttons_pressed(bool canRaiseIte
                 gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);
                 // Scale delta by zoom to match mouse position.
                 auto* mainWnd = window_get_main();
-                if (mainWnd && mainWnd->viewport)
+                if (mainWnd != nullptr && mainWnd->viewport != nullptr)
                 {
                     gSceneryShiftPressZOffset = gSceneryShiftPressZOffset * mainWnd->viewport->zoom;
                 }
@@ -3061,7 +3061,7 @@ static money64 selection_lower_land(uint8_t flags)
 static void window_top_toolbar_land_tool_drag(const ScreenCoordsXY& screenPos)
 {
     rct_window* window = window_find_from_point(screenPos);
-    if (!window)
+    if (window == nullptr)
         return;
     rct_widgetindex widget_index = window_find_widget_from_point(window, screenPos);
     if (widget_index == -1)
@@ -3070,7 +3070,7 @@ static void window_top_toolbar_land_tool_drag(const ScreenCoordsXY& screenPos)
     if (widget->type != WindowWidgetType::Viewport)
         return;
     rct_viewport* viewport = window->viewport;
-    if (!viewport)
+    if (viewport == nullptr)
         return;
 
     int16_t tile_height = -16 / viewport->zoom;
@@ -3113,7 +3113,7 @@ static void window_top_toolbar_water_tool_drag(const ScreenCoordsXY& screenPos)
     if (widget->type != WindowWidgetType::Viewport)
         return;
     rct_viewport* viewport = window->viewport;
-    if (!viewport)
+    if (viewport == nullptr)
         return;
 
     int16_t dx = -16 / viewport->zoom;
@@ -3558,7 +3558,7 @@ static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 static void top_toolbar_debug_menu_dropdown(int16_t dropdownIndex)
 {
     rct_window* w = window_get_main();
-    if (w)
+    if (w != nullptr)
     {
         switch (dropdownIndex)
         {
@@ -3585,7 +3585,7 @@ static void top_toolbar_debug_menu_dropdown(int16_t dropdownIndex)
 static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
 {
     rct_window* w = window_get_main();
-    if (w)
+    if (w != nullptr)
     {
         switch (dropdownIndex)
         {
@@ -3681,7 +3681,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
 static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex)
 {
     rct_window* w = window_get_main();
-    if (w)
+    if (w != nullptr)
     {
         switch (dropdownIndex)
         {

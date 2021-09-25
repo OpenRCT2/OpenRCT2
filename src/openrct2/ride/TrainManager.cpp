@@ -22,7 +22,7 @@ namespace TrainManager
         while (iter != end && Entity == nullptr)
         {
             Entity = GetEntity<Vehicle>(*iter++);
-            if (Entity && !Entity->IsHead())
+            if (Entity != nullptr && !Entity->IsHead())
             {
                 Entity = nullptr;
             }

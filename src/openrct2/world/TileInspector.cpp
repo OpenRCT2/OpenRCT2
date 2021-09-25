@@ -149,7 +149,7 @@ namespace OpenRCT2::TileInspector
             }
 
             auto largeScenery = tileElement->AsLargeScenery();
-            if (largeScenery)
+            if (largeScenery != nullptr)
             {
                 // Only delete the banner entry if there are no other parts of the large scenery to delete
                 if (numLargeScenerySequences(loc, largeScenery) == 1)

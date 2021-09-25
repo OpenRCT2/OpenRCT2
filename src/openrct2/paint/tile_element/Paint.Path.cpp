@@ -1061,7 +1061,7 @@ void path_paint_box_support(
 
     // If we are on the same tile as a straight track, add the offset 2 so we
     //  can clip above gravel part of the track sprite
-    if (session->TrackElementOnSameHeight)
+    if (session->TrackElementOnSameHeight != nullptr)
     {
         if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
         {
@@ -1200,7 +1200,7 @@ void path_paint_pole_support(
 
     // If we are on the same tile as a straight track, add the offset 2 so we
     //  can clip above gravel part of the track sprite
-    if (session->TrackElementOnSameHeight)
+    if (session->TrackElementOnSameHeight != nullptr)
     {
         if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
         {

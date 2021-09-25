@@ -525,7 +525,7 @@ void PaintDrawStructs(paint_session* session)
 {
     paint_struct* ps = &session->PaintHead;
 
-    for (ps = ps->next_quadrant_ps; ps;)
+    for (ps = ps->next_quadrant_ps; ps != nullptr;)
     {
         PaintDrawStruct(session, ps);
 
@@ -541,7 +541,7 @@ void PaintDrawStructs(paint_session* session)
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags)
 {
     attached_paint_struct* attached_ps = ps->attached_ps;
-    for (; attached_ps; attached_ps = attached_ps->next)
+    for (; attached_ps != nullptr; attached_ps = attached_ps->next)
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 

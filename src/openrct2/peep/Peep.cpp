@@ -573,12 +573,12 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
 {
     auto* pathElement = map_get_path_element_at(location);
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
-    if (!pathElement)
+    if (pathElement == nullptr)
     {
         tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(location.ToCoordsXYZ()));
     }
 
-    if (!tileElement)
+    if (tileElement == nullptr)
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);
 
     // Set the coordinate of destination to be exactly
@@ -2055,7 +2055,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
     auto* guest = peep->As<Guest>();
     if (map_is_location_owned({ coords, z }))
     {
-        if (guest && guest->OutsideOfPark)
+        if (guest != nullptr && guest->OutsideOfPark)
         {
             peep_return_to_centre_of_tile(guest);
             return;

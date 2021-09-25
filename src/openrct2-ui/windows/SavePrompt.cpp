@@ -121,7 +121,7 @@ rct_window* window_save_prompt_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_SAVE_PROMPT);
-    if (window)
+    if (window != nullptr)
     {
         window_close(window);
     }

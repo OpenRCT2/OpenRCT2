@@ -375,14 +375,14 @@ private:
     };
     uint8_t Flags2;
     ride_id_t RideIndex;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad[2];
-#pragma clang diagnostic pop
+    ride_type_t RideType;
 
 public:
     track_type_t GetTrackType() const;
     void SetTrackType(track_type_t newEntryIndex);
+
+    ride_type_t GetRideType() const;
+    void SetRideType(const ride_type_t rideType);
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);

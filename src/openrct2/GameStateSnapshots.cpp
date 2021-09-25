@@ -744,7 +744,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         auto outputBuffer = GetCompareDataText(cmpData);
 
         FILE* fp = fopen(fileName.c_str(), "wt");
-        if (!fp)
+        if (fp == nullptr)
             return false;
 
         fputs(outputBuffer.c_str(), fp);
