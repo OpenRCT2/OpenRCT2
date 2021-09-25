@@ -2011,7 +2011,7 @@ static void window_options_advanced_mouseup(rct_window* w, rct_widgetindex widge
         case WIDX_PATH_TO_RCT1_BUTTON:
         {
             utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
-            if (rct1path)
+            if (rct1path != nullptr)
             {
                 // Check if this directory actually contains RCT1
                 if (Csg1datPresentAtLocation(rct1path))
