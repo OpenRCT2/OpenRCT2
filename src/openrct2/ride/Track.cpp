@@ -730,6 +730,16 @@ void TrackElement::SetTrackType(uint16_t newType)
     TrackType = newType;
 }
 
+ride_type_t TrackElement::GetRideType() const
+{
+    return RideType;
+}
+
+void TrackElement::SetRideType(const ride_type_t rideType)
+{
+    RideType = rideType;
+}
+
 uint8_t TrackElement::GetSequenceIndex() const
 {
     return Sequence;

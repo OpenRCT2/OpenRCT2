@@ -168,6 +168,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
 
     trackElement->SetClearanceZ(clearanceHeight);
     trackElement->SetTrackType(TrackElemType::Maze);
+    trackElement->SetRideType(ride->type);
     trackElement->SetRideIndex(_rideIndex);
     trackElement->SetMazeEntry(_mazeEntry);
     trackElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);

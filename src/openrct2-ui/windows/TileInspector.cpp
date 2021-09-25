@@ -1928,28 +1928,31 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
             case TILE_ELEMENT_TYPE_TRACK:
             {
-                // Details
-                // Ride
                 auto trackElement = tileElement->AsTrack();
                 ride_id_t rideId = trackElement->GetRideIndex();
                 auto ride = get_ride(rideId);
-                if (ride != nullptr)
-                {
-                    auto ft = Formatter();
-                    ft.Add<rct_string_id>(ride->GetRideTypeDescriptor().Naming.Name);
-                    DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, ft, { COLOUR_WHITE });
-                }
+
+                // Ride ID
                 auto ft = Formatter();
-                ft.Add<int16_t>(trackElement->GetRideIndex());
-                DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_TRACK_RIDE_ID, ft, { COLOUR_WHITE });
+                ft.Add<int16_t>(rideId);
+                DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_TRACK_RIDE_ID, ft, { COLOUR_WHITE });
+
+                // Ride name
                 if (ride != nullptr)
                 {
                     ft = Formatter();
                     ride->FormatNameTo(ft);
                     DrawTextBasic(
-                        dpi, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, ft, { COLOUR_WHITE });
+                        dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, ft, { COLOUR_WHITE });
                 }
+
+                // Ride type. Individual pieces may be of a different ride type from the ride it belongs to.
+                const auto& rtd = GetRideTypeDescriptor(trackElement->GetRideType());
+                ft = Formatter();
+                ft.Add<rct_string_id>(rtd.Naming.Name);
+                DrawTextBasic(
+                    dpi, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, ft, { COLOUR_WHITE });
+
                 // Track
                 ft = Formatter();
                 ft.Add<track_type_t>(trackElement->GetTrackType());
