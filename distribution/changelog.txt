@@ -26,6 +26,7 @@
 - Fix: [#15257] Chat icon shows in scenario/track editor. Other icons don't disable when deactivated in options menu.
 - Fix: [#15289] Unexpected behavior with duplicated banners which also caused desyncs in multiplayer.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
+- Improved: [#15462] Ghost elements do no longer overrule higher elements' colours in the map window.
 - Change: [#8601] Revert ToonTower base block fix to re-enable support blocking.
 - Change: [#15174] [Plugin] Deprecate the type "peep" and add support to target a specific scripting api version.
 
