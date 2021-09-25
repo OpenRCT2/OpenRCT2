@@ -72,7 +72,7 @@ static void UpdateFootpathsFromMapping(
 namespace OpenRCT2
 {
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x3;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x4;
 
     // The minimum version that is forwards compatible with the current version.
     constexpr uint32_t PARK_FILE_MIN_VERSION = 0x2;
@@ -147,6 +147,10 @@ namespace OpenRCT2
             ReadWriteInterfaceChunk(os);
             ReadWriteCheatsChunk(os);
             ReadWriteRestrictedObjectsChunk(os);
+            if (os.GetHeader().TargetVersion < 0x4)
+            {
+                UpdateTrackElementsRideType();
+            }
 
             // Initial cash will eventually be removed
             gInitialCash = gCash;
@@ -918,6 +922,32 @@ namespace OpenRCT2
             if (!found)
             {
                 throw std::runtime_error("No tiles chunk found.");
+            }
+        }
+
+        void UpdateTrackElementsRideType()
+        {
+            for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+            {
+                for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+                {
+                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+                    if (tileElement == nullptr)
+                        continue;
+                    do
+                    {
+                        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                            continue;
+
+                        auto* trackElement = tileElement->AsTrack();
+                        const auto* ride = get_ride(trackElement->GetRideIndex());
+                        if (ride != nullptr)
+                        {
+                            trackElement->SetRideType(ride->type);
+                        }
+
+                    } while (!(tileElement++)->IsLastForTile());
+                }
             }
         }
 
