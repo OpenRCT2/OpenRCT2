@@ -1805,6 +1805,7 @@ static void ride_music_update(Ride* ride)
             }
         }
     }
+
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
     if (ride->music_tune_id == 255)
     {
