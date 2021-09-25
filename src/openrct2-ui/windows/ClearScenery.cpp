@@ -41,7 +41,7 @@ static rct_widget window_clear_scenery_widgets[] = {
     MakeRemapWidget({ 7, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
     MakeRemapWidget({37, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
     MakeRemapWidget({67, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP),     // footpaths
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_clear_scenery_close(rct_window *w);

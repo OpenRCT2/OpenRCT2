@@ -106,7 +106,7 @@ static rct_widget window_title_command_editor_widgets[] = {
 
     MakeWidget({ 10, 99}, {  71,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_OK                                         ), // OKAY
     MakeWidget({120, 99}, {  71,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CANCEL                                     ), // Cancel
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_title_command_editor_close(rct_window * w);

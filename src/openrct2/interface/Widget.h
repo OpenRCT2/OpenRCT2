@@ -40,7 +40,7 @@ enum class WindowWidgetType : uint8_t
     Last = 26,
 };
 
-#define WIDGETS_END WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0
+constexpr const auto WIDGETS_END = rct_widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
 #define BAR_BLINK (1u << 31)
 
 #define SPINNER_INCREASE(l, r, t, b) (r) - 12, (r)-1, (t) + 1, (b)-1

@@ -100,7 +100,7 @@ static rct_widget _windowFinancesSummaryWidgets[] =
     TAB_WIDGETS,
     MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
     MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget _windowFinancesCashWidgets[] =
@@ -108,7 +108,7 @@ static rct_widget _windowFinancesCashWidgets[] =
     WINDOW_SHIM(STR_FINANCIAL_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
     TAB_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget _windowFinancesParkValueWidgets[] =
@@ -116,7 +116,7 @@ static rct_widget _windowFinancesParkValueWidgets[] =
     WINDOW_SHIM(STR_PARK_VALUE_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
     TAB_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget _windowFinancesProfitWidgets[] =
@@ -124,7 +124,7 @@ static rct_widget _windowFinancesProfitWidgets[] =
     WINDOW_SHIM(STR_PROFIT_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
     TAB_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget _windowFinancesMarketingWidgets[] =
@@ -140,7 +140,7 @@ static rct_widget _windowFinancesMarketingWidgets[] =
     MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget _windowFinancesResearchWidgets[] =
@@ -159,7 +159,7 @@ static rct_widget _windowFinancesResearchWidgets[] =
     MakeWidget({  8, 160}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
     MakeWidget({  8, 173}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
     MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *_windowFinancesPageWidgets[] =

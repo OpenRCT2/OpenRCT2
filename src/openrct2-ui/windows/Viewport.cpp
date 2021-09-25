@@ -47,7 +47,7 @@ static rct_widget window_viewport_widgets[] =
     MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP       ), // zoom in
     MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP      ), // zoom out
     MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP), // locate
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // clang-format on

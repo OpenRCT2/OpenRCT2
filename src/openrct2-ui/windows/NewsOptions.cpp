@@ -80,7 +80,7 @@ static rct_widget window_news_options_widgets[] = {
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_news_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);

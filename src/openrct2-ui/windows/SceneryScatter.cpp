@@ -47,7 +47,7 @@ static rct_widget window_scenery_scatter_widgets[] = {
     MakeRemapWidget({ 7, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW   ), // low amount
     MakeRemapWidget({31, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM), // medium amount
     MakeRemapWidget({55, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH  ), // high amount
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 // clang-format on
 
