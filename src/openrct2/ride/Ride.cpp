@@ -1762,22 +1762,25 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
  */
 static void ride_music_update(Ride* ride)
 {
-    const auto& rtd = ride->GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
-    {
-        return;
-    }
-
-    if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
-    {
-        ride->music_tune_id = 255;
-        return;
-    }
-
+    // The circus does not have music in the normal sense - its “music” is a sound effect.
     if (ride->type == RIDE_TYPE_CIRCUS)
     {
         Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-        if (vehicle != nullptr && vehicle->status != Vehicle::Status::DoingCircusShow)
+        if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
+        {
+            ride->music_tune_id = 255;
+            return;
+        }
+    }
+    else
+    {
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+        {
+            return;
+        }
+
+        if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
         {
             ride->music_tune_id = 255;
             return;

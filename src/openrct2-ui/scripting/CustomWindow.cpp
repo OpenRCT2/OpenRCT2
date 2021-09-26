@@ -965,7 +965,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            widgetList.push_back({ WIDGETS_END });
+            widgetList.push_back(WIDGETS_END);
             widgets = widgetList.data();
 
             WindowInitScrollWidgets(this);

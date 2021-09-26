@@ -86,7 +86,7 @@ static rct_widget window_scenarioselect_widgets[] = {
     MakeRemapWidget({594, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 7
     MakeRemapWidget({685, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 8
     MakeWidget     ({  3, 54}, { WW - SidebarWidth, 276 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static constexpr const rct_string_id ScenarioOriginStringIds[] = {

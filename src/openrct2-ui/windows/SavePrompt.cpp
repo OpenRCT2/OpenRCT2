@@ -42,7 +42,7 @@ static rct_widget window_save_prompt_widgets[] = {
     MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
     MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
     MakeWidget({174, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_CANCEL   ), // cancel
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
@@ -57,7 +57,7 @@ static rct_widget window_quit_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
     MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
     MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static constexpr const rct_string_id window_save_prompt_labels[][2] = {

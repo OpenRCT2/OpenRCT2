@@ -226,7 +226,7 @@ static rct_widget window_options_display_widgets[] = {
     MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
     MakeWidget        ({ 11, 191}, {280,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
     MakeWidget        ({ 11, 206}, {280,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_rendering_widgets[] = {
@@ -250,7 +250,7 @@ static rct_widget window_options_rendering_widgets[] = {
     MakeWidget({10, FRAME_EFFECTS_START + 60}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
     MakeWidget({25, FRAME_EFFECTS_START + 75}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP), // Disable lightning effect
 #undef FRAME_EFFECTS_START
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_culture_widgets[] = {
@@ -267,7 +267,7 @@ static rct_widget window_options_culture_widgets[] = {
     MakeWidget({288, 114}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_HEIGHT_LABELS_UNITS_TIP),
     MakeWidget({155, 128}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                 ), // Date format
     MakeWidget({288, 129}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_DATE_FORMAT_TIP        ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_audio_widgets[] = {
@@ -284,7 +284,7 @@ static rct_widget window_options_audio_widgets[] = {
     MakeWidget({155,  68}, {145, 13}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Master volume
     MakeWidget({155,  83}, {145, 13}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
     MakeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Music volume
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_controls_and_interface_widgets[] = {
@@ -312,7 +312,7 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
     MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
     MakeWidget({ 24, TOOLBAR_GROUP_START + 76}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
-    { WIDGETS_END },
+    WIDGETS_END,
 #undef TOOLBAR_GROUP_START
 };
 
@@ -343,7 +343,7 @@ static rct_widget window_options_misc_widgets[] = {
     MakeWidget({175, TWEAKS_START + 61}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                               ), // Default inspection time dropdown
     MakeWidget({288, TWEAKS_START + 62}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP), // Default inspection time dropdown button
 #undef TWEAKS_START
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_advanced_widgets[] = {
@@ -359,7 +359,7 @@ static rct_widget window_options_advanced_widgets[] = {
     MakeWidget        ({ 23, 169}, {276, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
     MakeWidget        ({ 24, 184}, {266, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
     MakeWidget        ({289, 184}, { 11, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_options_page_widgets[] = {

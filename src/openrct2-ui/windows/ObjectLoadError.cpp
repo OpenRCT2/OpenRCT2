@@ -282,7 +282,7 @@ static rct_widget window_object_load_error_widgets[] = {
 #ifndef DISABLE_HTTP
     MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
 #endif
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_object_load_error_close(rct_window *w);
