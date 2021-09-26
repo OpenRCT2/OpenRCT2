@@ -5734,3 +5734,29 @@ void Ride::IncreaseNumShelteredSections()
     num_sheltered_sections &= ~ShelteredSectionsBits::NumShelteredSectionsMask;
     num_sheltered_sections |= newNumShelteredSections;
 }
+
+void Ride::UpdateRideTypeForAllPieces()
+{
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            auto* tileElement = map_get_first_element_at(TileCoordsXY(x, y));
+            if (tileElement == nullptr)
+                continue;
+
+            do
+            {
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                    continue;
+
+                auto* trackElement = tileElement->AsTrack();
+                if (trackElement->GetRideIndex() != id)
+                    continue;
+
+                trackElement->SetRideType(type);
+
+            } while (!(tileElement++)->IsLastForTile());
+        }
+    }
+}
