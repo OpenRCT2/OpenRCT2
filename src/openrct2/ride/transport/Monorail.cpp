@@ -460,6 +460,7 @@ static void paint_monorail_station(
 {
     uint32_t imageId;
     const StationObject* stationObject = nullptr;
+
     if (ride != nullptr)
         stationObject = ride_get_station_object(ride);
 

@@ -44,7 +44,7 @@ static int8_t TopSpinSeatPositionOffset[] = {
  */
 static void top_spin_paint_vehicle(
     paint_session* session, int32_t al, int32_t cl, const Ride* ride, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& tileElement)
 {
     if (ride == nullptr)
         return;

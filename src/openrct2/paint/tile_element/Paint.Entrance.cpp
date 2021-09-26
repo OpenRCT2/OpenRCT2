@@ -14,8 +14,6 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
-#include "../../object/FootpathObject.h"
-#include "../../object/FootpathSurfaceObject.h"
 #include "../../object/StationObject.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
