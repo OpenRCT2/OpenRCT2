@@ -519,7 +519,7 @@ declare global {
         result: boolean;
     }
 
-    type VehicleCrashIntoType = "another_vehicle"|"land"|"water";
+    type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
 
     interface VehicleCrashArgs {
         readonly id: number;
@@ -1071,8 +1071,21 @@ declare global {
         exit: CoordsXYZD;
     }
 
-    type EntityType
-        = "balloon"|"car"|"crash_splash"|"crashed_vehicle_particle"|"duck"|"explosion_cloud"|"explosion_flare"|"jumping_fountain_snow"|"jumping_fountain_water"|"litter"|"money_effect"|"guest"|"staff"|"steam_particle"|
+    type EntityType =
+        "balloon" |
+        "car" |
+        "crash_splash" |
+        "crashed_vehicle_particle" |
+        "duck" |
+        "explosion_cloud" |
+        "explosion_flare" |
+        "jumping_fountain_snow" |
+        "jumping_fountain_water" |
+        "litter" |
+        "money_effect" |
+        "guest" |
+        "staff" |
+        "steam_particle" |
         /**
          * @deprecated since version 34, use guest or staff instead.
          */
@@ -1233,7 +1246,7 @@ declare global {
         /**
          * List of guest IDs ordered by seat.
          */
-        guests: Array<number|null>;
+        guests: Array<number | null>;
 
         /**
          * Moves the vehicle forward or backwards along the track, relative to its current
@@ -1499,8 +1512,18 @@ declare global {
         creationTime: number;
     }
 
-    type LitterType
-        = "vomit"|"vomit_alt"|"empty_can"|"rubbish"|"burger_box"|"empty_cup"|"empty_box"|"empty_bottle"|"empty_bowl_red"|"empty_drink_carton"|"empty_juice_cup"|"empty_bowl_blue";
+    type LitterType = "vomit" |
+        "vomit_alt" |
+        "empty_can" |
+        "rubbish" |
+        "burger_box" |
+        "empty_cup" |
+        "empty_box" |
+        "empty_bottle" |
+        "empty_bowl_red" |
+        "empty_drink_carton" |
+        "empty_juice_cup" |
+        "empty_bowl_blue";
 
     /**
      * Network APIs
