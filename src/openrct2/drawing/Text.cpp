@@ -18,56 +18,67 @@ static void DrawText(
 static void DrawText(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, rct_string_id format, const void* args);
 
-StaticLayout::StaticLayout(utf8string source, const TextPaint& paint, int32_t width)
+class StaticLayout
 {
-    Buffer = source;
-    Paint = paint;
+private:
+    utf8string Buffer;
+    TextPaint Paint;
+    int32_t LineCount = 0;
+    int32_t LineHeight;
+    int32_t MaxWidth;
 
-    MaxWidth = gfx_wrap_string(Buffer, width, paint.SpriteBase, &LineCount);
-    LineCount += 1;
-    LineHeight = font_get_line_height(paint.SpriteBase);
-}
-
-void StaticLayout::Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
-{
-    TextPaint tempPaint = Paint;
-
-    auto lineCoords = coords;
-    switch (Paint.Alignment)
+public:
+    StaticLayout(utf8string source, const TextPaint& paint, int32_t width)
     {
-        case TextAlignment::LEFT:
-            break;
-        case TextAlignment::CENTRE:
-            lineCoords.x += MaxWidth / 2;
-            break;
-        case TextAlignment::RIGHT:
-            lineCoords.x += MaxWidth;
-            break;
+        Buffer = source;
+        Paint = paint;
+
+        MaxWidth = gfx_wrap_string(Buffer, width, paint.SpriteBase, &LineCount);
+        LineCount += 1;
+        LineHeight = font_get_line_height(paint.SpriteBase);
     }
-    utf8* buffer = Buffer;
-    for (int32_t line = 0; line < LineCount; ++line)
+
+    void Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
     {
-        DrawText(dpi, lineCoords, tempPaint, buffer);
-        tempPaint.Colour = TEXT_COLOUR_254;
-        buffer = get_string_end(buffer) + 1;
-        lineCoords.y += LineHeight;
+        TextPaint tempPaint = Paint;
+
+        auto lineCoords = coords;
+        switch (Paint.Alignment)
+        {
+            case TextAlignment::LEFT:
+                break;
+            case TextAlignment::CENTRE:
+                lineCoords.x += MaxWidth / 2;
+                break;
+            case TextAlignment::RIGHT:
+                lineCoords.x += MaxWidth;
+                break;
+        }
+        utf8* buffer = Buffer;
+        for (int32_t line = 0; line < LineCount; ++line)
+        {
+            DrawText(dpi, lineCoords, tempPaint, buffer);
+            tempPaint.Colour = TEXT_COLOUR_254;
+            buffer = get_string_end(buffer) + 1;
+            lineCoords.y += LineHeight;
+        }
     }
-}
 
-int32_t StaticLayout::GetHeight()
-{
-    return LineHeight * LineCount;
-}
+    int32_t GetHeight() const
+    {
+        return LineHeight * LineCount;
+    }
 
-int32_t StaticLayout::GetWidth()
-{
-    return MaxWidth;
-}
+    int32_t GetWidth() const
+    {
+        return MaxWidth;
+    }
 
-int32_t StaticLayout::GetLineCount()
-{
-    return LineCount;
-}
+    int32_t GetLineCount() const
+    {
+        return LineCount;
+    }
+};
 
 static void DrawText(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
