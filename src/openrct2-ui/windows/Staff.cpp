@@ -86,7 +86,7 @@ static rct_widget window_staff_overview_widgets[] = {
     MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_STAFF_TIP    ), // Rename Button
     MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP), // Locate Button
     MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_DEMOLISH,   STR_FIRE_STAFF_TIP    ), // Fire Button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 //0x9AF910
@@ -98,13 +98,13 @@ static rct_widget window_staff_options_widgets[] = {
     MakeWidget     ({      5, 101}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 4
     MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                            ), // Costume Dropdown
     MakeWidget     ({WW - 17,  51}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 //0x9AF9F4
 static rct_widget window_staff_stats_widgets[] = {
     MAIN_STAFF_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_staff_page_widgets[] = {

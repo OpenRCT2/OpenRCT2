@@ -63,12 +63,12 @@ static rct_widget window_player_overview_widgets[] = {
     MakeWidget({179, 45}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_LOCATE,         STR_LOCATE_PLAYER_TIP), // Locate button
     MakeWidget({179, 69}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_DEMOLISH,       STR_KICK_PLAYER_TIP  ), // Kick button
     MakeWidget({  3, 60}, {175, 61}, WindowWidgetType::Viewport, WindowColour::Secondary                                           ), // Viewport
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_player_statistics_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_player_page_widgets[] = {

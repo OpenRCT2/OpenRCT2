@@ -99,40 +99,40 @@ static rct_widget window_park_entrance_widgets[] = {
     MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,                 STR_NAME_PARK_TIP                       ), // rename
     MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_PARK_TIP                      ),
     MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_PARK_TIP                       ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_rating_widgets[] = {
     MAIN_PARK_WIDGETS(255),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_guests_widgets[] = {
     MAIN_PARK_WIDGETS(255),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
     MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_stats_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_awards_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_park_page_widgets[] = {

@@ -95,38 +95,38 @@ static rct_widget window_guest_overview_widgets[] = {
     MakeWidget({167,  69}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
     MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
     MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_stats_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_rides_widgets[] = {
     MAIN_GUEST_WIDGETS,
     MakeWidget({3, 57}, {186, 87}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_finance_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_thoughts_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_inventory_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_debug_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x981D0C

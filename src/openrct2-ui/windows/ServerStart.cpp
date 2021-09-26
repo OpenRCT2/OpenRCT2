@@ -62,7 +62,7 @@ static rct_widget window_server_start_widgets[] = {
     MakeWidget        ({    6,     117}, {287, 14}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ADVERTISE,                STR_ADVERTISE_SERVER_TIP), // advertise checkbox
     MakeWidget        ({    6, WH-6-13}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_NEW_GAME                                          ), // start server button
     MakeWidget        ({  112, WH-6-13}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_LOAD_GAME                                         ), // None
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_server_start_close(rct_window *w);

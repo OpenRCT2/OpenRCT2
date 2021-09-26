@@ -43,7 +43,7 @@ static rct_widget window_land_rights_widgets[] = {
     MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_RIGHTS_TIP ), // increment size
     MakeRemapWidget({22, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_LAND_RIGHTS,         STR_BUY_LAND_RIGHTS_TIP           ), // land rights
     MakeRemapWidget({52, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_CONSTRUCTION_RIGHTS, STR_BUY_CONSTRUCTION_RIGHTS_TIP   ), // construction rights
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_land_rights_close(rct_window *w);

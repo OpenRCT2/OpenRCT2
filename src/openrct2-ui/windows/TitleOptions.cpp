@@ -21,7 +21,7 @@ enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
 
 static rct_widget window_title_options_widgets[] = {
     MakeWidget({0, 0}, {80, 15}, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);

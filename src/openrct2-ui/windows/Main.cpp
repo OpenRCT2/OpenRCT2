@@ -17,7 +17,7 @@
 // clang-format off
 static rct_widget window_main_widgets[] = {
     MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 void window_main_paint(rct_window *w, rct_drawpixelinfo *dpi);

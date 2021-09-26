@@ -212,7 +212,7 @@ static rct_widget window_cheats_money_widgets[] =
     MakeSpinnerWidgets({120, 239}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // Day box
     MakeWidget        ({ 11, 258}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_SET          ), // Set Date
     MakeWidget        ({127, 258}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_RESET        ), // Reset Date
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_cheats_guests_widgets[] =
@@ -245,7 +245,7 @@ static rct_widget window_cheats_guests_widgets[] =
     MakeWidget({127, 384}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
     MakeWidget({ 11, 426}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
     MakeWidget({127, 426}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_ALL_GUESTS,     STR_CHEAT_REMOVE_ALL_GUESTS_TIP), // remove all guests
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 //Strings for following moved to window_cheats_paint()
@@ -281,7 +281,7 @@ static rct_widget window_cheats_misc_widgets[] =
     MakeWidget        ({  5, 347}, {238,  35},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
     MakeWidget        ({126, 361}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Staff speed
     MakeWidget        ({225, 362}, { 11,  12},   WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 static rct_widget window_cheats_rides_widgets[] =
 {
@@ -307,7 +307,7 @@ static rct_widget window_cheats_rides_widgets[] =
     MakeWidget({ 11, 384}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
     MakeWidget({ 11, 405}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
     MakeWidget({ 11, 426}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           ), // Ignore Research Status
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_cheats_page_widgets[] =

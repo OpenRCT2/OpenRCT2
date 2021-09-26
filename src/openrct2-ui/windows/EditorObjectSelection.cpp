@@ -170,7 +170,7 @@ static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     MakeTab   ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
     // Copied object type times...
 
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 #pragma endregion

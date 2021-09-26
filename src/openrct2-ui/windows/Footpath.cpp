@@ -106,7 +106,7 @@ static rct_widget window_footpath_widgets[] = {
     MakeWidget({ 3, 321}, {100, 54}, WindowWidgetType::Groupbox, WindowColour::Primary                                                                                      ),
     MakeWidget({13, 332}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_FOOTPATH_LAND,    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
     MakeWidget({57, 332}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_FOOTPATH_BRIDGE,  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    ),
-    {WIDGETS_END},
+    WIDGETS_END,
 };
 
 static void window_footpath_close(rct_window * w);
