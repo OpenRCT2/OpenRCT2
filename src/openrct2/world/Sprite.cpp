@@ -48,21 +48,18 @@ static void FreeEntity(EntityBase& entity);
 
 constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 {
-    size_t index = SPATIAL_INDEX_LOCATION_NULL;
-    if (x != LOCATION_NULL)
-    {
-        x = std::clamp(x, 0, 0xFFFF);
-        y = std::clamp(y, 0, 0xFFFF);
+    if (x == LOCATION_NULL)
+        return SPATIAL_INDEX_LOCATION_NULL;
 
-        int16_t flooredX = floor2(x, 32);
-        uint8_t tileY = y >> 5;
-        index = (flooredX << 3) | tileY;
-    }
+    const auto tileX = std::clamp<size_t>(x / COORDS_XY_STEP, 0, MAXIMUM_MAP_SIZE_TECHNICAL);
+    const auto tileY = std::clamp<size_t>(y / COORDS_XY_STEP, 0, MAXIMUM_MAP_SIZE_TECHNICAL);
+    const auto index = tileX * MAXIMUM_MAP_SIZE_TECHNICAL + tileY;
 
     if (index >= sizeof(gSpriteSpatialIndex))
     {
         return SPATIAL_INDEX_LOCATION_NULL;
     }
+
     return index;
 }
 
