@@ -28,8 +28,9 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {
     @autoreleasepool
     {
+		const auto* fontName = reinterpret_cast<const char*>(font->font_name);
         CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize(
-            static_cast<CFStringRef>([NSString stringWithUTF8String:font->font_name]), 0.0);
+            static_cast<CFStringRef>([NSString stringWithUTF8String:fontName]), 0.0);
         CFURLRef url = static_cast<CFURLRef>(CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute));
         if (url)
         {

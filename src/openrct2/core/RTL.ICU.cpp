@@ -23,7 +23,7 @@ std::string FixRTL(std::string& input)
 {
     UErrorCode err = static_cast<UErrorCode>(0);
     // Force a hard left-to-right at the beginning (will mess up mixed strings' word order otherwise)
-    std::string text2 = std::string(u8"\xE2\x80\xAA") + input;
+    std::string text2 = std::string(reinterpret_cast<const char*>(u8"\xE2\x80\xAA")) + input;
 
     icu::UnicodeString ustr = icu::UnicodeString::fromUTF8(icu::StringPiece(text2));
 
