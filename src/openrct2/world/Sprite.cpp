@@ -55,7 +55,7 @@ constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
     const auto tileY = std::clamp<size_t>(y / COORDS_XY_STEP, 0, MAXIMUM_MAP_SIZE_TECHNICAL);
     const auto index = tileX * MAXIMUM_MAP_SIZE_TECHNICAL + tileY;
 
-    if (index >= sizeof(gSpriteSpatialIndex))
+    if (index >= std::size(gSpriteSpatialIndex))
     {
         return SPATIAL_INDEX_LOCATION_NULL;
     }
