@@ -12,8 +12,9 @@
 #include "../../common.h"
 
 struct paint_session;
+struct CoordsXY;
 
-void sprite_paint_setup(paint_session* session, int32_t x, int32_t y);
+void sprite_paint_setup(paint_session* session, const CoordsXY& pos);
 
 template<typename T> void PaintEntity(paint_session* session, const T* entity, int32_t imageDirection);
 

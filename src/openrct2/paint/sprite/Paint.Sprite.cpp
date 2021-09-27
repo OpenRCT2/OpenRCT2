@@ -32,7 +32,7 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(paint_session* session, int32_t x, int32_t y)
+void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
 {
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
     {
@@ -47,7 +47,7 @@ void sprite_paint_setup(paint_session* session, int32_t x, int32_t y)
 
     const bool highlightPathIssues = (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (const auto* spr : EntityTileList({ x, y }))
+    for (const auto* spr : EntityTileList(pos))
     {
         if (highlightPathIssues)
         {

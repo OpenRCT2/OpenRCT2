@@ -218,17 +218,17 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
     for (; numVerticalTiles > 0; --numVerticalTiles)
     {
         tile_element_paint_setup(session, mapTile);
-        sprite_paint_setup(session, mapTile.x, mapTile.y);
+        sprite_paint_setup(session, mapTile);
 
-        auto loc1 = mapTile + adjacentTiles[0];
-        sprite_paint_setup(session, loc1.x, loc1.y);
+        const auto loc1 = mapTile + adjacentTiles[0];
+        sprite_paint_setup(session, loc1);
 
-        auto loc2 = mapTile + adjacentTiles[1];
+        const auto loc2 = mapTile + adjacentTiles[1];
         tile_element_paint_setup(session, loc2);
-        sprite_paint_setup(session, loc2.x, loc2.y);
+        sprite_paint_setup(session, loc2);
 
-        auto loc3 = mapTile + adjacentTiles[2];
-        sprite_paint_setup(session, loc3.x, loc3.y);
+        const auto loc3 = mapTile + adjacentTiles[2];
+        sprite_paint_setup(session, loc3);
 
         mapTile += nextVerticalTile;
     }
