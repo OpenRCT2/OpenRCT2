@@ -389,11 +389,11 @@ void lightfx_prepare_light_list()
                 continue;
             }
 
-            entry->lightIntensity = std::min<uint32_t>(
-                0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
+            entry->lightIntensity = std::min<uint8_t>(
+                0xFFu, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100u));
         }
-        entry->lightIntensity = std::max<uint32_t>(
-            0x00, entry->lightIntensity - static_cast<int8_t>(_current_view_zoom_front) * 5);
+        entry->lightIntensity = std::max<uint8_t>(
+            0x00u, entry->lightIntensity - static_cast<int8_t>(_current_view_zoom_front) * 5u);
 
         if (_current_view_zoom_front > 0)
         {
