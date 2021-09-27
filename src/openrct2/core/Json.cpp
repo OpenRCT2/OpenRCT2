@@ -45,7 +45,7 @@ namespace Json
     json_t ReadFromFile(const fs::path& path, size_t maxSize)
     {
         auto path8 = path.u8string();
-        return ReadFromFile(path8.c_str(), maxSize);
+        return ReadFromFile(reinterpret_cast<const utf8*>(path8.c_str()), maxSize);
     }
 
     void WriteToFile(const utf8* path, const json_t& jsonData, int indentSize)
@@ -61,7 +61,7 @@ namespace Json
     void WriteToFile(const fs::path& path, const json_t& jsonData, int indentSize)
     {
         auto path8 = path.u8string();
-        WriteToFile(path8.c_str(), jsonData, indentSize);
+        WriteToFile(reinterpret_cast<const utf8*>(path8.c_str()), jsonData, indentSize);
     }
 
     json_t FromString(std::string_view raw)

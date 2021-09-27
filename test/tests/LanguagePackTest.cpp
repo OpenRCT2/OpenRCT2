@@ -60,13 +60,14 @@ TEST_F(LanguagePackTest, language_pack_multibyte)
     auto lang = LanguagePackFactory::FromText(0, (const utf8*)LanguageZhTW);
     ASSERT_EQ(lang->GetId(), 0);
     ASSERT_EQ(lang->GetCount(), 4U);
-    ASSERT_STREQ(lang->GetString(2), u8"懸吊式雲霄飛車");
+    ASSERT_STREQ(lang->GetString(2), reinterpret_cast<const utf8*>(u8"懸吊式雲霄飛車"));
     ASSERT_EQ(lang->GetScenarioOverrideStringId("Forest Frontiers", 0), 0x7000);
     ASSERT_EQ(lang->GetScenarioOverrideStringId("Forest Frontiers", 2), 0x7002);
     ASSERT_STREQ(lang->GetString(0x7000), "Forest Frontiers");
-    ASSERT_STREQ(lang->GetString(0x7002), u8"在隱藏於森林深處的清空範圍中, 建造一個很受歡迎的樂園");
+    ASSERT_STREQ(
+        lang->GetString(0x7002), reinterpret_cast<const utf8*>(u8"在隱藏於森林深處的清空範圍中, 建造一個很受歡迎的樂園"));
     ASSERT_EQ(lang->GetObjectOverrideStringId("CONDORRD", 0), 0x6000);
-    ASSERT_STREQ(lang->GetString(0x6000), u8"神鷹暢遊");
+    ASSERT_STREQ(lang->GetString(0x6000), reinterpret_cast<const utf8*>(u8"神鷹暢遊"));
 }
 
 const utf8* LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX becomes the string id number.\n"

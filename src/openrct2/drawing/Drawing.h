@@ -730,6 +730,7 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
 
 // string
 void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
+void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const char8_t* buffer, TextPaint textPaint = {});
 void gfx_draw_string_no_formatting(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint);
 

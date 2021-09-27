@@ -138,45 +138,45 @@ TEST_F(FormattingTests, comma_large)
 TEST_F(FormattingTests, currency)
 {
     gConfigGeneral.currency_format = CurrencyType::Pounds;
-    ASSERT_EQ(u8"-£251", FormatString("{CURRENCY}", -2510));
-    ASSERT_EQ(u8"£1", FormatString("{CURRENCY}", 4));
-    ASSERT_EQ(u8"£1", FormatString("{CURRENCY}", 5));
-    ASSERT_EQ(u8"£1", FormatString("{CURRENCY}", 10));
-    ASSERT_EQ(u8"£2", FormatString("{CURRENCY}", 11));
-    ASSERT_EQ(u8"£112", FormatString("{CURRENCY}", 1111));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"-£251"), FormatString("{CURRENCY}", -2510));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£1"), FormatString("{CURRENCY}", 4));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£1"), FormatString("{CURRENCY}", 5));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£1"), FormatString("{CURRENCY}", 10));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£2"), FormatString("{CURRENCY}", 11));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£112"), FormatString("{CURRENCY}", 1111));
 }
 
 TEST_F(FormattingTests, currency2dp)
 {
     gConfigGeneral.currency_format = CurrencyType::Pounds;
-    ASSERT_EQ(u8"-£251.00", FormatString("{CURRENCY2DP}", -2510));
-    ASSERT_EQ(u8"£0.40", FormatString("{CURRENCY2DP}", 4));
-    ASSERT_EQ(u8"£0.50", FormatString("{CURRENCY2DP}", 5));
-    ASSERT_EQ(u8"£1.00", FormatString("{CURRENCY2DP}", 10));
-    ASSERT_EQ(u8"£1.10", FormatString("{CURRENCY2DP}", 11));
-    ASSERT_EQ(u8"£111.10", FormatString("{CURRENCY2DP}", 1111));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"-£251.00"), FormatString("{CURRENCY2DP}", -2510));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£0.40"), FormatString("{CURRENCY2DP}", 4));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£0.50"), FormatString("{CURRENCY2DP}", 5));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£1.00"), FormatString("{CURRENCY2DP}", 10));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£1.10"), FormatString("{CURRENCY2DP}", 11));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"£111.10"), FormatString("{CURRENCY2DP}", 1111));
 }
 
 TEST_F(FormattingTests, currency_yen)
 {
     gConfigGeneral.currency_format = CurrencyType::Yen;
-    ASSERT_EQ(u8"-¥25,100", FormatString("{CURRENCY}", -2510));
-    ASSERT_EQ(u8"¥40", FormatString("{CURRENCY2DP}", 4));
-    ASSERT_EQ(u8"¥50", FormatString("{CURRENCY2DP}", 5));
-    ASSERT_EQ(u8"¥100", FormatString("{CURRENCY2DP}", 10));
-    ASSERT_EQ(u8"¥110", FormatString("{CURRENCY2DP}", 11));
-    ASSERT_EQ(u8"¥11,110", FormatString("{CURRENCY2DP}", 1111));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"-¥25,100"), FormatString("{CURRENCY}", -2510));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥40"), FormatString("{CURRENCY2DP}", 4));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥50"), FormatString("{CURRENCY2DP}", 5));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥100"), FormatString("{CURRENCY2DP}", 10));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥110"), FormatString("{CURRENCY2DP}", 11));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥11,110"), FormatString("{CURRENCY2DP}", 1111));
 }
 
 TEST_F(FormattingTests, currency2dp_yen)
 {
     gConfigGeneral.currency_format = CurrencyType::Yen;
-    ASSERT_EQ(u8"-¥25,100", FormatString("{CURRENCY2DP}", -2510));
-    ASSERT_EQ(u8"¥40", FormatString("{CURRENCY2DP}", 4));
-    ASSERT_EQ(u8"¥50", FormatString("{CURRENCY2DP}", 5));
-    ASSERT_EQ(u8"¥100", FormatString("{CURRENCY2DP}", 10));
-    ASSERT_EQ(u8"¥110", FormatString("{CURRENCY2DP}", 11));
-    ASSERT_EQ(u8"¥11,110", FormatString("{CURRENCY2DP}", 1111));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"-¥25,100"), FormatString("{CURRENCY2DP}", -2510));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥40"), FormatString("{CURRENCY2DP}", 4));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥50"), FormatString("{CURRENCY2DP}", 5));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥100"), FormatString("{CURRENCY2DP}", 10));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥110"), FormatString("{CURRENCY2DP}", 11));
+    ASSERT_EQ(reinterpret_cast<const utf8*>(u8"¥11,110"), FormatString("{CURRENCY2DP}", 1111));
 }
 
 TEST_F(FormattingTests, currency_pts)

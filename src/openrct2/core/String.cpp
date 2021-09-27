@@ -149,6 +149,11 @@ namespace String
         return str == nullptr || str[0] == '\0';
     }
 
+    bool IsNullOrEmpty(const char8_t* str)
+    {
+        return str == nullptr || str[0] == u8'\0';
+    }
+
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase)
     {
         return Compare(a.c_str(), b.c_str(), ignoreCase);

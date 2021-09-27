@@ -504,8 +504,8 @@ namespace Config
         if (reader->ReadSection("font"))
         {
             auto model = &gConfigFonts;
-            model->file_name = reader->GetCString("file_name", nullptr);
-            model->font_name = reader->GetCString("font_name", nullptr);
+            model->file_name = reinterpret_cast<char8_t*>(reader->GetCString("file_name", nullptr));
+            model->font_name = reinterpret_cast<char8_t*>(reader->GetCString("font_name", nullptr));
             model->x_offset = reader->GetInt32("x_offset", false);
             model->y_offset = reader->GetInt32("y_offset", true);
             model->size_tiny = reader->GetInt32("size_tiny", true);
@@ -525,8 +525,8 @@ namespace Config
     {
         auto model = &gConfigFonts;
         writer->WriteSection("font");
-        writer->WriteString("file_name", model->file_name);
-        writer->WriteString("font_name", model->font_name);
+        writer->WriteString("file_name", reinterpret_cast<utf8*>(model->file_name));
+        writer->WriteString("font_name", reinterpret_cast<utf8*>(model->font_name));
         writer->WriteInt32("x_offset", model->x_offset);
         writer->WriteInt32("y_offset", model->y_offset);
         writer->WriteInt32("size_tiny", model->size_tiny);

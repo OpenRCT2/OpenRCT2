@@ -65,7 +65,7 @@ TEST_F(IniReaderTest, read_prepared)
     ASSERT_EQ(ir->GetInt32("one", 42), 42);
     ASSERT_EQ(ir->GetBoolean("boolval", false), true);
     const utf8* str = ir->GetCString("path", nullptr);
-    ASSERT_STREQ(str, u8"C:'\\some/dir\\here/神鷹暢遊");
+    ASSERT_STREQ(str, reinterpret_cast<const utf8*>(u8"C:'\\some/dir\\here/神鷹暢遊"));
     Memory::Free(str);
     // go back a section
     ASSERT_EQ(ir->ReadSection("int"), true);

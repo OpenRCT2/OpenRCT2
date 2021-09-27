@@ -150,7 +150,7 @@ void FileWatcher::WatchDirectory()
                 std::wstring fileNameW(notifyInfo->FileName, notifyInfo->FileNameLength / sizeof(wchar_t));
                 auto fileName = String::ToUtf8(fileNameW);
                 auto path = fs::path(_path) / fs::path(fileName);
-                onFileChanged(path.u8string());
+                onFileChanged(reinterpret_cast<const char*>(path.u8string().c_str()));
             } while (notifyInfo->NextEntryOffset != 0);
         }
     }

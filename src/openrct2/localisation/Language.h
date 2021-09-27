@@ -73,8 +73,8 @@ enum class RCT2LanguageId
 struct language_descriptor
 {
     const char* locale;
-    const utf8* english_name;
-    const utf8* native_name;
+    const char8_t* english_name;
+    const char8_t* native_name;
 #if !defined(NO_TTF)
     TTFontFamily const* font_family;
 #else
@@ -85,11 +85,11 @@ struct language_descriptor
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 
-constexpr const char* BlackUpArrowString = u8"{BLACK}▲";
-constexpr const char* BlackDownArrowString = u8"{BLACK}▼";
-constexpr const char* BlackLeftArrowString = u8"{BLACK}◀";
-constexpr const char* BlackRightArrowString = u8"{BLACK}▶";
-constexpr const char* CheckBoxMarkString = u8"✓";
+constexpr auto BlackUpArrowString = u8"{BLACK}▲";
+constexpr auto BlackDownArrowString = u8"{BLACK}▼";
+constexpr auto BlackLeftArrowString = u8"{BLACK}◀";
+constexpr auto BlackRightArrowString = u8"{BLACK}▶";
+constexpr auto CheckBoxMarkString = u8"✓";
 
 uint8_t language_get_id_from_locale(const char* locale);
 const char* language_get_string(rct_string_id id);

@@ -37,8 +37,8 @@ struct InternalTTFFont;
 using TTF_Font = InternalTTFFont;
 struct TTFFontDescriptor
 {
-    const utf8* filename;
-    const utf8* font_name;
+    const char8_t* filename;
+    const char8_t* font_name;
     int32_t ptSize;
     int32_t offset_x;
     int32_t offset_y;

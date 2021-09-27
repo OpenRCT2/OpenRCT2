@@ -1108,7 +1108,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
                 FontSpriteBase fontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FontSpriteBase::MEDIUM_EXTRA_DARK
                                                                                          : FontSpriteBase::MEDIUM_DARK;
                 gfx_draw_string(
-                    dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
+                    dpi, { 2, y }, reinterpret_cast<const char*>(CheckBoxMarkString),
                     { static_cast<colour_t>(w->colours[1] & 0x7F), fontSpriteBase });
             }
 

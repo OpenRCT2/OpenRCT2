@@ -85,14 +85,14 @@ TEST_F(StringTest, Split_ByEmpty)
 TEST_F(StringTest, Convert_950_to_UTF8)
 {
     auto input = StringFromHex("a7d6b374aabab4c4a6e2aab0af57");
-    auto expected = u8"快速的棕色狐狸";
+    auto expected = reinterpret_cast<const utf8*>(u8"快速的棕色狐狸");
     auto actual = String::Convert(input, CODE_PAGE::CP_950, CODE_PAGE::CP_UTF8);
     ASSERT_EQ(expected, actual);
 }
 
 TEST_F(StringTest, Convert_UTF8_to_932)
 {
-    auto input = u8"ファストブラウンフォックス";
+    auto input = reinterpret_cast<const utf8*>(u8"ファストブラウンフォックス");
     auto expected = StringFromHex("83748340835883678375838983458393837483488362834e8358");
     auto actual = String::Convert(input, CODE_PAGE::CP_UTF8, CODE_PAGE::CP_932);
     ASSERT_EQ(expected, actual);
@@ -100,7 +100,7 @@ TEST_F(StringTest, Convert_UTF8_to_932)
 
 TEST_F(StringTest, Convert_UTF8_to_UTF8)
 {
-    auto input = u8"سريع|brown|ثعلب";
+    auto input = reinterpret_cast<const utf8*>(u8"سريع|brown|ثعلب");
     auto expected = input;
     auto actual = String::Convert(input, CODE_PAGE::CP_UTF8, CODE_PAGE::CP_UTF8);
     ASSERT_EQ(expected, actual);
@@ -125,28 +125,28 @@ TEST_F(StringTest, ToUpper_Basic)
 }
 TEST_F(StringTest, ToUpper_Dutch)
 {
-    auto actual = String::ToUpper(u8"fĳntjes puffend fietsen");
-    ASSERT_STREQ(actual.c_str(), u8"FĲNTJES PUFFEND FIETSEN");
+    auto actual = String::ToUpper(reinterpret_cast<const utf8*>(u8"fĳntjes puffend fietsen"));
+    ASSERT_STREQ(actual.c_str(), reinterpret_cast<const utf8*>(u8"FĲNTJES PUFFEND FIETSEN"));
 }
 TEST_F(StringTest, ToUpper_French)
 {
-    auto actual = String::ToUpper(u8"jusqu'à 2500 carrés de côté");
-    ASSERT_STREQ(actual.c_str(), u8"JUSQU'À 2500 CARRÉS DE CÔTÉ");
+    auto actual = String::ToUpper(reinterpret_cast<const utf8*>(u8"jusqu'à 2500 carrés de côté"));
+    ASSERT_STREQ(actual.c_str(), reinterpret_cast<const utf8*>(u8"JUSQU'À 2500 CARRÉS DE CÔTÉ"));
 }
 TEST_F(StringTest, ToUpper_Greek)
 {
-    auto actual = String::ToUpper(u8"μέχρι 2500 τετράγωνα στην άκρη");
-    ASSERT_STREQ(actual.c_str(), u8"ΜΈΧΡΙ 2500 ΤΕΤΡΆΓΩΝΑ ΣΤΗΝ ΆΚΡΗ");
+    auto actual = String::ToUpper(reinterpret_cast<const utf8*>(u8"μέχρι 2500 τετράγωνα στην άκρη"));
+    ASSERT_STREQ(actual.c_str(), reinterpret_cast<const utf8*>(u8"ΜΈΧΡΙ 2500 ΤΕΤΡΆΓΩΝΑ ΣΤΗΝ ΆΚΡΗ"));
 }
 TEST_F(StringTest, ToUpper_Russian)
 {
-    auto actual = String::ToUpper(u8"до 2500 квадратов в сторону");
-    ASSERT_STREQ(actual.c_str(), u8"ДО 2500 КВАДРАТОВ В СТОРОНУ");
+    auto actual = String::ToUpper(reinterpret_cast<const utf8*>(u8"до 2500 квадратов в сторону"));
+    ASSERT_STREQ(actual.c_str(), reinterpret_cast<const utf8*>(u8"ДО 2500 КВАДРАТОВ В СТОРОНУ"));
 }
 TEST_F(StringTest, ToUpper_Japanese)
 {
-    auto actual = String::ToUpper(u8"日本語で大文字がなし");
-    ASSERT_STREQ(actual.c_str(), u8"日本語で大文字がなし");
+    auto actual = String::ToUpper(reinterpret_cast<const utf8*>(u8"日本語で大文字がなし"));
+    ASSERT_STREQ(actual.c_str(), reinterpret_cast<const utf8*>(u8"日本語で大文字がなし"));
 }
 
 TEST_F(StringTest, strlogicalcmp)
@@ -182,24 +182,24 @@ class CodepointViewTest : public testing::Test
 {
 };
 
-static std::vector<char32_t> ToVector(std::string_view s)
+static std::vector<int> ToVector(std::string_view s)
 {
-    std::vector<char32_t> codepoints;
+    std::vector<int> codepoints;
     for (auto codepoint : CodepointView(s))
     {
-        codepoints.push_back(codepoint);
+        codepoints.push_back(static_cast<int>(codepoint));
     }
     return codepoints;
 }
 
-static void AssertCodepoints(std::string_view s, const std::vector<char32_t>& expected)
+static void AssertCodepoints(std::string_view s, const std::vector<int>& expected)
 {
     ASSERT_EQ(ToVector(s), expected);
 }
 
 TEST_F(CodepointViewTest, CodepointView_iterate)
 {
-    AssertCodepoints("test", { 't', 'e', 's', 't' });
-    AssertCodepoints("ゲスト", { U'ゲ', U'ス', U'ト' });
-    AssertCodepoints("<🎢>", { U'<', U'🎢', U'>' });
+    AssertCodepoints(reinterpret_cast<const utf8*>(u8"test"), { 't', 'e', 's', 't' });
+    AssertCodepoints(reinterpret_cast<const utf8*>(u8"ゲスト"), { U'ゲ', U'ス', U'ト' });
+    AssertCodepoints(reinterpret_cast<const utf8*>(u8"<🎢>"), { U'<', U'🎢', U'>' });
 }

@@ -414,7 +414,7 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
         CoTaskMemFree(fontFolder);
 
         // Append the requested font's file name.
-        safe_strcat_path(buffer, font->filename, size);
+        safe_strcat_path(buffer, reinterpret_cast<const char*>(font->filename), size);
         return true;
     }
 

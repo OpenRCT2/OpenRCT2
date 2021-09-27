@@ -188,8 +188,8 @@ struct NotificationConfiguration
 
 struct FontConfiguration
 {
-    utf8* file_name;
-    utf8* font_name;
+    char8_t* file_name;
+    char8_t* font_name;
     int32_t x_offset;
     int32_t y_offset;
     int32_t size_tiny;

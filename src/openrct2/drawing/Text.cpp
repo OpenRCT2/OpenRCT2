@@ -145,6 +145,11 @@ void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const
     DrawText(dpi, coords, textPaint, buffer);
 }
 
+void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const char8_t* buffer, TextPaint textPaint)
+{
+    DrawText(dpi, coords, textPaint, reinterpret_cast<const utf8*>(buffer));
+}
+
 void gfx_draw_string_no_formatting(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {

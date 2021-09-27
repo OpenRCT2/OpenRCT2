@@ -1233,7 +1233,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                     colour2 |= COLOUR_FLAG_INSET;
 
                 gfx_draw_string(
-                    dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
+                    dpi, screenCoords, reinterpret_cast<const char*>(CheckBoxMarkString),
                     { static_cast<colour_t>(colour2), fontSpriteBase });
             }
 

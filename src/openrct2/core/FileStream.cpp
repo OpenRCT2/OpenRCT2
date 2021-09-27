@@ -42,9 +42,12 @@ namespace OpenRCT2
         : FileStream(path.c_str(), fileMode)
     {
     }
-
     FileStream::FileStream(std::string_view path, int32_t fileMode)
         : FileStream(std::string(path), fileMode)
+    {
+    }
+    FileStream::FileStream(const std::u8string& path, int32_t fileMode)
+        : FileStream(reinterpret_cast<const utf8*>(path.c_str()), fileMode)
     {
     }
 

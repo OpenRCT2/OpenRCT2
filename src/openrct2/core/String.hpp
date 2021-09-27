@@ -47,6 +47,7 @@ namespace String
     std::string_view ToStringView(const char* ch, size_t maxLen);
 
     bool IsNullOrEmpty(const utf8* str);
+    bool IsNullOrEmpty(const char8_t* str);
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase = false);
     int32_t Compare(const utf8* a, const utf8* b, bool ignoreCase = false);
     bool Equals(std::string_view a, std::string_view b, bool ignoreCase = false);

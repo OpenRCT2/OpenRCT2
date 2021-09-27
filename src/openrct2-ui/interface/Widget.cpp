@@ -631,7 +631,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     if (WidgetIsPressed(w, widgetIndex))
     {
         gfx_draw_string(
-            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
+            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, reinterpret_cast<const char*>(CheckBoxMarkString),
             { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) });
     }
 
@@ -732,7 +732,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         gfx_fill_rect_inset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
-        gfx_draw_string(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
+        gfx_draw_string(dpi, { l + 1, t }, reinterpret_cast<const char*>(BlackLeftArrowString), {});
     }
 
     // Thumb
@@ -749,7 +749,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         gfx_fill_rect_inset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
-        gfx_draw_string(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
+        gfx_draw_string(dpi, { r - 6, t }, reinterpret_cast<const char*>(BlackRightArrowString), {});
     }
 }
 
@@ -769,7 +769,7 @@ static void WidgetVScrollbarDraw(
     gfx_fill_rect_inset(
         dpi, { { l, t }, { r, t + (SCROLLBAR_WIDTH - 1) } }, colour,
         ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
+    gfx_draw_string(dpi, { l + 1, t - 1 }, reinterpret_cast<const char*>(BlackUpArrowString), {});
 
     // Thumb
     gfx_fill_rect_inset(
@@ -782,7 +782,7 @@ static void WidgetVScrollbarDraw(
     gfx_fill_rect_inset(
         dpi, { { l, b - (SCROLLBAR_WIDTH - 1) }, { r, b } }, colour,
         ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
+    gfx_draw_string(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, reinterpret_cast<const char*>(BlackDownArrowString), {});
 }
 
 /**

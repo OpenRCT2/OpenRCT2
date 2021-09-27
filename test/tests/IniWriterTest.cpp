@@ -155,7 +155,7 @@ TEST_F(IniWriterTest, create_loose_string_entry)
     OpenRCT2::MemoryStream ms(1000);
     auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
-    iw->WriteString("path", u8"C:'\\some/dir\\here/神鷹暢遊");
+    iw->WriteString("path", reinterpret_cast<const utf8*>(u8"C:'\\some/dir\\here/神鷹暢遊"));
     uint8_t null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 43);
@@ -178,7 +178,7 @@ TEST_F(IniWriterTest, create_multiple_section_with_values)
     iw->WriteInt32("one", 1);
     iw->WriteInt32("zero", 0);
     iw->WriteSection("string");
-    iw->WriteString("path", u8"C:'\\some/dir\\here/神鷹暢遊");
+    iw->WriteString("path", reinterpret_cast<const utf8*>(u8"C:'\\some/dir\\here/神鷹暢遊"));
     uint8_t null_terminator = 0;
     ms.Write(&null_terminator, 1);
     ASSERT_GE(ms.GetPosition(), 99);

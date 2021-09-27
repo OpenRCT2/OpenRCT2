@@ -84,8 +84,10 @@ static void Decrypt(std::vector<uint8_t>& data, const EncryptionKey& key)
 
 std::vector<uint8_t> DecryptSea(const fs::path& path)
 {
-    auto key = GetEncryptionKey(path.filename().u8string());
-    auto data = File::ReadAllBytes(path.u8string());
+    auto u8fileName = path.filename().u8string();
+    auto u8filePath = path.u8string();
+    auto key = GetEncryptionKey(reinterpret_cast<const utf8*>(u8fileName.c_str()));
+    auto data = File::ReadAllBytes(reinterpret_cast<const char*>(u8filePath.c_str()));
 
     // Last 4 bytes is the checksum
     size_t inputSize = data.size() - 4;
