@@ -66,7 +66,7 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
     gfx_draw_sprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 }, 0);
 }
 
-static std::optional<uint8_t> GetSceneryType(ObjectType type)
+static std::optional<uint8_t> GetSceneryType(const ObjectType type)
 {
     switch (type)
     {

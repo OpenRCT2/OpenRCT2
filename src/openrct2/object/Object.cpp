@@ -215,25 +215,6 @@ void Object::SetAuthors(std::vector<std::string>&& authors)
     _authors = std::move(authors);
 }
 
-std::optional<uint8_t> rct_object_entry::GetSceneryType() const
-{
-    switch (GetType())
-    {
-        case ObjectType::SmallScenery:
-            return SCENERY_TYPE_SMALL;
-        case ObjectType::LargeScenery:
-            return SCENERY_TYPE_LARGE;
-        case ObjectType::Walls:
-            return SCENERY_TYPE_WALL;
-        case ObjectType::Banners:
-            return SCENERY_TYPE_BANNER;
-        case ObjectType::PathBits:
-            return SCENERY_TYPE_PATH_ITEM;
-        default:
-            return std::nullopt;
-    }
-}
-
 bool rct_object_entry::IsEmpty() const
 {
     uint64_t a, b;

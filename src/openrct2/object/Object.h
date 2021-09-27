@@ -119,8 +119,6 @@ struct rct_object_entry
         flags |= (static_cast<uint8_t>(newType) & 0x0F);
     }
 
-    std::optional<uint8_t> GetSceneryType() const;
-
     ObjectSourceGame GetSourceGame() const
     {
         return static_cast<ObjectSourceGame>((flags & 0xF0) >> 4);
