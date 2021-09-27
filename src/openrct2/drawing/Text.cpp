@@ -157,10 +157,9 @@ int32_t DrawTextWrapped(
 {
     const void* args = ft.Data();
 
-    utf8 buffer[512];
-    format_string(buffer, sizeof(buffer), format, args);
-
-    StaticLayout layout(buffer, textPaint, width);
+    // TODO: Refactor StaticLayout to take a std::string_view instead. It shouldn't have to write to the buffer.
+    const std::string buffer = format_string(format, args);
+    StaticLayout layout(const_cast<char*>(buffer.c_str()), textPaint, width);
 
     if (textPaint.Alignment == TextAlignment::CENTRE)
     {
