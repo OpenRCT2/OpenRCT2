@@ -101,7 +101,6 @@ void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteA
         // Image is only a transparency mask. Just colour the pixels using the palette map.
         // Used for glass.
         DrawBMPSprite<BLEND_TRANSPARENT | BLEND_DST>(dpi, args);
-        return;
     }
     else if (!(args.SourceImage.flags & G1_FLAG_BMP))
     {
