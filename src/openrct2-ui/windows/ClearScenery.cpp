@@ -65,6 +65,12 @@ class CleanScenery final : public Window
             gClearLargeScenery = false;
             gClearFootpath = false;
         }
+
+        void OnClose() override
+        {
+            if (clear_scenery_tool_is_active())
+                tool_cancel();
+        }
 };
 // clang-format on
 
@@ -105,12 +111,13 @@ rct_window* window_clear_scenery_open()
  *
  *  rct2: 0x006E6B65
  */
+/*
 static void window_clear_scenery_close([[maybe_unused]] rct_window* w)
 {
     // If the tool wasn't changed, turn tool off
     if (clear_scenery_tool_is_active())
         tool_cancel();
-}
+}*/
 
 /**
  *
