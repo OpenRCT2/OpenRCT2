@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,36 +33,24 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_CLEAR_SCENERY;
 static constexpr const int32_t WW = 98;
 static constexpr const int32_t WH = 94;
 
+static constexpr ScreenSize CLEARSCENERY_BUTTON = {24, 24};
+
 static rct_widget window_clear_scenery_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,        STR_NONE),                                   // preview box
     MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP),                // decrement size
     MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP),                 // increment size
-    MakeRemapWidget({ 7, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
-    MakeRemapWidget({37, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
-    MakeRemapWidget({67, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP),     // footpaths
+    MakeRemapWidget({ 7, 53}, CLEARSCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
+    MakeRemapWidget({37, 53}, CLEARSCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
+    MakeRemapWidget({67, 53}, CLEARSCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP),     // footpaths
     WIDGETS_END,
 };
 
-static void window_clear_scenery_close(rct_window *w);
-static void window_clear_scenery_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_clear_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_clear_scenery_update(rct_window *w);
-static void window_clear_scenery_invalidate(rct_window *w);
-static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_clear_scenery_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_clear_scenery_inputsize(rct_window *w);
-
-static rct_window_event_list window_clear_scenery_events([](auto& events)
+class CleanScenery final : public Window
 {
-    events.close = &window_clear_scenery_close;
-    events.mouse_up = &window_clear_scenery_mouseup;
-    events.mouse_down = &window_clear_scenery_mousedown;
-    events.update = &window_clear_scenery_update;
-    events.text_input = &window_clear_scenery_textinput;
-    events.invalidate = &window_clear_scenery_invalidate;
-    events.paint = &window_clear_scenery_paint;
-});
+    public:
+
+};
 // clang-format on
 
 /**
