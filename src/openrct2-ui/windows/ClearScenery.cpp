@@ -99,6 +99,27 @@ class CleanScenery final : public Window
                     break;
             }
         }
+
+        void OnMouseDown(rct_widgetindex widgetIndex) override
+        {
+            switch(widgetIndex)
+                {
+                    case WIDX_DECREMENT:
+                        // Decrement land tool size, if it stays within the limit
+                        gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+
+                        // Invalidate the window
+                        Invalidate();
+                        break;
+                    case WIDX_INCREMENT:
+                        // Increment land tool size, if it stays within the limit
+                        gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+
+                        // Invalidate the window
+                        Invalidate();
+                        break;
+                }
+        }
 };
 // clang-format on
 
@@ -177,6 +198,8 @@ static void window_clear_scenery_mouseup(rct_window* w, rct_widgetindex widgetIn
     }
 }
 */
+
+/*
 static void window_clear_scenery_mousedown(rct_window* w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget* widget)
 {
     switch (widgetIndex)
@@ -196,7 +219,7 @@ static void window_clear_scenery_mousedown(rct_window* w, rct_widgetindex widget
             w->Invalidate();
             break;
     }
-}
+}*/
 
 static void window_clear_scenery_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
