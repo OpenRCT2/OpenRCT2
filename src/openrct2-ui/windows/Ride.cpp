@@ -1212,7 +1212,7 @@ static void WindowRideUpdateOverallView(Ride* ride)
     {
         // Each farther zoom level shows twice as many tiles (log)
         // Appropriate zoom is lowered by one to fill the entire view with the ride
-        view.zoom = std::clamp<int32_t>(std::ceil(std::log(size / 80)) - 1, 0, 3);
+        view.zoom = std::clamp<ZoomLevel>(std::ceil(std::log(size / 80)) - 1, 0, ZoomLevel::max());
     }
     else
     {
