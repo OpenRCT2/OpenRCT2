@@ -778,7 +778,7 @@ static std::unique_ptr<TrackDesign> _trackDesign;
 struct RideOverallView
 {
     CoordsXYZ loc;
-    uint8_t zoom;
+    ZoomLevel zoom;
 };
 
 static std::vector<RideOverallView> ride_overall_views = {};
