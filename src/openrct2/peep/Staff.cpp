@@ -1344,7 +1344,7 @@ void Staff::UpdateSweeping()
     if (Action == PeepActionType::StaffSweep && ActionFrame == 8)
     {
         // Remove sick at this location
-        Litter::RemoveAt({ x, y, z });
+        Litter::RemoveAt(GetLocation());
         StaffLitterSwept++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
@@ -2489,7 +2489,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 
     if (ActionFrame == 0x13 || ActionFrame == 0x19 || ActionFrame == 0x1F || ActionFrame == 0x25 || ActionFrame == 0x2B)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::MechanicFix, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::MechanicFix, GetLocation());
     }
 
     return false;
