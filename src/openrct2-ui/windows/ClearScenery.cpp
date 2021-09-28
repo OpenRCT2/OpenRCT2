@@ -49,7 +49,22 @@ static rct_widget window_clear_scenery_widgets[] = {
 class CleanScenery final : public Window
 {
     public:
+        void OnOpen() override
+        {
+            widgets = window_clear_scenery_widgets;
+            enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT)
+                | (1ULL << WIDX_PREVIEW) | (1ULL << WIDX_SMALL_SCENERY) | (1ULL << WIDX_LARGE_SCENERY) | (1ULL << WIDX_FOOTPATH);
+            hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
+            WindowInitScrollWidgets(this);
+            window_push_others_below(this);
 
+            gLandToolSize = 2;
+            gClearSceneryCost = MONEY64_UNDEFINED;
+
+            gClearSmallScenery = true;
+            gClearLargeScenery = false;
+            gClearFootpath = false;
+        }
 };
 // clang-format on
 
@@ -57,6 +72,7 @@ class CleanScenery final : public Window
  *
  *  rct2: 0x0068E0A7
  */
+/*
 rct_window* window_clear_scenery_open()
 {
     rct_window* window;
@@ -84,7 +100,7 @@ rct_window* window_clear_scenery_open()
 
     return window;
 }
-
+*/
 /**
  *
  *  rct2: 0x006E6B65
