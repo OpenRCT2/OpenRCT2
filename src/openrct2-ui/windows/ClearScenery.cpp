@@ -128,6 +128,16 @@ class CleanScenery final : public Window
             if (!clear_scenery_tool_is_active())
                 Close();
         }
+
+        void Invalidate()
+        {
+            // Set the preview image button to be pressed down
+            pressed_widgets = (1ULL << WIDX_PREVIEW) | (gClearSmallScenery ? (1ULL << WIDX_SMALL_SCENERY) : 0)
+                | (gClearLargeScenery ? (1ULL << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1ULL << WIDX_FOOTPATH) : 0);
+
+            // Update the preview image (for tool sizes up to 7)
+            window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        }
 };
 // clang-format on
 
@@ -280,6 +290,7 @@ static void window_clear_scenery_update(rct_window* w)
  *
  *  rct2: 0x0068E115
  */
+/*
 static void window_clear_scenery_invalidate(rct_window* w)
 {
     // Set the preview image button to be pressed down
@@ -289,7 +300,7 @@ static void window_clear_scenery_invalidate(rct_window* w)
     // Update the preview image (for tool sizes up to 7)
     window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 }
-
+ */
 /**
  *
  *  rct2: 0x0068E130
