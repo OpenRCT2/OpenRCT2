@@ -71,6 +71,34 @@ class CleanScenery final : public Window
             if (clear_scenery_tool_is_active())
                 tool_cancel();
         }
+
+        void OnMouseUp(rct_widgetindex widgetIndex) override
+        {
+            switch (widgetIndex)
+                {
+                case WIDX_CLOSE:
+                    Close();
+                    break;
+                case WIDX_PREVIEW:
+                    Formatter ft;
+                    ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+                    ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+                    WindowTextInputOpen(WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+                    break;
+                case WIDX_SMALL_SCENERY:
+                    gClearSmallScenery ^= 1;
+                    Invalidate();
+                    break;
+                case WIDX_LARGE_SCENERY:
+                    gClearLargeScenery ^= 1;
+                    Invalidate();
+                    break;
+                case WIDX_FOOTPATH:
+                    gClearFootpath ^= 1;
+                    Invalidate();
+                    break;
+            }
+        }
 };
 // clang-format on
 
@@ -123,6 +151,7 @@ static void window_clear_scenery_close([[maybe_unused]] rct_window* w)
  *
  *  rct2: 0x0068E185
  */
+/*
 static void window_clear_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
@@ -147,7 +176,7 @@ static void window_clear_scenery_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
     }
 }
-
+*/
 static void window_clear_scenery_mousedown(rct_window* w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget* widget)
 {
     switch (widgetIndex)
@@ -194,7 +223,15 @@ static void window_clear_scenery_inputsize(rct_window* w)
     ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
     window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
 }
-
+/*
+static void window_clear_scenery_inputsize(rct_window* w)
+{
+    Formatter ft;
+    ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+    ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+    window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+}
+*/
 /**
  *
  *  rct2: 0x0068E205

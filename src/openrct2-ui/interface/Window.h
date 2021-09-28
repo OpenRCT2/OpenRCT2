@@ -26,6 +26,8 @@ struct Window : rct_window
     void SetCheckboxValue(rct_widgetindex widgetIndex, bool value);
     void DrawWidgets(rct_drawpixelinfo& dpi);
     void Close();
+    void WindowTextInputOpen(rct_widgetindex call_widget, rct_string_id title, rct_string_id description, const Formatter& descriptionArgs,
+        rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength);
 };
 
 void WindowAllWheelInput();

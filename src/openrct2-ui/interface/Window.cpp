@@ -24,6 +24,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/world/Sprite.h>
+#include <openrct2-ui/windows/Window.h>
 
 using namespace OpenRCT2;
 
@@ -750,4 +751,11 @@ void Window::DrawWidgets(rct_drawpixelinfo& dpi)
 void Window::Close()
 {
     window_close(this);
+}
+
+void Window::WindowTextInputOpen(
+    rct_widgetindex call_widget, rct_string_id title, rct_string_id description, const Formatter& descriptionArgs,
+    rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
+{
+    window_text_input_open(this, call_widget, title, description, descriptionArgs, existing_text, existing_args, maxLength);
 }
