@@ -48,6 +48,26 @@ static rct_widget window_clear_scenery_widgets[] = {
 
 class CleanScenery final : public Window
 {
+
+    void window_clear_scenery_textinput(rct_widgetindex widgetIndex, char* text)
+    {
+        int32_t size;
+        char* end;
+
+        if (widgetIndex != WIDX_PREVIEW || text == nullptr)
+            return;
+
+        size = strtol(text, &end, 10);
+        if (*end == '\0')
+        {
+            size = std::max(MINIMUM_TOOL_SIZE, size);
+            size = std::min(MAXIMUM_TOOL_SIZE, size);
+            gLandToolSize = size;
+            Invalidate();
+        }
+    }
+
+
     public:
         void OnOpen() override
         {
@@ -74,15 +94,16 @@ class CleanScenery final : public Window
 
         void OnMouseUp(rct_widgetindex widgetIndex) override
         {
+            Formatter ft;
+            ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+            ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
             switch (widgetIndex)
                 {
                 case WIDX_CLOSE:
                     Close();
                     break;
                 case WIDX_PREVIEW:
-                    Formatter ft;
-                    ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-                    ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+                    
                     WindowTextInputOpen(WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
                     break;
                 case WIDX_SMALL_SCENERY:
@@ -164,6 +185,23 @@ class CleanScenery final : public Window
             }
         }
 };
+
+
+rct_window* window_clear_scenery_open()
+{
+    auto w = static_cast<CleanScenery*>(window_bring_to_front_by_class(WC_CLEAR_SCENERY));
+
+    if (w != nullptr)
+        return w;
+
+    w = WindowCreate<CleanScenery>(WC_CLEAR_SCENERY, WW, WH, 0);
+
+    if (w != nullptr)
+        return w;
+
+    return nullptr;
+}
+
 // clang-format on
 
 /**
@@ -264,31 +302,8 @@ static void window_clear_scenery_mousedown(rct_window* w, rct_widgetindex widget
     }
 }*/
 
-static void window_clear_scenery_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
-{
-    int32_t size;
-    char* end;
 
-    if (widgetIndex != WIDX_PREVIEW || text == nullptr)
-        return;
 
-    size = strtol(text, &end, 10);
-    if (*end == '\0')
-    {
-        size = std::max(MINIMUM_TOOL_SIZE, size);
-        size = std::min(MAXIMUM_TOOL_SIZE, size);
-        gLandToolSize = size;
-        w->Invalidate();
-    }
-}
-
-static void window_clear_scenery_inputsize(rct_window* w)
-{
-    Formatter ft;
-    ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-    ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
-    window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
-}
 /*
 static void window_clear_scenery_inputsize(rct_window* w)
 {
