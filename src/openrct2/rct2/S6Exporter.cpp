@@ -1235,9 +1235,9 @@ void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const Entity
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
     dst->flags = 0;
-    dst->x = src->x;
-    dst->y = src->y;
-    dst->z = src->z;
+    dst->x = static_cast<int16_t>(src->x);
+    dst->y = static_cast<int16_t>(src->y);
+    dst->z = static_cast<int16_t>(src->z);
     dst->sprite_width = src->sprite_width;
     dst->sprite_height_positive = src->sprite_height_positive;
     dst->sprite_left = src->SpriteRect.GetLeft();
