@@ -590,7 +590,7 @@ void reset_all_sprite_quadrant_placements()
         auto* spr = GetEntity(i);
         if (spr != nullptr && spr->Type != EntityType::Null)
         {
-            spr->MoveTo({ spr->x, spr->y, spr->z });
+            spr->MoveTo(spr->GetLocation());
         }
     }
 }
