@@ -120,6 +120,14 @@ class CleanScenery final : public Window
                         break;
                 }
         }
+
+        void OnUpdate() override
+        {
+            frame_no++;
+            // Close window if another tool is open
+            if (!clear_scenery_tool_is_active())
+                Close();
+        }
 };
 // clang-format on
 
@@ -259,6 +267,7 @@ static void window_clear_scenery_inputsize(rct_window* w)
  *
  *  rct2: 0x0068E205
  */
+/*
 static void window_clear_scenery_update(rct_window* w)
 {
     w->frame_no++;
@@ -266,7 +275,7 @@ static void window_clear_scenery_update(rct_window* w)
     if (!clear_scenery_tool_is_active())
         window_close(w);
 }
-
+*/
 /**
  *
  *  rct2: 0x0068E115
