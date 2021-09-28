@@ -175,10 +175,10 @@ void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t 
     viewport->pos = screenCoords;
     viewport->width = width;
     viewport->height = height;
-    const auto zoom = focus.zoom;
 
-    viewport->view_width = width << static_cast<int8_t>(zoom);
-    viewport->view_height = height << static_cast<int8_t>(zoom);
+    const auto zoom = focus.zoom;
+    viewport->view_width = width * zoom;
+    viewport->view_height = height * zoom;
     viewport->zoom = zoom;
     viewport->flags = 0;
 

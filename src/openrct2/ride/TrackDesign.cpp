@@ -2099,7 +2099,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         size_z = 0;
     }
 
-    int32_t zoom_level = 1;
+    ZoomLevel zoom_level = 1;
 
     if (size_x < size_y)
     {
@@ -2116,8 +2116,8 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         zoom_level = 3;
     }
 
-    size_x = 370 << zoom_level;
-    size_y = 217 << zoom_level;
+    size_x = 370 * zoom_level;
+    size_y = 217 * zoom_level;
 
     rct_viewport view;
     view.width = 370;
