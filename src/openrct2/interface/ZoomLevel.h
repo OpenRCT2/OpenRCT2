@@ -40,12 +40,12 @@ public:
 
     friend ZoomLevel operator+(ZoomLevel lhs, const ZoomLevel& rhs);
     friend ZoomLevel operator-(ZoomLevel lhs, const ZoomLevel& rhs);
-    friend bool operator==(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator!=(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator>=(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator<=(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator==(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator!=(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator>=(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator<=(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs);
 
     template<typename T> friend T operator*(const T& lhs, const ZoomLevel& rhs)
     {
@@ -70,3 +70,33 @@ public:
         return 3;
     }
 };
+
+constexpr bool operator==(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level == rhs._level;
+}
+
+constexpr bool operator!=(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level != rhs._level;
+}
+
+constexpr bool operator>=(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level >= rhs._level;
+}
+
+constexpr bool operator<=(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level <= rhs._level;
+}
+
+constexpr bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level > rhs._level;
+}
+
+constexpr bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level < rhs._level;
+}

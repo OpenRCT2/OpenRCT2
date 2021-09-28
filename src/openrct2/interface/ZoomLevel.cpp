@@ -69,33 +69,3 @@ ZoomLevel operator-(ZoomLevel lhs, const ZoomLevel& rhs)
     lhs -= rhs;
     return lhs;
 }
-
-bool operator==(const ZoomLevel& lhs, const ZoomLevel& rhs)
-{
-    return lhs._level == rhs._level;
-}
-
-bool operator!=(const ZoomLevel& lhs, const ZoomLevel& rhs)
-{
-    return lhs._level != rhs._level;
-}
-
-bool operator>=(const ZoomLevel& lhs, const ZoomLevel& rhs)
-{
-    return lhs._level >= rhs._level;
-}
-
-bool operator<=(const ZoomLevel& lhs, const ZoomLevel& rhs)
-{
-    return lhs._level <= rhs._level;
-}
-
-bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs)
-{
-    return lhs._level > rhs._level;
-}
-
-bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs)
-{
-    return lhs._level < rhs._level;
-}
