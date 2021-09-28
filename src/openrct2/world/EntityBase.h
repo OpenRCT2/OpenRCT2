@@ -26,9 +26,9 @@ struct EntityBase
 {
     EntityType Type;
     uint16_t sprite_index;
-    int16_t x;
-    int16_t y;
-    int16_t z;
+    int32_t x;
+    int32_t y;
+    int32_t z;
     // Width from centre of sprite to edge
     uint8_t sprite_width;
     // Height from centre of sprite to bottom
