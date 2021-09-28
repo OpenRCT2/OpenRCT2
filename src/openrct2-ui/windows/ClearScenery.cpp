@@ -138,6 +138,31 @@ class CleanScenery final : public Window
             // Update the preview image (for tool sizes up to 7)
             window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
         }
+
+        void OnDraw(rct_drawpixelinfo& dpi)
+        {
+            DrawWidgets(dpi);
+
+            // Draw number for tool sizes bigger than 7
+            ScreenCoordsXY screenCoords = { windowPos.x + window_clear_scenery_widgets[WIDX_PREVIEW].midX(),
+                                            windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
+            if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+            {
+                auto ft = Formatter();
+                ft.Add<uint16_t>(gLandToolSize);
+                DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            }
+
+            // Draw cost amount
+            if (gClearSceneryCost != MONEY64_UNDEFINED && gClearSceneryCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(gClearSceneryCost);
+                screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + windowPos.x;
+                screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
+                DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+            }
+        }
 };
 // clang-format on
 
@@ -305,6 +330,7 @@ static void window_clear_scenery_invalidate(rct_window* w)
  *
  *  rct2: 0x0068E130
  */
+/*
 static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
@@ -328,4 +354,4 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5 + 27;
         DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
     }
-}
+}*/
