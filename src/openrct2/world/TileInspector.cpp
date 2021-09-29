@@ -587,48 +587,36 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             const uint8_t originalSlope = surfaceElement->GetSlope();
-            const bool diagonal = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
-
             uint8_t newSlope = surfaceElement->GetSlope() ^ (1 << cornerIndex);
-            surfaceElement->SetSlope(newSlope);
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height + 2;
-            }
-            else
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height;
-            }
 
             // All corners are raised
-            if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if ((newSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
-                uint8_t slope = TILE_ELEMENT_SLOPE_FLAT;
-
-                if (diagonal)
+                newSlope = TILE_ELEMENT_SLOPE_FLAT;
+                if ((originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
                 {
                     switch (originalSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     {
                         case TILE_ELEMENT_SLOPE_S_CORNER_DN:
-                            slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                            newSlope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
                             break;
                         case TILE_ELEMENT_SLOPE_W_CORNER_DN:
-                            slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                            newSlope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
                             break;
                         case TILE_ELEMENT_SLOPE_N_CORNER_DN:
-                            slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                            newSlope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
                             break;
                         case TILE_ELEMENT_SLOPE_E_CORNER_DN:
-                            slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                            newSlope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
                             break;
                     }
                 }
-                surfaceElement->SetSlope(slope);
 
-                // Update base and clearance heights
                 surfaceElement->base_height += 2;
-                surfaceElement->clearance_height = surfaceElement->base_height + (diagonal ? 2 : 0);
+                surfaceElement->clearance_height = surfaceElement->base_height;
             }
+
+            surfaceElement->SetSlope(newSlope);
 
             map_invalidate_tile_full(loc);
 
