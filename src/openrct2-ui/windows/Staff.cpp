@@ -529,7 +529,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
             }
 
             // Disable clear patrol area if no area is set.
-            if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
+            if (!peep->HasPatrolArea())
             {
                 Dropdown::SetDisabled(1, true);
             }
@@ -567,12 +567,8 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                 {
                     return;
                 }
-                for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-                {
-                    gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
-                }
-                assert(gStaffModes[peep->StaffId] == StaffMode::Patrol);
-                gStaffModes[peep->StaffId] = StaffMode::Walk;
+                // TODO: THIS SHOULD BE NETWORKED
+                peep->ClearPatrolArea();
 
                 gfx_invalidate_screen();
                 staff_update_greyed_patrol_areas();

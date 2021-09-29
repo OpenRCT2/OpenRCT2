@@ -414,7 +414,7 @@ public:
                 DrawTextEllipsised(&dpi, { actionOffset, y }, actionColumnSize, format, ft);
 
                 // True if a patrol path is set for the worker
-                if (gStaffModes[peep->StaffId] == StaffMode::Patrol)
+                if (peep->HasPatrolArea())
                 {
                     gfx_draw_sprite(&dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                 }
@@ -566,7 +566,7 @@ private:
 
             if (isPatrolAreaSet)
             {
-                if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
+                if (!peep->HasPatrolArea())
                 {
                     continue;
                 }
