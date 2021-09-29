@@ -506,7 +506,7 @@ namespace OpenRCT2
             {
                 if constexpr (sizeof(T) > 4)
                 {
-                    if (std::is_signed<T>())
+                    if constexpr (std::is_signed<T>())
                     {
                         int64_t raw{};
                         Read(&raw, sizeof(raw));
@@ -578,9 +578,9 @@ namespace OpenRCT2
                 buffer.reserve(64);
                 while (true)
                 {
-                    char c;
+                    char c{};
                     ReadBuffer(&c, sizeof(c));
-                    if (c == 0)
+                    if (c == '\0')
                     {
                         break;
                     }
