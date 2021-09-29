@@ -28,6 +28,7 @@
 #    include <openrct2/sprites.h>
 #    include <optional>
 #    include <string>
+#    include <utility>
 #    include <vector>
 
 using namespace OpenRCT2;
