@@ -973,10 +973,11 @@ bool Vehicle::SoundCanPlay() const
     if (g_music_tracking_viewport == nullptr)
         return false;
 
-    int16_t left = g_music_tracking_viewport->viewPos.x;
-    int16_t bottom = g_music_tracking_viewport->viewPos.y;
-    int16_t quarter_w = g_music_tracking_viewport->view_width / 4;
-    int16_t quarter_h = g_music_tracking_viewport->view_height / 4;
+    const auto quarter_w = g_music_tracking_viewport->view_width / 4;
+    const auto quarter_h = g_music_tracking_viewport->view_height / 4;
+
+    auto left = g_music_tracking_viewport->viewPos.x;
+    auto bottom = g_music_tracking_viewport->viewPos.y;
 
     if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
@@ -987,8 +988,8 @@ bool Vehicle::SoundCanPlay() const
     if (left >= SpriteRect.GetRight() || bottom >= SpriteRect.GetBottom())
         return false;
 
-    int16_t right = g_music_tracking_viewport->view_width + left;
-    int16_t top = g_music_tracking_viewport->view_height + bottom;
+    auto right = g_music_tracking_viewport->view_width + left;
+    auto top = g_music_tracking_viewport->view_height + bottom;
 
     if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
