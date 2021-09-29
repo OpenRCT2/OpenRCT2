@@ -566,7 +566,11 @@ private:
 
             if (isPatrolAreaSet)
             {
-                if (!peep->HasPatrolArea() || !peep->IsLocationInPatrol(footpathCoords))
+                if (!peep->HasPatrolArea())
+                {
+                    continue;
+                }
+                if (!peep->IsLocationInPatrol(footpathCoords))
                 {
                     continue;
                 }

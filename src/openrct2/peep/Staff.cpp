@@ -142,13 +142,15 @@ void staff_update_greyed_patrol_areas()
         {
             if (EnumValue(staff->AssignedStaffType) == staff_type)
             {
-                if (staff->PatrolInfo != nullptr)
+                if (!staff->HasPatrolArea())
                 {
-                    auto staffData = staff->PatrolInfo->Data;
-                    for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-                    {
-                        mergedData[i] |= staffData[i];
-                    }
+                    continue;
+                }
+
+                auto staffData = staff->PatrolInfo->Data;
+                for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+                {
+                    mergedData[i] |= staffData[i];
                 }
             }
         }

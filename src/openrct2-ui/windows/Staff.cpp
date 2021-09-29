@@ -562,13 +562,16 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             // Clear patrol
             if (dropdownIndex == 1)
             {
-                const auto staff = GetStaff(w);
-                if (staff != nullptr)
+                const auto peep = GetStaff(w);
+                if (peep == nullptr)
                 {
-                    staff->ClearPatrolArea();
-                    gfx_invalidate_screen();
-                    staff_update_greyed_patrol_areas();
+                    return;
                 }
+                // TODO: THIS SHOULD BE NETWORKED
+                peep->ClearPatrolArea();
+
+                gfx_invalidate_screen();
+                staff_update_greyed_patrol_areas();
             }
             else
             {

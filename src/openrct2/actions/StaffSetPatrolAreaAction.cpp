@@ -64,6 +64,7 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
     }
 
     staff->TogglePatrolArea(_loc);
+
     if (!staff->HasPatrolArea())
     {
         // This frees the data if there is no patrol area
