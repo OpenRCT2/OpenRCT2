@@ -1761,9 +1761,10 @@ void S6Exporter::ExportMapAnimations()
         auto& dst = _s6.map_animations[i];
 
         dst.type = src.type;
+        // In RCT12MapAnimation, the x and y coordinates use big coords, while the z coordinate uses small coords.
         dst.x = src.location.x;
         dst.y = src.location.y;
-        dst.baseZ = src.location.z;
+        dst.baseZ = src.location.z / COORDS_Z_STEP;
     }
 }
 
