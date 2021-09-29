@@ -1090,6 +1090,23 @@ void S6Exporter::ExportMarketingCampaigns()
     }
 }
 
+void S6Exporter::RebuildEntitySpatialLocation(const TileCoordsXY& loc)
+{
+    uint16_t previous = SPRITE_INDEX_NULL;
+    for (auto* entity : EntityTileList(loc.ToCoordsXY()))
+    {
+        if (previous != SPRITE_INDEX_NULL)
+        {
+            _s6.sprites[previous].unknown.next_in_quadrant = entity->sprite_index;
+        }
+        previous = entity->sprite_index;
+    }
+    if (previous != SPRITE_INDEX_NULL)
+    {
+        _s6.sprites[previous].unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+    }
+}
+
 void S6Exporter::RebuildEntityLinks()
 {
     // Rebuild next/previous linked list entity indexs
@@ -1123,21 +1140,13 @@ void S6Exporter::RebuildEntityLinks()
     {
         for (auto y = 0; y < 255; ++y)
         {
-            uint16_t previous = SPRITE_INDEX_NULL;
-            for (auto* entity : EntityTileList(TileCoordsXY{ x, y }.ToCoordsXY()))
-            {
-                if (previous != SPRITE_INDEX_NULL)
-                {
-                    _s6.sprites[previous].unknown.next_in_quadrant = entity->sprite_index;
-                }
-                previous = entity->sprite_index;
-            }
-            if (previous != SPRITE_INDEX_NULL)
-            {
-                _s6.sprites[previous].unknown.next_in_quadrant = SPRITE_INDEX_NULL;
-            }
+            RebuildEntitySpatialLocation(TileCoordsXY{ x, y });
         }
     }
+    // Revuild next_in_quadrant linked list for LOCATION_NULL
+    TileCoordsXY invalid;
+    invalid.SetNull();
+    RebuildEntitySpatialLocation(invalid);
 }
 
 constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const EntityBase* src)
