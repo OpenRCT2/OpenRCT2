@@ -34,6 +34,10 @@
  */
 void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
 {
+    if (!map_is_location_valid(pos))
+    {
+        return;
+    }
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
     {
         return;
