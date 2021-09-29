@@ -46,21 +46,19 @@ static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex
 
 static void FreeEntity(EntityBase& entity);
 
-constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
+static constexpr size_t GetSpatialIndexOffset(const CoordsXY& loc)
 {
-    if (x == LOCATION_NULL)
+    if (loc.IsNull())
         return SPATIAL_INDEX_LOCATION_NULL;
 
-    const auto tileX = std::clamp<size_t>(x / COORDS_XY_STEP, 0, MAXIMUM_MAP_SIZE_TECHNICAL);
-    const auto tileY = std::clamp<size_t>(y / COORDS_XY_STEP, 0, MAXIMUM_MAP_SIZE_TECHNICAL);
-    const auto index = tileX * MAXIMUM_MAP_SIZE_TECHNICAL + tileY;
+    // NOTE: The input coordinate is rotated and can have negative components.
+    const auto tileX = std::abs(loc.x) / COORDS_XY_STEP;
+    const auto tileY = std::abs(loc.y) / COORDS_XY_STEP;
 
-    if (index >= std::size(gSpriteSpatialIndex))
-    {
+    if (tileX >= MAXIMUM_MAP_SIZE_TECHNICAL || tileY >= MAXIMUM_MAP_SIZE_TECHNICAL)
         return SPATIAL_INDEX_LOCATION_NULL;
-    }
 
-    return index;
+    return tileX * MAXIMUM_MAP_SIZE_TECHNICAL + tileY;
 }
 
 // Required for GetEntity to return a default
@@ -155,7 +153,7 @@ EntityBase* get_sprite(size_t spriteIndex)
 
 const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
 {
-    return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
+    return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos)];
 }
 
 void EntityBase::Invalidate()
@@ -463,7 +461,7 @@ void sprite_misc_update_all()
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
 static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc)
 {
-    size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
+    size_t newIndex = GetSpatialIndexOffset(newLoc);
     auto& spatialVector = gSpriteSpatialIndex[newIndex];
     auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
     spatialVector.insert(index, sprite->sprite_index);
@@ -471,7 +469,7 @@ static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc)
 
 static void SpriteSpatialRemove(EntityBase* sprite)
 {
-    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
+    size_t currentIndex = GetSpatialIndexOffset({ sprite->x, sprite->y });
     auto& spatialVector = gSpriteSpatialIndex[currentIndex];
     auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
     if (index != std::end(spatialVector) && *index == sprite->sprite_index)
@@ -487,8 +485,8 @@ static void SpriteSpatialRemove(EntityBase* sprite)
 
 static void SpriteSpatialMove(EntityBase* sprite, const CoordsXY& newLoc)
 {
-    size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
-    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
+    size_t newIndex = GetSpatialIndexOffset(newLoc);
+    size_t currentIndex = GetSpatialIndexOffset({ sprite->x, sprite->y });
     if (newIndex == currentIndex)
         return;
 

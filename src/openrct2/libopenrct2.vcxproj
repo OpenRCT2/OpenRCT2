@@ -58,6 +58,7 @@
     <ClInclude Include="actions\BannerSetColourAction.h" />
     <ClInclude Include="actions\BannerSetNameAction.h" />
     <ClInclude Include="actions\BannerSetStyleAction.h" />
+    <ClInclude Include="actions\ChangeMapSizeAction.h" />
     <ClInclude Include="actions\ClearAction.h" />
     <ClInclude Include="actions\ClimateSetAction.h" />
     <ClInclude Include="actions\CustomAction.h" />
@@ -505,6 +506,7 @@
     <ClCompile Include="actions\BannerSetColourAction.cpp" />
     <ClCompile Include="actions\BannerSetNameAction.cpp" />
     <ClCompile Include="actions\BannerSetStyleAction.cpp" />
+    <ClCompile Include="actions\ChangeMapSizeAction.cpp" />
     <ClCompile Include="actions\ClearAction.cpp" />
     <ClCompile Include="actions\ClimateSetAction.cpp" />
     <ClCompile Include="actions\CustomAction.cpp" />
