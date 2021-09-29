@@ -1115,6 +1115,9 @@ void S6Exporter::RebuildEntityLinks()
            RCT12EntityLinkListOffset::Peep, RCT12EntityLinkListOffset::TrainHead, RCT12EntityLinkListOffset::Vehicle })
     {
         uint16_t previous = SPRITE_INDEX_NULL;
+        // Intialise Head to NULL for situations where there are no entities of this type.
+        _s6.sprite_lists_head[EnumValue(list) >> 1] = SPRITE_INDEX_NULL;
+
         for (auto& entity : _s6.sprites)
         {
             if (entity.unknown.linked_list_type_offset == list)
