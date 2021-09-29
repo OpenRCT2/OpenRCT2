@@ -447,31 +447,32 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
 
     // Create Viewport and DPI for every rotation and zoom.
     constexpr int32_t MAX_ROTATIONS = 4;
-    constexpr int32_t MAX_ZOOM_LEVEL = 3;
-    std::array<rct_drawpixelinfo, MAX_ROTATIONS * MAX_ZOOM_LEVEL> dpis;
-    std::array<rct_viewport, MAX_ROTATIONS * MAX_ZOOM_LEVEL> viewports;
+    constexpr auto NUM_ZOOM_LEVELS = static_cast<int8_t>(ZoomLevel::max());
+    std::array<rct_drawpixelinfo, MAX_ROTATIONS * NUM_ZOOM_LEVELS> dpis;
+    std::array<rct_viewport, MAX_ROTATIONS * NUM_ZOOM_LEVELS> viewports;
 
-    for (int32_t zoom = 0; zoom < MAX_ZOOM_LEVEL; zoom++)
+    for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
     {
+        int32_t zoomIndex{ static_cast<int8_t>(zoom) };
         for (int32_t rotation = 0; rotation < MAX_ROTATIONS; rotation++)
         {
-            auto& viewport = viewports[zoom * MAX_ZOOM_LEVEL + rotation];
-            auto& dpi = dpis[zoom * MAX_ZOOM_LEVEL + rotation];
+            auto& viewport = viewports[zoomIndex * NUM_ZOOM_LEVELS + rotation];
+            auto& dpi = dpis[zoomIndex * NUM_ZOOM_LEVELS + rotation];
             viewport = GetGiantViewport(gMapSize, rotation, zoom);
             dpi = CreateDPI(viewport);
         }
     }
 
-    const uint32_t totalRenderCount = iterationCount * MAX_ROTATIONS * MAX_ZOOM_LEVEL;
+    const uint32_t totalRenderCount = iterationCount * MAX_ROTATIONS * NUM_ZOOM_LEVELS;
 
     try
     {
         double totalTime = 0.0;
 
-        std::array<double, MAX_ZOOM_LEVEL> zoomAverages;
+        std::array<double, NUM_ZOOM_LEVELS> zoomAverages;
 
         // Render at every zoom.
-        for (int32_t zoom = 0; zoom < MAX_ZOOM_LEVEL; zoom++)
+        for (int32_t zoom = 0; zoom < NUM_ZOOM_LEVELS; zoom++)
         {
             double zoomLevelTime = 0.0;
 
@@ -481,8 +482,8 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
                 // N iterations.
                 for (uint32_t i = 0; i < iterationCount; i++)
                 {
-                    auto& dpi = dpis[zoom * MAX_ZOOM_LEVEL + rotation];
-                    auto& viewport = viewports[zoom * MAX_ZOOM_LEVEL + rotation];
+                    auto& dpi = dpis[zoom * NUM_ZOOM_LEVELS + rotation];
+                    auto& viewport = viewports[zoom * NUM_ZOOM_LEVELS + rotation];
                     double elapsed = MeasureFunctionTime([&viewport, &dpi]() { RenderViewport(nullptr, viewport, dpi); });
                     totalTime += elapsed;
                     zoomLevelTime += elapsed;
@@ -497,10 +498,11 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
         const auto engineName = format_string(engineStringId, nullptr);
         std::printf("Engine: %s\n", engineName.c_str());
         std::printf("Render Count: %u\n", totalRenderCount);
-        for (int32_t zoom = 0; zoom < MAX_ZOOM_LEVEL; zoom++)
+        for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
         {
-            const auto zoomAverage = zoomAverages[zoom];
-            std::printf("Zoom[%d] average: %.06fs, %.f FPS\n", zoom, zoomAverage, 1.0 / zoomAverage);
+            int32_t zoomIndex{ static_cast<int8_t>(zoom) };
+            const auto zoomAverage = zoomAverages[zoomIndex];
+            std::printf("Zoom[%d] average: %.06fs, %.f FPS\n", zoomIndex, zoomAverage, 1.0 / zoomAverage);
         }
         std::printf("Total average: %.06fs, %.f FPS\n", average, 1.0 / average);
         std::printf("Time: %.05fs\n", totalTime);
@@ -647,7 +649,8 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         rct_viewport viewport{};
         if (giantScreenshot)
         {
-            auto zoom = std::atoi(argv[3]);
+            auto customZoom = static_cast<int8_t>(std::atoi(argv[3]));
+            auto zoom = ZoomLevel{ customZoom };
             auto rotation = std::atoi(argv[4]) & 3;
             viewport = GetGiantViewport(gMapSize, rotation, zoom);
             gCurrentRotation = rotation;
@@ -705,7 +708,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
 
                 viewport.viewPos = { coords2d.x - ((viewport.view_width << customZoom) / 2),
                                      coords2d.y - ((viewport.view_height << customZoom) / 2) };
-                viewport.zoom = customZoom;
+                viewport.zoom = ZoomLevel{ static_cast<int8_t>(customZoom) };
                 gCurrentRotation = customRotation;
             }
             else
