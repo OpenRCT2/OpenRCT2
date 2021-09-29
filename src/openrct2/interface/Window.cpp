@@ -1081,17 +1081,23 @@ void window_zoom_out(rct_window* w, bool atCursor)
 
 void main_window_zoom(bool zoomIn, bool atCursor)
 {
+    auto* mainWindow = window_get_main();
+    if (mainWindow != nullptr)
+        return;
+
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gEditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
-        {
-            auto* mainWindow = window_get_main();
-            if (mainWindow != nullptr)
-                window_zoom_set(mainWindow, mainWindow->viewport->zoom + (zoomIn ? -1 : 1), atCursor);
-        }
-    }
+
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gEditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+        return;
+
+    if (zoomIn)
+        window_zoom_in(mainWindow, atCursor);
+    else
+        window_zoom_out(mainWindow, atCursor);
 }
 
 /**
