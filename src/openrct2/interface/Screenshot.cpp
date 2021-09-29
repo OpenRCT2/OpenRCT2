@@ -387,9 +387,8 @@ void screenshot_giant()
             throw std::runtime_error("Giant screenshot failed, unable to find a suitable destination path.");
         }
 
-        int32_t rotation = get_current_rotation();
-        ZoomLevel zoom = 0;
-
+        auto rotation = get_current_rotation();
+        auto zoom = ZoomLevel{ 0 };
         auto mainWindow = window_get_main();
         auto vp = window_get_viewport(mainWindow);
         if (mainWindow != nullptr && vp != nullptr)

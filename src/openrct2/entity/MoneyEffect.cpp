@@ -169,7 +169,7 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
 void MoneyEffect::Paint(paint_session* session, int32_t imageDirection) const
 {
     rct_drawpixelinfo& dpi = session->DPI;
-    if (dpi.zoom_level > 0)
+    if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         return;
     }

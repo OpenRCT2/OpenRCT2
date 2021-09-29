@@ -2371,7 +2371,7 @@ namespace RCT1
         void ImportSavedView()
         {
             gSavedView = ScreenCoordsXY{ _s4.view_x, _s4.view_y };
-            gSavedViewZoom = _s4.view_zoom;
+            gSavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.view_zoom) };
             gSavedViewRotation = _s4.view_rotation;
         }
 

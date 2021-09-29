@@ -19,7 +19,7 @@ private:
 public:
     constexpr ZoomLevel() = default;
 
-    constexpr ZoomLevel(int8_t level)
+    explicit constexpr ZoomLevel(int8_t level)
         : _level(level)
     {
     }
@@ -29,7 +29,11 @@ public:
     {
     }
 
-    explicit operator int8_t() const;
+    explicit constexpr operator int8_t() const
+    {
+        return _level;
+    }
+
     ZoomLevel operator++(int);
     ZoomLevel& operator++();
     ZoomLevel operator--(int);
@@ -40,6 +44,8 @@ public:
 
     friend ZoomLevel operator+(ZoomLevel lhs, const ZoomLevel& rhs);
     friend ZoomLevel operator-(ZoomLevel lhs, const ZoomLevel& rhs);
+    friend ZoomLevel operator+(ZoomLevel lhs, int8_t rhs);
+    friend ZoomLevel operator-(ZoomLevel lhs, int8_t rhs);
     friend constexpr bool operator==(const ZoomLevel& lhs, const ZoomLevel& rhs);
     friend constexpr bool operator!=(const ZoomLevel& lhs, const ZoomLevel& rhs);
     friend constexpr bool operator>=(const ZoomLevel& lhs, const ZoomLevel& rhs);
@@ -67,7 +73,7 @@ public:
 
     static constexpr ZoomLevel max()
     {
-        return 3;
+        return ZoomLevel{ 3 };
     }
 };
 

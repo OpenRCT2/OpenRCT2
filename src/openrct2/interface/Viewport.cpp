@@ -218,11 +218,11 @@ void viewport_remove(rct_viewport* viewport)
     _viewports.erase(it);
 }
 
-void viewports_invalidate(const ScreenRect& screenRect, int32_t maxZoom)
+void viewports_invalidate(const ScreenRect& screenRect, ZoomLevel maxZoom)
 {
     for (auto& vp : _viewports)
     {
-        if (maxZoom == -1 || vp.zoom <= maxZoom)
+        if (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom })
         {
             viewport_invalidate(&vp, screenRect);
         }
@@ -950,7 +950,7 @@ void viewport_paint(
     uint32_t viewFlags = viewport->flags;
     uint32_t width = screenRect.GetWidth();
     uint32_t height = screenRect.GetHeight();
-    uint32_t bitmask = viewport->zoom >= 0 ? 0xFFFFFFFF & (0xFFFFFFFF * viewport->zoom) : 0xFFFFFFFF;
+    uint32_t bitmask = viewport->zoom >= ZoomLevel{ 0 } ? 0xFFFFFFFF & (0xFFFFFFFF * viewport->zoom) : 0xFFFFFFFF;
     ScreenCoordsXY topLeft = screenRect.Point1;
 
     width &= bitmask;
@@ -1081,7 +1081,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
     if (paletteId != FilterPaletteID::PaletteNull)
     {
         // Only scale width if zoomed in more than 1:1
-        auto zoomLevel = dpi->zoom_level < 0 ? dpi->zoom_level : 0;
+        auto zoomLevel = dpi->zoom_level < ZoomLevel{ 0 } ? dpi->zoom_level : ZoomLevel{ 0 };
         auto x = dpi->x;
         auto y = dpi->y;
         auto w = (dpi->width / zoomLevel) - 1;
@@ -1482,7 +1482,7 @@ static bool is_sprite_interacted_with_palette_set(
         return false;
     }
 
-    if (dpi->zoom_level > 0)
+    if (dpi->zoom_level > ZoomLevel{ 0 })
     {
         if (g1->flags & G1_FLAG_NO_ZOOM_DRAW)
         {
@@ -1518,7 +1518,7 @@ static bool is_sprite_interacted_with_palette_set(
     origin.y += g1->y_offset;
     int32_t yStartPoint = 0;
     int32_t height = g1->height;
-    if (dpi->zoom_level != 0)
+    if (dpi->zoom_level != ZoomLevel{ 0 })
     {
         if (height % 2)
         {
@@ -1526,7 +1526,7 @@ static bool is_sprite_interacted_with_palette_set(
             yStartPoint++;
         }
 
-        if (dpi->zoom_level == 2)
+        if (dpi->zoom_level == ZoomLevel{ 2 })
         {
             if (height % 4)
             {
@@ -1720,7 +1720,7 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
         viewLoc.x = viewLoc.x * myviewport->zoom;
         viewLoc.y = viewLoc.y * myviewport->zoom;
         viewLoc += myviewport->viewPos;
-        if (myviewport->zoom > 0)
+        if (myviewport->zoom > ZoomLevel{ 0 })
         {
             viewLoc.x &= (0xFFFFFFFF * myviewport->zoom) & 0xFFFFFFFF;
             viewLoc.y &= (0xFFFFFFFF * myviewport->zoom) & 0xFFFFFFFF;
@@ -1978,8 +1978,8 @@ ZoomLevel ZoomLevel::min()
 {
     if (drawing_engine_get_type() == DrawingEngine::OpenGL)
     {
-        return -2;
+        return ZoomLevel{ -2 };
     }
 
-    return 0;
+    return ZoomLevel{ 0 };
 }

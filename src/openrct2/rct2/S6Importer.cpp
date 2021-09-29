@@ -417,7 +417,7 @@ namespace RCT2
 
             gSavedAge = _s6.saved_age;
             gSavedView = ScreenCoordsXY{ _s6.saved_view_x, _s6.saved_view_y };
-            gSavedViewZoom = _s6.saved_view_zoom;
+            gSavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s6.saved_view_zoom) };
             gSavedViewRotation = _s6.saved_view_rotation;
 
             ImportRideRatingsCalcData();

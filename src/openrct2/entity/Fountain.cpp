@@ -401,7 +401,7 @@ void JumpingFountain::Paint(paint_session* session, int32_t imageDirection) cons
     constexpr uint32_t JumpingFountainWaterBaseImage = 22973;
 
     rct_drawpixelinfo& dpi = session->DPI;
-    if (dpi.zoom_level > 0)
+    if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         return;
     }

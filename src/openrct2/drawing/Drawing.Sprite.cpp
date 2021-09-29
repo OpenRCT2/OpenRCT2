@@ -435,7 +435,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         return;
     }
 
-    if (dpi->zoom_level > 0 && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
+    if (dpi->zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
     {
         rct_drawpixelinfo zoomed_dpi = *dpi;
         zoomed_dpi.bits = dpi->bits;
@@ -452,16 +452,16 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         return;
     }
 
-    if (dpi->zoom_level > 0 && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
+    if (dpi->zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
     {
         return;
     }
 
     // Its used super often so we will define it to a separate variable.
     auto zoom_level = dpi->zoom_level;
-    int32_t zoom_mask = zoom_level > 0 ? 0xFFFFFFFF * zoom_level : 0xFFFFFFFF;
+    int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? 0xFFFFFFFF * zoom_level : 0xFFFFFFFF;
 
-    if (zoom_level > 0 && g1->flags & G1_FLAG_RLE_COMPRESSION)
+    if (zoom_level > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
         x -= ~zoom_mask;
         y -= ~zoom_mask;
@@ -503,7 +503,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     }
     else
     {
-        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoom_level > 0)
+        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoom_level > ZoomLevel{ 0 })
         {
             source_start_y -= dest_start_y & ~zoom_mask;
             height += dest_start_y & ~zoom_mask;
@@ -549,7 +549,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     }
     else
     {
-        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoom_level > 0)
+        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoom_level > ZoomLevel{ 0 })
         {
             source_start_x -= dest_start_x & ~zoom_mask;
         }
@@ -613,7 +613,7 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
         return;
     }
 
-    if (dpi->zoom_level != 0)
+    if (dpi->zoom_level != ZoomLevel{ 0 })
     {
         // TODO: Implement other zoom levels (probably not used though)
         assert(false);

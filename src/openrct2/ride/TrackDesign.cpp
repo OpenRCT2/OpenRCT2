@@ -2099,8 +2099,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         size_z = 0;
     }
 
-    ZoomLevel zoom_level = 1;
-
+    ZoomLevel zoom_level{ 1 };
     if (size_x < size_y)
     {
         size_x = size_y;
@@ -2108,12 +2107,12 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
 
     if (size_x > 1000 || size_z > 280)
     {
-        zoom_level = 2;
+        zoom_level = ZoomLevel{ 2 };
     }
 
     if (size_x > 1600 || size_z > 1000)
     {
-        zoom_level = 3;
+        zoom_level = ZoomLevel{ 3 };
     }
 
     size_x = 370 * zoom_level;

@@ -1026,7 +1026,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF)
         {
-            clipDPI.zoom_level = 1;
+            clipDPI.zoom_level = ZoomLevel{ 1 };
             clipDPI.width *= 2;
             clipDPI.height *= 2;
             screenCoords.x *= 2;
@@ -1212,12 +1212,13 @@ static void WindowRideUpdateOverallView(Ride* ride)
     {
         // Each farther zoom level shows twice as many tiles (log)
         // Appropriate zoom is lowered by one to fill the entire view with the ride
-        view.zoom = std::clamp<ZoomLevel>(std::ceil(std::log(size / 80)) - 1, 0, ZoomLevel::max());
+        const auto zoomValue = static_cast<int8_t>(std::ceil(std::log(size / 80)) - 1);
+        view.zoom = std::clamp(ZoomLevel{ zoomValue }, ZoomLevel{ 0 }, ZoomLevel::max());
     }
     else
     {
         // Small rides or stalls are zoomed in all the way.
-        view.zoom = 0;
+        view.zoom = ZoomLevel{ 0 };
     }
 }
 

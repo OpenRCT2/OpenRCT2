@@ -739,7 +739,7 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
         return nullptr;
 
     viewport = w->viewport;
-    if (viewport == nullptr || viewport->zoom >= 2)
+    if (viewport == nullptr || viewport->zoom >= ZoomLevel{ 2 })
         return nullptr;
 
     auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);
