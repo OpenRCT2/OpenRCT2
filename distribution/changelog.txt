@@ -16,7 +16,7 @@
 - Fix: [#14649] ImageImporter incorrectly remaps colours outside the RCT2 palette.
 - Fix: [#14667] “Extreme Hawaiian Island” has unpurchaseable land tiles (original bug).
 - Fix: [#15096] Crash when placing entrances in the scenario editor near the map corner.
-- Fix: [#15136] SV6 export causing vanilla RCT2 to crash under certain situations.
+- Fix: [#15136] Exported SV6 files cause vanilla RCT2 to hang.
 - Fix: [#15142] ToonTowner's mine roofs were moved into the pirate theme scenery group instead of the mine theme scenery group.
 - Fix: [#15148] Track Designs Manager delete confirmation window doesn't display properly.
 - Fix: [#15170] Plugin: incorrect label text alignment.
