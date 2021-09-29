@@ -1139,6 +1139,7 @@ void S6Exporter::RebuildEntityLinks()
     }
 
     // Rebuild next_in_quadrant linked list entity indexs
+    // This in theory is not required but to be on the safe side we are rebuilding it.
     for (auto x = 0; x < 255; ++x)
     {
         for (auto y = 0; y < 255; ++y)
@@ -1146,7 +1147,7 @@ void S6Exporter::RebuildEntityLinks()
             RebuildEntitySpatialLocation(TileCoordsXY{ x, y });
         }
     }
-    // Revuild next_in_quadrant linked list for LOCATION_NULL
+    // Rebuild next_in_quadrant linked list for LOCATION_NULL
     TileCoordsXY invalid;
     invalid.SetNull();
     RebuildEntitySpatialLocation(invalid);
