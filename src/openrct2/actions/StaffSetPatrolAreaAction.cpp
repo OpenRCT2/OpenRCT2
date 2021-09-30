@@ -55,7 +55,7 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Query() const
     return MakeResult();
 }
 
-static void UpdateStaffMode(Staff& staff)
+static void UpdateStaffMode(const Staff& staff)
 {
     bool isPatrolling = false;
     const auto peepOffset = staff.StaffId * STAFF_PATROL_AREA_SIZE;
