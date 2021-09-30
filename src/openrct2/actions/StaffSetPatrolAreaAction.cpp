@@ -29,7 +29,7 @@ uint16_t StaffSetPatrolAreaAction::GetActionFlags() const
 void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
-    stream << DS_TAG(_spriteId) << DS_TAG(_loc);
+    stream << DS_TAG(_spriteId) << DS_TAG(_loc) << DS_TAG(_mode);
 }
 
 GameActions::Result::Ptr StaffSetPatrolAreaAction::Query() const
