@@ -473,7 +473,6 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
-    // Create sick at location
     const auto curLoc = GetLocation();
     Litter::Create({ curLoc, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
