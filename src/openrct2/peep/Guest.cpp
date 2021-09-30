@@ -5028,12 +5028,12 @@ void Guest::UpdateRideShopLeave()
     if (auto loc = UpdateAction(); loc.has_value())
     {
         const auto curLoc = GetLocation();
-
         MoveTo({ loc.value(), curLoc.z });
 
-        if ((curLoc.x & 0xFFE0) != NextLoc.x)
+        const auto newLoc = GetLocation().ToTileStart();
+        if (newLoc.x != NextLoc.x)
             return;
-        if ((curLoc.y & 0xFFE0) != NextLoc.y)
+        if (newLoc.y != NextLoc.y)
             return;
     }
 
