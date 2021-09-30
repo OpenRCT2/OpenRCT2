@@ -531,7 +531,7 @@ void game_load_init()
     }
     else
     {
-        const auto mainWindow = window_get_main();
+        auto* mainWindow = window_get_main();
         window_unfollow_sprite(mainWindow);
     }
 

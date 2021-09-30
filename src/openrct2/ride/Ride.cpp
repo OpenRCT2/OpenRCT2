@@ -3704,7 +3704,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
  */
 void Ride::ConstructMissingEntranceOrExit() const
 {
-    rct_window* w = window_get_main();
+    auto* w = window_get_main();
     if (w == nullptr)
         return;
 
@@ -3757,7 +3757,7 @@ void Ride::ConstructMissingEntranceOrExit() const
  */
 static void ride_scroll_to_track_error(CoordsXYE* trackElement)
 {
-    rct_window* w = window_get_main();
+    auto* w = window_get_main();
     if (w != nullptr)
     {
         window_scroll_to_location(w, { *trackElement, trackElement->element->GetBaseZ() });
