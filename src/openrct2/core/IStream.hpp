@@ -208,7 +208,7 @@ namespace OpenRCT2
         utf8* ReadString();
         std::string ReadStdString();
         void WriteString(const utf8* str);
-        void WriteString(std::string_view string);
+        void WriteString(const std::string_view string);
         void WriteString(const std::string& string);
     };
 

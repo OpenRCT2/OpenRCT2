@@ -69,7 +69,7 @@ namespace OpenRCT2
         ChunkEntry _currentChunk;
 
     public:
-        OrcaStream(IStream& stream, Mode mode)
+        OrcaStream(IStream& stream, const Mode mode)
         {
             _stream = &stream;
             _mode = mode;
@@ -121,10 +121,7 @@ namespace OpenRCT2
 
         ~OrcaStream()
         {
-            if (_mode == Mode::READING)
-            {
-            }
-            else
+            if (_mode == Mode::WRITING)
             {
                 const void* uncompressedData = _buffer.GetData();
                 const uint64_t uncompressedSize = _buffer.GetLength();
@@ -184,7 +181,7 @@ namespace OpenRCT2
             return _header;
         }
 
-        template<typename TFunc> bool ReadWriteChunk(uint32_t chunkId, TFunc f)
+        template<typename TFunc> bool ReadWriteChunk(const uint32_t chunkId, TFunc f)
         {
             if (_mode == Mode::READING)
             {
@@ -209,12 +206,12 @@ namespace OpenRCT2
         }
 
     private:
-        bool SeekChunk(uint32_t id)
+        bool SeekChunk(const uint32_t id)
         {
-            auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.Id == id; });
+            const auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.Id == id; });
             if (result != _chunks.end())
             {
-                auto offset = result->Offset;
+                const auto offset = result->Offset;
                 _buffer.SetPosition(offset);
                 return true;
             }
@@ -238,7 +235,7 @@ namespace OpenRCT2
             std::stack<ArrayState> _arrayStack;
 
         public:
-            ChunkStream(MemoryStream& buffer, Mode mode)
+            ChunkStream(MemoryStream& buffer, const Mode mode)
                 : _buffer(buffer)
                 , _mode(mode)
             {
@@ -254,7 +251,7 @@ namespace OpenRCT2
                 return _buffer;
             }
 
-            void ReadWrite(void* addr, size_t len)
+            void ReadWrite(void* addr, const size_t len)
             {
                 if (_mode == Mode::READING)
                 {
@@ -266,7 +263,7 @@ namespace OpenRCT2
                 }
             }
 
-            void Read(void* addr, size_t len)
+            void Read(void* addr, const size_t len)
             {
                 if (_mode == Mode::READING)
                 {
@@ -278,7 +275,7 @@ namespace OpenRCT2
                 }
             }
 
-            void Write(const void* addr, size_t len)
+            void Write(const void* addr, const size_t len)
             {
                 if (_mode == Mode::READING)
                 {
@@ -404,7 +401,7 @@ namespace OpenRCT2
                 Write(sv);
             }
 
-            void Write(const std::string_view& v)
+            void Write(const std::string_view v)
             {
                 if (_mode == Mode::READING)
                 {
@@ -426,7 +423,7 @@ namespace OpenRCT2
             {
                 if (_mode == Mode::READING)
                 {
-                    auto count = BeginArray();
+                    const auto count = BeginArray();
                     vec.clear();
                     for (size_t i = 0; i < count; i++)
                     {
@@ -459,7 +456,7 @@ namespace OpenRCT2
             {
                 if (_mode == Mode::READING)
                 {
-                    auto count = BeginArray();
+                    const auto count = BeginArray();
                     for (auto& el : arr)
                     {
                         el = {};
@@ -495,12 +492,12 @@ namespace OpenRCT2
             }
 
         private:
-            void ReadBuffer(void* dst, size_t len)
+            void ReadBuffer(void* dst, const size_t len)
             {
                 _buffer.Read(dst, len);
             }
 
-            void WriteBuffer(const void* buffer, size_t len)
+            void WriteBuffer(const void* buffer, const size_t len)
             {
                 _buffer.Write(buffer, len);
             }
@@ -509,7 +506,7 @@ namespace OpenRCT2
             {
                 if constexpr (sizeof(T) > 4)
                 {
-                    if (std::is_signed<T>())
+                    if constexpr (std::is_signed<T>())
                     {
                         int64_t raw{};
                         Read(&raw, sizeof(raw));
@@ -545,11 +542,11 @@ namespace OpenRCT2
                 }
             }
 
-            template<typename T, typename = std::enable_if<std::is_integral<T>::value>> void WriteInteger(T value)
+            template<typename T, typename = std::enable_if<std::is_integral<T>::value>> void WriteInteger(const T value)
             {
                 if constexpr (sizeof(T) > 4)
                 {
-                    if (std::is_signed<T>())
+                    if constexpr (std::is_signed<T>())
                     {
                         auto raw = static_cast<int64_t>(value);
                         Write(&raw, sizeof(raw));
@@ -562,7 +559,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    if (std::is_signed<T>())
+                    if constexpr (std::is_signed<T>())
                     {
                         auto raw = static_cast<int32_t>(value);
                         Write(&raw, sizeof(raw));
@@ -581,9 +578,9 @@ namespace OpenRCT2
                 buffer.reserve(64);
                 while (true)
                 {
-                    char c;
+                    char c{};
                     ReadBuffer(&c, sizeof(c));
-                    if (c == 0)
+                    if (c == '\0')
                     {
                         break;
                     }
@@ -593,9 +590,9 @@ namespace OpenRCT2
                 return buffer;
             }
 
-            void WriteString(const std::string_view& s)
+            void WriteString(const std::string_view s)
             {
-                char nullt = '\0';
+                const char nullt = '\0';
                 auto len = s.find('\0');
                 if (len == std::string_view::npos)
                 {
@@ -643,7 +640,7 @@ namespace OpenRCT2
                     return arrayState.Count == 0;
                 }
 
-                auto lastElSize = static_cast<size_t>(_buffer.GetPosition()) - arrayState.LastPos;
+                const auto lastElSize = static_cast<size_t>(_buffer.GetPosition()) - arrayState.LastPos;
                 if (arrayState.Count == 0)
                 {
                     // Set array element size based on first element size
@@ -663,12 +660,9 @@ namespace OpenRCT2
             void EndArray()
             {
                 auto& arrayState = _arrayStack.top();
-                if (_mode == Mode::READING)
+                if (_mode == Mode::WRITING)
                 {
-                }
-                else
-                {
-                    size_t backupPos = _buffer.GetPosition();
+                    const size_t backupPos = _buffer.GetPosition();
                     if (backupPos != static_cast<size_t>(arrayState.StartPos) + 8 && arrayState.Count == 0)
                     {
                         throw std::runtime_error("Array data was written but no elements were added.");

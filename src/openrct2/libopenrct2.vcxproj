@@ -177,6 +177,7 @@
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />
     <ClInclude Include="core\Numerics.hpp" />
+    <ClInclude Include="core\OrcaStream.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
     <ClInclude Include="core\RTL.h" />
