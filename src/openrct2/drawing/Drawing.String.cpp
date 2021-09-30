@@ -958,7 +958,6 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
             info->palette[2] = (eax >> 8) & 0xFF;
             info->palette[3] = (eax >> 16) & 0xFF;
             info->palette[4] = (eax >> 24) & 0xFF;
-            eax = 0;
         }
     }
 }

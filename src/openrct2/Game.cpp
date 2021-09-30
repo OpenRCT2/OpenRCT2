@@ -519,8 +519,6 @@ void game_fix_save_vars()
 
 void game_load_init()
 {
-    rct_window* mainWindow;
-
     IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
     snapshots->Reset();
 
@@ -530,11 +528,10 @@ void game_load_init()
     {
         viewport_init_all();
         game_create_windows();
-        mainWindow = window_get_main();
     }
     else
     {
-        mainWindow = window_get_main();
+        auto* mainWindow = window_get_main();
         window_unfollow_sprite(mainWindow);
     }
 

@@ -342,7 +342,7 @@ public:
                 {
                     window_close_construction_windows();
                     _currentRideIndex = static_cast<ride_id_t>(rideIndex);
-                    w = OpenWindow(WC_RIDE_CONSTRUCTION);
+                    OpenWindow(WC_RIDE_CONSTRUCTION);
                 }
                 else
                 {

@@ -1005,8 +1005,6 @@ static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widg
 
 static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    widget = &w->widgets[widgetIndex - 1];
-
     switch (widgetIndex)
     {
         case WIDX_VIRTUAL_FLOOR_DROPDOWN:
@@ -1258,7 +1256,6 @@ static void window_options_culture_dropdown(rct_window* w, rct_widgetindex widge
                     }
                     // report error to console regardless
                     log_error("Failed to open language file.");
-                    dropdownIndex = fallbackLanguage - 1;
                 }
                 else
                 {
