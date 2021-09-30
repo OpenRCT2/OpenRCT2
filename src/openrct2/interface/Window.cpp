@@ -427,16 +427,16 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
     rct_widgetindex widget_index = -1;
     for (int32_t i = 0;; i++)
     {
-        rct_widget* widget = &w->widgets[i];
-        if (widget->type == WindowWidgetType::Last)
+        const auto& widget = w->widgets[i];
+        if (widget.type == WindowWidgetType::Last)
         {
             break;
         }
 
-        if (widget->type != WindowWidgetType::Empty && widget->IsVisible())
+        if (widget.type != WindowWidgetType::Empty && widget.IsVisible())
         {
-            if (screenCoords.x >= w->windowPos.x + widget->left && screenCoords.x <= w->windowPos.x + widget->right
-                && screenCoords.y >= w->windowPos.y + widget->top && screenCoords.y <= w->windowPos.y + widget->bottom)
+            if (screenCoords.x >= w->windowPos.x + widget.left && screenCoords.x <= w->windowPos.x + widget.right
+                && screenCoords.y >= w->windowPos.y + widget.top && screenCoords.y <= w->windowPos.y + widget.bottom)
             {
                 widget_index = i;
             }
@@ -445,8 +445,11 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
 
     // Return next widget if a dropdown
     if (widget_index != -1)
-        if (w->widgets[widget_index].type == WindowWidgetType::DropdownMenu)
+    {
+        const auto& widget = w->widgets[widget_index];
+        if (widget.type == WindowWidgetType::DropdownMenu)
             widget_index++;
+    }
 
     // Return the widget index
     return widget_index;
@@ -502,8 +505,6 @@ void window_invalidate_all()
  */
 void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_widget* widget;
-
     assert(w != nullptr);
 #ifdef DEBUG
     for (int32_t i = 0; i <= widgetIndex; i++)
@@ -512,12 +513,12 @@ void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
     }
 #endif
 
-    widget = &w->widgets[widgetIndex];
-    if (widget->left == -2)
+    const auto& widget = w->widgets[widgetIndex];
+    if (widget.left == -2)
         return;
 
-    gfx_set_dirty_blocks({ { w->windowPos + ScreenCoordsXY{ widget->left, widget->top } },
-                           { w->windowPos + ScreenCoordsXY{ widget->right + 1, widget->bottom + 1 } } });
+    gfx_set_dirty_blocks({ { w->windowPos + ScreenCoordsXY{ widget.left, widget.top } },
+                           { w->windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
 }
 
 template<typename _TPred> static void widget_invalidate_by_condition(_TPred pred)
@@ -623,7 +624,8 @@ int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index
     assert(w != nullptr);
     for (i = 0; i < widget_index; i++)
     {
-        if (w->widgets[i].type == WindowWidgetType::Scroll)
+        const auto& widget = w->widgets[i];
+        if (widget.type == WindowWidgetType::Scroll)
             result++;
     }
     return result;
@@ -1747,8 +1749,9 @@ void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetin
     {
         if (!(w->disabled_widgets & (1LL << i)))
         {
-            w->widgets[i].left = x;
-            w->widgets[i].right = x + tab_width;
+            auto& widget = w->widgets[i];
+            widget.left = x;
+            widget.right = x + tab_width;
             x += tab_width + 1;
         }
     }
@@ -2179,12 +2182,12 @@ rct_windowclass window_get_classification(rct_window* window)
  */
 void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
 {
-    rct_widget* widget = &w->widgets[widget_index];
+    const auto& widget = w->widgets[widget_index];
     rct_scroll* scroll = &w->scrolls[window_get_scroll_data_index(w, widget_index)];
 
     if (scroll->flags & HSCROLLBAR_VISIBLE)
     {
-        int32_t view_size = widget->width() - 21;
+        int32_t view_size = widget.width() - 21;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             view_size -= 11;
         int32_t x = scroll->h_left * view_size;
@@ -2192,7 +2195,7 @@ void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
             x /= scroll->h_right;
         scroll->h_thumb_left = x + 11;
 
-        x = widget->width() - 2;
+        x = widget.width() - 2;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             x -= 11;
         x += scroll->h_left;
@@ -2213,7 +2216,7 @@ void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
 
     if (scroll->flags & VSCROLLBAR_VISIBLE)
     {
-        int32_t view_size = widget->height() - 21;
+        int32_t view_size = widget.height() - 21;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             view_size -= 11;
         int32_t y = scroll->v_top * view_size;
@@ -2221,7 +2224,7 @@ void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
             y /= scroll->v_bottom;
         scroll->v_thumb_top = y + 11;
 
-        y = widget->height() - 2;
+        y = widget.height() - 2;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             y -= 11;
         y += scroll->v_top;

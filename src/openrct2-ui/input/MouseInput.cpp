@@ -194,14 +194,14 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, rct_wind
     rct_widgetindex widgetIndex = _dragWidget.widget_index;
     uint8_t scrollIndex = _dragScrollIndex;
 
-    rct_widget* widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
     rct_scroll* scroll = &w->scrolls[scrollIndex];
 
     ScreenCoordsXY differentialCoords = screenCoords - gInputDragLast;
 
     if (scroll->flags & HSCROLLBAR_VISIBLE)
     {
-        int16_t size = widget->width() - 1;
+        int16_t size = widget.width() - 1;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             size -= 11;
         size = std::max(0, scroll->h_right - size);
@@ -210,7 +210,7 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, rct_wind
 
     if (scroll->flags & VSCROLLBAR_VISIBLE)
     {
-        int16_t size = widget->height() - 1;
+        int16_t size = widget.height() - 1;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             size -= 11;
         size = std::max(0, scroll->v_bottom - size);
@@ -604,9 +604,7 @@ static void InputViewportDragEnd()
 
 static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    rct_widget* widget;
-
-    widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
 
     _inputState = InputState::ScrollLeft;
     gPressedWidget.window_classification = w->classification;
@@ -617,7 +615,7 @@ static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const S
     int32_t scroll_area, scroll_id;
     ScreenCoordsXY scrollCoords;
     scroll_id = 0; // safety
-    WidgetScrollGetPart(w, widget, screenCoords, scrollCoords, &scroll_area, &scroll_id);
+    WidgetScrollGetPart(w, &widget, screenCoords, scrollCoords, &scroll_area, &scroll_id);
 
     _currentScrollArea = scroll_area;
     _currentScrollIndex = scroll_id;
@@ -628,15 +626,15 @@ static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const S
         return;
     }
 
-    rct_widget* widg = &w->widgets[widgetIndex];
+    const auto& widg = w->widgets[widgetIndex];
     rct_scroll* scroll = &w->scrolls[scroll_id];
 
-    int32_t widget_width = widg->width() - 1;
+    int32_t widget_width = widg.width() - 1;
     if (scroll->flags & VSCROLLBAR_VISIBLE)
         widget_width -= SCROLLBAR_WIDTH + 1;
     int32_t widget_content_width = std::max(scroll->h_right - widget_width, 0);
 
-    int32_t widget_height = widg->bottom - widg->top - 1;
+    int32_t widget_height = widg.bottom - widg.top - 1;
     if (scroll->flags & HSCROLLBAR_VISIBLE)
         widget_height -= SCROLLBAR_WIDTH + 1;
     int32_t widget_content_height = std::max(scroll->v_bottom - widget_height, 0);
@@ -676,12 +674,11 @@ static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const S
 
 static void InputScrollContinue(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    rct_widget* widget;
     int32_t scroll_part, scroll_id;
 
     assert(w != nullptr);
 
-    widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
     if (w->classification != gPressedWidget.window_classification || w->number != gPressedWidget.window_number
         || widgetIndex != gPressedWidget.widget_index)
     {
@@ -690,7 +687,7 @@ static void InputScrollContinue(rct_window* w, rct_widgetindex widgetIndex, cons
     }
 
     ScreenCoordsXY newScreenCoords;
-    WidgetScrollGetPart(w, widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
+    WidgetScrollGetPart(w, &widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
 
     if (_currentScrollArea == SCROLL_PART_HSCROLLBAR_THUMB)
     {
@@ -746,14 +743,14 @@ static void InputScrollEnd()
  */
 static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t scroll_id)
 {
-    rct_widget* widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
 
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         int32_t newLeft;
         newLeft = w->scrolls[scroll_id].h_right;
         newLeft *= x;
-        x = widget->width() - 21;
+        x = widget.width() - 21;
         if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
             x -= SCROLLBAR_WIDTH + 1;
         newLeft /= x;
@@ -763,7 +760,7 @@ static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetInd
         newLeft += x;
         if (newLeft < 0)
             newLeft = 0;
-        x = widget->width() - 1;
+        x = widget.width() - 1;
         if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
             x -= SCROLLBAR_WIDTH + 1;
         x *= -1;
@@ -785,14 +782,14 @@ static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetInd
 static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetIndex, int32_t y, int32_t scroll_id)
 {
     assert(w != nullptr);
-    rct_widget* widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
 
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         int32_t newTop;
         newTop = w->scrolls[scroll_id].v_bottom;
         newTop *= y;
-        y = widget->height() - 21;
+        y = widget.height() - 21;
         if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
             y -= SCROLLBAR_WIDTH + 1;
         newTop /= y;
@@ -802,7 +799,7 @@ static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetInd
         newTop += y;
         if (newTop < 0)
             newTop = 0;
-        y = widget->height() - 1;
+        y = widget.height() - 1;
         if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
             y -= SCROLLBAR_WIDTH + 1;
         y *= -1;
@@ -841,12 +838,12 @@ static void InputScrollPartUpdateHLeft(rct_window* w, rct_widgetindex widgetInde
 static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id)
 {
     assert(w != nullptr);
-    rct_widget* widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         w->scrolls[scroll_id].flags |= HSCROLLBAR_RIGHT_PRESSED;
         w->scrolls[scroll_id].h_left += 3;
-        int32_t newLeft = widget->width() - 1;
+        int32_t newLeft = widget.width() - 1;
         if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
             newLeft -= SCROLLBAR_WIDTH + 1;
         newLeft *= -1;
@@ -884,12 +881,12 @@ static void InputScrollPartUpdateVTop(rct_window* w, rct_widgetindex widgetIndex
 static void InputScrollPartUpdateVBottom(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id)
 {
     assert(w != nullptr);
-    rct_widget* widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         w->scrolls[scroll_id].flags |= VSCROLLBAR_DOWN_PRESSED;
         w->scrolls[scroll_id].v_top += 3;
-        int32_t newTop = widget->height() - 1;
+        int32_t newTop = widget.height() - 1;
         if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
             newTop -= SCROLLBAR_WIDTH + 1;
         newTop *= -1;
@@ -1000,7 +997,6 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
 {
     rct_windowclass windowClass = WC_NULL;
     rct_windownumber windowNumber = 0;
-    rct_widget* widget;
 
     if (w != nullptr)
     {
@@ -1026,9 +1022,9 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
         window_cancel_textbox();
     }
 
-    widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
 
-    switch (widget->type)
+    switch (widget.type)
     {
         case WindowWidgetType::Frame:
         case WindowWidgetType::Resize:
@@ -1060,7 +1056,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
         default:
             if (WidgetIsEnabled(w, widgetIndex) && !WidgetIsDisabled(w, widgetIndex))
             {
-                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget->midX());
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget.midX());
 
                 // Set new cursor down widget
                 gPressedWidget.window_classification = windowClass;
