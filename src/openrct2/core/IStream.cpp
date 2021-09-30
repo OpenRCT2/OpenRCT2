@@ -12,6 +12,9 @@
 #include "../object/Object.h"
 #include "Memory.hpp"
 #include "String.hpp"
+
+#include <vector>
+
 namespace OpenRCT2
 {
     utf8* IStream::ReadString()
