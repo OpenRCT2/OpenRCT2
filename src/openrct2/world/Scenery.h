@@ -294,3 +294,10 @@ PathBitEntry* get_footpath_item_entry(ObjectEntryIndex entryIndex);
 rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex);
 
 int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry);
+
+bool IsSceneryAvailableToBuild(ScenerySelection item);
+
+bool IsSceneryItemRestricted(ScenerySelection item);
+void ClearRestrictedScenery();
+void RestrictAllMiscScenery();
+std::vector<ScenerySelection>& GetRestrictedScenery();
