@@ -112,6 +112,8 @@ namespace OpenRCT2
 
         uint64_t TryRead(void* buffer, uint64_t length) override;
 
+        void Clear();
+
     private:
         void EnsureCapacity(size_t capacity);
     };
