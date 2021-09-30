@@ -805,6 +805,7 @@
 		7CDC7EE9B12E40FB9FE78546 /* Crypt.OpenRCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4248E4E4394842D4AF6119DA /* Crypt.OpenRCT2.cpp */; };
 		4653963391E945D397BCCA0C /* ChangeMapSizeAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 76CE81CEAF7F4538976F7C4C /* ChangeMapSizeAction.cpp */; };
 		F1BE1CB5525C4FF794A3F3CE /* ChangeMapSizeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = C49050C073DB4CB980E1EC5A /* ChangeMapSizeAction.h */; };
+		B769EFE0AA1149AE93C15DED /* OrcaStream.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F9061C16C67A45D7915FA229 /* OrcaStream.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1913,6 +1914,7 @@
 		4248E4E4394842D4AF6119DA /* Crypt.OpenRCT2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Crypt.OpenRCT2.cpp; path = src/openrct2/core/Crypt.OpenRCT2.cpp; sourceTree = SOURCE_ROOT; };
 		76CE81CEAF7F4538976F7C4C /* ChangeMapSizeAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChangeMapSizeAction.cpp; path = src/openrct2/actions/ChangeMapSizeAction.cpp; sourceTree = SOURCE_ROOT; };
 		C49050C073DB4CB980E1EC5A /* ChangeMapSizeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChangeMapSizeAction.h; path = src/openrct2/actions/ChangeMapSizeAction.h; sourceTree = SOURCE_ROOT; };
+		F9061C16C67A45D7915FA229 /* OrcaStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = OrcaStream.hpp; path = src/openrct2/core/OrcaStream.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2567,7 +2569,6 @@
 				F76C838C1EC4E7CC00FA49E2 /* MemoryStream.cpp */,
 				F76C838D1EC4E7CC00FA49E2 /* MemoryStream.h */,
 				2ADE2F24224418B2002598AF /* Meta.hpp */,
-				F76C838E1EC4E7CC00FA49E2 /* Nullable.hpp */,
 				2ADE2F23224418B1002598AF /* Numerics.hpp */,
 				F76C838F1EC4E7CC00FA49E2 /* Path.cpp */,
 				F76C83901EC4E7CC00FA49E2 /* Path.hpp */,
@@ -2587,6 +2588,7 @@
 				F4D523B8782E4C458AF1490D /* GroupVector.hpp */,
 				F28A181D311D4E078FDB090C /* ZipStream.hpp */,
 				4248E4E4394842D4AF6119DA /* Crypt.OpenRCT2.cpp */,
+				F9061C16C67A45D7915FA229 /* OrcaStream.hpp */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -3672,6 +3674,7 @@
 				C8D612EB56BD4214BEC0F7FF /* GroupVector.hpp in Headers */,
 				B2F44E535BD14A03BE8B9D14 /* ZipStream.hpp in Headers */,
 				F1BE1CB5525C4FF794A3F3CE /* ChangeMapSizeAction.h in Headers */,
+				B769EFE0AA1149AE93C15DED /* OrcaStream.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
