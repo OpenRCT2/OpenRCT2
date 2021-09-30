@@ -967,9 +967,9 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     auto ft = Formatter();
     peep->FormatActionTo(ft);
-    rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
-    auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top };
-    int32_t width = widget->width();
+    const auto& widget = w->widgets[WIDX_BTM_LABEL];
+    auto screenPos = w->windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
+    int32_t width = widget.width();
     DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
 }
 
@@ -982,16 +982,14 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_2];
-
     int32_t image_id = SPR_TAB_STAFF_OPTIONS_0;
-
     if (w->page == WINDOW_STAFF_OPTIONS)
     {
         image_id += (w->frame_no / 2) % 7;
     }
 
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_2];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
     gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
@@ -1004,16 +1002,14 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_3];
-
     int32_t image_id = SPR_TAB_STATS_0;
-
     if (w->page == WINDOW_STAFF_STATISTICS)
     {
         image_id += (w->frame_no / 4) % 7;
     }
 
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_3];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
     gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
@@ -1025,10 +1021,10 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_1];
-    int32_t width = widget->width() - 1;
-    int32_t height = widget->height() - 1;
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
+    const auto& widget = w->widgets[WIDX_TAB_1];
+    int32_t width = widget.width() - 1;
+    int32_t height = widget.height() - 1;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
     if (w->page == WINDOW_STAFF_OVERVIEW)
         height++;
 
@@ -1379,11 +1375,11 @@ void window_staff_viewport_init(rct_window* w)
     {
         if (w->viewport == nullptr)
         {
-            rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
+            const auto& view_widget = w->widgets[WIDX_VIEWPORT];
 
-            auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
-            int32_t width = view_widget->width() - 1;
-            int32_t height = view_widget->height() - 1;
+            auto screenPos = ScreenCoordsXY{ view_widget.left + 1 + w->windowPos.x, view_widget.top + 1 + w->windowPos.y };
+            int32_t width = view_widget.width() - 1;
+            int32_t height = view_widget.height() - 1;
 
             viewport_create(w, screenPos, width, height, focus.value());
             w->flags |= WF_NO_SCROLLING;

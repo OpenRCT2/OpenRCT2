@@ -539,8 +539,8 @@ void WindowAllWheelInput()
             rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->position);
             if (widgetIndex != -1)
             {
-                rct_widget* widget = &w->widgets[widgetIndex];
-                if (widget->type == WindowWidgetType::Scroll)
+                const auto& widget = w->widgets[widgetIndex];
+                if (widget.type == WindowWidgetType::Scroll)
                 {
                     int32_t scrollIndex = WindowGetScrollIndex(w, widgetIndex);
                     rct_scroll* scroll = &w->scrolls[scrollIndex];

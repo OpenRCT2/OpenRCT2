@@ -143,7 +143,7 @@ bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsActiveTool(rct_window* w, rct_widgetindex widgetIndex);
 void WidgetScrollGetPart(
-    rct_window* w, rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
+    rct_window* w, const rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id);
 
 void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
