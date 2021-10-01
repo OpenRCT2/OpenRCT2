@@ -1928,7 +1928,7 @@ void Vehicle::UpdateMeasurements()
             if (sceneryEntry == nullptr)
                 continue;
 
-            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
             {
                 coverFound = true;
                 break;

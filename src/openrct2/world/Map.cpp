@@ -2182,7 +2182,7 @@ bool map_surface_is_blocked(const CoordsXY& mapCoords)
         {
             return false;
         }
-        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
             return true;
     }
     return false;

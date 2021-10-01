@@ -131,6 +131,11 @@ struct SmallSceneryEntry : SceneryEntryBase
     uint16_t animation_mask;
     uint16_t num_frames;
     ObjectEntryIndex scenery_tab_id;
+
+    constexpr bool HasFlag(const uint32_t _flags) const
+    {
+        return (flags & _flags) != 0;
+    }
 };
 
 struct WallSceneryEntry : SceneryEntryBase

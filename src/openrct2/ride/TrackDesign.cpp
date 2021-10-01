@@ -726,10 +726,10 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 auto* sceneryEntry = static_cast<SmallSceneryEntry*>(object_entry_get_chunk(entry_type, entryIndex));
                 scenery.y = -scenery.y;
 
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
                 {
                     scenery.flags ^= (1 << 0);
-                    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
                     {
                         scenery.flags ^= (1 << 2);
                     }
@@ -935,10 +935,8 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             quadrant &= 3;
 
             auto* sceneryEntry = get_small_scenery_entry(entry_index);
-            if (!(!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)
-                  && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
-                && scenery_small_entry_has_flag(
-                    sceneryEntry,
+            if (!(!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
+                && sceneryEntry->HasFlag(
                     SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
             {
                 quadrant = 0;
