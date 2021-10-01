@@ -2547,14 +2547,15 @@ static money64 try_place_ghost_large_scenery(
     auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour);
     sceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
     auto res = GameActions::Execute(&sceneryPlaceAction);
-    auto lspar = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get());
-    if (lspar == nullptr || res->Error != GameActions::Status::Ok)
+    if (res->Error != GameActions::Status::Ok)
         return MONEY64_UNDEFINED;
+
+    const auto placementData = res->GetData<LargeSceneryPlaceActionResult>();
 
     gSceneryPlaceRotation = loc.direction;
 
-    gSceneryGhostPosition = { loc, lspar->firstTileHeight };
-    if (lspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
+    gSceneryGhostPosition = { loc, placementData.firstTileHeight };
+    if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
         viewport_set_visibility(4);
