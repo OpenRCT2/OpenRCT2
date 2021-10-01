@@ -3492,8 +3492,15 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
             continue;
         }
 
+        size_t numIterations = 0;
         do
         {
+            // Fixes both freezing issues in #15503.
+            if (numIterations++ > 1000000)
+            {
+                break;
+            }
+
             firstBlock->SetBlockBrakeClosed(true);
             for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
             {
