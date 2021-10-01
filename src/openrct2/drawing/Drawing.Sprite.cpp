@@ -458,8 +458,8 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     }
 
     // Its used super often so we will define it to a separate variable.
-    auto zoom_level = dpi->zoom_level;
-    int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? 0xFFFFFFFF * zoom_level : 0xFFFFFFFF;
+    const auto zoom_level = dpi->zoom_level;
+    const int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? 0xFFFFFFFF * zoom_level : 0xFFFFFFFF;
 
     if (zoom_level > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
