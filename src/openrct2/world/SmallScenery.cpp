@@ -37,11 +37,11 @@ static int32_t map_place_clear_func(
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
-        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_IS_TREE))
+        if (scenery != nullptr && scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
         *price += scenery->removal_price * 10;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
