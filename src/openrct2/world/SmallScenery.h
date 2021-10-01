@@ -13,7 +13,7 @@
 #include "Map.h"
 #include "Scenery.h"
 
-enum SMALL_SCENERY_FLAGS
+enum SMALL_SCENERY_FLAGS : uint32_t
 {
     SMALL_SCENERY_FLAG_FULL_TILE = (1 << 0),            // 0x1
     SMALL_SCENERY_FLAG_VOFFSET_CENTRE = (1 << 1),       // 0x2
@@ -53,5 +53,4 @@ enum
     MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
 };
 
-bool scenery_small_entry_has_flag(const SmallSceneryEntry* sceneryEntry, uint32_t flags);
 SmallSceneryEntry* get_small_scenery_entry(ObjectEntryIndex entryIndex);
