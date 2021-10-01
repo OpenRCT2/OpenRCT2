@@ -391,9 +391,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
         if (vehicle->remaining_distance < 0 || vehicle->remaining_distance >= 13962)
         {
-            unk_F64E20.x = vehicle->x;
-            unk_F64E20.y = vehicle->y;
-            unk_F64E20.z = vehicle->z;
+            unk_F64E20 = vehicle->GetLocation();
             vehicle->Invalidate();
 
             while (true)

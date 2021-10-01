@@ -898,7 +898,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         {
             if (State == PeepState::Walking || State == PeepState::Sitting)
             {
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { x, y, z });
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, GetLocation());
 
                 ExplosionCloud::Create({ x, y, z + 16 });
                 ExplosionFlare::Create({ x, y, z + 16 });
@@ -1237,7 +1237,7 @@ void Guest::UpdateSitting()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        auto loc = CoordsXYZ{ x, y, z }.ToTileStart() + CoordsXYZ{ BenchUseOffsets[Var37 & 0x7], 0 };
+        auto loc = GetLocation().ToTileStart() + CoordsXYZ{ BenchUseOffsets[Var37 & 0x7], 0 };
 
         MoveTo(loc);
 
@@ -1770,7 +1770,7 @@ void Guest::OnExitRide(Ride* ride)
         int32_t laughType = scenario_rand() & 7;
         if (laughType < 3)
         {
-            OpenRCT2::Audio::Play3D(laughs[laughType], { x, y, z });
+            OpenRCT2::Audio::Play3D(laughs[laughType], GetLocation());
         }
     }
 
@@ -2289,11 +2289,11 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
         //      needing to be synchronised
         if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
         {
-            MoneyEffect::CreateAt(amount, { x, y, z }, true);
+            MoneyEffect::CreateAt(amount, GetLocation(), true);
         }
     }
 
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, { x, y, z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, GetLocation());
 }
 
 void Guest::SetHasRidden(const Ride* ride)
@@ -5007,7 +5007,7 @@ void Guest::UpdateRideShopInteract()
     // Do not play toilet flush sound on title screen as it's considered loud and annoying
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::ToiletFlush, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::ToiletFlush, GetLocation());
     }
 
     RideSubState = PeepRideSubState::LeaveShop;
@@ -5027,11 +5027,13 @@ void Guest::UpdateRideShopLeave()
 {
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ loc.value(), z });
+        const auto curLoc = GetLocation();
+        MoveTo({ loc.value(), curLoc.z });
 
-        if ((x & 0xFFE0) != NextLoc.x)
+        const auto newLoc = GetLocation().ToTileStart();
+        if (newLoc.x != NextLoc.x)
             return;
-        if ((y & 0xFFE0) != NextLoc.y)
+        if (newLoc.y != NextLoc.y)
             return;
     }
 
@@ -5238,11 +5240,12 @@ void Guest::UpdateWalking()
                     Litter::Type::EmptyCup,
                 };
                 auto litterType = litter_types[scenario_rand() & 0x3];
-                int32_t litterX = x + (scenario_rand() & 0x7) - 3;
-                int32_t litterY = y + (scenario_rand() & 0x7) - 3;
+                const auto loc = GetLocation();
+                int32_t litterX = loc.x + (scenario_rand() & 0x7) - 3;
+                int32_t litterY = loc.y + (scenario_rand() & 0x7) - 3;
                 Direction litterDirection = (scenario_rand() & 0x3);
 
-                Litter::Create({ litterX, litterY, z, litterDirection }, litterType);
+                Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
             }
         }
     }
@@ -5264,16 +5267,17 @@ void Guest::UpdateWalking()
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             UpdateSpriteType();
 
-            int32_t litterX = x + (scenario_rand() & 0x7) - 3;
-            int32_t litterY = y + (scenario_rand() & 0x7) - 3;
+            const auto loc = GetLocation();
+            int32_t litterX = loc.x + (scenario_rand() & 0x7) - 3;
+            int32_t litterY = loc.y + (scenario_rand() & 0x7) - 3;
             Direction litterDirection = (scenario_rand() & 0x3);
 
-            Litter::Create({ litterX, litterY, z, litterDirection }, litterType);
+            Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
         }
     }
 
     // Check if vehicle is blocking the destination tile
-    auto curPos = TileCoordsXYZ(CoordsXYZ{ x, y, z });
+    auto curPos = TileCoordsXYZ(GetLocation());
     auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
     if (curPos.x != dstPos.x || curPos.y != dstPos.y)
     {

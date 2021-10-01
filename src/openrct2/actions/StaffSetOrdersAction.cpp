@@ -68,8 +68,7 @@ GameActions::Result::Ptr StaffSetOrdersAction::Execute() const
     context_broadcast_intent(&intent);
 
     auto res = std::make_unique<GameActions::Result>();
-    res->Position.x = staff->x;
-    res->Position.y = staff->y;
-    res->Position.z = staff->z;
+    res->Position = staff->GetLocation();
+
     return res;
 }

@@ -69,21 +69,23 @@ void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
             }
         }
 
+        const auto entityPos = spr->GetLocation();
+
         // Only paint sprites that are below the clip height and inside the clip selection.
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
         if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
         {
-            if (spr->z > (gClipHeight * COORDS_Z_STEP))
+            if (entityPos.z > (gClipHeight * COORDS_Z_STEP))
             {
                 continue;
             }
-            if (spr->x < gClipSelectionA.x || spr->x > gClipSelectionB.x)
+            if (entityPos.x < gClipSelectionA.x || entityPos.x > gClipSelectionB.x)
             {
                 continue;
             }
-            if (spr->y < gClipSelectionA.y || spr->y > gClipSelectionB.y)
+            if (entityPos.y < gClipSelectionA.y || entityPos.y > gClipSelectionB.y)
             {
                 continue;
             }
@@ -103,8 +105,8 @@ void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
         image_direction &= 0x1F;
 
         session->CurrentlyDrawnItem = spr;
-        session->SpritePosition.x = spr->x;
-        session->SpritePosition.y = spr->y;
+        session->SpritePosition.x = entityPos.x;
+        session->SpritePosition.y = entityPos.y;
         session->InteractionType = ViewportInteractionItem::Entity;
 
         switch (spr->Type)
