@@ -27,6 +27,7 @@
 - Fix: [#15255] Tile Inspector shows banner information on walls that do not contain one.
 - Fix: [#15257] Chat icon shows in scenario/track editor. Other icons don't disable when deactivated in options menu.
 - Fix: [#15289] Unexpected behavior with duplicated banners which also caused desyncs in multiplayer.
+- Fix: [#15476] Crash when placing/clearing small scenery.
 - Fix: [#15487] Map animations do not work correctly when loading an exported SV6 file in vanilla RCT2.
 - Fix: [#15496] Crash in paint_swinging_inverter_ship_structure().
 - Improved: [#3417] Crash dumps are now placed in their own folder.
