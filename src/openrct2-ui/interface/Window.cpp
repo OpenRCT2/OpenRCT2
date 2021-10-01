@@ -357,25 +357,25 @@ static rct_widget* WindowGetScrollWidget(rct_window* w, int32_t scrollIndex)
  */
 static void WindowScrollWheelInput(rct_window* w, int32_t scrollIndex, int32_t wheel)
 {
-    rct_scroll* scroll = &w->scrolls[scrollIndex];
+    auto& scroll = w->scrolls[scrollIndex];
     rct_widget* widget = WindowGetScrollWidget(w, scrollIndex);
     rct_widgetindex widgetIndex = WindowGetWidgetIndex(w, widget);
 
-    if (scroll->flags & VSCROLLBAR_VISIBLE)
+    if (scroll.flags & VSCROLLBAR_VISIBLE)
     {
         int32_t size = widget->height() - 1;
-        if (scroll->flags & HSCROLLBAR_VISIBLE)
+        if (scroll.flags & HSCROLLBAR_VISIBLE)
             size -= 11;
-        size = std::max(0, scroll->v_bottom - size);
-        scroll->v_top = std::min(std::max(0, scroll->v_top + wheel), size);
+        size = std::max(0, scroll.v_bottom - size);
+        scroll.v_top = std::min(std::max(0, scroll.v_top + wheel), size);
     }
     else
     {
         int32_t size = widget->width() - 1;
-        if (scroll->flags & VSCROLLBAR_VISIBLE)
+        if (scroll.flags & VSCROLLBAR_VISIBLE)
             size -= 11;
-        size = std::max(0, scroll->h_right - size);
-        scroll->h_left = std::min(std::max(0, scroll->h_left + wheel), size);
+        size = std::max(0, scroll.h_right - size);
+        scroll.h_left = std::min(std::max(0, scroll.h_left + wheel), size);
     }
 
     WidgetScrollUpdateThumbs(w, widgetIndex);
@@ -395,8 +395,8 @@ static int32_t WindowWheelInput(rct_window* w, int32_t wheel)
             continue;
 
         // Originally always checked first scroll view, bug maybe?
-        rct_scroll* scroll = &w->scrolls[i];
-        if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
+        const auto& scroll = w->scrolls[i];
+        if (scroll.flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
         {
             WindowScrollWheelInput(w, i, wheel);
             return 1;
@@ -543,8 +543,8 @@ void WindowAllWheelInput()
                 if (widget.type == WindowWidgetType::Scroll)
                 {
                     int32_t scrollIndex = WindowGetScrollIndex(w, widgetIndex);
-                    rct_scroll* scroll = &w->scrolls[scrollIndex];
-                    if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
+                    const auto& scroll = w->scrolls[scrollIndex];
+                    if (scroll.flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
                     {
                         WindowScrollWheelInput(w, WindowGetScrollIndex(w, widgetIndex), pixel_scroll);
                         return;
@@ -578,7 +578,6 @@ void ApplyScreenSaverLockSetting()
 void WindowInitScrollWidgets(rct_window* w)
 {
     rct_widget* widget;
-    rct_scroll* scroll;
     int32_t widget_index, scroll_index;
     int32_t width, height;
 
@@ -592,20 +591,20 @@ void WindowInitScrollWidgets(rct_window* w)
             continue;
         }
 
-        scroll = &w->scrolls[scroll_index];
-        scroll->flags = 0;
+        auto& scroll = w->scrolls[scroll_index];
+        scroll.flags = 0;
         width = 0;
         height = 0;
         window_get_scroll_size(w, scroll_index, &width, &height);
-        scroll->h_left = 0;
-        scroll->h_right = width + 1;
-        scroll->v_top = 0;
-        scroll->v_bottom = height + 1;
+        scroll.h_left = 0;
+        scroll.h_right = width + 1;
+        scroll.v_top = 0;
+        scroll.v_bottom = height + 1;
 
         if (widget->content & SCROLL_HORIZONTAL)
-            scroll->flags |= HSCROLLBAR_VISIBLE;
+            scroll.flags |= HSCROLLBAR_VISIBLE;
         if (widget->content & SCROLL_VERTICAL)
-            scroll->flags |= VSCROLLBAR_VISIBLE;
+            scroll.flags |= VSCROLLBAR_VISIBLE;
 
         WidgetScrollUpdateThumbs(w, widget_index);
 

@@ -195,26 +195,26 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, rct_wind
     uint8_t scrollIndex = _dragScrollIndex;
 
     const auto& widget = w->widgets[widgetIndex];
-    rct_scroll* scroll = &w->scrolls[scrollIndex];
+    auto& scroll = w->scrolls[scrollIndex];
 
     ScreenCoordsXY differentialCoords = screenCoords - gInputDragLast;
 
-    if (scroll->flags & HSCROLLBAR_VISIBLE)
+    if (scroll.flags & HSCROLLBAR_VISIBLE)
     {
         int16_t size = widget.width() - 1;
-        if (scroll->flags & VSCROLLBAR_VISIBLE)
+        if (scroll.flags & VSCROLLBAR_VISIBLE)
             size -= 11;
-        size = std::max(0, scroll->h_right - size);
-        scroll->h_left = std::min<uint16_t>(std::max(0, scroll->h_left + differentialCoords.x), size);
+        size = std::max(0, scroll.h_right - size);
+        scroll.h_left = std::min<uint16_t>(std::max(0, scroll.h_left + differentialCoords.x), size);
     }
 
-    if (scroll->flags & VSCROLLBAR_VISIBLE)
+    if (scroll.flags & VSCROLLBAR_VISIBLE)
     {
         int16_t size = widget.height() - 1;
-        if (scroll->flags & HSCROLLBAR_VISIBLE)
+        if (scroll.flags & HSCROLLBAR_VISIBLE)
             size -= 11;
-        size = std::max(0, scroll->v_bottom - size);
-        scroll->v_top = std::min<uint16_t>(std::max(0, scroll->v_top + differentialCoords.y), size);
+        size = std::max(0, scroll.v_bottom - size);
+        scroll.v_top = std::min<uint16_t>(std::max(0, scroll.v_top + differentialCoords.y), size);
     }
 
     WidgetScrollUpdateThumbs(w, widgetIndex);
@@ -627,43 +627,43 @@ static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const S
     }
 
     const auto& widg = w->widgets[widgetIndex];
-    rct_scroll* scroll = &w->scrolls[scroll_id];
+    auto& scroll = w->scrolls[scroll_id];
 
     int32_t widget_width = widg.width() - 1;
-    if (scroll->flags & VSCROLLBAR_VISIBLE)
+    if (scroll.flags & VSCROLLBAR_VISIBLE)
         widget_width -= SCROLLBAR_WIDTH + 1;
-    int32_t widget_content_width = std::max(scroll->h_right - widget_width, 0);
+    int32_t widget_content_width = std::max(scroll.h_right - widget_width, 0);
 
     int32_t widget_height = widg.bottom - widg.top - 1;
-    if (scroll->flags & HSCROLLBAR_VISIBLE)
+    if (scroll.flags & HSCROLLBAR_VISIBLE)
         widget_height -= SCROLLBAR_WIDTH + 1;
-    int32_t widget_content_height = std::max(scroll->v_bottom - widget_height, 0);
+    int32_t widget_content_height = std::max(scroll.v_bottom - widget_height, 0);
 
     switch (scroll_area)
     {
         case SCROLL_PART_HSCROLLBAR_LEFT:
-            scroll->h_left = std::max(scroll->h_left - 3, 0);
+            scroll.h_left = std::max(scroll.h_left - 3, 0);
             break;
         case SCROLL_PART_HSCROLLBAR_RIGHT:
-            scroll->h_left = std::min(scroll->h_left + 3, widget_content_width);
+            scroll.h_left = std::min(scroll.h_left + 3, widget_content_width);
             break;
         case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
-            scroll->h_left = std::max(scroll->h_left - widget_width, 0);
+            scroll.h_left = std::max(scroll.h_left - widget_width, 0);
             break;
         case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
-            scroll->h_left = std::min(scroll->h_left + widget_width, widget_content_width);
+            scroll.h_left = std::min(scroll.h_left + widget_width, widget_content_width);
             break;
         case SCROLL_PART_VSCROLLBAR_TOP:
-            scroll->v_top = std::max(scroll->v_top - 3, 0);
+            scroll.v_top = std::max(scroll.v_top - 3, 0);
             break;
         case SCROLL_PART_VSCROLLBAR_BOTTOM:
-            scroll->v_top = std::min(scroll->v_top + 3, widget_content_height);
+            scroll.v_top = std::min(scroll.v_top + 3, widget_content_height);
             break;
         case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:
-            scroll->v_top = std::max(scroll->v_top - widget_height, 0);
+            scroll.v_top = std::max(scroll.v_top - widget_height, 0);
             break;
         case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:
-            scroll->v_top = std::min(scroll->v_top + widget_height, widget_content_height);
+            scroll.v_top = std::min(scroll.v_top + widget_height, widget_content_height);
             break;
         default:
             break;
@@ -744,32 +744,33 @@ static void InputScrollEnd()
 static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t scroll_id)
 {
     const auto& widget = w->widgets[widgetIndex];
+    auto& scroll = w->scrolls[scroll_id];
 
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         int32_t newLeft;
-        newLeft = w->scrolls[scroll_id].h_right;
+        newLeft = scroll.h_right;
         newLeft *= x;
         x = widget.width() - 21;
-        if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
+        if (scroll.flags & VSCROLLBAR_VISIBLE)
             x -= SCROLLBAR_WIDTH + 1;
         newLeft /= x;
         x = newLeft;
-        w->scrolls[scroll_id].flags |= HSCROLLBAR_THUMB_PRESSED;
-        newLeft = w->scrolls[scroll_id].h_left;
+        scroll.flags |= HSCROLLBAR_THUMB_PRESSED;
+        newLeft = scroll.h_left;
         newLeft += x;
         if (newLeft < 0)
             newLeft = 0;
         x = widget.width() - 1;
-        if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
+        if (scroll.flags & VSCROLLBAR_VISIBLE)
             x -= SCROLLBAR_WIDTH + 1;
         x *= -1;
-        x += w->scrolls[scroll_id].h_right;
+        x += scroll.h_right;
         if (x < 0)
             x = 0;
         if (newLeft > x)
             newLeft = x;
-        w->scrolls[scroll_id].h_left = newLeft;
+        scroll.h_left = newLeft;
         WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
@@ -783,32 +784,33 @@ static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetInd
 {
     assert(w != nullptr);
     const auto& widget = w->widgets[widgetIndex];
+    auto& scroll = w->scrolls[scroll_id];
 
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
         int32_t newTop;
-        newTop = w->scrolls[scroll_id].v_bottom;
+        newTop = scroll.v_bottom;
         newTop *= y;
         y = widget.height() - 21;
-        if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
+        if (scroll.flags & HSCROLLBAR_VISIBLE)
             y -= SCROLLBAR_WIDTH + 1;
         newTop /= y;
         y = newTop;
-        w->scrolls[scroll_id].flags |= VSCROLLBAR_THUMB_PRESSED;
-        newTop = w->scrolls[scroll_id].v_top;
+        scroll.flags |= VSCROLLBAR_THUMB_PRESSED;
+        newTop = scroll.v_top;
         newTop += y;
         if (newTop < 0)
             newTop = 0;
         y = widget.height() - 1;
-        if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
+        if (scroll.flags & HSCROLLBAR_VISIBLE)
             y -= SCROLLBAR_WIDTH + 1;
         y *= -1;
-        y += w->scrolls[scroll_id].v_bottom;
+        y += scroll.v_bottom;
         if (y < 0)
             y = 0;
         if (newTop > y)
             newTop = y;
-        w->scrolls[scroll_id].v_top = newTop;
+        scroll.v_top = newTop;
         WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
@@ -823,9 +825,10 @@ static void InputScrollPartUpdateHLeft(rct_window* w, rct_widgetindex widgetInde
     assert(w != nullptr);
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
-        w->scrolls[scroll_id].flags |= HSCROLLBAR_LEFT_PRESSED;
-        if (w->scrolls[scroll_id].h_left >= 3)
-            w->scrolls[scroll_id].h_left -= 3;
+        auto& scroll = w->scrolls[scroll_id];
+        scroll.flags |= HSCROLLBAR_LEFT_PRESSED;
+        if (scroll.h_left >= 3)
+            scroll.h_left -= 3;
         WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
@@ -841,17 +844,18 @@ static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetInd
     const auto& widget = w->widgets[widgetIndex];
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
-        w->scrolls[scroll_id].flags |= HSCROLLBAR_RIGHT_PRESSED;
-        w->scrolls[scroll_id].h_left += 3;
+        auto& scroll = w->scrolls[scroll_id];
+        scroll.flags |= HSCROLLBAR_RIGHT_PRESSED;
+        scroll.h_left += 3;
         int32_t newLeft = widget.width() - 1;
-        if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
+        if (scroll.flags & VSCROLLBAR_VISIBLE)
             newLeft -= SCROLLBAR_WIDTH + 1;
         newLeft *= -1;
-        newLeft += w->scrolls[scroll_id].h_right;
+        newLeft += scroll.h_right;
         if (newLeft < 0)
             newLeft = 0;
-        if (w->scrolls[scroll_id].h_left > newLeft)
-            w->scrolls[scroll_id].h_left = newLeft;
+        if (scroll.h_left > newLeft)
+            scroll.h_left = newLeft;
         WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
@@ -866,9 +870,10 @@ static void InputScrollPartUpdateVTop(rct_window* w, rct_widgetindex widgetIndex
     assert(w != nullptr);
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
-        w->scrolls[scroll_id].flags |= VSCROLLBAR_UP_PRESSED;
-        if (w->scrolls[scroll_id].v_top >= 3)
-            w->scrolls[scroll_id].v_top -= 3;
+        auto& scroll = w->scrolls[scroll_id];
+        scroll.flags |= VSCROLLBAR_UP_PRESSED;
+        if (scroll.v_top >= 3)
+            scroll.v_top -= 3;
         WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
@@ -884,17 +889,18 @@ static void InputScrollPartUpdateVBottom(rct_window* w, rct_widgetindex widgetIn
     const auto& widget = w->widgets[widgetIndex];
     if (window_find_by_number(w->classification, w->number) != nullptr)
     {
-        w->scrolls[scroll_id].flags |= VSCROLLBAR_DOWN_PRESSED;
-        w->scrolls[scroll_id].v_top += 3;
+        auto& scroll = w->scrolls[scroll_id];
+        scroll.flags |= VSCROLLBAR_DOWN_PRESSED;
+        scroll.v_top += 3;
         int32_t newTop = widget.height() - 1;
-        if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
+        if (scroll.flags & HSCROLLBAR_VISIBLE)
             newTop -= SCROLLBAR_WIDTH + 1;
         newTop *= -1;
-        newTop += w->scrolls[scroll_id].v_bottom;
+        newTop += scroll.v_bottom;
         if (newTop < 0)
             newTop = 0;
-        if (w->scrolls[scroll_id].v_top > newTop)
-            w->scrolls[scroll_id].v_top = newTop;
+        if (scroll.v_top > newTop)
+            scroll.v_top = newTop;
         WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
