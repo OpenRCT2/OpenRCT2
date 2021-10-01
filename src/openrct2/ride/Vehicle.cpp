@@ -3275,12 +3275,12 @@ void Vehicle::UpdateDeparting()
             auto soundId = (rideEntry->vehicles[0].sound_range == 4) ? OpenRCT2::Audio::SoundId::Tram
                                                                      : OpenRCT2::Audio::SoundId::TrainDeparting;
 
-            OpenRCT2::Audio::Play3D(soundId, { x, y, z });
+            OpenRCT2::Audio::Play3D(soundId, GetLocation());
         }
 
         if (curRide->mode == RideMode::UpwardLaunch || (curRide->mode == RideMode::DownwardLaunch && var_CE > 1))
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
         }
 
         if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
@@ -3493,7 +3493,7 @@ void Vehicle::FinishDeparting()
         if (var_CE >= 1 && (14 << 16) > velocity)
             return;
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
     }
 
     if (curRide->mode == RideMode::UpwardLaunch)
@@ -3501,7 +3501,7 @@ void Vehicle::FinishDeparting()
         if ((curRide->launch_speed << 16) > velocity)
             return;
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
     }
 
     if (curRide->mode != RideMode::Race && !curRide->IsBlockSectioned())
@@ -3634,14 +3634,15 @@ void Vehicle::UpdateCollisionSetup()
 #ifdef ENABLE_SCRIPTING
         InvokeVehicleCrashHook(train->sprite_index, "another_vehicle");
 #endif
+        const auto trainLoc = train->GetLocation();
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { train->x, train->y, train->z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, trainLoc);
 
-        ExplosionCloud::Create({ train->x, train->y, train->z });
+        ExplosionCloud::Create(trainLoc);
 
         for (int32_t i = 0; i < 10; i++)
         {
-            VehicleCrashParticle::Create(train->colours, { train->x, train->y, train->z });
+            VehicleCrashParticle::Create(train->colours, trainLoc);
         }
 
         train->IsCrashedVehicle = true;
@@ -3652,7 +3653,7 @@ void Vehicle::UpdateCollisionSetup()
         train->sprite_height_negative = 45;
         train->sprite_height_positive = 5;
 
-        train->MoveTo({ train->x, train->y, train->z });
+        train->MoveTo(trainLoc);
 
         train->SwingSpeed = 0;
     }
@@ -3695,7 +3696,7 @@ void Vehicle::UpdateCrashSetup()
 
     if (NumPeepsUntilTrainTail() != 0)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, GetLocation());
     }
 
     int32_t edx = velocity >> 10;
@@ -4132,7 +4133,7 @@ void Vehicle::UpdateArriving()
 
     if ((curRide->mode == RideMode::UpwardLaunch || curRide->mode == RideMode::DownwardLaunch) && var_CE < 2)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
         velocity = 0;
         acceleration = 0;
         SetState(Vehicle::Status::Departing, 1);
@@ -4422,9 +4423,7 @@ void Vehicle::UpdateMotionBoatHire()
     if (remaining_distance >= 0x368A)
     {
         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        unk_F64E20.x = x;
-        unk_F64E20.y = y;
-        unk_F64E20.z = z;
+        unk_F64E20 = GetLocation();
         Invalidate();
 
         for (;;)
@@ -5125,24 +5124,24 @@ void Vehicle::UpdateHauntedHouseOperating()
     switch (current_time)
     {
         case 45:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
             break;
         case 75:
             Pitch = 1;
             Invalidate();
             break;
         case 400:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream1, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream1, GetLocation());
             break;
         case 745:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
             break;
         case 775:
             Pitch = 1;
             Invalidate();
             break;
         case 1100:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, GetLocation());
             break;
     }
 }
@@ -5402,15 +5401,17 @@ void Vehicle::CrashOnLand()
     }
 
     sub_state = 2;
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { x, y, z });
 
-    ExplosionCloud::Create({ x, y, z });
-    ExplosionFlare::Create({ x, y, z });
+    const auto curLoc = GetLocation();
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, curLoc);
+
+    ExplosionCloud::Create(curLoc);
+    ExplosionFlare::Create(curLoc);
 
     uint8_t numParticles = std::min(sprite_width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
-        VehicleCrashParticle::Create(colours, { x, y, z });
+        VehicleCrashParticle::Create(colours, curLoc);
 
     IsCrashedVehicle = true;
     animation_frame = 0;
@@ -5419,7 +5420,7 @@ void Vehicle::CrashOnLand()
     sprite_height_negative = 45;
     sprite_height_positive = 5;
 
-    MoveTo({ x, y, z });
+    MoveTo(curLoc);
 
     crash_z = 0;
 }
@@ -5468,16 +5469,18 @@ void Vehicle::CrashOnWater()
     }
 
     sub_state = 2;
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water1, { x, y, z });
 
-    CrashSplashParticle::Create({ x, y, z });
-    CrashSplashParticle::Create({ x - 8, y - 9, z });
-    CrashSplashParticle::Create({ x + 11, y - 9, z });
-    CrashSplashParticle::Create({ x + 11, y + 8, z });
-    CrashSplashParticle::Create({ x - 4, y + 8, z });
+    const auto curLoc = GetLocation();
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water1, curLoc);
+
+    CrashSplashParticle::Create(curLoc);
+    CrashSplashParticle::Create(curLoc + CoordsXYZ{ -8, -9, 0 });
+    CrashSplashParticle::Create(curLoc + CoordsXYZ{ 11, -9, 0 });
+    CrashSplashParticle::Create(curLoc + CoordsXYZ{ 11, 8, 0 });
+    CrashSplashParticle::Create(curLoc + CoordsXYZ{ -4, 8, 0 });
 
     for (int32_t i = 0; i < 10; ++i)
-        VehicleCrashParticle::Create(colours, { x - 4, y + 8, z });
+        VehicleCrashParticle::Create(colours, curLoc + CoordsXYZ{ -4, 8, 0 });
 
     IsCrashedVehicle = true;
     animation_frame = 0;
@@ -5486,7 +5489,7 @@ void Vehicle::CrashOnWater()
     sprite_height_negative = 45;
     sprite_height_positive = 5;
 
-    MoveTo({ x, y, z });
+    MoveTo(curLoc);
 
     crash_z = -1;
 }
@@ -5500,6 +5503,8 @@ void Vehicle::UpdateCrash()
     for (Vehicle* curVehicle = GetEntity<Vehicle>(sprite_index); curVehicle != nullptr;
          curVehicle = GetEntity<Vehicle>(curVehicle->next_vehicle_on_train))
     {
+        CoordsXYZ curPos = curVehicle->GetLocation();
+
         if (curVehicle->sub_state > 1)
         {
             if (curVehicle->crash_z <= 96)
@@ -5509,7 +5514,8 @@ void Vehicle::UpdateCrash()
                 {
                     int32_t xOffset = (scenario_rand() & 2) - 1;
                     int32_t yOffset = (scenario_rand() & 2) - 1;
-                    ExplosionCloud::Create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
+
+                    ExplosionCloud::Create(curPos + CoordsXYZ{ xOffset, yOffset, 0 });
                 }
             }
             if (curVehicle->animationState <= 0xe388)
@@ -5527,7 +5533,7 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        TileElement* collideElement = vehicle_check_collision({ curVehicle->x, curVehicle->y, curVehicle->z });
+        TileElement* collideElement = vehicle_check_collision(curPos);
         if (collideElement == nullptr)
         {
             curVehicle->sub_state = 1;
@@ -5538,12 +5544,12 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        int16_t height = tile_element_height({ curVehicle->x, curVehicle->y });
-        int16_t waterHeight = tile_element_water_height({ curVehicle->x, curVehicle->y });
+        int16_t height = tile_element_height(curPos);
+        int16_t waterHeight = tile_element_water_height(curPos);
         int16_t zDiff;
         if (waterHeight != 0)
         {
-            zDiff = curVehicle->z - waterHeight;
+            zDiff = curPos.z - waterHeight;
             if (zDiff <= 0 && zDiff >= -20)
             {
                 curVehicle->CrashOnWater();
@@ -5551,8 +5557,8 @@ void Vehicle::UpdateCrash()
             }
         }
 
-        zDiff = curVehicle->z - height;
-        if ((zDiff <= 0 && zDiff >= -20) || curVehicle->z < 16)
+        zDiff = curPos.z - height;
+        if ((zDiff <= 0 && zDiff >= -20) || curPos.z < 16)
         {
             curVehicle->CrashOnLand();
             continue;
@@ -5560,20 +5566,18 @@ void Vehicle::UpdateCrash()
 
         curVehicle->Invalidate();
 
-        CoordsXYZ curPosition = { curVehicle->x, curVehicle->y, curVehicle->z };
-
-        curPosition.x += static_cast<int8_t>(curVehicle->crash_x >> 8);
-        curPosition.y += static_cast<int8_t>(curVehicle->crash_y >> 8);
-        curPosition.z += static_cast<int8_t>(curVehicle->crash_z >> 8);
+        curPos.x += static_cast<int8_t>(curVehicle->crash_x >> 8);
+        curPos.y += static_cast<int8_t>(curVehicle->crash_y >> 8);
+        curPos.z += static_cast<int8_t>(curVehicle->crash_z >> 8);
         curVehicle->TrackLocation = { (curVehicle->crash_x << 8), (curVehicle->crash_y << 8), (curVehicle->crash_z << 8) };
 
-        if (!map_is_location_valid(curPosition))
+        if (!map_is_location_valid(curPos))
         {
             curVehicle->CrashOnLand();
             continue;
         }
 
-        curVehicle->MoveTo(curPosition);
+        curVehicle->MoveTo(curPos);
 
         if (curVehicle->sub_state == 1)
         {

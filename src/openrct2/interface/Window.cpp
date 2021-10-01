@@ -1086,7 +1086,7 @@ void main_window_zoom(bool zoomIn, bool atCursor)
     {
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
         {
-            rct_window* mainWindow = window_get_main();
+            auto* mainWindow = window_get_main();
             if (mainWindow != nullptr)
                 window_zoom_set(mainWindow, mainWindow->viewport->zoom + (zoomIn ? -1 : 1), atCursor);
         }
@@ -1706,7 +1706,7 @@ void window_resize_gui(int32_t width, int32_t height)
  */
 void window_resize_gui_scenario_editor(int32_t width, int32_t height)
 {
-    rct_window* mainWind = window_get_main();
+    auto* mainWind = window_get_main();
     if (mainWind != nullptr)
     {
         rct_viewport* viewport = mainWind->viewport;
@@ -1797,7 +1797,7 @@ void window_update_viewport_ride_music()
 
 static void window_snap_left(rct_window* w, int32_t proximity)
 {
-    auto mainWindow = window_get_main();
+    const auto* mainWindow = window_get_main();
     auto wBottom = w->windowPos.y + w->height;
     auto wLeftProximity = w->windowPos.x - (proximity * 2);
     auto wRightProximity = w->windowPos.x + (proximity * 2);
@@ -1827,7 +1827,7 @@ static void window_snap_left(rct_window* w, int32_t proximity)
 
 static void window_snap_top(rct_window* w, int32_t proximity)
 {
-    auto mainWindow = window_get_main();
+    const auto* mainWindow = window_get_main();
     auto wRight = w->windowPos.x + w->width;
     auto wTopProximity = w->windowPos.y - (proximity * 2);
     auto wBottomProximity = w->windowPos.y + (proximity * 2);
@@ -1857,7 +1857,7 @@ static void window_snap_top(rct_window* w, int32_t proximity)
 
 static void window_snap_right(rct_window* w, int32_t proximity)
 {
-    auto mainWindow = window_get_main();
+    const auto* mainWindow = window_get_main();
     auto wRight = w->windowPos.x + w->width;
     auto wBottom = w->windowPos.y + w->height;
     auto wLeftProximity = wRight - (proximity * 2);
@@ -1887,7 +1887,7 @@ static void window_snap_right(rct_window* w, int32_t proximity)
 
 static void window_snap_bottom(rct_window* w, int32_t proximity)
 {
-    auto mainWindow = window_get_main();
+    const auto* mainWindow = window_get_main();
     auto wRight = w->windowPos.x + w->width;
     auto wBottom = w->windowPos.y + w->height;
     auto wTopProximity = wBottom - (proximity * 2);

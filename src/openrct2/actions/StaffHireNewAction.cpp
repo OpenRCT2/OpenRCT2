@@ -189,7 +189,8 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
             // NOTE: This state is required for the window to act.
             newPeep->State = PeepState::Picked;
 
-            newPeep->MoveTo({ newPeep->x, newPeep->y, newPeep->z });
+            // INVESTIGATE: x and y are LOCATION_NULL at this point.
+            newPeep->MoveTo(newPeep->GetLocation());
         }
 
         // Staff uses this
@@ -264,17 +265,13 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
 
         if (chosenGuest != nullptr)
         {
-            newLocation.x = chosenGuest->x;
-            newLocation.y = chosenGuest->y;
-            newLocation.z = chosenGuest->z;
+            newLocation = chosenGuest->GetLocation();
         }
         else
         {
             // User must pick a location
             newPeep->State = PeepState::Picked;
-            newLocation.x = newPeep->x;
-            newLocation.y = newPeep->y;
-            newLocation.z = newPeep->z;
+            newLocation = newPeep->GetLocation();
         }
     }
     else
@@ -294,9 +291,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
         {
             // User must pick a location
             newPeep->State = PeepState::Picked;
-            newLocation.x = newPeep->x;
-            newLocation.y = newPeep->y;
-            newLocation.z = newPeep->z;
+            newLocation = newPeep->GetLocation();
         }
     }
 

@@ -32,7 +32,7 @@ namespace OpenRCT2::TileInspector
     GameActionResultPtr PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting);
     GameActionResultPtr SortElementsAt(const CoordsXY& loc, bool isExecuting);
     GameActionResultPtr AnyBaseHeightOffset(const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting);
-    GameActionResultPtr SurfaceShowParkFences(const CoordsXY& loc, bool enabled, bool isExecuting);
+    GameActionResultPtr SurfaceShowParkFences(const CoordsXY& loc, bool showFences, bool isExecuting);
     GameActionResultPtr SurfaceToggleCorner(const CoordsXY& loc, int32_t cornerIndex, bool isExecuting);
     GameActionResultPtr SurfaceToggleDiagonal(const CoordsXY& loc, bool isExecuting);
     GameActionResultPtr PathSetSloped(const CoordsXY& loc, int32_t elementIndex, bool sloped, bool isExecuting);

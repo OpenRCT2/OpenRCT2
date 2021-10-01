@@ -542,9 +542,7 @@ void sprite_set_coordinates(const CoordsXYZ& spritePos, EntityBase* sprite)
     sprite->SpriteRect = ScreenRect(
         screenCoords - ScreenCoordsXY{ sprite->sprite_width, sprite->sprite_height_negative },
         screenCoords + ScreenCoordsXY{ sprite->sprite_width, sprite->sprite_height_positive });
-    sprite->x = spritePos.x;
-    sprite->y = spritePos.y;
-    sprite->z = spritePos.z;
+    sprite->SetLocation(spritePos);
 }
 
 /**

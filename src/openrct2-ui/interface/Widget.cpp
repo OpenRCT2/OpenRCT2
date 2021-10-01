@@ -465,11 +465,9 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left + 5;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t r = w->windowPos.x + widget->right;
-    int32_t b = w->windowPos.y + widget->bottom;
-    int32_t textRight = l;
+    auto l = w->windowPos.x + widget->left + 5;
+    auto t = w->windowPos.y + widget->top;
+    auto textRight = l;
 
     // Text
     auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
@@ -491,8 +489,8 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     // Resolve the absolute ltrb
     l = w->windowPos.x + widget->left;
     t = w->windowPos.y + widget->top + 4;
-    r = w->windowPos.x + widget->right;
-    b = w->windowPos.y + widget->bottom;
+    const auto r = w->windowPos.x + widget->right;
+    const auto b = w->windowPos.y + widget->bottom;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour] & 0x7F;
