@@ -177,16 +177,15 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
         if (sceneryEntry == nullptr)
             continue;
 
-        if (scenery_small_entry_has_flag(
-                sceneryEntry,
+        if (sceneryEntry->HasFlag(
                 SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
-                    | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
+                | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
         {
             map_invalidate_tile_zoom1({ loc, loc.z, tileElement->GetClearanceZ() });
             return false;
         }
 
-        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_CLOCK))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
         {
             // Peep, looking at scenery
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused())
@@ -638,7 +637,7 @@ void AutoCreateMapAnimations()
             {
                 auto sceneryEl = el->AsSmallScenery();
                 auto* sceneryEntry = sceneryEl->GetEntry();
-                if (sceneryEntry != nullptr && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
+                if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
                 {
                     map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, loc);
                 }

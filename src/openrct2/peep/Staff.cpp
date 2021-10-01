@@ -1258,7 +1258,7 @@ void Staff::UpdateWatering()
 
             auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
-            if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
                 continue;
 
             tile_element->AsSmallScenery()->SetAge(0);
@@ -1645,7 +1645,7 @@ bool Staff::UpdatePatrollingFindWatering()
 
             auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
-            if (sceneryEntry == nullptr || !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (sceneryEntry == nullptr || !sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
             {
                 continue;
             }
