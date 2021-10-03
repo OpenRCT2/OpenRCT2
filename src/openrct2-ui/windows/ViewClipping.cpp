@@ -385,12 +385,30 @@ public:
         return { 1000, 0 };
     }
 
-    void SetClipHeight(const uint8_t clipheight)
+    void OnOpen() override
     {
-        gClipHeight = clipheight;
-        rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
-        const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
-        this->scrolls[0].h_left = static_cast<int16_t>(std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget->width() - 1))));
+        this->widgets = window_view_clipping_widgets;
+        this->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
+            | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)
+            | (1ULL << WIDX_CLIP_SELECTOR) | (1ULL << WIDX_CLIP_CLEAR);
+        this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
+        WindowInitScrollWidgets(this);
+
+        // Initialise the clip height slider from the current clip height value.
+        this->SetClipHeight(gClipHeight);
+
+        window_push_others_below(this);
+
+        // Get the main viewport to set the view clipping flag.
+        rct_window* mainWindow = window_get_main();
+
+        // Turn on view clipping when the window is opened.
+        if (mainWindow != nullptr)
+        {
+            mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
+            mainWindow->Invalidate();
+        }
+
     }
 
 private:
@@ -403,6 +421,14 @@ private:
             mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
             mainWindow->Invalidate();
         }
+    }
+
+    void SetClipHeight(const uint8_t clipheight)
+    {
+        gClipHeight = clipheight;
+        rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
+        const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
+        this->scrolls[0].h_left = static_cast<int16_t>(std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget->width() - 1))));
     }
 
     bool IsActive()
@@ -422,29 +448,7 @@ rct_window* window_view_clipping_open()
     if (window == nullptr)
     {
         window = WindowCreate<ViewClippingWindow>(WC_VIEW_CLIPPING, ScreenCoordsXY(32, 32), WW, WH);
-        window->widgets = window_view_clipping_widgets;
-        window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
-            | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)
-            | (1ULL << WIDX_CLIP_SELECTOR) | (1ULL << WIDX_CLIP_CLEAR);
-        window->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
-        WindowInitScrollWidgets(window);
     }
-
-    // Initialise the clip height slider from the current clip height value.
-    dynamic_cast<ViewClippingWindow*>(window)->SetClipHeight(gClipHeight);
-
-    window_push_others_below(window);
-
-    // Get the main viewport to set the view clipping flag.
-    rct_window* mainWindow = window_get_main();
-
-    // Turn on view clipping when the window is opened.
-    if (mainWindow != nullptr)
-    {
-        mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
-        mainWindow->Invalidate();
-    }
-
     return window;
 }
 /*
