@@ -321,8 +321,11 @@ public:
                 _selectedPage = 0;
                 _numPages = 1;
                 widgets[WIDX_TRACKING].type = WindowWidgetType::Empty;
-                widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::Empty;
-                if (_selectedTab == TabId::Individual)
+                if (_selectedTab == TabId::Summarised)
+                {
+                    widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::Empty;   
+                }
+                else if (_selectedTab == TabId::Individual)
                 {
                     widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
                     widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
@@ -576,6 +579,10 @@ public:
                     _selectedTab = TabId::Individual;
                     widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
                     Invalidate();
+                    if (!_filterName.empty())
+                    {
+                        widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
+                    }
                     scrolls[0].v_top = 0;
                     RefreshList();
                 }
