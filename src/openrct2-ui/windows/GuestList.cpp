@@ -324,6 +324,8 @@ public:
                 if (_selectedTab == TabId::Summarised)
                 {
                     widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::Empty;
+                    SetWidgetPressed(WIDX_FILTER_BY_NAME, false);
+                    _filterName.clear();
                 }
                 else if (_selectedTab == TabId::Individual)
                 {
@@ -579,10 +581,7 @@ public:
                     _selectedTab = TabId::Individual;
                     widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
                     Invalidate();
-                    if (!_filterName.empty())
-                    {
-                        widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
-                    }
+                    widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
                     scrolls[0].v_top = 0;
                     RefreshList();
                 }
