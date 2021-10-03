@@ -33,8 +33,8 @@ enum class FontSpriteBase : int16_t
 
 #ifndef NO_TTF
 
-struct Internal_TTF_Font;
-using TTF_Font = Internal_TTF_Font;
+struct InternalTTFFont;
+using TTF_Font = InternalTTFFont;
 struct TTFFontDescriptor
 {
     const utf8* filename;
