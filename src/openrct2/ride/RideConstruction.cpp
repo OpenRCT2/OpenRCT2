@@ -1202,43 +1202,6 @@ money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, u
     return res->Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
 }
 
-// Finds the direction a ride entrance should face for an NxN station.
-// Direction is valid if queryLocation is directly adjacent to this station.
-static Direction GetRideEntranceDirection(const CoordsXY& queryLocation, CoordsXY entranceMin, CoordsXY entranceMax)
-{
-    entranceMin -= CoordsXY(32, 32);
-    entranceMax += CoordsXY(32, 32);
-    if (queryLocation.x == entranceMin.x)
-    {
-        if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
-        {
-            return 0;
-        }
-    }
-    if (queryLocation.y == entranceMax.y)
-    {
-        if (queryLocation.x > entranceMin.x && queryLocation.x < entranceMax.x)
-        {
-            return 1;
-        }
-    }
-    if (queryLocation.x == entranceMax.x)
-    {
-        if (queryLocation.y > entranceMin.y && queryLocation.y < entranceMax.y)
-        {
-            return 2;
-        }
-    }
-    if (queryLocation.y == entranceMin.y)
-    {
-        if (queryLocation.x > entranceMin.x && queryLocation.x < entranceMax.x)
-        {
-            return 3;
-        }
-    }
-    return INVALID_DIRECTION;
-}
-
 /**
  *
  *  rct2: 0x006CCF70
@@ -1302,132 +1265,67 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         return entranceExitCoords;
     }
 
-    // flat rides
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
+    // find the quadrant the mouse is hovering over - that's the direction to start searching for a station TileElement
+    Direction startDirection = 0;
+    auto mapX = (coordsAtHeight->x & 0x1F) - 16;
+    auto mapY = (coordsAtHeight->y & 0x1F) - 16;
+    if (std::abs(mapX) < std::abs(mapY))
     {
-        // find the quadrant the mouse is hovering over - that's the direction to start searching for a station TileElement
-        Direction startDirection = 0;
-        auto mapX = (coordsAtHeight->x & 0x1F) - 16;
-        auto mapY = (coordsAtHeight->y & 0x1F) - 16;
-        if (std::abs(mapX) < std::abs(mapY))
-        {
-            startDirection = mapY < 0 ? 3 : 1;
-        }
-        else
-        {
-            startDirection = mapX < 0 ? 0 : 2;
-        }
-        // check all 4 directions, starting with the mouse's quadrant
-        for (uint8_t directionIncrement = 0; directionIncrement < 4; directionIncrement++)
-        {
-            entranceExitCoords.direction = (startDirection + directionIncrement) & 3;
-            // search for TrackElement one tile over, shifted in the search direction
-            auto nextLocation = entranceExitCoords;
-            nextLocation += CoordsDirectionDelta[entranceExitCoords.direction];
-            if (map_is_location_valid(nextLocation))
-            {
-                // iterate over every element in the tile until we find what we want
-                auto tileElement = map_get_first_element_at(nextLocation);
-                if (tileElement == nullptr)
-                    continue;
-                do
-                {
-                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-                        continue;
-                    if (tileElement->GetBaseZ() != stationBaseZ)
-                        continue;
-                    if (tileElement->AsTrack()->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
-                        continue;
-                    if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Maze)
-                    {
-                        // if it's a maze, it can place the entrance and exit immediately
-                        entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
-                        gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
-                        return entranceExitCoords;
-                    }
-                    if (tileElement->AsTrack()->GetStationIndex() != gRideEntranceExitPlaceStationIndex)
-                        continue;
-                    // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
-                    // entrance can be placed on that side
-
-                    // get the ride entrance's side relative to the TrackElement
-                    Direction direction = (direction_reverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
-                    const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (ted.SequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << direction))
-                    {
-                        // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
-                        // the station
-                        entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
-                        gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
-                        return entranceExitCoords;
-                    }
-                } while (!(tileElement++)->IsLastForTile());
-            }
-        }
-        gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
+        startDirection = mapY < 0 ? 3 : 1;
     }
-    // tracked rides excluding tower rides
     else
     {
-        // create a 2-point rectangle. The rectangle will have a width or height of 0 depending on station direction
-        CoordsXY entranceMin = { stationStart };
-        CoordsXY entranceMax = { stationStart };
-
-        // get the beginning of the station TrackElement
-        auto tileElement = ride_get_station_start_track_element(ride, gRideEntranceExitPlaceStationIndex);
-        if (tileElement == nullptr)
+        startDirection = mapX < 0 ? 0 : 2;
+    }
+    // check all 4 directions, starting with the mouse's quadrant
+    for (uint8_t directionIncrement = 0; directionIncrement < 4; directionIncrement++)
+    {
+        entranceExitCoords.direction = (startDirection + directionIncrement) & 3;
+        // search for TrackElement one tile over, shifted in the search direction
+        auto nextLocation = entranceExitCoords;
+        nextLocation += CoordsDirectionDelta[entranceExitCoords.direction];
+        if (map_is_location_valid(nextLocation))
         {
-            entranceExitCoords.SetNull();
-            return entranceExitCoords;
-        }
-        auto stationDirection = tileElement->GetDirection();
-        entranceExitCoords.direction = stationDirection;
-
-        auto next = entranceMax;
-        // find additional station TrackElements and extend the line of valid entrance locations
-        while (true)
-        {
-            entranceMax = next;
-            next -= CoordsDirectionDelta[stationDirection];
-            tileElement = map_get_first_element_at(next);
+            // iterate over every element in the tile until we find what we want
+            auto tileElement = map_get_first_element_at(nextLocation);
             if (tileElement == nullptr)
-                break;
-            bool goToNextTile = false;
-
+                continue;
             do
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
+                if (tileElement->GetBaseZ() != stationBaseZ)
+                    continue;
                 if (tileElement->AsTrack()->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                     continue;
-                if (tileElement->AsTrack()->GetStationIndex() != gRideEntranceExitPlaceStationIndex)
-                    continue;
-
-                if (tileElement->AsTrack()->IsStation())
+                if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Maze)
                 {
-                    goToNextTile = true;
+                    // if it's a maze, it can place the entrance and exit immediately
+                    entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
+                    gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
+                    return entranceExitCoords;
                 }
-            } while (!goToNextTile && !(tileElement++)->IsLastForTile());
+                StationIndex stationIndex = tileElement->AsTrack()->GetStationIndex();
+                // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
+                // entrance can be placed on that side
 
-            if (!goToNextTile)
-                break;
-        }
-        // swap variables for valid ranges
-        if (entranceMin.x > entranceMax.x)
-            std::swap(entranceMin.x, entranceMax.x);
-        if (entranceMin.y > entranceMax.y)
-            std::swap(entranceMin.y, entranceMax.y);
+                gRideEntranceExitPlaceStationIndex = stationIndex;
 
-        // get the station direction from its position
-        auto direction = GetRideEntranceDirection(entranceExitCoords, entranceMin, entranceMax);
-
-        if (direction != INVALID_DIRECTION && direction != stationDirection && direction != direction_reverse(stationDirection))
-        {
-            entranceExitCoords.direction = direction;
-            gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
-            return entranceExitCoords;
+                // get the ride entrance's side relative to the TrackElement
+                Direction direction = (direction_reverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
+                const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+                if (ted.SequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << direction))
+                {
+                    // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
+                    // the station
+                    entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
+                    gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
+                    return entranceExitCoords;
+                }
+            } while (!(tileElement++)->IsLastForTile());
         }
     }
+    gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
     return entranceExitCoords;
 }
 
