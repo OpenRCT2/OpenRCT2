@@ -479,12 +479,14 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
-                if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                {
-                    gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
-                }
             }
+
+            if (OpenRCT2::GetContext()->HasNewVersionInfo())
+            {
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+            }
+
             WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
                 Dropdown::Flag::StayOpen, numItems);
