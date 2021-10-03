@@ -1462,9 +1462,10 @@ void window_event_unknown_08_call(rct_window* w)
 
 void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->tool_update != nullptr)
-            w->event_handlers->tool_update(w, widgetIndex, screenCoords);
+    if (w->event_handlers == nullptr)
+        w->OnToolUpdate(widgetIndex, screenCoords);
+    else if (w->event_handlers->tool_update != nullptr)
+        w->event_handlers->tool_update(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -1477,16 +1478,18 @@ void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, con
 
 void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->tool_drag != nullptr)
-            w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
+    if (w->event_handlers == nullptr)
+        w->OnToolDrag(widgetIndex, screenCoords);
+    else if (w->event_handlers->tool_drag != nullptr)
+        w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->tool_up != nullptr)
-            w->event_handlers->tool_up(w, widgetIndex, screenCoords);
+    if (w->event_handlers == nullptr)
+        w->OnToolUp(widgetIndex, screenCoords);
+    else if (w->event_handlers->tool_up != nullptr)
+        w->event_handlers->tool_up(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex)
