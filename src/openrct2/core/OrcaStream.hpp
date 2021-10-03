@@ -512,10 +512,12 @@ namespace OpenRCT2
                         Read(&raw, sizeof(raw));
                         return static_cast<T>(raw);
                     }
-
-                    uint64_t raw{};
-                    Read(&raw, sizeof(raw));
-                    return static_cast<T>(raw);
+                    else
+                    {
+                        uint64_t raw{};
+                        Read(&raw, sizeof(raw));
+                        return static_cast<T>(raw);
+                    }
                 }
                 else
                 {
