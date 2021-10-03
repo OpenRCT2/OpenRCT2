@@ -12,14 +12,6 @@
 #include "../peep/Staff.h"
 #include "GameAction.h"
 
-/* rct2: 0x009929FC */
-static constexpr const PeepSpriteType spriteTypes[] = {
-    PeepSpriteType::Handyman,
-    PeepSpriteType::Mechanic,
-    PeepSpriteType::Security,
-    PeepSpriteType::EntertainerPanda,
-};
-
 class StaffHireNewActionResult final : public GameActions::Result
 {
 public:

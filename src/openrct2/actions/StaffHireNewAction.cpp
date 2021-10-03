@@ -26,6 +26,14 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 
+/* rct2: 0x009929FC */
+static constexpr const PeepSpriteType spriteTypes[] = {
+    PeepSpriteType::Handyman,
+    PeepSpriteType::Mechanic,
+    PeepSpriteType::Security,
+    PeepSpriteType::EntertainerPanda,
+};
+
 StaffHireNewActionResult::StaffHireNewActionResult()
     : GameActions::Result(GameActions::Status::Ok, STR_CANT_HIRE_NEW_STAFF)
 {
