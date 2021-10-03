@@ -1212,22 +1212,24 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
     // determine if the mouse is hovering over a station - that's the station to add the entrance to
     auto info = get_map_coordinates_from_pos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
+    const auto* trackElement = nullptr;
     if (info.SpriteType != ViewportInteractionItem::None)
     {
         if (info.Element->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
-            if (info.Element->AsTrack()->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
+            trackElement = info.Element->AsTrack();
+            if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
             {
-                const auto& ted = GetTrackElementDescriptor(info.Element->AsTrack()->GetTrackType());
+                const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
                 if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                 {
-                    if (info.Element->AsTrack()->GetTrackType() == TrackElemType::Maze)
+                    if (trackElement->GetTrackType() == TrackElemType::Maze)
                     {
                         gRideEntranceExitPlaceStationIndex = 0;
                     }
                     else
                     {
-                        gRideEntranceExitPlaceStationIndex = info.Element->AsTrack()->GetStationIndex();
+                        gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
                     }
                 }
             }
@@ -1296,16 +1298,17 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                     continue;
                 if (tileElement->GetBaseZ() != stationBaseZ)
                     continue;
-                if (tileElement->AsTrack()->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
+                trackElement = tileElement->AsTrack();
+                if (trackElement->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                     continue;
-                if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Maze)
+                if (trackElement->GetTrackType() == TrackElemType::Maze)
                 {
                     // if it's a maze, it can place the entrance and exit immediately
                     entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
                     gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
                     return entranceExitCoords;
                 }
-                StationIndex stationIndex = tileElement->AsTrack()->GetStationIndex();
+                StationIndex stationIndex = trackElement->GetStationIndex();
                 // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
                 // entrance can be placed on that side
 
@@ -1313,8 +1316,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
 
                 // get the ride entrance's side relative to the TrackElement
                 Direction direction = (direction_reverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
-                const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                if (ted.SequenceProperties[tileElement->AsTrack()->GetSequenceIndex()] & (1 << direction))
+                const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
+                if (ted.SequenceProperties[trackElement->GetSequenceIndex()] & (1 << direction))
                 {
                     // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
                     // the station
