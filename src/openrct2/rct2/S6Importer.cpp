@@ -820,6 +820,10 @@ public:
         {
             musicStyle = src->music;
         }
+        else if (dst->type == RIDE_TYPE_CIRCUS)
+        {
+            musicStyle = 0;
+        }
         dst->music = musicStyle;
 
         auto entranceStyle = src->entrance_style;

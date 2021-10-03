@@ -885,6 +885,10 @@ namespace RCT1
                     dst->music = src->music;
                 }
             }
+            else if (dst->type == RIDE_TYPE_CIRCUS)
+            {
+                dst->music = 0;
+            }
 
             if (src->operating_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
             {
