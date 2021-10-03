@@ -441,11 +441,12 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                gDropdownItemsFormat[numItems++] = STR_QUIT_TRACK_DESIGNS_MANAGER;
-                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
-
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                     gDropdownItemsFormat[numItems++] = STR_QUIT_ROLLERCOASTER_DESIGNER;
+                else
+                    gDropdownItemsFormat[numItems++] = STR_QUIT_TRACK_DESIGNS_MANAGER;
+
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
             }
             else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
