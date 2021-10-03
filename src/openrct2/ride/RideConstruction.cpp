@@ -1212,7 +1212,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
     // determine if the mouse is hovering over a station - that's the station to add the entrance to
     auto info = get_map_coordinates_from_pos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
-    const auto* trackElement = nullptr;
+    TrackElement* trackElement = nullptr;
     if (info.SpriteType != ViewportInteractionItem::None)
     {
         if (info.Element->GetType() == TILE_ELEMENT_TYPE_TRACK)
