@@ -103,7 +103,7 @@ struct c_glyph
 };
 
 /* The structure used to hold internal font information */
-struct _TTF_Font
+struct Internal_TTF_Font
 {
     /* Freetype2 maintains all sorts of useful info itself */
     FT_Face face;

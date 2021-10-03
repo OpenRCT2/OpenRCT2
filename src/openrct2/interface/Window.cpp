@@ -228,7 +228,7 @@ void window_close(rct_window* w)
         g_window_list.erase(itWindow);
 }
 
-template<typename _TPred> static void window_close_by_condition(_TPred pred, uint32_t flags = WindowCloseFlags::None)
+template<typename TPred> static void window_close_by_condition(TPred pred, uint32_t flags = WindowCloseFlags::None)
 {
     bool listUpdated;
     do
@@ -458,7 +458,7 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
  *
  * @param window The window to invalidate (esi).
  */
-template<typename _TPred> static void window_invalidate_by_condition(_TPred pred)
+template<typename TPred> static void window_invalidate_by_condition(TPred pred)
 {
     window_visit_each([pred](rct_window* w) {
         if (pred(w))
@@ -520,7 +520,7 @@ void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
                            { w->windowPos + ScreenCoordsXY{ widget->right + 1, widget->bottom + 1 } } });
 }
 
-template<typename _TPred> static void widget_invalidate_by_condition(_TPred pred)
+template<typename TPred> static void widget_invalidate_by_condition(TPred pred)
 {
     window_visit_each([pred](rct_window* w) {
         if (pred(w))
