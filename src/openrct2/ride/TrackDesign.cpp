@@ -1864,8 +1864,7 @@ static money32 track_design_ride_create_command(int32_t type, int32_t subType, i
     auto gameAction = RideCreateAction(type, subType, 0, 0);
     gameAction.SetFlags(flags);
 
-    auto r = GameActions::ExecuteNested(&gameAction);
-    const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
+    auto res = GameActions::ExecuteNested(&gameAction);
 
     // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
     if (res->Error != GameActions::Status::Ok)
@@ -1873,7 +1872,7 @@ static money32 track_design_ride_create_command(int32_t type, int32_t subType, i
         return MONEY32_UNDEFINED;
     }
 
-    *outRideIndex = res->rideIndex;
+    *outRideIndex = res->GetData<ride_id_t>();
 
     return res->Cost;
 }
