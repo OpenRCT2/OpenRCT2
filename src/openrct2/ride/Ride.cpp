@@ -1760,9 +1760,9 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
 #pragma region Music functions
 
 /**
-* Circus Specialized Function
-*
-*/
+ *
+ *  Circus music is a sound object, rather than music. Needs separate processing.
+ */
 static void circus_music_update(Ride* ride)
 {
     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
