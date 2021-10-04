@@ -97,6 +97,8 @@ static void ride_entrance_exit_connected(Ride* ride);
 static int32_t ride_get_new_breakdown_problem(Ride* ride);
 static void ride_inspection_update(Ride* ride);
 static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus);
+static int32_t ride_music_sample_rate(Ride* ride);
+static bool ride_music_breakdown_effect(Ride* ride);
 static void circus_music_update(Ride* ride);
 static void ride_music_update(Ride* ride);
 static void ride_shop_connected(Ride* ride);
@@ -984,14 +986,7 @@ void Ride::Update()
     if (vehicle_change_timeout != 0)
         vehicle_change_timeout--;
 
-    if (this->type == RIDE_TYPE_CIRCUS)
-    {
-        circus_music_update(this);
-    }
-    else
-    {
-        ride_music_update(this);
-    }
+    ride_music_update(this);
 
     // Update stations
     if (type != RIDE_TYPE_MAZE)
@@ -1761,18 +1756,30 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
 
 /**
  *
- *  Circus music is a sound object, rather than music. Needs separate processing.
+ *  Calculates the sample rate for ride music.
  */
-static void circus_music_update(Ride* ride)
+static int32_t ride_music_sample_rate(Ride* ride)
 {
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-    if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
+    int32_t sampleRate = 22050;
+
+    // Alter sample rate for a power cut effect
+    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        ride->music_position = 0;
-        ride->music_tune_id = 255;
-        return;
+        sampleRate = ride->breakdown_sound_modifier * 70;
+        if (ride->breakdown_reason_pending != BREAKDOWN_CONTROL_FAILURE)
+            sampleRate *= -1;
+        sampleRate += 22050;
     }
 
+    return sampleRate;
+}
+
+/**
+ *
+ *  Ride music slows down upon breaking. If it's completely broken, no music should play.
+ */
+static bool ride_music_breakdown_effect(Ride* ride)
+{
     // Oscillate parameters for a power cut effect when breaking down
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
     {
@@ -1795,23 +1802,35 @@ static void circus_music_update(Ride* ride)
             if (ride->breakdown_sound_modifier == 255)
             {
                 ride->music_tune_id = 255;
-                return;
+                return true;
             }
         }
+    }
+    return false;
+}
+
+/**
+ *
+ *  Circus music is a sound effect, rather than music. Needs separate processing.
+ */
+static void circus_music_update(Ride* ride)
+{
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+    if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
+    {
+        ride->music_position = 0;
+        ride->music_tune_id = 255;
+        return;
+    }
+
+    if(ride_music_breakdown_effect(ride))
+    {
+        return;
     }
 
     CoordsXYZ rideCoords = ride->stations[0].GetStart().ToTileCentre();
 
-    int32_t sampleRate = 22050;
-
-    // Alter sample rate for a power cut effect
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
-    {
-        sampleRate = ride->breakdown_sound_modifier * 70;
-        if (ride->breakdown_reason_pending != BREAKDOWN_CONTROL_FAILURE)
-            sampleRate *= -1;
-        sampleRate += 22050;
-    }
+    int32_t sampleRate = ride_music_sample_rate(ride);
 
     OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
 }
@@ -1822,6 +1841,12 @@ static void circus_music_update(Ride* ride)
  */
 static void ride_music_update(Ride* ride)
 {
+    if (ride->type == RIDE_TYPE_CIRCUS)
+    {
+        circus_music_update(ride);
+        return;
+    }
+
     const auto& rtd = ride->GetRideTypeDescriptor();
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
     {
@@ -1834,31 +1859,9 @@ static void ride_music_update(Ride* ride)
         return;
     }
 
-    // Oscillate parameters for a power cut effect when breaking down
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (ride_music_breakdown_effect(ride))
     {
-        if (ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE)
-        {
-            if (!(gCurrentTicks & 7))
-                if (ride->breakdown_sound_modifier != 255)
-                    ride->breakdown_sound_modifier++;
-        }
-        else
-        {
-            if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-                || ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
-                || ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE)
-            {
-                if (ride->breakdown_sound_modifier != 255)
-                    ride->breakdown_sound_modifier++;
-            }
-
-            if (ride->breakdown_sound_modifier == 255)
-            {
-                ride->music_tune_id = 255;
-                return;
-            }
-        }
+        return;
     }
 
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
@@ -1877,16 +1880,7 @@ static void ride_music_update(Ride* ride)
 
     CoordsXYZ rideCoords = ride->stations[0].GetStart().ToTileCentre();
 
-    int32_t sampleRate = 22050;
-
-    // Alter sample rate for a power cut effect
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
-    {
-        sampleRate = ride->breakdown_sound_modifier * 70;
-        if (ride->breakdown_reason_pending != BREAKDOWN_CONTROL_FAILURE)
-            sampleRate *= -1;
-        sampleRate += 22050;
-    }
+    int32_t sampleRate = ride_music_sample_rate(ride);
 
     OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
 }
