@@ -97,6 +97,7 @@ static void ride_entrance_exit_connected(Ride* ride);
 static int32_t ride_get_new_breakdown_problem(Ride* ride);
 static void ride_inspection_update(Ride* ride);
 static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus);
+static void circus_music_update(Ride* ride);
 static void ride_music_update(Ride* ride);
 static void ride_shop_connected(Ride* ride);
 
@@ -983,7 +984,14 @@ void Ride::Update()
     if (vehicle_change_timeout != 0)
         vehicle_change_timeout--;
 
-    ride_music_update(this);
+    if (this->type == RIDE_TYPE_CIRCUS)
+    {
+        circus_music_update(this);
+    }
+    else
+    {
+        ride_music_update(this);
+    }
 
     // Update stations
     if (type != RIDE_TYPE_MAZE)
@@ -1752,34 +1760,78 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
 #pragma region Music functions
 
 /**
+* Circus Specialized Function
+*
+*/
+static void circus_music_update(Ride* ride)
+{
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+    if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
+    {
+        ride->music_position = 0;
+        ride->music_tune_id = 255;
+        return;
+    }
+
+    // Oscillate parameters for a power cut effect when breaking down
+    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+    {
+        if (ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE)
+        {
+            if (!(gCurrentTicks & 7))
+                if (ride->breakdown_sound_modifier != 255)
+                    ride->breakdown_sound_modifier++;
+        }
+        else
+        {
+            if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+                || ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
+                || ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE)
+            {
+                if (ride->breakdown_sound_modifier != 255)
+                    ride->breakdown_sound_modifier++;
+            }
+
+            if (ride->breakdown_sound_modifier == 255)
+            {
+                ride->music_tune_id = 255;
+                return;
+            }
+        }
+    }
+
+    CoordsXYZ rideCoords = ride->stations[0].GetStart().ToTileCentre();
+
+    int32_t sampleRate = 22050;
+
+    // Alter sample rate for a power cut effect
+    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+    {
+        sampleRate = ride->breakdown_sound_modifier * 70;
+        if (ride->breakdown_reason_pending != BREAKDOWN_CONTROL_FAILURE)
+            sampleRate *= -1;
+        sampleRate += 22050;
+    }
+
+    OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
+}
+
+/**
  *
  *  rct2: 0x006ABE85
  */
 static void ride_music_update(Ride* ride)
 {
-    // The circus does not have music in the normal sense - its “music” is a sound effect.
-    if (ride->type == RIDE_TYPE_CIRCUS)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
     {
-        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-        if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
-        {
-            ride->music_tune_id = 255;
-            return;
-        }
+        return;
     }
-    else
-    {
-        const auto& rtd = ride->GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
-        {
-            return;
-        }
 
-        if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
-        {
-            ride->music_tune_id = 255;
-            return;
-        }
+    if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
+    {
+        ride->music_tune_id = 255;
+        return;
     }
 
     // Oscillate parameters for a power cut effect when breaking down
