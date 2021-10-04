@@ -12,16 +12,12 @@
 #include "../peep/Staff.h"
 #include "GameAction.h"
 
-class StaffHireNewActionResult final : public GameActions::Result
+struct StaffHireNewActionResult
 {
-public:
-    StaffHireNewActionResult();
-    StaffHireNewActionResult(GameActions::Status error, rct_string_id message);
-
-    uint32_t peepSriteIndex = SPRITE_INDEX_NULL;
+    uint16_t StaffEntityId = SPRITE_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(StaffHireNewAction, GameCommand::HireNewStaffMember, StaffHireNewActionResult)
+DEFINE_GAME_ACTION(StaffHireNewAction, GameCommand::HireNewStaffMember, GameActions::Result)
 {
 private:
     bool _autoPosition{};
