@@ -1823,7 +1823,7 @@ static void circus_music_update(Ride* ride)
         return;
     }
 
-    if(ride_music_breakdown_effect(ride))
+    if (ride_music_breakdown_effect(ride))
     {
         return;
     }
