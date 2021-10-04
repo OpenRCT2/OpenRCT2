@@ -21,25 +21,6 @@
 #include "../world/Wall.h"
 
 using namespace OpenRCT2::TrackMetaData;
-WallPlaceActionResult::WallPlaceActionResult()
-    : GameActions::Result(GameActions::Status::Ok, STR_CANT_BUILD_THIS_HERE)
-{
-}
-
-WallPlaceActionResult::WallPlaceActionResult(GameActions::Status err)
-    : GameActions::Result(err, STR_CANT_BUILD_THIS_HERE)
-{
-}
-
-WallPlaceActionResult::WallPlaceActionResult(GameActions::Status err, rct_string_id msg)
-    : GameActions::Result(err, STR_CANT_BUILD_THIS_HERE, msg)
-{
-}
-
-WallPlaceActionResult::WallPlaceActionResult(GameActions::Status error, rct_string_id msg, uint8_t* args)
-    : GameActions::Result(error, STR_CANT_BUILD_THIS_HERE, msg, args)
-{
-}
 
 WallPlaceAction::WallPlaceAction(
     ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
@@ -78,7 +59,7 @@ void WallPlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr WallPlaceAction::Query() const
 {
-    auto res = std::make_unique<WallPlaceActionResult>();
+    auto res = MakeResult();
     res->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
     res->Position = _loc;
 
@@ -93,7 +74,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::NotOwned);
+        return MakeResult(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsSandboxMode)
@@ -102,23 +83,23 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         {
             if (!map_is_location_in_park(_loc))
             {
-                return std::make_unique<WallPlaceActionResult>(GameActions::Status::NotOwned);
+                return MakeResult(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_NONE);
             }
         }
         else if (!map_is_location_owned(_loc))
         {
-            return std::make_unique<WallPlaceActionResult>(GameActions::Status::NotOwned);
+            return MakeResult(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_NONE);
         }
     }
     else if (!_trackDesignDrawingPreview && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))
     {
         log_error("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
-        return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
     if (_edge > 3)
     {
-        return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
     uint8_t edgeSlope = 0;
@@ -129,7 +110,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         if (surfaceElement == nullptr)
         {
             log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
-            return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
         }
         targetHeight = surfaceElement->GetBaseZ();
 
@@ -146,7 +127,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
     if (surfaceElement == nullptr)
     {
         log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
-        return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
     if (surfaceElement->GetWaterHeight() > 0)
@@ -155,13 +136,13 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
 
         if (targetHeight < waterHeight && !gCheatsDisableClearanceChecks)
         {
-            return std::make_unique<WallPlaceActionResult>(GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_UNDERWATER);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
     }
 
     if (targetHeight < surfaceElement->GetBaseZ() && !gCheatsDisableClearanceChecks)
     {
-        return std::make_unique<WallPlaceActionResult>(GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+        return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
     }
 
     if (!(edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS)))
@@ -173,8 +154,8 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         {
             if (targetHeight / 8 < newBaseHeight)
             {
-                return std::make_unique<WallPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
 
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
@@ -189,8 +170,9 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
                         newBaseHeight += 2;
                         if (targetHeight / 8 < newBaseHeight)
                         {
-                            return std::make_unique<WallPlaceActionResult>(
-                                GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                            return MakeResult(
+                                GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE,
+                                STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                         }
                         newBaseHeight -= 2;
                     }
@@ -203,8 +185,8 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         {
             if (targetHeight / 8 < newBaseHeight)
             {
-                return std::make_unique<WallPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
 
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
@@ -219,8 +201,9 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
                         newBaseHeight += 2;
                         if (targetHeight / 8 < newBaseHeight)
                         {
-                            return std::make_unique<WallPlaceActionResult>(
-                                GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                            return MakeResult(
+                                GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE,
+                                STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                         }
                     }
                 }
@@ -233,7 +216,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
     if (wallEntry == nullptr)
     {
         log_error("Wall Type not found %d", _wallType);
-        return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
     if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
@@ -241,7 +224,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         if (HasReachedBannerLimit())
         {
             log_error("No free banners available");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
     }
 
@@ -250,8 +233,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
     {
         if (wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
         {
-            return std::make_unique<WallPlaceActionResult>(
-                GameActions::Status::Disallowed, STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
         }
         clearanceHeight += 2;
     }
@@ -269,16 +251,19 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     res->Cost = wallEntry->price;
+
+    res->SetData(WallPlaceActionResult{});
+
     return res;
 }
 
 GameActions::Result::Ptr WallPlaceAction::Execute() const
 {
-    auto res = std::make_unique<WallPlaceActionResult>();
+    auto res = MakeResult();
     res->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
     res->Position = _loc;
 
@@ -299,7 +284,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         if (surfaceElement == nullptr)
         {
             log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
-            return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
         }
         targetHeight = surfaceElement->GetBaseZ();
 
@@ -318,7 +303,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     if (wallEntry == nullptr)
     {
         log_error("Wall Type not found %d", _wallType);
-        return std::make_unique<WallPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
     uint8_t clearanceHeight = targetHeight / COORDS_Z_STEP;
@@ -345,7 +330,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         if (banner == nullptr)
         {
             log_error("No free banners available");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
 
         banner->text = {};
@@ -361,12 +346,13 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
             banner->ride_index = rideIndex;
             banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
         }
-
-        res->bannerId = banner->id;
     }
 
     auto* wallElement = TileElementInsert<WallElement>(targetLoc, 0b0000);
-    Guard::Assert(wallElement != nullptr);
+    if (wallElement == nullptr)
+    {
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+    }
 
     wallElement->clearance_height = clearanceHeight;
     wallElement->SetDirection(_edge);
@@ -386,12 +372,14 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
 
     wallElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
-    res->tileElement = wallElement->as<TileElement>();
-
     map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);
     map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
     res->Cost = wallEntry->price;
+
+    const auto bannerId = banner != nullptr ? banner->id : BANNER_INDEX_NULL;
+    res->SetData(WallPlaceActionResult{ wallElement->GetBaseZ(), bannerId });
+
     return res;
 }
 
