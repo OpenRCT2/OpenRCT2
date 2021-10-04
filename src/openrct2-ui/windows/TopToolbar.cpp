@@ -2464,18 +2464,18 @@ static money64 try_place_ghost_small_scenery(
     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(loc, quadrant, entryIndex, primaryColour, secondaryColour);
     smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&smallSceneryPlaceAction);
-    auto sspar = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get());
-    if (sspar == nullptr || res->Error != GameActions::Status::Ok)
+    if (res->Error != GameActions::Status::Ok)
         return MONEY64_UNDEFINED;
+
+    const auto placementData = res->GetData<SmallSceneryPlaceActionResult>();
 
     gSceneryPlaceRotation = loc.direction;
     gSceneryPlaceObject.SceneryType = SCENERY_TYPE_SMALL;
     gSceneryPlaceObject.EntryIndex = entryIndex;
 
-    TileElement* tileElement = sspar->tileElement;
-    gSceneryGhostPosition = { loc, tileElement->GetBaseZ() };
-    gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-    if (sspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
+    gSceneryGhostPosition = { loc, placementData.BaseHeight };
+    gSceneryQuadrant = placementData.SceneryQuadrant;
+    if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
         viewport_set_visibility(4);
