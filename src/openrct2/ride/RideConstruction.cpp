@@ -1212,12 +1212,11 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
     // determine if the mouse is hovering over a station - that's the station to add the entrance to
     auto info = get_map_coordinates_from_pos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
-    TrackElement* trackElement = nullptr;
     if (info.SpriteType != ViewportInteractionItem::None)
     {
         if (info.Element->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
-            trackElement = info.Element->AsTrack();
+            auto* trackElement = info.Element->AsTrack();
             if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
             {
                 const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
@@ -1298,7 +1297,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                     continue;
                 if (tileElement->GetBaseZ() != stationBaseZ)
                     continue;
-                trackElement = tileElement->AsTrack();
+                auto* trackElement = tileElement->AsTrack();
                 if (trackElement->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                     continue;
                 if (trackElement->GetTrackType() == TrackElemType::Maze)
