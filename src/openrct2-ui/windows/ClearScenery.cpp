@@ -188,7 +188,7 @@ class CleanSceneryWindow final : public Window
 
 rct_window* window_clear_scenery_open()
 {
-    auto w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WC_CLEAR_SCENERY));
+    auto* w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WC_CLEAR_SCENERY));
 
     if (w != nullptr)
         return w;
