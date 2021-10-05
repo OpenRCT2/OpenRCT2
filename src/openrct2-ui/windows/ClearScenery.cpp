@@ -72,7 +72,7 @@ class CleanSceneryWindow final : public Window
                 tool_cancel();
         }
 
-        void OnMouseUp(rct_widgetindex widgetIndex) override
+        void OnMouseUp(const rct_widgetindex widgetIndex) override
         {
             
             
@@ -104,7 +104,7 @@ class CleanSceneryWindow final : public Window
             }
         }
 
-        void OnMouseDown(rct_widgetindex widgetIndex) override
+        void OnMouseDown(const rct_widgetindex widgetIndex) override
         {
             switch(widgetIndex)
                 {
@@ -125,7 +125,7 @@ class CleanSceneryWindow final : public Window
                 }
         }
 
-        void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+        void OnTextInput(const rct_widgetindex widgetIndex, const std::string_view text) override
         {
             if (widgetIndex != WIDX_PREVIEW || text.empty())
                 return;
