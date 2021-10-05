@@ -141,7 +141,6 @@ public:
 
     void OnMouseDown(rct_widgetindex widgetIndex) override
     {
-
         rct_window* mainWindow;
 
         switch (widgetIndex)
@@ -276,7 +275,6 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-
         WindowDrawWidgets(this, &dpi);
 
         // Clip height value
@@ -293,7 +291,9 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<int32_t>(static_cast<int32_t>(gClipHeight));
-                DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { this->colours[0] }); // Printing the raw value.
+
+                // Printing the raw value.
+                DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { this->colours[0] }); 
                 break;
             }
             case DISPLAY_TYPE::DISPLAY_UNITS:
@@ -337,7 +337,7 @@ public:
         }
     }
 
-    ScreenSize OnScrollGetSize(int32_t scrollIndex) override //void OnScrollGetSize(int scrollIndex, int* width, int* height)
+    ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
         return { 1000, 0 };
     }
@@ -365,7 +365,6 @@ public:
             mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
             mainWindow->Invalidate();
         }
-
     }
 
 private:
@@ -385,7 +384,8 @@ private:
         gClipHeight = clipheight;
         rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
         const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
-        this->scrolls[0].h_left = static_cast<int16_t>(std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget->width() - 1))));
+        this->scrolls[0].h_left =
+            static_cast<int16_t>(std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget->width() - 1))));
     }
 
     bool IsActive()
