@@ -27,12 +27,12 @@ namespace Random
     /**
      * FixedSeedSequence adheres to the _Named Requirement_ `SeedSequence`.
      */
-    template<size_t _TNum = 0> class FixedSeedSequence
+    template<size_t TNum = 0> class FixedSeedSequence
     {
     public:
         using result_type = uint32_t;
 
-        static constexpr size_t N = _TNum;
+        static constexpr size_t N = TNum;
         static constexpr result_type default_seed = 0x1234567F;
 
         explicit FixedSeedSequence()
@@ -41,26 +41,26 @@ namespace Random
         }
 
         template<
-            typename... _TTypes, typename std::enable_if<sizeof...(_TTypes) == N, int>::type = 0,
-            typename std::enable_if<Meta::all_convertible<result_type, _TTypes...>::value, int>::type = 0>
-        explicit FixedSeedSequence(_TTypes... s)
+            typename... TTypes, typename std::enable_if<sizeof...(TTypes) == N, int>::type = 0,
+            typename std::enable_if<Meta::all_convertible<result_type, TTypes...>::value, int>::type = 0>
+        explicit FixedSeedSequence(TTypes... s)
             : v{ static_cast<result_type>(s)... }
         {
         }
 
-        template<typename _TIt, typename = decltype(*std::declval<_TIt&>(), ++std::declval<_TIt&>(), void())>
-        explicit FixedSeedSequence(_TIt begin, _TIt end)
+        template<typename TIt, typename = decltype(*std::declval<TIt&>(), ++std::declval<TIt&>(), void())>
+        explicit FixedSeedSequence(TIt begin, TIt end)
         {
             std::copy(begin, end, v.begin());
         }
 
-        template<typename _TType>
-        explicit FixedSeedSequence(std::initializer_list<_TType> il)
+        template<typename TType>
+        explicit FixedSeedSequence(std::initializer_list<TType> il)
             : FixedSeedSequence(il.begin(), il.end())
         {
         }
 
-        template<typename _TIt> void generate(_TIt begin, _TIt end) const
+        template<typename TIt> void generate(TIt begin, TIt end) const
         {
             std::copy_n(v.begin(), std::min(static_cast<size_t>(end - begin), N), begin);
         }
@@ -70,7 +70,7 @@ namespace Random
             return N;
         }
 
-        template<typename _TIt> constexpr void param(_TIt ob) const
+        template<typename TIt> constexpr void param(TIt ob) const
         {
             std::copy(v.begin(), v.end(), ob);
         }
@@ -79,9 +79,9 @@ namespace Random
         std::array<result_type, N> v;
     };
 
-    template<typename _TUIntType> struct RotateEngineState
+    template<typename TUIntType> struct RotateEngineState
     {
-        using value_type = _TUIntType;
+        using value_type = TUIntType;
 
         value_type s0;
         value_type s1;
@@ -91,21 +91,21 @@ namespace Random
      * RotateEngine adheres to the _Named Requirement_ `RandomNumberEngine`
      * https://en.cppreference.com/w/cpp/named_req/RandomNumberEngine
      */
-    template<typename _TUIntType, _TUIntType _TX, size_t _TR1, size_t _TR2>
-    class RotateEngine : protected RotateEngineState<_TUIntType>
+    template<typename TUIntType, TUIntType TX, size_t TR1, size_t TR2>
+    class RotateEngine : protected RotateEngineState<TUIntType>
     {
-        static_assert(std::is_unsigned<_TUIntType>::value, "Type must be unsigned integral.");
+        static_assert(std::is_unsigned<TUIntType>::value, "Type must be unsigned integral.");
 
-        using RotateEngineState<_TUIntType>::s0;
-        using RotateEngineState<_TUIntType>::s1;
+        using RotateEngineState<TUIntType>::s0;
+        using RotateEngineState<TUIntType>::s1;
 
     public:
-        using result_type = _TUIntType;
-        using state_type = RotateEngineState<_TUIntType>;
+        using result_type = TUIntType;
+        using state_type = RotateEngineState<TUIntType>;
 
-        static constexpr result_type x = _TX;
-        static constexpr size_t r1 = _TR1;
-        static constexpr size_t r2 = _TR2;
+        static constexpr result_type x = TX;
+        static constexpr size_t r1 = TR1;
+        static constexpr size_t r2 = TR2;
         static constexpr result_type default_seed = 1;
 
         static constexpr result_type min()
@@ -129,8 +129,8 @@ namespace Random
             s1 = r.s1;
         }
 
-        template<typename _TSseq, typename = typename std::enable_if<!std::is_same<_TSseq, RotateEngine>::value>::type>
-        explicit RotateEngine(_TSseq& seed_seq)
+        template<typename TSseq, typename = typename std::enable_if<!std::is_same<TSseq, RotateEngine>::value>::type>
+        explicit RotateEngine(TSseq& seed_seq)
         {
             seed(seed_seq);
         }
@@ -141,7 +141,7 @@ namespace Random
             s1 = s;
         }
 
-        template<typename _TSseq> typename std::enable_if<std::is_class<_TSseq>::value, void>::type seed(_TSseq& seed_seq)
+        template<typename TSseq> typename std::enable_if<std::is_class<TSseq>::value, void>::type seed(TSseq& seed_seq)
         {
             std::array<result_type, 2> s;
             seed_seq.generate(s.begin(), s.end());

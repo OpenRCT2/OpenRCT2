@@ -222,7 +222,7 @@ TileElement* LandSetHeightAction::CheckTreeObstructions() const
             continue;
 
         auto* sceneryEntry = sceneryElement->GetEntry();
-        if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE))
+        if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             continue;
 
         return sceneryElement->as<TileElement>();

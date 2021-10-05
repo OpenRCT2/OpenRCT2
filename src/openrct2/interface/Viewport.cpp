@@ -668,7 +668,7 @@ void viewport_update_sprite_follow(rct_window* window)
 
         viewport_set_underground_flag(underground, window, window->viewport);
 
-        auto centreLoc = centre_2d_coordinates({ sprite->x, sprite->y, sprite->z }, window->viewport);
+        auto centreLoc = centre_2d_coordinates(sprite->GetLocation(), window->viewport);
         if (centreLoc.has_value())
         {
             window->savedViewPos = *centreLoc;
@@ -958,8 +958,6 @@ void viewport_paint(
     height &= bitmask;
     left &= bitmask;
     top &= bitmask;
-    right = left + width;
-    bottom = top + height;
 
     auto x = left - static_cast<int32_t>(viewport->viewPos.x & bitmask);
     x = x / viewport->zoom;

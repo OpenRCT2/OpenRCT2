@@ -566,7 +566,7 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             {
                 auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
                 {
                     map_obstruction_set_error_text(tileElement, *res);
                     return res;

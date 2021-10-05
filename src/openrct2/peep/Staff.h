@@ -15,7 +15,8 @@
 #define STAFF_MAX_COUNT 200
 // The number of elements in the gStaffPatrolAreas array per staff member. Every bit in the array represents a 4x4 square.
 // Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
-#define STAFF_PATROL_AREA_SIZE 128
+constexpr size_t STAFF_PATROL_AREA_BLOCKS_PER_LINE = MAXIMUM_MAP_SIZE_TECHNICAL / 4;
+constexpr size_t STAFF_PATROL_AREA_SIZE = (STAFF_PATROL_AREA_BLOCKS_PER_LINE * STAFF_PATROL_AREA_BLOCKS_PER_LINE) / 32;
 
 enum class StaffMode : uint8_t
 {
@@ -65,8 +66,6 @@ void staff_set_name(uint16_t spriteIndex, const char* name);
 bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerType);
 void staff_update_greyed_patrol_areas();
 bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords);
-void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value);
-void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords);
 colour_t staff_get_colour(StaffType staffType);
 bool staff_set_colour(StaffType staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();

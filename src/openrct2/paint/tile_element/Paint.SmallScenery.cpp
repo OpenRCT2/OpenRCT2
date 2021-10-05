@@ -75,9 +75,9 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     boxlength.y = 2;
     int8_t x_offset = 0;
     int8_t y_offset = 0;
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
     {
-        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HALF_SPACE))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HALF_SPACE))
         {
             // 6DFFE3:
             static constexpr const CoordsXY scenery_half_tile_offsets[] = {
@@ -97,13 +97,13 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
         {
             x_offset = 15;
             y_offset = 15;
-            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
             {
                 x_offset = 3;
                 y_offset = 3;
                 boxlength.x = 26;
                 boxlength.y = 26;
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
                 {
                     x_offset = 1;
                     y_offset = 1;
@@ -130,7 +130,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     {
         boxlength.z = 128;
     }
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_WITHER))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
     {
         if (sceneryElement.GetAge() >= SCENERY_WITHER_AGE_THRESHOLD_1)
         {
@@ -141,9 +141,9 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
             baseImageid += 4;
         }
     }
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
     {
-        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
             baseImageid |= SPRITE_ID_PALETTE_COLOUR_2(sceneryElement.GetPrimaryColour(), sceneryElement.GetSecondaryColour());
         }
@@ -156,13 +156,13 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     {
         baseImageid = (baseImageid & 0x7FFFF) | marker;
     }
-    if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
+    if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
         PaintAddImageAsParent(
             session, baseImageid, { x_offset, y_offset, height }, { boxlength.x, boxlength.y, boxlength.z - 1 }, boxoffset);
     }
 
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_GLASS))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
     {
         if (marker == 0)
         {
@@ -176,13 +176,13 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
         }
     }
 
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
     {
         rct_drawpixelinfo* dpi = &session->DPI;
-        if ((scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) || (dpi->zoom_level <= 1))
+        if ((sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) || (dpi->zoom_level <= 1))
         {
             // 6E01A9:
-            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1))
             {
                 // 6E0512:
                 int32_t image_id = ((gCurrentTicks / 2) & 0xF) + sceneryEntry->image + 4;
@@ -194,7 +194,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
-            else if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4))
+            else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4))
             {
                 // 6E043B:
                 int32_t image_id = ((gCurrentTicks / 2) & 0xF) + sceneryEntry->image + 8;
@@ -224,7 +224,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
-            else if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_CLOCK))
+            else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
             {
                 // 6E035C:
                 int32_t minuteImageOffset = ((gRealTimeOfDay.minute + 6) * 17) / 256;
@@ -267,7 +267,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
-            else if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_SWAMP_GOO))
+            else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_SWAMP_GOO))
             {
                 // 6E02F6:
                 int32_t image_id = gCurrentTicks;
@@ -283,10 +283,10 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
-            else if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
+            else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
             {
                 int32_t frame = gCurrentTicks;
-                if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_COG)))
+                if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_COG)))
                 {
                     // 6E01F8:
                     frame += ((session->SpritePosition.x / 4) + (session->SpritePosition.y / 4));
@@ -302,13 +302,13 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
                     image_id = sceneryEntry->frame_offsets[frame];
                 }
                 image_id = (image_id * 4) + direction + sceneryEntry->image;
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED | SMALL_SCENERY_FLAG17))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED | SMALL_SCENERY_FLAG17))
                 {
                     image_id += 4;
                 }
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 {
-                    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
                     {
                         image_id |= SPRITE_ID_PALETTE_COLOUR_2(
                             sceneryElement.GetPrimaryColour(), sceneryElement.GetSecondaryColour());
@@ -322,7 +322,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
                 {
                     image_id = (image_id & 0x7FFFF) | marker;
                 }
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED))
                 {
                     PaintAddImageAsParent(
                         session, image_id, { x_offset, y_offset, height }, { boxlength.x, boxlength.y, boxlength.z - 1 },
@@ -340,7 +340,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     // 6E0556: Draw supports:
     if (sceneryElement.NeedsSupports())
     {
-        if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_SUPPORTS)))
+        if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_SUPPORTS)))
         {
             int32_t ax = 0;
             int32_t supportHeight = height;
@@ -350,7 +350,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
                 ax = 49;
             }
             uint32_t supportImageColourFlags = IMAGE_TYPE_REMAP;
-            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_PAINT_SUPPORTS))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_PAINT_SUPPORTS))
             {
                 supportImageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(sceneryElement.GetPrimaryColour());
             }
@@ -373,19 +373,19 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
 
     paint_util_set_general_support_height(session, ceil2(height, 8), 0x20);
     // 6E05FF:
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
     {
-        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
         {
             // 6E0825:
             paint_util_set_segment_support_height(session, SEGMENT_C4, height, 0x20);
-            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
             {
                 paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, height, 0x20);
             }
             return;
         }
-        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
             // 6E075C:
             direction = (sceneryElement.GetSceneryQuadrant() + rotation) % 4;
@@ -395,16 +395,16 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
         }
         return;
     }
-    if (scenery_small_entry_has_flag(sceneryEntry, (SMALL_SCENERY_FLAG27 | SMALL_SCENERY_FLAG_FULL_TILE)))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG27 | SMALL_SCENERY_FLAG_FULL_TILE))
     {
         paint_util_set_segment_support_height(session, SEGMENT_C4, 0xFFFF, 0);
-        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
             paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
         }
         return;
     }
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
     {
         direction = (sceneryElement.GetSceneryQuadrant() + rotation) % 4;
         paint_util_set_segment_support_height(

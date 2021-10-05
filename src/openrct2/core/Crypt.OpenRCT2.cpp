@@ -17,7 +17,7 @@
 
 using namespace Crypt;
 
-class OpenRCT2FNV1aAlgorithm : public FNV1aAlgorithm
+class OpenRCT2FNV1aAlgorithm final : public FNV1aAlgorithm
 {
 private:
     static constexpr uint64_t Offset = 0xCBF29CE484222325ULL;
