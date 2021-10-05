@@ -68,7 +68,6 @@ static rct_widget window_view_clipping_widgets[] = {
 class ViewClippingWindow final : public Window
 {
 private:
-
     CoordsXY _selectionStart;
     CoordsXY _previousClipSelectionA;
     CoordsXY _previousClipSelectionB;
@@ -89,7 +88,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this); 
+                window_close(this);
                 break;
             case WIDX_CLIP_CHECKBOX_ENABLE:
                 // Toggle height clipping.
@@ -293,7 +292,7 @@ public:
                 ft.Add<int32_t>(static_cast<int32_t>(gClipHeight));
 
                 // Printing the raw value.
-                DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { this->colours[0] }); 
+                DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { this->colours[0] });
                 break;
             }
             case DISPLAY_TYPE::DISPLAY_UNITS:
@@ -384,8 +383,8 @@ private:
         gClipHeight = clipheight;
         rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
         const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
-        this->scrolls[0].h_left =
-            static_cast<int16_t>(std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget->width() - 1))));
+        this->scrolls[0].h_left = static_cast<int16_t>(
+            std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget->width() - 1))));
     }
 
     bool IsActive()
@@ -396,7 +395,6 @@ private:
             return false;
         return _toolActive;
     }
-
 };
 
 rct_window* window_view_clipping_open()
