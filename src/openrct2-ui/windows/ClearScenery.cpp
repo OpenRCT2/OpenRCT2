@@ -134,8 +134,7 @@ class CleanSceneryWindow final : public Window
             int32_t size = strtol(text.data(), &end, 10);
             if (*end == '\0')
             {
-                size = std::max(MINIMUM_TOOL_SIZE, size);
-                size = std::min(MAXIMUM_TOOL_SIZE, size);
+                size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
                 gLandToolSize = size;
                 Invalidate();
             }
