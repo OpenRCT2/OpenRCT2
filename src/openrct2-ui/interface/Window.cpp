@@ -753,7 +753,7 @@ void Window::Close()
     window_close(this);
 }
 
-void Window::WindowTextInputOpen(rct_widgetindex callWidget,
+void Window::TextInputOpen(rct_widgetindex callWidget,
                                  rct_string_id title,
                                  rct_string_id description,
                                  const Formatter& descriptionArgs,

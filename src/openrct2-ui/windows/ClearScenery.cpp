@@ -86,7 +86,7 @@ class CleanSceneryWindow final : public Window
                         Formatter ft;
                         ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
                         ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
-                        WindowTextInputOpen(WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+                        TextInputOpen(WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
                         break;
                     }
                 case WIDX_SMALL_SCENERY:
