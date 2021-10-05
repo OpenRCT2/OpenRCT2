@@ -533,11 +533,11 @@ STR_1144    :Ei pysty rakentamaan/siirtämään tämän laitteen/kohteen sisää
 STR_1145    :Ei pysty rakentamaan/siirtämään tämän laitteen/kohteen uloskäyntiä…
 STR_1146    :Sisäänkäyntiä ei ole vielä rakennettu
 STR_1147    :Uloskäyntiä ei ole vielä rakennettu
-STR_1148    :Neljänneskuorma
-STR_1149    :Puolikas kuorma
-STR_1150    :Kolmeneljäsosakuorma
-STR_1151    :Täysi kuorma
-STR_1152    :Mikä tahansa kuorma
+STR_1148    :Neljänneslasti
+STR_1149    :Puolikas lasti
+STR_1150    :Kolmeneljäsosalasti
+STR_1151    :Täysi lasti
+STR_1152    :Mikä tahansa lasti
 STR_1153    :Korkeusmerkinnät radoissa
 STR_1154    :Korkeusmerkinnät maanpinnassa
 STR_1155    :Korkeusmerkinnät poluissa
@@ -548,8 +548,8 @@ STR_1159    :Sijoita maisemointeja, kasveja ja somisteita
 STR_1160    :Luo/säädä järviä ja vettä
 STR_1161    :Tätä ei voi sijoittaa tähän…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Oikea klikkaus muokkaa)
-STR_1164    :{STRINGID}{NEWLINE}(Oikea klikkaus poistaa)
+STR_1163    :{STRINGID}{NEWLINE}(Muokkaa oikealla painikkeella)
+STR_1164    :{STRINGID}{NEWLINE}(Poista oikealla painikkeella)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Veden tasoa ei voi laskea tässä…
 STR_1167    :Veden tasoa ei voi nostaa tässä…
@@ -873,7 +873,7 @@ STR_1482    :“Voin pahoin”
 STR_1483    :“Voin erittäin pahoin”
 STR_1484    :“Tahdon mennä johonkin jännittävämpään kuin {STRINGID}”
 STR_1485    :“{STRINGID} näyttää liian hurjalta minulle”
-STR_1486    :“En ole nauttinut {STRINGID} loppuun vielä”
+STR_1486    :“Minulla on vielä {STRINGID} jäljellä”
 STR_1487    :“Pelkästään laitteen {STRINGID} katsominen saa minut voimaan pahoin”
 STR_1488    :“En aio maksaa noin paljon laitteesta {STRINGID}”
 STR_1489    :“Haluan kotiin”
@@ -898,7 +898,7 @@ STR_1507    :“En löydä puiston uloskäyntiä”
 STR_1508    :“Tahdon pois kohteesta {STRINGID}”
 STR_1509    :“Tahdon ulos kohteesta {STRINGID}”
 STR_1510    :“En mene kohteeseen {STRINGID} - se ei ole turvallinen”
-STR_1511    :“Tämä tie on kuvottava”
+STR_1511    :“Tämä polku on kuvottava”
 STR_1512    :“Täällä on liikaa tungosta”
 STR_1513    :“Täällä on todella paljon ilkivaltaa”
 STR_1514    :“Mahtava maisema!”
@@ -918,7 +918,7 @@ STR_1527    :“Tämä hattara kojusta {STRINGID} on todella reilun hintainen”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :“Tämä pitsa kojusta {STRINGID} on todella reilun hintainen”
+STR_1531    :“Tämä pizza kojusta {STRINGID} on todella reilun hintainen”
 STR_1532    :
 STR_1533    :“Tämä popcorn kojusta {STRINGID} on todella reilun hintainen”
 STR_1534    :“Tämä nakkisämpylä kojusta {STRINGID} on todella reilun hintainen”
@@ -939,32 +939,32 @@ STR_1548    :
 STR_1549    :
 STR_1550    :“Vau!”
 STR_1551    :“Minulla on outo fiilis että joku katselee minua”
-STR_1552    :“En maksa noin paljon ilmapallosta kojussa {STRINGID}”
-STR_1553    :“En maksa noin paljon pehmolelusta kojussa {STRINGID}”
-STR_1554    :“En maksa noin paljon puiston kartasta kojussa {STRINGID}”
+STR_1552    :“En maksa noin paljon ilmapallosta kojusta {STRINGID}”
+STR_1553    :“En maksa noin paljon pehmolelusta kojusta {STRINGID}”
+STR_1554    :“En maksa noin paljon puiston kartasta kojusta {STRINGID}”
 STR_1555    :“En maksa noin paljon kuvasta laitteesta {STRINGID}”
-STR_1556    :“En maksa noin paljon sateenvarjosta kojussa {STRINGID}”
-STR_1557    :“En maksa noin paljon juomasta kojussa {STRINGID}”
-STR_1558    :“En maksa noin paljon hampurilaisesta kojussa {STRINGID}”
-STR_1559    :“En maksa noin paljon ranskalaisista kojussa {STRINGID}”
-STR_1560    :“En maksa noin paljon jäätelöstä kojussa {STRINGID}”
-STR_1561    :“En maksa noin paljon hattarasta kojussa {STRINGID}”
+STR_1556    :“En maksa noin paljon sateenvarjosta kojusta {STRINGID}”
+STR_1557    :“En maksa noin paljon juomasta kojusta {STRINGID}”
+STR_1558    :“En maksa noin paljon hampurilaisesta kojusta {STRINGID}”
+STR_1559    :“En maksa noin paljon ranskalaisista kojusta {STRINGID}”
+STR_1560    :“En maksa noin paljon jäätelöstä kojusta {STRINGID}”
+STR_1561    :“En maksa noin paljon hattarasta kojusta {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :“En maksa noin paljon pitsasta kojussa {STRINGID}”
+STR_1565    :“En maksa noin paljon pizzasta kojusta {STRINGID}”
 STR_1566    :
-STR_1567    :“En maksa noin paljon popcornista kojussa {STRINGID}”
-STR_1568    :“En maksa noin paljon nakkisämpylästä kojussa {STRINGID}”
-STR_1569    :“En maksa noin paljon lonkerosta kojussa {STRINGID}”
-STR_1570    :“En maksa noin paljon hatusta kojussa {STRINGID}”
-STR_1571    :“En maksa noin paljon toffeeomenasta kojussa {STRINGID}”
-STR_1572    :“En maksa noin paljon t-paidasta kojussa {STRINGID}”
-STR_1573    :“En maksa noin paljon donitsista kojussa {STRINGID}”
-STR_1574    :“En maksa noin paljon kahvista kojussa {STRINGID}”
+STR_1567    :“En maksa noin paljon popcornista kojusta {STRINGID}”
+STR_1568    :“En maksa noin paljon nakkisämpylästä kojusta {STRINGID}”
+STR_1569    :“En maksa noin paljon lonkerosta kojusta {STRINGID}”
+STR_1570    :“En maksa noin paljon hatusta kojusta {STRINGID}”
+STR_1571    :“En maksa noin paljon toffeeomenasta kojusta {STRINGID}”
+STR_1572    :“En maksa noin paljon t-paidasta kojusta {STRINGID}”
+STR_1573    :“En maksa noin paljon donitsista kojusta {STRINGID}”
+STR_1574    :“En maksa noin paljon kahvista kojusta {STRINGID}”
 STR_1575    :
-STR_1576    :“En maksa noin paljon paistetusta kanasta kojussa {STRINGID}”
-STR_1577    :“En maksa noin paljon limsasta kojussa {STRINGID}”
+STR_1576    :“En maksa noin paljon paistetusta kanasta kojusta {STRINGID}”
+STR_1577    :“En maksa noin paljon limsasta kojusta {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
@@ -986,7 +986,7 @@ STR_1595    :“Tämä lihapullakeitto kojusta {STRINGID} on todella reilun hint
 STR_1596    :“Tämä hedelmämehu kojusta {STRINGID} on todella reilun hintainen”
 STR_1597    :“Tämä soijamaito kojusta {STRINGID} on todella reilun hintainen”
 STR_1598    :“Tämä sujongkwa kojusta {STRINGID} on todella reilun hintainen”
-STR_1599    :“Tämä pantonki kojusta {STRINGID} on todella reilun hintainen”
+STR_1599    :“Tämä voileipä kojusta {STRINGID} on todella reilun hintainen”
 STR_1600    :“Tämä keksi kojusta {STRINGID} on todella reilun hintainen”
 STR_1601    :
 STR_1602    :
@@ -1006,24 +1006,24 @@ STR_1615    :
 STR_1616    :“En maksa noin paljon kuvasta laitteesta {STRINGID}”
 STR_1617    :“En maksa noin paljon kuvasta laitteesta {STRINGID}”
 STR_1618    :“En maksa noin paljon kuvasta laitteesta {STRINGID}”
-STR_1619    :“En maksa noin paljon rinkelistä kojussa {STRINGID}”
-STR_1620    :“En maksa noin paljon kaakaosta kojussa {STRINGID}”
-STR_1621    :“En maksa noin paljon jääteestä kojussa {STRINGID}”
-STR_1622    :“En maksa noin paljon tippaleivästä kojussa {STRINGID}”
-STR_1623    :“En maksa noin paljon aurinkolaseista kojussa {STRINGID}”
-STR_1624    :“En maksa noin paljon häränlihanuudeleista kojussa {STRINGID}”
-STR_1625    :“En maksa noin paljon paistetuista riisinuudeleista kojussa {STRINGID}”
-STR_1626    :“En maksa noin paljon wontonkeitosta kojussa {STRINGID}”
-STR_1627    :“En maksa noin paljon lihapullakeitosta kojussa {STRINGID}”
-STR_1628    :“En maksa noin paljon hedelmämehusta kojussa {STRINGID}”
-STR_1629    :“En maksa noin paljon soijamaidosta kojussa {STRINGID}”
-STR_1630    :“En maksa noin paljon sujongkwasta kojussa {STRINGID}”
-STR_1631    :“En maksa noin paljon patongista kojussa {STRINGID}”
-STR_1632    :“En maksa noin paljon keksistä kojussa {STRINGID}”
+STR_1619    :“En maksa noin paljon rinkelistä kojusta {STRINGID}”
+STR_1620    :“En maksa noin paljon kaakaosta kojusta {STRINGID}”
+STR_1621    :“En maksa noin paljon jääteestä kojusta {STRINGID}”
+STR_1622    :“En maksa noin paljon tippaleivästä kojusta {STRINGID}”
+STR_1623    :“En maksa noin paljon aurinkolaseista kojusta {STRINGID}”
+STR_1624    :“En maksa noin paljon häränlihanuudeleista kojusta {STRINGID}”
+STR_1625    :“En maksa noin paljon paistetuista riisinuudeleista kojusta {STRINGID}”
+STR_1626    :“En maksa noin paljon wontonkeitosta kojusta {STRINGID}”
+STR_1627    :“En maksa noin paljon lihapullakeitosta kojusta {STRINGID}”
+STR_1628    :“En maksa noin paljon hedelmämehusta kojusta {STRINGID}”
+STR_1629    :“En maksa noin paljon soijamaidosta kojusta {STRINGID}”
+STR_1630    :“En maksa noin paljon sujongkwasta kojusta {STRINGID}”
+STR_1631    :“En maksa noin paljon voileivästä kojusta {STRINGID}”
+STR_1632    :“En maksa noin paljon keksistä kojusta {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :“En maksa noin paljon grillimakkarasta kojussa {STRINGID}”
+STR_1636    :“En maksa noin paljon grillimakkarasta kojusta {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1199,7 +1199,7 @@ STR_1816    :Valitse kävijälistan näyttämä tietotyyppi
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Kaikki kävijät
 STR_1819    :{WINDOW_COLOUR_2}Kaikki kävijät (yhteenvetona)
-STR_1820    :{WINDOW_COLOUR_2}Kävijät {STRINGID}
+STR_1820    :{WINDOW_COLOUR_2}Kävijät: {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Kävijät, jotka ajattelevat {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Kävijöiden ajatukset kohteesta {POP16}{STRINGID}
 STR_1823    :Näytä kävijöiden ajatukset tästä laitteesta/kohteesta
@@ -1364,34 +1364,34 @@ STR_1984    :{WINDOW_COLOUR_2}Paistetun kanan hinta:
 STR_1985    :{WINDOW_COLOUR_2}Limsan hinta:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :ilmapalloani
-STR_1989    :pehmoleluani
-STR_1990    :puiston karttaani
-STR_1991    :valokuvaani
-STR_1992    :sateenvarjoani
-STR_1993    :juomaani
-STR_1994    :hampurilaistani
-STR_1995    :ranskalaisiani
-STR_1996    :jäätelöäni
-STR_1997    :hattaraani
-STR_1998    :tyhjää tölkkiäni
-STR_1999    :roskaani
-STR_2000    :tyhjää hampurilaisrasiaani
-STR_2001    :pizzaani
-STR_2002    :kuponkiani
-STR_2003    :popcorniani
-STR_2004    :nakkisämpylääni
-STR_2005    :lonkeroani
-STR_2006    :hattuani
-STR_2007    :toffeeomenaani
-STR_2008    :t-paitaani
-STR_2009    :donitsiani
-STR_2010    :kahviani
-STR_2011    :tyhjää kuppiani
-STR_2012    :paistettua kanaani
-STR_2013    :limsaani
-STR_2014    :tyhjää rasiaani
-STR_2015    :tyhjää pulloani
+STR_1988    :ilmapallo
+STR_1989    :pehmolelu
+STR_1990    :puiston kartta
+STR_1991    :valokuva
+STR_1992    :sateenvarjo
+STR_1993    :juoma
+STR_1994    :hampurilainen
+STR_1995    :ranskalaisannos
+STR_1996    :jäätelö
+STR_1997    :hattara
+STR_1998    :tyhjä tölkki
+STR_1999    :roska
+STR_2000    :tyhjä hampurilaisrasia
+STR_2001    :pizza
+STR_2002    :kuponki
+STR_2003    :popcorn
+STR_2004    :nakkisämpylä
+STR_2005    :lonkero
+STR_2006    :hattu
+STR_2007    :toffeeomena
+STR_2008    :t-paita
+STR_2009    :donitsi
+STR_2010    :kahvi
+STR_2011    :tyhjä kuppi
+STR_2012    :paistettu kana
+STR_2013    :limsa
+STR_2014    :tyhjä rasia
+STR_2015    :tyhjä pullo
 STR_2016    :Ilmapalloja
 STR_2017    :Pehmoleluja
 STR_2018    :Puistokarttoja
@@ -1488,32 +1488,32 @@ STR_2111    :{WINDOW_COLOUR_2}Lihapullakeiton hinta:
 STR_2112    :{WINDOW_COLOUR_2}Hedelmämehun hinta:
 STR_2113    :{WINDOW_COLOUR_2}Soijapapumaidon hinta:
 STR_2114    :{WINDOW_COLOUR_2}Sujongkwan hinta:
-STR_2115    :{WINDOW_COLOUR_2}Patongin hinta:
+STR_2115    :{WINDOW_COLOUR_2}Voileivän hinta:
 STR_2116    :{WINDOW_COLOUR_2}Piparin hinta:
 STR_2117    :{WINDOW_COLOUR_2}
 STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
 STR_2120    :{WINDOW_COLOUR_2}Grillimakkaran hinta:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2125    :rinkeliäni
-STR_2126    :kaakaotani
-STR_2127    :jääteetäni
-STR_2128    :tippaleipääni
-STR_2129    :aurinkolasejani
-STR_2130    :häränlihanuudeleitani
-STR_2131    :paistettuja riisinuudeleitani
-STR_2132    :wontonkeittoani
-STR_2133    :lihapullakeittoani
-STR_2134    :hedelmämehuani
-STR_2135    :soijapapumaitoani
-STR_2136    :sujongkwaani
-STR_2137    :patonkiani
-STR_2138    :pipariani
-STR_2139    :tyhjää kulhoani
-STR_2140    :tyhjää juomatölkkiäni
-STR_2141    :tyhjää mehukuppiani
-STR_2142    :grillimakkaraani
-STR_2143    :tyhjää kulhoani
+STR_2125    :rinkeli
+STR_2126    :kaakao
+STR_2127    :jäätee
+STR_2128    :tippaleipä
+STR_2129    :aurinkolasi
+STR_2130    :häränlihanuudeli
+STR_2131    :paistettu riisinuudeli
+STR_2132    :wontonkeitto
+STR_2133    :lihapullakeitto
+STR_2134    :hedelmämehu
+STR_2135    :soijapapumaito
+STR_2136    :sujongkwa
+STR_2137    :voileipä
+STR_2138    :pipari
+STR_2139    :tyhjää kulho
+STR_2140    :tyhjää juomatölkki
+STR_2141    :tyhjää mehukuppi
+STR_2142    :grillimakkara
+STR_2143    :tyhjää kulho
 STR_2147    :Rinkeleitä
 STR_2148    :Kaakaoita
 STR_2149    :Jääteitä
@@ -1526,7 +1526,7 @@ STR_2155    :Lihapullakeittoja
 STR_2156    :Hedelmämehuja
 STR_2157    :Soijapapumaitoja
 STR_2158    :Sujongkwoita
-STR_2159    :Patonkeja
+STR_2159    :Voileipiä
 STR_2160    :Pipareita
 STR_2161    :Tyhjiä kulhoja
 STR_2162    :Tyhjiä juomatölkkejä
@@ -1545,7 +1545,7 @@ STR_2177    :lihapullakeittoa
 STR_2178    :hedelmämehu
 STR_2179    :soijapapumaitoa
 STR_2180    :sujongkwaa
-STR_2181    :patonki
+STR_2181    :voileipä
 STR_2182    :pipari
 STR_2183    :tyhjä kulho
 STR_2184    :tyhjä juomatölkki
@@ -1564,7 +1564,7 @@ STR_2199    :Lihapullakeitto
 STR_2200    :Hedelmämehu
 STR_2201    :Soijapapumaito
 STR_2202    :Sujongkwa
-STR_2203    :Patonki
+STR_2203    :Voileipä
 STR_2204    :Pipari
 STR_2205    :Tyhjä kulho
 STR_2206    :Tyhjä juomatölkki
@@ -1579,7 +1579,7 @@ STR_2214    :Rakentaminen ei ole mahdollista pelin ollessa pysäytettynä!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
-STR_2218    :{RED}{STRINGID} laitteessa {STRINGID} ei ole vielä palautunut {STRINGID}lle!{NEWLINE}Tarkista, onko se jumissa tai juuttunut
+STR_2218    :{RED}{STRINGID} laitteessa {STRINGID} ei ole vielä palannut {STRINGID}lle!{NEWLINE}Tarkista, onko se jumissa tai juuttunut
 STR_2219    :{RED}{COMMA16} henkilöä on kuollut laitteen {STRINGID} onnettomuudessa
 STR_2220    :{WINDOW_COLOUR_2}Puiston taso: {BLACK}{COMMA16}
 STR_2221    :Puiston taso: {COMMA16}
@@ -1740,17 +1740,17 @@ STR_2382    :Maa
 STR_2383    :Vesi
 STR_2384    :{WINDOW_COLOUR_2}Tavoitteesi:
 STR_2385    :{BLACK}Ei mitään
-STR_2386    :{BLACK}Puistossasi tulee olla vähintään {COMMA16} kävijää {MONTHYEAR} loppuun mennessä ja puiston tason tulee olla vähintään 600
-STR_2387    :{BLACK}Saavuta puiston arvoksi vähintään {POP16}{POP16}{CURRENCY} vuoden {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR} loppuun mennessä
+STR_2386    :{BLACK}Puistossasi tulee olla vähintään {COMMA16} kävijää {MONTHYEAR} loppuun mennessä, ja puiston tason tulee olla vähintään 600
+STR_2387    :{BLACK}Saavuta puiston arvoksi vähintään {POP16}{POP16}{CURRENCY} {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR} loppuun mennessä
 STR_2388    :{BLACK}Pidä hauskaa!
 STR_2389    :{BLACK}Rakenna niin hyvä {STRINGID} kuin voit!
 STR_2390    :{BLACK}Puistossasi tulee olla 10 eri tyyppistä toiminnassa olevaa vuoristorataa joiden huvitustaso on vähintään 6.00
 STR_2391    :{BLACK}Puistossasi tulee olla vähintään {COMMA16} kävijää, eikä puiston taso saa pudota hetkeksikään alle 700:n!
-STR_2392    :{BLACK}Sinun tulee saada {POP16}{POP16}{CURRENCY} kuukausituloja laitteiden lipputuloista
+STR_2392    :{BLACK}Sinun tulee ansaita {POP16}{POP16}{CURRENCY} kuukausituloja laitteiden lipputuloista
 STR_2393    :{BLACK}Puistossasi tulee olla 10 eri tyyppistä toiminnassa olevaa vuoristorataa, joiden pitää olla vähintään {LENGTH} pitkiä ja joiden huvitustaso on vähintään 7.00
 STR_2394    :{BLACK}Viimeistele puiston 5 osittain rakennettua vuoristorataa niin, että jokaisen huvitustaso on vähintään {POP16}{POP16}{COMMA2DP32} 
-STR_2395    :{BLACK}Maksa lainasi takaisin ja saavuta puistolle arvo {POP16}{POP16}{CURRENCY}
-STR_2396    :{BLACK}Sinun tulee saada {POP16}{POP16}{CURRENCY} kuukausituloja ruoan, juomien ja tavaroiden myynnistä
+STR_2395    :{BLACK}Maksa lainasi takaisin, ja saavuta puiston arvoksi vähintään {POP16}{POP16}{CURRENCY}
+STR_2396    :{BLACK}Sinun tulee ansaita {POP16}{POP16}{CURRENCY} kuukausituloja ruoan, juomien ja tavaroiden myynnistä
 STR_2397    :Ei mitään
 STR_2398    :Kävijöiden määrä tiettynä päivänä
 STR_2399    :Puiston arvo tiettynä päivänä
@@ -1792,12 +1792,12 @@ STR_2436    :1 viikko
 STR_2443    :{WINDOW_COLOUR_2}Viikottainen kustannus: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Kokonaiskustannus: {BLACK}{CURRENCY2DP}
 STR_2445    :Aloita tämä markkinointikampanja
-STR_2446    :{YELLOW}Markkinointikampanjasi ilmaiseen sisäänpääsyyn on loppunut
-STR_2447    :{YELLOW}Markkinointikampanjasi ilmaiseen pääsyyn laitteeseen {STRINGID} on loppunut
-STR_2448    :{YELLOW}Markkinointikampanjasi sisäänpääsyyn puoleen hintaan on loppunut
-STR_2449    :{YELLOW}Markkinointikampanjasi ilmaisia {STRINGID} varten on loppunut
-STR_2450    :{YELLOW}Mainoskampanjasi puistolle on loppunut
-STR_2451    :{YELLOW}Mainoskampanjasi laitteelle {STRINGID} on loppunut
+STR_2446    :{YELLOW}Markkinointikampanjasi ilmaiseen sisäänpääsyyn on päättynyt
+STR_2447    :{YELLOW}Markkinointikampanjasi ilmaiseen pääsyyn laitteeseen {STRINGID} on päättynyt
+STR_2448    :{YELLOW}Markkinointikampanjasi sisäänpääsyyn puoleen hintaan on päättynyt
+STR_2449    :{YELLOW}Markkinointikampanjasi ilmaisia {STRINGID} varten on päättynyt
+STR_2450    :{YELLOW}Mainoskampanjasi puistolle on päättynyt
+STR_2451    :{YELLOW}Mainoskampanjasi laitteelle {STRINGID} on päättynyt
 STR_2452    :{WINDOW_COLOUR_2}Varat (miinus velka): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Varat (miinus velka): {RED}{CURRENCY2DP}
 STR_2454    :{BLACK}{CURRENCY2DP} -
@@ -2000,8 +2000,8 @@ STR_2793    :(Suorittanut {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Suorittanut: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2}Yhtiön arvolla: {BLACK}{CURRENCY}
 STR_2795    :Järjestä
 STR_2796    :Järjestä laitelistaus valitun tietotyypin mukaan
-STR_2797    :Vieritä näkymää kun hiiri on näytön reunassa
-STR_2798    :Valitse vieritetäänkö näkymää kun hiiri on näytön reunassa
+STR_2797    :Vieritä näkymää kun osoitin on näytön reunassa
+STR_2798    :Valitse vieritetäänkö näkymää kun osoitin on näytön reunassa
 STR_2799    :Näytä ja aseta näppäinasetukset
 STR_2800    :{WINDOW_COLOUR_2}Sisäänpääsyt: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Tulot sisäänpääsyistä: {BLACK}{CURRENCY2DP}
@@ -2015,10 +2015,10 @@ STR_2808    :{RED}Kävijät valittavat puistosi ilkivallasta{NEWLINE}Tarkista ja
 STR_2809    :{RED}Kävijät ovat nälkäisiä eivätkä löydä paikkaa josta saisi ruokaa
 STR_2810    :{RED}Kävijät ovat janoisia eivätkä löydä paikkaa josta saisi juotavaa
 STR_2811    :{RED}Kävijät valittavat etteivät löydä vessaa puistostasi
-STR_2812    :{RED}Kävijät eksyvät tai jäävät jumiink{NEWLINE}Tarkista polkusi että kävijät löytävä tiensä paikasta toiseen
-STR_2813    :{RED}Sisäänpääsyn hinta on liian korkea!{NEWLINE}Laske sisäänpääsyhintaa tai paranna puiston arvoa jotta puistosi houkuttelee enemmän kävijöitä
+STR_2812    :{RED}Kävijät eksyvät tai jäävät jumiin{NEWLINE}Tarkista polkuasettelusi, jotta kävijät löytävät tiensä paikasta toiseen
+STR_2813    :{RED}Puiston sisäänpääsyhinta on liian korkea!{NEWLINE}Laske sisäänpääsyhintaa tai paranna puiston arvoa jotta puistosi houkuttelee enemmän kävijöitä
 STR_2814    :{WINDOW_COLOUR_2}Sotkuisin puisto -palkinto
-STR_2815    :{WINDOW_COLOUR_2}Siistein puisto -palkinto
+STR_2815    :{WINDOW_COLOUR_2}Puhtain puisto -palkinto
 STR_2816    :{WINDOW_COLOUR_2}Parhaimmat vuoristoradat -palkinto
 STR_2817    :{WINDOW_COLOUR_2}Paras hinta/laatu-suhde -palkinto
 STR_2818    :{WINDOW_COLOUR_2}Kaunein puisto -palkinto
@@ -2035,7 +2035,7 @@ STR_2828    :{WINDOW_COLOUR_2}Häikäisevimmät värivalinnat -palkinto
 STR_2829    :{WINDOW_COLOUR_2}Sekavin asettelu -palkinto
 STR_2830    :{WINDOW_COLOUR_2}Parhaat lempeät laitteet -palkinto
 STR_2831    :{TOPAZ}Puistosi sai ”Maan sotkuisin puisto” -palkinnon!
-STR_2832    :{TOPAZ}Puistosi sai ”Maan siistein puisto” -palkinnon!
+STR_2832    :{TOPAZ}Puistosi sai ”Maan puhtain puisto” -palkinnon!
 STR_2833    :{TOPAZ}Puistosi sai ”Parhaimmat vuoristoradat” -palkinnon!
 STR_2834    :{TOPAZ}Puistosi sai ”Maan paras hinta/laatu-suhde” -palkinnon!
 STR_2835    :{TOPAZ}Puistosi sai ”Maan kaunein puisto” -palkinnon!
@@ -2051,7 +2051,7 @@ STR_2844    :{TOPAZ}Puistosi sai ”Maan parhaat mukautetut laitteet” -palkinn
 STR_2845    :{TOPAZ}Puistosi sai ”Häikäisevimmät värivalinnat” -palkinnon!
 STR_2846    :{TOPAZ}Puistosi sai ”Sekavin asettelu” -palkinnon!
 STR_2847    :{TOPAZ}Puistosi sai ”Maan parhaat lempeät laitteet” -palkinnon!
-STR_2848    :{WINDOW_COLOUR_2}Ei tuoreita palkintoja
+STR_2848    :{WINDOW_COLOUR_2}Ei viimeaikaisia palkintoja
 STR_2849    :Uusi skenaario asennettiin onnistuneesti
 STR_2850    :Uusi ratamalli asennettiin onnistuneesti
 STR_2851    :Skenaario on jo asennettu
@@ -2152,7 +2152,7 @@ STR_3062    :Perusvuoristorata
 STR_3063    :Vesikanava (vedenalainen rata)
 STR_3064    :Aloittelijoiden puistot
 STR_3065    :Haastavat puistot
-STR_3066    :Asiantuntijoiden puistot
+STR_3066    :Vaativat puistot
 STR_3067    :“Oikeat” puistot
 STR_3068    :Muut puistot
 STR_3069    :Yläosa
@@ -3585,7 +3585,7 @@ STR_6377    :{WINDOW_COLOUR_2}Tyyppi: {BLACK}{STRINGID} laitteelle {STRINGID}
 STR_6378    :Vastaanotetaan esinelistaa: {INT32} / {INT32}
 STR_6379    :Vastaanotettiin epäkelpoja tietoja
 STR_6380    :Päivitys saatavilla!
-STR_6381    :Liity OpenRCT2 -Discordiin!
+STR_6381    :Liity OpenRCT2:n Discordiin!
 STR_6382    :Uusi OpenRCT2-versio on saatavilla: {STRING}!
 STR_6383    :Avaa lataussivusto
 STR_6384    :Lumisade
