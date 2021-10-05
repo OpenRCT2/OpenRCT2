@@ -944,9 +944,8 @@ static void window_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, in
             spriteIndex += (frame % window_ride_tab_animation_frames[w->page]);
         }
 
-        gfx_draw_sprite(
-            dpi, ImageId(spriteIndex),
-            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
+        const auto& widget = w->widgets[widgetIndex];
+        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.left, widget.top });
     }
 }
 
@@ -981,9 +980,9 @@ static void window_ride_draw_tab_main(rct_drawpixelinfo* dpi, rct_window* w)
                         spriteIndex += (w->frame_no / 4) % 8;
                     break;
             }
-            gfx_draw_sprite(
-                dpi, ImageId(spriteIndex),
-                w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
+
+            const auto& widget = w->widgets[widgetIndex];
+            gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.left, widget.top });
         }
     }
 }
@@ -995,13 +994,13 @@ static void window_ride_draw_tab_main(rct_drawpixelinfo* dpi, rct_window* w)
 static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_VEHICLE;
-    rct_widget* widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
 
     if (!(w->disabled_widgets & (1LL << widgetIndex)))
     {
-        auto screenCoords = ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        int32_t width = widget->right - screenCoords.x;
-        int32_t height = widget->bottom - 3 - screenCoords.y;
+        auto screenCoords = ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
+        int32_t width = widget.right - screenCoords.x;
+        int32_t height = widget.bottom - 3 - screenCoords.y;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             height += 4;
 
@@ -1013,7 +1012,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
             return;
         }
 
-        screenCoords = ScreenCoordsXY{ widget->width() / 2, widget->height() - 12 };
+        screenCoords = ScreenCoordsXY{ widget.width() / 2, widget.height() - 12 };
 
         auto ride = get_ride(w->rideId);
         if (ride == nullptr)
@@ -1070,7 +1069,7 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
 
     if (!(w->disabled_widgets & (1LL << widgetIndex)))
     {
-        rct_widget* widget = &w->widgets[widgetIndex];
+        const auto& widget = w->widgets[widgetIndex];
         int32_t spriteIndex = 0;
         if (w->page == WINDOW_RIDE_PAGE_CUSTOMER)
             spriteIndex = w->picked_peep_frame & ~3;
@@ -1080,7 +1079,7 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
         spriteIndex |= 0xA9E00000;
 
         gfx_draw_sprite(
-            dpi, ImageId::FromUInt32(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 6 });
+            dpi, ImageId::FromUInt32(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.midX(), widget.bottom - 6 });
     }
 }
 
@@ -1656,11 +1655,11 @@ static void window_ride_init_viewport(rct_window* w)
     // rct2: 0x006aec9c only used here so brought it into the function
     if (w->viewport == nullptr && !ride->overall_view.IsNull())
     {
-        rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
+        const auto& view_widget = w->widgets[WIDX_VIEWPORT];
 
-        auto screenPos = w->windowPos + ScreenCoordsXY{ view_widget->left + 1, view_widget->top + 1 };
-        int32_t width = view_widget->width() - 1;
-        int32_t height = view_widget->height() - 1;
+        auto screenPos = w->windowPos + ScreenCoordsXY{ view_widget.left + 1, view_widget.top + 1 };
+        int32_t width = view_widget.width() - 1;
+        int32_t height = view_widget.height() - 1;
 
         viewport_create(w, screenPos, width, height, w->focus.value());
 
@@ -4807,7 +4806,6 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     // TODO: This should use lists and identified sprites
     rct_drawpixelinfo clippedDpi;
-    rct_widget* widget;
 
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -4817,12 +4815,12 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_ride_draw_tab_images(dpi, w);
 
     // Track / shop item preview
-    widget = &window_ride_colour_widgets[WIDX_TRACK_PREVIEW];
-    if (widget->type != WindowWidgetType::Empty)
+    const auto& trackPreviewWidget = window_ride_colour_widgets[WIDX_TRACK_PREVIEW];
+    if (trackPreviewWidget.type != WindowWidgetType::Empty)
         gfx_fill_rect(
             dpi,
-            { { w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 } },
-              { w->windowPos + ScreenCoordsXY{ widget->right - 1, widget->bottom - 1 } } },
+            { { w->windowPos + ScreenCoordsXY{ trackPreviewWidget.left + 1, trackPreviewWidget.top + 1 } },
+              { w->windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
             PALETTE_INDEX_12);
 
     auto trackColour = ride_get_track_colour(ride, w->ride_colour);
@@ -4831,7 +4829,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr || rideEntry->shop_item[0] == ShopItem::None)
     {
-        auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+        auto screenCoords = w->windowPos + ScreenCoordsXY{ trackPreviewWidget.left, trackPreviewWidget.top };
 
         // Track
         if (ride->type == RIDE_TYPE_MAZE)
@@ -4858,7 +4856,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else
     {
         auto screenCoords = w->windowPos
-            + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
+            + ScreenCoordsXY{ (trackPreviewWidget.left + trackPreviewWidget.right) / 2 - 8,
+                              (trackPreviewWidget.bottom + trackPreviewWidget.top) / 2 - 6 };
 
         ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
         gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, ride->track_colour[0].main), screenCoords);
@@ -4866,12 +4865,13 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Entrance preview
     trackColour = ride_get_track_colour(ride, 0);
-    widget = &w->widgets[WIDX_ENTRANCE_PREVIEW];
-    if (widget->type != WindowWidgetType::Empty)
+    const auto& entrancePreviewWidget = w->widgets[WIDX_ENTRANCE_PREVIEW];
+    if (entrancePreviewWidget.type != WindowWidgetType::Empty)
     {
         if (clip_drawpixelinfo(
-                &clippedDpi, dpi, w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 }, widget->width(),
-                widget->height()))
+                &clippedDpi, dpi,
+                w->windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
+                entrancePreviewWidget.width(), entrancePreviewWidget.height()))
         {
             gfx_clear(&clippedDpi, PALETTE_INDEX_12);
 

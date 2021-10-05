@@ -473,14 +473,14 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
-    // Create sick at location
-    Litter::Create({ x, y, z, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    const auto curLoc = GetLocation();
+    Litter::Create({ curLoc, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = { OpenRCT2::Audio::SoundId::Cough1, OpenRCT2::Audio::SoundId::Cough2,
                                                             OpenRCT2::Audio::SoundId::Cough3,
                                                             OpenRCT2::Audio::SoundId::Cough4 };
     auto soundId = coughs[scenario_rand() & 3];
-    OpenRCT2::Audio::Play3D(soundId, { x, y, z });
+    OpenRCT2::Audio::Play3D(soundId, curLoc);
 
     return { { x, y } };
 }
@@ -652,6 +652,7 @@ void peep_sprite_remove(Peep* peep)
     }
     else
     {
+        staff->ClearPatrolArea();
         gStaffModes[staff->StaffId] = StaffMode::None;
         staff_update_greyed_patrol_areas();
 

@@ -3416,7 +3416,6 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
         trackElement = map_get_track_element_at(vehiclePos);
 
         vehiclePos.z = trackElement->GetBaseZ();
-        direction = trackElement->GetDirection();
     }
 
     if (!vehicle_create_trains(id, vehiclePos, trackElement))
@@ -3705,7 +3704,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
  */
 void Ride::ConstructMissingEntranceOrExit() const
 {
-    rct_window* w = window_get_main();
+    auto* w = window_get_main();
     if (w == nullptr)
         return;
 
@@ -3758,7 +3757,7 @@ void Ride::ConstructMissingEntranceOrExit() const
  */
 static void ride_scroll_to_track_error(CoordsXYE* trackElement)
 {
-    rct_window* w = window_get_main();
+    auto* w = window_get_main();
     if (w != nullptr)
     {
         window_scroll_to_location(w, { *trackElement, trackElement->element->GetBaseZ() });
@@ -5548,9 +5547,9 @@ void determine_ride_entrance_and_exit_locations()
             // Search the map to find it. Skip the outer ring of invisible tiles.
             bool alreadyFoundEntrance = false;
             bool alreadyFoundExit = false;
-            for (uint8_t x = 1; x < MAXIMUM_MAP_SIZE_TECHNICAL - 1; x++)
+            for (int32_t x = 1; x < MAXIMUM_MAP_SIZE_TECHNICAL - 1; x++)
             {
-                for (uint8_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
+                for (int32_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
                 {
                     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
 

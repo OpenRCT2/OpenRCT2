@@ -17,26 +17,6 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 
-LargeSceneryPlaceActionResult::LargeSceneryPlaceActionResult()
-    : GameActions::Result(GameActions::Status::Ok, STR_CANT_POSITION_THIS_HERE)
-{
-}
-
-LargeSceneryPlaceActionResult::LargeSceneryPlaceActionResult(GameActions::Status error)
-    : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE)
-{
-}
-
-LargeSceneryPlaceActionResult::LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message)
-    : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message)
-{
-}
-
-LargeSceneryPlaceActionResult::LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args)
-    : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message, args)
-{
-}
-
 LargeSceneryPlaceAction::LargeSceneryPlaceAction(
     const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
     : _loc(loc)
@@ -68,14 +48,15 @@ void LargeSceneryPlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
 {
-    auto res = std::make_unique<LargeSceneryPlaceActionResult>();
+    auto res = MakeResult();
     res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
     res->Expenditure = ExpenditureType::Landscaping;
     int16_t surfaceHeight = tile_element_height(_loc);
     res->Position.x = _loc.x + 16;
     res->Position.y = _loc.y + 16;
     res->Position.z = surfaceHeight;
-    res->GroundFlags = 0;
+
+    auto resultData = LargeSceneryPlaceActionResult{};
 
     money32 supportsCost = 0;
 
@@ -84,20 +65,20 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         log_error(
             "Invalid game command for scenery placement, primaryColour = %u, secondaryColour = %u", _primaryColour,
             _secondaryColour);
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     if (_sceneryType >= MAX_LARGE_SCENERY_OBJECTS)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto* sceneryEntry = get_large_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->tiles);
@@ -148,45 +129,47 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         {
             if ((canBuild->GroundFlags & ELEMENT_IS_UNDERWATER) || (canBuild->GroundFlags & ELEMENT_IS_UNDERGROUND))
             {
-                return std::make_unique<LargeSceneryPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_UNDERWATER);
+                return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
             }
-            if (res->GroundFlags && !(res->GroundFlags & tempSceneryGroundFlags))
+            if (resultData.GroundFlags && !(resultData.GroundFlags & tempSceneryGroundFlags))
             {
-                return std::make_unique<LargeSceneryPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE,
+                    STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
             }
         }
 
-        res->GroundFlags = tempSceneryGroundFlags;
+        resultData.GroundFlags = tempSceneryGroundFlags;
 
         if (!LocationValid(curTile) || map_is_edge(curTile))
         {
-            return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::Disallowed, STR_OFF_EDGE_OF_MAP);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned({ curTile, zLow }) && !gCheatsSandboxMode)
         {
-            return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
 
     if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
     {
         log_error("No free map elements available");
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::NoFreeElements);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
     res->Cost = (sceneryEntry->price * 10) + supportsCost;
+    res->SetData(std::move(resultData));
+
     return res;
 }
 
 GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
 {
-    auto res = std::make_unique<LargeSceneryPlaceActionResult>();
+    auto res = MakeResult();
     res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
     res->Expenditure = ExpenditureType::Landscaping;
 
@@ -194,7 +177,8 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
     res->Position.x = _loc.x + 16;
     res->Position.y = _loc.y + 16;
     res->Position.z = surfaceHeight;
-    res->GroundFlags = 0;
+
+    auto resultData = LargeSceneryPlaceActionResult{};
 
     money32 supportsCost = 0;
 
@@ -202,13 +186,13 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
     if (sceneryEntry == nullptr)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     if (sceneryEntry->tiles == nullptr)
     {
         log_error("Invalid large scenery object, sceneryType = %u", _sceneryType);
-        return std::make_unique<LargeSceneryPlaceActionResult>(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
@@ -228,7 +212,8 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         if (banner == nullptr)
         {
             log_error("No free banners available");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
+            return MakeResult(
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
 
         banner->text = {};
@@ -245,7 +230,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
             banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
         }
 
-        res->bannerId = banner->id;
+        resultData.bannerId = banner->id;
     }
 
     uint8_t tileNum = 0;
@@ -275,7 +260,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         }
 
         supportsCost += canBuild->Cost;
-        res->GroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        resultData.GroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
@@ -302,7 +287,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
 
         if (tileNum == 0)
         {
-            res->firstTileHeight = zLow;
+            resultData.firstTileHeight = zLow;
         }
     }
 
@@ -310,6 +295,8 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
     res->Cost = (sceneryEntry->price * 10) + supportsCost;
+    res->SetData(std::move(resultData));
+
     return res;
 }
 

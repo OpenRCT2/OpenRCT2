@@ -250,14 +250,12 @@ static void window_view_clipping_mousedown(rct_window* w, rct_widgetindex widget
         case WIDX_CLIP_HEIGHT_INCREASE:
             if (gClipHeight < 255)
                 window_view_clipping_set_clipheight(w, gClipHeight + 1);
-            mainWindow = window_get_main();
             if (mainWindow != nullptr)
                 mainWindow->Invalidate();
             break;
         case WIDX_CLIP_HEIGHT_DECREASE:
             if (gClipHeight > 0)
                 window_view_clipping_set_clipheight(w, gClipHeight - 1);
-            mainWindow = window_get_main();
             if (mainWindow != nullptr)
                 mainWindow->Invalidate();
             break;

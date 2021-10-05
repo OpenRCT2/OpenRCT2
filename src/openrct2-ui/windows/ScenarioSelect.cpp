@@ -245,16 +245,16 @@ static void window_scenarioselect_init_tabs(rct_window* w)
     int32_t x = 3;
     for (int32_t i = 0; i < NumTabs; i++)
     {
-        rct_widget* widget = &w->widgets[i + WIDX_TAB1];
+        auto& widget = w->widgets[i + WIDX_TAB1];
         if (!(showPages & (1 << i)))
         {
-            widget->type = WindowWidgetType::Empty;
+            widget.type = WindowWidgetType::Empty;
             continue;
         }
 
-        widget->type = WindowWidgetType::Tab;
-        widget->left = x;
-        widget->right = x + 90;
+        widget.type = WindowWidgetType::Tab;
+        widget.left = x;
+        widget.right = x + 90;
         x += 91;
     }
 }
@@ -563,8 +563,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     rct_string_id highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
     rct_string_id unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
 
-    rct_widget* listWidget = &w->widgets[WIDX_SCENARIOLIST];
-    int32_t listWidth = listWidget->width() - 12;
+    const auto& listWidget = w->widgets[WIDX_SCENARIOLIST];
+    int32_t listWidth = listWidget.width() - 12;
 
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 

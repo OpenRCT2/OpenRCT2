@@ -61,7 +61,7 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
     {
         case PeepPickupType::Pickup:
         {
-            res->Position = { peep->x, peep->y, peep->z };
+            res->Position = peep->GetLocation();
             if (!peep->CanBePickedUp())
             {
                 return MakeResult(GameActions::Status::Disallowed, STR_ERR_CANT_PLACE_PERSON_HERE);
@@ -83,7 +83,7 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
         }
         break;
         case PeepPickupType::Cancel:
-            res->Position = { peep->x, peep->y, peep->z };
+            res->Position = peep->GetLocation();
             break;
         case PeepPickupType::Place:
             res->Position = _loc;
@@ -119,7 +119,7 @@ GameActions::Result::Ptr PeepPickupAction::Execute() const
     {
         case PeepPickupType::Pickup:
         {
-            res->Position = { peep->x, peep->y, peep->z };
+            res->Position = peep->GetLocation();
 
             Peep* existing = network_get_pickup_peep(_owner);
             if (existing != nullptr)
@@ -148,7 +148,7 @@ GameActions::Result::Ptr PeepPickupAction::Execute() const
         break;
         case PeepPickupType::Cancel:
         {
-            res->Position = { peep->x, peep->y, peep->z };
+            res->Position = peep->GetLocation();
 
             Peep* const pickedUpPeep = network_get_pickup_peep(_owner);
             if (pickedUpPeep != nullptr)

@@ -884,10 +884,10 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
 
     if (action.GetType() == GameCommand::CreateRide)
     {
-        auto& rideCreateResult = static_cast<RideCreateGameActionResult&>(*result.get());
-        if (rideCreateResult.rideIndex != RIDE_ID_NULL)
+        if (result->Error == GameActions::Status::Ok)
         {
-            obj.Set("ride", EnumValue(rideCreateResult.rideIndex));
+            const auto rideIndex = result->GetData<ride_id_t>();
+            obj.Set("ride", EnumValue(rideIndex));
         }
     }
     else if (action.GetType() == GameCommand::HireNewStaffMember)

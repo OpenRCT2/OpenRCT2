@@ -1005,8 +1005,6 @@ static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widg
 
 static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    widget = &w->widgets[widgetIndex - 1];
-
     switch (widgetIndex)
     {
         case WIDX_VIRTUAL_FLOOR_DROPDOWN:
@@ -1258,7 +1256,6 @@ static void window_options_culture_dropdown(rct_window* w, rct_widgetindex widge
                     }
                     // report error to console regardless
                     log_error("Failed to open language file.");
-                    dropdownIndex = fallbackLanguage - 1;
                 }
                 else
                 {
@@ -1477,10 +1474,10 @@ static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetI
     }
 }
 
-static uint8_t get_scroll_percentage(rct_widget* widget, rct_scroll* scroll)
+static uint8_t get_scroll_percentage(const rct_widget& widget, const rct_scroll& scroll)
 {
-    uint8_t width = widget->width() - 1;
-    return static_cast<float>(scroll->h_left) / (scroll->h_right - width) * 100;
+    uint8_t width = widget.width() - 1;
+    return static_cast<float>(scroll.h_left) / (scroll.h_right - width) * 100;
 }
 
 static void window_options_audio_update(rct_window* w)
@@ -1489,10 +1486,9 @@ static void window_options_audio_update(rct_window* w)
 
     if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
     {
-        rct_widget* widget;
-
-        widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
-        uint8_t master_volume = get_scroll_percentage(widget, &w->scrolls[0]);
+        const auto& masterVolumeWidget = window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        const auto& masterVolumeScroll = w->scrolls[0];
+        uint8_t master_volume = get_scroll_percentage(masterVolumeWidget, masterVolumeScroll);
         if (master_volume != gConfigSound.master_volume)
         {
             gConfigSound.master_volume = master_volume;
@@ -1500,8 +1496,9 @@ static void window_options_audio_update(rct_window* w)
             widget_invalidate(w, WIDX_MASTER_VOLUME);
         }
 
-        widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
-        uint8_t sound_volume = get_scroll_percentage(widget, &w->scrolls[1]);
+        const auto& soundVolumeWidget = window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        const auto& soundVolumeScroll = w->scrolls[1];
+        uint8_t sound_volume = get_scroll_percentage(soundVolumeWidget, soundVolumeScroll);
         if (sound_volume != gConfigSound.sound_volume)
         {
             gConfigSound.sound_volume = sound_volume;
@@ -1509,8 +1506,9 @@ static void window_options_audio_update(rct_window* w)
             widget_invalidate(w, WIDX_SOUND_VOLUME);
         }
 
-        widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
-        uint8_t ride_music_volume = get_scroll_percentage(widget, &w->scrolls[2]);
+        const auto& musicVolumeWidget = window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        const auto& musicVolumeScroll = w->scrolls[2];
+        uint8_t ride_music_volume = get_scroll_percentage(musicVolumeWidget, musicVolumeScroll);
         if (ride_music_volume != gConfigSound.ride_music_volume)
         {
             gConfigSound.ride_music_volume = ride_music_volume;
@@ -1527,11 +1525,11 @@ static void window_options_audio_scrollgetsize(rct_window* w, int32_t scrollInde
 
 static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
 {
-    rct_widget* widget = &window_options_audio_widgets[widget_index];
-    rct_scroll* scroll = &w->scrolls[scroll_id];
+    const auto& widget = window_options_audio_widgets[widget_index];
+    auto& scroll = w->scrolls[scroll_id];
 
-    int widget_size = scroll->h_right - (widget->width() - 1);
-    scroll->h_left = ceil(volume / 100.0f * widget_size);
+    int32_t widget_size = scroll.h_right - (widget.width() - 1);
+    scroll.h_left = ceil(volume / 100.0f * widget_size);
 
     WidgetScrollUpdateThumbs(w, widget_index);
 }
