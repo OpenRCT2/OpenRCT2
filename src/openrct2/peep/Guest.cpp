@@ -898,7 +898,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         {
             if (State == PeepState::Walking || State == PeepState::Sitting)
             {
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { x, y, z });
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, GetLocation());
 
                 ExplosionCloud::Create({ x, y, z + 16 });
                 ExplosionFlare::Create({ x, y, z + 16 });
@@ -906,10 +906,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 Remove();
                 return;
             }
-            else
-            {
-                PeepFlags &= ~PEEP_FLAGS_EXPLODE;
-            }
+
+            PeepFlags &= ~PEEP_FLAGS_EXPLODE;
         }
 
         if (PeepFlags & PEEP_FLAGS_HUNGER)
@@ -991,7 +989,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0
             && GuestHeadingToRideId == RIDE_ID_NULL)
         {
-            uint32_t time_duration = gScenarioTicks - ParkEntryTime;
+            uint32_t time_duration = gCurrentTicks - ParkEntryTime;
             time_duration /= 2048;
 
             if (time_duration >= 5)
@@ -1239,7 +1237,7 @@ void Guest::UpdateSitting()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        auto loc = CoordsXYZ{ x, y, z }.ToTileStart() + CoordsXYZ{ BenchUseOffsets[Var37 & 0x7], 0 };
+        auto loc = GetLocation().ToTileStart() + CoordsXYZ{ BenchUseOffsets[Var37 & 0x7], 0 };
 
         MoveTo(loc);
 
@@ -1409,7 +1407,7 @@ void Guest::CheckCantFindRide()
     GuestHeadingToRideId = RIDE_ID_NULL;
     rct_window* w = window_find_by_number(WC_PEEP, sprite_index);
 
-    if (w)
+    if (w != nullptr)
     {
         window_event_invalidate_call(w);
     }
@@ -1478,7 +1476,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
             InsertNewThought(PeepThoughtType::HaventFinished, food);
             return false;
         }
-        else if (Nausea >= 145)
+
+        if (Nausea >= 145)
             return false;
     }
 
@@ -1771,7 +1770,7 @@ void Guest::OnExitRide(Ride* ride)
         int32_t laughType = scenario_rand() & 7;
         if (laughType < 3)
         {
-            OpenRCT2::Audio::Play3D(laughs[laughType], { x, y, z });
+            OpenRCT2::Audio::Play3D(laughs[laughType], GetLocation());
         }
     }
 
@@ -2290,11 +2289,11 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
         //      needing to be synchronised
         if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
         {
-            MoneyEffect::CreateAt(amount, { x, y, z }, true);
+            MoneyEffect::CreateAt(amount, GetLocation(), true);
         }
     }
 
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, { x, y, z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, GetLocation());
 }
 
 void Guest::SetHasRidden(const Ride* ride)
@@ -3641,30 +3640,28 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             peep_update_ride_leave_entrance_maze(this, ride, entranceLocation);
             return;
         }
-        else if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
+        if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
         {
             peep_update_ride_leave_entrance_spiral_slide(this, ride, entranceLocation);
             return;
         }
-        else
+
+        // If the ride type was changed guests will become stuck.
+        // Inform the player about this if its a new issue or hasn't been addressed within 120 seconds.
+        if ((ride->current_issues & RIDE_ISSUE_GUESTS_STUCK) == 0 || gCurrentTicks - ride->last_issue_time > 3000)
         {
-            // If the ride type was changed guests will become stuck.
-            // Inform the player about this if its a new issue or hasn't been addressed within 120 seconds.
-            if ((ride->current_issues & RIDE_ISSUE_GUESTS_STUCK) == 0 || gCurrentTicks - ride->last_issue_time > 3000)
+            ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
+            ride->last_issue_time = gCurrentTicks;
+
+            auto ft = Formatter();
+            ride->FormatNameTo(ft);
+            if (gConfigNotifications.ride_warnings)
             {
-                ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
-                ride->last_issue_time = gCurrentTicks;
-
-                auto ft = Formatter();
-                ride->FormatNameTo(ft);
-                if (gConfigNotifications.ride_warnings)
-                {
-                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, EnumValue(CurrentRide), ft);
-                }
+                News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, EnumValue(CurrentRide), ft);
             }
-
-            return;
         }
+
+        return;
     }
 
     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
@@ -4559,7 +4556,8 @@ void Guest::UpdateRideApproachSpiralSlide()
         MoveTo({ LOCATION_NULL, y, z });
         return;
     }
-    else if (waypoint == 2)
+
+    if (waypoint == 2)
     {
         bool lastRide = false;
         if (ride->status != RideStatus::Open)
@@ -4733,7 +4731,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
         SetDestination(targetLoc);
         return;
     }
-    waypoint = 3;
+
     // Actually force the final waypoint
     Var37 |= 3;
 
@@ -5009,7 +5007,7 @@ void Guest::UpdateRideShopInteract()
     // Do not play toilet flush sound on title screen as it's considered loud and annoying
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::ToiletFlush, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::ToiletFlush, GetLocation());
     }
 
     RideSubState = PeepRideSubState::LeaveShop;
@@ -5029,11 +5027,13 @@ void Guest::UpdateRideShopLeave()
 {
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ loc.value(), z });
+        const auto curLoc = GetLocation();
+        MoveTo({ loc.value(), curLoc.z });
 
-        if ((x & 0xFFE0) != NextLoc.x)
+        const auto newLoc = GetLocation().ToTileStart();
+        if (newLoc.x != NextLoc.x)
             return;
-        if ((y & 0xFFE0) != NextLoc.y)
+        if (newLoc.y != NextLoc.y)
             return;
     }
 
@@ -5240,11 +5240,12 @@ void Guest::UpdateWalking()
                     Litter::Type::EmptyCup,
                 };
                 auto litterType = litter_types[scenario_rand() & 0x3];
-                int32_t litterX = x + (scenario_rand() & 0x7) - 3;
-                int32_t litterY = y + (scenario_rand() & 0x7) - 3;
+                const auto loc = GetLocation();
+                int32_t litterX = loc.x + (scenario_rand() & 0x7) - 3;
+                int32_t litterY = loc.y + (scenario_rand() & 0x7) - 3;
                 Direction litterDirection = (scenario_rand() & 0x3);
 
-                Litter::Create({ litterX, litterY, z, litterDirection }, litterType);
+                Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
             }
         }
     }
@@ -5266,16 +5267,17 @@ void Guest::UpdateWalking()
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
             UpdateSpriteType();
 
-            int32_t litterX = x + (scenario_rand() & 0x7) - 3;
-            int32_t litterY = y + (scenario_rand() & 0x7) - 3;
+            const auto loc = GetLocation();
+            int32_t litterX = loc.x + (scenario_rand() & 0x7) - 3;
+            int32_t litterY = loc.y + (scenario_rand() & 0x7) - 3;
             Direction litterDirection = (scenario_rand() & 0x3);
 
-            Litter::Create({ litterX, litterY, z, litterDirection }, litterType);
+            Litter::Create({ litterX, litterY, loc.z, litterDirection }, litterType);
         }
     }
 
     // Check if vehicle is blocking the destination tile
-    auto curPos = TileCoordsXYZ(CoordsXYZ{ x, y, z });
+    auto curPos = TileCoordsXYZ(GetLocation());
     auto dstPos = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
     if (curPos.x != dstPos.x || curPos.y != dstPos.y)
     {
@@ -5585,7 +5587,7 @@ void Guest::UpdateEnteringPark()
     SetState(PeepState::Falling);
 
     OutsideOfPark = false;
-    ParkEntryTime = gScenarioTicks;
+    ParkEntryTime = gCurrentTicks;
     increment_guests_in_park();
     decrement_guests_heading_for_park();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

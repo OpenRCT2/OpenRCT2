@@ -42,7 +42,7 @@ static rct_widget window_shortcut_widgets[] = {
     MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
     MakeWidget({4,    47}, {412, 245}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
     MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 // clang-format on
 
@@ -59,7 +59,7 @@ enum
 static rct_widget window_shortcut_change_widgets[] = {
     WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
     MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 // clang-format on
 
@@ -350,10 +350,8 @@ private:
             }
             return true;
         }
-        else
-        {
-            return group == groupFilter;
-        }
+
+        return group == groupFilter;
     }
 
     void InitialiseList()
@@ -437,7 +435,7 @@ private:
             enabled_widgets |= (1ULL << (WIDX_TAB_0 + i));
         }
 
-        _widgets.push_back({ WIDGETS_END });
+        _widgets.push_back(WIDGETS_END);
         widgets = _widgets.data();
 
         WindowInitScrollWidgets(this);

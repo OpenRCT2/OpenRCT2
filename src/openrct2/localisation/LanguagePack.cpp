@@ -158,12 +158,11 @@ public:
             {
                 return _scenarioOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
-            else
-            {
-                return nullptr;
-            }
+
+            return nullptr;
         }
-        else if (stringId >= ObjectOverrideBase)
+
+        if (stringId >= ObjectOverrideBase)
         {
             int32_t offset = stringId - ObjectOverrideBase;
             int32_t ooIndex = offset / ObjectOverrideMaxStringCount;
@@ -174,22 +173,16 @@ public:
             {
                 return _objectOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
-            else
-            {
-                return nullptr;
-            }
+
+            return nullptr;
         }
-        else
+
+        if ((_strings.size() > static_cast<size_t>(stringId)) && !_strings[stringId].empty())
         {
-            if ((_strings.size() > static_cast<size_t>(stringId)) && !_strings[stringId].empty())
-            {
-                return _strings[stringId].c_str();
-            }
-            else
-            {
-                return nullptr;
-            }
+            return _strings[stringId].c_str();
         }
+
+        return nullptr;
     }
 
     rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) override
@@ -469,7 +462,8 @@ private:
                 // Unexpected new line, ignore line entirely
                 return;
             }
-            else if (!IsWhitespace(codepoint) && codepoint != ':')
+
+            if (!IsWhitespace(codepoint) && codepoint != ':')
             {
                 reader->Skip();
                 sb.Append(codepoint);

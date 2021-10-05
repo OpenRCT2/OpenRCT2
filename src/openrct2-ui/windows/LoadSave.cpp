@@ -73,7 +73,7 @@ static rct_widget window_loadsave_widgets[] =
     MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // Date
     MakeWidget({               4,      68}, {342, 303}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL                                            ), // File list
     MakeWidget({               4, WH - 24}, {197,  19}, WindowWidgetType::Button,       WindowColour::Primary  , STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // Use native browser
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 #pragma endregion
@@ -1142,7 +1142,7 @@ static rct_widget window_overwrite_prompt_widgets[] = {
     { WindowWidgetType::Button, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
     { WindowWidgetType::Button, 0, OVERWRITE_WW - 95, OVERWRITE_WW - 11, OVERWRITE_WH - 20, OVERWRITE_WH - 9,
       STR_SAVE_PROMPT_CANCEL, STR_NONE },
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex);

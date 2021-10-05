@@ -63,12 +63,12 @@ static rct_widget window_player_overview_widgets[] = {
     MakeWidget({179, 45}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_LOCATE,         STR_LOCATE_PLAYER_TIP), // Locate button
     MakeWidget({179, 69}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_DEMOLISH,       STR_KICK_PLAYER_TIP  ), // Kick button
     MakeWidget({  3, 60}, {175, 61}, WindowWidgetType::Viewport, WindowColour::Secondary                                           ), // Viewport
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_player_statistics_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_player_page_widgets[] = {
@@ -155,7 +155,6 @@ rct_window* window_player_open(uint8_t id)
         window = WindowCreateAutoPos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
         window->number = id;
         window->page = 0;
-        window->viewport_focus_coordinates.y = 0;
         window->frame_no = 0;
         window->list_information_type = 0;
         window->picked_peep_frame = 0;
@@ -164,10 +163,9 @@ rct_window* window_player_open(uint8_t id)
         window->min_height = 134;
         window->max_width = 500;
         window->max_height = 450;
+
         window->no_list_items = 0;
         window->selected_list_item = -1;
-
-        window->viewport_focus_coordinates.y = -1;
     }
 
     window->page = 0;
@@ -549,8 +547,8 @@ static void window_player_set_page(rct_window* w, int32_t page)
     {
         if (w->viewport == nullptr)
         {
-            viewport_create(
-                w, w->windowPos, w->width, w->height, 0, TileCoordsXYZ(128, 128, 0).ToCoordsXYZ(), 1, SPRITE_INDEX_NULL);
+            const auto focus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
+            viewport_create(w, w->windowPos, w->width, w->height, focus);
             w->flags |= WF_NO_SCROLLING;
             window_event_invalidate_call(w);
             window_player_update_viewport(w, false);

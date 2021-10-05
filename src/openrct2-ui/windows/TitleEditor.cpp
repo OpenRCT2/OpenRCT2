@@ -171,7 +171,7 @@ static rct_widget window_title_editor_widgets[] = {
     MakeWidget     ({  26, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
     MakeWidget     ({  44, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
     MakeWidget     ({  62, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static size_t _selectedTitleSequence = SIZE_MAX;
@@ -354,7 +354,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
                     auto parkImporter = ParkImporter::Create(handle->HintPath);
                     auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
-                    objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                    objectMgr.LoadObjects(result.RequiredObjects);
                     parkImporter->Import();
 
                     if (isScenario)

@@ -3649,7 +3649,12 @@ STR_6449    :{WINDOW_COLOUR_2}Tracks:
 STR_6450    :{BLACK}“{STRING}”
 STR_6451    :{BLACK}“{STRING}” - {STRING}
 STR_6452    :{WINDOW_COLOUR_2}Verkoopt: {BLACK}{STRING}
-STR_6453    :Versie-informatie kopiëren 
+STR_6453    :Versie-informatie kopiëren
+STR_6454    :Kan de tekst van de lichtkrant niet veranderen…
+STR_6455    :Kan de tekst van dit bord niet veranderen…
+STR_6456    :Reuzenscreenshot
+STR_6457    :Bug rapporteren op GitHub
+STR_6458    :Volgen in het hoofdvenster
 
 #############
 # Scenarios #

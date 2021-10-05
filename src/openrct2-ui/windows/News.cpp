@@ -38,7 +38,7 @@ static rct_widget window_news_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_TAB_GEARS_0), // settings
     MakeWidget({  4, 44}, {392, 252}, WindowWidgetType::Scroll,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 class NewsWindow final : public Window
@@ -139,12 +139,12 @@ public:
                     buttonIndex = 0;
                     break;
                 }
-                else if (mutableScreenCoords.x < 351 && newsItem.TypeHasSubject())
+                if (mutableScreenCoords.x < 351 && newsItem.TypeHasSubject())
                 {
                     buttonIndex = 1;
                     break;
                 }
-                else if (mutableScreenCoords.x < 376 && newsItem.TypeHasLocation())
+                if (mutableScreenCoords.x < 376 && newsItem.TypeHasLocation())
                 {
                     buttonIndex = 2;
                     break;

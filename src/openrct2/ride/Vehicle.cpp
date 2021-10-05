@@ -967,16 +967,17 @@ bool Vehicle::SoundCanPlay() const
     if (sound1_id == OpenRCT2::Audio::SoundId::Null && sound2_id == OpenRCT2::Audio::SoundId::Null)
         return false;
 
-    if (sprite_left == LOCATION_NULL)
+    if (x == LOCATION_NULL)
         return false;
 
     if (g_music_tracking_viewport == nullptr)
         return false;
 
-    int16_t left = g_music_tracking_viewport->viewPos.x;
-    int16_t bottom = g_music_tracking_viewport->viewPos.y;
-    int16_t quarter_w = g_music_tracking_viewport->view_width / 4;
-    int16_t quarter_h = g_music_tracking_viewport->view_height / 4;
+    const auto quarter_w = g_music_tracking_viewport->view_width / 4;
+    const auto quarter_h = g_music_tracking_viewport->view_height / 4;
+
+    auto left = g_music_tracking_viewport->viewPos.x;
+    auto bottom = g_music_tracking_viewport->viewPos.y;
 
     if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
@@ -984,11 +985,11 @@ bool Vehicle::SoundCanPlay() const
         bottom -= quarter_h;
     }
 
-    if (left >= sprite_right || bottom >= sprite_bottom)
+    if (left >= SpriteRect.GetRight() || bottom >= SpriteRect.GetBottom())
         return false;
 
-    int16_t right = g_music_tracking_viewport->view_width + left;
-    int16_t top = g_music_tracking_viewport->view_height + bottom;
+    auto right = g_music_tracking_viewport->view_width + left;
+    auto top = g_music_tracking_viewport->view_height + bottom;
 
     if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
@@ -996,7 +997,7 @@ bool Vehicle::SoundCanPlay() const
         top += quarter_h + quarter_h;
     }
 
-    if (right < sprite_left || top < sprite_top)
+    if (right < SpriteRect.GetRight() || top < SpriteRect.GetTop())
         return false;
 
     return true;
@@ -1026,7 +1027,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
 {
     OpenRCT2::Audio::VehicleSoundParams param;
     param.priority = priority;
-    int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->viewPos.x;
+    int32_t panX = (SpriteRect.GetLeft() / 2) + (SpriteRect.GetRight() / 2) - g_music_tracking_viewport->viewPos.x;
     panX = panX / g_music_tracking_viewport->zoom;
     panX += g_music_tracking_viewport->pos.x;
 
@@ -1037,7 +1038,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     }
     param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
-    int32_t panY = (sprite_top / 2) + (sprite_bottom / 2) - g_music_tracking_viewport->viewPos.y;
+    int32_t panY = (SpriteRect.GetTop() / 2) + (SpriteRect.GetBottom() / 2) - g_music_tracking_viewport->viewPos.y;
     panY = panY / g_music_tracking_viewport->zoom;
     panY += g_music_tracking_viewport->pos.y;
 
@@ -1897,7 +1898,7 @@ void Vehicle::UpdateMeasurements()
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
-        auto tileElement = map_get_first_element_at({ x, y });
+        auto tileElement = map_get_first_element_at(CoordsXY{ x, y });
         if (tileElement == nullptr)
             return;
 
@@ -1927,7 +1928,7 @@ void Vehicle::UpdateMeasurements()
             if (sceneryEntry == nullptr)
                 continue;
 
-            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
             {
                 coverFound = true;
                 break;
@@ -1983,12 +1984,10 @@ static SoundIdVolume sub_6D7AC0(
             currentVolume = std::min<int32_t>(currentVolume + 15, targetVolume);
             return { currentSoundId, currentVolume };
         }
-        else
-        {
-            currentVolume -= 9;
-            if (currentVolume >= 80)
-                return { currentSoundId, currentVolume };
-        }
+
+        currentVolume -= 9;
+        if (currentVolume >= 80)
+            return { currentSoundId, currentVolume };
     }
 
     // Begin sound at quarter volume
@@ -2307,7 +2306,7 @@ static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, uin
             // track type to, e.g., Crooked House
             break;
         }
-        else if (trainIndex >= std::size(ride->vehicles))
+        if (trainIndex >= std::size(ride->vehicles))
         {
             return std::nullopt;
         }
@@ -2355,7 +2354,7 @@ void Vehicle::UpdateWaitingForPassengers()
         Invalidate();
         return;
     }
-    else if (sub_state == 1)
+    if (sub_state == 1)
     {
         if (time_waiting != 0xFFFF)
             time_waiting++;
@@ -3030,13 +3029,11 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                          * trains can depart! */
                         return false;
                     }
-                    else
-                    {
-                        /* Sync exception - train is not arriving at the station
-                         * and there are less than half the trains for the ride
-                         * travelling. */
-                        continue;
-                    }
+
+                    /* Sync exception - train is not arriving at the station
+                     * and there are less than half the trains for the ride
+                     * travelling. */
+                    continue;
                 }
             }
         }
@@ -3278,12 +3275,12 @@ void Vehicle::UpdateDeparting()
             auto soundId = (rideEntry->vehicles[0].sound_range == 4) ? OpenRCT2::Audio::SoundId::Tram
                                                                      : OpenRCT2::Audio::SoundId::TrainDeparting;
 
-            OpenRCT2::Audio::Play3D(soundId, { x, y, z });
+            OpenRCT2::Audio::Play3D(soundId, GetLocation());
         }
 
         if (curRide->mode == RideMode::UpwardLaunch || (curRide->mode == RideMode::DownwardLaunch && var_CE > 1))
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
         }
 
         if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
@@ -3377,13 +3374,13 @@ void Vehicle::UpdateDeparting()
             UpdateDepartingBoatHire();
             return;
         }
-        else if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle)
+        if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle)
         {
             velocity = -velocity;
             FinishDeparting();
             return;
         }
-        else if (curRide->mode == RideMode::Shuttle)
+        if (curRide->mode == RideMode::Shuttle)
         {
             update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
             velocity = 0;
@@ -3496,7 +3493,7 @@ void Vehicle::FinishDeparting()
         if (var_CE >= 1 && (14 << 16) > velocity)
             return;
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
     }
 
     if (curRide->mode == RideMode::UpwardLaunch)
@@ -3504,7 +3501,7 @@ void Vehicle::FinishDeparting()
         if ((curRide->launch_speed << 16) > velocity)
             return;
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
     }
 
     if (curRide->mode != RideMode::Race && !curRide->IsBlockSectioned())
@@ -3637,14 +3634,15 @@ void Vehicle::UpdateCollisionSetup()
 #ifdef ENABLE_SCRIPTING
         InvokeVehicleCrashHook(train->sprite_index, "another_vehicle");
 #endif
+        const auto trainLoc = train->GetLocation();
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { train->x, train->y, train->z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, trainLoc);
 
-        ExplosionCloud::Create({ train->x, train->y, train->z });
+        ExplosionCloud::Create(trainLoc);
 
         for (int32_t i = 0; i < 10; i++)
         {
-            VehicleCrashParticle::Create(train->colours, { train->x, train->y, train->z });
+            VehicleCrashParticle::Create(train->colours, trainLoc);
         }
 
         train->IsCrashedVehicle = true;
@@ -3655,7 +3653,7 @@ void Vehicle::UpdateCollisionSetup()
         train->sprite_height_negative = 45;
         train->sprite_height_positive = 5;
 
-        train->MoveTo({ train->x, train->y, train->z });
+        train->MoveTo(trainLoc);
 
         train->SwingSpeed = 0;
     }
@@ -3698,7 +3696,7 @@ void Vehicle::UpdateCrashSetup()
 
     if (NumPeepsUntilTrainTail() != 0)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, GetLocation());
     }
 
     int32_t edx = velocity >> 10;
@@ -3827,7 +3825,7 @@ void Vehicle::UpdateTravelling()
                 UpdateTravellingBoatHireSetup();
                 return;
             }
-            else if (curRide->mode == RideMode::Shuttle)
+            if (curRide->mode == RideMode::Shuttle)
             {
                 update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
                 velocity = 0;
@@ -4135,7 +4133,7 @@ void Vehicle::UpdateArriving()
 
     if ((curRide->mode == RideMode::UpwardLaunch || curRide->mode == RideMode::DownwardLaunch) && var_CE < 2)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
         velocity = 0;
         acceleration = 0;
         SetState(Vehicle::Status::Departing, 1);
@@ -4425,9 +4423,7 @@ void Vehicle::UpdateMotionBoatHire()
     if (remaining_distance >= 0x368A)
     {
         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        unk_F64E20.x = x;
-        unk_F64E20.y = y;
-        unk_F64E20.z = z;
+        unk_F64E20 = GetLocation();
         Invalidate();
 
         for (;;)
@@ -5128,24 +5124,24 @@ void Vehicle::UpdateHauntedHouseOperating()
     switch (current_time)
     {
         case 45:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
             break;
         case 75:
             Pitch = 1;
             Invalidate();
             break;
         case 400:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream1, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream1, GetLocation());
             break;
         case 745:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
             break;
         case 775:
             Pitch = 1;
             Invalidate();
             break;
         case 1100:
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, { x, y, z });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScream2, GetLocation());
             break;
     }
 }
@@ -5405,15 +5401,17 @@ void Vehicle::CrashOnLand()
     }
 
     sub_state = 2;
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { x, y, z });
 
-    ExplosionCloud::Create({ x, y, z });
-    ExplosionFlare::Create({ x, y, z });
+    const auto curLoc = GetLocation();
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, curLoc);
+
+    ExplosionCloud::Create(curLoc);
+    ExplosionFlare::Create(curLoc);
 
     uint8_t numParticles = std::min(sprite_width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
-        VehicleCrashParticle::Create(colours, { x, y, z });
+        VehicleCrashParticle::Create(colours, curLoc);
 
     IsCrashedVehicle = true;
     animation_frame = 0;
@@ -5422,7 +5420,7 @@ void Vehicle::CrashOnLand()
     sprite_height_negative = 45;
     sprite_height_positive = 5;
 
-    MoveTo({ x, y, z });
+    MoveTo(curLoc);
 
     crash_z = 0;
 }
@@ -5471,16 +5469,18 @@ void Vehicle::CrashOnWater()
     }
 
     sub_state = 2;
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water1, { x, y, z });
 
-    CrashSplashParticle::Create({ x, y, z });
-    CrashSplashParticle::Create({ x - 8, y - 9, z });
-    CrashSplashParticle::Create({ x + 11, y - 9, z });
-    CrashSplashParticle::Create({ x + 11, y + 8, z });
-    CrashSplashParticle::Create({ x - 4, y + 8, z });
+    const auto curLoc = GetLocation();
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water1, curLoc);
+
+    CrashSplashParticle::Create(curLoc);
+    CrashSplashParticle::Create(curLoc + CoordsXYZ{ -8, -9, 0 });
+    CrashSplashParticle::Create(curLoc + CoordsXYZ{ 11, -9, 0 });
+    CrashSplashParticle::Create(curLoc + CoordsXYZ{ 11, 8, 0 });
+    CrashSplashParticle::Create(curLoc + CoordsXYZ{ -4, 8, 0 });
 
     for (int32_t i = 0; i < 10; ++i)
-        VehicleCrashParticle::Create(colours, { x - 4, y + 8, z });
+        VehicleCrashParticle::Create(colours, curLoc + CoordsXYZ{ -4, 8, 0 });
 
     IsCrashedVehicle = true;
     animation_frame = 0;
@@ -5489,7 +5489,7 @@ void Vehicle::CrashOnWater()
     sprite_height_negative = 45;
     sprite_height_positive = 5;
 
-    MoveTo({ x, y, z });
+    MoveTo(curLoc);
 
     crash_z = -1;
 }
@@ -5503,6 +5503,8 @@ void Vehicle::UpdateCrash()
     for (Vehicle* curVehicle = GetEntity<Vehicle>(sprite_index); curVehicle != nullptr;
          curVehicle = GetEntity<Vehicle>(curVehicle->next_vehicle_on_train))
     {
+        CoordsXYZ curPos = curVehicle->GetLocation();
+
         if (curVehicle->sub_state > 1)
         {
             if (curVehicle->crash_z <= 96)
@@ -5512,7 +5514,8 @@ void Vehicle::UpdateCrash()
                 {
                     int32_t xOffset = (scenario_rand() & 2) - 1;
                     int32_t yOffset = (scenario_rand() & 2) - 1;
-                    ExplosionCloud::Create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
+
+                    ExplosionCloud::Create(curPos + CoordsXYZ{ xOffset, yOffset, 0 });
                 }
             }
             if (curVehicle->animationState <= 0xe388)
@@ -5530,7 +5533,7 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        TileElement* collideElement = vehicle_check_collision({ curVehicle->x, curVehicle->y, curVehicle->z });
+        TileElement* collideElement = vehicle_check_collision(curPos);
         if (collideElement == nullptr)
         {
             curVehicle->sub_state = 1;
@@ -5541,12 +5544,12 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        int16_t height = tile_element_height({ curVehicle->x, curVehicle->y });
-        int16_t waterHeight = tile_element_water_height({ curVehicle->x, curVehicle->y });
+        int16_t height = tile_element_height(curPos);
+        int16_t waterHeight = tile_element_water_height(curPos);
         int16_t zDiff;
         if (waterHeight != 0)
         {
-            zDiff = curVehicle->z - waterHeight;
+            zDiff = curPos.z - waterHeight;
             if (zDiff <= 0 && zDiff >= -20)
             {
                 curVehicle->CrashOnWater();
@@ -5554,8 +5557,8 @@ void Vehicle::UpdateCrash()
             }
         }
 
-        zDiff = curVehicle->z - height;
-        if ((zDiff <= 0 && zDiff >= -20) || curVehicle->z < 16)
+        zDiff = curPos.z - height;
+        if ((zDiff <= 0 && zDiff >= -20) || curPos.z < 16)
         {
             curVehicle->CrashOnLand();
             continue;
@@ -5563,20 +5566,18 @@ void Vehicle::UpdateCrash()
 
         curVehicle->Invalidate();
 
-        CoordsXYZ curPosition = { curVehicle->x, curVehicle->y, curVehicle->z };
-
-        curPosition.x += static_cast<int8_t>(curVehicle->crash_x >> 8);
-        curPosition.y += static_cast<int8_t>(curVehicle->crash_y >> 8);
-        curPosition.z += static_cast<int8_t>(curVehicle->crash_z >> 8);
+        curPos.x += static_cast<int8_t>(curVehicle->crash_x >> 8);
+        curPos.y += static_cast<int8_t>(curVehicle->crash_y >> 8);
+        curPos.z += static_cast<int8_t>(curVehicle->crash_z >> 8);
         curVehicle->TrackLocation = { (curVehicle->crash_x << 8), (curVehicle->crash_y << 8), (curVehicle->crash_z << 8) };
 
-        if (!map_is_location_valid(curPosition))
+        if (!map_is_location_valid(curPos))
         {
             curVehicle->CrashOnLand();
             continue;
         }
 
-        curVehicle->MoveTo(curPosition);
+        curVehicle->MoveTo(curPos);
 
         if (curVehicle->sub_state == 1)
         {
@@ -6922,10 +6923,7 @@ int32_t Vehicle::GetSwingAmount() const
             {
                 return 14;
             }
-            else
-            {
-                return -15;
-            }
+            return -15;
 
         case TrackElemType::SBendRight:
         case TrackElemType::SBendRightCovered:
@@ -6934,10 +6932,7 @@ int32_t Vehicle::GetSwingAmount() const
             {
                 return -14;
             }
-            else
-            {
-                return 15;
-            }
+            return 15;
 
         case TrackElemType::LeftQuarterTurn3Tiles:
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
@@ -7002,32 +6997,32 @@ static uint8_t GetSwingSprite(int16_t swingPosition)
 {
     if (swingPosition < -10012)
         return 11;
-    else if (swingPosition > 10012)
+    if (swingPosition > 10012)
         return 12;
 
     if (swingPosition < -8191)
         return 9;
-    else if (swingPosition > 8191)
+    if (swingPosition > 8191)
         return 10;
 
     if (swingPosition < -6371)
         return 7;
-    else if (swingPosition > 6371)
+    if (swingPosition > 6371)
         return 8;
 
     if (swingPosition < -4550)
         return 5;
-    else if (swingPosition > 4550)
+    if (swingPosition > 4550)
         return 6;
 
     if (swingPosition < -2730)
         return 3;
-    else if (swingPosition > 2730)
+    if (swingPosition > 2730)
         return 4;
 
     if (swingPosition < -910)
         return 1;
-    else if (swingPosition > 910)
+    if (swingPosition > 910)
         return 2;
 
     return 0;
@@ -7247,30 +7242,28 @@ void Vehicle::UpdateAnimationAnimalFlying()
         animationState--;
         return;
     }
-    else
+
+    if (animation_frame == 0)
     {
-        if (animation_frame == 0)
+        auto trackType = GetTrackType();
+        TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
+        if (trackElement != nullptr && trackElement->AsTrack()->HasChain())
         {
-            auto trackType = GetTrackType();
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
-            if (trackElement != nullptr && trackElement->AsTrack()->HasChain())
-            {
-                // start flapping, bird
-                animation_frame = 1;
-                animationState = 5;
-                Invalidate();
-            }
-        }
-        else
-        {
-            // continue flapping until reaching frame 0
-            animation_frame = (animation_frame + 1) % 4;
+            // start flapping, bird
+            animation_frame = 1;
+            animationState = 5;
             Invalidate();
         }
-        // number of frames to skip before updating again
-        constexpr std::array<uint8_t, 4> frameWaitTimes = { 5, 3, 5, 3 };
-        animationState = frameWaitTimes[animation_frame];
     }
+    else
+    {
+        // continue flapping until reaching frame 0
+        animation_frame = (animation_frame + 1) % 4;
+        Invalidate();
+    }
+    // number of frames to skip before updating again
+    constexpr std::array<uint8_t, 4> frameWaitTimes = { 5, 3, 5, 3 };
+    animationState = frameWaitTimes[animation_frame];
 }
 
 /**
@@ -9276,10 +9269,8 @@ static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const 
     {
         return accelerationDecrease2 / totalMass;
     }
-    else
-    {
-        return accelerationDecrease2;
-    }
+
+    return accelerationDecrease2;
 }
 
 int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const rct_ride_entry_vehicle& vehicleEntry)
@@ -9610,16 +9601,14 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
                 {
                     break;
                 }
-                else
+
+                if (car->remaining_distance < 0x368A)
                 {
-                    if (car->remaining_distance < 0x368A)
-                    {
-                        break;
-                    }
-                    car->acceleration += dword_9A2970[car->Pitch];
-                    _vehicleUnkF64E10++;
-                    continue;
+                    break;
                 }
+                car->acceleration += dword_9A2970[car->Pitch];
+                _vehicleUnkF64E10++;
+                continue;
             }
             if (car->remaining_distance < 0x368A)
             {
@@ -9630,16 +9619,14 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             {
                 break;
             }
-            else
+
+            if (car->remaining_distance >= 0)
             {
-                if (car->remaining_distance >= 0)
-                {
-                    break;
-                }
-                car->acceleration = dword_9A2970[car->Pitch];
-                _vehicleUnkF64E10++;
-                continue;
+                break;
             }
+            car->acceleration = dword_9A2970[car->Pitch];
+            _vehicleUnkF64E10++;
+            continue;
         }
         // loc_6DBF20
         car->MoveTo(unk_F64E20);
@@ -9820,7 +9807,7 @@ void Vehicle::UpdateCrossings() const
                                 frontVehicle->TrackLocation, frontVehicle->GetTrackType(), 0) };
     int32_t curZ = frontVehicle->TrackLocation.z;
 
-    if (xyElement.element && status != Vehicle::Status::Arriving)
+    if (xyElement.element != nullptr && status != Vehicle::Status::Arriving)
     {
         int16_t autoReserveAhead = 4 + abs(velocity) / 150000;
         int16_t crossingBonus = 0;
@@ -9840,7 +9827,7 @@ void Vehicle::UpdateCrossings() const
 
             // Many New Element parks have invisible rides hacked into the path.
             // Limit path blocking to rides actually supporting level crossings to prevent peeps getting stuck everywhere.
-            if (pathElement && curRide != nullptr
+            if (pathElement != nullptr && curRide != nullptr
                 && GetRideTypeDescriptor(curRide->type).HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
             {
                 if (!playedClaxon && !pathElement->IsBlockedByVehicle())
@@ -9891,7 +9878,7 @@ void Vehicle::UpdateCrossings() const
                   map_get_track_element_at_of_type_seq(backVehicle->TrackLocation, backVehicle->GetTrackType(), 0) };
     curZ = backVehicle->TrackLocation.z;
 
-    if (xyElement.element)
+    if (xyElement.element != nullptr)
     {
         uint8_t freeCount = travellingForwards ? 3 : 1;
 
@@ -9908,7 +9895,7 @@ void Vehicle::UpdateCrossings() const
             }
 
             auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
-            if (pathElement)
+            if (pathElement != nullptr)
             {
                 pathElement->SetIsBlockedByVehicle(false);
             }

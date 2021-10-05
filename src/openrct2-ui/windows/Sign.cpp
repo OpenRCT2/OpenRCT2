@@ -49,7 +49,7 @@ static rct_widget window_sign_widgets[] = {
     MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_DEMOLISH, STR_DEMOLISH_SIGN_TIP          ), // demolish button
     MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
     MakeWidget({     17, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // clang-format on
@@ -127,10 +127,9 @@ public:
 
         // Create viewport
         rct_widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
-
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
-            viewportWidget.height() - 1, 0, { signViewPosition, viewZ }, 0, SPRITE_INDEX_NULL);
+            viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
         viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
@@ -302,7 +301,7 @@ public:
         rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
-            viewportWidget->height() - 1, 0, signViewPos, 0, SPRITE_INDEX_NULL);
+            viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
         if (viewport != nullptr)
             viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();

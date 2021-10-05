@@ -387,11 +387,9 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
         Console::WriteLine("Updated config.ini");
         return EXITCODE_OK;
     }
-    else
-    {
-        Console::Error::WriteLine("Unable to update config.ini");
-        return EXITCODE_FAIL;
-    }
+
+    Console::Error::WriteLine("Unable to update config.ini");
+    return EXITCODE_FAIL;
 }
 
 static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator* enumerator)

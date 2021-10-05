@@ -321,7 +321,7 @@ namespace OpenRCT2
             const std::string& outFile = _currentRecording->filePath;
 
             FILE* fp = fopen(outFile.c_str(), "wb");
-            if (fp)
+            if (fp != nullptr)
             {
                 const auto& fileStream = fileSerialiser.GetStream();
                 fwrite(fileStream.GetData(), 1, fileStream.GetLength(), fp);
@@ -524,7 +524,7 @@ namespace OpenRCT2
                 auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
 
                 auto loadResult = importer->LoadFromStream(&data.parkData, false);
-                objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
+                objManager.LoadObjects(loadResult.RequiredObjects);
 
                 importer->Import();
 
@@ -554,7 +554,7 @@ namespace OpenRCT2
         bool ReadReplayFromFile(const std::string& file, MemoryStream& stream)
         {
             FILE* fp = fopen(file.c_str(), "rb");
-            if (!fp)
+            if (fp == nullptr)
                 return false;
 
             char buffer[128];

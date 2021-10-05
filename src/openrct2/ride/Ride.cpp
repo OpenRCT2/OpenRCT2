@@ -1757,22 +1757,25 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
  */
 static void ride_music_update(Ride* ride)
 {
-    const auto& rtd = ride->GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
-    {
-        return;
-    }
-
-    if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
-    {
-        ride->music_tune_id = 255;
-        return;
-    }
-
+    // The circus does not have music in the normal sense - its “music” is a sound effect.
     if (ride->type == RIDE_TYPE_CIRCUS)
     {
         Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-        if (vehicle != nullptr && vehicle->status != Vehicle::Status::DoingCircusShow)
+        if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
+        {
+            ride->music_tune_id = 255;
+            return;
+        }
+    }
+    else
+    {
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+        {
+            return;
+        }
+
+        if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
         {
             ride->music_tune_id = 255;
             return;
@@ -1885,7 +1888,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
         gForces.VerticalG = std::clamp(gForces.VerticalG / 8, -127, 127);
         gForces.LateralG = std::clamp(gForces.LateralG / 8, -127, 127);
 
-        if (gScenarioTicks & 1)
+        if (gCurrentTicks & 1)
         {
             gForces.VerticalG = (gForces.VerticalG + measurement.vertical[measurement.current_item]) / 2;
             gForces.LateralG = (gForces.LateralG + measurement.lateral[measurement.current_item]) / 2;
@@ -1898,7 +1901,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
     auto velocity = std::min(std::abs((vehicle->velocity * 5) >> 16), 255);
     auto altitude = std::min(vehicle->z / 8, 255);
 
-    if (gScenarioTicks & 1)
+    if (gCurrentTicks & 1)
     {
         velocity = (velocity + measurement.velocity[measurement.current_item]) / 2;
         altitude = (altitude + measurement.altitude[measurement.current_item]) / 2;
@@ -1907,7 +1910,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
     measurement.velocity[measurement.current_item] = velocity & 0xFF;
     measurement.altitude[measurement.current_item] = altitude & 0xFF;
 
-    if (gScenarioTicks & 1)
+    if (gCurrentTicks & 1)
     {
         measurement.current_item++;
         measurement.num_items = std::max(measurement.num_items, measurement.current_item);
@@ -2010,18 +2013,16 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
         assert(measurement != nullptr);
     }
 
-    measurement->last_use_tick = gScenarioTicks;
+    measurement->last_use_tick = gCurrentTicks;
     if (measurement->flags & 1)
     {
         return { measurement.get(), { STR_EMPTY, {} } };
     }
-    else
-    {
-        auto ft = Formatter();
-        ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.vehicle).singular);
-        ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.station).singular);
-        return { nullptr, { STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES, ft } };
-    }
+
+    auto ft = Formatter();
+    ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.vehicle).singular);
+    ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.station).singular);
+    return { nullptr, { STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES, ft } };
 }
 
 #pragma endregion
@@ -2210,7 +2211,7 @@ static void ride_shop_connected(Ride* ride)
         return;
 
     TrackElement* trackElement = nullptr;
-    TileElement* tileElement = map_get_first_element_at(shopLoc.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(shopLoc);
     do
     {
         if (tileElement == nullptr)
@@ -2566,7 +2567,7 @@ void Ride::ChainQueues() const
 
         // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
         // the ride or not.
-        TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
+        TileElement* tileElement = map_get_first_element_at(location);
         if (tileElement != nullptr)
         {
             do
@@ -2911,7 +2912,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
     {
         auto entranceExitMapPos = position->ToCoordsXYZ();
 
-        TileElement* tileElement = map_get_first_element_at(position->ToCoordsXY());
+        TileElement* tileElement = map_get_first_element_at(*position);
         do
         {
             if (tileElement == nullptr)
@@ -3415,7 +3416,6 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
         trackElement = map_get_track_element_at(vehiclePos);
 
         vehiclePos.z = trackElement->GetBaseZ();
-        direction = trackElement->GetDirection();
     }
 
     if (!vehicle_create_trains(id, vehiclePos, trackElement))
@@ -3704,7 +3704,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
  */
 void Ride::ConstructMissingEntranceOrExit() const
 {
-    rct_window* w = window_get_main();
+    auto* w = window_get_main();
     if (w == nullptr)
         return;
 
@@ -3757,7 +3757,7 @@ void Ride::ConstructMissingEntranceOrExit() const
  */
 static void ride_scroll_to_track_error(CoordsXYE* trackElement)
 {
-    rct_window* w = window_get_main();
+    auto* w = window_get_main();
     if (w != nullptr)
     {
         window_scroll_to_location(w, { *trackElement, trackElement->element->GetBaseZ() });
@@ -4255,10 +4255,8 @@ RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
     {
         return GetRideTypeDescriptor(rideType).Naming;
     }
-    else
-    {
-        return rideEntry->naming;
-    }
+
+    return rideEntry->naming;
 }
 
 /*
@@ -4741,22 +4739,20 @@ uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCa
     {
         return rideEntry->front_vehicle;
     }
-    else if (position == 1 && rideEntry->second_vehicle != 255)
+    if (position == 1 && rideEntry->second_vehicle != 255)
     {
         return rideEntry->second_vehicle;
     }
-    else if (position == 2 && rideEntry->third_vehicle != 255)
+    if (position == 2 && rideEntry->third_vehicle != 255)
     {
         return rideEntry->third_vehicle;
     }
-    else if (position == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255)
+    if (position == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255)
     {
         return rideEntry->rear_vehicle;
     }
-    else
-    {
-        return rideEntry->default_vehicle;
-    }
+
+    return rideEntry->default_vehicle;
 }
 
 // Finds track pieces that a given ride entry has sprites for
@@ -5401,16 +5397,14 @@ int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed)
     {
         return rawSpeed;
     }
-    else if (shiftFactor > 0)
+    if (shiftFactor > 0)
     {
         return (rawSpeed << shiftFactor);
     }
-    else
-    {
-        // Workaround for an issue with older compilers (GCC 6, Clang 4) which would fail the build
-        int8_t shiftFactorAbs = std::abs(shiftFactor);
-        return (rawSpeed >> shiftFactorAbs);
-    }
+
+    // Workaround for an issue with older compilers (GCC 6, Clang 4) which would fail the build
+    int8_t shiftFactorAbs = std::abs(shiftFactor);
+    return (rawSpeed >> shiftFactorAbs);
 }
 
 void fix_invalid_vehicle_sprite_sizes()
@@ -5553,11 +5547,11 @@ void determine_ride_entrance_and_exit_locations()
             // Search the map to find it. Skip the outer ring of invisible tiles.
             bool alreadyFoundEntrance = false;
             bool alreadyFoundExit = false;
-            for (uint8_t x = 1; x < MAXIMUM_MAP_SIZE_TECHNICAL - 1; x++)
+            for (int32_t x = 1; x < MAXIMUM_MAP_SIZE_TECHNICAL - 1; x++)
             {
-                for (uint8_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
+                for (int32_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
 
                     if (tileElement != nullptr)
                     {
@@ -5738,4 +5732,30 @@ void Ride::IncreaseNumShelteredSections()
         newNumShelteredSections++;
     num_sheltered_sections &= ~ShelteredSectionsBits::NumShelteredSectionsMask;
     num_sheltered_sections |= newNumShelteredSections;
+}
+
+void Ride::UpdateRideTypeForAllPieces()
+{
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            auto* tileElement = map_get_first_element_at(TileCoordsXY(x, y));
+            if (tileElement == nullptr)
+                continue;
+
+            do
+            {
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                    continue;
+
+                auto* trackElement = tileElement->AsTrack();
+                if (trackElement->GetRideIndex() != id)
+                    continue;
+
+                trackElement->SetRideType(type);
+
+            } while (!(tileElement++)->IsLastForTile());
+        }
+    }
 }

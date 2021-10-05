@@ -40,7 +40,7 @@ static rct_widget window_editor_bottom_toolbar_widgets[] = {
     MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
     MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
     MakeWidget({442, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_editor_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);

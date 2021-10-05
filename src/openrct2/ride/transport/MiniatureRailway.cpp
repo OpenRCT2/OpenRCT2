@@ -558,7 +558,7 @@ static uint32_t miniature_railway_track_to_grooved(uint32_t imageId)
 static uint32_t miniature_railway_track_to_grooved_indent(
     uint32_t imageId, const TileElement* path, uint8_t direction, uint8_t rotation)
 {
-    if (!path)
+    if (path == nullptr)
     {
         return 0;
     }
@@ -598,7 +598,7 @@ static void paint_miniature_railway_track_flat(
     bool paintAsGravel = false;
     bool paintGrooved = false;
 
-    if (session->PathElementOnSameHeight)
+    if (session->PathElementOnSameHeight != nullptr)
     {
         paintAsGravel = true;
         paintGrooved = true;

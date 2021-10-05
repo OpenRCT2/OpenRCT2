@@ -88,11 +88,9 @@ static Image ReadBitmap(std::istream& istream, IMAGE_FORMAT format)
 
             return image;
         }
-        else
-        {
-            SDL_FreeSurface(bitmap);
-            throw std::runtime_error("Unable to lock surface.");
-        }
+
+        SDL_FreeSurface(bitmap);
+        throw std::runtime_error("Unable to lock surface.");
     }
     else
     {

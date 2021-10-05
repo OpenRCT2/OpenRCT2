@@ -13,6 +13,10 @@
 #include "../interface/Viewport.h"
 #include "../object/Object.h"
 
+class FootpathObject;
+class FootpathSurfaceObject;
+class FootpathRailingsObject;
+
 enum
 {
     PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),
@@ -24,8 +28,6 @@ constexpr auto FootpathMaxHeight = 248 * COORDS_Z_STEP;
 constexpr auto FootpathMinHeight = 2 * COORDS_Z_STEP;
 constexpr auto PATH_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
-
-#define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 
 class FootpathObject;
 
@@ -99,8 +101,30 @@ struct PathRailingsDescriptor
     uint32_t BridgeImage;
     uint32_t RailingsImage;
     RailingEntrySupportType SupportType;
+    colour_t SupportColour;
     uint8_t Flags;
     uint8_t ScrollingMode;
+};
+
+using PathConstructFlags = uint8_t;
+namespace PathConstructFlag
+{
+    constexpr PathConstructFlags IsQueue = 1 << 0;
+    constexpr PathConstructFlags IsLegacyPathObject = 1 << 1;
+} // namespace PathConstructFlag
+
+struct FootpathSelection
+{
+    ObjectEntryIndex LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex NormalSurface = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex QueueSurface = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex Railings = OBJECT_ENTRY_INDEX_NULL;
+    bool IsQueueSelected{};
+
+    ObjectEntryIndex GetSelectedSurface() const
+    {
+        return IsQueueSelected ? QueueSurface : NormalSurface;
+    }
 };
 
 struct ProvisionalFootpath
@@ -109,6 +133,9 @@ struct ProvisionalFootpath
     CoordsXYZ Position;
     uint8_t Slope;
     uint8_t Flags;
+    ObjectEntryIndex SurfaceIndex;
+    ObjectEntryIndex RailingsIndex;
+    PathConstructFlags ConstructFlags;
 };
 
 // Masks for values stored in TileElement.type
@@ -192,6 +219,7 @@ enum
     FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY = (1 << 7)
 };
 
+extern FootpathSelection gFootpathSelection;
 extern ProvisionalFootpath gProvisionalFootpath;
 extern uint16_t gFootpathSelectedId;
 extern CoordsXYZ gFootpathConstructFromPosition;
@@ -206,7 +234,9 @@ extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
 TileElement* map_get_footpath_element(const CoordsXYZ& coords);
 void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
 money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags);
-money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int32_t slope);
+money32 footpath_provisional_set(
+    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
+    PathConstructFlags constructFlags);
 void footpath_provisional_remove();
 void footpath_provisional_update();
 CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
@@ -224,6 +254,8 @@ int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t 
 void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
 
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex);
+const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex);
+const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);

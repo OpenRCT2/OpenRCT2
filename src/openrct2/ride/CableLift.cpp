@@ -391,9 +391,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
         if (vehicle->remaining_distance < 0 || vehicle->remaining_distance >= 13962)
         {
-            unk_F64E20.x = vehicle->x;
-            unk_F64E20.y = vehicle->y;
-            unk_F64E20.z = vehicle->z;
+            unk_F64E20 = vehicle->GetLocation();
             vehicle->Invalidate();
 
             while (true)
@@ -404,31 +402,25 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                     {
                         break;
                     }
-                    else
-                    {
-                        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                        _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
-                        vehicle->remaining_distance = 13962;
-                        vehicle->acceleration += dword_9A2970[vehicle->Pitch];
-                        _vehicleUnkF64E10++;
-                        continue;
-                    }
+
+                    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                    _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
+                    vehicle->remaining_distance = 13962;
+                    vehicle->acceleration += dword_9A2970[vehicle->Pitch];
+                    _vehicleUnkF64E10++;
+                    continue;
                 }
-                else
+
+                if (vehicle->CableLiftUpdateTrackMotionForwards())
                 {
-                    if (vehicle->CableLiftUpdateTrackMotionForwards())
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                        _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
-                        vehicle->remaining_distance = -1;
-                        vehicle->acceleration += dword_9A2970[vehicle->Pitch];
-                        _vehicleUnkF64E10++;
-                    }
+                    break;
                 }
+
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
+                vehicle->remaining_distance = -1;
+                vehicle->acceleration += dword_9A2970[vehicle->Pitch];
+                _vehicleUnkF64E10++;
             }
             vehicle->MoveTo(unk_F64E20);
         }

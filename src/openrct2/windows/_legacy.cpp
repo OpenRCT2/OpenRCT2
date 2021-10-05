@@ -77,52 +77,49 @@ money32 place_provisional_track_piece(
 
         return result;
     }
+
+    auto trackPlaceAction = TrackPlaceAction(
+        rideIndex, trackType, { trackPos, static_cast<uint8_t>(trackDirection) }, 0, 0, 0, liftHillAndAlternativeState, false);
+    trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+    // This command must not be sent over the network
+    auto res = GameActions::Execute(&trackPlaceAction);
+    auto tpar = dynamic_cast<TrackPlaceActionResult*>(res.get());
+    result = ((tpar == nullptr) || (res->Error == GameActions::Status::Ok)) ? res->Cost : MONEY32_UNDEFINED;
+    if (result == MONEY32_UNDEFINED)
+        return result;
+
+    int16_t z_begin, z_end;
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    const rct_track_coordinates& coords = ted.Coordinates;
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+    {
+        z_begin = coords.z_begin;
+        z_end = coords.z_end;
+    }
     else
     {
-        auto trackPlaceAction = TrackPlaceAction(
-            rideIndex, trackType, { trackPos, static_cast<uint8_t>(trackDirection) }, 0, 0, 0, liftHillAndAlternativeState,
-            false);
-        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-        // This command must not be sent over the network
-        auto res = GameActions::Execute(&trackPlaceAction);
-        auto tpar = dynamic_cast<TrackPlaceActionResult*>(res.get());
-        result = ((tpar == nullptr) || (res->Error == GameActions::Status::Ok)) ? res->Cost : MONEY32_UNDEFINED;
-        if (result == MONEY32_UNDEFINED)
-            return result;
-
-        int16_t z_begin, z_end;
-        const auto& ted = GetTrackElementDescriptor(trackType);
-        const rct_track_coordinates& coords = ted.Coordinates;
-        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
-        {
-            z_begin = coords.z_begin;
-            z_end = coords.z_end;
-        }
-        else
-        {
-            z_end = z_begin = coords.z_begin;
-        }
-
-        _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
-        _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-        if (tpar != nullptr)
-        {
-            viewport_set_visibility((tpar->GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
-        }
-        if (_currentTrackSlopeEnd != 0)
-            viewport_set_visibility(2);
-
-        // Invalidate previous track piece (we may not be changing height!)
-        virtual_floor_invalidate();
-
-        if (!scenery_tool_is_active())
-        {
-            // Set height to where the next track piece would begin
-            virtual_floor_set_height(trackPos.z - z_begin + z_end);
-        }
-
-        return result;
+        z_end = z_begin = coords.z_begin;
     }
+
+    _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
+    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
+    if (tpar != nullptr)
+    {
+        viewport_set_visibility((tpar->GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
+    }
+    if (_currentTrackSlopeEnd != 0)
+        viewport_set_visibility(2);
+
+    // Invalidate previous track piece (we may not be changing height!)
+    virtual_floor_invalidate();
+
+    if (!scenery_tool_is_active())
+    {
+        // Set height to where the next track piece would begin
+        virtual_floor_set_height(trackPos.z - z_begin + z_end);
+    }
+
+    return result;
 }
 
 static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_track_element()

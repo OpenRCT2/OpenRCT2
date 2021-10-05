@@ -22,7 +22,7 @@ enum WINDOW_TITLE_EXIT_WIDGET_IDX {
 
 static rct_widget window_title_exit_widgets[] = {
     MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, SPR_MENU_EXIT, STR_EXIT),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_title_exit_paint(rct_window *w, rct_drawpixelinfo *dpi);

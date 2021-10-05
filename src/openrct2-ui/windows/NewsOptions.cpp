@@ -80,7 +80,7 @@ static rct_widget window_news_options_widgets[] = {
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_news_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -180,8 +180,8 @@ static void window_news_options_invalidate(rct_window* w)
     w->pressed_widgets |= (1ULL << (WIDX_TAB_PARK + w->page));
 
     // Set checkboxes
-    rct_widget* baseCheckBox = &w->widgets[WIDX_CHECKBOX_0];
-    int32_t y = baseCheckBox->top;
+    const auto& baseCheckBox = w->widgets[WIDX_CHECKBOX_0];
+    int32_t y = baseCheckBox.top;
 
     int32_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
     rct_widget* checkboxWidget = &w->widgets[checkboxWidgetIndex];
@@ -194,8 +194,8 @@ static void window_news_options_invalidate(rct_window* w)
         w->enabled_widgets |= (1ULL << checkboxWidgetIndex);
 
         checkboxWidget->type = WindowWidgetType::Checkbox;
-        checkboxWidget->left = baseCheckBox->left;
-        checkboxWidget->right = baseCheckBox->right;
+        checkboxWidget->left = baseCheckBox.left;
+        checkboxWidget->right = baseCheckBox.right;
         checkboxWidget->top = y;
         checkboxWidget->bottom = checkboxWidget->top + LIST_ROW_HEIGHT + 3;
         checkboxWidget->text = ndef->caption;
@@ -266,9 +266,8 @@ static void window_news_options_draw_tab_image(rct_window* w, rct_drawpixelinfo*
             }
         }
 
-        gfx_draw_sprite(
-            dpi, ImageId(spriteIndex),
-            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
+        const auto& widget = w->widgets[widgetIndex];
+        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.left, widget.top });
     }
 }
 

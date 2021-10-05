@@ -47,10 +47,8 @@ namespace RCT1
                 auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
                 return LoadFromStream(&fs);
             }
-            else
-            {
-                throw std::runtime_error("Invalid RCT1 track extension.");
-            }
+
+            throw std::runtime_error("Invalid RCT1 track extension.");
         }
 
         bool LoadFromStream(OpenRCT2::IStream* stream) override
@@ -85,10 +83,8 @@ namespace RCT1
             {
                 return ImportAA();
             }
-            else
-            {
-                return ImportTD4();
-            }
+
+            return ImportTD4();
         }
 
     private:
@@ -161,7 +157,7 @@ namespace RCT1
                 assert(vehObjName != nullptr);
                 std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
             }
-            std::memcpy(&td->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
+            td->vehicle_object = ObjectEntryDescriptor(vehicleObject);
             td->vehicle_type = td4Base.vehicle_type;
 
             td->flags = td4Base.flags;

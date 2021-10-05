@@ -62,8 +62,8 @@ const News::Item& News::ItemQueues::operator[](size_t index) const
 {
     if (index < Recent.capacity())
         return Recent[index];
-    else
-        return Archived[index - Recent.capacity()];
+
+    return Archived[index - Recent.capacity()];
 }
 
 News::Item* News::ItemQueues::At(int32_t index)
@@ -77,10 +77,8 @@ const News::Item* News::ItemQueues::At(int32_t index) const
     {
         return &(*this)[index];
     }
-    else
-    {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 bool News::IsQueueEmpty()
@@ -226,7 +224,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             if (peep == nullptr)
                 break;
 
-            subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
+            subjectLoc = peep->GetLocation();
             if (subjectLoc->x != LOCATION_NULL)
                 break;
 
@@ -253,7 +251,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             }
             if (sprite != nullptr)
             {
-                subjectLoc = CoordsXYZ{ sprite->x, sprite->y, sprite->z };
+                subjectLoc = sprite->GetLocation();
             }
             break;
         }
@@ -262,7 +260,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             auto peep = TryGetEntity<Peep>(subject);
             if (peep != nullptr)
             {
-                subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
+                subjectLoc = peep->GetLocation();
             }
             break;
         }

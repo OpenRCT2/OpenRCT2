@@ -58,6 +58,7 @@
     <ClInclude Include="actions\BannerSetColourAction.h" />
     <ClInclude Include="actions\BannerSetNameAction.h" />
     <ClInclude Include="actions\BannerSetStyleAction.h" />
+    <ClInclude Include="actions\ChangeMapSizeAction.h" />
     <ClInclude Include="actions\ClearAction.h" />
     <ClInclude Include="actions\ClimateSetAction.h" />
     <ClInclude Include="actions\CustomAction.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />
     <ClInclude Include="core\Numerics.hpp" />
+    <ClInclude Include="core\OrcaStream.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
     <ClInclude Include="core\RTL.h" />
@@ -310,12 +312,15 @@
     <ClInclude Include="ride\coaster\JuniorRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\AirPoweredVerticalCoaster.h" />
     <ClInclude Include="ride\coaster\meta\BobsleighCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\ClassicMiniRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\CompactInvertedCoaster.h" />
     <ClInclude Include="ride\coaster\meta\CorkscrewRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\FlyingRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\GigaCoaster.h" />
     <ClInclude Include="ride\coaster\meta\HeartlineTwisterCoaster.h" />
     <ClInclude Include="ride\coaster\meta\HybridCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\Hypercoaster.h" />
+    <ClInclude Include="ride\coaster\meta\HyperTwister.h" />
     <ClInclude Include="ride\coaster\meta\InvertedHairpinCoaster.h" />
     <ClInclude Include="ride\coaster\meta\InvertedImpulseCoaster.h" />
     <ClInclude Include="ride\coaster\meta\InvertedRollerCoaster.h" />
@@ -332,6 +337,7 @@
     <ClInclude Include="ride\coaster\meta\ReverserRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\SideFrictionRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\SingleRailRollerCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\SpinningWildMouse.h" />
     <ClInclude Include="ride\coaster\meta\SpiralRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\StandUpRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\SteelWildMouse.h" />
@@ -356,6 +362,7 @@
     <ClInclude Include="ride\gentle\meta\MiniGolf.h" />
     <ClInclude Include="ride\gentle\meta\MiniHelicopters.h" />
     <ClInclude Include="ride\gentle\meta\MonorailCycles.h" />
+    <ClInclude Include="ride\gentle\meta\MonsterTrucks.h" />
     <ClInclude Include="ride\gentle\meta\ObservationTower.h" />
     <ClInclude Include="ride\gentle\meta\SpaceRings.h" />
     <ClInclude Include="ride\gentle\meta\SpiralSlide.h" />
@@ -396,7 +403,9 @@
     <ClInclude Include="ride\transport\meta\Monorail.h" />
     <ClInclude Include="ride\transport\meta\SuspendedMonorail.h" />
     <ClInclude Include="ride\Vehicle.h" />
+    <ClInclude Include="ride\VehicleColour.h" />
     <ClInclude Include="ride\VehicleData.h" />
+    <ClInclude Include="ride\VehicleEntry.h" />
     <ClInclude Include="ride\VehiclePaint.h" />
     <ClInclude Include="ride\VehicleSubpositionData.h" />
     <ClInclude Include="ride\water\meta\BoatHire.h" />
@@ -498,6 +507,7 @@
     <ClCompile Include="actions\BannerSetColourAction.cpp" />
     <ClCompile Include="actions\BannerSetNameAction.cpp" />
     <ClCompile Include="actions\BannerSetStyleAction.cpp" />
+    <ClCompile Include="actions\ChangeMapSizeAction.cpp" />
     <ClCompile Include="actions\ClearAction.cpp" />
     <ClCompile Include="actions\ClimateSetAction.cpp" />
     <ClCompile Include="actions\CustomAction.cpp" />
@@ -598,6 +608,7 @@
     <ClCompile Include="core\ChecksumStream.cpp" />
     <ClCompile Include="core\Console.cpp" />
     <ClCompile Include="core\Crypt.CNG.cpp" />
+    <ClCompile Include="core\Crypt.OpenRCT2.cpp" />
     <ClCompile Include="core\Crypt.OpenSSL.cpp" />
     <ClCompile Include="core\Diagnostics.cpp" />
     <ClCompile Include="core\File.cpp" />

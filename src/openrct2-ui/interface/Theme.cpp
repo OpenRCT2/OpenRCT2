@@ -743,10 +743,8 @@ uint8_t ThemeGetColour(rct_windowclass wc, uint8_t index)
         }
         return desc->DefaultTheme.Colours[index];
     }
-    else
-    {
-        return entry->Theme.Colours[index];
-    }
+
+    return entry->Theme.Colours[index];
 }
 
 void ThemeSetColour(rct_windowclass wc, uint8_t index, colour_t colour)

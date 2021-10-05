@@ -156,10 +156,7 @@ public:
                 {
                     return this->OpenWindow(WC_RESEARCH);
                 }
-                else
-                {
-                    return window_new_ride_open_research();
-                }
+                return window_new_ride_open_research();
             case WV_MAZE_CONSTRUCTION:
                 return window_maze_construction_open();
             case WV_NETWORK_PASSWORD:
@@ -256,7 +253,7 @@ public:
             case WC_OBJECT_LOAD_ERROR:
             {
                 std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
-                const rct_object_entry* objects = static_cast<rct_object_entry*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
+                auto objects = static_cast<const ObjectEntryDescriptor*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
                 size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
                 window_object_load_error_open(const_cast<utf8*>(path.c_str()), count, objects);
 
@@ -345,7 +342,7 @@ public:
                 {
                     window_close_construction_windows();
                     _currentRideIndex = static_cast<ride_id_t>(rideIndex);
-                    w = OpenWindow(WC_RIDE_CONSTRUCTION);
+                    OpenWindow(WC_RIDE_CONSTRUCTION);
                 }
                 else
                 {

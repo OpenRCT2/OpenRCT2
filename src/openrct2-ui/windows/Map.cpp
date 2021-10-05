@@ -18,6 +18,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/ChangeMapSizeAction.h>
 #include <openrct2/actions/LandSetRightsAction.h>
 #include <openrct2/actions/PlaceParkEntranceAction.h>
 #include <openrct2/actions/PlacePeepSpawnAction.h>
@@ -117,7 +118,7 @@ static rct_widget window_map_widgets[] = {
     MakeWidget        ({ 58, 197}, {174,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
     MakeWidget        ({218,  45}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_ROTATE_ARROW,                STR_ROTATE_OBJECTS_90                          ),
     MakeWidget        ({110, 189}, {131,  14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_MAPGEN_WINDOW_TITLE,         STR_MAP_GENERATOR_TIP                          ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // used in transforming viewport view coordinates to minimap coordinates
@@ -655,17 +656,8 @@ static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, cha
                 size += 2;
                 size = std::clamp(size, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
 
-                int32_t currentSize = gMapSize;
-                while (size < currentSize)
-                {
-                    map_window_decrease_map_size();
-                    currentSize--;
-                }
-                while (size > currentSize)
-                {
-                    map_window_increase_map_size();
-                    currentSize++;
-                }
+                auto changeMapSizeAction = ChangeMapSizeAction(size);
+                GameActions::Execute(&changeMapSizeAction);
                 w->Invalidate();
             }
             break;
@@ -1370,17 +1362,8 @@ static void window_map_set_peep_spawn_tool_down(const ScreenCoordsXY& screenCoor
  */
 static void map_window_increase_map_size()
 {
-    if (gMapSize >= MAXIMUM_MAP_SIZE_TECHNICAL)
-    {
-        context_show_error(STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE, {});
-        return;
-    }
-
-    gMapSize++;
-    map_extend_boundary_surface();
-    window_map_init_map();
-    window_map_centre_on_view_point();
-    gfx_invalidate_screen();
+    auto increaseMapSizeAction = ChangeMapSizeAction(gMapSize + 1);
+    GameActions::Execute(&increaseMapSizeAction);
 }
 
 /**
@@ -1389,17 +1372,8 @@ static void map_window_increase_map_size()
  */
 static void map_window_decrease_map_size()
 {
-    if (gMapSize < 16)
-    {
-        context_show_error(STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE, {});
-        return;
-    }
-
-    gMapSize--;
-    map_remove_out_of_range_elements();
-    window_map_init_map();
-    window_map_centre_on_view_point();
-    gfx_invalidate_screen();
+    auto decreaseMapSizeAction = ChangeMapSizeAction(gMapSize - 1);
+    GameActions::Execute(&decreaseMapSizeAction);
 }
 
 static constexpr const uint16_t WaterColour = MapColour(PALETTE_INDEX_195);

@@ -63,23 +63,22 @@ namespace OpenRCT2::Scripting
 
     void ScTileElement::type_set(std::string value)
     {
-        auto type = _element->type;
         if (value == "surface")
-            type = TILE_ELEMENT_TYPE_SURFACE;
+            _element->type = TILE_ELEMENT_TYPE_SURFACE;
         else if (value == "footpath")
-            type = TILE_ELEMENT_TYPE_PATH;
+            _element->type = TILE_ELEMENT_TYPE_PATH;
         else if (value == "track")
-            type = TILE_ELEMENT_TYPE_TRACK;
+            _element->type = TILE_ELEMENT_TYPE_TRACK;
         else if (value == "small_scenery")
-            type = TILE_ELEMENT_TYPE_SMALL_SCENERY;
+            _element->type = TILE_ELEMENT_TYPE_SMALL_SCENERY;
         else if (value == "entrance")
-            type = TILE_ELEMENT_TYPE_ENTRANCE;
+            _element->type = TILE_ELEMENT_TYPE_ENTRANCE;
         else if (value == "wall")
-            type = TILE_ELEMENT_TYPE_WALL;
+            _element->type = TILE_ELEMENT_TYPE_WALL;
         else if (value == "large_scenery")
-            type = TILE_ELEMENT_TYPE_LARGE_SCENERY;
+            _element->type = TILE_ELEMENT_TYPE_LARGE_SCENERY;
         else if (value == "banner")
-            type = TILE_ELEMENT_TYPE_BANNER;
+            _element->type = TILE_ELEMENT_TYPE_BANNER;
         else
         {
             if (value == "openrct2_corrupt_deprecated")
@@ -88,7 +87,6 @@ namespace OpenRCT2::Scripting
             return;
         }
 
-        _element->type = type;
         Invalidate();
     }
 

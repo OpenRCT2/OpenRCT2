@@ -27,54 +27,52 @@ static uint32_t ParseModifier(std::string_view text)
     {
         return KMOD_CTRL;
     }
-    else if (String::Equals(text, "LCTRL", true))
+    if (String::Equals(text, "LCTRL", true))
     {
         return KMOD_LCTRL;
     }
-    else if (String::Equals(text, "RCTRL", true))
+    if (String::Equals(text, "RCTRL", true))
     {
         return KMOD_RCTRL;
     }
-    else if (String::Equals(text, "SHIFT", true))
+    if (String::Equals(text, "SHIFT", true))
     {
         return KMOD_SHIFT;
     }
-    else if (String::Equals(text, "LSHIFT", true))
+    if (String::Equals(text, "LSHIFT", true))
     {
         return KMOD_LSHIFT;
     }
-    else if (String::Equals(text, "RSHIFT", true))
+    if (String::Equals(text, "RSHIFT", true))
     {
         return KMOD_RSHIFT;
     }
-    else if (String::Equals(text, "ALT", true))
+    if (String::Equals(text, "ALT", true))
     {
         return KMOD_ALT;
     }
-    else if (String::Equals(text, "LALT", true))
+    if (String::Equals(text, "LALT", true))
     {
         return KMOD_LALT;
     }
-    else if (String::Equals(text, "RALT", true))
+    if (String::Equals(text, "RALT", true))
     {
         return KMOD_RALT;
     }
-    else if (String::Equals(text, "GUI", true))
+    if (String::Equals(text, "GUI", true))
     {
         return KMOD_GUI;
     }
-    else if (String::Equals(text, "LCTRL", true))
+    if (String::Equals(text, "LCTRL", true))
     {
         return KMOD_LGUI;
     }
-    else if (String::Equals(text, "RGUI", true))
+    if (String::Equals(text, "RGUI", true))
     {
         return KMOD_RGUI;
     }
-    else
-    {
-        return 0;
-    }
+
+    return 0;
 }
 
 static uint32_t ParseKey(std::string_view text)
@@ -99,10 +97,8 @@ static size_t FindPlus(std::string_view s, size_t index)
             index++;
             continue;
         }
-        else
-        {
-            break;
-        }
+
+        break;
     }
     return index;
 }
@@ -209,15 +205,11 @@ std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
         {
             return language_get_string(r->second.second);
         }
-        else
-        {
-            return r->second.first;
-        }
+
+        return r->second.first;
     }
-    else
-    {
-        return {};
-    }
+
+    return {};
 }
 
 std::string_view ShortcutInput::GetLocalisedKeyName(uint32_t key)
@@ -260,10 +252,8 @@ std::string_view ShortcutInput::GetLocalisedKeyName(uint32_t key)
     {
         return language_get_string(r->second);
     }
-    else
-    {
-        return {};
-    }
+
+    return {};
 }
 
 std::string ShortcutInput::ToString() const
@@ -350,13 +340,13 @@ bool ShortcutInput::AppendModifier(std::string& s, uint32_t left, uint32_t right
         s += "+";
         return true;
     }
-    else if (Modifiers & left)
+    if (Modifiers & left)
     {
         s += GetModifierName(left, localised);
         s += "+";
         return true;
     }
-    else if (Modifiers & right)
+    if (Modifiers & right)
     {
         s += GetModifierName(right, localised);
         s += "+";
@@ -379,7 +369,7 @@ static bool HasModifier(uint32_t shortcut, uint32_t actual, uint32_t left, uint3
         }
         return false;
     }
-    else if (actual & (left | right))
+    if (actual & (left | right))
     {
         return false;
     }

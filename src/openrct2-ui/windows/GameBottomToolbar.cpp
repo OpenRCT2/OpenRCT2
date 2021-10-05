@@ -62,7 +62,7 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
     MakeWidget({498,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right outset panel
     MakeWidget({500,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right inset panel
     MakeWidget({500,  2}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Date
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 uint8_t gToolbarDirtyFlags;

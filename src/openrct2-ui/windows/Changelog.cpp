@@ -46,7 +46,7 @@ static rct_widget _windowChangelogWidgets[] = {
     MakeWidget({0,  14}, {500, 382}, WindowWidgetType::Resize,      WindowColour::Secondary                               ), // content panel
     MakeWidget({3,  16}, {495, 366}, WindowWidgetType::Scroll,      WindowColour::Secondary, SCROLL_BOTH                  ), // scroll area
     MakeWidget({3, 473}, {300,  14}, WindowWidgetType::Placeholder, WindowColour::Secondary, STR_NEW_RELEASE_DOWNLOAD_PAGE), // changelog button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // clang-format on
@@ -175,7 +175,7 @@ public:
                 Close();
                 break;
             case WIDX_OPEN_URL:
-                if (_newVersionInfo)
+                if (_newVersionInfo != nullptr)
                 {
                     GetContext()->GetUiContext()->OpenURL(_newVersionInfo->url);
                 }

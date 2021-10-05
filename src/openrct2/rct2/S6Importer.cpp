@@ -32,6 +32,7 @@
 #include "../management/Research.h"
 #include "../network/network.h"
 #include "../object/ObjectLimits.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/Peep.h"
@@ -99,14 +100,12 @@ public:
         {
             return LoadScenario(path);
         }
-        else if (String::Equals(extension, ".sv6", true))
+        if (String::Equals(extension, ".sv6", true))
         {
             return LoadSavedGame(path);
         }
-        else
-        {
-            throw std::runtime_error("Invalid RCT2 park extension.");
-        }
+
+        throw std::runtime_error("Invalid RCT2 park extension.");
     }
 
     ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
@@ -213,20 +212,25 @@ public:
         gScenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.info.category);
 
         // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
-        if (!IsLikelyUTF8(_s6.info.name) && !IsLikelyUTF8(_s6.info.details))
+        auto loadMaybeUTF8 = [](std::string_view str) -> std::string {
+            return !IsLikelyUTF8(str) ? rct2_to_utf8(str, RCT2LanguageId::EnglishUK) : std::string(str);
+        };
+
+        if (_s6.header.type == S6_TYPE_SCENARIO)
         {
-            gScenarioName = rct2_to_utf8(_s6.info.name, RCT2LanguageId::EnglishUK);
-            gScenarioDetails = rct2_to_utf8(_s6.info.details, RCT2LanguageId::EnglishUK);
+            gScenarioName = loadMaybeUTF8(_s6.info.name);
+            gScenarioDetails = loadMaybeUTF8(_s6.info.details);
         }
         else
         {
-            gScenarioName = _s6.info.name;
-            gScenarioDetails = _s6.info.details;
+            // Saved games do not have an info chunk
+            gScenarioName = loadMaybeUTF8(_s6.scenario_name);
+            gScenarioDetails = loadMaybeUTF8(_s6.scenario_description);
         }
 
         gDateMonthsElapsed = static_cast<int32_t>(_s6.elapsed_months);
         gDateMonthTicks = _s6.current_day;
-        gScenarioTicks = _s6.scenario_ticks;
+        gCurrentTicks = _s6.game_ticks_1;
 
         scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
@@ -402,7 +406,6 @@ public:
             String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
         }
         std::memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
-        gCurrentTicks = _s6.game_ticks_1;
         gCurrentRealTimeTicks = 0;
 
         ImportRides();
@@ -481,6 +484,7 @@ public:
 
         research_determine_first_of_type();
     }
+
     void FixLandOwnership() const
     {
         if (String::Equals(_s6.scenario_filename, "Europe - European Cultural Festival.SC6"))
@@ -969,7 +973,7 @@ public:
                 invented = false;
                 continue;
             }
-            else if (researchItem.IsUninventedEndMarker() || researchItem.IsRandomEndMarker())
+            if (researchItem.IsUninventedEndMarker() || researchItem.IsRandomEndMarker())
             {
                 break;
             }
@@ -1199,7 +1203,8 @@ public:
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
                 track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
 
-                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, _s6.rides[src2->GetRideIndex()].type));
+                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, rideType));
+                dst2->SetRideType(rideType);
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetColourScheme(src2->GetColourScheme());
@@ -1547,10 +1552,7 @@ public:
         dst->z = src->z;
         dst->sprite_width = src->sprite_width;
         dst->sprite_height_positive = src->sprite_height_positive;
-        dst->sprite_left = src->sprite_left;
-        dst->sprite_top = src->sprite_top;
-        dst->sprite_right = src->sprite_right;
-        dst->sprite_bottom = src->sprite_bottom;
+        dst->SpriteRect = ScreenRect(src->sprite_left, src->sprite_top, src->sprite_right, src->sprite_bottom);
         dst->sprite_direction = src->sprite_direction;
     }
 
@@ -1585,7 +1587,7 @@ public:
         }
     }
 
-    std::vector<rct_object_entry> GetRequiredObjects()
+    ObjectList GetRequiredObjects()
     {
         std::vector<rct_object_entry> result;
 
@@ -1601,7 +1603,22 @@ public:
         AddRequiredObjects<MAX_WATER_OBJECTS>(result, _s6.WaterObjects);
         AddRequiredObjects<MAX_SCENARIO_TEXT_OBJECTS>(result, _s6.ScenarioTextObjects);
 
-        return result;
+        ObjectList objectList;
+        for (size_t i = 0; i < result.size(); i++)
+        {
+            ObjectType objectType;
+            ObjectEntryIndex entryIndex;
+            get_type_entry_index(i, &objectType, &entryIndex);
+
+            auto desc = ObjectEntryDescriptor(result[i]);
+            if (desc.HasValue())
+            {
+                assert(desc.GetType() == objectType);
+                objectList.SetObject(entryIndex, desc);
+            }
+        }
+
+        return objectList;
     }
 };
 
@@ -1713,6 +1730,15 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->IsCrashedVehicle = src->flags & RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
 }
 
+static uint32_t AdjustScenarioToCurrentTicks(const rct_s6_data& s6, uint32_t tick)
+{
+    // Previously gScenarioTicks was used as a time point, now it's gCurrentTicks.
+    // gCurrentTicks and gScenarioTicks are now exported as the same, older saves that have a different
+    // scenario tick must account for the difference between the two.
+    uint32_t ticksElapsed = s6.scenario_ticks - tick;
+    return s6.game_ticks_1 - ticksElapsed;
+}
+
 template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
 {
     auto dst = CreateEntityAt<Guest>(baseSrc.sprite_index);
@@ -1745,7 +1771,7 @@ template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
     dst->TimeInQueue = src->time_in_queue;
     dst->CashInPocket = src->cash_in_pocket;
     dst->CashSpent = src->cash_spent;
-    dst->ParkEntryTime = src->park_entry_time;
+    dst->ParkEntryTime = AdjustScenarioToCurrentTicks(_s6, src->park_entry_time);
     dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
     dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->previous_ride);
     dst->PreviousRideTimeOut = src->previous_ride_time_out;
@@ -1795,6 +1821,7 @@ template<> void S6Importer::ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
 
     dst->AssignedStaffType = StaffType(src->staff_type);
     dst->MechanicTimeSinceCall = src->mechanic_time_since_call;
+
     dst->HireDate = src->park_entry_time;
     dst->StaffId = src->staff_id;
     dst->StaffOrders = src->staff_orders;
@@ -1913,7 +1940,7 @@ template<> void S6Importer::ImportEntity<Litter>(const RCT12SpriteBase& baseSrc)
     auto src = static_cast<const RCT12SpriteLitter*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->SubType = Litter::Type(src->type);
-    dst->creationTick = src->creationTick;
+    dst->creationTick = AdjustScenarioToCurrentTicks(_s6, src->creationTick);
 }
 
 void S6Importer::ImportEntity(const RCT12SpriteBase& src)
@@ -1987,7 +2014,7 @@ void load_from_sv6(const char* path)
     {
         auto& objectMgr = context->GetObjectManager();
         auto result = s6Importer->LoadSavedGame(path);
-        objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+        objectMgr.LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();
@@ -2027,7 +2054,7 @@ void load_from_sc6(const char* path)
     try
     {
         auto result = s6Importer->LoadScenario(path);
-        objManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+        objManager.LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();

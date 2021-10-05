@@ -100,8 +100,7 @@ GameActions::Result::Ptr GuestSetNameAction::Execute() const
     context_broadcast_intent(&intent);
 
     auto res = std::make_unique<GameActions::Result>();
-    res->Position.x = guest->x;
-    res->Position.y = guest->y;
-    res->Position.z = guest->z;
+    res->Position = guest->GetLocation();
+
     return res;
 }

@@ -226,7 +226,7 @@ static rct_widget window_options_display_widgets[] = {
     MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
     MakeWidget        ({ 11, 191}, {280,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
     MakeWidget        ({ 11, 206}, {280,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_rendering_widgets[] = {
@@ -250,7 +250,7 @@ static rct_widget window_options_rendering_widgets[] = {
     MakeWidget({10, FRAME_EFFECTS_START + 60}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
     MakeWidget({25, FRAME_EFFECTS_START + 75}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP), // Disable lightning effect
 #undef FRAME_EFFECTS_START
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_culture_widgets[] = {
@@ -267,7 +267,7 @@ static rct_widget window_options_culture_widgets[] = {
     MakeWidget({288, 114}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_HEIGHT_LABELS_UNITS_TIP),
     MakeWidget({155, 128}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                 ), // Date format
     MakeWidget({288, 129}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_DATE_FORMAT_TIP        ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_audio_widgets[] = {
@@ -284,7 +284,7 @@ static rct_widget window_options_audio_widgets[] = {
     MakeWidget({155,  68}, {145, 13}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Master volume
     MakeWidget({155,  83}, {145, 13}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
     MakeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Music volume
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_controls_and_interface_widgets[] = {
@@ -312,7 +312,7 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
     MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
     MakeWidget({ 24, TOOLBAR_GROUP_START + 76}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
-    { WIDGETS_END },
+    WIDGETS_END,
 #undef TOOLBAR_GROUP_START
 };
 
@@ -343,7 +343,7 @@ static rct_widget window_options_misc_widgets[] = {
     MakeWidget({175, TWEAKS_START + 61}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                               ), // Default inspection time dropdown
     MakeWidget({288, TWEAKS_START + 62}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP), // Default inspection time dropdown button
 #undef TWEAKS_START
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_options_advanced_widgets[] = {
@@ -359,7 +359,7 @@ static rct_widget window_options_advanced_widgets[] = {
     MakeWidget        ({ 23, 169}, {276, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
     MakeWidget        ({ 24, 184}, {266, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
     MakeWidget        ({289, 184}, { 11, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_options_page_widgets[] = {
@@ -1005,8 +1005,6 @@ static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widg
 
 static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    widget = &w->widgets[widgetIndex - 1];
-
     switch (widgetIndex)
     {
         case WIDX_VIRTUAL_FLOOR_DROPDOWN:
@@ -1258,7 +1256,6 @@ static void window_options_culture_dropdown(rct_window* w, rct_widgetindex widge
                     }
                     // report error to console regardless
                     log_error("Failed to open language file.");
-                    dropdownIndex = fallbackLanguage - 1;
                 }
                 else
                 {
@@ -1477,10 +1474,10 @@ static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetI
     }
 }
 
-static uint8_t get_scroll_percentage(rct_widget* widget, rct_scroll* scroll)
+static uint8_t get_scroll_percentage(const rct_widget& widget, const rct_scroll& scroll)
 {
-    uint8_t width = widget->width() - 1;
-    return static_cast<float>(scroll->h_left) / (scroll->h_right - width) * 100;
+    uint8_t width = widget.width() - 1;
+    return static_cast<float>(scroll.h_left) / (scroll.h_right - width) * 100;
 }
 
 static void window_options_audio_update(rct_window* w)
@@ -1489,10 +1486,9 @@ static void window_options_audio_update(rct_window* w)
 
     if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
     {
-        rct_widget* widget;
-
-        widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
-        uint8_t master_volume = get_scroll_percentage(widget, &w->scrolls[0]);
+        const auto& masterVolumeWidget = window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        const auto& masterVolumeScroll = w->scrolls[0];
+        uint8_t master_volume = get_scroll_percentage(masterVolumeWidget, masterVolumeScroll);
         if (master_volume != gConfigSound.master_volume)
         {
             gConfigSound.master_volume = master_volume;
@@ -1500,8 +1496,9 @@ static void window_options_audio_update(rct_window* w)
             widget_invalidate(w, WIDX_MASTER_VOLUME);
         }
 
-        widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
-        uint8_t sound_volume = get_scroll_percentage(widget, &w->scrolls[1]);
+        const auto& soundVolumeWidget = window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        const auto& soundVolumeScroll = w->scrolls[1];
+        uint8_t sound_volume = get_scroll_percentage(soundVolumeWidget, soundVolumeScroll);
         if (sound_volume != gConfigSound.sound_volume)
         {
             gConfigSound.sound_volume = sound_volume;
@@ -1509,8 +1506,9 @@ static void window_options_audio_update(rct_window* w)
             widget_invalidate(w, WIDX_SOUND_VOLUME);
         }
 
-        widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
-        uint8_t ride_music_volume = get_scroll_percentage(widget, &w->scrolls[2]);
+        const auto& musicVolumeWidget = window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        const auto& musicVolumeScroll = w->scrolls[2];
+        uint8_t ride_music_volume = get_scroll_percentage(musicVolumeWidget, musicVolumeScroll);
         if (ride_music_volume != gConfigSound.ride_music_volume)
         {
             gConfigSound.ride_music_volume = ride_music_volume;
@@ -1527,11 +1525,11 @@ static void window_options_audio_scrollgetsize(rct_window* w, int32_t scrollInde
 
 static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
 {
-    rct_widget* widget = &window_options_audio_widgets[widget_index];
-    rct_scroll* scroll = &w->scrolls[scroll_id];
+    const auto& widget = window_options_audio_widgets[widget_index];
+    auto& scroll = w->scrolls[scroll_id];
 
-    int widget_size = scroll->h_right - (widget->width() - 1);
-    scroll->h_left = ceil(volume / 100.0f * widget_size);
+    int32_t widget_size = scroll.h_right - (widget.width() - 1);
+    scroll.h_left = ceil(volume / 100.0f * widget_size);
 
     WidgetScrollUpdateThumbs(w, widget_index);
 }
@@ -2011,7 +2009,7 @@ static void window_options_advanced_mouseup(rct_window* w, rct_widgetindex widge
         case WIDX_PATH_TO_RCT1_BUTTON:
         {
             utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
-            if (rct1path)
+            if (rct1path != nullptr)
             {
                 // Check if this directory actually contains RCT1
                 if (Csg1datPresentAtLocation(rct1path))
@@ -2172,12 +2170,10 @@ static OpenRCT2String window_options_advanced_tooltip(
             // No tooltip if the path is empty
             return { STR_NONE, {} };
         }
-        else
-        {
-            auto ft = Formatter();
-            ft.Add<utf8*>(gConfigGeneral.rct1_path);
-            return { fallback, ft };
-        }
+
+        auto ft = Formatter();
+        ft.Add<utf8*>(gConfigGeneral.rct1_path);
+        return { fallback, ft };
     }
     return { fallback, {} };
 }

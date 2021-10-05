@@ -152,29 +152,27 @@ namespace OpenRCT2::Scripting
             {
                 return ToDuk(_ctx, undefined);
             }
+
+            DukObject obj(_ctx);
+            obj.Set("id", id);
+            obj.Set("offset", ToDuk<ScreenCoordsXY>(_ctx, { g1->x_offset, g1->y_offset }));
+            obj.Set("width", g1->width);
+            obj.Set("height", g1->height);
+
+            obj.Set("isBMP", (g1->flags & G1_FLAG_BMP) != 0);
+            obj.Set("isRLE", (g1->flags & G1_FLAG_RLE_COMPRESSION) != 0);
+            obj.Set("isPalette", (g1->flags & G1_FLAG_PALETTE) != 0);
+            obj.Set("noZoom", (g1->flags & G1_FLAG_NO_ZOOM_DRAW) != 0);
+
+            if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)
+            {
+                obj.Set("nextZoomId", id - g1->zoomed_offset);
+            }
             else
             {
-                DukObject obj(_ctx);
-                obj.Set("id", id);
-                obj.Set("offset", ToDuk<ScreenCoordsXY>(_ctx, { g1->x_offset, g1->y_offset }));
-                obj.Set("width", g1->width);
-                obj.Set("height", g1->height);
-
-                obj.Set("isBMP", (g1->flags & G1_FLAG_BMP) != 0);
-                obj.Set("isRLE", (g1->flags & G1_FLAG_RLE_COMPRESSION) != 0);
-                obj.Set("isPalette", (g1->flags & G1_FLAG_PALETTE) != 0);
-                obj.Set("noZoom", (g1->flags & G1_FLAG_NO_ZOOM_DRAW) != 0);
-
-                if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)
-                {
-                    obj.Set("nextZoomId", id - g1->zoomed_offset);
-                }
-                else
-                {
-                    obj.Set("nextZoomId", undefined);
-                }
-                return obj.Take();
+                obj.Set("nextZoomId", undefined);
             }
+            return obj.Take();
         }
 
         DukValue measureText(const std::string& text)

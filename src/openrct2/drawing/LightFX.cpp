@@ -331,7 +331,7 @@ void lightfx_prepare_light_list()
                 int32_t minDist = 0;
                 int32_t baseHeight = (-999) * COORDS_Z_STEP;
 
-                if (interactionType != ViewportInteractionItem::Entity && tileElement)
+                if (interactionType != ViewportInteractionItem::Entity && tileElement != nullptr)
                 {
                     baseHeight = tileElement->GetBaseZ();
                 }
@@ -440,7 +440,7 @@ void lightfx_swap_buffers()
 void lightfx_update_viewport_settings()
 {
     rct_window* mainWindow = window_get_main();
-    if (mainWindow)
+    if (mainWindow != nullptr)
     {
         rct_viewport* viewport = window_get_viewport(mainWindow);
         _current_view_x_back = viewport->viewPos.x;

@@ -25,31 +25,26 @@ template<> void PaintEntity(paint_session* session, const Peep* peep, int32_t im
     {
         if (peep->Is<Staff>())
         {
-            int16_t peep_x, peep_y, peep_z;
-
-            peep_x = peep->x;
-            peep_y = peep->y;
-            peep_z = peep->z;
-
+            auto loc = peep->GetLocation();
             switch (peep->sprite_direction)
             {
                 case 0:
-                    peep_x -= 10;
+                    loc.x -= 10;
                     break;
                 case 8:
-                    peep_y += 10;
+                    loc.y += 10;
                     break;
                 case 16:
-                    peep_x += 10;
+                    loc.x += 10;
                     break;
                 case 24:
-                    peep_y -= 10;
+                    loc.y -= 10;
                     break;
                 default:
                     return;
             }
 
-            LightfxAdd3DLight(*peep, 0, { peep_x, peep_y, peep_z }, LightType::Spot1);
+            LightfxAdd3DLight(*peep, 0, loc, LightType::Spot1);
         }
     }
 #endif

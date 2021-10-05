@@ -54,10 +54,8 @@ namespace OpenRCT2::Scripting
             {
                 return std::make_pair(input, std::string_view());
             }
-            else
-            {
-                return std::make_pair(input.substr(0, pos), input.substr(pos + 1));
-            }
+
+            return std::make_pair(input.substr(0, pos), input.substr(pos + 1));
         }
 
         std::pair<std::string_view, std::string_view> GetNamespaceAndKey(std::string_view input) const
@@ -179,7 +177,7 @@ namespace OpenRCT2::Scripting
                     duk_push_string(ctx, locale);
                     return DukValue::take_from_stack(ctx);
                 }
-                else if (key == "general.showFps")
+                if (key == "general.showFps")
                 {
                     duk_push_boolean(ctx, gConfigGeneral.show_fps);
                     return DukValue::take_from_stack(ctx);

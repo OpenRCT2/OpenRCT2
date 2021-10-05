@@ -58,13 +58,11 @@ namespace OpenRCT2::Scripting
                     case EntityType::Guest:
                         if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
                             return "peep";
-                        else
-                            return "guest";
+                        return "guest";
                     case EntityType::Staff:
                         if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
                             return "peep";
-                        else
-                            return "staff";
+                        return "staff";
                     case EntityType::SteamParticle:
                         return "steam_particle";
                     case EntityType::MoneyEffect:

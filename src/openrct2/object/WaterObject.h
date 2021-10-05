@@ -20,11 +20,6 @@ private:
     rct_water_type _legacyType = {};
 
 public:
-    explicit WaterObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;

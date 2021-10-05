@@ -32,13 +32,12 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t y)
+void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
 {
-    if ((x & 0xe000) | (y & 0xe000))
+    if (!map_is_location_valid(pos))
     {
         return;
     }
-
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
     {
         return;
@@ -52,7 +51,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
     const bool highlightPathIssues = (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (const auto* spr : EntityTileList({ x, y }))
+    for (const auto* spr : EntityTileList(pos))
     {
         if (highlightPathIssues)
         {
@@ -70,21 +69,23 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
             }
         }
 
+        const auto entityPos = spr->GetLocation();
+
         // Only paint sprites that are below the clip height and inside the clip selection.
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
         if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
         {
-            if (spr->z > (gClipHeight * COORDS_Z_STEP))
+            if (entityPos.z > (gClipHeight * COORDS_Z_STEP))
             {
                 continue;
             }
-            if (spr->x < gClipSelectionA.x || spr->x > gClipSelectionB.x)
+            if (entityPos.x < gClipSelectionA.x || entityPos.x > gClipSelectionB.x)
             {
                 continue;
             }
-            if (spr->y < gClipSelectionA.y || spr->y > gClipSelectionB.y)
+            if (entityPos.y < gClipSelectionA.y || entityPos.y > gClipSelectionB.y)
             {
                 continue;
             }
@@ -92,8 +93,8 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
         dpi = &session->DPI;
 
-        if (dpi->y + dpi->height <= spr->sprite_top || spr->sprite_bottom <= dpi->y || dpi->x + dpi->width <= spr->sprite_left
-            || spr->sprite_right <= dpi->x)
+        if (dpi->y + dpi->height <= spr->SpriteRect.GetTop() || spr->SpriteRect.GetBottom() <= dpi->y
+            || dpi->x + dpi->width <= spr->SpriteRect.GetLeft() || spr->SpriteRect.GetRight() <= dpi->x)
         {
             continue;
         }
@@ -104,8 +105,8 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         image_direction &= 0x1F;
 
         session->CurrentlyDrawnItem = spr;
-        session->SpritePosition.x = spr->x;
-        session->SpritePosition.y = spr->y;
+        session->SpritePosition.x = entityPos.x;
+        session->SpritePosition.y = entityPos.y;
         session->InteractionType = ViewportInteractionItem::Entity;
 
         switch (spr->Type)

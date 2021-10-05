@@ -178,7 +178,8 @@ static void FreeImageList(uint32_t baseImageId, uint32_t count)
             it->Count += count;
             return;
         }
-        else if (baseImageId + count == it->BaseId)
+
+        if (baseImageId + count == it->BaseId)
         {
             it->BaseId = baseImageId;
             it->Count += count;

@@ -1,6 +1,7 @@
 #include "Litter.h"
 
 #include "../Cheats.h"
+#include "../Game.h"
 #include "../localisation/StringIds.h"
 #include "../scenario/Scenario.h"
 #include "EntityList.h"
@@ -77,7 +78,7 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
     litter->sprite_height_positive = 3;
     litter->SubType = type;
     litter->MoveTo(offsetLitterPos);
-    litter->creationTick = gScenarioTicks;
+    litter->creationTick = gCurrentTicks;
 }
 
 /**
@@ -121,7 +122,7 @@ static const rct_string_id litterNames[12] = {
 
 rct_string_id Litter::GetName() const
 {
-    if (EnumValue(SubType) >= sizeof(litterNames))
+    if (EnumValue(SubType) >= std::size(litterNames))
         return STR_NONE;
     return litterNames[EnumValue(SubType)];
 }

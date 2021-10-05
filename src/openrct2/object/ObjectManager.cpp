@@ -69,6 +69,12 @@ public:
 
     Object* GetLoadedObject(ObjectType objectType, size_t index) override
     {
+        // This is sometimes done deliberately (to avoid boilerplate), so no need to log_warn for this.
+        if (index == OBJECT_ENTRY_INDEX_NULL)
+        {
+            return nullptr;
+        }
+
         if (index >= static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]))
         {
 #ifdef DEBUG
@@ -133,10 +139,16 @@ public:
         return RepositoryItemToObject(ori);
     }
 
-    void LoadObjects(const rct_object_entry* entries, size_t count) override
+    Object* LoadObject(const ObjectEntryDescriptor& descriptor) override
+    {
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(descriptor);
+        return RepositoryItemToObject(ori);
+    }
+
+    void LoadObjects(const ObjectList& objectList) override
     {
         // Find all the required objects
-        auto requiredObjects = GetRequiredObjects(entries, count);
+        auto requiredObjects = GetRequiredObjects(objectList);
 
         // Load the required objects
         LoadObjects(requiredObjects);
@@ -149,19 +161,19 @@ public:
         ResetTypeToRideEntryIndexMap();
     }
 
-    void UnloadObjects(const std::vector<rct_object_entry>& entries) override
+    void UnloadObjects(const std::vector<ObjectEntryDescriptor>& entries) override
     {
         // TODO there are two performance issues here:
         //        - FindObject for every entry which is a dictionary lookup
         //        - GetLoadedObjectIndex for every entry which enumerates _loadedList
 
         size_t numObjectsUnloaded = 0;
-        for (const auto& entry : entries)
+        for (const auto& descriptor : entries)
         {
-            const ObjectRepositoryItem* ori = _objectRepository.FindObject(&entry);
+            const auto* ori = _objectRepository.FindObject(descriptor);
             if (ori != nullptr)
             {
-                Object* loadedObject = ori->LoadedObject.get();
+                auto* loadedObject = ori->LoadedObject.get();
                 if (loadedObject != nullptr)
                 {
                     UnloadObject(loadedObject);
@@ -207,9 +219,10 @@ public:
         size_t numObjects = _objectRepository.GetNumObjects();
         for (size_t i = 0; i < numObjects; i++)
         {
+            // TODO: remove ObjectGeneration::DAT check when the NSF is here
             const ObjectRepositoryItem* item = &_objectRepository.GetObjects()[i];
             if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr
-                && !item->LoadedObject->IsJsonObject())
+                && item->LoadedObject->GetGeneration() == ObjectGeneration::DAT)
             {
                 objects.push_back(item);
             }
@@ -359,7 +372,7 @@ private:
         if (loadedObject != nullptr)
             return loadedObject;
 
-        ObjectType objectType = ori->ObjectEntry.GetType();
+        ObjectType objectType = ori->Type;
         if (slot)
         {
             if (_loadedObjects.size() > static_cast<size_t>(*slot) && _loadedObjects[*slot] != nullptr)
@@ -387,7 +400,6 @@ private:
                 ResetTypeToRideEntryIndexMap();
             }
         }
-
         return loadedObject;
     }
 
@@ -402,12 +414,12 @@ private:
                 _loadedObjects.resize(i + 1);
                 return static_cast<int32_t>(i);
             }
-            else if (_loadedObjects[i] == nullptr)
+            if (_loadedObjects[i] == nullptr)
             {
                 return static_cast<int32_t>(i);
             }
         }
-        return {};
+        return std::nullopt;
     }
 
     size_t GetLoadedObjectIndex(const Object* object)
@@ -431,7 +443,7 @@ private:
         object->Unload();
 
         // TODO try to prevent doing a repository search
-        const ObjectRepositoryItem* ori = _objectRepository.FindObject(object->GetObjectEntry());
+        const auto* ori = _objectRepository.FindObject(object->GetDescriptor());
         if (ori != nullptr)
         {
             _objectRepository.UnregisterLoadedObject(ori, object);
@@ -535,25 +547,29 @@ private:
         return entryIndex;
     }
 
-    std::vector<const ObjectRepositoryItem*> GetRequiredObjects(const rct_object_entry* entries, size_t count)
+    std::vector<const ObjectRepositoryItem*> GetRequiredObjects(const ObjectList& objectList)
     {
         std::vector<const ObjectRepositoryItem*> requiredObjects;
-        std::vector<rct_object_entry> missingObjects;
+        std::vector<ObjectEntryDescriptor> missingObjects;
 
-        for (size_t i = 0; i < count; i++)
+        for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
         {
-            const rct_object_entry* entry = &entries[i];
-            const ObjectRepositoryItem* ori = nullptr;
-            if (!object_entry_is_empty(entry))
+            auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+            for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
             {
-                ori = _objectRepository.FindObject(entry);
-                if (ori == nullptr && entry->GetType() != ObjectType::ScenarioText)
+                const ObjectRepositoryItem* ori = nullptr;
+                const auto& entry = objectList.GetObject(objectType, i);
+                if (entry.HasValue())
                 {
-                    missingObjects.push_back(*entry);
-                    ReportMissingObject(entry);
+                    ori = _objectRepository.FindObject(entry);
+                    if (ori == nullptr && entry.GetType() != ObjectType::ScenarioText)
+                    {
+                        missingObjects.push_back(entry);
+                        ReportMissingObject(entry);
+                    }
                 }
+                requiredObjects.push_back(ori);
             }
-            requiredObjects.push_back(ori);
         }
 
         if (!missingObjects.empty())
@@ -592,7 +608,7 @@ private:
     {
         std::vector<Object*> objects;
         std::vector<Object*> newLoadedObjects;
-        std::vector<rct_object_entry> badObjects;
+        std::vector<ObjectEntryDescriptor> badObjects;
         objects.resize(OBJECT_ENTRY_COUNT);
         newLoadedObjects.reserve(OBJECT_ENTRY_COUNT);
 
@@ -612,7 +628,7 @@ private:
                     std::lock_guard<std::mutex> guard(commonMutex);
                     if (newObject == nullptr)
                     {
-                        badObjects.push_back(requiredObject->ObjectEntry);
+                        badObjects.push_back(ObjectEntryDescriptor(requiredObject->ObjectEntry));
                         ReportObjectLoadProblem(&requiredObject->ObjectEntry);
                     }
                     else
@@ -714,11 +730,10 @@ private:
         }
     }
 
-    static void ReportMissingObject(const rct_object_entry* entry)
+    static void ReportMissingObject(const ObjectEntryDescriptor& entry)
     {
-        utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
-        std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
-        Console::Error::WriteLine("[%s] Object not found.", objName);
+        std::string name(entry.GetName());
+        Console::Error::WriteLine("[%s] Object not found.", name.c_str());
     }
 
     void ReportObjectLoadProblem(const rct_object_entry* entry)
@@ -771,7 +786,7 @@ Object* object_manager_load_object(const rct_object_entry* entry)
     return loadedObject;
 }
 
-void object_manager_unload_objects(const std::vector<rct_object_entry>& entries)
+void object_manager_unload_objects(const std::vector<ObjectEntryDescriptor>& entries)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager.UnloadObjects(entries);

@@ -20,6 +20,7 @@
 #include <limits>
 #include <list>
 #include <memory>
+#include <variant>
 
 struct rct_drawpixelinfo;
 struct rct_window;
@@ -130,8 +131,8 @@ struct rct_widget
     {
         if (height() >= 10)
             return std::max<int32_t>(top, top + (height() / 2) - 5);
-        else
-            return top - 1;
+
+        return top - 1;
     }
 
     bool IsVisible() const
@@ -194,51 +195,34 @@ struct rct_scroll
 
 constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
 
-/**
- * Viewport focus structure.
- * size: 0xA
- * Use sprite.type to work out type.
- */
-struct coordinate_focus
+struct Focus
 {
-    int16_t var_480;
-    int16_t x;        // 0x482
-    int16_t y;        // 0x484 & VIEWPORT_FOCUS_Y_MASK
-    int16_t z;        // 0x486
-    uint8_t rotation; // 0x488
-    uint8_t zoom;     // 0x489
-    int16_t width;
-    int16_t height;
-};
+    using CoordinateFocus = CoordsXYZ;
+    using EntityFocus = uint16_t;
 
-// Type is viewport_target_sprite_id & 0x80000000 != 0
-struct sprite_focus
-{
-    int16_t var_480;
-    uint16_t sprite_id; // 0x482
-    uint8_t pad_484;
-    uint8_t type; // 0x485 & VIEWPORT_FOCUS_TYPE_MASK
-    uint16_t pad_486;
-    uint8_t rotation; // 0x488
-    uint8_t zoom;     // 0x489
-};
+    uint8_t zoom = 0;
+    std::variant<CoordinateFocus, EntityFocus> data;
 
-#define VIEWPORT_FOCUS_TYPE_MASK 0xC0
-enum VIEWPORT_FOCUS_TYPE : uint8_t
-{
-    VIEWPORT_FOCUS_TYPE_COORDINATE = (1 << 6),
-    VIEWPORT_FOCUS_TYPE_SPRITE = (1 << 7)
-};
-#define VIEWPORT_FOCUS_Y_MASK 0x3FFF
-
-struct viewport_focus
-{
-    VIEWPORT_FOCUS_TYPE type{};
-    union
+    template<typename T> constexpr explicit Focus(T newValue, uint8_t newZoom = 0)
     {
-        sprite_focus sprite;
-        coordinate_focus coordinate;
-    };
+        data = newValue;
+        zoom = newZoom;
+    }
+
+    CoordsXYZ GetPos() const;
+
+    constexpr bool operator==(const Focus& other) const
+    {
+        if (zoom != other.zoom)
+        {
+            return false;
+        }
+        return data == other.data;
+    }
+    constexpr bool operator!=(const Focus& other) const
+    {
+        return !(*this == other);
+    }
 };
 
 struct rct_window_event_list

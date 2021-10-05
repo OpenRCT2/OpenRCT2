@@ -38,6 +38,7 @@ namespace OpenRCT2
     public:
         FileStream(const fs::path& path, int32_t fileMode);
         FileStream(const std::string& path, int32_t fileMode);
+        FileStream(std::string_view path, int32_t fileMode);
         FileStream(const utf8* path, int32_t fileMode);
         ~FileStream() override;
 

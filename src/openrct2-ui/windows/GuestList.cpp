@@ -60,7 +60,7 @@ static rct_widget window_guest_list_widgets[] = {
     MakeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
     MakeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
     MakeWidget({  3, 72}, {344, 255}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_BOTH                                      ), // guest list
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 // clang-format on
 
@@ -807,7 +807,7 @@ private:
 
     bool IsRefreshOfGroupsRequired()
     {
-        uint32_t tick256 = floor2(gScenarioTicks, 256);
+        uint32_t tick256 = floor2(gCurrentTicks, 256);
         if (_selectedView == _lastFindGroupsSelectedView)
         {
             if (_lastFindGroupsWait != 0 || _lastFindGroupsTick == tick256)
@@ -834,7 +834,7 @@ private:
 
     void RefreshGroups()
     {
-        _lastFindGroupsTick = floor2(gScenarioTicks, 256);
+        _lastFindGroupsTick = floor2(gCurrentTicks, 256);
         _lastFindGroupsSelectedView = _selectedView;
         _lastFindGroupsWait = 320;
         _groups.clear();

@@ -57,5 +57,7 @@ GameActions::Result::Ptr StaffFireAction::Execute() const
     }
     window_close_by_class(WC_FIRE_PROMPT);
     peep_sprite_remove(staff);
+    // Due to patrol areas best to invalidate the whole screen on removal of staff
+    gfx_invalidate_screen();
     return MakeResult();
 }

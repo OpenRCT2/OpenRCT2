@@ -120,12 +120,10 @@ bool platform_lock_single_instance()
 
         return true;
     }
-    else
-    {
-        // Already running
-        CloseHandle(mutex);
-        return false;
-    }
+
+    // Already running
+    CloseHandle(mutex);
+    return false;
 }
 
 int32_t platform_get_drives()
@@ -223,55 +221,55 @@ uint16_t platform_get_locale_language()
     {
         return LANGUAGE_ENGLISH_UK;
     }
-    else if (strcmp(langCode, "ENU") == 0)
+    if (strcmp(langCode, "ENU") == 0)
     {
         return LANGUAGE_ENGLISH_US;
     }
-    else if (strcmp(langCode, "DEU") == 0)
+    if (strcmp(langCode, "DEU") == 0)
     {
         return LANGUAGE_GERMAN;
     }
-    else if (strcmp(langCode, "NLD") == 0)
+    if (strcmp(langCode, "NLD") == 0)
     {
         return LANGUAGE_DUTCH;
     }
-    else if (strcmp(langCode, "FRA") == 0)
+    if (strcmp(langCode, "FRA") == 0)
     {
         return LANGUAGE_FRENCH;
     }
-    else if (strcmp(langCode, "HUN") == 0)
+    if (strcmp(langCode, "HUN") == 0)
     {
         return LANGUAGE_HUNGARIAN;
     }
-    else if (strcmp(langCode, "PLK") == 0)
+    if (strcmp(langCode, "PLK") == 0)
     {
         return LANGUAGE_POLISH;
     }
-    else if (strcmp(langCode, "ESP") == 0)
+    if (strcmp(langCode, "ESP") == 0)
     {
         return LANGUAGE_SPANISH;
     }
-    else if (strcmp(langCode, "SVE") == 0)
+    if (strcmp(langCode, "SVE") == 0)
     {
         return LANGUAGE_SWEDISH;
     }
-    else if (strcmp(langCode, "ITA") == 0)
+    if (strcmp(langCode, "ITA") == 0)
     {
         return LANGUAGE_ITALIAN;
     }
-    else if (strcmp(langCode, "POR") == 0)
+    if (strcmp(langCode, "POR") == 0)
     {
         return LANGUAGE_PORTUGUESE_BR;
     }
-    else if (strcmp(langCode, "FIN") == 0)
+    if (strcmp(langCode, "FIN") == 0)
     {
         return LANGUAGE_FINNISH;
     }
-    else if (strcmp(langCode, "NOR") == 0)
+    if (strcmp(langCode, "NOR") == 0)
     {
         return LANGUAGE_NORWEGIAN;
     }
-    else if (strcmp(langCode, "DAN") == 0)
+    if (strcmp(langCode, "DAN") == 0)
     {
         return LANGUAGE_DANISH;
     }
@@ -347,8 +345,8 @@ TemperatureUnit platform_get_locale_temperature_format()
 
     if (fahrenheit)
         return TemperatureUnit::Fahrenheit;
-    else
-        return TemperatureUnit::Celsius;
+
+    return TemperatureUnit::Celsius;
 }
 
 uint8_t platform_get_locale_date_format()
@@ -381,21 +379,19 @@ uint8_t platform_get_locale_date_format()
     {
         return DATE_FORMAT_DAY_MONTH_YEAR;
     }
-    else if (wcsncmp(L"M", first, 1) == 0)
+    if (wcsncmp(L"M", first, 1) == 0)
     {
         return DATE_FORMAT_MONTH_DAY_YEAR;
     }
-    else if (wcsncmp(L"y", first, 1) == 0)
+    if (wcsncmp(L"y", first, 1) == 0)
     {
         if (wcsncmp(L"d", second, 1) == 0)
         {
             return DATE_FORMAT_YEAR_DAY_MONTH;
         }
-        else
-        {
-            // Closest possible option
-            return DATE_FORMAT_YEAR_MONTH_DAY;
-        }
+
+        // Closest possible option
+        return DATE_FORMAT_YEAR_MONTH_DAY;
     }
 #    endif
 
@@ -421,10 +417,8 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
         safe_strcat_path(buffer, font->filename, size);
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 #        else
     log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
     safe_strcpy(buffer, "C:\\Windows\\Fonts\\", size);
