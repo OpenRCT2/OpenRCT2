@@ -131,7 +131,7 @@ class CleanSceneryWindow final : public Window
                 return;
 
             char* end;
-            int32_t size = strtol(text.data(), &end, 10);
+            int32_t size = strtol(std::string(text).c_str(), &end, 10);
             if (*end == '\0')
             {
                 size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
