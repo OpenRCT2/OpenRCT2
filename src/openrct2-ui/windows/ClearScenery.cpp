@@ -127,13 +127,11 @@ class CleanSceneryWindow final : public Window
 
         void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
         {
-            int32_t size;
-            char* end;
-
             if (widgetIndex != WIDX_PREVIEW || text == nullptr)
                 return;
 
-            size = strtol(text.data(), &end, 10);
+            char* end;
+            int32_t size = strtol(text.data(), &end, 10);
             if (*end == '\0')
             {
                 size = std::max(MINIMUM_TOOL_SIZE, size);
