@@ -159,7 +159,7 @@ static void ReorganiseTileElements(size_t capacity)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y });
             if (element == nullptr)
             {
                 auto& newElement = newElements.emplace_back();
@@ -207,25 +207,23 @@ static bool map_check_free_elements_and_reorganise(size_t numElementsOnTile, siz
     {
         return true;
     }
-    else
-    {
-        // if space issue is due to fragmentation then Reorg Tiles without increasing capacity
-        if (_tileElements.size() > totalElementsRequired + _tileElementsInUse)
-        {
-            ReorganiseTileElements();
-            // This check is not expected to fail
-            freeElements = _tileElements.capacity() - _tileElements.size();
-            if (freeElements >= totalElementsRequired)
-            {
-                return true;
-            }
-        }
 
-        // Capacity must increase to handle the space (Note capacity can go above MAX_TILE_ELEMENTS)
-        auto newCapacity = _tileElements.capacity() * 2;
-        ReorganiseTileElements(newCapacity);
-        return true;
+    // if space issue is due to fragmentation then Reorg Tiles without increasing capacity
+    if (_tileElements.size() > totalElementsRequired + _tileElementsInUse)
+    {
+        ReorganiseTileElements();
+        // This check is not expected to fail
+        freeElements = _tileElements.capacity() - _tileElements.size();
+        if (freeElements >= totalElementsRequired)
+        {
+            return true;
+        }
     }
+
+    // Capacity must increase to handle the space (Note capacity can go above MAX_TILE_ELEMENTS)
+    auto newCapacity = _tileElements.capacity() * 2;
+    ReorganiseTileElements(newCapacity);
+    return true;
 }
 
 static size_t CountElementsOnTile(const CoordsXY& loc);
@@ -243,14 +241,14 @@ void tile_element_iterator_begin(tile_element_iterator* it)
 {
     it->x = 0;
     it->y = 0;
-    it->element = map_get_first_element_at({ 0, 0 });
+    it->element = map_get_first_element_at(TileCoordsXY{ 0, 0 });
 }
 
 int32_t tile_element_iterator_next(tile_element_iterator* it)
 {
     if (it->element == nullptr)
     {
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -263,7 +261,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     if (it->x < (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
     {
         it->x++;
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -271,7 +269,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     {
         it->x = 0;
         it->y++;
-        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
@@ -283,15 +281,26 @@ void tile_element_iterator_restart_for_tile(tile_element_iterator* it)
     it->element = nullptr;
 }
 
-TileElement* map_get_first_element_at(const CoordsXY& elementPos)
+static bool IsTileLocationValid(const TileCoordsXY& coords)
 {
-    if (!map_is_location_valid(elementPos))
+    const bool is_x_valid = coords.x < MAXIMUM_MAP_SIZE_TECHNICAL && coords.x >= 0;
+    const bool is_y_valid = coords.y < MAXIMUM_MAP_SIZE_TECHNICAL && coords.y >= 0;
+    return is_x_valid && is_y_valid;
+}
+
+TileElement* map_get_first_element_at(const TileCoordsXY& tilePos)
+{
+    if (!IsTileLocationValid(tilePos))
     {
         log_verbose("Trying to access element outside of range");
         return nullptr;
     }
-    auto tileElementPos = TileCoordsXY{ elementPos };
-    return _tileIndex.GetFirstElementAt(tileElementPos);
+    return _tileIndex.GetFirstElementAt(tilePos);
+}
+
+TileElement* map_get_first_element_at(const CoordsXY& elementPos)
+{
+    return map_get_first_element_at(TileCoordsXY{ elementPos });
 }
 
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
@@ -638,7 +647,7 @@ int16_t tile_element_water_height(const CoordsXY& loc)
  */
 bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
 {
-    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(loc);
 
     if (tileElement == nullptr)
         return false;
@@ -1574,7 +1583,9 @@ void map_restore_provisional_elements()
     if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
         gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
-        footpath_provisional_set(gProvisionalFootpath.Type, gProvisionalFootpath.Position, gProvisionalFootpath.Slope);
+        footpath_provisional_set(
+            gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
+            gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
     }
     if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
     {
@@ -1680,7 +1691,7 @@ void map_extend_boundary_surface()
         existingTileElement = map_get_surface_element_at(TileCoordsXY{ x, y - 1 }.ToCoordsXY());
         newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
-        if (existingTileElement && newTileElement)
+        if (existingTileElement != nullptr && newTileElement != nullptr)
         {
             map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
@@ -1694,7 +1705,7 @@ void map_extend_boundary_surface()
         existingTileElement = map_get_surface_element_at(TileCoordsXY{ x - 1, y }.ToCoordsXY());
         newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
-        if (existingTileElement && newTileElement)
+        if (existingTileElement != nullptr && newTileElement != nullptr)
         {
             map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
@@ -1741,7 +1752,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
                     break;
             }
             auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
-            auto result = GameActions::Execute(&parkEntranceRemoveAction);
+            auto result = GameActions::ExecuteNested(&parkEntranceRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result->Error != GameActions::Status::Ok)
             {
@@ -1753,7 +1764,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
         {
             CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
-            auto result = GameActions::Execute(&wallRemoveAction);
+            auto result = GameActions::ExecuteNested(&wallRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result->Error != GameActions::Status::Ok)
             {
@@ -1765,7 +1776,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
         {
             auto removeSceneryAction = LargeSceneryRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
-            auto result = GameActions::Execute(&removeSceneryAction);
+            auto result = GameActions::ExecuteNested(&removeSceneryAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result->Error != GameActions::Status::Ok)
             {
@@ -1777,7 +1788,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
         {
             auto bannerRemoveAction = BannerRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
-            auto result = GameActions::Execute(&bannerRemoveAction);
+            auto result = GameActions::ExecuteNested(&bannerRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result->Error != GameActions::Status::Ok)
             {
@@ -2171,7 +2182,7 @@ bool map_surface_is_blocked(const CoordsXY& mapCoords)
         {
             return false;
         }
-        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
             return true;
     }
     return false;

@@ -157,14 +157,12 @@ namespace RCT1
             {
                 return LoadScenario(path);
             }
-            else if (String::Equals(extension, ".sv4", true))
+            if (String::Equals(extension, ".sv4", true))
             {
                 return LoadSavedGame(path);
             }
-            else
-            {
-                throw std::runtime_error("Invalid RCT1 park extension.");
-            }
+
+            throw std::runtime_error("Invalid RCT1 park extension.");
         }
 
         ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
@@ -333,10 +331,8 @@ namespace RCT1
                 std::memcpy(s4.get(), decodedData.get(), sizeof(S4));
                 return s4;
             }
-            else
-            {
-                throw std::runtime_error("Unable to decode park.");
-            }
+
+            throw std::runtime_error("Unable to decode park.");
         }
 
         void Initialise()
@@ -364,10 +360,8 @@ namespace RCT1
             {
                 return "";
             }
-            else
-            {
-                return path_get_filename(scenarioEntry->path);
-            }
+
+            return path_get_filename(scenarioEntry->path);
         }
 
         void InitialiseEntryMaps()
@@ -1299,7 +1293,7 @@ namespace RCT1
                     x <<= 7;
                     int32_t y = val & 0x3E0;
                     y <<= 2;
-                    staff_set_patrol_area(staffmember->StaffId, { x, y }, true);
+                    staffmember->SetPatrolArea({ x, y }, true);
                 }
             }
         }
@@ -1464,7 +1458,7 @@ namespace RCT1
             }
         }
 
-        std::vector<rct_object_entry> GetRequiredObjects()
+        ObjectList GetRequiredObjects()
         {
             std::vector<rct_object_entry> result;
             AppendRequiredObjects(result, ObjectType::Ride, _rideEntries);
@@ -1489,7 +1483,14 @@ namespace RCT1
                 }));
             AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
             AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
-            return result;
+
+            ObjectList objectList;
+            for (rct_object_entry entry : result)
+            {
+                objectList.Add(ObjectEntryDescriptor(entry));
+            }
+
+            return objectList;
         }
 
         void ImportTileElements()
@@ -1630,6 +1631,7 @@ namespace RCT1
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
 
                     dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
+                    dst2->SetRideType(rideType);
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     dst2->SetColourScheme(src2->GetColourScheme());
@@ -2044,7 +2046,7 @@ namespace RCT1
                     {
                         continue;
                     }
-                    else if (researchItem.item == RCT1_RESEARCH_END)
+                    if (researchItem.item == RCT1_RESEARCH_END)
                     {
                         break;
                     }
@@ -2090,7 +2092,7 @@ namespace RCT1
         void ImportParkFlags()
         {
             // Date and srand
-            gScenarioTicks = _s4.ticks;
+            gCurrentTicks = _s4.ticks;
             scenario_rand_seed(_s4.random_a, _s4.random_b);
             gDateMonthsElapsed = static_cast<int32_t>(_s4.month);
             gDateMonthTicks = _s4.day;
@@ -2426,11 +2428,9 @@ namespace RCT1
                 *count = std::size(_s4.research_items_LL);
                 return _s4.research_items_LL;
             }
-            else
-            {
-                *count = std::size(_s4.research_items);
-                return _s4.research_items;
-            }
+
+            *count = std::size(_s4.research_items);
+            return _s4.research_items;
         }
 
         std::string GetUserString(rct_string_id stringId)
@@ -2530,7 +2530,7 @@ namespace RCT1
             {
                 for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)
                         continue;
                     do
@@ -2689,10 +2689,7 @@ namespace RCT1
         dst->sprite_height_positive = src->sprite_height_positive;
         dst->sprite_direction = src->sprite_direction;
 
-        dst->sprite_left = src->sprite_left;
-        dst->sprite_top = src->sprite_top;
-        dst->sprite_right = src->sprite_right;
-        dst->sprite_bottom = src->sprite_bottom;
+        dst->SpriteRect = ScreenRect(src->sprite_left, src->sprite_top, src->sprite_right, src->sprite_bottom);
 
         dst->mass = src->mass;
         dst->num_seats = src->num_seats;
@@ -3056,7 +3053,7 @@ void load_from_sv4(const utf8* path)
     auto& objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<RCT1::S4Importer>();
     auto result = s4Importer->LoadSavedGame(path);
-    objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+    objectMgr.LoadObjects(result.RequiredObjects);
     s4Importer->Import();
 }
 
@@ -3065,6 +3062,6 @@ void load_from_sc4(const utf8* path)
     auto& objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<RCT1::S4Importer>();
     auto result = s4Importer->LoadScenario(path);
-    objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+    objectMgr.LoadObjects(result.RequiredObjects);
     s4Importer->Import();
 }

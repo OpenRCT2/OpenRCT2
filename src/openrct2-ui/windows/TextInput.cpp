@@ -34,7 +34,7 @@ static rct_widget window_text_input_widgets[] = {
     WINDOW_SHIM(STR_NONE, WW, WH),
     MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
     MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 class TextInputWindow final : public Window

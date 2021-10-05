@@ -40,10 +40,8 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t
             assert(false);
             return;
         }
-        else
-        {
-            palette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
-        }
+
+        palette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {

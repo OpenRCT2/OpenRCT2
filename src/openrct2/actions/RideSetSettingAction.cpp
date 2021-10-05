@@ -223,6 +223,7 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
             break;
         case RideSetSetting::RideType:
             ride->type = _value;
+            ride->UpdateRideTypeForAllPieces();
             gfx_invalidate_screen();
             break;
     }
@@ -291,9 +292,6 @@ rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
             {
                 return STR_CANT_CHANGE_THIS;
             }
-            else
-            {
-                return STR_CANT_CHANGE_LAUNCH_SPEED;
-            }
+            return STR_CANT_CHANGE_LAUNCH_SPEED;
     }
 }

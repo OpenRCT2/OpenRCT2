@@ -67,11 +67,11 @@ void ride_construct_new(RideSelection listItem)
 
     auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2);
 
-    gameAction.SetCallback([](const GameAction* ga, const RideCreateGameActionResult* result) {
+    gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
-
-        auto ride = get_ride(result->rideIndex);
+        const auto rideIndex = result->GetData<ride_id_t>();
+        auto ride = get_ride(rideIndex);
         ride_construct(ride);
     });
 

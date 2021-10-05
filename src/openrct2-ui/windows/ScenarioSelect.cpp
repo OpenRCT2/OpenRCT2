@@ -86,7 +86,7 @@ static rct_widget window_scenarioselect_widgets[] = {
     MakeRemapWidget({594, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 7
     MakeRemapWidget({685, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 8
     MakeWidget     ({  3, 54}, { WW - SidebarWidth, 276 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static constexpr const rct_string_id ScenarioOriginStringIds[] = {
@@ -147,8 +147,8 @@ static int32_t ScenarioSelectGetWindowWidth()
     // Shrink the window if we're showing scenarios by difficulty level.
     if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && !_titleEditor)
         return 610;
-    else
-        return WW;
+
+    return WW;
 }
 
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor)
@@ -196,7 +196,6 @@ rct_window* window_scenarioselect_open(std::function<void(std::string_view)> cal
     initialise_list_items(window);
 
     WindowInitScrollWidgets(window);
-    window->viewport_focus_coordinates.var_480 = -1;
     window->highlighted_scenario = nullptr;
 
     return window;
@@ -246,16 +245,16 @@ static void window_scenarioselect_init_tabs(rct_window* w)
     int32_t x = 3;
     for (int32_t i = 0; i < NumTabs; i++)
     {
-        rct_widget* widget = &w->widgets[i + WIDX_TAB1];
+        auto& widget = w->widgets[i + WIDX_TAB1];
         if (!(showPages & (1 << i)))
         {
-            widget->type = WindowWidgetType::Empty;
+            widget.type = WindowWidgetType::Empty;
             continue;
         }
 
-        widget->type = WindowWidgetType::Tab;
-        widget->left = x;
-        widget->right = x + 90;
+        widget.type = WindowWidgetType::Tab;
+        widget.left = x;
+        widget.right = x + 90;
         x += 91;
     }
 }
@@ -564,8 +563,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     rct_string_id highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
     rct_string_id unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
 
-    rct_widget* listWidget = &w->widgets[WIDX_SCENARIOLIST];
-    int32_t listWidth = listWidget->width() - 12;
+    const auto& listWidget = w->widgets[WIDX_SCENARIOLIST];
+    int32_t listWidth = listWidget.width() - 12;
 
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 

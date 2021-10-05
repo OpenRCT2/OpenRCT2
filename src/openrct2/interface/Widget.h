@@ -40,7 +40,7 @@ enum class WindowWidgetType : uint8_t
     Last = 26,
 };
 
-#define WIDGETS_END WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0
+constexpr const auto WIDGETS_END = rct_widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
 #define BAR_BLINK (1u << 31)
 
 #define SPINNER_INCREASE(l, r, t, b) (r) - 12, (r)-1, (t) + 1, (b)-1
@@ -143,7 +143,7 @@ bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsActiveTool(rct_window* w, rct_widgetindex widgetIndex);
 void WidgetScrollGetPart(
-    rct_window* w, rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
+    rct_window* w, const rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id);
 
 void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);

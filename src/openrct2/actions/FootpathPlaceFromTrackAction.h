@@ -17,11 +17,15 @@ private:
     CoordsXYZ _loc;
     uint8_t _slope{};
     ObjectEntryIndex _type{};
+    ObjectEntryIndex _railingsType{};
     uint8_t _edges{};
+    PathConstructFlags _constructFlags{};
 
 public:
     FootpathPlaceFromTrackAction() = default;
-    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges);
+    FootpathPlaceFromTrackAction(
+        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
+        PathConstructFlags constructFlags = 0);
 
     uint16_t GetActionFlags() const override;
 
@@ -32,4 +36,5 @@ public:
 private:
     GameActions::Result::Ptr ElementInsertQuery(GameActions::Result::Ptr res) const;
     GameActions::Result::Ptr ElementInsertExecute(GameActions::Result::Ptr res) const;
+    bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
 };

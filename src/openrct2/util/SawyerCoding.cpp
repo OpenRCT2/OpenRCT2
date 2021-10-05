@@ -415,12 +415,12 @@ int32_t sawyercoding_detect_rct1_version(int32_t gameVersion)
 
     if (gameVersion >= 108000 && gameVersion < 110000)
         return (FILE_VERSION_RCT1 | fileType);
-    else if (gameVersion >= 110000 && gameVersion < 120000)
+    if (gameVersion >= 110000 && gameVersion < 120000)
         return (FILE_VERSION_RCT1_AA | fileType);
-    else if (gameVersion >= 120000 && gameVersion < 130000)
+    if (gameVersion >= 120000 && gameVersion < 130000)
         return (FILE_VERSION_RCT1_LL | fileType);
     // RCTOA Acres sets this, and possibly some other user-created scenarios as well
-    else if (gameVersion == 0)
+    if (gameVersion == 0)
         return (FILE_VERSION_RCT1_LL | fileType);
 
     return -1;

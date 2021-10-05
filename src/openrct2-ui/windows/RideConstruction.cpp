@@ -132,7 +132,7 @@ static rct_widget window_ride_construction_widgets[] = {
     MakeWidget        ({ 96, 120}, { 67,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SEAT_ROT                                                               ),
     MakeSpinnerWidgets({101, 138}, { 58,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary, 0,                                       STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
     MakeWidget        ({139, 338}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SIMULATE,                         STR_SIMULATE_RIDE_TIP                               ),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 #pragma endregion
@@ -1315,21 +1315,21 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                     window_ride_construction_update_active_elements();
                     break;
                 }
-                else if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT)
                 {
                     _currentTrackCurve = TrackElemType::RightHalfBankedHelixDownLarge | RideConstructionSpecialPieceSelected;
                     _currentTrackPrice = MONEY32_UNDEFINED;
                     window_ride_construction_update_active_elements();
                     break;
                 }
-                else if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL && _currentTrackBankEnd == TRACK_BANK_LEFT)
+                if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL && _currentTrackBankEnd == TRACK_BANK_LEFT)
                 {
                     _currentTrackCurve = TrackElemType::LeftHalfBankedHelixDownSmall | RideConstructionSpecialPieceSelected;
                     _currentTrackPrice = MONEY32_UNDEFINED;
                     window_ride_construction_update_active_elements();
                     break;
                 }
-                else if (_currentTrackCurve == TRACK_CURVE_RIGHT_SMALL && _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                if (_currentTrackCurve == TRACK_CURVE_RIGHT_SMALL && _currentTrackBankEnd == TRACK_BANK_RIGHT)
                 {
                     _currentTrackCurve = TrackElemType::RightHalfBankedHelixDownSmall | RideConstructionSpecialPieceSelected;
                     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -1346,7 +1346,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                     window_ride_construction_update_active_elements();
                     break;
                 }
-                else if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT)
                 {
                     _currentTrackCurve = TrackElemType::RightQuarterBankedHelixLargeDown | RideConstructionSpecialPieceSelected;
                     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -1365,7 +1365,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                         window_ride_construction_update_active_elements();
                         break;
                     }
-                    else if (_currentTrackCurve == TRACK_CURVE_RIGHT)
+                    if (_currentTrackCurve == TRACK_CURVE_RIGHT)
                     {
                         _currentTrackCurve = TrackElemType::RightQuarterHelixLargeDown | RideConstructionSpecialPieceSelected;
                         _currentTrackPrice = MONEY32_UNDEFINED;
@@ -1447,21 +1447,21 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                     window_ride_construction_update_active_elements();
                     break;
                 }
-                else if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT)
                 {
                     _currentTrackCurve = TrackElemType::RightHalfBankedHelixUpLarge | RideConstructionSpecialPieceSelected;
                     _currentTrackPrice = MONEY32_UNDEFINED;
                     window_ride_construction_update_active_elements();
                     break;
                 }
-                else if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL && _currentTrackBankEnd == TRACK_BANK_LEFT)
+                if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL && _currentTrackBankEnd == TRACK_BANK_LEFT)
                 {
                     _currentTrackCurve = TrackElemType::LeftHalfBankedHelixUpSmall | RideConstructionSpecialPieceSelected;
                     _currentTrackPrice = MONEY32_UNDEFINED;
                     window_ride_construction_update_active_elements();
                     break;
                 }
-                else if (_currentTrackCurve == TRACK_CURVE_RIGHT_SMALL && _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                if (_currentTrackCurve == TRACK_CURVE_RIGHT_SMALL && _currentTrackBankEnd == TRACK_BANK_RIGHT)
                 {
                     _currentTrackCurve = TrackElemType::RightHalfBankedHelixUpSmall | RideConstructionSpecialPieceSelected;
                     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -1478,7 +1478,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                     window_ride_construction_update_active_elements();
                     break;
                 }
-                else if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT)
                 {
                     _currentTrackCurve = TrackElemType::RightQuarterBankedHelixLargeUp | RideConstructionSpecialPieceSelected;
                     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -1497,7 +1497,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
                         window_ride_construction_update_active_elements();
                         break;
                     }
-                    else if (_currentTrackCurve == TRACK_CURVE_RIGHT)
+                    if (_currentTrackCurve == TRACK_CURVE_RIGHT)
                     {
                         _currentTrackCurve = TrackElemType::RightQuarterHelixLargeUp | RideConstructionSpecialPieceSelected;
                         _currentTrackPrice = MONEY32_UNDEFINED;
@@ -2139,7 +2139,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
             auto* mainWnd = window_get_main();
-            if (mainWnd && mainWnd->viewport)
+            if (mainWnd != nullptr && mainWnd->viewport != nullptr)
             {
                 _trackPlaceShiftZ = _trackPlaceShiftZ * mainWnd->viewport->zoom;
             }
@@ -2424,11 +2424,11 @@ static void sub_6CBCE2(
         auto southTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_SOUTH];
 
         // Replace map elements with temporary ones containing track
-        _backupTileElementArrays[0] = map_get_first_element_at(centreTileCoords.ToCoordsXY());
-        _backupTileElementArrays[1] = map_get_first_element_at(eastTileCoords.ToCoordsXY());
-        _backupTileElementArrays[2] = map_get_first_element_at(westTileCoords.ToCoordsXY());
-        _backupTileElementArrays[3] = map_get_first_element_at(northTileCoords.ToCoordsXY());
-        _backupTileElementArrays[4] = map_get_first_element_at(southTileCoords.ToCoordsXY());
+        _backupTileElementArrays[0] = map_get_first_element_at(centreTileCoords);
+        _backupTileElementArrays[1] = map_get_first_element_at(eastTileCoords);
+        _backupTileElementArrays[2] = map_get_first_element_at(westTileCoords);
+        _backupTileElementArrays[3] = map_get_first_element_at(northTileCoords);
+        _backupTileElementArrays[4] = map_get_first_element_at(southTileCoords);
         map_set_tile_element(centreTileCoords, &_tempTrackTileElement);
         map_set_tile_element(eastTileCoords, &_tempSideTrackTileElement);
         map_set_tile_element(westTileCoords, &_tempSideTrackTileElement);
@@ -2444,6 +2444,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.SetBaseZ(baseZ);
         _tempTrackTileElement.SetClearanceZ(clearanceZ);
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
+        _tempTrackTileElement.AsTrack()->SetRideType(ride->type);
         _tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
         _tempTrackTileElement.AsTrack()->SetHasCableLift(false);
         _tempTrackTileElement.AsTrack()->SetInverted((liftHillAndInvertedState & CONSTRUCTION_INVERTED_TRACK_SELECTED) != 0);
@@ -3520,7 +3521,6 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
             _currentTrackPrice = place_provisional_track_piece(
                 rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
-            z = trackPos.z;
             if (_currentTrackPrice != MONEY32_UNDEFINED)
                 break;
 
@@ -3566,17 +3566,18 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         {
             pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z });
 
-            if (pathsByDir[i] && (pathsByDir[i])->AsPath()->IsSloped() && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
+            if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsSloped()
+                && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
             {
                 pathsByDir[i] = nullptr;
             }
 
             // Sloped path on the level below
-            if (!pathsByDir[i])
+            if (pathsByDir[i] == nullptr)
             {
                 pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
 
-                if (pathsByDir[i]
+                if (pathsByDir[i] != nullptr
                     && (!(pathsByDir[i])->AsPath()->IsSloped()
                         || (pathsByDir[i])->AsPath()->GetSlopeDirection() != direction_reverse(i)))
                 {
@@ -3584,12 +3585,12 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
                 }
             }
 
-            if (pathsByDir[i] && (pathsByDir[i])->AsPath()->IsQueue())
+            if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsQueue())
             {
                 pathsByDir[i] = nullptr;
             }
 
-            if (pathsByDir[i] && i == _currentTrackPieceDirection)
+            if (pathsByDir[i] != nullptr && i == _currentTrackPieceDirection)
             {
                 keepOrientation = true;
                 break;
@@ -3600,7 +3601,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         {
             for (int8_t i = 0; i < 4; i++)
             {
-                if (pathsByDir[i])
+                if (pathsByDir[i] != nullptr)
                 {
                     _currentTrackPieceDirection = i;
 

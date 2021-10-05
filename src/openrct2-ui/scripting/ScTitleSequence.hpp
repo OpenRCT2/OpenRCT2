@@ -210,7 +210,7 @@ namespace OpenRCT2::Scripting
                         auto& objectMgr = GetContext()->GetObjectManager();
                         auto parkImporter = ParkImporter::Create(handle->HintPath);
                         auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
-                        objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                        objectMgr.LoadObjects(result.RequiredObjects);
                         parkImporter->Import();
 
                         auto old = gLoadKeepWindowsOpen;

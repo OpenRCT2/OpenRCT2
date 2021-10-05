@@ -61,7 +61,6 @@ void date_reset()
 {
     gDateMonthsElapsed = 0;
     gDateMonthTicks = 0;
-    gCurrentTicks = 0;
     gCurrentRealTimeTicks = 0;
 }
 

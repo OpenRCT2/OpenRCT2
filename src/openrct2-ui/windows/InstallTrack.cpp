@@ -48,7 +48,7 @@ static rct_widget window_install_track_widgets[] = {
     MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_SCENERY,                          STR_TOGGLE_SCENERY_TIP),
     MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
     MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_install_track_close(rct_window *w);
@@ -94,7 +94,7 @@ rct_window* window_install_track_open(const utf8* path)
         log_error("Failed to load track (ride type null): %s", path);
         return nullptr;
     }
-    if (object_manager_load_object(&_trackDesign->vehicle_object) == nullptr)
+    if (object_manager_load_object(&_trackDesign->vehicle_object.Entry) == nullptr)
     {
         log_error("Failed to load track (vehicle load fail): %s", path);
         return nullptr;
@@ -242,7 +242,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
 
-        const auto* objectEntry = object_manager_load_object(&td6->vehicle_object);
+        const auto* objectEntry = object_manager_load_object(&td6->vehicle_object.Entry);
         if (objectEntry != nullptr)
         {
             auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);

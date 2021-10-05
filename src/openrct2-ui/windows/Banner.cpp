@@ -66,7 +66,7 @@ static rct_widget window_banner_widgets[] = {
     MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
     MakeWidget({     43, WH - 16}, {39, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary                                                     ), // high money
     MakeWidget({     70, WH - 15}, {11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ), // high money
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // clang-format on
@@ -81,7 +81,7 @@ private:
         rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-            (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, 0, _bannerViewPos, 0, SPRITE_INDEX_NULL);
+            (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, Focus(_bannerViewPos));
 
         if (viewport != nullptr)
             viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
@@ -96,7 +96,7 @@ private:
             return nullptr;
         }
 
-        TileElement* tileElement = map_get_first_element_at(banner->position.ToCoordsXY().ToTileCentre());
+        TileElement* tileElement = map_get_first_element_at(banner->position);
         if (tileElement == nullptr)
         {
             return nullptr;

@@ -313,17 +313,16 @@ PeepActionSpriteType Peep::GetActionSpriteType()
     { // PeepActionType::None1 or PeepActionType::None2
         return PeepSpecialSpriteToSpriteTypeMap[SpecialSprite];
     }
-    else if (EnumValue(Action) < std::size(PeepActionToSpriteTypeMap))
+
+    if (EnumValue(Action) < std::size(PeepActionToSpriteTypeMap))
     {
         return PeepActionToSpriteTypeMap[EnumValue(Action)];
     }
-    else
-    {
-        openrct2_assert(
-            EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle,
-            "Invalid peep action %u", EnumValue(Action));
-        return PeepActionSpriteType::None;
-    }
+
+    openrct2_assert(
+        EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle, "Invalid peep action %u",
+        EnumValue(Action));
+    return PeepActionSpriteType::None;
 }
 
 /*
@@ -474,14 +473,14 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
-    // Create sick at location
-    Litter::Create({ x, y, z, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    const auto curLoc = GetLocation();
+    Litter::Create({ curLoc, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = { OpenRCT2::Audio::SoundId::Cough1, OpenRCT2::Audio::SoundId::Cough2,
                                                             OpenRCT2::Audio::SoundId::Cough3,
                                                             OpenRCT2::Audio::SoundId::Cough4 };
     auto soundId = coughs[scenario_rand() & 3];
-    OpenRCT2::Audio::Play3D(soundId, { x, y, z });
+    OpenRCT2::Audio::Play3D(soundId, curLoc);
 
     return { { x, y } };
 }
@@ -574,12 +573,12 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
 {
     auto* pathElement = map_get_path_element_at(location);
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
-    if (!pathElement)
+    if (pathElement == nullptr)
     {
         tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(location.ToCoordsXYZ()));
     }
 
-    if (!tileElement)
+    if (tileElement == nullptr)
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);
 
     // Set the coordinate of destination to be exactly
@@ -653,6 +652,7 @@ void peep_sprite_remove(Peep* peep)
     }
     else
     {
+        staff->ClearPatrolArea();
         gStaffModes[staff->StaffId] = StaffMode::None;
         staff_update_greyed_patrol_areas();
 
@@ -713,7 +713,7 @@ void Peep::UpdateFalling()
     }
 
     // If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-    TileElement* tile_element = map_get_first_element_at({ x, y });
+    TileElement* tile_element = map_get_first_element_at(CoordsXY{ x, y });
     TileElement* saved_map = nullptr;
     int32_t saved_height = 0;
 
@@ -1178,15 +1178,15 @@ void peep_update_crowd_noise()
 
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->sprite_left == LOCATION_NULL)
+        if (peep->x == LOCATION_NULL)
             continue;
-        if (viewport->viewPos.x > peep->sprite_right)
+        if (viewport->viewPos.x > peep->SpriteRect.GetRight())
             continue;
-        if (viewport->viewPos.x + viewport->view_width < peep->sprite_left)
+        if (viewport->viewPos.x + viewport->view_width < peep->SpriteRect.GetLeft())
             continue;
-        if (viewport->viewPos.y > peep->sprite_bottom)
+        if (viewport->viewPos.y > peep->SpriteRect.GetBottom())
             continue;
-        if (viewport->viewPos.y + viewport->view_height < peep->sprite_top)
+        if (viewport->viewPos.y + viewport->view_height < peep->SpriteRect.GetTop())
             continue;
 
         visiblePeeps += peep->State == PeepState::Queuing ? 1 : 2;
@@ -1513,17 +1513,15 @@ bool Peep::SetName(std::string_view value)
         Name = nullptr;
         return true;
     }
-    else
+
+    auto newNameMemory = static_cast<char*>(std::malloc(value.size() + 1));
+    if (newNameMemory != nullptr)
     {
-        auto newNameMemory = static_cast<char*>(std::malloc(value.size() + 1));
-        if (newNameMemory != nullptr)
-        {
-            std::memcpy(newNameMemory, value.data(), value.size());
-            newNameMemory[value.size()] = '\0';
-            std::free(Name);
-            Name = newNameMemory;
-            return true;
-        }
+        std::memcpy(newNameMemory, value.data(), value.size());
+        newNameMemory[value.size()] = '\0';
+        std::free(Name);
+        Name = newNameMemory;
+        return true;
     }
     return false;
 }
@@ -1835,15 +1833,13 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                     found = true;
                     break;
                 }
-                else
+
+                if (z != nextTileElement->base_height)
                 {
-                    if (z != nextTileElement->base_height)
-                    {
-                        continue;
-                    }
-                    found = true;
-                    break;
+                    continue;
                 }
+                found = true;
+                break;
             } while (!(nextTileElement++)->IsLastForTile());
         }
 
@@ -1963,7 +1959,8 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
             crowded++;
             continue;
         }
-        else if (auto litter = entity->As<Litter>(); litter != nullptr)
+
+        if (auto litter = entity->As<Litter>(); litter != nullptr)
         {
             if (abs(litter->z - guest->NextLoc.z) > 16)
                 continue;
@@ -2060,7 +2057,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
     auto* guest = peep->As<Guest>();
     if (map_is_location_owned({ coords, z }))
     {
-        if (guest && guest->OutsideOfPark)
+        if (guest != nullptr && guest->OutsideOfPark)
         {
             peep_return_to_centre_of_tile(guest);
             return;
@@ -2359,7 +2356,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             tile_result = tileElement;
             return;
         }
-        else if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
             if (peep_interact_with_shop(this, { newLoc, tileElement }))
             {

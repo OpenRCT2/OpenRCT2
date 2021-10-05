@@ -246,7 +246,7 @@ static rct_widget window_ride_main_widgets[] = {
     MakeWidget({296,  76}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_RIDE_TIP          ),
     MakeWidget({  3, 180}, {305,  12}, WindowWidgetType::DropdownMenu,      WindowColour::Secondary, STR_ARG_6_STRINGID                                     ),
     MakeWidget({297, 180}, { 11,  12}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH                                     ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x009ADDA8
@@ -257,7 +257,7 @@ static rct_widget window_ride_vehicle_widgets[] = {
     MakeWidget        ({  7, 147}, {302, 43}, WindowWidgetType::Scroll,   WindowColour::Secondary, STR_EMPTY                                         ),
     MakeSpinnerWidgets({  7, 196}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
     MakeSpinnerWidgets({164, 196}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x009ADEFC
@@ -280,7 +280,7 @@ static rct_widget window_ride_operating_widgets[] = {
     MakeWidget        ({297, 110}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                                  ),
     MakeWidget        ({ 21,  89}, {129, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
     MakeSpinnerWidgets({157,  89}, {152, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_NUMBER_OF_CIRCUITS_VALUE                                                        ), // NB: 3 widgets
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x009AE190
@@ -291,7 +291,7 @@ static rct_widget window_ride_maintenance_widgets[] = {
     MakeWidget({289, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,         STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
     MakeWidget({265, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION,   STR_REFURBISH_RIDE_TIP                                ),
     MakeWidget({241, 108}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_NO_ENTRY,       STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x009AE2A4
@@ -317,7 +317,7 @@ static rct_widget window_ride_colour_widgets[] = {
     MakeWidget({ 79, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_MAIN_COLOUR_TIP                   ),
     MakeWidget({ 99, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
     MakeWidget({119, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x009AE4C8
@@ -326,7 +326,7 @@ static rct_widget window_ride_music_widgets[] = {
     MakeWidget({  7, 47}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
     MakeWidget({  7, 62}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY                                     ),
     MakeWidget({297, 63}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x009AE5DC
@@ -337,7 +337,7 @@ static rct_widget window_ride_measurements_widgets[] = {
     MakeWidget({158, 127}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RESET_SELECTION                             ),
     MakeWidget({  4, 177}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_DESIGN_SAVE                                 ),
     MakeWidget({158, 177}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_DESIGN_CANCEL                               ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x009AE710
@@ -348,7 +348,7 @@ static rct_widget window_ride_graphs_widgets[] = {
     MakeWidget({ 76, 163}, { 73,  14}, WindowWidgetType::Button, WindowColour::Secondary, STR_RIDE_STATS_ALTITUDE, STR_SHOW_GRAPH_OF_ALTITUDE_AGAINST_TIME_TIP             ),
     MakeWidget({149, 163}, { 73,  14}, WindowWidgetType::Button, WindowColour::Secondary, STR_RIDE_STATS_VERT_G,   STR_SHOW_GRAPH_OF_VERTICAL_ACCELERATION_AGAINST_TIME_TIP),
     MakeWidget({222, 163}, { 73,  14}, WindowWidgetType::Button, WindowColour::Secondary, STR_RIDE_STATS_LAT_G,    STR_SHOW_GRAPH_OF_LATERAL_ACCELERATION_AGAINST_TIME_TIP ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x009AE844
@@ -360,7 +360,7 @@ static rct_widget window_ride_income_widgets[] = {
     MakeWidget        ({ 19,  94}, {126, 14}, WindowWidgetType::Label,    WindowColour::Secondary                                                                    ),
     MakeSpinnerWidgets({147,  94}, {162, 14}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_SECONDARY_PRICE_VALUE                                    ), // NB: 3 widgets
     MakeWidget        ({  5, 106}, {306, 13}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x009AE9C8
@@ -369,7 +369,7 @@ static rct_widget window_ride_customer_widgets[] = {
     MakeWidget({289,  54}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION, STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP),
     MakeWidget({289,  78}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION,             STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP            ),
     MakeWidget({289, 102}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION,    STR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION_TIP   ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_ride_page_widgets[] = {
@@ -781,7 +781,7 @@ static std::unique_ptr<TrackDesign> _trackDesign;
 // Cached overall view for each ride
 // (Re)calculated when the ride window is opened
 struct ride_overall_view {
-    int16_t x, y, z;
+    CoordsXYZ loc;
     uint8_t zoom;
 };
 
@@ -944,9 +944,8 @@ static void window_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, in
             spriteIndex += (frame % window_ride_tab_animation_frames[w->page]);
         }
 
-        gfx_draw_sprite(
-            dpi, ImageId(spriteIndex),
-            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
+        const auto& widget = w->widgets[widgetIndex];
+        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.left, widget.top });
     }
 }
 
@@ -981,9 +980,9 @@ static void window_ride_draw_tab_main(rct_drawpixelinfo* dpi, rct_window* w)
                         spriteIndex += (w->frame_no / 4) % 8;
                     break;
             }
-            gfx_draw_sprite(
-                dpi, ImageId(spriteIndex),
-                w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
+
+            const auto& widget = w->widgets[widgetIndex];
+            gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.left, widget.top });
         }
     }
 }
@@ -995,13 +994,13 @@ static void window_ride_draw_tab_main(rct_drawpixelinfo* dpi, rct_window* w)
 static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_VEHICLE;
-    rct_widget* widget = &w->widgets[widgetIndex];
+    const auto& widget = w->widgets[widgetIndex];
 
     if (!(w->disabled_widgets & (1LL << widgetIndex)))
     {
-        auto screenCoords = ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        int32_t width = widget->right - screenCoords.x;
-        int32_t height = widget->bottom - 3 - screenCoords.y;
+        auto screenCoords = ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
+        int32_t width = widget.right - screenCoords.x;
+        int32_t height = widget.bottom - 3 - screenCoords.y;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             height += 4;
 
@@ -1013,7 +1012,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
             return;
         }
 
-        screenCoords = ScreenCoordsXY{ widget->width() / 2, widget->height() - 12 };
+        screenCoords = ScreenCoordsXY{ widget.width() / 2, widget.height() - 12 };
 
         auto ride = get_ride(w->rideId);
         if (ride == nullptr)
@@ -1070,7 +1069,7 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
 
     if (!(w->disabled_widgets & (1LL << widgetIndex)))
     {
-        rct_widget* widget = &w->widgets[widgetIndex];
+        const auto& widget = w->widgets[widgetIndex];
         int32_t spriteIndex = 0;
         if (w->page == WINDOW_RIDE_PAGE_CUSTOMER)
             spriteIndex = w->picked_peep_frame & ~3;
@@ -1080,7 +1079,7 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
         spriteIndex |= 0xA9E00000;
 
         gfx_draw_sprite(
-            dpi, ImageId::FromUInt32(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 6 });
+            dpi, ImageId::FromUInt32(spriteIndex), w->windowPos + ScreenCoordsXY{ widget.midX(), widget.bottom - 6 });
     }
 }
 
@@ -1167,10 +1166,10 @@ static void window_ride_update_overall_view(Ride* ride)
 
     tile_element_iterator_begin(&it);
 
-    int32_t minx = std::numeric_limits<int32_t>::max(), miny = std::numeric_limits<int32_t>::max(),
-            minz = std::numeric_limits<int32_t>::max();
-    int32_t maxx = std::numeric_limits<int32_t>::min(), maxy = std::numeric_limits<int32_t>::min(),
-            maxz = std::numeric_limits<int32_t>::min();
+    CoordsXYZ min = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max(),
+                      std::numeric_limits<int32_t>::max() };
+    CoordsXYZ max = { std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::min(),
+                      std::numeric_limits<int32_t>::min() };
 
     while (tile_element_iterator_next(&it))
     {
@@ -1184,13 +1183,13 @@ static void window_ride_update_overall_view(Ride* ride)
         int32_t baseZ = it.element->GetBaseZ();
         int32_t clearZ = it.element->GetClearanceZ();
 
-        minx = std::min(minx, location.x);
-        miny = std::min(miny, location.y);
-        minz = std::min(minz, baseZ);
+        min.x = std::min(min.x, location.x);
+        min.y = std::min(min.y, location.y);
+        min.z = std::min(min.z, baseZ);
 
-        maxx = std::max(maxx, location.x);
-        maxy = std::max(maxy, location.y);
-        maxz = std::max(maxz, clearZ);
+        max.x = std::max(max.x, location.x);
+        max.y = std::max(max.y, location.y);
+        max.z = std::max(max.z, clearZ);
     }
 
     const auto rideIndex = EnumValue(ride->id);
@@ -1200,16 +1199,12 @@ static void window_ride_update_overall_view(Ride* ride)
     }
 
     auto& view = ride_overall_views[rideIndex];
-    view.x = (minx + maxx) / 2 + 16;
-    view.y = (miny + maxy) / 2 + 16;
-    view.z = (minz + maxz) / 2 - 8;
+    view.loc = CoordsXYZ{ (min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2 } + CoordsXYZ{ 16, 16, -8 };
 
     // Calculate size to determine from how far away to view the ride
-    int32_t dx = maxx - minx;
-    int32_t dy = maxy - miny;
-    int32_t dz = maxz - minz;
+    const auto diff = max - min;
 
-    int32_t size = static_cast<int32_t>(std::sqrt(dx * dx + dy * dy + dz * dz));
+    const int32_t size = static_cast<int32_t>(std::sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z));
 
     if (size >= 80)
     {
@@ -1489,7 +1484,7 @@ static void window_ride_set_page(rct_window* w, int32_t page)
     if (page == WINDOW_RIDE_PAGE_VEHICLE)
     {
         auto constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
-        if (constructionWindow && constructionWindow->number == w->number)
+        if (constructionWindow != nullptr && constructionWindow->number == w->number)
         {
             window_close_by_class(WC_RIDE_CONSTRUCTION);
             // Closing the construction window sets the tab to the first page, which we don't want here,
@@ -1564,7 +1559,7 @@ static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_wi
         return std::nullopt;
     }
 
-    for (StationIndex index = 0; index < sizeof(ride->stations); ++index)
+    for (StationIndex index = 0; index < std::size(ride->stations); ++index)
     {
         const auto& station = ride->stations[index];
         if (!station.Start.IsNull())
@@ -1591,42 +1586,29 @@ static void window_ride_init_viewport(rct_window* w)
     if (ride == nullptr)
         return;
 
-    int32_t viewSelectionIndex = w->viewport_focus_coordinates.var_480 - 1;
+    int32_t viewSelectionIndex = w->ride.view - 1;
 
-    union
-    {
-        sprite_focus sprite;
-        coordinate_focus coordinate;
-    } focus;
-
-    focus.coordinate.x = 0;
-    focus.coordinate.y = 0;
-    focus.coordinate.z = 0;
-    focus.sprite.sprite_id = SPRITE_INDEX_NULL;
-    focus.coordinate.zoom = 0;
-    focus.coordinate.rotation = get_current_rotation();
-    focus.coordinate.width = 0;
-    focus.coordinate.height = 0;
+    std::optional<Focus> focus;
 
     if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        focus.sprite.sprite_id = ride->vehicles[viewSelectionIndex];
+        uint16_t vehId = ride->vehicles[viewSelectionIndex];
         rct_ride_entry* ride_entry = ride->GetRideEntry();
-        if (ride_entry && ride_entry->tab_vehicle != 0)
+        if (ride_entry != nullptr && ride_entry->tab_vehicle != 0)
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(focus.sprite.sprite_id);
+            Vehicle* vehicle = GetEntity<Vehicle>(vehId);
             if (vehicle == nullptr)
             {
-                focus.sprite.sprite_id = SPRITE_INDEX_NULL;
+                vehId = SPRITE_INDEX_NULL;
             }
             else if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
             {
-                focus.sprite.sprite_id = vehicle->next_vehicle_on_train;
+                vehId = vehicle->next_vehicle_on_train;
             }
         }
-        if (focus.sprite.sprite_id != SPRITE_INDEX_NULL)
+        if (vehId != SPRITE_INDEX_NULL)
         {
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE;
+            focus = Focus(vehId);
         }
     }
     else if (viewSelectionIndex >= ride->num_vehicles && viewSelectionIndex < (ride->num_vehicles + ride->num_stations))
@@ -1634,41 +1616,27 @@ static void window_ride_init_viewport(rct_window* w)
         auto stationIndex = GetStationIndexFromViewSelection(*w);
         if (stationIndex)
         {
-            auto location = ride->stations[*stationIndex].GetStart();
-            focus.coordinate.x = location.x;
-            focus.coordinate.y = location.y;
-            focus.coordinate.z = location.z;
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            const auto location = ride->stations[*stationIndex].GetStart();
+            focus = Focus(location);
         }
     }
     else
     {
         if (viewSelectionIndex > 0)
         {
-            w->viewport_focus_coordinates.var_480 = 0;
+            w->ride.view = 0;
         }
         if (w->number < ride_overall_views.size())
         {
             const auto& view = ride_overall_views[w->number];
-            focus.coordinate.x = view.x;
-            focus.coordinate.y = view.y;
-            focus.coordinate.z = view.z;
-            focus.coordinate.zoom = view.zoom;
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            focus = Focus(view.loc, view.zoom);
         }
     }
-    focus.coordinate.var_480 = w->viewport_focus_coordinates.var_480;
 
     uint16_t viewport_flags = 0;
-
     if (w->viewport != nullptr)
     {
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x
-            && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
-            && focus.coordinate.z == w->viewport_focus_coordinates.z
-            && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation
-            && focus.coordinate.zoom == w->viewport_focus_coordinates.zoom && focus.coordinate.width == w->width
-            && focus.coordinate.height == w->height)
+        if (focus == w->focus)
         {
             return;
         }
@@ -1682,31 +1650,23 @@ static void window_ride_init_viewport(rct_window* w)
 
     window_event_invalidate_call(w);
 
-    w->viewport_focus_coordinates.x = focus.coordinate.x;
-    w->viewport_focus_coordinates.y = focus.coordinate.y;
-    w->viewport_focus_coordinates.z = focus.coordinate.z;
-    w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
-    w->viewport_focus_coordinates.zoom = focus.coordinate.zoom;
-    w->viewport_focus_coordinates.width = w->width;
-    w->viewport_focus_coordinates.height = w->height;
+    w->focus = focus;
 
     // rct2: 0x006aec9c only used here so brought it into the function
-    if (!w->viewport && !ride->overall_view.IsNull())
+    if (w->viewport == nullptr && !ride->overall_view.IsNull())
     {
-        rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
+        const auto& view_widget = w->widgets[WIDX_VIEWPORT];
 
-        auto screenPos = w->windowPos + ScreenCoordsXY{ view_widget->left + 1, view_widget->top + 1 };
-        int32_t width = view_widget->width() - 1;
-        int32_t height = view_widget->height() - 1;
-        viewport_create(
-            w, screenPos, width, height, focus.coordinate.zoom,
-            { focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, focus.coordinate.z },
-            focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
+        auto screenPos = w->windowPos + ScreenCoordsXY{ view_widget.left + 1, view_widget.top + 1 };
+        int32_t width = view_widget.width() - 1;
+        int32_t height = view_widget.height() - 1;
+
+        viewport_create(w, screenPos, width, height, w->focus.value());
 
         w->flags |= WF_NO_SCROLLING;
         w->Invalidate();
     }
-    if (w->viewport)
+    if (w->viewport != nullptr)
     {
         w->viewport->flags = viewport_flags;
         w->Invalidate();
@@ -1835,6 +1795,8 @@ static void window_ride_main_resize(rct_window* w)
 
     w->flags |= WF_RESIZABLE;
     window_set_resize(w, 316, minHeight, 500, 450);
+    // Unlike with other windows, the focus needs to be recentred so it’s best to just reset it.
+    w->focus = std::nullopt;
     window_ride_init_viewport(w);
 }
 
@@ -1911,14 +1873,11 @@ static RideStatus window_ride_get_next_default_status(const Ride* ride)
             {
                 return RideStatus::Closed;
             }
-            else if (ride->SupportsStatus(RideStatus::Testing) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+            if (ride->SupportsStatus(RideStatus::Testing) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
             {
                 return RideStatus::Testing;
             }
-            else
-            {
-                return RideStatus::Open;
-            }
+            return RideStatus::Open;
         case RideStatus::Simulating:
             return RideStatus::Testing;
         case RideStatus::Testing:
@@ -4847,7 +4806,6 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     // TODO: This should use lists and identified sprites
     rct_drawpixelinfo clippedDpi;
-    rct_widget* widget;
 
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -4857,12 +4815,12 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_ride_draw_tab_images(dpi, w);
 
     // Track / shop item preview
-    widget = &window_ride_colour_widgets[WIDX_TRACK_PREVIEW];
-    if (widget->type != WindowWidgetType::Empty)
+    const auto& trackPreviewWidget = window_ride_colour_widgets[WIDX_TRACK_PREVIEW];
+    if (trackPreviewWidget.type != WindowWidgetType::Empty)
         gfx_fill_rect(
             dpi,
-            { { w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 } },
-              { w->windowPos + ScreenCoordsXY{ widget->right - 1, widget->bottom - 1 } } },
+            { { w->windowPos + ScreenCoordsXY{ trackPreviewWidget.left + 1, trackPreviewWidget.top + 1 } },
+              { w->windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
             PALETTE_INDEX_12);
 
     auto trackColour = ride_get_track_colour(ride, w->ride_colour);
@@ -4871,7 +4829,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr || rideEntry->shop_item[0] == ShopItem::None)
     {
-        auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+        auto screenCoords = w->windowPos + ScreenCoordsXY{ trackPreviewWidget.left, trackPreviewWidget.top };
 
         // Track
         if (ride->type == RIDE_TYPE_MAZE)
@@ -4898,7 +4856,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else
     {
         auto screenCoords = w->windowPos
-            + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
+            + ScreenCoordsXY{ (trackPreviewWidget.left + trackPreviewWidget.right) / 2 - 8,
+                              (trackPreviewWidget.bottom + trackPreviewWidget.top) / 2 - 6 };
 
         ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
         gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, ride->track_colour[0].main), screenCoords);
@@ -4906,12 +4865,13 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Entrance preview
     trackColour = ride_get_track_colour(ride, 0);
-    widget = &w->widgets[WIDX_ENTRANCE_PREVIEW];
-    if (widget->type != WindowWidgetType::Empty)
+    const auto& entrancePreviewWidget = w->widgets[WIDX_ENTRANCE_PREVIEW];
+    if (entrancePreviewWidget.type != WindowWidgetType::Empty)
     {
         if (clip_drawpixelinfo(
-                &clippedDpi, dpi, w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 }, widget->width(),
-                widget->height()))
+                &clippedDpi, dpi,
+                w->windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
+                entrancePreviewWidget.width(), entrancePreviewWidget.height()))
         {
             gfx_clear(&clippedDpi, PALETTE_INDEX_12);
 
@@ -5265,8 +5225,7 @@ static void cancel_scenery_selection()
     OpenRCT2::Audio::Resume();
 
     rct_window* main_w = window_get_main();
-
-    if (main_w)
+    if (main_w != nullptr)
     {
         main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
     }
@@ -5298,8 +5257,7 @@ static void setup_scenery_selection(rct_window* w)
     OpenRCT2::Audio::StopAll();
 
     rct_window* w_main = window_get_main();
-
-    if (w_main)
+    if (w_main != nullptr)
     {
         w_main->viewport->flags |= (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
     }
@@ -6023,10 +5981,8 @@ static OpenRCT2String window_ride_graphs_tooltip(rct_window* w, const rct_widget
                 ft.Add<uint16_t>(measurement->vehicle_index + 1);
                 return { fallback, ft };
             }
-            else
-            {
-                return message;
-            }
+
+            return message;
         }
     }
     else

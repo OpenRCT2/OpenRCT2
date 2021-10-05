@@ -29,11 +29,6 @@ public:
     int32_t Height{};
     uint8_t ScrollingMode{};
 
-    explicit StationObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;

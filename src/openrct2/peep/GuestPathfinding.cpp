@@ -88,7 +88,7 @@ static TileElement* get_banner_on_path(TileElement* path_element)
         if (bannerElement->IsLastForTile())
             return nullptr;
 
-    } while (bannerElement++);
+    } while (bannerElement++ != nullptr);
 
     return nullptr;
 }
@@ -276,7 +276,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
     }
 
     loc += TileDirectionDelta[chosenDirection];
-    nextTileElement = map_get_first_element_at(loc.ToCoordsXY());
+    nextTileElement = map_get_first_element_at(loc);
     do
     {
         if (nextTileElement == nullptr)
@@ -327,7 +327,7 @@ static uint8_t footpath_element_dest_in_dir(
         return PATH_SEARCH_LIMIT_REACHED;
 
     loc += TileDirectionDelta[chosenDirection];
-    tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
     {
         return PATH_SEARCH_FAILED;
@@ -733,7 +733,7 @@ static void peep_pathfind_heuristic_search(
 
     /* Get the next map element of interest in the direction of test_edge. */
     bool found = false;
-    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
     {
         return;
@@ -1275,7 +1275,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
     // Get the path element at this location
-    TileElement* dest_tile_element = map_get_first_element_at(loc.ToCoordsXY());
+    TileElement* dest_tile_element = map_get_first_element_at(loc);
     /* Where there are multiple matching map elements placed with zero
      * clearance, save the first one for later use to determine the path
      * slope - this maintains the original behaviour (which only processes
@@ -1669,8 +1669,8 @@ static int32_t guest_path_find_entering_park(Peep* peep, uint8_t edges)
 
     if (chosenDirection == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
-    else
-        return peep_move_one_tile(chosenDirection, peep);
+
+    return peep_move_one_tile(chosenDirection, peep);
 }
 
 /**
@@ -1724,8 +1724,8 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
     direction = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
     if (direction == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
-    else
-        return peep_move_one_tile(direction, peep);
+
+    return peep_move_one_tile(direction, peep);
 }
 
 /**
@@ -1782,8 +1782,8 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
 
     if (chosenDirection == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
-    else
-        return peep_move_one_tile(chosenDirection, peep);
+
+    return peep_move_one_tile(chosenDirection, peep);
 }
 
 /**
@@ -1797,7 +1797,7 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
 static void get_ride_queue_end(TileCoordsXYZ& loc)
 {
     TileCoordsXY queueEnd = { 0, 0 };
-    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(loc);
 
     if (tileElement == nullptr)
     {
@@ -1845,7 +1845,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         }
         nextTile += TileDirectionDelta[direction];
 
-        tileElement = map_get_first_element_at(nextTile.ToCoordsXY());
+        tileElement = map_get_first_element_at(nextTile);
         found = false;
         if (tileElement == nullptr)
             break;

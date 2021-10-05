@@ -145,7 +145,7 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
-        auto tileElement = map_get_first_element_at(banner->position.ToCoordsXY());
+        auto tileElement = map_get_first_element_at(banner->position);
         if (tileElement != nullptr)
         {
             do
@@ -166,7 +166,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
     if (banner == nullptr)
         return nullptr;
 
-    auto tileElement = map_get_first_element_at(banner->position.ToCoordsXY());
+    auto tileElement = map_get_first_element_at(banner->position);
     if (tileElement == nullptr)
         return nullptr;
 

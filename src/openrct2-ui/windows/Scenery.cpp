@@ -171,7 +171,7 @@ static rct_widget window_scenery_widgets[] = {
     MakeWidget     ({615, 117}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_TERNARY_COLOUR  ), // 20000000  0x009DE468
     MakeWidget     ({609, 130}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_G2_EYEDROPPER,   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
     MakeWidget     ({609, 154}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 // clang-format on
 
@@ -989,7 +989,7 @@ void window_scenery_invalidate(rct_window* w)
             }
 
             auto* sceneryEntry = get_small_scenery_entry(tabSelectedScenery.EntryIndex);
-            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
             {
                 window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
             }
@@ -1060,12 +1060,11 @@ void window_scenery_invalidate(rct_window* w)
         {
             auto* sceneryEntry = get_small_scenery_entry(tabSelectedScenery.EntryIndex);
 
-            if (scenery_small_entry_has_flag(
-                    sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
             {
                 window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
 
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
                     window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
             }
         }
@@ -1313,11 +1312,11 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                 auto* sceneryEntry = get_small_scenery_entry(currentSceneryGlobal.EntryIndex);
                 uint32_t imageId = sceneryEntry->image + gWindowSceneryRotation;
 
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 {
                     imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
-                    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
                     {
                         imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
                     }
@@ -1325,15 +1324,15 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
 
                 uint16_t spriteTop = (sceneryEntry->height / 4) + 0x2B;
 
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)
-                    && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)
+                    && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
                     spriteTop -= 0x0C;
                 }
 
                 gfx_draw_sprite(&clipdpi, imageId, { 0x20, spriteTop }, w->colours[1]);
 
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_GLASS))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
                 {
                     imageId = ((sceneryEntry->image + gWindowSceneryRotation) + 0x40000004)
                         + (EnumValue(GlassPaletteIds[gWindowSceneryPrimaryColour]) << 19);
@@ -1341,7 +1340,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                     gfx_draw_sprite(&clipdpi, imageId, { 0x20, spriteTop }, w->colours[1]);
                 }
 
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED_FG))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
                 {
                     imageId = (sceneryEntry->image + gWindowSceneryRotation) + 4;
                     gfx_draw_sprite(&clipdpi, imageId, { 0x20, spriteTop }, w->colours[1]);

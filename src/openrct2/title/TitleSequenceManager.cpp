@@ -185,7 +185,7 @@ namespace TitleSequenceManager
                 {
                     return true;
                 }
-                else if (a.PredefinedIndex > b.PredefinedIndex)
+                if (a.PredefinedIndex > b.PredefinedIndex)
                 {
                     return false;
                 }

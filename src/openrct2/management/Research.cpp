@@ -159,13 +159,12 @@ static void research_next_design()
                 it = gResearchItemsUninvented.begin();
                 continue;
             }
-            else
-            {
-                research_mark_as_fully_completed();
-                return;
-            }
+
+            research_mark_as_fully_completed();
+            return;
         }
-        else if (ignoreActiveResearchTypes || (gResearchPriorities & EnumToFlag(researchItem.category)))
+
+        if (ignoreActiveResearchTypes || (gResearchPriorities & EnumToFlag(researchItem.category)))
         {
             break;
         }
@@ -316,7 +315,7 @@ void research_update()
         return;
     }
 
-    if (gScenarioTicks % 32 != 0)
+    if (gCurrentTicks % 32 != 0)
     {
         return;
     }
@@ -561,11 +560,9 @@ bool scenery_is_invented(const ScenerySelection& sceneryItem)
     {
         return _researchedSceneryItems[sceneryItem.SceneryType][sceneryItem.EntryIndex];
     }
-    else
-    {
-        log_warning("Invalid Scenery Type");
-        return false;
-    }
+
+    log_warning("Invalid Scenery Type");
+    return false;
 }
 
 void scenery_set_invented(const ScenerySelection& sceneryItem)
@@ -697,23 +694,17 @@ rct_string_id ResearchItem::GetName() const
         {
             return STR_EMPTY;
         }
-        else
-        {
-            return rideEntry->naming.Name;
-        }
+
+        return rideEntry->naming.Name;
     }
-    else
+
+    rct_scenery_group_entry* sceneryEntry = get_scenery_group_entry(entryIndex);
+    if (sceneryEntry == nullptr)
     {
-        rct_scenery_group_entry* sceneryEntry = get_scenery_group_entry(entryIndex);
-        if (sceneryEntry == nullptr)
-        {
-            return STR_EMPTY;
-        }
-        else
-        {
-            return sceneryEntry->name;
-        }
+        return STR_EMPTY;
     }
+
+    return sceneryEntry->name;
 }
 
 /**

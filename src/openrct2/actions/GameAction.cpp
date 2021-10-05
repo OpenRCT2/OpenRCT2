@@ -335,7 +335,7 @@ namespace GameActions
     {
         if (network_get_mode() == NETWORK_MODE_CLIENT)
             return "cl";
-        else if (network_get_mode() == NETWORK_MODE_SERVER)
+        if (network_get_mode() == NETWORK_MODE_SERVER)
             return "sv";
         return "sp";
     }
@@ -502,7 +502,7 @@ namespace GameActions
                     bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
                     bool recordAction = false;
-                    if (replayManager)
+                    if (replayManager != nullptr)
                     {
                         if (replayManager->IsRecording() && commandExecutes)
                             recordAction = true;

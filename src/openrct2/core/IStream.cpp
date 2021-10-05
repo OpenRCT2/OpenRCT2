@@ -57,6 +57,17 @@ namespace OpenRCT2
         }
     }
 
+    void IStream::WriteString(const std::string_view str)
+    {
+        for (const auto c : str)
+        {
+            if (c == '\0')
+                break;
+            WriteValue<uint8_t>(c);
+        }
+        WriteValue<uint8_t>(0);
+    }
+
     void IStream::WriteString(const std::string& str)
     {
         WriteString(str.c_str());

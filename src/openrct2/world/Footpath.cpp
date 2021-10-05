@@ -43,6 +43,7 @@
 using namespace OpenRCT2::TrackMetaData;
 void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElement* tileElement);
 
+FootpathSelection gFootpathSelection;
 ProvisionalFootpath gProvisionalFootpath;
 uint16_t gFootpathSelectedId;
 CoordsXYZ gFootpathConstructFromPosition;
@@ -139,21 +140,25 @@ money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags)
  *
  *  rct2: 0x006A76FF
  */
-money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int32_t slope)
+money32 footpath_provisional_set(
+    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
+    PathConstructFlags constructFlags)
 {
     money32 cost;
 
     footpath_provisional_remove();
 
-    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type);
+    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
     cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     if (res->Error == GameActions::Status::Ok)
     {
-        gProvisionalFootpath.Type = type;
+        gProvisionalFootpath.SurfaceIndex = type;
+        gProvisionalFootpath.RailingsIndex = railingsType;
         gProvisionalFootpath.Position = footpathLoc;
         gProvisionalFootpath.Slope = slope;
+        gProvisionalFootpath.ConstructFlags = constructFlags;
         gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
@@ -581,19 +586,16 @@ static int32_t rct_neighbour_compare(const void* a, const void* b)
     uint8_t vb = (static_cast<const rct_neighbour*>(b))->order;
     if (va < vb)
         return 1;
-    else if (va > vb)
+    if (va > vb)
         return -1;
-    else
-    {
-        uint8_t da = (static_cast<const rct_neighbour*>(a))->direction;
-        uint8_t db = (static_cast<const rct_neighbour*>(b))->direction;
-        if (da < db)
-            return -1;
-        else if (da > db)
-            return 1;
-        else
-            return 0;
-    }
+
+    uint8_t da = (static_cast<const rct_neighbour*>(a))->direction;
+    uint8_t db = (static_cast<const rct_neighbour*>(b))->direction;
+    if (da < db)
+        return -1;
+    if (da > db)
+        return 1;
+    return 0;
 }
 
 static void neighbour_list_init(rct_neighbour_list* neighbourList)
@@ -855,7 +857,7 @@ static void loc_6A6D7E(
                         }
                         return;
                     }
-                    else if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
+                    if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
                     {
                         if (tileElement->AsPath()->IsSloped()
                             && tileElement->AsPath()->GetSlopeDirection() == direction_reverse(direction))
@@ -1224,7 +1226,7 @@ void footpath_update_queue_chains()
             if (location.IsNull())
                 continue;
 
-            TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
+            TileElement* tileElement = map_get_first_element_at(location);
             if (tileElement != nullptr)
             {
                 do
@@ -1648,8 +1650,8 @@ ObjectEntryIndex PathElement::GetLegacyPathEntryIndex() const
 {
     if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
         return SurfaceIndex;
-    else
-        return OBJECT_ENTRY_INDEX_NULL;
+
+    return OBJECT_ENTRY_INDEX_NULL;
 }
 
 const FootpathObject* PathElement::GetLegacyPathEntry() const
@@ -1659,7 +1661,7 @@ const FootpathObject* PathElement::GetLegacyPathEntry() const
 
 void PathElement::SetLegacyPathEntryIndex(ObjectEntryIndex newIndex)
 {
-    SurfaceIndex = newIndex & ~FOOTPATH_ELEMENT_INSERT_QUEUE;
+    SurfaceIndex = newIndex;
     RailingsIndex = OBJECT_ENTRY_INDEX_NULL;
     Flags2 |= FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
@@ -1712,8 +1714,8 @@ ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 {
     if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
         return OBJECT_ENTRY_INDEX_NULL;
-    else
-        return SurfaceIndex;
+
+    return SurfaceIndex;
 }
 
 const FootpathSurfaceObject* PathElement::GetSurfaceEntry() const
@@ -1732,8 +1734,8 @@ ObjectEntryIndex PathElement::GetRailingsEntryIndex() const
 {
     if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
         return OBJECT_ENTRY_INDEX_NULL;
-    else
-        return RailingsIndex;
+
+    return RailingsIndex;
 }
 
 const FootpathRailingsObject* PathElement::GetRailingsEntry() const
@@ -1761,6 +1763,7 @@ void PathElement::SetQueueBannerDirection(uint8_t direction)
 
 bool PathElement::ShouldDrawPathOverSupports() const
 {
+    // TODO: make this an actual decision of the tile element.
     return (GetRailingsDescriptor()->Flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
 }
 
@@ -2140,7 +2143,7 @@ static void footpath_remove_edges_towards(const CoordsXYRangedZ& footPathPos, in
 // entrances and exits, shops, paths).
 bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved)
 {
-    TileElement* tileElement = map_get_first_element_at(coords.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(coords);
     if (tileElement == nullptr)
         return false;
     do
@@ -2157,7 +2160,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
                     if (!tileElement->AsPath()->IsSloped())
                         // The footpath is flat, it can be connected to from any direction
                         return true;
-                    else if (tileElement->AsPath()->GetSlopeDirection() == direction_reverse(coords.direction))
+                    if (tileElement->AsPath()->GetSlopeDirection() == direction_reverse(coords.direction))
                         // The footpath is sloped and its lowest point matches the edge connection
                         return true;
                 }
@@ -2329,6 +2332,26 @@ const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 
     const FootpathObject* footpathObject = (static_cast<FootpathObject*>(obj));
     return footpathObject;
+}
+
+const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
+    if (obj == nullptr)
+        return nullptr;
+
+    return static_cast<FootpathSurfaceObject*>(obj);
+}
+
+const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex);
+    if (obj == nullptr)
+        return nullptr;
+
+    return static_cast<FootpathRailingsObject*>(obj);
 }
 
 ride_id_t PathElement::GetRideIndex() const

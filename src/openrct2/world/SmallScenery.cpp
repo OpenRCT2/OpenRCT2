@@ -37,11 +37,11 @@ static int32_t map_place_clear_func(
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
-        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_IS_TREE))
+        if (scenery != nullptr && scenery->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
         *price += scenery->removal_price * 10;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -74,11 +74,6 @@ int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY&
 int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
 {
     return map_place_clear_func(tile_element, coords, flags, price, /*is_scenery=*/false);
-}
-
-bool scenery_small_entry_has_flag(const SmallSceneryEntry* sceneryEntry, uint32_t flags)
-{
-    return static_cast<bool>(sceneryEntry->flags & flags);
 }
 
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
@@ -126,7 +121,7 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
         {
             auto* sceneryEntry = GetEntry();
 
-            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_WITHER))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
             {
                 map_invalidate_tile_zoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
             }

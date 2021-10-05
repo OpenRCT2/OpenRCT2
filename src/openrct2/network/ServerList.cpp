@@ -95,20 +95,18 @@ std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)
 
         return std::nullopt;
     }
-    else
-    {
-        ServerListEntry entry;
 
-        entry.Address = ip + ":" + std::to_string(port);
-        entry.Name = name;
-        entry.Description = description;
-        entry.Version = version;
-        entry.RequiresPassword = requiresPassword;
-        entry.Players = players;
-        entry.MaxPlayers = maxPlayers;
+    ServerListEntry entry;
 
-        return entry;
-    }
+    entry.Address = ip + ":" + std::to_string(port);
+    entry.Name = name;
+    entry.Description = description;
+    entry.Version = version;
+    entry.RequiresPassword = requiresPassword;
+    entry.Players = players;
+    entry.MaxPlayers = maxPlayers;
+
+    return entry;
 }
 
 void ServerList::Sort()

@@ -20,6 +20,8 @@ struct Ride;
 
 constexpr const ride_id_t RIDE_ID_NULL = static_cast<ride_id_t>(std::numeric_limits<std::underlying_type_t<ride_id_t>>::max());
 
+using ride_type_t = uint16_t;
+
 /**
  * Couples a ride type and subtype together.
  */

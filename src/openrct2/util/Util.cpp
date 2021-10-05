@@ -351,17 +351,15 @@ int32_t strlogicalcmp(const char* s1, const char* s2)
     {
         if (*s2 == '\0')
             return *s1 != '\0';
-        else if (*s1 == '\0')
+        if (*s1 == '\0')
             return -1;
-        else if (!(isdigit(*s1) && isdigit(*s2)))
+        if (!(isdigit(*s1) && isdigit(*s2)))
         {
             if (toupper(*s1) != toupper(*s2))
                 return toupper(*s1) - toupper(*s2);
-            else
-            {
-                ++s1;
-                ++s2;
-            }
+
+            ++s1;
+            ++s2;
         }
         else
         {
@@ -370,8 +368,9 @@ int32_t strlogicalcmp(const char* s1, const char* s2)
             unsigned long n2 = strtoul(s2, &lim2, 10);
             if (n1 > n2)
                 return 1;
-            else if (n1 < n2)
+            if (n1 < n2)
                 return -1;
+
             s1 = lim1;
             s2 = lim2;
         }
@@ -388,8 +387,7 @@ utf8* safe_strtrunc(utf8* text, size_t size)
     const char* sourceLimit = text + size - 1;
     char* ch = text;
     char* last = text;
-    uint32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&ch))) != 0)
+    while (utf8_get_next(ch, const_cast<const utf8**>(&ch)) != 0)
     {
         if (ch <= sourceLimit)
         {
@@ -458,10 +456,8 @@ char* safe_strcat(char* destination, const char* source, size_t size)
         {
             break;
         }
-        else
-        {
-            destination++;
-        }
+
+        destination++;
     }
 
     bool terminated = false;
@@ -694,6 +690,102 @@ bool util_gzip_compress(FILE* source, FILE* dest)
     } while (flush != Z_FINISH);
     deflateEnd(&strm);
     return true;
+}
+
+std::vector<uint8_t> Gzip(const void* data, const size_t dataLen)
+{
+    assert(data != nullptr);
+
+    std::vector<uint8_t> output;
+    z_stream strm{};
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+
+    {
+        const auto ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 | 16, 8, Z_DEFAULT_STRATEGY);
+        if (ret != Z_OK)
+        {
+            throw std::runtime_error("deflateInit2 failed with error " + std::to_string(ret));
+        }
+    }
+
+    int flush = 0;
+    const auto* src = static_cast<const Bytef*>(data);
+    size_t srcRemaining = dataLen;
+    do
+    {
+        const auto nextBlockSize = std::min(srcRemaining, CHUNK);
+        srcRemaining -= nextBlockSize;
+
+        flush = srcRemaining == 0 ? Z_FINISH : Z_NO_FLUSH;
+        strm.avail_in = static_cast<uInt>(nextBlockSize);
+        strm.next_in = const_cast<Bytef*>(src);
+        do
+        {
+            output.resize(output.size() + nextBlockSize);
+            strm.avail_out = static_cast<uInt>(nextBlockSize);
+            strm.next_out = &output[output.size() - nextBlockSize];
+            const auto ret = deflate(&strm, flush);
+            if (ret == Z_STREAM_ERROR)
+            {
+                throw std::runtime_error("deflate failed with error " + std::to_string(ret));
+            }
+            output.resize(output.size() - strm.avail_out);
+        } while (strm.avail_out == 0);
+
+        src += nextBlockSize;
+    } while (flush != Z_FINISH);
+    deflateEnd(&strm);
+    return output;
+}
+
+std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen)
+{
+    assert(data != nullptr);
+
+    std::vector<uint8_t> output;
+    z_stream strm{};
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+
+    {
+        const auto ret = inflateInit2(&strm, 15 | 16);
+        if (ret != Z_OK)
+        {
+            throw std::runtime_error("inflateInit2 failed with error " + std::to_string(ret));
+        }
+    }
+
+    int flush = 0;
+    const auto* src = static_cast<const Bytef*>(data);
+    size_t srcRemaining = dataLen;
+    do
+    {
+        const auto nextBlockSize = std::min(srcRemaining, CHUNK);
+        srcRemaining -= nextBlockSize;
+
+        flush = srcRemaining == 0 ? Z_FINISH : Z_NO_FLUSH;
+        strm.avail_in = static_cast<uInt>(nextBlockSize);
+        strm.next_in = const_cast<Bytef*>(src);
+        do
+        {
+            output.resize(output.size() + nextBlockSize);
+            strm.avail_out = static_cast<uInt>(nextBlockSize);
+            strm.next_out = &output[output.size() - nextBlockSize];
+            const auto ret = inflate(&strm, flush);
+            if (ret == Z_STREAM_ERROR)
+            {
+                throw std::runtime_error("deflate failed with error " + std::to_string(ret));
+            }
+            output.resize(output.size() - strm.avail_out);
+        } while (strm.avail_out == 0);
+
+        src += nextBlockSize;
+    } while (flush != Z_FINISH);
+    inflateEnd(&strm);
+    return output;
 }
 
 // Type-independent code left as macro to reduce duplicate code.

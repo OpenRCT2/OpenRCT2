@@ -31,7 +31,8 @@ private:
             return true;
         else if constexpr (std::is_integral_v<T>)
             return true;
-        return false;
+        else
+            return false;
     }
 
     static constexpr auto ValueDistance(T a, T b)
@@ -134,10 +135,8 @@ public:
                 auto index = static_cast<size_t>(k);
                 return _map.begin() + index;
             }
-            else
-            {
-                return binarySearchValue();
-            }
+
+            return binarySearchValue();
         }
         else
         {

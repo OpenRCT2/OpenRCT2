@@ -241,7 +241,7 @@ constexpr int32_t BUTTONH = 17;
 
 static rct_widget DefaultWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // Group boxes .top and .bottom for a given window height offsets from the bottom
@@ -259,7 +259,7 @@ static rct_widget SurfaceWidgets[] = {
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SUR_GBPT, 2) + 7 * 2),  STR_NONE,   STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_S
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 0, GBBT(WH - SUR_GBPT, 2) + 7 * 1),  STR_NONE,   STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_W
     { WindowWidgetType::Checkbox,         1,  GBBF(WH - SUR_GBPT, 0, 4),  STR_TILE_INSPECTOR_SURFACE_DIAGONAL,    STR_NONE }, // WIDX_SURFACE_CHECK_DIAGONAL
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 constexpr int32_t PAT_GBPB = PADDING_BOTTOM;               // Path group box properties bottom
@@ -279,7 +279,7 @@ static rct_widget PathWidgets[] = {
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 0, GBBT(WH - PAT_GBPT, 2) + 7 * 2),  STR_NONE,   STR_NONE }, // WIDX_PATH_CHECK_EDGE_W
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - PAT_GBPT, 2) + 7 * 1),  STR_NONE,   STR_NONE }, // WIDX_PATH_CHECK_EDGE_NW
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 2, GBBT(WH - PAT_GBPT, 2) + 7 * 0),  STR_NONE,   STR_NONE }, // WIDX_PATH_CHECK_EDGE_N
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 constexpr int32_t TRA_GBPB = PADDING_BOTTOM;               // Track group box properties bottom
@@ -293,7 +293,7 @@ static rct_widget TrackWidgets[] = {
     { WindowWidgetType::Checkbox,         1,  GBBF(WH - TRA_GBPT, 0, 2),  STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT,            STR_NONE }, // WIDX_TRACK_CHECK_CHAIN_LIFT
     { WindowWidgetType::Checkbox,         1,  GBBF(WH - TRA_GBPT, 0, 3),  STR_TILE_INSPECTOR_TRACK_BLOCK_BRAKE,           STR_NONE }, // WIDX_PATH_CHECK_BLOCK_BRAKE_CLOSED
     { WindowWidgetType::Checkbox,         1,  GBBF(WH - TRA_GBPT, 0, 4),  STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE,     STR_NONE }, // WIDX_PATH_CHECK_IS_INDESTRUCTIBLE
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 constexpr int32_t SCE_GBPB = PADDING_BOTTOM;               // Scenery group box properties bottom
@@ -311,7 +311,7 @@ static rct_widget SceneryWidgets[] = {
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 2, GBBT(WH - SCE_GBPT, 2) + 7 * 1),  STR_NONE,   STR_NONE }, // WIDX_SCENERY_CHECK_COLLISION_E
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SCE_GBPT, 2) + 7 * 2),  STR_NONE,   STR_NONE }, // WIDX_SCENERY_CHECK_COLLISION_S
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 0, GBBT(WH - SCE_GBPT, 2) + 7 * 1),  STR_NONE,   STR_NONE }, // WIDX_SCENERY_CHECK_COLLISION_W
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 
@@ -323,7 +323,7 @@ static rct_widget EntranceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - ENT_GBPT, 0) + 3, GBBB(WH - ENT_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_ENTRANCE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WindowWidgetType::Button,           1,  GBB(WH - ENT_GBPT, 0, 1),   STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE,        STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE_TIP }, // WIDX_ENTRANCE_BUTTON_MAKE_USABLE
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 constexpr int32_t WALL_GBPB = PADDING_BOTTOM;                  // Wall group box properties bottom
@@ -336,7 +336,7 @@ static rct_widget WallWidgets[] = {
     { WindowWidgetType::DropdownMenu,         1,  GBD(WH - WALL_GBPT, 1, 1),  STR_NONE,                                       STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE
     { WindowWidgetType::Button,           1,  GBDB(WH - WALL_GBPT, 1, 1), STR_DROPDOWN_GLYPH,                             STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - WALL_GBPT, 2) + 3, GBBB(WH - WALL_GBPT, 2) - 3, STR_NONE,  STR_NONE),  // WIDX_WALL_SPINNER_ANIMATION_FRAME{,_INCREASE,_DECREASE}
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 constexpr int32_t LAR_GBPB = PADDING_BOTTOM;               // Large scenery group box properties bottom
@@ -346,7 +346,7 @@ constexpr int32_t LAR_GBDT = LAR_GBDB + 20 + 3 * 11;       // Large scenery grou
 static rct_widget LargeSceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - LAR_GBPT, 0) + 3, GBBB(WH - LAR_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_LARGE_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 constexpr int32_t BAN_GBPB = PADDING_BOTTOM;               // Banner group box properties bottom
@@ -361,7 +361,7 @@ static rct_widget BannerWidgets[] = {
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 1,   GBBT(WH - BAN_GBPT, 1) + 7 * 3),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_SW
     { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 1,   GBBT(WH - BAN_GBPT, 1) + 7 * 1),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_NW
 
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 constexpr int32_t COR_GBPB = PADDING_BOTTOM;               // Corrupt element group box properties bottom
@@ -372,7 +372,7 @@ static rct_widget CorruptWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - COR_GBPT, 0) + 3, GBBB(WH - COR_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_CORRUPT_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WindowWidgetType::Button,           1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_CLAMP_TO_NEXT, STR_TILE_INSPECTOR_CLAMP_TO_NEXT_TIP }, // WIDX_CORRUPT_BUTTON_CLAMP
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *PageWidgets[] = {
@@ -1928,28 +1928,31 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
             case TILE_ELEMENT_TYPE_TRACK:
             {
-                // Details
-                // Ride
                 auto trackElement = tileElement->AsTrack();
                 ride_id_t rideId = trackElement->GetRideIndex();
                 auto ride = get_ride(rideId);
-                if (ride != nullptr)
-                {
-                    auto ft = Formatter();
-                    ft.Add<rct_string_id>(ride->GetRideTypeDescriptor().Naming.Name);
-                    DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, ft, { COLOUR_WHITE });
-                }
+
+                // Ride ID
                 auto ft = Formatter();
-                ft.Add<int16_t>(trackElement->GetRideIndex());
-                DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_TRACK_RIDE_ID, ft, { COLOUR_WHITE });
+                ft.Add<int16_t>(rideId);
+                DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_TRACK_RIDE_ID, ft, { COLOUR_WHITE });
+
+                // Ride name
                 if (ride != nullptr)
                 {
                     ft = Formatter();
                     ride->FormatNameTo(ft);
                     DrawTextBasic(
-                        dpi, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, ft, { COLOUR_WHITE });
+                        dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, ft, { COLOUR_WHITE });
                 }
+
+                // Ride type. Individual pieces may be of a different ride type from the ride it belongs to.
+                const auto& rtd = GetRideTypeDescriptor(trackElement->GetRideType());
+                ft = Formatter();
+                ft.Add<rct_string_id>(rtd.Naming.Name);
+                DrawTextBasic(
+                    dpi, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, ft, { COLOUR_WHITE });
+
                 // Track
                 ft = Formatter();
                 ft.Add<track_type_t>(trackElement->GetTrackType());
@@ -2007,7 +2010,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 // Quadrant value
                 const auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-                if (sceneryEntry != nullptr && !(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
+                if (sceneryEntry != nullptr && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))
                 {
                     int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
                     static rct_string_id quadrant_string_idx[] = { STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,

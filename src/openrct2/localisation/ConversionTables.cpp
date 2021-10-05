@@ -111,8 +111,9 @@ static int32_t encoding_search_compare(const void *pKey, const void *pEntry)
 static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_convert_entry *table, size_t count)
 {
     encoding_convert_entry * entry = static_cast<encoding_convert_entry *>(std::bsearch(&code, table, count, sizeof(encoding_convert_entry), encoding_search_compare));
-    if (entry == nullptr) return code;
-    else return entry->unicode;
+    if (entry == nullptr)
+        return code;
+    return entry->unicode;
 }
 
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)

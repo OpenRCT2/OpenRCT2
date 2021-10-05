@@ -387,8 +387,8 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
     {
         if (rideType != RIDE_TYPE_NULL)
             break;
-        else
-            imageId++;
+
+        imageId++;
     }
 
     gfx_draw_sprite(dpi, imageId, { 0, 0 }, 0);

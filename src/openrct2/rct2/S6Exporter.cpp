@@ -266,14 +266,14 @@ static void ExportObjectList(IObjectManager& objMgr, T& objects)
         auto& dst = objects[i];
 
         const auto* object = objMgr.GetLoadedObject(TObjectType, i);
-        if (object == nullptr || object->GetObjectEntry() == nullptr)
+        if (object == nullptr)
         {
             // The sv6 format expects null/invalid entries to be filled with 0xFF.
             std::memset(&dst, 0xFF, sizeof(dst));
         }
         else
         {
-            dst = *object->GetObjectEntry();
+            dst = object->GetObjectEntry();
         }
     }
 }
@@ -316,7 +316,7 @@ void S6Exporter::Export()
 
     _s6.elapsed_months = static_cast<uint16_t>(gDateMonthsElapsed);
     _s6.current_day = gDateMonthTicks;
-    _s6.scenario_ticks = gScenarioTicks;
+    _s6.scenario_ticks = gCurrentTicks;
 
     auto state = scenario_rand_state();
     _s6.scenario_srand_0 = state.s0;
@@ -1090,6 +1090,23 @@ void S6Exporter::ExportMarketingCampaigns()
     }
 }
 
+void S6Exporter::RebuildEntitySpatialLocation(const TileCoordsXY& loc)
+{
+    uint16_t previous = SPRITE_INDEX_NULL;
+    for (auto* entity : EntityTileList(loc.ToCoordsXY()))
+    {
+        if (previous != SPRITE_INDEX_NULL)
+        {
+            _s6.sprites[previous].unknown.next_in_quadrant = entity->sprite_index;
+        }
+        previous = entity->sprite_index;
+    }
+    if (previous != SPRITE_INDEX_NULL)
+    {
+        _s6.sprites[previous].unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+    }
+}
+
 void S6Exporter::RebuildEntityLinks()
 {
     // Rebuild next/previous linked list entity indexs
@@ -1098,6 +1115,9 @@ void S6Exporter::RebuildEntityLinks()
            RCT12EntityLinkListOffset::Peep, RCT12EntityLinkListOffset::TrainHead, RCT12EntityLinkListOffset::Vehicle })
     {
         uint16_t previous = SPRITE_INDEX_NULL;
+        // Intialise Head to NULL for situations where there are no entities of this type.
+        _s6.sprite_lists_head[EnumValue(list) >> 1] = SPRITE_INDEX_NULL;
+
         for (auto& entity : _s6.sprites)
         {
             if (entity.unknown.linked_list_type_offset == list)
@@ -1119,25 +1139,18 @@ void S6Exporter::RebuildEntityLinks()
     }
 
     // Rebuild next_in_quadrant linked list entity indexs
+    // This in theory is not required but to be on the safe side we are rebuilding it.
     for (auto x = 0; x < 255; ++x)
     {
         for (auto y = 0; y < 255; ++y)
         {
-            uint16_t previous = SPRITE_INDEX_NULL;
-            for (auto* entity : EntityTileList(TileCoordsXY{ x, y }.ToCoordsXY()))
-            {
-                if (previous != SPRITE_INDEX_NULL)
-                {
-                    _s6.sprites[previous].unknown.next_in_quadrant = entity->sprite_index;
-                }
-                previous = entity->sprite_index;
-            }
-            if (previous != SPRITE_INDEX_NULL)
-            {
-                _s6.sprites[previous].unknown.next_in_quadrant = SPRITE_INDEX_NULL;
-            }
+            RebuildEntitySpatialLocation(TileCoordsXY{ x, y });
         }
     }
+    // Rebuild next_in_quadrant linked list for LOCATION_NULL
+    TileCoordsXY invalid;
+    invalid.SetNull();
+    RebuildEntitySpatialLocation(invalid);
 }
 
 constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const EntityBase* src)
@@ -1148,7 +1161,7 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const EntityBase* src)
         case EntityType::Vehicle:
         {
             auto veh = src->As<Vehicle>();
-            if (veh && veh->IsHead())
+            if (veh != nullptr && veh->IsHead())
             {
                 output = RCT12EntityLinkListOffset::TrainHead;
             }
@@ -1222,15 +1235,15 @@ void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const Entity
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
     dst->flags = 0;
-    dst->x = src->x;
-    dst->y = src->y;
-    dst->z = src->z;
+    dst->x = static_cast<int16_t>(src->x);
+    dst->y = static_cast<int16_t>(src->y);
+    dst->z = static_cast<int16_t>(src->z);
     dst->sprite_width = src->sprite_width;
     dst->sprite_height_positive = src->sprite_height_positive;
-    dst->sprite_left = src->sprite_left;
-    dst->sprite_top = src->sprite_top;
-    dst->sprite_right = src->sprite_right;
-    dst->sprite_bottom = src->sprite_bottom;
+    dst->sprite_left = src->SpriteRect.GetLeft();
+    dst->sprite_top = src->SpriteRect.GetTop();
+    dst->sprite_right = src->SpriteRect.GetRight();
+    dst->sprite_bottom = src->SpriteRect.GetBottom();
     dst->sprite_direction = src->sprite_direction;
 }
 
@@ -1748,9 +1761,10 @@ void S6Exporter::ExportMapAnimations()
         auto& dst = _s6.map_animations[i];
 
         dst.type = src.type;
+        // In RCT12MapAnimation, the x and y coordinates use big coords, while the z coordinate uses small coords.
         dst.x = src.location.x;
         dst.y = src.location.y;
-        dst.baseZ = src.location.z;
+        dst.baseZ = src.location.z / COORDS_Z_STEP;
     }
 }
 
@@ -1863,7 +1877,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, const TileElement* src
 
             // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
             auto ride = get_ride(static_cast<ride_id_t>(dst2->GetRideIndex()));
-            if (ride)
+            if (ride != nullptr)
             {
                 if (ride->type == RIDE_TYPE_MAZE)
                 {

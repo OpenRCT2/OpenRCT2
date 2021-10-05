@@ -59,7 +59,7 @@ static rct_widget window_view_clipping_widgets[] = {
     MakeWidget        ({     11, 105}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
     MakeWidget        ({     11, 126}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
 
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 #pragma endregion
@@ -250,14 +250,12 @@ static void window_view_clipping_mousedown(rct_window* w, rct_widgetindex widget
         case WIDX_CLIP_HEIGHT_INCREASE:
             if (gClipHeight < 255)
                 window_view_clipping_set_clipheight(w, gClipHeight + 1);
-            mainWindow = window_get_main();
             if (mainWindow != nullptr)
                 mainWindow->Invalidate();
             break;
         case WIDX_CLIP_HEIGHT_DECREASE:
             if (gClipHeight > 0)
                 window_view_clipping_set_clipheight(w, gClipHeight - 1);
-            mainWindow = window_get_main();
             if (mainWindow != nullptr)
                 mainWindow->Invalidate();
             break;

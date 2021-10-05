@@ -88,10 +88,8 @@ static PeepSpawn* get_random_peep_spawn()
     {
         return &gPeepSpawns[scenario_rand() % gPeepSpawns.size()];
     }
-    else
-    {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 void park_set_open(bool open)
@@ -470,7 +468,7 @@ int32_t Park::CalculateParkRating() const
         for (auto litter : EntityList<Litter>())
         {
             // Ignore recently dropped litter
-            if (litter->creationTick - gScenarioTicks >= 7680)
+            if (litter->creationTick - gCurrentTicks >= 7680)
             {
                 litterCount++;
             }

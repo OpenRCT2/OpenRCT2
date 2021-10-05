@@ -20,7 +20,9 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/platform/platform.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/windows/Intent.h>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -48,8 +50,8 @@ private:
         }
     };
 
-    std::vector<rct_object_entry> _entries;
-    std::vector<rct_object_entry> _downloadedEntries;
+    std::vector<ObjectEntryDescriptor> _entries;
+    std::vector<ObjectEntryDescriptor> _downloadedEntries;
     size_t _currentDownloadIndex{};
     std::mutex _downloadedEntriesMutex;
     std::mutex _queueMutex;
@@ -64,7 +66,7 @@ private:
     inline static bool _downloadingObjects;
 
 public:
-    void Begin(const std::vector<rct_object_entry>& entries)
+    void Begin(const std::vector<ObjectEntryDescriptor>& entries)
     {
         _lastDownloadStatusInfo = {};
         _downloadStatusInfo = {};
@@ -80,7 +82,7 @@ public:
         return _downloadingObjects;
     }
 
-    std::vector<rct_object_entry> GetDownloadedEntries()
+    std::vector<ObjectEntryDescriptor> GetDownloadedEntries()
     {
         std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
         return _downloadedEntries;
@@ -150,7 +152,7 @@ private:
         _nextDownloadQueued = true;
     }
 
-    void DownloadObject(const rct_object_entry& entry, const std::string& name, const std::string& url)
+    void DownloadObject(const ObjectEntryDescriptor& entry, const std::string& name, const std::string& url)
     {
         try
         {
@@ -168,7 +170,7 @@ private:
                         auto dataLen = response.body.size();
 
                         auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
-                        objRepo.AddObjectFromFile(name, data, dataLen);
+                        objRepo.AddObjectFromFile(ObjectGeneration::DAT, name, data, dataLen);
 
                         std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
                         _downloadedEntries.push_back(entry);
@@ -199,7 +201,7 @@ private:
         }
 
         auto& entry = _entries[_currentDownloadIndex];
-        auto name = String::Trim(std::string(entry.name, sizeof(entry.name)));
+        auto name = String::Trim(std::string(entry.GetName()));
         log_verbose("Downloading object: [%s]:", name.c_str());
         _currentDownloadIndex++;
         UpdateProgress({ name, _lastDownloadSource, _currentDownloadIndex, _entries.size() });
@@ -280,10 +282,10 @@ static rct_widget window_object_load_error_widgets[] = {
 #ifndef DISABLE_HTTP
     MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
 #endif
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
-static rct_string_id get_object_type_string(const rct_object_entry *entry);
+static rct_string_id get_object_type_string(ObjectType type);
 static void window_object_load_error_close(rct_window *w);
 static void window_object_load_error_update(rct_window *w);
 static void window_object_load_error_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -310,7 +312,7 @@ static rct_window_event_list window_object_load_error_events([](auto& events)
 });
 // clang-format on
 
-static std::vector<rct_object_entry> _invalid_entries;
+static std::vector<ObjectEntryDescriptor> _invalid_entries;
 static int32_t highlighted_index = -1;
 static std::string file_path;
 #ifndef DISABLE_HTTP
@@ -324,10 +326,10 @@ static bool _updatedListAfterDownload;
  *  Could possibly be moved out of the window file if other
  *  uses exist and a suitable location is found.
  */
-static rct_string_id get_object_type_string(const rct_object_entry* entry)
+static rct_string_id get_object_type_string(ObjectType type)
 {
     rct_string_id result;
-    switch (entry->GetType())
+    switch (type)
     {
         case ObjectType::Ride:
             result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
@@ -371,39 +373,21 @@ static rct_string_id get_object_type_string(const rct_object_entry* entry)
  */
 static void copy_object_names_to_clipboard(rct_window* w)
 {
-    // Something has gone wrong, this shouldn't happen.
-    // We don't want to allocate stupidly large amounts of memory for no reason
-    assert(w->no_list_items > 0 && w->no_list_items <= OBJECT_ENTRY_COUNT);
-
-    // No system has a newline over 2 characters
-    size_t line_sep_len = strnlen(PLATFORM_NEWLINE, 2);
-    size_t buffer_len = (w->no_list_items * (8 + line_sep_len)) + 1;
-    utf8* buffer = new utf8[buffer_len]{};
-
-    size_t cur_len = 0;
+    std::stringstream stream;
     for (uint16_t i = 0; i < w->no_list_items; i++)
     {
-        cur_len += (8 + line_sep_len);
-        assert(cur_len < buffer_len);
-
-        uint16_t nameLength = 8;
-        for (; nameLength > 0; nameLength--)
-        {
-            if (_invalid_entries[i].name[nameLength - 1] != ' ')
-                break;
-        }
-
-        strncat(buffer, _invalid_entries[i].name, nameLength);
-        strncat(buffer, PLATFORM_NEWLINE, buffer_len - strlen(buffer) - 1);
+        const auto& entry = _invalid_entries[i];
+        stream << entry.GetName();
+        stream << PLATFORM_NEWLINE;
     }
 
-    platform_place_string_on_clipboard(buffer);
-    delete[] buffer;
+    auto clip = stream.str();
+    OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(clip.c_str());
 }
 
-rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects)
+rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
-    _invalid_entries = std::vector<rct_object_entry>(missingObjects, missingObjects + numMissingObjects);
+    _invalid_entries = std::vector<ObjectEntryDescriptor>(missingObjects, missingObjects + numMissingObjects);
 
     // Check if window is already open
     rct_window* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
@@ -476,14 +460,8 @@ static void window_object_load_error_mouseup(rct_window* w, rct_widgetindex widg
         case WIDX_COPY_CURRENT:
             if (w->selected_list_item > -1 && w->selected_list_item < w->no_list_items)
             {
-                utf8 selectedName[32]{};
-                strncpy(selectedName, _invalid_entries[w->selected_list_item].name, 8);
-
-                utf8* strp = strchr(selectedName, ' ');
-                if (strp != nullptr)
-                    *strp = '\0';
-
-                platform_place_string_on_clipboard(selectedName);
+                auto name = std::string(_invalid_entries[w->selected_list_item].GetName());
+                OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(name.c_str());
             }
             break;
         case WIDX_COPY_ALL:
@@ -580,16 +558,22 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
         // Draw the actual object entry's name...
         screenCoords.x = NAME_COL_LEFT - 3;
 
-        utf8 nameBuf[32]{};
-        strncpy(nameBuf, _invalid_entries[i].name, 8);
-        gfx_draw_string(dpi, screenCoords, nameBuf, { COLOUR_DARK_GREEN });
+        const auto& entry = _invalid_entries[i];
 
-        // ... source game ...
-        rct_string_id sourceStringId = object_manager_get_source_game_string(_invalid_entries[i].GetSourceGame());
-        DrawTextBasic(dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
+        auto name = entry.GetName();
+        char buffer[256];
+        String::Set(buffer, sizeof(buffer), name.data(), name.size());
+        gfx_draw_string(dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
+
+        if (entry.Generation == ObjectGeneration::DAT)
+        {
+            // ... source game ...
+            rct_string_id sourceStringId = object_manager_get_source_game_string(entry.Entry.GetSourceGame());
+            DrawTextBasic(dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
+        }
 
         // ... and type
-        rct_string_id type = get_object_type_string(&_invalid_entries[i]);
+        rct_string_id type = get_object_type_string(entry.GetType());
         DrawTextBasic(dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
     }
 }
@@ -613,7 +597,7 @@ static void window_object_load_error_update_list(rct_window* w)
         _invalid_entries.erase(
             std::remove_if(
                 _invalid_entries.begin(), _invalid_entries.end(),
-                [de](const rct_object_entry& e) { return std::memcmp(de.name, e.name, sizeof(e.name)) == 0; }),
+                [de](const ObjectEntryDescriptor& e) { return de.GetName() == e.GetName(); }),
             _invalid_entries.end());
         w->no_list_items = static_cast<uint16_t>(_invalid_entries.size());
     }

@@ -66,7 +66,7 @@ static rct_widget window_server_list_widgets[] = {
     MakeWidget({  6, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
     MakeWidget({112, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
     MakeWidget({218, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_server_list_close(rct_window *w);
@@ -260,7 +260,7 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
     {
         const auto& server = _serverList.GetServer(serverIndex);
 
-        auto listWidget = &w->widgets[WIDX_LIST];
+        const auto& listWidget = w->widgets[WIDX_LIST];
 
         gDropdownItemsFormat[0] = STR_JOIN_GAME;
         if (server.Favourite)
@@ -271,8 +271,8 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
         {
             gDropdownItemsFormat[1] = STR_ADD_TO_FAVOURITES;
         }
-        auto dropdownPos = ScreenCoordsXY{ w->windowPos.x + listWidget->left + screenCoords.x + 2 - w->scrolls[0].h_left,
-                                           w->windowPos.y + listWidget->top + screenCoords.y + 2 - w->scrolls[0].v_top };
+        auto dropdownPos = ScreenCoordsXY{ w->windowPos.x + listWidget.left + screenCoords.x + 2 - w->scrolls[0].h_left,
+                                           w->windowPos.y + listWidget.top + screenCoords.y + 2 - w->scrolls[0].v_top };
         WindowDropdownShowText(dropdownPos, 0, COLOUR_GREY, 0, 2);
     }
 }
@@ -287,9 +287,10 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
     }
 
     int32_t hoverButtonIndex = -1;
+    auto& listWidget = w->widgets[WIDX_LIST];
     if (index != -1)
     {
-        int32_t width = w->widgets[WIDX_LIST].width();
+        int32_t width = listWidget.width();
         int32_t sy = index * ITEM_HEIGHT;
         for (int32_t i = 0; i < 2; i++)
         {
@@ -304,11 +305,11 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
         }
     }
 
-    int32_t width = w->widgets[WIDX_LIST].width();
+    int32_t width = listWidget.width();
     int32_t right = width - 3 - 14 - 10;
     if (screenCoords.x < right)
     {
-        w->widgets[WIDX_LIST].tooltip = STR_NONE;
+        listWidget.tooltip = STR_NONE;
         window_tooltip_close();
     }
 
@@ -421,11 +422,12 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    int32_t width = w->widgets[WIDX_LIST].width();
+    auto& listWidget = w->widgets[WIDX_LIST];
+    int32_t width = listWidget.width();
 
     ScreenCoordsXY screenCoords;
     screenCoords.y = 0;
-    w->widgets[WIDX_LIST].tooltip = STR_NONE;
+    listWidget.tooltip = STR_NONE;
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
         if (screenCoords.y >= dpi->y + dpi->height)
@@ -439,7 +441,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         {
             gfx_filter_rect(dpi, 0, screenCoords.y, width, screenCoords.y + ITEM_HEIGHT, FilterPaletteID::PaletteDarken1);
             _version = serverDetails.Version;
-            w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
+            listWidget.tooltip = STR_NETWORK_VERSION_TIP;
         }
 
         colour_t colour = w->colours[1];

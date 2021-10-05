@@ -64,7 +64,7 @@ GameActions::Result::Ptr SignSetStyleAction::Query() const
     {
         WallElement* wallElement = banner_get_scrolling_wall_tile_element(_bannerIndex);
 
-        if (!wallElement)
+        if (wallElement == nullptr)
         {
             log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
             return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);

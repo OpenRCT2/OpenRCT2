@@ -143,12 +143,10 @@ void NetworkUserManager::Save()
                 // erase advances the iterator so make sure we don't do it again
                 continue;
             }
-            else
-            {
-                // replace the existing element in jsonUsers
-                *it = networkUser->ToJson();
-                savedHashes.insert(hashString);
-            }
+
+            // replace the existing element in jsonUsers
+            *it = networkUser->ToJson();
+            savedHashes.insert(hashString);
         }
 
         it++;

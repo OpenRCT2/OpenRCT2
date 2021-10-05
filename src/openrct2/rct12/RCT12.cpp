@@ -436,10 +436,8 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
     {
         return typeA | (typeB << 2);
     }
-    else
-    {
-        return -1;
-    }
+
+    return -1;
 }
 
 colour_t RCT12WallElement::GetRCT1WallColour() const
@@ -1282,11 +1280,9 @@ std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength)
                     rct2encoded.resize(i);
                     break;
                 }
-                else
-                {
-                    // Skip the next two bytes which represent the unicode character
-                    i += 2;
-                }
+
+                // Skip the next two bytes which represent the unicode character
+                i += 2;
             }
         }
     }
@@ -1410,5 +1406,5 @@ std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
     {
         return std::distance(std::begin(_musicStyles), it);
     }
-    return {};
+    return std::nullopt;
 }

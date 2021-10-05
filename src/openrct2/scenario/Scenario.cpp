@@ -68,7 +68,6 @@ bool gFirstTimeSaving = true;
 uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
-uint32_t gScenarioTicks;
 random_engine_t gScenarioRand;
 
 Objective gScenarioObjective;
@@ -609,7 +608,8 @@ ObjectiveStatus Objective::CheckGuestsBy() const
         {
             return ObjectiveStatus::Success;
         }
-        else if (currentMonthYear == MONTH_COUNT * Year)
+
+        if (currentMonthYear == MONTH_COUNT * Year)
         {
             return ObjectiveStatus::Failure;
         }
@@ -630,7 +630,8 @@ ObjectiveStatus Objective::CheckParkValueBy() const
         {
             return ObjectiveStatus::Success;
         }
-        else if (currentMonthYear == MONTH_COUNT * Year)
+
+        if (currentMonthYear == MONTH_COUNT * Year)
         {
             return ObjectiveStatus::Failure;
         }

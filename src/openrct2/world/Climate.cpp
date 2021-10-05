@@ -222,10 +222,8 @@ bool climate_is_raining()
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 bool climate_is_snowing()
@@ -235,10 +233,8 @@ bool climate_is_snowing()
     {
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 bool WeatherIsDry(WeatherType weatherType)
@@ -274,10 +270,8 @@ static int8_t climate_step_weather_level(int8_t currentWeatherLevel, int8_t next
     {
         return currentWeatherLevel + 1;
     }
-    else
-    {
-        return currentWeatherLevel - 1;
-    }
+
+    return currentWeatherLevel - 1;
 }
 
 /**

@@ -121,10 +121,8 @@ public:
         {
             return zipFileStat.size;
         }
-        else
-        {
-            return 0;
-        }
+
+        return 0;
     }
 
     std::vector<uint8_t> GetFileData(std::string_view path) const override
@@ -306,11 +304,9 @@ private:
             {
                 return 0;
             }
-            else
-            {
-                _pos += readBytes;
-                return static_cast<uint64_t>(readBytes);
-            }
+
+            _pos += readBytes;
+            return static_cast<uint64_t>(readBytes);
         }
 
         const void* GetData() const override

@@ -39,10 +39,10 @@ struct NetworkPacket final
     bool CommandRequiresAuth();
 
     const uint8_t* Read(size_t size);
-    const utf8* ReadString();
+    std::string_view ReadString();
 
     void Write(const void* bytes, size_t size);
-    void WriteString(const utf8* string);
+    void WriteString(std::string_view s);
 
     template<typename T> NetworkPacket& operator>>(T& value)
     {

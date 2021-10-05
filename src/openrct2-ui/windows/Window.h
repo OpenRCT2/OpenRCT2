@@ -47,7 +47,7 @@ rct_window* window_editor_main_open();
 rct_window* window_editor_objective_options_open();
 rct_window* window_editor_scenario_options_open();
 rct_window* window_footpath_open();
-void window_footpath_reset_selected_path();
+void WindowFootpathResetSelectedPath();
 rct_window* window_guest_open(Peep* peep);
 rct_window* window_land_open();
 rct_window* window_land_rights_open();
@@ -163,7 +163,7 @@ void window_text_input_open(
     std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
     std::function<void(std::string_view)> okCallback, std::function<void()> cancelCallback);
 
-rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects);
+rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects);
 
 rct_window* window_ride_construction_open();
 void window_ride_construction_update_active_elements_impl();

@@ -90,12 +90,12 @@ namespace SawyerEncoding
 
             if (checksum - 0x1D4C1 == fileChecksum)
                 return RCT12TrackDesignVersion::TD6;
-            else if (checksum - 0x1A67C == fileChecksum)
+            if (checksum - 0x1A67C == fileChecksum)
                 return RCT12TrackDesignVersion::TD4;
-            else if (checksum - 0x1A650 == fileChecksum)
+            if (checksum - 0x1A650 == fileChecksum)
                 return RCT12TrackDesignVersion::TD4;
-            else
-                return RCT12TrackDesignVersion::unknown;
+
+            return RCT12TrackDesignVersion::unknown;
         }
         catch (const std::exception&)
         {

@@ -96,14 +96,12 @@ std::string_view FormatTokenToString(FormatToken token, bool withBraces)
     {
         return GetFormatTokenStringWithBraces(token);
     }
-    else
-    {
-        auto it = FormatTokenMap.find(token);
-        if (it != FormatTokenMap.end())
-            return it->first;
 
-        return {};
-    }
+    auto it = FormatTokenMap.find(token);
+    if (it != FormatTokenMap.end())
+        return it->first;
+
+    return {};
 }
 
 bool FormatTokenTakesArgument(FormatToken token)

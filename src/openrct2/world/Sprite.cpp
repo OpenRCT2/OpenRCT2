@@ -46,24 +46,19 @@ static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex
 
 static void FreeEntity(EntityBase& entity);
 
-constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
+static constexpr size_t GetSpatialIndexOffset(const CoordsXY& loc)
 {
-    size_t index = SPATIAL_INDEX_LOCATION_NULL;
-    if (x != LOCATION_NULL)
-    {
-        x = std::clamp(x, 0, 0xFFFF);
-        y = std::clamp(y, 0, 0xFFFF);
-
-        int16_t flooredX = floor2(x, 32);
-        uint8_t tileY = y >> 5;
-        index = (flooredX << 3) | tileY;
-    }
-
-    if (index >= sizeof(gSpriteSpatialIndex))
-    {
+    if (loc.IsNull())
         return SPATIAL_INDEX_LOCATION_NULL;
-    }
-    return index;
+
+    // NOTE: The input coordinate is rotated and can have negative components.
+    const auto tileX = std::abs(loc.x) / COORDS_XY_STEP;
+    const auto tileY = std::abs(loc.y) / COORDS_XY_STEP;
+
+    if (tileX >= MAXIMUM_MAP_SIZE_TECHNICAL || tileY >= MAXIMUM_MAP_SIZE_TECHNICAL)
+        return SPATIAL_INDEX_LOCATION_NULL;
+
+    return tileX * MAXIMUM_MAP_SIZE_TECHNICAL + tileY;
 }
 
 // Required for GetEntity to return a default
@@ -158,12 +153,12 @@ EntityBase* get_sprite(size_t spriteIndex)
 
 const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
 {
-    return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
+    return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos)];
 }
 
 void EntityBase::Invalidate()
 {
-    if (sprite_left == LOCATION_NULL)
+    if (x == LOCATION_NULL)
         return;
 
     int32_t maxZoom = 0;
@@ -196,7 +191,7 @@ void EntityBase::Invalidate()
             break;
     }
 
-    viewports_invalidate(sprite_left, sprite_top, sprite_right, sprite_bottom, maxZoom);
+    viewports_invalidate(SpriteRect.GetLeft(), SpriteRect.GetTop(), SpriteRect.GetRight(), SpriteRect.GetBottom(), maxZoom);
 }
 
 static void ResetEntityLists()
@@ -228,7 +223,19 @@ const std::list<uint16_t>& GetEntityList(const EntityType id)
 void reset_sprite_list()
 {
     gSavedAge = 0;
-    std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
+
+    // Free all associated Entity pointers prior to zeroing memory
+    for (int32_t i = 0; i < MAX_ENTITIES; ++i)
+    {
+        auto* spr = GetEntity(i);
+        if (spr == nullptr)
+        {
+            continue;
+        }
+        FreeEntity(*spr);
+    }
+
+    std::fill(std::begin(_spriteList), std::end(_spriteList), rct_sprite());
     OpenRCT2::RideUse::GetHistory().Clear();
     OpenRCT2::RideUse::GetTypeHistory().Clear();
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)
@@ -238,7 +245,6 @@ void reset_sprite_list()
         {
             continue;
         }
-        FreeEntity(*spr);
         spr->Type = EntityType::Null;
         spr->sprite_index = i;
 
@@ -313,7 +319,8 @@ static void sprite_reset(EntityBase* sprite)
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
-    std::memset(sprite, 0, sizeof(rct_sprite));
+    rct_sprite* spr = reinterpret_cast<rct_sprite*>(sprite);
+    *spr = rct_sprite();
 
     sprite->sprite_index = sprite_index;
     sprite->Type = EntityType::Null;
@@ -370,7 +377,7 @@ static void PrepareNewEntity(EntityBase* base, const EntityType type)
     base->sprite_width = 0x10;
     base->sprite_height_negative = 0x14;
     base->sprite_height_positive = 0x8;
-    base->sprite_left = LOCATION_NULL;
+    base->SpriteRect = {};
 
     SpriteSpatialInsert(base, { LOCATION_NULL, 0 });
 }
@@ -454,7 +461,7 @@ void sprite_misc_update_all()
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
 static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc)
 {
-    size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
+    size_t newIndex = GetSpatialIndexOffset(newLoc);
     auto& spatialVector = gSpriteSpatialIndex[newIndex];
     auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
     spatialVector.insert(index, sprite->sprite_index);
@@ -462,7 +469,7 @@ static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc)
 
 static void SpriteSpatialRemove(EntityBase* sprite)
 {
-    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
+    size_t currentIndex = GetSpatialIndexOffset({ sprite->x, sprite->y });
     auto& spatialVector = gSpriteSpatialIndex[currentIndex];
     auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
     if (index != std::end(spatialVector) && *index == sprite->sprite_index)
@@ -478,8 +485,8 @@ static void SpriteSpatialRemove(EntityBase* sprite)
 
 static void SpriteSpatialMove(EntityBase* sprite, const CoordsXY& newLoc)
 {
-    size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
-    size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
+    size_t newIndex = GetSpatialIndexOffset(newLoc);
+    size_t currentIndex = GetSpatialIndexOffset({ sprite->x, sprite->y });
     if (newIndex == currentIndex)
         return;
 
@@ -505,7 +512,6 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 
     if (loc.x == LOCATION_NULL)
     {
-        sprite_left = LOCATION_NULL;
         x = loc.x;
         y = loc.y;
         z = loc.z;
@@ -533,13 +539,10 @@ void sprite_set_coordinates(const CoordsXYZ& spritePos, EntityBase* sprite)
 {
     auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), spritePos);
 
-    sprite->sprite_left = screenCoords.x - sprite->sprite_width;
-    sprite->sprite_right = screenCoords.x + sprite->sprite_width;
-    sprite->sprite_top = screenCoords.y - sprite->sprite_height_negative;
-    sprite->sprite_bottom = screenCoords.y + sprite->sprite_height_positive;
-    sprite->x = spritePos.x;
-    sprite->y = spritePos.y;
-    sprite->z = spritePos.z;
+    sprite->SpriteRect = ScreenRect(
+        screenCoords - ScreenCoordsXY{ sprite->sprite_width, sprite->sprite_height_negative },
+        screenCoords + ScreenCoordsXY{ sprite->sprite_width, sprite->sprite_height_positive });
+    sprite->SetLocation(spritePos);
 }
 
 /**
