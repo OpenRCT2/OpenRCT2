@@ -312,7 +312,7 @@ namespace PaintSortFlags
     static constexpr uint8_t OutsideQuadrant = (1U << 7);
 } // namespace PaintSortFlags
 
-template<uint8_t _TRotation>
+template<uint8_t TRotation>
 static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag)
 {
     paint_struct* ps;
@@ -403,7 +403,7 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
 
             const paint_struct_bound_box& currentBBox = ps_next->bounds;
 
-            const bool compareResult = CheckBoundingBox<_TRotation>(initialBBox, currentBBox);
+            const bool compareResult = CheckBoundingBox<TRotation>(initialBBox, currentBBox);
 
             if (compareResult)
             {

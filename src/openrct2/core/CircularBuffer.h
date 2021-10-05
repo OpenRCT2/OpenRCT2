@@ -12,14 +12,14 @@
 #include <array>
 #include <cstddef>
 
-template<typename _TType, size_t _TMax> class CircularBuffer
+template<typename TType, size_t TMax> class CircularBuffer
 {
 public:
-    using value_type = _TType;
-    using pointer = _TType*;
-    using const_pointer = const _TType*;
-    using reference = _TType&;
-    using const_reference = const _TType&;
+    using value_type = TType;
+    using pointer = TType*;
+    using const_pointer = const TType*;
+    using reference = TType&;
+    using const_reference = const TType&;
     using size_type = size_t;
     using difference_type = ptrdiff_t;
 
@@ -137,5 +137,5 @@ private:
     size_t _head = 0;
     size_t _tail = 0;
     size_t _size = 0;
-    std::array<_TType, _TMax> _elements;
+    std::array<TType, TMax> _elements;
 };
