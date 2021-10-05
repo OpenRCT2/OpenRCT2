@@ -3610,6 +3610,9 @@ STR_6406    :Instalador de GOG RollerCoaster Tycoon 2
 STR_6407    :Puede tardar unos minutos.
 STR_6408    :Please install “innoextract” to extract GOG Installer, then restart OpenRCT2. Instale "innoextract" para extraer el Instalador de GOG y luego reinicie OpenRCT2.
 STR_6409    :El archivo seleccionado no es el Instalador sin conexión de GOG para RollerCoaster Tycoon 2. Puede que hayas descargado GOG Galaxy downloader stub o ha seleccionado el archivo incorrecto.
+STR_6454    :No se puede cambiar el nombre del banner…
+STR_6455    :No se puede cambiar el nombre del señal…
+
 ##############
 # Escenarios #
 ##############
