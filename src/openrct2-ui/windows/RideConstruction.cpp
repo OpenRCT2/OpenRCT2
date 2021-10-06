@@ -1931,6 +1931,14 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         const rct_preview_track* trackBlock = ted.Block;
         newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
         gGotoStartPlacementMode = true;
+
+        // When flat rides are deleted, the window should be reset so the ride can be placed again.
+        const auto rideId = w->rideId;
+        auto ride = get_ride(rideId);
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        {
+            ride_initialise_construction_window(ride);
+        }
     }
 
     auto trackRemoveAction = TrackRemoveAction(
