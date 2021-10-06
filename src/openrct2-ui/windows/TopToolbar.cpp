@@ -2533,11 +2533,12 @@ static money64 try_place_ghost_wall(
     // 6e26b0
     auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
     wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-    wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
+    wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
 
-        gSceneryGhostPosition = { loc, result->tileElement->GetBaseZ() };
+        const auto placementData = result->GetData<WallPlaceActionResult>();
+        gSceneryGhostPosition = { loc, placementData.BaseHeight };
         gSceneryGhostWallRotation = edge;
 
         gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
