@@ -13,6 +13,7 @@
 
 #include <SDL.h>
 #include <algorithm>
+#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
@@ -24,7 +25,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/world/Sprite.h>
-#include <openrct2-ui/windows/Window.h>
 
 using namespace OpenRCT2;
 
@@ -752,13 +752,9 @@ void Window::Close()
     window_close(this);
 }
 
-void Window::TextInputOpen(rct_widgetindex callWidget,
-                                 rct_string_id title,
-                                 rct_string_id description,
-                                 const Formatter& descriptionArgs,
-                                 rct_string_id existingText,
-                                 uintptr_t existingArgs,
-                                 int32_t maxLength)
+void Window::TextInputOpen(
+    rct_widgetindex callWidget, rct_string_id title, rct_string_id description, const Formatter& descriptionArgs,
+    rct_string_id existingText, uintptr_t existingArgs, int32_t maxLength)
 {
     window_text_input_open(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
 }
