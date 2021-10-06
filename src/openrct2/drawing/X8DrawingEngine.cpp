@@ -284,7 +284,7 @@ rct_drawpixelinfo* X8DrawingEngine::GetDrawingPixelInfo()
 
 DRAWING_ENGINE_FLAGS X8DrawingEngine::GetFlags()
 {
-    return DEF_DIRTY_OPTIMISATIONS;
+    return static_cast<DRAWING_ENGINE_FLAGS>(DEF_DIRTY_OPTIMISATIONS | DEF_PARALLEL_DRAWING);
 }
 
 void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)

@@ -996,6 +996,12 @@ void viewport_paint(
         _paintJobs.reset();
     }
 
+    bool useParallelDrawing = false;
+    if (useMultithreading && (dpi->DrawingEngine->GetFlags() & DEF_PARALLEL_DRAWING))
+    {
+        useParallelDrawing = true;
+    }
+
     // Create space to record sessions and keep track which index is being drawn
     size_t index = 0;
     if (recorded_sessions != nullptr)

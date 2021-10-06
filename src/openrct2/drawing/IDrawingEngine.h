@@ -32,6 +32,11 @@ enum DRAWING_ENGINE_FLAGS
      * Whether or not the engine will only draw changed blocks of the screen each frame.
      */
     DEF_DIRTY_OPTIMISATIONS = 1 << 0,
+
+    /**
+     * The drawing engine is capable of processing the drawing in parallel.
+     */
+    DEF_PARALLEL_DRAWING = 1 << 1,
 };
 
 struct rct_drawpixelinfo;
