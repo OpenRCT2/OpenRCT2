@@ -120,12 +120,13 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
     }
 
     auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
-    hireStaffAction.SetCallback([=](const GameAction*, const StaffHireNewActionResult* res) -> void {
+    hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
         if (res->Error != GameActions::Status::Ok)
             return;
 
+        auto actionResult = res->GetData<StaffHireNewActionResult>();
         // Open window for new staff.
-        auto* staff = GetEntity<Staff>(res->peepSriteIndex);
+        auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
         auto intent = Intent(WC_PEEP);
         intent.putExtra(INTENT_EXTRA_PEEP, staff);
         context_open_intent(&intent);
