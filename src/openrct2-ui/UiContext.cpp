@@ -296,7 +296,7 @@ public:
 
         for (auto& w : g_window_list)
         {
-            DrawWeatherWindow(weatherDrawer, w.get(), left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(dpi, weatherDrawer, w.get(), left, right, top, bottom, drawFunc);
         }
     }
 
@@ -860,8 +860,8 @@ private:
     }
 
     static void DrawWeatherWindow(
-        IWeatherDrawer* weatherDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top, int16_t bottom,
-        DrawWeatherFunc drawFunc)
+        rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top,
+        int16_t bottom, DrawWeatherFunc drawFunc)
     {
         rct_window* w{};
         auto itStart = window_get_iterator(original_w);
@@ -881,7 +881,7 @@ private:
                     {
                         auto width = right - left;
                         auto height = bottom - top;
-                        drawFunc(weatherDrawer, left, top, width, height);
+                        drawFunc(dpi, weatherDrawer, left, top, width, height);
                     }
                 }
                 return;
@@ -903,39 +903,39 @@ private:
                 break;
             }
 
-            DrawWeatherWindow(weatherDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
+            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
 
             left = w->windowPos.x;
-            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
 
         int16_t w_right = RCT_WINDOW_RIGHT(w);
         if (right > w_right)
         {
-            DrawWeatherWindow(weatherDrawer, original_w, left, w_right, top, bottom, drawFunc);
+            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, w_right, top, bottom, drawFunc);
 
             left = w_right;
-            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
 
         if (top < w->windowPos.y)
         {
-            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
+            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
 
             top = w->windowPos.y;
-            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
 
         int16_t w_bottom = RCT_WINDOW_BOTTOM(w);
         if (bottom > w_bottom)
         {
-            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, w_bottom, drawFunc);
+            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, w_bottom, drawFunc);
 
             top = w_bottom;
-            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(dpi, weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
     }

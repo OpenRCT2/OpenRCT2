@@ -71,7 +71,7 @@ namespace OpenRCT2::Drawing
         virtual void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) abstract;
         virtual std::string Screenshot() abstract;
 
-        virtual IDrawingContext* GetDrawingContext(rct_drawpixelinfo* dpi) abstract;
+        virtual IDrawingContext* GetDrawingContext() abstract;
         virtual rct_drawpixelinfo* GetDrawingPixelInfo() abstract;
 
         virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
@@ -90,11 +90,9 @@ namespace OpenRCT2::Drawing
 
     struct IWeatherDrawer
     {
-        virtual ~IWeatherDrawer()
-        {
-        }
+        virtual ~IWeatherDrawer() = default;
         virtual void Draw(
-            int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+            rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
             const uint8_t* weatherpattern) abstract;
     };
 } // namespace OpenRCT2::Drawing

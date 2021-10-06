@@ -43,13 +43,9 @@ X8WeatherDrawer::~X8WeatherDrawer()
     delete[] _weatherPixels;
 }
 
-void X8WeatherDrawer::SetDPI(rct_drawpixelinfo* dpi)
-{
-    _screenDPI = dpi;
-}
-
 void X8WeatherDrawer::Draw(
-    int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart, const uint8_t* weatherpattern)
+    rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+    const uint8_t* weatherpattern)
 {
     const uint8_t* pattern = weatherpattern;
     auto patternXSpace = *pattern++;
@@ -58,10 +54,10 @@ void X8WeatherDrawer::Draw(
     uint8_t patternStartXOffset = xStart % patternXSpace;
     uint8_t patternStartYOffset = yStart % patternYSpace;
 
-    uint32_t pixelOffset = (_screenDPI->pitch + _screenDPI->width) * y + x;
+    uint32_t pixelOffset = (dpi->pitch + dpi->width) * y + x;
     uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
-    uint8_t* screenBits = _screenDPI->bits;
+    uint8_t* screenBits = dpi->bits;
 
     // Stores the colours of changed pixels
     WeatherPixel* newPixels = &_weatherPixels[_weatherPixelsCount];
@@ -90,18 +86,18 @@ void X8WeatherDrawer::Draw(
             }
         }
 
-        pixelOffset += _screenDPI->pitch + _screenDPI->width;
+        pixelOffset += dpi->pitch + dpi->width;
         patternYPos++;
         patternYPos %= patternYSpace;
     }
 }
 
-void X8WeatherDrawer::Restore()
+void X8WeatherDrawer::Restore(rct_drawpixelinfo* dpi)
 {
     if (_weatherPixelsCount > 0)
     {
-        uint32_t numPixels = (_screenDPI->width + _screenDPI->pitch) * _screenDPI->height;
-        uint8_t* bits = _screenDPI->bits;
+        uint32_t numPixels = (dpi->width + dpi->pitch) * dpi->height;
+        uint8_t* bits = dpi->bits;
         for (uint32_t i = 0; i < _weatherPixelsCount; i++)
         {
             WeatherPixel weatherPixel = _weatherPixels[i];
@@ -201,8 +197,7 @@ void X8DrawingEngine::BeginDraw()
             Resize(_width, _height);
         }
 #endif
-        _weatherDrawer.SetDPI(&_bitsDPI);
-        _weatherDrawer.Restore();
+        _weatherDrawer.Restore(&_bitsDPI);
     }
 }
 
@@ -271,9 +266,8 @@ std::string X8DrawingEngine::Screenshot()
     return screenshot_dump_png(&_bitsDPI);
 }
 
-IDrawingContext* X8DrawingEngine::GetDrawingContext(rct_drawpixelinfo* dpi)
+IDrawingContext* X8DrawingEngine::GetDrawingContext()
 {
-    _drawingContext->SetDPI(dpi);
     return _drawingContext;
 }
 
@@ -466,10 +460,8 @@ IDrawingEngine* X8DrawingContext::GetEngine()
     return _engine;
 }
 
-void X8DrawingContext::Clear(uint8_t paletteIndex)
+void X8DrawingContext::Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
 {
-    rct_drawpixelinfo* dpi = _dpi;
-
     int32_t w = dpi->width / dpi->zoom_level;
     int32_t h = dpi->height / dpi->zoom_level;
     uint8_t* ptr = dpi->bits;
@@ -529,10 +521,9 @@ static constexpr const uint16_t * Patterns[] = {
 };
 // clang-format on
 
-void X8DrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void X8DrawingContext::FillRect(
+    rct_drawpixelinfo* dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
-    rct_drawpixelinfo* dpi = _dpi;
-
     if (left > right)
         return;
     if (top > bottom)
@@ -650,10 +641,9 @@ void X8DrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, int3
     }
 }
 
-void X8DrawingContext::FilterRect(FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void X8DrawingContext::FilterRect(
+    rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
-    rct_drawpixelinfo* dpi = _dpi;
-
     if (left > right)
         return;
     if (top > bottom)
@@ -723,22 +713,23 @@ void X8DrawingContext::FilterRect(FilterPaletteID palette, int32_t left, int32_t
     }
 }
 
-void X8DrawingContext::DrawLine(uint32_t colour, const ScreenLine& line)
+void X8DrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line)
 {
-    gfx_draw_line_software(_dpi, line, colour);
+    gfx_draw_line_software(dpi, line, colour);
 }
 
-void X8DrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour)
+void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour)
 {
-    gfx_draw_sprite_software(_dpi, ImageId::FromUInt32(image, tertiaryColour), { x, y });
+    gfx_draw_sprite_software(dpi, ImageId::FromUInt32(image, tertiaryColour), { x, y });
 }
 
-void X8DrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage)
+void X8DrawingContext::DrawSpriteRawMasked(
+    rct_drawpixelinfo* dpi, int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage)
 {
-    gfx_draw_sprite_raw_masked_software(_dpi, { x, y }, maskImage, colourImage);
+    gfx_draw_sprite_raw_masked_software(dpi, { x, y }, maskImage, colourImage);
 }
 
-void X8DrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour)
+void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint8_t colour)
 {
     uint8_t palette[256];
     std::fill_n(palette, sizeof(palette), colour);
@@ -746,15 +737,10 @@ void X8DrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uin
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
     gfx_draw_sprite_palette_set_software(
-        _dpi, ImageId::FromUInt32((image & 0x7FFFF) | IMAGE_TYPE_REMAP), spriteCoords, PaletteMap(palette));
+        dpi, ImageId::FromUInt32((image & 0x7FFFF) | IMAGE_TYPE_REMAP), spriteCoords, PaletteMap(palette));
 }
 
-void X8DrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap)
+void X8DrawingContext::DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
-    gfx_draw_sprite_palette_set_software(_dpi, ImageId::FromUInt32(image), { x, y }, paletteMap);
-}
-
-void X8DrawingContext::SetDPI(rct_drawpixelinfo* dpi)
-{
-    _dpi = dpi;
+    gfx_draw_sprite_palette_set_software(dpi, ImageId::FromUInt32(image), { x, y }, paletteMap);
 }
