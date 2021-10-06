@@ -3496,6 +3496,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
         do
         {
             // Fixes both freezing issues in #15503.
+            // TODO: refactor the code so a tortoise-and-hare algorithm can be used.
             if (numIterations++ > 1000000)
             {
                 break;
