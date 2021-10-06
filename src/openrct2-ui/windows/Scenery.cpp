@@ -305,7 +305,7 @@ static void window_scenery_init(rct_window* w)
     for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < maxTabs - 1; scenerySetIndex++)
     {
         const auto* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
-        if (sceneryGroupEntry != nullptr)
+        if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
         {
             SceneryTabInfo tabInfo;
             tabInfo.SceneryGroupIndex = scenerySetIndex;
