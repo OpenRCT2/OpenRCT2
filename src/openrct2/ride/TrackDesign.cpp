@@ -823,10 +823,10 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
                 scenery.y = -scenery.y;
 
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
                 {
                     scenery.flags ^= (1 << 0);
-                    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
                     {
                         scenery.flags ^= (1 << 2);
                     }
@@ -989,10 +989,8 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             quadrant &= 3;
 
             auto* sceneryEntry = get_small_scenery_entry(entryInfo->Index);
-            if (!(!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)
-                  && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
-                && scenery_small_entry_has_flag(
-                    sceneryEntry,
+            if (!(!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
+                && sceneryEntry->HasFlag(
                     SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
             {
                 quadrant = 0;
@@ -1921,8 +1919,7 @@ static money32 track_design_ride_create_command(int32_t type, int32_t subType, i
     auto gameAction = RideCreateAction(type, subType, 0, 0);
     gameAction.SetFlags(flags);
 
-    auto r = GameActions::ExecuteNested(&gameAction);
-    const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
+    auto res = GameActions::ExecuteNested(&gameAction);
 
     // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
     if (res->Error != GameActions::Status::Ok)
@@ -1930,7 +1927,7 @@ static money32 track_design_ride_create_command(int32_t type, int32_t subType, i
         return MONEY32_UNDEFINED;
     }
 
-    *outRideIndex = res->rideIndex;
+    *outRideIndex = res->GetData<ride_id_t>();
 
     return res->Cost;
 }

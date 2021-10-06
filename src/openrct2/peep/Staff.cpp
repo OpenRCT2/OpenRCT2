@@ -112,12 +112,13 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
     }
 
     auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
-    hireStaffAction.SetCallback([=](const GameAction*, const StaffHireNewActionResult* res) -> void {
+    hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
         if (res->Error != GameActions::Status::Ok)
             return;
 
+        auto actionResult = res->GetData<StaffHireNewActionResult>();
         // Open window for new staff.
-        auto* staff = GetEntity<Staff>(res->peepSriteIndex);
+        auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
         auto intent = Intent(WC_PEEP);
         intent.putExtra(INTENT_EXTRA_PEEP, staff);
         context_open_intent(&intent);
@@ -1265,7 +1266,7 @@ void Staff::UpdateWatering()
 
             auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
-            if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
                 continue;
 
             tile_element->AsSmallScenery()->SetAge(0);
@@ -1652,7 +1653,7 @@ bool Staff::UpdatePatrollingFindWatering()
 
             auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
-            if (sceneryEntry == nullptr || !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (sceneryEntry == nullptr || !sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
             {
                 continue;
             }

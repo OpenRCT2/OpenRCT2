@@ -215,15 +215,20 @@ public:
         gScenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.info.category);
 
         // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
-        if (!IsLikelyUTF8(_s6.info.name) && !IsLikelyUTF8(_s6.info.details))
+        auto loadMaybeUTF8 = [](std::string_view str) -> std::string {
+            return !IsLikelyUTF8(str) ? rct2_to_utf8(str, RCT2LanguageId::EnglishUK) : std::string(str);
+        };
+
+        if (_s6.header.type == S6_TYPE_SCENARIO)
         {
-            gScenarioName = rct2_to_utf8(_s6.info.name, RCT2LanguageId::EnglishUK);
-            gScenarioDetails = rct2_to_utf8(_s6.info.details, RCT2LanguageId::EnglishUK);
+            gScenarioName = loadMaybeUTF8(_s6.info.name);
+            gScenarioDetails = loadMaybeUTF8(_s6.info.details);
         }
         else
         {
-            gScenarioName = _s6.info.name;
-            gScenarioDetails = _s6.info.details;
+            // Saved games do not have an info chunk
+            gScenarioName = loadMaybeUTF8(_s6.scenario_name);
+            gScenarioDetails = loadMaybeUTF8(_s6.scenario_description);
         }
 
         gDateMonthsElapsed = static_cast<int32_t>(_s6.elapsed_months);

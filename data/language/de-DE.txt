@@ -3651,6 +3651,8 @@ STR_6453    :Versionsinfo kopieren
 STR_6454    :Kann Banner nicht umbenennen …
 STR_6455    :Kann Schild nicht umbenennen …
 STR_6456    :Riesiger Screenshot
+STR_6457    :Einen Fehler auf GitHub melden
+STR_6458    :Dies in Hauptansicht folgen
 
 #############
 # Scenarios #

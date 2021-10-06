@@ -112,13 +112,12 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (gCheatsDisablePlantAging && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED)))
+    if (gCheatsDisablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
     {
         return;
     }
 
-    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gClimateCurrent.Weather)
-        || GetAge() < 5)
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gClimateCurrent.Weather) || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);
         return;
@@ -146,7 +145,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
                 return;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 sceneryEntry = tileElementAbove->AsSmallScenery()->GetEntry();
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
                     IncreaseAge(sceneryPos);
                     return;

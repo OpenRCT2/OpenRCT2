@@ -884,18 +884,21 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
 
     if (action.GetType() == GameCommand::CreateRide)
     {
-        auto& rideCreateResult = static_cast<RideCreateGameActionResult&>(*result.get());
-        if (rideCreateResult.rideIndex != RIDE_ID_NULL)
+        if (result->Error == GameActions::Status::Ok)
         {
-            obj.Set("ride", EnumValue(rideCreateResult.rideIndex));
+            const auto rideIndex = result->GetData<ride_id_t>();
+            obj.Set("ride", EnumValue(rideIndex));
         }
     }
     else if (action.GetType() == GameCommand::HireNewStaffMember)
     {
-        auto& staffHireResult = static_cast<StaffHireNewActionResult&>(*result.get());
-        if (staffHireResult.peepSriteIndex != SPRITE_INDEX_NULL)
+        if (result->Error == GameActions::Status::Ok)
         {
-            obj.Set("peep", staffHireResult.peepSriteIndex);
+            const auto actionResult = result->GetData<StaffHireNewActionResult>();
+            if (actionResult.StaffEntityId != SPRITE_INDEX_NULL)
+            {
+                obj.Set("peep", actionResult.StaffEntityId);
+            }
         }
     }
 

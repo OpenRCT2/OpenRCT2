@@ -103,13 +103,12 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
     auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
-    auto rideIndex = static_cast<RideCreateGameActionResult*>(r.get())->rideIndex;
-
     if (r->Error != GameActions::Status::Ok)
     {
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
+    const auto rideIndex = r->GetData<ride_id_t>();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
@@ -164,13 +163,12 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
     auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
-    auto rideIndex = static_cast<RideCreateGameActionResult*>(r.get())->rideIndex;
-
     if (r->Error != GameActions::Status::Ok)
     {
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
+    const auto rideIndex = r->GetData<ride_id_t>();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {

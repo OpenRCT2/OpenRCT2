@@ -122,11 +122,10 @@ enum FILE_MENU_DDIDX {
     DDIDX_GIANT_SCREENSHOT = 8,
     // separator
     DDIDX_FILE_BUG_ON_GITHUB = 10,
+    DDIDX_UPDATE_AVAILABLE = 11,
     // separator
-    DDIDX_QUIT_TO_MENU = 12,
-    DDIDX_EXIT_OPENRCT2 = 13,
-    // separator
-    DDIDX_UPDATE_AVAILABLE = 15,
+    DDIDX_QUIT_TO_MENU = 13,
+    DDIDX_EXIT_OPENRCT2 = 14,
 };
 
 enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
@@ -440,12 +439,18 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                gDropdownItemsFormat[numItems++] = STR_QUIT_TRACK_DESIGNS_MANAGER;
-                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
 
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                     gDropdownItemsFormat[numItems++] = STR_QUIT_ROLLERCOASTER_DESIGNER;
+                else
+                    gDropdownItemsFormat[numItems++] = STR_QUIT_TRACK_DESIGNS_MANAGER;
+
+                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
             }
             else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
@@ -458,6 +463,10 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_SCENARIO_EDITOR;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
@@ -475,15 +484,15 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
-                if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                {
-                    gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
-                }
             }
+
             WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
                 Dropdown::Flag::StayOpen, numItems);
@@ -542,6 +551,10 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
             if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
                 dropdownIndex += DDIDX_ABOUT;
 
+            // The "Update available" menu item is only available when there is one
+            if (dropdownIndex >= DDIDX_UPDATE_AVAILABLE && !OpenRCT2::GetContext()->HasNewVersionInfo())
+                dropdownIndex += 1;
+
             switch (dropdownIndex)
             {
                 case DDIDX_NEW_GAME:
@@ -596,6 +609,9 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
                 }
                 break;
+                case DDIDX_UPDATE_AVAILABLE:
+                    context_open_window_view(WV_NEW_VERSION_INFO);
+                    break;
                 case DDIDX_QUIT_TO_MENU:
                 {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
@@ -606,9 +622,6 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 }
                 case DDIDX_EXIT_OPENRCT2:
                     context_quit();
-                    break;
-                case DDIDX_UPDATE_AVAILABLE:
-                    context_open_window_view(WV_NEW_VERSION_INFO);
                     break;
             }
             break;
@@ -1006,8 +1019,7 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
             auto* sceneryEntry = info.Element->AsSmallScenery()->GetEntry();
 
             // If can't repaint
-            if (!scenery_small_entry_has_flag(
-                    sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
+            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
                 return;
 
             uint8_t quadrant = info.Element->AsSmallScenery()->GetSceneryQuadrant();
@@ -1251,7 +1263,7 @@ static void sub_6E1F34_small_scenery(
 
     auto* sceneryEntry = get_small_scenery_entry(sceneryIndex);
     maxPossibleHeight -= sceneryEntry->height;
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_STACKABLE))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE))
     {
         can_raise_item = true;
     }
@@ -1259,7 +1271,7 @@ static void sub_6E1F34_small_scenery(
     sub_6E1F34_update_screen_coords_and_buttons_pressed(can_raise_item, screenPos);
 
     // Small scenery
-    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
     {
         uint8_t quadrant = 0;
 
@@ -1323,7 +1335,7 @@ static void sub_6E1F34_small_scenery(
 
         uint8_t rotation = gWindowSceneryRotation;
 
-        if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE))
+        if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
         {
             rotation = util_rand() & 0xFF;
         }
@@ -1407,7 +1419,7 @@ static void sub_6E1F34_small_scenery(
     gridPos = gridPos.ToTileStart();
     uint8_t rotation = gWindowSceneryRotation;
 
-    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE))
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
     {
         rotation = util_rand() & 0xFF;
     }
@@ -1764,7 +1776,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
 
                 if (isCluster)
                 {
-                    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
                     {
                         quadrant = util_rand() & 3;
                     }
@@ -1779,7 +1791,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                     cur_grid_x += grid_x_offset * COORDS_XY_STEP;
                     cur_grid_y += grid_y_offset * COORDS_XY_STEP;
 
-                    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE))
+                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
                     {
                         gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
                     }
@@ -2462,18 +2474,18 @@ static money64 try_place_ghost_small_scenery(
     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(loc, quadrant, entryIndex, primaryColour, secondaryColour);
     smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&smallSceneryPlaceAction);
-    auto sspar = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get());
-    if (sspar == nullptr || res->Error != GameActions::Status::Ok)
+    if (res->Error != GameActions::Status::Ok)
         return MONEY64_UNDEFINED;
+
+    const auto placementData = res->GetData<SmallSceneryPlaceActionResult>();
 
     gSceneryPlaceRotation = loc.direction;
     gSceneryPlaceObject.SceneryType = SCENERY_TYPE_SMALL;
     gSceneryPlaceObject.EntryIndex = entryIndex;
 
-    TileElement* tileElement = sspar->tileElement;
-    gSceneryGhostPosition = { loc, tileElement->GetBaseZ() };
-    gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-    if (sspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
+    gSceneryGhostPosition = { loc, placementData.BaseHeight };
+    gSceneryQuadrant = placementData.SceneryQuadrant;
+    if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
         viewport_set_visibility(4);
@@ -2519,11 +2531,12 @@ static money64 try_place_ghost_wall(
     // 6e26b0
     auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
     wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-    wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
+    wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
 
-        gSceneryGhostPosition = { loc, result->tileElement->GetBaseZ() };
+        const auto placementData = result->GetData<WallPlaceActionResult>();
+        gSceneryGhostPosition = { loc, placementData.BaseHeight };
         gSceneryGhostWallRotation = edge;
 
         gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
@@ -2545,14 +2558,15 @@ static money64 try_place_ghost_large_scenery(
     auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour);
     sceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
     auto res = GameActions::Execute(&sceneryPlaceAction);
-    auto lspar = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get());
-    if (lspar == nullptr || res->Error != GameActions::Status::Ok)
+    if (res->Error != GameActions::Status::Ok)
         return MONEY64_UNDEFINED;
+
+    const auto placementData = res->GetData<LargeSceneryPlaceActionResult>();
 
     gSceneryPlaceRotation = loc.direction;
 
-    gSceneryGhostPosition = { loc, lspar->firstTileHeight };
-    if (lspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
+    gSceneryGhostPosition = { loc, placementData.firstTileHeight };
+    if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
         viewport_set_visibility(4);
@@ -2664,7 +2678,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
             auto* sceneryEntry = get_small_scenery_entry(selection.EntryIndex);
 
             gMapSelectType = MAP_SELECT_TYPE_FULL;
-            if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
+            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
             {
                 gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + (quadrant ^ 2);
             }
@@ -3066,8 +3080,8 @@ static void window_top_toolbar_land_tool_drag(const ScreenCoordsXY& screenPos)
     rct_widgetindex widget_index = window_find_widget_from_point(window, screenPos);
     if (widget_index == -1)
         return;
-    rct_widget* widget = &window->widgets[widget_index];
-    if (widget->type != WindowWidgetType::Viewport)
+    const auto& widget = window->widgets[widget_index];
+    if (widget.type != WindowWidgetType::Viewport)
         return;
     rct_viewport* viewport = window->viewport;
     if (viewport == nullptr)
@@ -3109,8 +3123,8 @@ static void window_top_toolbar_water_tool_drag(const ScreenCoordsXY& screenPos)
     rct_widgetindex widget_index = window_find_widget_from_point(window, screenPos);
     if (widget_index == -1)
         return;
-    rct_widget* widget = &window->widgets[widget_index];
-    if (widget->type != WindowWidgetType::Viewport)
+    const auto& widget = window->widgets[widget_index];
+    if (widget.type != WindowWidgetType::Viewport)
         return;
     rct_viewport* viewport = window->viewport;
     if (viewport == nullptr)
