@@ -122,8 +122,8 @@ enum FILE_MENU_DDIDX {
     DDIDX_GIANT_SCREENSHOT = 8,
     // separator
     DDIDX_FILE_BUG_ON_GITHUB = 10,
+    DDIDX_UPDATE_AVAILABLE = 11,
     // separator
-    DDIDX_UPDATE_AVAILABLE = 12,
     DDIDX_QUIT_TO_MENU = 13,
     DDIDX_EXIT_OPENRCT2 = 14,
 };
@@ -439,9 +439,11 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+
                 if (OpenRCT2::GetContext()->HasNewVersionInfo())
                     gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
 
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                     gDropdownItemsFormat[numItems++] = STR_QUIT_ROLLERCOASTER_DESIGNER;
@@ -461,10 +463,11 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+
                 if (OpenRCT2::GetContext()->HasNewVersionInfo())
                     gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
 
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_SCENARIO_EDITOR;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
             }
@@ -481,10 +484,11 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+
                 if (OpenRCT2::GetContext()->HasNewVersionInfo())
                     gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
 
+                gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
             }
