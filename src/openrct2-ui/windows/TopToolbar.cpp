@@ -122,11 +122,10 @@ enum FILE_MENU_DDIDX {
     DDIDX_GIANT_SCREENSHOT = 8,
     // separator
     DDIDX_FILE_BUG_ON_GITHUB = 10,
+    DDIDX_UPDATE_AVAILABLE = 11,
     // separator
-    DDIDX_QUIT_TO_MENU = 12,
-    DDIDX_EXIT_OPENRCT2 = 13,
-    // separator
-    DDIDX_UPDATE_AVAILABLE = 15,
+    DDIDX_QUIT_TO_MENU = 13,
+    DDIDX_EXIT_OPENRCT2 = 14,
 };
 
 enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
@@ -440,7 +439,12 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
+
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                     gDropdownItemsFormat[numItems++] = STR_QUIT_ROLLERCOASTER_DESIGNER;
                 else
@@ -459,6 +463,10 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_SCENARIO_EDITOR;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
@@ -476,15 +484,15 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
-                if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                {
-                    gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
-                }
             }
+
             WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
                 Dropdown::Flag::StayOpen, numItems);
@@ -543,6 +551,10 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
             if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
                 dropdownIndex += DDIDX_ABOUT;
 
+            // The "Update available" menu item is only available when there is one
+            if (dropdownIndex >= DDIDX_UPDATE_AVAILABLE && !OpenRCT2::GetContext()->HasNewVersionInfo())
+                dropdownIndex += 1;
+
             switch (dropdownIndex)
             {
                 case DDIDX_NEW_GAME:
@@ -597,6 +609,9 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
                 }
                 break;
+                case DDIDX_UPDATE_AVAILABLE:
+                    context_open_window_view(WV_NEW_VERSION_INFO);
+                    break;
                 case DDIDX_QUIT_TO_MENU:
                 {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
@@ -607,9 +622,6 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 }
                 case DDIDX_EXIT_OPENRCT2:
                     context_quit();
-                    break;
-                case DDIDX_UPDATE_AVAILABLE:
-                    context_open_window_view(WV_NEW_VERSION_INFO);
                     break;
             }
             break;
