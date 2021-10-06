@@ -931,8 +931,6 @@ static void viewport_paint_column(paint_session* session)
     {
         PaintDrawMoneyStructs(&session->DPI, session->PSStringHead);
     }
-
-    PaintSessionFree(session);
 }
 
 /**
@@ -1011,7 +1009,7 @@ void viewport_paint(
         recorded_sessions->resize(columnCount);
     }
 
-    // Splits the area into 32 pixel columns and renders them
+    // Generate and sort columns.
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
         paint_session* session = PaintSessionAlloc(&dpi1, viewFlags);
@@ -1052,9 +1050,27 @@ void viewport_paint(
         _paintJobs->Join();
     }
 
-    for (auto column : _paintColumns)
+    // Paint columns.
+    for (auto* session : _paintColumns)
     {
-        viewport_paint_column(column);
+        if (useParallelDrawing)
+        {
+            _paintJobs->AddTask([session]() -> void { viewport_paint_column(session); });
+        }
+        else
+        {
+            viewport_paint_column(session);
+        }
+    }
+    if (useParallelDrawing)
+    {
+        _paintJobs->Join();
+    }
+
+    // Release resources.
+    for (auto* session : _paintColumns)
+    {
+        PaintSessionFree(session);
     }
 }
 
