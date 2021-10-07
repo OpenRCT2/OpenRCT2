@@ -41,7 +41,7 @@ enum class DISPLAY_TYPE {
     DISPLAY_UNITS
 };
 
-static DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
+// static DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
 
 #pragma region Widgets
 
@@ -73,6 +73,7 @@ private:
     CoordsXY _previousClipSelectionB;
     bool _toolActive{ false };
     bool _dragging{ false };
+    static inline DISPLAY_TYPE _clipHeightDisplayType;
 
 public:
     void OnCloseButton()
@@ -82,8 +83,6 @@ public:
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        rct_window* mainWindow;
-
         // mouseup appears to be used for buttons, checkboxes
         switch (widgetIndex)
         {
@@ -91,8 +90,9 @@ public:
                 window_close(this);
                 break;
             case WIDX_CLIP_CHECKBOX_ENABLE:
+            {
                 // Toggle height clipping.
-                mainWindow = window_get_main();
+                rct_window* mainWindow = window_get_main();
                 if (mainWindow != nullptr)
                 {
                     mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
@@ -100,15 +100,16 @@ public:
                 }
                 this->Invalidate();
                 break;
+            }
             case WIDX_CLIP_HEIGHT_VALUE:
                 // Toggle display of the cut height value in RAW vs UNITS
-                if (gClipHeightDisplayType == DISPLAY_TYPE::DISPLAY_RAW)
+                if (_clipHeightDisplayType == DISPLAY_TYPE::DISPLAY_RAW)
                 {
-                    gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
+                    _clipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
                 }
                 else
                 {
-                    gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_RAW;
+                    _clipHeightDisplayType = DISPLAY_TYPE::DISPLAY_RAW;
                 }
                 this->Invalidate();
                 break;
@@ -163,9 +164,9 @@ public:
 
     void OnUpdate() override
     {
-        const rct_widget* const widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
+        const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
         const rct_scroll* const scroll = &this->scrolls[0];
-        const int16_t scroll_width = widget->width() - 1;
+        const int16_t scroll_width = widget.width() - 1;
         const uint8_t clip_height = static_cast<uint8_t>(
             (static_cast<float>(scroll->h_left) / (scroll->h_right - scroll_width)) * 255);
         if (clip_height != gClipHeight)
@@ -283,7 +284,7 @@ public:
         screenCoords = this->windowPos
             + ScreenCoordsXY{ this->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1, this->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
 
-        switch (gClipHeightDisplayType)
+        switch (_clipHeightDisplayType)
         {
             case DISPLAY_TYPE::DISPLAY_RAW:
             default:
@@ -298,7 +299,7 @@ public:
             case DISPLAY_TYPE::DISPLAY_UNITS:
             {
                 // Print the value in the configured height label type:
-                if (gConfigGeneral.show_height_as_units == 1)
+                if (gConfigGeneral.show_height_as_units)
                 {
                     // Height label is Units.
                     auto ft = Formatter();
@@ -350,6 +351,8 @@ public:
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(this);
 
+        _clipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
+
         // Initialise the clip height slider from the current clip height value.
         this->SetClipHeight(gClipHeight);
 
@@ -378,13 +381,13 @@ private:
         }
     }
 
-    void SetClipHeight(const uint8_t clipheight)
+    void SetClipHeight(const uint8_t clipHeight)
     {
-        gClipHeight = clipheight;
-        rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
+        gClipHeight = clipHeight;
+        const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
         const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
         this->scrolls[0].h_left = static_cast<int16_t>(
-            std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget->width() - 1))));
+            std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget.width() - 1))));
     }
 
     bool IsActive()
