@@ -76,7 +76,7 @@ private:
     std::unique_ptr<TrackDesign> _loadedTrackDesign;
     std::vector<uint8_t> _trackDesignPreviewPixels;
 
-    void window_track_list_filter_list()
+    void FilterList()
     {
         _filteredTrackIds.clear();
 
@@ -110,7 +110,7 @@ private:
         }
     }
 
-    void window_track_list_select(int32_t listIndex)
+    void SelectFromList(int32_t listIndex)
     {
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, this->windowPos.x + (this->width / 2));
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
@@ -158,7 +158,7 @@ private:
         }
     }
 
-    int32_t window_track_list_get_list_item_index_from_position(const ScreenCoordsXY& screenCoords)
+    int32_t GetListItemFromPosition(const ScreenCoordsXY& screenCoords)
     {
         size_t maxItems = _filteredTrackIds.size();
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
@@ -175,7 +175,7 @@ private:
         return index;
     }
 
-    void track_list_load_designs(RideSelection item)
+    void LoadDesignsList(RideSelection item)
     {
         auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
         std::string entryName;
@@ -188,10 +188,10 @@ private:
         }
         _trackDesigns = repo->GetItemsForObjectEntry(item.Type, entryName);
 
-        window_track_list_filter_list();
+        FilterList();
     }
 
-    bool track_list_load_design_for_preview(utf8* path)
+    bool LoadDesignPreview(utf8* path)
     {
         _loadedTrackDesign = track_design_open(path);
         if (_loadedTrackDesign != nullptr)
@@ -300,7 +300,7 @@ public:
                 }
 
                 String::Set(_filterString, sizeof(_filterString), "");
-                window_track_list_filter_list();
+                FilterList();
                 Invalidate();
                 break;
         }
@@ -314,19 +314,19 @@ public:
             // Extra item: custom design
             numItems++;
         }
-        int32_t scroll_height = static_cast<int32_t>(numItems * SCROLLABLE_ROW_HEIGHT);
+        int32_t scrollHeight = static_cast<int32_t>(numItems * SCROLLABLE_ROW_HEIGHT);
 
-        return { width, scroll_height };
+        return { width, scrollHeight };
     }
 
     void OnScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
         if (!track_list.track_list_being_updated)
         {
-            int32_t i = window_track_list_get_list_item_index_from_position(screenCoords);
+            int32_t i = GetListItemFromPosition(screenCoords);
             if (i != -1)
             {
-                window_track_list_select(i);
+                SelectFromList(i);
             }
         }
     }
@@ -335,7 +335,7 @@ public:
     {
         if (!track_list.track_list_being_updated)
         {
-            int32_t i = window_track_list_get_list_item_index_from_position(screenCoords);
+            int32_t i = GetListItemFromPosition(screenCoords);
             if (i != -1 && selected_list_item != i)
             {
                 selected_list_item = i;
@@ -354,7 +354,7 @@ public:
 
         String::Set(_filterString, sizeof(_filterString), text.data());
 
-        window_track_list_filter_list();
+        FilterList();
 
         scrolls->v_top = 0;
 
@@ -428,7 +428,7 @@ public:
 
         if (track_list.reload_track_designs)
         {
-            track_list_load_designs(_window_track_list_item);
+            LoadDesignsList(_window_track_list_item);
             selected_list_item = 0;
             Invalidate();
             track_list.reload_track_designs = false;
@@ -480,7 +480,7 @@ public:
 
         if (_loadedTrackDesignIndex != trackIndex)
         {
-            if (track_list_load_design_for_preview(path))
+            if (LoadDesignPreview(path))
             {
                 _loadedTrackDesignIndex = trackIndex;
             }
@@ -740,7 +740,7 @@ public:
     bool SetRideSelection(const RideSelection item)
     {
         _window_track_list_item = item;
-        track_list_load_designs(item);
+        LoadDesignsList(item);
         return true;
     }
 };
