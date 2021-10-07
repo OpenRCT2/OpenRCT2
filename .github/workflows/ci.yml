@@ -42,8 +42,7 @@ jobs:
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container:
-      image: openrct2/openrct2-build:0.3.1-format
+    container: openrct2/openrct2-build:0.3.1-format
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -93,8 +92,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container:
-      image: openrct2/openrct2-build:0.3.1-mingw
+    container: openrct2/openrct2-build:0.3.1-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -193,19 +191,17 @@ jobs:
     name: Linux (${{ matrix.platform }}, portable)
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container:
-      image: ${{ matrix.image }}
+    container: openrct2/openrct2-build:0.3.1-bionic${{ matrix.image_suffix }}
     strategy:
       fail-fast: false
       matrix:
         platform: [x86_64, i686]
         include:
           - platform: x86_64
-            image: openrct2/openrct2-build:0.3.1-bionic
             cache_key: linux-portable
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
           - platform: i686
-            image: openrct2/openrct2-build:0.3.1-bionic32
+            image_suffix: 32
             cache_key: linux-portable-32
             build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -gz"
     steps:
@@ -239,8 +235,7 @@ jobs:
     name: Linux (x64, AppImage)
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container:
-      image: openrct2/openrct2-build:0.3.1-bionic
+    container: openrct2/openrct2-build:0.3.1-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -303,8 +298,7 @@ jobs:
     name: Linux (Debug, [http, network, OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container:
-      image: openrct2/openrct2-build:0.3.1-bionic
+    container: openrct2/openrct2-build:0.3.1-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -320,8 +314,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container:
-      image: openrct2/openrct2-build:0.3.1-android
+    container: openrct2/openrct2-build:0.3.1-android
     steps:
       - name: Checkout
         uses: actions/checkout@v2
