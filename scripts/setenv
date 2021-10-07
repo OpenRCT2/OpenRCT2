@@ -2,9 +2,9 @@
 
 # This sets up more environment variables using the existing environment
 # It should be dot sourced into your environment
+export OPENRCT2_VERSION=$(grep 'Release version:' distribution/readme.txt | tr -d 'Release version: ')
 if [[ "$GITHUB_ACTIONS" != "true" ]]; then
     export OPENRCT2_BUILD_SERVER=$(hostname)
-    export OPENRCT2_VERSION=0.3.4.1
     GITHUB_REF=$(git rev-parse --symbolic-full-name HEAD)
     GITHUB_SHA=$(git rev-parse HEAD)
 fi
@@ -28,14 +28,21 @@ if [[ $GITHUB_REF == refs/tags/* ]]; then
     unset OPENRCT2_BRANCH
     export OPENRCT2_TAG=true
     export OPENRCT2_PUSH=true
+    if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+        echo OPENRCT2_TAG=$OPENRCT2_TAG >> $GITHUB_ENV
+        echo OPENRCT2_PUSH=$OPENRCT2_PUSH >> $GITHUB_ENV
+    fi
 else
     export OPENRCT2_BRANCH=${GITHUB_REF#refs/heads/}
-    if [[ "$OPENRCT2_BRANCH" =~ ^(develop|push/) ]]; then
-        export OPENRCT2_PUSH=true
+    if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+        echo OPENRCT2_BRANCH=$OPENRCT2_BRANCH >> $GITHUB_ENV
     fi
-fi
-if [[ "$OPENRCT2_ORG_TOKEN" == "" ]]; then
-    unset OPENRCT2_PUSH
+    if [[ "$OPENRCT2_BRANCH" =~ ^(develop|push/) ]] && [[ -n "$OPENRCT2_ORG_TOKEN" ]]; then
+        export OPENRCT2_PUSH=true
+        if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+            echo OPENRCT2_PUSH=$OPENRCT2_PUSH >> $GITHUB_ENV
+        fi
+    fi
 fi
 
 # Get the short SHA1
@@ -44,6 +51,9 @@ export OPENRCT2_SHA1_SHORT=${OPENRCT2_SHA1:0:7}
 unset OPENRCT2_VERSION_EXTRA
 if [[ "$OPENRCT2_TAG" != "true" ]]; then
     export OPENRCT2_VERSION_EXTRA=$OPENRCT2_BRANCH-$OPENRCT2_SHA1_SHORT
+    if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+        echo OPENRCT2_VERSION_EXTRA=$OPENRCT2_VERSION_EXTRA >> $GITHUB_ENV
+    fi
 fi
 
 # Add scripts directory to PATH
@@ -51,8 +61,17 @@ realpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$(pwd)/${1#./}"
 }
 scriptsdir="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
-export PATH="$scriptsdir:$PATH"
-export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+paths="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$scriptsdir"
+export PATH="$paths:$PATH"
+if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+    echo "$paths" >> $GITHUB_PATH
+    export OPENRCT2_BUILD_SERVER=GitHub
+    echo "OPENRCT2_VERSION=$OPENRCT2_VERSION" >> $GITHUB_ENV
+    echo "OPENRCT2_BUILD_SERVER=$OPENRCT2_BUILD_SERVER" >> $GITHUB_ENV
+    echo "OPENRCT2_DESCRIBE=$OPENRCT2_DESCRIBE" >> $GITHUB_ENV
+    echo "OPENRCT2_SHA1=$OPENRCT2_SHA1" >> $GITHUB_ENV
+    echo "OPENRCT2_SHA1_SHORT=$OPENRCT2_SHA1_SHORT" >> $GITHUB_ENV
+fi
 
 # Output all the variables
 if [[ "$1" != "-q" ]]; then
