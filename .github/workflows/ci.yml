@@ -1,5 +1,21 @@
 name: CI
-on: [push, pull_request]
+on: 
+  push:
+    paths-ignore:
+      - '.github/*_TEMPLATE/**'
+      - '.github/workflows/localisation.yml'
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.gitignore'
+      - '.vscode/**'
+  pull_request:
+    paths-ignore:
+      - '.github/*_TEMPLATE/**'
+      - '.github/workflows/localisation.yml'
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.gitignore'
+      - '.vscode/**'
 defaults:
   run:
     shell: bash
