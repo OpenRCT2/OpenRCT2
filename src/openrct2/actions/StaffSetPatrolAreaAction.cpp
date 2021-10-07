@@ -80,11 +80,13 @@ static void UpdateStaffMode(const Staff& staff)
 
 static void InvalidatePatrolTile(const CoordsXY& loc)
 {
+    // Align the location to the top left of the patrol square
+    const auto alignedLoc = CoordsXY{ loc.x & 0x1F80, loc.y & 0x1F80 };
     for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)
     {
         for (int32_t x = 0; x < 4 * COORDS_XY_STEP; x += COORDS_XY_STEP)
         {
-            map_invalidate_tile_full({ (loc.x & 0x1F80) + x, (loc.y & 0x1F80) + y });
+            map_invalidate_tile_full(alignedLoc + CoordsXY{ x, y });
         }
     }
 }
