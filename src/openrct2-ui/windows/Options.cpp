@@ -549,557 +549,873 @@ static uint64_t window_options_page_enabled_widgets[] = {
 };
 // clang-format on
 
-#pragma region Common tab events
-
-static void window_options_common_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+enum
 {
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close(w);
-            return;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-        case WIDX_TAB_4:
-        case WIDX_TAB_5:
-        case WIDX_TAB_6:
-        case WIDX_TAB_7:
-            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
-            break;
-    }
-}
+    WINDOW_OPTIONS_PAGE_DISPLAY,
+    WINDOW_OPTIONS_PAGE_RENDERING,
+    WINDOW_OPTIONS_PAGE_CULTURE,
+    WINDOW_OPTIONS_PAGE_AUDIO,
+    WINDOW_OPTIONS_PAGE_CONTROLS,
+    WINDOW_OPTIONS_PAGE_MISC,
+    WINDOW_OPTIONS_PAGE_ADVANCED,
+};
 
-static void window_options_common_invalidate_before(rct_window* w)
+class OptionsWindow final : public Window
 {
-    if (window_options_page_widgets[w->page] != w->widgets)
+public:
+    void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        w->widgets = window_options_page_widgets[w->page];
-        WindowInitScrollWidgets(w);
-    }
-    window_options_set_pressed_tab(w);
-
-    w->disabled_widgets = 0;
-    auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
-    if (!hasFilePicker)
-    {
-        w->enabled_widgets &= ~(1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE);
-        w->disabled_widgets |= (1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE);
-        w->widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;
-    }
-}
-
-static void window_options_common_invalidate_after(rct_window* w)
-{
-    // Automatically adjust window height to fit widgets
-    int32_t y = 0;
-    for (auto widget = &w->widgets[WIDX_PAGE_START]; widget->type != WindowWidgetType::Last; widget++)
-    {
-        y = std::max<int32_t>(y, widget->bottom);
-    }
-    w->height = y + 6;
-    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-}
-
-static void window_options_common_update(rct_window* w)
-{
-    // Tab animation
-    w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_1 + w->page);
-}
-
-#pragma region Display Tab
-
-static void window_options_display_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    if (widgetIndex < WIDX_PAGE_START)
-        return window_options_common_mouseup(w, widgetIndex);
-
-    switch (widgetIndex)
-    {
-        case WIDX_UNCAP_FPS_CHECKBOX:
-            gConfigGeneral.uncap_fps ^= 1;
-            drawing_engine_set_vsync(gConfigGeneral.use_vsync);
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_USE_VSYNC_CHECKBOX:
-            gConfigGeneral.use_vsync ^= 1;
-            drawing_engine_set_vsync(gConfigGeneral.use_vsync);
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_SHOW_FPS_CHECKBOX:
-            gConfigGeneral.show_fps ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_MULTITHREADING_CHECKBOX:
-            gConfigGeneral.multithreading ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_MINIMIZE_FOCUS_LOSS:
-            gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
-            platform_refresh_video(false);
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_STEAM_OVERLAY_PAUSE:
-            gConfigGeneral.steam_overlay_pause ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_DISABLE_SCREENSAVER_LOCK:
-            gConfigGeneral.disable_screensaver ^= 1;
-            ApplyScreenSaverLockSetting();
-            config_save_default();
-            w->Invalidate();
-            break;
-    }
-}
-
-static void window_options_display_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-{
-    widget = &w->widgets[widgetIndex - 1];
-
-    switch (widgetIndex)
-    {
-        case WIDX_RESOLUTION_DROPDOWN:
+        if (widgetIndex < WIDX_PAGE_START)
+            CommonMouseUp(widgetIndex);
+        else
         {
-            const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
-
-            int32_t selectedResolution = -1;
-            for (size_t i = 0; i < resolutions.size(); i++)
+            switch (page)
             {
-                const Resolution& resolution = resolutions[i];
+                case WINDOW_OPTIONS_PAGE_DISPLAY:
+                    DisplayMouseUp(widgetIndex);
+                    break;
+                case WINDOW_OPTIONS_PAGE_RENDERING:
+                    RenderingMouseUp(widgetIndex);
+                    break;
+                case WINDOW_OPTIONS_PAGE_CULTURE:
+                    CultureMouseUp(widgetIndex);
+                    break;
+                case WINDOW_OPTIONS_PAGE_AUDIO:
+                    AudioMouseUp(widgetIndex);
+                    break;
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
+                    ControlsMouseUp(widgetIndex);
+                    break;
+                case WINDOW_OPTIONS_PAGE_MISC:
+                    MiscMouseUp(widgetIndex);
+                    break;
+                case WINDOW_OPTIONS_PAGE_ADVANCED:
+                    AdvancedMouseUp(widgetIndex);
+                    break;
+                default:
+                    // panik
+                    break;
+            }
+        }
+    }
 
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+    void OnMouseDown(rct_widgetindex widgetIndex) override
+    {
+        switch (page)
+        {
+            case WINDOW_OPTIONS_PAGE_DISPLAY:
+                DisplayMouseDown(widgetIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_RENDERING:
+                RenderingMouseDown(widgetIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_CULTURE:
+                CultureMouseDown(widgetIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_AUDIO:
+                AudioMouseDown(widgetIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_CONTROLS:
+                ControlsMouseDown(widgetIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_MISC:
+                MiscMouseDown(widgetIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_ADVANCED:
+                AdvancedMouseDown(widgetIndex);
+                break;
+            default:
+                // panik
+                break;
+        }
+    }
 
-                uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
-                args[0] = STR_RESOLUTION_X_BY_Y;
-                args[1] = resolution.Width;
-                args[2] = resolution.Height;
+    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    {
+        switch (page)
+        {
+            case WINDOW_OPTIONS_PAGE_DISPLAY:
+                DisplayDropdown(widgetIndex, dropdownIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_RENDERING:
+                RenderingDropdown(widgetIndex, dropdownIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_CULTURE:
+                CultureDropdown(widgetIndex, dropdownIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_AUDIO:
+                AudioDropdown(widgetIndex, dropdownIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_CONTROLS:
+                ControlsDropdown(widgetIndex, dropdownIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_MISC:
+                MiscDropdown(widgetIndex, dropdownIndex);
+                break;
+            case WINDOW_OPTIONS_PAGE_ADVANCED:
+                AdvancedDropdown(widgetIndex, dropdownIndex);
+                break;
+            default:
+                // panik
+                break;
+        }
+    }
 
-                if (resolution.Width == gConfigGeneral.fullscreen_width
-                    && resolution.Height == gConfigGeneral.fullscreen_height)
+    void OnPrepareDraw() override
+    {
+        switch (page)
+        {
+            case WINDOW_OPTIONS_PAGE_DISPLAY:
+                DisplayPrepareDraw();
+                break;
+            case WINDOW_OPTIONS_PAGE_RENDERING:
+                RenderingPrepareDraw();
+                break;
+            case WINDOW_OPTIONS_PAGE_CULTURE:
+                CulturePrepareDraw();
+                break;
+            case WINDOW_OPTIONS_PAGE_AUDIO:
+                AudioPrepareDraw();
+                break;
+            case WINDOW_OPTIONS_PAGE_CONTROLS:
+                ControlsPrepareDraw();
+                break;
+            case WINDOW_OPTIONS_PAGE_MISC:
+                MiscPrepareDraw();
+                break;
+            case WINDOW_OPTIONS_PAGE_ADVANCED:
+                AdvancedPrepareDraw();
+                break;
+            default:
+                // panik
+                break;
+        }
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        switch (page)
+        {
+            case WINDOW_OPTIONS_PAGE_DISPLAY:
+                DisplayDraw(&dpi);
+                break;
+            case WINDOW_OPTIONS_PAGE_RENDERING:
+                RenderingDraw(&dpi);
+                break;
+            case WINDOW_OPTIONS_PAGE_CULTURE:
+                CultureDraw(&dpi);
+                break;
+            case WINDOW_OPTIONS_PAGE_AUDIO:
+                AudioDraw(&dpi);
+                break;
+            case WINDOW_OPTIONS_PAGE_CONTROLS:
+                ControlsDraw(&dpi);
+                break;
+            case WINDOW_OPTIONS_PAGE_MISC:
+                MiscDraw(&dpi);
+                break;
+            case WINDOW_OPTIONS_PAGE_ADVANCED:
+                AdvancedDraw(&dpi);
+                break;
+            default:
+                // panik
+                break;
+        }
+    }
+
+    void OnUpdate() override
+    {
+        CommonUpdate();
+    }
+
+private:
+#pragma region Common events
+    void CommonMouseUp(rct_widgetindex widgetIndex)
+    {
+        // static void window_options_common_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                window_close(this);
+                return;
+            case WIDX_TAB_1:
+            case WIDX_TAB_2:
+            case WIDX_TAB_3:
+            case WIDX_TAB_4:
+            case WIDX_TAB_5:
+            case WIDX_TAB_6:
+            case WIDX_TAB_7:
+                SetPage(widgetIndex - WIDX_TAB_1);
+                break;
+        }
+    }
+
+    void CommonPrepareDrawBefore()
+    {
+        // static void window_options_common_invalidate_before(rct_window* w)
+
+        if (window_options_page_widgets[this->page] != this->widgets)
+        {
+            this->widgets = window_options_page_widgets[this->page];
+            WindowInitScrollWidgets(this);
+        }
+        SetPressedTab();
+
+        this->disabled_widgets = 0;
+        auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
+        if (!hasFilePicker)
+        {
+            this->enabled_widgets &= ~(1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE);
+            this->disabled_widgets |= (1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE);
+            this->widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;
+        }
+    }
+
+    void CommonPrepareDrawAfter()
+    {
+        // static void window_options_common_invalidate_after(rct_window* w)
+
+        // Automatically adjust window height to fit widgets
+        int32_t y = 0;
+        for (auto widget = &this->widgets[WIDX_PAGE_START]; widget->type != WindowWidgetType::Last; widget++)
+        {
+            y = std::max<int32_t>(y, widget->bottom);
+        }
+        this->height = y + 6;
+        this->widgets[WIDX_BACKGROUND].bottom = this->height - 1;
+        this->widgets[WIDX_PAGE_BACKGROUND].bottom = this->height - 1;
+    }
+
+    void CommonUpdate()
+    {
+        // static void window_options_common_update(rct_window* w)
+
+        // Tab animation
+        this->frame_no++;
+        widget_invalidate(this, WIDX_TAB_1 + this->page);
+    }
+#pragma endregion
+
+#pragma region Display events
+    void DisplayMouseUp(rct_widgetindex widgetIndex)
+    {
+        // static void window_options_display_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+
+        switch (widgetIndex)
+        {
+            case WIDX_UNCAP_FPS_CHECKBOX:
+                gConfigGeneral.uncap_fps ^= 1;
+                drawing_engine_set_vsync(gConfigGeneral.use_vsync);
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_USE_VSYNC_CHECKBOX:
+                gConfigGeneral.use_vsync ^= 1;
+                drawing_engine_set_vsync(gConfigGeneral.use_vsync);
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_SHOW_FPS_CHECKBOX:
+                gConfigGeneral.show_fps ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_MULTITHREADING_CHECKBOX:
+                gConfigGeneral.multithreading ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_MINIMIZE_FOCUS_LOSS:
+                gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
+                platform_refresh_video(false);
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_STEAM_OVERLAY_PAUSE:
+                gConfigGeneral.steam_overlay_pause ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_DISABLE_SCREENSAVER_LOCK:
+                gConfigGeneral.disable_screensaver ^= 1;
+                ApplyScreenSaverLockSetting();
+                config_save_default();
+                this->Invalidate();
+                break;
+        }
+    }
+
+    void DisplayMouseDown(rct_widgetindex widgetIndex)
+    {
+        // static void window_options_display_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+
+        rct_widget* widget = &this->widgets[widgetIndex - 1];
+
+        switch (widgetIndex)
+        {
+            case WIDX_RESOLUTION_DROPDOWN:
+            {
+                const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+
+                int32_t selectedResolution = -1;
+                for (size_t i = 0; i < resolutions.size(); i++)
                 {
-                    selectedResolution = static_cast<int32_t>(i);
+                    const Resolution& resolution = resolutions[i];
+
+                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+
+                    uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
+                    args[0] = STR_RESOLUTION_X_BY_Y;
+                    args[1] = resolution.Width;
+                    args[2] = resolution.Height;
+
+                    if (resolution.Width == gConfigGeneral.fullscreen_width
+                        && resolution.Height == gConfigGeneral.fullscreen_height)
+                    {
+                        selectedResolution = static_cast<int32_t>(i);
+                    }
+                }
+
+                ShowDropDown(widget, static_cast<int32_t>(resolutions.size()));
+
+                if (selectedResolution != -1 && selectedResolution < 32)
+                {
+                    Dropdown::SetChecked(selectedResolution, true);
                 }
             }
 
-            window_options_show_dropdown(w, widget, static_cast<int32_t>(resolutions.size()));
-
-            if (selectedResolution != -1 && selectedResolution < 32)
-            {
-                Dropdown::SetChecked(selectedResolution, true);
-            }
-        }
-
-        break;
-        case WIDX_FULLSCREEN_DROPDOWN:
-            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_OPTIONS_DISPLAY_WINDOWED;
-            gDropdownItemsArgs[1] = STR_OPTIONS_DISPLAY_FULLSCREEN;
-            gDropdownItemsArgs[2] = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
-
-            window_options_show_dropdown(w, widget, 3);
-
-            Dropdown::SetChecked(gConfigGeneral.fullscreen_mode, true);
             break;
-        case WIDX_DRAWING_ENGINE_DROPDOWN:
-        {
-            int32_t numItems = 3;
+            case WIDX_FULLSCREEN_DROPDOWN:
+                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[0] = STR_OPTIONS_DISPLAY_WINDOWED;
+                gDropdownItemsArgs[1] = STR_OPTIONS_DISPLAY_FULLSCREEN;
+                gDropdownItemsArgs[2] = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
+
+                ShowDropDown(widget, 3);
+
+                Dropdown::SetChecked(gConfigGeneral.fullscreen_mode, true);
+                break;
+            case WIDX_DRAWING_ENGINE_DROPDOWN:
+            {
+                int32_t numItems = 3;
 #ifdef DISABLE_OPENGL
-            numItems = 2;
+                numItems = 2;
 #endif
 
-            for (int32_t i = 0; i < numItems; i++)
-            {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
+                for (int32_t i = 0; i < numItems; i++)
+                {
+                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
+                }
+                ShowDropDown(widget, numItems);
+                Dropdown::SetChecked(EnumValue(gConfigGeneral.drawing_engine), true);
+                break;
             }
-            window_options_show_dropdown(w, widget, numItems);
-            Dropdown::SetChecked(EnumValue(gConfigGeneral.drawing_engine), true);
-            break;
-        }
-        case WIDX_SCALE_UP:
-            gConfigGeneral.window_scale += 0.25f;
-            config_save_default();
-            gfx_invalidate_screen();
-            context_trigger_resize();
-            context_update_cursor_scale();
-            break;
-        case WIDX_SCALE_DOWN:
-            gConfigGeneral.window_scale -= 0.25f;
-            gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
-            config_save_default();
-            gfx_invalidate_screen();
-            context_trigger_resize();
-            context_update_cursor_scale();
-            break;
-        case WIDX_SCALE_QUALITY_DROPDOWN:
-            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
-            gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
-
-            window_options_show_dropdown(w, widget, 2);
-
-            // Note: offset by one to compensate for lack of NN option.
-            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
-            break;
-    }
-}
-
-static void window_options_display_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-{
-    if (dropdownIndex == -1)
-        return;
-
-    switch (widgetIndex)
-    {
-        case WIDX_RESOLUTION_DROPDOWN:
-        {
-            const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
-
-            const Resolution& resolution = resolutions[dropdownIndex];
-            if (resolution.Width != gConfigGeneral.fullscreen_width || resolution.Height != gConfigGeneral.fullscreen_height)
-            {
-                gConfigGeneral.fullscreen_width = resolution.Width;
-                gConfigGeneral.fullscreen_height = resolution.Height;
-
-                if (gConfigGeneral.fullscreen_mode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-                    context_set_fullscreen_mode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
-
-                config_save_default();
-                gfx_invalidate_screen();
-            }
-        }
-        break;
-        case WIDX_FULLSCREEN_DROPDOWN:
-            if (dropdownIndex != gConfigGeneral.fullscreen_mode)
-            {
-                context_set_fullscreen_mode(dropdownIndex);
-
-                gConfigGeneral.fullscreen_mode = static_cast<uint8_t>(dropdownIndex);
-                config_save_default();
-                gfx_invalidate_screen();
-            }
-            break;
-        case WIDX_DRAWING_ENGINE_DROPDOWN:
-            if (dropdownIndex != EnumValue(gConfigGeneral.drawing_engine))
-            {
-                DrawingEngine srcEngine = drawing_engine_get_type();
-                DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
-
-                gConfigGeneral.drawing_engine = dstEngine;
-                bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
-                platform_refresh_video(recreate_window);
-                config_save_default();
-                w->Invalidate();
-            }
-            break;
-        case WIDX_SCALE_QUALITY_DROPDOWN:
-            // Note: offset by one to compensate for lack of NN option.
-            if (static_cast<ScaleQuality>(dropdownIndex + 1) != gConfigGeneral.scale_quality)
-            {
-                gConfigGeneral.scale_quality = static_cast<ScaleQuality>(dropdownIndex + 1);
+            case WIDX_SCALE_UP:
+                gConfigGeneral.window_scale += 0.25f;
                 config_save_default();
                 gfx_invalidate_screen();
                 context_trigger_resize();
+                context_update_cursor_scale();
+                break;
+            case WIDX_SCALE_DOWN:
+                gConfigGeneral.window_scale -= 0.25f;
+                gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
+                config_save_default();
+                gfx_invalidate_screen();
+                context_trigger_resize();
+                context_update_cursor_scale();
+                break;
+            case WIDX_SCALE_QUALITY_DROPDOWN:
+                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
+                gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
+
+                ShowDropDown(widget, 2);
+
+                // Note: offset by one to compensate for lack of NN option.
+                Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
+                break;
+        }
+    }
+
+    void DisplayDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    {
+        // static void window_options_display_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+
+        if (dropdownIndex == -1)
+            return;
+
+        switch (widgetIndex)
+        {
+            case WIDX_RESOLUTION_DROPDOWN:
+            {
+                const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+
+                const Resolution& resolution = resolutions[dropdownIndex];
+                if (resolution.Width != gConfigGeneral.fullscreen_width || resolution.Height != gConfigGeneral.fullscreen_height)
+                {
+                    gConfigGeneral.fullscreen_width = resolution.Width;
+                    gConfigGeneral.fullscreen_height = resolution.Height;
+
+                    if (gConfigGeneral.fullscreen_mode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+                        context_set_fullscreen_mode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
+
+                    config_save_default();
+                    gfx_invalidate_screen();
+                }
             }
             break;
+            case WIDX_FULLSCREEN_DROPDOWN:
+                if (dropdownIndex != gConfigGeneral.fullscreen_mode)
+                {
+                    context_set_fullscreen_mode(dropdownIndex);
+
+                    gConfigGeneral.fullscreen_mode = static_cast<uint8_t>(dropdownIndex);
+                    config_save_default();
+                    gfx_invalidate_screen();
+                }
+                break;
+            case WIDX_DRAWING_ENGINE_DROPDOWN:
+                if (dropdownIndex != EnumValue(gConfigGeneral.drawing_engine))
+                {
+                    DrawingEngine srcEngine = drawing_engine_get_type();
+                    DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
+
+                    gConfigGeneral.drawing_engine = dstEngine;
+                    bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
+                    platform_refresh_video(recreate_window);
+                    config_save_default();
+                    this->Invalidate();
+                }
+                break;
+            case WIDX_SCALE_QUALITY_DROPDOWN:
+                // Note: offset by one to compensate for lack of NN option.
+                if (static_cast<ScaleQuality>(dropdownIndex + 1) != gConfigGeneral.scale_quality)
+                {
+                    gConfigGeneral.scale_quality = static_cast<ScaleQuality>(dropdownIndex + 1);
+                    config_save_default();
+                    gfx_invalidate_screen();
+                    context_trigger_resize();
+                }
+                break;
+        }
     }
-}
 
-static void window_options_display_invalidate(rct_window* w)
-{
-    window_options_common_invalidate_before(w);
-
-    // Resolution dropdown caption.
-    auto ft = Formatter::Common();
-    ft.Increment(16);
-    ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_width));
-    ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_height));
-
-    // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-    if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+    void DisplayPrepareDraw()
     {
-        w->disabled_widgets |= (1ULL << WIDX_RESOLUTION_DROPDOWN);
-        w->disabled_widgets |= (1ULL << WIDX_RESOLUTION);
+        // static void window_options_display_invalidate(rct_window* w)
+        CommonPrepareDrawBefore();
+
+        // Resolution dropdown caption.
+        auto ft = Formatter::Common();
+        ft.Increment(16);
+        ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_width));
+        ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_height));
+
+        // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
+        if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+        {
+            this->disabled_widgets |= (1ULL << WIDX_RESOLUTION_DROPDOWN);
+            this->disabled_widgets |= (1ULL << WIDX_RESOLUTION);
+        }
+        else
+        {
+            this->disabled_widgets &= ~(1ULL << WIDX_RESOLUTION_DROPDOWN);
+            this->disabled_widgets &= ~(1ULL << WIDX_RESOLUTION);
+        }
+
+        // Disable Steam Overlay checkbox when using software rendering.
+        if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+        {
+            this->disabled_widgets |= (1ULL << WIDX_STEAM_OVERLAY_PAUSE);
+        }
+        else
+        {
+            this->disabled_widgets &= ~(1ULL << WIDX_STEAM_OVERLAY_PAUSE);
+        }
+
+        // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
+        // In the latter case, nearest neighbour rendering will be used to scale.
+        if (gConfigGeneral.drawing_engine == DrawingEngine::Software
+            || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        {
+            this->disabled_widgets |= (1ULL << WIDX_SCALE_QUALITY);
+            this->disabled_widgets |= (1ULL << WIDX_SCALE_QUALITY_DROPDOWN);
+        }
+        else
+        {
+            this->disabled_widgets &= ~(1ULL << WIDX_SCALE_QUALITY);
+            this->disabled_widgets &= ~(1ULL << WIDX_SCALE_QUALITY_DROPDOWN);
+        }
+
+        // Disable changing VSync for Software engine, as we can't control its use of VSync
+        if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+        {
+            this->disabled_widgets |= (1ULL << WIDX_USE_VSYNC_CHECKBOX);
+        }
+        else
+        {
+            this->disabled_widgets &= ~(1ULL << WIDX_USE_VSYNC_CHECKBOX);
+        }
+
+        WidgetSetCheckboxValue(this, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
+        WidgetSetCheckboxValue(this, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
+        WidgetSetCheckboxValue(this, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
+        WidgetSetCheckboxValue(this, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
+        WidgetSetCheckboxValue(this, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
+        WidgetSetCheckboxValue(this, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
+        WidgetSetCheckboxValue(this, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
+
+        // Dropdown captions for straightforward strings.
+        window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
+        window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
+        window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
+            [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
+
+        CommonPrepareDrawAfter();
     }
-    else
+
+    void DisplayDraw(rct_drawpixelinfo* dpi)
     {
-        w->disabled_widgets &= ~(1ULL << WIDX_RESOLUTION_DROPDOWN);
-        w->disabled_widgets &= ~(1ULL << WIDX_RESOLUTION);
-    }
+        // static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
-    // Disable Steam Overlay checkbox when using software rendering.
-    if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+        WindowDrawWidgets(this, dpi);
+        window_options_draw_tab_images(dpi, this);
+
+        DrawTextBasic(
+            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_FULLSCREEN].top + 1 }, STR_FULLSCREEN_MODE,
+            {}, { this->colours[1] });
+
+        // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
+        colour_t colour = this->colours[1];
+        if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+        {
+            colour |= COLOUR_FLAG_INSET;
+        }
+        DrawTextBasic(
+            dpi, this->windowPos + ScreenCoordsXY{ 10 + 15, window_options_display_widgets[WIDX_RESOLUTION].top + 1 },
+            STR_DISPLAY_RESOLUTION, {}, { colour });
+
+        DrawTextBasic(
+            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_SCALE].top + 1 }, STR_UI_SCALING_DESC, {},
+            { this->colours[1] });
+        DrawTextBasic(
+            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1 },
+            STR_DRAWING_ENGINE, {}, { this->colours[1] });
+
+        auto ft = Formatter();
+        ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.window_scale * 100));
+        DrawTextBasic(
+            dpi, this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_SCALE].left + 1, this->widgets[WIDX_SCALE].top + 1 },
+            STR_WINDOW_OBJECTIVE_VALUE_RATING, ft, { this->colours[1] });
+
+        colour = this->colours[1];
+        if (gConfigGeneral.drawing_engine == DrawingEngine::Software
+            || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        {
+            colour |= COLOUR_FLAG_INSET;
+        }
+        DrawTextBasic(
+            dpi, this->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 },
+            STR_SCALING_QUALITY, {}, { colour });
+    }
+#pragma endregion
+
+#pragma region Rendering events
+    void RenderingMouseUp(rct_widgetindex widgetIndex)
     {
-        w->disabled_widgets |= (1ULL << WIDX_STEAM_OVERLAY_PAUSE);
+        // static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+
+        switch (widgetIndex)
+        {
+            case WIDX_TILE_SMOOTHING_CHECKBOX:
+                gConfigGeneral.landscape_smoothing ^= 1;
+                config_save_default();
+                gfx_invalidate_screen();
+                break;
+            case WIDX_GRIDLINES_CHECKBOX:
+                gConfigGeneral.always_show_gridlines ^= 1;
+                config_save_default();
+                gfx_invalidate_screen();
+                rct_window* mainWindow = window_get_main();
+                if (mainWindow != nullptr)
+                {
+                    if (gConfigGeneral.always_show_gridlines)
+                        mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
+                    else
+                        mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
+                }
+                break;
+            case WIDX_DAY_NIGHT_CHECKBOX:
+                gConfigGeneral.day_night_cycle ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
+                gConfigGeneral.enable_light_fx ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX:
+                gConfigGeneral.enable_light_fx_for_vehicles ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
+                gConfigGeneral.upper_case_banners ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
+                gConfigGeneral.disable_lightning_effect ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
+                gConfigGeneral.render_weather_effects ^= 1;
+                gConfigGeneral.render_weather_gloom = gConfigGeneral.render_weather_effects;
+                config_save_default();
+                this->Invalidate();
+                gfx_invalidate_screen();
+                break;
+            case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
+                gConfigGeneral.show_guest_purchases ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+            case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
+                gConfigGeneral.transparent_screenshot ^= 1;
+                config_save_default();
+                this->Invalidate();
+                break;
+        }
     }
-    else
+
+    void RenderingMouseDown(rct_widgetindex widgetIndex)
     {
-        w->disabled_widgets &= ~(1ULL << WIDX_STEAM_OVERLAY_PAUSE);
+        // static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+
+        switch (widgetIndex)
+        {
+            case WIDX_VIRTUAL_FLOOR_DROPDOWN:
+                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[0] = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
+                gDropdownItemsArgs[1] = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
+                gDropdownItemsArgs[2] = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
+
+                rct_widget* widget = &this->widgets[widgetIndex - 1];
+                ShowDropDown(widget, 3);
+
+                Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
+                break;
+        }
     }
 
-    // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
-    // In the latter case, nearest neighbour rendering will be used to scale.
-    if (gConfigGeneral.drawing_engine == DrawingEngine::Software
-        || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+    void RenderingDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        w->disabled_widgets |= (1ULL << WIDX_SCALE_QUALITY);
-        w->disabled_widgets |= (1ULL << WIDX_SCALE_QUALITY_DROPDOWN);
+        // static void window_options_rendering_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+
+        if (dropdownIndex == -1)
+            return;
+
+        switch (widgetIndex)
+        {
+            case WIDX_VIRTUAL_FLOOR_DROPDOWN:
+                gConfigGeneral.virtual_floor_style = static_cast<VirtualFloorStyles>(dropdownIndex);
+                config_save_default();
+                break;
+        }
     }
-    else
+
+    void RenderingPrepareDraw()
     {
-        w->disabled_widgets &= ~(1ULL << WIDX_SCALE_QUALITY);
-        w->disabled_widgets &= ~(1ULL << WIDX_SCALE_QUALITY_DROPDOWN);
+        // static void window_options_rendering_invalidate(rct_window* w)
+
+        CommonPrepareDrawBefore();
+
+        WidgetSetCheckboxValue(this, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
+        WidgetSetCheckboxValue(this, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
+        WidgetSetCheckboxValue(this, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
+        WidgetSetCheckboxValue(this, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
+        WidgetSetCheckboxValue(this, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
+        WidgetSetCheckboxValue(this, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
+
+        rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
+                                                     STR_VIRTUAL_FLOOR_STYLE_GLASSY };
+
+        window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
+            gConfigGeneral.virtual_floor_style)];
+
+        WidgetSetCheckboxValue(this, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
+        if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
+        {
+            this->disabled_widgets &= ~(1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+        }
+        else
+        {
+            this->disabled_widgets |= (1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+            gConfigGeneral.enable_light_fx = false;
+        }
+
+        WidgetSetCheckboxValue(this, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
+        if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
+            && gConfigGeneral.enable_light_fx)
+        {
+            this->disabled_widgets &= ~(1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+        }
+        else
+        {
+            this->disabled_widgets |= (1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+            gConfigGeneral.enable_light_fx_for_vehicles = false;
+        }
+
+        WidgetSetCheckboxValue(
+            this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX, gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
+        WidgetSetCheckboxValue(this, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
+        if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
+        {
+            WidgetSetCheckboxValue(this, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
+            this->enabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+            this->disabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        }
+        else
+        {
+            this->enabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+            this->disabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        }
+
+        CommonPrepareDrawAfter();
     }
 
-    // Disable changing VSync for Software engine, as we can't control its use of VSync
-    if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+    void RenderingDraw(rct_drawpixelinfo* dpi)
     {
-        w->disabled_widgets |= (1ULL << WIDX_USE_VSYNC_CHECKBOX);
+        // static void window_options_rendering_paint(rct_window* w, rct_drawpixelinfo* dpi)
+
+        WindowDrawWidgets(this, dpi);
+        DrawTabImages(dpi);
     }
-    else
+
+#pragma endregion
+
+#pragma region Culture events
+    void CultureMouseUp(rct_widgetindex widgetIndex)
     {
-        w->disabled_widgets &= ~(1ULL << WIDX_USE_VSYNC_CHECKBOX);
     }
-
-    WidgetSetCheckboxValue(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
-    WidgetSetCheckboxValue(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
-    WidgetSetCheckboxValue(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
-    WidgetSetCheckboxValue(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
-    WidgetSetCheckboxValue(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
-    WidgetSetCheckboxValue(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
-    WidgetSetCheckboxValue(w, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
-
-    // Dropdown captions for straightforward strings.
-    window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
-    window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
-    window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
-        [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
-
-    window_options_common_invalidate_after(w);
-}
-
-static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-    window_options_draw_tab_images(dpi, w);
-
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_FULLSCREEN].top + 1 }, STR_FULLSCREEN_MODE,
-        {}, { w->colours[1] });
-
-    // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-    colour_t colour = w->colours[1];
-    if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+    void CultureMouseDown(rct_widgetindex widgetIndex)
     {
-        colour |= COLOUR_FLAG_INSET;
     }
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 10 + 15, window_options_display_widgets[WIDX_RESOLUTION].top + 1 },
-        STR_DISPLAY_RESOLUTION, {}, { colour });
-
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_SCALE].top + 1 }, STR_UI_SCALING_DESC, {},
-        { w->colours[1] });
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1 },
-        STR_DRAWING_ENGINE, {}, { w->colours[1] });
-
-    auto ft = Formatter();
-    ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.window_scale * 100));
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SCALE].left + 1, w->widgets[WIDX_SCALE].top + 1 },
-        STR_WINDOW_OBJECTIVE_VALUE_RATING, ft, { w->colours[1] });
-
-    colour = w->colours[1];
-    if (gConfigGeneral.drawing_engine == DrawingEngine::Software
-        || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+    void CultureDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        colour |= COLOUR_FLAG_INSET;
     }
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 },
-        STR_SCALING_QUALITY, {}, { colour });
-}
+    void CulturePrepareDraw()
+    {
+    }
+    void CultureDraw(rct_drawpixelinfo& dpi)
+    {
+    }
+#pragma endregion
 
+#pragma region Audio events
+    void AudioMouseUp(rct_widgetindex widgetIndex)
+    {
+    }
+    void AudioMouseDown(rct_widgetindex widgetIndex)
+    {
+    }
+    void AudioDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    {
+    }
+    void AudioPrepareDraw()
+    {
+    }
+    void AudioDraw(rct_drawpixelinfo& dpi)
+    {
+    }
+#pragma endregion
+
+#pragma region Controls events
+    void ControlsMouseUp(rct_widgetindex widgetIndex)
+    {
+    }
+    void ControlsMouseDown(rct_widgetindex widgetIndex)
+    {
+    }
+    void ControlsDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    {
+    }
+    void ControlsPrepareDraw()
+    {
+    }
+    void ControlsDraw(rct_drawpixelinfo& dpi)
+    {
+    }
+#pragma endregion
+
+#pragma region Misc events
+    void MiscMouseUp(rct_widgetindex widgetIndex)
+    {
+    }
+    void MiscMouseDown(rct_widgetindex widgetIndex)
+    {
+    }
+    void MiscDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    {
+    }
+    void MiscPrepareDraw()
+    {
+    }
+    void MiscDraw(rct_drawpixelinfo& dpi)
+    {
+    }
+#pragma endregion
+
+#pragma region Advanced events
+    void AdvancedMouseUp(rct_widgetindex widgetIndex)
+    {
+    }
+    void AdvancedMouseDown(rct_widgetindex widgetIndex)
+    {
+    }
+    void AdvancedDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    {
+    }
+    void AdvancedPrepareDraw()
+    {
+    }
+    void AdvancedDraw(rct_drawpixelinfo& dpi)
+    {
+    }
+#pragma endregion
+
+    void SetPage(int32_t p)
+    {
+    }
+
+    void SetPressedTab()
+    {
+    }
+
+    void ShowDropDown(rct_widget* widget, int32_t num_items)
+    {
+    }
+
+    void DrawTabImages(rct_drawpixelinfo* dpi)
+    {
+    }
+};
 #pragma region Rendering Tab
 
-static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    if (widgetIndex < WIDX_PAGE_START)
-        return window_options_common_mouseup(w, widgetIndex);
 
-    switch (widgetIndex)
-    {
-        case WIDX_TILE_SMOOTHING_CHECKBOX:
-            gConfigGeneral.landscape_smoothing ^= 1;
-            config_save_default();
-            gfx_invalidate_screen();
-            break;
-        case WIDX_GRIDLINES_CHECKBOX:
-            gConfigGeneral.always_show_gridlines ^= 1;
-            config_save_default();
-            gfx_invalidate_screen();
-            if ((w = window_get_main()) != nullptr)
-            {
-                if (gConfigGeneral.always_show_gridlines)
-                    w->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-                else
-                    w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
-            }
-            break;
-        case WIDX_DAY_NIGHT_CHECKBOX:
-            gConfigGeneral.day_night_cycle ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
-            gConfigGeneral.enable_light_fx ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX:
-            gConfigGeneral.enable_light_fx_for_vehicles ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
-            gConfigGeneral.upper_case_banners ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
-            gConfigGeneral.disable_lightning_effect ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
-            gConfigGeneral.render_weather_effects ^= 1;
-            gConfigGeneral.render_weather_gloom = gConfigGeneral.render_weather_effects;
-            config_save_default();
-            w->Invalidate();
-            gfx_invalidate_screen();
-            break;
-        case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
-            gConfigGeneral.show_guest_purchases ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-        case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
-            gConfigGeneral.transparent_screenshot ^= 1;
-            config_save_default();
-            w->Invalidate();
-            break;
-    }
-}
 
-static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
-            gDropdownItemsArgs[1] = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
-            gDropdownItemsArgs[2] = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
 
-            widget = &w->widgets[widgetIndex - 1];
-            window_options_show_dropdown(w, widget, 3);
 
-            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
-            break;
-    }
-}
-
-static void window_options_rendering_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-{
-    if (dropdownIndex == -1)
-        return;
-
-    switch (widgetIndex)
-    {
-        case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-            gConfigGeneral.virtual_floor_style = static_cast<VirtualFloorStyles>(dropdownIndex);
-            config_save_default();
-            break;
-    }
-}
-
-static void window_options_rendering_invalidate(rct_window* w)
-{
-    window_options_common_invalidate_before(w);
-
-    WidgetSetCheckboxValue(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
-    WidgetSetCheckboxValue(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
-    WidgetSetCheckboxValue(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
-    WidgetSetCheckboxValue(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
-    WidgetSetCheckboxValue(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
-    WidgetSetCheckboxValue(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
-
-    rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
-                                                 STR_VIRTUAL_FLOOR_STYLE_GLASSY };
-
-    window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
-        gConfigGeneral.virtual_floor_style)];
-
-    WidgetSetCheckboxValue(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
-    if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
-    {
-        w->disabled_widgets &= ~(1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
-    }
-    else
-    {
-        w->disabled_widgets |= (1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
-        gConfigGeneral.enable_light_fx = false;
-    }
-
-    WidgetSetCheckboxValue(w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
-    if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
-        && gConfigGeneral.enable_light_fx)
-    {
-        w->disabled_widgets &= ~(1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
-    }
-    else
-    {
-        w->disabled_widgets |= (1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
-        gConfigGeneral.enable_light_fx_for_vehicles = false;
-    }
-
-    WidgetSetCheckboxValue(
-        w, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX, gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
-    WidgetSetCheckboxValue(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
-    if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
-    {
-        WidgetSetCheckboxValue(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
-        w->enabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-        w->disabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-    }
-    else
-    {
-        w->enabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-        w->disabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-    }
-
-    window_options_common_invalidate_after(w);
-}
-
-static void window_options_rendering_paint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-    window_options_draw_tab_images(dpi, w);
-}
 
 #pragma region Culture Tab
 
