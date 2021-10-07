@@ -16,6 +16,7 @@ on:
       - '.gitattributes'
       - '.gitignore'
       - '.vscode/**'
+  workflow_dispatch:
 defaults:
   run:
     shell: bash
