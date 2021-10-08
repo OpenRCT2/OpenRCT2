@@ -144,15 +144,14 @@ jobs:
         run: |
           xcodebuild -configuration Release
           mkdir -p artifacts
-          mv build/Release/OpenRCT2.app artifacts
           echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
-          cd artifacts
-          zip -rq openrct2-macos.zip OpenRCT2.app
+          cd build/Release
+          zip -rq ../../artifacts/openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v2
         with:
           name: OpenRCT2-${{ runner.os }}-xcode
-          path: artifacts/openrct2-macos.zip
+          path: artifacts
           if-no-files-found: error
       - name: Upload artifacts (openrct2.org)
         if: steps.setenv.outputs.OPENRCT2_PUSH == 'true'
@@ -179,15 +178,14 @@ jobs:
       - name: Build artifacts
         run: |
           mkdir -p artifacts
-          mv bin/OpenRCT2.app artifacts
           echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
-          cd artifacts
-          zip -rqy openrct2-macos.zip OpenRCT2.app
+          cd bin
+          zip -rqy ../artifacts/openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v2
         with:
           name: OpenRCT2-${{ runner.os }}-cmake
-          path: artifacts/openrct2-macos.zip
+          path: artifacts
           if-no-files-found: error
   linux-portable:
     name: Linux (${{ matrix.platform }}, portable)
