@@ -361,7 +361,7 @@ public:
         Invalidate();
     }
 
-    void Invalidate()
+    void OnPrepareDraw() override
     {
         rct_string_id stringId = STR_NONE;
         rct_ride_entry* entry = get_ride_entry(_window_track_list_item.EntryIndex);
