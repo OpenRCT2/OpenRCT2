@@ -282,18 +282,14 @@ jobs:
       - name: Build image
         run: docker build -t openrct2/openrct2-cli:develop develop/cli
       - name: Push image
+        if: github.ref == 'refs/heads/develop'
         env:
           OPENRCT2_DOCKER_USER: ${{ secrets.OPENRCT2_DOCKER_USER }}
           OPENRCT2_DOCKER_PASS: ${{ secrets.OPENRCT2_DOCKER_PASS }}
         run: |
           OPENRCT2_BRANCH=$(echo "$GITHUB_REF" | sed 's/refs\/heads\///')
-          echo "Current branch is $OPENRCT2_BRANCH"
-          if [ "$OPENRCT2_BRANCH" = 'develop' ]; then
-                  docker login -u "$OPENRCT2_DOCKER_USER" -p "$OPENRCT2_DOCKER_PASS"
-                  docker push openrct2/openrct2-cli:develop
-          else
-                  echo 'Image not pushed'
-          fi
+          docker login -u "$OPENRCT2_DOCKER_USER" -p "$OPENRCT2_DOCKER_PASS"
+          docker push openrct2/openrct2-cli:develop
   linux-clang:
     name: Linux (Debug, [http, network, OpenGL] disabled) using clang
     runs-on: ubuntu-latest
