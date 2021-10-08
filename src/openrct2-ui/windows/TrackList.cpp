@@ -457,7 +457,7 @@ public:
         int32_t trackIndex = _filteredTrackIds[listItemIndex];
 
         // Track preview
-        rct_widget* widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
+        auto& tdWidget = widgets[WIDX_TRACK_PREVIEW];
         int32_t colour = ColourMapA[colours[0]].darkest;
         utf8* path = _trackDesigns[trackIndex].path;
 
@@ -474,7 +474,7 @@ public:
                 { colours[1] }); // TODO Check dpi
         }
 
-        auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
+        auto screenPos = windowPos + ScreenCoordsXY{ tdWidget.left + 1, tdWidget.top + 1 };
         gfx_fill_rect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
 
         if (_loadedTrackDesignIndex != trackIndex)
@@ -495,7 +495,7 @@ public:
         }
 
         auto trackPreview = screenPos;
-        screenPos = windowPos + ScreenCoordsXY{ widget->midX(), widget->midY() };
+        screenPos = windowPos + ScreenCoordsXY{ tdWidget.midX(), tdWidget.midY() };
 
         rct_g1_element g1temp = {};
         g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
@@ -506,7 +506,7 @@ public:
         drawing_engine_invalidate_image(SPR_TEMP);
         gfx_draw_sprite(&dpi, ImageId(SPR_TEMP), trackPreview);
 
-        screenPos.y = windowPos.y + widget->bottom - 12;
+        screenPos.y = windowPos.y + tdWidget.bottom - 12;
 
         // Warnings
         if ((_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE)
@@ -534,7 +534,7 @@ public:
         DrawTextEllipsised(&dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, { TextAlignment::CENTRE });
 
         // Information
-        screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->bottom + 2 };
+        screenPos = windowPos + ScreenCoordsXY{ tdWidget.left + 1, tdWidget.bottom + 2 };
 
         // Stats
         ft = Formatter();
