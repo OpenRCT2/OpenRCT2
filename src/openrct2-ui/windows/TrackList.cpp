@@ -457,9 +457,8 @@ public:
         int32_t trackIndex = _filteredTrackIds[listItemIndex];
 
         // Track preview
-        int32_t colour;
         rct_widget* widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
-        colour = ColourMapA[colours[0]].darkest;
+        int32_t colour = ColourMapA[colours[0]].darkest;
         utf8* path = _trackDesigns[trackIndex].path;
 
         // Show track file path (in debug mode)
