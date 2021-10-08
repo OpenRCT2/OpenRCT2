@@ -1,4 +1,6 @@
-#!/bin/bash -ex
+#!/bin/bash
+
+set -ex
 
 REPO_ROOT=$(readlink -f $(dirname "$0")/../..)
 

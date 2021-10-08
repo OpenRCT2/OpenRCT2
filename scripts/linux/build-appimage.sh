@@ -1,4 +1,6 @@
-#!/bin/bash -ex
+#!/bin/bash
+
+set -ex
 
 # use RAM disk if possible
 if [ "$CI" == "" ] && [ -d /dev/shm ]; then

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # This sets up more environment variables using the existing environment
 # It should be dot sourced into your environment
 export OPENRCT2_VERSION=$(grep 'Release version:' distribution/readme.txt | tr -d 'Release version: ')
