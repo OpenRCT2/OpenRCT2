@@ -523,6 +523,15 @@ public:
 #endif
                 case SDL_KEYDOWN:
                 {
+#ifndef __MACOSX__
+                    // Ignore winkey keydowns. Handles edge case where tiling
+                    // window managers don't eat the keypresses when changing
+                    // workspaces.
+                    if (SDL_GetModState() & KMOD_GUI)
+                    {
+                        break;
+                    }
+#endif
                     _textComposition.HandleMessage(&e);
                     auto ie = GetInputEventFromSDLEvent(e);
                     ie.State = InputEventState::Down;
