@@ -97,9 +97,6 @@ static void ride_entrance_exit_connected(Ride* ride);
 static int32_t ride_get_new_breakdown_problem(Ride* ride);
 static void ride_inspection_update(Ride* ride);
 static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus);
-static int32_t ride_music_sample_rate(Ride* ride);
-static bool ride_music_breakdown_effect(Ride* ride);
-static void circus_music_update(Ride* ride);
 static void ride_music_update(Ride* ride);
 static void ride_shop_connected(Ride* ride);
 
@@ -1758,7 +1755,7 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
  *
  *  Calculates the sample rate for ride music.
  */
-static int32_t ride_music_sample_rate(Ride* ride)
+static int32_t RideMusicSampleRate(Ride* ride)
 {
     int32_t sampleRate = 22050;
 
@@ -1778,7 +1775,7 @@ static int32_t ride_music_sample_rate(Ride* ride)
  *
  *  Ride music slows down upon breaking. If it's completely broken, no music should play.
  */
-static bool ride_music_breakdown_effect(Ride* ride)
+static bool RideMusicBreakdownEffect(Ride* ride)
 {
     // Oscillate parameters for a power cut effect when breaking down
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
@@ -1813,7 +1810,7 @@ static bool ride_music_breakdown_effect(Ride* ride)
  *
  *  Circus music is a sound effect, rather than music. Needs separate processing.
  */
-static void circus_music_update(Ride* ride)
+static void CircusMusicUpdate(Ride* ride)
 {
     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
@@ -1823,14 +1820,14 @@ static void circus_music_update(Ride* ride)
         return;
     }
 
-    if (ride_music_breakdown_effect(ride))
+    if (RideMusicBreakdownEffect(ride))
     {
         return;
     }
 
     CoordsXYZ rideCoords = ride->stations[0].GetStart().ToTileCentre();
 
-    int32_t sampleRate = ride_music_sample_rate(ride);
+    const auto sampleRate = RideMusicSampleRate(ride);
 
     OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
 }
@@ -1843,7 +1840,7 @@ static void ride_music_update(Ride* ride)
 {
     if (ride->type == RIDE_TYPE_CIRCUS)
     {
-        circus_music_update(ride);
+        CircusMusicUpdate(ride);
         return;
     }
 
@@ -1859,7 +1856,7 @@ static void ride_music_update(Ride* ride)
         return;
     }
 
-    if (ride_music_breakdown_effect(ride))
+    if (RideMusicBreakdownEffect(ride))
     {
         return;
     }
@@ -1880,7 +1877,7 @@ static void ride_music_update(Ride* ride)
 
     CoordsXYZ rideCoords = ride->stations[0].GetStart().ToTileCentre();
 
-    int32_t sampleRate = ride_music_sample_rate(ride);
+    int32_t sampleRate = RideMusicSampleRate(ride);
 
     OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
 }
