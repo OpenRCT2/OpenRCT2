@@ -591,28 +591,21 @@ void scenery_set_not_invented(const ScenerySelection& sceneryItem)
 
 bool scenery_group_is_invented(int32_t sgIndex)
 {
-    auto invented = false;
     const auto sgEntry = get_scenery_group_entry(sgIndex);
-    if (sgEntry != nullptr && sgEntry->entry_count > 0)
+    if (sgEntry == nullptr || sgEntry->entry_count == 0)
     {
-        if (gCheatsIgnoreResearchStatus)
-        {
-            invented = true;
-        }
-        else
-        {
-            for (auto i = 0; i < sgEntry->entry_count; i++)
-            {
-                auto sceneryEntry = sgEntry->scenery_entries[i];
-                if (scenery_is_invented(sceneryEntry))
-                {
-                    invented = true;
-                    break;
-                }
-            }
-        }
+        return false;
     }
-    return invented;
+
+    if (gCheatsIgnoreResearchStatus)
+    {
+        return true;
+    }
+
+    return std::none_of(
+        std::begin(gResearchItemsUninvented), std::end(gResearchItemsUninvented), [sgIndex](const ResearchItem& item) {
+            return item.type == Research::EntryType::Scenery && item.entryIndex == sgIndex;
+        });
 }
 
 void scenery_group_set_invented(int32_t sgIndex)

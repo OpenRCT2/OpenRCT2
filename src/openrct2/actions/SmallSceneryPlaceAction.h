@@ -12,19 +12,14 @@
 #include "../world/TileElement.h"
 #include "GameAction.h"
 
-class SmallSceneryPlaceActionResult final : public GameActions::Result
+struct SmallSceneryPlaceActionResult
 {
-public:
-    SmallSceneryPlaceActionResult();
-    SmallSceneryPlaceActionResult(GameActions::Status error);
-    SmallSceneryPlaceActionResult(GameActions::Status error, rct_string_id message);
-    SmallSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args);
-
-    uint8_t GroundFlags{ 0 };
-    TileElement* tileElement = nullptr;
+    uint8_t GroundFlags{};
+    int32_t BaseHeight{};
+    uint8_t SceneryQuadrant{};
 };
 
-DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GameCommand::PlaceScenery, SmallSceneryPlaceActionResult)
+DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GameCommand::PlaceScenery, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;

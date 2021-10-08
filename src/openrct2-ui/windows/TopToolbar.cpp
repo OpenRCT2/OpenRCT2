@@ -122,11 +122,10 @@ enum FILE_MENU_DDIDX {
     DDIDX_GIANT_SCREENSHOT = 8,
     // separator
     DDIDX_FILE_BUG_ON_GITHUB = 10,
+    DDIDX_UPDATE_AVAILABLE = 11,
     // separator
-    DDIDX_QUIT_TO_MENU = 12,
-    DDIDX_EXIT_OPENRCT2 = 13,
-    // separator
-    DDIDX_UPDATE_AVAILABLE = 15,
+    DDIDX_QUIT_TO_MENU = 13,
+    DDIDX_EXIT_OPENRCT2 = 14,
 };
 
 enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
@@ -440,7 +439,12 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
+
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                     gDropdownItemsFormat[numItems++] = STR_QUIT_ROLLERCOASTER_DESIGNER;
                 else
@@ -459,6 +463,10 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_SCENARIO_EDITOR;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
@@ -476,15 +484,15 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+
                 gDropdownItemsFormat[numItems++] = STR_EMPTY;
                 gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
                 gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
-                if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                {
-                    gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
-                }
             }
+
             WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
                 Dropdown::Flag::StayOpen, numItems);
@@ -543,6 +551,10 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
             if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
                 dropdownIndex += DDIDX_ABOUT;
 
+            // The "Update available" menu item is only available when there is one
+            if (dropdownIndex >= DDIDX_UPDATE_AVAILABLE && !OpenRCT2::GetContext()->HasNewVersionInfo())
+                dropdownIndex += 1;
+
             switch (dropdownIndex)
             {
                 case DDIDX_NEW_GAME:
@@ -597,6 +609,9 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
                 }
                 break;
+                case DDIDX_UPDATE_AVAILABLE:
+                    context_open_window_view(WV_NEW_VERSION_INFO);
+                    break;
                 case DDIDX_QUIT_TO_MENU:
                 {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
@@ -607,9 +622,6 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 }
                 case DDIDX_EXIT_OPENRCT2:
                     context_quit();
-                    break;
-                case DDIDX_UPDATE_AVAILABLE:
-                    context_open_window_view(WV_NEW_VERSION_INFO);
                     break;
             }
             break;
@@ -2464,18 +2476,18 @@ static money64 try_place_ghost_small_scenery(
     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(loc, quadrant, entryIndex, primaryColour, secondaryColour);
     smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&smallSceneryPlaceAction);
-    auto sspar = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get());
-    if (sspar == nullptr || res->Error != GameActions::Status::Ok)
+    if (res->Error != GameActions::Status::Ok)
         return MONEY64_UNDEFINED;
+
+    const auto placementData = res->GetData<SmallSceneryPlaceActionResult>();
 
     gSceneryPlaceRotation = loc.direction;
     gSceneryPlaceObject.SceneryType = SCENERY_TYPE_SMALL;
     gSceneryPlaceObject.EntryIndex = entryIndex;
 
-    TileElement* tileElement = sspar->tileElement;
-    gSceneryGhostPosition = { loc, tileElement->GetBaseZ() };
-    gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-    if (sspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
+    gSceneryGhostPosition = { loc, placementData.BaseHeight };
+    gSceneryQuadrant = placementData.SceneryQuadrant;
+    if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
         viewport_set_visibility(4);
@@ -2521,11 +2533,12 @@ static money64 try_place_ghost_wall(
     // 6e26b0
     auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
     wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-    wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
+    wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
 
-        gSceneryGhostPosition = { loc, result->tileElement->GetBaseZ() };
+        const auto placementData = result->GetData<WallPlaceActionResult>();
+        gSceneryGhostPosition = { loc, placementData.BaseHeight };
         gSceneryGhostWallRotation = edge;
 
         gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
