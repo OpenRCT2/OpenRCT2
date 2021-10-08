@@ -14,9 +14,10 @@
 #include "../peep/Staff.h"
 #include "../world/Entity.h"
 
-StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc)
+StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc, const StaffSetPatrolAreaMode mode)
     : _spriteId(spriteId)
     , _loc(loc)
+    , _mode(mode)
 {
 }
 
@@ -28,7 +29,7 @@ uint16_t StaffSetPatrolAreaAction::GetActionFlags() const
 void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
-    stream << DS_TAG(_spriteId) << DS_TAG(_loc);
+    stream << DS_TAG(_spriteId) << DS_TAG(_loc) << DS_TAG(_mode);
 }
 
 GameActions::Result::Ptr StaffSetPatrolAreaAction::Query() const
@@ -54,6 +55,19 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Query() const
     return MakeResult();
 }
 
+static void InvalidatePatrolTile(const CoordsXY& loc)
+{
+    // Align the location to the top left of the patrol square
+    const auto alignedLoc = CoordsXY{ loc.x & 0x1F80, loc.y & 0x1F80 };
+    for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)
+    {
+        for (int32_t x = 0; x < 4 * COORDS_XY_STEP; x += COORDS_XY_STEP)
+        {
+            map_invalidate_tile_full(alignedLoc + CoordsXY{ x, y });
+        }
+    }
+}
+
 GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
 {
     auto staff = TryGetEntity<Staff>(_spriteId);
@@ -63,21 +77,26 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    staff->TogglePatrolArea(_loc);
-
-    if (!staff->HasPatrolArea())
+    switch (_mode)
     {
-        // This frees the data if there is no patrol area
-        staff->ClearPatrolArea();
+        case StaffSetPatrolAreaMode::Set:
+            staff->SetPatrolArea(_loc, true);
+            InvalidatePatrolTile(_loc);
+            break;
+        case StaffSetPatrolAreaMode::Unset:
+            staff->SetPatrolArea(_loc, false);
+            if (!staff->HasPatrolArea())
+            {
+                staff->ClearPatrolArea();
+            }
+            InvalidatePatrolTile(_loc);
+            break;
+        case StaffSetPatrolAreaMode::ClearAll:
+            staff->ClearPatrolArea();
+            gfx_invalidate_screen();
+            break;
     }
 
-    for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)
-    {
-        for (int32_t x = 0; x < 4 * COORDS_XY_STEP; x += COORDS_XY_STEP)
-        {
-            map_invalidate_tile_full({ (_loc.x & 0x1F80) + x, (_loc.y & 0x1F80) + y });
-        }
-    }
     staff_update_greyed_patrol_areas();
 
     return MakeResult();
