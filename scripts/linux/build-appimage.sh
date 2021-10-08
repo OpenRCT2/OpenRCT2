@@ -3,7 +3,7 @@
 set -ex
 
 # use RAM disk if possible
-if [ "$CI" == "" ] && [ -d /dev/shm ]; then
+if [ -z "$CI" ] && [ -d /dev/shm ]; then
     TEMP_BASE=/dev/shm
 else
     TEMP_BASE=/tmp
@@ -17,7 +17,7 @@ cleanup () {
     fi
 }
 
-if [ "$NO_CLEANUP" == "" ] && trap cleanup EXIT
+if [ -z "$NO_CLEANUP" ] && trap cleanup EXIT
 
 # store repo root as variable
 REPO_ROOT=$(readlink -f $(dirname "$0")/../..)
