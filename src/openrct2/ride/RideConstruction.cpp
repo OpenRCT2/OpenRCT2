@@ -1216,7 +1216,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     {
         if (info.Element->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
-            auto* trackElement = info.Element->AsTrack();
+            const auto* trackElement = info.Element->AsTrack();
             if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
             {
                 const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
@@ -1288,7 +1288,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         if (map_is_location_valid(nextLocation))
         {
             // iterate over every element in the tile until we find what we want
-            auto tileElement = map_get_first_element_at(nextLocation);
+            auto* tileElement = map_get_first_element_at(nextLocation);
             if (tileElement == nullptr)
                 continue;
             do
@@ -1307,11 +1307,10 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                     gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
                     return entranceExitCoords;
                 }
-                StationIndex stationIndex = trackElement->GetStationIndex();
                 // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
                 // entrance can be placed on that side
 
-                gRideEntranceExitPlaceStationIndex = stationIndex;
+                gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
 
                 // get the ride entrance's side relative to the TrackElement
                 Direction direction = (direction_reverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
