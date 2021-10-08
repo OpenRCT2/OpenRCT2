@@ -4,7 +4,7 @@ set -e
 
 readlink_bin='readlink'
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
+if [ "$(uname)" == "Darwin" ]; then
   if ! [ -x "$(command -v greadlink)" ]; then
     echo 'Please install greadlink with Homebrew: brew install coreutils'
     exit 1
