@@ -349,10 +349,10 @@ public:
         if (widgetIndex != WIDX_FILTER_STRING || text.empty())
             return;
 
-        if (String::Equals(_filterString, text.data()))
+        if (String::Equals(_filterString, std::string(text).c_str()))
             return;
 
-        String::Set(_filterString, sizeof(_filterString), text.data());
+        String::Set(_filterString, sizeof(_filterString), std::string(text).c_str());
 
         FilterList();
 
