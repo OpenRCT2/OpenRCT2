@@ -125,16 +125,11 @@ if (MACOS_USE_DEPENDENCIES)
     # if we're building on macOS, then we need the dependencies
     include(cmake/download.cmake)
     
-    # TODO - change back before merging
-    # set(MACOS_DYLIBS_VERSION "28")
-    # set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-x64-macos-dylibs.zip")
-    # set(MACOS_DYLIBS_SHA1 "29e5480376cf4ac5943f114387e32685204c8b78")
-    set(MACOS_DYLIBS_VERSION "29-alpha2")
+    set(MACOS_DYLIBS_VERSION "29")
     set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-universal-macos-dylibs.zip")
-    set(MACOS_DYLIBS_SHA1 "bb8899c4120f1add232af7f9ac774ea622e01ad3")
+    set(MACOS_DYLIBS_SHA1 "86cf2db4d87173112a00042418d0d18cae360e41")
     set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
-    # set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
-    set(MACOS_DYLIBS_URL "https://github.com/adam-bloom/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
+    set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 
     download_openrct2_zip(
         ZIP_VERSION ${MACOS_DYLIBS_VERSION}
