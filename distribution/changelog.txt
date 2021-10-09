@@ -15,6 +15,7 @@
 - Fix: [#14316] Closing the Track Designs Manager window causes broken state.
 - Fix: [#14649] ImageImporter incorrectly remaps colours outside the RCT2 palette.
 - Fix: [#14667] “Extreme Hawaiian Island” has unpurchaseable land tiles (original bug).
+- Fix: [#14741] Crash when exiting OpenRCT2 on macOS.
 - Fix: [#15096] Crash when placing entrances in the scenario editor near the map corner.
 - Fix: [#15136] Exported SV6 files cause vanilla RCT2 to hang.
 - Fix: [#15142] ToonTowner's mine roofs were moved into the pirate theme scenery group instead of the mine theme scenery group.
