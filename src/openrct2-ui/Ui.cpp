@@ -61,9 +61,9 @@ int main(int argc, const char** argv)
             {
                 audioContext = ToShared(CreateAudioContext());
             }
-            catch (const SDLException&)
+            catch (const SDLException& e)
             {
-                log_warning("Failed to create audio context. Using dummy audio context.");
+                log_warning("Failed to create audio context. Using dummy audio context. Error message was: %s", e.what());
                 audioContext = ToShared(CreateDummyAudioContext());
             }
             auto uiContext = ToShared(CreateUiContext(env));
