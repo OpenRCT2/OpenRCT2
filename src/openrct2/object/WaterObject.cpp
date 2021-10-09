@@ -46,6 +46,7 @@ void WaterObject::Unload()
     language_free_object_string(_legacyType.string_idx);
 
     _legacyType.string_idx = 0;
+    _legacyType.image_id = 0;
 }
 
 void WaterObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const

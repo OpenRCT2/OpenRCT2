@@ -98,7 +98,7 @@ void LargeSceneryObject::Unload()
     gfx_object_free_images(_baseImageId, GetImageTable().GetCount());
 
     _legacyType.name = 0;
-    _legacyType.image = 0;
+    _baseImageId = _legacyType.image = 0;
 }
 
 void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
