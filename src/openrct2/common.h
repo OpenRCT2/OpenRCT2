@@ -23,7 +23,6 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
-#include <stdexcept>
 
 using utf8 = char;
 using utf8string = utf8*;
@@ -37,30 +36,6 @@ using const_utf8string = const utf8*;
 
 using codepoint_t = uint32_t;
 using colour_t = uint8_t;
-
-namespace
-{
-    [[maybe_unused]] constexpr bool is_power_of_2(int v)
-    {
-        return v && ((v & (v - 1)) == 0);
-    }
-
-    // Rounds an integer down to the given power of 2. y must be a power of 2.
-    [[maybe_unused]] constexpr int floor2(const int x, const int y)
-    {
-        if (!is_power_of_2(y))
-            throw std::logic_error("floor2 should only operate on power of 2");
-        return x & ~(y - 1);
-    }
-
-    // Rounds an integer up to the given power of 2. y must be a power of 2.
-    [[maybe_unused]] constexpr int ceil2(const int x, const int y)
-    {
-        if (!is_power_of_2(y))
-            throw std::logic_error("ceil2 should only operate on power of 2");
-        return (x + y - 1) & ~(y - 1);
-    }
-} // namespace
 
 // Gets the name of a symbol as a C string
 #define nameof(symbol) #symbol

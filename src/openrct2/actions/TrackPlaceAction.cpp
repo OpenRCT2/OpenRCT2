@@ -15,7 +15,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
-#include "../util/Util.h"
+#include "../util/Math.hpp"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
