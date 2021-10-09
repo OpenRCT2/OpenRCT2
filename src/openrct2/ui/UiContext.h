@@ -29,7 +29,8 @@ namespace OpenRCT2
         struct IDrawingEngineFactory;
         struct IWeatherDrawer;
         using DrawWeatherFunc = void (*)(
-            OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+            rct_drawpixelinfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width,
+            int32_t height);
     } // namespace Drawing
 
     namespace Ui

@@ -21,15 +21,21 @@ namespace OpenRCT2::Drawing
         virtual ~IDrawingContext() = default;
         virtual OpenRCT2::Drawing::IDrawingEngine* GetEngine() abstract;
 
-        virtual void Clear(uint8_t paletteIndex) abstract;
-        virtual void FillRect(uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
-        virtual void FilterRect(FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
-        virtual void DrawLine(uint32_t colour, const ScreenLine& line) abstract;
-        virtual void DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) abstract;
-        virtual void DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) abstract;
-        virtual void DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour) abstract;
-        virtual void DrawGlyph(uint32_t image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
+        virtual void Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex) abstract;
+        virtual void FillRect(
+            rct_drawpixelinfo* dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
+        virtual void FilterRect(
+            rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
+        virtual void DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line) abstract;
+        virtual void DrawSprite(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) abstract;
+        virtual void DrawSpriteRawMasked(
+            rct_drawpixelinfo* dpi, int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) abstract;
+        virtual void DrawSpriteSolid(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint8_t colour) abstract;
+        virtual void DrawGlyph(
+            rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
         virtual void DrawBitmap(
-            uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y) abstract;
+            rct_drawpixelinfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,
+            int32_t y) abstract;
     };
+
 } // namespace OpenRCT2::Drawing
