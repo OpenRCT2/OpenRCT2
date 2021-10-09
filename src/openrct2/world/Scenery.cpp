@@ -26,6 +26,7 @@
 #include "Climate.h"
 #include "Footpath.h"
 #include "Fountain.h"
+#include "LargeScenery.h"
 #include "Map.h"
 #include "Park.h"
 #include "SmallScenery.h"
@@ -51,6 +52,8 @@ int16_t gSceneryCtrlPressed;
 int16_t gSceneryCtrlPressZ;
 
 money64 gClearSceneryCost;
+
+static std::vector<ScenerySelection> _restrictedScenery;
 
 // rct2: 0x009A3E74
 const CoordsXY SceneryQuadrantOffsets[] = { { 7, 7 }, { 7, 23 }, { 23, 23 }, { 23, 7 } };
@@ -279,4 +282,110 @@ rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex)
 int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry)
 {
     return (wallEntry->flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
+}
+
+bool IsSceneryAvailableToBuild(const ScenerySelection& item)
+{
+    if (!gCheatsIgnoreResearchStatus)
+    {
+        if (!scenery_is_invented(item))
+        {
+            return false;
+        }
+    }
+
+    if (!gCheatsSandboxMode)
+    {
+        if (IsSceneryItemRestricted(item))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+static size_t GetMaxObjectsForSceneryType(const uint8_t sceneryType)
+{
+    switch (sceneryType)
+    {
+        case SCENERY_TYPE_SMALL:
+            return MAX_SMALL_SCENERY_OBJECTS;
+        case SCENERY_TYPE_PATH_ITEM:
+            return MAX_PATH_ADDITION_OBJECTS;
+        case SCENERY_TYPE_WALL:
+            return MAX_WALL_SCENERY_OBJECTS;
+        case SCENERY_TYPE_LARGE:
+            return MAX_LARGE_SCENERY_OBJECTS;
+        case SCENERY_TYPE_BANNER:
+            return MAX_BANNER_OBJECTS;
+        default:
+            return 0;
+    }
+}
+
+static SceneryEntryBase* GetSceneryEntry(const ScenerySelection& item)
+{
+    switch (item.SceneryType)
+    {
+        case SCENERY_TYPE_SMALL:
+            return get_small_scenery_entry(item.EntryIndex);
+        case SCENERY_TYPE_PATH_ITEM:
+            return get_footpath_item_entry(item.EntryIndex);
+        case SCENERY_TYPE_WALL:
+            return get_wall_entry(item.EntryIndex);
+        case SCENERY_TYPE_LARGE:
+            return get_large_scenery_entry(item.EntryIndex);
+        case SCENERY_TYPE_BANNER:
+            return get_banner_entry(item.EntryIndex);
+        default:
+            return nullptr;
+    }
+}
+
+bool IsSceneryItemRestricted(const ScenerySelection& item)
+{
+    return std::find(std::begin(_restrictedScenery), std::end(_restrictedScenery), item) != std::end(_restrictedScenery);
+}
+
+void ClearRestrictedScenery()
+{
+    _restrictedScenery.clear();
+}
+
+std::vector<ScenerySelection>& GetRestrictedScenery()
+{
+    return _restrictedScenery;
+}
+
+void RestrictAllMiscScenery()
+{
+    std::vector<ScenerySelection> nonMiscScenery;
+    for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    {
+        const auto* sgEntry = get_scenery_group_entry(i);
+        if (sgEntry != nullptr)
+        {
+            for (size_t j = 0; j < sgEntry->entry_count; j++)
+            {
+                nonMiscScenery.push_back(sgEntry->scenery_entries[j]);
+            }
+        }
+    }
+    for (uint8_t sceneryType = SCENERY_TYPE_SMALL; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
+    {
+        const auto maxObjects = GetMaxObjectsForSceneryType(sceneryType);
+        for (ObjectEntryIndex i = 0; i < maxObjects; i++)
+        {
+            const ScenerySelection sceneryItem = { sceneryType, i };
+            const auto* sceneryEntry = GetSceneryEntry(sceneryItem);
+            if (sceneryEntry != nullptr)
+            {
+                if (std::find(std::begin(nonMiscScenery), std::end(nonMiscScenery), sceneryItem) == std::end(nonMiscScenery))
+                {
+                    _restrictedScenery.push_back(sceneryItem);
+                }
+            }
+        }
+    }
 }
