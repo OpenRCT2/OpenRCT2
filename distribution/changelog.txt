@@ -35,6 +35,7 @@
 - Fix: [#15503] Freeze when doing specific coaster merges with block brakes.
 - Fix: [#15514] Two different “quit to menu” menu items are available in track designer and track design manager.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
+- Improved: [#15538] Software rendering can now draw in parallel when Multithreading is enabled.
 - Change: [#8601] Revert ToonTower base block fix to re-enable support blocking.
 - Change: [#15174] [Plugin] Deprecate the type "peep" and add support to target a specific scripting api version.
 
