@@ -18,7 +18,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
-#include "../util/Util.h"
+#include "../util/Math.hpp"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"

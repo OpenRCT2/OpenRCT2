@@ -20,6 +20,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../util/Math.hpp"
 #include "../world/Banner.h"
 #include "../world/Scenery.h"
 #include "Intent.h"
