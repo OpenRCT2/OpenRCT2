@@ -25,7 +25,6 @@
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
-#include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../network/network.h"
 #include "../peep/Peep.h"
