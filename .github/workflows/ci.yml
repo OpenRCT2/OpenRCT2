@@ -146,21 +146,37 @@ jobs:
               echo 'Not going to push build'
           fi
   macos-cmake:
-    name: macOS (x64) using CMake
+    name: macOS (${{ matrix.arch }}) using CMake
     runs-on: macos-latest
     needs: check-code-formatting
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x64, arm64]
+        include:
+          - arch: x64
+            cache_key: macos-x64
+            # Note: only build/run tests on the native architecture of the CI agent
+            # Github macos-latest agents are currently all Intel
+            build_flags: -DARCH="x86_64" -DWITH_TESTS=on
+            run_tests: true
+          - arch: arm64
+            cache_key: macos-arm64
+            build_flags: -DARCH="arm64"
+            run_tests: false
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
-          key: macos
+          key: ${{ matrix.cache_key }}
       - name: Build OpenRCT2
         run: |
           HOMEBREW_NO_ANALYTICS=1 brew install ninja
-          . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on
+          . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on ${{ matrix.build_flags }}
       - name: Run Tests
+        if: ${{matrix.run_tests}}
         run: . scripts/setenv -q && run-tests
       - name: Build artifacts
         run: |
@@ -173,7 +189,45 @@ jobs:
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v2
         with:
-          name: OpenRCT2-${{ runner.os }}-cmake
+          name: OpenRCT2-${{ runner.os }}-${{ matrix.arch }}-cmake
+          path: artifacts/openrct2-macos.zip
+          if-no-files-found: error
+  macos-universal:
+    name: macOS universal app bundle
+    runs-on: macos-latest
+    needs: macos-cmake
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: download x64 app bundle
+        uses: actions/download-artifact@v2
+        with:
+          name: OpenRCT2-${{ runner.os }}-x64-cmake
+          path: macos_universal/x64
+      - name: download arm64 app bundle
+        uses: actions/download-artifact@v2
+        with:
+          name: OpenRCT2-${{ runner.os }}-arm64-cmake
+          path: macos_universal/arm64
+      - name: Make Universal app bundle
+        run: |
+          . scripts/setenv
+          cd macos_universal
+          unzip x64/openrct2-macos.zip -d x64
+          unzip arm64/openrct2-macos.zip -d arm64
+          create-macos-universal
+      - name: Create artifact
+        run: |
+          . scripts/setenv
+          mkdir -p artifacts
+          mv macos_universal/OpenRCT2-universal.app artifacts/OpenRCT2.app
+          echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
+          cd artifacts
+          zip -rqy openrct2-macos.zip OpenRCT2.app
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenRCT2-${{ runner.os }}-universal
           path: artifacts/openrct2-macos.zip
           if-no-files-found: error
   linux-portable:
