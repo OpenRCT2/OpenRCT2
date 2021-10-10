@@ -137,7 +137,7 @@ public:
 
     void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
     {
-        if (widgetIndex != WIDX_PREVIEW || text == nullptr)
+        if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
 
         char* end;
