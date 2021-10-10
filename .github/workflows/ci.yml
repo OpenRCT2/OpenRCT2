@@ -115,36 +115,6 @@ jobs:
           name: OpenRCT2-${{ matrix.platform }}
           path: bin/openrct2.exe
           if-no-files-found: error
-  macos-xcode:
-    name: macOS (x64) using Xcode
-    runs-on: macos-latest
-    needs: check-code-formatting
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build OpenRCT2
-        run: |
-          . scripts/setenv
-          xcodebuild -configuration Release
-          mkdir -p artifacts
-          mv build/Release/OpenRCT2.app artifacts
-          echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
-          cd artifacts
-          zip -rq openrct2-macos.zip OpenRCT2.app
-      - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenRCT2-${{ runner.os }}-xcode
-          path: artifacts/openrct2-macos.zip
-          if-no-files-found: error
-      - name: Upload artifacts (openrct2.org)
-        run: |
-          . scripts/setenv
-          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-              upload-build artifacts/openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-          else
-              echo 'Not going to push build'
-          fi
   macos-cmake:
     name: macOS (${{ matrix.arch }}) using CMake
     runs-on: macos-latest
@@ -230,6 +200,14 @@ jobs:
           name: OpenRCT2-${{ runner.os }}-universal
           path: artifacts/openrct2-macos.zip
           if-no-files-found: error
+      - name: Upload artifacts (openrct2.org)
+        run: |
+          . scripts/setenv
+          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
+              upload-build artifacts/openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+          else
+              echo 'Not going to push build'
+          fi
   linux-portable:
     name: Linux (${{ matrix.platform }}, portable)
     runs-on: ubuntu-latest
