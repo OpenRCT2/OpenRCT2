@@ -183,7 +183,7 @@ private:
     uint32_t _height = 0;
     uint32_t _pitch = 0;
     size_t _bitsSize = 0;
-    std::unique_ptr<uint8_t> _bits;
+    std::unique_ptr<uint8_t[]> _bits;
 
     rct_drawpixelinfo _bitsDPI = {};
 
@@ -201,7 +201,7 @@ public:
 
     explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
-        , _drawingContext(new OpenGLDrawingContext(*this))
+        , _drawingContext(std::make_unique<OpenGLDrawingContext>(*this))
         , _weatherDrawer(_drawingContext.get())
     {
         _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
@@ -425,6 +425,7 @@ private:
             }
         }
 
+        _bits = std::make_unique<uint8_t[]>(newBitsSize);
         _bits.reset(newBits);
         _bitsSize = newBitsSize;
         _width = width;
@@ -443,10 +444,10 @@ private:
     void ConfigureCanvas()
     {
         // Re-create screen framebuffer
-        _screenFramebuffer.reset(new OpenGLFramebuffer(_window));
+        _screenFramebuffer = std::make_unique<OpenGLFramebuffer>(_window);
         if (GetContext()->GetUiContext()->GetScaleQuality() != ScaleQuality::NearestNeighbour)
         {
-            _scaleFramebuffer.reset(new OpenGLFramebuffer(_width, _height, false, false));
+            _scaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width, _height, false, false);
         }
         if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
         {
@@ -499,7 +500,7 @@ void OpenGLDrawingContext::Resize(int32_t width, int32_t height)
     _drawLineShader->SetScreenSize(width, height);
 
     // Re-create canvas framebuffer
-    _swapFramebuffer.reset(new SwapFramebuffer(width, height));
+    _swapFramebuffer = std::make_unique<SwapFramebuffer>(width, height);
 }
 
 void OpenGLDrawingContext::ResetPalette()
