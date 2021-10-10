@@ -170,3 +170,12 @@ void Painter::ReleaseSession(paint_session* session)
     session->PaintEntryChain.Clear();
     _freePaintSessions.push_back(session);
 }
+
+Painter::~Painter()
+{
+    for (auto&& session : _paintSessionPool)
+    {
+        ReleaseSession(session.get());
+    }
+    _paintSessionPool.clear();
+}
