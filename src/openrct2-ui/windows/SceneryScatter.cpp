@@ -117,7 +117,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(const rct_widgetindex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -135,7 +135,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(const rct_widgetindex widgetIndex, const std::string_view text) override
     {
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
@@ -200,10 +200,8 @@ public:
 
 rct_window* WindowSceneryScatterOpen()
 {
-    rct_window* window;
-
     // Check if window is already open
-    window = window_find_by_class(WC_SCENERY_SCATTER);
+    auto* window = window_find_by_class(WC_SCENERY_SCATTER);
     if (window == nullptr)
     {
         window = WindowCreate<SceneryScatterWindow>(WC_SCENERY_SCATTER, 86, 100);
