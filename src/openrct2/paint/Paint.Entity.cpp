@@ -85,7 +85,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
         }
 
         const auto entityPos = spr->GetLocation();
-        
+
         // Only paint sprites that are below the clip height and inside the clip selection.
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
