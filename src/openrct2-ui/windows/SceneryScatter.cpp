@@ -71,27 +71,35 @@ static rct_window_event_list window_clear_scenery_events([](auto& events)
 });
 // clang-format on
 
+class SceneryScatterWindow final : public rct_window
+{
+private:
+public:
+    void OnOpen() override
+    {
+        widgets = window_scenery_scatter_widgets;
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT)
+            | (1ULL << WIDX_PREVIEW) | (1ULL << WIDX_DENSITY_LOW) | (1ULL << WIDX_DENSITY_MEDIUM) | (1ULL << WIDX_DENSITY_HIGH);
+        hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
+        WindowInitScrollWidgets(this);
+        window_push_others_below(this);
+
+        gWindowSceneryScatterEnabled = true;
+        gWindowSceneryScatterSize = 16;
+        gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+    }
+};
+
 rct_window* WindowSceneryScatterOpen()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_find_by_class(WC_SCENERY_SCATTER);
-    if (window != nullptr)
-        return window;
-
-    window = WindowCreateAutoPos(86, 100, &window_clear_scenery_events, WC_SCENERY_SCATTER, 0);
-
-    window->widgets = window_scenery_scatter_widgets;
-    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT)
-        | (1ULL << WIDX_PREVIEW) | (1ULL << WIDX_DENSITY_LOW) | (1ULL << WIDX_DENSITY_MEDIUM) | (1ULL << WIDX_DENSITY_HIGH);
-    window->hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-    WindowInitScrollWidgets(window);
-    window_push_others_below(window);
-
-    gWindowSceneryScatterEnabled = true;
-    gWindowSceneryScatterSize = 16;
-    gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+    if (window == nullptr)
+    {
+        window = WindowCreate<SceneryScatterWindow>(WC_SCENERY_SCATTER, 86, 100);
+    }
 
     return window;
 }
