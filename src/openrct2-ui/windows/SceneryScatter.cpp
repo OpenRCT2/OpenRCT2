@@ -201,6 +201,21 @@ public:
         // Update the preview image (for tool sizes up to 7)
         widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
     }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        WindowDrawWidgets(this, &dpi);
+
+        // Draw area as a number for tool sizes bigger than 7
+        if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        {
+            const auto& preview = widgets[WIDX_PREVIEW];
+            const auto screenCoords = ScreenCoordsXY{ windowPos.x + preview.midX(), windowPos.y + preview.midY() };
+            auto ft = Formatter();
+            ft.Add<uint16_t>(gWindowSceneryScatterSize);
+            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+        }
+    }
 };
 
 rct_window* WindowSceneryScatterOpen()
