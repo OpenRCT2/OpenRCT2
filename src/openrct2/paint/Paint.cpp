@@ -55,7 +55,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
 static uint32_t PaintPSColourifyImage(
-    uint32_t imageId, ViewportInteractionItem spriteType, EntityType *entityType, uint32_t viewFlags);
+    uint32_t imageId, ViewportInteractionItem spriteType, EntityType* entityType, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
