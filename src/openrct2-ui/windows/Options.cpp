@@ -1090,8 +1090,8 @@ private:
         this->DrawTabImages(dpi);
 
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_FULLSCREEN].top + 1 }, STR_FULLSCREEN_MODE,
-            {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_FULLSCREEN].top + 1 }, STR_FULLSCREEN_MODE, {},
+            { this->colours[1] });
 
         // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
         colour_t colour = this->colours[1];
@@ -1100,15 +1100,14 @@ private:
             colour |= COLOUR_FLAG_INSET;
         }
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10 + 15, this->widgets[WIDX_RESOLUTION].top + 1 },
-            STR_DISPLAY_RESOLUTION, {}, { colour });
-
+            dpi, this->windowPos + ScreenCoordsXY{ 10 + 15, this->widgets[WIDX_RESOLUTION].top + 1 }, STR_DISPLAY_RESOLUTION,
+            {}, { colour });
         DrawTextBasic(
             dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_SCALE].top + 1 }, STR_UI_SCALING_DESC, {},
             { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DRAWING_ENGINE].top + 1 },
-            STR_DRAWING_ENGINE, {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DRAWING_ENGINE].top + 1 }, STR_DRAWING_ENGINE,
+            {}, { this->colours[1] });
 
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.window_scale * 100));
@@ -1123,8 +1122,8 @@ private:
             colour |= COLOUR_FLAG_INSET;
         }
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 25, this->widgets[WIDX_SCALE_QUALITY].top + 1 },
-            STR_SCALING_QUALITY, {}, { colour });
+            dpi, this->windowPos + ScreenCoordsXY{ 25, this->widgets[WIDX_SCALE_QUALITY].top + 1 }, STR_SCALING_QUALITY, {},
+            { colour });
     }
 #pragma endregion
 
@@ -1318,8 +1317,11 @@ private:
                 break;
             case WIDX_CURRENCY_DROPDOWN:
             {
-                constexpr auto num_items = EnumValue(CurrencyType::Count) + 1;       // All the currencies plus the separator
-                size_t num_ordinary_currencies = EnumValue(CurrencyType::Count) - 1; // All the currencies except custom currency
+                // All the currencies plus the separator
+                constexpr auto num_items = EnumValue(CurrencyType::Count) + 1;
+
+                // All the currencies except custom currency
+                size_t num_ordinary_currencies = EnumValue(CurrencyType::Count) - 1;
 
                 for (size_t i = 0; i < num_ordinary_currencies; i++)
                 {
@@ -1501,13 +1503,11 @@ private:
         this->widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
 
         // Temperature: celsius/fahrenheit
-        this->widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit
-            ? STR_FAHRENHEIT
-            : STR_CELSIUS;
+        this->widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit ? STR_FAHRENHEIT
+                                                                                                                : STR_CELSIUS;
 
         // Height: units/real values
-        this->widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS
-                                                                                                      : STR_REAL_VALUES;
+        this->widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS : STR_REAL_VALUES;
 
         this->CommonPrepareDrawAfter();
     }
@@ -1518,23 +1518,23 @@ private:
         this->DrawTabImages(dpi);
 
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_LANGUAGE].top + 1 },
-            STR_OPTIONS_LANGUAGE, {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_LANGUAGE].top + 1 }, STR_OPTIONS_LANGUAGE, {},
+            { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_CURRENCY].top + 1 }, STR_CURRENCY,
-            {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_CURRENCY].top + 1 }, STR_CURRENCY, {},
+            { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DISTANCE].top + 1 },
-            STR_DISTANCE_AND_SPEED, {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DISTANCE].top + 1 }, STR_DISTANCE_AND_SPEED, {},
+            { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_TEMPERATURE].top + 1 },
-            STR_TEMPERATURE, {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_TEMPERATURE].top + 1 }, STR_TEMPERATURE, {},
+            { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_HEIGHT_LABELS].top + 1 },
-            STR_HEIGHT_LABELS, {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_HEIGHT_LABELS].top + 1 }, STR_HEIGHT_LABELS, {},
+            { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DATE_FORMAT].top + 1 },
-            STR_DATE_FORMAT, {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DATE_FORMAT].top + 1 }, STR_DATE_FORMAT, {},
+            { this->colours[1] });
     }
 
 #pragma endregion
@@ -1614,7 +1614,7 @@ private:
                 break;
         }
     }
-    
+
     void AudioDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
@@ -1912,8 +1912,8 @@ private:
             dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 },
             STR_SHOW_TOOLBAR_BUTTONS_FOR, {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_THEMES].top + 1 },
-            STR_THEMES_LABEL_CURRENT_THEME, {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_THEMES].top + 1 }, STR_THEMES_LABEL_CURRENT_THEME, {},
+            { this->colours[1] });
     }
 
 #pragma endregion
@@ -2111,8 +2111,8 @@ private:
             this->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
         }
 
-        this->widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
-            [gConfigGeneral.default_inspection_interval];
+        this->widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames[gConfigGeneral
+                                                                                               .default_inspection_interval];
 
         this->CommonPrepareDrawAfter();
     }
@@ -2123,8 +2123,8 @@ private:
         this->DrawTabImages(dpi);
 
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_TITLE_SEQUENCE].top + 1 }, STR_TITLE_SEQUENCE,
-            {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_TITLE_SEQUENCE].top + 1 }, STR_TITLE_SEQUENCE, {},
+            { this->colours[1] });
         DrawTextBasic(
             dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_SCENARIO_GROUPING].top + 1 },
             STR_OPTIONS_SCENARIO_GROUPING, {}, { this->colours[1] });
@@ -2273,7 +2273,8 @@ private:
         this->CommonPrepareDrawBefore();
 
         WidgetSetCheckboxValue(this, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
-        WidgetSetCheckboxValue(this, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
+        WidgetSetCheckboxValue(
+            this, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
         WidgetSetCheckboxValue(this, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         WidgetSetCheckboxValue(this, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
         WidgetSetCheckboxValue(this, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
@@ -2290,19 +2291,17 @@ private:
             dpi, this->windowPos + ScreenCoordsXY{ 24, this->widgets[WIDX_AUTOSAVE].top + 1 },
             STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, {}, { this->colours[1] });
         DrawTextBasic(
-            dpi,
-            this->windowPos
-                + ScreenCoordsXY{ this->widgets[WIDX_AUTOSAVE].left + 1,
-                                  this->widgets[WIDX_AUTOSAVE].top },
+            dpi, this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_AUTOSAVE].left + 1, this->widgets[WIDX_AUTOSAVE].top },
             window_options_autosave_names[gConfigGeneral.autosave_frequency], {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 24, this->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
-            STR_AUTOSAVE_AMOUNT, {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 24, this->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 }, STR_AUTOSAVE_AMOUNT, {},
+            { this->colours[1] });
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.autosave_amount));
         DrawTextBasic(
             dpi,
-            this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, this->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
+            this->windowPos
+                + ScreenCoordsXY{ this->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, this->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
             STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, ft, { this->colours[1] });
 
         ft = Formatter();
