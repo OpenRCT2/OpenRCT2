@@ -344,8 +344,8 @@ bool metal_b_supports_paint_setup(
 }
 
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
 {
     return PaintIntercept::Paint6C(
         image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
@@ -360,9 +360,9 @@ paint_struct* PaintAddImageAsParent(
 }
 
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
-    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     return PaintIntercept::PaintFull(
         PAINT_98197C, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
@@ -387,9 +387,9 @@ paint_struct* PaintAddImageAsChild(
 }
 
 paint_struct* PaintAddImageAsOrphan(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
-    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     return PaintIntercept::PaintFull(
         PAINT_98198C, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
@@ -397,16 +397,16 @@ paint_struct* PaintAddImageAsOrphan(
 }
 
 paint_struct* PaintAddImageAsChild(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
-    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     return PaintIntercept::PaintFull(
         PAINT_98199C, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
         bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, session->CurrentRotation);
 }
 
-bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int32_t x, int32_t y)
+bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
 {
     return false;
 }
