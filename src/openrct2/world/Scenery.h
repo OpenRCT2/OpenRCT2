@@ -295,9 +295,9 @@ rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex);
 
 int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry);
 
-bool IsSceneryAvailableToBuild(ScenerySelection item);
+bool IsSceneryAvailableToBuild(const ScenerySelection& item);
 
-bool IsSceneryItemRestricted(ScenerySelection item);
+bool IsSceneryItemRestricted(const ScenerySelection& item);
 void ClearRestrictedScenery();
 void RestrictAllMiscScenery();
 std::vector<ScenerySelection>& GetRestrictedScenery();

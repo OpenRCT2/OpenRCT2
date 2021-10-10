@@ -56,7 +56,7 @@
 #include <openrct2/peep/Staff.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/UiContext.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/util/Math.hpp>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/LargeScenery.h>
@@ -2627,8 +2627,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
         scenery_remove_ghost_tool_placement();
         return;
     }
-
-    const auto selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    const auto& selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
     if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();

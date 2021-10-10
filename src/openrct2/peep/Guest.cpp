@@ -30,7 +30,7 @@
 #include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
-#include "../util/Util.h"
+#include "../util/Math.hpp"
 #include "../windows/Intent.h"
 #include "../world/Balloon.h"
 #include "../world/Climate.h"

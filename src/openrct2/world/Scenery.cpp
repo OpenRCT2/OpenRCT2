@@ -284,7 +284,7 @@ int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry)
     return (wallEntry->flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
 }
 
-bool IsSceneryAvailableToBuild(ScenerySelection item)
+bool IsSceneryAvailableToBuild(const ScenerySelection& item)
 {
     if (!gCheatsIgnoreResearchStatus)
     {
@@ -305,7 +305,7 @@ bool IsSceneryAvailableToBuild(ScenerySelection item)
     return true;
 }
 
-static ObjectEntryIndex GetMaxObjectsForSceneryType(uint8_t sceneryType)
+static size_t GetMaxObjectsForSceneryType(const uint8_t sceneryType)
 {
     switch (sceneryType)
     {
@@ -324,7 +324,7 @@ static ObjectEntryIndex GetMaxObjectsForSceneryType(uint8_t sceneryType)
     }
 }
 
-static SceneryEntryBase* GetSceneryEntry(ScenerySelection item)
+static SceneryEntryBase* GetSceneryEntry(const ScenerySelection& item)
 {
     switch (item.SceneryType)
     {
@@ -343,10 +343,9 @@ static SceneryEntryBase* GetSceneryEntry(ScenerySelection item)
     }
 }
 
-bool IsSceneryItemRestricted(ScenerySelection item)
+bool IsSceneryItemRestricted(const ScenerySelection& item)
 {
-    auto it = std::find(_restrictedScenery.begin(), _restrictedScenery.end(), item);
-    return it != _restrictedScenery.end();
+    return std::find(std::begin(_restrictedScenery), std::end(_restrictedScenery), item) != std::end(_restrictedScenery);
 }
 
 void ClearRestrictedScenery()
@@ -364,7 +363,7 @@ void RestrictAllMiscScenery()
     std::vector<ScenerySelection> nonMiscScenery;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        auto sgEntry = get_scenery_group_entry(i);
+        const auto* sgEntry = get_scenery_group_entry(i);
         if (sgEntry != nullptr)
         {
             for (size_t j = 0; j < sgEntry->entry_count; j++)
@@ -375,15 +374,14 @@ void RestrictAllMiscScenery()
     }
     for (uint8_t sceneryType = SCENERY_TYPE_SMALL; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
     {
-        auto maxObjects = GetMaxObjectsForSceneryType(sceneryType);
+        const auto maxObjects = GetMaxObjectsForSceneryType(sceneryType);
         for (ObjectEntryIndex i = 0; i < maxObjects; i++)
         {
-            ScenerySelection sceneryItem = { sceneryType, i };
-            auto sceneryEntry = GetSceneryEntry(sceneryItem);
+            const ScenerySelection sceneryItem = { sceneryType, i };
+            const auto* sceneryEntry = GetSceneryEntry(sceneryItem);
             if (sceneryEntry != nullptr)
             {
-                auto it = std::find(nonMiscScenery.begin(), nonMiscScenery.end(), sceneryItem);
-                if (it == nonMiscScenery.end())
+                if (std::find(std::begin(nonMiscScenery), std::end(nonMiscScenery), sceneryItem) == std::end(nonMiscScenery))
                 {
                     _restrictedScenery.push_back(sceneryItem);
                 }

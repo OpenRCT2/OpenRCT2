@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../util/Math.hpp"
 
 #include <algorithm>
 

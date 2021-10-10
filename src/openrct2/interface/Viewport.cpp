@@ -25,6 +25,7 @@
 #include "../ride/Vehicle.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../util/Math.hpp"
 #include "../world/Climate.h"
 #include "../world/EntityList.h"
 #include "../world/Map.h"

@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../management/Award.h"
-#include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
