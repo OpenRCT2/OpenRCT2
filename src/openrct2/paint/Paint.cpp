@@ -499,7 +499,7 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
     }
 
     EntityType *entityType = nullptr;
-    auto* entity = reinterpret_cast<SpriteBase*>(ps->tileElement);
+    auto* entity = reinterpret_cast<EntityBase*>(ps->tileElement);
     if (entity != nullptr)
     {
         entityType = &entity->Type;
@@ -552,7 +552,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
         EntityType *entityType = nullptr;
-        auto* entity = reinterpret_cast<SpriteBase*>(ps->tileElement);
+        auto* entity = reinterpret_cast<EntityBase*>(ps->tileElement);
         if (entity != nullptr)
         {
             entityType = &entity->Type;

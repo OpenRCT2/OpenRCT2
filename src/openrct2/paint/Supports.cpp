@@ -459,7 +459,7 @@ static constexpr const uint16_t word_97B3C4[] = {
 bool wooden_a_supports_paint_setup(
     paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags)
 {
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
         imageColourFlags &= 0x7FFFF;
         imageColourFlags |= gColourifyImageSeeThroughFlags;

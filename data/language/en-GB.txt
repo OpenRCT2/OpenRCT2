@@ -3669,7 +3669,6 @@ STR_6468    :Transparency Options
 STR_6469    :Invisible Vehicles
 STR_6470    :See-Through Supports
 STR_6471    :Open transparency options
-STR_6472    :Ride Exclusions
 
 #############
 # Scenarios #

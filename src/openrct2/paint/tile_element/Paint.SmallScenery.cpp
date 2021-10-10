@@ -157,13 +157,13 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
         baseImageid = (baseImageid & 0x7FFFF) | marker;
     }
 
-    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE)
         && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_TREES && session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES)
     {
         baseImageid = 0x7FFFF;
     }
     else if (
-        scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE)
+        sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE)
         && session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES && !(session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_TREES))
     {
         baseImageid &= 0x7FFFF;
