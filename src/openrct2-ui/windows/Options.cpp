@@ -1106,8 +1106,8 @@ private:
             dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_SCALE].top + 1 }, STR_UI_SCALING_DESC, {},
             { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DRAWING_ENGINE].top + 1 }, STR_DRAWING_ENGINE,
-            {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DRAWING_ENGINE].top + 1 }, STR_DRAWING_ENGINE, {},
+            { this->colours[1] });
 
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.window_scale * 100));
