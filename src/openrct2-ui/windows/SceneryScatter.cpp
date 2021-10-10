@@ -154,6 +154,28 @@ public:
                 break;
         }
     }
+
+    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    {
+        if (widgetIndex != WIDX_PREVIEW || text == nullptr)
+            return;
+
+        char* end;
+        std::string tempString(text);
+        auto size = strtol(tempString.c_str(), &end, 10);
+        if (*end == '\0')
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_PREVIEW:
+                    size = std::max<int32_t>(MINIMUM_TOOL_SIZE, size);
+                    size = std::min<int32_t>(MAXIMUM_TOOL_SIZE, size);
+                    gWindowSceneryScatterSize = size;
+                    break;
+            }
+            Invalidate();
+        }
+    }
 };
 
 rct_window* WindowSceneryScatterOpen()
