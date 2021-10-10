@@ -420,7 +420,7 @@ void research_remove(ResearchItem* researchItem)
     for (auto it = gResearchItemsUninvented.begin(); it != gResearchItemsUninvented.end(); it++)
     {
         auto& researchItem2 = *it;
-        if (researchItem2.Equals(researchItem))
+        if (researchItem2 == *researchItem)
         {
             gResearchItemsUninvented.erase(it);
             return;
@@ -429,7 +429,7 @@ void research_remove(ResearchItem* researchItem)
     for (auto it = gResearchItemsInvented.begin(); it != gResearchItemsInvented.end(); it++)
     {
         auto& researchItem2 = *it;
-        if (researchItem2.Equals(researchItem))
+        if (researchItem2 == *researchItem)
         {
             gResearchItemsInvented.erase(it);
             return;
@@ -857,23 +857,18 @@ void ResearchItem::SetNull()
     entryIndex = OBJECT_ENTRY_INDEX_NULL;
 }
 
-bool ResearchItem::Equals(const ResearchItem* otherItem) const
-{
-    return (entryIndex == otherItem->entryIndex && baseRideType == otherItem->baseRideType && type == otherItem->type);
-}
-
 bool ResearchItem::Exists() const
 {
     for (auto const& researchItem : gResearchItemsUninvented)
     {
-        if (researchItem.Equals(this))
+        if (researchItem == *this)
         {
             return true;
         }
     }
     for (auto const& researchItem : gResearchItemsInvented)
     {
-        if (researchItem.Equals(this))
+        if (researchItem == *this)
         {
             return true;
         }
@@ -917,6 +912,11 @@ rct_string_id ResearchItem::GetCategoryName() const
     const auto categoryValue = EnumValue(category);
     Guard::Assert(categoryValue <= 6, "Unsupported category name");
     return _researchCategoryNames[categoryValue];
+}
+
+bool ResearchItem::operator==(const ResearchItem& rhs) const
+{
+    return (entryIndex == rhs.entryIndex && baseRideType == rhs.baseRideType && type == rhs.type);
 }
 
 static std::bitset<RIDE_TYPE_COUNT> _seenRideType = {};
@@ -975,11 +975,11 @@ void research_determine_first_of_type()
 
         // The last research item will also be present in gResearchItemsInvented.
         // Avoid marking its ride type as "invented" prematurely.
-        if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem.Equals(&gResearchLastItem.value()))
+        if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem == gResearchLastItem.value())
             continue;
 
         // The next research item is (sometimes?) also present in gResearchItemsInvented, even though it isn't invented yet(!)
-        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem.Equals(&gResearchNextItem.value()))
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == gResearchNextItem.value())
             continue;
 
         research_mark_ride_type_as_seen(researchItem);
@@ -999,7 +999,7 @@ void research_determine_first_of_type()
     for (auto& researchItem : gResearchItemsUninvented)
     {
         // The next research item is (sometimes?) also present in gResearchItemsUninvented
-        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem.Equals(&gResearchNextItem.value()))
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == gResearchNextItem.value())
         {
             // Copy the "first of type" flag.
             researchItem.flags = gResearchNextItem->flags;
