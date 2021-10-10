@@ -93,6 +93,49 @@ public:
     {
         gWindowSceneryScatterEnabled = false;
     }
+
+    void InputSize(const rct_widgetindex widgetIndex)
+    {
+        uint8_t maxLength = 0;
+        Formatter ft;
+
+        switch (widgetIndex)
+        {
+            case WIDX_PREVIEW:
+                ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+                ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+                maxLength = 3;
+                break;
+        }
+        window_text_input_open(
+            this, widgetIndex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxLength);
+    }
+
+    void OnMouseUp(rct_widgetindex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                window_close(this);
+                break;
+
+            case WIDX_PREVIEW:
+                InputSize(widgetIndex);
+                break;
+
+            case WIDX_DENSITY_LOW:
+                gWindowSceneryScatterDensity = ScatterToolDensity::LowDensity;
+                break;
+
+            case WIDX_DENSITY_MEDIUM:
+                gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+                break;
+
+            case WIDX_DENSITY_HIGH:
+                gWindowSceneryScatterDensity = ScatterToolDensity::HighDensity;
+                break;
+        }
+    }
 };
 
 rct_window* WindowSceneryScatterOpen()
@@ -111,6 +154,7 @@ rct_window* WindowSceneryScatterOpen()
 
 static void WindowSceneryScatterMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
+<<<<<<< HEAD
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
@@ -128,11 +172,9 @@ static void WindowSceneryScatterMouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_DENSITY_MEDIUM:
             gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
             break;
+=======
+>>>>>>> abc251535... Implement OnMouseUp
 
-        case WIDX_DENSITY_HIGH:
-            gWindowSceneryScatterDensity = ScatterToolDensity::HighDensity;
-            break;
-    }
 }
 
 static void WindowSceneryScatterMousedown(rct_window* w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget* widget)
@@ -176,6 +218,7 @@ static void WindowSceneryScatterTextinput(rct_window* w, rct_widgetindex widgetI
     }
 }
 
+<<<<<<< HEAD
 static void WindowSceneryScatterInputsize(rct_window* w, rct_widgetindex widgetindex)
 {
     uint8_t maxlen = 0;
@@ -191,6 +234,9 @@ static void WindowSceneryScatterInputsize(rct_window* w, rct_widgetindex widgeti
     }
     WindowTextInputOpen(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxlen);
 }
+=======
+
+>>>>>>> abc251535... Implement OnMouseUp
 
 static void WindowSceneryScatterInvalidate(rct_window* w)
 {
