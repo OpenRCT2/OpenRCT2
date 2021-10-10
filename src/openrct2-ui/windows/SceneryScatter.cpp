@@ -176,6 +176,31 @@ public:
             Invalidate();
         }
     }
+
+    void OnPrepareDraw() override
+    {
+        // Set the preview image button to be pressed down
+        pressed_widgets = (1ULL << WIDX_PREVIEW);
+
+        // Set density buttons' pressed state.
+        switch (gWindowSceneryScatterDensity)
+        {
+            case ScatterToolDensity::LowDensity:
+                pressed_widgets |= (1ULL << WIDX_DENSITY_LOW);
+                break;
+
+            case ScatterToolDensity::MediumDensity:
+                pressed_widgets |= (1ULL << WIDX_DENSITY_MEDIUM);
+                break;
+
+            case ScatterToolDensity::HighDensity:
+                pressed_widgets |= (1ULL << WIDX_DENSITY_HIGH);
+                break;
+        }
+
+        // Update the preview image (for tool sizes up to 7)
+        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
+    }
 };
 
 rct_window* WindowSceneryScatterOpen()
