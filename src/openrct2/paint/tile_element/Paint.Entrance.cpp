@@ -72,10 +72,6 @@ static void ride_entrance_exit_paint(
     {
         return;
     }
-    
-    if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES)
-        && ride->ignore_invisible_flag == false)
-        return;
 
     if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES)
         && ride->ignore_invisible_flag == false)
