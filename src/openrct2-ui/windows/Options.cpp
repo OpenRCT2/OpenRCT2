@@ -2648,12 +2648,7 @@ rct_window* window_options_open()
     auto* window = window_bring_to_front_by_class(WC_OPTIONS);
     if (window == nullptr)
     {
-        //auto uiContext = GetContext()->GetUiContext();
-        auto screenWidth = context_get_width(); //uiContext->GetWidth();
-        auto screenHeight = context_get_height(); // uiContext->GetHeight();
-        ScreenCoordsXY pos{ (screenWidth - WW) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - WH) / 2) };
-        //window = WindowCreateCentred(WW, WH, {}, WC_OPTIONS, 0U); // w = WindowCreateCentred(WW, WH, &window_options_events_display, WC_OPTIONS, 0);
-        window = WindowCreate<OptionsWindow>(WC_OPTIONS, pos, WW, WH);
+        window = WindowCreate<OptionsWindow>(WC_OPTIONS, WW, WH, WF_CENTRE_SCREEN);
     }
     return window;
 }
