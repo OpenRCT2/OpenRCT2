@@ -1273,7 +1273,8 @@ private:
         }
 
         WidgetSetCheckboxValue(
-            this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX, gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
+            this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
+            gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
         WidgetSetCheckboxValue(this, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
         if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
         {
@@ -1476,8 +1477,7 @@ private:
         ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
 
         // Currency: pounds, dollars, etc. (10 total)
-        this->widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)]
-                                                                 .stringId;
+        this->widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)].stringId;
 
         // Distance: metric / imperial / si
         {
@@ -2270,8 +2270,6 @@ private:
 
     void AdvancedPrepareDraw()
     {
-        // static void window_options_advanced_invalidate(rct_window* w)
-
         this->CommonPrepareDrawBefore();
 
         WidgetSetCheckboxValue(this, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
