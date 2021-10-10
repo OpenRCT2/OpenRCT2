@@ -422,15 +422,6 @@ const int32_t window_options_tab_animation_frames[] =
     16, // WINDOW_OPTIONS_PAGE_ADVANCED,
 };
 
-/*
-static void window_options_set_page(rct_window *w, int32_t page);
-static void window_options_set_pressed_tab(rct_window *w);
-static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, int32_t page, int32_t spriteIndex);
-static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int32_t num_items);
-static void window_options_update_height_markers();
-*/
-
 #pragma region Enabled Widgets
 
 #define MAIN_OPTIONS_ENABLED_WIDGETS \
@@ -577,9 +568,6 @@ public:
                 case WINDOW_OPTIONS_PAGE_RENDERING:
                     RenderingMouseUp(widgetIndex);
                     break;
-                case WINDOW_OPTIONS_PAGE_CULTURE:
-                    CultureMouseUp(widgetIndex);
-                    break;
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioMouseUp(widgetIndex);
                     break;
@@ -592,8 +580,8 @@ public:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                     AdvancedMouseUp(widgetIndex);
                     break;
+                case WINDOW_OPTIONS_PAGE_CULTURE:
                 default:
-                    // panik
                     break;
             }
         }
@@ -625,7 +613,6 @@ public:
                 AdvancedMouseDown(widgetIndex);
                 break;
             default:
-                // panik
                 break;
         }
     }
@@ -656,7 +643,6 @@ public:
                 AdvancedDropdown(widgetIndex, dropdownIndex);
                 break;
             default:
-                // panik
                 break;
         }
     }
@@ -687,7 +673,6 @@ public:
                 AdvancedPrepareDraw();
                 break;
             default:
-                // panik
                 break;
         }
     }
@@ -718,7 +703,6 @@ public:
                 AdvancedDraw(&dpi);
                 break;
             default:
-                // panik
                 break;
         }
     }
@@ -729,23 +713,16 @@ public:
 
         switch (page)
         {
-            case WINDOW_OPTIONS_PAGE_DISPLAY:
-                break;
-            case WINDOW_OPTIONS_PAGE_RENDERING:
-                break;
-            case WINDOW_OPTIONS_PAGE_CULTURE:
-                break;
             case WINDOW_OPTIONS_PAGE_AUDIO:
                 AudioUpdate();
                 break;
+            case WINDOW_OPTIONS_PAGE_DISPLAY:
+            case WINDOW_OPTIONS_PAGE_RENDERING:
+            case WINDOW_OPTIONS_PAGE_CULTURE:
             case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                break;
             case WINDOW_OPTIONS_PAGE_MISC:
-                break;
             case WINDOW_OPTIONS_PAGE_ADVANCED:
-                break;
             default:
-                // panik
                 break;
         }
     }
@@ -754,34 +731,25 @@ public:
     {
         switch (this->page)
         {
-            case WINDOW_OPTIONS_PAGE_DISPLAY:
-                break;
-            case WINDOW_OPTIONS_PAGE_RENDERING:
-                break;
-            case WINDOW_OPTIONS_PAGE_CULTURE:
-                break;
             case WINDOW_OPTIONS_PAGE_AUDIO:
                 return AudioScrollGetSize(scrollIndex);
                 break;
+            case WINDOW_OPTIONS_PAGE_DISPLAY:
+            case WINDOW_OPTIONS_PAGE_RENDERING:
+            case WINDOW_OPTIONS_PAGE_CULTURE:
             case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                break;
             case WINDOW_OPTIONS_PAGE_MISC:
-                break;
             case WINDOW_OPTIONS_PAGE_ADVANCED:
-                break;
             default:
-                // panik
+                return { WW, WH };
                 break;
         }
-        return { WW, WH };
     }
 
 private:
 #pragma region Common events
     void CommonMouseUp(rct_widgetindex widgetIndex)
     {
-        // static void window_options_common_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
@@ -801,8 +769,6 @@ private:
 
     void CommonPrepareDrawBefore()
     {
-        // static void window_options_common_invalidate_before(rct_window* w)
-
         if (window_options_page_widgets[this->page] != this->widgets)
         {
             this->widgets = window_options_page_widgets[this->page];
@@ -822,8 +788,6 @@ private:
 
     void CommonPrepareDrawAfter()
     {
-        // static void window_options_common_invalidate_after(rct_window* w)
-
         // Automatically adjust window height to fit widgets
         int32_t y = 0;
         for (auto widget = &this->widgets[WIDX_PAGE_START]; widget->type != WindowWidgetType::Last; widget++)
@@ -837,19 +801,15 @@ private:
 
     void CommonUpdate()
     {
-        // static void window_options_common_update(rct_window* w)
-
         // Tab animation
         this->frame_no++;
         widget_invalidate(this, WIDX_TAB_1 + this->page);
     }
 #pragma endregion
 
-#pragma region Display events
+#pragma region Display tab events
     void DisplayMouseUp(rct_widgetindex widgetIndex)
     {
-        // static void window_options_display_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-
         switch (widgetIndex)
         {
             case WIDX_UNCAP_FPS_CHECKBOX:
@@ -896,8 +856,6 @@ private:
 
     void DisplayMouseDown(rct_widgetindex widgetIndex)
     {
-        // static void window_options_display_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-
         rct_widget* widget = &this->widgets[widgetIndex - 1];
 
         switch (widgetIndex)
@@ -925,7 +883,7 @@ private:
                     }
                 }
 
-                ShowDropDown(widget, static_cast<int32_t>(resolutions.size()));
+                this->ShowDropdown(widget, static_cast<int32_t>(resolutions.size()));
 
                 if (selectedResolution != -1 && selectedResolution < 32)
                 {
@@ -942,7 +900,7 @@ private:
                 gDropdownItemsArgs[1] = STR_OPTIONS_DISPLAY_FULLSCREEN;
                 gDropdownItemsArgs[2] = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
 
-                ShowDropDown(widget, 3);
+                this->ShowDropdown(widget, 3);
 
                 Dropdown::SetChecked(gConfigGeneral.fullscreen_mode, true);
                 break;
@@ -958,7 +916,7 @@ private:
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
                 }
-                ShowDropDown(widget, numItems);
+                this->ShowDropdown(widget, numItems);
                 Dropdown::SetChecked(EnumValue(gConfigGeneral.drawing_engine), true);
                 break;
             }
@@ -983,7 +941,7 @@ private:
                 gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
                 gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
 
-                ShowDropDown(widget, 2);
+                this->ShowDropdown(widget, 2);
 
                 // Note: offset by one to compensate for lack of NN option.
                 Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
@@ -993,8 +951,6 @@ private:
 
     void DisplayDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        // static void window_options_display_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-
         if (dropdownIndex == -1)
             return;
 
@@ -1005,7 +961,8 @@ private:
                 const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
 
                 const Resolution& resolution = resolutions[dropdownIndex];
-                if (resolution.Width != gConfigGeneral.fullscreen_width || resolution.Height != gConfigGeneral.fullscreen_height)
+                if (resolution.Width != gConfigGeneral.fullscreen_width
+                    || resolution.Height != gConfigGeneral.fullscreen_height)
                 {
                     gConfigGeneral.fullscreen_width = resolution.Width;
                     gConfigGeneral.fullscreen_height = resolution.Height;
@@ -1056,7 +1013,6 @@ private:
 
     void DisplayPrepareDraw()
     {
-        // static void window_options_display_invalidate(rct_window* w)
         CommonPrepareDrawBefore();
 
         // Resolution dropdown caption.
@@ -1120,9 +1076,9 @@ private:
         WidgetSetCheckboxValue(this, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
 
         // Dropdown captions for straightforward strings.
-        window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
-        window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
-        window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
+        this->widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
+        this->widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
+        this->widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
             [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
 
         CommonPrepareDrawAfter();
@@ -1130,13 +1086,11 @@ private:
 
     void DisplayDraw(rct_drawpixelinfo* dpi)
     {
-        // static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
-
         WindowDrawWidgets(this, dpi);
         this->DrawTabImages(dpi);
 
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_FULLSCREEN].top + 1 }, STR_FULLSCREEN_MODE,
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_FULLSCREEN].top + 1 }, STR_FULLSCREEN_MODE,
             {}, { this->colours[1] });
 
         // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
@@ -1146,14 +1100,14 @@ private:
             colour |= COLOUR_FLAG_INSET;
         }
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10 + 15, window_options_display_widgets[WIDX_RESOLUTION].top + 1 },
+            dpi, this->windowPos + ScreenCoordsXY{ 10 + 15, this->widgets[WIDX_RESOLUTION].top + 1 },
             STR_DISPLAY_RESOLUTION, {}, { colour });
 
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_SCALE].top + 1 }, STR_UI_SCALING_DESC, {},
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_SCALE].top + 1 }, STR_UI_SCALING_DESC, {},
             { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1 },
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DRAWING_ENGINE].top + 1 },
             STR_DRAWING_ENGINE, {}, { this->colours[1] });
 
         auto ft = Formatter();
@@ -1169,16 +1123,14 @@ private:
             colour |= COLOUR_FLAG_INSET;
         }
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 },
+            dpi, this->windowPos + ScreenCoordsXY{ 25, this->widgets[WIDX_SCALE_QUALITY].top + 1 },
             STR_SCALING_QUALITY, {}, { colour });
     }
 #pragma endregion
 
-#pragma region Rendering events
+#pragma region Rendering tab events
     void RenderingMouseUp(rct_widgetindex widgetIndex)
     {
-        // static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-
         switch (widgetIndex)
         {
             case WIDX_TILE_SMOOTHING_CHECKBOX:
@@ -1248,8 +1200,6 @@ private:
 
     void RenderingMouseDown(rct_widgetindex widgetIndex)
     {
-        // static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-
         switch (widgetIndex)
         {
             case WIDX_VIRTUAL_FLOOR_DROPDOWN:
@@ -1261,7 +1211,7 @@ private:
                 gDropdownItemsArgs[2] = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
 
                 rct_widget* widget = &this->widgets[widgetIndex - 1];
-                ShowDropDown(widget, 3);
+                this->ShowDropdown(widget, 3);
 
                 Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
                 break;
@@ -1270,8 +1220,6 @@ private:
 
     void RenderingDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        // static void window_options_rendering_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-
         if (dropdownIndex == -1)
             return;
 
@@ -1286,8 +1234,6 @@ private:
 
     void RenderingPrepareDraw()
     {
-        // static void window_options_rendering_invalidate(rct_window* w)
-
         CommonPrepareDrawBefore();
 
         WidgetSetCheckboxValue(this, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
@@ -1300,7 +1246,7 @@ private:
         rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
                                                      STR_VIRTUAL_FLOOR_STYLE_GLASSY };
 
-        window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
+        this->widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
             gConfigGeneral.virtual_floor_style)];
 
         WidgetSetCheckboxValue(this, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
@@ -1346,28 +1292,15 @@ private:
 
     void RenderingDraw(rct_drawpixelinfo* dpi)
     {
-        // static void window_options_rendering_paint(rct_window* w, rct_drawpixelinfo* dpi)
-
         WindowDrawWidgets(this, dpi);
         DrawTabImages(dpi);
     }
 
 #pragma endregion
 
-#pragma region Culture events
-    void CultureMouseUp(rct_widgetindex widgetIndex)
-    {
-        // static void window_options_culture_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-        /*
-        if (widgetIndex < WIDX_PAGE_START)
-            return window_options_common_mouseup(w, widgetIndex);
-        */
-    }
-
+#pragma region Culture tab events
     void CultureMouseDown(rct_widgetindex widgetIndex)
     {
-        // static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-
         rct_widget* widget = &this->widgets[widgetIndex - 1];
 
         switch (widgetIndex)
@@ -1378,7 +1311,7 @@ private:
                 gDropdownItemsArgs[0] = STR_HEIGHT_IN_UNITS;
                 gDropdownItemsArgs[1] = STR_REAL_VALUES;
 
-                this->ShowDropDown(widget, 2);
+                this->ShowDropdown(widget, 2);
 
                 Dropdown::SetChecked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
                 break;
@@ -1398,7 +1331,7 @@ private:
                 gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId;
 
-                this->ShowDropDown(widget, num_items);
+                this->ShowDropdown(widget, num_items);
 
                 if (gConfigGeneral.currency_format == CurrencyType::Custom)
                 {
@@ -1418,7 +1351,7 @@ private:
                 gDropdownItemsArgs[1] = STR_METRIC;
                 gDropdownItemsArgs[2] = STR_SI;
 
-                this->ShowDropDown(widget, 3);
+                this->ShowDropdown(widget, 3);
 
                 Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
                 break;
@@ -1428,7 +1361,7 @@ private:
                 gDropdownItemsArgs[0] = STR_CELSIUS;
                 gDropdownItemsArgs[1] = STR_FAHRENHEIT;
 
-                this->ShowDropDown(widget, 2);
+                this->ShowDropdown(widget, 2);
 
                 Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
                 break;
@@ -1438,7 +1371,7 @@ private:
                     gDropdownItemsFormat[i - 1] = STR_OPTIONS_DROPDOWN_ITEM;
                     gDropdownItemsArgs[i - 1] = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
                 }
-                this->ShowDropDown(widget, LANGUAGE_COUNT - 1);
+                this->ShowDropdown(widget, LANGUAGE_COUNT - 1);
                 Dropdown::SetChecked(LocalisationService_GetCurrentLanguage() - 1, true);
                 break;
             case WIDX_DATE_FORMAT_DROPDOWN:
@@ -1447,7 +1380,7 @@ private:
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItemsArgs[i] = DateFormatStringIds[i];
                 }
-                this->ShowDropDown(widget, 4);
+                this->ShowDropdown(widget, 4);
                 Dropdown::SetChecked(gConfigGeneral.date_format, true);
                 break;
         }
@@ -1455,8 +1388,6 @@ private:
 
     void CultureDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        // static void window_options_culture_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-
         if (dropdownIndex == -1)
             return;
 
@@ -1538,8 +1469,6 @@ private:
 
     void CulturePrepareDraw()
     {
-        // static void window_options_culture_invalidate(rct_window* w)
-
         this->CommonPrepareDrawBefore();
 
         // Language
@@ -1547,7 +1476,7 @@ private:
         ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
 
         // Currency: pounds, dollars, etc. (10 total)
-        window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)]
+        this->widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)]
                                                                  .stringId;
 
         // Distance: metric / imperial / si
@@ -1565,19 +1494,19 @@ private:
                     stringId = STR_SI;
                     break;
             }
-            window_options_culture_widgets[WIDX_DISTANCE].text = stringId;
+            this->widgets[WIDX_DISTANCE].text = stringId;
         }
 
         // Date format
-        window_options_culture_widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
+        this->widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
 
         // Temperature: celsius/fahrenheit
-        window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit
+        this->widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit
             ? STR_FAHRENHEIT
             : STR_CELSIUS;
 
         // Height: units/real values
-        window_options_culture_widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS
+        this->widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS
                                                                                                       : STR_REAL_VALUES;
 
         this->CommonPrepareDrawAfter();
@@ -1585,37 +1514,34 @@ private:
 
     void CultureDraw(rct_drawpixelinfo* dpi)
     {
-        // static void window_options_culture_paint(rct_window* w, rct_drawpixelinfo* dpi)
         WindowDrawWidgets(this, dpi);
         this->DrawTabImages(dpi);
 
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_LANGUAGE].top + 1 }, STR_OPTIONS_LANGUAGE,
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_LANGUAGE].top + 1 },
+            STR_OPTIONS_LANGUAGE, {}, { this->colours[1] });
+        DrawTextBasic(
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_CURRENCY].top + 1 }, STR_CURRENCY,
             {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_CURRENCY].top + 1 }, STR_CURRENCY, {},
-            { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DISTANCE].top + 1 },
+            STR_DISTANCE_AND_SPEED, {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DISTANCE].top + 1 }, STR_DISTANCE_AND_SPEED,
-            {}, { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_TEMPERATURE].top + 1 },
+            STR_TEMPERATURE, {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_TEMPERATURE].top + 1 }, STR_TEMPERATURE, {},
-            { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_HEIGHT_LABELS].top + 1 },
+            STR_HEIGHT_LABELS, {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1 }, STR_HEIGHT_LABELS,
-            {}, { this->colours[1] });
-        DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1 }, STR_DATE_FORMAT, {},
-            { this->colours[1] });
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DATE_FORMAT].top + 1 },
+            STR_DATE_FORMAT, {}, { this->colours[1] });
     }
 
 #pragma endregion
 
-#pragma region Audio events
+#pragma region Audio tab events
     void AudioMouseUp(rct_widgetindex widgetIndex)
     {
-        // static void window_options_audio_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-
         switch (widgetIndex)
         {
             case WIDX_SOUND_CHECKBOX:
@@ -1655,8 +1581,6 @@ private:
 
     void AudioMouseDown(rct_widgetindex widgetIndex)
     {
-        // static void window_options_audio_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-
         rct_widget* widget = &this->widgets[widgetIndex - 1];
 
         switch (widgetIndex)
@@ -1671,7 +1595,7 @@ private:
                     gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(OpenRCT2::Audio::GetDeviceName(i).c_str());
                 }
 
-                this->ShowDropDown(widget, OpenRCT2::Audio::GetDeviceCount());
+                this->ShowDropdown(widget, OpenRCT2::Audio::GetDeviceCount());
 
                 Dropdown::SetChecked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
                 break;
@@ -1684,7 +1608,7 @@ private:
                     gDropdownItemsArgs[i] = window_options_title_music_names[i];
                 }
 
-                this->ShowDropDown(widget, num_items);
+                this->ShowDropdown(widget, num_items);
 
                 Dropdown::SetChecked(gConfigSound.title_music, true);
                 break;
@@ -1693,8 +1617,6 @@ private:
     
     void AudioDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        // static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-
         if (dropdownIndex == -1)
             return;
 
@@ -1742,9 +1664,7 @@ private:
 
     void AudioUpdate()
     {
-        // static void window_options_audio_update(rct_window* w)
-
-        const auto& masterVolumeWidget = window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        const auto& masterVolumeWidget = this->widgets[WIDX_MASTER_VOLUME];
         const auto& masterVolumeScroll = this->scrolls[0];
         uint8_t master_volume = this->GetScrollPercentage(masterVolumeWidget, masterVolumeScroll);
         if (master_volume != gConfigSound.master_volume)
@@ -1754,7 +1674,7 @@ private:
             widget_invalidate(this, WIDX_MASTER_VOLUME);
         }
 
-        const auto& soundVolumeWidget = window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        const auto& soundVolumeWidget = this->widgets[WIDX_MASTER_VOLUME];
         const auto& soundVolumeScroll = this->scrolls[1];
         uint8_t sound_volume = this->GetScrollPercentage(soundVolumeWidget, soundVolumeScroll);
         if (sound_volume != gConfigSound.sound_volume)
@@ -1764,7 +1684,7 @@ private:
             widget_invalidate(this, WIDX_SOUND_VOLUME);
         }
 
-        const auto& musicVolumeWidget = window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        const auto& musicVolumeWidget = this->widgets[WIDX_MASTER_VOLUME];
         const auto& musicVolumeScroll = this->scrolls[2];
         uint8_t ride_music_volume = this->GetScrollPercentage(musicVolumeWidget, musicVolumeScroll);
         if (ride_music_volume != gConfigSound.ride_music_volume)
@@ -1782,8 +1702,6 @@ private:
 
     void AudioPrepareDraw()
     {
-        // static void window_options_audio_invalidate(rct_window* w)
-
         this->CommonPrepareDrawBefore();
 
         // Sound device
@@ -1809,11 +1727,11 @@ private:
             }
         }
 
-        window_options_audio_widgets[WIDX_SOUND].text = audioDeviceStringId;
+        this->widgets[WIDX_SOUND].text = audioDeviceStringId;
         auto ft = Formatter::Common();
         ft.Add<char*>(audioDeviceName);
 
-        window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
+        this->widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
 
         WidgetSetCheckboxValue(this, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
         WidgetSetCheckboxValue(this, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
@@ -1835,19 +1753,15 @@ private:
 
     void AudioDraw(rct_drawpixelinfo* dpi)
     {
-        // static void window_options_audio_paint(rct_window* w, rct_drawpixelinfo* dpi)
-
         WindowDrawWidgets(this, dpi);
         this->DrawTabImages(dpi);
     }
 
 #pragma endregion
 
-#pragma region Controls events
+#pragma region Controls tab events
     void ControlsMouseUp(rct_widgetindex widgetIndex)
     {
-        // static void window_options_controls_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-
         switch (widgetIndex)
         {
             case WIDX_HOTKEY_DROPDOWN:
@@ -1925,7 +1839,6 @@ private:
 
     void ControlsMouseDown(rct_widgetindex widgetIndex)
     {
-        // static void window_options_controls_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
         rct_widget* widget = &this->widgets[widgetIndex - 1];
 
         switch (widgetIndex)
@@ -1940,8 +1853,8 @@ private:
                 }
 
                 WindowDropdownShowTextCustomWidth(
-                    { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1, this->colours[1], 0,
-                    Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
+                    { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1,
+                    this->colours[1], 0, Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
                 Dropdown::SetChecked(static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex()), true);
                 widget_invalidate(this, WIDX_THEMES_DROPDOWN);
@@ -1951,8 +1864,6 @@ private:
 
     void ControlsDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        // static void window_options_controls_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-
         if (dropdownIndex == -1)
             return;
 
@@ -1970,8 +1881,6 @@ private:
 
     void ControlsPrepareDraw()
     {
-        // static void window_options_controls_invalidate(rct_window* w)
-
         this->CommonPrepareDrawBefore();
 
         WidgetSetCheckboxValue(this, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
@@ -1996,26 +1905,22 @@ private:
 
     void ControlsDraw(rct_drawpixelinfo* dpi)
     {
-        // static void window_options_controls_paint(rct_window* w, rct_drawpixelinfo* dpi)
         WindowDrawWidgets(this, dpi);
         this->DrawTabImages(dpi);
 
         DrawTextBasic(
-            dpi,
-            this->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 },
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 },
             STR_SHOW_TOOLBAR_BUTTONS_FOR, {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1 },
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_THEMES].top + 1 },
             STR_THEMES_LABEL_CURRENT_THEME, {}, { this->colours[1] });
     }
 
 #pragma endregion
 
-#pragma region Misc events
+#pragma region Misc tab events
     void MiscMouseUp(rct_widgetindex widgetIndex)
     {
-        // static void window_options_misc_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-
         switch (widgetIndex)
         {
             case WIDX_REAL_NAME_CHECKBOX:
@@ -2065,7 +1970,6 @@ private:
 
     void MiscMouseDown(rct_widgetindex widgetIndex)
     {
-        // static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
         uint32_t num_items;
 
         rct_widget* widget = &this->widgets[widgetIndex - 1];
@@ -2081,8 +1985,8 @@ private:
                 }
 
                 WindowDropdownShowText(
-                    { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1, this->colours[1],
-                    Dropdown::Flag::StayOpen, num_items);
+                    { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1,
+                    this->colours[1], Dropdown::Flag::StayOpen, num_items);
 
                 Dropdown::SetChecked(static_cast<int32_t>(title_get_current_sequence()), true);
                 break;
@@ -2095,8 +1999,8 @@ private:
                 gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
 
                 WindowDropdownShowTextCustomWidth(
-                    { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1, this->colours[1], 0,
-                    Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
+                    { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1,
+                    this->colours[1], 0, Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
                 Dropdown::SetChecked(gConfigGeneral.scenario_select_mode, true);
                 break;
@@ -2107,7 +2011,7 @@ private:
                     gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
                 }
 
-                this->ShowDropDown(widget, 7);
+                this->ShowDropdown(widget, 7);
                 Dropdown::SetChecked(gConfigGeneral.default_inspection_interval, true);
                 break;
         }
@@ -2115,8 +2019,6 @@ private:
 
     void MiscDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        // static void window_options_misc_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-
         if (dropdownIndex == -1)
             return;
 
@@ -2153,8 +2055,6 @@ private:
 
     void MiscPrepareDraw()
     {
-        // static void window_options_misc_invalidate(rct_window* w)
-
         this->CommonPrepareDrawBefore();
 
         const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
@@ -2166,14 +2066,14 @@ private:
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
             this->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
-            window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+            this->widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
             // Disable the use of the allow_early_completion option during network play on clients.
             // This is to prevent confusion on clients because changing this setting during network play wouldn't change
             // the way scenarios are completed during this network-session
             if (network_get_mode() == NETWORK_MODE_CLIENT)
             {
                 this->disabled_widgets |= (1ULL << WIDX_ALLOW_EARLY_COMPLETION);
-                window_options_misc_widgets[WIDX_ALLOW_EARLY_COMPLETION].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+                this->widgets[WIDX_ALLOW_EARLY_COMPLETION].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
             }
         }
 
@@ -2196,9 +2096,9 @@ private:
         }
 
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY)
-            window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
+            this->widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
         else
-            window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
+            this->widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
 
         WidgetSetCheckboxValue(this, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
 
@@ -2211,7 +2111,7 @@ private:
             this->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
         }
 
-        window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
+        this->widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
             [gConfigGeneral.default_inspection_interval];
 
         this->CommonPrepareDrawAfter();
@@ -2219,28 +2119,25 @@ private:
 
     void MiscDraw(rct_drawpixelinfo* dpi)
     {
-        // static void window_options_misc_paint(rct_window* w, rct_drawpixelinfo* dpi)
         WindowDrawWidgets(this, dpi);
         this->DrawTabImages(dpi);
 
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1 }, STR_TITLE_SEQUENCE,
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_TITLE_SEQUENCE].top + 1 }, STR_TITLE_SEQUENCE,
             {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1 },
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_SCENARIO_GROUPING].top + 1 },
             STR_OPTIONS_SCENARIO_GROUPING, {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1 },
+            dpi, this->windowPos + ScreenCoordsXY{ 10, this->widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1 },
             STR_DEFAULT_INSPECTION_INTERVAL, {}, { this->colours[1] });
     }
 
 #pragma endregion
 
-#pragma region Advanced events
+#pragma region Advanced tab events
     void AdvancedMouseUp(rct_widgetindex widgetIndex)
     {
-        // static void window_options_advanced_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-
         switch (widgetIndex)
         {
             case WIDX_DEBUGGING_TOOLS:
@@ -2320,8 +2217,6 @@ private:
 
     void AdvancedMouseDown(rct_widgetindex widgetIndex)
     {
-        // static void window_options_advanced_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-
         rct_widget* widget = &this->widgets[widgetIndex - 1];
 
         switch (widgetIndex)
@@ -2333,7 +2228,7 @@ private:
                     gDropdownItemsArgs[i] = window_options_autosave_names[i];
                 }
 
-                this->ShowDropDown(widget, AUTOSAVE_NEVER + 1);
+                this->ShowDropdown(widget, AUTOSAVE_NEVER + 1);
                 Dropdown::SetChecked(gConfigGeneral.autosave_frequency, true);
                 break;
             case WIDX_AUTOSAVE_AMOUNT_UP:
@@ -2357,7 +2252,6 @@ private:
 
     void AdvancedDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        // static void window_options_advanced_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
         if (dropdownIndex == -1)
             return;
 
@@ -2391,21 +2285,20 @@ private:
 
     void AdvancedDraw(rct_drawpixelinfo* dpi)
     {
-        // static void window_options_advanced_paint(rct_window* w, rct_drawpixelinfo* dpi)
         WindowDrawWidgets(this, dpi);
         this->DrawTabImages(dpi);
 
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1 },
+            dpi, this->windowPos + ScreenCoordsXY{ 24, this->widgets[WIDX_AUTOSAVE].top + 1 },
             STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, {}, { this->colours[1] });
         DrawTextBasic(
             dpi,
             this->windowPos
-                + ScreenCoordsXY{ window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
-                                  window_options_advanced_widgets[WIDX_AUTOSAVE].top },
+                + ScreenCoordsXY{ this->widgets[WIDX_AUTOSAVE].left + 1,
+                                  this->widgets[WIDX_AUTOSAVE].top },
             window_options_autosave_names[gConfigGeneral.autosave_frequency], {}, { this->colours[1] });
         DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
+            dpi, this->windowPos + ScreenCoordsXY{ 24, this->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
             STR_AUTOSAVE_AMOUNT, {}, { this->colours[1] });
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.autosave_amount));
@@ -2417,7 +2310,7 @@ private:
         ft = Formatter();
         ft.Add<utf8*>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
 
-        rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
+        rct_widget pathWidget = this->widgets[WIDX_PATH_TO_RCT1_BUTTON];
 
         // Apply vertical alignment if appropriate.
         int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
@@ -2430,7 +2323,6 @@ private:
 
     OpenRCT2String AdvancedTooltip(rct_widgetindex widgetIndex, rct_string_id fallback)
     {
-    // static OpenRCT2String window_options_advanced_tooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
         if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
         {
             if (str_is_null_or_empty(gConfigGeneral.rct1_path))
@@ -2450,10 +2342,8 @@ private:
 
     void SetPage(int32_t p)
     {
-        // static void window_options_set_page(rct_window* w, int32_t page)
         this->page = p;
         this->frame_no = 0;
-        // this->event_handlers = window_options_event_lists[page]; // ??? ~hjort96
         this->enabled_widgets = window_options_page_enabled_widgets[this->page];
         this->pressed_widgets = 0;
         this->widgets = window_options_page_widgets[this->page];
@@ -2467,17 +2357,15 @@ private:
 
     void SetPressedTab()
     {
-        // static void window_options_set_pressed_tab(rct_window* w)
         int32_t i;
         for (i = 0; i < WINDOW_OPTIONS_PAGE_COUNT; i++)
             this->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
         this->pressed_widgets |= 1LL << (WIDX_TAB_1 + this->page);
     }
 
-    void ShowDropDown(rct_widget* widget, int32_t num_items)
+    void ShowDropdown(rct_widget* widget, int32_t num_items)
     {
         // helper function, all dropdown boxes have similar properties
-        // static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
         WindowDropdownShowTextCustomWidth(
             { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1, this->colours[1], 0,
             Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
@@ -2485,7 +2373,6 @@ private:
 
     void DrawTabImages(rct_drawpixelinfo* dpi)
     {
-        // static void window_options_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
         this->DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_TAB_PAINT_0);
         this->DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
         this->DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
@@ -2497,7 +2384,6 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
     {
-        // static void window_options_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
         rct_widgetindex widgetIndex = WIDX_TAB_1 + p;
         rct_widget* widget = &this->widgets[widgetIndex];
 
@@ -2529,24 +2415,19 @@ private:
 
     void UpdateHeightMarkers()
     {
-        // static void window_options_update_height_markers()
         config_save_default();
         gfx_invalidate_screen();
     }
 
     uint8_t GetScrollPercentage(const rct_widget& widget, const rct_scroll& scroll)
     {
-        // static uint8_t get_scroll_percentage(const rct_widget& widget, const rct_scroll& scroll)
-
         uint8_t w = widget.width() - 1;
         return static_cast<float>(scroll.h_left) / (scroll.h_right - w) * 100;
     }
 
     void InitializeScrollPosition(rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
     {
-        // static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
-
-        const auto& widget = window_options_audio_widgets[widget_index];
+        const auto& widget = this->widgets[widget_index];
         auto& scroll = this->scrolls[scroll_id];
 
         int32_t widget_size = scroll.h_right - (widget.width() - 1);
@@ -2556,89 +2437,7 @@ private:
     }
 };
 
-#pragma region Event lists
-/*
-static rct_window_event_list window_options_events_display([](auto& events) {
-    events.mouse_up = &window_options_display_mouseup;
-    events.mouse_down = &window_options_display_mousedown;
-    events.dropdown = &window_options_display_dropdown;
-    events.update = &window_options_common_update;
-    events.invalidate = &window_options_display_invalidate;
-    events.paint = &window_options_display_paint;
-});
-
-static rct_window_event_list window_options_events_rendering([](auto& events) {
-    events.mouse_up = &window_options_rendering_mouseup;
-    events.mouse_down = &window_options_rendering_mousedown;
-    events.dropdown = &window_options_rendering_dropdown;
-    events.update = &window_options_common_update;
-    events.invalidate = &window_options_rendering_invalidate;
-    events.paint = &window_options_rendering_paint;
-});
-
-static rct_window_event_list window_options_events_culture([](auto& events) {
-    events.mouse_up = &window_options_culture_mouseup;
-    events.mouse_down = &window_options_culture_mousedown;
-    events.dropdown = &window_options_culture_dropdown;
-    events.update = &window_options_common_update;
-    events.invalidate = &window_options_culture_invalidate;
-    events.paint = &window_options_culture_paint;
-});
-
-static rct_window_event_list window_options_events_audio([](auto& events) {
-    events.mouse_up = &window_options_audio_mouseup;
-    events.mouse_down = &window_options_audio_mousedown;
-    events.dropdown = &window_options_audio_dropdown;
-    events.update = &window_options_audio_update;
-    events.get_scroll_size = &window_options_audio_scrollgetsize;
-    events.invalidate = &window_options_audio_invalidate;
-    events.paint = &window_options_audio_paint;
-});
-
-static rct_window_event_list window_options_events_controls([](auto& events) {
-    events.mouse_up = &window_options_controls_mouseup;
-    events.mouse_down = &window_options_controls_mousedown;
-    events.dropdown = &window_options_controls_dropdown;
-    events.update = &window_options_common_update;
-    events.invalidate = &window_options_controls_invalidate;
-    events.paint = &window_options_controls_paint;
-});
-
-static rct_window_event_list window_options_events_misc([](auto& events) {
-    events.mouse_up = &window_options_misc_mouseup;
-    events.mouse_down = &window_options_misc_mousedown;
-    events.dropdown = &window_options_misc_dropdown;
-    events.update = &window_options_common_update;
-    events.invalidate = &window_options_misc_invalidate;
-    events.paint = &window_options_misc_paint;
-});
-
-static rct_window_event_list window_options_events_advanced([](auto& events) {
-    events.mouse_up = &window_options_advanced_mouseup;
-    events.mouse_down = &window_options_advanced_mousedown;
-    events.dropdown = &window_options_advanced_dropdown;
-    events.update = &window_options_common_update;
-    events.tooltip = &window_options_advanced_tooltip;
-    events.invalidate = &window_options_advanced_invalidate;
-    events.paint = &window_options_advanced_paint;
-});
-
-// clang-format off
-static rct_window_event_list* window_options_event_lists[] = {
-    &window_options_events_display,
-    &window_options_events_rendering,
-    &window_options_events_culture,
-    &window_options_events_audio,
-    &window_options_events_controls,
-    &window_options_events_misc,
-    &window_options_events_advanced,
-};
-
-*/
-#pragma endregion
-
 // clang-format on
-
 /**
  *
  *  rct2: 0x006BAC5B
