@@ -88,6 +88,11 @@ public:
         gWindowSceneryScatterSize = 16;
         gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
     }
+
+    void OnClose() override
+    {
+        gWindowSceneryScatterEnabled = false;
+    }
 };
 
 rct_window* WindowSceneryScatterOpen()
@@ -102,11 +107,6 @@ rct_window* WindowSceneryScatterOpen()
     }
 
     return window;
-}
-
-static void WindowSceneryScatterClose([[maybe_unused]] rct_window* w)
-{
-    gWindowSceneryScatterEnabled = false;
 }
 
 static void WindowSceneryScatterMouseup(rct_window* w, rct_widgetindex widgetIndex)
