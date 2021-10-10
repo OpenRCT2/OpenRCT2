@@ -51,26 +51,6 @@ static rct_widget window_scenery_scatter_widgets[] = {
 };
 // clang-format on
 
-static void WindowSceneryScatterClose(rct_window* w);
-static void WindowSceneryScatterMouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void WindowSceneryScatterMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void WindowSceneryScatterInvalidate(rct_window* w);
-static void WindowSceneryScatterPaint(rct_window* w, rct_drawpixelinfo* dpi);
-static void WindowSceneryScatterTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
-static void WindowSceneryScatterInputsize(rct_window* w, rct_widgetindex widgetindex);
-
-// clang-format off
-static rct_window_event_list window_clear_scenery_events([](auto& events)
-{
-    events.close = &WindowSceneryScatterClose;
-    events.mouse_up = &WindowSceneryScatterMouseup;
-    events.mouse_down = &WindowSceneryScatterMousedown;
-    events.text_input = &WindowSceneryScatterTextinput;
-    events.invalidate = &WindowSceneryScatterInvalidate;
-    events.paint = &WindowSceneryScatterPaint;
-});
-// clang-format on
-
 class SceneryScatterWindow final : public rct_window
 {
 private:
