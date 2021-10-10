@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../Game.h"
+#include "../util/Math.hpp"
 #include "Date.h"
 #include "StringIds.h"
 

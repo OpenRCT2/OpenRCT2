@@ -19,6 +19,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/util/Math.hpp>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
@@ -321,8 +322,13 @@ public:
                 _selectedPage = 0;
                 _numPages = 1;
                 widgets[WIDX_TRACKING].type = WindowWidgetType::Empty;
-                widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::Empty;
-                if (_selectedTab == TabId::Individual)
+                if (_selectedTab == TabId::Summarised)
+                {
+                    widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::Empty;
+                    SetWidgetPressed(WIDX_FILTER_BY_NAME, false);
+                    _filterName.clear();
+                }
+                else if (_selectedTab == TabId::Individual)
                 {
                     widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
                     widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
@@ -576,6 +582,7 @@ public:
                     _selectedTab = TabId::Individual;
                     widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
                     Invalidate();
+                    widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
                     scrolls[0].v_top = 0;
                     RefreshList();
                 }

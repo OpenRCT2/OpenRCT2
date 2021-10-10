@@ -12,6 +12,7 @@
 #include "../interface/Viewport.h"
 #include "../object/FootpathRailingsObject.h"
 #include "../sprites.h"
+#include "../util/Math.hpp"
 #include "../world/Surface.h"
 #include "Paint.h"
 #include "tile_element/Paint.TileElement.h"

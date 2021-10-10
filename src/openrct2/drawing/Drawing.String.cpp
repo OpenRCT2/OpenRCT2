@@ -578,9 +578,9 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, std::string_view tex
         auto baseId = uint32_t(0x7FFFF) - 1024;
         auto imageId = baseId + _ttfGlId;
         auto drawingEngine = dpi->DrawingEngine;
-        auto drawingContext = drawingEngine->GetDrawingContext(dpi);
+        auto drawingContext = drawingEngine->GetDrawingContext();
         drawingEngine->InvalidateImage(imageId);
-        drawingContext->DrawBitmap(imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY);
+        drawingContext->DrawBitmap(dpi, imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY);
 
         _ttfGlId++;
         if (_ttfGlId >= 1023)

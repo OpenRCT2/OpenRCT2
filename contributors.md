@@ -178,6 +178,7 @@ The following people are not part of the development team, but have been contrib
 * (ocalhoun6)
 * Sean Payne (seanmajorpayne)
 * Soham Roy (sohamroy19)
+* Gaven Rendell (Rendello)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -188,6 +189,7 @@ The following people are not part of the development team, but have been contrib
 * Michał Janiszewski (janisozaur) - Linux, Travis CI
 * Lewis Fox (LRFLEW) - macOS
 * Andrew Rimpici (Andy608) - macOS
+* Adam Bloom (adam-bloom) - macOS, CI
 
 ## Documentation
 * (honzi)

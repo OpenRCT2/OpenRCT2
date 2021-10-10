@@ -892,10 +892,13 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
     }
     else if (action.GetType() == GameCommand::HireNewStaffMember)
     {
-        auto& staffHireResult = static_cast<StaffHireNewActionResult&>(*result.get());
-        if (staffHireResult.peepSriteIndex != SPRITE_INDEX_NULL)
+        if (result->Error == GameActions::Status::Ok)
         {
-            obj.Set("peep", staffHireResult.peepSriteIndex);
+            const auto actionResult = result->GetData<StaffHireNewActionResult>();
+            if (actionResult.StaffEntityId != SPRITE_INDEX_NULL)
+            {
+                obj.Set("peep", actionResult.StaffEntityId);
+            }
         }
     }
 

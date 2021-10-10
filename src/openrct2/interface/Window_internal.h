@@ -63,7 +63,6 @@ struct rct_window
         news_variables news;
         map_variables map;
         ride_variables ride;
-        scenery_variables scenery;
         track_list_variables track_list;
         error_variables error;
         void* custom_info;
@@ -176,7 +175,16 @@ struct rct_window
     virtual void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi)
     {
     }
+    virtual void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    {
+    }
     virtual void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    {
+    }
+    virtual void OnToolDrag(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    {
+    }
+    virtual void OnToolUp(rct_widgetindex, const ScreenCoordsXY&)
     {
     }
     virtual void OnToolAbort(rct_widgetindex widgetIndex)

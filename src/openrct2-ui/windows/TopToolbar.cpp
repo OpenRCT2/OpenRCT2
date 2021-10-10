@@ -56,7 +56,7 @@
 #include <openrct2/peep/Staff.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/UiContext.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/util/Math.hpp>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/LargeScenery.h>
@@ -1725,13 +1725,11 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         return;
     }
 
-    ScenerySelection selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    auto selectedTab = gWindowSceneryTabSelections.size() > gWindowSceneryActiveTabIndex
+        ? gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex]
+        : ScenerySelection{};
     uint8_t sceneryType = selectedTab.SceneryType;
     uint16_t selectedScenery = selectedTab.EntryIndex;
-
-    if (selectedTab.IsUndefined())
-        return;
-
     CoordsXY gridPos;
 
     switch (sceneryType)
@@ -2476,18 +2474,18 @@ static money64 try_place_ghost_small_scenery(
     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(loc, quadrant, entryIndex, primaryColour, secondaryColour);
     smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&smallSceneryPlaceAction);
-    auto sspar = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get());
-    if (sspar == nullptr || res->Error != GameActions::Status::Ok)
+    if (res->Error != GameActions::Status::Ok)
         return MONEY64_UNDEFINED;
+
+    const auto placementData = res->GetData<SmallSceneryPlaceActionResult>();
 
     gSceneryPlaceRotation = loc.direction;
     gSceneryPlaceObject.SceneryType = SCENERY_TYPE_SMALL;
     gSceneryPlaceObject.EntryIndex = entryIndex;
 
-    TileElement* tileElement = sspar->tileElement;
-    gSceneryGhostPosition = { loc, tileElement->GetBaseZ() };
-    gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-    if (sspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
+    gSceneryGhostPosition = { loc, placementData.BaseHeight };
+    gSceneryQuadrant = placementData.SceneryQuadrant;
+    if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         // Set underground on
         viewport_set_visibility(4);
@@ -2533,11 +2531,12 @@ static money64 try_place_ghost_wall(
     // 6e26b0
     auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
     wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-    wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
+    wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
 
-        gSceneryGhostPosition = { loc, result->tileElement->GetBaseZ() };
+        const auto placementData = result->GetData<WallPlaceActionResult>();
+        gSceneryGhostPosition = { loc, placementData.BaseHeight };
         gSceneryGhostWallRotation = edge;
 
         gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
@@ -2623,8 +2622,12 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
     if (gWindowSceneryEyedropperEnabled)
         return;
 
-    ScenerySelection selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
-
+    if (gWindowSceneryActiveTabIndex >= gWindowSceneryTabSelections.size())
+    {
+        scenery_remove_ghost_tool_placement();
+        return;
+    }
+    const auto& selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
     if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();

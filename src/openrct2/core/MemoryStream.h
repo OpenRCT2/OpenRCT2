@@ -12,7 +12,6 @@
 #include "../common.h"
 #include "IStream.hpp"
 
-#include <algorithm>
 #include <vector>
 
 namespace OpenRCT2

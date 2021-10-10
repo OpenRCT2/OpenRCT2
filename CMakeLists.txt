@@ -20,11 +20,26 @@ if (CCache_FOUND)
 endif (CCache_FOUND)
 
 if (APPLE)
-    set(CMAKE_OSX_ARCHITECTURES "x86_64")
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
-endif ()
+    execute_process(COMMAND /usr/bin/uname -m OUTPUT_VARIABLE SYSTEM_MACOS_ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if (NOT DEFINED ARCH)
+        set(ARCH "${SYSTEM_MACOS_ARCH}")
+    endif ()
 
+    set(CMAKE_OSX_ARCHITECTURES "${ARCH}" CACHE STRING "")
+
+    if("${ARCH}" MATCHES "^x86_64")
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "")
+    elseif("${ARCH}" MATCHES "^arm64")
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "")
+    else()
+        message("Unknown macOS architecture: ${ARCH}. Behavior may be unexpected.")
+    endif()
+endif ()
 project(openrct2 CXX)
+
+if (APPLE)
+    set(CMAKE_SYSTEM_PROCESSOR "${CMAKE_OSX_ARCHITECTURES}" CACHE STRING "")
+endif ()
 
 include(cmake/platform.cmake)
 include(CMakeDependentOption)
@@ -50,9 +65,9 @@ set(OBJECTS_VERSION "1.0.21")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
 set(OBJECTS_SHA1 "c38af45d51a6e440386180feacf76c64720b6ac5")
 
-set(REPLAYS_VERSION "0.0.54")
+set(REPLAYS_VERSION "0.0.55")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "FF54C3699C3A0DF02269C5EB4C4A9C8E6D5C4EB4")
+set(REPLAYS_SHA1 "70B4B7CB26A428801676BCC615F3881E72A45406")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -110,9 +125,9 @@ if (MACOS_USE_DEPENDENCIES)
     # if we're building on macOS, then we need the dependencies
     include(cmake/download.cmake)
     
-    set(MACOS_DYLIBS_VERSION "28")
-    set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-x64-macos-dylibs.zip")
-    set(MACOS_DYLIBS_SHA1 "29e5480376cf4ac5943f114387e32685204c8b78")
+    set(MACOS_DYLIBS_VERSION "29")
+    set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-universal-macos-dylibs.zip")
+    set(MACOS_DYLIBS_SHA1 "86cf2db4d87173112a00042418d0d18cae360e41")
     set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
     set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 
@@ -209,6 +224,10 @@ if (NOT DISABLE_DISCORD_RPC)
     endif()
 endif()
 
+# ensure X86 and X86_64 are always initialized
+# may be overwritten below
+set(X86 0)
+set(X86_64 0)
 # Copied from https://github.com/opencv/opencv/blob/dcdd6af5a856826fe62c95322145731e702e54c5/cmake/OpenCVDetectCXXCompiler.cmake#L63-L70
 if(MSVC64 OR MINGW64)
     set(X86_64 1)
@@ -368,14 +387,16 @@ endif ()
 
 
 # g2
-add_custom_command(
-    OUTPUT g2.dat
-    COMMAND ./openrct2-cli sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
-add_custom_target(g2 DEPENDS ${PROJECT_NAME} g2.dat)
-
-project(openrct2 CXX)
+if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_ARCH}")))
+    add_custom_command(
+        OUTPUT g2.dat
+        COMMAND ./openrct2-cli sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+    add_custom_target(g2 DEPENDS ${PROJECT_NAME} g2.dat)
+else ()
+    message("Skipping g2.dat generation in macOS cross-compile")
+endif ()
 
 # Include tests
 if (WITH_TESTS)
