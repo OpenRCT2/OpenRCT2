@@ -712,6 +712,8 @@ static void window_scenery_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     w->Invalidate();
 }
 
+static ScenerySelection get_scenery_id_by_cursor_pos(rct_window* w, const ScreenCoordsXY& screenCoords);
+
 /**
  *
  *  rct2: 0x006E1B9F
@@ -720,6 +722,28 @@ static void window_scenery_periodic_update(rct_window* w)
 {
     if (!_selectedScenery.IsUndefined())
     {
+        // Find out what scenery the cursor is over
+        const CursorState* state = context_get_cursor_state();
+        rct_widgetindex widgetIndex = window_find_widget_from_point(w, state->position);
+        if (widgetIndex == WIDX_SCENERY_LIST)
+        {
+            ScreenCoordsXY scrollPos = {};
+            int32_t scrollArea = 0;
+            int32_t scrollId = 0;
+            WidgetScrollGetPart(w, &w->widgets[WIDX_SCENERY_LIST], state->position, scrollPos, &scrollArea, &scrollId);
+            if (scrollArea == SCROLL_PART_VIEW)
+            {
+                const ScenerySelection scenery = get_scenery_id_by_cursor_pos(w, scrollPos);
+                if (scenery == _selectedScenery)
+                {
+                    return;
+                }
+            }
+        }
+
+        // Cursor was not over the currently hover selected scenery so reset hover selection.
+        // This will happen when the mouse leaves the scroll window and is required so that the cost and description switch to
+        // the tool scenery selection.
         _selectedScenery = {};
     }
 }

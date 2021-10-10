@@ -1002,11 +1002,11 @@ void research_determine_first_of_type()
 
         // The last research item will also be present in gResearchItemsInvented.
         // Avoid marking its ride type as "invented" prematurely.
-        if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem == *gResearchLastItem)
+        if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem == gResearchLastItem.value())
             continue;
 
         // The next research item is (sometimes?) also present in gResearchItemsInvented, even though it isn't invented yet(!)
-        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == *gResearchNextItem)
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == gResearchNextItem.value())
             continue;
 
         research_mark_ride_type_as_seen(researchItem);
@@ -1026,7 +1026,7 @@ void research_determine_first_of_type()
     for (auto& researchItem : gResearchItemsUninvented)
     {
         // The next research item is (sometimes?) also present in gResearchItemsUninvented
-        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == *gResearchNextItem)
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == gResearchNextItem.value())
         {
             // Copy the "first of type" flag.
             researchItem.flags = gResearchNextItem->flags;
