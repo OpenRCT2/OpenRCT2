@@ -732,8 +732,7 @@ public:
         switch (this->page)
         {
             case WINDOW_OPTIONS_PAGE_AUDIO:
-                AudioScrollGetSize(scrollIndex);
-                break;
+                return AudioScrollGetSize(scrollIndex);
             case WINDOW_OPTIONS_PAGE_DISPLAY:
             case WINDOW_OPTIONS_PAGE_RENDERING:
             case WINDOW_OPTIONS_PAGE_CULTURE:
