@@ -21,6 +21,7 @@
 #include "Track.h"
 
 #include <iterator>
+#include <tuple>
 
 // clang-format off
 // 0x0098E52C:
@@ -1008,357 +1009,40 @@ static void vehicle_sprite_paint_6D51DE(
     vehicle_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
 }
 
-// 6D51DE
-static void vehicle_sprite_0_0(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
+struct ImageInfo
 {
-    vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-}
+    int32_t Direction;
+    int32_t Id;
+};
 
-// 6D4EE7
-static void vehicle_sprite_0_1(
+static void vehicle_sprite_0_generic(
     paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const rct_ride_entry_vehicle* vehicleEntry, const ImageInfo& inlineTwistInfo = { 0, 0 },
+    const ImageInfo& bankedInfo = { 0, 0 }, const uint32_t spriteFlags = 0,
+    bool updateEntry = false, bool alwaysDecreaseEntry = false)
 {
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
-    {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4F34
-static void vehicle_sprite_0_2(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
-    {
-        int32_t ecx = (imageDirection / 2) + 108;
-        int32_t ebx = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4F0C
-static void vehicle_sprite_0_3(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
-    {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4F5C
-static void vehicle_sprite_0_4(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
-    {
-        int32_t ecx = ((imageDirection / 2) ^ 8) + 108;
-        int32_t ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4F84
-static void vehicle_sprite_0_5(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
+    if ((updateEntry && vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)) || alwaysDecreaseEntry)
     {
         vehicleEntry--;
     }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
+    if (spriteFlags != 0)
     {
-        int32_t ecx = (imageDirection / 8) + 124;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4FE4
-static void vehicle_sprite_0_6(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
-    {
-        vehicleEntry--;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
-    {
-        int32_t ecx = (imageDirection / 8) + 128;
-        int32_t ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D5055
-static void vehicle_sprite_0_7(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
-    {
-        vehicleEntry--;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
-    {
-        int32_t ecx = (imageDirection / 8) + 132;
-        int32_t ebx = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D50C6
-static void vehicle_sprite_0_8(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
-    {
-        vehicleEntry--;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
-    {
-        int32_t ecx = (imageDirection / 8) + 136;
-        int32_t ebx = (((imageDirection / 8) + 24) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D5137
-static void vehicle_sprite_0_9(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
-    {
-        vehicleEntry--;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
-    {
-        int32_t ecx = (imageDirection / 8) + 140;
-        int32_t ebx = (((imageDirection / 8) + 32) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4FB1
-static void vehicle_sprite_0_10(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
-    {
-        vehicleEntry--;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
-    {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 124;
-        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_4(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D501B
-static void vehicle_sprite_0_11(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
-    {
-        vehicleEntry--;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
-    {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 128;
-        int32_t ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_4(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D508C
-static void vehicle_sprite_0_12(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
-    {
-        vehicleEntry--;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
-    {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 132;
-        int32_t ebx = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_4(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D50FD
-static void vehicle_sprite_0_13(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
-    {
-        vehicleEntry--;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
-    {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 136;
-        int32_t ebx = (((imageDirection / 8) + 28) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_4(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D516E
-static void vehicle_sprite_0_14(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
-    {
-        vehicleEntry--;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
-    {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 140;
-        int32_t ebx = (((imageDirection / 8) + 36) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4EE4
-static void vehicle_sprite_0_16(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    vehicleEntry--;
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
-    {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4F31
-static void vehicle_sprite_0_17(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    vehicleEntry--;
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
-    {
-        int32_t ecx = (imageDirection / 2) + 108;
-        int32_t ebx = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4F09
-static void vehicle_sprite_0_18(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    vehicleEntry--;
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
-    {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4F59
-static void vehicle_sprite_0_19(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    vehicleEntry--;
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
-    {
-        int32_t ecx = ((imageDirection / 2) ^ 8) + 108;
-        int32_t ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_swing_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
+        if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) && (spriteFlags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS))
+        {
+            int32_t imageId = inlineTwistInfo.Id;
+            int32_t direction = inlineTwistInfo.Direction;
+            vehicle_swing_sprite_paint(session, vehicle, imageId, direction, z, vehicleEntry);
+        }
+        else if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) && (spriteFlags & VEHICLE_SPRITE_FLAG_FLAT_BANKED))
+        {
+            int32_t imageId = bankedInfo.Id;
+            int32_t direction = bankedInfo.Direction;
+            vehicle_swing_sprite_paint(session, vehicle, imageId, direction, z, vehicleEntry);
+        }
+        else
+        {
+            vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        }
     }
     else
     {
@@ -1371,68 +1055,149 @@ static void vehicle_sprite_0(
     paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    // 0x009A3DE4:
+    ImageInfo bankedInfo, twistedInfo;
+    bool alwaysDecreaseEntry = vehicle->bank_rotation >= 16;
     switch (vehicle->bank_rotation)
     {
         case 0:
-            vehicle_sprite_0_0(session, vehicle, imageDirection, z, vehicleEntry);
+        case 15:
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry);
             break;
         case 1:
-            vehicle_sprite_0_1(session, vehicle, imageDirection, z, vehicleEntry);
+        case 16:
+            bankedInfo.Direction = imageDirection / 2;
+            bankedInfo.Id = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, { 0, 0 }, bankedInfo, VEHICLE_SPRITE_FLAG_FLAT_BANKED, true, alwaysDecreaseEntry);
             break;
         case 2:
-            vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
+        case 17:
+            bankedInfo.Direction = (imageDirection / 2) + 108;
+            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, { 0, 0 }, bankedInfo, VEHICLE_SPRITE_FLAG_FLAT_BANKED, true, alwaysDecreaseEntry);
             break;
         case 3:
-            vehicle_sprite_0_3(session, vehicle, imageDirection, z, vehicleEntry);
+        case 18:
+            bankedInfo.Direction = imageDirection / 2;
+            bankedInfo.Id = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, { 0, 0 }, bankedInfo, VEHICLE_SPRITE_FLAG_FLAT_BANKED, true, alwaysDecreaseEntry);
             break;
         case 4:
-            vehicle_sprite_0_4(session, vehicle, imageDirection, z, vehicleEntry);
+        case 19:
+            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, { 0, 0 }, bankedInfo, VEHICLE_SPRITE_FLAG_FLAT_BANKED, true, alwaysDecreaseEntry);
             break;
         case 5:
-            vehicle_sprite_0_5(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = (imageDirection / 2) + 108;
+            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = (imageDirection / 8) + 124;
+            twistedInfo.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
         case 6:
-            vehicle_sprite_0_6(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = (imageDirection / 2) + 108;
+            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = (imageDirection / 8) + 128;
+            twistedInfo.Id = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
         case 7:
-            vehicle_sprite_0_7(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = (imageDirection / 2) + 108;
+            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = (imageDirection / 8) + 132;
+            twistedInfo.Id = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames)
+                + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
         case 8:
-            vehicle_sprite_0_8(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = (imageDirection / 2) + 108;
+            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = (imageDirection / 8) + 136;
+            twistedInfo.Id = (((imageDirection / 8) + 24) * vehicleEntry->base_num_frames)
+                + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
         case 9:
-            vehicle_sprite_0_9(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = (imageDirection / 2) + 108;
+            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = (imageDirection / 8) + 140;
+            twistedInfo.Id = (((imageDirection / 8) + 32) * vehicleEntry->base_num_frames)
+                + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
         case 10:
-            vehicle_sprite_0_10(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 124;
+            twistedInfo.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
         case 11:
-            vehicle_sprite_0_11(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 128;
+            twistedInfo.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+                + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
         case 12:
-            vehicle_sprite_0_12(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 132;
+            twistedInfo.Id = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames)
+                + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
         case 13:
-            vehicle_sprite_0_13(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 136;
+            twistedInfo.Id = (((imageDirection / 8) + 28) * vehicleEntry->base_num_frames)
+                + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
         case 14:
-            vehicle_sprite_0_14(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 15:
-            vehicle_sprite_0_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 16:
-            vehicle_sprite_0_16(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 17:
-            vehicle_sprite_0_17(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 18:
-            vehicle_sprite_0_18(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 19:
-            vehicle_sprite_0_19(session, vehicle, imageDirection, z, vehicleEntry);
+            bankedInfo.Direction = (imageDirection / 2) + 108;
+            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 140;
+            twistedInfo.Id = (((imageDirection / 8) + 36) * vehicleEntry->base_num_frames)
+                + vehicleEntry->inline_twist_image_id;
+            vehicle_sprite_0_generic(
+                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
             break;
     }
 }
