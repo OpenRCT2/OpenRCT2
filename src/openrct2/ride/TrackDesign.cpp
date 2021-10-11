@@ -651,7 +651,7 @@ static void track_design_load_scenery_objects(TrackDesign* td6)
     {
         if (scenery.scenery_object.HasValue())
         {
-            objectManager.LoadObject(td6->vehicle_object);
+            objectManager.LoadObject(scenery.scenery_object);
         }
     }
 }
@@ -734,7 +734,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
         if (result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
             result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
 
-        if (result.Index == OBJECT_ENTRY_INDEX_NULL || result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (result.Index == OBJECT_ENTRY_INDEX_NULL)
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
             return {};
