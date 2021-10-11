@@ -1014,6 +1014,162 @@ struct ImageInfo
     int32_t Id;
 };
 
+static void vehicule_sprite_0_1(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = imageDirection / 2;
+    bankedInfo.Id = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
+}
+
+static void vehicule_sprite_0_2(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = (imageDirection / 2) + 108;
+    bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
+}
+
+static void vehicule_sprite_0_3(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = imageDirection / 2;
+    bankedInfo.Id = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
+}
+
+static void vehicule_sprite_0_4(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+    bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
+}
+
+static void vehicule_sprite_0_5(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = (imageDirection / 2) + 108;
+    bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = (imageDirection / 8) + 124;
+    twistedInfo.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
+static void vehicule_sprite_0_6(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = (imageDirection / 2) + 108;
+    bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = (imageDirection / 8) + 128;
+    twistedInfo.Id = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
+static void vehicule_sprite_0_7(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = (imageDirection / 2) + 108;
+    bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = (imageDirection / 8) + 132;
+    twistedInfo.Id = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
+static void vehicule_sprite_0_8(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = (imageDirection / 2) + 108;
+    bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = (imageDirection / 8) + 132;
+    twistedInfo.Id = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
+static void vehicule_sprite_0_9(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = (imageDirection / 2) + 108;
+    bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = (imageDirection / 8) + 140;
+    twistedInfo.Id = (((imageDirection / 8) + 32) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
+static void vehicule_sprite_0_10(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+    bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 124;
+    twistedInfo.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
+static void vehicule_sprite_0_11(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+    bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 128;
+    twistedInfo.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
+static void vehicule_sprite_0_12(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+    bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 132;
+    twistedInfo.Id = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
+static void vehicule_sprite_0_13(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
+    bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 136;
+    twistedInfo.Id = (((imageDirection / 8) + 28) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
+static void vehicule_sprite_0_14(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& bankedInfo, ImageInfo& twistedInfo,
+    uint32_t& spriteFlags)
+{
+    bankedInfo.Direction = (imageDirection / 2) + 108;
+    bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+
+    twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 140;
+    twistedInfo.Id = (((imageDirection / 8) + 36) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+    spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+}
+
 // 6D51D7
 static void vehicle_sprite_0(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
@@ -1031,114 +1187,49 @@ static void vehicle_sprite_0(
             break;
         case 1:
         case 16:
-            bankedInfo.Direction = imageDirection / 2;
-            bankedInfo.Id = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
+            vehicule_sprite_0_1(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 2:
         case 17:
-            bankedInfo.Direction = (imageDirection / 2) + 108;
-            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
+            vehicule_sprite_0_2(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 3:
         case 18:
-            bankedInfo.Direction = imageDirection / 2;
-            bankedInfo.Id = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
+            vehicule_sprite_0_3(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 4:
         case 19:
-            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
-            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
+            vehicule_sprite_0_4(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 5:
-            bankedInfo.Direction = (imageDirection / 2) + 108;
-            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = (imageDirection / 8) + 124;
-            twistedInfo.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_5(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 6:
-            bankedInfo.Direction = (imageDirection / 2) + 108;
-            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = (imageDirection / 8) + 128;
-            twistedInfo.Id = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_6(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 7:
-            bankedInfo.Direction = (imageDirection / 2) + 108;
-            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = (imageDirection / 8) + 132;
-            twistedInfo.Id = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames)
-                + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_7(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 8:
-            bankedInfo.Direction = (imageDirection / 2) + 108;
-            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = (imageDirection / 8) + 136;
-            twistedInfo.Id = (((imageDirection / 8) + 24) * vehicleEntry->base_num_frames)
-                + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_8(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 9:
-            bankedInfo.Direction = (imageDirection / 2) + 108;
-            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = (imageDirection / 8) + 140;
-            twistedInfo.Id = (((imageDirection / 8) + 32) * vehicleEntry->base_num_frames)
-                + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_9(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 10:
-            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
-            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 124;
-            twistedInfo.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_10(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 11:
-            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
-            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 128;
-            twistedInfo.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
-                + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_11(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 12:
-            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
-            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 132;
-            twistedInfo.Id = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames)
-                + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_12(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 13:
-            bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
-            bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 136;
-            twistedInfo.Id = (((imageDirection / 8) + 28) * vehicleEntry->base_num_frames)
-                + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_13(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
         case 14:
-            bankedInfo.Direction = (imageDirection / 2) + 108;
-            bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-
-            twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 140;
-            twistedInfo.Id = (((imageDirection / 8) + 36) * vehicleEntry->base_num_frames)
-                + vehicleEntry->inline_twist_image_id;
-            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
+            vehicule_sprite_0_14(imageDirection, vehicleEntry, bankedInfo, twistedInfo, spriteFlags);
             break;
     }
 
