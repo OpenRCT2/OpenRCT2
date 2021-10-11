@@ -1055,42 +1055,38 @@ static void vehicle_sprite_0(
     paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    ImageInfo bankedInfo, twistedInfo;
+    ImageInfo bankedInfo = { 0, 0 }, twistedInfo = { 0, 0 };
     bool alwaysDecreaseEntry = vehicle->bank_rotation >= 16;
+    bool updateEntry = vehicle->bank_rotation % 15;
+    uint32_t spriteFlags = 0;
     switch (vehicle->bank_rotation)
     {
         case 0:
         case 15:
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry);
             break;
         case 1:
         case 16:
             bankedInfo.Direction = imageDirection / 2;
             bankedInfo.Id = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, { 0, 0 }, bankedInfo, VEHICLE_SPRITE_FLAG_FLAT_BANKED, true, alwaysDecreaseEntry);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
             break;
         case 2:
         case 17:
             bankedInfo.Direction = (imageDirection / 2) + 108;
             bankedInfo.Id = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, { 0, 0 }, bankedInfo, VEHICLE_SPRITE_FLAG_FLAT_BANKED, true, alwaysDecreaseEntry);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
             break;
         case 3:
         case 18:
             bankedInfo.Direction = imageDirection / 2;
             bankedInfo.Id = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, { 0, 0 }, bankedInfo, VEHICLE_SPRITE_FLAG_FLAT_BANKED, true, alwaysDecreaseEntry);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
             break;
         case 4:
         case 19:
             bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
             bankedInfo.Id = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, { 0, 0 }, bankedInfo, VEHICLE_SPRITE_FLAG_FLAT_BANKED, true, alwaysDecreaseEntry);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED;
             break;
         case 5:
             bankedInfo.Direction = (imageDirection / 2) + 108;
@@ -1098,9 +1094,7 @@ static void vehicle_sprite_0(
 
             twistedInfo.Direction = (imageDirection / 8) + 124;
             twistedInfo.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
         case 6:
             bankedInfo.Direction = (imageDirection / 2) + 108;
@@ -1108,9 +1102,7 @@ static void vehicle_sprite_0(
 
             twistedInfo.Direction = (imageDirection / 8) + 128;
             twistedInfo.Id = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
         case 7:
             bankedInfo.Direction = (imageDirection / 2) + 108;
@@ -1119,9 +1111,7 @@ static void vehicle_sprite_0(
             twistedInfo.Direction = (imageDirection / 8) + 132;
             twistedInfo.Id = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames)
                 + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
         case 8:
             bankedInfo.Direction = (imageDirection / 2) + 108;
@@ -1130,9 +1120,7 @@ static void vehicle_sprite_0(
             twistedInfo.Direction = (imageDirection / 8) + 136;
             twistedInfo.Id = (((imageDirection / 8) + 24) * vehicleEntry->base_num_frames)
                 + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
         case 9:
             bankedInfo.Direction = (imageDirection / 2) + 108;
@@ -1141,9 +1129,7 @@ static void vehicle_sprite_0(
             twistedInfo.Direction = (imageDirection / 8) + 140;
             twistedInfo.Id = (((imageDirection / 8) + 32) * vehicleEntry->base_num_frames)
                 + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
         case 10:
             bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
@@ -1151,9 +1137,7 @@ static void vehicle_sprite_0(
 
             twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 124;
             twistedInfo.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
         case 11:
             bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
@@ -1162,9 +1146,7 @@ static void vehicle_sprite_0(
             twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 128;
             twistedInfo.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
                 + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
         case 12:
             bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
@@ -1173,9 +1155,7 @@ static void vehicle_sprite_0(
             twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 132;
             twistedInfo.Id = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames)
                 + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
         case 13:
             bankedInfo.Direction = ((imageDirection / 2) ^ 8) + 108;
@@ -1184,9 +1164,7 @@ static void vehicle_sprite_0(
             twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 136;
             twistedInfo.Id = (((imageDirection / 8) + 28) * vehicleEntry->base_num_frames)
                 + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
         case 14:
             bankedInfo.Direction = (imageDirection / 2) + 108;
@@ -1195,11 +1173,13 @@ static void vehicle_sprite_0(
             twistedInfo.Direction = ((imageDirection / 8) ^ 2) + 140;
             twistedInfo.Id = (((imageDirection / 8) + 36) * vehicleEntry->base_num_frames)
                 + vehicleEntry->inline_twist_image_id;
-            vehicle_sprite_0_generic(
-                session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-                VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS, true);
+            spriteFlags = VEHICLE_SPRITE_FLAG_FLAT_BANKED | VEHICLE_SPRITE_FLAG_INLINE_TWISTS;
             break;
     }
+
+    vehicle_sprite_0_generic(
+        session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
+        spriteFlags, updateEntry, alwaysDecreaseEntry);
 }
 
 // 6D4614
