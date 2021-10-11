@@ -21,7 +21,6 @@
 #include "Track.h"
 
 #include <iterator>
-#include <tuple>
 
 // clang-format off
 // 0x0098E52C:
@@ -1015,41 +1014,6 @@ struct ImageInfo
     int32_t Id;
 };
 
-static void vehicle_sprite_0_generic(
-    paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry, const ImageInfo& inlineTwistInfo = { 0, 0 },
-    const ImageInfo& bankedInfo = { 0, 0 }, const uint32_t spriteFlags = 0,
-    bool updateEntry = false, bool alwaysDecreaseEntry = false)
-{
-    if ((updateEntry && vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)) || alwaysDecreaseEntry)
-    {
-        vehicleEntry--;
-    }
-    if (spriteFlags != 0)
-    {
-        if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) && (spriteFlags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS))
-        {
-            int32_t imageId = inlineTwistInfo.Id;
-            int32_t direction = inlineTwistInfo.Direction;
-            vehicle_swing_sprite_paint(session, vehicle, imageId, direction, z, vehicleEntry);
-        }
-        else if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) && (spriteFlags & VEHICLE_SPRITE_FLAG_FLAT_BANKED))
-        {
-            int32_t imageId = bankedInfo.Id;
-            int32_t direction = bankedInfo.Direction;
-            vehicle_swing_sprite_paint(session, vehicle, imageId, direction, z, vehicleEntry);
-        }
-        else
-        {
-            vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-        }
-    }
-    else
-    {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
 // 6D51D7
 static void vehicle_sprite_0(
     paint_session* session, const Vehicle* vehicle, const int32_t imageDirection, const int32_t z,
@@ -1177,9 +1141,35 @@ static void vehicle_sprite_0(
             break;
     }
 
-    vehicle_sprite_0_generic(
-        session, vehicle, imageDirection, z, vehicleEntry, twistedInfo, bankedInfo,
-        spriteFlags, updateEntry, alwaysDecreaseEntry);
+    if ((updateEntry && vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)) || alwaysDecreaseEntry)
+    {
+        vehicleEntry--;
+    }
+    if (spriteFlags != 0)
+    {
+        if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
+            && (spriteFlags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS))
+        {
+            int32_t imageId = twistedInfo.Id;
+            int32_t direction = twistedInfo.Direction;
+            vehicle_swing_sprite_paint(session, vehicle, imageId, direction, z, vehicleEntry);
+        }
+        else if (
+            (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) && (spriteFlags & VEHICLE_SPRITE_FLAG_FLAT_BANKED))
+        {
+            int32_t imageId = bankedInfo.Id;
+            int32_t direction = bankedInfo.Direction;
+            vehicle_swing_sprite_paint(session, vehicle, imageId, direction, z, vehicleEntry);
+        }
+        else
+        {
+            vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        }
+    }
+    else
+    {
+        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+    }
 }
 
 // 6D4614
