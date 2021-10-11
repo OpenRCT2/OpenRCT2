@@ -26,6 +26,7 @@
 - Fix: [#15197] Cannot place flat ride after removing it in construction window.
 - Fix: [#15199] Construction window is not closed when a ride gets demolished.
 - Fix: [#15213] Freeze when hovering over Reverse Freefall Coaster in Russian.
+- Fix: [#15227] Crash on exit after hovering over water types in the Object Selection window.
 - Fix: [#15255] Tile Inspector shows banner information on walls that do not contain one.
 - Fix: [#15257] Chat icon shows in scenario/track editor. Other icons don't disable when deactivated in options menu.
 - Fix: [#15289] Unexpected behavior with duplicated banners which also caused desyncs in multiplayer.
