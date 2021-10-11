@@ -394,21 +394,22 @@ private:
     void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch)
     {
         size_t newBitsSize = pitch * height;
-        uint8_t* newBits = new uint8_t[newBitsSize];
+
+        auto newBits = std::make_unique<uint8_t[]>(newBitsSize);
         if (_bits == nullptr)
         {
-            std::fill_n(newBits, newBitsSize, 0);
+            std::fill_n(newBits.get(), newBitsSize, 0);
         }
         else
         {
             if (_pitch == pitch)
             {
-                std::copy_n(_bits.get(), std::min(_bitsSize, newBitsSize), newBits);
+                std::copy_n(_bits.get(), std::min(_bitsSize, newBitsSize), newBits.get());
             }
             else
             {
                 uint8_t* src = _bits.get();
-                uint8_t* dst = newBits;
+                uint8_t* dst = newBits.get();
 
                 uint32_t minWidth = std::min(_width, width);
                 uint32_t minHeight = std::min(_height, height);
@@ -425,8 +426,7 @@ private:
             }
         }
 
-        _bits = std::make_unique<uint8_t[]>(newBitsSize);
-        _bits.reset(newBits);
+        _bits = std::move(newBits);
         _bitsSize = newBitsSize;
         _width = width;
         _height = height;
