@@ -563,17 +563,23 @@ public:
             switch (page)
             {
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
-                    return DisplayMouseUp(widgetIndex);
+                    DisplayMouseUp(widgetIndex);
+                    break;
                 case WINDOW_OPTIONS_PAGE_RENDERING:
-                    return RenderingMouseUp(widgetIndex);
+                    RenderingMouseUp(widgetIndex);
+                    break;
                 case WINDOW_OPTIONS_PAGE_AUDIO:
-                    return AudioMouseUp(widgetIndex);
+                    AudioMouseUp(widgetIndex);
+                    break;
                 case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                    return ControlsMouseUp(widgetIndex);
+                    ControlsMouseUp(widgetIndex);
+                    break;
                 case WINDOW_OPTIONS_PAGE_MISC:
-                    return MiscMouseUp(widgetIndex);
+                    MiscMouseUp(widgetIndex);
+                    break;
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
-                    return AdvancedMouseUp(widgetIndex);
+                    AdvancedMouseUp(widgetIndex);
+                    break;
                 case WINDOW_OPTIONS_PAGE_CULTURE:
                 default:
                     break;
@@ -586,19 +592,26 @@ public:
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_DISPLAY:
-                return DisplayMouseDown(widgetIndex);
+                DisplayMouseDown(widgetIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_RENDERING:
-                return RenderingMouseDown(widgetIndex);
+                RenderingMouseDown(widgetIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_CULTURE:
-                return CultureMouseDown(widgetIndex);
+                CultureMouseDown(widgetIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_AUDIO:
-                return AudioMouseDown(widgetIndex);
+                AudioMouseDown(widgetIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                return ControlsMouseDown(widgetIndex);
+                ControlsMouseDown(widgetIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_MISC:
-                return MiscMouseDown(widgetIndex);
+                MiscMouseDown(widgetIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_ADVANCED:
-                return AdvancedMouseDown(widgetIndex);
+                AdvancedMouseDown(widgetIndex);
+                break;
             default:
                 break;
         }
@@ -609,19 +622,26 @@ public:
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_DISPLAY:
-                return DisplayDropdown(widgetIndex, dropdownIndex);
+                DisplayDropdown(widgetIndex, dropdownIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_RENDERING:
-                return RenderingDropdown(widgetIndex, dropdownIndex);
+                RenderingDropdown(widgetIndex, dropdownIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_CULTURE:
-                return CultureDropdown(widgetIndex, dropdownIndex);
+                CultureDropdown(widgetIndex, dropdownIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_AUDIO:
-                return AudioDropdown(widgetIndex, dropdownIndex);
+                AudioDropdown(widgetIndex, dropdownIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                return ControlsDropdown(widgetIndex, dropdownIndex);
+                ControlsDropdown(widgetIndex, dropdownIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_MISC:
-                return MiscDropdown(widgetIndex, dropdownIndex);
+                MiscDropdown(widgetIndex, dropdownIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_ADVANCED:
-                return AdvancedDropdown(widgetIndex, dropdownIndex);
+                AdvancedDropdown(widgetIndex, dropdownIndex);
+                break;
             default:
                 break;
         }
@@ -632,19 +652,26 @@ public:
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_DISPLAY:
-                return DisplayPrepareDraw();
+                DisplayPrepareDraw();
+                break;
             case WINDOW_OPTIONS_PAGE_RENDERING:
-                return RenderingPrepareDraw();
+                RenderingPrepareDraw();
+                break;
             case WINDOW_OPTIONS_PAGE_CULTURE:
-                return CulturePrepareDraw();
+                CulturePrepareDraw();
+                break;
             case WINDOW_OPTIONS_PAGE_AUDIO:
-                return AudioPrepareDraw();
+                AudioPrepareDraw();
+                break;
             case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                return ControlsPrepareDraw();
+                ControlsPrepareDraw();
+                break;
             case WINDOW_OPTIONS_PAGE_MISC:
-                return MiscPrepareDraw();
+                MiscPrepareDraw();
+                break;
             case WINDOW_OPTIONS_PAGE_ADVANCED:
-                return AdvancedPrepareDraw();
+                AdvancedPrepareDraw();
+                break;
             default:
                 break;
         }
@@ -655,19 +682,26 @@ public:
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_DISPLAY:
-                return DisplayDraw(&dpi);
+                DisplayDraw(&dpi);
+                break;
             case WINDOW_OPTIONS_PAGE_RENDERING:
-                return RenderingDraw(&dpi);
+                RenderingDraw(&dpi);
+                break;
             case WINDOW_OPTIONS_PAGE_CULTURE:
-                return CultureDraw(&dpi);
+                CultureDraw(&dpi);
+                break;
             case WINDOW_OPTIONS_PAGE_AUDIO:
-                return AudioDraw(&dpi);
+                AudioDraw(&dpi);
+                break;
             case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                return ControlsDraw(&dpi);
+                ControlsDraw(&dpi);
+                break;
             case WINDOW_OPTIONS_PAGE_MISC:
-                return MiscDraw(&dpi);
+                MiscDraw(&dpi);
+                break;
             case WINDOW_OPTIONS_PAGE_ADVANCED:
-                return AdvancedDraw(&dpi);
+                AdvancedDraw(&dpi);
+                break;
             default:
                 break;
         }
@@ -680,7 +714,8 @@ public:
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_AUDIO:
-                return AudioUpdate();
+                AudioUpdate();
+                break;
             case WINDOW_OPTIONS_PAGE_DISPLAY:
             case WINDOW_OPTIONS_PAGE_RENDERING:
             case WINDOW_OPTIONS_PAGE_CULTURE:
@@ -697,7 +732,8 @@ public:
         switch (this->page)
         {
             case WINDOW_OPTIONS_PAGE_AUDIO:
-                return AudioScrollGetSize(scrollIndex);
+                AudioScrollGetSize(scrollIndex);
+                break;
             case WINDOW_OPTIONS_PAGE_DISPLAY:
             case WINDOW_OPTIONS_PAGE_RENDERING:
             case WINDOW_OPTIONS_PAGE_CULTURE:
@@ -716,7 +752,8 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                return window_close(this);
+                window_close(this);
+                break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
             case WIDX_TAB_3:
@@ -724,7 +761,8 @@ private:
             case WIDX_TAB_5:
             case WIDX_TAB_6:
             case WIDX_TAB_7:
-                return SetPage(widgetIndex - WIDX_TAB_1);
+                SetPage(widgetIndex - WIDX_TAB_1);
+                break;
         }
     }
 
