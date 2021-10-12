@@ -2308,6 +2308,41 @@ static void vehicle_sprite_24(
     }
 }
 
+static void VehicleSprite50_0(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& diagonalSlopes,
+    ImageInfo& diagonaGentleSlopeBankedTransitions, int32_t& spriteFlags)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES;
+    diagonalSlopes.Direction = imageDirection / 2;
+    diagonalSlopes.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+}
+
+static void VehicleSprite50_1(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& diagonalSlopes,
+    ImageInfo& diagonaGentleSlopeBankedTransitions, int32_t& spriteFlags)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES | VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS;
+    diagonalSlopes.Direction = imageDirection / 2;
+    diagonalSlopes.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+
+    diagonaGentleSlopeBankedTransitions.Direction = imageDirection / 2;
+    diagonaGentleSlopeBankedTransitions.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames)
+        + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+}
+
+static void VehicleSprite50_3(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& diagonalSlopes,
+    ImageInfo& diagonaGentleSlopeBankedTransitions, int32_t& spriteFlags)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES | VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS;
+    diagonalSlopes.Direction = imageDirection / 2;
+    diagonalSlopes.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+
+    diagonaGentleSlopeBankedTransitions.Direction = imageDirection / 2;
+    diagonaGentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
+        + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+}
+
 // 6D4D67
 static void VehicleSprite50(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
@@ -2335,26 +2370,15 @@ static void VehicleSprite50(
         case 15:
         case 17:
         case 19:
-            diagonalSlopes.Direction = imageDirection / 2;
-            diagonalSlopes.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+            VehicleSprite50_0(imageDirection, vehicleEntry, diagonalSlopes, diagonaGentleSlopeBankedTransitions, spriteFlags);
             break;
         case 1:
         case 16:
-            diagonalSlopes.Direction = imageDirection / 2;
-            diagonalSlopes.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
-
-            diagonaGentleSlopeBankedTransitions.Direction = imageDirection / 2;
-            diagonaGentleSlopeBankedTransitions.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames)
-                + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+            VehicleSprite50_1(imageDirection, vehicleEntry, diagonalSlopes, diagonaGentleSlopeBankedTransitions, spriteFlags);
             break;
         case 3:
         case 18:
-            diagonalSlopes.Direction = imageDirection / 2;
-            diagonalSlopes.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
-
-            diagonaGentleSlopeBankedTransitions.Direction = imageDirection / 2;
-            diagonaGentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
-                + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+            VehicleSprite50_3(imageDirection, vehicleEntry, diagonalSlopes, diagonaGentleSlopeBankedTransitions, spriteFlags);
             break;
     }
 
