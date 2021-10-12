@@ -641,18 +641,6 @@ namespace OpenRCT2::TileInspector
         {
             uint8_t newSlope = surfaceElement->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
             surfaceElement->SetSlope(newSlope);
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height + 4;
-            }
-            else if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height + 2;
-            }
-            else
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height;
-            }
 
             map_invalidate_tile_full(loc);
 
