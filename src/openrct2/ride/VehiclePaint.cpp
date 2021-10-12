@@ -2309,126 +2309,73 @@ static void vehicle_sprite_24(
 }
 
 // 6D4D67
-static void vehicle_sprite_50_0(
+static void VehicleSprite50(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
+    int32_t spriteFlags = 0;
+    ImageInfo diagonalSlopes = { 0, 0 };
+    ImageInfo diagonaGentleSlopeBankedTransitions = { 0, 0 };
+
+    switch (vehicle->bank_rotation)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
-        VehicleSwingSpritePaint(session, vehicle, ebx, ecx, z, vehicleEntry);
+        case 0:
+        case 2:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        case 17:
+        case 19:
+            diagonalSlopes.Direction = imageDirection / 2;
+            diagonalSlopes.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+            break;
+        case 1:
+        case 16:
+            diagonalSlopes.Direction = imageDirection / 2;
+            diagonalSlopes.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+
+            diagonaGentleSlopeBankedTransitions.Direction = imageDirection / 2;
+            diagonaGentleSlopeBankedTransitions.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames)
+                + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+            break;
+        case 3:
+        case 18:
+            diagonalSlopes.Direction = imageDirection / 2;
+            diagonalSlopes.Id = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+
+            diagonaGentleSlopeBankedTransitions.Direction = imageDirection / 2;
+            diagonaGentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
+                + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+            break;
+    }
+
+    if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
+        && (spriteFlags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS))
+    {
+        int32_t direction = diagonaGentleSlopeBankedTransitions.Direction;
+        int32_t imageId = diagonaGentleSlopeBankedTransitions.Id;
+        VehicleSwingSpritePaint(session, vehicle, imageId, direction, z, vehicleEntry);
+    }
+    else if (
+        (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
+        && (spriteFlags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES))
+    {
+        int32_t direction = diagonalSlopes.Direction;
+        int32_t imageId = diagonalSlopes.Id;
+        VehicleSwingSpritePaint(session, vehicle, imageId, direction, z, vehicleEntry);
     }
     else
     {
         VehicleSprite0(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4DB5
-static void vehicle_sprite_50_1(
-    paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
-    {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames)
-            + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
-        VehicleSwingSpritePaint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4DD3
-static void vehicle_sprite_50_3(
-    paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
-    {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
-            + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
-        VehicleSwingSpritePaint(session, vehicle, ebx, ecx, z, vehicleEntry);
-    }
-    else
-    {
-        vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-    }
-}
-
-// 6D4D60
-static void vehicle_sprite_50(
-    paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
-    const rct_ride_entry_vehicle* vehicleEntry)
-{
-    // 0x009A3D44:
-    switch (vehicle->bank_rotation)
-    {
-        case 0:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 1:
-            vehicle_sprite_50_1(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 2:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 3:
-            vehicle_sprite_50_3(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 4:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 5:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 6:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 7:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 8:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 9:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 10:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 11:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 12:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 13:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 14:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 15:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 16:
-            vehicle_sprite_50_1(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 17:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 18:
-            vehicle_sprite_50_3(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
-        case 19:
-            vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
-            break;
     }
 }
 
@@ -2743,7 +2690,7 @@ static constexpr const vehicle_sprite_func vehicle_sprite_funcs[] = {
     VehicleSprite0,
     VehicleSprite0,
     VehicleSprite0,
-    vehicle_sprite_50,
+    VehicleSprite50,
     vehicle_sprite_51,
     vehicle_sprite_52,
     vehicle_sprite_53,
