@@ -464,13 +464,15 @@ int32_t Park::CalculateParkRating() const
     // Litter
     {
         int32_t litterCount = 0;
-        for (auto litter : EntityList<Litter>())
+        for (auto* litter : EntityList<Litter>())
         {
-            // Ignore recently dropped litter
-            if (litter->creationTick - gCurrentTicks >= 7680)
+            if (litter->GetAge() < 7680)
             {
-                litterCount++;
+                // Ignore recently dropped litter.
+                continue;
             }
+
+            litterCount++;
         }
         result -= 600 - (4 * (150 - std::min<int32_t>(150, litterCount)));
     }

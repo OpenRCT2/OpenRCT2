@@ -40,4 +40,5 @@ struct Litter : EntityBase
     static void RemoveAt(const CoordsXYZ& litterPos);
     void Serialise(DataSerialiser& stream);
     rct_string_id GetName() const;
+    uint32_t GetAge() const;
 };
