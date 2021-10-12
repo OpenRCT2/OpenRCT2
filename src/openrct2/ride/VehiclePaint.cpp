@@ -1772,6 +1772,82 @@ static void VehicleSprite5(
     }
 }
 
+static void VehicleSprite6_0(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& spinning, ImageInfo& gentleSlopes,
+    ImageInfo& gentleSlopeBankedTransitions, ImageInfo& gentleSlopeBankedTurns, uint32_t& spriteFlags)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES;
+    gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
+    gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+
+    spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
+    spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+}
+
+static void VehicleSprite6_1(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& spinning, ImageInfo& gentleSlopes,
+    ImageInfo& gentleSlopeBankedTransitions, ImageInfo& gentleSlopeBankedTurns, uint32_t& spriteFlags)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS;
+    gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
+    gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+
+    spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
+    spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+
+    gentleSlopeBankedTransitions.Direction = ((imageDirection / 2) ^ 8) + 16;
+    gentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
+        + vehicleEntry->gentle_slope_to_bank_image_id;
+}
+
+static void VehicleSprite6_2(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& spinning, ImageInfo& gentleSlopes,
+    ImageInfo& gentleSlopeBankedTransitions, ImageInfo& gentleSlopeBankedTurns, uint32_t& spriteFlags)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS;
+    gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
+    gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+
+    spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
+    spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+
+    gentleSlopeBankedTurns.Direction = imageDirection / 2;
+    gentleSlopeBankedTurns.Id = ((imageDirection + 64) * vehicleEntry->base_num_frames)
+        + vehicleEntry->gentle_slope_bank_turn_image_id;
+}
+
+static void VehicleSprite6_3(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& spinning, ImageInfo& gentleSlopes,
+    ImageInfo& gentleSlopeBankedTransitions, ImageInfo& gentleSlopeBankedTurns, uint32_t& spriteFlags)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES;
+    gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
+    gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+
+    spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
+    spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+
+    gentleSlopeBankedTransitions.Direction = ((imageDirection / 2) ^ 8) + 16;
+    gentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+        + vehicleEntry->gentle_slope_to_bank_image_id;
+}
+
+static void VehicleSprite6_4(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, ImageInfo& spinning, ImageInfo& gentleSlopes,
+    ImageInfo& gentleSlopeBankedTransitions, ImageInfo& gentleSlopeBankedTurns, uint32_t& spriteFlags)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS;
+    gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
+    gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+
+    spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
+    spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+
+    gentleSlopeBankedTurns.Direction = imageDirection / 2;
+    gentleSlopeBankedTurns.Id = ((imageDirection + 96) * vehicleEntry->base_num_frames)
+        + vehicleEntry->gentle_slope_bank_turn_image_id;
+}
+
 static void VehicleSprite6(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
@@ -1788,64 +1864,33 @@ static void VehicleSprite6(
     switch (vehicle->bank_rotation)
     {
         case 0:
-            spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES;
-            gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
-            gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
-            spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+            VehicleSprite6_0(
+                imageDirection, vehicleEntry, spinning, gentleSlopes, gentleSlopeBankedTransitions, gentleSlopeBankedTurns,
+                spriteFlags);
             break;
         case 1:
         case 16:
-            spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS;
-            gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
-            gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
-            spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            gentleSlopeBankedTransitions.Direction = ((imageDirection / 2) ^ 8) + 16;
-            gentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
-                + vehicleEntry->gentle_slope_to_bank_image_id;
+            VehicleSprite6_1(
+                imageDirection, vehicleEntry, spinning, gentleSlopes, gentleSlopeBankedTransitions, gentleSlopeBankedTurns,
+                spriteFlags);
             break;
         case 2:
         case 17:
-            spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS;
-            gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
-            gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
-            spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            gentleSlopeBankedTurns.Direction = imageDirection / 2;
-            gentleSlopeBankedTurns.Id = ((imageDirection + 64) * vehicleEntry->base_num_frames)
-                + vehicleEntry->gentle_slope_bank_turn_image_id;
+            VehicleSprite6_2(
+                imageDirection, vehicleEntry, spinning, gentleSlopes, gentleSlopeBankedTransitions, gentleSlopeBankedTurns,
+                spriteFlags);
             break;
         case 3:
         case 18:
-            spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES;
-            gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
-            gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
-            spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            gentleSlopeBankedTransitions.Direction = ((imageDirection / 2) ^ 8) + 16;
-            gentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
-                + vehicleEntry->gentle_slope_to_bank_image_id;
+            VehicleSprite6_3(
+                imageDirection, vehicleEntry, spinning, gentleSlopes, gentleSlopeBankedTransitions, gentleSlopeBankedTurns,
+                spriteFlags);
             break;
         case 4:
         case 19:
-            spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS;
-            gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
-            gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
-            spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            gentleSlopeBankedTurns.Direction = imageDirection / 2;
-            gentleSlopeBankedTurns.Id = ((imageDirection + 96) * vehicleEntry->base_num_frames)
-                + vehicleEntry->gentle_slope_bank_turn_image_id;
+            VehicleSprite6_4(
+                imageDirection, vehicleEntry, spinning, gentleSlopes, gentleSlopeBankedTransitions, gentleSlopeBankedTurns,
+                spriteFlags);
             break;
         case 5:
         case 6:
@@ -1858,12 +1903,9 @@ static void VehicleSprite6(
         case 13:
         case 14:
         case 15:
-            spriteFlags = VEHICLE_SPRITE_FLAG_GENTLE_SLOPES;
-            gentleSlopes.Direction = ((imageDirection / 2) ^ 8) + 16;
-            gentleSlopes.Id = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-
-            spinning.Direction = ((imageDirection / 2) ^ 8) + 16;
-            spinning.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+            VehicleSprite6_0(
+                imageDirection, vehicleEntry, spinning, gentleSlopes, gentleSlopeBankedTransitions, gentleSlopeBankedTurns,
+                spriteFlags);
             break;
     }
 
