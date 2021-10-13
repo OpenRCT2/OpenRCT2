@@ -2437,6 +2437,41 @@ static void vehicle_sprite_52(
     }
 }
 
+static void VehicleSprite53_0(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, int32_t& spriteFlags, ImageInfo& diagonalSlopes,
+    ImageInfo& diagonalGentleSlopeBankedTransitions)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES;
+    diagonalSlopes.Direction = imageDirection / 2;
+    diagonalSlopes.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+}
+
+static void VehicleSprite53_1(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, int32_t& spriteFlags, ImageInfo& diagonalSlopes,
+    ImageInfo& diagonalGentleSlopeBankedTransitions)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES | VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS;
+    diagonalSlopes.Direction = imageDirection / 2;
+    diagonalSlopes.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+
+    diagonalGentleSlopeBankedTransitions.Direction = imageDirection / 2;
+    diagonalGentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
+        + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+}
+
+static void VehicleSprite53_3(
+    int32_t imageDirection, const rct_ride_entry_vehicle* vehicleEntry, int32_t& spriteFlags, ImageInfo& diagonalSlopes,
+    ImageInfo& diagonalGentleSlopeBankedTransitions)
+{
+    spriteFlags = VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES | VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS;
+    diagonalSlopes.Direction = imageDirection / 2;
+    diagonalSlopes.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+
+    diagonalGentleSlopeBankedTransitions.Direction = imageDirection / 2;
+    diagonalGentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+        + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+}
+
 static void VehicleSprite53(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
@@ -2463,32 +2498,15 @@ static void VehicleSprite53(
         case 15:
         case 17:
         case 19:
-            spriteFlags = VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES;
-            diagonalSlopes.Direction = imageDirection / 2;
-            diagonalSlopes.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
-                + vehicleEntry->diagonal_slope_image_id;
+            VehicleSprite53_0(imageDirection, vehicleEntry, spriteFlags, diagonalSlopes, diagonalGentleSlopeBankedTransitions);
             break;
         case 1:
         case 16:
-            spriteFlags = VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES | VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS;
-            diagonalSlopes.Direction = imageDirection / 2;
-            diagonalSlopes.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
-                + vehicleEntry->diagonal_slope_image_id;
-
-            diagonalGentleSlopeBankedTransitions.Direction = imageDirection / 2;
-            diagonalGentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
-                + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+            VehicleSprite53_1(imageDirection, vehicleEntry, spriteFlags, diagonalSlopes, diagonalGentleSlopeBankedTransitions);
             break;
         case 3:
         case 18:
-            spriteFlags = VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES | VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS;
-            diagonalSlopes.Direction = imageDirection / 2;
-            diagonalSlopes.Id = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
-                + vehicleEntry->diagonal_slope_image_id;
-
-            diagonalGentleSlopeBankedTransitions.Direction = imageDirection / 2;
-            diagonalGentleSlopeBankedTransitions.Id = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
-                + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+            VehicleSprite53_3(imageDirection, vehicleEntry, spriteFlags, diagonalSlopes, diagonalGentleSlopeBankedTransitions);
             break;
     }
 
