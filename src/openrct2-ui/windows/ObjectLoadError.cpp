@@ -294,43 +294,31 @@ static rct_widget window_object_load_error_widgets[] = {
  */
 static constexpr rct_string_id GetStringFromObjectType(const ObjectType type)
 {
-    rct_string_id result = STR_NONE;
     switch (type)
     {
         case ObjectType::Ride:
-            result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
-            break;
+            return STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
         case ObjectType::SmallScenery:
-            result = STR_OBJECT_SELECTION_SMALL_SCENERY;
-            break;
+            return STR_OBJECT_SELECTION_SMALL_SCENERY;
         case ObjectType::LargeScenery:
-            result = STR_OBJECT_SELECTION_LARGE_SCENERY;
-            break;
+            return STR_OBJECT_SELECTION_LARGE_SCENERY;
         case ObjectType::Walls:
-            result = STR_OBJECT_SELECTION_WALLS_FENCES;
-            break;
+            return STR_OBJECT_SELECTION_WALLS_FENCES;
         case ObjectType::Banners:
-            result = STR_OBJECT_SELECTION_PATH_SIGNS;
-            break;
+            return STR_OBJECT_SELECTION_PATH_SIGNS;
         case ObjectType::Paths:
-            result = STR_OBJECT_SELECTION_FOOTPATHS;
-            break;
+            return STR_OBJECT_SELECTION_FOOTPATHS;
         case ObjectType::PathBits:
-            result = STR_OBJECT_SELECTION_PATH_EXTRAS;
-            break;
+            return STR_OBJECT_SELECTION_PATH_EXTRAS;
         case ObjectType::SceneryGroup:
-            result = STR_OBJECT_SELECTION_SCENERY_GROUPS;
-            break;
+            return STR_OBJECT_SELECTION_SCENERY_GROUPS;
         case ObjectType::ParkEntrance:
-            result = STR_OBJECT_SELECTION_PARK_ENTRANCE;
-            break;
+            return STR_OBJECT_SELECTION_PARK_ENTRANCE;
         case ObjectType::Water:
-            result = STR_OBJECT_SELECTION_WATER;
-            break;
+            return STR_OBJECT_SELECTION_WATER;
         default:
-            result = STR_UNKNOWN_OBJECT_TYPE;
+            return STR_UNKNOWN_OBJECT_TYPE;
     }
-    return result;
 }
 
 class ObjectLoadErrorWindow final : public rct_window
@@ -341,7 +329,7 @@ private:
     std::string _filePath;
 #ifndef DISABLE_HTTP
     ObjectDownloader _objDownloader;
-    bool _updatedListAfterDownload;
+    bool _updatedListAfterDownload{};
 
     void DownloadAllObjects()
     {
@@ -362,8 +350,8 @@ private:
                     _invalidEntries.begin(), _invalidEntries.end(),
                     [de](const ObjectEntryDescriptor& e) { return de.GetName() == e.GetName(); }),
                 _invalidEntries.end());
-            no_list_items = static_cast<uint16_t>(_invalidEntries.size());
         }
+        no_list_items = static_cast<uint16_t>(_invalidEntries.size());
     }
 #endif
 
@@ -423,7 +411,7 @@ public:
         {
             case WIDX_CLOSE:
                 window_close(this);
-                break;
+                return;
             case WIDX_COPY_CURRENT:
                 if (selected_list_item > -1 && selected_list_item < no_list_items)
                 {
@@ -529,7 +517,8 @@ public:
             if (screenCoords.y + SCROLLABLE_ROW_HEIGHT < dpi.y)
                 continue;
 
-            const auto screenRect = ScreenRect{ { 0, screenCoords.y }, { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
+            const auto screenRect = ScreenRect{ { 0, screenCoords.y },
+                                                { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
             // If hovering over item, change the color and fill the backdrop.
             if (i == selected_list_item)
                 gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].darker);
