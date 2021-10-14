@@ -293,13 +293,9 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ScreenCoordsXY cellCoords;
         if (_dropdown_list_vertically)
-        {
             cellCoords = { i / _dropdown_num_rows, i % _dropdown_num_rows };
-        }
         else
-        {
             cellCoords = { i % _dropdown_num_columns, i / _dropdown_num_columns };
-        }
 
         ScreenCoordsXY screenCoords = w->windowPos
             + ScreenCoordsXY{ 2 + (cellCoords.x * _dropdown_item_width), 2 + (cellCoords.y * _dropdown_item_height) };
