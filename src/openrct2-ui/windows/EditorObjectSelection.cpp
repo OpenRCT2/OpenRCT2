@@ -753,7 +753,10 @@ static void window_editor_object_selection_scroll_mouseover(
         w->selected_list_item = selectedObject;
 
         if (_loadedObject != nullptr)
+        {
             _loadedObject->Unload();
+            _loadedObject = nullptr;
+        }
 
         if (selectedObject != -1)
         {
