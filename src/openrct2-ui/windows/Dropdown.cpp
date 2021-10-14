@@ -294,13 +294,11 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ScreenCoordsXY cellCoords;
         if (_dropdown_list_vertically)
         {
-            cellCoords.x = i / _dropdown_num_rows;
-            cellCoords.y = i % _dropdown_num_rows;
+            cellCoords = { i / _dropdown_num_rows, i % _dropdown_num_rows };
         }
         else
         {
-            cellCoords.x = i % _dropdown_num_columns;
-            cellCoords.y = i / _dropdown_num_columns;
+            cellCoords = { i % _dropdown_num_columns, i / _dropdown_num_columns };
         }
 
         if (gDropdownItemsFormat[i] == Dropdown::SeparatorString)
@@ -339,7 +337,7 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (item == Dropdown::FormatLandPicker || item == Dropdown::FormatColourPicker)
             {
                 // Image item
-                uint32_t image = static_cast<uint32_t>(gDropdownItemsArgs[i]);
+                auto image = static_cast<uint32_t>(gDropdownItemsArgs[i]);
                 if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                     image++;
 
