@@ -314,7 +314,10 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     else
     {
         // Research type
-        std::array<rct_string_id, 2> strings = { STR_RESEARCH_UNKNOWN, 0 };
+        std::array strings = {
+            static_cast<rct_string_id>(STR_RESEARCH_UNKNOWN),
+            STR_NONE,
+        };
         rct_string_id label = STR_RESEARCH_TYPE_LABEL;
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
         {
@@ -374,7 +377,10 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     if (gResearchLastItem.has_value())
     {
         rct_string_id lastDevelopmentFormat = STR_EMPTY;
-        std::array<rct_string_id, 2> strings = { gResearchLastItem->GetName(), 0 };
+        std::array strings = {
+            gResearchLastItem->GetName(),
+            STR_NONE,
+        };
         auto type = gResearchLastItem->type;
         if (type == Research::EntryType::Scenery)
         {

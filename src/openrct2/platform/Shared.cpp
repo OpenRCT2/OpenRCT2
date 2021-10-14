@@ -237,7 +237,7 @@ CurrencyType platform_get_currency_value(const char* currCode)
 #ifndef _WIN32
 std::string platform_sanitise_filename(const std::string& path)
 {
-    static const std::array<std::string::value_type, 1> prohibited = { '/' };
+    static constexpr std::array prohibited = { '/' };
     auto sanitised = path;
     std::replace_if(
         sanitised.begin(), sanitised.end(),

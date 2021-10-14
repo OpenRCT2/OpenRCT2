@@ -28,7 +28,7 @@ enum class PATTERN
     FAST_RANDOM_CHASERS,
 };
 
-static constexpr const std::array<CoordsXY, 8> _fountainDirectionsNegative = {
+static constexpr const std::array _fountainDirectionsNegative = {
     CoordsXY{ -COORDS_XY_STEP, 0 },
     CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
     CoordsXY{ 0, 0 },
@@ -39,14 +39,16 @@ static constexpr const std::array<CoordsXY, 8> _fountainDirectionsNegative = {
     CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
 };
 
-static constexpr const std::array<CoordsXY, 8> _fountainDirectionsPositive = { CoordsXY{ COORDS_XY_STEP, 0 },
-                                                                               CoordsXY{ 0, 0 },
-                                                                               CoordsXY{ 0, COORDS_XY_STEP },
-                                                                               CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
-                                                                               CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
-                                                                               CoordsXY{ COORDS_XY_STEP, 0 },
-                                                                               CoordsXY{ 0, 0 },
-                                                                               CoordsXY{ 0, COORDS_XY_STEP } };
+static constexpr const std::array _fountainDirectionsPositive = {
+    CoordsXY{ COORDS_XY_STEP, 0 },
+    CoordsXY{ 0, 0 },
+    CoordsXY{ 0, COORDS_XY_STEP },
+    CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
+    CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
+    CoordsXY{ COORDS_XY_STEP, 0 },
+    CoordsXY{ 0, 0 },
+    CoordsXY{ 0, COORDS_XY_STEP },
+};
 constexpr auto _FountainChanceOfStoppingEdgeMode = 0x3333;   // 0.200
 constexpr auto _FountainChanceOfStoppingRandomMode = 0x2000; // 0.125
 
