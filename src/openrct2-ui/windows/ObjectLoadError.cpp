@@ -292,7 +292,7 @@ static rct_widget window_object_load_error_widgets[] = {
  *  Could possibly be moved out of the window file if other
  *  uses exist and a suitable location is found.
  */
-static constexpr rct_string_id get_object_type_string(const ObjectType type)
+static constexpr rct_string_id GetStringFromObjectType(const ObjectType type)
 {
     rct_string_id result = STR_NONE;
     switch (type)
@@ -336,33 +336,33 @@ static constexpr rct_string_id get_object_type_string(const ObjectType type)
 class ObjectLoadErrorWindow final : public rct_window
 {
 private:
-    std::vector<ObjectEntryDescriptor> _invalid_entries;
-    int32_t highlighted_index = -1;
-    std::string file_path;
+    std::vector<ObjectEntryDescriptor> _invalidEntries;
+    int32_t _highlightedIndex = -1;
+    std::string _filePath;
 #ifndef DISABLE_HTTP
     ObjectDownloader _objDownloader;
     bool _updatedListAfterDownload;
 
-    void window_object_load_error_download_all()
+    void DownloadAllObjects()
     {
         if (!_objDownloader.IsDownloading())
         {
             _updatedListAfterDownload = false;
-            _objDownloader.Begin(_invalid_entries);
+            _objDownloader.Begin(_invalidEntries);
         }
     }
 
-    void window_object_load_error_update_list()
+    void UpdateObjectList()
     {
-        auto entries = _objDownloader.GetDownloadedEntries();
+        const auto entries = _objDownloader.GetDownloadedEntries();
         for (auto& de : entries)
         {
-            _invalid_entries.erase(
+            _invalidEntries.erase(
                 std::remove_if(
-                    _invalid_entries.begin(), _invalid_entries.end(),
+                    _invalidEntries.begin(), _invalidEntries.end(),
                     [de](const ObjectEntryDescriptor& e) { return de.GetName() == e.GetName(); }),
-                _invalid_entries.end());
-            no_list_items = static_cast<uint16_t>(_invalid_entries.size());
+                _invalidEntries.end());
+            no_list_items = static_cast<uint16_t>(_invalidEntries.size());
         }
     }
 #endif
@@ -371,21 +371,21 @@ private:
      *  Returns a newline-separated string listing all object names.
      *  Used for placing all names on the clipboard.
      */
-    void copy_object_names_to_clipboard()
+    void CopyObjectNamesToClipboard()
     {
         std::stringstream stream;
         for (uint16_t i = 0; i < no_list_items; i++)
         {
-            const auto& entry = _invalid_entries[i];
+            const auto& entry = _invalidEntries[i];
             stream << entry.GetName();
             stream << PLATFORM_NEWLINE;
         }
 
-        auto clip = stream.str();
+        const auto clip = stream.str();
         OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(clip.c_str());
     }
 
-    void window_object_load_error_select_element_from_list(const int32_t index)
+    void SelectObjectFromList(const int32_t index)
     {
         if (index < 0 || index > no_list_items)
         {
@@ -413,11 +413,11 @@ public:
 
     void OnClose() override
     {
-        _invalid_entries.clear();
-        _invalid_entries.shrink_to_fit();
+        _invalidEntries.clear();
+        _invalidEntries.shrink_to_fit();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(const rct_widgetindex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -427,16 +427,16 @@ public:
             case WIDX_COPY_CURRENT:
                 if (selected_list_item > -1 && selected_list_item < no_list_items)
                 {
-                    auto name = std::string(_invalid_entries[selected_list_item].GetName());
+                    const auto name = std::string(_invalidEntries[selected_list_item].GetName());
                     OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(name.c_str());
                 }
                 break;
             case WIDX_COPY_ALL:
-                copy_object_names_to_clipboard();
+                CopyObjectNamesToClipboard();
                 break;
 #ifndef DISABLE_HTTP
             case WIDX_DOWNLOAD_ALL:
-                window_object_load_error_download_all();
+                DownloadAllObjects();
                 break;
 #endif
         }
@@ -449,7 +449,7 @@ public:
         // Check if the mouse is hovering over the list
         if (!WidgetIsHighlighted(this, WIDX_SCROLL))
         {
-            highlighted_index = -1;
+            _highlightedIndex = -1;
             widget_invalidate(this, WIDX_SCROLL);
         }
 
@@ -462,36 +462,36 @@ public:
             // Don't do this too often as it isn't particularly efficient
             if (frame_no % 64 == 0)
             {
-                window_object_load_error_update_list();
+                UpdateObjectList();
             }
         }
         else if (!_updatedListAfterDownload)
         {
-            window_object_load_error_update_list();
+            UpdateObjectList();
             _updatedListAfterDownload = true;
         }
 #endif
     }
 
-    ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+    ScreenSize OnScrollGetSize(const int32_t scrollIndex) override
     {
         return ScreenSize(0, no_list_items * SCROLLABLE_ROW_HEIGHT);
     }
 
-    void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    void OnScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        const auto selected_item = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-        window_object_load_error_select_element_from_list(selected_item);
+        const auto selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+        SelectObjectFromList(selectedItem);
     }
 
-    void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    void OnScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
         // Highlight item that the cursor is over, or remove highlighting if none
-        const auto selected_item = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-        if (selected_item < 0 || selected_item >= no_list_items)
-            highlighted_index = -1;
+        const auto selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+        if (selectedItem < 0 || selectedItem >= no_list_items)
+            _highlightedIndex = -1;
         else
-            highlighted_index = selected_item;
+            _highlightedIndex = selectedItem;
 
         widget_invalidate(this, WIDX_SCROLL);
     }
@@ -508,16 +508,16 @@ public:
         // Draw file name
         ft = Formatter();
         ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_FILE);
-        ft.Add<utf8*>(file_path.c_str());
+        ft.Add<utf8*>(_filePath.c_str());
         DrawTextEllipsised(&dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(const int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         gfx_fill_rect(
             &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
-        const int32_t list_width = widgets[WIDX_SCROLL].width();
+        const int32_t listWidth = widgets[WIDX_SCROLL].width();
 
         for (int32_t i = 0; i < no_list_items; i++)
         {
@@ -529,11 +529,11 @@ public:
             if (screenCoords.y + SCROLLABLE_ROW_HEIGHT < dpi.y)
                 continue;
 
-            auto screenRect = ScreenRect{ { 0, screenCoords.y }, { list_width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
+            const auto screenRect = ScreenRect{ { 0, screenCoords.y }, { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
             // If hovering over item, change the color and fill the backdrop.
             if (i == selected_list_item)
                 gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].darker);
-            else if (i == highlighted_index)
+            else if (i == _highlightedIndex)
                 gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].mid_dark);
             else if ((i & 1) != 0) // odd / even check
                 gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].light);
@@ -541,7 +541,7 @@ public:
             // Draw the actual object entry's name...
             screenCoords.x = NAME_COL_LEFT - 3;
 
-            const auto& entry = _invalid_entries[i];
+            const auto& entry = _invalidEntries[i];
 
             auto name = entry.GetName();
             char buffer[256];
@@ -551,23 +551,23 @@ public:
             if (entry.Generation == ObjectGeneration::DAT)
             {
                 // ... source game ...
-                rct_string_id sourceStringId = object_manager_get_source_game_string(entry.Entry.GetSourceGame());
+                const auto sourceStringId = object_manager_get_source_game_string(entry.Entry.GetSourceGame());
                 DrawTextBasic(&dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
             }
 
             // ... and type
-            rct_string_id type = get_object_type_string(entry.GetType());
+            const auto type = GetStringFromObjectType(entry.GetType());
             DrawTextBasic(&dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
         }
     }
 
-    void Initialise(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
+    void Initialise(utf8* path, const size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
     {
-        _invalid_entries = std::vector<ObjectEntryDescriptor>(missingObjects, missingObjects + numMissingObjects);
+        _invalidEntries = std::vector<ObjectEntryDescriptor>(missingObjects, missingObjects + numMissingObjects);
 
         // Refresh list items and path
         no_list_items = static_cast<uint16_t>(numMissingObjects);
-        file_path = path;
+        _filePath = path;
 
         Invalidate();
     }
