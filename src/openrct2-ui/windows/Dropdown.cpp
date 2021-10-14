@@ -301,11 +301,12 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
             cellCoords = { i % _dropdown_num_columns, i / _dropdown_num_columns };
         }
 
+        ScreenCoordsXY screenCoords = w->windowPos
+            + ScreenCoordsXY{ 2 + (cellCoords.x * _dropdown_item_width), 2 + (cellCoords.y * _dropdown_item_height) };
+
         if (gDropdownItemsFormat[i] == Dropdown::SeparatorString)
         {
-            const ScreenCoordsXY leftTop = w->windowPos
-                + ScreenCoordsXY{ 2 + (cellCoords.x * _dropdown_item_width),
-                                  2 + (cellCoords.y * _dropdown_item_height) + (_dropdown_item_height / 2) };
+            const ScreenCoordsXY leftTop = screenCoords + ScreenCoordsXY{ 0, (_dropdown_item_height / 2) };
             const ScreenCoordsXY rightBottom = leftTop + ScreenCoordsXY{ _dropdown_item_width - 1, 0 };
             const ScreenCoordsXY shadowOffset{ 0, 1 };
 
@@ -323,14 +324,12 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
         else
         {
-            //
             if (i == highlightedIndex)
             {
-                const ScreenCoordsXY leftTop = w->windowPos
-                    + ScreenCoordsXY{ 2 + (cellCoords.x * _dropdown_item_width), 2 + (cellCoords.y * _dropdown_item_height) };
-                const ScreenCoordsXY rightBottom = leftTop
+                // Darken the cell's background slightly when highlighted
+                const ScreenCoordsXY rightBottom = screenCoords
                     + ScreenCoordsXY{ _dropdown_item_width - 1, _dropdown_item_height - 1 };
-                gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::PaletteDarken3);
+                gfx_filter_rect(dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
             }
 
             rct_string_id item = gDropdownItemsFormat[i];
@@ -341,9 +340,7 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                     image++;
 
-                ScreenCoordsXY position = w->windowPos
-                    + ScreenCoordsXY{ 2 + (cellCoords.x * _dropdown_item_width), 2 + (cellCoords.y * _dropdown_item_height) };
-                gfx_draw_sprite(dpi, ImageId::FromUInt32(image), position);
+                gfx_draw_sprite(dpi, ImageId::FromUInt32(image), screenCoords);
             }
             else
             {
@@ -359,8 +356,6 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     colour = NOT_TRANSLUCENT(w->colours[0]) | COLOUR_FLAG_INSET;
 
                 // Draw item string
-                ScreenCoordsXY screenCoords = { w->windowPos.x + 2 + (cellCoords.x * _dropdown_item_width),
-                                                w->windowPos.y + 2 + (cellCoords.y * _dropdown_item_height) };
                 Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItemsArgs[i]));
                 DrawTextEllipsised(dpi, screenCoords, w->width - 5, item, ft, { colour });
             }
