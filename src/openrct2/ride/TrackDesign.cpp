@@ -699,6 +699,25 @@ static ObjectEntryIndex TrackDesignGetDefaultRailingIndex()
     return OBJECT_ENTRY_INDEX_NULL;
 }
 
+static ObjectEntryIndex TrackDesignGetDefaultPathIndex(bool isQueue)
+{
+    for (ObjectEntryIndex i = 0; i < MAX_PATH_OBJECTS; i++)
+    {
+        auto legacyPathEntry = GetLegacyFootpathEntry(i);
+        if (legacyPathEntry != nullptr)
+        {
+            const auto& surfaceDescriptor = isQueue ? legacyPathEntry->GetQueueSurfaceDescriptor()
+                                                    : legacyPathEntry->GetPathSurfaceDescriptor();
+            if (surfaceDescriptor.IsEditorOnly())
+            {
+                continue;
+            }
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
 static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(const TrackDesignSceneryElement& scenery)
 {
     TrackSceneryEntry result;
@@ -733,6 +752,13 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
             result.Index = TrackDesignGetDefaultSurfaceIndex(scenery.IsQueue());
         if (result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
             result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
+
+        // NOTE: This block can be deleted in the NSF branch.
+        if (result.Index == OBJECT_ENTRY_INDEX_NULL)
+        {
+            result.Type = ObjectType::Paths;
+            result.Index = TrackDesignGetDefaultPathIndex(scenery.IsQueue());
+        }
 
         if (result.Index == OBJECT_ENTRY_INDEX_NULL)
         {
