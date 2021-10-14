@@ -53,7 +53,6 @@ static rct_widget window_scenery_scatter_widgets[] = {
 
 class SceneryScatterWindow final : public rct_window
 {
-private:
 public:
     void OnOpen() override
     {
