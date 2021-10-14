@@ -165,11 +165,11 @@ public:
     {
     }
 
-    EntityListIterator_t begin()
+    EntityListIterator_t begin() const
     {
         return EntityListIterator_t(std::cbegin(vec), std::cend(vec));
     }
-    EntityListIterator_t end()
+    EntityListIterator_t end() const
     {
         return EntityListIterator_t(std::cend(vec), std::cend(vec));
     }
