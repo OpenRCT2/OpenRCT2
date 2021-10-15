@@ -1316,23 +1316,23 @@ private:
             case WIDX_CURRENCY_DROPDOWN:
             {
                 // All the currencies plus the separator
-                constexpr auto num_items = EnumValue(CurrencyType::Count) + 1;
+                constexpr auto numItems = EnumValue(CurrencyType::Count) + 1;
 
                 // All the currencies except custom currency
-                size_t num_ordinary_currencies = EnumValue(CurrencyType::Count) - 1;
+                size_t numOrdinaryCurrencies = EnumValue(CurrencyType::Count) - 1;
 
-                for (size_t i = 0; i < num_ordinary_currencies; i++)
+                for (size_t i = 0; i < numOrdinaryCurrencies; i++)
                 {
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
                 }
 
-                gDropdownItemsFormat[num_ordinary_currencies] = Dropdown::SeparatorString;
+                gDropdownItemsFormat[numOrdinaryCurrencies] = Dropdown::SeparatorString;
 
-                gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId;
+                gDropdownItemsFormat[numOrdinaryCurrencies + 1] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[numOrdinaryCurrencies + 1] = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId;
 
-                this->ShowDropdown(widget, num_items);
+                this->ShowDropdown(widget, numItems);
 
                 if (gConfigGeneral.currency_format == CurrencyType::Custom)
                 {
@@ -1598,15 +1598,15 @@ private:
                 Dropdown::SetChecked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
-                uint32_t num_items = 4;
+                uint32_t numItems = 4;
 
-                for (size_t i = 0; i < num_items; i++)
+                for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItemsArgs[i] = window_options_title_music_names[i];
                 }
 
-                this->ShowDropdown(widget, num_items);
+                this->ShowDropdown(widget, numItems);
 
                 Dropdown::SetChecked(gConfigSound.title_music, true);
                 break;
@@ -1664,30 +1664,30 @@ private:
     {
         const auto& masterVolumeWidget = this->widgets[WIDX_MASTER_VOLUME];
         const auto& masterVolumeScroll = this->scrolls[0];
-        uint8_t master_volume = this->GetScrollPercentage(masterVolumeWidget, masterVolumeScroll);
-        if (master_volume != gConfigSound.master_volume)
+        uint8_t masterVolume = this->GetScrollPercentage(masterVolumeWidget, masterVolumeScroll);
+        if (masterVolume != gConfigSound.master_volume)
         {
-            gConfigSound.master_volume = master_volume;
+            gConfigSound.master_volume = masterVolume;
             config_save_default();
             widget_invalidate(this, WIDX_MASTER_VOLUME);
         }
 
         const auto& soundVolumeWidget = this->widgets[WIDX_MASTER_VOLUME];
         const auto& soundVolumeScroll = this->scrolls[1];
-        uint8_t sound_volume = this->GetScrollPercentage(soundVolumeWidget, soundVolumeScroll);
-        if (sound_volume != gConfigSound.sound_volume)
+        uint8_t soundVolume = this->GetScrollPercentage(soundVolumeWidget, soundVolumeScroll);
+        if (soundVolume != gConfigSound.sound_volume)
         {
-            gConfigSound.sound_volume = sound_volume;
+            gConfigSound.sound_volume = soundVolume;
             config_save_default();
             widget_invalidate(this, WIDX_SOUND_VOLUME);
         }
 
         const auto& musicVolumeWidget = this->widgets[WIDX_MASTER_VOLUME];
         const auto& musicVolumeScroll = this->scrolls[2];
-        uint8_t ride_music_volume = this->GetScrollPercentage(musicVolumeWidget, musicVolumeScroll);
-        if (ride_music_volume != gConfigSound.ride_music_volume)
+        uint8_t rideMusicVolume = this->GetScrollPercentage(musicVolumeWidget, musicVolumeScroll);
+        if (rideMusicVolume != gConfigSound.ride_music_volume)
         {
-            gConfigSound.ride_music_volume = ride_music_volume;
+            gConfigSound.ride_music_volume = rideMusicVolume;
             config_save_default();
             widget_invalidate(this, WIDX_MUSIC_VOLUME);
         }
@@ -1842,9 +1842,9 @@ private:
         switch (widgetIndex)
         {
             case WIDX_THEMES_DROPDOWN:
-                uint32_t num_items = static_cast<uint32_t>(ThemeManagerGetNumAvailableThemes());
+                uint32_t numItems = static_cast<uint32_t>(ThemeManagerGetNumAvailableThemes());
 
-                for (size_t i = 0; i < num_items; i++)
+                for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
                     gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
@@ -1852,7 +1852,7 @@ private:
 
                 WindowDropdownShowTextCustomWidth(
                     { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1,
-                    this->colours[1], 0, Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
+                    this->colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
                 Dropdown::SetChecked(static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex()), true);
                 widget_invalidate(this, WIDX_THEMES_DROPDOWN);
@@ -1968,15 +1968,14 @@ private:
 
     void MiscMouseDown(rct_widgetindex widgetIndex)
     {
-        uint32_t num_items;
-
         rct_widget* widget = &this->widgets[widgetIndex - 1];
 
         switch (widgetIndex)
         {
             case WIDX_TITLE_SEQUENCE_DROPDOWN:
-                num_items = static_cast<int32_t>(title_sequence_manager_get_count());
-                for (size_t i = 0; i < num_items; i++)
+            {
+                uint32_t numItems = static_cast<int32_t>(title_sequence_manager_get_count());
+                for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
                     gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
@@ -1984,12 +1983,14 @@ private:
 
                 WindowDropdownShowText(
                     { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1,
-                    this->colours[1], Dropdown::Flag::StayOpen, num_items);
+                    this->colours[1], Dropdown::Flag::StayOpen, numItems);
 
                 Dropdown::SetChecked(static_cast<int32_t>(title_get_current_sequence()), true);
                 break;
+            }
             case WIDX_SCENARIO_GROUPING_DROPDOWN:
-                num_items = 2;
+            {
+                uint32_t numItems = 2;
 
                 gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[0] = STR_OPTIONS_SCENARIO_DIFFICULTY;
@@ -1998,10 +1999,11 @@ private:
 
                 WindowDropdownShowTextCustomWidth(
                     { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height() + 1,
-                    this->colours[1], 0, Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
+                    this->colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
                 Dropdown::SetChecked(gConfigGeneral.scenario_select_mode, true);
                 break;
+            }
             case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
                 for (size_t i = 0; i < 7; i++)
                 {
@@ -2352,8 +2354,7 @@ private:
 
     void SetPressedTab()
     {
-        int32_t i;
-        for (i = 0; i < WINDOW_OPTIONS_PAGE_COUNT; i++)
+        for (int32_t i = 0; i < WINDOW_OPTIONS_PAGE_COUNT; i++)
             this->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
         this->pressed_widgets |= 1LL << (WIDX_TAB_1 + this->page);
     }
@@ -2420,15 +2421,15 @@ private:
         return static_cast<float>(scroll.h_left) / (scroll.h_right - w) * 100;
     }
 
-    void InitializeScrollPosition(rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
+    void InitializeScrollPosition(rct_widgetindex widgetIndex, int32_t scrollId, uint8_t volume)
     {
-        const auto& widget = this->widgets[widget_index];
-        auto& scroll = this->scrolls[scroll_id];
+        const auto& widget = this->widgets[widgetIndex];
+        auto& scroll = this->scrolls[scrollId];
 
-        int32_t widget_size = scroll.h_right - (widget.width() - 1);
-        scroll.h_left = ceil(volume / 100.0f * widget_size);
+        int32_t widgetSize = scroll.h_right - (widget.width() - 1);
+        scroll.h_left = ceil(volume / 100.0f * widgetSize);
 
-        WidgetScrollUpdateThumbs(this, widget_index);
+        WidgetScrollUpdateThumbs(this, widgetIndex);
     }
 };
 
