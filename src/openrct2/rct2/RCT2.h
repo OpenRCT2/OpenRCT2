@@ -1077,3 +1077,15 @@ RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType);
  * Handles single and multi-byte strings.
  */
 size_t GetRCT2StringBufferLen(const char* buffer, size_t maxBufferLen);
+
+struct FootpathMapping
+{
+    std::string_view Original;
+    std::string_view NormalSurface;
+    std::string_view QueueSurface;
+    std::string_view Railing;
+};
+
+const FootpathMapping* GetFootpathSurfaceId(
+    const ObjectEntryDescriptor& desc, bool ideallyLoaded = false, bool isQueue = false);
+std::optional<rct_object_entry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings);

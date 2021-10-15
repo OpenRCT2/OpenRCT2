@@ -1347,21 +1347,12 @@ RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
     return origTrackType;
 }
 
-money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue)
-{
-    if (origValue == RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE)
-        return COMPANY_VALUE_ON_FAILED_OBJECTIVE;
-
-    return ToMoney64(origValue);
-}
-
-money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue)
-{
-    if (origValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
-        return RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE;
-
-    return ToMoney32(origValue);
-}
+static constexpr std::string_view _stationStyles[] = {
+    "rct2.station.plain",         "rct2.station.wooden", "rct2.station.canvas_tent", "rct2.station.castle_grey",
+    "rct2.station.castle_brown",  "rct2.station.jungle", "rct2.station.log",         "rct2.station.classical",
+    "rct2.station.abstract",      "rct2.station.snow",   "rct2.station.pagoda",      "rct2.station.space",
+    "openrct2.station.noentrance"
+};
 
 static constexpr std::string_view _musicStyles[] = {
     "rct2.music.dodgems",
@@ -1399,6 +1390,15 @@ static constexpr std::string_view _musicStyles[] = {
     "rct2.music.candy",
 };
 
+std::string_view GetStationIdentifierFromStyle(uint8_t style)
+{
+    if (style < std::size(_stationStyles))
+    {
+        return _stationStyles[style];
+    }
+    return {};
+}
+
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
 {
     auto it = std::find(std::begin(_musicStyles), std::end(_musicStyles), identifier);
@@ -1407,4 +1407,20 @@ std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
         return std::distance(std::begin(_musicStyles), it);
     }
     return std::nullopt;
+}
+
+money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue)
+{
+    if (origValue == RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+        return COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+
+    return ToMoney64(origValue);
+}
+
+money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue)
+{
+    if (origValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+        return RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+
+    return ToMoney32(origValue);
 }
