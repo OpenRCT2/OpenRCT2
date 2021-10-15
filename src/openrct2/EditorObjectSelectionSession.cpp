@@ -318,7 +318,7 @@ static void remove_selected_objects_from_research(ObjectEntryDescriptor& descrip
                     tmp.type = Research::EntryType::Ride;
                     tmp.entryIndex = entryIndex;
                     tmp.baseRideType = rideType;
-                    research_remove(&tmp);
+                    research_remove(tmp);
                 }
                 break;
             }
@@ -327,7 +327,7 @@ static void remove_selected_objects_from_research(ObjectEntryDescriptor& descrip
                 ResearchItem tmp = {};
                 tmp.type = Research::EntryType::Scenery;
                 tmp.entryIndex = entryIndex;
-                research_remove(&tmp);
+                research_remove(tmp);
                 break;
             }
             default:

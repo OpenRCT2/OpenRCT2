@@ -176,7 +176,7 @@ void research_populate_list_random();
 
 void research_finish_item(ResearchItem* researchItem);
 void research_insert(ResearchItem&& item, bool researched);
-void research_remove(ResearchItem* researchItem);
+void research_remove(const ResearchItem& researchItem);
 
 bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);

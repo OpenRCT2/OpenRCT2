@@ -155,7 +155,7 @@ static void move_research_item(ResearchItem* beforeItem, int32_t scrollIndex)
         w->Invalidate();
     }
 
-    research_remove(&_editorInventionsListDraggedItem);
+    research_remove(_editorInventionsListDraggedItem);
 
     auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
     if (beforeItem != nullptr)
