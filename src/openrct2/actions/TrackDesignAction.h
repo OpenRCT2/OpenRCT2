@@ -12,18 +12,7 @@
 #include "../ride/TrackDesign.h"
 #include "GameAction.h"
 
-class TrackDesignActionResult final : public GameActions::Result
-{
-public:
-    TrackDesignActionResult();
-    TrackDesignActionResult(GameActions::Status error);
-    TrackDesignActionResult(GameActions::Status error, rct_string_id title, rct_string_id message);
-    TrackDesignActionResult(GameActions::Status error, rct_string_id message);
-
-    ride_id_t rideIndex = RIDE_ID_NULL;
-};
-
-DEFINE_GAME_ACTION(TrackDesignAction, GameCommand::PlaceTrackDesign, TrackDesignActionResult)
+DEFINE_GAME_ACTION(TrackDesignAction, GameCommand::PlaceTrackDesign, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
