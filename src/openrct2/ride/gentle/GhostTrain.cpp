@@ -361,7 +361,7 @@ static void paint_ghost_train_station(
 {
     uint32_t imageId;
 
-    static constexpr const std::array<uint32_t, 4> imageIds = {
+    static constexpr const std::array imageIds = {
         SPR_STATION_BASE_B_SW_NE,
         SPR_STATION_BASE_B_NW_SE,
         SPR_STATION_BASE_B_SW_NE,

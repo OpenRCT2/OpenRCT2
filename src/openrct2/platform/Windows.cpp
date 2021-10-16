@@ -196,7 +196,7 @@ std::string platform_get_rct2_steam_dir()
 
 std::string platform_sanitise_filename(const std::string& path)
 {
-    static const std::array<std::string::value_type, 9> prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
+    static constexpr std::array prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
     auto sanitised = path;
     std::replace_if(
         sanitised.begin(), sanitised.end(),
