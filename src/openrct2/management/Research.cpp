@@ -421,12 +421,12 @@ static void research_insert_researched(ResearchItem&& item)
  *
  *  rct2: 0x006857CF
  */
-void research_remove(ResearchItem* researchItem)
+void ResearchRemove(const ResearchItem& researchItem)
 {
     for (auto it = gResearchItemsUninvented.begin(); it != gResearchItemsUninvented.end(); it++)
     {
         auto& researchItem2 = *it;
-        if (researchItem2 == *researchItem)
+        if (researchItem2 == researchItem)
         {
             gResearchItemsUninvented.erase(it);
             return;
@@ -435,7 +435,7 @@ void research_remove(ResearchItem* researchItem)
     for (auto it = gResearchItemsInvented.begin(); it != gResearchItemsInvented.end(); it++)
     {
         auto& researchItem2 = *it;
-        if (researchItem2 == *researchItem)
+        if (researchItem2 == researchItem)
         {
             gResearchItemsInvented.erase(it);
             return;

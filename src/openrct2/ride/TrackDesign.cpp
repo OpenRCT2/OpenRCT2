@@ -651,7 +651,7 @@ static void track_design_load_scenery_objects(TrackDesign* td6)
     {
         if (scenery.scenery_object.HasValue())
         {
-            objectManager.LoadObject(td6->vehicle_object);
+            objectManager.LoadObject(scenery.scenery_object);
         }
     }
 }
