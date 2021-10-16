@@ -1220,7 +1220,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
             if (highlighted)
             {
                 auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
-                gfx_filter_rect(dpi, 0, screenCoords.y, w->width, bottom, FilterPaletteID::PaletteDarken1);
+                gfx_filter_rect(dpi, { 0, screenCoords.y, w->width, bottom }, FilterPaletteID::PaletteDarken1);
             }
 
             // Draw checkmark

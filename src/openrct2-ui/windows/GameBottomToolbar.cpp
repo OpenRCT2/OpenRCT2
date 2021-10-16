@@ -350,26 +350,32 @@ void window_game_bottom_toolbar_invalidate_news_item()
  */
 static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
+    int32_t left,top, right, bottom;
+    auto widgetLeft = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
+    auto widgetRight = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET];
+    auto widgetMiddle = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+
     // Draw panel grey backgrounds
-    gfx_filter_rect(
-        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top,
-        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom, FilterPaletteID::Palette51);
-    gfx_filter_rect(
-        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top,
-        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, FilterPaletteID::Palette51);
+    left = w->windowPos.x + widgetLeft.left;
+    top = w->windowPos.y + widgetLeft.top;
+    right = w->windowPos.x + widgetLeft.right;
+    bottom = w->windowPos.y + widgetLeft.bottom;
+    gfx_filter_rect(dpi, { left, top, right, bottom }, FilterPaletteID::Palette51);
+
+    left = w->windowPos.x + widgetRight.left;
+    top = w->windowPos.y + widgetRight.top;
+    right = w->windowPos.x + widgetRight.right;
+    bottom = w->windowPos.y + widgetRight.bottom;
+    gfx_filter_rect(dpi, { left, top, right, bottom }, FilterPaletteID::Palette51);
 
     if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
-        gfx_filter_rect(
-            dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left,
-            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top,
-            w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right,
-            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, FilterPaletteID::Palette51);
+        left = w->windowPos.x + widgetMiddle.left;
+        top = w->windowPos.y + widgetMiddle.top;
+        right = w->windowPos.x + widgetMiddle.right;
+        bottom = w->windowPos.y + widgetMiddle.bottom;
+        gfx_filter_rect(dpi, { left, top, right, bottom }, FilterPaletteID::Palette51);
     }
 
     WindowDrawWidgets(w, dpi);

@@ -364,6 +364,10 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     bool drawPreviousButton = false;
     bool drawNextButton = false;
 
+    int32_t left, top, right, bottom;
+    auto widgetPrevious = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE];
+    auto widgetNext = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE];
+
     if (gEditorStep == EditorStep::ObjectSelection)
     {
         drawNextButton = true;
@@ -389,20 +393,20 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         if (drawPreviousButton)
         {
-            gfx_filter_rect(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom + w->windowPos.y, FilterPaletteID::Palette51);
+            left = widgetPrevious.left + w->windowPos.x;
+            top = widgetPrevious.top + w->windowPos.y;
+            right = widgetPrevious.right + w->windowPos.x;
+            bottom = widgetPrevious.bottom + w->windowPos.y;
+            gfx_filter_rect(dpi, { left, top, right, bottom }, FilterPaletteID::Palette51);
         }
 
         if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
         {
-            gfx_filter_rect(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom + w->windowPos.y, FilterPaletteID::Palette51);
+            left = widgetNext.left + w->windowPos.x;
+            top = widgetNext.top + w->windowPos.y;
+            right = widgetNext.right + w->windowPos.x;
+            bottom = widgetNext.bottom + w->windowPos.y;
+            gfx_filter_rect(dpi, { left, top, right, bottom }, FilterPaletteID::Palette51);
         }
     }
 
@@ -411,11 +415,10 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         const auto topLeft = w->windowPos
-            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 1,
-                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
+            + ScreenCoordsXY{ widgetPrevious.left + 1, widgetPrevious.top + 1 };
         const auto bottomRight = w->windowPos
-            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right - 1,
-                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
+            + ScreenCoordsXY{ widgetPrevious.right - 1, widgetPrevious.bottom - 1 };
+            
         if (drawPreviousButton)
         {
             gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
@@ -426,11 +429,9 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
         }
 
-        int16_t stateX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right
-                          + window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left)
-                / 2
-            + w->windowPos.x;
+        int16_t stateX = (widgetPrevious.right + widgetNext.left) / 2 + w->windowPos.x;
         int16_t stateY = w->height - 0x0C + w->windowPos.y;
+
         DrawTextBasic(
             dpi, { stateX, stateY }, EditorStepNames[EnumValue(gEditorStep)], {},
             { static_cast<colour_t>(NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
@@ -439,9 +440,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             gfx_draw_sprite(
                 dpi, ImageId(SPR_PREVIOUS),
-                w->windowPos
-                    + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6,
-                                      window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
+                w->windowPos + ScreenCoordsXY{ widgetPrevious.left + 6, widgetPrevious.top + 6 });
 
             colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
             if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR
@@ -450,11 +449,8 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 textColour = COLOUR_WHITE;
             }
 
-            int16_t textX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 30
-                             + window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right)
-                    / 2
-                + w->windowPos.x;
-            int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->windowPos.y;
+            int16_t textX = (widgetPrevious.left + 30 + widgetPrevious.right) / 2 + w->windowPos.x;
+            int16_t textY = widgetPrevious.top + 6 + w->windowPos.y;
 
             rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) - 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -468,9 +464,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             gfx_draw_sprite(
                 dpi, ImageId(SPR_NEXT),
-                w->windowPos
-                    + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29,
-                                      window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 });
+                w->windowPos + ScreenCoordsXY{ widgetNext.right - 29, widgetNext.top + 6 });
 
             colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
 
@@ -479,11 +473,8 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 textColour = COLOUR_WHITE;
             }
 
-            int16_t textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left
-                             + window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 30)
-                    / 2
-                + w->windowPos.x;
-            int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->windowPos.y;
+            int16_t textX = (widgetNext.left + widgetNext.right - 30) / 2 + w->windowPos.x;
+            int16_t textY = widgetNext.top + 6 + w->windowPos.y;
 
             rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) + 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
