@@ -690,7 +690,8 @@ public:
             {
                 // Highlight
                 gfx_filter_rect(
-                    &dpi, screenCoords.x, screenCoords.y, width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
+                    &dpi,
+                    { screenCoords.x, screenCoords.y, width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
                     FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
@@ -715,7 +716,8 @@ public:
                 {
                     // Highlight
                     gfx_filter_rect(
-                        &dpi, screenCoords.x, screenCoords.y, width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
+                        &dpi, 
+                        { screenCoords.x, screenCoords.y, width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
                         FilterPaletteID::PaletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
