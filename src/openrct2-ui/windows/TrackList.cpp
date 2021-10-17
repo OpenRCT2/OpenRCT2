@@ -689,7 +689,10 @@ public:
             if (listIndex == static_cast<size_t>(selected_list_item))
             {
                 // Highlight
-                gfx_filter_rect(&dpi, { screenCoords.x, screenCoords.y, width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                gfx_filter_rect(
+                    &dpi, 
+                    { screenCoords.x, screenCoords.y, width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, 
+                    FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else
@@ -712,7 +715,10 @@ public:
                 if (listIndex == static_cast<size_t>(selected_list_item))
                 {
                     // Highlight
-                    gfx_filter_rect(&dpi, { screenCoords.x, screenCoords.y, width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                    gfx_filter_rect(
+                        &dpi, 
+                        { screenCoords.x, screenCoords.y, width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, 
+                        FilterPaletteID::PaletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }
                 else
