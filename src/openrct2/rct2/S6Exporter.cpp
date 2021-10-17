@@ -1114,10 +1114,11 @@ void S6Exporter::ExportStaffPatrolAreas()
     auto staffId = 0;
     for (auto* staff : EntityList<Staff>())
     {
-        const size_t staffPatrolOffset = staffId * STAFF_PATROL_AREA_SIZE;
-        std::copy(std::begin(staff->PatrolInfo->Data), std::end(staff->PatrolInfo->Data), &_s6.patrol_areas[staffPatrolOffset]);
         if (staff->HasPatrolArea())
         {
+            const size_t staffPatrolOffset = staffId * STAFF_PATROL_AREA_SIZE;
+            std::copy(
+                std::begin(staff->PatrolInfo->Data), std::end(staff->PatrolInfo->Data), &_s6.patrol_areas[staffPatrolOffset]);
             _s6.staff_modes[staffId] = EnumValue(RCT2StaffMode::Patrol);
         }
         else
