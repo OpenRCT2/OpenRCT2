@@ -825,20 +825,22 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     // Set window title and buttons
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(ObjectSelectionPages[w->selected_tab].Caption);
+    auto& titleWidget = w->widgets[WIDX_TITLE];
+    auto& installTrackWidget = w->widgets[WIDX_INSTALL_TRACK];
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        w->widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
-        w->widgets[WIDX_INSTALL_TRACK].type = WindowWidgetType::Button;
+        titleWidget.text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
+        installTrackWidget.type = WindowWidgetType::Button;
     }
     else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
-        w->widgets[WIDX_TITLE].text = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
-        w->widgets[WIDX_INSTALL_TRACK].type = WindowWidgetType::Empty;
+        titleWidget.text = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
+        installTrackWidget.type = WindowWidgetType::Empty;
     }
     else
     {
-        w->widgets[WIDX_TITLE].text = STR_OBJECT_SELECTION;
-        w->widgets[WIDX_INSTALL_TRACK].type = WindowWidgetType::Empty;
+        titleWidget.text = STR_OBJECT_SELECTION;
+        installTrackWidget.type = WindowWidgetType::Empty;
     }
 
     // Align tabs, hide advanced ones
@@ -846,17 +848,17 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     int32_t x = 3;
     for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
     {
-        auto widget = &w->widgets[WIDX_TAB_1 + i];
+        auto& widget = w->widgets[WIDX_TAB_1 + i];
         if ((!advancedMode && ObjectSelectionPages[i].IsAdvanced)
             || ObjectSelectionPages[i].Image == static_cast<uint32_t>(SPR_NONE))
         {
-            widget->type = WindowWidgetType::Empty;
+            widget.type = WindowWidgetType::Empty;
         }
         else
         {
-            widget->type = WindowWidgetType::Tab;
-            widget->left = x;
-            widget->right = x + 30;
+            widget.type = WindowWidgetType::Tab;
+            widget.left = x;
+            widget.right = x + 30;
             x += 31;
         }
     }
@@ -950,8 +952,8 @@ static void window_editor_object_selection_invalidate(rct_window* w)
 
 static void window_editor_object_selection_paint_descriptions(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    auto widget = &w->widgets[WIDX_PREVIEW];
-    auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget->bottom + 23 };
+    const auto& widget = w->widgets[WIDX_PREVIEW];
+    auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget.bottom + 23 };
     auto width = w->windowPos.x + w->width - screenPos.x - 4;
 
     auto description = object_get_description(_loadedObject.get());
@@ -1069,18 +1071,17 @@ static void window_editor_object_selection_paint_debug_data(rct_window* w, rct_d
 static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t width;
-    rct_widget* widget;
 
     WindowDrawWidgets(w, dpi);
 
     // Draw tabs
     for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
     {
-        widget = &w->widgets[WIDX_TAB_1 + i];
-        if (widget->type != WindowWidgetType::Empty)
+        const auto& widget = w->widgets[WIDX_TAB_1 + i];
+        if (widget.type != WindowWidgetType::Empty)
         {
             auto image = ImageId(ObjectSelectionPages[i].Image);
-            auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+            auto screenPos = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
             gfx_draw_sprite(dpi, image, screenPos);
         }
     }
@@ -1096,8 +1097,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         for (int32_t i = 0; i < 7; i++)
         {
-            widget = &w->widgets[WIDX_FILTER_RIDE_TAB_ALL + i];
-            if (widget->type == WindowWidgetType::Empty)
+            const auto& widget = w->widgets[WIDX_FILTER_RIDE_TAB_ALL + i];
+            if (widget.type == WindowWidgetType::Empty)
                 continue;
 
             int32_t spriteIndex = ride_tabs[i];
@@ -1108,17 +1109,17 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
             }
             spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
-            auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+            auto screenPos = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
             gfx_draw_sprite(dpi, ImageId(spriteIndex, w->colours[1]), screenPos);
         }
     }
 
     // Preview background
-    widget = &w->widgets[WIDX_PREVIEW];
+    const auto& previewWidget = w->widgets[WIDX_PREVIEW];
     gfx_fill_rect(
         dpi,
-        { w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 },
-          w->windowPos + ScreenCoordsXY{ widget->right - 1, widget->bottom - 1 } },
+        { w->windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
+          w->windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
         ColourMapA[w->colours[1]].darkest);
 
     // Draw number of selected items
@@ -1136,25 +1137,25 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     }
 
     // Draw sort button text
-    widget = &w->widgets[WIDX_LIST_SORT_TYPE];
-    if (widget->type != WindowWidgetType::Empty)
+    const auto& listSortTypeWidget = w->widgets[WIDX_LIST_SORT_TYPE];
+    if (listSortTypeWidget.type != WindowWidgetType::Empty)
     {
         auto ft = Formatter();
         auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                         : STR_NONE;
         ft.Add<rct_string_id>(stringId);
-        auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_TYPE, ft, { w->colours[1] });
+        auto screenPos = w->windowPos + ScreenCoordsXY{ listSortTypeWidget.left + 1, listSortTypeWidget.top + 1 };
+        DrawTextEllipsised(dpi, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { w->colours[1] });
     }
-    widget = &w->widgets[WIDX_LIST_SORT_RIDE];
-    if (widget->type != WindowWidgetType::Empty)
+    const auto& listSortRideWidget = w->widgets[WIDX_LIST_SORT_RIDE];
+    if (listSortRideWidget.type != WindowWidgetType::Empty)
     {
         auto ft = Formatter();
         auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                         : STR_NONE;
         ft.Add<rct_string_id>(stringId);
-        auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_RIDE, ft, { w->colours[1] });
+        auto screenPos = w->windowPos + ScreenCoordsXY{ listSortRideWidget.left + 1, listSortRideWidget.top + 1 };
+        DrawTextEllipsised(dpi, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { w->colours[1] });
     }
 
     if (w->selected_list_item == -1 || _loadedObject == nullptr)
@@ -1163,12 +1164,11 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     list_item* listItem = &_listItems[w->selected_list_item];
 
     // Draw preview
-    widget = &w->widgets[WIDX_PREVIEW];
     {
         rct_drawpixelinfo clipDPI;
-        auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        width = widget->width() - 1;
-        int32_t height = widget->height() - 1;
+        auto screenPos = w->windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
+        width = previewWidget.width() - 1;
+        int32_t height = previewWidget.height() - 1;
         if (clip_drawpixelinfo(&clipDPI, dpi, screenPos, width, height))
         {
             _loadedObject->DrawPreview(&clipDPI, width, height);
@@ -1177,7 +1177,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
     // Draw name of object
     {
-        auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX() + 1, widget->bottom + 3 };
+        auto screenPos = w->windowPos + ScreenCoordsXY{ previewWidget.midX() + 1, previewWidget.bottom + 3 };
         width = w->width - w->widgets[WIDX_LIST].right - 6;
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
@@ -1188,6 +1188,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     window_editor_object_selection_paint_descriptions(w, dpi);
     window_editor_object_selection_paint_debug_data(w, dpi);
 }
+
 /**
  *
  *  rct2: 0x006AADA3
