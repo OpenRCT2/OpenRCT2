@@ -419,7 +419,7 @@ static void sub_6A4101(
             }
         }
 
-        if (!pathElement.HasQueueBanner())
+        if (!pathElement.HasQueueBanner() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_NO_QUEUE_BANNER))
         {
             return;
         }
