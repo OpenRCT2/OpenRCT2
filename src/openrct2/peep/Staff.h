@@ -166,3 +166,5 @@ int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costume
 
 money32 GetStaffWage(StaffType type);
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
+
+const PatrolArea& GetMergedPatrolArea(const StaffType type);

@@ -421,8 +421,6 @@ public:
         ImportRideMeasurements();
         gNextGuestNumber = _s6.next_guest_index;
         gGrassSceneryTileLoopPosition = _s6.grass_and_scenery_tilepos;
-        std::memcpy(gStaffPatrolAreas, _s6.patrol_areas, sizeof(_s6.patrol_areas));
-        std::memcpy(gStaffModes, _s6.staff_modes, sizeof(_s6.staff_modes));
         // unk_13CA73E
         // pad_13CA73F
         // unk_13CA740
@@ -485,6 +483,7 @@ public:
         FixLandOwnership();
 
         research_determine_first_of_type();
+        staff_update_greyed_patrol_areas();
     }
 
     void FixLandOwnership() const
@@ -1444,6 +1443,37 @@ public:
         }
     }
 
+    void ImportStaffPatrolArea(Staff* staffmember, uint8_t staffId)
+    {
+        int32_t peepOffset = staffId * RCT12_PATROL_AREA_SIZE;
+        for (int32_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
+        {
+            if (_s6.patrol_areas[peepOffset + i] == 0)
+            {
+                // No patrol for this area
+                continue;
+            }
+
+            // Loop over the bits of the uint32_t
+            for (int32_t j = 0; j < 32; j++)
+            {
+                int8_t bit = (_s6.patrol_areas[peepOffset + i] >> j) & 1;
+                if (bit == 0)
+                {
+                    // No patrol for this area
+                    continue;
+                }
+                // val contains the 6 highest bits of both the x and y coordinates
+                int32_t val = j | (i << 5);
+                int32_t x = val & 0x03F;
+                x <<= 7;
+                int32_t y = val & 0xFC0;
+                y <<= 2;
+                staffmember->SetPatrolArea({ x, y }, true);
+            }
+        }
+    }
+
     void ImportEntities()
     {
         for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
@@ -1873,6 +1903,8 @@ template<> void S6Importer::ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
     dst->StaffGardensWatered = src->paid_on_rides;
     dst->StaffLitterSwept = src->paid_on_food;
     dst->StaffBinsEmptied = src->paid_on_souvenirs;
+
+    ImportStaffPatrolArea(dst, src->staff_id);
 }
 
 template<> void S6Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& baseSrc)

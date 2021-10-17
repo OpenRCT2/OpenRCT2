@@ -68,6 +68,11 @@ colour_t gStaffSecurityColour;
 
 static PatrolArea _mergedPatrolAreas[EnumValue(StaffType::Count)];
 
+const PatrolArea& GetMergedPatrolArea(const StaffType type)
+{
+    return _mergedPatrolAreas[EnumValue(type)];
+}
+
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
 

@@ -1183,19 +1183,6 @@ namespace RCT1
 
         void FixImportStaff()
         {
-            // The RCT2/OpenRCT2 structures are bigger than in RCT1, so initialise them to zero
-            std::fill(std::begin(gStaffModes), std::end(gStaffModes), StaffMode::None);
-            std::fill(std::begin(gStaffPatrolAreas), std::end(gStaffPatrolAreas), 0);
-
-            for (int32_t i = 0; i < RCT1_MAX_STAFF; i++)
-            {
-                gStaffModes[i] = static_cast<StaffMode>(_s4.staff_modes[i]);
-            }
-
-            for (auto peep : EntityList<Staff>())
-            {
-                ImportStaffPatrolArea(peep);
-            }
             // Only the individual patrol areas have been converted, so generate the combined patrol areas of each staff type
             staff_update_greyed_patrol_areas();
         }
@@ -1258,7 +1245,7 @@ namespace RCT1
             dst->PathfindGoal.direction = INVALID_DIRECTION;
         }
 
-        void ImportStaffPatrolArea(Staff* staffmember)
+        void ImportStaffPatrolArea(Staff* staffmember, uint8_t staffId)
         {
             // The patrol areas in RCT1 are encoded as follows, for coordinates x and y, separately for every staff member:
             // - Chop off the 7 lowest bits of the x and y coordinates, which leaves 5 bits per coordinate.
@@ -1270,7 +1257,7 @@ namespace RCT1
             //                                          index in the array ----^     ^--- bit position in the 8-bit value
             // We do the opposite in this function to recover the x and y values.
 
-            int32_t peepOffset = staffmember->StaffId * RCT12_PATROL_AREA_SIZE;
+            int32_t peepOffset = staffId * RCT12_PATROL_AREA_SIZE;
             for (int32_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
             {
                 if (_s4.patrol_areas[peepOffset + i] == 0)
@@ -2893,6 +2880,8 @@ namespace RCT1
         dst->StaffGardensWatered = src->paid_on_rides;
         dst->StaffLitterSwept = src->paid_on_food;
         dst->StaffBinsEmptied = src->paid_on_souvenirs;
+
+        ImportStaffPatrolArea(dst, src->staff_id);
     }
 
     template<> void S4Importer::ImportEntity<Litter>(const RCT12SpriteBase& srcBase)
