@@ -33,7 +33,12 @@ struct swinging_ship_bound_box
 };
 
 /** rct2: 0x008A83B0 */
-static constexpr const uint32_t swinging_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
+static constexpr const uint32_t swinging_ship_base_sprite_offset[] = {
+    0,
+    9,
+    0,
+    9,
+};
 
 /** rct2: 0x008A83C0 */
 static constexpr const swinging_ship_bound_box swinging_ship_data[] = {

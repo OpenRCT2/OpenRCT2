@@ -20,11 +20,29 @@ struct rct_crooked_house_bound_box
     CoordsXY length;
 };
 
-static constexpr const rct_crooked_house_bound_box crooked_house_data[] = { { { 6, 0 }, { 42, 24 } },
-                                                                            { { 0, 0 }, { 0, 0 } },
-                                                                            { { -16, -16 }, { 32, 32 } },
-                                                                            { { 0, 0 }, { 0, 0 } }, // Unused
-                                                                            { { 0, 6 }, { 24, 42 } } };
+static constexpr const rct_crooked_house_bound_box crooked_house_data[] = {
+    {
+        { 6, 0 },
+        { 42, 24 },
+    },
+    {
+        { 0, 0 },
+        { 0, 0 },
+    },
+    {
+        { -16, -16 },
+        { 32, 32 },
+    },
+    {
+        // Unused
+        { 0, 0 },
+        { 0, 0 },
+    },
+    {
+        { 0, 6 },
+        { 24, 42 },
+    },
+};
 
 /**
  *  rct2: 0x0088ABA4

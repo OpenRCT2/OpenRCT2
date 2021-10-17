@@ -26,8 +26,8 @@
 
 using namespace OpenRCT2;
 
-// clang-format off
-enum {
+enum
+{
     WINDOW_MAPGEN_PAGE_BASE,
     WINDOW_MAPGEN_PAGE_RANDOM,
     WINDOW_MAPGEN_PAGE_SIMPLEX,
@@ -35,7 +35,8 @@ enum {
     WINDOW_MAPGEN_PAGE_COUNT
 };
 
-enum {
+enum
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -113,6 +114,7 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_MAPGEN_WINDOW_TITLE;
 static constexpr const int32_t WW = 250;
 static constexpr const int32_t WH = 273;
 
+// clang-format off
 #define SHARED_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
     MakeWidget({ 0, 43}, {WW, 229}, WindowWidgetType::Resize, WindowColour::Secondary), /* WIDX_PAGE_BACKGROUND */ \
@@ -169,49 +171,49 @@ static rct_widget HeightmapWidgets[] = {
     MakeSpinnerWidgets({104, 160}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_WATER_LEVEL{,_UP,_DOWN}
     WIDGETS_END,
 };
+// clang-format on
 
-static rct_widget *PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
+static rct_widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     MapWidgets,
     RandomWidgets,
     SimplexWidgets,
-    HeightmapWidgets
+    HeightmapWidgets,
 };
 
 #pragma endregion
 
 #pragma region Events
 
-static void window_mapgen_shared_close(rct_window *w);
-static void window_mapgen_shared_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_mapgen_shared_close(rct_window* w);
+static void window_mapgen_shared_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 
-static void window_mapgen_base_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_mapgen_base_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_mapgen_base_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_mapgen_base_update(rct_window *w);
-static void window_mapgen_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_mapgen_base_invalidate(rct_window *w);
-static void window_mapgen_base_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_mapgen_base_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_mapgen_base_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_mapgen_base_update(rct_window* w);
+static void window_mapgen_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void window_mapgen_base_invalidate(rct_window* w);
+static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_mapgen_random_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_mapgen_random_update(rct_window *w);
-static void window_mapgen_random_invalidate(rct_window *w);
-static void window_mapgen_random_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_mapgen_random_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_mapgen_random_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_mapgen_random_update(rct_window* w);
+static void window_mapgen_random_invalidate(rct_window* w);
+static void window_mapgen_random_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_mapgen_simplex_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_mapgen_simplex_update(rct_window *w);
-static void window_mapgen_simplex_invalidate(rct_window *w);
-static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_mapgen_simplex_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_mapgen_simplex_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_mapgen_simplex_update(rct_window* w);
+static void window_mapgen_simplex_invalidate(rct_window* w);
+static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_mapgen_heightmap_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_mapgen_heightmap_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_mapgen_heightmap_invalidate(rct_window *w);
-static void window_mapgen_heightmap_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_mapgen_heightmap_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_mapgen_heightmap_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_mapgen_heightmap_invalidate(rct_window* w);
+static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list BaseEvents([](auto& events)
-{
+static rct_window_event_list BaseEvents([](auto& events) {
     events.close = &window_mapgen_shared_close;
     events.mouse_up = &window_mapgen_base_mouseup;
     events.mouse_down = &window_mapgen_base_mousedown;
@@ -222,8 +224,7 @@ static rct_window_event_list BaseEvents([](auto& events)
     events.paint = &window_mapgen_base_paint;
 });
 
-static rct_window_event_list RandomEvents([](auto& events)
-{
+static rct_window_event_list RandomEvents([](auto& events) {
     events.close = &window_mapgen_shared_close;
     events.mouse_up = &window_mapgen_random_mouseup;
     events.mouse_down = &window_mapgen_random_mousedown;
@@ -232,8 +233,7 @@ static rct_window_event_list RandomEvents([](auto& events)
     events.paint = &window_mapgen_random_paint;
 });
 
-static rct_window_event_list SimplexEvents([](auto& events)
-{
+static rct_window_event_list SimplexEvents([](auto& events) {
     events.close = &window_mapgen_shared_close;
     events.mouse_up = &window_mapgen_simplex_mouseup;
     events.mouse_down = &window_mapgen_simplex_mousedown;
@@ -244,8 +244,7 @@ static rct_window_event_list SimplexEvents([](auto& events)
     events.paint = &window_mapgen_simplex_paint;
 });
 
-static rct_window_event_list HeightmapEvents([](auto& events)
-{
+static rct_window_event_list HeightmapEvents([](auto& events) {
     events.close = &window_mapgen_shared_close;
     events.mouse_up = &window_mapgen_heightmap_mouseup;
     events.mouse_down = &window_mapgen_heightmap_mousedown;
@@ -253,17 +252,18 @@ static rct_window_event_list HeightmapEvents([](auto& events)
     events.paint = &window_mapgen_heightmap_paint;
 });
 
-static rct_window_event_list *PageEvents[] = {
+static rct_window_event_list* PageEvents[] = {
     &BaseEvents,
     &RandomEvents,
     &SimplexEvents,
-    &HeightmapEvents
+    &HeightmapEvents,
 };
 
 #pragma endregion
 
 #pragma region Enabled widgets
 
+// clang-format off
 static uint64_t PageEnabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
@@ -393,17 +393,27 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     0,
     (1ULL << WIDX_HEIGHTMAP_SMOOTH_TILES)
 };
+// clang-format on
 
 #pragma endregion
 
 static constexpr const int32_t TabAnimationDivisor[WINDOW_MAPGEN_PAGE_COUNT] = {
-    1, 1, 1, 1
+    1,
+    1,
+    1,
+    1,
 };
 static constexpr const int32_t TabAnimationFrames[WINDOW_MAPGEN_PAGE_COUNT] = {
-    1, 1, 1, 1
+    1,
+    1,
+    1,
+    1,
 };
 static constexpr const int32_t TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
-    16, 16, 16, 0
+    16,
+    16,
+    16,
+    0,
 };
 // clang-format on
 

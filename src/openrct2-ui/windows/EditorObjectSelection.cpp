@@ -213,8 +213,12 @@ static rct_window_event_list window_editor_object_selection_events([](auto& even
 
 #pragma endregion
 
-static constexpr const int32_t window_editor_object_selection_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
-static constexpr const int32_t window_editor_object_selection_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
+static constexpr const int32_t window_editor_object_selection_animation_loops[] = {
+    20, 32, 10, 72, 24, 28, 16,
+};
+static constexpr const int32_t window_editor_object_selection_animation_divisor[] = {
+    4, 8, 2, 4, 4, 4, 2,
+};
 
 static void window_editor_object_set_page(rct_window* w, int32_t page);
 static void window_editor_object_selection_set_pressed_tab(rct_window* w);
@@ -1089,11 +1093,15 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         }
     }
 
-    const int32_t ride_tabs[] = { SPR_TAB_RIDE_16,        IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0,
-                                  SPR_TAB_RIDES_GENTLE_0, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0,
-                                  SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0,
-                                  SPR_TAB_RIDES_SHOP_0,   SPR_TAB_FINANCES_RESEARCH_0 };
-    const int32_t ThrillRidesTabAnimationSequence[] = { 5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0 };
+    const int32_t ride_tabs[] = {
+        SPR_TAB_RIDE_16,        IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0,
+        SPR_TAB_RIDES_GENTLE_0, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0,
+        SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0,
+        SPR_TAB_RIDES_SHOP_0,   SPR_TAB_FINANCES_RESEARCH_0,
+    };
+    const int32_t ThrillRidesTabAnimationSequence[] = {
+        5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0,
+    };
 
     // Draw ride tabs
     if (get_selected_object_type(w) == ObjectType::Ride)

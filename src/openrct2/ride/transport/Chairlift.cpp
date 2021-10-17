@@ -68,8 +68,12 @@ enum
     SPR_CHAIRLIFT_STATION_END_CAP_NW,
 };
 
-const uint32_t chairlift_bullwheel_frames[] = { SPR_CHAIRLIFT_BULLWHEEL_FRAME_1, SPR_CHAIRLIFT_BULLWHEEL_FRAME_2,
-                                                SPR_CHAIRLIFT_BULLWHEEL_FRAME_3, SPR_CHAIRLIFT_BULLWHEEL_FRAME_4 };
+const uint32_t chairlift_bullwheel_frames[] = {
+    SPR_CHAIRLIFT_BULLWHEEL_FRAME_1,
+    SPR_CHAIRLIFT_BULLWHEEL_FRAME_2,
+    SPR_CHAIRLIFT_BULLWHEEL_FRAME_3,
+    SPR_CHAIRLIFT_BULLWHEEL_FRAME_4,
+};
 
 static void chairlift_paint_util_draw_supports(paint_session* session, int32_t segments, uint16_t height)
 {

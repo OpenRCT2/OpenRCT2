@@ -264,7 +264,12 @@ static void paint_mini_helicopters_track_left_quarter_turn_3_tiles(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static constexpr const uint8_t mini_helicopters_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8_t mini_helicopters_right_quarter_turn_3_tiles_to_left_turn_map[] = {
+    3,
+    1,
+    2,
+    0,
+};
 
 /** rct2: 0x0081F3F8 */
 static void paint_mini_helicopters_track_right_quarter_turn_3_tiles(

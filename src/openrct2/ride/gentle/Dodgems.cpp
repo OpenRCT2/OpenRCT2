@@ -26,8 +26,12 @@ enum
     SPR_DODGEMS_FENCE_TOP_LEFT = 21937
 };
 
-static constexpr const uint32_t dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TOP_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
-                                                            SPR_DODGEMS_FENCE_BOTTOM_LEFT, SPR_DODGEMS_FENCE_TOP_LEFT };
+static constexpr const uint32_t dodgems_fence_sprites[] = {
+    SPR_DODGEMS_FENCE_TOP_RIGHT,
+    SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
+    SPR_DODGEMS_FENCE_BOTTOM_LEFT,
+    SPR_DODGEMS_FENCE_TOP_LEFT,
+};
 
 static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t offset)
 {

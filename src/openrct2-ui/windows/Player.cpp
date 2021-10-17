@@ -73,7 +73,7 @@ static rct_widget window_player_statistics_widgets[] = {
 
 static rct_widget *window_player_page_widgets[] = {
     window_player_overview_widgets,
-    window_player_statistics_widgets
+    window_player_statistics_widgets,
 };
 
 #pragma endregion
@@ -120,7 +120,7 @@ static rct_window_event_list window_player_statistics_events([](auto& events)
 
 static rct_window_event_list *window_player_page_events[] = {
     &window_player_overview_events,
-    &window_player_statistics_events
+    &window_player_statistics_events,
 };
 
 #pragma endregion
@@ -141,7 +141,7 @@ static uint32_t window_player_page_enabled_widgets[] = {
 
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2)
+    (1ULL << WIDX_TAB_2),
 };
 // clang-format on
 

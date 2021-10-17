@@ -212,7 +212,9 @@ static void water_rc_track_right_quarter_turn_5_tiles_25_deg_up(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
-static constexpr const uint8_t water_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = { 6, 4, 5, 3, 1, 2, 0 };
+static constexpr const uint8_t water_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = {
+    6, 4, 5, 3, 1, 2, 0,
+};
 
 static void water_rc_track_left_quarter_turn_5_tiles_25_deg_down(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -250,7 +252,12 @@ static void water_rc_track_right_quarter_turn_3_tiles_25_deg_down(
         session, ride, trackSequence, direction, height, trackElement, JuniorRcChainType::None);
 }
 
-static constexpr const uint8_t water_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8_t water_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = {
+    3,
+    1,
+    2,
+    0,
+};
 
 static void water_rc_track_left_quarter_turn_3_tiles_25_deg_up(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,

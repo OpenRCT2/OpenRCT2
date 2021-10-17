@@ -85,8 +85,9 @@ static constexpr const char* SnowTrees[] = {
 #pragma endregion
 
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
-static constexpr const std::string_view BaseTerrain[] = { "rct2.surface.grass", "rct2.surface.sand", "rct2.surface.sandbrown",
-                                                          "rct2.surface.dirt", "rct2.surface.ice" };
+static constexpr const std::string_view BaseTerrain[] = {
+    "rct2.surface.grass", "rct2.surface.sand", "rct2.surface.sandbrown", "rct2.surface.dirt", "rct2.surface.ice",
+};
 
 static void mapgen_place_trees();
 static void mapgen_set_water_level(int32_t waterLevel);

@@ -20,7 +20,9 @@
 #endif
 
 [[maybe_unused]] static bool _log_location_enabled = true;
-bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::Count)] = { true, true, true, false, true };
+bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::Count)] = {
+    true, true, true, false, true,
+};
 
 static FILE* diagnostic_get_stream(DiagnosticLevel level)
 {
@@ -36,9 +38,9 @@ static FILE* diagnostic_get_stream(DiagnosticLevel level)
 
 #ifdef __ANDROID__
 
-int _android_log_priority[static_cast<uint8_t>(DiagnosticLevel::Count)] = { ANDROID_LOG_FATAL, ANDROID_LOG_ERROR,
-                                                                            ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE,
-                                                                            ANDROID_LOG_INFO };
+int _android_log_priority[static_cast<uint8_t>(DiagnosticLevel::Count)] = {
+    ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO,
+};
 
 void diagnostic_log(DiagnosticLevel diagnosticLevel, const char* format, ...)
 {

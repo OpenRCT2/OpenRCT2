@@ -392,7 +392,7 @@ static constexpr const rct_string_id window_options_title_music_names[] = {
 
 static constexpr const rct_string_id window_options_scale_quality_names[] = {
     STR_SCALING_QUALITY_LINEAR,
-    STR_SCALING_QUALITY_SMOOTH_NN
+    STR_SCALING_QUALITY_SMOOTH_NN,
 };
 
 static constexpr const rct_string_id window_options_fullscreen_mode_names[] = {
@@ -1240,8 +1240,11 @@ private:
         WidgetSetCheckboxValue(this, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
         WidgetSetCheckboxValue(this, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
-        rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
-                                                     STR_VIRTUAL_FLOOR_STYLE_GLASSY };
+        static constexpr rct_string_id VirtualFloorStyleStrings[] = {
+            STR_VIRTUAL_FLOOR_STYLE_DISABLED,
+            STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
+            STR_VIRTUAL_FLOOR_STYLE_GLASSY,
+        };
 
         this->widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
             gConfigGeneral.virtual_floor_style)];
