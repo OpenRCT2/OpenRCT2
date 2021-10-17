@@ -374,7 +374,7 @@ money64 Ride::CalculateIncomePerHour() const
             // TODO: use data from the last 5 minutes instead of all-time values for a more accurate calculation
             if (rideTicketsSold > 0)
             {
-                priceMinusCost += ((no_secondary_items_sold * shopItemProfit) / rideTicketsSold);
+                priceMinusCost += ((static_cast<int32_t>(no_secondary_items_sold) * shopItemProfit) / rideTicketsSold);
             }
         }
         else
