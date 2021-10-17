@@ -350,7 +350,7 @@ void window_game_bottom_toolbar_invalidate_news_item()
  */
 static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t left,top, right, bottom;
+    int32_t left, top, right, bottom;
     auto widgetLeft = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
     auto widgetRight = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET];
     auto widgetMiddle = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
