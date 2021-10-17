@@ -200,7 +200,7 @@ public:
             rct_td6_scenery_element t6SceneryElement{};
             _stream.Read(&t6SceneryElement, sizeof(rct_td6_scenery_element));
             TrackDesignSceneryElement sceneryElement{};
-            sceneryElement.scenery_object = t6SceneryElement.scenery_object;
+            sceneryElement.scenery_object = ObjectEntryDescriptor(t6SceneryElement.scenery_object);
             sceneryElement.x = t6SceneryElement.x;
             sceneryElement.y = t6SceneryElement.y;
             sceneryElement.z = t6SceneryElement.z;

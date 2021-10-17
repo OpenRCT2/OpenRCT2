@@ -32,13 +32,13 @@ struct TrackDesignEntranceElement
 /* Track Scenery entry  size: 0x16 */
 struct TrackDesignSceneryElement
 {
-    rct_object_entry scenery_object; // 0x00
-    int8_t x;                        // 0x10
-    int8_t y;                        // 0x11
-    int8_t z;                        // 0x12
-    uint8_t flags;                   // 0x13 direction quadrant tertiary colour
-    uint8_t primary_colour;          // 0x14
-    uint8_t secondary_colour;        // 0x15
+    ObjectEntryDescriptor scenery_object;
+    int8_t x;
+    int8_t y;
+    int8_t z;
+    uint8_t flags;
+    uint8_t primary_colour;
+    uint8_t secondary_colour;
 
     bool IsQueue() const
     {

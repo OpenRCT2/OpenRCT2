@@ -286,90 +286,72 @@ void WindowDropdownClose()
 
 static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t cell_x, cell_y, l, t, r, b, item, image;
-
     WindowDrawWidgets(w, dpi);
 
     int32_t highlightedIndex = gDropdownHighlightedIndex;
     for (int32_t i = 0; i < gDropdownNumItems; i++)
     {
+        ScreenCoordsXY cellCoords;
         if (_dropdown_list_vertically)
-        {
-            cell_x = i / _dropdown_num_rows;
-            cell_y = i % _dropdown_num_rows;
-        }
+            cellCoords = { i / _dropdown_num_rows, i % _dropdown_num_rows };
         else
-        {
-            cell_x = i % _dropdown_num_columns;
-            cell_y = i / _dropdown_num_columns;
-        }
+            cellCoords = { i % _dropdown_num_columns, i / _dropdown_num_columns };
+
+        ScreenCoordsXY screenCoords = w->windowPos
+            + ScreenCoordsXY{ 2 + (cellCoords.x * _dropdown_item_width), 2 + (cellCoords.y * _dropdown_item_height) };
 
         if (gDropdownItemsFormat[i] == Dropdown::SeparatorString)
         {
-            l = w->windowPos.x + 2 + (cell_x * _dropdown_item_width);
-            t = w->windowPos.y + 2 + (cell_y * _dropdown_item_height);
-            r = l + _dropdown_item_width - 1;
-            t += (_dropdown_item_height / 2);
-            b = t;
+            const ScreenCoordsXY leftTop = screenCoords + ScreenCoordsXY{ 0, (_dropdown_item_height / 2) };
+            const ScreenCoordsXY rightBottom = leftTop + ScreenCoordsXY{ _dropdown_item_width - 1, 0 };
+            const ScreenCoordsXY shadowOffset{ 0, 1 };
 
             if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT)
             {
                 translucent_window_palette palette = TranslucentWindowPalettes[BASE_COLOUR(w->colours[0])];
-                gfx_filter_rect(dpi, l, t, r, b, palette.highlight);
-                gfx_filter_rect(dpi, l, t + 1, r, b + 1, palette.shadow);
+                gfx_filter_rect(dpi, { leftTop, rightBottom }, palette.highlight);
+                gfx_filter_rect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
             }
             else
             {
-                gfx_fill_rect(dpi, { { l, t }, { r, b } }, ColourMapA[w->colours[0]].mid_dark);
-                gfx_fill_rect(dpi, { { l, t + 1 }, { r, b + 1 } }, ColourMapA[w->colours[0]].lightest);
+                gfx_fill_rect(dpi, { leftTop, rightBottom }, ColourMapA[w->colours[0]].mid_dark);
+                gfx_fill_rect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[w->colours[0]].lightest);
             }
         }
         else
         {
-            //
             if (i == highlightedIndex)
             {
-                l = w->windowPos.x + 2 + (cell_x * _dropdown_item_width);
-                t = w->windowPos.y + 2 + (cell_y * _dropdown_item_height);
-                r = l + _dropdown_item_width - 1;
-                b = t + _dropdown_item_height - 1;
-                gfx_filter_rect(dpi, l, t, r, b, FilterPaletteID::PaletteDarken3);
+                // Darken the cell's background slightly when highlighted
+                const ScreenCoordsXY rightBottom = screenCoords
+                    + ScreenCoordsXY{ _dropdown_item_width - 1, _dropdown_item_height - 1 };
+                gfx_filter_rect(dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
             }
 
-            item = gDropdownItemsFormat[i];
+            rct_string_id item = gDropdownItemsFormat[i];
             if (item == Dropdown::FormatLandPicker || item == Dropdown::FormatColourPicker)
             {
                 // Image item
-                image = static_cast<uint32_t>(gDropdownItemsArgs[i]);
+                auto image = static_cast<uint32_t>(gDropdownItemsArgs[i]);
                 if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                     image++;
 
-                gfx_draw_sprite(
-                    dpi, ImageId::FromUInt32(image),
-                    w->windowPos + ScreenCoordsXY{ 2 + (cell_x * _dropdown_item_width), 2 + (cell_y * _dropdown_item_height) });
+                gfx_draw_sprite(dpi, ImageId::FromUInt32(image), screenCoords);
             }
             else
             {
                 // Text item
-                if (i < Dropdown::ItemsMaxSize)
-                {
-                    if (Dropdown::IsChecked(i))
-                    {
-                        item++;
-                    }
-                }
+                if (i < Dropdown::ItemsMaxSize && Dropdown::IsChecked(i))
+                    item++;
 
                 // Calculate colour
                 colour_t colour = NOT_TRANSLUCENT(w->colours[0]);
                 if (i == highlightedIndex)
                     colour = COLOUR_WHITE;
-                if (Dropdown::IsDisabled(i))
-                    if (i < Dropdown::ItemsMaxSize)
-                        colour = NOT_TRANSLUCENT(w->colours[0]) | COLOUR_FLAG_INSET;
+                if (i < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(i))
+                    colour = NOT_TRANSLUCENT(w->colours[0]) | COLOUR_FLAG_INSET;
 
                 // Draw item string
-                ScreenCoordsXY screenCoords = { w->windowPos.x + 2 + (cell_x * _dropdown_item_width),
-                                                w->windowPos.y + 2 + (cell_y * _dropdown_item_height) };
                 Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItemsArgs[i]));
                 DrawTextEllipsised(dpi, screenCoords, w->width - 5, item, ft, { colour });
             }
