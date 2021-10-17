@@ -593,7 +593,9 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             if (i == w->selected_list_item)
             {
                 gfx_filter_rect(
-                    dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                    dpi, 
+                    { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, 
+                    FilterPaletteID::PaletteDarken1);
                 buffer += network_get_player_name(i);
                 colour = w->colours[2];
             }
@@ -888,14 +890,18 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
 
     auto dpiCoords = ScreenCoordsXY{ dpi->x, dpi->y };
     gfx_fill_rect(
-        dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
+        dpi, 
+        { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, 
+        ColourMapA[w->colours[1]].mid_light);
 
     for (int32_t i = 0; i < network_get_num_actions(); i++)
     {
         if (i == w->selected_list_item)
         {
             gfx_filter_rect(
-                dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
+                dpi, 
+                { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 }, 
+                FilterPaletteID::PaletteDarken1);
         }
         if (screenCoords.y > dpi->y + dpi->height)
         {
