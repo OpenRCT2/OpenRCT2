@@ -401,7 +401,9 @@ public:
 
                 if (i == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
+                    gfx_filter_rect(
+                        &dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, 
+                        FilterPaletteID::PaletteDarken1);
                     format = (_quickFireMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
