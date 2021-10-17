@@ -387,22 +387,26 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
+        int32_t left, top, right, bottom;
+        auto previousWidget = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE];
+        auto nextWidget = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE];
+
         if (drawPreviousButton)
         {
-            gfx_filter_rect(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom + w->windowPos.y, FilterPaletteID::Palette51);
+            left = previousWidget.left + w->windowPos.x;
+            top = previousWidget.top + w->windowPos.y;
+            right = previousWidget.right + w->windowPos.x;
+            bottom = previousWidget.bottom + w->windowPos.y;
+            gfx_filter_rect(dpi, { left, top, right, bottom }, FilterPaletteID::Palette51);
         }
 
         if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
         {
-            gfx_filter_rect(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom + w->windowPos.y, FilterPaletteID::Palette51);
+            left = nextWidget.left + w->windowPos.x;
+            top = nextWidget.top + w->windowPos.y;
+            right = nextWidget.right + w->windowPos.x;
+            bottom = nextWidget.bottom + w->windowPos.y;
+            gfx_filter_rect(dpi, { left, top, right, bottom }, FilterPaletteID::Palette51);
         }
     }
 
