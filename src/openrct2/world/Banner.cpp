@@ -194,15 +194,17 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  */
 ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 {
-    static constexpr const std::array<CoordsXY, 9> NeighbourCheckOrder = { CoordsXY{ COORDS_XY_STEP, 0 },
-                                                                           CoordsXY{ -COORDS_XY_STEP, 0 },
-                                                                           { 0, COORDS_XY_STEP },
-                                                                           CoordsXY{ 0, -COORDS_XY_STEP },
-                                                                           CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
-                                                                           CoordsXY{ +COORDS_XY_STEP, -COORDS_XY_STEP },
-                                                                           CoordsXY{ +COORDS_XY_STEP, +COORDS_XY_STEP },
-                                                                           CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
-                                                                           CoordsXY{ 0, 0 } };
+    static constexpr const std::array NeighbourCheckOrder = {
+        CoordsXY{ COORDS_XY_STEP, 0 },
+        CoordsXY{ -COORDS_XY_STEP, 0 },
+        CoordsXY{ 0, COORDS_XY_STEP },
+        CoordsXY{ 0, -COORDS_XY_STEP },
+        CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+        CoordsXY{ +COORDS_XY_STEP, -COORDS_XY_STEP },
+        CoordsXY{ +COORDS_XY_STEP, +COORDS_XY_STEP },
+        CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+        CoordsXY{ 0, 0 },
+    };
 
     for (const auto& neighhbourCoords : NeighbourCheckOrder)
     {

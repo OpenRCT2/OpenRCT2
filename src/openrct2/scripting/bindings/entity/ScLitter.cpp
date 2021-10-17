@@ -48,10 +48,15 @@ namespace OpenRCT2::Scripting
     std::string ScLitter::litterType_get() const
     {
         auto* litter = GetLitter();
-        auto it = LitterTypeMap.find(litter->SubType);
-        if (it == LitterTypeMap.end())
-            return "";
-        return std::string{ it->first };
+        if (litter != nullptr)
+        {
+            auto it = LitterTypeMap.find(litter->SubType);
+            if (it != LitterTypeMap.end())
+            {
+                return std::string{ it->first };
+            }
+        }
+        return "";
     }
 
     void ScLitter::litterType_set(const std::string& litterType)

@@ -122,8 +122,14 @@ template<> void PaintEntity(paint_session* session, const JumpingFountain* jumpi
     uint32_t baseImageId = (jumpingFountain->FountainType == JumpingFountainType::Snow) ? JumpingFountainSnowBaseImage
                                                                                         : JumpingFountainWaterBaseImage;
     uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain->frame;
-    constexpr std::array<CoordsXY, 2> antiClockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, -3 }, CoordsXY{ 0, -3 } };
-    constexpr std::array<CoordsXY, 2> clockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, 3 }, CoordsXY{ 0, 3 } };
+    constexpr std::array antiClockWiseBoundingBoxes = {
+        CoordsXY{ -COORDS_XY_STEP, -3 },
+        CoordsXY{ 0, -3 },
+    };
+    constexpr std::array clockWiseBoundingBoxes = {
+        CoordsXY{ -COORDS_XY_STEP, 3 },
+        CoordsXY{ 0, 3 },
+    };
 
     auto bb = isAntiClockwise ? antiClockWiseBoundingBoxes : clockWiseBoundingBoxes;
 

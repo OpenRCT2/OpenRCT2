@@ -1121,10 +1121,12 @@ void map_invalidate_map_selection_tiles()
 static void map_get_bounding_box(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
 {
     uint32_t rotation = get_current_rotation();
-    std::array<const CoordsXY, 4> corners{ CoordsXY{ _range.GetLeft(), _range.GetTop() },
-                                           CoordsXY{ _range.GetRight(), _range.GetTop() },
-                                           CoordsXY{ _range.GetRight(), _range.GetBottom() },
-                                           CoordsXY{ _range.GetLeft(), _range.GetBottom() } };
+    const std::array corners{
+        CoordsXY{ _range.GetLeft(), _range.GetTop() },
+        CoordsXY{ _range.GetRight(), _range.GetTop() },
+        CoordsXY{ _range.GetRight(), _range.GetBottom() },
+        CoordsXY{ _range.GetLeft(), _range.GetBottom() },
+    };
 
     *left = std::numeric_limits<int32_t>::max();
     *top = std::numeric_limits<int32_t>::max();

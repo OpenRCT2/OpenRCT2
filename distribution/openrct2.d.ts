@@ -1509,7 +1509,7 @@ declare global {
         /**
          * The tick number this entity was created.
          */
-        creationTime: number;
+        creationTick: number;
     }
 
     type LitterType = "vomit" |
