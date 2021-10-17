@@ -72,10 +72,10 @@ static void UpdateFootpathsFromMapping(
 namespace OpenRCT2
 {
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x4;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x5;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x2;
+    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x5;
 
     namespace ParkFileChunkType
     {
@@ -219,6 +219,16 @@ namespace OpenRCT2
         }
 
     private:
+        static uint8_t GetMinCarsPerTrain(uint8_t value)
+        {
+            return value >> 4;
+        }
+
+        static uint8_t GetMaxCarsPerTrain(uint8_t value)
+        {
+            return value & 0xF;
+        }
+
         void ReadWriteAuthoringChunk(OrcaStream& os)
         {
             // Write-only for now
@@ -1031,7 +1041,8 @@ namespace OpenRCT2
 
         void ReadWriteRidesChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::RIDES, [this](OrcaStream::ChunkStream& cs) {
+            const auto version = os.GetHeader().TargetVersion;
+            os.ReadWriteChunk(ParkFileChunkType::RIDES, [this, &version](OrcaStream::ChunkStream& cs) {
                 std::vector<ride_id_t> rideIds;
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -1059,7 +1070,7 @@ namespace OpenRCT2
                         }
                     }
                 }
-                cs.ReadWriteVector(rideIds, [&cs](ride_id_t& rideId) {
+                cs.ReadWriteVector(rideIds, [&cs, &version](ride_id_t& rideId) {
                     // Ride ID
                     cs.ReadWrite(rideId);
 
@@ -1126,7 +1137,19 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.proposed_num_vehicles);
                     cs.ReadWrite(ride.proposed_num_cars_per_train);
                     cs.ReadWrite(ride.max_trains);
-                    cs.ReadWrite(ride.min_max_cars_per_train);
+                    if (version < 0x5)
+                    {
+                        uint8_t value;
+                        cs.ReadWrite(value);
+                        ride.MinCarsPerTrain = GetMinCarsPerTrain(value);
+                        ride.MaxCarsPerTrain = GetMaxCarsPerTrain(value);
+                    }
+                    else
+                    {
+                        cs.ReadWrite(ride.MinCarsPerTrain);
+                        cs.ReadWrite(ride.MaxCarsPerTrain);
+                    }
+
                     cs.ReadWrite(ride.min_waiting_time);
                     cs.ReadWrite(ride.max_waiting_time);
                     cs.ReadWriteArray(ride.vehicles, [&cs](uint16_t& v) {
