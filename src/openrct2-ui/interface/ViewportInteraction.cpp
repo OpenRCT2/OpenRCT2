@@ -25,6 +25,7 @@
 #include <openrct2/actions/SmallSceneryRemoveAction.h>
 #include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/peep/Staff.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>

@@ -10,7 +10,7 @@
 #include "StaffFireAction.h"
 
 #include "../interface/Window.h"
-#include "../peep/Peep.h"
+#include "../peep/Staff.h"
 #include "../world/Entity.h"
 
 StaffFireAction::StaffFireAction(uint16_t spriteId)

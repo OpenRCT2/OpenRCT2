@@ -11,6 +11,7 @@
 
 #include "core/CircularBuffer.h"
 #include "peep/Peep.h"
+#include "peep/Staff.h"
 #include "ride/Vehicle.h"
 #include "world/Balloon.h"
 #include "world/Duck.h"

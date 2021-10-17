@@ -18,6 +18,7 @@
 #include "../interface/Viewport.h"
 #include "../peep/Peep.h"
 #include "../peep/RideUseSystem.h"
+#include "../peep/Staff.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "Balloon.h"
@@ -555,6 +556,7 @@ static void FreeEntity(EntityBase& entity)
     if (staff != nullptr)
     {
         staff->SetName({});
+        staff->ClearPatrolArea();
     }
     else if (guest != nullptr)
     {

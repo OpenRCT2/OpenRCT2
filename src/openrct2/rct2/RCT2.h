@@ -747,6 +747,13 @@ struct RCT2SpritePeep : RCT12SpriteBase
 };
 assert_struct_size(RCT2SpritePeep, 0x100);
 
+enum class RCT2StaffMode : uint8_t
+{
+    None,
+    Walk,
+    Patrol = 3
+};
+
 union RCT2Sprite
 {
 private:

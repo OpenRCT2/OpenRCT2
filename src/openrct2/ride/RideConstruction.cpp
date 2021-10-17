@@ -20,6 +20,7 @@
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
+#include "../peep/Staff.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"

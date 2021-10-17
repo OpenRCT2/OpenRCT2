@@ -61,14 +61,12 @@ const rct_string_id StaffCostumeNames[] = {
 };
 // clang-format on
 
-// Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their StaffId
-// Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
-uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
-StaffMode gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
 uint16_t gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
+
+static PatrolArea _mergedPatrolAreas[EnumValue(StaffType::Count)];
 
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
@@ -84,12 +82,6 @@ template<> bool EntityBase::Is<Staff>() const
  */
 void staff_reset_modes()
 {
-    for (int32_t i = 0; i < STAFF_MAX_COUNT; i++)
-        gStaffModes[i] = StaffMode::None;
-
-    for (int32_t i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)); i++)
-        gStaffModes[i] = StaffMode::Walk;
-
     staff_update_greyed_patrol_areas();
 }
 
@@ -142,27 +134,27 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
  */
 void staff_update_greyed_patrol_areas()
 {
-    for (int32_t staff_type = 0; staff_type < static_cast<uint8_t>(StaffType::Count); ++staff_type)
+    for (int32_t staffType = 0; staffType < EnumValue(StaffType::Count); ++staffType)
     {
-        const size_t staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
-        for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-        {
-            gStaffPatrolAreas[staffPatrolOffset + i] = 0;
-        }
+        // Reset all of the merged data for the type.
+        auto& mergedData = _mergedPatrolAreas[staffType].Data;
+        std::fill(std::begin(mergedData), std::end(mergedData), 0);
 
-        for (auto peep : EntityList<Staff>())
+        for (auto staff : EntityList<Staff>())
         {
-            if (!peep->HasPatrolArea())
+            if (EnumValue(staff->AssignedStaffType) != staffType)
             {
                 continue;
             }
-            if (static_cast<uint8_t>(peep->AssignedStaffType) == staff_type)
+            if (!staff->HasPatrolArea())
             {
-                const size_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
-                for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-                {
-                    gStaffPatrolAreas[staffPatrolOffset + i] |= gStaffPatrolAreas[peepPatrolOffset + i];
-                }
+                continue;
+            }
+
+            auto staffData = staff->PatrolInfo->Data;
+            for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+            {
+                mergedData[i] |= staffData[i];
             }
         }
     }
@@ -369,7 +361,6 @@ void Staff::ResetStats()
 
 static std::pair<int32_t, int32_t> getPatrolAreaOffsetIndex(const CoordsXY& coords)
 {
-    // Patrol areas are 4 * 4 tiles (32 * 4) = 128 = 2^^7
     auto tilePos = TileCoordsXY(coords);
     auto x = tilePos.x / 4;
     auto y = tilePos.y / 4;
@@ -379,34 +370,37 @@ static std::pair<int32_t, int32_t> getPatrolAreaOffsetIndex(const CoordsXY& coor
     return { byteIndex, byteBitIndex };
 }
 
-static bool staff_is_patrol_area_set(int32_t staffIndex, const CoordsXY& coords)
-{
-    // Patrol quads are stored in a bit map (8 patrol quads per byte).
-    // Each patrol quad is 4x4.
-    // Therefore there are in total 64 x 64 patrol quads in the 256 x 256 map.
-    // At the end of the array (after the slots for individual staff members),
-    // there are slots that save the combined patrol area for every staff type.
-
-    int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    return gStaffPatrolAreas[peepOffset + offset] & (1UL << bitIndex);
-}
-
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
 {
-    return staff_is_patrol_area_set(StaffId, coords);
+    if (PatrolInfo != nullptr)
+    {
+        auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
+        return PatrolInfo->Data[offset] & (1UL << bitIndex);
+    }
+    return false;
 }
 
 bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords)
 {
-    return staff_is_patrol_area_set(STAFF_MAX_COUNT + static_cast<uint8_t>(type), coords);
+    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
+    return _mergedPatrolAreas[EnumValue(type)].Data[offset] & (1UL << bitIndex);
 }
 
 void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
 {
-    int32_t peepOffset = StaffId * STAFF_PATROL_AREA_SIZE;
+    if (PatrolInfo == nullptr)
+    {
+        if (value)
+        {
+            PatrolInfo = new PatrolArea();
+        }
+        else
+        {
+            return;
+        }
+    }
     auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    uint32_t* addr = &gStaffPatrolAreas[peepOffset + offset];
+    auto* addr = &PatrolInfo->Data[offset];
     if (value)
     {
         *addr |= (1 << bitIndex);
@@ -419,21 +413,17 @@ void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
 
 void Staff::ClearPatrolArea()
 {
-    const auto peepOffset = StaffId * STAFF_PATROL_AREA_SIZE;
-    std::fill_n(&gStaffPatrolAreas[peepOffset], STAFF_PATROL_AREA_SIZE, 0);
-    gStaffModes[StaffId] = StaffMode::Walk;
-}
-
-void Staff::TogglePatrolArea(const CoordsXY& coords)
-{
-    int32_t peepOffset = StaffId * STAFF_PATROL_AREA_SIZE;
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    gStaffPatrolAreas[peepOffset + offset] ^= (1 << bitIndex);
+    delete PatrolInfo;
+    PatrolInfo = nullptr;
 }
 
 bool Staff::HasPatrolArea() const
 {
-    return gStaffModes[StaffId] == StaffMode::Patrol;
+    if (PatrolInfo == nullptr)
+        return false;
+
+    constexpr auto hasData = [](const auto& datapoint) { return datapoint != 0; };
+    return std::any_of(std::begin(PatrolInfo->Data), std::end(PatrolInfo->Data), hasData);
 }
 
 /**
