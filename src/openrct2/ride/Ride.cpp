@@ -1876,7 +1876,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
     if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
         || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
         || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
-        if (vehicle->velocity == 0)
+        if (vehicle->velocity == 0.0_mph32)
             return;
 
     if (measurement.current_item >= RideMeasurement::MAX_ITEMS)
@@ -3062,7 +3062,7 @@ static Vehicle* vehicle_create_car(
     vehicle->num_seats = vehicleEntry->num_seats;
     vehicle->speed = vehicleEntry->powered_max_speed;
     vehicle->powered_acceleration = vehicleEntry->powered_acceleration;
-    vehicle->velocity = 0;
+    vehicle->velocity = 0.0_mph32;
     vehicle->acceleration = 0;
     vehicle->SwingSprite = 0;
     vehicle->SwingPosition = 0;
@@ -3505,7 +3505,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
             firstBlock->SetBlockBrakeClosed(true);
             for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
             {
-                car->velocity = 0;
+                car->velocity = 0.0_mph32;
                 car->acceleration = 0;
                 car->SwingSprite = 0;
                 car->remaining_distance += 13962;

@@ -15,6 +15,7 @@
 #include "../ParkImporter.h"
 #include "../actions/WallPlaceAction.h"
 #include "../audio/audio.h"
+#include "../common.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
@@ -855,7 +856,7 @@ namespace RCT1
             dst->SetMaxCarsPerTrain(rideEntry->max_cars_in_train);
 
             // RCT1 used 5mph / 8 km/h for every lift hill
-            dst->lift_hill_speed = 5;
+            dst->lift_hill_speed = 5_mph;
 
             dst->music = OBJECT_ENTRY_INDEX_NULL;
             if (GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))

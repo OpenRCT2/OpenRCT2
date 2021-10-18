@@ -1622,7 +1622,7 @@ void Vehicle::UpdateMeasurements()
             curRide->max_speed = absVelocity;
         }
 
-        if (curRide->average_speed_test_timeout == 0 && absVelocity > 0x8000)
+        if (curRide->average_speed_test_timeout == 0 && absVelocity > 0.5_mph32)
         {
             curRide->average_speed = add_clamp_int32_t(curRide->average_speed, absVelocity);
             curRide->stations[test_segment].SegmentTime++;
@@ -1709,7 +1709,7 @@ void Vehicle::UpdateMeasurements()
                 curRide->special_track_elements |= RIDE_ELEMENT_WHIRLPOOL;
                 break;
             case TrackElemType::Watersplash:
-                if (velocity >= 0xB0000)
+                if (velocity >= 11.0_mph32)
                 {
                     curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
                 }
@@ -1794,7 +1794,7 @@ void Vehicle::UpdateMeasurements()
 
         if (testingFlags & RIDE_TESTING_DROP_DOWN)
         {
-            if (velocity < 0 || !(trackFlags & TRACK_ELEM_FLAG_DOWN))
+            if (velocity < 0.0_mph32 || !(trackFlags & TRACK_ELEM_FLAG_DOWN))
             {
                 curRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
 
@@ -1809,7 +1809,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (trackFlags & TRACK_ELEM_FLAG_DOWN && velocity >= 0)
+        else if (trackFlags & TRACK_ELEM_FLAG_DOWN && velocity >= 0.0_mph32)
         {
             curRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
             curRide->testing_flags |= RIDE_TESTING_DROP_DOWN;
@@ -1826,7 +1826,7 @@ void Vehicle::UpdateMeasurements()
 
         if (testingFlags & RIDE_TESTING_DROP_UP)
         {
-            if (velocity > 0 || !(trackFlags & TRACK_ELEM_FLAG_UP))
+            if (velocity > 0.0_mph32 || !(trackFlags & TRACK_ELEM_FLAG_UP))
             {
                 curRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
 
@@ -1841,7 +1841,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (trackFlags & TRACK_ELEM_FLAG_UP && velocity <= 0)
+        else if (trackFlags & TRACK_ELEM_FLAG_UP && velocity <= 0.0_mph32)
         {
             curRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
             curRide->testing_flags |= RIDE_TESTING_DROP_UP;
@@ -2044,7 +2044,7 @@ void Vehicle::Update()
         auto vehicleEntry = &rideEntry->vehicles[vehicle_type];
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && curRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
         {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE) || (Pitch == 2 && velocity <= 0x20000))
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE) || (Pitch == 2 && velocity <= 2.0_mph32))
             {
                 SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
             }
@@ -2145,11 +2145,11 @@ void Vehicle::UpdateMovingToEndOfStation()
         case RideMode::RotatingLift:
         case RideMode::DownwardLaunch:
         case RideMode::FreefallDrop:
-            if (velocity >= -131940)
+            if (velocity >= -2.013245_mph32)
             {
                 acceleration = -3298;
             }
-            if (velocity < -131940)
+            if (velocity < -2.013245_mph32)
             {
                 velocity -= velocity / 16;
                 acceleration = 0;
@@ -2176,7 +2176,7 @@ void Vehicle::UpdateMovingToEndOfStation()
         case RideMode::CrookedHouse:
         case RideMode::Circus:
             current_station = 0;
-            velocity = 0;
+            velocity = 0.0_mph32;
             acceleration = 0;
             SetState(Vehicle::Status::WaitingForPassengers);
             break;
@@ -2192,12 +2192,12 @@ void Vehicle::UpdateMovingToEndOfStation()
 
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
             {
-                if (velocity <= 131940)
+                if (velocity <= 2.013245_mph32)
                 {
                     acceleration = 3298;
                 }
             }
-            if (velocity > 131940)
+            if (velocity > 2.013245_mph32)
             {
                 velocity -= velocity / 16;
                 acceleration = 0;
@@ -2207,7 +2207,7 @@ void Vehicle::UpdateMovingToEndOfStation()
 
             if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1)
             {
-                velocity = 0;
+                velocity = 0.0_mph32;
                 acceleration = 0;
                 sub_state++;
 
@@ -2219,7 +2219,7 @@ void Vehicle::UpdateMovingToEndOfStation()
             }
             else
             {
-                if (velocity > 98955)
+                if (velocity > 1.509934_mph32)
                 {
                     sub_state = 0;
                 }
@@ -2229,7 +2229,7 @@ void Vehicle::UpdateMovingToEndOfStation()
                 break;
 
             current_station = station;
-            velocity = 0;
+            velocity = 0.0_mph32;
             acceleration = 0;
             SetState(Vehicle::Status::WaitingForPassengers);
             break;
@@ -2320,7 +2320,7 @@ static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, uin
  */
 void Vehicle::UpdateWaitingForPassengers()
 {
-    velocity = 0;
+    velocity = 0.0_mph32;
 
     auto curRide = GetRide();
     if (curRide == nullptr)
@@ -2472,7 +2472,7 @@ void Vehicle::UpdateWaitingForPassengers()
     if (!CloseRestraints())
         return;
 
-    velocity = 0;
+    velocity = 0.0_mph32;
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT);
 
     if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
@@ -2521,7 +2521,7 @@ void Vehicle::UpdateDodgemsMode()
     // Mark the dodgem as not in use.
     animation_frame = 0;
     Invalidate();
-    velocity = 0;
+    velocity = 0.0_mph32;
     acceleration = 0;
     SetState(Vehicle::Status::UnloadingPassengers);
 }
@@ -2964,7 +2964,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                                 {
                                     continue;
                                 }
-                                if (v->status != Vehicle::Status::WaitingToDepart && v->velocity != 0)
+                                if (v->status != Vehicle::Status::WaitingToDepart && v->velocity != 0.0_mph32)
                                 {
                                     // Here at least one vehicle on the ride is moving.
                                     return false;
@@ -3131,8 +3131,8 @@ static void test_reset(Ride& ride, StationIndex curStation)
 {
     ride.lifecycle_flags |= RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_NO_RAW_STATS;
-    ride.max_speed = 0;
-    ride.average_speed = 0;
+    ride.max_speed = 0.0_mph32;
+    ride.average_speed = 0.0_mph32;
     ride.current_test_segment = 0;
     ride.average_speed_test_timeout = 0;
     ride.max_positive_vertical_g = FIXED_2DP(1, 0);
@@ -3263,7 +3263,7 @@ void Vehicle::UpdateDeparting()
             curRide->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             curRide->inspection_station = current_station;
             curRide->breakdown_reason = curRide->breakdown_reason_pending;
-            velocity = 0;
+            velocity = 0.0_mph32;
             return;
         }
 
@@ -3309,7 +3309,7 @@ void Vehicle::UpdateDeparting()
     switch (curRide->mode)
     {
         case RideMode::ReverseInclineLaunchedShuttle:
-            if (velocity >= -131940)
+            if (velocity >= -2.013245_mph32)
                 acceleration = -3298;
             break;
         case RideMode::PoweredLaunchPasstrough:
@@ -3332,7 +3332,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::DownwardLaunch:
             if (var_CE >= 1)
             {
-                if ((14 << 16) > velocity)
+                if (14.0_mph32 > velocity)
                     acceleration = 14 << 12;
                 break;
             }
@@ -3345,7 +3345,7 @@ void Vehicle::UpdateDeparting()
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
                 break;
 
-            if (velocity <= 131940)
+            if (velocity <= 2.013245_mph32)
                 acceleration = 3298;
             break;
         default:
@@ -3383,7 +3383,7 @@ void Vehicle::UpdateDeparting()
         if (curRide->mode == RideMode::Shuttle)
         {
             update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
-            velocity = 0;
+            velocity = 0.0_mph32;
 
             // We have turned, so treat it like entering a new tile
             UpdateCrossings();
@@ -3399,7 +3399,7 @@ void Vehicle::UpdateDeparting()
             if (velocity <= curSpeed)
             {
                 acceleration = 15539;
-                if (velocity != 0)
+                if (velocity != 0.0_mph32)
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
@@ -3417,7 +3417,7 @@ void Vehicle::UpdateDeparting()
             if (velocity >= curSpeed)
             {
                 acceleration = -15539;
-                if (velocity != 0)
+                if (velocity != 0.0_mph32)
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
@@ -3490,7 +3490,7 @@ void Vehicle::FinishDeparting()
 
     if (curRide->mode == RideMode::DownwardLaunch)
     {
-        if (var_CE >= 1 && (14 << 16) > velocity)
+        if (var_CE >= 1 && 14.0_mph32 > velocity)
             return;
 
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
@@ -3518,7 +3518,7 @@ void Vehicle::FinishDeparting()
     }
     lost_time_out = 0;
     SetState(Vehicle::Status::Travelling, 1);
-    if (velocity < 0)
+    if (velocity < 0.0_mph32)
         sub_state = 0;
 }
 
@@ -3671,7 +3671,7 @@ void Vehicle::UpdateCollisionSetup()
         nextTrain->prev_vehicle_on_ride = prev_vehicle_on_ride;
     }
 
-    velocity = 0;
+    velocity = 0.0_mph32;
 }
 
 /** rct2: 0x009A3AC4, 0x009A3AC6 */
@@ -3751,7 +3751,7 @@ void Vehicle::UpdateCrashSetup()
         prevTrain->next_vehicle_on_ride = lastVehicle->next_vehicle_on_ride;
         nextTrain->prev_vehicle_on_ride = prev_vehicle_on_ride;
     }
-    velocity = 0;
+    velocity = 0.0_mph32;
 }
 
 /**
@@ -3768,7 +3768,7 @@ void Vehicle::UpdateTravelling()
 
     if (sub_state == 2)
     {
-        velocity = 0;
+        velocity = 0.0_mph32;
         acceleration = 0;
         var_C0--;
         if (var_C0 == 0)
@@ -3778,7 +3778,7 @@ void Vehicle::UpdateTravelling()
     if (curRide->mode == RideMode::FreefallDrop && animation_frame != 0)
     {
         animation_frame++;
-        velocity = 0;
+        velocity = 0.0_mph32;
         acceleration = 0;
         Invalidate();
         return;
@@ -3791,7 +3791,7 @@ void Vehicle::UpdateTravelling()
         && curRide->mode == RideMode::ReverseInclineLaunchedShuttle && sub_state == 0)
     {
         sub_state = 1;
-        velocity = 0;
+        velocity = 0.0_mph32;
         skipCheck = true;
     }
 
@@ -3828,7 +3828,7 @@ void Vehicle::UpdateTravelling()
             if (curRide->mode == RideMode::Shuttle)
             {
                 update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
-                velocity = 0;
+                velocity = 0.0_mph32;
             }
             else
             {
@@ -3838,7 +3838,7 @@ void Vehicle::UpdateTravelling()
                     return;
                 }
                 sub_state = 1;
-                velocity = 0;
+                velocity = 0.0_mph32;
             }
         }
     }
@@ -3847,21 +3847,21 @@ void Vehicle::UpdateTravelling()
     {
         if (sub_state == 0)
         {
-            if (velocity >= -131940)
+            if (velocity >= -2.013245_mph32)
                 acceleration = -3298;
-            velocity = std::max(velocity, -131940);
+            velocity = std::max(velocity, -2.013245_mph32);
         }
         else
         {
             if (CurrentTowerElementIsTop())
             {
-                velocity = 0;
+                velocity = 0.0_mph32;
                 sub_state = 2;
                 var_C0 = 150;
             }
             else
             {
-                if (velocity <= 131940)
+                if (velocity <= 2.013245_mph32)
                     acceleration = 3298;
             }
         }
@@ -3916,18 +3916,19 @@ void Vehicle::UpdateTravelling()
     if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
         return;
 
-    if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle && velocity >= 0 && !HasUpdateFlag(VEHICLE_UPDATE_FLAG_12))
+    if (curRide->mode == RideMode::ReverseInclineLaunchedShuttle && velocity >= 0.0_mph32
+        && !HasUpdateFlag(VEHICLE_UPDATE_FLAG_12))
     {
         return;
     }
 
-    if (curRide->mode == RideMode::PoweredLaunchPasstrough && velocity < 0)
+    if (curRide->mode == RideMode::PoweredLaunchPasstrough && velocity < 0.0_mph32)
         return;
 
     SetState(Vehicle::Status::Arriving);
     current_station = _vehicleStationIndex;
     var_C0 = 0;
-    if (velocity < 0)
+    if (velocity < 0.0_mph32)
         sub_state = 1;
 }
 
@@ -3941,14 +3942,14 @@ void Vehicle::UpdateArrivingPassThroughStation(
             return;
         }
 
-        if (velocity <= 131940)
+        if (velocity <= 2.013245_mph32)
         {
             acceleration = 3298;
             return;
         }
 
         int32_t velocity_diff = velocity;
-        if (velocity_diff >= 1572864)
+        if (velocity_diff >= 24.0_mph32)
             velocity_diff /= 8;
         else
             velocity_diff /= 16;
@@ -3970,18 +3971,18 @@ void Vehicle::UpdateArrivingPassThroughStation(
     }
     else
     {
-        if (!(vehicleEntry.flags & VEHICLE_ENTRY_FLAG_POWERED) && velocity >= -131940)
+        if (!(vehicleEntry.flags & VEHICLE_ENTRY_FLAG_POWERED) && velocity >= -2.013245_mph32)
         {
             acceleration = -3298;
         }
 
-        if (velocity >= -131940)
+        if (velocity >= -2.013245_mph32)
         {
             return;
         }
 
         int32_t velocity_diff = velocity;
-        if (velocity_diff < -1572864)
+        if (velocity_diff < -24.0_mph32)
             velocity_diff /= 8;
         else
             velocity_diff /= 16;
@@ -4048,7 +4049,7 @@ void Vehicle::UpdateArriving()
         case RideMode::HauntedHouse:
         case RideMode::CrookedHouse:
             ClearUpdateFlag(VEHICLE_UPDATE_FLAG_12);
-            velocity = 0;
+            velocity = 0.0_mph32;
             acceleration = 0;
             SetState(Vehicle::Status::UnloadingPassengers);
             return;
@@ -4089,7 +4090,7 @@ void Vehicle::UpdateArriving()
           & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION | VEHICLE_UPDATE_MOTION_TRACK_FLAG_1
              | VEHICLE_UPDATE_MOTION_TRACK_FLAG_5)))
     {
-        if (velocity > 98955)
+        if (velocity > 1.509934_mph32)
             var_C0 = 0;
         return;
     }
@@ -4134,7 +4135,7 @@ void Vehicle::UpdateArriving()
     if ((curRide->mode == RideMode::UpwardLaunch || curRide->mode == RideMode::DownwardLaunch) && var_CE < 2)
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
-        velocity = 0;
+        velocity = 0.0_mph32;
         acceleration = 0;
         SetState(Vehicle::Status::Departing, 1);
         return;
@@ -4147,7 +4148,7 @@ void Vehicle::UpdateArriving()
     }
 
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_12);
-    velocity = 0;
+    velocity = 0.0_mph32;
     acceleration = 0;
     SetState(Vehicle::Status::UnloadingPassengers);
 }
@@ -4298,7 +4299,7 @@ void Vehicle::UpdateTravellingCableLift()
             curRide->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             curRide->inspection_station = current_station;
             curRide->breakdown_reason = curRide->breakdown_reason_pending;
-            velocity = 0;
+            velocity = 0.0_mph32;
             return;
         }
 
@@ -4325,7 +4326,7 @@ void Vehicle::UpdateTravellingCableLift()
         }
     }
 
-    if (velocity <= 439800)
+    if (velocity <= 6.710816_mph32)
     {
         acceleration = 4398;
     }
@@ -4649,7 +4650,7 @@ void Vehicle::UpdateMotionBoatHire()
     {
         int32_t edx = velocity >> 8;
         edx = (edx * edx);
-        if (velocity < 0)
+        if (velocity < 0.0_mph32)
         {
             edx = -edx;
         }
@@ -5606,8 +5607,8 @@ void Vehicle::UpdateSound()
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
-    int32_t ecx = abs(velocity) - 0x10000;
-    if (ecx >= 0)
+    int32_t ecx = abs(velocity) - 1.0_mph32;
+    if (ecx >= 0.0_mph32)
     {
         frictionSound.id = vehicleEntry->friction_sound_id;
         ecx >>= 15;
@@ -5620,7 +5621,7 @@ void Vehicle::UpdateSound()
             screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
-                if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
+                if (velocity < 4.0_mph32 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
                     GetLiftHillSound(curRide, screamSound);
                     break;
@@ -5642,7 +5643,7 @@ void Vehicle::UpdateSound()
             screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
-                if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
+                if (velocity < 4.0_mph32 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
                     GetLiftHillSound(curRide, screamSound);
                     break;
@@ -5705,9 +5706,9 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
     if (totalNumPeeps == 0)
         return OpenRCT2::Audio::SoundId::Null;
 
-    if (velocity < 0)
+    if (velocity < 0.0_mph32)
     {
-        if (velocity > -0x2C000)
+        if (velocity > -2.75_mph32)
             return OpenRCT2::Audio::SoundId::Null;
 
         for (Vehicle* vehicle2 = GetEntity<Vehicle>(sprite_index); vehicle2 != nullptr;
@@ -5725,7 +5726,7 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
         return OpenRCT2::Audio::SoundId::Null;
     }
 
-    if (velocity < 0x2C000)
+    if (velocity < 2.75_mph32)
         return OpenRCT2::Audio::SoundId::Null;
 
     for (Vehicle* vehicle2 = GetEntity<Vehicle>(sprite_index); vehicle2 != nullptr;
@@ -6385,7 +6386,7 @@ int32_t Vehicle::UpdateMotionDodgems()
     if (curRide->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
         && curRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
     {
-        nextVelocity = 0;
+        nextVelocity = 0.0_mph32;
     }
     velocity = nextVelocity;
 
@@ -6479,7 +6480,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         {
             int32_t oldVelocity = velocity;
             remaining_distance = 0;
-            velocity = 0;
+            velocity = 0.0_mph32;
             uint8_t direction = sprite_direction | 1;
 
             Vehicle* collideVehicle = GetEntity<Vehicle>(collideSprite);
@@ -6487,7 +6488,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             {
                 var_34 = (scenario_rand() & 1) ? 1 : -1;
 
-                if (oldVelocity >= 131072)
+                if (oldVelocity >= 2.0_mph32)
                 {
                     collideVehicle->dodgems_collision_direction = direction;
                     dodgems_collision_direction = direction ^ (1 << 4);
@@ -6497,7 +6498,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             {
                 var_34 = (scenario_rand() & 1) ? 6 : -6;
 
-                if (oldVelocity >= 131072)
+                if (oldVelocity >= 2.0_mph32)
                 {
                     dodgems_collision_direction = direction ^ (1 << 4);
                 }
@@ -6510,7 +6511,7 @@ int32_t Vehicle::UpdateMotionDodgems()
     int32_t eax = velocity / 2;
     int32_t edx = velocity >> 8;
     edx *= edx;
-    if (velocity < 0)
+    if (velocity < 0.0_mph32)
         edx = -edx;
     edx >>= 5;
     eax += edx;
@@ -6687,7 +6688,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
  */
 void Vehicle::ApplyNonStopBlockBrake()
 {
-    if (velocity >= 0)
+    if (velocity >= 0.0_mph32)
     {
         // If the vehicle is below the speed limit
         if (velocity <= BLOCK_BRAKE_BASE_SPEED)
@@ -6715,9 +6716,9 @@ void Vehicle::ApplyStopBlockBrake()
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
     acceleration = 0;
     // If the this is slow enough, stop it. If not, slow it down
-    if (velocity <= 0x20000)
+    if (velocity <= 2.0_mph32)
     {
-        velocity = 0;
+        velocity = 0.0_mph32;
     }
     else
     {
@@ -6797,7 +6798,7 @@ void Vehicle::UpdateVelocity()
     int32_t nextVelocity = acceleration + velocity;
     if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY))
     {
-        nextVelocity = 0;
+        nextVelocity = 0.0_mph32;
     }
     if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP))
     {
@@ -6808,7 +6809,7 @@ void Vehicle::UpdateVelocity()
         }
         if (vertical_drop_countdown >= 0)
         {
-            nextVelocity = 0;
+            nextVelocity = 0.0_mph32;
             acceleration = 0;
         }
     }
@@ -7983,7 +7984,7 @@ void Vehicle::Sub6DBF3E()
     }
 
     uint16_t ax = track_progress;
-    if (_vehicleVelocityF64E08 < 0)
+    if (_vehicleVelocityF64E08 < 0.0_mph32)
     {
         if (ax <= 22)
         {
@@ -8103,9 +8104,9 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::LeftReverser
             || tileElement->AsTrack()->GetTrackType() == TrackElemType::RightReverser)
         {
-            if (IsHead() && velocity <= 0x30000)
+            if (IsHead() && velocity <= 3.0_mph32)
             {
-                velocity = 0;
+                velocity = 0.0_mph32;
             }
         }
 
@@ -8209,11 +8210,11 @@ loc_6DAEB9:
             vehicle_type ^= 1;
             vehicleEntry = Entry();
         }
-        if (_vehicleVelocityF64E08 >= 0x40000)
+        if (_vehicleVelocityF64E08 >= 4.0_mph32)
         {
             acceleration = -_vehicleVelocityF64E08 * 8;
         }
-        else if (_vehicleVelocityF64E08 < 0x20000)
+        else if (_vehicleVelocityF64E08 < 2.0_mph32)
         {
             acceleration = 0x50000;
         }
@@ -8274,7 +8275,7 @@ loc_6DAEB9:
     }
     if (trackType == TrackElemType::LogFlumeReverser)
     {
-        if (track_progress != 16 || velocity < 0x40000)
+        if (track_progress != 16 || velocity < 4.0_mph32)
         {
             if (track_progress == 32)
             {
@@ -8367,7 +8368,7 @@ loc_6DAEB9:
         // this == frontVehicle
         if (this == _vehicleFrontVehicle)
         {
-            if (_vehicleVelocityF64E08 >= 0)
+            if (_vehicleVelocityF64E08 >= 0.0_mph32)
             {
                 otherVehicleIndex = prev_vehicle_on_ride;
                 if (UpdateMotionCollisionDetection(loc, &otherVehicleIndex))
@@ -8388,7 +8389,7 @@ loc_6DAEB9:
                     auto velocityDelta = abs(velocity - head->velocity);
                     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
                     {
-                        if (velocityDelta > 0xE0000)
+                        if (velocityDelta > 14.0_mph32)
                         {
                             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
                             {
@@ -8542,7 +8543,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
 
     if (tileElement->AsTrack()->HasChain())
     {
-        if (_vehicleVelocityF64E08 < 0)
+        if (_vehicleVelocityF64E08 < 0.0_mph32)
         {
             if (next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
@@ -8563,7 +8564,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
             ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
             if (next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
-                if (_vehicleVelocityF64E08 < 0)
+                if (_vehicleVelocityF64E08 < 0.0_mph32)
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
                 }
@@ -8601,7 +8602,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
         if (trackType == TrackElemType::Flat && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
         {
             int32_t unkVelocity = _vehicleVelocityF64E08;
-            if (unkVelocity < -524288)
+            if (unkVelocity < -8.0_mph32)
             {
                 unkVelocity = abs(unkVelocity);
                 acceleration = unkVelocity * 2;
@@ -8678,7 +8679,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
 
             if (this == _vehicleFrontVehicle)
             {
-                if (_vehicleVelocityF64E08 < 0)
+                if (_vehicleVelocityF64E08 < 0.0_mph32)
                 {
                     otherVehicleIndex = next_vehicle_on_ride;
                     if (UpdateMotionCollisionDetection(loc, &otherVehicleIndex))
@@ -8695,7 +8696,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
 
                         if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
                         {
-                            if (abs(v4->velocity - v3->velocity) > 0xE0000)
+                            if (abs(v4->velocity - v3->velocity) > 14.0_mph32)
                             {
                                 if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
                                 {
@@ -9037,7 +9038,7 @@ loc_6DC743:
 
     if (this == _vehicleFrontVehicle)
     {
-        if (_vehicleVelocityF64E08 >= 0)
+        if (_vehicleVelocityF64E08 >= 0.0_mph32)
         {
             otherVehicleIndex = prev_vehicle_on_ride;
             UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex);
@@ -9111,7 +9112,7 @@ loc_6DCA9A:
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
         if (next_vehicle_on_train == SPRITE_INDEX_NULL)
         {
-            if (_vehicleVelocityF64E08 < 0)
+            if (_vehicleVelocityF64E08 < 0.0_mph32)
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
             }
@@ -9153,7 +9154,7 @@ loc_6DCC2C:
 
     if (this == _vehicleFrontVehicle)
     {
-        if (_vehicleVelocityF64E08 >= 0)
+        if (_vehicleVelocityF64E08 >= 0.0_mph32)
         {
             otherVehicleIndex = var_44;
             if (UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex))
@@ -9188,7 +9189,7 @@ loc_6DCD6B:
             return;
         }
         Vehicle* vEDI = gCurrentVehicle;
-        if (abs(vEDI->velocity - vEBP->velocity) > 0xE0000)
+        if (abs(vEDI->velocity - vEBP->velocity) > 14.0_mph32)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
@@ -9227,7 +9228,7 @@ loc_6DCE02:
     {
         return;
     }
-    if (_vehicleVelocityF64E08 < 0)
+    if (_vehicleVelocityF64E08 < 0.0_mph32)
     {
         if (track_progress > 11)
         {
@@ -9259,7 +9260,7 @@ static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const 
 {
     int32_t accelerationDecrease2 = velocity >> 8;
     accelerationDecrease2 *= accelerationDecrease2;
-    if (velocity < 0)
+    if (velocity < 0.0_mph32)
     {
         accelerationDecrease2 = -accelerationDecrease2;
     }
@@ -9340,7 +9341,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const rct_ride_e
             }
         }
 
-        if (abs(velocity) > 0x10000)
+        if (abs(velocity) > 1.0_mph32)
         {
             newAcceleration = 0;
         }
@@ -9364,7 +9365,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     velocity += acceleration;
     _vehicleVelocityF64E08 = velocity;
     _vehicleVelocityF64E0C = (velocity >> 10) * 42;
-    _vehicleFrontVehicle = _vehicleVelocityF64E08 < 0 ? TrainTail() : this;
+    _vehicleFrontVehicle = _vehicleVelocityF64E08 < 0.0_mph32 ? TrainTail() : this;
 
     for (Vehicle* vehicle = _vehicleFrontVehicle; vehicle != nullptr;)
     {
@@ -9379,7 +9380,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
                 *outStation = _vehicleStationIndex;
             return _vehicleMotionTrackFlags;
         }
-        if (_vehicleVelocityF64E08 >= 0)
+        if (_vehicleVelocityF64E08 >= 0.0_mph32)
         {
             vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
@@ -9439,10 +9440,11 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
 {
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
     {
-        if (velocity > (speed * 0x4000))
+        // compare velocity with speed/4, also convert uint8_t speed to int32_t (_mph32)
+        if (velocity > (speed * 0x4000)) // 0x4000 = 65536/4 = (2^16)/4
         {
             // Same code as none powered rides
-            if (curAcceleration <= 0 && curAcceleration >= -500 && velocity <= 0x8000)
+            if (curAcceleration <= 0 && curAcceleration >= -500 && velocity <= 0.5_mph32)
             {
                 return curAcceleration + 400;
             }
@@ -9499,7 +9501,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
         }
     }
 
-    if (std::abs(velocity) <= 0x10000)
+    if (std::abs(velocity) <= 1.0_mph32)
     {
         return poweredAcceleration;
     }
@@ -9540,7 +9542,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     UpdateVelocity();
 
     Vehicle* vehicle = this;
-    if (_vehicleVelocityF64E08 < 0)
+    if (_vehicleVelocityF64E08 < 0.0_mph32)
     {
         vehicle = vehicle->TrainTail();
     }
@@ -9645,7 +9647,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
                 *outStation = _vehicleStationIndex;
             return _vehicleMotionTrackFlags;
         }
-        if (_vehicleVelocityF64E08 >= 0)
+        if (_vehicleVelocityF64E08 >= 0.0_mph32)
         {
             spriteId = car->next_vehicle_on_train;
         }
@@ -9696,7 +9698,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     {
         // Probably moving slowly on a flat track piece, low rolling resistance and drag.
 
-        if (vehicle->velocity <= 0x8000 && vehicle->velocity >= 0)
+        if (vehicle->velocity <= 0.5_mph32 && vehicle->velocity >= 0.0_mph32)
         {
             // Vehicle is creeping forwards very slowly (less than ~2km/h), boost speed a bit.
             curAcceleration += 400;
@@ -9717,7 +9719,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         {
             if (track_element_is_covered(vehicle->GetTrackType()))
             {
-                if (vehicle->velocity > 0x20000)
+                if (vehicle->velocity > 2.0_mph32)
                 {
                     curAcceleration -= vehicle->velocity >> 6;
                 }
