@@ -865,19 +865,22 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
         {
             if (i + 1 < get_colour_scheme_tab_count())
             {
+                int32_t left = 0;
+                int32_t top, bottom;
+                int32_t right = window_themes_widgets[WIDX_THEMES_LIST].right;
+
                 int32_t colour = w->colours[1];
                 if (colour & COLOUR_FLAG_TRANSLUCENT)
                 {
                     translucent_window_palette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
-                    gfx_filter_rect(dpi,
-                        { 0, screenCoords.y + _row_height - 2,
-                          window_themes_widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 2 },
-                        windowPalette.highlight);
-                    gfx_filter_rect(dpi,
-                        { 0, screenCoords.y + _row_height - 1,
-                          window_themes_widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 1 },
-                        windowPalette.shadow);
+                    top = screenCoords.y + _row_height - 2;
+                    bottom = screenCoords.y + _row_height - 2;
+                    gfx_filter_rect(dpi, { left, top, right, bottom }, windowPalette.highlight);
+
+                    top = screenCoords.y + _row_height - 1;
+                    bottom = screenCoords.y + _row_height - 1;
+                    gfx_filter_rect(dpi, { left, top, right, bottom }, windowPalette.shadow);
                 }
                 else
                 {
