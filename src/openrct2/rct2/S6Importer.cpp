@@ -1468,7 +1468,7 @@ public:
                 int32_t x = val & 0x03F;
                 x <<= 7;
                 int32_t y = val & 0xFC0;
-                y <<= 2;
+                y <<= 1;
                 staffmember->SetPatrolArea({ x, y }, true);
             }
         }
