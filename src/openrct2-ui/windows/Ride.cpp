@@ -29,6 +29,7 @@
 #include <openrct2/actions/RideSetPriceAction.h>
 #include <openrct2/actions/RideSetSettingAction.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/common.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/entity/EntityList.h>
@@ -2426,7 +2427,7 @@ static rct_string_id WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
             || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
             || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
         {
-            if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
+            if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0.0_mph32)
             {
                 ft.Add<rct_string_id>(STR_STOPPED_BY_BLOCK_BRAKES);
                 return STR_BLACK_STRING;

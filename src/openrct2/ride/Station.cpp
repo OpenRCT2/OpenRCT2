@@ -294,19 +294,19 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
                 switch (guest->GetEasterEggNameId())
                 {
                     case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:
-                        vehicle->speed += 35;
+                        vehicle->speed += 35_mph;
                         break;
                     case EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE:
-                        vehicle->speed += 25;
+                        vehicle->speed += 25_mph;
                         break;
                     case EASTEREGG_PEEP_NAME_DAMON_HILL:
-                        vehicle->speed += 55;
+                        vehicle->speed += 55_mph;
                         break;
                     case EASTEREGG_PEEP_NAME_CHRIS_SAWYER:
-                        vehicle->speed += 14;
+                        vehicle->speed += 14_mph;
                         break;
                     case EASTEREGG_PEEP_NAME_MR_BEAN:
-                        vehicle->speed = 9;
+                        vehicle->speed = 9_mph;
                         break;
                 }
             }

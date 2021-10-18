@@ -120,6 +120,29 @@ constexpr money16 ToMoney16(money64 value)
     return value == MONEY64_UNDEFINED ? MONEY16_UNDEFINED : static_cast<money16>(value);
 }
 
+constexpr int32_t operator""_mph32(long double speedMph)
+{
+    return static_cast<int32_t>(speedMph * 65536); // 65536 = 2^16, might truncate to cast to int32_t
+}
+
+constexpr int16_t operator""_mph(unsigned long long int speedMph)
+{
+    return static_cast<int16_t>(speedMph);
+}
+
+static_assert(439800 == 6.710816_mph32);
+static_assert(58640 == 0.894776_mph32);
+static_assert(0x20364 == 2.013245_mph32);
+static_assert(0x8000 == 0.5_mph32);
+static_assert(0xB0000 == 11.0_mph32);
+static_assert(131940 == 2.013245_mph32);
+static_assert(98955 == 1.509934_mph32);
+static_assert(1572864 == 24.0_mph32);
+static_assert(439800 == 6.710816_mph32);
+static_assert(0x2C000 == 2.75_mph32);
+static_assert(131072 == 2.0_mph32);
+static_assert(524288 == 8.0_mph32);
+
 using EMPTY_ARGS_VOID_POINTER = void();
 using rct_string_id = uint16_t;
 
