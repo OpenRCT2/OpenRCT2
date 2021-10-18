@@ -675,7 +675,8 @@ private:
                 rct_string_id format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, FilterPaletteID::PaletteDarken1);
+                    const ScreenRect screenRect{ { 0, y }, { 800, y + SCROLLABLE_ROW_HEIGHT - 1 } };
+                    gfx_filter_rect(&dpi, screenRect, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -745,7 +746,8 @@ private:
                 rct_string_id format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT, FilterPaletteID::PaletteDarken1);
+                    const ScreenRect screenRect{ { 0, y }, { 800, y + SUMMARISED_GUEST_ROW_HEIGHT } };
+                    gfx_filter_rect(&dpi, screenRect, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
