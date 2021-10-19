@@ -65,8 +65,8 @@ namespace GameActions
         using StringVariant = std::variant<std::string, rct_string_id>;
 
         GameActions::Status Error = GameActions::Status::Ok;
-        StringVariant ErrorTitle;
-        StringVariant ErrorMessage;
+        StringVariant ErrorTitle = STR_NONE;
+        StringVariant ErrorMessage = STR_NONE;
         std::array<uint8_t, 32> ErrorMessageArgs{};
         CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
         money32 Cost = 0;
