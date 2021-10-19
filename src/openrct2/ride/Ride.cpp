@@ -1201,7 +1201,7 @@ static uint8_t _breakdownProblemProbabilities[] = {
     10, // BREAKDOWN_DOORS_STUCK_OPEN
     6,  // BREAKDOWN_VEHICLE_MALFUNCTION
     0,  // BREAKDOWN_BRAKES_FAILURE
-    3   // BREAKDOWN_CONTROL_FAILURE
+    3,  // BREAKDOWN_CONTROL_FAILURE
 };
 
 /**

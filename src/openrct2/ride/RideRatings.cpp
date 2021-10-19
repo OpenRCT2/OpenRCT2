@@ -789,7 +789,7 @@ static void ride_ratings_calculate_value(Ride* ride)
         { 120, 81, 256, 0 },  // 0.32x
         { 128, 81, 512, 0 },  // 0.16x
         { 200, 81, 1024, 0 }, // 0.08x
-        { 200, 9, 16, 0 }     // 0.56x "easter egg"
+        { 200, 9, 16, 0 },    // 0.56x "easter egg"
     };
 
 #ifdef ORIGINAL_RATINGS
@@ -803,7 +803,7 @@ static void ride_ratings_calculate_value(Ride* ride)
         { 120, 81, 256, 0 },  // 0.32x
         { 128, 81, 512, 0 },  // 0.16x
         { 200, 81, 1024, 0 }, // 0.08x
-        { 200, 9, 16, 0 }     // 0.56x "easter egg"
+        { 200, 9, 16, 0 },    // 0.56x "easter egg"
     };
 #endif
 

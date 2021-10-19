@@ -53,11 +53,13 @@ constexpr auto _FountainChanceOfStoppingEdgeMode = 0x3333;   // 0.200
 constexpr auto _FountainChanceOfStoppingRandomMode = 0x2000; // 0.125
 
 // rct2: 0x0097F040
-const uint8_t _fountainDirections[] = { 0, 1, 2, 3, 0, 1, 2, 3 };
+const uint8_t _fountainDirections[] = {
+    0, 1, 2, 3, 0, 1, 2, 3,
+};
 
 // rct2: 0x0097F048
 const uint8_t _fountainDirectionFlags[] = {
-    0, 0, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, 0, 0
+    0, 0, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, 0, 0,
 };
 
 // rct2: 0x0097F050
@@ -69,7 +71,7 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::GOTO_EDGE,                                              // RACING_PAIRS
     FOUNTAIN_FLAG::FAST | FOUNTAIN_FLAG::GOTO_EDGE | FOUNTAIN_FLAG::SPLIT, // SPLITTING_CHASERS
     0,                                                                     // DOPEY_JUMPERS
-    FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
+    FOUNTAIN_FLAG::FAST,                                                   // FAST_RANDOM_CHASERS
 };
 
 template<> bool EntityBase::Is<JumpingFountain>() const

@@ -2018,7 +2018,7 @@ static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
         (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
         (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
         (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
-    )
+    ),
 };
 // clang-format on
 

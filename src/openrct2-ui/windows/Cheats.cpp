@@ -239,7 +239,7 @@ static rct_widget window_cheats_guests_widgets[] =
     MakeWidget({ 11, 279}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
     MakeWidget({ 11, 300}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
     MakeWidget({  5, 342}, {238,  69},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GIVE_ALL_GUESTS                                       ), // Guests parameters group frame
-    MakeWidget({ 11, 363}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_CURRENCY_FORMAT                                       ), // give guests money
+    MakeWidget({ 11, 363}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CURRENCY_FORMAT                                             ), // give guests money
     MakeWidget({127, 363}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_PARK_MAP                                   ), // give guests park maps
     MakeWidget({ 11, 384}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_BALLOON                                    ), // give guests balloons
     MakeWidget({127, 384}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
@@ -413,7 +413,7 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_DISABLE_RIDE_VALUE_AGING) |
     (1ULL << WIDX_IGNORE_RESEARCH_STATUS) |
     (1ULL << WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES) |
-    (1ULL << WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS)
+    (1ULL << WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS),
 };
 
 static uint64_t window_cheats_page_hold_down_widgets[] = {
@@ -432,7 +432,7 @@ static uint64_t window_cheats_page_hold_down_widgets[] = {
     (1ULL << WIDX_INCREASE_PARK_RATING) |
     (1ULL << WIDX_DECREASE_PARK_RATING),
 
-    0
+    0,
 };
 
 static rct_string_id window_cheats_page_titles[] = {

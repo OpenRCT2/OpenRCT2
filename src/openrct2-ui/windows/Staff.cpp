@@ -35,14 +35,15 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WW = 190;
 static constexpr const int32_t WH = 180;
 
-// clang-format off
-enum WINDOW_STAFF_PAGE {
+enum WINDOW_STAFF_PAGE
+{
     WINDOW_STAFF_OVERVIEW,
     WINDOW_STAFF_OPTIONS,
     WINDOW_STAFF_STATISTICS,
 };
 
-enum WINDOW_STAFF_WIDGET_IDX {
+enum WINDOW_STAFF_WIDGET_IDX
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -70,6 +71,7 @@ enum WINDOW_STAFF_WIDGET_IDX {
 validate_global_widx(WC_PEEP, WIDX_PATROL);
 validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
+// clang-format off
 #define MAIN_STAFF_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     MakeWidget({ 0, 43}, {190, 137}, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */ \
@@ -100,63 +102,63 @@ static rct_widget window_staff_options_widgets[] = {
     MakeWidget     ({WW - 17,  51}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
     WIDGETS_END,
 };
+// clang-format on
 
-//0x9AF9F4
+// 0x9AF9F4
 static rct_widget window_staff_stats_widgets[] = {
     MAIN_STAFF_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget *window_staff_page_widgets[] = {
+static rct_widget* window_staff_page_widgets[] = {
     window_staff_overview_widgets,
     window_staff_options_widgets,
-    window_staff_stats_widgets
+    window_staff_stats_widgets,
 };
 
 static void window_staff_set_page(rct_window* w, int32_t page);
 static void window_staff_disable_widgets(rct_window* w);
-static void window_staff_unknown_05(rct_window *w);
+static void window_staff_unknown_05(rct_window* w);
 static void window_staff_viewport_init(rct_window* w);
 
-static void window_staff_overview_close(rct_window *w);
-static void window_staff_overview_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_overview_resize(rct_window *w);
-static void window_staff_overview_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_staff_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_staff_overview_close(rct_window* w);
+static void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_staff_overview_resize(rct_window* w);
+static void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_staff_overview_update(rct_window* w);
-static void window_staff_overview_invalidate(rct_window *w);
-static void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_staff_overview_invalidate(rct_window* w);
+static void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_staff_overview_viewport_rotate(rct_window *w);
-static void window_staff_follow(rct_window *w);
+static void window_staff_overview_tool_abort(rct_window* w, rct_widgetindex widgetIndex);
+static void window_staff_overview_text_input(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void window_staff_overview_viewport_rotate(rct_window* w);
+static void window_staff_follow(rct_window* w);
 static void window_staff_show_locate_dropdown(rct_window* w, rct_widget* widget);
 
-static void window_staff_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_staff_options_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_staff_options_update(rct_window* w);
-static void window_staff_options_invalidate(rct_window *w);
-static void window_staff_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_staff_options_invalidate(rct_window* w);
+static void window_staff_options_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_staff_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_staff_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 
-static void window_staff_stats_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_stats_resize(rct_window *w);
+static void window_staff_stats_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_staff_stats_resize(rct_window* w);
 static void window_staff_stats_update(rct_window* w);
-static void window_staff_stats_invalidate(rct_window *w);
-static void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_staff_stats_invalidate(rct_window* w);
+static void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 void window_staff_set_colours();
 
 // 0x992AEC
-static rct_window_event_list window_staff_overview_events([](auto& events)
-{
+static rct_window_event_list window_staff_overview_events([](auto& events) {
     events.close = &window_staff_overview_close;
     events.mouse_up = &window_staff_overview_mouseup;
     events.resize = &window_staff_overview_resize;
@@ -175,8 +177,7 @@ static rct_window_event_list window_staff_overview_events([](auto& events)
 });
 
 // 0x992B5C
-static rct_window_event_list window_staff_options_events([](auto& events)
-{
+static rct_window_event_list window_staff_options_events([](auto& events) {
     events.mouse_up = &window_staff_options_mouseup;
     events.resize = &window_staff_stats_resize;
     events.mouse_down = &window_staff_options_mousedown;
@@ -188,8 +189,7 @@ static rct_window_event_list window_staff_options_events([](auto& events)
 });
 
 // 0x992BCC
-static rct_window_event_list window_staff_stats_events([](auto& events)
-{
+static rct_window_event_list window_staff_stats_events([](auto& events) {
     events.mouse_up = &window_staff_stats_mouseup;
     events.resize = &window_staff_stats_resize;
     events.unknown_05 = &window_staff_unknown_05;
@@ -198,12 +198,13 @@ static rct_window_event_list window_staff_stats_events([](auto& events)
     events.paint = &window_staff_stats_paint;
 });
 
-static rct_window_event_list *window_staff_page_events[] = {
+static rct_window_event_list* window_staff_page_events[] = {
     &window_staff_overview_events,
     &window_staff_options_events,
-    &window_staff_stats_events
+    &window_staff_stats_events,
 };
 
+// clang-format off
 static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |

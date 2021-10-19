@@ -22,7 +22,6 @@
 #include <cstring>
 
 // 98DA00
-// clang-format off
 int32_t object_entry_group_counts[] = {
     MAX_RIDE_OBJECTS,          // rides
     MAX_SMALL_SCENERY_OBJECTS, // small scenery
@@ -45,6 +44,7 @@ int32_t object_entry_group_counts[] = {
 static_assert(std::size(object_entry_group_counts) == EnumValue(ObjectType::Count));
 
 // 98DA2C
+// clang-format off
 int32_t object_entry_group_encoding[] = {
     CHUNK_ENCODING_RLE,
     CHUNK_ENCODING_RLE,
@@ -56,7 +56,7 @@ int32_t object_entry_group_encoding[] = {
     CHUNK_ENCODING_RLE,
     CHUNK_ENCODING_RLE,
     CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_ROTATE
+    CHUNK_ENCODING_ROTATE,
 };
 // clang-format on
 

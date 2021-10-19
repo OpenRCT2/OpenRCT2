@@ -73,7 +73,7 @@ static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
     window_editor_bottom_toolbar_jump_back_to_options_selection,
     nullptr,
     window_editor_bottom_toolbar_jump_back_to_object_selection,
-    nullptr
+    nullptr,
 };
 
 static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
@@ -84,7 +84,7 @@ static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
     window_editor_bottom_toolbar_jump_forward_to_save_scenario,
     nullptr,
     nullptr,
-    nullptr
+    nullptr,
 };
 
 static constexpr const rct_string_id EditorStepNames[] = {

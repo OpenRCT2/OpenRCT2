@@ -74,12 +74,11 @@ static void* _crowdSoundChannel = nullptr;
 
 static void peep_128_tick_update(Peep* peep, int32_t index);
 static void peep_release_balloon(Guest* peep, int16_t spawn_height);
-// clang-format off
 
 static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
     PeepActionSpriteType::None,
     PeepActionSpriteType::HoldMat,
-    PeepActionSpriteType::StaffMower
+    PeepActionSpriteType::StaffMower,
 };
 
 static PeepActionSpriteType PeepActionToSpriteTypeMap[] = {
@@ -113,19 +112,14 @@ static PeepActionSpriteType PeepActionToSpriteTypeMap[] = {
     PeepActionSpriteType::Disgust,
     PeepActionSpriteType::DrawPicture,
     PeepActionSpriteType::BeingWatched,
-    PeepActionSpriteType::WithdrawMoney
+    PeepActionSpriteType::WithdrawMoney,
 };
 
 const bool gSpriteTypeToSlowWalkMap[] = {
-    false, false, false, false, false, false, false, false,
-    false, false, false, true,  false, false, true,  true,
-    true,  true,  true,  false, true,  false, true,  true,
-    true,  false, false, true,  true,  false, false, true,
-    true,  true,  true,  true,  true,  true,  false, true,
-    false, true,  true,  true,  true,  true,  true,  true,
+    false, false, false, false, false, false, false, false, false, false, false, true, false, false, true,  true,
+    true,  true,  true,  false, true,  false, true,  true,  true,  false, false, true, true,  false, false, true,
+    true,  true,  true,  true,  true,  true,  false, true,  false, true,  true,  true, true,  true,  true,  true,
 };
-
-// clang-format on
 
 template<> bool EntityBase::Is<Peep>() const
 {
@@ -373,7 +367,12 @@ void Peep::StateReset()
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static constexpr const CoordsXY word_981D7C[4] = { { -2, 0 }, { 0, 2 }, { 2, 0 }, { 0, -2 } };
+static constexpr const CoordsXY word_981D7C[4] = {
+    { -2, 0 },
+    { 0, 2 },
+    { 2, 0 },
+    { 0, -2 },
+};
 
 std::optional<CoordsXY> Peep::UpdateAction()
 {
@@ -476,9 +475,12 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     const auto curLoc = GetLocation();
     Litter::Create({ curLoc, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
-    static constexpr OpenRCT2::Audio::SoundId coughs[4] = { OpenRCT2::Audio::SoundId::Cough1, OpenRCT2::Audio::SoundId::Cough2,
-                                                            OpenRCT2::Audio::SoundId::Cough3,
-                                                            OpenRCT2::Audio::SoundId::Cough4 };
+    static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
+        OpenRCT2::Audio::SoundId::Cough1,
+        OpenRCT2::Audio::SoundId::Cough2,
+        OpenRCT2::Audio::SoundId::Cough3,
+        OpenRCT2::Audio::SoundId::Cough4,
+    };
     auto soundId = coughs[scenario_rand() & 3];
     OpenRCT2::Audio::Play3D(soundId, curLoc);
 
@@ -2454,7 +2456,9 @@ rct_string_id get_real_name_string_id_from_id(uint32_t id)
     // Generate a name_string_idx from the peep Id using bit twiddling
     uint16_t ax = static_cast<uint16_t>(id + 0xF0B);
     uint16_t dx = 0;
-    static constexpr uint16_t twiddlingBitOrder[] = { 4, 9, 3, 7, 5, 8, 2, 1, 6, 0, 12, 11, 13, 10 };
+    static constexpr uint16_t twiddlingBitOrder[] = {
+        4, 9, 3, 7, 5, 8, 2, 1, 6, 0, 12, 11, 13, 10,
+    };
     for (size_t i = 0; i < std::size(twiddlingBitOrder); i++)
     {
         dx |= (ax & (1 << twiddlingBitOrder[i]) ? 1 : 0) << i;

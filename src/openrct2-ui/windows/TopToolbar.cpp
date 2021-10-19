@@ -70,8 +70,8 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
-// clang-format off
-enum {
+enum
+{
     WIDX_PAUSE,
     WIDX_FILE_MENU,
     WIDX_MUTE,
@@ -110,7 +110,8 @@ validate_global_widx(WC_TOP_TOOLBAR, WIDX_WATER);
 validate_global_widx(WC_TOP_TOOLBAR, WIDX_SCENERY);
 validate_global_widx(WC_TOP_TOOLBAR, WIDX_PATH);
 
-enum FILE_MENU_DDIDX {
+enum FILE_MENU_DDIDX
+{
     DDIDX_NEW_GAME = 0,
     DDIDX_LOAD_GAME = 1,
     DDIDX_SAVE_GAME = 2,
@@ -128,7 +129,8 @@ enum FILE_MENU_DDIDX {
     DDIDX_EXIT_OPENRCT2 = 14,
 };
 
-enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
+enum TOP_TOOLBAR_VIEW_MENU_DDIDX
+{
     DDIDX_UNDERGROUND_INSIDE = 0,
     DDIDX_TRANSPARENT_WATER = 1,
     DDIDX_HIDE_BASE = 2,
@@ -147,24 +149,27 @@ enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
     DDIDX_VIEW_CLIPPING = 15,
     DDIDX_HIGHLIGHT_PATH_ISSUES = 16,
 
-    TOP_TOOLBAR_VIEW_MENU_COUNT
+    TOP_TOOLBAR_VIEW_MENU_COUNT,
 };
 
-enum TOP_TOOLBAR_DEBUG_DDIDX {
+enum TOP_TOOLBAR_DEBUG_DDIDX
+{
     DDIDX_CONSOLE = 0,
     DDIDX_DEBUG_PAINT = 1,
 
-    TOP_TOOLBAR_DEBUG_COUNT
+    TOP_TOOLBAR_DEBUG_COUNT,
 };
 
-enum TOP_TOOLBAR_NETWORK_DDIDX {
+enum TOP_TOOLBAR_NETWORK_DDIDX
+{
     DDIDX_MULTIPLAYER = 0,
     DDIDX_MULTIPLAYER_RECONNECT = 1,
 
-    TOP_TOOLBAR_NETWORK_COUNT
+    TOP_TOOLBAR_NETWORK_COUNT,
 };
 
-enum {
+enum
+{
     DDIDX_CHEATS,
     DDIDX_TILE_INSPECTOR = 1,
     DDIDX_OBJECT_SELECTION = 2,
@@ -176,21 +181,24 @@ enum {
     DDIDX_DISABLE_CLEARANCE_CHECKS = 8,
     DDIDX_DISABLE_SUPPORT_LIMITS = 9,
 
-    TOP_TOOLBAR_CHEATS_COUNT
+    TOP_TOOLBAR_CHEATS_COUNT,
 };
 
-enum {
+enum
+{
     DDIDX_SHOW_MAP,
     DDIDX_OPEN_VIEWPORT,
 };
 
-enum {
+enum
+{
     DDIDX_ROTATE_CLOCKWISE,
     DDIDX_ROTATE_ANTI_CLOCKWISE,
 };
 
 #pragma region Toolbar_widget_ordering
 
+// clang-format off
 // from left to right
 static constexpr const int32_t left_aligned_widgets_order[] = {
     WIDX_PAUSE,
@@ -209,7 +217,6 @@ static constexpr const int32_t left_aligned_widgets_order[] = {
     WIDX_ROTATE,
     WIDX_VIEW_MENU,
     WIDX_MAP,
-
 };
 
 // from right to left
@@ -229,7 +236,7 @@ static constexpr const int32_t right_aligned_widgets_order[] = {
     WIDX_SCENERY,
     WIDX_WATER,
     WIDX_LAND,
-    WIDX_CLEAR_SCENERY
+    WIDX_CLEAR_SCENERY,
 };
 
 #pragma endregion
@@ -264,20 +271,20 @@ static rct_widget window_top_toolbar_widgets[] = {
     MakeWidget     ({  0, 0}, {10,                      1}, WindowWidgetType::Empty,  WindowColour::Primary                                                                   ), // Artificial widget separator
     WIDGETS_END,
 };
+// clang-format on
 
-static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoordsy);
-static void window_top_toolbar_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
-static void window_top_toolbar_invalidate(rct_window *w);
-static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_top_toolbar_tool_abort(rct_window* w, rct_widgetindex widgetIndex);
+static void window_top_toolbar_invalidate(rct_window* w);
+static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_top_toolbar_events([](auto& events)
-{
+static rct_window_event_list window_top_toolbar_events([](auto& events) {
     events.mouse_up = &window_top_toolbar_mouseup;
     events.mouse_down = &window_top_toolbar_mousedown;
     events.dropdown = &window_top_toolbar_dropdown;
@@ -289,7 +296,6 @@ static rct_window_event_list window_top_toolbar_events([](auto& events)
     events.invalidate = &window_top_toolbar_invalidate;
     events.paint = &window_top_toolbar_paint;
 });
-// clang-format on
 
 static void top_toolbar_init_view_menu(rct_window* window, rct_widget* widget);
 static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex);

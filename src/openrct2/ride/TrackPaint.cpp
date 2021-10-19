@@ -30,13 +30,12 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-// clang-format off
 /* rct2: 0x007667AC */
 static constexpr TileCoordsXY EntranceOffsetEdgeNE[] = {
     { -1, 0 },
-    { 0,  -1 },
-    { 1,  0 },
-    { 0,  1 },
+    { 0, -1 },
+    { 1, 0 },
+    { 0, 1 },
 };
 
 /* rct2: 0x007667AE */
@@ -48,10 +47,10 @@ static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
 };
 
 const uint8_t track_map_2x2[][4] = {
-    {0, 1, 2, 3},
-    {1, 3, 0, 2},
-    {3, 2, 1, 0},
-    {2, 0, 3, 1}
+    { 0, 1, 2, 3 },
+    { 1, 3, 0, 2 },
+    { 3, 2, 1, 0 },
+    { 2, 0, 3, 1 },
 };
 
 const uint8_t edges_2x2[] = {
@@ -62,12 +61,13 @@ const uint8_t edges_2x2[] = {
 };
 
 const uint8_t track_map_3x3[][9] = {
-    {0, 1, 2, 3, 4, 5, 6, 7, 8},
-    {0, 3, 5, 7, 2, 8, 1, 6, 4},
-    {0, 7, 8, 6, 5, 4, 3, 1, 2},
-    {0, 6, 4, 1, 8, 2, 7, 3, 5}
+    { 0, 1, 2, 3, 4, 5, 6, 7, 8 },
+    { 0, 3, 5, 7, 2, 8, 1, 6, 4 },
+    { 0, 7, 8, 6, 5, 4, 3, 1, 2 },
+    { 0, 6, 4, 1, 8, 2, 7, 3, 5 },
 };
 
+// clang-format off
 const uint8_t edges_3x3[] = {
     0,
     EDGE_NE | EDGE_NW,
@@ -79,14 +79,16 @@ const uint8_t edges_3x3[] = {
     EDGE_SW | EDGE_SE,
     EDGE_SW,
 };
+// clang-format on
 
 const uint8_t track_map_4x4[][16] = {
-    {0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15},
-    {3,  7,  11, 15, 2,  6,  10, 14, 1,  5,  9,  13, 0,  4,  8,  12},
-    {15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1,  0},
-    {12, 8,  4,  0,  13, 9,  5,  1,  14, 10, 6,  2,  15, 11, 7,  3},
+    { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+    { 3, 7, 11, 15, 2, 6, 10, 14, 1, 5, 9, 13, 0, 4, 8, 12 },
+    { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
+    { 12, 8, 4, 0, 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3 },
 };
 
+// clang-format off
 const uint8_t edges_4x4[] = {
     EDGE_NE | EDGE_NW,
     EDGE_NE,
@@ -103,76 +105,79 @@ const uint8_t edges_4x4[] = {
     EDGE_NW | EDGE_SW,
     EDGE_SW,
     EDGE_SW,
-    EDGE_SW | EDGE_SE
+    EDGE_SW | EDGE_SE,
 };
+// clang-format on
 
 const uint8_t track_map_1x4[][4] = {
-    {0, 1, 2, 3},
-    {2, 3, 0, 1},
-    {2, 3, 0, 1},
-    {0, 1, 2, 3},
+    { 0, 1, 2, 3 },
+    { 2, 3, 0, 1 },
+    { 2, 3, 0, 1 },
+    { 0, 1, 2, 3 },
 };
 
 const uint32_t floorSpritesCork[] = {
     SPR_FLOOR_CORK_SE_SW,
     SPR_FLOOR_CORK_SW,
     SPR_FLOOR_CORK_SE,
-    SPR_FLOOR_CORK
+    SPR_FLOOR_CORK,
 };
 
 const uint32_t floorSpritesMetal[] = {
     SPR_FLOOR_METAL,
     SPR_FLOOR_METAL,
     SPR_FLOOR_METAL,
-    SPR_FLOOR_METAL
+    SPR_FLOOR_METAL,
 };
 
 const uint32_t floorSpritesMetalB[] = {
     SPR_FLOOR_METAL_B,
     SPR_FLOOR_METAL_B,
     SPR_FLOOR_METAL_B,
-    SPR_FLOOR_METAL_B
+    SPR_FLOOR_METAL_B,
 };
 
 const uint32_t fenceSpritesRope[] = {
     SPR_FENCE_ROPE_NE,
     SPR_FENCE_ROPE_SE,
     SPR_FENCE_ROPE_SW,
-    SPR_FENCE_ROPE_NW
+    SPR_FENCE_ROPE_NW,
 };
 
 const uint32_t fenceSpritesMetal[] = {
     SPR_FENCE_METAL_NE,
     SPR_FENCE_METAL_SE,
     SPR_FENCE_METAL_SW,
-    SPR_FENCE_METAL_NW
+    SPR_FENCE_METAL_NW,
 };
-
 
 const uint32_t fenceSpritesMetalB[] = {
     SPR_FENCE_METAL_B_NE,
     SPR_FENCE_METAL_B_SE,
     SPR_FENCE_METAL_B_SW,
-    SPR_FENCE_METAL_B_NW
+    SPR_FENCE_METAL_B_NW,
 };
 
 const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3] = {
     {
         SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
         SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2
-    }, {
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2,
+    },
+    {
         SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
         SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2
-    }, {
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2,
+    },
+    {
         SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
         SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2
-    }, {
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2,
+    },
+    {
         SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
         SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2
+        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2,
     }
 };
 
@@ -189,29 +194,29 @@ static constexpr const uint32_t trackSpritesGhostTrainSpinningTunnel[2][2][4] = 
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_0,
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_1,
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_2,
-            SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_3
+            SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_3,
         },
         {
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_0,
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_1,
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_2,
-            SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_3
-        }
+            SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_3,
+        },
     },
     {
         {
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_0,
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_1,
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_2,
-            SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_3
+            SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_3,
         },
         {
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_0,
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_1,
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_2,
-            SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_3
-        }
-    }
+            SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_3,
+        },
+    },
 };
 
 enum
@@ -224,7 +229,6 @@ enum
     SPR_STATION_COVER_OFFSET_SE_NW_FRONT,
     SPR_STATION_COVER_OFFSET_TALL
 };
-// clang-format on
 
 bool track_paint_util_has_fence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride* ride, uint8_t rotation)
@@ -1036,7 +1040,12 @@ constexpr CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
     },
 };
 
-static constexpr const int8_t right_helix_up_small_quarter_tiles_sprite_map[] = { 0, -1, 1, 2 };
+static constexpr const int8_t right_helix_up_small_quarter_tiles_sprite_map[] = {
+    0,
+    -1,
+    1,
+    2,
+};
 
 void track_paint_util_right_helix_up_small_quarter_tiles_paint(
     paint_session* session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
@@ -1135,7 +1144,9 @@ constexpr CoordsXY defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
     },
 };
 
-static constexpr const int8_t right_helix_up_large_quarter_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
+static constexpr const int8_t right_helix_up_large_quarter_sprite_map[] = {
+    0, -1, 1, 2, -1, 3, 4,
+};
 void track_paint_util_right_helix_up_large_quarter_tiles_paint(
     paint_session* session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
     uint32_t colourFlags, const uint32_t sprites[4][5][2], const CoordsXY offsets[4][5][2],
@@ -1306,9 +1317,13 @@ const int8_t defaultEighthToDiagThickness[4][4] = {
     },
 };
 
-const uint8_t mapLeftEighthTurnToOrthogonal[] = { 4, 2, 3, 1, 0 };
+const uint8_t mapLeftEighthTurnToOrthogonal[] = {
+    4, 2, 3, 1, 0,
+};
 
-static constexpr const int8_t eighth_to_diag_sprite_map[] = { 0, 1, 2, -1, 3 };
+static constexpr const int8_t eighth_to_diag_sprite_map[] = {
+    0, 1, 2, -1, 3,
+};
 void track_paint_util_eighth_to_diag_tiles_paint(
     paint_session* session, const int8_t thickness[4][4], int16_t height, Direction direction, uint8_t trackSequence,
     uint32_t colourFlags, const uint32_t sprites[4][4], const CoordsXY offsets[4][4], const CoordsXY boundsLengths[4][4],

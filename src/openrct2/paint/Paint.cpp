@@ -212,8 +212,11 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
     uint16_t numVerticalTiles = (session->DPI.height + 2128) >> 5;
 
     // Adjacent tiles to also check due to overlapping of sprites
-    constexpr CoordsXY adjacentTiles[] = { CoordsXY{ -32, 32 }.Rotate(direction), CoordsXY{ 0, 32 }.Rotate(direction),
-                                           CoordsXY{ 32, 0 }.Rotate(direction) };
+    constexpr CoordsXY adjacentTiles[] = {
+        CoordsXY{ -32, 32 }.Rotate(direction),
+        CoordsXY{ 0, 32 }.Rotate(direction),
+        CoordsXY{ 32, 0 }.Rotate(direction),
+    };
     constexpr CoordsXY nextVerticalTile = CoordsXY{ 32, 32 }.Rotate(direction);
 
     for (; numVerticalTiles > 0; --numVerticalTiles)

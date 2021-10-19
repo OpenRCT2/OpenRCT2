@@ -213,23 +213,20 @@ static constexpr const UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
     { WC_MAP,                      COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_GREY,                COLOUR_GREY,                COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
     { WC_ABOUT,                    COLOURS_RCT1(COLOUR_GREY,               COLOUR_DARK_BROWN,          COLOUR_WHITE,               COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
     { WC_CHANGELOG,                COLOURS_RCT1(COLOUR_DARK_BROWN,         COLOUR_DARK_BROWN,          COLOUR_WHITE,               COLOUR_BLACK,    COLOUR_BLACK,    COLOUR_BLACK)    },
-
-    THEME_DEF_END
+    THEME_DEF_END,
 };
+// clang-format on
 
-static constexpr const UIThemeWindowEntry PredefinedThemeRCT2_Entries[] =
-{
-    THEME_DEF_END
+static constexpr const UIThemeWindowEntry PredefinedThemeRCT2_Entries[] = {
+    THEME_DEF_END,
 };
 
 const UITheme PredefinedThemeRCT1 = UITheme::CreatePredefined(
-    "*RCT1", PredefinedThemeRCT1_Entries, UITHEME_FLAG_USE_LIGHTS_RIDE |
-                                         UITHEME_FLAG_USE_LIGHTS_PARK |
-                                         UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT |
-                                         UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+    "*RCT1", PredefinedThemeRCT1_Entries,
+    UITHEME_FLAG_USE_LIGHTS_RIDE | UITHEME_FLAG_USE_LIGHTS_PARK | UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT
+        | UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
 
-const UITheme PredefinedThemeRCT2 = UITheme::CreatePredefined(
-    "*RCT2", PredefinedThemeRCT2_Entries, 0);
+const UITheme PredefinedThemeRCT2 = UITheme::CreatePredefined("*RCT2", PredefinedThemeRCT2_Entries, 0);
 
 struct PredefinedTheme
 {
@@ -239,9 +236,8 @@ struct PredefinedTheme
 
 static constexpr const PredefinedTheme PredefinedThemes[] = {
     { &PredefinedThemeRCT1, STR_TITLE_SEQUENCE_RCT1 },
-    { &PredefinedThemeRCT2, STR_TITLE_SEQUENCE_RCT2 }
+    { &PredefinedThemeRCT2, STR_TITLE_SEQUENCE_RCT2 },
 };
-// clang-format on
 
 #pragma endregion
 

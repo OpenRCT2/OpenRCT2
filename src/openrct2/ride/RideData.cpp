@@ -170,7 +170,7 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
 const uint16_t RideFilmLength[3] = {
     5000, // MOUSE_TAILS
     6000, // STORM_CHASERS
-    7000  // SPACE_RAIDERS
+    7000, // SPACE_RAIDERS
 };
 
 const rct_string_id RideModeNames[] = {
