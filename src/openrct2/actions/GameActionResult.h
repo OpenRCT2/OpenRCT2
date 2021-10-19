@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,10 @@
 #include <any>
 #include <array>
 #include <cstdint>
+#include <limits>
 #include <memory>
-#include <string.h>
+#include <string>
+#include <type_traits>
 
 class StringVariant
 {
@@ -96,7 +98,7 @@ namespace GameActions
 
         NoFreeElements,
 
-        Unknown = UINT16_MAX,
+        Unknown = std::numeric_limits<std::underlying_type_t<Status>>::max(),
     };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
