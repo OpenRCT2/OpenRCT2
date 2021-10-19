@@ -209,12 +209,12 @@ void mapgen_generate(mapgen_settings* settings)
     {
         switch (util_rand() % 4)
         {
-        case 0:
-            beachTexture = "rct2.terrain_surface.sand";
-            break;
-        case 1:
-            beachTexture = "rct2.terrain_surface.sand_brown";
-            break;
+            case 0:
+                beachTexture = "rct2.terrain_surface.sand";
+                break;
+            case 1:
+                beachTexture = "rct2.terrain_surface.sand_brown";
+                break;
         }
     }
     auto beachTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(beachTexture));
@@ -713,15 +713,15 @@ bool mapgen_load_heightmap(const utf8* path)
     {
         switch (format)
         {
-        case IMAGE_FORMAT::BITMAP:
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
-            break;
-        case IMAGE_FORMAT::PNG_32:
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
-            break;
-        default:
-            log_error("Unable to load height map image: %s", e.what());
-            break;
+            case IMAGE_FORMAT::BITMAP:
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
+                break;
+            case IMAGE_FORMAT::PNG_32:
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
+                break;
+            default:
+                log_error("Unable to load height map image: %s", e.what());
+                break;
         }
         return false;
     }
