@@ -70,7 +70,7 @@ enum
     SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3 = 16869,
 };
 
-static constexpr const uint32_t monorail_cycles_track_pieces_flat[4] = {
+static constexpr const uint32_t monorail_cycles_track_pieces_flat[2] = {
     SPR_MONORAIL_CYCLES_FLAT_SW_NE,
     SPR_MONORAIL_CYCLES_FLAT_NW_SE,
 };
