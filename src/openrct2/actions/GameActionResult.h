@@ -19,59 +19,7 @@
 #include <memory>
 #include <string>
 #include <type_traits>
-
-class StringVariant
-{
-private:
-    rct_string_id StringId = STR_NONE;
-    std::string String;
-
-public:
-    StringVariant() = default;
-
-    StringVariant(rct_string_id stringId)
-        : StringId(stringId)
-    {
-    }
-
-    StringVariant(const std::string& s)
-        : String(s)
-    {
-    }
-
-    StringVariant(std::string&& s)
-        : String(std::move(s))
-    {
-    }
-
-    StringVariant(const char* s)
-        : String(s)
-    {
-    }
-
-    const std::string* AsString() const
-    {
-        if (!String.empty())
-        {
-            return &String;
-        }
-        return {};
-    }
-
-    const rct_string_id* AsStringId() const
-    {
-        if (String.empty())
-        {
-            return &StringId;
-        }
-        return {};
-    }
-
-    rct_string_id GetStringId() const
-    {
-        return String.empty() ? StringId : STR_NONE;
-    }
-};
+#include <variant>
 
 namespace GameActions
 {
@@ -114,6 +62,7 @@ namespace GameActions
     {
     public:
         using Ptr = std::unique_ptr<GameActions::Result>;
+        using StringVariant = std::variant<std::string, rct_string_id>;
 
         GameActions::Status Error = GameActions::Status::Ok;
         StringVariant ErrorTitle;

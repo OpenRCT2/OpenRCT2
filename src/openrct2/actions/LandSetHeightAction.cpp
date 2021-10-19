@@ -130,9 +130,8 @@ GameActions::Result::Ptr LandSetHeightAction::Query() const
             CREATE_CROSSING_MODE_NONE);
         if (clearResult->Error != GameActions::Status::Ok)
         {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::Disallowed, STR_NONE, clearResult->ErrorMessage.GetStringId(),
-                clearResult->ErrorMessageArgs.data());
+            clearResult->Error = GameActions::Status::Disallowed;
+            return clearResult;
         }
 
         tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);

@@ -109,9 +109,8 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
         auto constructResult = MapCanConstructAt({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 });
         if (constructResult->Error != GameActions::Status::Ok)
         {
-            return MakeResult(
-                GameActions::Status::NoClearance, res->ErrorTitle.GetStringId(), constructResult->ErrorMessage.GetStringId(),
-                constructResult->ErrorMessageArgs.data());
+            constructResult->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            return constructResult;
         }
 
         if (constructResult->GroundFlags & ELEMENT_IS_UNDERWATER)

@@ -579,9 +579,10 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
     {
         tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(location.ToCoordsXYZ()));
     }
-
     if (tileElement == nullptr)
+    {
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);
+    }
 
     // Set the coordinate of destination to be exactly
     // in the middle of a tile.
@@ -595,13 +596,13 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
     if (auto res = MapCanConstructAt({ destination, destination.z, destination.z + (1 * 8) }, { 0b1111, 0 });
         res->Error != GameActions::Status::Ok)
     {
-        if (res->ErrorMessage.GetStringId() != STR_RAISE_OR_LOWER_LAND_FIRST)
+        const auto stringId = std::get<rct_string_id>(res->ErrorMessage);
+        if (stringId != STR_RAISE_OR_LOWER_LAND_FIRST)
         {
-            if (res->ErrorMessage.GetStringId() != STR_FOOTPATH_IN_THE_WAY)
+            if (stringId != STR_FOOTPATH_IN_THE_WAY)
             {
                 return std::make_unique<GameActions::Result>(
-                    GameActions::Status::NoClearance, STR_ERR_CANT_PLACE_PERSON_HERE, res->ErrorMessage.GetStringId(),
-                    res->ErrorMessageArgs.data());
+                    GameActions::Status::NoClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res->ErrorMessageArgs.data());
             }
         }
     }
