@@ -387,26 +387,22 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
-        int32_t left, top, right, bottom;
         auto previousWidget = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE];
         auto nextWidget = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE];
+        ScreenCoordsXY leftTop, rightBottom;
 
         if (drawPreviousButton)
         {
-            left = previousWidget.left + w->windowPos.x;
-            top = previousWidget.top + w->windowPos.y;
-            right = previousWidget.right + w->windowPos.x;
-            bottom = previousWidget.bottom + w->windowPos.y;
-            gfx_filter_rect(dpi, { left, top, right, bottom }, FilterPaletteID::Palette51);
+            leftTop = w->windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
+            rightBottom = w->windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
+            gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
 
         if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
         {
-            left = nextWidget.left + w->windowPos.x;
-            top = nextWidget.top + w->windowPos.y;
-            right = nextWidget.right + w->windowPos.x;
-            bottom = nextWidget.bottom + w->windowPos.y;
-            gfx_filter_rect(dpi, { left, top, right, bottom }, FilterPaletteID::Palette51);
+            leftTop = w->windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
+            rightBottom = w->windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
+            gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
     }
 
