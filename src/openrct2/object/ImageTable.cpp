@@ -132,7 +132,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         try
         {
             auto imageData = context->GetData(s);
-            auto image = Imaging::ReadFromBuffer(imageData, IMAGE_FORMAT::PNG_32);
+            auto image = Imaging::ReadFromBuffer(imageData);
 
             ImageImporter importer;
             auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
@@ -149,14 +149,21 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     return result;
 }
 
-std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(IReadObjectContext* context, json_t& el)
+std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
+    IReadObjectContext* context, std::vector<std::pair<std::string, Image>>& imageSources, json_t& el)
 {
     Guard::Assert(el.is_object(), "ImageTable::ParseImages expects parameter el to be object");
 
     auto path = Json::GetString(el["path"]);
     auto x = Json::GetNumber<int16_t>(el["x"]);
     auto y = Json::GetNumber<int16_t>(el["y"]);
+    auto srcX = Json::GetNumber<int16_t>(el["srcX"]);
+    auto srcY = Json::GetNumber<int16_t>(el["srcY"]);
+    auto srcWidth = Json::GetNumber<int16_t>(el["srcWidth"]);
+    auto srcHeight = Json::GetNumber<int16_t>(el["srcHeight"]);
     auto raw = Json::GetString(el["format"]) == "raw";
+    auto keepPalette = Json::GetString(el["palette"]) == "keep";
+    auto zoomOffset = Json::GetNumber<int32_t>(el["zoom"]);
 
     std::vector<std::unique_ptr<RequiredImage>> result;
     try
@@ -166,15 +173,31 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         {
             flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::RLE);
         }
-        auto imageData = context->GetData(path);
-        auto image = Imaging::ReadFromBuffer(imageData, IMAGE_FORMAT::PNG_32);
+        if (keepPalette)
+        {
+            flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
+        }
+
+        auto itSource = std::find_if(
+            imageSources.begin(), imageSources.end(),
+            [&path](const std::pair<std::string, Image>& item) { return item.first == path; });
+        if (itSource == imageSources.end())
+        {
+            throw std::runtime_error("Unable to find image in image source list.");
+        }
+        auto& image = itSource->second;
+
+        if (srcWidth == 0)
+            srcWidth = image.Width;
+
+        if (srcHeight == 0)
+            srcHeight = image.Height;
 
         ImageImporter importer;
-        auto importResult = importer.Import(image, 0, 0, flags);
-        auto g1Element = importResult.Element;
-        g1Element.x_offset = x;
-        g1Element.y_offset = y;
-        result.push_back(std::make_unique<RequiredImage>(g1Element));
+        auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, flags);
+        auto g1element = importResult.Element;
+        g1element.zoomed_offset = zoomOffset;
+        result.push_back(std::make_unique<RequiredImage>(g1element));
     }
     catch (const std::exception& e)
     {
@@ -385,6 +408,31 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
     }
 }
 
+std::vector<std::pair<std::string, Image>> ImageTable::GetImageSources(IReadObjectContext* context, json_t& jsonImages)
+{
+    std::vector<std::pair<std::string, Image>> result;
+    for (auto& jsonImage : jsonImages)
+    {
+        if (jsonImage.is_object())
+        {
+            auto path = Json::GetString(jsonImage["path"]);
+            auto keepPalette = Json::GetString(jsonImage["palette"]) == "keep";
+            auto itSource = std::find_if(result.begin(), result.end(), [&path](const std::pair<std::string, Image>& item) {
+                return item.first == path;
+            });
+            if (itSource == result.end())
+            {
+                auto imageData = context->GetData(path);
+                auto imageFormat = keepPalette ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
+                auto image = Imaging::ReadFromBuffer(imageData, imageFormat);
+                auto pair = std::make_pair<std::string, Image>(std::move(path), std::move(image));
+                result.push_back(std::move(pair));
+            }
+        }
+    }
+    return result;
+}
+
 void ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
 {
     Guard::Assert(root.is_object(), "ImageTable::ReadJson expects parameter root to be object");
@@ -394,6 +442,7 @@ void ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
         // First gather all the required images from inspecting the JSON
         std::vector<std::unique_ptr<RequiredImage>> allImages;
         auto jsonImages = root["images"];
+        auto imageSources = GetImageSources(context, jsonImages);
 
         for (auto& jsonImage : jsonImages)
         {
@@ -406,7 +455,7 @@ void ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
             }
             else if (jsonImage.is_object())
             {
-                auto images = ParseImages(context, jsonImage);
+                auto images = ParseImages(context, imageSources, jsonImage);
                 allImages.insert(
                     allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
             }
