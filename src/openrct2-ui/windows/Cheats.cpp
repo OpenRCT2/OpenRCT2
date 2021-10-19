@@ -413,7 +413,7 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_DISABLE_RIDE_VALUE_AGING) |
     (1ULL << WIDX_IGNORE_RESEARCH_STATUS) |
     (1ULL << WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES) |
-    (1ULL << WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS)
+    (1ULL << WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS),
 };
 
 static uint64_t window_cheats_page_hold_down_widgets[] = {
@@ -432,7 +432,7 @@ static uint64_t window_cheats_page_hold_down_widgets[] = {
     (1ULL << WIDX_INCREASE_PARK_RATING) |
     (1ULL << WIDX_DECREASE_PARK_RATING),
 
-    0
+    0,
 };
 
 static rct_string_id window_cheats_page_titles[] = {

@@ -582,7 +582,7 @@ static constexpr const map_animation_invalidate_event_handler _animatedObjectEve
     map_animation_invalidate_banner,
     map_animation_invalidate_large_scenery,
     map_animation_invalidate_wall_door,
-    map_animation_invalidate_wall
+    map_animation_invalidate_wall,
 };
 
 /**

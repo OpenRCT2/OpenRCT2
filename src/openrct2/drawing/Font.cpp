@@ -19,7 +19,11 @@
 #include <iterator>
 #include <unordered_map>
 
-static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = { 6, 10, 10 };
+static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = {
+    6,
+    10,
+    10,
+};
 
 static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT][FONT_SPRITE_GLYPH_COUNT];
 static uint8_t _additionalSpriteFontCharacterWidth[FONT_SIZE_COUNT][SPR_G2_GLYPH_COUNT] = {};

@@ -29,15 +29,16 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 240;
 static constexpr const int32_t WW = 340;
 
-// clang-format off
-enum {
+enum
+{
     PAGE_RIDES,
     PAGE_SHOPS_AND_STALLS,
     PAGE_KIOSKS_AND_FACILITIES,
     PAGE_COUNT
 };
 
-enum WINDOW_RIDE_LIST_WIDGET_IDX {
+enum WINDOW_RIDE_LIST_WIDGET_IDX
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -55,6 +56,7 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
     WIDX_QUICK_DEMOLISH,
 };
 
+// clang-format off
 static rct_widget window_ride_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
@@ -71,24 +73,24 @@ static rct_widget window_ride_list_widgets[] = {
     MakeWidget({315, 90}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_DEMOLISH,               STR_QUICK_DEMOLISH_RIDE           ),
     WIDGETS_END,
 };
+// clang-format on
 
 static bool _quickDemolishMode = false;
 static std::vector<ride_id_t> _rideList;
 
-static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_ride_list_resize(rct_window *w);
-static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_ride_list_update(rct_window *w);
-static void window_ride_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_ride_list_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_ride_list_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_ride_list_invalidate(rct_window *w);
-static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void window_ride_list_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_ride_list_resize(rct_window* w);
+static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_ride_list_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_ride_list_update(rct_window* w);
+static void window_ride_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_ride_list_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_ride_list_invalidate(rct_window* w);
+static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_ride_list_events([](auto& events)
-{
+static rct_window_event_list window_ride_list_events([](auto& events) {
     events.mouse_up = &window_ride_list_mouseup;
     events.resize = &window_ride_list_resize;
     events.mouse_down = &window_ride_list_mousedown;
@@ -102,7 +104,8 @@ static rct_window_event_list window_ride_list_events([](auto& events)
     events.scroll_paint = &window_ride_list_scrollpaint;
 });
 
-enum {
+enum
+{
     INFORMATION_TYPE_STATUS,
     INFORMATION_TYPE_POPULARITY,
     INFORMATION_TYPE_SATISFACTION,
@@ -118,7 +121,7 @@ enum {
     INFORMATION_TYPE_RELIABILITY,
     INFORMATION_TYPE_DOWN_TIME,
     INFORMATION_TYPE_GUESTS_FAVOURITE,
-    DROPDOWN_LIST_COUNT
+    DROPDOWN_LIST_COUNT,
 };
 
 static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
@@ -136,7 +139,7 @@ static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST
     STR_QUEUE_TIME,
     STR_RELIABILITY,
     STR_DOWN_TIME,
-    STR_GUESTS_FAVOURITE
+    STR_GUESTS_FAVOURITE,
 };
 
 static constexpr const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
@@ -146,21 +149,21 @@ static constexpr const rct_string_id ride_list_statusbar_count_strings[PAGE_COUN
 };
 
 static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
-    false,
-    false,
-    false,
-    true,
-    false,
-    true,
-    false,
-    false,
-    true,
-    true,
-    false,
-    false,
-    false,
-    false,
-    false
+    false, // Status
+    false, // Popularity
+    false, // Satisfaction
+    true,  // Profit
+    false, // Total customers
+    true,  // Total profit
+    false, // Customers
+    false, // Age
+    true,  // Income
+    true,  // Running_cost
+    false, // Queue length
+    false, // Queue time
+    false, // Reliability
+    false, // Down time
+    false, // Guests favourite
 };
 
 static constexpr const rct_string_id page_names[] = {
@@ -168,7 +171,6 @@ static constexpr const rct_string_id page_names[] = {
     STR_SHOPS_AND_STALLS,
     STR_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
-// clang-format on
 
 static int32_t _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 

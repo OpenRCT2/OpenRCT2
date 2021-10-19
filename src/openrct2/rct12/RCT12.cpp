@@ -1348,10 +1348,10 @@ RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
 }
 
 static constexpr std::string_view _stationStyles[] = {
-    "rct2.station.plain",         "rct2.station.wooden", "rct2.station.canvas_tent", "rct2.station.castle_grey",
-    "rct2.station.castle_brown",  "rct2.station.jungle", "rct2.station.log",         "rct2.station.classical",
-    "rct2.station.abstract",      "rct2.station.snow",   "rct2.station.pagoda",      "rct2.station.space",
-    "openrct2.station.noentrance"
+    "rct2.station.plain",          "rct2.station.wooden", "rct2.station.canvas_tent", "rct2.station.castle_grey",
+    "rct2.station.castle_brown",   "rct2.station.jungle", "rct2.station.log",         "rct2.station.classical",
+    "rct2.station.abstract",       "rct2.station.snow",   "rct2.station.pagoda",      "rct2.station.space",
+    "openrct2.station.noentrance",
 };
 
 static constexpr std::string_view _musicStyles[] = {

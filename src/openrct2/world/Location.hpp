@@ -491,7 +491,12 @@ const Direction INVALID_DIRECTION = 0xFF;
  * Array of all valid cardinal directions, to make it easy to write range-based for loops like:
  *   for (Direction d : ALL_DIRECTIONS)
  */
-constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
+constexpr Direction ALL_DIRECTIONS[] = {
+    0,
+    1,
+    2,
+    3,
+};
 
 /**
  * Given a direction, return the direction that points the other way,

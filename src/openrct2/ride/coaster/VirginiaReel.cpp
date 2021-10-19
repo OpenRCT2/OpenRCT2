@@ -130,14 +130,26 @@ static constexpr const uint32_t virginia_reel_track_pieces_25_deg_up_lift_hill[4
 };
 
 static constexpr const uint32_t virginia_reel_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
-    { SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-      SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
-    { SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-      SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2 },
-    { SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0, SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-      SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2 },
-    { SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0, SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-      SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
+    {
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2,
+    },
+    {
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2,
+    },
+    {
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2,
+    },
+    {
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
+        SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2,
+    },
 };
 
 static constexpr const uint32_t virginia_reel_track_pieces_flat_quarter_turn_1_tile[4] = {
@@ -447,7 +459,12 @@ static void paint_virginia_reel_station(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static constexpr const uint8_t virginia_reel_left_quarter_turn_supports[] = { 5, 2, 3, 4 };
+static constexpr const uint8_t virginia_reel_left_quarter_turn_supports[] = {
+    5,
+    2,
+    3,
+    4,
+};
 
 /** rct2: 0x00811304 */
 static void paint_virginia_reel_track_left_quarter_turn_3_tiles(
@@ -477,7 +494,12 @@ static void paint_virginia_reel_track_left_quarter_turn_3_tiles(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static constexpr const uint8_t virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8_t virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = {
+    3,
+    1,
+    2,
+    0,
+};
 
 /** rct2: 0x00811314 */
 static void paint_virginia_reel_track_right_quarter_turn_3_tiles(

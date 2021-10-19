@@ -35,13 +35,8 @@
 #include <cstring>
 #include <iterator>
 
-// clang-format off
-static constexpr const uint8_t byte_97B444[] =
-{
-    0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
-    5, 7, 12, 14, 13, 15, 0, 0, 0, 0,
-    0, 0, 0, 17, 0, 0, 0, 16, 0, 18,
-    15, 0
+static constexpr const uint8_t byte_97B444[] = {
+    0, 2, 1, 3, 8, 10, 9, 11, 4, 6, 5, 7, 12, 14, 13, 15, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 16, 0, 18, 15, 0,
 };
 
 // rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
@@ -50,26 +45,26 @@ static constexpr const CoordsXY viewport_surface_paint_data[][4] = {
         { 32, 0 },
         { -32, 32 },
         { -64, -32 },
-        { 0, -64 }
+        { 0, -64 },
     },
     {
         { 0, 32 },
         { -64, 0 },
         { -32, -64 },
-        { 32, -32 }
+        { 32, -32 },
     },
     {
         { 0, -32 },
         { 0, 0 },
         { -32, 0 },
-        { -32, -32 }
+        { -32, -32 },
     },
     {
         { -32, 0 },
         { -32, -32 },
         { 0, -32 },
-        { 0, 0 }
-    }
+        { 0, 0 },
+    },
 };
 
 enum
@@ -88,11 +83,12 @@ struct corner_height
     uint8_t left;
 };
 
+// clang-format off
 /**
 *  rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
 */
 static constexpr const corner_height corner_heights[] = {
-    //   T  R  B  L
+    // T  R  B  L
     { 0, 0, 0, 0 },
     { 0, 0, 1, 0 },
     { 0, 0, 0, 1 },
@@ -130,25 +126,25 @@ static constexpr const corner_height corner_heights[] = {
 // bottom left tint
 static constexpr const uint8_t byte_97B524[] = {
     2, 5, 1, 4, 2, 5, 1, 2, 2, 4,
-    1, 2, 1, 3, 0, 3, 1, 5, 0
+    1, 2, 1, 3, 0, 3, 1, 5, 0,
 };
 
 // top left tint
 static constexpr const uint32_t byte_97B537[] = {
     2, 5, 2, 4, 2, 5, 1, 1, 3, 4,
-    3, 2, 1, 2, 0, 3, 1, 5, 0
+    3, 2, 1, 2, 0, 3, 1, 5, 0,
 };
 
 // top right tint
 static constexpr const uint8_t byte_97B54A[] = {
     2, 2, 2, 4, 0, 0, 1, 1, 3, 4,
-    3, 5, 1, 2, 2, 3, 1, 5, 0
+    3, 5, 1, 2, 2, 3, 1, 5, 0,
 };
 
 // bottom right tint
 static constexpr const uint8_t byte_97B55D[] = {
     2, 2, 1, 4, 0, 0, 1, 2, 2, 4,
-    1, 5, 1, 3, 2, 3, 1, 5, 0
+    1, 5, 1, 3, 2, 3, 1, 5, 0,
 };
 
 static constexpr const uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
@@ -203,23 +199,20 @@ static constexpr const int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
     0,
 };
 
+// clang-format on
 // tunnel offset
 static constexpr const uint8_t byte_97B5B0[TUNNEL_TYPE_COUNT] = {
-    0, 0, 0, 3, 3, 3, 6, 6, 6, 6,
-    10, 11, 12, 13, 14, 14,
-    16, 17, 18, 19, 20, 21, 22
+    0, 0, 0, 3, 3, 3, 6, 6, 6, 6, 10, 11, 12, 13, 14, 14, 16, 17, 18, 19, 20, 21, 22,
 };
 
-static constexpr const uint8_t byte_97B740[] =
-{
-    0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
-    0, 3, 0, 1, 4, 0
+static constexpr const uint8_t byte_97B740[] = {
+    0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 4, 0,
 };
 
 struct tile_descriptor
 {
     TileCoordsXY tile_coords;
-    const TileElement * tile_element;
+    const TileElement* tile_element;
     uint8_t terrain;
     uint8_t slope;
     corner_height corner_heights;
@@ -227,20 +220,23 @@ struct tile_descriptor
 
 struct tile_surface_boundary_data
 {
-    int32_t  bit_1;
-    int32_t  bit_8;
-    int32_t  bit_4;
-    int32_t  bit_2;
+    int32_t bit_1;
+    int32_t bit_8;
+    int32_t bit_4;
+    int32_t bit_2;
     uint32_t image[5];
     CoordsXY offset;
     CoordsXY box_offset;
     CoordsXY box_size;
 };
 
-static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
-{
-    { // Bottom right
-        1, 8, 4, 2,
+static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] = {
+    {
+        // Bottom right
+        1,
+        8,
+        4,
+        2,
         {
             SPR_TERRAIN_BOUNDARY_FENCES_1,
             SPR_TERRAIN_BOUNDARY_FENCES_5,
@@ -249,11 +245,15 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
             SPR_TERRAIN_BOUNDARY_FENCES_5,
         },
         { 1, 31 },
-        { 1,  31 },
-        { 30,  1 }
+        { 1, 31 },
+        { 30, 1 },
     },
-    { // Bottom left
-        1, 2, 4, 8,
+    {
+        // Bottom left
+        1,
+        2,
+        4,
+        8,
         {
             SPR_TERRAIN_BOUNDARY_FENCES_2,
             SPR_TERRAIN_BOUNDARY_FENCES_6,
@@ -262,11 +262,15 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
             SPR_TERRAIN_BOUNDARY_FENCES_6,
         },
         { 31, 0 },
-        { 31,  1 },
-        { 1,  30 }
+        { 31, 1 },
+        { 1, 30 },
     },
-    { // Top left
-        4, 2, 8, 1,
+    {
+        // Top left
+        4,
+        2,
+        8,
+        1,
         {
             SPR_TERRAIN_BOUNDARY_FENCES_1,
             SPR_TERRAIN_BOUNDARY_FENCES_3,
@@ -275,11 +279,15 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
             SPR_TERRAIN_BOUNDARY_FENCES_5,
         },
         { 1, 0 },
-        { 1,  1 },
-        { 30,  1 }
+        { 1, 1 },
+        { 30, 1 },
     },
-    { // Top right
-        4, 8, 2, 1,
+    {
+        // Top right
+        4,
+        8,
+        2,
+        1,
         {
             SPR_TERRAIN_BOUNDARY_FENCES_2,
             SPR_TERRAIN_BOUNDARY_FENCES_4,
@@ -288,11 +296,10 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
             SPR_TERRAIN_BOUNDARY_FENCES_6,
         },
         { 1, 1 },
-        { 1,  1 },
-        { 1,  30 }
+        { 1, 1 },
+        { 1, 30 },
     },
 };
-// clang-format on
 
 static const TerrainSurfaceObject* get_surface_object(size_t index)
 {

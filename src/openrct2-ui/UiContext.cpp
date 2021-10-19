@@ -172,7 +172,11 @@ public:
 
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
-        static constexpr const int32_t SDLFSFlags[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
+        static constexpr const int32_t SDLFSFlags[] = {
+            0,
+            SDL_WINDOW_FULLSCREEN,
+            SDL_WINDOW_FULLSCREEN_DESKTOP,
+        };
         uint32_t windowFlags = SDLFSFlags[static_cast<int32_t>(mode)];
 
         // HACK Changing window size when in fullscreen usually has no effect

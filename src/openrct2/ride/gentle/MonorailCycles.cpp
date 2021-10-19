@@ -70,8 +70,10 @@ enum
     SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3 = 16869,
 };
 
-static constexpr const uint32_t monorail_cycles_track_pieces_flat[4] = { SPR_MONORAIL_CYCLES_FLAT_SW_NE,
-                                                                         SPR_MONORAIL_CYCLES_FLAT_NW_SE };
+static constexpr const uint32_t monorail_cycles_track_pieces_flat[2] = {
+    SPR_MONORAIL_CYCLES_FLAT_SW_NE,
+    SPR_MONORAIL_CYCLES_FLAT_NW_SE,
+};
 
 static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
     {
@@ -101,7 +103,7 @@ static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_5
         SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_2,
         SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_3,
         SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_4,
-    }
+    },
 };
 
 static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_left[2][4] = {
@@ -116,7 +118,7 @@ static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_left[2][4] =
         SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_1,
         SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_2,
         SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_3,
-    }
+    },
 };
 
 static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_right[2][4] = {
@@ -131,18 +133,30 @@ static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_right[2][4] 
         SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_1,
         SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_2,
         SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3,
-    }
+    },
 };
 
 static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
-    { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
-    { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2 },
-    { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0, SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2 },
-    { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0, SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
+    {
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2,
+    },
+    {
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2,
+    },
+    {
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2,
+    },
+    {
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2,
+    },
 };
 
 static paint_struct* paint_monorail_cycles_util_7c(
@@ -258,7 +272,12 @@ static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static constexpr const uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = {
+    3,
+    1,
+    2,
+    0,
+};
 
 /** rct2: 0x0088AD98 */
 static void paint_monorail_cycles_track_right_quarter_turn_3_tiles(

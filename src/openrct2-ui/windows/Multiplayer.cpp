@@ -107,7 +107,7 @@ static rct_widget *window_multiplayer_page_widgets[] = {
     window_multiplayer_information_widgets,
     window_multiplayer_players_widgets,
     window_multiplayer_groups_widgets,
-    window_multiplayer_options_widgets
+    window_multiplayer_options_widgets,
 };
 
 static constexpr const uint64_t window_multiplayer_page_enabled_widgets[] = {
@@ -212,12 +212,22 @@ static rct_window_event_list *window_multiplayer_page_events[] = {
     &window_multiplayer_information_events,
     &window_multiplayer_players_events,
     &window_multiplayer_groups_events,
-    &window_multiplayer_options_events
+    &window_multiplayer_options_events,
 };
 // clang-format on
 
-static constexpr const int32_t window_multiplayer_animation_divisor[] = { 4, 4, 2, 2 };
-static constexpr const int32_t window_multiplayer_animation_frames[] = { 8, 8, 7, 4 };
+static constexpr const int32_t window_multiplayer_animation_divisor[] = {
+    4,
+    4,
+    2,
+    2,
+};
+static constexpr const int32_t window_multiplayer_animation_frames[] = {
+    8,
+    8,
+    7,
+    4,
+};
 
 static void window_multiplayer_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_multiplayer_set_page(rct_window* w, int32_t page);

@@ -9,11 +9,11 @@
 
 #include "Localisation.h"
 
-// clang-format off
 const char real_name_initials[] = {
-    'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W'
+    'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W',
 };
 
+// clang-format off
 // The peep sorter assumes this array is alphabetically ordered
 const char *real_names[] = {
     "Aaron",
@@ -1039,6 +1039,6 @@ const char *real_names[] = {
     "Yvonne",
     "Zachary",
     "Zachery",
-    "Zola"
+    "Zola",
 };
 // clang-format on

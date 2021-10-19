@@ -25,7 +25,12 @@ private:
     ParkParameter _parameter{ ParkParameter::Count };
     uint64_t _value{};
 
-    constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_CLOSE_PARK, STR_CANT_OPEN_PARK, STR_NONE, STR_NONE };
+    constexpr static rct_string_id _ErrorTitles[] = {
+        STR_CANT_CLOSE_PARK,
+        STR_CANT_OPEN_PARK,
+        STR_NONE,
+        STR_NONE,
+    };
 
 public:
     ParkSetParameterAction() = default;
