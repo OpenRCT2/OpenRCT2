@@ -1664,8 +1664,8 @@ static void window_ride_construction_dropdown(rct_window* w, rct_widgetindex wid
     _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;
     window_ride_construction_update_active_elements();
 }
-static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result);
-static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result);
+static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActions::Result* result);
+static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActions::Result* result);
 static void CloseConstructWindowOnCompletion(Ride* ride);
 
 static void CloseConstructWindowOnCompletion(Ride* ride)
@@ -1687,7 +1687,7 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
     }
 }
 
-static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result)
+static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActions::Result* result)
 {
     if (result->Error != GameActions::Status::Ok)
     {
@@ -1732,7 +1732,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
     CloseConstructWindowOnCompletion(ride);
 }
 
-static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result)
+static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActions::Result* result)
 {
     if (result->Error != GameActions::Status::Ok)
     {
@@ -1833,8 +1833,8 @@ static void window_ride_construction_construct(rct_window* w)
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
     }
 
-    auto tpar = dynamic_cast<TrackPlaceActionResult*>(res.get());
-    if (tpar != nullptr && tpar->GroundFlags & ELEMENT_IS_UNDERGROUND)
+    const auto resultData = res->GetData<TrackPlaceActionResult>();
+    if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         viewport_set_visibility(1);
     }

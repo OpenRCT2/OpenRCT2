@@ -28,26 +28,6 @@ static int32_t place_virtual_track(
     return place_virtual_track(const_cast<TrackDesign*>(&td6), ptdOperation, placeScenery, ride, loc);
 }
 
-TrackDesignActionResult::TrackDesignActionResult()
-    : GameActions::Result(GameActions::Status::Ok, STR_NONE)
-{
-}
-
-TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error)
-    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE)
-{
-}
-
-TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error, rct_string_id title, rct_string_id message)
-    : GameActions::Result(error, title, message)
-{
-}
-
-TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error, rct_string_id message)
-    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
-{
-}
-
 TrackDesignAction::TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td)
     : _loc(location)
     , _td(td)
@@ -84,7 +64,7 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
@@ -113,7 +93,7 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GameActions::Status::Unknown);
+        return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     money32 cost = 0;
@@ -133,9 +113,11 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
     GameActions::ExecuteNested(&gameAction);
     if (cost == MONEY32_UNDEFINED)
     {
-        return MakeResult(GameActions::Status::Disallowed, error_reason);
+        return MakeResult(GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, error_reason);
     }
     res->Cost = cost;
+    res->SetData(ride_id_t{ RIDE_ID_NULL });
+
     return res;
 }
 
@@ -173,7 +155,7 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GameActions::Status::Unknown);
+        return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     money32 cost = 0;
@@ -211,7 +193,7 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
         gameAction.SetFlags(GetFlags());
 
         GameActions::ExecuteNested(&gameAction);
-        return MakeResult(GameActions::Status::Disallowed, error_reason);
+        return MakeResult(GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, error_reason);
     }
 
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
@@ -275,6 +257,7 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
         r = GameActions::ExecuteNested(&gameAction);
     }
     res->Cost = cost;
-    res->rideIndex = ride->id;
+    res->SetData(ride_id_t{ ride->id });
+
     return res;
 }

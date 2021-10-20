@@ -1758,35 +1758,30 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
 
 /**
  *
- *  rct2: 0x006ABE85
+ *  Calculates the sample rate for ride music.
  */
-static void ride_music_update(Ride* ride)
+static int32_t RideMusicSampleRate(Ride* ride)
 {
-    // The circus does not have music in the normal sense - its “music” is a sound effect.
-    if (ride->type == RIDE_TYPE_CIRCUS)
-    {
-        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-        if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
-        {
-            ride->music_tune_id = 255;
-            return;
-        }
-    }
-    else
-    {
-        const auto& rtd = ride->GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
-        {
-            return;
-        }
+    int32_t sampleRate = 22050;
 
-        if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
-        {
-            ride->music_tune_id = 255;
-            return;
-        }
+    // Alter sample rate for a power cut effect
+    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+    {
+        sampleRate = ride->breakdown_sound_modifier * 70;
+        if (ride->breakdown_reason_pending != BREAKDOWN_CONTROL_FAILURE)
+            sampleRate *= -1;
+        sampleRate += 22050;
     }
 
+    return sampleRate;
+}
+
+/**
+ *
+ *  Ride music slows down upon breaking. If it's completely broken, no music should play.
+ */
+static bool RideMusicBreakdownEffect(Ride* ride)
+{
     // Oscillate parameters for a power cut effect when breaking down
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
     {
@@ -1809,9 +1804,66 @@ static void ride_music_update(Ride* ride)
             if (ride->breakdown_sound_modifier == 255)
             {
                 ride->music_tune_id = 255;
-                return;
+                return true;
             }
         }
+    }
+    return false;
+}
+
+/**
+ *
+ *  Circus music is a sound effect, rather than music. Needs separate processing.
+ */
+static void CircusMusicUpdate(Ride* ride)
+{
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+    if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
+    {
+        ride->music_position = 0;
+        ride->music_tune_id = 255;
+        return;
+    }
+
+    if (RideMusicBreakdownEffect(ride))
+    {
+        return;
+    }
+
+    CoordsXYZ rideCoords = ride->stations[0].GetStart().ToTileCentre();
+
+    const auto sampleRate = RideMusicSampleRate(ride);
+
+    OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
+}
+
+/**
+ *
+ *  rct2: 0x006ABE85
+ */
+static void ride_music_update(Ride* ride)
+{
+    if (ride->type == RIDE_TYPE_CIRCUS)
+    {
+        CircusMusicUpdate(ride);
+        return;
+    }
+
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+    {
+        return;
+    }
+
+    if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
+    {
+        ride->music_tune_id = 255;
+        return;
+    }
+
+    if (RideMusicBreakdownEffect(ride))
+    {
+        return;
     }
 
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
@@ -1830,16 +1882,7 @@ static void ride_music_update(Ride* ride)
 
     CoordsXYZ rideCoords = ride->stations[0].GetStart().ToTileCentre();
 
-    int32_t sampleRate = 22050;
-
-    // Alter sample rate for a power cut effect
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
-    {
-        sampleRate = ride->breakdown_sound_modifier * 70;
-        if (ride->breakdown_reason_pending != BREAKDOWN_CONTROL_FAILURE)
-            sampleRate *= -1;
-        sampleRate += 22050;
-    }
+    int32_t sampleRate = RideMusicSampleRate(ride);
 
     OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
 }
