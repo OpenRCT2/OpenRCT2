@@ -11,6 +11,7 @@
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../world/ConstructionClearance.h"
 
 using namespace OpenRCT2::TrackMetaData;
 

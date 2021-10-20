@@ -11,6 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/Park.h"
 #include "../world/Surface.h"
 

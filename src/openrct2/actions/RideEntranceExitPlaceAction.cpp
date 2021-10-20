@@ -13,6 +13,7 @@
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/Station.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 
 RideEntranceExitPlaceAction::RideEntranceExitPlaceAction(

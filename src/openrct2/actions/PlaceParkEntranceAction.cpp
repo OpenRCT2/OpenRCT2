@@ -14,6 +14,7 @@
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/MapAnimation.h"

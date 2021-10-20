@@ -15,6 +15,7 @@
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"

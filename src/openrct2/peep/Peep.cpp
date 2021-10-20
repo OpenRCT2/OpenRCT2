@@ -36,6 +36,7 @@
 #include "../windows/Intent.h"
 #include "../world/Balloon.h"
 #include "../world/Climate.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/EntityTweener.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
