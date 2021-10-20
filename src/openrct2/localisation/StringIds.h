@@ -2864,7 +2864,7 @@ enum
     STR_ROTATE_ANTI_CLOCKWISE = 5459,
     STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE = 5460,
     STR_CHEAT_SET_GUESTS_PARAMETERS = 5461,
-    STR_CHEAT_CURRENCY_FORMAT = 5462,
+    STR_CURRENCY_FORMAT = 5462,
     STR_CHEAT_HAVE_FUN = 5463,
     STR_CHEAT_GENERAL_GROUP = 5464,
     STR_CHEAT_WEATHER_GROUP = 5465,
@@ -3912,6 +3912,8 @@ enum
     STR_FILE_BUG_ON_GITHUB = 6457,
 
     STR_FOLLOW_SUBJECT_TIP = 6458,
+
+    STR_UNSUPPORTED_OBJECT_FORMAT = 6459,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

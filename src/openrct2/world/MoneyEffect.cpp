@@ -18,7 +18,12 @@
 #include "Map.h"
 #include "Sprite.h"
 
-static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
+static constexpr const CoordsXY _moneyEffectMoveOffset[] = {
+    { 1, -1 },
+    { 1, 1 },
+    { -1, 1 },
+    { -1, -1 },
+};
 
 template<> bool EntityBase::Is<MoneyEffect>() const
 {

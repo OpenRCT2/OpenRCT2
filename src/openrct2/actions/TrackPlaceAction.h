@@ -11,18 +11,12 @@
 
 #include "GameAction.h"
 
-class TrackPlaceActionResult final : public GameActions::Result
+struct TrackPlaceActionResult
 {
-public:
-    TrackPlaceActionResult();
-    TrackPlaceActionResult(GameActions::Status error);
-    TrackPlaceActionResult(GameActions::Status error, rct_string_id message);
-    TrackPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args);
-
     uint8_t GroundFlags{ 0 };
 };
 
-DEFINE_GAME_ACTION(TrackPlaceAction, GameCommand::PlaceTrack, TrackPlaceActionResult)
+DEFINE_GAME_ACTION(TrackPlaceAction, GameCommand::PlaceTrack, GameActions::Result)
 {
 private:
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };

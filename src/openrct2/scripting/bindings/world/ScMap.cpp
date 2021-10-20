@@ -122,7 +122,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Litter>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->sprite_index)));
             }
         }
         else if (type == "duck")

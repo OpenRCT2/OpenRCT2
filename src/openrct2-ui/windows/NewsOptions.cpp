@@ -247,8 +247,16 @@ static void window_news_options_set_page(rct_window* w, int32_t page)
     }
 }
 
-const int32_t window_news_option_tab_animation_divisor[] = { 1, 4, 4 };
-const int32_t window_news_option_tab_animation_frames[] = { 1, 16, 8 };
+const int32_t window_news_option_tab_animation_divisor[] = {
+    1,
+    4,
+    4,
+};
+const int32_t window_news_option_tab_animation_frames[] = {
+    1,
+    16,
+    8,
+};
 
 static void window_news_options_draw_tab_image(rct_window* w, rct_drawpixelinfo* dpi, int32_t page, int32_t spriteIndex)
 {

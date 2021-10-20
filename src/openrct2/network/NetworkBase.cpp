@@ -38,7 +38,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "13"
+#define NETWORK_STREAM_VERSION "14"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -841,7 +841,9 @@ void NetworkBase::ServerClientDisconnected()
 std::string NetworkBase::GenerateAdvertiseKey()
 {
     // Generate a string of 16 random hex characters (64-integer key as a hex formatted string)
-    static char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+    static char hexChars[] = {
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
+    };
     char key[17];
     for (int32_t i = 0; i < 16; i++)
     {

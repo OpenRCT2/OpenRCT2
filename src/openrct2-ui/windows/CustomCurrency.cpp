@@ -35,10 +35,10 @@ enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
 
 static rct_widget window_custom_currency_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CHEAT_CURRENCY_FORMAT), // NB: 3 widgets
-    MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY                ),
-    MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                           ),
-    MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH       ),
+    MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
+    MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),
+    MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                 ),
+    MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH ),
     WIDGETS_END,
 };
 
@@ -212,7 +212,7 @@ static void custom_currency_window_text_input([[maybe_unused]] struct rct_window
 static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto ft = Formatter::Common();
-    ft.Add<int32_t>(100);
+    ft.Add<money64>(MONEY(10, 0));
 
     WindowDrawWidgets(w, dpi);
 

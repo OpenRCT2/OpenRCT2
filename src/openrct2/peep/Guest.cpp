@@ -163,7 +163,10 @@ static constexpr const CoordsXY _WatchingPositionOffsets[] = {
 };
 
 static constexpr const ride_rating NauseaMaximumThresholds[] = {
-    300, 600, 800, 1000
+    300,
+    600,
+    800,
+    1000,
 };
 
 /** rct2: 009823AC */
@@ -210,8 +213,9 @@ static constexpr const char *gPeepEasterEggNames[] = {
     "KATIE SMITH",
     "EILIDH BELL",
     "NANCY STILLWAGON",
-    "DAVID ELLIS"
+    "DAVID ELLIS",
 };
+// clang-format on
 
 // Flags used by PeepThoughtToActionMap
 enum PeepThoughtToActionFlag : uint8_t
@@ -406,9 +410,11 @@ static struct
 
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
 static constexpr const ride_rating NauseaMinimumThresholds[] = {
-    0, 0, 200, 400
+    0,
+    0,
+    200,
+    400,
 };
-// clang-format on
 
 static bool peep_has_voucher_for_free_ride(Guest* peep, Ride* ride);
 static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide);
@@ -1764,9 +1770,11 @@ void Guest::OnExitRide(Ride* ride)
     {
         InsertNewThought(PeepThoughtType::WasGreat, ride->id);
 
-        static constexpr OpenRCT2::Audio::SoundId laughs[3] = { OpenRCT2::Audio::SoundId::Laugh1,
-                                                                OpenRCT2::Audio::SoundId::Laugh2,
-                                                                OpenRCT2::Audio::SoundId::Laugh3 };
+        static constexpr OpenRCT2::Audio::SoundId laughs[3] = {
+            OpenRCT2::Audio::SoundId::Laugh1,
+            OpenRCT2::Audio::SoundId::Laugh2,
+            OpenRCT2::Audio::SoundId::Laugh3,
+        };
         int32_t laughType = scenario_rand() & 7;
         if (laughType < 3)
         {

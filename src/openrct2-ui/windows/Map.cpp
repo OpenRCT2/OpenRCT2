@@ -66,13 +66,14 @@ constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
 using MapCoordsXY = TileCoordsXY;
 
-// clang-format off
-enum {
+enum
+{
     PAGE_PEEPS,
     PAGE_RIDES
 };
 
-enum WINDOW_MAP_WIDGET_IDX {
+enum WINDOW_MAP_WIDGET_IDX
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -99,6 +100,7 @@ enum WINDOW_MAP_WIDGET_IDX {
 
 validate_global_widx(WC_MAP, WIDX_ROTATE_90);
 
+// clang-format off
 static rct_widget window_map_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                                  ),
@@ -127,39 +129,39 @@ static constexpr const ScreenCoordsXY MiniMapOffsets[] = {
     {     MAXIMUM_MAP_SIZE_TECHNICAL - 8,                              0 },
     { 2 * MAXIMUM_MAP_SIZE_TECHNICAL - 8,     MAXIMUM_MAP_SIZE_TECHNICAL },
     {     MAXIMUM_MAP_SIZE_TECHNICAL - 8, 2 * MAXIMUM_MAP_SIZE_TECHNICAL },
-    {                              0 - 8,     MAXIMUM_MAP_SIZE_TECHNICAL }
+    {                              0 - 8,     MAXIMUM_MAP_SIZE_TECHNICAL },
 };
+// clang-format on
 
 /** rct2: 0x00981BCC */
 static constexpr const uint16_t RideKeyColours[] = {
-    MapColour(PALETTE_INDEX_61),   // COLOUR_KEY_RIDE
-    MapColour(PALETTE_INDEX_42),   // COLOUR_KEY_FOOD
-    MapColour(PALETTE_INDEX_20),   // COLOUR_KEY_DRINK
-    MapColour(PALETTE_INDEX_209),  // COLOUR_KEY_SOUVENIR
-    MapColour(PALETTE_INDEX_136),  // COLOUR_KEY_KIOSK
-    MapColour(PALETTE_INDEX_102),  // COLOUR_KEY_FIRST_AID
-    MapColour(PALETTE_INDEX_55),   // COLOUR_KEY_CASH_MACHINE
-    MapColour(PALETTE_INDEX_161),  // COLOUR_KEY_TOILETS
+    MapColour(PALETTE_INDEX_61),  // COLOUR_KEY_RIDE
+    MapColour(PALETTE_INDEX_42),  // COLOUR_KEY_FOOD
+    MapColour(PALETTE_INDEX_20),  // COLOUR_KEY_DRINK
+    MapColour(PALETTE_INDEX_209), // COLOUR_KEY_SOUVENIR
+    MapColour(PALETTE_INDEX_136), // COLOUR_KEY_KIOSK
+    MapColour(PALETTE_INDEX_102), // COLOUR_KEY_FIRST_AID
+    MapColour(PALETTE_INDEX_55),  // COLOUR_KEY_CASH_MACHINE
+    MapColour(PALETTE_INDEX_161), // COLOUR_KEY_TOILETS
 };
 
-static void window_map_close(rct_window *w);
-static void window_map_resize(rct_window *w);
-static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_map_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_map_update(rct_window *w);
+static void window_map_close(rct_window* w);
+static void window_map_resize(rct_window* w);
+static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_map_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_map_update(rct_window* w);
 static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_map_toolabort(rct_window *w, rct_widgetindex widgetIndex);
-static void window_map_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_map_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_map_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_map_invalidate(rct_window *w);
-static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void window_map_toolabort(rct_window* w, rct_widgetindex widgetIndex);
+static void window_map_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void window_map_invalidate(rct_window* w);
+static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_map_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_map_events([](auto& events)
-{
+static rct_window_event_list window_map_events([](auto& events) {
     events.close = &window_map_close;
     events.mouse_up = &window_map_mouseup;
     events.resize = &window_map_resize;
@@ -177,7 +179,6 @@ static rct_window_event_list window_map_events([](auto& events)
     events.paint = &window_map_paint;
     events.scroll_paint = &window_map_scrollpaint;
 });
-// clang-format on
 
 /** rct2: 0x00F1AD61 */
 static uint8_t _activeTool;

@@ -38,7 +38,12 @@ void bolliger_mabillard_track_flat(
 {
     if (trackElement.HasChain())
     {
-        uint32_t imageIds[] = { 17486, 17487, 17488, 17489 };
+        uint32_t imageIds[] = {
+            17486,
+            17487,
+            17488,
+            17489,
+        };
         PaintAddImageAsParentRotated(
             session, direction, session->TrackColours[SCHEME_TRACK] | imageIds[direction], 0, 0, 32, 20, 3, height, 0, 6,
             height);
@@ -50,7 +55,12 @@ void bolliger_mabillard_track_flat(
     }
     else
     {
-        uint32_t imageIds[] = { 17146, 17147, 17146, 17147 };
+        uint32_t imageIds[] = {
+            17146,
+            17147,
+            17146,
+            17147,
+        };
 
         PaintAddImageAsParentRotated(
             session, direction, session->TrackColours[SCHEME_TRACK] | imageIds[direction], 0, 0, 32, 20, 3, height, 0, 6,

@@ -25,9 +25,11 @@
 #include "../util/Util.h"
 #include "../world/Park.h"
 
-constexpr static rct_string_id SetVehicleTypeErrorTitle[] = { STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
-                                                              STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
-                                                              STR_RIDE_SET_VEHICLE_TYPE_FAIL };
+constexpr static rct_string_id SetVehicleTypeErrorTitle[] = {
+    STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
+    STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
+    STR_RIDE_SET_VEHICLE_TYPE_FAIL,
+};
 
 RideSetVehicleAction::RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour)
     : _rideIndex(rideIndex)

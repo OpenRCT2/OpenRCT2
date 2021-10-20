@@ -151,7 +151,7 @@ static constexpr const char RideTypeViewOrder[] = {
     RIDE_TYPE_INFORMATION_KIOSK,
     RIDE_TYPE_FIRST_AID,
     RIDE_TYPE_CASH_MACHINE,
-    RIDE_TYPE_TOILETS
+    RIDE_TYPE_TOILETS,
 };
 
 #pragma endregion
@@ -164,7 +164,7 @@ enum {
     WINDOW_NEW_RIDE_PAGE_WATER,
     WINDOW_NEW_RIDE_PAGE_SHOP,
     WINDOW_NEW_RIDE_PAGE_RESEARCH,
-    WINDOW_NEW_RIDE_PAGE_COUNT
+    WINDOW_NEW_RIDE_PAGE_COUNT,
 };
 
 #pragma region Widgets
@@ -247,10 +247,14 @@ static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE
     STR_NEW_SHOPS_STALLS,
     STR_RESEARCH_AND_DEVELOPMENT,
 };
-
-static constexpr const int32_t window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
-static constexpr const int32_t window_new_ride_tab_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
 // clang-format on
+
+static constexpr const int32_t window_new_ride_tab_animation_loops[] = {
+    20, 32, 10, 72, 24, 28, 16,
+};
+static constexpr const int32_t window_new_ride_tab_animation_divisor[] = {
+    4, 8, 2, 4, 4, 4, 2,
+};
 
 static void window_new_ride_set_page(rct_window* w, int32_t page);
 static void window_new_ride_refresh_widget_sizing(rct_window* w);
@@ -600,8 +604,9 @@ static void window_new_ride_set_pressed_tab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + _windowNewRideCurrentTab);
 }
 
-static constexpr const int32_t ThrillRidesTabAnimationSequence[] = { 5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0,
-                                                                     0, 0, 0, 1, 2, 3, 4, 0, 0, 0 };
+static constexpr const int32_t ThrillRidesTabAnimationSequence[] = {
+    5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0,
+};
 
 static void window_new_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
 {

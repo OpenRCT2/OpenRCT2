@@ -58,7 +58,10 @@ static int32_t _weatherVolume = 1;
 static uint32_t _lightningTimer;
 static uint32_t _thunderTimer;
 static void* _thunderSoundChannels[MAX_THUNDER_INSTANCES];
-static THUNDER_STATUS _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS::NONE, THUNDER_STATUS::NONE };
+static THUNDER_STATUS _thunderStatus[MAX_THUNDER_INSTANCES] = {
+    THUNDER_STATUS::NONE,
+    THUNDER_STATUS::NONE,
+};
 static OpenRCT2::Audio::SoundId _thunderSoundId;
 static int32_t _thunderVolume;
 static int32_t _thunderStereoEcho = 0;

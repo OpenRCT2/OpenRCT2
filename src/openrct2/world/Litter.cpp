@@ -126,3 +126,8 @@ rct_string_id Litter::GetName() const
         return STR_NONE;
     return litterNames[EnumValue(SubType)];
 }
+
+uint32_t Litter::GetAge() const
+{
+    return gCurrentTicks - creationTick;
+}

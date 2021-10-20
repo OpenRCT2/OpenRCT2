@@ -511,13 +511,13 @@ static constexpr const uint16_t PatternInverse[] = {
     0b0000011111111000,
     0b0000001111111100,
     0b0000000111111110,
-    0b0000000011111111
+    0b0000000011111111,
 };
 
 /** rct2: 0x0097FEFC */
-static constexpr const uint16_t * Patterns[] = {
+static constexpr const uint16_t* Patterns[] = {
     Pattern,
-    PatternInverse
+    PatternInverse,
 };
 // clang-format on
 
