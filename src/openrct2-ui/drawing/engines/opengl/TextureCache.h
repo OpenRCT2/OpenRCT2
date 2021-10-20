@@ -101,8 +101,8 @@ public:
         _atlasWidth = atlasWidth;
         _atlasHeight = atlasHeight;
 
-        _cols = _atlasWidth / _imageSize;
-        _rows = _atlasHeight / _imageSize;
+        _cols = std::max(1, _atlasWidth / _imageSize);
+        _rows = std::max(1, _atlasHeight / _imageSize);
 
         _freeSlots.resize(_cols * _rows);
         for (size_t i = 0; i < _freeSlots.size(); i++)
