@@ -140,9 +140,9 @@ bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
         && trackType == TrackElemType::Booster;
 }
 
-track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType)
+track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType, bool convertFlat)
 {
-    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+    if (convertFlat && GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
         return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
     if (origTrackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, origTrackType))
         return TrackElemType::RotationControlToggle;

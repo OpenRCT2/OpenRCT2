@@ -86,6 +86,7 @@ private:
     rct_s6_data _s6{};
     uint8_t _gameVersion = 0;
     bool _isSV7 = false;
+    std::bitset<RCT12_MAX_RIDES_IN_PARK> _isFlatRide{};
 
 public:
     S6Importer(IObjectRepository& objectRepository)
@@ -234,6 +235,7 @@ public:
 
         scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
+        DetermineFlatRideStatus();
         ImportTileElements();
         ImportEntities();
 
@@ -541,6 +543,29 @@ public:
                 auto dst = GetOrAllocateRide(rideId);
                 ImportRide(dst, src, rideId);
             }
+        }
+    }
+
+    void DetermineFlatRideStatus()
+    {
+        for (uint8_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
+        {
+            auto src = &_s6.rides[index];
+            if (src->type == RIDE_TYPE_NULL)
+                continue;
+
+            auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
+            auto* rideEntry = get_ride_entry(subtype);
+
+            // This code is needed to detect hacks where a tracked ride has been made invisible
+            // by setting its ride type to a flat ride.
+            ObjectEntryIndex originalRideType = src->type;
+            if (rideEntry != nullptr)
+            {
+                originalRideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+            }
+            const auto isFlatRide = GetRideTypeDescriptor(originalRideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE);
+            _isFlatRide.set(static_cast<size_t>(index), isFlatRide);
         }
     }
 
@@ -860,7 +885,8 @@ public:
         dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.current_ride);
         dst.State = src.state;
         if (src.current_ride < RCT12_MAX_RIDES_IN_PARK && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors))
-            dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type);
+            dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
+                src.proximity_track_type, _s6.rides[src.current_ride].type, _isFlatRide[src.current_ride]);
         else
             dst.ProximityTrackType = 0xFF;
         dst.ProximityBaseHeight = src.proximity_base_height;
@@ -1203,7 +1229,7 @@ public:
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
                 track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
 
-                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, rideType));
+                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, rideType, _isFlatRide[src2->GetRideIndex()]));
                 dst2->SetRideType(rideType);
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
