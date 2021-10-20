@@ -486,9 +486,6 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
 GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
     WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
 {
-    int32_t entryType, sequence;
-    rct_large_scenery_tile* tile;
-
     *wallAcrossTrack = false;
     if (map_is_location_at_edge(_loc))
     {
@@ -537,24 +534,30 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             {
-                entryType = tileElement->AsLargeScenery()->GetEntryIndex();
-                sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
-                auto* sceneryEntry = get_large_scenery_entry(entryType);
-                tile = &sceneryEntry->tiles[sequence];
+                const auto* largeSceneryElement = tileElement->AsLargeScenery();
+                const auto* sceneryEntry = largeSceneryElement->GetEntry();
+
+                // If there is no entry, assume the object is not in the way.
+                if (sceneryEntry == nullptr)
+                    break;
+
+                auto sequence = largeSceneryElement->GetSequenceIndex();
+                rct_large_scenery_tile* tile = &sceneryEntry->tiles[sequence];
+                if (tile == nullptr)
+                    break;
+
+                int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
+                if (!(tile->flags & (1 << direction)))
                 {
-                    int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
-                    if (!(tile->flags & (1 << direction)))
-                    {
-                        map_obstruction_set_error_text(tileElement, *res);
-                        return res;
-                    }
+                    map_obstruction_set_error_text(tileElement, *res);
+                    return res;
                 }
                 break;
             }
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             {
                 auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
+                if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
                 {
                     map_obstruction_set_error_text(tileElement, *res);
                     return res;
