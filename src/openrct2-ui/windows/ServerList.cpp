@@ -109,10 +109,8 @@ enum
     DDIDX_FAVOURITE
 };
 
-static int32_t _hoverButtonIndex = -1;
 static std::string _version;
 
-static void server_list_get_item_button(int32_t buttonIndex, int32_t x, int32_t y, int32_t width, int32_t* outX, int32_t* outY);
 static void join_server(std::string address);
 static void server_list_fetch_servers_begin();
 static void server_list_fetch_servers_check(rct_window* w);
@@ -288,25 +286,7 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
         index = -1;
     }
 
-    int32_t hoverButtonIndex = -1;
     auto& listWidget = w->widgets[WIDX_LIST];
-    if (index != -1)
-    {
-        int32_t width = listWidget.width();
-        int32_t sy = index * ITEM_HEIGHT;
-        for (int32_t i = 0; i < 2; i++)
-        {
-            int32_t bx, by;
-
-            server_list_get_item_button(i, 0, sy, width, &bx, &by);
-            if (screenCoords.x >= bx && screenCoords.y >= by && screenCoords.x < bx + 24 && screenCoords.y < by + 24)
-            {
-                hoverButtonIndex = i;
-                break;
-            }
-        }
-    }
-
     int32_t width = listWidget.width();
     int32_t right = width - 3 - 14 - 10;
     if (screenCoords.x < right)
@@ -315,10 +295,9 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
         window_tooltip_close();
     }
 
-    if (w->selected_list_item != index || _hoverButtonIndex != hoverButtonIndex)
+    if (w->selected_list_item != index)
     {
         w->selected_list_item = index;
-        _hoverButtonIndex = hoverButtonIndex;
         window_tooltip_close();
         w->Invalidate();
     }
@@ -514,12 +493,6 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
         screenCoords.y += ITEM_HEIGHT;
     }
-}
-
-static void server_list_get_item_button(int32_t buttonIndex, int32_t x, int32_t y, int32_t width, int32_t* outX, int32_t* outY)
-{
-    *outX = width - 3 - 36 - (30 * buttonIndex);
-    *outY = y + 2;
 }
 
 static void join_server(std::string address)
