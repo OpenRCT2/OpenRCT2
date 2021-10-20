@@ -289,10 +289,10 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
             // Valid location found. Place the ghost at the location.
             auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
             tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-            tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
+            tdAction.SetCallback([trackLoc](const GameAction*, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
-                    _window_track_place_ride_index = result->rideIndex;
+                    _window_track_place_ride_index = result->GetData<ride_id_t>();
                     _windowTrackPlaceLastValid = trackLoc;
                     _window_track_place_last_was_valid = true;
                 }
@@ -336,20 +336,21 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     if (res->Error == GameActions::Status::Ok)
     {
         auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
-        tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
+        tdAction.SetCallback([trackLoc](const GameAction*, const GameActions::Result* result) {
             if (result->Error == GameActions::Status::Ok)
             {
-                auto ride = get_ride(result->rideIndex);
+                const auto rideId = result->GetData<ride_id_t>();
+                auto ride = get_ride(rideId);
                 if (ride != nullptr)
                 {
                     window_close_by_class(WC_ERROR);
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
 
-                    _currentRideIndex = result->rideIndex;
+                    _currentRideIndex = rideId;
                     if (track_design_are_entrance_and_exit_placed())
                     {
                         auto intent = Intent(WC_RIDE);
-                        intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(result->rideIndex));
+                        intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(rideId));
                         context_open_intent(&intent);
                         auto wnd = window_find_by_class(WC_TRACK_DESIGN_PLACE);
                         window_close(wnd);
