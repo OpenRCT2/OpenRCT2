@@ -597,13 +597,10 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
         res->Error != GameActions::Status::Ok)
     {
         const auto stringId = std::get<rct_string_id>(res->ErrorMessage);
-        if (stringId != STR_RAISE_OR_LOWER_LAND_FIRST)
+        if (stringId != STR_RAISE_OR_LOWER_LAND_FIRST && stringId != STR_FOOTPATH_IN_THE_WAY)
         {
-            if (stringId != STR_FOOTPATH_IN_THE_WAY)
-            {
-                return std::make_unique<GameActions::Result>(
-                    GameActions::Status::NoClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res->ErrorMessageArgs.data());
-            }
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::NoClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res->ErrorMessageArgs.data());
         }
     }
 
