@@ -3530,17 +3530,16 @@ static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride
     peep->RideSubState = PeepRideSubState::ApproachSpiralSlide;
 }
 
-static uint8_t peep_get_waypointed_seat_location(
-    Peep* peep, Ride* ride, rct_ride_entry_vehicle* vehicle_type, uint8_t track_direction)
+uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, rct_ride_entry_vehicle* vehicle_type, uint8_t track_direction) const
 {
     // The seatlocation can be split into segments around the ride base
     // to decide the segment first split off the segmentable seat location
     // from the fixed section
-    uint8_t seatLocationSegment = peep->CurrentSeat & 0x7;
-    uint8_t seatLocationFixed = peep->CurrentSeat & 0xF8;
+    uint8_t seatLocationSegment = CurrentSeat & 0x7;
+    uint8_t seatLocationFixed = CurrentSeat & 0xF8;
 
     // Enterprise has more segments (8) compared to the normal (4)
-    if (ride->type != RIDE_TYPE_ENTERPRISE)
+    if (ride.type != RIDE_TYPE_ENTERPRISE)
         track_direction *= 2;
 
     // Type 1 loading doesn't do segments and all peeps go to the same
@@ -3556,19 +3555,19 @@ static uint8_t peep_get_waypointed_seat_location(
     return seatLocationSegment + seatLocationFixed;
 }
 
-static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
+void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
 {
-    TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, peep->CurrentRideStation);
+    TileCoordsXYZD entranceLocation = ride_get_entrance_location(&ride, CurrentRideStation);
     Guard::Assert(!entranceLocation.IsNull());
     uint8_t direction_entrance = entranceLocation.direction;
 
-    CoordsXY waypoint = ride->stations[peep->CurrentRideStation].Start.ToTileCentre();
+    CoordsXY waypoint = ride.stations[CurrentRideStation].Start.ToTileCentre();
 
-    TileElement* tile_element = ride_get_station_start_track_element(ride, peep->CurrentRideStation);
+    TileElement* tile_element = ride_get_station_start_track_element(&ride, CurrentRideStation);
 
     uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
 
-    auto vehicle = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
+    auto vehicle = GetEntity<Vehicle>(ride.vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         // TODO: Goto ride exit on failure.
@@ -3577,20 +3576,21 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
     auto ride_entry = vehicle->GetRideEntry();
     auto vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
-    peep->Var37 = (direction_entrance | peep_get_waypointed_seat_location(peep, ride, vehicle_type, direction_track) * 4) * 4;
+    Var37 = (direction_entrance | GetWaypointedSeatLocation(ride, vehicle_type, direction_track) * 4) * 4;
 
-    if (ride->type == RIDE_TYPE_ENTERPRISE)
+    if (ride.type == RIDE_TYPE_ENTERPRISE)
     {
         waypoint.x = vehicle->x;
         waypoint.y = vehicle->y;
     }
 
-    Guard::Assert(vehicle_type->peep_loading_waypoints.size() >= static_cast<size_t>(peep->Var37 / 4));
-    waypoint.x += vehicle_type->peep_loading_waypoints[peep->Var37 / 4][0].x;
-    waypoint.y += vehicle_type->peep_loading_waypoints[peep->Var37 / 4][0].y;
+    const auto waypointIndex = Var37 / 4;
+    Guard::Assert(vehicle_type->peep_loading_waypoints.size() >= static_cast<size_t>(waypointIndex));
+    waypoint.x += vehicle_type->peep_loading_waypoints[waypointIndex][0].x;
+    waypoint.y += vehicle_type->peep_loading_waypoints[waypointIndex][0].y;
 
-    peep->SetDestination(waypoint);
-    peep->RideSubState = PeepRideSubState::ApproachVehicleWaypoints;
+    SetDestination(waypoint);
+    RideSubState = PeepRideSubState::ApproachVehicleWaypoints;
 }
 
 /**
@@ -3694,7 +3694,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
 
     if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS)
     {
-        peep_update_ride_leave_entrance_waypoints(this, ride);
+        UpdateRideLeaveEntranceWaypoints(*ride);
         return;
     }
 
@@ -4237,8 +4237,7 @@ void Guest::UpdateRideLeaveVehicle()
     if (vehicleEntry == nullptr)
         return;
 
-    Var37 = ((exitLocation.direction | peep_get_waypointed_seat_location(this, ride, vehicleEntry, station_direction) * 4) * 4)
-        | 1;
+    Var37 = ((exitLocation.direction | GetWaypointedSeatLocation(*ride, vehicleEntry, station_direction) * 4) * 4) | 1;
 
     if (ride->type == RIDE_TYPE_ENTERPRISE)
     {
