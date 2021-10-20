@@ -178,14 +178,14 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
         }
 
-        auto r = std::find_if(imageSources.begin(), imageSources.end(), [&path](const std::pair<std::string, Image>& item) {
-            return item.first == path;
-        });
-        if (r == imageSources.end())
+        auto itSource = std::find_if(
+            imageSources.begin(), imageSources.end(),
+            [&path](const std::pair<std::string, Image>& item) { return item.first == path; });
+        if (itSource == imageSources.end())
         {
             throw std::runtime_error("Unable to find image in image source list.");
         }
-        auto& image = r->second;
+        auto& image = itSource->second;
 
         if (srcWidth == 0)
             srcWidth = image.Width;
@@ -417,10 +417,10 @@ std::vector<std::pair<std::string, Image>> ImageTable::GetImageSources(IReadObje
         {
             auto path = Json::GetString(jsonImage["path"]);
             auto keepPalette = Json::GetString(jsonImage["palette"]) == "keep";
-            auto r = std::find_if(result.begin(), result.end(), [&path](const std::pair<std::string, Image>& item) {
+            auto itSource = std::find_if(result.begin(), result.end(), [&path](const std::pair<std::string, Image>& item) {
                 return item.first == path;
             });
-            if (r == result.end())
+            if (itSource == result.end())
             {
                 auto imageData = context->GetData(path);
                 auto imageFormat = keepPalette ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
