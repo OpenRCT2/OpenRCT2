@@ -51,13 +51,12 @@ money32 place_provisional_track_piece(
     if (ride == nullptr)
         return MONEY32_UNDEFINED;
 
-    money32 result;
     ride_construction_remove_ghosts();
     if (ride->type == RIDE_TYPE_MAZE)
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST; // 105
-        result = maze_set_track(trackPos.x, trackPos.y, trackPos.z, flags, true, 0, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+        auto result = maze_set_track(trackPos.x, trackPos.y, trackPos.z, flags, true, 0, rideIndex, GC_SET_MAZE_TRACK_BUILD);
         if (result == MONEY32_UNDEFINED)
             return result;
 
@@ -84,10 +83,8 @@ money32 place_provisional_track_piece(
     trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
     // This command must not be sent over the network
     auto res = GameActions::Execute(&trackPlaceAction);
-    auto tpar = dynamic_cast<TrackPlaceActionResult*>(res.get());
-    result = ((tpar == nullptr) || (res->Error == GameActions::Status::Ok)) ? res->Cost : MONEY32_UNDEFINED;
-    if (result == MONEY32_UNDEFINED)
-        return result;
+    if (res->Error != GameActions::Status::Ok)
+        return MONEY32_UNDEFINED;
 
     int16_t z_begin, z_end;
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -104,10 +101,9 @@ money32 place_provisional_track_piece(
 
     _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-    if (tpar != nullptr)
-    {
-        viewport_set_visibility((tpar->GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
-    }
+
+    const auto resultData = res->GetData<TrackPlaceActionResult>();
+    viewport_set_visibility((resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
     if (_currentTrackSlopeEnd != 0)
         viewport_set_visibility(2);
 
@@ -120,7 +116,7 @@ money32 place_provisional_track_piece(
         virtual_floor_set_height(trackPos.z - z_begin + z_end);
     }
 
-    return result;
+    return res->Cost;
 }
 
 static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_track_element()
