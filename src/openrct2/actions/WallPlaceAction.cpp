@@ -542,12 +542,10 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
                     break;
 
                 auto sequence = largeSceneryElement->GetSequenceIndex();
-                rct_large_scenery_tile* tile = &sceneryEntry->tiles[sequence];
-                if (tile == nullptr)
-                    break;
+                const rct_large_scenery_tile& tile = sceneryEntry->tiles[sequence];
 
                 int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
-                if (!(tile->flags & (1 << direction)))
+                if (!(tile.flags & (1 << direction)))
                 {
                     map_obstruction_set_error_text(tileElement, *res);
                     return res;
