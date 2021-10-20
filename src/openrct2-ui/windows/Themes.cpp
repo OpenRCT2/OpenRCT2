@@ -865,37 +865,27 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
         {
             if (i + 1 < get_colour_scheme_tab_count())
             {
-                ScreenCoordsXY leftTop, rightBottom;
-
                 int32_t colour = w->colours[1];
+
+                auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _row_height - 2 };
+                auto rightBottom = ScreenCoordsXY{ window_themes_widgets[WIDX_THEMES_LIST].right,
+                                                   screenCoords.y + _row_height - 2 };
+                auto yPixelOffset = ScreenCoordsXY{ 0, 1 };
+
                 if (colour & COLOUR_FLAG_TRANSLUCENT)
                 {
                     translucent_window_palette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
-                    leftTop = ScreenCoordsXY{ 0, screenCoords.y + _row_height - 2 };
-                    rightBottom = ScreenCoordsXY{ window_themes_widgets[WIDX_THEMES_LIST].right,
-                                                  screenCoords.y + _row_height - 2 };
                     gfx_filter_rect(dpi, { leftTop, rightBottom }, windowPalette.highlight);
-
-                    leftTop = ScreenCoordsXY{ 0, screenCoords.y + _row_height - 1 };
-                    rightBottom = ScreenCoordsXY{ window_themes_widgets[WIDX_THEMES_LIST].right,
-                                                  screenCoords.y + _row_height - 1 };
-                    gfx_filter_rect(dpi, { leftTop, rightBottom }, windowPalette.shadow);
+                    gfx_filter_rect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                 }
                 else
                 {
                     colour = ColourMapA[w->colours[1]].mid_dark;
-                    gfx_fill_rect(
-                        dpi,
-                        { { 0, screenCoords.y + _row_height - 2 },
-                          { window_themes_widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 2 } },
-                        colour);
+                    gfx_fill_rect(dpi, { leftTop, rightBottom }, colour);
+
                     colour = ColourMapA[w->colours[1]].lightest;
-                    gfx_fill_rect(
-                        dpi,
-                        { { 0, screenCoords.y + _row_height - 1 },
-                          { window_themes_widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 1 } },
-                        colour);
+                    gfx_fill_rect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
                 }
             }
 

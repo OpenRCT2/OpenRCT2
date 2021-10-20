@@ -353,11 +353,10 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
     auto leftWidget = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
     auto rightWidget = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET];
     auto middleWidget = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
-    ScreenCoordsXY leftTop, rightBottom;
 
     // Draw panel grey backgrounds
-    leftTop = w->windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
-    rightBottom = w->windowPos + ScreenCoordsXY{ leftWidget.right, leftWidget.bottom };
+    auto leftTop = w->windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
+    auto rightBottom = w->windowPos + ScreenCoordsXY{ leftWidget.right, leftWidget.bottom };
     gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
 
     leftTop = w->windowPos + ScreenCoordsXY{ rightWidget.left, rightWidget.top };
