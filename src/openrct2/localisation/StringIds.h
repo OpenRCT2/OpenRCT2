@@ -14,7 +14,7 @@
 constexpr const rct_string_id STR_NONE = 0xFFFF;
 constexpr const rct_string_id STR_VIEWPORT = 0xFFFE;
 
-enum
+enum : uint16_t
 {
     STR_EMPTY = 0,
     STR_RIDE_NAME_DEFAULT = 1,

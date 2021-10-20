@@ -25,32 +25,28 @@ namespace GameActions
         std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());
     }
 
+    struct StringVariantVisitor
+    {
+        const void* ErrorMessageArgs{};
+
+        std::string operator()(const std::string& str) const
+        {
+            return str;
+        }
+        std::string operator()(const rct_string_id strId) const
+        {
+            return format_string(strId, ErrorMessageArgs);
+        }
+    };
+
     std::string GameActions::Result::GetErrorTitle() const
     {
-        std::string title;
-        if (auto error = ErrorTitle.AsString())
-        {
-            title = *error;
-        }
-        else
-        {
-            title = format_string(ErrorTitle.GetStringId(), ErrorMessageArgs.data());
-        }
-        return title;
+        return std::visit(StringVariantVisitor{ ErrorMessageArgs.data() }, ErrorTitle);
     }
 
     std::string GameActions::Result::GetErrorMessage() const
     {
-        std::string message;
-        if (auto error = ErrorMessage.AsString())
-        {
-            message = *error;
-        }
-        else
-        {
-            message = format_string(ErrorMessage.GetStringId(), ErrorMessageArgs.data());
-        }
-        return message;
+        return std::visit(StringVariantVisitor{ ErrorMessageArgs.data() }, ErrorMessage);
     }
 
 } // namespace GameActions
