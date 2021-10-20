@@ -237,7 +237,6 @@ public:
         size_t numObjects = _objectRepository.GetNumObjects();
         for (size_t i = 0; i < numObjects; i++)
         {
-            // TODO: remove ObjectGeneration::DAT check when the NSF is here
             const ObjectRepositoryItem* item = &_objectRepository.GetObjects()[i];
             if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr)
             {
