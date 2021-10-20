@@ -43,6 +43,7 @@
 - Fix: [#15567] Litter not being counted correctly during Park rating calculation (original bug).
 - Fix: [#15582] [Plugin] Litter properties return incorrect values.
 - Fix: [#15584] Ride income underflows when on-ride photos are making losses.
+- Fix: [#15612] Crash when placing walls beside certain scenery objects.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
 - Improved: [#13524] macOS arm64 native (universal) app
 - Improved: [#15538] Software rendering can now draw in parallel when Multithreading is enabled.
