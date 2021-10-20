@@ -1674,7 +1674,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
         dst->SetTrackType(src->GetTrackType());
         // RotationControlToggle and Booster are saved as the same track piece ID
         // Which one the vehicle is using must be determined
-        if (GetRideTypeDescriptor(ride.type).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (_isFlatRide[src->ride])
         {
             dst->SetTrackType(RCT12FlatTrackTypeToOpenRCT2(src->GetTrackType()));
         }
