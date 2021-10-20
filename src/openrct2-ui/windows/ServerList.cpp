@@ -40,8 +40,8 @@ static std::future<std::tuple<std::vector<ServerListEntry>, rct_string_id>> _fet
 static uint32_t _numPlayersOnline = 0;
 static rct_string_id _statusText = STR_SERVER_LIST_CONNECTING;
 
-// clang-format off
-enum {
+enum
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -52,11 +52,13 @@ enum {
     WIDX_START_SERVER
 };
 
-enum {
+enum
+{
     WIDX_LIST_REMOVE,
     WIDX_LIST_SPECTATE
 };
 
+// clang-format off
 static rct_widget window_server_list_widgets[] = {
     MakeWidget({  0,  0}, {341, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
     MakeWidget({  1,  1}, {338, 14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
@@ -68,23 +70,24 @@ static rct_widget window_server_list_widgets[] = {
     MakeWidget({218, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
     WIDGETS_END,
 };
+// clang-format on
 
-static void window_server_list_close(rct_window *w);
-static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_server_list_resize(rct_window *w);
-static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_server_list_update(rct_window *w);
-static void window_server_list_scroll_getsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_server_list_scroll_mousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_server_list_scroll_mouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static OpenRCT2String window_server_list_tooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
-static void window_server_list_invalidate(rct_window *w);
-static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void window_server_list_close(rct_window* w);
+static void window_server_list_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_server_list_resize(rct_window* w);
+static void window_server_list_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_server_list_update(rct_window* w);
+static void window_server_list_scroll_getsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_server_list_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static OpenRCT2String window_server_list_tooltip(
+    rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
+static void window_server_list_invalidate(rct_window* w);
+static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_server_list_events([](auto& events)
-{
+static rct_window_event_list window_server_list_events([](auto& events) {
     events.close = &window_server_list_close;
     events.mouse_up = &window_server_list_mouseup;
     events.resize = &window_server_list_resize;
@@ -99,7 +102,6 @@ static rct_window_event_list window_server_list_events([](auto& events)
     events.paint = &window_server_list_paint;
     events.scroll_paint = &window_server_list_scrollpaint;
 });
-// clang-format on
 
 enum
 {
