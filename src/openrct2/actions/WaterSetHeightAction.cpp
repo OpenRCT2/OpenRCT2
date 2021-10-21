@@ -85,8 +85,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
 
     if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2->Error != GameActions::Status::Ok)
     {
-        return MakeResult(
-            GameActions::Status::NoClearance, STR_NONE, res2->ErrorMessage.GetStringId(), res2->ErrorMessageArgs.data());
+        return res2;
     }
     if (surfaceElement->HasTrackThatNeedsWater())
     {

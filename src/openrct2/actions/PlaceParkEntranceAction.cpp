@@ -86,9 +86,8 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
 
         if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2->Error != GameActions::Status::Ok)
         {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, res2->ErrorMessage.GetStringId(),
-                res2->ErrorMessageArgs.data());
+            res2->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
+            return res2;
         }
 
         // Check that entrance element does not already exist at this location

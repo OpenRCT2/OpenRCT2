@@ -62,7 +62,7 @@ static constexpr const uint8_t Rotation1TimeToSpriteMap_0[] = {
     204, 204, 204, 205, 205, 205, 206, 206, 206, 207, 207, 207, 208, 208, 208, 209, 209,
     209, 210, 210, 210, 211, 211, 211, 212, 212, 212, 213, 213, 213, 214, 214, 214, 215,
     215, 215,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 /** rct2: 0x0099F422 */
@@ -106,7 +106,7 @@ static constexpr const uint8_t Rotation1TimeToSpriteMap_1[] = {
     204, 204, 204, 205, 205, 205, 206, 206, 206, 207, 207, 207, 208, 208, 208, 209, 209,
     209, 210, 210, 210, 211, 211, 211, 212, 212, 212, 213, 213, 213, 214, 214, 214, 215,
     215, 215,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 /** rct2: 0x0099F6AB */
@@ -159,7 +159,7 @@ static constexpr const uint8_t Rotation1TimeToSpriteMap_2[] = {
     213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 213, 214,
     214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214,
     214, 214,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 /** rct2: 0x0099F0F4 */
@@ -208,7 +208,7 @@ static constexpr const uint8_t Rotation2TimeToSpriteMap_0[] = {
     38,  38,  39,  39,  40,  40,  41,  41,  42,  42,  40,  40,  41,  41,  42,  42,  40,
     40,  41,  41,  42,  42,  43,  43,  44,  44,  45,  45,  43,  43,  44,  44,  45,  45,
     43,  43,  44,  44,  45,  45,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 /** rct2: 0x009A26A6 */
@@ -219,7 +219,7 @@ static constexpr const uint8_t Rotation2TimeToSpriteMap_1[] = {
     47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,
     47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,  46,
     46,  47,  47,  48,  48,  46,  46,  47,  47,  48,  48,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 /** rct2: 0x009A270E */
@@ -252,7 +252,7 @@ static constexpr const uint8_t Rotation2TimeToSpriteMap_2[] = {
     4,   4,   4,   5,   5,   5,   5,   5,   5,   5,   5,   6,   6,   6,   6,   6,   6,
     6,   6,   2,   2,   2,   2,   2,   2,   2,   2,   1,   1,   1,   1,   1,   1,   1,
     1,   0,   0,   0,   0,   0,   0,   0,   0,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 /** rct2: 0x009A2428 */
@@ -296,7 +296,7 @@ static constexpr const uint8_t Rotation3TimeToSpriteMap_0[] = {
     113, 113, 114, 114, 114, 115, 115, 115, 116, 116, 116, 117, 117, 117, 118, 118, 118,
     119, 119, 119, 120, 120, 120, 121, 121, 121, 122, 122, 122, 123, 123, 123, 124, 124,
     124, 125, 125, 125, 126, 126, 126, 127, 127, 127,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 /** rct2: 0x0099ED49 */
@@ -324,7 +324,7 @@ static constexpr const uint8_t Rotation3TimeToSpriteMap_1[] = {
     113, 113, 114, 114, 114, 115, 115, 115, 116, 116, 116, 117, 117, 117, 118, 118, 118,
     119, 119, 119, 120, 120, 120, 121, 121, 121, 122, 122, 122, 123, 123, 123, 124, 124,
     124, 125, 125, 125, 126, 126, 126, 127, 127, 127,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 /** rct2: 0x0099EED1 */
@@ -361,7 +361,7 @@ static constexpr const uint8_t Rotation3TimeToSpriteMap_2[] = {
     124, 124, 124, 124, 124, 124, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125,
     125, 125, 125, 125, 125, 125, 125, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126,
     126, 126, 126, 126, 126, 126, 126, 126, 126, 126,
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 };
 
 /** rct2: 0x0099EB1C */

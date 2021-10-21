@@ -142,7 +142,7 @@ static rct_widget *window_park_page_widgets[] = {
     window_park_price_widgets,
     window_park_stats_widgets,
     window_park_objective_widgets,
-    window_park_awards_widgets
+    window_park_awards_widgets,
 };
 
 #pragma endregion
@@ -273,7 +273,7 @@ static rct_window_event_list *window_park_page_events[] = {
     &window_park_price_events,
     &window_park_stats_events,
     &window_park_objective_events,
-    &window_park_awards_events
+    &window_park_awards_events,
 };
 
 #pragma endregion
@@ -351,7 +351,7 @@ static uint32_t window_park_page_enabled_widgets[] = {
     (1ULL << WIDX_TAB_4) |
     (1ULL << WIDX_TAB_5) |
     (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7)
+    (1ULL << WIDX_TAB_7),
 };
 
 static uint32_t window_park_page_hold_down_widgets[] = {
@@ -364,7 +364,7 @@ static uint32_t window_park_page_hold_down_widgets[] = {
 
     0,
     0,
-    0
+    0,
 };
 
 #pragma endregion

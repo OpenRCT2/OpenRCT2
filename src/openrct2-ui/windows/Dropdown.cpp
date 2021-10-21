@@ -157,7 +157,7 @@ void WindowDropdownShowTextCustomWidth(
     if (gDropdownNumItems == 0)
     {
         _dropdown_num_columns = 1;
-        _dropdown_num_rows = 0;
+        _dropdown_num_rows = 1;
     }
     else
     {
@@ -231,15 +231,15 @@ void WindowDropdownShowImage(
     _dropdown_item_width = itemWidth;
     _dropdown_item_height = itemHeight;
     gDropdownNumItems = numItems;
-    // There must always be at least one column to prevent dividing by zero
+    // There must always be at least one column and row to prevent dividing by zero
     if (gDropdownNumItems == 0)
     {
         _dropdown_num_columns = 1;
-        _dropdown_num_rows = 0;
+        _dropdown_num_rows = 1;
     }
     else
     {
-        _dropdown_num_columns = numColumns;
+        _dropdown_num_columns = std::max(1, numColumns);
         _dropdown_num_rows = gDropdownNumItems / _dropdown_num_columns;
         if (gDropdownNumItems % _dropdown_num_columns != 0)
             _dropdown_num_rows++;

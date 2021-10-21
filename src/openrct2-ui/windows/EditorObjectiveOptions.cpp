@@ -113,7 +113,7 @@ static rct_widget window_editor_objective_options_rides_widgets[] = {
 
 static rct_widget *window_editor_objective_options_widgets[] = {
     window_editor_objective_options_main_widgets,
-    window_editor_objective_options_rides_widgets
+    window_editor_objective_options_rides_widgets,
 };
 
 #pragma endregion
@@ -168,7 +168,7 @@ static rct_window_event_list window_objective_options_rides_events([](auto& even
 
 static rct_window_event_list *window_editor_objective_options_page_events[] = {
     &window_objective_options_main_events,
-    &window_objective_options_rides_events
+    &window_objective_options_rides_events,
 };
 
 #pragma endregion
@@ -193,7 +193,7 @@ static uint64_t window_editor_objective_options_page_enabled_widgets[] = {
 
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2)
+    (1ULL << WIDX_TAB_2),
 };
 
 static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
@@ -202,7 +202,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
     (1ULL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
     (1ULL << WIDX_OBJECTIVE_ARG_2_DECREASE),
 
-    0
+    0,
 };
 // clang-format on
 
@@ -1095,7 +1095,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         if (i == w->selected_list_item)
         {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y, w->width, y + 11, FilterPaletteID::PaletteDarken1);
+            gfx_filter_rect(dpi, { 0, y, w->width, y + 11 }, FilterPaletteID::PaletteDarken1);
         }
 
         // Checkbox mark

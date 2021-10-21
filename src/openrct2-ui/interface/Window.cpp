@@ -113,10 +113,10 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
 
     // Place window in an empty corner of the screen
     const ScreenCoordsXY cornerPositions[] = {
-        { 0, 30 },                                          // topLeft
-        { screenWidth - width, 30 },                        // topRight
-        { 0, screenHeight - 34 - height },                  // bottomLeft
-        { screenWidth - width, screenHeight - 34 - height } // bottomRight
+        { 0, 30 },                                           // topLeft
+        { screenWidth - width, 30 },                         // topRight
+        { 0, screenHeight - 34 - height },                   // bottomLeft
+        { screenWidth - width, screenHeight - 34 - height }, // bottomRight
     };
 
     for (const auto& cornerPos : cornerPositions)
@@ -133,14 +133,16 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        const ScreenCoordsXY offsets[] = { { w->width + 2, 0 },
-                                           { -w->width - 2, 0 },
-                                           { 0, w->height + 2 },
-                                           { 0, -w->height - 2 },
-                                           { w->width + 2, -w->height - 2 },
-                                           { -w->width - 2, -w->height - 2 },
-                                           { w->width + 2, w->height + 2 },
-                                           { -w->width - 2, w->height + 2 } };
+        const ScreenCoordsXY offsets[] = {
+            { w->width + 2, 0 },
+            { -w->width - 2, 0 },
+            { 0, w->height + 2 },
+            { 0, -w->height - 2 },
+            { w->width + 2, -w->height - 2 },
+            { -w->width - 2, -w->height - 2 },
+            { w->width + 2, w->height + 2 },
+            { -w->width - 2, w->height + 2 },
+        };
 
         for (const auto& offset : offsets)
         {
@@ -158,14 +160,12 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        // clang-format off
         const ScreenCoordsXY offsets[] = {
             { w->width + 2, 0 },
             { -w->width - 2, 0 },
             { 0, w->height + 2 },
-            { 0, -w->height - 2 }
+            { 0, -w->height - 2 },
         };
-        // clang-format on
 
         for (const auto& offset : offsets)
         {

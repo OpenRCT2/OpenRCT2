@@ -506,7 +506,7 @@ static void wooden_wild_mouse_track_right_quarter_turn_3(
             { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_0, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 1 } },
             { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_1, { 0, 16, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
             { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_2, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
-        }
+        },
     };
     static uint8_t supportType[] = { 4, 5, 2, 3 };
 

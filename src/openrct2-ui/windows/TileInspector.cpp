@@ -34,7 +34,6 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/TileInspector.h>
 
-// clang-format off
 static constexpr const rct_string_id EntranceTypeStringIds[] = {
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_ENTRANCE,
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_EXIT,
@@ -44,17 +43,18 @@ static constexpr const rct_string_id EntranceTypeStringIds[] = {
 static constexpr const rct_string_id ParkEntrancePartStringIds[] = {
     STR_TILE_INSPECTOR_ENTRANCE_MIDDLE,
     STR_TILE_INSPECTOR_ENTRANCE_LEFT,
-    STR_TILE_INSPECTOR_ENTRANCE_RIGHT
+    STR_TILE_INSPECTOR_ENTRANCE_RIGHT,
 };
 
 static constexpr const rct_string_id WallSlopeStringIds[] = {
     STR_TILE_INSPECTOR_WALL_FLAT,
     STR_TILE_INSPECTOR_WALL_SLOPED_LEFT,
     STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT,
-    STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME
+    STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME,
 };
 
-enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
+enum WINDOW_TILE_INSPECTOR_WIDGET_IDX
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -180,18 +180,18 @@ constexpr int32_t MIN_WH = 130;
 constexpr int32_t MAX_WH = 800;
 
 // Button space for top buttons
-constexpr int32_t BW = WW - 5;     // Button's right side
-constexpr int32_t BX = BW - 23;    // Button's left side
-constexpr int32_t BY = 17;         // Button's Top
-constexpr int32_t BH = BY + 23;    // Button's Bottom
+constexpr int32_t BW = WW - 5;  // Button's right side
+constexpr int32_t BX = BW - 23; // Button's left side
+constexpr int32_t BY = 17;      // Button's Top
+constexpr int32_t BH = BY + 23; // Button's Bottom
 constexpr int32_t BS = 24;
 
 // Column offsets for the table headers
-constexpr int32_t COL_X_TYPE = 3;                // Type
-constexpr int32_t COL_X_BH = COL_X_TYPE + 312;   // Base height
-constexpr int32_t COL_X_CH = COL_X_BH + 20;      // Clearance height
-constexpr int32_t COL_X_GF = COL_X_CH + 20;      // Ghost flag
-constexpr int32_t COL_X_LF = COL_X_GF + 12;      // Last for tile flag
+constexpr int32_t COL_X_TYPE = 3;              // Type
+constexpr int32_t COL_X_BH = COL_X_TYPE + 312; // Base height
+constexpr int32_t COL_X_CH = COL_X_BH + 20;    // Clearance height
+constexpr int32_t COL_X_GF = COL_X_CH + 20;    // Ghost flag
+constexpr int32_t COL_X_LF = COL_X_GF + 12;    // Last for tile flag
 
 constexpr int32_t PADDING_BOTTOM = 15;
 constexpr int32_t GROUPBOX_PADDING = 6;
@@ -200,6 +200,7 @@ constexpr int32_t VERTICAL_GROUPBOX_PADDING = 4;
 constexpr int32_t BUTTONW = 130;
 constexpr int32_t BUTTONH = 17;
 
+// clang-format off
 // Calculates the .left, .right, .top and .bottom for buttons in a group box.
 // Buttons are used as reference points for all other widgets in the group boxes.
 #define GBBL(col)               (12 + col * (BUTTONW + HORIZONTAL_GROUPBOX_PADDING))
@@ -387,8 +388,10 @@ static rct_widget *PageWidgets[] = {
     BannerWidgets,
     CorruptWidgets,
 };
+// clang-format on
 
-static struct {
+static struct
+{
     // Offsets from the bottom of the window
     int16_t details_top_offset, details_bottom_offset;
     int16_t properties_top_offset, properties_bottom_offset;
@@ -403,10 +406,9 @@ static struct {
     { WALL_GBDT, WALL_GBDB, WALL_GBPT, WALL_GBPB, STR_TILE_INSPECTOR_GROUPBOX_WALL_INFO },
     { LAR_GBDT, LAR_GBDB, LAR_GBPT, LAR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_LARGE_SCENERY_INFO },
     { BAN_GBDT, BAN_GBDB, BAN_GBPT, BAN_GBPB, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO },
-    { COR_GBDT, COR_GBDB, COR_GBPT, COR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO }
+    { COR_GBDT, COR_GBDB, COR_GBPT, COR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO },
 };
 
-// clang-format on
 static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
     ViewportInteractionItem::Terrain, ViewportInteractionItem::Entity, ViewportInteractionItem::Ride,
     ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem,
@@ -441,9 +443,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 static void window_tile_inspector_set_page(rct_window* w, const TileInspectorPage page);
 static void window_tile_inspector_close(rct_window* w);
 
-// clang-format off
-static rct_window_event_list TileInspectorWindowEvents([](auto& events)
-{
+static rct_window_event_list TileInspectorWindowEvents([](auto& events) {
     events.mouse_up = &window_tile_inspector_mouseup;
     events.resize = &window_tile_inspector_resize;
     events.mouse_down = &window_tile_inspector_mousedown;
@@ -461,6 +461,7 @@ static rct_window_event_list TileInspectorWindowEvents([](auto& events)
     events.close = &window_tile_inspector_close;
 });
 
+// clang-format off
 static uint64_t PageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
@@ -2013,10 +2014,12 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (sceneryEntry != nullptr && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))
                 {
                     int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-                    static rct_string_id quadrant_string_idx[] = { STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,
-                                                                   STR_TILE_INSPECTOR_SCENERY_QUADRANT_NW,
-                                                                   STR_TILE_INSPECTOR_SCENERY_QUADRANT_NE,
-                                                                   STR_TILE_INSPECTOR_SCENERY_QUADRANT_SE };
+                    static constexpr rct_string_id quadrant_string_idx[] = {
+                        STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,
+                        STR_TILE_INSPECTOR_SCENERY_QUADRANT_NW,
+                        STR_TILE_INSPECTOR_SCENERY_QUADRANT_NE,
+                        STR_TILE_INSPECTOR_SCENERY_QUADRANT_SE,
+                    };
                     ft = Formatter();
                     ft.Add<rct_string_id>(quadrant_string_idx[quadrant]);
                     DrawTextBasic(

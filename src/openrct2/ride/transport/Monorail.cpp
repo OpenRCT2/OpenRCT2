@@ -167,7 +167,7 @@ static constexpr const uint32_t monorail_track_pieces_flat_quarter_turn_5_tiles[
         SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_2,
         SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_3,
         SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_4,
-    }
+    },
 };
 
 static constexpr const uint32_t monorail_track_pieces_25_deg_up[4] = {
@@ -191,41 +191,57 @@ static constexpr const uint32_t monorail_track_pieces_25_deg_up_to_flat[4] = {
     SPR_MONORAIL_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static constexpr const uint32_t monorail_track_pieces_s_bend_left[2][4] = { {
-                                                                                SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_0,
-                                                                                SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_1,
-                                                                                SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_2,
-                                                                                SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_3,
-                                                                            },
-                                                                            {
-                                                                                SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_3,
-                                                                                SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_2,
-                                                                                SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_1,
-                                                                                SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_0,
-                                                                            } };
+static constexpr const uint32_t monorail_track_pieces_s_bend_left[2][4] = {
+    {
+        SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_0,
+        SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_1,
+        SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_2,
+        SPR_MONORAIL_S_BEND_LEFT_SW_NE_PART_3,
+    },
+    {
+        SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_3,
+        SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_2,
+        SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_1,
+        SPR_MONORAIL_S_BEND_LEFT_SE_NW_PART_0,
+    },
+};
 
-static constexpr const uint32_t monorail_track_pieces_s_bend_right[2][4] = { {
-                                                                                 SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_0,
-                                                                                 SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_1,
-                                                                                 SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_2,
-                                                                                 SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_3,
-                                                                             },
-                                                                             {
-                                                                                 SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_3,
-                                                                                 SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_2,
-                                                                                 SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_1,
-                                                                                 SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_0,
-                                                                             } };
+static constexpr const uint32_t monorail_track_pieces_s_bend_right[2][4] = {
+    {
+        SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_0,
+        SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_1,
+        SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_2,
+        SPR_MONORAIL_S_BEND_RIGHT_SW_NE_PART_3,
+    },
+    {
+        SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_3,
+        SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_2,
+        SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_1,
+        SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_0,
+    },
+};
 
 static constexpr const uint32_t monorail_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
-    { SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-      SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
-    { SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-      SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_2 },
-    { SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_0, SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-      SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_2 },
-    { SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_0, SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-      SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
+    {
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_0,
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_1,
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_2,
+    },
+    {
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_0,
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_1,
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_2,
+    },
+    {
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_0,
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_1,
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_2,
+    },
+    {
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_0,
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_1,
+        SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_2,
+    },
 };
 
 static constexpr const uint32_t ghost_train_track_pieces_right_eight_to_diag[4][4] = {
@@ -990,7 +1006,9 @@ static void paint_monorail_track_left_quarter_turn_3_tiles(
     paint_monorail_track_right_quarter_turn_3_tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
-static constexpr const int8_t paint_monorail_eighth_to_diag_index[] = { 0, 1, 2, -1, 3 };
+static constexpr const int8_t paint_monorail_eighth_to_diag_index[] = {
+    0, 1, 2, -1, 3,
+};
 
 /** rct2: 0x008AE31C */
 static void paint_monorail_track_left_eighth_to_diag(
@@ -1155,12 +1173,19 @@ static constexpr const bool monorail_diag_image_segment[][4] = {
     { true, false, false, false },
 };
 
-static constexpr const uint8_t monorail_diag_support_segment[] = { 1, 0, 2, 3 };
+static constexpr const uint8_t monorail_diag_support_segment[] = {
+    1,
+    0,
+    2,
+    3,
+};
 
-static constexpr const int32_t monorail_diag_blocked_segments[] = { SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC,
-                                                                    SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_B4,
-                                                                    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C0 | SEGMENT_D4,
-                                                                    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8 };
+static constexpr const int32_t monorail_diag_blocked_segments[] = {
+    SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC,
+    SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_B4,
+    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C0 | SEGMENT_D4,
+    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8,
+};
 
 /** rct2: 0x008AE2AC */
 static void paint_monorail_track_diag_flat(

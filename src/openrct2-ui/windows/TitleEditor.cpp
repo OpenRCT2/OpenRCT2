@@ -35,38 +35,37 @@
 
 using namespace OpenRCT2;
 
-// clang-format off
-enum WINDOW_TITLE_EDITOR_TAB {
+enum WINDOW_TITLE_EDITOR_TAB
+{
     WINDOW_TITLE_EDITOR_TAB_PRESETS,
     WINDOW_TITLE_EDITOR_TAB_SAVES,
     WINDOW_TITLE_EDITOR_TAB_SCRIPT,
     WINDOW_TITLE_EDITOR_TAB_COUNT
 };
 
-static void window_title_editor_close(rct_window * w);
-static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIndex);
-static void window_title_editor_resize(rct_window * w);
-static void window_title_editor_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
-static void window_title_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_title_editor_update(rct_window * w);
-static void window_title_editor_scrollgetsize(rct_window * w, int32_t scrollIndex, int32_t * width, int32_t * height);
-static void window_title_editor_scrollmousedown(rct_window * w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_title_editor_scrollmouseover(rct_window * w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_title_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
-static void window_title_editor_invalidate(rct_window * w);
-static void window_title_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
-static void window_title_editor_scrollpaint(rct_window * w, rct_drawpixelinfo * dpi, int32_t scrollIndex);
-static void window_title_editor_scrollpaint_saves(rct_window * w, rct_drawpixelinfo * dpi);
-static void window_title_editor_scrollpaint_commands(rct_window * w, rct_drawpixelinfo * dpi);
-static void window_title_editor_draw_tab_images(rct_drawpixelinfo * dpi, rct_window * w);
+static void window_title_editor_close(rct_window* w);
+static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_title_editor_resize(rct_window* w);
+static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_title_editor_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_title_editor_update(rct_window* w);
+static void window_title_editor_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void window_title_editor_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_title_editor_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void window_title_editor_invalidate(rct_window* w);
+static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_title_editor_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
+static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_title_editor_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w);
 static void window_title_editor_load_sequence(size_t index);
-static ITitleSequencePlayer * window_title_editor_get_player();
+static ITitleSequencePlayer* window_title_editor_get_player();
 static bool window_title_editor_check_can_edit();
-static void window_title_editor_add_park_callback(int32_t result, const utf8 * path);
-static void window_title_editor_rename_park(size_t index, const utf8 * name);
+static void window_title_editor_add_park_callback(int32_t result, const utf8* path);
+static void window_title_editor_rename_park(size_t index, const utf8* name);
 
-static rct_window_event_list window_title_editor_events([](auto& events)
-{
+static rct_window_event_list window_title_editor_events([](auto& events) {
     events.close = &window_title_editor_close;
     events.mouse_up = &window_title_editor_mouseup;
     events.resize = &window_title_editor_resize;
@@ -82,7 +81,8 @@ static rct_window_event_list window_title_editor_events([](auto& events)
     events.scroll_paint = &window_title_editor_scrollpaint;
 });
 
-enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
+enum WINDOW_TITLE_EDITOR_WIDGET_IDX
+{
     WIDX_TITLE_EDITOR_BACKGROUND,
     WIDX_TITLE_EDITOR_TITLE,
     WIDX_TITLE_EDITOR_CLOSE,
@@ -110,7 +110,7 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
     WIDX_TITLE_EDITOR_INSERT,
     WIDX_TITLE_EDITOR_EDIT,
     WIDX_TITLE_EDITOR_DELETE,
-    //WIDX_TITLE_EDITOR_RELOAD,
+    // WIDX_TITLE_EDITOR_RELOAD,
     WIDX_TITLE_EDITOR_SKIP_TO,
 
     WIDX_TITLE_EDITOR_MOVE_DOWN,
@@ -135,6 +135,7 @@ static constexpr const ScreenSize REORDER_BTN = { 36, 14 };
 
 static constexpr int32_t SCROLL_WIDTH = 350;
 
+// clang-format off
 static rct_widget window_title_editor_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({   0,  43}, { 320,  84}, WindowWidgetType::Resize,        WindowColour::Secondary             ), // tab content panel
@@ -173,32 +174,32 @@ static rct_widget window_title_editor_widgets[] = {
     MakeWidget     ({  62, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
     WIDGETS_END,
 };
+// clang-format on
 
 static size_t _selectedTitleSequence = SIZE_MAX;
 static bool _isSequenceReadOnly;
 static std::unique_ptr<TitleSequence> _editingTitleSequence;
-static const utf8 * _sequenceName;
+static const utf8* _sequenceName;
 
-static utf8 * _renameSavePath = nullptr;
+static utf8* _renameSavePath = nullptr;
 
 static int16_t _window_title_editor_highlighted_index;
 
 static int32_t window_title_editor_tab_animation_loops[] = {
     64,
     1,
-    28
+    28,
 };
 static int32_t window_title_editor_tab_animation_divisor[] = {
     4,
     1,
-    4
+    4,
 };
 static int32_t window_title_editor_tab_sprites[] = {
     SPR_TAB_RIDE_0,
     SPR_FLOPPY,
-    SPR_TAB_STATS_0
+    SPR_TAB_STATS_0,
 };
-// clang-format on
 
 void window_title_editor_open(int32_t tab)
 {

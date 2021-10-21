@@ -68,6 +68,7 @@
     <ClInclude Include="actions\FootpathAdditionPlaceAction.h" />
     <ClInclude Include="actions\FootpathAdditionRemoveAction.h" />
     <ClInclude Include="actions\GameAction.h" />
+    <ClInclude Include="actions\GameActionResult.h" />
     <ClInclude Include="actions\GuestSetFlagsAction.h" />
     <ClInclude Include="actions\GuestSetNameAction.h" />
     <ClInclude Include="actions\LandBuyRightsAction.h" />
@@ -519,6 +520,7 @@
     <ClCompile Include="actions\GameAction.cpp" />
     <ClCompile Include="actions\GameActionCompat.cpp" />
     <ClCompile Include="actions\GameActionRegistration.cpp" />
+    <ClCompile Include="actions\GameActionResult.cpp" />
     <ClCompile Include="actions\GuestSetFlagsAction.cpp" />
     <ClCompile Include="actions\GuestSetNameAction.cpp" />
     <ClCompile Include="actions\LandBuyRightsAction.cpp" />

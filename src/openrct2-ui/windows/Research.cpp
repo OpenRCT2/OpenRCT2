@@ -92,7 +92,7 @@ static rct_widget window_research_funding_widgets[] = {
 
 static rct_widget *window_research_page_widgets[] = {
     window_research_development_widgets,
-    window_research_funding_widgets
+    window_research_funding_widgets,
 };
 
 #pragma endregion
@@ -133,7 +133,7 @@ static rct_window_event_list window_research_funding_events([](auto& events)
 
 static rct_window_event_list *window_research_page_events[] = {
     &window_research_development_events,
-    &window_research_funding_events
+    &window_research_funding_events,
 };
 
 #pragma endregion
@@ -157,12 +157,16 @@ static uint32_t window_research_page_enabled_widgets[] = {
     (1ULL << WIDX_THRILL_RIDES) |
     (1ULL << WIDX_WATER_RIDES) |
     (1ULL << WIDX_SHOPS_AND_STALLS) |
-    (1ULL << WIDX_SCENERY_AND_THEMING)
+    (1ULL << WIDX_SCENERY_AND_THEMING),
 };
+// clang-format on
 
 #pragma endregion
 
-const int32_t window_research_tab_animation_loops[] = { 16, 16 };
+const int32_t window_research_tab_animation_loops[] = {
+    16,
+    16,
+};
 
 static constexpr const rct_string_id ResearchStageNames[] = {
     STR_RESEARCH_STAGE_INITIAL_RESEARCH,
@@ -170,7 +174,6 @@ static constexpr const rct_string_id ResearchStageNames[] = {
     STR_RESEARCH_STAGE_COMPLETING_DESIGN,
     STR_RESEARCH_STAGE_UNKNOWN,
 };
-// clang-format on
 
 static void window_research_set_page(rct_window* w, int32_t page);
 static void window_research_set_pressed_tab(rct_window* w);

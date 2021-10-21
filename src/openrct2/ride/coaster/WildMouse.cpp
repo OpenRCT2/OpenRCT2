@@ -531,7 +531,7 @@ static void wild_mouse_track_right_quarter_turn_3(
             { SPR_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 3 } },
             { SPR_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_1, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 3 } },
             { SPR_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_2, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 3 } },
-        }
+        },
     };
 
     track_paint_util_right_quarter_turn_3_tiles_paint_3(
@@ -583,7 +583,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
         {
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_DOWN_SE_NE_PART_0, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 3 } },
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_DOWN_SE_NE_PART_1, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 3 } },
-        }
+        },
     };
     static constexpr const int16_t generalSupportHeights[] = { 72, 56, 56, 72 };
 
@@ -651,7 +651,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
         {
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_UP_SE_NE_PART_0, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 3 } },
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_UP_SE_NE_PART_1, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 3 } },
-        }
+        },
     };
     static constexpr const int16_t generalSupportHeights[] = { 72, 56, 56, 72 };
 

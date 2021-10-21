@@ -171,7 +171,7 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
 static rct_widget *window_editor_scenario_options_widgets[] = {
     window_editor_scenario_options_financial_widgets,
     window_editor_scenario_options_guests_widgets,
-    window_editor_scenario_options_park_widgets
+    window_editor_scenario_options_park_widgets,
 };
 
 #pragma endregion
@@ -237,7 +237,7 @@ static rct_window_event_list window_scenario_options_park_events([](auto& events
 static rct_window_event_list *window_editor_scenario_options_page_events[] = {
     &window_scenario_options_financial_events,
     &window_scenario_options_guests_events,
-    &window_scenario_options_park_events
+    &window_scenario_options_park_events,
 };
 
 #pragma endregion
@@ -288,7 +288,7 @@ static uint64_t window_editor_scenario_options_page_enabled_widgets[] = {
         (1ULL << WIDX_FORBID_LANDSCAPE_CHANGES) |
         (1ULL << WIDX_FORBID_HIGH_CONSTRUCTION) |
         (1ULL << WIDX_HARD_PARK_RATING) |
-        (1ULL << WIDX_HARD_GUEST_GENERATION)
+        (1ULL << WIDX_HARD_GUEST_GENERATION),
 };
 
 static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
@@ -313,7 +313,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
         (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
         (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
         (1ULL << WIDX_ENTRY_PRICE_INCREASE) |
-        (1ULL << WIDX_ENTRY_PRICE_DECREASE)
+        (1ULL << WIDX_ENTRY_PRICE_DECREASE),
 };
 // clang-format on
 

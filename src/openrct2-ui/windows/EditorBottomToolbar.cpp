@@ -73,7 +73,7 @@ static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
     window_editor_bottom_toolbar_jump_back_to_options_selection,
     nullptr,
     window_editor_bottom_toolbar_jump_back_to_object_selection,
-    nullptr
+    nullptr,
 };
 
 static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
@@ -84,7 +84,7 @@ static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
     window_editor_bottom_toolbar_jump_forward_to_save_scenario,
     nullptr,
     nullptr,
-    nullptr
+    nullptr,
 };
 
 static constexpr const rct_string_id EditorStepNames[] = {
@@ -387,22 +387,21 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
+        auto previousWidget = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE];
+        auto nextWidget = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE];
+
         if (drawPreviousButton)
         {
-            gfx_filter_rect(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom + w->windowPos.y, FilterPaletteID::Palette51);
+            auto leftTop = w->windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
+            auto rightBottom = w->windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
+            gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
 
         if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
         {
-            gfx_filter_rect(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom + w->windowPos.y, FilterPaletteID::Palette51);
+            auto leftTop = w->windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
+            auto rightBottom = w->windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
+            gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
     }
 
