@@ -258,7 +258,8 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
         return canBuild;
     }
 
-    const uint8_t groundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
     res->SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
 
     res->Expenditure = ExpenditureType::Landscaping;
@@ -418,7 +419,8 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
         sceneryElement->SetNeedsSupports();
     }
 
-    const uint8_t groundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
     res->SetData(
         SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
 

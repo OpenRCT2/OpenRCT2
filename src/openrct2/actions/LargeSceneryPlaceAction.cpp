@@ -125,10 +125,11 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
 
         supportsCost += canBuild->Cost;
 
-        int32_t tempSceneryGroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        int32_t tempSceneryGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (!gCheatsDisableClearanceChecks)
         {
-            if ((canBuild->GroundFlags & ELEMENT_IS_UNDERWATER) || (canBuild->GroundFlags & ELEMENT_IS_UNDERGROUND))
+            if ((clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER) || (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND))
             {
                 return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
             }
@@ -261,7 +262,9 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         }
 
         supportsCost += canBuild->Cost;
-        resultData.GroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+
+        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        resultData.GroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {

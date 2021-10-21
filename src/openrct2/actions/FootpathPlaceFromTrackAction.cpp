@@ -145,9 +145,11 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
         return canBuild;
     }
     res->Cost += canBuild->Cost;
-    gFootpathGroundFlags = canBuild->GroundFlags;
 
-    if (!gCheatsDisableClearanceChecks && (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER))
+    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    gFootpathGroundFlags = clearanceData.GroundFlags;
+
+    if (!gCheatsDisableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
     {
         return MakeResult(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
@@ -213,7 +215,9 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         return canBuild;
     }
     res->Cost += canBuild->Cost;
-    gFootpathGroundFlags = canBuild->GroundFlags;
+
+    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    gFootpathGroundFlags = clearanceData.GroundFlags;
 
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)

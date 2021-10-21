@@ -101,10 +101,4 @@ namespace GameActions
 #    pragma GCC diagnostic pop
 #endif
 
-    class ConstructClearResult final : public Result
-    {
-    public:
-        uint8_t GroundFlags{ 0 };
-    };
-
 } // namespace GameActions

@@ -113,15 +113,15 @@ static bool MapLoc68BABCShouldContinue(
  *  ebp = clearFunc
  *  bl = bl
  */
-std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
+GameActions::Result::Ptr MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
 {
     int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
     northZ = eastZ = baseHeight = southZ = westZ = water_height = 0;
-    auto res = std::make_unique<GameActions::ConstructClearResult>();
+    auto res = std::make_unique<GameActions::Result>();
     uint8_t slope = 0;
 
-    res->GroundFlags = ELEMENT_IS_ABOVE_GROUND;
+    uint8_t groundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
     if (map_is_edge(pos))
     {
@@ -170,7 +170,7 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
         water_height = tileElement->AsSurface()->GetWaterHeight();
         if (water_height && water_height > pos.baseZ && tileElement->GetBaseZ() < pos.clearanceZ)
         {
-            res->GroundFlags |= ELEMENT_IS_UNDERWATER;
+            groundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < pos.clearanceZ)
             {
                 bool returnError = true;
@@ -217,8 +217,8 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             if (tileElement->GetBaseZ() >= pos.clearanceZ)
             {
                 // loc_68BA81
-                res->GroundFlags |= ELEMENT_IS_UNDERGROUND;
-                res->GroundFlags &= ~ELEMENT_IS_ABOVE_GROUND;
+                groundFlags |= ELEMENT_IS_UNDERGROUND;
+                groundFlags &= ~ELEMENT_IS_ABOVE_GROUND;
             }
             else
             {
@@ -278,10 +278,13 @@ std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
             }
         }
     } while (!(tileElement++)->IsLastForTile());
+
+    res->SetData(ConstructClearResult{ groundFlags });
+
     return res;
 }
 
-std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
+GameActions::Result::Ptr MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
 {
     return MapCanConstructWithClearAt(pos, nullptr, bl, 0);
 }

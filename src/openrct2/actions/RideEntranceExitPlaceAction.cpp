@@ -108,7 +108,8 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
         return canBuild;
     }
 
-    if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER)
+    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
     {
         return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
     }
@@ -237,7 +238,8 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::TrackPlaceQuery(const Coor
         return canBuild;
     }
 
-    if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER)
+    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
     {
         return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
     }
