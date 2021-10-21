@@ -34,14 +34,14 @@ GameActions::Result::Ptr StaffFireAction::Query() const
     if (_spriteId >= MAX_ENTITIES)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     return MakeResult();
@@ -53,7 +53,7 @@ GameActions::Result::Ptr StaffFireAction::Execute() const
     if (staff == nullptr)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     window_close_by_class(WC_FIRE_PROMPT);
     peep_sprite_remove(staff);
