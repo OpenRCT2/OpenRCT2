@@ -109,6 +109,7 @@ enum
     DDIDX_FAVOURITE
 };
 
+static bool _showServerVersion = false;
 static std::string _version;
 
 static void join_server(std::string address);
@@ -279,26 +280,31 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
 
 static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    // Item
-    int32_t index = screenCoords.y / ITEM_HEIGHT;
-    if (index < 0 || index >= w->no_list_items)
-    {
-        index = -1;
-    }
-
     auto& listWidget = w->widgets[WIDX_LIST];
-    int32_t width = listWidget.width();
-    int32_t right = width - 3 - 14 - 10;
-    if (screenCoords.x < right)
+
+    int32_t itemIndex = screenCoords.y / ITEM_HEIGHT;
+    bool showServerVersion = false;
+    if (itemIndex < 0 || itemIndex >= w->no_list_items)
     {
-        listWidget.tooltip = STR_NONE;
-        window_tooltip_close();
+        itemIndex = -1;
+    }
+    else
+    {
+        const int32_t iconX = listWidget.width() - SCROLLBAR_WIDTH - 17;
+        showServerVersion = screenCoords.x > iconX;
     }
 
-    if (w->selected_list_item != index)
+    if (w->selected_list_item != itemIndex || _showServerVersion != showServerVersion)
     {
-        w->selected_list_item = index;
+        w->selected_list_item = itemIndex;
+        _showServerVersion = showServerVersion;
+
+        if (showServerVersion)
+            listWidget.tooltip = STR_NETWORK_VERSION_TIP;
+        else
+            listWidget.tooltip = STR_NONE;
         window_tooltip_close();
+
         w->Invalidate();
     }
 }
@@ -408,7 +414,6 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
     ScreenCoordsXY screenCoords;
     screenCoords.y = 0;
-    listWidget.tooltip = STR_NONE;
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
         if (screenCoords.y >= dpi->y + dpi->height)
@@ -422,7 +427,6 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         {
             gfx_filter_rect(dpi, { 0, screenCoords.y, width, screenCoords.y + ITEM_HEIGHT }, FilterPaletteID::PaletteDarken1);
             _version = serverDetails.Version;
-            listWidget.tooltip = STR_NETWORK_VERSION_TIP;
         }
 
         colour_t colour = w->colours[1];
