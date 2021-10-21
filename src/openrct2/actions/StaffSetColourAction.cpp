@@ -41,7 +41,7 @@ GameActions::Result::Ptr StaffSetColourAction::Query() const
     auto staffType = static_cast<StaffType>(_staffType);
     if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     return MakeResult();
 }
@@ -51,7 +51,7 @@ GameActions::Result::Ptr StaffSetColourAction::Execute() const
     // Update global uniform colour property
     if (!staff_set_colour(static_cast<StaffType>(_staffType), _colour))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     // Update each staff member's uniform
