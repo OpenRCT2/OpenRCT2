@@ -10,11 +10,15 @@
 #pragma once
 
 #include "../actions/GameActionResult.h"
-#include "Location.hpp"
+#include "../common.h"
 #include "Map.h"
-#include "TileElement.h"
 
 #include <cstdint>
+
+struct TileElement;
+struct CoordsXY;
+struct CoordsXYRangedZ;
+class QuarterTile;
 
 using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 
