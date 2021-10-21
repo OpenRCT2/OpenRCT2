@@ -97,7 +97,8 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         if (HasReachedBannerLimit())
         {
             log_error("No free banners available");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
+            return MakeResult(
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
     }
 
