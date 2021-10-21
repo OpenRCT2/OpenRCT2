@@ -894,3 +894,10 @@ namespace OpenRCT2
         return nullptr;
     }
 } // namespace OpenRCT2
+
+ScreenCoordsXY translate_3d_to_2d_with_z(int32_t rotation, const CoordsXYZ& pos)
+{
+    auto rotated = pos.Rotate(rotation);
+    // Use right shift to avoid issues like #9301
+    return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
+}
