@@ -74,7 +74,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
     if (tileElement == nullptr)
     {
         log_error("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto pathElement = tileElement->AsPath();
@@ -96,7 +96,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
         auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
         uint16_t sceneryFlags = pathBitEntry->flags;
 
@@ -115,7 +115,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
         if (!(sceneryFlags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
             && (pathElement->GetEdges()) == 0x0F)
         {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
 
         if ((sceneryFlags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
@@ -133,7 +133,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
         // Check if there is something on the path already
         if (pathElement->HasAddition())
         {
-            return MakeResult(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
     }
     return res;
@@ -151,7 +151,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
     if (pathElement == nullptr)
     {
         log_error("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     // No change
@@ -166,7 +166,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
         auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
 
         res->Cost = pathBitEntry->price;
