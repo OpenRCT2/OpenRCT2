@@ -43,7 +43,7 @@ GameActions::Result::Ptr GuestSetFlagsAction::Query() const
     if (peep == nullptr)
     {
         log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
     }
     return std::make_unique<GameActions::Result>();
 }
@@ -54,7 +54,7 @@ GameActions::Result::Ptr GuestSetFlagsAction::Execute() const
     if (peep == nullptr)
     {
         log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
     }
 
     peep->PeepFlags = _newFlags;
