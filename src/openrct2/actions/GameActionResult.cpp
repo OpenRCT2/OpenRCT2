@@ -4,25 +4,15 @@
 
 namespace GameActions
 {
-    Result::Result(GameActions::Status error, rct_string_id message)
-    {
-        Error = error;
-        ErrorMessage = message;
-    }
-
-    Result::Result(GameActions::Status error, rct_string_id title, rct_string_id message)
+    Result::Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args /*= nullptr*/)
     {
         Error = error;
         ErrorTitle = title;
         ErrorMessage = message;
-    }
-
-    Result::Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args)
-    {
-        Error = error;
-        ErrorTitle = title;
-        ErrorMessage = message;
-        std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());
+        if (args != nullptr)
+        {
+            std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());
+        }
     }
 
     struct StringVariantVisitor
