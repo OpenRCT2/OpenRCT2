@@ -68,7 +68,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return MakeResult(GameActions::Status::Unknown, STR_NONE);
+        return MakeResult(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     int32_t zHigh = surfaceElement->GetBaseZ();
@@ -90,7 +90,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
     }
     if (surfaceElement->HasTrackThatNeedsWater())
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_NONE);
+        return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
     }
 
     res->Cost = 250;
@@ -113,7 +113,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Execute() const
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     if (_height > surfaceElement->base_height)
