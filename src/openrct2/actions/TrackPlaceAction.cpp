@@ -328,7 +328,7 @@ GameActions::Result TrackPlaceAction::Query() const
             }
         }
 
-        int32_t entranceDirections = ted.SequenceProperties[0];
+        int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
         {
             if (!track_add_station_element({ mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign))
@@ -561,7 +561,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         {
             if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
             {
-                entranceDirections = ted.SequenceProperties[0];
+                entranceDirections = std::get<0>(ted.SequenceProperties);
             }
         }
 
@@ -623,7 +623,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         }
         trackElement->SetColourScheme(_colour);
 
-        entranceDirections = ted.SequenceProperties[0];
+        entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
         {
             uint8_t availableDirections = entranceDirections & 0x0F;
