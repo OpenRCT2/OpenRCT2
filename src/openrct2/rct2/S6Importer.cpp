@@ -546,6 +546,17 @@ public:
         }
     }
 
+    /**
+     * This code is needed to detect hacks where a tracked ride has been made invisible
+     * by setting its ride type to a flat ride.
+     *
+     * The function should classify rides as follows:
+     * 1. If the ride type is tracked and its vehicles also belong on tracks, it should be classified as tracked.
+     * 2. If the ride type is a flat ride, but its vehicles belong on tracks,
+     *     it should be classified as tracked (Crooked House mod).
+     * 3. If the ride type is tracked and its vehicles belong to a flat ride, it should be classified as tracked.
+     * 4. If the ride type is a flat ride and its vehicles also belong to a flat ride, it should be classified as a flat ride.
+     */
     void DetermineFlatRideStatus()
     {
         for (uint8_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
@@ -556,9 +567,15 @@ public:
 
             auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
             auto* rideEntry = get_ride_entry(subtype);
+            // If the ride is tracked, we don’t need to check the vehicle any more.
+            if (!GetRideTypeDescriptor(src->type).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+            {
+                _isFlatRide[index] = false;
+                continue;
+            }
 
-            // This code is needed to detect hacks where a tracked ride has been made invisible
-            // by setting its ride type to a flat ride.
+            // We have established the ride type is a flat ride, which means the vehicle now determines whether it is a
+            // true flat ride (scenario 4) or a tracked ride with an invisibility hack (scenario 2).
             ObjectEntryIndex originalRideType = src->type;
             if (rideEntry != nullptr)
             {
