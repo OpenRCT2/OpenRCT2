@@ -35,7 +35,7 @@ GameActions::Result::Ptr ParkSetParameterAction::Query() const
 {
     if (_parameter >= ParkParameter::Count)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto res = MakeResult();
@@ -66,7 +66,7 @@ GameActions::Result::Ptr ParkSetParameterAction::Execute() const
             window_invalidate_by_class(WC_RIDE);
             break;
         default:
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto res = MakeResult();
