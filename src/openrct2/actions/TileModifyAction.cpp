@@ -49,7 +49,7 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
 {
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
     }
     auto res = MakeResult();
     switch (_setting)
@@ -218,7 +218,7 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
         }
         default:
             log_error("invalid instruction");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     res->Position.x = _loc.x;
