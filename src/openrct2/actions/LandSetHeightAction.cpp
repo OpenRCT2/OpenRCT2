@@ -49,20 +49,21 @@ GameActions::Result::Ptr LandSetHeightAction::Query() const
 {
     if (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, STR_NONE);
     }
 
     rct_string_id errorTitle = CheckParameters();
     if (errorTitle != STR_NONE)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, errorTitle);
+        return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, errorTitle, STR_NONE);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
         if (!map_is_location_in_park(_coords))
         {
-            return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
         }
     }
 
@@ -75,7 +76,7 @@ GameActions::Result::Ptr LandSetHeightAction::Query() const
             TileElement* tileElement = CheckTreeObstructions();
             if (tileElement != nullptr)
             {
-                auto res = MakeResult(GameActions::Status::Disallowed, STR_NONE);
+                auto res = MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
                 map_obstruction_set_error_text(tileElement, *res);
                 return res;
             }
@@ -89,13 +90,13 @@ GameActions::Result::Ptr LandSetHeightAction::Query() const
         errorTitle = CheckRideSupports();
         if (errorTitle != STR_NONE)
         {
-            return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, errorTitle);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, errorTitle, STR_NONE);
         }
     }
 
     auto* surfaceElement = map_get_surface_element_at(_coords);
     if (surfaceElement == nullptr)
-        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
     // We need to check if there is _currently_ a level crossing on the tile.
     // For that, we need the old height, so we can't use the _height variable.
@@ -103,13 +104,13 @@ GameActions::Result::Ptr LandSetHeightAction::Query() const
     auto* pathElement = map_get_footpath_element(oldCoords);
     if (pathElement != nullptr && pathElement->AsPath()->IsLevelCrossing(oldCoords))
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST);
+        return MakeResult(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, STR_NONE);
     }
 
     TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
     if (tileElement != nullptr)
     {
-        auto res = MakeResult(GameActions::Status::Disallowed, STR_NONE);
+        auto res = MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
         map_obstruction_set_error_text(tileElement, *res);
         return res;
     }
@@ -138,7 +139,7 @@ GameActions::Result::Ptr LandSetHeightAction::Query() const
         tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);
         if (tileElement != nullptr)
         {
-            auto res = MakeResult(GameActions::Status::Disallowed, STR_NONE);
+            auto res = MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
             map_obstruction_set_error_text(tileElement, *res);
             return res;
         }
@@ -164,7 +165,7 @@ GameActions::Result::Ptr LandSetHeightAction::Execute() const
 
     auto* surfaceElement = map_get_surface_element_at(_coords);
     if (surfaceElement == nullptr)
-        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
     cost += GetSurfaceHeightChangeCost(surfaceElement);
     SetSurfaceHeight(reinterpret_cast<TileElement*>(surfaceElement));
