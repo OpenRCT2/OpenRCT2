@@ -65,13 +65,13 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
     if (tileElement == nullptr)
     {
         log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
     // If we have a bugged scenery entry, do not touch the tile element.
     if (sceneryEntry == nullptr)
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS);
+        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_NONE);
 
     auto rotatedOffsets = CoordsXYZ{
         CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
@@ -135,13 +135,13 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
     if (tileElement == nullptr)
     {
         log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
     // If we have a bugged scenery entry, do not touch the tile element.
     if (sceneryEntry == nullptr)
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS);
+        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_NONE);
 
     tileElement->RemoveBannerEntry();
 
