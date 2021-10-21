@@ -98,7 +98,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
-        return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
+        return MakeResult(GameActions::Status::NoFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
     auto canBuild = MapCanConstructWithClearAt(
@@ -224,12 +224,12 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::TrackPlaceQuery(const Coor
 
     if (!gCheatsSandboxMode && !map_is_location_owned(loc))
     {
-        return MakeResult(GameActions::Status::NotOwned, errorTitle);
+        return MakeResult(GameActions::Status::NotOwned, errorTitle, STR_NONE);
     }
 
     if (!MapCheckCapacityAndReorganise(loc))
     {
-        return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
+        return MakeResult(GameActions::Status::NoFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
     int16_t baseZ = loc.z;
     int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
