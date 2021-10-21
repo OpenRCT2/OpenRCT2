@@ -61,13 +61,13 @@ GameActions::Result::Ptr BannerSetColourAction::QueryExecute(bool isExecuting) c
     if (!LocationValid(_loc))
     {
         log_error("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_primaryColour > 31)
     {
         log_error("Invalid primary colour: colour = %u", _primaryColour);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
@@ -80,7 +80,7 @@ GameActions::Result::Ptr BannerSetColourAction::QueryExecute(bool isExecuting) c
     if (bannerElement == nullptr)
     {
         log_error("Could not find banner at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS);
+        return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     auto index = bannerElement->GetIndex();
@@ -88,7 +88,7 @@ GameActions::Result::Ptr BannerSetColourAction::QueryExecute(bool isExecuting) c
     if (banner == nullptr)
     {
         log_error("Invalid banner index: index = %u", index);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (isExecuting)
