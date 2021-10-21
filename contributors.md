@@ -179,6 +179,7 @@ The following people are not part of the development team, but have been contrib
 * Sean Payne (seanmajorpayne)
 * Soham Roy (sohamroy19)
 * Gaven Rendell (Rendello)
+* Sebastian Flinck Lindström (Bepso)
 
 ## Toolchain
 * (Balletie) - macOS
