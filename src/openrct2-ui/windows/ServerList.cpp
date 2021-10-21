@@ -109,7 +109,7 @@ enum
     DDIDX_FAVOURITE
 };
 
-static bool _showServerVersion = false;
+static bool _showVersionTooltip = false;
 static std::string _version;
 
 static void join_server(std::string address);
@@ -283,7 +283,7 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
     auto& listWidget = w->widgets[WIDX_LIST];
 
     int32_t itemIndex = screenCoords.y / ITEM_HEIGHT;
-    bool showServerVersion = false;
+    bool showVersionTooltip = false;
     if (itemIndex < 0 || itemIndex >= w->no_list_items)
     {
         itemIndex = -1;
@@ -291,15 +291,15 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
     else
     {
         const int32_t iconX = listWidget.width() - SCROLLBAR_WIDTH - 17;
-        showServerVersion = screenCoords.x > iconX;
+        showVersionTooltip = screenCoords.x > iconX;
     }
 
-    if (w->selected_list_item != itemIndex || _showServerVersion != showServerVersion)
+    if (w->selected_list_item != itemIndex || _showVersionTooltip != showVersionTooltip)
     {
         w->selected_list_item = itemIndex;
-        _showServerVersion = showServerVersion;
+        _showVersionTooltip = showVersionTooltip;
 
-        if (showServerVersion)
+        if (showVersionTooltip)
             listWidget.tooltip = STR_NETWORK_VERSION_TIP;
         else
             listWidget.tooltip = STR_NONE;
