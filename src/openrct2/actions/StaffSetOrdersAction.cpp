@@ -39,7 +39,7 @@ GameActions::Result::Ptr StaffSetOrdersAction::Query() const
 {
     if (_spriteIndex >= MAX_ENTITIES)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
@@ -47,7 +47,7 @@ GameActions::Result::Ptr StaffSetOrdersAction::Query() const
         || (staff->AssignedStaffType != StaffType::Handyman && staff->AssignedStaffType != StaffType::Mechanic))
     {
         log_warning("Invalid game command for sprite %u", _spriteIndex);
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     return std::make_unique<GameActions::Result>();
@@ -59,7 +59,7 @@ GameActions::Result::Ptr StaffSetOrdersAction::Execute() const
     if (staff == nullptr)
     {
         log_warning("Invalid game command for sprite %u", _spriteIndex);
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     staff->StaffOrders = _ordersId;
 
