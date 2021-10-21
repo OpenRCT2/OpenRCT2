@@ -98,7 +98,7 @@ GameActions::Result::Ptr FootpathPlaceAction::Query() const
     if (_direction != INVALID_DIRECTION && !direction_valid(_direction))
     {
         log_error("Direction invalid. direction = %u", _direction);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
     }
 
     footpath_provisional_remove();
@@ -205,7 +205,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateQuery(PathElement* pa
 
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST && !pathElement->IsGhost())
     {
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_BUILD_FOOTPATH_HERE);
+        return MakeResult(GameActions::Status::Unknown, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
     }
     return res;
 }
@@ -269,7 +269,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_BUILD_FOOTPATH_HERE);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
     }
 
     res->Cost = MONEY(12, 00);
@@ -319,7 +319,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
     res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
@@ -383,7 +383,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_NONE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
     res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
