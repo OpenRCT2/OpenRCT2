@@ -490,7 +490,7 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
     *wallAcrossTrack = false;
     if (map_is_location_at_edge(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_OFF_EDGE_OF_MAP);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
     TileElement* tileElement = map_get_first_element_at(_loc);
@@ -512,7 +512,7 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
             int32_t direction = tileElement->GetDirection();
             if (_edge == direction)
             {
-                auto res = MakeResult(GameActions::Status::NoClearance, STR_NONE);
+                auto res = MakeResult(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
                 map_obstruction_set_error_text(tileElement, *res);
                 return res;
             }
@@ -520,7 +520,7 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
         }
         if (tileElement->GetOccupiedQuadrants() == 0)
             continue;
-        auto res = MakeResult(GameActions::Status::NoClearance, STR_NONE);
+        auto res = MakeResult(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
         switch (elementType)
         {
             case TILE_ELEMENT_TYPE_ENTRANCE:
