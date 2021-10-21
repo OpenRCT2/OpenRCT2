@@ -2899,7 +2899,7 @@ STR_5626    :Overige parken
 STR_5627    :Scenariolijst groeperen op:
 STR_5628    :Oorsprong
 STR_5629    :Moeilijkheidsgraad
-STR_5630    :Moeilijke scenario’s ontgrendelden met gemakkelijke
+STR_5630    :Moeilijke scenario’s ontgrendelden met makkelijke
 STR_5631    :Originele DLC
 STR_5632    :Bouw je eigen…
 STR_5633    :CMD + 

@@ -17,6 +17,7 @@
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"

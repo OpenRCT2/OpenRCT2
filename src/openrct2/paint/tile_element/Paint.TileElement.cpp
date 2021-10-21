@@ -23,6 +23,7 @@
 #include "../../world/Banner.h"
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
+#include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/Surface.h"
 #include "../Paint.h"
@@ -146,27 +147,24 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     }
 #endif // __TESTPAINT__
 
-    int32_t dx = 0;
     switch (rotation)
     {
         case 0:
-            dx = x + y;
             break;
         case 1:
             x += 32;
-            dx = y - x;
             break;
         case 2:
             x += 32;
             y += 32;
-            dx = -(x + y);
             break;
         case 3:
             y += 32;
-            dx = x - y;
             break;
     }
-    dx >>= 1;
+
+    int32_t screenMinY = translate_3d_to_2d_with_z(rotation, { x, y, 0 }).y;
+
     // Display little yellow arrow when building footpaths?
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) && session->MapPosition.x == gMapSelectArrowPosition.x
         && session->MapPosition.y == gMapSelectArrowPosition.y)
@@ -182,9 +180,8 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
         PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { 32, 32, -1 }, { 0, 0, arrowZ + 18 });
     }
-    int32_t bx = dx + 52;
 
-    if (bx <= dpi->y)
+    if (screenMinY + 52 <= dpi->y)
         return;
 
     const TileElement* element = tile_element; // push tile_element
@@ -210,9 +207,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     }
 #endif // __TESTPAINT__
 
-    dx -= max_height + 32;
-    dx -= dpi->height;
-    if (dx >= dpi->y)
+    if (screenMinY - (max_height + 32) >= dpi->y + dpi->height)
         return;
 
     session->SpritePosition.x = x;

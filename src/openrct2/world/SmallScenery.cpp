@@ -24,58 +24,6 @@
 #include "Scenery.h"
 #include "Surface.h"
 
-static int32_t map_place_clear_func(
-    TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price, bool is_scenery)
-{
-    if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
-        return 1;
-
-    if (is_scenery && !(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
-        return 1;
-
-    auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
-
-    if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
-    {
-        if (scenery != nullptr && scenery->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
-            return 1;
-    }
-
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
-        *price += scenery->removal_price * 10;
-
-    if (flags & GAME_COMMAND_FLAG_GHOST)
-        return 0;
-
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
-        return 0;
-
-    map_invalidate_tile({ coords, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ() });
-
-    tile_element_remove(*tile_element);
-
-    (*tile_element)--;
-    return 0;
-}
-
-/**
- *
- *  rct2: 0x006E0D6E, 0x006B8D88
- */
-int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
-{
-    return map_place_clear_func(tile_element, coords, flags, price, /*is_scenery=*/true);
-}
-
-/**
- *
- *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
- */
-int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price)
-{
-    return map_place_clear_func(tile_element, coords, flags, price, /*is_scenery=*/false);
-}
-
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
 {
     return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
