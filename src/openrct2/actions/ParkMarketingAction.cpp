@@ -50,7 +50,7 @@ GameActions::Result::Ptr ParkMarketingAction::Query() const
 {
     if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_NONE);
     }
     if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
     {
