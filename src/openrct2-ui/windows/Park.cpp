@@ -512,8 +512,7 @@ static void window_park_entrance_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_RENAME:
         {
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-            window_text_input_raw_open(
-                w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), USER_STRING_MAX_LENGTH);
+            window_text_input_raw_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), INT_MAX);
             break;
         }
         case WIDX_CLOSE_LIGHT:
