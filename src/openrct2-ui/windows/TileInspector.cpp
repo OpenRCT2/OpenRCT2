@@ -185,12 +185,17 @@ constexpr auto ToolbarButtonSize = ScreenSize{ 24, 24 };
 constexpr auto ToolbarButtonHalfSize = ScreenSize{ 24, 12 };
 constexpr auto ToolbarButtonOffsetX = ScreenSize{ -24, 0 };
 
-// Column offsets for the table headers
-constexpr int32_t COL_X_TYPE = 3;              // Type
-constexpr int32_t COL_X_BH = COL_X_TYPE + 312; // Base height
-constexpr int32_t COL_X_CH = COL_X_BH + 20;    // Clearance height
-constexpr int32_t COL_X_GF = COL_X_CH + 20;    // Ghost flag
-constexpr int32_t COL_X_LF = COL_X_GF + 12;    // Last for tile flag
+// List's column offsets
+constexpr auto TypeColumnXY = ScreenCoordsXY{ 3, 42 };
+constexpr auto TypeColumnSize = ScreenSize{ 312, 14 };
+constexpr auto BaseHeightColumnXY = TypeColumnXY + ScreenSize{ TypeColumnSize.width, 0 };
+constexpr auto BaseHeightColumnSize = ScreenSize{ 20, 14 };
+constexpr auto ClearanceHeightColumnXY = BaseHeightColumnXY + ScreenCoordsXY{ BaseHeightColumnSize.width, 0 };
+constexpr auto ClearanceHeightColumnSize = ScreenSize{ 20, 14 };
+constexpr auto GhostFlagColumnXY = ClearanceHeightColumnXY + ScreenCoordsXY{ ClearanceHeightColumnSize.width, 0 };
+constexpr auto GhostFlagColumnSize = ScreenSize{ 12, 14 };
+constexpr auto LastFlagColumnXY = GhostFlagColumnXY + ScreenCoordsXY{ GhostFlagColumnSize.width, 0 };
+constexpr auto LastFlagColumnSize = ScreenSize{ 30, 14 };
 
 constexpr int32_t PADDING_BOTTOM = 15;
 constexpr int32_t GROUPBOX_PADDING = 6;
@@ -232,11 +237,11 @@ constexpr int32_t BUTTONH = 17;
     MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 5,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_PASTE,     STR_TILE_INSPECTOR_PASTE_TIP),        /* Paste button */          \
     MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 6,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_COPY,      STR_TILE_INSPECTOR_COPY_TIP),         /* Copy button */           \
     /* Column headers */ \
-    MakeWidget({COL_X_TYPE, 42},   {312, 14},    WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_ELEMENT_TYPE),                                                /* Type */              \
-    MakeWidget({COL_X_BH,   42},   {20, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT,      STR_TILE_INSPECTOR_BASE_HEIGHT),      /* Base height */       \
-    MakeWidget({COL_X_CH,   42},   {20, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, STR_TILE_INSPECTOR_CLEARANCE_HEIGHT), /* Clearance height */  \
-    MakeWidget({COL_X_GF,   42},   {12, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */        \
-    MakeWidget({COL_X_LF,   42},   {30, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */ \
+    MakeWidget(TypeColumnXY,            TypeColumnSize,            WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_ELEMENT_TYPE),                                                /* Type */              \
+    MakeWidget(BaseHeightColumnXY,      BaseHeightColumnSize,      WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT,      STR_TILE_INSPECTOR_BASE_HEIGHT),      /* Base height */       \
+    MakeWidget(ClearanceHeightColumnXY, ClearanceHeightColumnSize, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, STR_TILE_INSPECTOR_CLEARANCE_HEIGHT), /* Clearance height */  \
+    MakeWidget(GhostFlagColumnXY,       GhostFlagColumnSize,       WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */        \
+    MakeWidget(LastFlagColumnXY,        LastFlagColumnSize,        WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */ \
     /* Group boxes */ \
     MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_NONE,                               STR_NONE ), /* Details group box */     \
     MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, STR_NONE )  /* Properties group box */
@@ -2355,24 +2360,23 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 
         const rct_string_id stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
 
-        // Undo relative scroll offset, but keep the 3 pixel padding
-        screenCoords.x = -w->widgets[WIDX_LIST].left;
+        // Element name
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(typeName);
-        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ COL_X_TYPE + 3, 0 }, COL_X_BH, stringFormat, ft); // 3px padding
+        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ TypeColumnXY.x, 0 }, TypeColumnSize.width, stringFormat, ft);
 
         // Base height
         ft = Formatter();
         ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
         ft.Add<int32_t>(tileElement->base_height);
-        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ COL_X_BH, 0 }, stringFormat, ft);
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ BaseHeightColumnXY.x, 0 }, stringFormat, ft);
 
         // Clearance height
         ft = Formatter();
         ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
         ft.Add<int32_t>(clearanceHeight);
-        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ COL_X_CH, 0 }, stringFormat, ft);
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ ClearanceHeightColumnXY.x, 0 }, stringFormat, ft);
 
         // Checkmarks for ghost and last for tile
         ft = Formatter();
@@ -2380,11 +2384,11 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         ft.Add<char*>(CheckBoxMarkString);
         if (ghost)
         {
-            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ COL_X_GF, 0 }, stringFormat, ft);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ GhostFlagColumnXY.x, 0 }, stringFormat, ft);
         }
         if (last)
         {
-            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ COL_X_LF, 0 }, stringFormat, ft);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LastFlagColumnXY.x, 0 }, stringFormat, ft);
         }
 
         screenCoords.y -= SCROLLABLE_ROW_HEIGHT;
