@@ -168,7 +168,7 @@ public:
                 _stream.Read(&t6TrackElement, sizeof(rct_td46_track_element));
                 TrackDesignTrackElement trackElement{};
 
-                track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.type, td->type);
+                track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.type, td->type, true);
                 if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
                 {
                     trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
