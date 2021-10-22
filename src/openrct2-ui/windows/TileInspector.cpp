@@ -216,10 +216,10 @@ constexpr int32_t BUTTONH = 17;
 
 #define MAIN_TILE_INSPECTOR_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    { WindowWidgetType::Scroll, 1, 3, WW - 4, 57, WH - PADDING_BOTTOM, 2, STR_NONE }, /* Element list */ \
+    MakeWidget({3, 57}, {WW - 6, WH - PADDING_BOTTOM - 58}, WindowWidgetType::Scroll, WindowColour::Secondary), /* Element list */ \
     /* X and Y spinners */ \
-      SPINNER_WIDGETS  (1,  20, 70,  23, 34, STR_NONE, STR_NONE), /* Spinner X (3 widgets) */ \
-      SPINNER_WIDGETS  (1,  90, 140, 23, 34, STR_NONE, STR_NONE), /* Spinner Y (3 widgets) */ \
+    MakeSpinnerWidgets({20, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner X (3 widgets) */ \
+    MakeSpinnerWidgets({90, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner Y (3 widgets) */ \
     /* Top buttons */ \
     MakeWidget({BX, BY},           {24, 24},     WindowWidgetType::FlatBtn ,    WindowColour::Secondary, SPR_MAP,          STR_INSERT_CORRUPT_TIP),              /* Insert corrupt button */ \
     MakeWidget({BX - 24, BY},      {24, 24},     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_DEMOLISH,     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */         \
@@ -1764,7 +1764,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else
     {
         gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(43 - 7, 24), "-", { COLOUR_WHITE });
-        gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(113, 24), "-", { COLOUR_WHITE });
+        gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(113 - 7, 24), "-", { COLOUR_WHITE });
     }
 
     if (windowTileInspectorSelectedIndex != -1)
