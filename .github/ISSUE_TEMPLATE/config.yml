@@ -1,7 +1,7 @@
 blank_issues_enabled: true
 contact_links:
 - name: Feature request
-  url: https://github.com/OpenRCT2/OpenRCT2/discussions/new?category=Feature%20requests
+  url: https://github.com/OpenRCT2/OpenRCT2/discussions/categories/feature-requests
   about: Request a new feature to be added to OpenRCT2.
 - name: Translation / Localisation
   url: https://github.com/OpenRCT2/Localisation
