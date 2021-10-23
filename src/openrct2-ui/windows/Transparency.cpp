@@ -121,96 +121,102 @@ public:
 
     void OnPrepareDraw() override
     {
+        uint32_t wflags = 0;
+        rct_window* w = window_get_main();
+
         pressed_widgets = 0;
         disabled_widgets = 0;
 
-        rct_window* w = window_get_main();
-        if (w == nullptr)
-            return;
+        if (w != nullptr)
+            wflags = w->viewport->flags;
 
-        SetWidgetPressed(WIDX_SEE_THROUGH_RIDES, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES));
-        SetWidgetPressed(WIDX_SEE_THROUGH_VEHICLES, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES));
-        SetWidgetPressed(WIDX_SEE_THROUGH_SCENERY, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY));
-        SetWidgetPressed(WIDX_SEE_THROUGH_TREES, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_TREES));
-        SetWidgetPressed(WIDX_SEE_THROUGH_PATHS, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS));
-        SetWidgetPressed(WIDX_SEE_THROUGH_SUPPORTS, (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS));
-        SetWidgetPressed(WIDX_INVISIBLE_RIDES, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_RIDES));
-        SetWidgetPressed(WIDX_INVISIBLE_VEHICLES, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_VEHICLES));
-        SetWidgetPressed(WIDX_INVISIBLE_SCENERY, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SCENERY));
-        SetWidgetPressed(WIDX_INVISIBLE_TREES, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_TREES));
-        SetWidgetPressed(WIDX_INVISIBLE_PATHS, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_PATHS));
-        SetWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
-        SetWidgetPressed(WIDX_INVISIBLE_GUESTS, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS));
-        SetWidgetPressed(WIDX_INVISIBLE_STAFF, (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF));
+        SetWidgetPressed(WIDX_SEE_THROUGH_RIDES, (wflags & VIEWPORT_FLAG_SEETHROUGH_RIDES));
+        SetWidgetPressed(WIDX_SEE_THROUGH_VEHICLES, (wflags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES));
+        SetWidgetPressed(WIDX_SEE_THROUGH_SCENERY, (wflags & VIEWPORT_FLAG_SEETHROUGH_SCENERY));
+        SetWidgetPressed(WIDX_SEE_THROUGH_TREES, (wflags & VIEWPORT_FLAG_SEETHROUGH_TREES));
+        SetWidgetPressed(WIDX_SEE_THROUGH_PATHS, (wflags & VIEWPORT_FLAG_SEETHROUGH_PATHS));
+        SetWidgetPressed(WIDX_SEE_THROUGH_SUPPORTS, (wflags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS));
+        SetWidgetPressed(WIDX_INVISIBLE_RIDES, (wflags & VIEWPORT_FLAG_INVISIBLE_RIDES));
+        SetWidgetPressed(WIDX_INVISIBLE_VEHICLES, (wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES));
+        SetWidgetPressed(WIDX_INVISIBLE_SCENERY, (wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY));
+        SetWidgetPressed(WIDX_INVISIBLE_TREES, (wflags & VIEWPORT_FLAG_INVISIBLE_TREES));
+        SetWidgetPressed(WIDX_INVISIBLE_PATHS, (wflags & VIEWPORT_FLAG_INVISIBLE_PATHS));
+        SetWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
+        SetWidgetPressed(WIDX_INVISIBLE_GUESTS, (wflags & VIEWPORT_FLAG_INVISIBLE_GUESTS));
+        SetWidgetPressed(WIDX_INVISIBLE_STAFF, (wflags & VIEWPORT_FLAG_INVISIBLE_STAFF));
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
         DrawWidgets(dpi);
         // Locate mechanic button image
-        rct_widget* widget = &widgets[WIDX_INVISIBLE_STAFF];
-        auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
+        const auto& widget = widgets[WIDX_INVISIBLE_STAFF];
+        auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
         gfx_draw_sprite(
             &dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, screenCoords, 0);
-    }
-
-    OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback) override
-    {
-        return { fallback, {} };
     }
 
 private:
     void OnMouseUpMain(rct_widgetindex widgetIndex)
     {
+        uint32_t wflags = 0;
         rct_window* w = window_get_main();
+
         if (w == nullptr)
             return;
+
+        wflags = w->viewport->flags;
 
         switch (widgetIndex)
         {
             case WIDX_SEE_THROUGH_RIDES:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+                wflags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
                 break;
             case WIDX_SEE_THROUGH_VEHICLES:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_VEHICLES;
+                wflags ^= VIEWPORT_FLAG_SEETHROUGH_VEHICLES;
                 break;
             case WIDX_SEE_THROUGH_SCENERY:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+                wflags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
                 break;
             case WIDX_SEE_THROUGH_TREES:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_TREES;
+                wflags ^= VIEWPORT_FLAG_SEETHROUGH_TREES;
                 break;
             case WIDX_SEE_THROUGH_PATHS:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_PATHS;
+                wflags ^= VIEWPORT_FLAG_SEETHROUGH_PATHS;
                 break;
             case WIDX_SEE_THROUGH_SUPPORTS:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SUPPORTS;
+                wflags ^= VIEWPORT_FLAG_SEETHROUGH_SUPPORTS;
                 break;
             case WIDX_INVISIBLE_RIDES:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_RIDES;
+                wflags ^= VIEWPORT_FLAG_INVISIBLE_RIDES;
                 break;
             case WIDX_INVISIBLE_VEHICLES:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+                wflags ^= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
                 break;
             case WIDX_INVISIBLE_SCENERY:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SCENERY;
+                wflags ^= VIEWPORT_FLAG_INVISIBLE_SCENERY;
                 break;
             case WIDX_INVISIBLE_TREES:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_TREES;
+                wflags ^= VIEWPORT_FLAG_INVISIBLE_TREES;
                 break;
             case WIDX_INVISIBLE_PATHS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PATHS;
+                wflags ^= VIEWPORT_FLAG_INVISIBLE_PATHS;
                 break;
             case WIDX_INVISIBLE_SUPPORTS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+                wflags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
                 break;
             case WIDX_INVISIBLE_GUESTS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_GUESTS;
+                wflags ^= VIEWPORT_FLAG_INVISIBLE_GUESTS;
                 break;
             case WIDX_INVISIBLE_STAFF:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_STAFF;
+                wflags ^= VIEWPORT_FLAG_INVISIBLE_STAFF;
                 break;
         }
+
+        if (w->viewport->flags == wflags)
+            return;
+
+        w->viewport->flags = wflags;
         w->Invalidate();
     }
 };
