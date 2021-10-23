@@ -55,7 +55,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
 static uint32_t PaintPSColourifyImage(
-    uint32_t imageId, ViewportInteractionItem spriteType, EntityType* entityType, uint32_t viewFlags);
+    uint32_t imageId, ViewportInteractionItem spriteType, std::optional<EntityType> entityType, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
@@ -498,11 +498,11 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
         }
     }
 
-    EntityType* entityType = nullptr;
+    EntityType entityType;
     auto* entity = reinterpret_cast<EntityBase*>(ps->tileElement);
     if (entity != nullptr)
     {
-        entityType = &entity->Type;
+        entityType = entity->Type;
     }
     uint32_t imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, entityType, session->ViewFlags);
     if (gPaintBoundingBoxes && dpi->zoom_level == 0)
@@ -551,11 +551,11 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     for (; attached_ps != nullptr; attached_ps = attached_ps->next)
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
-        EntityType* entityType = nullptr;
+        EntityType entityType;
         auto* entity = reinterpret_cast<EntityBase*>(ps->tileElement);
         if (entity != nullptr)
         {
-            entityType = &entity->Type;
+            entityType = entity->Type;
         }
         uint32_t imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, entityType, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
@@ -666,7 +666,7 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imag
 }
 
 static uint32_t PaintPSColourifyImage(
-    uint32_t imageId, ViewportInteractionItem spriteType, EntityType* entityType, uint32_t viewFlags)
+    uint32_t imageId, ViewportInteractionItem spriteType, std::optional<EntityType> entityType, uint32_t viewFlags)
 {
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES))
     {
@@ -680,7 +680,7 @@ static uint32_t PaintPSColourifyImage(
     {
         if (spriteType == ViewportInteractionItem::Entity)
         {
-            if (entityType != nullptr && *entityType == EntityType::Vehicle)
+            if (entityType == EntityType::Vehicle)
             {
                 imageId &= 0x7FFFF;
                 imageId |= gColourifyImageSeeThroughFlags;

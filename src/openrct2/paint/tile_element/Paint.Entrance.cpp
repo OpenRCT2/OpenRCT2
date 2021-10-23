@@ -73,8 +73,7 @@ static void ride_entrance_exit_paint(
         return;
     }
 
-    if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES)
-        && ride->ignore_invisible_flag == false)
+    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES)
         return;
 
     auto stationObj = ride_get_station_object(ride);

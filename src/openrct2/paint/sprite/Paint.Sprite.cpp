@@ -77,7 +77,7 @@ void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
             if (veh != nullptr)
             {
                 auto ride = get_ride(veh->ride);
-                if (ride != nullptr && ride->ignore_invisible_flag == false)
+                if (ride != nullptr)
                     return;
             }
         }
