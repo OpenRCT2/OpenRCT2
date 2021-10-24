@@ -13,6 +13,7 @@
 - Fix: [#13465] Creating a scenario based on a won save game results in a scenario that’s instantly won.
 - Fix: [#13912] “Dome park” no longer renders dome correctly.
 - Fix: [#14316] Closing the Track Designs Manager window causes broken state.
+- Fix: [#14482, #15258] Rides with invisibility hacks sometimes behave incorrectly.
 - Fix: [#14649] ImageImporter incorrectly remaps colours outside the RCT2 palette.
 - Fix: [#14667] “Extreme Hawaiian Island” has unpurchaseable land tiles (original bug).
 - Fix: [#14741] Crash when exiting OpenRCT2 on macOS.
