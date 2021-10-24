@@ -823,7 +823,7 @@ void viewport_render(
         std::min(bottomRight.y, viewport->height) * viewport->zoom,
     } + viewport->viewPos;
 
-    viewport_paint(viewport, dpi, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, sessions);
+    viewport_paint(viewport, dpi, { topLeft, bottomRight }, sessions);
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
     // FIXME g_viewport_list doesn't exist anymore
@@ -943,32 +943,33 @@ static void viewport_paint_column(paint_session* session)
  *  ebp: bottom
  */
 void viewport_paint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    const rct_viewport* viewport, rct_drawpixelinfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* recorded_sessions)
 {
     uint32_t viewFlags = viewport->flags;
-    uint32_t width = right - left;
-    uint32_t height = bottom - top;
+    uint32_t width = screenRect.GetWidth();
+    uint32_t height = screenRect.GetHeight();
     uint32_t bitmask = viewport->zoom >= 0 ? 0xFFFFFFFF & (0xFFFFFFFF * viewport->zoom) : 0xFFFFFFFF;
+    ScreenCoordsXY topLeft = screenRect.Point1;
 
     width &= bitmask;
     height &= bitmask;
-    left &= bitmask;
-    top &= bitmask;
+    topLeft.x &= bitmask;
+    topLeft.y &= bitmask;
 
-    auto x = left - static_cast<int32_t>(viewport->viewPos.x & bitmask);
+    auto x = topLeft.x - static_cast<int32_t>(viewport->viewPos.x & bitmask);
     x = x / viewport->zoom;
     x += viewport->pos.x;
 
-    auto y = top - static_cast<int32_t>(viewport->viewPos.y & bitmask);
+    auto y = topLeft.y - static_cast<int32_t>(viewport->viewPos.y & bitmask);
     y = y / viewport->zoom;
     y += viewport->pos.y;
 
     rct_drawpixelinfo dpi1;
     dpi1.DrawingEngine = dpi->DrawingEngine;
     dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
-    dpi1.x = left;
-    dpi1.y = top;
+    dpi1.x = topLeft.x;
+    dpi1.y = topLeft.y;
     dpi1.width = width;
     dpi1.height = height;
     dpi1.pitch = (dpi->width + dpi->pitch) - (width / viewport->zoom);
