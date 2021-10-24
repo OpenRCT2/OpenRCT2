@@ -217,13 +217,13 @@ void viewport_remove(rct_viewport* viewport)
     _viewports.erase(it);
 }
 
-void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t maxZoom)
+void viewports_invalidate(const ScreenRect& screenRect, int32_t maxZoom)
 {
     for (auto& vp : _viewports)
     {
         if (maxZoom == -1 || vp.zoom <= maxZoom)
         {
-            viewport_invalidate(&vp, { { left, top }, { right, bottom } });
+            viewport_invalidate(&vp, screenRect);
         }
     }
 }

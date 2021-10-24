@@ -191,7 +191,7 @@ void EntityBase::Invalidate()
             break;
     }
 
-    viewports_invalidate(SpriteRect.GetLeft(), SpriteRect.GetTop(), SpriteRect.GetRight(), SpriteRect.GetBottom(), maxZoom);
+    viewports_invalidate(SpriteRect, maxZoom);
 }
 
 static void ResetEntityLists()
