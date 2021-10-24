@@ -223,7 +223,7 @@ void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bott
     {
         if (maxZoom == -1 || vp.zoom <= maxZoom)
         {
-            viewport_invalidate(&vp, left, top, right, bottom);
+            viewport_invalidate(&vp, { { left, top }, { right, bottom } });
         }
     }
 }
@@ -1150,7 +1150,7 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
 
 void rct_viewport::Invalidate() const
 {
-    viewport_invalidate(this, viewPos.x, viewPos.y, viewPos.x + view_width, viewPos.y + view_height);
+    viewport_invalidate(this, { viewPos, viewPos + ScreenCoordsXY{ view_width, view_height } });
 }
 
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
@@ -1742,9 +1742,9 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
 }
 
 /**
- * Left, top, right and bottom represent 2D map coordinates at zoom 0.
+ * screenRect represents 2D map coordinates at zoom 0.
  */
-void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenRect)
 {
     // if unknown viewport visibility, use the containing window to discover the status
     if (viewport->visibility == VisibilityCache::Unknown)
@@ -1764,31 +1764,23 @@ void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top
     if (viewport->visibility == VisibilityCache::Covered)
         return;
 
-    int32_t viewportLeft = viewport->viewPos.x;
-    int32_t viewportTop = viewport->viewPos.y;
-    int32_t viewportRight = viewport->viewPos.x + viewport->view_width;
-    int32_t viewportBottom = viewport->viewPos.y + viewport->view_height;
-    if (right > viewportLeft && bottom > viewportTop)
+    auto [topLeft, bottomRight] = screenRect;
+    const auto [viewportRight, viewportBottom] = viewport->viewPos
+        + ScreenCoordsXY{ viewport->view_width, viewport->view_height };
+
+    if (bottomRight.x > viewport->viewPos.x && bottomRight.y > viewport->viewPos.y)
     {
-        left = std::max(left, viewportLeft);
-        top = std::max(top, viewportTop);
-        right = std::min(right, viewportRight);
-        bottom = std::min(bottom, viewportBottom);
+        topLeft = { std::max(topLeft.x, viewport->viewPos.x), std::max(topLeft.y, viewport->viewPos.y) };
+        topLeft -= viewport->viewPos;
+        topLeft = { topLeft.x / viewport->zoom, topLeft.y / viewport->zoom };
+        topLeft += viewport->pos;
 
-        left -= viewportLeft;
-        top -= viewportTop;
-        right -= viewportLeft;
-        bottom -= viewportTop;
-        left = left / viewport->zoom;
-        top = top / viewport->zoom;
-        right = right / viewport->zoom;
-        bottom = bottom / viewport->zoom;
-        left += viewport->pos.x;
-        top += viewport->pos.y;
-        right += viewport->pos.x;
-        bottom += viewport->pos.y;
+        bottomRight = { std::max(bottomRight.x, viewportRight), std::max(bottomRight.y, viewportBottom) };
+        bottomRight -= viewport->viewPos;
+        bottomRight = { bottomRight.x / viewport->zoom, bottomRight.y / viewport->zoom };
+        bottomRight += viewport->pos;
 
-        gfx_set_dirty_blocks({ { left, top }, { right, bottom } });
+        gfx_set_dirty_blocks({ topLeft, bottomRight });
     }
 }
 
