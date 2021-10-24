@@ -126,7 +126,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         dpi.bits = static_cast<uint8_t*>(malloc(dpi.width * dpi.height));
 
         log_info("Obtaining sprite data...");
-        viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height, &sessions);
+        viewport_render(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } }, &sessions);
 
         free(dpi.bits);
         drawing_engine_dispose();

@@ -792,45 +792,43 @@ void viewport_update_smart_vehicle_follow(rct_window* window)
  *  ebp: bottom
  */
 void viewport_render(
-    rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    rct_drawpixelinfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions)
 {
-    if (right <= viewport->pos.x)
+    auto [topLeft, bottomRight] = screenRect;
+
+    if (bottomRight.x <= viewport->pos.x)
         return;
-    if (bottom <= viewport->pos.y)
+    if (bottomRight.y <= viewport->pos.y)
         return;
-    if (left >= viewport->pos.x + viewport->width)
+    if (topLeft.x >= viewport->pos.x + viewport->width)
         return;
-    if (top >= viewport->pos.y + viewport->height)
+    if (topLeft.y >= viewport->pos.y + viewport->height)
         return;
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
-    int32_t l = left, t = top, r = right, b = bottom;
+    const auto dirtyBoxTopLeft = topLeft;
+    const auto dirtyBoxTopRight = bottomRight - ScreenCoordsXY{ 1, 1 };
 #endif
 
-    left = std::max<int32_t>(left - viewport->pos.x, 0);
-    right = std::min<int32_t>(right - viewport->pos.x, viewport->width);
-    top = std::max<int32_t>(top - viewport->pos.y, 0);
-    bottom = std::min<int32_t>(bottom - viewport->pos.y, viewport->height);
+    topLeft -= viewport->pos;
+    topLeft = ScreenCoordsXY{
+        std::max(topLeft.x, 0) * viewport->zoom,
+        std::max(topLeft.y, 0) * viewport->zoom,
+    } + viewport->viewPos;
 
-    left = left * viewport->zoom;
-    right = right * viewport->zoom;
-    top = top * viewport->zoom;
-    bottom = bottom * viewport->zoom;
+    bottomRight -= viewport->pos;
+    bottomRight = ScreenCoordsXY{
+        std::min(bottomRight.x, viewport->width) * viewport->zoom,
+        std::min(bottomRight.y, viewport->height) * viewport->zoom,
+    } + viewport->viewPos;
 
-    left += viewport->viewPos.x;
-    right += viewport->viewPos.x;
-    top += viewport->viewPos.y;
-    bottom += viewport->viewPos.y;
-
-    viewport_paint(viewport, dpi, left, top, right, bottom, sessions);
+    viewport_paint(viewport, dpi, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, sessions);
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
+    // FIXME g_viewport_list doesn't exist anymore
     if (viewport != g_viewport_list)
-    {
-        gfx_fill_rect_inset(dpi, l, t, r - 1, b - 1, 0x2, INSET_RECT_F_30);
-        return;
-    }
+        gfx_fill_rect_inset(dpi, { dirtyBoxTopLeft, dirtyBoxTopRight }, 0x2, INSET_RECT_F_30);
 #endif
 }
 

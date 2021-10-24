@@ -62,5 +62,5 @@ rct_window* window_editor_main_open()
  */
 static void window_editor_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
+    viewport_render(dpi, w->viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
 }

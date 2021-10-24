@@ -1246,7 +1246,7 @@ static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t le
  */
 void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
+    viewport_render(dpi, w->viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
 }
 
 void window_set_position(rct_window* w, const ScreenCoordsXY& screenCoords)
