@@ -116,10 +116,7 @@ static bool MapLoc68BABCShouldContinue(
 GameActions::Result::Ptr MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
 {
-    int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
-    northZ = eastZ = baseHeight = southZ = westZ = water_height = 0;
     auto res = std::make_unique<GameActions::Result>();
-    uint8_t slope = 0;
 
     uint8_t groundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
@@ -132,6 +129,7 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
 
     if (gCheatsDisableClearanceChecks)
     {
+        res->SetData(ConstructClearResult{ groundFlags });
         return res;
     }
 
@@ -142,6 +140,7 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
         res->ErrorMessage = STR_NONE;
         return res;
     }
+
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
@@ -157,37 +156,24 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
                         continue;
                     }
 
-                    if (tileElement != nullptr)
-                    {
-                        map_obstruction_set_error_text(tileElement, *res);
-                        res->Error = GameActions::Status::NoClearance;
-                    }
+                    map_obstruction_set_error_text(tileElement, *res);
+                    res->Error = GameActions::Status::NoClearance;
                     return res;
                 }
             }
             continue;
         }
-        water_height = tileElement->AsSurface()->GetWaterHeight();
-        if (water_height && water_height > pos.baseZ && tileElement->GetBaseZ() < pos.clearanceZ)
+
+        const auto waterHeight = tileElement->AsSurface()->GetWaterHeight();
+        if (waterHeight && waterHeight > pos.baseZ && tileElement->GetBaseZ() < pos.clearanceZ)
         {
             groundFlags |= ELEMENT_IS_UNDERWATER;
-            if (water_height < pos.clearanceZ)
+            if (waterHeight < pos.clearanceZ)
             {
-                bool returnError = true;
-                if (clearFunc != nullptr)
+                if (clearFunc != nullptr && clearFunc(&tileElement, pos, flags, &res->Cost))
                 {
-                    if (!clearFunc(&tileElement, pos, flags, &res->Cost))
-                    {
-                        returnError = false;
-                    }
-                }
-                if (returnError)
-                {
-                    if (tileElement != nullptr)
-                    {
-                        res->Error = GameActions::Status::NoClearance;
-                        res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
-                    }
+                    res->Error = GameActions::Status::NoClearance;
+                    res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                     return res;
                 }
             }
@@ -195,7 +181,7 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
 
         if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
-            auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
+            const auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 
             if (heightFromGround > (18 * COORDS_Z_STEP))
             {
@@ -222,11 +208,11 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
             }
             else
             {
-                northZ = tileElement->GetBaseZ();
-                eastZ = northZ;
-                southZ = northZ;
-                westZ = northZ;
-                slope = tileElement->AsSurface()->GetSlope();
+                auto northZ = tileElement->GetBaseZ();
+                auto eastZ = northZ;
+                auto southZ = northZ;
+                auto westZ = northZ;
+                const auto slope = tileElement->AsSurface()->GetSlope();
                 if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
                 {
                     northZ += LAND_HEIGHT_STEP;
@@ -251,17 +237,15 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
                     if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         westZ += LAND_HEIGHT_STEP;
                 }
-                baseHeight = pos.baseZ + (4 * COORDS_Z_STEP);
+                const auto baseHeight = pos.baseZ + (4 * COORDS_Z_STEP);
+                const auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
+                const auto zQuarter = quarterTile.GetZQuarterOccupied();
+                if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || pos.baseZ >= northZ) && baseHeight >= northZ))
+                    && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || pos.baseZ >= eastZ) && baseHeight >= eastZ))
+                    && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || pos.baseZ >= southZ) && baseHeight >= southZ))
+                    && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || pos.baseZ >= westZ) && baseHeight >= westZ)))
                 {
-                    auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
-                    auto zQuarter = quarterTile.GetZQuarterOccupied();
-                    if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || pos.baseZ >= northZ) && baseHeight >= northZ))
-                        && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || pos.baseZ >= eastZ) && baseHeight >= eastZ))
-                        && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || pos.baseZ >= southZ) && baseHeight >= southZ))
-                        && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || pos.baseZ >= westZ) && baseHeight >= westZ)))
-                    {
-                        continue;
-                    }
+                    continue;
                 }
 
                 if (MapLoc68BABCShouldContinue(tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
@@ -269,11 +253,8 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
                     continue;
                 }
 
-                if (tileElement != nullptr)
-                {
-                    map_obstruction_set_error_text(tileElement, *res);
-                    res->Error = GameActions::Status::NoClearance;
-                }
+                map_obstruction_set_error_text(tileElement, *res);
+                res->Error = GameActions::Status::NoClearance;
                 return res;
             }
         }
