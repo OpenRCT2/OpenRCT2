@@ -525,9 +525,10 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
         return false;
 
     auto inputElement = input->element->AsTrack();
-    const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
     if (inputElement == nullptr)
         return false;
+
+    const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
 
     auto rideIndex = inputElement->GetRideIndex();
     auto ride = get_ride(rideIndex);

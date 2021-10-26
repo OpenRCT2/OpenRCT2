@@ -43,6 +43,7 @@
 - Fix: [#15514] Two different “quit to menu” menu items are available in track designer and track design manager.
 - Fix: [#15560] Memory leak due to OpenGL Renderer not releasing a texture.
 - Fix: [#15567] Litter not being counted correctly during Park rating calculation (original bug).
+- Fix: [#15579] Crash in track_block_get_next().
 - Fix: [#15582] [Plugin] Litter properties return incorrect values.
 - Fix: [#15584] Ride income underflows when on-ride photos are making losses.
 - Fix: [#15612] Crash when placing walls beside certain scenery objects.
