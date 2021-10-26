@@ -528,13 +528,12 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     if (inputElement == nullptr)
         return false;
 
-    const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
-
     auto rideIndex = inputElement->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return false;
 
+    const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
     const auto* trackBlock = ted.Block;
     if (trackBlock == nullptr)
         return false;
