@@ -90,11 +90,12 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness > 5)
+        if (std::get<0>(peep->Thoughts).freshness > 5)
             continue;
 
-        if (peep->Thoughts[0].type == PeepThoughtType::BadLitter || peep->Thoughts[0].type == PeepThoughtType::PathDisgusting
-            || peep->Thoughts[0].type == PeepThoughtType::Vandalism)
+        if (std::get<0>(peep->Thoughts).type == PeepThoughtType::BadLitter
+            || std::get<0>(peep->Thoughts).type == PeepThoughtType::PathDisgusting
+            || std::get<0>(peep->Thoughts).type == PeepThoughtType::Vandalism)
         {
             negativeCount++;
         }
@@ -118,14 +119,15 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness > 5)
+        if (std::get<0>(peep->Thoughts).freshness > 5)
             continue;
 
-        if (peep->Thoughts[0].type == PeepThoughtType::VeryClean)
+        if (std::get<0>(peep->Thoughts).type == PeepThoughtType::VeryClean)
             positiveCount++;
 
-        if (peep->Thoughts[0].type == PeepThoughtType::BadLitter || peep->Thoughts[0].type == PeepThoughtType::PathDisgusting
-            || peep->Thoughts[0].type == PeepThoughtType::Vandalism)
+        if (std::get<0>(peep->Thoughts).type == PeepThoughtType::BadLitter
+            || std::get<0>(peep->Thoughts).type == PeepThoughtType::PathDisgusting
+            || std::get<0>(peep->Thoughts).type == PeepThoughtType::Vandalism)
         {
             negativeCount++;
         }
@@ -198,14 +200,15 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness > 5)
+        if (std::get<0>(peep->Thoughts).freshness > 5)
             continue;
 
-        if (peep->Thoughts[0].type == PeepThoughtType::Scenery)
+        if (std::get<0>(peep->Thoughts).type == PeepThoughtType::Scenery)
             positiveCount++;
 
-        if (peep->Thoughts[0].type == PeepThoughtType::BadLitter || peep->Thoughts[0].type == PeepThoughtType::PathDisgusting
-            || peep->Thoughts[0].type == PeepThoughtType::Vandalism)
+        if (std::get<0>(peep->Thoughts).type == PeepThoughtType::BadLitter
+            || std::get<0>(peep->Thoughts).type == PeepThoughtType::PathDisgusting
+            || std::get<0>(peep->Thoughts).type == PeepThoughtType::Vandalism)
         {
             negativeCount++;
         }
@@ -238,7 +241,7 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
     {
         if (peep->OutsideOfPark)
             continue;
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepThoughtType::Vandalism)
+        if (std::get<0>(peep->Thoughts).freshness <= 5 && std::get<0>(peep->Thoughts).type == PeepThoughtType::Vandalism)
             peepsWhoDislikeVandalism++;
     }
 
@@ -307,7 +310,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepThoughtType::Hungry)
+        if (std::get<0>(peep->Thoughts).freshness <= 5 && std::get<0>(peep->Thoughts).type == PeepThoughtType::Hungry)
             hungryPeeps++;
     }
     return (hungryPeeps <= 12);
@@ -351,7 +354,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepThoughtType::Hungry)
+        if (std::get<0>(peep->Thoughts).freshness <= 5 && std::get<0>(peep->Thoughts).type == PeepThoughtType::Hungry)
             hungryPeeps++;
     }
     return (hungryPeeps > 15);
@@ -381,7 +384,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepThoughtType::Toilet)
+        if (std::get<0>(peep->Thoughts).freshness <= 5 && std::get<0>(peep->Thoughts).type == PeepThoughtType::Toilet)
             guestsWhoNeedRestroom++;
     }
     return (guestsWhoNeedRestroom <= 16);
@@ -513,8 +516,9 @@ static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t act
             continue;
 
         peepsCounted++;
-        if (peep->Thoughts[0].freshness <= 5
-            && (peep->Thoughts[0].type == PeepThoughtType::Lost || peep->Thoughts[0].type == PeepThoughtType::CantFind))
+        if (std::get<0>(peep->Thoughts).freshness <= 5
+            && (std::get<0>(peep->Thoughts).type == PeepThoughtType::Lost
+                || std::get<0>(peep->Thoughts).type == PeepThoughtType::CantFind))
             peepsLost++;
     }
 
