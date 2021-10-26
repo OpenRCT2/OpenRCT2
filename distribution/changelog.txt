@@ -22,6 +22,7 @@
 - Fix: [#15142] ToonTowner's mine roofs were moved into the pirate theme scenery group instead of the mine theme scenery group.
 - Fix: [#15148] Track Designs Manager delete confirmation window doesn't display properly.
 - Fix: [#15170] Plugin: incorrect label text alignment.
+- Fix: [#15177] Crash in lightfx_add_lights_magic_vehicle().
 - Fix: [#15184] Crash when hovering over water types in Object Selection.
 - Fix: [#15193] Crash when rides/stalls are demolished.
 - Fix: [#15197] Cannot place flat ride after removing it in construction window.
