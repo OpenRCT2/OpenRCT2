@@ -6860,12 +6860,12 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
         }
     }
 
-    memmove(&Thoughts[1], &Thoughts[0], sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - 1));
+    memmove(&std::get<1>(Thoughts), &std::get<0>(Thoughts), sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - 1));
 
-    Thoughts[0].type = thoughtType;
-    Thoughts[0].item = thoughtArguments;
-    Thoughts[0].freshness = 0;
-    Thoughts[0].fresh_timeout = 0;
+    std::get<0>(Thoughts).type = thoughtType;
+    std::get<0>(Thoughts).item = thoughtArguments;
+    std::get<0>(Thoughts).freshness = 0;
+    std::get<0>(Thoughts).fresh_timeout = 0;
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 }
@@ -6979,7 +6979,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->PathCheckOptimisation = 0;
     peep->InteractionRideIndex = RIDE_ID_NULL;
     peep->PreviousRide = RIDE_ID_NULL;
-    peep->Thoughts[0].type = PeepThoughtType::None;
+    peep->std::get<0>(Thoughts).type = PeepThoughtType::None;
     peep->WindowInvalidateFlags = 0;
 
     uint8_t intensityHighest = (scenario_rand() & 0x7) + 3;
