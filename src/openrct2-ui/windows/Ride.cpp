@@ -65,6 +65,8 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
 static constexpr const int32_t WH = 207;
 static constexpr const int32_t WW = 316;
 
+static void populate_vehicle_type_dropdown(Ride* ride, bool forceRefresh = false);
+
 enum
 {
     WINDOW_RIDE_PAGE_MAIN,
@@ -1249,6 +1251,8 @@ static rct_window* window_ride_open(Ride* ride)
 
     window_ride_update_overall_view(ride);
 
+    populate_vehicle_type_dropdown(ride, true);
+
     return w;
 }
 
@@ -2066,7 +2070,7 @@ static void window_ride_main_follow_ride(rct_window* w)
     }
 }
 
-static void populate_vehicle_type_dropdown(Ride* ride)
+static void populate_vehicle_type_dropdown(Ride* ride, bool forceRefresh)
 {
     auto& objManager = GetContext()->GetObjectManager();
     rct_ride_entry* rideEntry = ride->GetRideEntry();
@@ -2091,7 +2095,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
 
     // Don't repopulate the list if we just did.
     auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
-    if (VehicleDropdownExpanded == selectionShouldBeExpanded && VehicleDropdownRideType == rideEntry
+    if (!forceRefresh && VehicleDropdownExpanded == selectionShouldBeExpanded && VehicleDropdownRideType == rideEntry
         && VehicleDropdownDataLanguage == ls.GetCurrentLanguage())
         return;
 
