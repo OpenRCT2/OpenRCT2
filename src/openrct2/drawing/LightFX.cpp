@@ -710,6 +710,8 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
     };
 
     auto ride = vehicle->GetRide();
+    if (ride == nullptr)
+        return;
 
     switch (ride->type)
     {
