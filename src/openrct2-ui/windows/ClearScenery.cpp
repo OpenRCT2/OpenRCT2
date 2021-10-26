@@ -75,6 +75,8 @@ public:
         gClearSmallScenery = true;
         gClearLargeScenery = false;
         gClearFootpath = false;
+
+        Invalidate();
     }
 
     void OnClose() override
@@ -200,7 +202,7 @@ rct_window* window_clear_scenery_open()
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<CleanSceneryWindow>(WC_CLEAR_SCENERY, WW, WH, 0);
+    w = WindowCreate<CleanSceneryWindow>(WC_CLEAR_SCENERY, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 
     if (w != nullptr)
         return w;
