@@ -525,7 +525,6 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
         return false;
 
     auto inputElement = input->element->AsTrack();
-    const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
     if (inputElement == nullptr)
         return false;
 
@@ -534,6 +533,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     if (ride == nullptr)
         return false;
 
+    const auto& ted = GetTrackElementDescriptor(inputElement->GetTrackType());
     const auto* trackBlock = ted.Block;
     if (trackBlock == nullptr)
         return false;
