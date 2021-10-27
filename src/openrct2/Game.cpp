@@ -501,7 +501,7 @@ void game_fix_save_vars()
         }
     }
 
-    research_fix();
+    ResearchFix();
 
     // Fix banner list pointing to NULL map elements
     banner_reset_broken_index();

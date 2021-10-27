@@ -76,7 +76,7 @@ void research_reset_items()
  *
  *  rct2: 0x00684BAE
  */
-void research_update_uncompleted_types()
+void ResearchUpdateUncompletedTypes()
 {
     int32_t uncompletedResearchTypes = 0;
 
@@ -354,7 +354,7 @@ void research_update()
                 gResearchProgress = 0;
                 gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
                 research_calculate_expected_date();
-                research_update_uncompleted_types();
+                ResearchUpdateUncompletedTypes();
                 research_invalidate_related_windows();
                 break;
             case RESEARCH_STAGE_FINISHED_ALL:
@@ -724,7 +724,7 @@ void research_remove_flags()
     }
 }
 
-static void research_remove_null_items(std::vector<ResearchItem>& items)
+static void ResearchRemoveNullItems(std::vector<ResearchItem>& items)
 {
     for (auto it = items.begin(); it != items.end();)
     {
@@ -787,7 +787,7 @@ static void research_mark_item_as_researched(const ResearchItem& item)
     }
 }
 
-static void research_rebuild_invented_tables()
+static void ResearchRebuildInventedTables()
 {
     set_every_ride_type_not_invented();
     set_every_ride_entry_invented();
@@ -808,7 +808,7 @@ static void research_rebuild_invented_tables()
     }
 }
 
-static void research_add_all_missing_items(bool isResearched)
+static void ResearchAddAllMissingItems(bool isResearched)
 {
     for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
@@ -829,19 +829,19 @@ static void research_add_all_missing_items(bool isResearched)
     }
 }
 
-void research_fix()
+void ResearchFix()
 {
     // Remove null entries from the research list
-    research_remove_null_items(gResearchItemsInvented);
-    research_remove_null_items(gResearchItemsUninvented);
+    ResearchRemoveNullItems(gResearchItemsInvented);
+    ResearchRemoveNullItems(gResearchItemsUninvented);
 
     // Add missing entries to the research list
     // If research is complete, mark all the missing items as available
-    research_add_all_missing_items(gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL);
+    ResearchAddAllMissingItems(gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL);
 
     // Now rebuild all the tables that say whether a ride or scenery item is invented
-    research_rebuild_invented_tables();
-    research_update_uncompleted_types();
+    ResearchRebuildInventedTables();
+    ResearchUpdateUncompletedTypes();
 }
 
 void research_items_make_all_unresearched()
