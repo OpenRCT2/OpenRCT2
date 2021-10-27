@@ -53,7 +53,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (_surfaceStyle > 0x1F)
         {
             log_error("Invalid surface style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -62,7 +62,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (surfaceObj == nullptr)
         {
             log_error("Invalid surface style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
 
@@ -71,7 +71,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (_edgeStyle > 0xF)
         {
             log_error("Invalid edge style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
@@ -79,7 +79,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (edgeObj == nullptr)
         {
             log_error("Invalid edge style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
 

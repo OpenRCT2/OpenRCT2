@@ -63,7 +63,7 @@ GameActions::Result::Ptr FootpathRemoveAction::Query() const
     TileElement* footpathElement = GetFootpathElement();
     if (footpathElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
     }
 
     res->Cost = GetRefundPrice(footpathElement);
@@ -111,7 +111,7 @@ GameActions::Result::Ptr FootpathRemoveAction::Execute() const
     }
     else
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
     }
 
     res->Cost += GetRefundPrice(footpathElement);

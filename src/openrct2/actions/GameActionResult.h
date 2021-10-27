@@ -58,7 +58,7 @@ namespace GameActions
     /**
      * Represents the result of a game action query or execution.
      */
-    class Result
+    class Result final
     {
     public:
         using Ptr = std::unique_ptr<GameActions::Result>;
@@ -74,11 +74,7 @@ namespace GameActions
         std::any ResultData;
 
         Result() = default;
-        Result(GameActions::Status error, rct_string_id message);
-        Result(GameActions::Status error, rct_string_id title, rct_string_id message);
-        Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args);
-        Result(const GameActions::Result&) = delete;
-        virtual ~Result(){};
+        Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args = nullptr);
 
         std::string GetErrorTitle() const;
         std::string GetErrorMessage() const;

@@ -118,7 +118,7 @@ GameActions::Result::Ptr RideDemolishAction::Execute() const
             return RefurbishRide(ride);
     }
 
-    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS);
+    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
 }
 
 GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const

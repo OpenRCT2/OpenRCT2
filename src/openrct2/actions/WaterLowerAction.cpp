@@ -113,10 +113,9 @@ GameActions::Result::Ptr WaterLowerAction::QueryExecute(bool isExecuting) const
 
     if (!withinOwnership)
     {
-        GameActions::Result::Ptr ownerShipResult = std::make_unique<GameActions::Result>(
-            GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
-        ownerShipResult->ErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
-        return ownerShipResult;
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::Disallowed, STR_CANT_LOWER_WATER_LEVEL_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        ;
     }
 
     if (isExecuting && hasChanged)

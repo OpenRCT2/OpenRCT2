@@ -71,7 +71,7 @@ GameActions::Result::Ptr StaffSetNameAction::Execute() const
     auto curName = staff->GetName();
     if (curName == _name)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Ok, STR_NONE);
+        return std::make_unique<GameActions::Result>();
     }
 
     if (!staff->SetName(_name))

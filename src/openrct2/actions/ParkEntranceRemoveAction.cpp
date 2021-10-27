@@ -35,7 +35,7 @@ GameActions::Result::Ptr ParkEntranceRemoveAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
-        return MakeResult(GameActions::Status::NotInEditorMode, STR_CANT_REMOVE_THIS);
+        return MakeResult(GameActions::Status::NotInEditorMode, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto res = MakeResult();
@@ -47,7 +47,7 @@ GameActions::Result::Ptr ParkEntranceRemoveAction::Query() const
     if (!LocationValid(_loc) || entranceIndex == -1)
     {
         log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
     return res;
 }
@@ -63,7 +63,7 @@ GameActions::Result::Ptr ParkEntranceRemoveAction::Execute() const
     if (entranceIndex == -1)
     {
         log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto direction = (gParkEntrances[entranceIndex].direction - 1) & 3;

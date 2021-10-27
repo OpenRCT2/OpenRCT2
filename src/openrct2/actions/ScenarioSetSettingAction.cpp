@@ -31,7 +31,7 @@ GameActions::Result::Ptr ScenarioSetSettingAction::Query() const
     if (_setting >= ScenarioSetSetting::Count)
     {
         log_error("Invalid setting: %u", _setting);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     return MakeResult();
@@ -242,7 +242,7 @@ GameActions::Result::Ptr ScenarioSetSettingAction::Execute() const
             break;
         default:
             log_error("Invalid setting: %u", _setting);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
     return MakeResult();

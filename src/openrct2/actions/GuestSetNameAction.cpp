@@ -83,7 +83,7 @@ GameActions::Result::Ptr GuestSetNameAction::Execute() const
     auto curName = guest->GetName();
     if (curName == _name)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Ok, STR_NONE);
+        return std::make_unique<GameActions::Result>();
     }
 
     if (!guest->SetName(_name))

@@ -55,13 +55,13 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
         log_error("No free map elements.");
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     auto pathElement = GetValidPathElement();
@@ -87,14 +87,14 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
     if (HasReachedBannerLimit())
     {
         log_error("No free banners available");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
     }
 
     auto* bannerEntry = get_banner_entry(_bannerType);
     if (bannerEntry == nullptr)
     {
         log_error("Invalid banner object type. bannerType = ", _bannerType);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
     res->Cost = bannerEntry->price;
 
@@ -113,21 +113,21 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     if (!MapCheckCapacityAndReorganise(_loc))
     {
         log_error("No free map elements.");
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     auto* bannerEntry = get_banner_entry(_bannerType);
     if (bannerEntry == nullptr)
     {
         log_error("Invalid banner object type. bannerType = ", _bannerType);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto banner = CreateBanner();
     if (banner == nullptr)
     {
         log_error("No free banners available");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
     }
     banner->flags = 0;
     banner->text = {};
