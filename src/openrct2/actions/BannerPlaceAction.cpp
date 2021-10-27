@@ -61,7 +61,7 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
     if (!MapCheckCapacityAndReorganise(_loc))
     {
         log_error("No free map elements.");
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     auto pathElement = GetValidPathElement();
@@ -87,7 +87,7 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
     if (HasReachedBannerLimit())
     {
         log_error("No free banners available");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
     }
 
     auto* bannerEntry = get_banner_entry(_bannerType);
@@ -113,7 +113,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     if (!MapCheckCapacityAndReorganise(_loc))
     {
         log_error("No free map elements.");
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     auto* bannerEntry = get_banner_entry(_bannerType);
@@ -127,7 +127,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     if (banner == nullptr)
     {
         log_error("No free banners available");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
     }
     banner->flags = 0;
     banner->text = {};
