@@ -5417,12 +5417,7 @@ bool ride_has_adjacent_station(Ride* ride)
 bool ride_has_station_shelter(Ride* ride)
 {
     auto stationObj = ride_get_station_object(ride);
-    if (network_get_mode() != NETWORK_MODE_NONE)
-    {
-        // The server might run in headless mode so no images will be loaded, only check for stations.
-        return stationObj != nullptr;
-    }
-    return stationObj != nullptr && stationObj->BaseImageId != 0;
+    return stationObj != nullptr && (stationObj->Flags & STATION_OBJECT_FLAGS::HAS_SHELTER);
 }
 
 bool ride_has_ratings(const Ride* ride)
