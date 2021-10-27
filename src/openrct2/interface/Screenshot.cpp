@@ -373,7 +373,7 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& vi
         drawingEngine = tempDrawingEngine.get();
     }
     dpi.DrawingEngine = drawingEngine;
-    viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
+    viewport_render(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } });
 }
 
 void screenshot_giant()

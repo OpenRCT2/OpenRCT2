@@ -2147,22 +2147,13 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
     dpi.DrawingEngine = drawingEngine.get();
 
-    CoordsXY offset = { size_x / 2, size_y / 2 };
+    const ScreenCoordsXY offset = { size_x / 2, size_y / 2 };
     for (uint8_t i = 0; i < 4; i++)
     {
         gCurrentRotation = i;
 
-        auto screenCoords = translate_3d_to_2d_with_z(i, centre);
-        screenCoords.x -= offset.x;
-        screenCoords.y -= offset.y;
-
-        int32_t left = screenCoords.x;
-        int32_t top = screenCoords.y;
-        int32_t right = left + size_x;
-        int32_t bottom = top + size_y;
-
-        view.viewPos = { left, top };
-        viewport_paint(&view, &dpi, left, top, right, bottom);
+        view.viewPos = translate_3d_to_2d_with_z(i, centre) - offset;
+        viewport_paint(&view, &dpi, { view.viewPos, view.viewPos + ScreenCoordsXY{ size_x, size_y } });
 
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
     }

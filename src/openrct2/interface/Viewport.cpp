@@ -217,13 +217,13 @@ void viewport_remove(rct_viewport* viewport)
     _viewports.erase(it);
 }
 
-void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t maxZoom)
+void viewports_invalidate(const ScreenRect& screenRect, int32_t maxZoom)
 {
     for (auto& vp : _viewports)
     {
         if (maxZoom == -1 || vp.zoom <= maxZoom)
         {
-            viewport_invalidate(&vp, left, top, right, bottom);
+            viewport_invalidate(&vp, screenRect);
         }
     }
 }
@@ -792,45 +792,43 @@ void viewport_update_smart_vehicle_follow(rct_window* window)
  *  ebp: bottom
  */
 void viewport_render(
-    rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    rct_drawpixelinfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions)
 {
-    if (right <= viewport->pos.x)
+    auto [topLeft, bottomRight] = screenRect;
+
+    if (bottomRight.x <= viewport->pos.x)
         return;
-    if (bottom <= viewport->pos.y)
+    if (bottomRight.y <= viewport->pos.y)
         return;
-    if (left >= viewport->pos.x + viewport->width)
+    if (topLeft.x >= viewport->pos.x + viewport->width)
         return;
-    if (top >= viewport->pos.y + viewport->height)
+    if (topLeft.y >= viewport->pos.y + viewport->height)
         return;
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
-    int32_t l = left, t = top, r = right, b = bottom;
+    const auto dirtyBoxTopLeft = topLeft;
+    const auto dirtyBoxTopRight = bottomRight - ScreenCoordsXY{ 1, 1 };
 #endif
 
-    left = std::max<int32_t>(left - viewport->pos.x, 0);
-    right = std::min<int32_t>(right - viewport->pos.x, viewport->width);
-    top = std::max<int32_t>(top - viewport->pos.y, 0);
-    bottom = std::min<int32_t>(bottom - viewport->pos.y, viewport->height);
+    topLeft -= viewport->pos;
+    topLeft = ScreenCoordsXY{
+        std::max(topLeft.x, 0) * viewport->zoom,
+        std::max(topLeft.y, 0) * viewport->zoom,
+    } + viewport->viewPos;
 
-    left = left * viewport->zoom;
-    right = right * viewport->zoom;
-    top = top * viewport->zoom;
-    bottom = bottom * viewport->zoom;
+    bottomRight -= viewport->pos;
+    bottomRight = ScreenCoordsXY{
+        std::min(bottomRight.x, viewport->width) * viewport->zoom,
+        std::min(bottomRight.y, viewport->height) * viewport->zoom,
+    } + viewport->viewPos;
 
-    left += viewport->viewPos.x;
-    right += viewport->viewPos.x;
-    top += viewport->viewPos.y;
-    bottom += viewport->viewPos.y;
-
-    viewport_paint(viewport, dpi, left, top, right, bottom, sessions);
+    viewport_paint(viewport, dpi, { topLeft, bottomRight }, sessions);
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
+    // FIXME g_viewport_list doesn't exist anymore
     if (viewport != g_viewport_list)
-    {
-        gfx_fill_rect_inset(dpi, l, t, r - 1, b - 1, 0x2, INSET_RECT_F_30);
-        return;
-    }
+        gfx_fill_rect_inset(dpi, { dirtyBoxTopLeft, dirtyBoxTopRight }, 0x2, INSET_RECT_F_30);
 #endif
 }
 
@@ -945,32 +943,33 @@ static void viewport_paint_column(paint_session* session)
  *  ebp: bottom
  */
 void viewport_paint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    const rct_viewport* viewport, rct_drawpixelinfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* recorded_sessions)
 {
     uint32_t viewFlags = viewport->flags;
-    uint32_t width = right - left;
-    uint32_t height = bottom - top;
+    uint32_t width = screenRect.GetWidth();
+    uint32_t height = screenRect.GetHeight();
     uint32_t bitmask = viewport->zoom >= 0 ? 0xFFFFFFFF & (0xFFFFFFFF * viewport->zoom) : 0xFFFFFFFF;
+    ScreenCoordsXY topLeft = screenRect.Point1;
 
     width &= bitmask;
     height &= bitmask;
-    left &= bitmask;
-    top &= bitmask;
+    topLeft.x &= bitmask;
+    topLeft.y &= bitmask;
 
-    auto x = left - static_cast<int32_t>(viewport->viewPos.x & bitmask);
+    auto x = topLeft.x - static_cast<int32_t>(viewport->viewPos.x & bitmask);
     x = x / viewport->zoom;
     x += viewport->pos.x;
 
-    auto y = top - static_cast<int32_t>(viewport->viewPos.y & bitmask);
+    auto y = topLeft.y - static_cast<int32_t>(viewport->viewPos.y & bitmask);
     y = y / viewport->zoom;
     y += viewport->pos.y;
 
     rct_drawpixelinfo dpi1;
     dpi1.DrawingEngine = dpi->DrawingEngine;
     dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
-    dpi1.x = left;
-    dpi1.y = top;
+    dpi1.x = topLeft.x;
+    dpi1.y = topLeft.y;
     dpi1.width = width;
     dpi1.height = height;
     dpi1.pitch = (dpi->width + dpi->pitch) - (width / viewport->zoom);
@@ -1150,7 +1149,7 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
 
 void rct_viewport::Invalidate() const
 {
-    viewport_invalidate(this, viewPos.x, viewPos.y, viewPos.x + view_width, viewPos.y + view_height);
+    viewport_invalidate(this, { viewPos, viewPos + ScreenCoordsXY{ view_width, view_height } });
 }
 
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
@@ -1742,9 +1741,9 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
 }
 
 /**
- * Left, top, right and bottom represent 2D map coordinates at zoom 0.
+ * screenRect represents 2D map coordinates at zoom 0.
  */
-void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenRect)
 {
     // if unknown viewport visibility, use the containing window to discover the status
     if (viewport->visibility == VisibilityCache::Unknown)
@@ -1764,31 +1763,23 @@ void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top
     if (viewport->visibility == VisibilityCache::Covered)
         return;
 
-    int32_t viewportLeft = viewport->viewPos.x;
-    int32_t viewportTop = viewport->viewPos.y;
-    int32_t viewportRight = viewport->viewPos.x + viewport->view_width;
-    int32_t viewportBottom = viewport->viewPos.y + viewport->view_height;
-    if (right > viewportLeft && bottom > viewportTop)
+    auto [topLeft, bottomRight] = screenRect;
+    const auto [viewportRight, viewportBottom] = viewport->viewPos
+        + ScreenCoordsXY{ viewport->view_width, viewport->view_height };
+
+    if (bottomRight.x > viewport->viewPos.x && bottomRight.y > viewport->viewPos.y)
     {
-        left = std::max(left, viewportLeft);
-        top = std::max(top, viewportTop);
-        right = std::min(right, viewportRight);
-        bottom = std::min(bottom, viewportBottom);
+        topLeft = { std::max(topLeft.x, viewport->viewPos.x), std::max(topLeft.y, viewport->viewPos.y) };
+        topLeft -= viewport->viewPos;
+        topLeft = { topLeft.x / viewport->zoom, topLeft.y / viewport->zoom };
+        topLeft += viewport->pos;
 
-        left -= viewportLeft;
-        top -= viewportTop;
-        right -= viewportLeft;
-        bottom -= viewportTop;
-        left = left / viewport->zoom;
-        top = top / viewport->zoom;
-        right = right / viewport->zoom;
-        bottom = bottom / viewport->zoom;
-        left += viewport->pos.x;
-        top += viewport->pos.y;
-        right += viewport->pos.x;
-        bottom += viewport->pos.y;
+        bottomRight = { std::max(bottomRight.x, viewportRight), std::max(bottomRight.y, viewportBottom) };
+        bottomRight -= viewport->viewPos;
+        bottomRight = { bottomRight.x / viewport->zoom, bottomRight.y / viewport->zoom };
+        bottomRight += viewport->pos;
 
-        gfx_set_dirty_blocks({ { left, top }, { right, bottom } });
+        gfx_set_dirty_blocks({ topLeft, bottomRight });
     }
 }
 

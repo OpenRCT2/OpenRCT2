@@ -106,7 +106,7 @@ void viewport_init_all();
 std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_viewport* viewport);
 void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
 void viewport_remove(rct_viewport* viewport);
-void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t maxZoom = -1);
+void viewports_invalidate(const ScreenRect& screenRect, int32_t maxZoom = -1);
 void viewport_update_position(rct_window* window);
 void viewport_update_sprite_follow(rct_window* window);
 void viewport_update_smart_sprite_follow(rct_window* window);
@@ -114,10 +114,10 @@ void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep);
 void viewport_update_smart_staff_follow(rct_window* window, const Staff* peep);
 void viewport_update_smart_vehicle_follow(rct_window* window);
 void viewport_render(
-    rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    rct_drawpixelinfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 void viewport_paint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    const rct_viewport* viewport, rct_drawpixelinfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 
 CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords);
@@ -146,7 +146,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
 
-void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
+void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenRect);
 
 std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rct_viewport** viewport);
 std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int32_t z);
