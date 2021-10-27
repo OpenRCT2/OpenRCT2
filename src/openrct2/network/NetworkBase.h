@@ -2,6 +2,7 @@
 
 #include "../System.hpp"
 #include "../actions/GameAction.h"
+#include "../object/Object.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkPlayer.h"
@@ -45,7 +46,7 @@ public: // Common
     std::string BeginLog(const std::string& directory, const std::string& midName, const std::string& filenameFormat);
     void AppendLog(std::ostream& fs, std::string_view s);
     void BeginChatLog();
-    void AppendChatLog(std::string_view text);
+    void AppendChatLog(std::string_view s);
     void CloseChatLog();
     NetworkStats_t GetStats() const;
     json_t GetServerInfoAsJson() const;
@@ -138,7 +139,7 @@ public: // Client
     void Client_Send_GAME_ACTION(const GameAction* action);
     void Client_Send_PING();
     void Client_Send_GAMEINFO();
-    void Client_Send_MAPREQUEST(const std::vector<std::string>& objects);
+    void Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor>& objects);
     void Client_Send_HEARTBEAT(NetworkConnection& connection) const;
 
     // Handlers.
@@ -218,7 +219,7 @@ private: // Client Data
     std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
     std::multimap<uint32_t, NetworkPlayer> _pendingPlayerInfo;
     std::map<uint32_t, ServerTickData_t> _serverTickData;
-    std::vector<std::string> _missingObjects;
+    std::vector<ObjectEntryDescriptor> _missingObjects;
     std::string _host;
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";

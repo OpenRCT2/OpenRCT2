@@ -178,7 +178,7 @@ static FootpathMapping _footpathMappings[] = {
     { "FUTRPATH", "rct2tt.footpath_surface.circuitboard", "rct2tt.footpath_surface.queue_circuitboard",
       "rct2tt.footpath_railings.circuitboard" },
     { "FUTRPAT2", "rct2tt.footpath_surface.circuitboard", "rct2tt.footpath_surface.queue_circuitboard",
-      "openrct2.footpath_railings.invisible" },
+      "rct2tt.footpath_railings.circuitboard_invisible" },
     { "JURRPATH", "rct2tt.footpath_surface.rocky", "rct2.footpath_surface.queue_yellow", "rct2tt.footpath_railings.rocky" },
     { "MEDIPATH", "rct2tt.footpath_surface.medieval", "rct2.footpath_surface.queue_yellow",
       "rct2tt.footpath_railings.medieval" },

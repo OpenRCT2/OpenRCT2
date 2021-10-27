@@ -944,6 +944,8 @@ track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType);
 RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType);
 std::string_view GetStationIdentifierFromStyle(uint8_t style);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
+void SetDefaultRCT2TerrainObjects(ObjectList& objectList);
+void RCT12AddDefaultObjects(ObjectList& objectList);
 
 static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
 

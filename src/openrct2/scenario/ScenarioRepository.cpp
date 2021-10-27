@@ -126,7 +126,7 @@ class ScenarioFileIndex final : public FileIndex<scenario_index_entry>
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
     static constexpr uint16_t VERSION = 5;
-    static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea";
+    static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
@@ -197,6 +197,28 @@ private:
         try
         {
             std::string extension = Path::GetExtension(path);
+            if (String::Equals(extension, ".park", true))
+            {
+                // OpenRCT2 park
+                bool result = false;
+                try
+                {
+                    auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+                    auto importer = ParkImporter::CreateParkFile(objRepository);
+                    importer->LoadScenario(path.c_str(), true);
+                    if (importer->GetDetails(entry))
+                    {
+                        String::Set(entry->path, sizeof(entry->path), path.c_str());
+                        entry->timestamp = timestamp;
+                        result = true;
+                    }
+                }
+                catch (const std::exception&)
+                {
+                }
+                return result;
+            }
+
             if (String::Equals(extension, ".sc4", true))
             {
                 // RCT1 scenario

@@ -530,7 +530,7 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
 static void window_top_toolbar_scenarioselect_callback(const utf8* path)
 {
     window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
-    context_load_park_from_file(path);
+    GetContext()->LoadParkFromFile(path, false, true);
 }
 
 /**

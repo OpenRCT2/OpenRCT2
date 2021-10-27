@@ -809,7 +809,7 @@ template<> struct DataSerializerTraits_t<PeepThought>
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "PeepThought(type = %d, item = %d, freshness = %d, freshtimeout = %d)",
+            msg, sizeof(msg), "PeepThought(type = %d, item = %u, freshness = %d, freshtimeout = %d)",
             static_cast<int32_t>(val.type), val.item, val.freshness, val.fresh_timeout);
         stream->Write(msg, strlen(msg));
     }

@@ -410,7 +410,7 @@ static void sub_6A4101(
             }
         }
 
-        if (!pathElement.HasQueueBanner())
+        if (!pathElement.HasQueueBanner() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_NO_QUEUE_BANNER))
         {
             return;
         }
@@ -487,7 +487,7 @@ static void sub_6A4101(
     uint32_t drawnCorners = 0;
     // If the path is not drawn over the supports, then no corner sprites will be drawn (making double-width paths
     // look like connected series of intersections).
-    if (pathElement.ShouldDrawPathOverSupports())
+    if (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS)
     {
         drawnCorners = (connectedEdges & FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK) >> 4;
     }
@@ -661,7 +661,7 @@ static void sub_6A4101(
  * @param pathElement (esp[0])
  * @param connectedEdges (bp) (relative to the camera's rotation)
  * @param height (dx)
- * @param railingsDescriptor (0x00F3EF6C)
+ * @param pathPaintInfo (0x00F3EF6C)
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
@@ -1083,7 +1083,8 @@ void path_paint_box_support(
             session, image_id | imageFlags, { 0, 0, height }, { boundBoxSize, 0 },
             { boundBoxOffset, height + boundingBoxZOffset });
 
-        if (!pathElement.IsQueue() && !pathElement.ShouldDrawPathOverSupports())
+        // TODO: Revert this when path import works correctly.
+        if (!pathElement.IsQueue() && !(pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
             // don't draw
         }
@@ -1223,7 +1224,8 @@ void path_paint_pole_support(
             session, bridgeImage | imageFlags, { 0, 0, height }, { boundBoxSize, 0 },
             { boundBoxOffset, height + boundingBoxZOffset });
 
-        if (pathElement.IsQueue() || pathElement.ShouldDrawPathOverSupports())
+        // TODO: Revert this when path import works correctly.
+        if (pathElement.IsQueue() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
             PaintAddImageAsChild(
                 session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,

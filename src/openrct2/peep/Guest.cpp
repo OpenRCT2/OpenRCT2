@@ -1475,7 +1475,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     if (HasItem(shopItem))
     {
-        InsertNewThought(PeepThoughtType::AlreadyGot, EnumValue(shopItem));
+        InsertNewThought(PeepThoughtType::AlreadyGot, shopItem);
         return false;
     }
 
@@ -1484,7 +1484,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
         int32_t food = bitscanforward(GetFoodOrDrinkFlags());
         if (food != -1)
         {
-            InsertNewThought(PeepThoughtType::HaventFinished, food);
+            InsertNewThought(PeepThoughtType::HaventFinished, static_cast<ShopItem>(food));
             return false;
         }
 
@@ -1533,7 +1533,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
             }
             if (price > CashInPocket)
             {
-                InsertNewThought(PeepThoughtType::CantAffordItem, EnumValue(shopItem));
+                InsertNewThought(PeepThoughtType::CantAffordItem, shopItem);
                 return false;
             }
         }
@@ -2326,17 +2326,11 @@ bool Guest::HasRidden(const Ride* ride) const
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
 {
-    // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
-    rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
-
     OpenRCT2::RideUse::GetTypeHistory().Add(sprite_index, rideType);
 }
 
 bool Guest::HasRiddenRideType(int32_t rideType) const
 {
-    // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
-    rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
-
     return OpenRCT2::RideUse::GetTypeHistory().Contains(sprite_index, rideType);
 }
 
@@ -2543,7 +2537,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
     {
         chosen_train = ride->stations[CurrentRideStation].TrainAtStation;
     }
-    if (chosen_train == RideStation::NO_TRAIN || chosen_train >= MAX_VEHICLES_PER_RIDE)
+    if (chosen_train >= MAX_VEHICLES_PER_RIDE)
     {
         return false;
     }

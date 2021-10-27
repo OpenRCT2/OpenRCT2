@@ -427,7 +427,7 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::InterfaceSceneryPicker,
         ShortcutId::InterfaceScaleIncrease,
         ShortcutId::InterfaceScaleDecrease,
-        ShortcutId::WindowTileInspectorInsertCorrupt,
+        ShortcutId::WindowTileInspectorToggleInvisibility,
         ShortcutId::WindowTileInspectorCopy,
         ShortcutId::WindowTileInspectorPaste,
         ShortcutId::WindowTileInspectorRemove,

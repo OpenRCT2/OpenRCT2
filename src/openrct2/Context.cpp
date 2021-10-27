@@ -495,7 +495,6 @@ namespace OpenRCT2
 #endif
             }
 
-            gCurrentTicks = 0;
             input_reset_place_obj_modifier();
             viewport_init_all();
 
@@ -573,7 +572,8 @@ namespace OpenRCT2
             _drawingEngine = nullptr;
         }
 
-        bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail) final override
+        bool LoadParkFromFile(
+            const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
         {
             log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
             try
@@ -582,7 +582,7 @@ namespace OpenRCT2
                 {
                     auto data = DecryptSea(fs::u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
-                    if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail))
+                    if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail, asScenario))
                     {
                         throw std::runtime_error(".sea file may have been renamed.");
                     }
@@ -590,7 +590,7 @@ namespace OpenRCT2
                 }
 
                 auto fs = FileStream(path, FILE_MODE_OPEN);
-                if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
+                if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail, asScenario))
                 {
                     return false;
                 }
@@ -609,7 +609,9 @@ namespace OpenRCT2
             return false;
         }
 
-        bool LoadParkFromStream(IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail) final override
+        bool LoadParkFromStream(
+            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
+            bool asScenario = false) final override
         {
             try
             {
@@ -619,13 +621,17 @@ namespace OpenRCT2
                     throw std::runtime_error("Unable to detect file type");
                 }
 
-                if (info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
+                if (info.Type != FILE_TYPE::PARK && info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
                 {
                     throw std::runtime_error("Invalid file type.");
                 }
 
                 std::unique_ptr<IParkImporter> parkImporter;
-                if (info.Version <= FILE_TYPE_S4_CUTOFF)
+                if (info.Type == FILE_TYPE::PARK)
+                {
+                    parkImporter = ParkImporter::CreateParkFile(*_objectRepository);
+                }
+                else if (info.Version <= FILE_TYPE_S4_CUTOFF)
                 {
                     // Save is an S4 (RCT1 format)
                     parkImporter = ParkImporter::CreateS4();
@@ -656,7 +662,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 bool sendMap = false;
 #endif
-                if (info.Type == FILE_TYPE::SAVED_GAME)
+                if (!asScenario && (info.Type == FILE_TYPE::PARK || info.Type == FILE_TYPE::SAVED_GAME))
                 {
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_CLIENT)

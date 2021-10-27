@@ -88,6 +88,9 @@ private:
     uint8_t _gameVersion = 0;
     bool _isSV7 = false;
     std::bitset<RCT12_MAX_RIDES_IN_PARK> _isFlatRide{};
+    ObjectEntryIndex _pathToSurfaceMap[16];
+    ObjectEntryIndex _pathToQueueSurfaceMap[16];
+    ObjectEntryIndex _pathToRailingMap[16];
 
 public:
     S6Importer(IObjectRepository& objectRepository)
@@ -254,8 +257,6 @@ public:
         gGuestChangeModifier = _s6.guest_count_change_modifier;
         gResearchFundingLevel = _s6.current_research_level;
         // pad_01357400
-        ImportResearchedRideTypes();
-        ImportResearchedRideEntries();
         // _s6.researched_track_types_a
         // _s6.researched_track_types_b
 
@@ -275,8 +276,6 @@ public:
         gStaffHandymanColour = _s6.handyman_colour;
         gStaffMechanicColour = _s6.mechanic_colour;
         gStaffSecurityColour = _s6.security_colour;
-
-        ImportResearchedSceneryItems();
 
         gParkRating = _s6.park_rating;
 
@@ -401,14 +400,13 @@ public:
         if (_s6.header.type == S6_TYPE_SCENARIO)
         {
             // _s6.scenario_filename is wrong for some RCT2 expansion scenarios, so we use the real filename
-            String::Set(gScenarioFileName, sizeof(gScenarioFileName), Path::GetFileName(_s6Path));
+            gScenarioFileName = String::ToStd(Path::GetFileName(_s6Path));
         }
         else
         {
             // For savegames the filename can be arbitrary, so we have no choice but to rely on the name provided
-            String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
+            gScenarioFileName = std::string(String::ToStringView(_s6.scenario_filename, std::size(_s6.scenario_filename)));
         }
-        std::memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
         gCurrentRealTimeTicks = 0;
 
         ImportRides();
@@ -485,6 +483,9 @@ public:
 
         research_determine_first_of_type();
         staff_update_greyed_patrol_areas();
+
+        CheatsReset();
+        ClearRestrictedScenery();
     }
 
     void FixLandOwnership() const
@@ -871,13 +872,14 @@ public:
         }
         dst->music = musicStyle;
 
-        auto entranceStyle = src->entrance_style;
         // In SV7, "plain" entrances are invisible.
-        if (_isSV7 && entranceStyle == RCT12_STATION_STYLE_PLAIN)
+        auto entranceStyle = OBJECT_ENTRY_INDEX_NULL;
+        if (!_isSV7 && GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
         {
-            entranceStyle = RCT12_STATION_STYLE_INVISIBLE;
+            entranceStyle = src->entrance_style;
         }
         dst->entrance_style = entranceStyle;
+
         dst->vehicle_change_timeout = src->vehicle_change_timeout;
         dst->num_block_brakes = src->num_block_brakes;
         dst->lift_hill_speed = src->lift_hill_speed;
@@ -958,61 +960,6 @@ public:
         }
     }
 
-    void ImportResearchedRideTypes()
-    {
-        set_every_ride_type_not_invented();
-
-        for (int32_t rideType = 0; rideType < RCT2_RIDE_TYPE_COUNT; rideType++)
-        {
-            int32_t quadIndex = rideType >> 5;
-            int32_t bitIndex = rideType & 0x1F;
-            bool invented = (_s6.researched_ride_types[quadIndex] & (1UL << bitIndex));
-
-            if (invented)
-                ride_type_set_invented(rideType);
-        }
-    }
-
-    void ImportResearchedRideEntries()
-    {
-        set_every_ride_entry_not_invented();
-
-        for (int32_t rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
-        {
-            int32_t quadIndex = rideEntryIndex >> 5;
-            int32_t bitIndex = rideEntryIndex & 0x1F;
-            bool invented = (_s6.researched_ride_entries[quadIndex] & (1UL << bitIndex));
-
-            if (invented)
-                ride_entry_set_invented(rideEntryIndex);
-        }
-    }
-
-    void ImportResearchedSceneryItems()
-    {
-        set_all_scenery_items_not_invented();
-
-        for (uint16_t sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
-        {
-            int32_t quadIndex = sceneryEntryIndex >> 5;
-            int32_t bitIndex = sceneryEntryIndex & 0x1F;
-            bool invented = (_s6.researched_scenery_items[quadIndex] & (1UL << bitIndex));
-
-            if (invented)
-            {
-                ScenerySelection scenerySelection = { static_cast<uint8_t>((sceneryEntryIndex >> 8) & 0xFF),
-                                                      static_cast<uint16_t>(sceneryEntryIndex & 0xFF) };
-
-                // SV6 has room for 8 types of scenery, and sometimes scenery of non-existing types 5 and 6 is marked as
-                // "invented".
-                if (scenerySelection.SceneryType < SCENERY_TYPE_COUNT)
-                {
-                    scenery_set_invented(scenerySelection);
-                }
-            }
-        }
-    }
-
     void ImportResearchList()
     {
         bool invented = true;
@@ -1037,7 +984,10 @@ public:
 
     void ImportBanner(Banner* dst, const RCT12Banner* src)
     {
+        auto id = dst->id;
+
         *dst = {};
+        dst->id = id;
         dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->type);
         dst->flags = src->flags;
 
@@ -1137,10 +1087,15 @@ public:
         auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements);
 
         std::vector<TileElement> tileElements;
+        bool nextElementInvisible = false;
+        bool restOfTileInvisible = false;
         for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
             for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
             {
+                nextElementInvisible = false;
+                restOfTileInvisible = false;
+
                 if (coords.x >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL || coords.y >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL)
                 {
                     auto& dstElement = tileElements.emplace_back();
@@ -1161,22 +1116,30 @@ public:
 
                 do
                 {
-                    auto& dstElement = tileElements.emplace_back();
                     if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
                     {
-                        std::memcpy(&dstElement, srcElement, sizeof(*srcElement));
+                        continue;
                     }
-                    else
+
+                    auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
+                    if (tileElementType == RCT12TileElementType::Corrupt)
                     {
-                        auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
-                        // Todo: replace with setting invisibility bit
-                        if (tileElementType == RCT12TileElementType::Corrupt
-                            || tileElementType == RCT12TileElementType::EightCarsCorrupt14
-                            || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
-                            std::memcpy(&dstElement, srcElement, sizeof(*srcElement));
-                        else
-                            ImportTileElement(&dstElement, srcElement);
+                        // One property of corrupt elements was to hide tops of tower tracks, and to avoid the next element from
+                        // being hidden, multiple consecutive corrupt elements were sometimes used. This would essentially
+                        // toggle the flag, so we inverse nextElementInvisible here instead of always setting it to true.
+                        nextElementInvisible = !nextElementInvisible;
+                        continue;
                     }
+                    if (tileElementType == RCT12TileElementType::EightCarsCorrupt14
+                        || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
+                    {
+                        restOfTileInvisible = true;
+                        continue;
+                    }
+
+                    auto& dstElement = tileElements.emplace_back();
+                    ImportTileElement(&dstElement, srcElement, nextElementInvisible || restOfTileInvisible);
+                    nextElementInvisible = false;
                 } while (!(srcElement++)->IsLastForTile());
 
                 // Set last element flag in case the original last element was never added
@@ -1189,7 +1152,7 @@ public:
         SetTileElements(std::move(tileElements));
     }
 
-    void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
+    void ImportTileElement(TileElement* dst, const RCT12TileElement* src, bool invisible)
     {
         // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
         uint8_t tileElementType = src->GetType();
@@ -1202,6 +1165,7 @@ public:
         dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
         dst->SetGhost(src->IsGhost());
         dst->SetLastForTile(src->IsLastForTile());
+        dst->SetInvisible(invisible);
 
         switch (tileElementType)
         {
@@ -1226,7 +1190,21 @@ public:
                 auto dst2 = dst->AsPath();
                 auto src2 = src->AsPath();
 
-                dst2->SetLegacyPathEntryIndex(src2->GetEntryIndex());
+                auto pathEntryIndex = src2->GetEntryIndex();
+                auto surfaceEntry = src2->IsQueue() ? _pathToQueueSurfaceMap[pathEntryIndex]
+                                                    : _pathToSurfaceMap[pathEntryIndex];
+                if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                {
+                    // Legacy footpath object
+                    dst2->SetLegacyPathEntryIndex(pathEntryIndex);
+                }
+                else
+                {
+                    // Surface / railing
+                    dst2->SetSurfaceEntryIndex(surfaceEntry);
+                    dst2->SetRailingsEntryIndex(_pathToRailingMap[pathEntryIndex]);
+                }
+
                 dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
                 dst2->SetSloped(src2->IsSloped());
                 dst2->SetSlopeDirection(src2->GetSlopeDirection());
@@ -1317,8 +1295,26 @@ public:
                 dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                dst2->SetLegacyPathEntryIndex(src2->GetPathType());
 
+                if (src2->GetSequenceIndex() == 0)
+                {
+                    auto pathEntryIndex = src2->GetPathType();
+                    auto surfaceEntry = _pathToSurfaceMap[pathEntryIndex];
+                    if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                    {
+                        // Legacy footpath object
+                        dst2->SetLegacyPathEntryIndex(pathEntryIndex);
+                    }
+                    else
+                    {
+                        // Surface
+                        dst2->SetSurfaceEntryIndex(surfaceEntry);
+                    }
+                }
+                else
+                {
+                    dst2->SetSurfaceEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+                }
                 break;
             }
             case TILE_ELEMENT_TYPE_WALL:
@@ -1655,56 +1651,69 @@ public:
         return justText.data();
     }
 
-    template<size_t TInternalLimit, typename T>
-    static void AddRequiredObjects(std::vector<rct_object_entry>& required, const T& list)
-    {
-        rct_object_entry nullEntry = {};
-        std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
-
-        for (const auto& entry : list)
-        {
-            required.push_back(entry);
-        }
-
-        // NOTE: The segment of this object type needs to be filled to the internal limit
-        // the object manager currently expects this.
-        for (size_t i = std::size(list); i < TInternalLimit; i++)
-        {
-            required.push_back(nullEntry);
-        }
-    }
-
     ObjectList GetRequiredObjects()
     {
-        std::vector<rct_object_entry> result;
-
-        AddRequiredObjects<MAX_RIDE_OBJECTS>(result, _s6.RideObjects);
-        AddRequiredObjects<MAX_SMALL_SCENERY_OBJECTS>(result, _s6.SceneryObjects);
-        AddRequiredObjects<MAX_LARGE_SCENERY_OBJECTS>(result, _s6.LargeSceneryObjects);
-        AddRequiredObjects<MAX_WALL_SCENERY_OBJECTS>(result, _s6.WallSceneryObjects);
-        AddRequiredObjects<MAX_BANNER_OBJECTS>(result, _s6.BannerObjects);
-        AddRequiredObjects<MAX_PATH_OBJECTS>(result, _s6.PathObjects);
-        AddRequiredObjects<MAX_PATH_ADDITION_OBJECTS>(result, _s6.PathAdditionObjects);
-        AddRequiredObjects<MAX_SCENERY_GROUP_OBJECTS>(result, _s6.SceneryGroupObjects);
-        AddRequiredObjects<MAX_PARK_ENTRANCE_OBJECTS>(result, _s6.ParkEntranceObjects);
-        AddRequiredObjects<MAX_WATER_OBJECTS>(result, _s6.WaterObjects);
-        AddRequiredObjects<MAX_SCENARIO_TEXT_OBJECTS>(result, _s6.ScenarioTextObjects);
+        std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), OBJECT_ENTRY_INDEX_NULL);
 
         ObjectList objectList;
-        for (size_t i = 0; i < result.size(); i++)
+        int objectIt = 0;
+        ObjectEntryIndex surfaceCount = 0;
+        ObjectEntryIndex railingCount = 0;
+        for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
         {
-            ObjectType objectType;
-            ObjectEntryIndex entryIndex;
-            get_type_entry_index(i, &objectType, &entryIndex);
-
-            auto desc = ObjectEntryDescriptor(result[i]);
-            if (desc.HasValue())
+            for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
             {
-                assert(desc.GetType() == objectType);
-                objectList.SetObject(entryIndex, desc);
+                auto entry = ObjectEntryDescriptor(_s6.Objects[objectIt]);
+                if (entry.HasValue())
+                {
+                    if (objectType == EnumValue(ObjectType::Paths))
+                    {
+                        auto footpathMapping = GetFootpathSurfaceId(entry);
+                        if (footpathMapping == nullptr)
+                        {
+                            // Unsupported footpath
+                            objectList.SetObject(i, entry);
+                        }
+                        else
+                        {
+                            // We have surface objects for this footpath
+                            auto surfaceIndex = objectList.Find(ObjectType::FootpathSurface, footpathMapping->NormalSurface);
+                            if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                            {
+                                objectList.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->NormalSurface);
+                                surfaceIndex = surfaceCount++;
+                            }
+                            _pathToSurfaceMap[i] = surfaceIndex;
+
+                            surfaceIndex = objectList.Find(ObjectType::FootpathSurface, footpathMapping->QueueSurface);
+                            if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                            {
+                                objectList.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->QueueSurface);
+                                surfaceIndex = surfaceCount++;
+                            }
+                            _pathToQueueSurfaceMap[i] = surfaceIndex;
+
+                            auto railingIndex = objectList.Find(ObjectType::FootpathRailings, footpathMapping->Railing);
+                            if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
+                            {
+                                objectList.SetObject(ObjectType::FootpathRailings, railingCount, footpathMapping->Railing);
+                                railingIndex = railingCount++;
+                            }
+                            _pathToRailingMap[i] = railingIndex;
+                        }
+                    }
+                    else
+                    {
+                        objectList.SetObject(i, entry);
+                    }
+                }
             }
         }
 
+        SetDefaultRCT2TerrainObjects(objectList);
+        RCT12AddDefaultObjects(objectList);
         return objectList;
     }
 };

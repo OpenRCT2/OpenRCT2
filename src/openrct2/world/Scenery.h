@@ -301,3 +301,6 @@ bool IsSceneryItemRestricted(const ScenerySelection& item);
 void ClearRestrictedScenery();
 void RestrictAllMiscScenery();
 std::vector<ScenerySelection>& GetRestrictedScenery();
+
+ObjectType GetObjectTypeFromSceneryType(uint8_t type);
+uint8_t GetSceneryTypeFromObjectType(ObjectType type);

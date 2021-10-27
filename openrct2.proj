@@ -46,8 +46,8 @@
     <GtestSha1>058b9df80244c03f1633cb06e9f70471a29ebb8e</GtestSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha1>304d13a126c15bf2c86ff13b81a2f2cc1856ac8d</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.21/objects.zip</ObjectsUrl>
-    <ObjectsSha1>c38af45d51a6e440386180feacf76c64720b6ac5</ObjectsSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.2.2/objects.zip</ObjectsUrl>
+    <ObjectsSha1>a808fd47e9bc35d105dc371428a55888e6a86860</ObjectsSha1>
     <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.57/replays.zip</ReplaysUrl>
     <ReplaysSha1>DF9C3B48755B19FDD4D0EC721007B98CD5B6F420</ReplaysSha1>
   </PropertyGroup>

@@ -12,6 +12,7 @@
 #include "../core/String.hpp"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
+#include "../object/ObjectList.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../world/Banner.h"
@@ -1407,6 +1408,64 @@ std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
         return std::distance(std::begin(_musicStyles), it);
     }
     return std::nullopt;
+}
+
+void SetDefaultRCT2TerrainObjects(ObjectList& objectList)
+{
+    // Surfaces
+    objectList.SetObject(ObjectType::TerrainSurface, 0, "rct2.terrain_surface.grass");
+    objectList.SetObject(ObjectType::TerrainSurface, 1, "rct2.terrain_surface.sand");
+    objectList.SetObject(ObjectType::TerrainSurface, 2, "rct2.terrain_surface.dirt");
+    objectList.SetObject(ObjectType::TerrainSurface, 3, "rct2.terrain_surface.rock");
+    objectList.SetObject(ObjectType::TerrainSurface, 4, "rct2.terrain_surface.martian");
+    objectList.SetObject(ObjectType::TerrainSurface, 5, "rct2.terrain_surface.chequerboard");
+    objectList.SetObject(ObjectType::TerrainSurface, 6, "rct2.terrain_surface.grass_clumps");
+    objectList.SetObject(ObjectType::TerrainSurface, 7, "rct2.terrain_surface.ice");
+    objectList.SetObject(ObjectType::TerrainSurface, 8, "rct2.terrain_surface.grid_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 9, "rct2.terrain_surface.grid_yellow");
+    objectList.SetObject(ObjectType::TerrainSurface, 10, "rct2.terrain_surface.grid_purple");
+    objectList.SetObject(ObjectType::TerrainSurface, 11, "rct2.terrain_surface.grid_green");
+    objectList.SetObject(ObjectType::TerrainSurface, 12, "rct2.terrain_surface.sand_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 13, "rct2.terrain_surface.sand_brown");
+    objectList.SetObject(ObjectType::TerrainSurface, 14, "rct1aa.terrain_surface.roof_red");
+    objectList.SetObject(ObjectType::TerrainSurface, 15, "rct1ll.terrain_surface.roof_grey");
+    objectList.SetObject(ObjectType::TerrainSurface, 16, "rct1ll.terrain_surface.rust");
+    objectList.SetObject(ObjectType::TerrainSurface, 17, "rct1ll.terrain_surface.wood");
+
+    // Edges
+    objectList.SetObject(ObjectType::TerrainEdge, 0, "rct2.terrain_edge.rock");
+    objectList.SetObject(ObjectType::TerrainEdge, 1, "rct2.terrain_edge.wood_red");
+    objectList.SetObject(ObjectType::TerrainEdge, 2, "rct2.terrain_edge.wood_black");
+    objectList.SetObject(ObjectType::TerrainEdge, 3, "rct2.terrain_edge.ice");
+    objectList.SetObject(ObjectType::TerrainEdge, 4, "rct1.terrain_edge.brick");
+    objectList.SetObject(ObjectType::TerrainEdge, 5, "rct1.terrain_edge.iron");
+    objectList.SetObject(ObjectType::TerrainEdge, 6, "rct1aa.terrain_edge.grey");
+    objectList.SetObject(ObjectType::TerrainEdge, 7, "rct1aa.terrain_edge.yellow");
+    objectList.SetObject(ObjectType::TerrainEdge, 8, "rct1aa.terrain_edge.red");
+    objectList.SetObject(ObjectType::TerrainEdge, 9, "rct1ll.terrain_edge.purple");
+    objectList.SetObject(ObjectType::TerrainEdge, 10, "rct1ll.terrain_edge.green");
+    objectList.SetObject(ObjectType::TerrainEdge, 11, "rct1ll.terrain_edge.stone_brown");
+    objectList.SetObject(ObjectType::TerrainEdge, 12, "rct1ll.terrain_edge.stone_grey");
+    objectList.SetObject(ObjectType::TerrainEdge, 13, "rct1ll.terrain_edge.skyscraper_a");
+    objectList.SetObject(ObjectType::TerrainEdge, 14, "rct1ll.terrain_edge.skyscraper_b");
+}
+
+void RCT12AddDefaultObjects(ObjectList& objectList)
+{
+    // Stations
+    for (size_t i = 0; i < std::size(_stationStyles); i++)
+    {
+        objectList.SetObject(ObjectType::Station, static_cast<ObjectEntryIndex>(i), _stationStyles[i]);
+    }
+
+    // Music
+    for (size_t i = 0; i < std::size(_musicStyles); i++)
+    {
+        if (!_musicStyles[i].empty())
+        {
+            objectList.SetObject(ObjectType::Music, static_cast<ObjectEntryIndex>(i), _musicStyles[i]);
+        }
+    }
 }
 
 money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue)

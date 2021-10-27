@@ -135,45 +135,73 @@ void setup_in_use_selection_flags()
         {
             default:
             case TILE_ELEMENT_TYPE_SURFACE:
+            {
+                auto surfaceEl = iter.element->AsSurface();
+                auto surfaceIndex = surfaceEl->GetSurfaceStyle();
+                auto edgeIndex = surfaceEl->GetEdgeStyle();
+
+                Editor::SetSelectedObject(ObjectType::TerrainSurface, surfaceIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                Editor::SetSelectedObject(ObjectType::TerrainEdge, edgeIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                break;
+            }
             case TILE_ELEMENT_TYPE_TRACK:
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                type = iter.element->AsPath()->GetLegacyPathEntryIndex();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
-                Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
-
-                if (iter.element->AsPath()->HasAddition())
+            {
+                auto footpathEl = iter.element->AsPath();
+                auto legacyPathEntryIndex = footpathEl->GetLegacyPathEntryIndex();
+                if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
                 {
-                    uint8_t path_additions = iter.element->AsPath()->GetAdditionEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::PathBits, path_additions, OBJECT_SELECTION_FLAG_SELECTED);
+                    auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
+                    auto railingEntryIndex = footpathEl->GetRailingsEntryIndex();
+                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                    Editor::SetSelectedObject(ObjectType::FootpathRailings, railingEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                }
+                else
+                {
+                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                }
+                if (footpathEl->HasAddition())
+                {
+                    auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
+                    Editor::SetSelectedObject(ObjectType::PathBits, pathAdditionEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
                 }
                 break;
+            }
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 type = iter.element->AsSmallScenery()->GetEntryIndex();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]);
                 Editor::SetSelectedObject(ObjectType::SmallScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                if (iter.element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
-                    break;
-                // Skip if not the middle part
-                if (iter.element->AsEntrance()->GetSequenceIndex() != 0)
+            {
+                auto parkEntranceEl = iter.element->AsEntrance();
+                if (parkEntranceEl->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
 
                 Editor::SetSelectedObject(ObjectType::ParkEntrance, 0, OBJECT_SELECTION_FLAG_SELECTED);
 
-                type = iter.element->AsEntrance()->GetLegacyPathEntryIndex();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
-                Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
+                // Skip if not the middle part
+                if (parkEntranceEl->GetSequenceIndex() != 0)
+                    break;
+
+                auto legacyPathEntryIndex = parkEntranceEl->GetLegacyPathEntryIndex();
+                if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
+                {
+                    auto surfaceEntryIndex = parkEntranceEl->GetSurfaceEntryIndex();
+                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                }
+                else
+                {
+                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                }
                 break;
+            }
             case TILE_ELEMENT_TYPE_WALL:
                 type = iter.element->AsWall()->GetEntryIndex();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::Walls)]);
                 Editor::SetSelectedObject(ObjectType::Walls, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 type = iter.element->AsLargeScenery()->GetEntryIndex();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::LargeScenery)]);
                 Editor::SetSelectedObject(ObjectType::LargeScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
@@ -182,7 +210,6 @@ void setup_in_use_selection_flags()
                 if (banner != nullptr)
                 {
                     type = banner->type;
-                    assert(type < object_entry_group_counts[EnumValue(ObjectType::Banners)]);
                     Editor::SetSelectedObject(ObjectType::Banners, type, OBJECT_SELECTION_FLAG_SELECTED);
                 }
                 break;
@@ -192,8 +219,9 @@ void setup_in_use_selection_flags()
 
     for (auto& ride : GetRideManager())
     {
-        ObjectEntryIndex type = ride.subtype;
-        Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
+        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED);
+        Editor::SetSelectedObject(ObjectType::Station, ride.entrance_style, OBJECT_SELECTION_FLAG_SELECTED);
+        Editor::SetSelectedObject(ObjectType::Music, ride.music, OBJECT_SELECTION_FLAG_SELECTED);
     }
 
     // Apply selected object status for hacked vehicles that may not have an associated ride
@@ -214,19 +242,19 @@ void setup_in_use_selection_flags()
         }
     }
 
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
-    for (int32_t i = 0; i < numObjects; i++)
+    auto numObjects = object_repository_get_items_count();
+    const auto* items = object_repository_get_items();
+    for (size_t i = 0; i < numObjects; i++)
     {
-        uint8_t* selectionFlags = &_objectSelectionFlags[i];
-        const ObjectRepositoryItem* item = &items[i];
+        auto* selectionFlags = &_objectSelectionFlags[i];
+        const auto* item = &items[i];
         *selectionFlags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
-        ObjectType entryType;
-        ObjectEntryIndex entryIndex;
-        if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex))
+        if (item->LoadedObject != nullptr)
         {
-            auto flags = Editor::GetSelectedObjectFlags(entryType, entryIndex);
+            auto objectType = item->LoadedObject->GetObjectType();
+            auto entryIndex = objectMgr.GetLoadedObjectEntryIndex(item->LoadedObject.get());
+            auto flags = Editor::GetSelectedObjectFlags(objectType, entryIndex);
             if (flags & OBJECT_SELECTION_FLAG_SELECTED)
             {
                 *selectionFlags |= OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_SELECTED;
@@ -300,7 +328,7 @@ void editor_object_flags_free()
  *
  *  rct2: 0x00685791
  */
-static void remove_selected_objects_from_research(ObjectEntryDescriptor& descriptor)
+static void remove_selected_objects_from_research(const ObjectEntryDescriptor& descriptor)
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objManager.GetLoadedObject(descriptor);
