@@ -2876,7 +2876,6 @@ namespace RCT1
         dst->AssignedStaffType = StaffType(src->staff_type);
         dst->MechanicTimeSinceCall = src->mechanic_time_since_call;
         dst->HireDate = src->park_entry_time;
-        dst->StaffId = src->staff_id;
         dst->StaffOrders = src->staff_orders;
         dst->StaffMowingTimeout = src->staff_mowing_timeout;
         dst->StaffLawnsMown = src->paid_to_enter;

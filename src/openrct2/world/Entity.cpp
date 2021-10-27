@@ -224,7 +224,6 @@ void Staff::Serialise(DataSerialiser& stream)
     stream << AssignedStaffType;
     stream << MechanicTimeSinceCall;
     stream << HireDate;
-    stream << StaffId;
     stream << StaffOrders;
     stream << StaffMowingTimeout;
     stream << StaffLawnsMown;

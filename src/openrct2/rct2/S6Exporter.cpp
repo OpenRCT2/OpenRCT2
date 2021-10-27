@@ -1463,7 +1463,6 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Staff* src)
     dst->staff_type = static_cast<uint8_t>(src->AssignedStaffType);
     dst->mechanic_time_since_call = src->MechanicTimeSinceCall;
     dst->park_entry_time = src->HireDate;
-    dst->staff_id = src->StaffId;
     dst->staff_orders = src->StaffOrders;
     dst->staff_mowing_timeout = src->StaffMowingTimeout;
     dst->paid_to_enter = src->StaffLawnsMown;

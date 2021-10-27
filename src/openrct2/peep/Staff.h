@@ -32,7 +32,6 @@ public:
     StaffType AssignedStaffType;
     uint16_t MechanicTimeSinceCall; // time getting to ride to fix
     int32_t HireDate;
-    uint8_t StaffId;
     uint8_t StaffOrders;
     uint8_t StaffMowingTimeout;
     union
