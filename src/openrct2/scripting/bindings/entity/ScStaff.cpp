@@ -11,6 +11,8 @@
 
 #    include "ScStaff.hpp"
 
+#    include "../../../peep/Staff.h"
+
 namespace OpenRCT2::Scripting
 {
     ScStaff::ScStaff(uint16_t Id)

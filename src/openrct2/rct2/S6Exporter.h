@@ -80,4 +80,5 @@ private:
     void ExportUserStrings();
     void RebuildEntityLinks();
     void RebuildEntitySpatialLocation(const TileCoordsXY& loc);
+    void ExportStaffPatrolAreas();
 };

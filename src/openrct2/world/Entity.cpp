@@ -11,6 +11,7 @@
 
 #include "../core/DataSerialiser.h"
 #include "../peep/Peep.h"
+#include "../peep/Staff.h"
 #include "../ride/Vehicle.h"
 #include "Balloon.h"
 #include "Duck.h"
@@ -223,7 +224,6 @@ void Staff::Serialise(DataSerialiser& stream)
     stream << AssignedStaffType;
     stream << MechanicTimeSinceCall;
     stream << HireDate;
-    stream << StaffId;
     stream << StaffOrders;
     stream << StaffMowingTimeout;
     stream << StaffLawnsMown;

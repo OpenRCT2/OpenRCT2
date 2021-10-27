@@ -11,6 +11,7 @@
 
 #include "core/CircularBuffer.h"
 #include "peep/Peep.h"
+#include "peep/Staff.h"
 #include "ride/Vehicle.h"
 #include "world/Balloon.h"
 #include "world/Duck.h"
@@ -296,7 +297,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Staff, AssignedStaffType);
         COMPARE_FIELD(Staff, MechanicTimeSinceCall);
         COMPARE_FIELD(Staff, HireDate);
-        COMPARE_FIELD(Staff, StaffId);
         COMPARE_FIELD(Staff, StaffOrders);
         COMPARE_FIELD(Staff, StaffMowingTimeout);
         COMPARE_FIELD(Staff, StaffRidesFixed);

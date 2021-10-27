@@ -55,29 +55,6 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Query() const
     return MakeResult();
 }
 
-static void UpdateStaffMode(const Staff& staff)
-{
-    bool isPatrolling = false;
-    const auto peepOffset = staff.StaffId * STAFF_PATROL_AREA_SIZE;
-    for (size_t i = peepOffset; i < peepOffset + STAFF_PATROL_AREA_SIZE; i++)
-    {
-        if (gStaffPatrolAreas[i] != 0)
-        {
-            isPatrolling = true;
-            break;
-        }
-    }
-
-    if (isPatrolling)
-    {
-        gStaffModes[staff.StaffId] = StaffMode::Patrol;
-    }
-    else if (gStaffModes[staff.StaffId] == StaffMode::Patrol)
-    {
-        gStaffModes[staff.StaffId] = StaffMode::Walk;
-    }
-}
-
 static void InvalidatePatrolTile(const CoordsXY& loc)
 {
     // Align the location to the top left of the patrol square
@@ -104,12 +81,14 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
     {
         case StaffSetPatrolAreaMode::Set:
             staff->SetPatrolArea(_loc, true);
-            UpdateStaffMode(*staff);
             InvalidatePatrolTile(_loc);
             break;
         case StaffSetPatrolAreaMode::Unset:
             staff->SetPatrolArea(_loc, false);
-            UpdateStaffMode(*staff);
+            if (!staff->HasPatrolArea())
+            {
+                staff->ClearPatrolArea();
+            }
             InvalidatePatrolTile(_loc);
             break;
         case StaffSetPatrolAreaMode::ClearAll:

@@ -12,6 +12,7 @@
 #    include "ScMap.hpp"
 
 #    include "../../../common.h"
+#    include "../../../peep/Staff.h"
 #    include "../../../ride/Ride.h"
 #    include "../../../ride/TrainManager.h"
 #    include "../../../world/Balloon.h"

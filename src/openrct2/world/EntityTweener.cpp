@@ -9,12 +9,12 @@
 #include "EntityTweener.h"
 
 #include "../peep/Peep.h"
+#include "../peep/Staff.h"
 #include "../ride/Vehicle.h"
 #include "EntityList.h"
 #include "Sprite.h"
 
 #include <cmath>
-
 void EntityTweener::PopulateEntities()
 {
     for (auto ent : EntityList<Guest>())
