@@ -394,3 +394,41 @@ void RestrictAllMiscScenery()
         }
     }
 }
+
+ObjectType GetObjectTypeFromSceneryType(uint8_t type)
+{
+    switch (type)
+    {
+        case SCENERY_TYPE_SMALL:
+            return ObjectType::SmallScenery;
+        case SCENERY_TYPE_PATH_ITEM:
+            return ObjectType::PathBits;
+        case SCENERY_TYPE_WALL:
+            return ObjectType::Walls;
+        case SCENERY_TYPE_LARGE:
+            return ObjectType::LargeScenery;
+        case SCENERY_TYPE_BANNER:
+            return ObjectType::Banners;
+        default:
+            throw std::runtime_error("Invalid scenery type");
+    }
+}
+
+uint8_t GetSceneryTypeFromObjectType(ObjectType type)
+{
+    switch (type)
+    {
+        case ObjectType::SmallScenery:
+            return SCENERY_TYPE_SMALL;
+        case ObjectType::PathBits:
+            return SCENERY_TYPE_PATH_ITEM;
+        case ObjectType::Walls:
+            return SCENERY_TYPE_WALL;
+        case ObjectType::LargeScenery:
+            return SCENERY_TYPE_LARGE;
+        case ObjectType::Banners:
+            return SCENERY_TYPE_BANNER;
+        default:
+            throw std::runtime_error("Invalid object type");
+    }
+}

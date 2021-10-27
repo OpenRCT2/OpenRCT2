@@ -144,19 +144,16 @@ namespace RCT1
             }
 
             // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
-            rct_object_entry vehicleObject = { 0x80, "        " };
+            std::string_view vehicleObject;
             if (td4Base.type == RideType::HedgeMaze)
             {
-                const char* vehObjName = RCT1::GetRideTypeObject(td4Base.type);
-                assert(vehObjName != nullptr);
-                std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
+                vehicleObject = RCT1::GetRideTypeObject(td4Base.type);
             }
             else
             {
-                const char* vehObjName = RCT1::GetVehicleObject(td4Base.vehicle_type);
-                assert(vehObjName != nullptr);
-                std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
+                vehicleObject = RCT1::GetVehicleObject(td4Base.vehicle_type);
             }
+            assert(!vehicleObject.empty());
             td->vehicle_object = ObjectEntryDescriptor(vehicleObject);
             td->vehicle_type = td4Base.vehicle_type;
 

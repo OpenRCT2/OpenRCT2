@@ -92,7 +92,6 @@ struct rct_window
         uint32_t highlighted_item;
         uint16_t ride_colour;
         ResearchItem* research_item;
-        rct_object_entry* object_entry;
         const scenario_index_entry* highlighted_scenario;
         uint16_t var_496;
     };

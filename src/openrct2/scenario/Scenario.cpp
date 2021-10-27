@@ -31,6 +31,7 @@
 #include "../network/network.h"
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
 #include "../peep/Guest.h"
 #include "../peep/Staff.h"
 #include "../platform/platform.h"
@@ -64,7 +65,6 @@ std::string gScenarioName;
 std::string gScenarioDetails;
 std::string gScenarioCompletedBy;
 std::string gScenarioSavePath;
-char gScenarioExpansionPacks[3256];
 bool gFirstTimeSaving = true;
 uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
@@ -78,7 +78,7 @@ uint16_t gScenarioParkRatingWarningDays;
 money64 gScenarioCompletedCompanyValue;
 money64 gScenarioCompanyValueRecord;
 
-char gScenarioFileName[MAX_PATH];
+std::string gScenarioFileName;
 
 static void scenario_objective_check();
 
@@ -154,7 +154,15 @@ void scenario_begin()
     park_calculate_size();
     map_count_remaining_land_rights();
     Staff::ResetStats();
-    gLastEntranceStyle = 0;
+
+    auto& objManager = GetContext()->GetObjectManager();
+    gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+    if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+    {
+        // Fall back to first entrance object
+        gLastEntranceStyle = 0;
+    }
+
     gMarketingCampaigns.clear();
     gParkRatingCasualtyPenalty = 0;
 
@@ -199,7 +207,7 @@ void scenario_success()
     gScenarioCompletedCompanyValue = companyValue;
     peep_applause();
 
-    if (scenario_repository_try_record_highscore(gScenarioFileName, companyValue, nullptr))
+    if (scenario_repository_try_record_highscore(gScenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
@@ -214,7 +222,7 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char* name)
 {
-    if (scenario_repository_try_record_highscore(gScenarioFileName, gScenarioCompanyValueRecord, name))
+    if (scenario_repository_try_record_highscore(gScenarioFileName.c_str(), gScenarioCompanyValueRecord, name))
     {
         gScenarioCompletedBy = name;
     }

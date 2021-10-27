@@ -286,14 +286,20 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     ride->income_per_hour = MONEY64_UNDEFINED;
     ride->profit = MONEY64_UNDEFINED;
     ride->connected_message_throttle = 0;
-    ride->entrance_style = 0;
+
+    ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+    {
+        ride->entrance_style = gLastEntranceStyle;
+    }
+
     ride->num_block_brakes = 0;
     ride->guests_favourite = 0;
 
     ride->num_circuits = 1;
     ride->mode = ride->GetDefaultMode();
-    ride->SetMinCarsPerTrain(rideEntry->min_cars_in_train);
-    ride->SetMaxCarsPerTrain(rideEntry->max_cars_in_train);
+    ride->MinCarsPerTrain = rideEntry->min_cars_in_train;
+    ride->MaxCarsPerTrain = rideEntry->max_cars_in_train;
     ride_set_vehicle_colours_to_random_preset(ride, _colour2);
     window_invalidate_by_class(WC_RIDE_LIST);
 

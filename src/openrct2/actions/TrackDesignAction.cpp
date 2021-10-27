@@ -14,6 +14,7 @@
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../rct12/RCT12.h"
 #include "../ride/TrackDesign.h"
 #include "RideCreateAction.h"
 #include "RideDemolishAction.h"
@@ -226,7 +227,12 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = _td.colour_scheme;
 
-    ride->entrance_style = _td.entrance_style;
+    auto stationIdentifier = GetStationIdentifierFromStyle(_td.entrance_style);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
+    {
+        ride->entrance_style = gLastEntranceStyle;
+    }
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {

@@ -35,7 +35,7 @@ struct Vehicle;
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
 #define MAX_VEHICLES_PER_RIDE_ENTRY 4
-constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 31;
+constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 255; // Note: that 255 represents No Train (null) hence why this is not 256
 constexpr const uint8_t MAX_CIRCUITS_PER_RIDE = 20;
 constexpr const uint8_t MAX_CARS_PER_TRAIN = 255;
 constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_VEHICLES_PER_RIDE);
@@ -43,8 +43,9 @@ constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_V
 #define MAX_CATEGORIES_PER_RIDE 2
 #define DOWNTIME_HISTORY_SIZE 8
 #define CUSTOMER_HISTORY_SIZE 10
-#define MAX_STATIONS 4
-#define MAX_RIDES 255
+#define MAX_CARS_PER_TRAIN 255
+#define MAX_STATIONS 255
+constexpr const uint16_t MAX_RIDES = 1000;
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
@@ -217,7 +218,7 @@ struct Ride
     ObjectEntryIndex subtype;
     RideMode mode;
     uint8_t colour_scheme_type;
-    VehicleColour vehicle_colours[MAX_VEHICLE_COLOURS];
+    VehicleColour vehicle_colours[MAX_VEHICLES_PER_RIDE + 1];
     // 0 = closed, 1 = open, 2 = test
     RideStatus status;
     std::string custom_name;
@@ -232,10 +233,9 @@ struct Ride
     uint8_t proposed_num_cars_per_train;
     uint8_t max_trains;
 
-private:
-    uint8_t min_max_cars_per_train;
-
 public:
+    uint8_t MinCarsPerTrain;
+    uint8_t MaxCarsPerTrain;
     uint8_t min_waiting_time;
     uint8_t max_waiting_time;
     union
@@ -459,11 +459,6 @@ public:
 
     std::pair<RideMeasurement*, OpenRCT2String> GetMeasurement();
 
-    uint8_t GetMinCarsPerTrain() const;
-    uint8_t GetMaxCarsPerTrain() const;
-    void SetMinCarsPerTrain(uint8_t newValue);
-    void SetMaxCarsPerTrain(uint8_t newValue);
-
     uint8_t GetNumShelteredSections() const;
     void IncreaseNumShelteredSections();
 
@@ -523,8 +518,9 @@ enum
     RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
     RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED = 1 << 16,
     RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
-    RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18,   // Used for the Award for Best Custom-designed Rides
-    RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19 // Not used anymore
+    RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18,    // Used for the Award for Best Custom-designed Rides
+    RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19, // Not used anymore
+    RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
 };
 
 // Constants used by the ride_type->flags property at 0x008
@@ -1257,3 +1253,7 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
+
+std::vector<ride_id_t> GetTracklessRides();
+
+void ride_remove_vehicles(Ride* ride);

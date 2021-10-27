@@ -81,7 +81,7 @@ namespace RCT1
     class EntryList
     {
     private:
-        std::vector<const char*> _entries;
+        std::vector<std::string> _entries;
 
     public:
         size_t GetCount() const
@@ -89,20 +89,22 @@ namespace RCT1
             return _entries.size();
         }
 
-        const std::vector<const char*>& GetEntries() const
+        const std::vector<std::string>& GetEntries() const
         {
             return _entries;
         }
 
-        ObjectEntryIndex GetOrAddEntry(const char* entryName)
+        ObjectEntryIndex GetOrAddEntry(std::string_view identifier)
         {
-            auto entryIndex = Collections::IndexOf(_entries, entryName, true);
-            if (entryIndex == SIZE_MAX)
+            for (size_t i = 0; i < _entries.size(); i++)
             {
-                entryIndex = _entries.size();
-                _entries.push_back(entryName);
+                if (_entries[i] == identifier)
+                {
+                    return static_cast<ObjectEntryIndex>(i);
+                }
             }
-            return static_cast<ObjectEntryIndex>(entryIndex);
+            _entries.emplace_back(identifier);
+            return static_cast<ObjectEntryIndex>(_entries.size() - 1);
         }
 
         void AddRange(std::initializer_list<const char*> initializerList)
@@ -132,6 +134,10 @@ namespace RCT1
         EntryList _pathAdditionEntries;
         EntryList _sceneryGroupEntries;
         EntryList _waterEntry;
+        EntryList _terrainSurfaceEntries;
+        EntryList _terrainEdgeEntries;
+        EntryList _footpathSurfaceEntries;
+        EntryList _footpathRailingsEntries;
 
         // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
         ObjectEntryIndex _rideTypeToRideEntryMap[EnumValue(RideType::Count)]{};
@@ -142,6 +148,10 @@ namespace RCT1
         ObjectEntryIndex _pathTypeToEntryMap[24]{};
         ObjectEntryIndex _pathAdditionTypeToEntryMap[16]{};
         ObjectEntryIndex _sceneryThemeTypeToEntryMap[24]{};
+        ObjectEntryIndex _terrainSurfaceTypeToEntryMap[16]{};
+        ObjectEntryIndex _terrainEdgeTypeToEntryMap[16]{};
+        ObjectEntryIndex _footpathSurfaceTypeToEntryMap[32]{};
+        ObjectEntryIndex _footpathRailingsTypeToEntryMap[4]{};
 
         // Research
         std::bitset<MAX_RIDE_OBJECTS> _researchRideEntryUsed{};
@@ -199,7 +209,6 @@ namespace RCT1
             Initialise();
 
             CreateAvailableObjectMappings();
-            LoadObjects();
 
             ImportRides();
             ImportRideMeasurements();
@@ -222,6 +231,10 @@ namespace RCT1
 
             map_count_remaining_land_rights();
             research_determine_first_of_type();
+
+            CheatsReset();
+            ClearRestrictedScenery();
+            RestrictAllMiscScenery();
         }
 
         bool GetDetails(scenario_index_entry* dst) override
@@ -343,11 +356,10 @@ namespace RCT1
 
             uint16_t mapSize = _s4.map_size == 0 ? RCT1_MAX_MAP_SIZE : _s4.map_size;
 
-            String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
+            gScenarioFileName = GetRCT1ScenarioName();
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
             auto context = OpenRCT2::GetContext();
-            context->GetObjectManager().UnloadAll();
             context->GetGameState()->InitAll(mapSize);
             gEditorStep = EditorStep::ObjectSelection;
             gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -375,6 +387,14 @@ namespace RCT1
             std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(
+                std::begin(_terrainSurfaceTypeToEntryMap), std::end(_terrainSurfaceTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(std::begin(_terrainEdgeTypeToEntryMap), std::end(_terrainEdgeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(
+                std::begin(_footpathSurfaceTypeToEntryMap), std::end(_footpathSurfaceTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(
+                std::begin(_footpathRailingsTypeToEntryMap), std::end(_footpathRailingsTypeToEntryMap),
+                OBJECT_ENTRY_INDEX_NULL);
         }
 
         /**
@@ -395,25 +415,42 @@ namespace RCT1
         {
             // Add default scenery groups
             _sceneryGroupEntries.AddRange({
-                "SCGTREES",
-                "SCGSHRUB",
-                "SCGGARDN",
-                "SCGFENCE",
-                "SCGWALLS",
-                "SCGPATHX",
+                "rct2.scenery_group.scgtrees",
+                "rct2.scenery_group.scgshrub",
+                "rct2.scenery_group.scggardn",
+                "rct2.scenery_group.scgfence",
+                "rct2.scenery_group.scgwalls",
+                "rct2.scenery_group.scgpathx",
             });
 
             // Add default footpaths
-            _pathEntries.AddRange({
-                "TARMAC  ",
-                "TARMACG ",
-                "TARMACB ",
-                "PATHCRZY",
-                "PATHSPCE",
-                "PATHDIRT",
-                "PATHASH ",
-                "ROAD    ",
-            });
+            _footpathSurfaceEntries.AddRange(
+                { "rct1.footpath_surface.tarmac", "rct1.footpath_surface.dirt", "rct1.footpath_surface.crazy_paving",
+                  "rct1.footpath_surface.tiles_brown", "rct1aa.footpath_surface.ash", "rct1aa.footpath_surface.tarmac_green",
+                  "rct1aa.footpath_surface.tarmac_brown", "rct1aa.footpath_surface.tiles_grey",
+                  "rct1aa.footpath_surface.tarmac_red", "rct1ll.footpath_surface.tiles_green",
+                  "rct1ll.footpath_surface.tiles_red", "rct1.footpath_surface.queue_blue", "rct1aa.footpath_surface.queue_red",
+                  "rct1aa.footpath_surface.queue_yellow", "rct1aa.footpath_surface.queue_green" });
+
+            _footpathRailingsEntries.AddRange({ "rct2.footpath_railings.wood", "rct1ll.footpath_railings.space",
+                                                "rct1ll.footpath_railings.bamboo", "rct2.footpath_railings.concrete" });
+
+            // Add default surfaces
+            _terrainSurfaceEntries.AddRange(
+                { "rct2.terrain_surface.grass", "rct2.terrain_surface.sand", "rct2.terrain_surface.dirt",
+                  "rct2.terrain_surface.rock", "rct2.terrain_surface.martian", "rct2.terrain_surface.chequerboard",
+                  "rct2.terrain_surface.grass_clumps", "rct2.terrain_surface.ice", "rct2.terrain_surface.grid_red",
+                  "rct2.terrain_surface.grid_yellow", "rct2.terrain_surface.grid_purple", "rct2.terrain_surface.grid_green",
+                  "rct2.terrain_surface.sand_red", "rct2.terrain_surface.sand_brown", "rct1aa.terrain_surface.roof_red",
+                  "rct1ll.terrain_surface.roof_grey", "rct1ll.terrain_surface.rust", "rct1ll.terrain_surface.wood" });
+
+            // Add default edges
+            _terrainEdgeEntries.AddRange({ "rct2.terrain_edge.rock", "rct2.terrain_edge.wood_red",
+                                           "rct2.terrain_edge.wood_black", "rct2.terrain_edge.ice", "rct1.terrain_edge.brick",
+                                           "rct1.terrain_edge.iron", "rct1aa.terrain_edge.grey", "rct1aa.terrain_edge.yellow",
+                                           "rct1aa.terrain_edge.red", "rct1ll.terrain_edge.purple", "rct1ll.terrain_edge.green",
+                                           "rct1ll.terrain_edge.stone_brown", "rct1ll.terrain_edge.stone_grey",
+                                           "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b" });
         }
 
         void AddAvailableEntriesFromResearchList()
@@ -469,13 +506,28 @@ namespace RCT1
             {
                 switch (tileElement->GetType())
                 {
+                    case TILE_ELEMENT_TYPE_SURFACE:
+                    {
+                        auto surfaceEl = tileElement->AsSurface();
+                        auto surfaceStyle = surfaceEl->GetSurfaceStyle();
+                        auto edgeStyle = surfaceEl->GetEdgeStyle();
+                        AddEntryForTerrainSurface(surfaceStyle);
+                        AddEntryForTerrainEdge(edgeStyle);
+                        break;
+                    }
                     case TILE_ELEMENT_TYPE_PATH:
                     {
                         uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                         uint8_t pathAdditionsType = tileElement->AsPath()->GetAddition();
+                        uint8_t footpathRailingsType = RCT1_PATH_SUPPORT_TYPE_TRUSS;
+                        if (_gameVersion == FILE_VERSION_RCT1_LL)
+                        {
+                            footpathRailingsType = tileElement->AsPath()->GetRCT1SupportType();
+                        }
 
-                        AddEntryForPath(pathType);
                         AddEntryForPathAddition(pathAdditionsType);
+                        AddEntryForPathSurface(pathType);
+                        AddEntryForFootpathRailings(footpathRailingsType);
                         break;
                     }
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
@@ -528,14 +580,14 @@ namespace RCT1
                 if (sceneryTheme != 0 && _sceneryThemeTypeToEntryMap[sceneryTheme] == OBJECT_ENTRY_INDEX_NULL)
                     continue;
 
-                std::vector<const char*> objects = RCT1::GetSceneryObjects(sceneryTheme);
-                for (const char* objectName : objects)
+                auto objects = RCT1::GetSceneryObjects(sceneryTheme);
+                for (auto objectName : objects)
                 {
                     auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
-                    auto foundObject = objectRepository.FindObjectLegacy(objectName);
+                    auto foundObject = objectRepository.FindObject(objectName);
                     if (foundObject != nullptr)
                     {
-                        ObjectType objectType = foundObject->ObjectEntry.GetType();
+                        auto objectType = foundObject->Type;
                         switch (objectType)
                         {
                             case ObjectType::SmallScenery:
@@ -559,14 +611,17 @@ namespace RCT1
                                 break;
                         }
                     }
+                    else
+                    {
+                        log_error("Cannot find object %s", objectName);
+                    }
                 }
             }
         }
 
         void AddEntryForWater()
         {
-            const char* entryName;
-
+            std::string_view entryName;
             if (_gameVersion < FILE_VERSION_RCT1_LL)
             {
                 entryName = RCT1::GetWaterObject(RCT1_WATER_CYAN);
@@ -575,7 +630,6 @@ namespace RCT1
             {
                 entryName = RCT1::GetWaterObject(_s4.water_colour);
             }
-
             _waterEntry.GetOrAddEntry(entryName);
         }
 
@@ -585,8 +639,8 @@ namespace RCT1
 
             if (_rideTypeToRideEntryMap[EnumValue(rideType)] == OBJECT_ENTRY_INDEX_NULL)
             {
-                const char* entryName = RCT1::GetRideTypeObject(rideType);
-                if (!String::Equals(entryName, "        "))
+                auto entryName = RCT1::GetRideTypeObject(rideType);
+                if (!entryName.empty())
                 {
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
                     _rideTypeToRideEntryMap[EnumValue(rideType)] = entryIndex;
@@ -600,8 +654,8 @@ namespace RCT1
 
             if (_vehicleTypeToRideEntryMap[vehicleType] == OBJECT_ENTRY_INDEX_NULL)
             {
-                const char* entryName = RCT1::GetVehicleObject(vehicleType);
-                if (!String::Equals(entryName, "        "))
+                auto entryName = RCT1::GetVehicleObject(vehicleType);
+                if (!entryName.empty())
                 {
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
                     _vehicleTypeToRideEntryMap[vehicleType] = entryIndex;
@@ -617,7 +671,7 @@ namespace RCT1
             assert(smallSceneryType < std::size(_smallSceneryTypeToEntryMap));
             if (_smallSceneryTypeToEntryMap[smallSceneryType] == OBJECT_ENTRY_INDEX_NULL)
             {
-                const char* entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
+                auto entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
                 auto entryIndex = _smallSceneryEntries.GetOrAddEntry(entryName);
 
                 _smallSceneryTypeToEntryMap[smallSceneryType] = entryIndex;
@@ -629,7 +683,7 @@ namespace RCT1
             assert(largeSceneryType < std::size(_largeSceneryTypeToEntryMap));
             if (_largeSceneryTypeToEntryMap[largeSceneryType] == OBJECT_ENTRY_INDEX_NULL)
             {
-                const char* entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
+                auto entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
                 auto entryIndex = _largeSceneryEntries.GetOrAddEntry(entryName);
 
                 _largeSceneryTypeToEntryMap[largeSceneryType] = entryIndex;
@@ -641,23 +695,23 @@ namespace RCT1
             assert(wallType < std::size(_wallTypeToEntryMap));
             if (_wallTypeToEntryMap[wallType] == OBJECT_ENTRY_INDEX_NULL)
             {
-                const char* entryName = RCT1::GetWallObject(wallType);
+                auto entryName = RCT1::GetWallObject(wallType);
                 auto entryIndex = _wallEntries.GetOrAddEntry(entryName);
 
                 _wallTypeToEntryMap[wallType] = entryIndex;
             }
         }
 
-        void AddEntryForPath(ObjectEntryIndex pathType)
+        void AddEntryForPathSurface(ObjectEntryIndex pathType)
         {
-            assert(pathType < std::size(_pathTypeToEntryMap));
-            if (_pathTypeToEntryMap[pathType] == OBJECT_ENTRY_INDEX_NULL)
+            assert(pathType < std::size(_footpathSurfaceTypeToEntryMap));
+            if (_footpathSurfaceTypeToEntryMap[pathType] == OBJECT_ENTRY_INDEX_NULL)
             {
-                const char* entryName = RCT1::GetPathObject(pathType);
-                if (!String::Equals(entryName, "        "))
+                auto identifier = RCT1::GetPathSurfaceObject(pathType);
+                if (!identifier.empty())
                 {
-                    auto entryIndex = _pathEntries.GetOrAddEntry(entryName);
-                    _pathTypeToEntryMap[pathType] = entryIndex;
+                    auto entryIndex = _footpathSurfaceEntries.GetOrAddEntry(identifier);
+                    _footpathSurfaceTypeToEntryMap[pathType] = entryIndex;
                 }
             }
         }
@@ -672,7 +726,7 @@ namespace RCT1
                 uint8_t normalisedPathAdditionType = RCT1::NormalisePathAddition(pathAdditionType);
                 if (_pathAdditionTypeToEntryMap[normalisedPathAdditionType] == OBJECT_ENTRY_INDEX_NULL)
                 {
-                    const char* entryName = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
+                    auto entryName = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
                     auto entryIndex = _pathAdditionEntries.GetOrAddEntry(entryName);
 
                     _pathAdditionTypeToEntryMap[normalisedPathAdditionType] = entryIndex;
@@ -691,7 +745,7 @@ namespace RCT1
             }
             else
             {
-                const char* entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
+                auto entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
                 if (_sceneryGroupEntries.GetCount() >= MAX_SCENERY_GROUP_OBJECTS)
                 {
                     Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", MAX_SCENERY_GROUP_OBJECTS);
@@ -701,6 +755,48 @@ namespace RCT1
                 {
                     auto entryIndex = _sceneryGroupEntries.GetOrAddEntry(entryName);
                     _sceneryThemeTypeToEntryMap[sceneryThemeType] = entryIndex;
+                }
+            }
+        }
+
+        void AddEntryForTerrainSurface(ObjectEntryIndex terrainSurfaceType)
+        {
+            assert(terrainSurfaceType < std::size(_terrainSurfaceTypeToEntryMap));
+            if (_terrainSurfaceTypeToEntryMap[terrainSurfaceType] == OBJECT_ENTRY_INDEX_NULL)
+            {
+                auto identifier = RCT1::GetTerrainSurfaceObject(terrainSurfaceType);
+                if (!identifier.empty())
+                {
+                    auto entryIndex = _terrainSurfaceEntries.GetOrAddEntry(identifier);
+                    _terrainSurfaceTypeToEntryMap[terrainSurfaceType] = entryIndex;
+                }
+            }
+        }
+
+        void AddEntryForTerrainEdge(ObjectEntryIndex terrainEdgeType)
+        {
+            assert(terrainEdgeType < std::size(_terrainEdgeTypeToEntryMap));
+            if (_terrainEdgeTypeToEntryMap[terrainEdgeType] == OBJECT_ENTRY_INDEX_NULL)
+            {
+                auto identifier = RCT1::GetTerrainEdgeObject(terrainEdgeType);
+                if (!identifier.empty())
+                {
+                    auto entryIndex = _terrainEdgeEntries.GetOrAddEntry(identifier);
+                    _terrainEdgeTypeToEntryMap[terrainEdgeType] = entryIndex;
+                }
+            }
+        }
+
+        void AddEntryForFootpathRailings(ObjectEntryIndex railingsType)
+        {
+            assert(railingsType < std::size(_footpathRailingsTypeToEntryMap));
+            if (_footpathRailingsTypeToEntryMap[railingsType] == OBJECT_ENTRY_INDEX_NULL)
+            {
+                auto identifier = RCT1::GetFootpathRailingsObject(railingsType);
+                if (!identifier.empty())
+                {
+                    auto entryIndex = _footpathRailingsEntries.GetOrAddEntry(identifier);
+                    _footpathRailingsTypeToEntryMap[railingsType] = entryIndex;
                 }
             }
         }
@@ -851,8 +947,8 @@ namespace RCT1
             dst->max_waiting_time = src->max_waiting_time;
             dst->operation_option = src->operation_option;
             dst->num_circuits = 1;
-            dst->SetMinCarsPerTrain(rideEntry->min_cars_in_train);
-            dst->SetMaxCarsPerTrain(rideEntry->max_cars_in_train);
+            dst->MinCarsPerTrain = rideEntry->min_cars_in_train;
+            dst->MaxCarsPerTrain = rideEntry->max_cars_in_train;
 
             // RCT1 used 5mph / 8 km/h for every lift hill
             dst->lift_hill_speed = 5;
@@ -1020,8 +1116,20 @@ namespace RCT1
                     dst->track_colour[i].additional = RCT1::GetColour(src->track_colour_additional[i]);
                     dst->track_colour[i].supports = RCT1::GetColour(src->track_colour_supports[i]);
                 }
+            }
+
+            dst->entrance_style = OBJECT_ENTRY_INDEX_NULL;
+            if (dst->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+            {
                 // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
-                dst->entrance_style = src->entrance_style;
+                if (_gameVersion == FILE_VERSION_RCT1)
+                {
+                    dst->entrance_style = 0; // plain entrance
+                }
+                else
+                {
+                    dst->entrance_style = src->entrance_style;
+                }
             }
 
             if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND)
@@ -1130,7 +1238,6 @@ namespace RCT1
             {
                 ImportEntity(_s4.sprites[i].unknown);
             }
-            FixImportStaff();
         }
 
         void SetVehicleColours(::Vehicle* dst, const RCT1::Vehicle* src)
@@ -1375,83 +1482,24 @@ namespace RCT1
             }
         }
 
-        void LoadObjects()
+        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const EntryList& entryList)
         {
-            auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-            objectManager.LoadDefaultObjects();
-
-            LoadObjects(ObjectType::Ride, _rideEntries);
-            LoadObjects(ObjectType::SmallScenery, _smallSceneryEntries);
-            LoadObjects(ObjectType::LargeScenery, _largeSceneryEntries);
-            LoadObjects(ObjectType::Walls, _wallEntries);
-            LoadObjects(ObjectType::Paths, _pathEntries);
-            LoadObjects(ObjectType::PathBits, _pathAdditionEntries);
-            LoadObjects(ObjectType::SceneryGroup, _sceneryGroupEntries);
-            LoadObjects(
-                ObjectType::Banners,
-                std::vector<const char*>({
-                    "BN1     ",
-                    "BN2     ",
-                    "BN3     ",
-                    "BN4     ",
-                    "BN5     ",
-                    "BN6     ",
-                    "BN7     ",
-                    "BN8     ",
-                    "BN9     ",
-                }));
-            LoadObjects(ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
-            LoadObjects(ObjectType::Water, _waterEntry);
+            AppendRequiredObjects(objectList, objectType, entryList.GetEntries());
         }
 
-        void LoadObjects(ObjectType objectType, const EntryList& entries)
+        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<std::string>& objectNames)
         {
-            LoadObjects(objectType, entries.GetEntries());
-        }
-
-        void LoadObjects(ObjectType objectType, const std::vector<const char*>& entries)
-        {
-            auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-
-            uint32_t entryIndex = 0;
-            for (const char* objectName : entries)
+            for (const auto& objectName : objectNames)
             {
-                rct_object_entry entry;
-                entry.flags = 0x00008000 + EnumValue(objectType);
-                std::copy_n(objectName, 8, entry.name);
-                entry.checksum = 0;
-
-                Object* object = objectManager.LoadObject(&entry);
-                if (object == nullptr && objectType != ObjectType::SceneryGroup)
-                {
-                    log_error("Failed to load %s.", objectName);
-                    throw std::runtime_error("Failed to load object.");
-                }
-
-                entryIndex++;
-            }
-        }
-
-        void AppendRequiredObjects(std::vector<rct_object_entry>& entries, ObjectType objectType, const EntryList& entryList)
-        {
-            AppendRequiredObjects(entries, objectType, entryList.GetEntries());
-        }
-
-        void AppendRequiredObjects(
-            std::vector<rct_object_entry>& entries, ObjectType objectType, const std::vector<const char*>& objectNames)
-        {
-            for (const auto objectName : objectNames)
-            {
-                rct_object_entry entry{};
-                entry.flags = ((static_cast<uint8_t>(ObjectSourceGame::RCT2) << 4) & 0xF0) | (EnumValue(objectType) & 0x0F);
-                entry.SetName(objectName);
-                entries.push_back(entry);
+                auto descriptor = ObjectEntryDescriptor(objectName);
+                descriptor.Type = objectType;
+                objectList.Add(descriptor);
             }
         }
 
         ObjectList GetRequiredObjects()
         {
-            std::vector<rct_object_entry> result;
+            ObjectList result;
             AppendRequiredObjects(result, ObjectType::Ride, _rideEntries);
             AppendRequiredObjects(result, ObjectType::SmallScenery, _smallSceneryEntries);
             AppendRequiredObjects(result, ObjectType::LargeScenery, _largeSceneryEntries);
@@ -1461,27 +1509,25 @@ namespace RCT1
             AppendRequiredObjects(result, ObjectType::SceneryGroup, _sceneryGroupEntries);
             AppendRequiredObjects(
                 result, ObjectType::Banners,
-                std::vector<const char*>({
-                    "BN1     ",
-                    "BN2     ",
-                    "BN3     ",
-                    "BN4     ",
-                    "BN5     ",
-                    "BN6     ",
-                    "BN7     ",
-                    "BN8     ",
-                    "BN9     ",
+                std::vector<std::string>({
+                    "rct2.footpath_banner.bn1",
+                    "rct2.footpath_banner.bn2",
+                    "rct2.footpath_banner.bn3",
+                    "rct2.footpath_banner.bn4",
+                    "rct2.footpath_banner.bn5",
+                    "rct2.footpath_banner.bn6",
+                    "rct2.footpath_banner.bn7",
+                    "rct2.footpath_banner.bn8",
+                    "rct2.footpath_banner.bn9",
                 }));
-            AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
+            AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.park_entrance.pkent1" }));
             AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
-
-            ObjectList objectList;
-            for (rct_object_entry entry : result)
-            {
-                objectList.Add(ObjectEntryDescriptor(entry));
-            }
-
-            return objectList;
+            AppendRequiredObjects(result, ObjectType::TerrainSurface, _terrainSurfaceEntries);
+            AppendRequiredObjects(result, ObjectType::TerrainEdge, _terrainEdgeEntries);
+            AppendRequiredObjects(result, ObjectType::FootpathSurface, _footpathSurfaceEntries);
+            AppendRequiredObjects(result, ObjectType::FootpathRailings, _footpathRailingsEntries);
+            RCT12AddDefaultObjects(result);
+            return result;
         }
 
         void ImportTileElements()
@@ -1555,9 +1601,12 @@ namespace RCT1
                     auto dst2 = dst->AsSurface();
                     auto src2 = src->AsSurface();
 
+                    auto surfaceStyle = _terrainSurfaceTypeToEntryMap[src2->GetSurfaceStyle()];
+                    auto edgeStyle = _terrainEdgeTypeToEntryMap[src2->GetEdgeStyle()];
+
                     dst2->SetSlope(src2->GetSlope());
-                    dst2->SetSurfaceStyle(RCT1::GetTerrain(src2->GetSurfaceStyle()));
-                    dst2->SetEdgeStyle(RCT1::GetTerrainEdge(src2->GetEdgeStyle()));
+                    dst2->SetSurfaceStyle(surfaceStyle);
+                    dst2->SetEdgeStyle(edgeStyle);
                     dst2->SetGrassLength(src2->GetGrassLength());
                     dst2->SetOwnership(src2->GetOwnership());
                     dst2->SetParkFences(src2->GetParkFences());
@@ -1586,7 +1635,7 @@ namespace RCT1
 
                     // Type
                     uint8_t pathType = src2->GetRCT1PathType();
-                    auto entryIndex = _pathTypeToEntryMap[pathType];
+                    auto entryIndex = _footpathSurfaceTypeToEntryMap[pathType];
 
                     dst2->SetDirection(0);
                     dst2->SetIsBroken(false);
@@ -1598,7 +1647,14 @@ namespace RCT1
                     {
                         dst2->SetIsQueue(true);
                     }
-                    // TODO: Set railings type
+
+                    uint8_t railingsType = RCT1_PATH_SUPPORT_TYPE_TRUSS;
+                    if (_gameVersion == FILE_VERSION_RCT1_LL)
+                    {
+                        railingsType = src2->GetRCT1SupportType();
+                    }
+                    auto railingsEntryIndex = _footpathRailingsTypeToEntryMap[railingsType];
+                    dst2->SetRailingsEntryIndex(railingsEntryIndex);
 
                     // Additions
                     ObjectEntryIndex additionType = dst2->GetAddition();
@@ -1713,8 +1769,8 @@ namespace RCT1
                         {
                             pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
                         }
-                        auto entryIndex = _pathTypeToEntryMap[pathType];
-                        dst2->SetLegacyPathEntryIndex(entryIndex & 0x7F);
+                        auto entryIndex = _footpathSurfaceTypeToEntryMap[pathType];
+                        dst2->SetSurfaceEntryIndex(entryIndex);
                     }
 
                     return 1;
@@ -2112,9 +2168,13 @@ namespace RCT1
             }
 
             // Number of guests history
-            for (size_t i = 0; i < 32; i++)
+            std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), std::numeric_limits<uint32_t>::max());
+            for (size_t i = 0; i < std::size(_s4.guests_in_park_history); i++)
             {
-                gGuestsInParkHistory[i] = _s4.guests_in_park_history[i];
+                if (_s4.guests_in_park_history[i] != std::numeric_limits<uint8_t>::max())
+                {
+                    gGuestsInParkHistory[i] = _s4.guests_in_park_history[i] * 20;
+                }
             }
 
             // News items
@@ -2343,7 +2403,10 @@ namespace RCT1
 
         void ImportBanner(Banner* dst, const RCT12Banner* src)
         {
+            auto id = dst->id;
+
             *dst = {};
+            dst->id = id;
             dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->type);
 
             dst->flags = 0;

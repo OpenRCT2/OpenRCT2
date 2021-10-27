@@ -288,6 +288,7 @@
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
+    <ClInclude Include="ParkFile.h" />
     <ClInclude Include="ParkImporter.h" />
     <ClInclude Include="peep\Guest.h" />
     <ClInclude Include="peep\GuestPathfinding.h" />
@@ -306,7 +307,6 @@
     <ClInclude Include="rct1\RCT1.h" />
     <ClInclude Include="rct1\Tables.h" />
     <ClInclude Include="rct2\RCT2.h" />
-    <ClInclude Include="rct2\S6Exporter.h" />
     <ClInclude Include="rct2\T6Exporter.h" />
     <ClInclude Include="ReplayManager.h" />
     <ClInclude Include="ride\CableLift.h" />
@@ -752,6 +752,7 @@
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Wall.cpp" />
     <ClCompile Include="paint\VirtualFloor.cpp" />
+    <ClCompile Include="ParkFile.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="peep\Guest.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />
@@ -779,7 +780,6 @@
     <ClCompile Include="rct1\T4Importer.cpp" />
     <ClCompile Include="rct1\Tables.cpp" />
     <ClCompile Include="rct2\RCT2.cpp" />
-    <ClCompile Include="rct2\S6Exporter.cpp" />
     <ClCompile Include="rct2\S6Importer.cpp" />
     <ClCompile Include="rct2\SeaDecrypt.cpp" />
     <ClCompile Include="rct2\T6Exporter.cpp" />

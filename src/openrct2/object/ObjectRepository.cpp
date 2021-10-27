@@ -612,10 +612,8 @@ private:
             // Convert to UTF-8 filename
             return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
         }
-        else
-        {
-            return std::string(name);
-        }
+
+        return std::string(name);
     }
 
     void WritePackedObject(OpenRCT2::IStream* stream, const rct_object_entry* entry)

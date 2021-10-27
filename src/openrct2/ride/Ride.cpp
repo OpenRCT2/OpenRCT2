@@ -1025,8 +1025,12 @@ void Ride::Update()
 
     // Various things include news messages
     if (lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
-        if (((gCurrentTicks >> 1) & 255) == static_cast<uint32_t>(id))
+    {
+        // Breakdown updates are distributed, only one ride can update the breakdown status per tick.
+        const auto updatingRideId = (gCurrentTicks / 2) % MAX_RIDES;
+        if (static_cast<ride_id_t>(updatingRideId) == id)
             ride_breakdown_status_update(this);
+    }
 
     ride_inspection_update(this);
 
@@ -1273,6 +1277,7 @@ static void ride_breakdown_update(Ride* ride)
 {
     if (gCurrentTicks & 255)
         return;
+
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         return;
 
@@ -5007,8 +5012,8 @@ void Ride::UpdateMaxVehicles()
     {
         int32_t trainLength;
         num_cars_per_train = std::max(rideEntry->min_cars_in_train, num_cars_per_train);
-        SetMinCarsPerTrain(rideEntry->min_cars_in_train);
-        SetMaxCarsPerTrain(rideEntry->max_cars_in_train);
+        MinCarsPerTrain = rideEntry->min_cars_in_train;
+        MaxCarsPerTrain = rideEntry->max_cars_in_train;
 
         // Calculate maximum train length based on smallest station length
         auto stationNumTiles = ride_get_smallest_station_length(this);
@@ -5041,8 +5046,8 @@ void Ride::UpdateMaxVehicles()
         {
             newCarsPerTrain = std::min(maxCarsPerTrain, newCarsPerTrain);
         }
-        SetMaxCarsPerTrain(maxCarsPerTrain);
-        SetMinCarsPerTrain(rideEntry->min_cars_in_train);
+        MaxCarsPerTrain = maxCarsPerTrain;
+        MinCarsPerTrain = rideEntry->min_cars_in_train;
 
         switch (mode)
         {
@@ -5120,8 +5125,8 @@ void Ride::UpdateMaxVehicles()
     else
     {
         max_trains = rideEntry->cars_per_flat_ride;
-        SetMinCarsPerTrain(rideEntry->min_cars_in_train);
-        SetMaxCarsPerTrain(rideEntry->max_cars_in_train);
+        MinCarsPerTrain = rideEntry->min_cars_in_train;
+        MaxCarsPerTrain = rideEntry->max_cars_in_train;
         numCarsPerTrain = rideEntry->max_cars_in_train;
         maxNumTrains = rideEntry->cars_per_flat_ride;
     }
@@ -5412,12 +5417,7 @@ bool ride_has_adjacent_station(Ride* ride)
 bool ride_has_station_shelter(Ride* ride)
 {
     auto stationObj = ride_get_station_object(ride);
-    if (network_get_mode() != NETWORK_MODE_NONE)
-    {
-        // The server might run in headless mode so no images will be loaded, only check for stations.
-        return stationObj != nullptr;
-    }
-    return stationObj != nullptr && stationObj->BaseImageId != 0;
+    return stationObj != nullptr && (stationObj->Flags & STATION_OBJECT_FLAGS::HAS_SHELTER);
 }
 
 bool ride_has_ratings(const Ride* ride)
@@ -5749,28 +5749,6 @@ const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
     return ::GetRideTypeDescriptor(type);
 }
 
-uint8_t Ride::GetMinCarsPerTrain() const
-{
-    return min_max_cars_per_train >> 4;
-}
-
-uint8_t Ride::GetMaxCarsPerTrain() const
-{
-    return min_max_cars_per_train & 0xF;
-}
-
-void Ride::SetMinCarsPerTrain(uint8_t newValue)
-{
-    min_max_cars_per_train &= ~0xF0;
-    min_max_cars_per_train |= (newValue << 4);
-}
-
-void Ride::SetMaxCarsPerTrain(uint8_t newValue)
-{
-    min_max_cars_per_train &= ~0x0F;
-    min_max_cars_per_train |= newValue & 0x0F;
-}
-
 uint8_t Ride::GetNumShelteredSections() const
 {
     return num_sheltered_sections & ShelteredSectionsBits::NumShelteredSectionsMask;
@@ -5809,4 +5787,38 @@ void Ride::UpdateRideTypeForAllPieces()
             } while (!(tileElement++)->IsLastForTile());
         }
     }
+}
+
+std::vector<ride_id_t> GetTracklessRides()
+{
+    // Iterate map and build list of seen ride IDs
+    std::vector<bool> seen;
+    seen.resize(256);
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        auto trackEl = it.element->AsTrack();
+        if (trackEl != nullptr && !trackEl->IsGhost())
+        {
+            auto rideId = static_cast<size_t>(trackEl->GetRideIndex());
+            if (rideId >= seen.size())
+            {
+                seen.resize(rideId + 1);
+            }
+            seen[rideId] = true;
+        }
+    }
+
+    // Get all rides that did not get seen during map iteration
+    const auto& rideManager = GetRideManager();
+    std::vector<ride_id_t> result;
+    for (const auto& ride : rideManager)
+    {
+        if (seen.size() <= static_cast<size_t>(ride.id) || !seen[static_cast<size_t>(ride.id)])
+        {
+            result.push_back(ride.id);
+        }
+    }
+    return result;
 }

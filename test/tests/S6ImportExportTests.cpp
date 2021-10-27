@@ -16,6 +16,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/GameStateSnapshots.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/ParkFile.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/config/Config.h>
@@ -27,9 +28,10 @@
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/platform.h>
-#include <openrct2/rct2/S6Exporter.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/EntityTweener.h>
+#include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Sprite.h>
 #include <stdio.h>
 #include <string>
@@ -70,7 +72,7 @@ static void GameInit(bool retainSpatialIndices)
     gGameSpeed = 1;
 }
 
-static bool ImportSave(MemoryStream& stream, std::unique_ptr<IContext>& context, bool retainSpatialIndices)
+static bool ImportS6(MemoryStream& stream, std::unique_ptr<IContext>& context, bool retainSpatialIndices)
 {
     stream.SetPosition(0);
 
@@ -86,14 +88,29 @@ static bool ImportSave(MemoryStream& stream, std::unique_ptr<IContext>& context,
     return true;
 }
 
+static bool ImportPark(MemoryStream& stream, std::unique_ptr<IContext>& context, bool retainSpatialIndices)
+{
+    stream.SetPosition(0);
+
+    auto& objManager = context->GetObjectManager();
+
+    auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
+    auto loadResult = importer->LoadFromStream(&stream, false);
+    objManager.LoadObjects(loadResult.RequiredObjects);
+    importer->Import();
+
+    GameInit(retainSpatialIndices);
+
+    return true;
+}
+
 static bool ExportSave(MemoryStream& stream, std::unique_ptr<IContext>& context)
 {
     auto& objManager = context->GetObjectManager();
 
-    auto exporter = std::make_unique<S6Exporter>();
+    auto exporter = std::make_unique<ParkFileExporter>();
     exporter->ExportObjectsList = objManager.GetPackableObjects();
-    exporter->Export();
-    exporter->SaveGame(&stream);
+    exporter->Export(stream);
 
     return true;
 }
@@ -185,7 +202,7 @@ TEST(S6ImportExportBasic, all)
 
         std::string testParkPath = TestData::GetParkPath("BigMapTest.sv6");
         ASSERT_TRUE(LoadFileToBuffer(importBuffer, testParkPath));
-        ASSERT_TRUE(ImportSave(importBuffer, context, false));
+        ASSERT_TRUE(ImportS6(importBuffer, context, false));
         RecordGameStateSnapshot(context, snapshotStream);
 
         ASSERT_TRUE(ExportSave(exportBuffer, context));
@@ -199,7 +216,7 @@ TEST(S6ImportExportBasic, all)
         bool initialised = context->Initialise();
         ASSERT_TRUE(initialised);
 
-        ASSERT_TRUE(ImportSave(exportBuffer, context, true));
+        ASSERT_TRUE(ImportPark(exportBuffer, context, true));
 
         RecordGameStateSnapshot(context, snapshotStream);
     }
@@ -231,7 +248,7 @@ TEST(S6ImportExportAdvanceTicks, all)
 
         std::string testParkPath = TestData::GetParkPath("BigMapTest.sv6");
         ASSERT_TRUE(LoadFileToBuffer(importBuffer, testParkPath));
-        ASSERT_TRUE(ImportSave(importBuffer, context, false));
+        ASSERT_TRUE(ImportS6(importBuffer, context, false));
         AdvanceGameTicks(1000, context);
         ASSERT_TRUE(ExportSave(exportBuffer, context));
 
@@ -246,7 +263,7 @@ TEST(S6ImportExportAdvanceTicks, all)
         bool initialised = context->Initialise();
         ASSERT_TRUE(initialised);
 
-        ASSERT_TRUE(ImportSave(exportBuffer, context, true));
+        ASSERT_TRUE(ImportPark(exportBuffer, context, true));
 
         RecordGameStateSnapshot(context, snapshotStream);
     }

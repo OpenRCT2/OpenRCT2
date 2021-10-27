@@ -29,7 +29,6 @@ struct TrackDesignEntranceElement
     bool isExit;
 };
 
-/* Track Scenery entry  size: 0x16 */
 struct TrackDesignSceneryElement
 {
     ObjectEntryDescriptor scenery_object;
