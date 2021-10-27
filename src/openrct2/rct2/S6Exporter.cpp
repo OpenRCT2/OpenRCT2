@@ -1108,7 +1108,7 @@ void S6Exporter::RebuildEntitySpatialLocation(const TileCoordsXY& loc)
 
 void S6Exporter::ExportStaffPatrolAreas()
 {
-    std::fill(std::begin(_s6.staff_modes), std::end(_s6.staff_modes), EnumValue(RCT2StaffMode::None));
+    std::fill(std::begin(_s6.staff_modes), std::end(_s6.staff_modes), RCT2StaffMode::None);
     std::fill(std::begin(_s6.patrol_areas), std::end(_s6.patrol_areas), 0);
 
     auto staffId = 0;
@@ -1119,11 +1119,11 @@ void S6Exporter::ExportStaffPatrolAreas()
             const size_t staffPatrolOffset = staffId * STAFF_PATROL_AREA_SIZE;
             std::copy(
                 std::begin(staff->PatrolInfo->Data), std::end(staff->PatrolInfo->Data), &_s6.patrol_areas[staffPatrolOffset]);
-            _s6.staff_modes[staffId] = EnumValue(RCT2StaffMode::Patrol);
+            _s6.staff_modes[staffId] = RCT2StaffMode::Patrol;
         }
         else
         {
-            _s6.staff_modes[staffId] = EnumValue(RCT2StaffMode::Walk);
+            _s6.staff_modes[staffId] = RCT2StaffMode::Walk;
         }
 
         _s6.sprites[staff->sprite_index].peep.staff_id = staffId;
@@ -1139,11 +1139,11 @@ void S6Exporter::ExportStaffPatrolAreas()
         std::copy(std::begin(area.Data), std::end(area.Data), &_s6.patrol_areas[staffPatrolOffset]);
         if (std::any_of(std::begin(area.Data), std::end(area.Data), hasData))
         {
-            _s6.staff_modes[EnumValue(type) + STAFF_MAX_COUNT] = EnumValue(RCT2StaffMode::Patrol);
+            _s6.staff_modes[EnumValue(type) + STAFF_MAX_COUNT] = RCT2StaffMode::Patrol;
         }
         else
         {
-            _s6.staff_modes[EnumValue(type) + STAFF_MAX_COUNT] = EnumValue(RCT2StaffMode::Walk);
+            _s6.staff_modes[EnumValue(type) + STAFF_MAX_COUNT] = RCT2StaffMode::Walk;
         }
     }
 }

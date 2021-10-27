@@ -1445,6 +1445,12 @@ public:
 
     void ImportStaffPatrolArea(Staff* staffmember, uint8_t staffId)
     {
+        // First check staff mode as vanilla did not clean up patrol areas when switching from patrol to walk
+        // without doing this we could accidentally add a patrol when it didn't exist.
+        if (_s6.staff_modes[staffId] != RCT2StaffMode::Patrol)
+        {
+            return;
+        }
         int32_t peepOffset = staffId * RCT12_PATROL_AREA_SIZE;
         for (int32_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
         {

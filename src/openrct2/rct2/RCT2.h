@@ -1032,7 +1032,7 @@ struct rct_s6_data
     uint32_t next_guest_index;
     uint16_t grass_and_scenery_tilepos;
     uint32_t patrol_areas[(RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];
-    uint8_t staff_modes[RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT];
+    RCT2StaffMode staff_modes[RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT];
     uint8_t pad_13CA73E;
     uint8_t pad_13CA73F;
     uint8_t byte_13CA740;

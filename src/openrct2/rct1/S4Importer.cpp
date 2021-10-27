@@ -1247,6 +1247,9 @@ namespace RCT1
 
         void ImportStaffPatrolArea(Staff* staffmember, uint8_t staffId)
         {
+            // TODO: It is likely that S4 files should have a staffmode check before setting
+            // patrol areas. See S6 importer.
+
             // The patrol areas in RCT1 are encoded as follows, for coordinates x and y, separately for every staff member:
             // - Chop off the 7 lowest bits of the x and y coordinates, which leaves 5 bits per coordinate.
             //   This step also "produces" the 4x4 patrol squares.
