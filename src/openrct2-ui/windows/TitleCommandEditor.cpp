@@ -20,6 +20,7 @@
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/peep/Peep.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>

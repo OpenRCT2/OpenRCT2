@@ -20,8 +20,8 @@
 #include "Guest.h"
 #include "Staff.h"
 
-#include <cstring>
 #include <bitset>
+#include <cstring>
 
 static bool _peepPathFindIsStaff;
 static int8_t _peepPathFindNumJunctions;

@@ -11,7 +11,6 @@
 
 #include "../Game.h"
 #include "../common.h"
-#include "../peep/Peep.h"
 #include "../world/Map.h"
 
 #include <string>
@@ -19,6 +18,7 @@
 #include <unordered_map>
 
 struct NetworkPacket;
+struct Peep;
 
 class NetworkPlayer final
 {
