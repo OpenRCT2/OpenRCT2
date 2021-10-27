@@ -308,8 +308,10 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
     }
     res->Cost += canBuild->Cost;
 
-    gFootpathGroundFlags = canBuild->GroundFlags;
-    if (!gCheatsDisableClearanceChecks && (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER))
+    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+
+    gFootpathGroundFlags = clearanceData.GroundFlags;
+    if (!gCheatsDisableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
     {
         return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
     }
@@ -375,7 +377,8 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
     }
     res->Cost += canBuild->Cost;
 
-    gFootpathGroundFlags = canBuild->GroundFlags;
+    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    gFootpathGroundFlags = clearanceData.GroundFlags;
 
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)

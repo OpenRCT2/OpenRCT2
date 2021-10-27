@@ -251,7 +251,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             }
         }
 
-        uint8_t mapGroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
         {
             return MakeResult(
@@ -272,7 +273,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
 
         if (ted.Flags & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
         { // No element has this flag
-            if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER)
+            if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
             {
                 return MakeResult(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -280,7 +281,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             }
         }
 
-        if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER && !gCheatsDisableClearanceChecks)
+        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !gCheatsDisableClearanceChecks)
         {
             return MakeResult(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -476,7 +477,8 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             }
         }
 
-        uint8_t mapGroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
         {
             return MakeResult(

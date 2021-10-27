@@ -25,10 +25,15 @@ using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coord
 int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 
-[[nodiscard]] std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
+struct ConstructClearResult
+{
+    uint8_t GroundFlags{ 0 };
+};
+
+[[nodiscard]] GameActions::Result::Ptr MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
     uint8_t crossingMode = CREATE_CROSSING_MODE_NONE, bool isTree = false);
 
-[[nodiscard]] std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
+[[nodiscard]] GameActions::Result::Ptr MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 
 void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Result& res);

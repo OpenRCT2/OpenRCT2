@@ -114,14 +114,15 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
             return constructResult;
         }
 
-        if (constructResult->GroundFlags & ELEMENT_IS_UNDERWATER)
+        const auto clearanceData = constructResult->GetData<ConstructClearResult>();
+        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
         {
             res->Error = GameActions::Status::NoClearance;
             res->ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
             return res;
         }
 
-        if (constructResult->GroundFlags & ELEMENT_IS_UNDERGROUND)
+        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
             res->Error = GameActions::Status::NoClearance;
             res->ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
