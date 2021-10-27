@@ -6979,7 +6979,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->PathCheckOptimisation = 0;
     peep->InteractionRideIndex = RIDE_ID_NULL;
     peep->PreviousRide = RIDE_ID_NULL;
-    peep->std::get<0>(Thoughts).type = PeepThoughtType::None;
+    std::get<0>(peep->Thoughts).type = PeepThoughtType::None;
     peep->WindowInvalidateFlags = 0;
 
     uint8_t intensityHighest = (scenario_rand() & 0x7) + 3;
