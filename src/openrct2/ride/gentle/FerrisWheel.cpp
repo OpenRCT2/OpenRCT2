@@ -10,7 +10,7 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../peep/Peep.h"
+#include "../../peep/Guest.h"
 #include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"

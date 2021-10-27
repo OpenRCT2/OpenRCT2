@@ -11,7 +11,7 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../peep/Peep.h"
+#include "../../peep/Guest.h"
 #include "../../world/Entity.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"

@@ -35,7 +35,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../peep/Peep.h"
+#include "../peep/Guest.h"
 #include "../peep/RideUseSystem.h"
 #include "../peep/Staff.h"
 #include "../rct12/RCT12.h"
@@ -71,6 +71,7 @@
 #include "../world/Surface.h"
 
 #include <algorithm>
+#include <bitset>
 
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
 

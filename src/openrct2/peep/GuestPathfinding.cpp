@@ -17,10 +17,11 @@
 #include "../util/Util.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
-#include "Peep.h"
+#include "Guest.h"
 #include "Staff.h"
 
 #include <cstring>
+#include <bitset>
 
 static bool _peepPathFindIsStaff;
 static int8_t _peepPathFindNumJunctions;

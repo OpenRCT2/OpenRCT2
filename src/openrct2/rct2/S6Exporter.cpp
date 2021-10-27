@@ -33,7 +33,7 @@
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../peep/Peep.h"
+#include "../peep/Guest.h"
 #include "../peep/RideUseSystem.h"
 #include "../peep/Staff.h"
 #include "../rct12/SawyerChunkWriter.h"

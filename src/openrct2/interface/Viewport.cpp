@@ -19,6 +19,7 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../paint/Paint.h"
+#include "../peep/Guest.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"

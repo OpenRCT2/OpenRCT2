@@ -27,6 +27,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "peep/Staff.h"
+#include "peep/Guest.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
 #include "ui/UiContext.h"

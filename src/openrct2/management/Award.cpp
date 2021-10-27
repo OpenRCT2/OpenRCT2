@@ -13,7 +13,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
-#include "../peep/Peep.h"
+#include "../peep/Guest.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../scenario/Scenario.h"

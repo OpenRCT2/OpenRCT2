@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <bitset>
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>

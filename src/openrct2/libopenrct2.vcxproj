@@ -289,6 +289,7 @@
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
     <ClInclude Include="ParkImporter.h" />
+    <ClInclude Include="peep\Guest.h" />
     <ClInclude Include="peep\GuestPathfinding.h" />
     <ClInclude Include="peep\Peep.h" />
     <ClInclude Include="peep\RideUseSystem.h" />

@@ -31,6 +31,7 @@
 #include "../network/network.h"
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
+#include "../peep/Guest.h"
 #include "../peep/Staff.h"
 #include "../platform/platform.h"
 #include "../rct1/RCT1.h"

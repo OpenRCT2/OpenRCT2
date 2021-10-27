@@ -10,7 +10,7 @@
 #include "GameStateSnapshots.h"
 
 #include "core/CircularBuffer.h"
-#include "peep/Peep.h"
+#include "peep/Guest.h"
 #include "peep/Staff.h"
 #include "ride/Vehicle.h"
 #include "world/Balloon.h"

@@ -10,7 +10,7 @@
 #include "Station.h"
 
 #include "../Game.h"
-#include "../peep/Peep.h"
+#include "../peep/Guest.h"
 #include "../scenario/Scenario.h"
 #include "../world/Location.hpp"
 #include "Track.h"
