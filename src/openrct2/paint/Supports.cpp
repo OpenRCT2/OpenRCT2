@@ -465,7 +465,7 @@ bool wooden_a_supports_paint_setup(
         imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS) && (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS))
     {
         return false;
     }
@@ -636,7 +636,7 @@ bool wooden_b_supports_paint_setup(
         imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS) && (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS))
     {
         return false;
     }
@@ -815,7 +815,7 @@ bool metal_a_supports_paint_setup(
         imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS) && (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS))
     {
         return false;
     }
@@ -1020,7 +1020,7 @@ bool metal_b_supports_paint_setup(
         imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS) && (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS))
     {
         return false; // AND
     }
@@ -1206,7 +1206,7 @@ bool path_a_supports_paint_setup(
         imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS) && (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS))
     {
         return false;
     }
@@ -1361,7 +1361,7 @@ bool path_b_supports_paint_setup(
         imageColourFlags |= gColourifyImageSeeThroughFlags;
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS) && (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS))
     {
         return false; // AND
     }

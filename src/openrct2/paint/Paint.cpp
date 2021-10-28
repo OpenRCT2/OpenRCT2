@@ -668,7 +668,7 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imag
 static uint32_t PaintPSColourifyImage(
     uint32_t imageId, ViewportInteractionItem spriteType, std::optional<EntityType> entityType, uint32_t viewFlags)
 {
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES))
+    if ((viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES))
     {
         if (spriteType == ViewportInteractionItem::Ride)
         {
@@ -676,7 +676,7 @@ static uint32_t PaintPSColourifyImage(
             imageId |= gColourifyImageSeeThroughFlags;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES))
+    if ((viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES) && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES))
     {
         if (spriteType == ViewportInteractionItem::Entity)
         {
@@ -723,7 +723,7 @@ static uint32_t PaintPSColourifyImage(
                 break;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS && viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS)
+    if ((viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS) && (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS))
     {
         switch (spriteType)
         {
@@ -736,7 +736,7 @@ static uint32_t PaintPSColourifyImage(
                 break;
         }
     }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY && viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY)
+    if ((viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) && (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY))
     {
         switch (spriteType)
         {

@@ -70,7 +70,7 @@ void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
             }
         }
 
-        if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES)
+        if ((session->ViewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES) && (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES)
             && spr->Type == EntityType::Vehicle)
         {
             const auto veh = spr->As<Vehicle>();
