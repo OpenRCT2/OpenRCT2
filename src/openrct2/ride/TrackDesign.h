@@ -21,16 +21,16 @@ struct Ride;
 
 struct TrackDesignState
 {
-    CoordsXYZ _trackPreviewMin;
-    CoordsXYZ _trackPreviewMax;
-    CoordsXYZ _trackPreviewOrigin;
-    uint8_t _trackDesignPlaceOperation{};
-    int16_t _trackDesignPlaceZ{};
-    int16_t _trackDesignPlaceSceneryZ{};
-    bool _trackDesignPlaceStateEntranceExitPlaced{};
-    bool _trackDesignPlaceStateHasScenery{};
-    bool _trackDesignPlaceStatePlaceScenery{};
-    bool _trackDesignPlaceIsReplay{};
+    CoordsXYZ PreviewMin;
+    CoordsXYZ PreviewMax;
+    CoordsXYZ Origin;
+    uint8_t PlaceOperation{};
+    int16_t PlaceZ{};
+    int16_t PlaceSceneryZ{};
+    bool EntranceExitPlaced{};
+    bool HasScenery{};
+    bool PlaceScenery{};
+    bool IsReplay{};
 };
 
 /* Track Entrance entry */
