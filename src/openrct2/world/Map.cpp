@@ -803,8 +803,6 @@ bool map_is_location_in_park(const CoordsXY& coords)
         if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
             return true;
     }
-
-    gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
     return false;
 }
 
