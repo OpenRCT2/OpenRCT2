@@ -19,6 +19,20 @@ struct Ride;
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
+struct TrackDesignState
+{
+    CoordsXYZ _trackPreviewMin;
+    CoordsXYZ _trackPreviewMax;
+    CoordsXYZ _trackPreviewOrigin;
+    uint8_t _trackDesignPlaceOperation{};
+    int16_t _trackDesignPlaceZ{};
+    int16_t _trackDesignPlaceSceneryZ{};
+    bool _trackDesignPlaceStateEntranceExitPlaced{};
+    bool _trackDesignPlaceStateHasScenery{};
+    bool _trackDesignPlaceStatePlaceScenery{};
+    bool _trackDesignPlaceIsReplay{};
+};
+
 /* Track Entrance entry */
 struct TrackDesignEntranceElement
 {
@@ -134,14 +148,14 @@ struct TrackDesign
     std::string name;
 
 public:
-    rct_string_id CreateTrackDesign(const Ride& ride);
-    rct_string_id CreateTrackDesignScenery();
+    rct_string_id CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
+    rct_string_id CreateTrackDesignScenery(TrackDesignState& tds);
     void Serialise(DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;
-    rct_string_id CreateTrackDesignTrack(const Ride& ride);
-    rct_string_id CreateTrackDesignMaze(const Ride& ride);
+    rct_string_id CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
+    rct_string_id CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
     CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 

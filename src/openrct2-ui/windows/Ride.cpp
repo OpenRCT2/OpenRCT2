@@ -5325,7 +5325,8 @@ static void window_ride_measurements_design_save(rct_window* w)
 
     if (gTrackDesignSaveMode)
     {
-        auto errMessage = _trackDesign->CreateTrackDesignScenery();
+        TrackDesignState tds{};
+        auto errMessage = _trackDesign->CreateTrackDesignScenery(tds);
         if (errMessage != STR_NONE)
         {
             context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage, {});
