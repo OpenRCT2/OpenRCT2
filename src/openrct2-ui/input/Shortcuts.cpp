@@ -654,7 +654,7 @@ static void ShortcutToggleInvisibleSupports()
     auto w = window_get_main();
     if (w != nullptr)
     {
-        if (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS || w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        if ((w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS) || (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS))
             w->viewport->flags = w->viewport->flags & ~(VIEWPORT_FLAG_SEETHROUGH_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
         else
             w->viewport->flags |= (VIEWPORT_FLAG_SEETHROUGH_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);

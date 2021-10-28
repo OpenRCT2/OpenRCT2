@@ -114,7 +114,7 @@ public:
                 Close();
                 break;
             default:
-                OnMouseUpMain(widgetIndex);
+                ToggleViewportFlag(widgetIndex);
                 break;
         }
     }
@@ -157,7 +157,7 @@ public:
     }
 
 private:
-    void OnMouseUpMain(rct_widgetindex widgetIndex)
+    void ToggleViewportFlag(rct_widgetindex widgetIndex)
     {
         uint32_t wflags = 0;
         rct_window* w = window_get_main();
@@ -210,6 +210,9 @@ private:
                 break;
             case WIDX_INVISIBLE_STAFF:
                 wflags ^= VIEWPORT_FLAG_INVISIBLE_STAFF;
+                break;
+            default:
+                return;
                 break;
         }
 
