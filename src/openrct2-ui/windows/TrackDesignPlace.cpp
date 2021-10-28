@@ -309,7 +309,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), trackLoc);
+    TrackDesignPreviewDrawOutlines(_trackDesign.get(), GetOrAllocateRide(PreviewRideId), trackLoc);
 }
 
 /**

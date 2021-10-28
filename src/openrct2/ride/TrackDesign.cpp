@@ -315,7 +315,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
         }
     }
 
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
+    TrackDesignPreviewDrawOutlines(this, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
 
     // Resave global vars for scenery reasons.
     tds.Origin = startPos;
@@ -434,7 +434,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ri
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = tds.Origin.z;
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
+    TrackDesignPreviewDrawOutlines(this, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
     tds.Origin = { startLoc.x, startLoc.y, startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -1963,6 +1963,12 @@ money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
 {
     TrackDesignState tds{};
     return place_virtual_track(tds, td6, ptdOperation, placeScenery, ride, coords);
+}
+
+void TrackDesignPreviewDrawOutlines(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords)
+{
+    TrackDesignState tds{};
+    place_virtual_track(tds, td6, PTD_OPERATION_DRAW_OUTLINES, true, ride, coords);
 }
 
 int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords)

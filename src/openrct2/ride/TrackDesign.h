@@ -225,6 +225,8 @@ extern ride_id_t gTrackDesignSaveRideIndex;
 void TrackDesignMirror(TrackDesign* td6);
 
 money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords);
+
+void TrackDesignPreviewDrawOutlines(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords);
 int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
