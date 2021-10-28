@@ -977,18 +977,18 @@ static void TrackDesignUpdatePreviewBounds(TrackDesignState& tds, const CoordsXY
                        std::max(tds.PreviewMax.z, coords.z) };
 }
 
-static bool TrackDesignPlaceSceneryElementRemoveGhost(
+static GameActions::Result::Ptr TrackDesignPlaceSceneryElementRemoveGhost(
     CoordsXY mapCoord, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
     auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
     if (!entryInfo)
     {
-        return true;
+        return std::make_unique<GameActions::Result>();
     }
 
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
-        return true;
+        return std::make_unique<GameActions::Result>();
     }
 
     int32_t z = (scenery.z * COORDS_Z_STEP) + originZ;
@@ -1025,11 +1025,11 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
-            return true;
+            return std::make_unique<GameActions::Result>();
     }
+
     ga->SetFlags(flags);
-    GameActions::ExecuteNested(ga.get());
-    return true;
+    return GameActions::ExecuteNested(ga.get());
 }
 
 static bool TrackDesignPlaceSceneryElementGetPlaceZ(TrackDesignState& tds, const TrackDesignSceneryElement& scenery)
@@ -1056,10 +1056,11 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
 
     if (tds.PlaceOperation == PTD_OPERATION_REMOVE_GHOST && mode == 0)
     {
-        if (TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ))
-            return 0;
+        auto res = TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ);
+        if (res->Error != GameActions::Status::Ok)
+            return std::nullopt;
 
-        return std::nullopt;
+        return res->Cost;
     }
 
     if (tds.PlaceOperation == PTD_OPERATION_GET_PLACE_Z)
