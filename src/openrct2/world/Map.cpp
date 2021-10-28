@@ -786,8 +786,6 @@ bool map_is_location_owned(const CoordsXYZ& loc)
             }
         }
     }
-
-    gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
     return false;
 }
 
