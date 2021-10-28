@@ -1862,42 +1862,31 @@ static std::optional<money32> track_design_place_ride(
     return totalCost;
 }
 
-/**
- * Places a virtual track. This can involve highlighting the surface tiles and showing the track layout. It is also used by
- * the track preview window to place the whole track.
- * Depending on the value of bl it modifies the function.
- * bl == 0, Draw outlines on the ground
- * bl == 1,
- * bl == 2,
- * bl == 3, Returns the z value of a successful placement. Only lower 16 bits are the value, the rest may be garbage?
- * bl == 4,
- * bl == 5, Returns cost to create the track. All 32 bits are used. Places the track. (used by the preview)
- * bl == 6, Clear white outlined track.
- *  rct2: 0x006D01B3
- */
-money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
+static money32 place_virtual_track(
+    TrackDesignState& tds, TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
 {
     _trackDesignPlaceStateSceneryUnavailable = false;
     _trackDesignPlaceStateEntranceExitPlaced = false;
 
-    TrackDesignState tds{};
     tds._trackDesignPlaceStatePlaceScenery = placeScenery;
     tds._trackDesignPlaceStateEntranceExitPlaced = false;
     tds._trackDesignPlaceStateHasScenery = false;
+
     tds._trackDesignPlaceIsReplay = ptdOperation & PTD_OPERATION_FLAG_IS_REPLAY;
     ptdOperation &= ~PTD_OPERATION_FLAG_IS_REPLAY;
     tds._trackDesignPlaceOperation = ptdOperation;
+
+    tds._trackPreviewMin = coords;
+    tds._trackPreviewMax = coords;
+    tds._trackDesignPlaceSceneryZ = 0;
 
     if (gTrackDesignSceneryToggle)
     {
         tds._trackDesignPlaceStatePlaceScenery = false;
     }
+
     _currentRideIndex = ride->id;
 
-    tds._trackPreviewMin = coords;
-    tds._trackPreviewMax = coords;
-
-    tds._trackDesignPlaceSceneryZ = 0;
     std::optional<money32> trackPlaceCost;
     if (td6->type == RIDE_TYPE_MAZE)
     {
@@ -1937,6 +1926,25 @@ money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
     }
 
     return trackPlaceCost.has_value() ? trackPlaceCost.value() : MONEY32_UNDEFINED;
+}
+
+/**
+ * Places a virtual track. This can involve highlighting the surface tiles and showing the track layout. It is also used by
+ * the track preview window to place the whole track.
+ * Depending on the value of bl it modifies the function.
+ * bl == 0, Draw outlines on the ground
+ * bl == 1,
+ * bl == 2,
+ * bl == 3, Returns the z value of a successful placement. Only lower 16 bits are the value, the rest may be garbage?
+ * bl == 4,
+ * bl == 5, Returns cost to create the track. All 32 bits are used. Places the track. (used by the preview)
+ * bl == 6, Clear white outlined track.
+ *  rct2: 0x006D01B3
+ */
+money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
+{
+    TrackDesignState tds{};
+    return place_virtual_track(tds, td6, ptdOperation, placeScenery, ride, coords);
 }
 
 static money32 track_design_ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
@@ -2019,7 +2027,7 @@ static bool track_design_place_preview(TrackDesignState& tds, TrackDesign* td6, 
 
     _currentTrackPieceDirection = 0;
     int32_t z = place_virtual_track(
-        td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(PreviewRideId), { mapSize, mapSize, 16 });
+        tds, td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(PreviewRideId), { mapSize, mapSize, 16 });
 
     if (tds._trackDesignPlaceStateHasScenery)
     {
@@ -2036,7 +2044,7 @@ static bool track_design_place_preview(TrackDesignState& tds, TrackDesign* td6, 
     }
 
     money32 resultCost = place_virtual_track(
-        td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, ride, { mapSize, mapSize, z });
+        tds, td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, ride, { mapSize, mapSize, z });
     gParkFlags = backup_park_flags;
 
     if (resultCost != MONEY32_UNDEFINED)
