@@ -1384,7 +1384,8 @@ static std::optional<money32> TrackDesignPlaceAllScenery(
     return cost;
 }
 
-static std::optional<money32> TrackDesignPlaceMaze(TrackDesignState& tds, TrackDesign* td6, const CoordsXYZ& coords, Ride* ride)
+static GameActions::Result::Ptr TrackDesignPlaceMaze(
+    TrackDesignState& tds, TrackDesign* td6, const CoordsXYZ& coords, Ride* ride)
 {
     if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
@@ -1429,7 +1430,11 @@ static std::optional<money32> TrackDesignPlaceMaze(TrackDesignState& tds, TrackD
                     if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
                         auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord, coords.z }, false);
-                        cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+                        if (res->Error != GameActions::Status::Ok)
+                        {
+                            return res;
+                        }
+                        cost = res->Cost;
                     }
                     else
                     {
@@ -1450,13 +1455,14 @@ static std::optional<money32> TrackDesignPlaceMaze(TrackDesignState& tds, TrackD
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, false);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
-                        cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+                        if (res->Error != GameActions::Status::Ok)
+                        {
+                            return res;
+                        }
+                        cost = res->Cost;
                     }
-                    if (cost != MONEY32_UNDEFINED)
-                    {
-                        tds.EntranceExitPlaced = true;
-                        _trackDesignPlaceStateEntranceExitPlaced = true;
-                    }
+                    tds.EntranceExitPlaced = true;
+                    _trackDesignPlaceStateEntranceExitPlaced = true;
                     break;
                 case MAZE_ELEMENT_TYPE_EXIT:
                     // exit
@@ -1469,7 +1475,11 @@ static std::optional<money32> TrackDesignPlaceMaze(TrackDesignState& tds, TrackD
                     if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
                         auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord, coords.z }, true);
-                        cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+                        if (res->Error != GameActions::Status::Ok)
+                        {
+                            return res;
+                        }
+                        cost = res->Cost;
                     }
                     else
                     {
@@ -1490,13 +1500,14 @@ static std::optional<money32> TrackDesignPlaceMaze(TrackDesignState& tds, TrackD
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, true);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
-                        cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+                        if (res->Error != GameActions::Status::Ok)
+                        {
+                            return res;
+                        }
+                        cost = res->Cost;
                     }
-                    if (cost != MONEY32_UNDEFINED)
-                    {
-                        tds.EntranceExitPlaced = true;
-                        _trackDesignPlaceStateEntranceExitPlaced = true;
-                    }
+                    tds.EntranceExitPlaced = true;
+                    _trackDesignPlaceStateEntranceExitPlaced = true;
                     break;
                 default:
                     maze_entry = Numerics::rol16(maze_element.maze_entry, rotation * 4);
@@ -1528,16 +1539,15 @@ static std::optional<money32> TrackDesignPlaceMaze(TrackDesignState& tds, TrackD
                     mazePlace.SetFlags(flags);
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
                                                                : GameActions::QueryNested(&mazePlace);
-                    cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+                    if (res->Error != GameActions::Status::Ok)
+                    {
+                        return res;
+                    }
+                    cost = res->Cost;
                     break;
             }
 
             totalCost += cost;
-
-            if (cost == MONEY32_UNDEFINED)
-            {
-                return std::nullopt;
-            }
         }
 
         if (tds.PlaceOperation == PTD_OPERATION_GET_PLACE_Z)
@@ -1583,10 +1593,15 @@ static std::optional<money32> TrackDesignPlaceMaze(TrackDesignState& tds, TrackD
     }
 
     tds.Origin = coords;
-    return totalCost;
+
+    auto res = std::make_unique<GameActions::Result>();
+    res->Cost = totalCost;
+
+    return res;
 }
 
-static std::optional<money32> TrackDesignPlaceRide(TrackDesignState& tds, TrackDesign* td6, const CoordsXYZ& origin, Ride* ride)
+static GameActions::Result::Ptr TrackDesignPlaceRide(
+    TrackDesignState& tds, TrackDesign* td6, const CoordsXYZ& origin, Ride* ride)
 {
     tds.Origin = origin;
     if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
@@ -1682,13 +1697,12 @@ static std::optional<money32> TrackDesignPlaceRide(TrackDesignState& tds, TrackD
 
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&trackPlaceAction)
                                                            : GameActions::QueryNested(&trackPlaceAction);
-                money32 cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
-
-                totalCost += cost;
-                if (cost == MONEY32_UNDEFINED)
+                if (res->Error != GameActions::Status::Ok)
                 {
-                    return std::nullopt;
+                    return res;
                 }
+
+                totalCost += res->Cost;
                 break;
             }
             case PTD_OPERATION_GET_PLACE_Z:
@@ -1705,7 +1719,8 @@ static std::optional<money32> TrackDesignPlaceRide(TrackDesignState& tds, TrackD
                     auto surfaceElement = map_get_surface_element_at(tile);
                     if (surfaceElement == nullptr)
                     {
-                        return std::nullopt;
+                        return std::make_unique<GameActions::Result>(
+                            GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
                     }
 
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
@@ -1778,7 +1793,8 @@ static std::optional<money32> TrackDesignPlaceRide(TrackDesignState& tds, TrackD
                     newCoords.z += entrance.z;
                     if (tile_element == nullptr)
                     {
-                        return std::nullopt;
+                        return std::make_unique<GameActions::Result>(
+                            GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
                     }
 
                     do
@@ -1819,12 +1835,11 @@ static std::optional<money32> TrackDesignPlaceRide(TrackDesignState& tds, TrackD
                         auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
                                                                    : GameActions::QueryNested(&rideEntranceExitPlaceAction);
 
-                        totalCost += res->Cost;
-
                         if (res->Error != GameActions::Status::Ok)
                         {
-                            return std::nullopt;
+                            return res;
                         }
+                        totalCost += res->Cost;
                         tds.EntranceExitPlaced = true;
                         _trackDesignPlaceStateEntranceExitPlaced = true;
                         break;
@@ -1838,7 +1853,8 @@ static std::optional<money32> TrackDesignPlaceRide(TrackDesignState& tds, TrackD
                     auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
                     if (res->Error != GameActions::Status::Ok)
                     {
-                        return std::nullopt;
+                        return std::make_unique<GameActions::Result>(
+                            GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
                     }
 
                     totalCost += res->Cost;
@@ -1855,7 +1871,11 @@ static std::optional<money32> TrackDesignPlaceRide(TrackDesignState& tds, TrackD
         ride->ValidateStations();
         ride->Delete();
     }
-    return totalCost;
+
+    auto res = std::make_unique<GameActions::Result>(GameActions::Status::Ok, STR_NONE, STR_NONE);
+    res->Cost = totalCost;
+
+    return res;
 }
 
 static money32 place_virtual_track(
@@ -1883,27 +1903,29 @@ static money32 place_virtual_track(
 
     _currentRideIndex = ride->id;
 
-    std::optional<money32> trackPlaceCost;
+    GameActions::Result::Ptr trackPlaceRes;
     if (td6->type == RIDE_TYPE_MAZE)
     {
-        trackPlaceCost = TrackDesignPlaceMaze(tds, td6, coords, ride);
+        trackPlaceRes = TrackDesignPlaceMaze(tds, td6, coords, ride);
     }
     else
     {
-        trackPlaceCost = TrackDesignPlaceRide(tds, td6, coords, ride);
+        trackPlaceRes = TrackDesignPlaceRide(tds, td6, coords, ride);
+    }
+
+    if (trackPlaceRes->Error != GameActions::Status::Ok)
+    {
+        return MONEY32_UNDEFINED;
     }
 
     // Scenery elements
-    if (trackPlaceCost.has_value())
+    auto sceneryCost = TrackDesignPlaceAllScenery(tds, td6->scenery_elements);
+    if (!sceneryCost.has_value())
     {
-        auto sceneryCost = TrackDesignPlaceAllScenery(tds, td6->scenery_elements);
-        if (!sceneryCost.has_value())
-        {
-            return MONEY32_UNDEFINED;
-        }
-
-        trackPlaceCost = trackPlaceCost.value() + sceneryCost.value();
+        return MONEY32_UNDEFINED;
     }
+
+    auto trackPlaceCost = trackPlaceRes->Cost + sceneryCost.value();
 
     // 0x6D0FE6
     if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
@@ -1921,7 +1943,7 @@ static money32 place_virtual_track(
         return tds.PlaceZ - tds.PlaceSceneryZ;
     }
 
-    return trackPlaceCost.has_value() ? trackPlaceCost.value() : MONEY32_UNDEFINED;
+    return trackPlaceCost;
 }
 
 /**
