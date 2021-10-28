@@ -119,6 +119,8 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
     auto res = std::make_unique<GameActions::Result>();
 
     uint8_t groundFlags = ELEMENT_IS_ABOVE_GROUND;
+    res->SetData(ConstructClearResult{ groundFlags });
+
     bool canBuildCrossing = false;
     if (map_is_edge(pos))
     {
