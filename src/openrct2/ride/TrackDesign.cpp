@@ -1065,149 +1065,180 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
 
     if (tds.PlaceOperation == PTD_OPERATION_GET_PLACE_Z)
     {
-        if (TrackDesignPlaceSceneryElementGetPlaceZ(tds, scenery))
-            return 0;
-
-        return std::nullopt;
+        TrackDesignPlaceSceneryElementGetPlaceZ(tds, scenery);
+        return 0;
     }
 
-    money32 totalCost = 0;
-    if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY || tds.PlaceOperation == PTD_OPERATION_PLACE
-        || tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST || tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+    money32 cost = 0;
+
+    if (tds.PlaceOperation != PTD_OPERATION_PLACE_QUERY && tds.PlaceOperation != PTD_OPERATION_PLACE
+        && tds.PlaceOperation != PTD_OPERATION_PLACE_GHOST && tds.PlaceOperation != PTD_OPERATION_PLACE_TRACK_PREVIEW)
     {
-        auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
-        if (!entryInfo)
+        return 0;
+    }
+
+    auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
+    if (!entryInfo)
+    {
+        return 0;
+    }
+
+    int16_t z;
+    uint8_t flags;
+    uint8_t quadrant;
+
+    switch (entryInfo->Type)
+    {
+        case ObjectType::SmallScenery:
         {
-            return 0;
+            if (mode != 0)
+            {
+                return 0;
+            }
+
+            rotation += scenery.flags;
+            rotation &= 3;
+            z = scenery.z * COORDS_Z_STEP + originZ;
+            quadrant = ((scenery.flags >> 2) + _currentTrackPieceDirection) & 3;
+
+            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
+            if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+            {
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                    | GAME_COMMAND_FLAG_NO_SPEND;
+            }
+            else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
+            {
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                    | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
+            }
+            else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
+            {
+                flags = GAME_COMMAND_FLAG_PATH_SCENERY;
+            }
+            if (tds.IsReplay)
+            {
+                flags |= GAME_COMMAND_FLAG_REPLAY;
+            }
+            gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
+
+            auto smallSceneryPlace = SmallSceneryPlaceAction(
+                { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primary_colour,
+                scenery.secondary_colour);
+
+            smallSceneryPlace.SetFlags(flags);
+            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace)
+                                                       : GameActions::QueryNested(&smallSceneryPlace);
+
+            cost = res->Error == GameActions::Status::Ok ? res->Cost : 0;
+            break;
         }
-
-        money32 cost;
-        int16_t z;
-        uint8_t flags;
-        uint8_t quadrant;
-
-        switch (entryInfo->Type)
+        case ObjectType::LargeScenery:
         {
-            case ObjectType::SmallScenery:
+            if (mode != 0)
             {
-                if (mode != 0)
-                {
-                    return 0;
-                }
-                if (tds.PlaceOperation == PTD_OPERATION_GET_PLACE_Z)
-                {
-                    return 0;
-                }
-
-                rotation += scenery.flags;
-                rotation &= 3;
-                z = scenery.z * COORDS_Z_STEP + originZ;
-                quadrant = ((scenery.flags >> 2) + _currentTrackPieceDirection) & 3;
-
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
-                if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
-                {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_NO_SPEND;
-                }
-                else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
-                {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
-                }
-                else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
-                {
-                    flags = GAME_COMMAND_FLAG_PATH_SCENERY;
-                }
-                if (tds.IsReplay)
-                {
-                    flags |= GAME_COMMAND_FLAG_REPLAY;
-                }
-                gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-
-                auto smallSceneryPlace = SmallSceneryPlaceAction(
-                    { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primary_colour,
-                    scenery.secondary_colour);
-
-                smallSceneryPlace.SetFlags(flags);
-                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace)
-                                                           : GameActions::QueryNested(&smallSceneryPlace);
-
-                cost = res->Error == GameActions::Status::Ok ? res->Cost : 0;
-                break;
+                return 0;
             }
-            case ObjectType::LargeScenery:
+
+            rotation += scenery.flags;
+            rotation &= 3;
+
+            z = scenery.z * COORDS_Z_STEP + originZ;
+
+            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
+            if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
             {
-                if (mode != 0)
-                {
-                    return 0;
-                }
-                if (tds.PlaceOperation == PTD_OPERATION_GET_PLACE_Z)
-                {
-                    return 0;
-                }
-
-                rotation += scenery.flags;
-                rotation &= 3;
-
-                z = scenery.z * COORDS_Z_STEP + originZ;
-
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
-                if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
-                {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_NO_SPEND;
-                }
-                else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
-                {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
-                }
-                else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
-                {
-                    flags = GAME_COMMAND_FLAG_PATH_SCENERY;
-                }
-                if (tds.IsReplay)
-                {
-                    flags |= GAME_COMMAND_FLAG_REPLAY;
-                }
-                auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                    { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primary_colour,
-                    scenery.secondary_colour);
-                sceneryPlaceAction.SetFlags(flags);
-                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&sceneryPlaceAction)
-                                                           : GameActions::QueryNested(&sceneryPlaceAction);
-
-                cost = res->Cost;
-                break;
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                    | GAME_COMMAND_FLAG_NO_SPEND;
             }
-            case ObjectType::Walls:
+            else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
             {
-                if (mode != 0)
-                {
-                    return 0;
-                }
-                if (tds.PlaceOperation == PTD_OPERATION_GET_PLACE_Z)
-                {
-                    return 0;
-                }
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                    | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
+            }
+            else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
+            {
+                flags = GAME_COMMAND_FLAG_PATH_SCENERY;
+            }
+            if (tds.IsReplay)
+            {
+                flags |= GAME_COMMAND_FLAG_REPLAY;
+            }
+            auto sceneryPlaceAction = LargeSceneryPlaceAction(
+                { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primary_colour, scenery.secondary_colour);
+            sceneryPlaceAction.SetFlags(flags);
+            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&sceneryPlaceAction)
+                                                       : GameActions::QueryNested(&sceneryPlaceAction);
 
-                z = scenery.z * COORDS_Z_STEP + originZ;
-                rotation += scenery.flags;
-                rotation &= 3;
+            cost = res->Cost;
+            break;
+        }
+        case ObjectType::Walls:
+        {
+            if (mode != 0)
+            {
+                return 0;
+            }
+
+            z = scenery.z * COORDS_Z_STEP + originZ;
+            rotation += scenery.flags;
+            rotation &= 3;
+
+            flags = GAME_COMMAND_FLAG_APPLY;
+            if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+            {
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                    | GAME_COMMAND_FLAG_NO_SPEND;
+            }
+            else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
+            {
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                    | GAME_COMMAND_FLAG_GHOST;
+            }
+            else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
+            {
+                flags = 0;
+            }
+            if (tds.IsReplay)
+            {
+                flags |= GAME_COMMAND_FLAG_REPLAY;
+            }
+            auto wallPlaceAction = WallPlaceAction(
+                entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primary_colour, scenery.secondary_colour,
+                (scenery.flags & 0xFC) >> 2);
+            wallPlaceAction.SetFlags(flags);
+            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&wallPlaceAction)
+                                                       : GameActions::QueryNested(&wallPlaceAction);
+
+            cost = res->Cost;
+            break;
+        }
+        case ObjectType::Paths:
+        case ObjectType::FootpathSurface:
+            z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
+            if (mode == 0)
+            {
+                auto isQueue = scenery.IsQueue();
+
+                uint8_t bh = ((scenery.flags & 0xF) << rotation);
+                flags = bh >> 4;
+                bh = (bh | flags) & 0xF;
+                flags = (((scenery.flags >> 5) + rotation) & 3) << 5;
+                bh |= flags;
+
+                bh |= scenery.flags & 0x90;
 
                 flags = GAME_COMMAND_FLAG_APPLY;
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                 {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_NO_SPEND;
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
                 }
-                else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
+                if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
                 {
                     flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                         | GAME_COMMAND_FLAG_GHOST;
                 }
-                else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
+                if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
                 {
                     flags = 0;
                 }
@@ -1215,129 +1246,64 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
                 {
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
-                auto wallPlaceAction = WallPlaceAction(
-                    entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primary_colour, scenery.secondary_colour,
-                    (scenery.flags & 0xFC) >> 2);
-                wallPlaceAction.SetFlags(flags);
-                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&wallPlaceAction)
-                                                           : GameActions::QueryNested(&wallPlaceAction);
-
-                cost = res->Cost;
-                break;
+                uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
+                uint8_t edges = bh & 0xF;
+                PathConstructFlags constructFlags = 0;
+                if (isQueue)
+                    constructFlags |= PathConstructFlag::IsQueue;
+                if (entryInfo->Type == ObjectType::Paths)
+                    constructFlags |= PathConstructFlag::IsLegacyPathObject;
+                auto footpathPlaceAction = FootpathPlaceFromTrackAction(
+                    { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges,
+                    constructFlags);
+                footpathPlaceAction.SetFlags(flags);
+                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
+                                                           : GameActions::QueryNested(&footpathPlaceAction);
+                // Ignore failures
+                cost = res->Error == GameActions::Status::Ok ? res->Cost : 0;
             }
-            case ObjectType::Paths:
-            case ObjectType::FootpathSurface:
-                if (tds.PlaceOperation == PTD_OPERATION_GET_PLACE_Z)
-                {
-                    return 0;
-                }
-
-                z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
-                if (mode == 0)
-                {
-                    auto isQueue = scenery.IsQueue();
-
-                    uint8_t bh = ((scenery.flags & 0xF) << rotation);
-                    flags = bh >> 4;
-                    bh = (bh | flags) & 0xF;
-                    flags = (((scenery.flags >> 5) + rotation) & 3) << 5;
-                    bh |= flags;
-
-                    bh |= scenery.flags & 0x90;
-
-                    flags = GAME_COMMAND_FLAG_APPLY;
-                    if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
-                    {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
-                    }
-                    if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
-                    {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                            | GAME_COMMAND_FLAG_GHOST;
-                    }
-                    if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
-                    {
-                        flags = 0;
-                    }
-                    if (tds.IsReplay)
-                    {
-                        flags |= GAME_COMMAND_FLAG_REPLAY;
-                    }
-                    uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
-                    uint8_t edges = bh & 0xF;
-                    PathConstructFlags constructFlags = 0;
-                    if (isQueue)
-                        constructFlags |= PathConstructFlag::IsQueue;
-                    if (entryInfo->Type == ObjectType::Paths)
-                        constructFlags |= PathConstructFlag::IsLegacyPathObject;
-                    auto footpathPlaceAction = FootpathPlaceFromTrackAction(
-                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entryInfo->Index, entryInfo->SecondaryIndex,
-                        edges, constructFlags);
-                    footpathPlaceAction.SetFlags(flags);
-                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
-                                                               : GameActions::QueryNested(&footpathPlaceAction);
-                    // Ignore failures
-                    cost = res->Error == GameActions::Status::Ok ? res->Cost : 0;
-                }
-                else
-                {
-                    if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
-                    {
-                        return 0;
-                    }
-
-                    auto* pathElement = map_get_path_element_at({ mapCoord.x / 32, mapCoord.y / 32, z });
-
-                    if (pathElement == nullptr)
-                    {
-                        return 0;
-                    }
-
-                    footpath_queue_chain_reset();
-                    footpath_remove_edges_at(mapCoord, reinterpret_cast<TileElement*>(pathElement));
-
-                    flags = GAME_COMMAND_FLAG_APPLY;
-                    if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
-                    {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
-                    }
-                    if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
-                    {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                            | GAME_COMMAND_FLAG_GHOST;
-                    }
-                    if (tds.IsReplay)
-                    {
-                        flags |= GAME_COMMAND_FLAG_REPLAY;
-                    }
-                    footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
-                    footpath_update_queue_chains();
-                    return 0;
-                }
-                break;
-            default:
-                _trackDesignPlaceStateSceneryUnavailable = true;
-                return 0;
-        }
-        totalCost = add_clamp_money32(totalCost, cost);
-        if (tds.PlaceOperation != PTD_OPERATION_PLACE)
-        {
-            if (cost == MONEY32_UNDEFINED)
+            else
             {
-                totalCost = MONEY32_UNDEFINED;
+                if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
+                {
+                    return 0;
+                }
+
+                auto* pathElement = map_get_path_element_at({ mapCoord.x / 32, mapCoord.y / 32, z });
+
+                if (pathElement == nullptr)
+                {
+                    return 0;
+                }
+
+                footpath_queue_chain_reset();
+                footpath_remove_edges_at(mapCoord, reinterpret_cast<TileElement*>(pathElement));
+
+                flags = GAME_COMMAND_FLAG_APPLY;
+                if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+                }
+                if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                        | GAME_COMMAND_FLAG_GHOST;
+                }
+                if (tds.IsReplay)
+                {
+                    flags |= GAME_COMMAND_FLAG_REPLAY;
+                }
+                footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
+                footpath_update_queue_chains();
+                return 0;
             }
-        }
-        if (totalCost != MONEY32_UNDEFINED)
-        {
-            return totalCost;
-        }
-        if (tds.PlaceOperation == PTD_OPERATION_PLACE)
-        {
-            return totalCost;
-        }
-        return std::nullopt;
+            break;
+        default:
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return 0;
     }
-    return totalCost;
+
+    return cost;
 }
 
 /**
