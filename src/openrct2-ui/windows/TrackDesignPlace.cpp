@@ -133,7 +133,7 @@ static void window_track_place_clear_mini_preview()
  */
 rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
 {
-    _trackDesign = track_design_open(tdFileRef->path);
+    _trackDesign = TrackDesignImport(tdFileRef->path);
     if (_trackDesign == nullptr)
     {
         return nullptr;
@@ -197,7 +197,7 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_MIRROR:
-            track_design_mirror(_trackDesign.get());
+            TrackDesignMirror(_trackDesign.get());
             _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
             w->Invalidate();
             _windowTrackPlaceLast.SetNull();

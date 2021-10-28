@@ -81,7 +81,7 @@ static void window_install_track_design(rct_window* w);
  */
 rct_window* window_install_track_open(const utf8* path)
 {
-    _trackDesign = track_design_open(path);
+    _trackDesign = TrackDesignImport(path);
     if (_trackDesign == nullptr)
     {
         context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE, {});
@@ -422,7 +422,7 @@ static void window_install_track_text_input(rct_window* w, rct_widgetindex widge
 
 static void window_install_track_update_preview()
 {
-    track_design_draw_preview(_trackDesign.get(), _trackDesignPreviewPixels.data());
+    TrackDesignDrawPreview(_trackDesign.get(), _trackDesignPreviewPixels.data());
 }
 
 static void window_install_track_design(rct_window* w)

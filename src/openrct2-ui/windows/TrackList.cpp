@@ -193,10 +193,10 @@ private:
 
     bool LoadDesignPreview(utf8* path)
     {
-        _loadedTrackDesign = track_design_open(path);
+        _loadedTrackDesign = TrackDesignImport(path);
         if (_loadedTrackDesign != nullptr)
         {
-            track_design_draw_preview(_loadedTrackDesign.get(), _trackDesignPreviewPixels.data());
+            TrackDesignDrawPreview(_loadedTrackDesign.get(), _trackDesignPreviewPixels.data());
             return true;
         }
         return false;

@@ -220,16 +220,16 @@ extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;
 extern ride_id_t gTrackDesignSaveRideIndex;
 
-[[nodiscard]] std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
+[[nodiscard]] std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path);
 
-void track_design_mirror(TrackDesign* td6);
+void TrackDesignMirror(TrackDesign* td6);
 
 money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels);
+void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving
