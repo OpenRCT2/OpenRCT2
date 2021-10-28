@@ -1308,7 +1308,7 @@ static GameActions::Result::Ptr TrackDesignPlaceSceneryElement(
  *
  *  rct2: 0x006D0964
  */
-static std::optional<money32> TrackDesignPlaceAllScenery(
+static GameActions::Result::Ptr TrackDesignPlaceAllScenery(
     TrackDesignState& tds, const std::vector<TrackDesignSceneryElement>& sceneryList)
 {
     const auto& origin = tds.Origin;
@@ -1340,13 +1340,16 @@ static std::optional<money32> TrackDesignPlaceAllScenery(
             auto placementRes = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
             if (placementRes->Error != GameActions::Status::Ok)
             {
-                return std::nullopt;
+                return placementRes;
             }
             cost += placementRes->Cost;
         }
     }
 
-    return cost;
+    auto res = std::make_unique<GameActions::Result>();
+    res->Cost = cost;
+
+    return res;
 }
 
 static GameActions::Result::Ptr TrackDesignPlaceMaze(
@@ -1884,13 +1887,13 @@ static money32 place_virtual_track(
     }
 
     // Scenery elements
-    auto sceneryCost = TrackDesignPlaceAllScenery(tds, td6->scenery_elements);
-    if (!sceneryCost.has_value())
+    auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td6->scenery_elements);
+    if (sceneryPlaceRes->Error != GameActions::Status::Ok)
     {
         return MONEY32_UNDEFINED;
     }
 
-    auto trackPlaceCost = trackPlaceRes->Cost + sceneryCost.value();
+    auto trackPlaceCost = trackPlaceRes->Cost + sceneryPlaceRes->Cost;
 
     // 0x6D0FE6
     if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
