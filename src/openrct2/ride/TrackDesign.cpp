@@ -1965,6 +1965,12 @@ money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
     return place_virtual_track(tds, td6, ptdOperation, placeScenery, ride, coords);
 }
 
+void TrackDesignPreviewRemoveGhosts(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords)
+{
+    TrackDesignState tds{};
+    place_virtual_track(tds, td6, PTD_OPERATION_REMOVE_GHOST, true, ride, coords);
+}
+
 void TrackDesignPreviewDrawOutlines(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords)
 {
     TrackDesignState tds{};

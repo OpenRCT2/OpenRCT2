@@ -413,7 +413,7 @@ static void window_track_place_clear_provisional()
         auto ride = get_ride(_window_track_place_ride_index);
         if (ride != nullptr)
         {
-            place_virtual_track(_trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _windowTrackPlaceLastValid);
+            TrackDesignPreviewRemoveGhosts(_trackDesign.get(), ride, _windowTrackPlaceLastValid);
             _window_track_place_last_was_valid = false;
         }
     }
@@ -426,7 +426,7 @@ void TrackPlaceClearProvisionalTemporarily()
         auto ride = get_ride(_window_track_place_ride_index);
         if (ride != nullptr)
         {
-            place_virtual_track(_trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _windowTrackPlaceLastValid);
+            TrackDesignPreviewRemoveGhosts(_trackDesign.get(), ride, _windowTrackPlaceLastValid);
         }
     }
 }
