@@ -1735,7 +1735,7 @@ STR_2383    :Vand
 STR_2384    :{WINDOW_COLOUR_2}Dit mål:
 STR_2385    :{BLACK}Ingen
 STR_2386    :{BLACK}At have mindst {COMMA16} gæster i parken, ved udgangen af {MONTHYEAR}, og med en park vurdering på mindst 600
-STR_2387    :{BLACK}At opnå en Parkværdi på mindst {POP16}{POP16}{CURRENCY} ved udgangen af {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}At opnå en Parkværdi på mindst {POP16}{POP16}{CURRENCY} ved udgangen af {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Hav det sjovt!
 STR_2389    :{BLACK}Byg den bedste {STRINGID} du kan!
 STR_2390    :{BLACK}At have 10 forskellige typer rutschebaner i gang i parken på samme tid, Hver med en spændings vurdering over 6.00

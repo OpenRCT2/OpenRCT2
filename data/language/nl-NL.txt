@@ -1736,7 +1736,7 @@ STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Je doelstelling:
 STR_2385    :{BLACK}Geen
 STR_2386    :{BLACK}Om ten minste {COMMA16} bezoekers in je park te hebben aan het einde van {MONTHYEAR}, met een parkwaardering van ten minste 600
-STR_2387    :{BLACK}Om een parkwaarde van ten minste {POP16}{POP16}{CURRENCY} te hebben aan het einde van {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Om een parkwaarde van ten minste {POP16}{POP16}{CURRENCY} te hebben aan het einde van {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Om plezier te hebben!
 STR_2389    :{BLACK}Om de beste {STRINGID} te bouwen!
 STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een plezierwaarde van ten minste 6,00

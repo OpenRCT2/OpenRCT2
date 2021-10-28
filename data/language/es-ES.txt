@@ -1736,7 +1736,7 @@ STR_2383    :Agua
 STR_2384    :{WINDOW_COLOUR_2}Tu objetivo:
 STR_2385    :{BLACK}Ninguno
 STR_2386    :{BLACK}Tener al menos {COMMA16} visitantes en tu parque a finales de {MONTHYEAR}, con una valoración del parque de al menos 600
-STR_2387    :{BLACK}Conseguir un valor del parque {POP16}{POP16}{CURRENCY} a final de {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Conseguir un valor del parque {POP16}{POP16}{CURRENCY} a final de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}¡Diviértete!
 STR_2389    :{BLACK}¡Construye el mejor {STRINGID} que puedas!
 STR_2390    :{BLACK}Tener al menos 10 tipos de montañas rusas distintas operando en el parque, cada una con un valor de emoción de al menos 6.00
@@ -2830,7 +2830,7 @@ STR_5554    :Activar herramienta de montaña
 STR_5555    :Muestra vehículos de otros tipos de vía
 STR_5556    :Expulsar jugador
 STR_5557    :Mantener conex. tras desincronización (Multijugador)
-STR_5558    :Se debe reiniciar para aplicar los cambios
+STR_5558    :Esta configuración solo tendrá efecto después de que haya reiniciado OpenRCT2
 STR_5559    :Inspecciones 10m
 STR_5560    :Establece el tiempo de inspección a 'Cada 10 minutos' en todas las atracciones
 STR_5561    :No se pudo cargar el idioma.

@@ -1739,7 +1739,7 @@ STR_2383    :물
 STR_2384    :{WINDOW_COLOUR_2}목표:
 STR_2385    :{BLACK}없음
 STR_2386    :{BLACK}공원에 최소 {COMMA16}명 이상의 손님을 {MONTHYEAR}까지 유치하고, 공원 등급을 600 이상으로 유지하세요
-STR_2387    :{BLACK}최소 {POP16}{POP16}{CURRENCY} 이상의 공원 가치를 {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}까지 달성하세요
+STR_2387    :{BLACK}최소 {POP16}{POP16}{CURRENCY} 이상의 공원 가치를 {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}까지 달성하세요
 STR_2388    :{BLACK}즐기세요!
 STR_2389    :{BLACK}최고의 {STRINGID}(을)를 건설하세요!
 STR_2390    :{BLACK}흥미도가 최소 6.00을 넘는 10종의 다른 롤러코스터를 공원에 운용하세요

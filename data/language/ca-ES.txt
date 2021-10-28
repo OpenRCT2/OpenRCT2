@@ -1736,7 +1736,7 @@ STR_2383    :Aigua
 STR_2384    :{WINDOW_COLOUR_2}El vostre objectiu:
 STR_2385    :{BLACK}Cap
 STR_2386    :{BLACK}Tenir al menys {COMMA16} visitants al parc al final de {MONTHYEAR}, amb una valoració del parc d'almenys 600.
-STR_2387    :{BLACK}Aconseguir una valoració del parc d'almenys {POP16}{POP16}{CURRENCY} al final de {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}.
+STR_2387    :{BLACK}Aconseguir una valoració del parc d'almenys {POP16}{POP16}{CURRENCY} al final de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}.
 STR_2388    :{BLACK}Divertiu-vos!
 STR_2389    :{BLACK}Construïu el millor {STRINGID} que pugueu!
 STR_2390    :{BLACK}Tenir 10 tipus diferents de muntanyes russes operant al parc, cadascuna d'elles amb un valor d'emoció d'almenys 6,00.

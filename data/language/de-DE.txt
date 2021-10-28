@@ -1736,7 +1736,7 @@ STR_2383    :Wasser
 STR_2384    :{WINDOW_COLOUR_2}Ihr Ziel:
 STR_2385    :{BLACK}Keins
 STR_2386    :{BLACK}Mindestens {COMMA16} Parkbesucher bis {MONTHYEAR} und eine Parkbewertung von mindestens 600 zu haben
-STR_2387    :{BLACK}Einen Verkehrswert von mindestens {POP16}{POP16}{CURRENCY} zu erreichen bis {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Einen Verkehrswert von mindestens {POP16}{POP16}{CURRENCY} zu erreichen bis {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Viel Spaß!
 STR_2389    :{BLACK}Bauen Sie Ihre(n) beste(n) {STRINGID}!
 STR_2390    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder einen Nervenkitzelwert von mindestens 6,00 aufweisen muss

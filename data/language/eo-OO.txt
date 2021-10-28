@@ -1735,7 +1735,7 @@ STR_2383    :Akvo
 STR_2384    :{WINDOW_COLOUR_2}Via celo:
 STR_2385    :{BLACK}Neniu
 STR_2386    :{BLACK}Havi almenaŭ {COMMA16} gastojn en via parko al la fino de {MONTHYEAR}, kun pritakso de parko ne malpli ol 600
-STR_2387    :{BLACK}Atingi parkvaloron ne malpli ol {POP16}{POP16}{CURRENCY} al la fino de {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Atingi parkvaloron ne malpli ol {POP16}{POP16}{CURRENCY} al la fino de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Amuzi Vin!
 STR_2389    :{BLACK}Konstrui je la plej bona {STRINGID}, kiun vi povas konstrui!
 STR_2390    :{BLACK}Havi 10 malsamajn tipojn de ondaj fervojoj funkciantajn en via parko, kiuj havas po pritakson de eksciteco ne malpli ol 6.00

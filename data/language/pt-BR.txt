@@ -1735,7 +1735,7 @@ STR_2383    :Água
 STR_2384    :{WINDOW_COLOUR_2}Seu objetivo:
 STR_2385    :{BLACK}Nenhum
 STR_2386    :{BLACK}Ter pelo menos {COMMA16} visitantes em seu parque até o fim de {MONTHYEAR}, com classificação de parque de pelo menos 600
-STR_2387    :{BLACK}Alcançar um valor do parque de pelo menos {POP16}{POP16}{CURRENCY} até o fim de {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Alcançar um valor do parque de pelo menos {POP16}{POP16}{CURRENCY} até o fim de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Divirta-se!
 STR_2389    :{BLACK}Construir o melhor {STRINGID} que puder!
 STR_2390    :{BLACK}Ter 10 tipos de montanha-russa diferentes operando em seu parque, cada uma com um valor de emoção de pelo menos 6.00

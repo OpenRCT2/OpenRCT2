@@ -1735,7 +1735,7 @@ STR_2383    :Woda
 STR_2384    :{WINDOW_COLOUR_2}Twój cel:
 STR_2385    :{BLACK}Brak
 STR_2386    :{BLACK}Miej przynajmniej {COMMA16} gości w parku na koniec roku  {MONTHYEAR} przy atrakcyjności parku wynoszącej przynajmniej 600
-STR_2387    :{BLACK}Uzyskaj wartość parku nie mniejszą niż {POP16}{POP16}{CURRENCY} na koniec {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Uzyskaj wartość parku nie mniejszą niż {POP16}{POP16}{CURRENCY} na koniec {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Baw się dobrze!
 STR_2389    :{BLACK}Wybuduj tę atrakcję ({STRINGID}) najlepiej jak potrafisz!
 STR_2390    :{BLACK}Zbuduj w parku 10 różnych działających kolejek górskich, każda o współczynniku emocji wynoszącym przynajmniej 6.00

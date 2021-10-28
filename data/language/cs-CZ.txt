@@ -1736,7 +1736,7 @@ STR_2383    :Vodní plochy
 STR_2384    :{WINDOW_COLOUR_2}Cíl scénáře:
 STR_2385    :{BLACK}žádný
 STR_2386    :{BLACK}Mít v parku alespoň {COMMA16} návštěvníků na konci {MONTHYEAR}, s hodnocením parku alespoň 600
-STR_2387    :{BLACK}Dosáhnout hodnoty parku alespoň {POP16}{POP16}{CURRENCY} na konci {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Dosáhnout hodnoty parku alespoň {POP16}{POP16}{CURRENCY} na konci {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Příjemnou zábavu!
 STR_2389    :{BLACK}Postav ten nejlepší {STRINGID}!
 STR_2390    :{BLACK}Mít v parku 10 druhů kolotočů v provozu, každý s hodnotou zábavnosti alespoň 6.00

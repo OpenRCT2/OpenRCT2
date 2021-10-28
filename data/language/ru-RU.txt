@@ -1731,7 +1731,7 @@ STR_2383    :Вода
 STR_2384    :{WINDOW_COLOUR_2}Ваша задача:
 STR_2385    :{BLACK}Нет
 STR_2386    :{BLACK}Иметь не менее {COMMA16} гостей в парке к концу {MONTHYEAR}, и рейтинг парка не менее 600
-STR_2387    :{BLACK}Поднять стоимость парка до {POP16}{POP16}{CURRENCY} к концу {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Поднять стоимость парка до {POP16}{POP16}{CURRENCY} к концу {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Удачи!
 STR_2389    :{BLACK}Постройте самый лучший {STRINGID} что сможете!
 STR_2390    :{BLACK}Завести 10 различных типов американских горок, каждую с рейтингом волнения не менее 6.00

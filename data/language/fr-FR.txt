@@ -1740,7 +1740,7 @@ STR_2383    :Eau
 STR_2384    :{WINDOW_COLOUR_2}Votre objectif :
 STR_2385    :{BLACK}Aucun
 STR_2386    :{BLACK}Avoir au moins {COMMA16} visiteurs dans votre parc à la fin {MONTHYEAR}, avec une évaluation de parc d’au moins 600
-STR_2387    :{BLACK}Atteindre une valeur de parc d’au moins {POP16}{POP16}{CURRENCY} à la fin {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Atteindre une valeur de parc d’au moins {POP16}{POP16}{CURRENCY} à la fin {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Amusez-vous !
 STR_2389    :{BLACK}Construisez la meilleure attraction {STRINGID} possible !
 STR_2390    :{BLACK}Avoir construit au moins 10 montagnes russes différentes dans votre parc, chacune d’entre elles atteignant un indice d’engouement d’au moins 6.00

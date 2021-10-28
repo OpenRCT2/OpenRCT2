@@ -1739,7 +1739,7 @@ STR_2383    :Acqua
 STR_2384    :{WINDOW_COLOUR_2}Il tuo obiettivo:
 STR_2385    :{BLACK}Nessuno
 STR_2386    :{BLACK}Avere almeno {COMMA16} visitatori nel parco entro la fine di {MONTHYEAR}, con una valutazione del parco di almeno 600
-STR_2387    :{BLACK}Far raggiungere al parco un valore di almeno {POP16}{POP16}{CURRENCY} entro la fine di  {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Far raggiungere al parco un valore di almeno {POP16}{POP16}{CURRENCY} entro la fine di  {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Divertirsi!
 STR_2389    :{BLACK}Costruire il migliore {STRINGID} si possa!
 STR_2390    :{BLACK}Avere 10 tipi diversi di ottovolante nel parco, ognuno con un livello di divertimento di almeno 6.00

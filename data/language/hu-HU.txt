@@ -1729,7 +1729,7 @@ STR_2383    :Víz
 STR_2384    :{WINDOW_COLOUR_2}A célod:
 STR_2385    :{BLACK}Nincs
 STR_2386    :{BLACK}Legyen legalább {COMMA16} vendég a parkodban {MONTHYEAR}végére, a parkod értékelése pedig legyen legalább 600
-STR_2387    :{BLACK}Legyen legalább {POP16}{POP16}{CURRENCY} a parkod értéke {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}végére
+STR_2387    :{BLACK}Legyen legalább {POP16}{POP16}{CURRENCY} a parkod értéke {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}végére
 STR_2388    :{BLACK}Érezd jól magad!
 STR_2389    :{BLACK}A lehető legjobb {STRINGID} építése!
 STR_2390    :{BLACK}Építs 10 különböző, egyenként legalább 6,00 izgalmi értékű hullámvasutat a parkodban
