@@ -93,7 +93,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
     auto z = ride->stations[_stationNum].GetBaseZ();
     if (!LocationValid(_loc) || (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z })))
     {
-        return MakeResult(GameActions::Status::NotOwned, errorTitle, STR_NONE);
+        return MakeResult(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (!MapCheckCapacityAndReorganise(_loc))
@@ -224,7 +224,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::TrackPlaceQuery(const Coor
 
     if (!gCheatsSandboxMode && !map_is_location_owned(loc))
     {
-        return MakeResult(GameActions::Status::NotOwned, errorTitle, STR_NONE);
+        return MakeResult(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (!MapCheckCapacityAndReorganise(loc))

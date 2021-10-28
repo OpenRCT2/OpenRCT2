@@ -84,12 +84,12 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         {
             if (!map_is_location_in_park(_loc))
             {
-                return MakeResult(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+                return MakeResult(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
         else if (!map_is_location_owned(_loc))
         {
-            return MakeResult(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+            return MakeResult(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
     else if (!_trackDesignDrawingPreview && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))

@@ -592,7 +592,8 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
 
     if (!map_is_location_owned(destination))
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::NotOwned, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::NotOwned, STR_ERR_CANT_PLACE_PERSON_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (auto res = MapCanConstructAt({ destination, destination.z, destination.z + (1 * 8) }, { 0b1111, 0 });
