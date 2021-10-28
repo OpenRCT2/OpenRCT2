@@ -1965,6 +1965,12 @@ money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
     return place_virtual_track(tds, td6, ptdOperation, placeScenery, ride, coords);
 }
 
+int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords)
+{
+    TrackDesignState tds{};
+    return place_virtual_track(tds, td6, PTD_OPERATION_GET_PLACE_Z, true, ride, coords);
+}
+
 static money32 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
 {
     // Don't set colours as will be set correctly later.

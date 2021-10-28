@@ -471,9 +471,7 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc)
     if (surfaceElement->GetWaterHeight() > 0)
         z = std::max(z, surfaceElement->GetWaterHeight());
 
-    return z
-        + place_virtual_track(
-               _trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(PreviewRideId), { loc, z });
+    return z + TrackDesignGetZPlacement(_trackDesign.get(), GetOrAllocateRide(PreviewRideId), { loc, z });
 }
 
 /**
