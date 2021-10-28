@@ -1846,7 +1846,20 @@ static GameActions::Result::Ptr TrackDesignPlaceRide(
     return res;
 }
 
-static money32 place_virtual_track(
+/**
+ * Places a virtual track. This can involve highlighting the surface tiles and showing the track layout. It is also used by
+ * the track preview window to place the whole track.
+ * Depending on the value of bl it modifies the function.
+ * bl == 0, Draw outlines on the ground
+ * bl == 1,
+ * bl == 2,
+ * bl == 3, Returns the z value of a successful placement. Only lower 16 bits are the value, the rest may be garbage?
+ * bl == 4,
+ * bl == 5, Returns cost to create the track. All 32 bits are used. Places the track. (used by the preview)
+ * bl == 6, Clear white outlined track.
+ *  rct2: 0x006D01B3
+ */
+static GameActions::Result::Ptr TrackDesignPlaceVirtual(
     TrackDesignState& tds, TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
 {
     _trackDesignPlaceStateSceneryUnavailable = false;
@@ -1883,17 +1896,15 @@ static money32 place_virtual_track(
 
     if (trackPlaceRes->Error != GameActions::Status::Ok)
     {
-        return MONEY32_UNDEFINED;
+        return trackPlaceRes;
     }
 
     // Scenery elements
     auto sceneryPlaceRes = TrackDesignPlaceAllScenery(tds, td6->scenery_elements);
     if (sceneryPlaceRes->Error != GameActions::Status::Ok)
     {
-        return MONEY32_UNDEFINED;
+        return sceneryPlaceRes;
     }
-
-    auto trackPlaceCost = trackPlaceRes->Cost + sceneryPlaceRes->Cost;
 
     // 0x6D0FE6
     if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
@@ -1904,51 +1915,52 @@ static money32 place_virtual_track(
         map_invalidate_map_selection_tiles();
     }
 
-    if (ptdOperation == PTD_OPERATION_GET_PLACE_Z)
-    {
-        // Change from vanilla: originally, _trackDesignPlaceSceneryZ was not subtracted
-        // from _trackDesignPlaceZ, causing bug #259.
-        return tds.PlaceZ - tds.PlaceSceneryZ;
-    }
+    auto res = std::make_unique<GameActions::Result>();
+    res->Cost = trackPlaceRes->Cost + sceneryPlaceRes->Cost;
 
-    return trackPlaceCost;
+    return res;
 }
 
-/**
- * Places a virtual track. This can involve highlighting the surface tiles and showing the track layout. It is also used by
- * the track preview window to place the whole track.
- * Depending on the value of bl it modifies the function.
- * bl == 0, Draw outlines on the ground
- * bl == 1,
- * bl == 2,
- * bl == 3, Returns the z value of a successful placement. Only lower 16 bits are the value, the rest may be garbage?
- * bl == 4,
- * bl == 5, Returns cost to create the track. All 32 bits are used. Places the track. (used by the preview)
- * bl == 6, Clear white outlined track.
- *  rct2: 0x006D01B3
- */
-money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
+GameActions::Result::Ptr TrackDesignPlace(
+    TrackDesign* td6, uint32_t flags, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
 {
+    uint32_t ptdOperation = (flags & GAME_COMMAND_FLAG_APPLY) != 0 ? PTD_OPERATION_PLACE : PTD_OPERATION_PLACE_QUERY;
+    if ((flags & GAME_COMMAND_FLAG_APPLY) != 0 && (flags & GAME_COMMAND_FLAG_GHOST) != 0)
+    {
+        ptdOperation = PTD_OPERATION_PLACE_GHOST;
+    }
+    if (flags & GAME_COMMAND_FLAG_REPLAY)
+        ptdOperation |= PTD_OPERATION_FLAG_IS_REPLAY;
+
     TrackDesignState tds{};
-    return place_virtual_track(tds, td6, ptdOperation, placeScenery, ride, coords);
+    return TrackDesignPlaceVirtual(tds, td6, ptdOperation, placeScenery, ride, coords);
 }
 
 void TrackDesignPreviewRemoveGhosts(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords)
 {
     TrackDesignState tds{};
-    place_virtual_track(tds, td6, PTD_OPERATION_REMOVE_GHOST, true, ride, coords);
+    TrackDesignPlaceVirtual(tds, td6, PTD_OPERATION_REMOVE_GHOST, true, ride, coords);
 }
 
 void TrackDesignPreviewDrawOutlines(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords)
 {
     TrackDesignState tds{};
-    place_virtual_track(tds, td6, PTD_OPERATION_DRAW_OUTLINES, true, ride, coords);
+    TrackDesignPlaceVirtual(tds, td6, PTD_OPERATION_DRAW_OUTLINES, true, ride, coords);
+}
+
+static int32_t TrackDesignGetZPlacement(TrackDesignState& tds, TrackDesign* td6, Ride* ride, const CoordsXYZ& coords)
+{
+    TrackDesignPlaceVirtual(tds, td6, PTD_OPERATION_GET_PLACE_Z, true, ride, coords);
+
+    // Change from vanilla: originally, _trackDesignPlaceSceneryZ was not subtracted
+    // from _trackDesignPlaceZ, causing bug #259.
+    return tds.PlaceZ - tds.PlaceSceneryZ;
 }
 
 int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords)
 {
     TrackDesignState tds{};
-    return place_virtual_track(tds, td6, PTD_OPERATION_GET_PLACE_Z, true, ride, coords);
+    return TrackDesignGetZPlacement(tds, td6, ride, coords);
 }
 
 static money32 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
@@ -2030,8 +2042,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     int32_t mapSize = gMapSize << 4;
 
     _currentTrackPieceDirection = 0;
-    int32_t z = place_virtual_track(
-        tds, td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(PreviewRideId), { mapSize, mapSize, 16 });
+    int32_t z = TrackDesignGetZPlacement(tds, td6, GetOrAllocateRide(PreviewRideId), { mapSize, mapSize, 16 });
 
     if (tds.HasScenery)
     {
@@ -2047,11 +2058,11 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         *flags |= TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE;
     }
 
-    money32 resultCost = place_virtual_track(
+    auto res = TrackDesignPlaceVirtual(
         tds, td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, ride, { mapSize, mapSize, z });
     gParkFlags = backup_park_flags;
 
-    if (resultCost != MONEY32_UNDEFINED)
+    if (res->Error == GameActions::Status::Ok)
     {
         if (entry_index == OBJECT_ENTRY_INDEX_NULL)
         {
@@ -2064,7 +2075,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
         _currentTrackPieceDirection = backup_rotation;
         _trackDesignDrawingPreview = false;
-        *cost = resultCost;
+        *cost = res->Cost;
         *outRide = ride;
         return true;
     }

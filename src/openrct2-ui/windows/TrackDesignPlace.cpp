@@ -268,8 +268,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     // Check if tool map position has changed since last update
     if (mapCoords == _windowTrackPlaceLast)
     {
-        place_virtual_track(
-            _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { mapCoords, 0 });
+        TrackDesignPreviewDrawOutlines(_trackDesign.get(), GetOrAllocateRide(PreviewRideId), { mapCoords, 0 });
         return;
     }
 
