@@ -15,6 +15,7 @@
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
 #include "../object/Object.h"
+#include "../peep/Guest.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
 #include "../world/Location.hpp"

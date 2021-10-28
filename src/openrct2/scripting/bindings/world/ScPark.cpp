@@ -17,7 +17,7 @@
 #    include "../../../core/String.hpp"
 #    include "../../../management/Finance.h"
 #    include "../../../management/NewsItem.h"
-#    include "../../../peep/Peep.h"
+#    include "../../../peep/Guest.h"
 #    include "../../../windows/Intent.h"
 #    include "../../../world/Park.h"
 #    include "../../Duktape.hpp"

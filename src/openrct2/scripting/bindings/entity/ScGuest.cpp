@@ -11,6 +11,8 @@
 
 #    include "ScGuest.hpp"
 
+#    include "../../../peep/Guest.h"
+
 namespace OpenRCT2::Scripting
 {
     ScGuest::ScGuest(uint16_t id)

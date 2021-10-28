@@ -11,10 +11,12 @@
 
 #include "../Cheats.h"
 #include "../common.h"
-#include "../peep/Peep.h"
+#include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
 
 #include <vector>
+
+struct Guest;
 
 enum
 {

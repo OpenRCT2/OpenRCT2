@@ -26,6 +26,7 @@
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "peep/Guest.h"
 #include "peep/Staff.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"

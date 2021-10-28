@@ -11,7 +11,7 @@
 
 #include "../common.h"
 #include "../localisation/StringIds.h"
-#include "../peep/Peep.h"
+#include "../peep/Guest.h"
 #include "../sprites.h"
 
 ShopItem& operator++(ShopItem& d, int)

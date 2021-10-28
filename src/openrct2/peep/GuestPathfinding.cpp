@@ -17,9 +17,10 @@
 #include "../util/Util.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
-#include "Peep.h"
+#include "Guest.h"
 #include "Staff.h"
 
+#include <bitset>
 #include <cstring>
 
 static bool _peepPathFindIsStaff;
