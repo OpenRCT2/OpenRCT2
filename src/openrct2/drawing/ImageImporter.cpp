@@ -51,7 +51,7 @@ ImportResult ImageImporter::Import(
     outElement.y_offset = offsetY;
     outElement.zoomed_offset = 0;
 
-    ImportResult result;
+    ImportResult result{};
     result.Element = outElement;
     result.Buffer = std::move(buffer);
     result.Element.offset = result.Buffer.data();
