@@ -1497,13 +1497,13 @@ static bool filter_string(const ObjectRepositoryItem* item)
 
     // Make use of lowercase characters only
     for (int32_t i = 0; name_lower[i] != '\0'; i++)
-        name_lower[i] = static_cast<char>(tolower(name_lower[i]));
+        name_lower[i] = static_cast<char>(tolower(static_cast<unsigned char>(name_lower[i])));
     for (int32_t i = 0; type_lower[i] != '\0'; i++)
-        type_lower[i] = static_cast<char>(tolower(type_lower[i]));
+        type_lower[i] = static_cast<char>(tolower(static_cast<unsigned char>(type_lower[i])));
     for (int32_t i = 0; object_path[i] != '\0'; i++)
-        object_path[i] = static_cast<char>(tolower(object_path[i]));
+        object_path[i] = static_cast<char>(tolower(static_cast<unsigned char>(object_path[i])));
     for (int32_t i = 0; filter_lower[i] != '\0'; i++)
-        filter_lower[i] = static_cast<char>(tolower(filter_lower[i]));
+        filter_lower[i] = static_cast<char>(tolower(static_cast<unsigned char>(filter_lower[i])));
 
     // Check if the searched string exists in the name, ride type, or filename
     bool inName = strstr(name_lower, filter_lower) != nullptr;

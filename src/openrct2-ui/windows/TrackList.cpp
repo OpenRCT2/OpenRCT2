@@ -93,7 +93,7 @@ private:
         utf8 filterStringLower[sizeof(_filterString)];
         String::Set(filterStringLower, sizeof(filterStringLower), _filterString);
         for (int32_t i = 0; filterStringLower[i] != '\0'; i++)
-            filterStringLower[i] = static_cast<utf8>(tolower(filterStringLower[i]));
+            filterStringLower[i] = static_cast<utf8>(tolower(static_cast<unsigned char>(filterStringLower[i])));
 
         // Fill the set with indices for tracks that match the filter
         for (uint16_t i = 0; i < _trackDesigns.size(); i++)
@@ -101,7 +101,7 @@ private:
             utf8 trackNameLower[USER_STRING_MAX_LENGTH];
             String::Set(trackNameLower, sizeof(trackNameLower), _trackDesigns[i].name);
             for (int32_t j = 0; trackNameLower[j] != '\0'; j++)
-                trackNameLower[j] = static_cast<utf8>(tolower(trackNameLower[j]));
+                trackNameLower[j] = static_cast<utf8>(tolower(static_cast<unsigned char>(trackNameLower[j])));
 
             if (strstr(trackNameLower, filterStringLower) != nullptr)
             {

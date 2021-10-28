@@ -56,7 +56,7 @@ namespace OpenRCT2::Scripting
         auto result = s.substr(sizeof("PERMISSION_") - 1);
         for (auto& c : result)
         {
-            c = std::tolower(c);
+            c = std::tolower(static_cast<unsigned char>(c));
         }
         return result;
     }
