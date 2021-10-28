@@ -1044,29 +1044,25 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(TrackDesignState& tds, const
     return true;
 }
 
-static std::optional<money32> TrackDesignPlaceSceneryElement(
+static GameActions::Result::Ptr TrackDesignPlaceSceneryElement(
     TrackDesignState& tds, CoordsXY mapCoord, uint8_t mode, const TrackDesignSceneryElement& scenery, uint8_t rotation,
     int32_t originZ)
 {
     if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
         TrackDesignAddSelectedTile(mapCoord);
-        return 0;
+        return std::make_unique<GameActions::Result>();
     }
 
     if (tds.PlaceOperation == PTD_OPERATION_REMOVE_GHOST && mode == 0)
     {
-        auto res = TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ);
-        if (res->Error != GameActions::Status::Ok)
-            return std::nullopt;
-
-        return res->Cost;
+        return TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ);
     }
 
     if (tds.PlaceOperation == PTD_OPERATION_GET_PLACE_Z)
     {
         TrackDesignPlaceSceneryElementGetPlaceZ(tds, scenery);
-        return 0;
+        return std::make_unique<GameActions::Result>();
     }
 
     money32 cost = 0;
@@ -1074,13 +1070,13 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
     if (tds.PlaceOperation != PTD_OPERATION_PLACE_QUERY && tds.PlaceOperation != PTD_OPERATION_PLACE
         && tds.PlaceOperation != PTD_OPERATION_PLACE_GHOST && tds.PlaceOperation != PTD_OPERATION_PLACE_TRACK_PREVIEW)
     {
-        return 0;
+        return std::make_unique<GameActions::Result>();
     }
 
     auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
     if (!entryInfo)
     {
-        return 0;
+        return std::make_unique<GameActions::Result>();
     }
 
     int16_t z;
@@ -1093,7 +1089,7 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
         {
             if (mode != 0)
             {
-                return 0;
+                return std::make_unique<GameActions::Result>();
             }
 
             rotation += scenery.flags;
@@ -1137,7 +1133,7 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
         {
             if (mode != 0)
             {
-                return 0;
+                return std::make_unique<GameActions::Result>();
             }
 
             rotation += scenery.flags;
@@ -1177,7 +1173,7 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
         {
             if (mode != 0)
             {
-                return 0;
+                return std::make_unique<GameActions::Result>();
             }
 
             z = scenery.z * COORDS_Z_STEP + originZ;
@@ -1266,14 +1262,13 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
             {
                 if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
                 {
-                    return 0;
+                    return std::make_unique<GameActions::Result>();
                 }
 
                 auto* pathElement = map_get_path_element_at({ mapCoord.x / 32, mapCoord.y / 32, z });
-
                 if (pathElement == nullptr)
                 {
-                    return 0;
+                    return std::make_unique<GameActions::Result>();
                 }
 
                 footpath_queue_chain_reset();
@@ -1295,15 +1290,18 @@ static std::optional<money32> TrackDesignPlaceSceneryElement(
                 }
                 footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
                 footpath_update_queue_chains();
-                return 0;
+                return std::make_unique<GameActions::Result>();
             }
             break;
         default:
             _trackDesignPlaceStateSceneryUnavailable = true;
-            return 0;
+            return std::make_unique<GameActions::Result>();
     }
 
-    return cost;
+    auto res = std::make_unique<GameActions::Result>();
+    res->Cost = cost;
+
+    return res;
 }
 
 /**
@@ -1339,12 +1337,12 @@ static std::optional<money32> TrackDesignPlaceAllScenery(
             auto mapCoord = CoordsXYZ{ tileCoords.ToCoordsXY(), origin.z };
             TrackDesignUpdatePreviewBounds(tds, mapCoord);
 
-            auto placementCost = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
-            if (!placementCost.has_value() || placementCost == MONEY32_UNDEFINED)
+            auto placementRes = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
+            if (placementRes->Error != GameActions::Status::Ok)
             {
                 return std::nullopt;
             }
-            cost += placementCost.value();
+            cost += placementRes->Cost;
         }
     }
 
