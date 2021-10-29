@@ -1116,7 +1116,6 @@ static GameActions::Result::Ptr TrackDesignPlaceSceneryElement(
             {
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
-            gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
             auto smallSceneryPlace = SmallSceneryPlaceAction(
                 { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primary_colour,
@@ -1393,7 +1392,6 @@ static GameActions::Result::Ptr TrackDesignPlaceMaze(
                     rotation &= 3;
 
                     flags = GAME_COMMAND_FLAG_APPLY;
-                    gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
                     if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
@@ -1438,7 +1436,6 @@ static GameActions::Result::Ptr TrackDesignPlaceMaze(
                     rotation &= 3;
 
                     flags = GAME_COMMAND_FLAG_APPLY;
-                    gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
                     if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
@@ -1501,7 +1498,6 @@ static GameActions::Result::Ptr TrackDesignPlaceMaze(
                     {
                         flags |= GAME_COMMAND_FLAG_REPLAY;
                     }
-                    gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
                     auto mazePlace = MazePlaceTrackAction({ mapCoord, coords.z }, ride->id, maze_entry);
                     mazePlace.SetFlags(flags);
@@ -1657,7 +1653,7 @@ static GameActions::Result::Ptr TrackDesignPlaceRide(
                 {
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
-                gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+
                 auto trackPlaceAction = TrackPlaceAction(
                     _currentRideIndex, trackType, { newCoords, tempZ, static_cast<uint8_t>(rotation) }, brakeSpeed, trackColour,
                     seatRotation, liftHillAndAlternativeState, true);
@@ -1796,7 +1792,7 @@ static GameActions::Result::Ptr TrackDesignPlaceRide(
                         {
                             flags |= GAME_COMMAND_FLAG_REPLAY;
                         }
-                        gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
                             newCoords, rotation, ride->id, stationIndex, entrance.isExit);
                         rideEntranceExitPlaceAction.SetFlags(flags);
