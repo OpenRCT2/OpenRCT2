@@ -178,6 +178,69 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window*
 static void window_ride_list_close_all(rct_window* w);
 static void window_ride_list_open_all(rct_window* w);
 
+class RideListWindow final : public Window
+{
+public:
+    // window_ride_list_open
+    void OnOpen() override
+    {
+    }
+
+    // window_ride_list_resize
+    void OnResize() override
+    {
+    }
+
+    // window_ride_list_mouseup
+    void OnMouseUp(rct_widgetindex widgetIndex) override
+    {
+    }
+    
+    // window_ride_list_mousedown
+    void OnMouseDown(rct_widgetindex widgetIndex) override
+    {
+    }
+
+    // window_ride_list_dropdown
+    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    {
+    }
+
+    // window_ride_list_update
+    void OnUpdate() override
+    {
+    }
+
+    // window_ride_list_scrollgetsize
+    ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+    {
+    }
+
+    // window_ride_list_scrollmousedown
+    void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+    }
+
+    // window_ride_list_scrollmouseover
+    void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+    }
+
+    // window_ride_list_invalidate
+    void OnPrepareDraw() override
+    {
+    }
+    // window_ride_list_paint
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+    }
+
+    // window_ride_list_scrollpaint
+    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    {
+    }
+};
+
 /**
  *
  *  rct2: 0x006B30BC
