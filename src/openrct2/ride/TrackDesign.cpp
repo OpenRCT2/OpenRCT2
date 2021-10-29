@@ -1339,7 +1339,11 @@ static GameActions::Result::Ptr TrackDesignPlaceAllScenery(
             auto placementRes = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
             if (placementRes->Error != GameActions::Status::Ok)
             {
-                return placementRes;
+                // Allow operation to fail when its removing ghosts.
+                if (tds.PlaceOperation != PTD_OPERATION_REMOVE_GHOST)
+                {
+                    return placementRes;
+                }
             }
             cost += placementRes->Cost;
         }
