@@ -6862,10 +6862,11 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
 
     memmove(&std::get<1>(Thoughts), &std::get<0>(Thoughts), sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - 1));
 
-    std::get<0>(Thoughts).type = thoughtType;
-    std::get<0>(Thoughts).item = thoughtArguments;
-    std::get<0>(Thoughts).freshness = 0;
-    std::get<0>(Thoughts).fresh_timeout = 0;
+    auto& thought = std::get<0>(Thoughts);
+    thought.type = thoughtType;
+    thought.item = thoughtArguments;
+    thought.freshness = 0;
+    thought.fresh_timeout = 0;
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 }
