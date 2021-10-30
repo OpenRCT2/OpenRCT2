@@ -762,6 +762,11 @@ public:
         }
     }
 
+    void RefreshListWrapper()
+    {
+        RefreshList();
+    }
+
 private:
 
     /**
@@ -806,12 +811,25 @@ private:
         std::swap(_rideList[index], _rideList[index + 1]);
     }
 
+    template <typename TSortPred>
+    void SortList(int32_t& currentListPosition, const Ride* thisRide, const TSortPred& pred)
+    {
+        while (--currentListPosition >= 0)
+        {
+            auto otherRide = get_ride(_rideList[currentListPosition]);
+            if (otherRide != nullptr)
+            {
+                if (pred(thisRide, otherRide))
+                    break;
+                BubbleListItem(currentListPosition);
+            }
+        }
+    }
     /**
      *
      *  rct2: 0x006B39A8
      */
     // window_ride_list_refresh_list
-public:
     void RefreshList()
     {
         _rideList.clear();
@@ -835,205 +853,82 @@ public:
             {
                 case INFORMATION_TYPE_STATUS:
                 {
-                    auto strA =r ->GetName();
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            auto strB = otherRide->GetName();
-                            if (strlogicalcmp(strA.c_str(), strB.c_str()) >= 0)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return 0 <= strlogicalcmp(thisRide->GetName().c_str(), otherRide->GetName().c_str());
+                    });
                     break;
                 }
                 case INFORMATION_TYPE_POPULARITY:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->popularity * 4 <= otherRide->popularity * 4)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->popularity * 4 <= otherRide->popularity * 4;
+                    });
                     break;
                 case INFORMATION_TYPE_SATISFACTION:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->satisfaction * 5 <= otherRide->satisfaction * 5)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->satisfaction * 5 <= otherRide->satisfaction * 5;
+                    });
                     break;
                 case INFORMATION_TYPE_PROFIT:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->profit <= otherRide->profit)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->profit <= otherRide->profit;
+                    });
                     break;
                 case INFORMATION_TYPE_TOTAL_CUSTOMERS:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->total_customers <= otherRide->total_customers)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->total_customers <= otherRide->total_customers;
+                    });
                     break;
                 case INFORMATION_TYPE_TOTAL_PROFIT:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->total_profit <= otherRide->total_profit)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->total_profit <= otherRide->total_profit;
+                    });
                     break;
                 case INFORMATION_TYPE_CUSTOMERS:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (ride_customers_per_hour(r ) <= ride_customers_per_hour(otherRide))
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return ride_customers_per_hour(thisRide) <= ride_customers_per_hour(otherRide);
+                    });
                     break;
                 case INFORMATION_TYPE_AGE:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->build_date <= otherRide->build_date)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->build_date <= otherRide->build_date;
+                    });
                     break;
                 case INFORMATION_TYPE_INCOME:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->income_per_hour <= otherRide->income_per_hour)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->income_per_hour <= otherRide->income_per_hour;
+                    });
                     break;
                 case INFORMATION_TYPE_RUNNING_COST:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->upkeep_cost <= otherRide->upkeep_cost)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->upkeep_cost <= otherRide->upkeep_cost;
+                    });
                     break;
                 case INFORMATION_TYPE_QUEUE_LENGTH:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->GetTotalQueueLength() <= otherRide->GetTotalQueueLength())
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->GetTotalQueueLength() <= otherRide->GetTotalQueueLength();
+                    });
                     break;
                 case INFORMATION_TYPE_QUEUE_TIME:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->GetMaxQueueTime() <= otherRide->GetMaxQueueTime())
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->GetMaxQueueTime() <= otherRide->GetMaxQueueTime();
+                    });
                     break;
                 case INFORMATION_TYPE_RELIABILITY:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->reliability_percentage <= otherRide->reliability_percentage)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->reliability_percentage <= otherRide->reliability_percentage;
+                    });
                     break;
                 case INFORMATION_TYPE_DOWN_TIME:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->downtime <= otherRide->downtime)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->downtime <= otherRide->downtime;
+                    });
                     break;
                 case INFORMATION_TYPE_GUESTS_FAVOURITE:
-                    while (--currentListPosition >= 0)
-                    {
-                        auto otherRide = get_ride(_rideList[currentListPosition]);
-                        if (otherRide != nullptr)
-                        {
-                            if (r ->guests_favourite <= otherRide->guests_favourite)
-                                break;
-
-                            BubbleListItem(currentListPosition);
-                        }
-                    }
+                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                        return thisRide->guests_favourite <= otherRide->guests_favourite;
+                    });
                     break;
             }
-
             listIndex++;
         }
 
@@ -1041,7 +936,6 @@ public:
         this->Invalidate();
     }
 
-private:
     // window_ride_list_close_all
     void CloseAllRides()
     {
@@ -1086,5 +980,5 @@ rct_window* window_ride_list_open()
 
 void window_ride_list_refresh_list(rct_window* w)
 {
-    dynamic_cast<RideListWindow*>(w)->RefreshList();
+    dynamic_cast<RideListWindow*>(w)->RefreshListWrapper();
 }
