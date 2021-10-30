@@ -36,11 +36,11 @@ if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
     if (WIN32 AND NOT MINGW_TARGET_NT5_1)
         target_link_libraries(${PROJECT_NAME} bcrypt)
     else ()
-        if (APPLE)
-            if (NOT MACOS_USE_DEPENDENCIES)
-                # Needed for linking with non-broken OpenSSL on Apple platforms
-                set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
-            endif ()
+        if (APPLE AND NOT MACOS_USE_DEPENDENCIES)
+            # note - we are not yet compatible with openssl3, which is now default brew version
+            execute_process(COMMAND brew --prefix openssl@1.1 OUTPUT_VARIABLE HOMEBREW_PREFIX_OPENSSL OUTPUT_STRIP_TRAILING_WHITESPACE)
+            # Needed for linking with non-broken OpenSSL on Apple platforms
+            list(APPEND CMAKE_PREFIX_PATH "${HOMEBREW_PREFIX_OPENSSL}")
         endif ()
         find_package(OpenSSL 1.0.0 REQUIRED)
 
@@ -173,6 +173,11 @@ find_package(Threads REQUIRED)
 target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
 if (NOT MINGW AND NOT MSVC)
+    if (APPLE AND NOT MACOS_USE_DEPENDENCIES)
+        execute_process(COMMAND brew --prefix icu4c OUTPUT_VARIABLE HOMEBREW_PREFIX_ICU OUTPUT_STRIP_TRAILING_WHITESPACE)
+        # Needed for linking with non-broken icu on Apple platforms
+        list(APPEND CMAKE_PREFIX_PATH "${HOMEBREW_PREFIX_ICU}")
+    endif ()
     # For unicode code page conversion.
     find_package(ICU 59.0 REQUIRED COMPONENTS uc)
         
