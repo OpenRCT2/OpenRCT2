@@ -445,10 +445,10 @@ public:
 
         // Open ride window
         auto rideIndex = _rideList[index];
-        auto r = get_ride(rideIndex);
+        auto* ridePtr = get_ride(rideIndex);
         if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
         {
-            ride_action_modify(r, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+            ride_action_modify(ridePtr, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
             RefreshList();
         }
         else
@@ -531,11 +531,11 @@ public:
             if (_rideList.size() > 0 && std::size(rideManager) != 0)
             {
                 auto c = static_cast<RideClassification>(this->page);
-                allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& r) {
-                    return r.GetClassification() == c && r.status == RideStatus::Open;
+                allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& rideRef) {
+                    return rideRef.GetClassification() == c && rideRef.status == RideStatus::Open;
                 });
-                allOpen = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& r) {
-                    return r.GetClassification() == c && r.status != RideStatus::Open;
+                allOpen = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& rideRef) {
+                    return rideRef.GetClassification() == c && rideRef.status != RideStatus::Open;
                 });
             }
 
@@ -598,13 +598,13 @@ public:
             }
 
             // Get ride
-            auto r = get_ride(_rideList[i]);
-            if (r == nullptr)
+            auto* ridePtr = get_ride(_rideList[i]);
+            if (ridePtr == nullptr)
                 continue;
 
             // Ride name
             auto ft = Formatter();
-            r->FormatNameTo(ft);
+            ridePtr->FormatNameTo(ft);
             DrawTextEllipsised(&dpi, { 0, y - 1 }, 159, format, ft);
 
             // Ride information
@@ -617,57 +617,57 @@ public:
                 case INFORMATION_TYPE_STATUS:
                     formatSecondaryEnabled = false;
                     ft.Rewind();
-                    r->FormatStatusTo(ft);
+                    ridePtr->FormatStatusTo(ft);
 
                     // Make test red and bold if broken down or crashed
-                    if ((r->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (r->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+                    if ((ridePtr->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ridePtr->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
                     {
                         format = STR_RED_OUTLINED_STRING;
                     }
                     break;
                 case INFORMATION_TYPE_POPULARITY:
                     formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
-                    if (r->popularity != 255)
+                    if (ridePtr->popularity != 255)
                     {
                         formatSecondary = STR_POPULARITY_LABEL;
-                        ft.Add<uint16_t>(r->popularity * 4);
+                        ft.Add<uint16_t>(ridePtr->popularity * 4);
                     }
                     break;
                 case INFORMATION_TYPE_SATISFACTION:
                     formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
-                    if (r->satisfaction != 255)
+                    if (ridePtr->satisfaction != 255)
                     {
                         formatSecondary = STR_SATISFACTION_LABEL;
-                        ft.Add<uint16_t>(r->satisfaction * 5);
+                        ft.Add<uint16_t>(ridePtr->satisfaction * 5);
                     }
                     break;
                 case INFORMATION_TYPE_PROFIT:
                     formatSecondary = 0;
-                    if (r->profit != MONEY64_UNDEFINED)
+                    if (ridePtr->profit != MONEY64_UNDEFINED)
                     {
                         formatSecondary = STR_PROFIT_LABEL;
-                        ft.Add<money64>(r->profit);
+                        ft.Add<money64>(ridePtr->profit);
                     }
                     break;
                 case INFORMATION_TYPE_TOTAL_CUSTOMERS:
                     formatSecondary = STR_RIDE_LIST_TOTAL_CUSTOMERS_LABEL;
-                    ft.Add<uint32_t>(r->total_customers);
+                    ft.Add<uint32_t>(ridePtr->total_customers);
                     break;
                 case INFORMATION_TYPE_TOTAL_PROFIT:
                     formatSecondary = 0;
-                    if (r->total_profit != MONEY64_UNDEFINED)
+                    if (ridePtr->total_profit != MONEY64_UNDEFINED)
                     {
                         formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
-                        ft.Add<money64>(r->total_profit);
+                        ft.Add<money64>(ridePtr->total_profit);
                     }
                     break;
                 case INFORMATION_TYPE_CUSTOMERS:
                     formatSecondary = STR_RIDE_LIST_CUSTOMERS_PER_HOUR_LABEL;
-                    ft.Add<uint32_t>(ride_customers_per_hour(r));
+                    ft.Add<uint32_t>(ride_customers_per_hour(ridePtr));
                     break;
                 case INFORMATION_TYPE_AGE:
                 {
-                    int16_t age = date_get_year(r->GetAge());
+                    int16_t age = date_get_year(ridePtr->GetAge());
                     switch (age)
                     {
                         case 0:
@@ -685,23 +685,23 @@ public:
                 }
                 case INFORMATION_TYPE_INCOME:
                     formatSecondary = 0;
-                    if (r->income_per_hour != MONEY64_UNDEFINED)
+                    if (ridePtr->income_per_hour != MONEY64_UNDEFINED)
                     {
                         formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
-                        ft.Add<money64>(r->income_per_hour);
+                        ft.Add<money64>(ridePtr->income_per_hour);
                     }
                     break;
                 case INFORMATION_TYPE_RUNNING_COST:
                     formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
-                    if (r->upkeep_cost != MONEY16_UNDEFINED)
+                    if (ridePtr->upkeep_cost != MONEY16_UNDEFINED)
                     {
                         formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
-                        ft.Add<money64>(r->upkeep_cost * 16);
+                        ft.Add<money64>(ridePtr->upkeep_cost * 16);
                     }
                     break;
                 case INFORMATION_TYPE_QUEUE_LENGTH:
                 {
-                    auto queueLength = r->GetTotalQueueLength();
+                    auto queueLength = ridePtr->GetTotalQueueLength();
                     ft.Add<uint16_t>(queueLength);
 
                     if (queueLength == 1)
@@ -720,7 +720,7 @@ public:
                 }
                 case INFORMATION_TYPE_QUEUE_TIME:
                 {
-                    auto maxQueueTime = r->GetMaxQueueTime();
+                    auto maxQueueTime = ridePtr->GetMaxQueueTime();
                     ft.Add<uint16_t>(maxQueueTime);
 
                     if (maxQueueTime > 1)
@@ -734,19 +734,19 @@ public:
                     break;
                 }
                 case INFORMATION_TYPE_RELIABILITY:
-                    ft.Add<uint16_t>(r->reliability_percentage);
+                    ft.Add<uint16_t>(ridePtr->reliability_percentage);
                     formatSecondary = STR_RELIABILITY_LABEL;
                     break;
                 case INFORMATION_TYPE_DOWN_TIME:
-                    ft.Add<uint16_t>(r->downtime);
+                    ft.Add<uint16_t>(ridePtr->downtime);
                     formatSecondary = STR_DOWN_TIME_LABEL;
                     break;
                 case INFORMATION_TYPE_GUESTS_FAVOURITE:
                     formatSecondary = 0;
-                    if (r->IsRide())
+                    if (ridePtr->IsRide())
                     {
-                        ft.Add<uint16_t>(r->guests_favourite);
-                        formatSecondary = r->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
+                        ft.Add<uint16_t>(ridePtr->guests_favourite);
+                        formatSecondary = ridePtr->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
                                                                       : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
                     }
                     break;
@@ -811,6 +811,10 @@ private:
         std::swap(_rideList[index], _rideList[index + 1]);
     }
 
+    /**
+     * Used in RefreshList() to handle the sorting of the list.
+     * Uses a predicate as exit criteria for the sorting.
+     */
     template <typename TSortPred>
     void SortList(int32_t& currentListPosition, const Ride* thisRide, const TSortPred& pred)
     {
@@ -835,96 +839,96 @@ private:
         _rideList.clear();
 
         size_t listIndex = 0;
-        for (auto& ridec : GetRideManager())
+        for (auto& rideRef : GetRideManager())
         {
-            auto r = &ridec;
-            if (r ->GetClassification() != static_cast<RideClassification>(this->page)
-                || (r ->status == RideStatus::Closed && !ride_has_any_track_elements(r )))
+            auto* ridePtr = &rideRef;
+            if (ridePtr->GetClassification() != static_cast<RideClassification>(this->page)
+                || (ridePtr->status == RideStatus::Closed && !ride_has_any_track_elements(ridePtr)))
                 continue;
 
-            if (r ->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST)
+            if (ridePtr->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST)
             {
-                r ->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
+                ridePtr->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
             }
 
-            _rideList.push_back(r ->id);
+            _rideList.push_back(ridePtr->id);
             auto currentListPosition = static_cast<int32_t>(listIndex);
             switch (this->list_information_type)
             {
                 case INFORMATION_TYPE_STATUS:
                 {
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return 0 <= strlogicalcmp(thisRide->GetName().c_str(), otherRide->GetName().c_str());
                     });
                     break;
                 }
                 case INFORMATION_TYPE_POPULARITY:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->popularity * 4 <= otherRide->popularity * 4;
                     });
                     break;
                 case INFORMATION_TYPE_SATISFACTION:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->satisfaction * 5 <= otherRide->satisfaction * 5;
                     });
                     break;
                 case INFORMATION_TYPE_PROFIT:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->profit <= otherRide->profit;
                     });
                     break;
                 case INFORMATION_TYPE_TOTAL_CUSTOMERS:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->total_customers <= otherRide->total_customers;
                     });
                     break;
                 case INFORMATION_TYPE_TOTAL_PROFIT:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->total_profit <= otherRide->total_profit;
                     });
                     break;
                 case INFORMATION_TYPE_CUSTOMERS:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return ride_customers_per_hour(thisRide) <= ride_customers_per_hour(otherRide);
                     });
                     break;
                 case INFORMATION_TYPE_AGE:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->build_date <= otherRide->build_date;
                     });
                     break;
                 case INFORMATION_TYPE_INCOME:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->income_per_hour <= otherRide->income_per_hour;
                     });
                     break;
                 case INFORMATION_TYPE_RUNNING_COST:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->upkeep_cost <= otherRide->upkeep_cost;
                     });
                     break;
                 case INFORMATION_TYPE_QUEUE_LENGTH:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->GetTotalQueueLength() <= otherRide->GetTotalQueueLength();
                     });
                     break;
                 case INFORMATION_TYPE_QUEUE_TIME:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->GetMaxQueueTime() <= otherRide->GetMaxQueueTime();
                     });
                     break;
                 case INFORMATION_TYPE_RELIABILITY:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->reliability_percentage <= otherRide->reliability_percentage;
                     });
                     break;
                 case INFORMATION_TYPE_DOWN_TIME:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->downtime <= otherRide->downtime;
                     });
                     break;
                 case INFORMATION_TYPE_GUESTS_FAVOURITE:
-                    SortList(currentListPosition, r, [](const Ride* thisRide, const Ride* otherRide) -> bool {
+                    SortList(currentListPosition, ridePtr, [](const Ride* thisRide, const Ride* otherRide) -> bool {
                         return thisRide->guests_favourite <= otherRide->guests_favourite;
                     });
                     break;
@@ -939,11 +943,11 @@ private:
     // window_ride_list_close_all
     void CloseAllRides()
     {
-        for (auto& r : GetRideManager())
+        for (auto& rideRef : GetRideManager())
         {
-            if (r .status != RideStatus::Closed &&r .GetClassification() == static_cast<RideClassification>(this->page))
+            if (rideRef.status != RideStatus::Closed && rideRef.GetClassification() == static_cast<RideClassification>(this->page))
             {
-                ride_set_status(&r , RideStatus::Closed);
+                ride_set_status(&rideRef, RideStatus::Closed);
             }
         }
     }
@@ -951,11 +955,11 @@ private:
     // window_ride_list_open_all
     void OpenAllRides()
     {
-        for (auto& r : GetRideManager())
+        for (auto& rideRef : GetRideManager())
         {
-            if (r .status != RideStatus::Open &&r .GetClassification() == static_cast<RideClassification>(this->page))
+            if (rideRef.status != RideStatus::Open && rideRef.GetClassification() == static_cast<RideClassification>(this->page))
             {
-                ride_set_status(&r , RideStatus::Open);
+                ride_set_status(&rideRef, RideStatus::Open);
             }
         }
     }
