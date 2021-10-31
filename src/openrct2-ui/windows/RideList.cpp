@@ -698,7 +698,7 @@ public:
                     {
                         ft.Add<uint16_t>(ridePtr->guests_favourite);
                         formatSecondary = ridePtr->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
-                                                                        : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
+                                                                         : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
                     }
                     break;
             }
@@ -766,7 +766,7 @@ private:
      * Used in RefreshList() to handle the sorting of the list.
      * Uses a lambda function (predicate) as exit criteria for the algorithm.
      */
-    template <typename TSortPred> void SortList(int32_t& currentListPosition, const Ride* thisRide, const TSortPred& pred)
+    template<typename TSortPred> void SortList(int32_t& currentListPosition, const Ride* thisRide, const TSortPred& pred)
     {
         while (--currentListPosition >= 0)
         {
