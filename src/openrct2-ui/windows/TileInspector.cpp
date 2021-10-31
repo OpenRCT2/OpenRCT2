@@ -363,17 +363,17 @@ static rct_widget LargeSceneryWidgets[] = {
     WIDGETS_END,
 };
 
-constexpr int32_t BAN_GBPB = PADDING_BOTTOM;               // Banner group box properties bottom
-constexpr int32_t BAN_GBPT = BAN_GBPB + 16 + 3 * 21;       // Banner group box properties top
-constexpr int32_t BAN_GBDB = BAN_GBPT + GROUPBOX_PADDING;  // Banner group box info bottom
-constexpr int32_t BAN_GBDT = BAN_GBDB + 20 + 1 * 11;       // Banner group box info top
+constexpr int32_t NumBannerProperties = 3;
+constexpr int32_t NumBannerDetails = 1;
+constexpr int32_t BannerPropertiesHeight = 16 + NumBannerProperties * 21;
+constexpr int32_t BannerDetailsHeight = 20 + NumBannerDetails * 11;
 static rct_widget BannerWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-      SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - BAN_GBPT, 0) + 3, GBBB(WH - BAN_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-    { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 3,   GBBT(WH - BAN_GBPT, 1) + 7 * 1),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_NE
-    { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 3,   GBBT(WH - BAN_GBPT, 1) + 7 * 3),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_SE
-    { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 1,   GBBT(WH - BAN_GBPT, 1) + 7 * 3),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_SW
-    { WindowWidgetType::Checkbox,         1,  CHK(GBBL(1) + 14 * 1,   GBBT(WH - BAN_GBPT, 1) + 7 * 1),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_NW
+    MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 3, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_NE
+    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 3, 7 * 3}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_SE
+    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 1, 7 * 3}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_SW
+    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 1, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_NW
 
     WIDGETS_END,
 };
@@ -432,7 +432,7 @@ constexpr TileInspectorGroupboxSettings PageGroupBoxSettings[] = {
     { ENT_GBDT, ENT_GBDB, ENT_GBPT, ENT_GBPB, STR_TILE_INSPECTOR_GROUPBOX_ENTRANCE_INFO },
     { WALL_GBDT, WALL_GBDB, WALL_GBPT, WALL_GBPB, STR_TILE_INSPECTOR_GROUPBOX_WALL_INFO },
     { LAR_GBDT, LAR_GBDB, LAR_GBPT, LAR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_LARGE_SCENERY_INFO },
-    { BAN_GBDT, BAN_GBDB, BAN_GBPT, BAN_GBPB, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO },
+    MakeGroupboxSettings(BannerDetailsHeight, BannerPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO),
     MakeGroupboxSettings(CorruptDetailsHeight, CorruptPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO),
 };
 
