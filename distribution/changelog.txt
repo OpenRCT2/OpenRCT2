@@ -10,6 +10,7 @@
 - Feature: [#15194] [Plugin] Add guest properties, ride downtime and park casualty penalty.
 - Feature: [#15195] Added a bug-report item in file dropdown menu.
 - Feature: [#15294] New vehicle animation type: flying animal.
+- Fix: [#10614] Track Designs with missing path(s) do not use alternate pathways.
 - Fix: [#12981] New vehicles do not appear in vehicle type dropdown.
 - Fix: [#13465] Creating a scenario based on a won save game results in a scenario that’s instantly won.
 - Fix: [#13912] “Dome park” no longer renders dome correctly.
