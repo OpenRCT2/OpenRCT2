@@ -203,6 +203,14 @@ constexpr int32_t HORIZONTAL_GROUPBOX_PADDING = 5;
 constexpr int32_t VERTICAL_GROUPBOX_PADDING = 4;
 constexpr int32_t BUTTONW = 130;
 constexpr int32_t BUTTONH = 17;
+constexpr auto PropertyButtonSize = ScreenSize{ BUTTONW + 1, BUTTONH + 1 };
+
+constexpr ScreenCoordsXY PropertyRowCol(ScreenCoordsXY anchor, int32_t row, int32_t column)
+{
+    return anchor
+        + ScreenCoordsXY{ column * (PropertyButtonSize.width + HORIZONTAL_GROUPBOX_PADDING),
+                          row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING) };
+}
 
 // clang-format off
 // Calculates the .left, .right, .top and .bottom for buttons in a group box.
@@ -321,7 +329,6 @@ static rct_widget SceneryWidgets[] = {
     WIDGETS_END,
 };
 
-
 constexpr int32_t ENT_GBPB = PADDING_BOTTOM;               // Entrance group box properties bottom
 constexpr int32_t ENT_GBPT = ENT_GBPB + 16 + 2 * 21;       // Entrance group box properties top
 constexpr int32_t ENT_GBDB = ENT_GBPT + GROUPBOX_PADDING;  // Entrance group box info bottom
@@ -371,14 +378,14 @@ static rct_widget BannerWidgets[] = {
     WIDGETS_END,
 };
 
-constexpr int32_t COR_GBPB = PADDING_BOTTOM;               // Corrupt element group box properties bottom
-constexpr int32_t COR_GBPT = COR_GBPB + 16 + 2 * 21;       // Corrupt element group box properties top
-constexpr int32_t COR_GBDB = COR_GBPT + GROUPBOX_PADDING;  // Corrupt element group box info bottom
-constexpr int32_t COR_GBDT = COR_GBDB + 20 + 0 * 11;       // Corrupt element group box info top
+constexpr int32_t NumCorruptProperties = 2;
+constexpr int32_t NumCorruptDetails = 0;
+constexpr int32_t CorruptPropertiesHeight = 16 + NumCorruptProperties * 21;
+constexpr int32_t CorruptDetailsHeight = 20 + NumCorruptDetails * 11;
 static rct_widget CorruptWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
-      SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - COR_GBPT, 0) + 3, GBBB(WH - COR_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_CORRUPT_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-    { WindowWidgetType::Button,           1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_CLAMP_TO_NEXT, STR_TILE_INSPECTOR_CLAMP_TO_NEXT_TIP }, // WIDX_CORRUPT_BUTTON_CLAMP
+    MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_CORRUPT_SPINNER_HEIGHT
+    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 0), PropertyButtonSize, WindowWidgetType::Button, WindowColour::Secondary,STR_TILE_INSPECTOR_CLAMP_TO_NEXT, STR_TILE_INSPECTOR_CLAMP_TO_NEXT_TIP ), // WIDX_CORRUPT_BUTTON_CLAMP
     WIDGETS_END,
 };
 
@@ -396,14 +403,28 @@ static rct_widget *PageWidgets[] = {
 };
 // clang-format on
 
-static struct
+struct TileInspectorGroupboxSettings
 {
     // Offsets from the bottom of the window
     int16_t details_top_offset, details_bottom_offset;
     int16_t properties_top_offset, properties_bottom_offset;
     // String to be displayed in the details groupbox
     rct_string_id string_id;
-} PageGroupBoxSettings[] = {
+};
+
+constexpr TileInspectorGroupboxSettings MakeGroupboxSettings(
+    int16_t detailsHeight, int16_t propertiesHeight, rct_string_id stringId)
+{
+    TileInspectorGroupboxSettings settings{};
+    decltype(settings.properties_bottom_offset) offsetSum = 0;
+    settings.properties_bottom_offset = (offsetSum += PADDING_BOTTOM);
+    settings.properties_top_offset = (offsetSum += propertiesHeight);
+    settings.details_bottom_offset = (offsetSum += GROUPBOX_PADDING);
+    settings.details_top_offset = (offsetSum += detailsHeight);
+    return settings;
+}
+
+constexpr TileInspectorGroupboxSettings PageGroupBoxSettings[] = {
     { SUR_GBDT, SUR_GBDB, SUR_GBPT, SUR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_SURFACE_INFO },
     { PAT_GBDT, PAT_GBDB, PAT_GBPT, PAT_GBPB, STR_TILE_INSPECTOR_GROUPBOX_PATH_INFO },
     { TRA_GBDT, TRA_GBDB, TRA_GBPT, TRA_GBPB, STR_TILE_INSPECTOR_GROUPBOX_TRACK_INFO },
@@ -412,7 +433,7 @@ static struct
     { WALL_GBDT, WALL_GBDB, WALL_GBPT, WALL_GBPB, STR_TILE_INSPECTOR_GROUPBOX_WALL_INFO },
     { LAR_GBDT, LAR_GBDB, LAR_GBPT, LAR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_LARGE_SCENERY_INFO },
     { BAN_GBDT, BAN_GBDB, BAN_GBPT, BAN_GBPB, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO },
-    { COR_GBDT, COR_GBDB, COR_GBPT, COR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO },
+    MakeGroupboxSettings(CorruptDetailsHeight, CorruptPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO),
 };
 
 static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
