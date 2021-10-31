@@ -255,7 +255,7 @@ public:
                 break;
         }
     }
-    
+
     /**
      *
      *  rct2: 0x006B3532
@@ -268,8 +268,8 @@ public:
             gDropdownItemsFormat[0] = STR_CLOSE_ALL;
             gDropdownItemsFormat[1] = STR_OPEN_ALL;
             WindowDropdownShowText(
-                { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height(),
-                this->colours[1], 0, 2);
+                { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height(), this->colours[1], 0,
+                2);
         }
         else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
         {
@@ -354,9 +354,9 @@ public:
     }
 
     /**
-    *
-    *  rct2: 0x006B386B
-    */
+     *
+     *  rct2: 0x006B386B
+     */
     void OnUpdate() override
     {
         this->frame_no = (this->frame_no + 1) % 64;
@@ -506,7 +506,7 @@ public:
         }
         this->widgets[WIDX_QUICK_DEMOLISH].bottom = this->widgets[WIDX_QUICK_DEMOLISH].top + 23;
         this->widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
-                                                                                         : WindowWidgetType::Empty;
+                                                                                            : WindowWidgetType::Empty;
     }
 
     /**
@@ -698,7 +698,7 @@ public:
                     {
                         ft.Add<uint16_t>(ridePtr->guests_favourite);
                         formatSecondary = ridePtr->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
-                                                                      : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
+                                                                        : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
                     }
                     break;
             }
@@ -719,7 +719,6 @@ public:
     }
 
 private:
-
     /**
      *
      *  rct2: 0x006B38EA
@@ -767,8 +766,7 @@ private:
      * Used in RefreshList() to handle the sorting of the list.
      * Uses a lambda function (predicate) as exit criteria for the algorithm.
      */
-    template <typename TSortPred>
-    void SortList(int32_t& currentListPosition, const Ride* thisRide, const TSortPred& pred)
+    template <typename TSortPred> void SortList(int32_t& currentListPosition, const Ride* thisRide, const TSortPred& pred)
     {
         while (--currentListPosition >= 0)
         {
@@ -931,7 +929,6 @@ rct_window* window_ride_list_open()
         window = WindowCreate<RideListWindow>(WC_RIDE_LIST, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
     }
     return window;
-
 }
 
 void window_ride_list_refresh_list(rct_window* w)
