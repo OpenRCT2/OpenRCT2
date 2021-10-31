@@ -75,35 +75,6 @@ static rct_widget window_ride_list_widgets[] = {
 };
 // clang-format on
 
-
-/*
-static void window_ride_list_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_ride_list_resize(rct_window* w);
-static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_ride_list_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_ride_list_update(rct_window* w);
-static void window_ride_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
-static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_ride_list_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_ride_list_invalidate(rct_window* w);
-static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
-
-static rct_window_event_list window_ride_list_events([](auto& events) {
-    events.mouse_up = &window_ride_list_mouseup;
-    events.resize = &window_ride_list_resize;
-    events.mouse_down = &window_ride_list_mousedown;
-    events.dropdown = &window_ride_list_dropdown;
-    events.update = &window_ride_list_update;
-    events.get_scroll_size = &window_ride_list_scrollgetsize;
-    events.scroll_mousedown = &window_ride_list_scrollmousedown;
-    events.scroll_mouseover = &window_ride_list_scrollmouseover;
-    events.invalidate = &window_ride_list_invalidate;
-    events.paint = &window_ride_list_paint;
-    events.scroll_paint = &window_ride_list_scrollpaint;
-});
-*/
-
 enum
 {
     INFORMATION_TYPE_STATUS,
@@ -172,12 +143,6 @@ static constexpr const rct_string_id page_names[] = {
     STR_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
 
-/*
-static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w);
-static void window_ride_list_close_all(rct_window* w);
-static void window_ride_list_open_all(rct_window* w);
-*/
-
 class RideListWindow final : public Window
 {
 private:
@@ -186,7 +151,6 @@ private:
     std::vector<ride_id_t> _rideList;
 
 public:
-    // window_ride_list_open
     void OnOpen() override
     {
         this->widgets = window_ride_list_widgets;
@@ -208,13 +172,13 @@ public:
         RefreshList();
 
         this->list_information_type = 0;
+
         _windowRideListInformationType = INFORMATION_TYPE_STATUS;
         _quickDemolishMode = false;
     }
 
     /**
      *
-     * window_ride_list_resize
      *  rct2: 0x006B38A7
      */
     void OnResize() override
@@ -245,7 +209,6 @@ public:
      *
      *  rct2: 0x006B3511
      */
-    // window_ride_list_mouseup
     void OnMouseUp(rct_widgetindex widgetIndex) override
     {
         switch (widgetIndex)
@@ -297,17 +260,16 @@ public:
      *
      *  rct2: 0x006B3532
      */
-    // window_ride_list_mousedown
     void OnMouseDown(rct_widgetindex widgetIndex) override
     {
-        // static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
         if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
         {
             auto* widget = &this->widgets[widgetIndex];
             gDropdownItemsFormat[0] = STR_CLOSE_ALL;
             gDropdownItemsFormat[1] = STR_OPEN_ALL;
             WindowDropdownShowText(
-                { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height(), this->colours[1], 0, 2);
+                { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height(),
+                this->colours[1], 0, 2);
         }
         else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
         {
@@ -356,7 +318,6 @@ public:
      *
      *  rct2: 0x006B3547
      */
-    // window_ride_list_dropdown
     void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
     {
         if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
@@ -396,7 +357,6 @@ public:
     *
     *  rct2: 0x006B386B
     */
-    // window_ride_list_update
     void OnUpdate() override
     {
         this->frame_no = (this->frame_no + 1) % 64;
@@ -409,18 +369,16 @@ public:
      *
      *  rct2: 0x006B35A1
      */
-    // window_ride_list_scrollgetsize
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        // static void window_ride_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
-        auto h = static_cast<int32_t>(_rideList.size() * SCROLLABLE_ROW_HEIGHT);
+        auto newHeight = static_cast<int32_t>(_rideList.size() * SCROLLABLE_ROW_HEIGHT);
         if (this->selected_list_item != -1)
         {
             this->selected_list_item = -1;
             this->Invalidate();
         }
 
-        auto top = h - this->widgets[WIDX_LIST].bottom + this->widgets[WIDX_LIST].top + 21;
+        auto top = newHeight - this->widgets[WIDX_LIST].bottom + this->widgets[WIDX_LIST].top + 21;
         if (top < 0)
             top = 0;
         if (top < this->scrolls[0].v_top)
@@ -429,14 +387,13 @@ public:
             this->Invalidate();
         }
 
-        return { 0, h };
+        return { 0, newHeight };
     }
 
     /**
      *
      *  rct2: 0x006B361F
      */
-    // window_ride_list_scrollmousedown
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
         auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
@@ -463,7 +420,6 @@ public:
      *
      *  rct2: 0x006B35EF
      */
-    // window_ride_list_scrollmouseover
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
         auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
@@ -478,7 +434,6 @@ public:
      *
      *  rct2: 0x006B3182
      */
-    // window_ride_list_invalidate
     void OnPrepareDraw() override
     {
         this->widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_windowRideListInformationType];
@@ -558,7 +513,6 @@ public:
      *
      *  rct2: 0x006B3235
      */
-    // window_ride_list_paint
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
         WindowDrawWidgets(this, &dpi);
@@ -576,7 +530,6 @@ public:
      *
      *  rct2: 0x006B3240
      */
-    // window_ride_list_scrollpaint
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
@@ -617,7 +570,8 @@ public:
                     ridePtr->FormatStatusTo(ft);
 
                     // Make test red and bold if broken down or crashed
-                    if ((ridePtr->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ridePtr->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+                    if ((ridePtr->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+                        || (ridePtr->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
                     {
                         format = STR_RED_OUTLINED_STRING;
                     }
@@ -770,7 +724,6 @@ private:
      *
      *  rct2: 0x006B38EA
      */
-    // window_ride_list_draw_tab_images
     void DrawTabImages(rct_drawpixelinfo* dpi)
     {
         int32_t sprite_idx;
@@ -780,21 +733,24 @@ private:
         if (this->page == PAGE_RIDES)
             sprite_idx += this->frame_no / 4;
         gfx_draw_sprite(
-            dpi, ImageId(sprite_idx), this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_TAB_1].left, this->widgets[WIDX_TAB_1].top });
+            dpi, ImageId(sprite_idx),
+            this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_TAB_1].left, this->widgets[WIDX_TAB_1].top });
 
         // Shops and stalls tab
         sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
         if (this->page == PAGE_SHOPS_AND_STALLS)
             sprite_idx += this->frame_no / 4;
         gfx_draw_sprite(
-            dpi, ImageId(sprite_idx), this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_TAB_2].left, this->widgets[WIDX_TAB_2].top });
+            dpi, ImageId(sprite_idx),
+            this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_TAB_2].left, this->widgets[WIDX_TAB_2].top });
 
         // Information kiosks and facilities tab
         sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
         if (this->page == PAGE_KIOSKS_AND_FACILITIES)
             sprite_idx += (this->frame_no / 4) % 8;
         gfx_draw_sprite(
-            dpi, ImageId(sprite_idx), this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_TAB_3].left, this->widgets[WIDX_TAB_3].top });
+            dpi, ImageId(sprite_idx),
+            this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_TAB_3].left, this->widgets[WIDX_TAB_3].top });
     }
 
     /**
@@ -802,7 +758,6 @@ private:
      * the two locations.
      *  rct2: New function not from rct2
      */
-    // window_bubble_list_item
     void BubbleListItem(int32_t index)
     {
         std::swap(_rideList[index], _rideList[index + 1]);
@@ -830,7 +785,6 @@ private:
      *
      *  rct2: 0x006B39A8
      */
-    // window_ride_list_refresh_list
     void RefreshList()
     {
         _rideList.clear();
@@ -942,7 +896,8 @@ private:
     {
         for (auto& rideRef : GetRideManager())
         {
-            if (rideRef.status != RideStatus::Closed && rideRef.GetClassification() == static_cast<RideClassification>(this->page))
+            if (rideRef.status != RideStatus::Closed
+                && rideRef.GetClassification() == static_cast<RideClassification>(this->page))
             {
                 ride_set_status(&rideRef, RideStatus::Closed);
             }
@@ -954,7 +909,8 @@ private:
     {
         for (auto& rideRef : GetRideManager())
         {
-            if (rideRef.status != RideStatus::Open && rideRef.GetClassification() == static_cast<RideClassification>(this->page))
+            if (rideRef.status != RideStatus::Open
+                && rideRef.GetClassification() == static_cast<RideClassification>(this->page))
             {
                 ride_set_status(&rideRef, RideStatus::Open);
             }
@@ -977,7 +933,6 @@ rct_window* window_ride_list_open()
     return window;
 
 }
-
 
 void window_ride_list_refresh_list(rct_window* w)
 {
