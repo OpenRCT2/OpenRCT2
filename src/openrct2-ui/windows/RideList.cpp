@@ -312,7 +312,7 @@ public:
         else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
         {
             auto* widget = &this->widgets[widgetIndex];
-            widget--; // ~hjort96 why??
+            widget--;
 
             int32_t lastType;
             if (this->page == PAGE_RIDES)
@@ -420,7 +420,7 @@ public:
             this->Invalidate();
         }
 
-        auto top = h - window_ride_list_widgets[WIDX_LIST].bottom + window_ride_list_widgets[WIDX_LIST].top + 21;
+        auto top = h - this->widgets[WIDX_LIST].bottom + this->widgets[WIDX_LIST].top + 21;
         if (top < 0)
             top = 0;
         if (top < this->scrolls[0].v_top)
@@ -481,17 +481,14 @@ public:
     // window_ride_list_invalidate
     void OnPrepareDraw() override
     {
-        // ~hjort96 Maybe change to this->widgets
-        window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping
-            [_windowRideListInformationType];
+        this->widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_windowRideListInformationType];
 
         // Set correct active tab
         for (int32_t i = 0; i < 3; i++)
             this->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
         this->pressed_widgets |= 1LL << (WIDX_TAB_1 + this->page);
 
-        // ~hjort96 Maybe change to this->widgets
-        window_ride_list_widgets[WIDX_TITLE].text = page_names[this->page];
+        this->widgets[WIDX_TITLE].text = page_names[this->page];
 
         if (_quickDemolishMode)
             this->pressed_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
@@ -813,7 +810,7 @@ private:
 
     /**
      * Used in RefreshList() to handle the sorting of the list.
-     * Uses a predicate as exit criteria for the sorting.
+     * Uses a lambda function (predicate) as exit criteria for the algorithm.
      */
     template <typename TSortPred>
     void SortList(int32_t& currentListPosition, const Ride* thisRide, const TSortPred& pred)
