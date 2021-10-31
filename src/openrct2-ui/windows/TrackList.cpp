@@ -251,7 +251,8 @@ public:
         // try to load the track manager again, and an infinite loop will result.
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && gScreenAge != 0)
         {
-            Close();
+            window_close_by_number(WC_MANAGE_TRACK_DESIGN, number);
+            window_close_by_number(WC_TRACK_DELETE_PROMPT, number);
             Editor::LoadTrackManager();
         }
     }
