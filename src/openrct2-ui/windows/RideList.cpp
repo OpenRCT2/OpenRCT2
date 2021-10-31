@@ -972,7 +972,7 @@ rct_window* window_ride_list_open()
     auto* window = window_bring_to_front_by_class(WC_RIDE_LIST);
     if (window == nullptr)
     {
-        window = WindowCreate<RideListWindow>(WC_RIDE_LIST, ScreenCoordsXY(32, 32), WW, WH);
+        window = WindowCreate<RideListWindow>(WC_RIDE_LIST, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
     }
     return window;
 
