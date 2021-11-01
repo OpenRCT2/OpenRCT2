@@ -187,15 +187,15 @@ constexpr auto ToolbarButtonOffsetX = ScreenSize{ -24, 0 };
 
 // List's column offsets
 constexpr auto TypeColumnXY = ScreenCoordsXY{ 3, 42 };
-constexpr auto TypeColumnSize = ScreenSize{ 312, 14 };
+constexpr auto TypeColumnSize = ScreenSize{ 287, 14 };
 constexpr auto BaseHeightColumnXY = TypeColumnXY + ScreenSize{ TypeColumnSize.width, 0 };
-constexpr auto BaseHeightColumnSize = ScreenSize{ 20, 14 };
+constexpr auto BaseHeightColumnSize = ScreenSize{ 30, 14 };
 constexpr auto ClearanceHeightColumnXY = BaseHeightColumnXY + ScreenCoordsXY{ BaseHeightColumnSize.width, 0 };
-constexpr auto ClearanceHeightColumnSize = ScreenSize{ 20, 14 };
+constexpr auto ClearanceHeightColumnSize = ScreenSize{ 30, 14 };
 constexpr auto GhostFlagColumnXY = ClearanceHeightColumnXY + ScreenCoordsXY{ ClearanceHeightColumnSize.width, 0 };
-constexpr auto GhostFlagColumnSize = ScreenSize{ 12, 14 };
+constexpr auto GhostFlagColumnSize = ScreenSize{ 15, 14 };
 constexpr auto LastFlagColumnXY = GhostFlagColumnXY + ScreenCoordsXY{ GhostFlagColumnSize.width, 0 };
-constexpr auto LastFlagColumnSize = ScreenSize{ 30, 14 };
+constexpr auto LastFlagColumnSize = ScreenSize{ 32, 14 };
 
 constexpr int32_t PADDING_BOTTOM = 15;
 constexpr int32_t GROUPBOX_PADDING = 6;
@@ -218,7 +218,7 @@ constexpr ScreenCoordsXY PropertyRowCol(ScreenCoordsXY anchor, int32_t row, int3
 
 #define MAIN_TILE_INSPECTOR_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({3, 57}, {WW - 6, WH - PADDING_BOTTOM - 58}, WindowWidgetType::Scroll, WindowColour::Secondary), /* Element list */ \
+    MakeWidget({3, 57}, {WW - 6, WH - PADDING_BOTTOM - 58}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), /* Element list */ \
     /* X and Y spinners */ \
     MakeSpinnerWidgets({20, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner X (3 widgets) */ \
     MakeSpinnerWidgets({90, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner Y (3 widgets) */ \
