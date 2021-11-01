@@ -183,8 +183,6 @@ public:
      */
     void OnResize() override
     {
-        this->min_width = 340;
-        this->min_height = 124;
         if (this->width < this->min_width)
         {
             this->Invalidate();
