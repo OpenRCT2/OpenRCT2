@@ -147,8 +147,7 @@ public:
             switch (widgetIndex)
             {
                 case WIDX_PREVIEW:
-                    size = std::max<int32_t>(MINIMUM_TOOL_SIZE, size);
-                    size = std::min<int32_t>(MAXIMUM_TOOL_SIZE, size);
+                    size = std::clamp<int32_t>(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
                     gWindowSceneryScatterSize = size;
                     break;
             }
