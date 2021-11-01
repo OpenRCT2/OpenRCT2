@@ -201,10 +201,8 @@ constexpr int32_t PADDING_BOTTOM = 15;
 constexpr int32_t GROUPBOX_PADDING = 6;
 constexpr int32_t HORIZONTAL_GROUPBOX_PADDING = 5;
 constexpr int32_t VERTICAL_GROUPBOX_PADDING = 4;
-constexpr int32_t BUTTONW = 130;
-constexpr int32_t BUTTONH = 17;
-constexpr auto PropertyButtonSize = ScreenSize{ BUTTONW + 1, BUTTONH + 1 };
-constexpr auto PropertyFullWidth = ScreenSize{ 370, BUTTONH + 1 };
+constexpr auto PropertyButtonSize = ScreenSize{ 130, 18 };
+constexpr auto PropertyFullWidth = ScreenSize{ 370, 18 };
 
 constexpr ScreenCoordsXY PropertyRowCol(ScreenCoordsXY anchor, int32_t row, int32_t column)
 {
@@ -214,21 +212,9 @@ constexpr ScreenCoordsXY PropertyRowCol(ScreenCoordsXY anchor, int32_t row, int3
 }
 
 // clang-format off
-// Calculates the .left, .right, .top and .bottom for buttons in a group box.
-// Buttons are used as reference points for all other widgets in the group boxes.
-#define GBBL(col)               (12 + col * (BUTTONW + HORIZONTAL_GROUPBOX_PADDING))
-#define GBBR(col)               (GBBL(col) + BUTTONW)
-#define GBBT(GROUPTOP, row)     ((GROUPTOP) + 14 + row * (BUTTONH + VERTICAL_GROUPBOX_PADDING))
-#define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + BUTTONH)
-#define GBB(GROUPTOP, col, row) GBBL(col), GBBR(col), GBBT((GROUPTOP), row), GBBB((GROUPTOP), row)
-#define GBBF(GROUPTOP, col, row)GBBL(col), WW - 10, GBBT((GROUPTOP), row), GBBB((GROUPTOP), row) // Full width
-
-// Dropdowns use the buttons as a reference
-#define GBD(GBT, col, row)  GBBL(col), GBBR(col), GBBT(GBT, row) + 3, GBBB(GBT, row) - 3 // Group box dropdown field
-#define GBDB(GBT, col, row) GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBB(GBT, row) - 4 // Group box dropdown button
-
-// Checkbox - given topleft corner
-#define CHK(x, y) x, x + 13, y + 2, y + 15
+// Macros for easily obtaining the top and bottom of a widget inside a properties group box
+#define GBBT(GROUPTOP, row)     ((GROUPTOP) + 14 + row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING))
+#define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + PropertyButtonSize.height)
 
 #define MAIN_TILE_INSPECTOR_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
