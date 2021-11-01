@@ -211,6 +211,12 @@ constexpr ScreenCoordsXY PropertyRowCol(ScreenCoordsXY anchor, int32_t row, int3
                           row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING) };
 }
 
+constexpr ScreenCoordsXY CheckboxGroupOffset(
+    ScreenCoordsXY anchorPoint, int16_t horizontalMultiplier, int16_t verticalMultiplier)
+{
+    return anchorPoint + ScreenCoordsXY{ 14 * horizontalMultiplier, 7 * verticalMultiplier };
+}
+
 // clang-format off
 // Macros for easily obtaining the top and bottom of a widget inside a properties group box
 #define GBBT(GROUPTOP, row)     ((GROUPTOP) + 14 + row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING))
@@ -255,10 +261,10 @@ static rct_widget SurfaceWidgets[] = {
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_SURFACE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         PropertyButtonSize, WindowWidgetType::Button,  WindowColour::Secondary, STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES), // WIDX_SURFACE_BUTTON_REMOVE_FENCES
     MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1),         PropertyButtonSize, WindowWidgetType::Button,  WindowColour::Secondary, STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES), // WIDX_SURFACE_BUTTON_RESTORE_FENCES
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 1, 7 * 0}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SURFACE_CHECK_CORNER_N
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 2, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SURFACE_CHECK_CORNER_E
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 1, 7 * 2}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SURFACE_CHECK_CORNER_S
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 0, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SURFACE_CHECK_CORNER_W
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 0), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SURFACE_CHECK_CORNER_N
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 2, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SURFACE_CHECK_CORNER_E
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 2), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SURFACE_CHECK_CORNER_S
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 0, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SURFACE_CHECK_CORNER_W
     MakeWidget(PropertyRowCol({ 12, 0 }, 4, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_SURFACE_DIAGONAL), // WIDX_SURFACE_CHECK_DIAGONAL
     WIDGETS_END,
 };
@@ -272,14 +278,14 @@ static rct_widget PathWidgets[] = {
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     MakeWidget(PropertyRowCol({ 12, 0 }, 1, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_PATH_BROKEN), // WIDX_PATH_CHECK_BROKEN
     MakeWidget(PropertyRowCol({ 12, 0 }, 2, 0), PropertyFullWidth, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_INSPECTOR_PATH_SLOPED), // WIDX_PATH_CHECK_SLOPED
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 3, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_NE
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 4, 7 * 2}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_E
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 3, 7 * 3}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_SE
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 2, 7 * 4}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_S
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 1, 7 * 3}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_SW
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 0, 7 * 2}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_W
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 1, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_NW
-    MakeWidget(PropertyRowCol({ 12, 0 }, 3, 1) + ScreenCoordsXY{ 14 * 2, 7 * 0}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_N
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 3, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_NE
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 4, 2), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_E
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 3, 3), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_SE
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 2, 4), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_S
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 3), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_SW
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 0, 2), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_W
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_NW
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 2, 0), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_PATH_CHECK_EDGE_N
     WIDGETS_END,
 };
 
@@ -304,14 +310,14 @@ constexpr int32_t SceneryDetailsHeight = 20 + NumSceneryDetails * 11;
 static rct_widget SceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 1, 7 * 0}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_QUARTER_N
-    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 2, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_QUARTER_E
-    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 1, 7 * 2}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_QUARTER_S
-    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 0, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_QUARTER_W
-    MakeWidget(PropertyRowCol({ 12, 0 }, 2, 1) + ScreenCoordsXY{ 14 * 1, 7 * 0}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_COLLISION_N
-    MakeWidget(PropertyRowCol({ 12, 0 }, 2, 1) + ScreenCoordsXY{ 14 * 2, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_COLLISION_E
-    MakeWidget(PropertyRowCol({ 12, 0 }, 2, 1) + ScreenCoordsXY{ 14 * 1, 7 * 2}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_COLLISION_S
-    MakeWidget(PropertyRowCol({ 12, 0 }, 2, 1) + ScreenCoordsXY{ 14 * 0, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_COLLISION_W
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_QUARTER_N
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 2, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_QUARTER_E
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 2), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_QUARTER_S
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 0, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_QUARTER_W
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 0), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_COLLISION_N
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 2, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_COLLISION_E
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 1, 2), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_COLLISION_S
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 2, 1), 0, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_SCENERY_CHECK_COLLISION_W
     WIDGETS_END,
 };
 
@@ -356,10 +362,10 @@ constexpr int32_t BannerDetailsHeight = 20 + NumBannerDetails * 11;
 static rct_widget BannerWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     MakeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WindowWidgetType::Spinner, WindowColour::Secondary), // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 3, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_NE
-    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 3, 7 * 3}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_SE
-    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 1, 7 * 3}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_SW
-    MakeWidget(PropertyRowCol({ 12, 0 }, 1, 1) + ScreenCoordsXY{ 14 * 1, 7 * 1}, { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_NW
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_NE
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 3), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_SE
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 3), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_SW
+    MakeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 1), { 12, 12 }, WindowWidgetType::Checkbox, WindowColour::Secondary), // WIDX_BANNER_CHECK_BLOCK_NW
 
     WIDGETS_END,
 };
