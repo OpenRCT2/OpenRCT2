@@ -425,7 +425,7 @@ static constexpr TileInspectorGroupboxSettings MakeGroupboxSettings(
     return settings;
 }
 
-constexpr TileInspectorGroupboxSettings PageGroupBoxSettings[] = {
+static constexpr TileInspectorGroupboxSettings PageGroupBoxSettings[] = {
     MakeGroupboxSettings(SurfaceDetailsHeight, SurfacePropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_SURFACE_INFO),
     MakeGroupboxSettings(PathDetailsHeight, PathPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_PATH_INFO),
     MakeGroupboxSettings(TrackDetailsHeight, TrackPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_TRACK_INFO),
