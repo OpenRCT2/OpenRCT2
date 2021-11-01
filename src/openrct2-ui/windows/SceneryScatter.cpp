@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <charconv>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -139,10 +140,10 @@ public:
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
 
-        char* end;
-        std::string tempString(text);
-        auto size = strtol(tempString.c_str(), &end, 10);
-        if (*end == '\0')
+        int32_t size = 0;
+        const auto res = std::from_chars(text.data(), text.data() + text.size(), size);
+
+        if (res.ec == std::errc())
         {
             switch (widgetIndex)
             {
