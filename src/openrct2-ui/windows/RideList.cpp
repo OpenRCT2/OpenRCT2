@@ -752,16 +752,6 @@ private:
     }
 
     /**
-     * Bubbles an item one position up in the window list.  This is done by swapping
-     * the two locations.
-     *  rct2: New function not from rct2
-     */
-    void BubbleListItem(int32_t index)
-    {
-        std::swap(_rideList[index], _rideList[index + 1]);
-    }
-
-    /**
      * Used in RefreshList() to handle the sorting of the list.
      * Uses a lambda function (predicate) as exit criteria for the algorithm.
      */
@@ -774,7 +764,7 @@ private:
             {
                 if (pred(thisRide, otherRide))
                     break;
-                BubbleListItem(currentListPosition);
+                std::swap(_rideList[currentListPosition], _rideList[currentListPosition + 1]);
             }
         }
     }
