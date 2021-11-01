@@ -264,17 +264,16 @@ public:
     {
         if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
         {
-            auto* widget = &this->widgets[widgetIndex];
+            const auto& widget = this->widgets[widgetIndex];
             gDropdownItemsFormat[0] = STR_CLOSE_ALL;
             gDropdownItemsFormat[1] = STR_OPEN_ALL;
             WindowDropdownShowText(
-                { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height(), this->colours[1], 0,
+                { this->windowPos.x + widget.left, this->windowPos.y + widget.top }, widget.height(), this->colours[1], 0,
                 2);
         }
         else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
         {
-            auto* widget = &this->widgets[widgetIndex];
-            widget--;
+            const auto& widget = this->widgets[widgetIndex-1];
 
             int32_t lastType;
             if (this->page == PAGE_RIDES)
@@ -305,8 +304,8 @@ public:
             }
 
             WindowDropdownShowTextCustomWidth(
-                { this->windowPos.x + widget->left, this->windowPos.y + widget->top }, widget->height(), this->colours[1], 0,
-                Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
+                { this->windowPos.x + widget.left, this->windowPos.y + widget.top }, widget.height(), this->colours[1], 0,
+                Dropdown::Flag::StayOpen, numItems, widget.width() - 3);
             if (selectedIndex != -1)
             {
                 Dropdown::SetChecked(selectedIndex, true);
@@ -371,7 +370,7 @@ public:
      */
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        auto newHeight = static_cast<int32_t>(_rideList.size() * SCROLLABLE_ROW_HEIGHT);
+        const auto newHeight = static_cast<int32_t>(_rideList.size() * SCROLLABLE_ROW_HEIGHT);
         if (this->selected_list_item != -1)
         {
             this->selected_list_item = -1;
@@ -396,12 +395,12 @@ public:
      */
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+        const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
         if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
             return;
 
         // Open ride window
-        auto rideIndex = _rideList[index];
+        const auto rideIndex = _rideList[index];
         auto* ridePtr = get_ride(rideIndex);
         if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
         {
@@ -422,7 +421,7 @@ public:
      */
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
+        const auto index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
         if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
             return;
 
@@ -548,7 +547,7 @@ public:
             }
 
             // Get ride
-            auto* ridePtr = get_ride(_rideList[i]);
+            const auto* ridePtr = get_ride(_rideList[i]);
             if (ridePtr == nullptr)
                 continue;
 
@@ -618,7 +617,7 @@ public:
                     break;
                 case INFORMATION_TYPE_AGE:
                 {
-                    int16_t age = date_get_year(ridePtr->GetAge());
+                    const int16_t age = date_get_year(ridePtr->GetAge());
                     switch (age)
                     {
                         case 0:
@@ -652,7 +651,7 @@ public:
                     break;
                 case INFORMATION_TYPE_QUEUE_LENGTH:
                 {
-                    auto queueLength = ridePtr->GetTotalQueueLength();
+                    const auto queueLength = ridePtr->GetTotalQueueLength();
                     ft.Add<uint16_t>(queueLength);
 
                     if (queueLength == 1)
@@ -671,7 +670,7 @@ public:
                 }
                 case INFORMATION_TYPE_QUEUE_TIME:
                 {
-                    auto maxQueueTime = ridePtr->GetMaxQueueTime();
+                    const auto maxQueueTime = ridePtr->GetMaxQueueTime();
                     ft.Add<uint16_t>(maxQueueTime);
 
                     if (maxQueueTime > 1)
@@ -770,7 +769,7 @@ private:
     {
         while (--currentListPosition >= 0)
         {
-            auto otherRide = get_ride(_rideList[currentListPosition]);
+            const auto* otherRide = get_ride(_rideList[currentListPosition]);
             if (otherRide != nullptr)
             {
                 if (pred(thisRide, otherRide))
