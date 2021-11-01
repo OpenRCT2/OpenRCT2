@@ -322,7 +322,7 @@ STR_0933    :Prima occorre modificare l'altezza del terreno
 STR_0934    :L'entrata dell'attrazione è d'intralcio
 STR_0935    :L'uscita dell'attrazione è d'intralcio
 STR_0936    :L'entrata del parco è d'intralcio
-STR_0937    :Visualizza le opzioni
+STR_0937    :Opzioni visuale
 STR_0938    :Regola l'altezza e la pendenza del terreno
 STR_0939    :Visuale sotterranea/interna
 STR_0940    :Nascondi terreno
@@ -382,7 +382,7 @@ STR_0993    :Demolisci l'attrazione
 STR_0994    :Demolisci
 STR_0995    :{WINDOW_COLOUR_1}Si è sicuri di voler demolire completamente {STRINGID}?
 STR_0996    :Visuale generale
-STR_0997    :Seleziona la visuale
+STR_0997    :Visuale selezione
 STR_0998    :Non è possibile collocare altre stazioni per questa attrazione
 STR_0999    :È necessaria una piattaforma stazione
 STR_1000    :Il tracciato non costituisce un circuito completo
@@ -412,7 +412,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} carrozze per treno
 STR_1024    :{COMMA16} carrozza per treno
 STR_1025    :{COMMA16} carrozze per treno
 STR_1026    :Piattaforma della stazione troppo lunga!
-STR_1027    :Individualo nella visuale principale
+STR_1027    :Individua nella visuale principale
 STR_1028    :Fuori dalla mappa!
 STR_1029    :Non si può costruire contemporaneamente sopra e sotto l'acqua!
 STR_1030    :Si può costruire solo sott'acqua!
@@ -764,11 +764,11 @@ STR_1374    :1/2 giro morte gr. (dx)
 STR_1375    :Trasferimento in alto
 STR_1376    :Trasferimento in basso
 STR_1377    :Avvitamento ond. (sx)
-STR_1378    :Avvitamento ond.  (dx)
+STR_1378    :Avvitamento ond. (dx)
 STR_1379    :Invertitore (sinistra)
 STR_1380    :Invertitore (destra)
-STR_1381    :Sal. x traino in curva (sx)
-STR_1382    :Sal. x  traino in curva (dx)
+STR_1381    :Salita trainata curva (sx)
+STR_1382    :Salita trainata curva (sx)
 STR_1383    :1/4 di giro della morte
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Altre configurazioni del tracciato
@@ -3662,6 +3662,8 @@ STR_6453    :Copia info versione
 STR_6454    :Impossibile rinominare il cartello…
 STR_6455    :Impossibile rinominare l’insegna…
 STR_6456    :Screenshot gigante
+STR_6457    :Segnala un bug su GitHub
+STR_6458    :Segui sulla visuale principale
 
 
 #############
