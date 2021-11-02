@@ -2689,6 +2689,10 @@ private:
 
         const auto& ted = GetTrackElementDescriptor(trackType);
         const auto* trackBlock = ted.Block;
+        const auto* rideEntry = currentRide->GetRideEntry();
+        auto clearanceHeight = (rideEntry != nullptr) ? rideEntry->Clearance
+                                                      : currentRide->GetRideTypeDescriptor().Heights.ClearanceHeight;
+
         while (trackBlock->index != 255)
         {
             auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
@@ -2696,8 +2700,7 @@ private:
             CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
             int32_t baseZ = originZ + trackBlock->z;
-            int32_t clearanceZ = trackBlock->var_07 + currentRide->GetRideTypeDescriptor().Heights.ClearanceHeight + baseZ
-                + (4 * COORDS_Z_STEP);
+            int32_t clearanceZ = trackBlock->var_07 + clearanceHeight + baseZ + (4 * COORDS_Z_STEP);
 
             auto centreTileCoords = TileCoordsXY{ coords };
             auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];

@@ -64,4 +64,5 @@ private:
     static colour_t ParseColour(const std::string& s);
 
     void ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups);
+    uint8_t GetDefaultClearance() const;
 };

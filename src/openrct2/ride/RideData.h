@@ -40,6 +40,14 @@ enum class ResearchCategory : uint8_t;
 
 using ride_ratings_calculation = void (*)(Ride& ride, RideRatingUpdateState& state);
 
+constexpr const uint8_t DefaultFoodStallHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultDrinksStallHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultShopHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultToiletHeight = 4 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultInformationKioskHeight = 6 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultFirstAidHeight = 6 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultCashMachineHeight = 8 * COORDS_Z_STEP;
+
 struct RideComponentName
 {
     StringId singular;
