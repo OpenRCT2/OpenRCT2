@@ -40,6 +40,7 @@ body:
       - The bug also exists in RCT2 (vanilla)
       - This bug is specific to multiplayer
       - Building the game
+      - User interface
   validations:
     required: false
 
