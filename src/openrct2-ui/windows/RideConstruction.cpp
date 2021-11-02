@@ -1936,7 +1936,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         // When flat rides are deleted, the window should be reset so the ride can be placed again.
         const auto rideId = w->rideId;
         auto ride = get_ride(rideId);
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
         {
             ride_initialise_construction_window(ride);
         }
