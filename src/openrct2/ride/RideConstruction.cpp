@@ -1525,21 +1525,23 @@ void Ride::ValidateStations()
                     continue;
 
                 auto trackType = trackElement->AsTrack()->GetTrackType();
-                uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
-                // determine where the ride entrance is relative to the station track
-                Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;
-
-                // if the ride entrance is not on a valid side, remove it
-                ted = &GetTrackElementDescriptor(trackType);
-                if (!(ted->SequenceProperties[trackSequence] & (1 << direction)))
-                {
-                    continue;
-                }
                 // get the StationIndex for the station
                 StationIndex stationId = 0;
                 if (trackType != TrackElemType::Maze)
                 {
+                    uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
+
+                    // determine where the ride entrance is relative to the station track
+                    Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;
+
+                    // if the ride entrance is not on a valid side, remove it
+                    ted = &GetTrackElementDescriptor(trackType);
+                    if (!(ted->SequenceProperties[trackSequence] & (1 << direction)))
+                    {
+                        continue;
+                    }
+
                     stationId = trackElement->AsTrack()->GetStationIndex();
                 }
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
