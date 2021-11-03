@@ -153,25 +153,25 @@ private:
 public:
     void OnOpen() override
     {
-        this->widgets = window_ride_list_widgets;
-        this->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OPEN_CLOSE_ALL) | (1ULL << WIDX_CURRENT_INFORMATION_TYPE)
+        widgets = window_ride_list_widgets;
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OPEN_CLOSE_ALL) | (1ULL << WIDX_CURRENT_INFORMATION_TYPE)
             | (1ULL << WIDX_INFORMATION_TYPE_DROPDOWN) | (1ULL << WIDX_SORT) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2)
             | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
         if (network_get_mode() != NETWORK_MODE_CLIENT)
         {
-            this->enabled_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
+            enabled_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
         }
         WindowInitScrollWidgets(this);
-        this->page = PAGE_RIDES;
-        this->selected_list_item = -1;
-        this->frame_no = 0;
-        this->min_width = 340;
-        this->min_height = 240;
-        this->max_width = 400;
-        this->max_height = 700;
+        page = PAGE_RIDES;
+        selected_list_item = -1;
+        frame_no = 0;
+        min_width = 340;
+        min_height = 240;
+        max_width = 400;
+        max_height = 700;
         RefreshList();
 
-        this->list_information_type = 0;
+        list_information_type = 0;
 
         _windowRideListInformationType = INFORMATION_TYPE_STATUS;
         _quickDemolishMode = false;
@@ -183,15 +183,15 @@ public:
      */
     void OnResize() override
     {
-        if (this->width < this->min_width)
+        if (width < min_width)
         {
-            this->Invalidate();
-            this->width = this->min_width;
+            Invalidate();
+            width = min_width;
         }
-        if (this->height < this->min_height)
+        if (height < min_height)
         {
-            this->Invalidate();
-            this->height = this->min_height;
+            Invalidate();
+            height = min_height;
         }
 
         // Refreshing the list can be a very intensive operation
@@ -215,19 +215,19 @@ public:
                 window_close(this);
                 break;
             case WIDX_SORT:
-                this->list_information_type = _windowRideListInformationType;
-                this->selected_list_item = -1;
+                list_information_type = _windowRideListInformationType;
+                selected_list_item = -1;
                 RefreshList();
                 break;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
             case WIDX_TAB_3:
-                if (this->page != widgetIndex - WIDX_TAB_1)
+                if (page != widgetIndex - WIDX_TAB_1)
                 {
-                    this->page = widgetIndex - WIDX_TAB_1;
-                    this->frame_no = 0;
-                    this->selected_list_item = -1;
-                    if (this->page != PAGE_RIDES && _windowRideListInformationType > INFORMATION_TYPE_RUNNING_COST)
+                    page = widgetIndex - WIDX_TAB_1;
+                    frame_no = 0;
+                    selected_list_item = -1;
+                    if (page != PAGE_RIDES && _windowRideListInformationType > INFORMATION_TYPE_RUNNING_COST)
                     {
                         _windowRideListInformationType = INFORMATION_TYPE_STATUS;
                     }
@@ -249,7 +249,7 @@ public:
                 {
                     _quickDemolishMode = false;
                 }
-                this->Invalidate();
+                Invalidate();
                 break;
         }
     }
@@ -262,18 +262,18 @@ public:
     {
         if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
         {
-            const auto& widget = this->widgets[widgetIndex];
+            const auto& widget = widgets[widgetIndex];
             gDropdownItemsFormat[0] = STR_CLOSE_ALL;
             gDropdownItemsFormat[1] = STR_OPEN_ALL;
             WindowDropdownShowText(
-                { this->windowPos.x + widget.left, this->windowPos.y + widget.top }, widget.height(), this->colours[1], 0, 2);
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
         }
         else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
         {
-            const auto& widget = this->widgets[widgetIndex - 1];
+            const auto& widget = widgets[widgetIndex - 1];
 
             int32_t lastType;
-            if (this->page == PAGE_RIDES)
+            if (page == PAGE_RIDES)
                 lastType = INFORMATION_TYPE_GUESTS_FAVOURITE;
             else
                 lastType = INFORMATION_TYPE_RUNNING_COST;
@@ -301,7 +301,7 @@ public:
             }
 
             WindowDropdownShowTextCustomWidth(
-                { this->windowPos.x + widget.left, this->windowPos.y + widget.top }, widget.height(), this->colours[1], 0,
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0,
                 Dropdown::Flag::StayOpen, numItems, widget.width() - 3);
             if (selectedIndex != -1)
             {
@@ -327,7 +327,7 @@ public:
                 OpenAllRides();
             }
 
-            this->Invalidate();
+            Invalidate();
         }
         else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
         {
@@ -345,7 +345,7 @@ public:
             }
 
             _windowRideListInformationType = informationType;
-            this->Invalidate();
+            Invalidate();
         }
     }
 
@@ -355,10 +355,10 @@ public:
      */
     void OnUpdate() override
     {
-        this->frame_no = (this->frame_no + 1) % 64;
-        widget_invalidate(this, WIDX_TAB_1 + this->page);
+        frame_no = (frame_no + 1) % 64;
+        widget_invalidate(this, WIDX_TAB_1 + page);
         if (_windowRideListInformationType != INFORMATION_TYPE_STATUS)
-            this->Invalidate();
+            Invalidate();
     }
 
     /**
@@ -368,19 +368,19 @@ public:
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
         const auto newHeight = static_cast<int32_t>(_rideList.size() * SCROLLABLE_ROW_HEIGHT);
-        if (this->selected_list_item != -1)
+        if (selected_list_item != -1)
         {
-            this->selected_list_item = -1;
-            this->Invalidate();
+            selected_list_item = -1;
+            Invalidate();
         }
 
-        auto top = newHeight - this->widgets[WIDX_LIST].bottom + this->widgets[WIDX_LIST].top + 21;
+        auto top = newHeight - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21;
         if (top < 0)
             top = 0;
-        if (top < this->scrolls[0].v_top)
+        if (top < scrolls[0].v_top)
         {
-            this->scrolls[0].v_top = top;
-            this->Invalidate();
+            scrolls[0].v_top = top;
+            Invalidate();
         }
 
         return { 0, newHeight };
@@ -422,8 +422,8 @@ public:
         if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
             return;
 
-        this->selected_list_item = index;
-        this->Invalidate();
+        selected_list_item = index;
+        Invalidate();
     }
 
     /**
@@ -432,53 +432,53 @@ public:
      */
     void OnPrepareDraw() override
     {
-        this->widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_windowRideListInformationType];
+        widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_windowRideListInformationType];
 
         // Set correct active tab
         for (int32_t i = 0; i < 3; i++)
-            this->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-        this->pressed_widgets |= 1LL << (WIDX_TAB_1 + this->page);
+            pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+        pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
 
-        this->widgets[WIDX_TITLE].text = page_names[this->page];
+        widgets[WIDX_TITLE].text = page_names[page];
 
         if (_quickDemolishMode)
-            this->pressed_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
+            pressed_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
         else
-            this->pressed_widgets &= ~(1ULL << WIDX_QUICK_DEMOLISH);
+            pressed_widgets &= ~(1ULL << WIDX_QUICK_DEMOLISH);
 
-        this->widgets[WIDX_BACKGROUND].right = this->width - 1;
-        this->widgets[WIDX_BACKGROUND].bottom = this->height - 1;
-        this->widgets[WIDX_PAGE_BACKGROUND].right = this->width - 1;
-        this->widgets[WIDX_PAGE_BACKGROUND].bottom = this->height - 1;
-        this->widgets[WIDX_TITLE].right = this->width - 2;
+        widgets[WIDX_BACKGROUND].right = width - 1;
+        widgets[WIDX_BACKGROUND].bottom = height - 1;
+        widgets[WIDX_PAGE_BACKGROUND].right = width - 1;
+        widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
+        widgets[WIDX_TITLE].right = width - 2;
 
         // if close button is on the right then it must move
-        this->widgets[WIDX_CLOSE].left = this->width - 13;
-        this->widgets[WIDX_CLOSE].right = this->width - 3;
+        widgets[WIDX_CLOSE].left = width - 13;
+        widgets[WIDX_CLOSE].right = width - 3;
 
-        this->widgets[WIDX_LIST].right = this->width - 26;
-        this->widgets[WIDX_LIST].bottom = this->height - 15;
-        this->widgets[WIDX_OPEN_CLOSE_ALL].right = this->width - 2;
-        this->widgets[WIDX_OPEN_CLOSE_ALL].left = this->width - 25;
-        this->widgets[WIDX_CLOSE_LIGHT].right = this->width - 7;
-        this->widgets[WIDX_CLOSE_LIGHT].left = this->width - 20;
-        this->widgets[WIDX_OPEN_LIGHT].right = this->width - 7;
-        this->widgets[WIDX_OPEN_LIGHT].left = this->width - 20;
-        this->widgets[WIDX_QUICK_DEMOLISH].right = this->width - 2;
-        this->widgets[WIDX_QUICK_DEMOLISH].left = this->width - 25;
+        widgets[WIDX_LIST].right = width - 26;
+        widgets[WIDX_LIST].bottom = height - 15;
+        widgets[WIDX_OPEN_CLOSE_ALL].right = width - 2;
+        widgets[WIDX_OPEN_CLOSE_ALL].left = width - 25;
+        widgets[WIDX_CLOSE_LIGHT].right = width - 7;
+        widgets[WIDX_CLOSE_LIGHT].left = width - 20;
+        widgets[WIDX_OPEN_LIGHT].right = width - 7;
+        widgets[WIDX_OPEN_LIGHT].left = width - 20;
+        widgets[WIDX_QUICK_DEMOLISH].right = width - 2;
+        widgets[WIDX_QUICK_DEMOLISH].left = width - 25;
 
         if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
         {
-            this->widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::Empty;
-            this->widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
-            this->widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
+            widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::Empty;
+            widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
+            widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
 
             const auto& rideManager = GetRideManager();
             auto allClosed = true;
             auto allOpen = false;
             if (_rideList.size() > 0 && std::size(rideManager) != 0)
             {
-                auto c = static_cast<RideClassification>(this->page);
+                auto c = static_cast<RideClassification>(page);
                 allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& rideRef) {
                     return rideRef.GetClassification() == c && rideRef.status == RideStatus::Open;
                 });
@@ -487,21 +487,21 @@ public:
                 });
             }
 
-            this->widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2
+            widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2
                 + WidgetIsPressed(this, WIDX_CLOSE_LIGHT);
-            this->widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
+            widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
                 + WidgetIsPressed(this, WIDX_OPEN_LIGHT);
-            this->widgets[WIDX_QUICK_DEMOLISH].top = this->widgets[WIDX_OPEN_LIGHT].bottom + 3;
+            widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_LIGHT].bottom + 3;
         }
         else
         {
-            this->widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::FlatBtn;
-            this->widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
-            this->widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
-            this->widgets[WIDX_QUICK_DEMOLISH].top = this->widgets[WIDX_OPEN_CLOSE_ALL].bottom + 3;
+            widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
+            widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
+            widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_CLOSE_ALL].bottom + 3;
         }
-        this->widgets[WIDX_QUICK_DEMOLISH].bottom = this->widgets[WIDX_QUICK_DEMOLISH].top + 23;
-        this->widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
+        widgets[WIDX_QUICK_DEMOLISH].bottom = widgets[WIDX_QUICK_DEMOLISH].top + 23;
+        widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
                                                                                             : WindowWidgetType::Empty;
     }
 
@@ -518,8 +518,8 @@ public:
         auto ft = Formatter();
         ft.Add<uint16_t>(static_cast<uint16_t>(_rideList.size()));
         DrawTextBasic(
-            &dpi, this->windowPos + ScreenCoordsXY{ 4, this->widgets[WIDX_LIST].bottom + 2 },
-            ride_list_statusbar_count_strings[this->page], ft);
+            &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 },
+            ride_list_statusbar_count_strings[page], ft);
     }
 
     /**
@@ -530,13 +530,13 @@ public:
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         gfx_fill_rect(
-            &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[this->colours[1]].mid_light);
+            &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } }, ColourMapA[colours[1]].mid_light);
 
         auto y = 0;
         for (size_t i = 0; i < _rideList.size(); i++)
         {
             rct_string_id format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
-            if (i == static_cast<size_t>(this->selected_list_item))
+            if (i == static_cast<size_t>(selected_list_item))
             {
                 // Background highlight
                 gfx_filter_rect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
@@ -725,27 +725,27 @@ private:
 
         // Rides tab
         sprite_idx = SPR_TAB_RIDE_0;
-        if (this->page == PAGE_RIDES)
-            sprite_idx += this->frame_no / 4;
+        if (page == PAGE_RIDES)
+            sprite_idx += frame_no / 4;
         gfx_draw_sprite(
             dpi, ImageId(sprite_idx),
-            this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_TAB_1].left, this->widgets[WIDX_TAB_1].top });
+            windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
 
         // Shops and stalls tab
         sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
-        if (this->page == PAGE_SHOPS_AND_STALLS)
-            sprite_idx += this->frame_no / 4;
+        if (page == PAGE_SHOPS_AND_STALLS)
+            sprite_idx += frame_no / 4;
         gfx_draw_sprite(
             dpi, ImageId(sprite_idx),
-            this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_TAB_2].left, this->widgets[WIDX_TAB_2].top });
+            windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
 
         // Information kiosks and facilities tab
         sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
-        if (this->page == PAGE_KIOSKS_AND_FACILITIES)
-            sprite_idx += (this->frame_no / 4) % 8;
+        if (page == PAGE_KIOSKS_AND_FACILITIES)
+            sprite_idx += (frame_no / 4) % 8;
         gfx_draw_sprite(
             dpi, ImageId(sprite_idx),
-            this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_TAB_3].left, this->widgets[WIDX_TAB_3].top });
+            windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
     }
 
     /**
@@ -777,7 +777,7 @@ private:
         size_t listIndex = 0;
         for (auto& rideRef : GetRideManager())
         {
-            if (rideRef.GetClassification() != static_cast<RideClassification>(this->page)
+            if (rideRef.GetClassification() != static_cast<RideClassification>(page)
                 || (rideRef.status == RideStatus::Closed && !ride_has_any_track_elements(&rideRef)))
                 continue;
 
@@ -788,7 +788,7 @@ private:
 
             _rideList.push_back(rideRef.id);
             auto currentListPosition = static_cast<int32_t>(listIndex);
-            switch (this->list_information_type)
+            switch (list_information_type)
             {
                 case INFORMATION_TYPE_STATUS:
                     currentListPosition = SortList(
@@ -884,8 +884,8 @@ private:
             listIndex++;
         }
 
-        this->selected_list_item = -1;
-        this->Invalidate();
+        selected_list_item = -1;
+        Invalidate();
     }
 
     // window_ride_list_close_all
@@ -894,7 +894,7 @@ private:
         for (auto& rideRef : GetRideManager())
         {
             if (rideRef.status != RideStatus::Closed
-                && rideRef.GetClassification() == static_cast<RideClassification>(this->page))
+                && rideRef.GetClassification() == static_cast<RideClassification>(page))
             {
                 ride_set_status(&rideRef, RideStatus::Closed);
             }
@@ -907,7 +907,7 @@ private:
         for (auto& rideRef : GetRideManager())
         {
             if (rideRef.status != RideStatus::Open
-                && rideRef.GetClassification() == static_cast<RideClassification>(this->page))
+                && rideRef.GetClassification() == static_cast<RideClassification>(page))
             {
                 ride_set_status(&rideRef, RideStatus::Open);
             }
