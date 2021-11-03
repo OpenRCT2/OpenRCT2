@@ -265,8 +265,7 @@ public:
             const auto& widget = widgets[widgetIndex];
             gDropdownItemsFormat[0] = STR_CLOSE_ALL;
             gDropdownItemsFormat[1] = STR_OPEN_ALL;
-            WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
+            WindowDropdownShowText({ windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
         }
         else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
         {
@@ -502,7 +501,7 @@ public:
         }
         widgets[WIDX_QUICK_DEMOLISH].bottom = widgets[WIDX_QUICK_DEMOLISH].top + 23;
         widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
-                                                                                            : WindowWidgetType::Empty;
+                                                                                      : WindowWidgetType::Empty;
     }
 
     /**
@@ -518,8 +517,7 @@ public:
         auto ft = Formatter();
         ft.Add<uint16_t>(static_cast<uint16_t>(_rideList.size()));
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 },
-            ride_list_statusbar_count_strings[page], ft);
+            &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[page], ft);
     }
 
     /**
@@ -728,24 +726,21 @@ private:
         if (page == PAGE_RIDES)
             sprite_idx += frame_no / 4;
         gfx_draw_sprite(
-            dpi, ImageId(sprite_idx),
-            windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
+            dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
 
         // Shops and stalls tab
         sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
         if (page == PAGE_SHOPS_AND_STALLS)
             sprite_idx += frame_no / 4;
         gfx_draw_sprite(
-            dpi, ImageId(sprite_idx),
-            windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+            dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
 
         // Information kiosks and facilities tab
         sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
         if (page == PAGE_KIOSKS_AND_FACILITIES)
             sprite_idx += (frame_no / 4) % 8;
         gfx_draw_sprite(
-            dpi, ImageId(sprite_idx),
-            windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+            dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
     }
 
     /**
@@ -893,8 +888,7 @@ private:
     {
         for (auto& rideRef : GetRideManager())
         {
-            if (rideRef.status != RideStatus::Closed
-                && rideRef.GetClassification() == static_cast<RideClassification>(page))
+            if (rideRef.status != RideStatus::Closed && rideRef.GetClassification() == static_cast<RideClassification>(page))
             {
                 ride_set_status(&rideRef, RideStatus::Closed);
             }
@@ -906,8 +900,7 @@ private:
     {
         for (auto& rideRef : GetRideManager())
         {
-            if (rideRef.status != RideStatus::Open
-                && rideRef.GetClassification() == static_cast<RideClassification>(page))
+            if (rideRef.status != RideStatus::Open && rideRef.GetClassification() == static_cast<RideClassification>(page))
             {
                 ride_set_status(&rideRef, RideStatus::Open);
             }
