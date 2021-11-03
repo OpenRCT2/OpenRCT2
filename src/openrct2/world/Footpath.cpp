@@ -1943,8 +1943,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
         {
             constexpr uint8_t edgeMask1 = EDGE_SE | EDGE_SW;
             const auto& path_element1 = std::get<7>(pathList);
-            if ((pathConnections & FOOTPATH_CONNECTION_NE) && path_element1 != nullptr
-                && !path_element1->AsPath()->IsWide()
+            if ((pathConnections & FOOTPATH_CONNECTION_NE) && path_element1 != nullptr && !path_element1->AsPath()->IsWide()
                 && (path_element1->AsPath()->GetEdges() & edgeMask1) == edgeMask1 && std::get<0>(pathList) != nullptr
                 && !std::get<0>(pathList)->AsPath()->IsWide())
             {
@@ -1958,8 +1957,7 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
              * Short circuit the logic appropriately. */
             constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_SE;
             const auto& path_element2 = std::get<6>(pathList);
-            if ((pathConnections & FOOTPATH_CONNECTION_SW) && path_element2 != nullptr
-                && !(path_element2)->AsPath()->IsWide()
+            if ((pathConnections & FOOTPATH_CONNECTION_SW) && path_element2 != nullptr && !(path_element2)->AsPath()->IsWide()
                 && (path_element2->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && std::get<2>(pathList) != nullptr)
             {
                 pathConnections |= FOOTPATH_CONNECTION_E;
