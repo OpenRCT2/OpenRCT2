@@ -556,7 +556,7 @@ void Guest::UpdateEasterEggInteractions()
 
     if (PeepFlags & PEEP_FLAGS_JOY)
     {
-        if (scenario_rand() <= 1456)
+        if ((scenario_rand() & 0xFFFF) <= 1456)
         {
             if (IsActionInterruptable())
             {
