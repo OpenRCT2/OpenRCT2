@@ -456,7 +456,7 @@ static bool IsValidLocation(const CoordsXYZ& coords)
     return false;
 }
 
-template<void (Guest::*EasterEggFunc)(Guest*)> static void ApplyEasterEggToNearbyGuests(Guest* guest)
+template<void (Guest::*EasterEggFunc)(Guest*), bool applyToSelf> static void ApplyEasterEggToNearbyGuests(Guest* guest)
 {
     const auto guestLoc = guest->GetLocation();
     if (!IsValidLocation(guestLoc))
@@ -464,10 +464,13 @@ template<void (Guest::*EasterEggFunc)(Guest*)> static void ApplyEasterEggToNearb
 
     for (auto* otherGuest : EntityTileList<Guest>(guestLoc))
     {
-        if (otherGuest == guest)
+        if constexpr (!applyToSelf)
         {
-            // Can not apply effect on self.
-            continue;
+            if (otherGuest == guest)
+            {
+                // Can not apply effect on self.
+                continue;
+            }
         }
         auto zDiff = std::abs(otherGuest->z - guestLoc.z);
         if (zDiff <= 32)
@@ -536,22 +539,22 @@ void Guest::UpdateEasterEggInteractions()
 {
     if (PeepFlags & PEEP_FLAGS_PURPLE)
     {
-        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsPurpleClothes>(this);
+        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsPurpleClothes, true>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_PIZZA)
     {
-        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsPizza>(this);
+        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsPizza, true>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_CONTAGIOUS)
     {
-        ApplyEasterEggToNearbyGuests<&Guest::MakePassingPeepsSick>(this);
+        ApplyEasterEggToNearbyGuests<&Guest::MakePassingPeepsSick, false>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_ICE_CREAM)
     {
-        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsIceCream>(this);
+        ApplyEasterEggToNearbyGuests<&Guest::GivePassingPeepsIceCream, false>(this);
     }
 
     if (PeepFlags & PEEP_FLAGS_JOY)
