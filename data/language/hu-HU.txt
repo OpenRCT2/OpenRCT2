@@ -3594,6 +3594,30 @@ STR_6431    :Jobb egérgomb
 STR_6432    :Egér {INT32}
 STR_6433    :Eltávolítás
 STR_6434    :A jelenlegi gyorsbillentyű összes hozzárendelésének törlése.
+STR_6435    :{WINDOW_COLOUR_2}Megállított vandálok: {BLACK}{COMMA16}
+STR_6436    :Láthatatlanság be/ki
+STR_6437    :Láthatatlan
+STR_6438    :L
+STR_6439    :Mezővizsgáló: Láthatatlanság be/ki
+STR_6440    :Átlátszó víz
+STR_6441    :Legalább egy nem várósori útobjektum legyen kiválasztva.
+STR_6442    :Legalább egy várósori útobjektum legyen kiválasztva.
+STR_6443    :Legalább egy úti kerítésobjektum legyen kiválasztva.
+STR_6444    :Útfelületek
+STR_6445    :Útkorlátok
+STR_6446    :{WINDOW_COLOUR_2}Felület neve: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Korlát neve: {BLACK}{STRINGID}
+STR_6448    :Nem támogatott objektumformátum
+STR_6449    :{WINDOW_COLOUR_2}Számok:
+STR_6450    :{BLACK}„{STRING}”
+STR_6451    :{BLACK}„{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Árul: {BLACK}{STRING}
+STR_6453    :Verzió infó másolása
+STR_6454    :A hirdetőtábla nem nevezhető át…
+STR_6455    :A felirat nem nevezhető át…
+STR_6456    :Óriás képmentés
+STR_6457    :Hiba jelentése a GitHubon
+STR_6458    :Követés a fő nézetben
 
 
 #############
