@@ -973,8 +973,6 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
 
 static void window_tile_inspector_resize(rct_window* w)
 {
-    w->min_width = WW;
-    w->min_height = MIN_WH;
     if (w->width < w->min_width)
     {
         w->Invalidate();
