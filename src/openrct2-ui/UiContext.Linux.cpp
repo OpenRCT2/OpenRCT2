@@ -392,9 +392,10 @@ namespace OpenRCT2::Ui
                     {
                         filtersb << ' ';
                     }
-                    else if (isalpha(c))
+                    else if (isalpha(static_cast<unsigned char>(c)))
                     {
-                        filtersb << '[' << static_cast<char>(tolower(c)) << static_cast<char>(toupper(c)) << ']';
+                        auto uc = static_cast<unsigned char>(c);
+                        filtersb << '[' << static_cast<char>(tolower(uc)) << static_cast<char>(toupper(uc)) << ']';
                     }
                     else
                     {

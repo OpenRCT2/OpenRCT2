@@ -332,7 +332,7 @@ int32_t strcicmp(char const* a, char const* b)
 {
     for (;; a++, b++)
     {
-        int32_t d = tolower(*a) - tolower(*b);
+        int32_t d = tolower(static_cast<unsigned char>(*a)) - tolower(static_cast<unsigned char>(*b));
         if (d != 0 || !*a)
             return d;
     }
@@ -353,7 +353,7 @@ int32_t strlogicalcmp(const char* s1, const char* s2)
             return *s1 != '\0';
         if (*s1 == '\0')
             return -1;
-        if (!(isdigit(*s1) && isdigit(*s2)))
+        if (!(isdigit(static_cast<unsigned char>(*s1)) && isdigit(static_cast<unsigned char>(*s2))))
         {
             if (toupper(*s1) != toupper(*s2))
                 return toupper(*s1) - toupper(*s2);

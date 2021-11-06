@@ -178,7 +178,7 @@ namespace String
             {
                 for (size_t i = 0; i < a.size(); i++)
                 {
-                    if (tolower(a[i]) != tolower(b[i]))
+                    if (tolower(static_cast<unsigned char>(a[i])) != tolower(static_cast<unsigned char>(b[i])))
                     {
                         return false;
                     }
@@ -212,7 +212,7 @@ namespace String
                         return false;
                     }
                 }
-                else if (tolower(ai) != tolower(bi))
+                else if (tolower(static_cast<unsigned char>(ai)) != tolower(static_cast<unsigned char>(bi)))
                 {
                     return false;
                 }
@@ -822,7 +822,7 @@ namespace String
         for (auto c : value)
         {
             // Keep alphanumeric and other accepted characters intact
-            if (std::isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~')
+            if (std::isalnum(static_cast<unsigned char>(c)) || c == '-' || c == '_' || c == '.' || c == '~')
             {
                 escaped << c;
             }

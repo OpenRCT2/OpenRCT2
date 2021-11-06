@@ -39,7 +39,7 @@ static std::string sanitizeTestName(const std::string& name)
     std::string res;
     for (char c : nameOnly)
     {
-        if (isalnum(c))
+        if (isalnum(static_cast<unsigned char>(c)))
             res += c;
     }
     return res;
