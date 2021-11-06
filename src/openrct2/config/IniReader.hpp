@@ -48,5 +48,5 @@ struct IIniReader
     utf8* GetCString(const std::string& name, const utf8* defaultValue) const;
 };
 
-std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream);
-std::unique_ptr<IIniReader> CreateDefaultIniReader();
+[[nodiscard]] std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream);
+[[nodiscard]] std::unique_ptr<IIniReader> CreateDefaultIniReader();

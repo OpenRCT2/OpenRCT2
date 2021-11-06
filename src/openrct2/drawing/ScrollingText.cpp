@@ -128,10 +128,8 @@ static uint8_t* font_sprite_get_codepoint_bitmap(int32_t codepoint)
     {
         return _characterBitmaps[offset - (SPR_G2_CHAR_BEGIN - SPR_CHAR_START) + FONT_SPRITE_GLYPH_COUNT];
     }
-    else
-    {
-        return _characterBitmaps[offset];
-    }
+
+    return _characterBitmaps[offset];
 }
 
 static int32_t scrolling_text_get_matching_or_oldest(

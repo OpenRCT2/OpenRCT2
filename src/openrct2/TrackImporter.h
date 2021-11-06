@@ -28,14 +28,14 @@ public:
     virtual bool Load(const utf8* path) abstract;
     virtual bool LoadFromStream(OpenRCT2::IStream* stream) abstract;
 
-    virtual std::unique_ptr<TrackDesign> Import() abstract;
+    [[nodiscard]] virtual std::unique_ptr<TrackDesign> Import() abstract;
 };
 
 namespace TrackImporter
 {
-    std::unique_ptr<ITrackImporter> Create(const std::string& hintPath);
-    std::unique_ptr<ITrackImporter> CreateTD4();
-    std::unique_ptr<ITrackImporter> CreateTD6();
+    [[nodiscard]] std::unique_ptr<ITrackImporter> Create(const std::string& hintPath);
+    [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD4();
+    [[nodiscard]] std::unique_ptr<ITrackImporter> CreateTD6();
 
     bool ExtensionIsRCT1(const std::string& extension);
 } // namespace TrackImporter

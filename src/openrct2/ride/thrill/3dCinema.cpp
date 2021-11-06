@@ -18,11 +18,10 @@
  * rct2: 0x007664C2
  */
 static void paint_3d_cinema_structure(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -43,7 +42,8 @@ static void paint_3d_cinema_structure(
     }
 
     uint32_t imageId = (rideEntry->vehicles[0].base_image_id + direction) | imageColourFlags;
-    PaintAddImageAsParent(session, imageId, xOffset, yOffset, 24, 24, 47, height + 3, xOffset + 16, yOffset + 16, height + 3);
+    PaintAddImageAsParent(
+        session, imageId, { xOffset, yOffset, height + 3 }, { 24, 24, 47 }, { xOffset + 16, yOffset + 16, height + 3 });
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType = ViewportInteractionItem::Ride;
@@ -53,44 +53,47 @@ static void paint_3d_cinema_structure(
  * rct2: 0x0076574C
  */
 static void paint_3d_cinema(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
+    StationObject* stationObject = nullptr;
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
 
-    auto ride = get_ride(rideIndex);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
             fenceSpritesRope, session->CurrentRotation);
     }
 
     switch (trackSequence)
     {
         case 1:
-            paint_3d_cinema_structure(session, rideIndex, direction, 32, 32, height);
+            paint_3d_cinema_structure(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_3d_cinema_structure(session, rideIndex, direction, 32, -32, height);
+            paint_3d_cinema_structure(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_3d_cinema_structure(session, rideIndex, direction, 0, -32, height);
+            paint_3d_cinema_structure(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_3d_cinema_structure(session, rideIndex, direction, -32, 32, height);
+            paint_3d_cinema_structure(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_3d_cinema_structure(session, rideIndex, direction, -32, -32, height);
+            paint_3d_cinema_structure(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_3d_cinema_structure(session, rideIndex, direction, -32, 0, height);
+            paint_3d_cinema_structure(session, ride, direction, -32, 0, height);
             break;
     }
 

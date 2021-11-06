@@ -14,6 +14,7 @@
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
@@ -50,8 +51,8 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
     res->Expenditure = ExpenditureType::LandPurchase;
     res->Position = { _loc.x, _loc.y, _loc.z };
 
-    if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32)
-        || _loc.y >= (gMapSizeUnits - 32))
+    if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (GetMapSizeUnits() - 32)
+        || _loc.y >= (GetMapSizeUnits() - 32))
     {
         return std::make_unique<GameActions::Result>(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
@@ -59,7 +60,8 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
 
     if (!CheckMapCapacity(3))
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
     }
 
     if (gParkEntrances.size() >= MAX_PARK_ENTRANCES)
@@ -85,9 +87,8 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
 
         if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2->Error != GameActions::Status::Ok)
         {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, res2->ErrorMessage.GetStringId(),
-                res2->ErrorMessageArgs.data());
+            res2->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
+            return res2;
         }
 
         // Check that entrance element does not already exist at this location
@@ -145,7 +146,14 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
         entranceElement->SetDirection(_loc.direction);
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
-        entranceElement->SetPathType(_pathType);
+        if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+        {
+            entranceElement->SetSurfaceEntryIndex(gFootpathSelection.NormalSurface);
+        }
+        else
+        {
+            entranceElement->SetLegacyPathEntryIndex(gFootpathSelection.LegacyPath);
+        }
 
         if (!entranceElement->IsGhost())
         {

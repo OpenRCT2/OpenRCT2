@@ -20,8 +20,20 @@ struct scenario_highscore_entry
 {
     utf8* fileName;
     utf8* name;
-    money32 company_value;
+    money64 company_value;
     datetime64 timestamp;
+};
+
+enum class ScenarioSource : uint8_t
+{
+    RCT1,
+    RCT1_AA,
+    RCT1_LL,
+    RCT2,
+    RCT2_WW,
+    RCT2_TT,
+    Real,
+    Other
 };
 
 struct scenario_index_entry
@@ -38,7 +50,7 @@ struct scenario_index_entry
     // Objective
     uint8_t objective_type;
     uint8_t objective_arg_1;
-    int32_t objective_arg_2;
+    int64_t objective_arg_2;
     int16_t objective_arg_3;
     scenario_highscore_entry* highscore = nullptr;
 
@@ -71,14 +83,16 @@ struct IScenarioRepository
     virtual const scenario_index_entry* GetByPath(const utf8* path) const abstract;
 
     virtual bool TryRecordHighscore(
-        int32_t language, const utf8* scenarioFileName, money32 companyValue, const utf8* name) abstract;
+        int32_t language, const utf8* scenarioFileName, money64 companyValue, const utf8* name) abstract;
 };
 
-std::unique_ptr<IScenarioRepository> CreateScenarioRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
-IScenarioRepository* GetScenarioRepository();
+[[nodiscard]] std::unique_ptr<IScenarioRepository> CreateScenarioRepository(
+    const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+[[nodiscard]] IScenarioRepository* GetScenarioRepository();
 
 void scenario_repository_scan();
-size_t scenario_repository_get_count();
-const scenario_index_entry* scenario_repository_get_by_index(size_t index);
-bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money32 companyValue, const utf8* name);
+[[nodiscard]] size_t scenario_repository_get_count();
+[[nodiscard]] const scenario_index_entry* scenario_repository_get_by_index(size_t index);
+[[nodiscard]] bool scenario_repository_try_record_highscore(
+    const utf8* scenarioFileName, money64 companyValue, const utf8* name);
 void scenario_translate(scenario_index_entry* scenarioEntry);

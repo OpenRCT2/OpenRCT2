@@ -19,6 +19,7 @@
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
+#include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
@@ -50,8 +51,7 @@ static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
         return 1;
     if (categoryA < categoryB)
         return -1;
-    else
-        return 1;
+    return 1;
 }
 
 static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
@@ -96,23 +96,19 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& e
                 {
                     return scenario_index_entry_CompareByCategory(entryA, entryB);
                 }
-                else
-                {
-                    return ScenarioCategoryCompare(entryA.category, entryB.category);
-                }
+
+                return ScenarioCategoryCompare(entryA.category, entryB.category);
             }
-            else if (entryA.source_index == -1)
+            if (entryA.source_index == -1)
             {
                 return 1;
             }
-            else if (entryB.source_index == -1)
+            if (entryB.source_index == -1)
             {
                 return -1;
             }
-            else
-            {
-                return entryA.source_index - entryB.source_index;
-            }
+            return entryA.source_index - entryB.source_index;
+
         case ScenarioSource::Real:
             return scenario_index_entry_CompareByCategory(entryA, entryB);
     }
@@ -153,10 +149,8 @@ protected:
         {
             return std::make_tuple(true, entry);
         }
-        else
-        {
-            return std::make_tuple(true, scenario_index_entry());
-        }
+
+        return std::make_tuple(true, scenario_index_entry());
     }
 
     void Serialise(DataSerialiser& ds, scenario_index_entry& item) const override
@@ -223,32 +217,28 @@ private:
                 }
                 return result;
             }
-            else
+
+            // RCT2 or RCTC scenario
+            auto stream = GetStreamFromRCT2Scenario(path);
+            auto chunkReader = SawyerChunkReader(stream.get());
+
+            rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
+            if (header.type == S6_TYPE_SCENARIO)
             {
-                // RCT2 or RCTC scenario
-                auto stream = GetStreamFromRCT2Scenario(path);
-                auto chunkReader = SawyerChunkReader(stream.get());
-
-                rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
-                if (header.type == S6_TYPE_SCENARIO)
+                rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
+                // If the name or the details contain a colour code, they might be in UTF-8 already.
+                // This is caused by a bug that was in OpenRCT2 for 3 years.
+                if (!IsLikelyUTF8(info.name) && !IsLikelyUTF8(info.details))
                 {
-                    rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
-                    // If the name or the details contain a colour code, they might be in UTF-8 already.
-                    // This is caused by a bug that was in OpenRCT2 for 3 years.
-                    if (!IsLikelyUTF8(info.name) && !IsLikelyUTF8(info.details))
-                    {
-                        rct2_to_utf8_self(info.name, sizeof(info.name));
-                        rct2_to_utf8_self(info.details, sizeof(info.details));
-                    }
+                    rct2_to_utf8_self(info.name, sizeof(info.name));
+                    rct2_to_utf8_self(info.details, sizeof(info.details));
+                }
 
-                    *entry = CreateNewScenarioEntry(path, timestamp, &info);
-                    return true;
-                }
-                else
-                {
-                    log_verbose("%s is not a scenario", path.c_str());
-                }
+                *entry = CreateNewScenarioEntry(path, timestamp, &info);
+                return true;
             }
+
+            log_verbose("%s is not a scenario", path.c_str());
         }
         catch (const std::exception&)
         {
@@ -318,7 +308,7 @@ private:
 class ScenarioRepository final : public IScenarioRepository
 {
 private:
-    static constexpr uint32_t HighscoreFileVersion = 1;
+    static constexpr uint32_t HighscoreFileVersion = 2;
 
     std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
@@ -416,7 +406,7 @@ public:
         return nullptr;
     }
 
-    bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money32 companyValue, const utf8* name) override
+    bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money64 companyValue, const utf8* name) override
     {
         // Scan the scenarios so we have a fresh list to query. This is to prevent the issue of scenario completions
         // not getting recorded, see #4951.
@@ -526,7 +516,7 @@ private:
         // Rotate each byte of mp.dat left by 4 bits to convert
         for (size_t i = 0; i < mpdat.size(); i++)
         {
-            mpdat[i] = rol8(mpdat[i], 4);
+            mpdat[i] = Numerics::rol8(mpdat[i], 4);
         }
 
         File::WriteAllBytes(dstPath, mpdat.data(), mpdat.size());
@@ -598,7 +588,7 @@ private:
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             uint32_t fileVersion = fs.ReadValue<uint32_t>();
-            if (fileVersion != 1)
+            if (fileVersion != 1 && fileVersion != 2)
             {
                 Console::Error::WriteLine("Invalid or incompatible highscores file.");
                 return;
@@ -612,7 +602,7 @@ private:
                 scenario_highscore_entry* highscore = InsertHighscore();
                 highscore->fileName = fs.ReadString();
                 highscore->name = fs.ReadString();
-                highscore->company_value = fs.ReadValue<money32>();
+                highscore->company_value = fileVersion == 1 ? fs.ReadValue<money32>() : fs.ReadValue<money64>();
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }
         }
@@ -784,7 +774,7 @@ const scenario_index_entry* scenario_repository_get_by_index(size_t index)
     return repo->GetByIndex(index);
 }
 
-bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money32 companyValue, const utf8* name)
+bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name)
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);

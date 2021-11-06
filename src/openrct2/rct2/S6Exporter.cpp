@@ -10,6 +10,7 @@
 #include "S6Exporter.h"
 
 #include "../Context.h"
+#include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -17,6 +18,7 @@
 #include "../config/Config.h"
 #include "../core/FileStream.h"
 #include "../core/IStream.hpp"
+#include "../core/Numerics.hpp"
 #include "../core/String.hpp"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
@@ -31,7 +33,8 @@
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../peep/Peep.h"
+#include "../peep/Guest.h"
+#include "../peep/RideUseSystem.h"
 #include "../peep/Staff.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../ride/Ride.h"
@@ -61,6 +64,8 @@
 #include <functional>
 #include <iterator>
 #include <optional>
+
+#define ENCRYPT_MONEY(money) (static_cast<money32>(Numerics::ror32((money), 13) ^ 0xF4EC9621))
 
 S6Exporter::S6Exporter()
 {
@@ -118,7 +123,7 @@ void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
     }
 
     // 3: Write available objects chunk
-    chunkWriter.WriteChunk(_s6.objects, sizeof(_s6.objects), SAWYER_ENCODING::ROTATE);
+    chunkWriter.WriteChunk(_s6.Objects, sizeof(_s6.Objects), SAWYER_ENCODING::ROTATE);
 
     // 4: Misc fields (data, rand...) chunk
     chunkWriter.WriteChunk(&_s6.elapsed_months, 16, SAWYER_ENCODING::RLECOMPRESSED);
@@ -157,38 +162,161 @@ void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
     stream->WriteValue(checksum);
 }
 
-void S6Exporter::Export()
+static void ride_all_has_any_track_elements(std::array<bool, RCT12_MAX_RIDES_IN_PARK>& rideIndexArray)
 {
-    _s6.info = gS6Info;
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
     {
-        auto temp = utf8_to_rct2(gS6Info.name);
-        safe_strcpy(_s6.info.name, temp.data(), sizeof(_s6.info.name));
-    }
-    {
-        auto temp = utf8_to_rct2(gS6Info.details);
-        safe_strcpy(_s6.info.details, temp.data(), sizeof(_s6.info.details));
-    }
-    uint32_t researchedTrackPiecesA[128] = {};
-    uint32_t researchedTrackPiecesB[128] = {};
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            continue;
+        if (it.element->IsGhost())
+            continue;
 
-    for (int32_t i = 0; i < RCT2_OBJECT_ENTRY_COUNT; i++)
+        rideIndexArray[EnumValue(it.element->AsTrack()->GetRideIndex())] = true;
+    }
+}
+
+static void scenario_remove_trackless_rides(rct_s6_data* s6)
+{
+    std::array<bool, RCT12_MAX_RIDES_IN_PARK> rideHasTrack{};
+    ride_all_has_any_track_elements(rideHasTrack);
+    for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {
-        const rct_object_entry* entry = get_loaded_object_entry(i);
-        void* entryData = get_loaded_object_chunk(i);
-        // RCT2 uses (void *)-1 to mark NULL. Make sure it's written in a vanilla-compatible way.
-        if (entry == nullptr || entryData == nullptr || entryData == reinterpret_cast<void*>(-1))
+        auto ride = &s6->rides[i];
+        if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
         {
-            std::memset(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
+            continue;
+        }
+
+        ride->type = RIDE_TYPE_NULL;
+        if (is_user_string_id(ride->name))
+        {
+            s6->custom_strings[(ride->name % RCT12_MAX_USER_STRINGS)][0] = 0;
+        }
+    }
+}
+
+/**
+ * Modifies the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
+ */
+static void scenario_fix_ghosts(rct_s6_data* s6)
+{
+    // Build tile pointer cache (needed to get the first element at a certain location)
+    RCT12TileElement* tilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+    for (size_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    {
+        tilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
+    }
+
+    RCT12TileElement* tileElement = s6->tile_elements;
+    RCT12TileElement** tile = tilePointers;
+    for (size_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (size_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            *tile++ = tileElement;
+            while (!(tileElement++)->IsLastForTile())
+                ;
+        }
+    }
+
+    // Remove all ghost elements
+    RCT12TileElement* destinationElement = s6->tile_elements;
+
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            // This is the equivalent of map_get_first_element_at(x, y), but on S6 data.
+            RCT12TileElement* originalElement = tilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
+            do
+            {
+                if (originalElement->IsGhost())
+                {
+                    uint8_t bannerIndex = originalElement->GetBannerIndex();
+                    if (bannerIndex != RCT12_BANNER_INDEX_NULL)
+                    {
+                        auto banner = &s6->banners[bannerIndex];
+                        if (banner->type != RCT12_OBJECT_ENTRY_INDEX_NULL)
+                        {
+                            banner->type = RCT12_OBJECT_ENTRY_INDEX_NULL;
+                            if (is_user_string_id(banner->string_idx))
+                                s6->custom_strings[(banner->string_idx % RCT12_MAX_USER_STRINGS)][0] = 0;
+                        }
+                    }
+                }
+                else
+                {
+                    *destinationElement++ = *originalElement;
+                }
+            } while (!(originalElement++)->IsLastForTile());
+
+            // Set last element flag in case the original last element was never added
+            (destinationElement - 1)->flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+        }
+    }
+}
+
+template<ObjectType TObjectType, size_t TMaxEntries, typename T>
+static void ExportObjectList(IObjectManager& objMgr, T& objects)
+{
+    for (size_t i = 0; i < TMaxEntries; i++)
+    {
+        auto& dst = objects[i];
+
+        const auto* object = objMgr.GetLoadedObject(TObjectType, i);
+        if (object == nullptr)
+        {
+            // The sv6 format expects null/invalid entries to be filled with 0xFF.
+            std::memset(&dst, 0xFF, sizeof(dst));
         }
         else
         {
-            _s6.objects[i] = *entry;
+            dst = object->GetObjectEntry();
         }
     }
+}
+
+void S6Exporter::Export()
+{
+    _s6.info = {};
+    _s6.info.editor_step = gEditorStep;
+    _s6.info.category = gScenarioCategory;
+    _s6.info.objective_type = gScenarioObjective.Type;
+    _s6.info.objective_arg_1 = gScenarioObjective.Year;
+    _s6.info.objective_arg_2 = gScenarioObjective.Currency;
+    _s6.info.objective_arg_3 = gScenarioObjective.NumGuests;
+    _s6.info.entry.flags = 0xFFFFFFFF;
+
+    {
+        auto temp = utf8_to_rct2(gScenarioName.c_str());
+        safe_strcpy(_s6.info.name, temp.data(), sizeof(_s6.info.name));
+    }
+    {
+        auto temp = utf8_to_rct2(gScenarioDetails.c_str());
+        safe_strcpy(_s6.info.details, temp.data(), sizeof(_s6.info.details));
+    }
+
+    uint32_t researchedTrackPiecesA[128] = {};
+    uint32_t researchedTrackPiecesB[128] = {};
+
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    ExportObjectList<ObjectType::Ride, RCT12_MAX_RIDE_OBJECTS>(objectMgr, _s6.RideObjects);
+    ExportObjectList<ObjectType::SmallScenery, RCT2_MAX_SMALL_SCENERY_OBJECTS>(objectMgr, _s6.SceneryObjects);
+    ExportObjectList<ObjectType::LargeScenery, RCT2_MAX_LARGE_SCENERY_OBJECTS>(objectMgr, _s6.LargeSceneryObjects);
+    ExportObjectList<ObjectType::Walls, RCT2_MAX_WALL_SCENERY_OBJECTS>(objectMgr, _s6.WallSceneryObjects);
+    ExportObjectList<ObjectType::Banners, RCT2_MAX_BANNER_OBJECTS>(objectMgr, _s6.BannerObjects);
+    ExportObjectList<ObjectType::Paths, RCT2_MAX_PATH_OBJECTS>(objectMgr, _s6.PathObjects);
+    ExportObjectList<ObjectType::PathBits, RCT2_MAX_PATH_ADDITION_OBJECTS>(objectMgr, _s6.PathAdditionObjects);
+    ExportObjectList<ObjectType::SceneryGroup, RCT2_MAX_SCENERY_GROUP_OBJECTS>(objectMgr, _s6.SceneryGroupObjects);
+    ExportObjectList<ObjectType::ParkEntrance, RCT2_MAX_PARK_ENTRANCE_OBJECTS>(objectMgr, _s6.ParkEntranceObjects);
+    ExportObjectList<ObjectType::Water, RCT2_MAX_WATER_OBJECTS>(objectMgr, _s6.WaterObjects);
+    ExportObjectList<ObjectType::ScenarioText, RCT2_MAX_SCENARIO_TEXT_OBJECTS>(objectMgr, _s6.ScenarioTextObjects);
 
     _s6.elapsed_months = static_cast<uint16_t>(gDateMonthsElapsed);
     _s6.current_day = gDateMonthTicks;
-    _s6.scenario_ticks = gScenarioTicks;
+    _s6.scenario_ticks = gCurrentTicks;
 
     auto state = scenario_rand_state();
     _s6.scenario_srand_0 = state.s0;
@@ -200,8 +328,8 @@ void S6Exporter::Export()
     ExportEntities();
     ExportParkName();
 
-    _s6.initial_cash = gInitialCash;
-    _s6.current_loan = gBankLoan;
+    _s6.initial_cash = ToMoney32(gInitialCash);
+    _s6.current_loan = ToMoney32(gBankLoan);
     _s6.park_flags = gParkFlags;
     _s6.park_entrance_fee = gParkEntranceFee;
     // rct1_park_entrance_x
@@ -226,7 +354,13 @@ void S6Exporter::Export()
     _s6.guests_in_park = gNumGuestsInPark;
     _s6.guests_heading_for_park = gNumGuestsHeadingForPark;
 
-    std::memcpy(_s6.expenditure_table, gExpenditureTable, sizeof(_s6.expenditure_table));
+    for (size_t i = 0; i < RCT12_EXPENDITURE_TABLE_MONTH_COUNT; i++)
+    {
+        for (size_t j = 0; j < RCT12_EXPENDITURE_TYPE_COUNT; j++)
+        {
+            _s6.expenditure_table[i][j] = ToMoney32(gExpenditureTable[i][j]);
+        }
+    }
 
     _s6.last_guests_in_park = gNumGuestsInParkLastWeek;
     // pad_01357BCA
@@ -238,7 +372,16 @@ void S6Exporter::Export()
 
     _s6.park_rating = gParkRating;
 
-    std::memcpy(_s6.park_rating_history, gParkRatingHistory, sizeof(_s6.park_rating_history));
+    std::copy(std::begin(gParkRatingHistory), std::end(gParkRatingHistory), _s6.park_rating_history);
+    std::fill(std::begin(_s6.guests_in_park_history), std::end(_s6.guests_in_park_history), RCT12ParkHistoryUndefined);
+    for (size_t i = 0; i < std::size(gGuestsInParkHistory); i++)
+    {
+        if (gGuestsInParkHistory[i] != GuestsInParkHistoryUndefined)
+        {
+            _s6.guests_in_park_history[i] = std::min<uint16_t>(gGuestsInParkHistory[i], 5000) / RCT12GuestsInParkHistoryFactor;
+        }
+    }
+
     std::memcpy(_s6.guests_in_park_history, gGuestsInParkHistory, sizeof(_s6.guests_in_park_history));
 
     _s6.active_research_types = gResearchPriorities;
@@ -268,7 +411,7 @@ void S6Exporter::Export()
     _s6.park_size = gParkSize;
     _s6.guest_generation_probability = _guestGenerationProbability;
     _s6.total_ride_value_for_money = gTotalRideValueForMoney;
-    _s6.maximum_loan = gMaxBankLoan;
+    _s6.maximum_loan = ToMoney32(gMaxBankLoan);
     _s6.guest_initial_cash = gGuestInitialCash;
     _s6.guest_initial_hunger = gGuestInitialHunger;
     _s6.guest_initial_thirst = gGuestInitialThirst;
@@ -285,24 +428,25 @@ void S6Exporter::Export()
 
     ExportMarketingCampaigns();
 
-    std::memcpy(_s6.balance_history, gCashHistory, sizeof(_s6.balance_history));
-
-    _s6.current_expenditure = gCurrentExpenditure;
-    _s6.current_profit = gCurrentProfit;
-    _s6.weekly_profit_average_dividend = gWeeklyProfitAverageDividend;
+    _s6.current_expenditure = ToMoney32(gCurrentExpenditure);
+    _s6.current_profit = ToMoney32(gCurrentProfit);
+    _s6.weekly_profit_average_dividend = ToMoney32(gWeeklyProfitAverageDividend);
     _s6.weekly_profit_average_divisor = gWeeklyProfitAverageDivisor;
     // pad_0135833A
 
-    std::memcpy(_s6.weekly_profit_history, gWeeklyProfitHistory, sizeof(_s6.weekly_profit_history));
+    _s6.park_value = ToMoney32(gParkValue);
 
-    _s6.park_value = gParkValue;
+    for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
+    {
+        _s6.balance_history[i] = ToMoney32(gCashHistory[i]);
+        _s6.weekly_profit_history[i] = ToMoney32(gWeeklyProfitHistory[i]);
+        _s6.park_value_history[i] = ToMoney32(gParkValueHistory[i]);
+    }
 
-    std::memcpy(_s6.park_value_history, gParkValueHistory, sizeof(_s6.park_value_history));
-
-    _s6.completed_company_value = gScenarioCompletedCompanyValue;
+    _s6.completed_company_value = OpenRCT2CompletedCompanyValueToRCT12(gScenarioCompletedCompanyValue);
     _s6.total_admissions = gTotalAdmissions;
-    _s6.income_from_admissions = gTotalIncomeFromAdmissions;
-    _s6.company_value = gCompanyValue;
+    _s6.income_from_admissions = ToMoney32(gTotalIncomeFromAdmissions);
+    _s6.company_value = ToMoney32(gCompanyValue);
     std::memcpy(_s6.peep_warning_throttle, gPeepWarningThrottle, sizeof(_s6.peep_warning_throttle));
 
     // Awards
@@ -324,16 +468,16 @@ void S6Exporter::Export()
     _s6.loan_hash = GetLoanHash(gInitialCash, gBankLoan, gMaxBankLoan);
     _s6.ride_count = ride_get_count();
     // pad_013587CA
-    _s6.historical_profit = gHistoricalProfit;
+    _s6.historical_profit = ToMoney32(gHistoricalProfit);
     // pad_013587D4
     String::Set(_s6.scenario_completed_name, sizeof(_s6.scenario_completed_name), gScenarioCompletedBy.c_str());
-    _s6.cash = ENCRYPT_MONEY(gCash);
+    _s6.cash = ENCRYPT_MONEY(ToMoney32(gCash));
     // pad_013587FC
     _s6.park_rating_casualty_penalty = gParkRatingCasualtyPenalty;
-    _s6.map_size_units = gMapSizeUnits;
-    _s6.map_size_minus_2 = gMapSizeMinus2;
+    _s6.map_size_units = GetMapSizeUnits();
+    _s6.map_size_minus_2 = GetMapSizeMinus2();
     _s6.map_size = gMapSize;
-    _s6.map_max_xy = gMapSizeMaxXY;
+    _s6.map_max_xy = GetMapSizeMaxXY();
     _s6.same_price_throughout = gSamePriceThroughoutPark & 0xFFFFFFFF;
     _s6.suggested_max_guests = _suggestedGuestMaximum;
     _s6.park_rating_warning_days = gScenarioParkRatingWarningDays;
@@ -379,8 +523,7 @@ void S6Exporter::Export()
     ExportRideMeasurements();
     _s6.next_guest_index = gNextGuestNumber;
     _s6.grass_and_scenery_tilepos = gGrassSceneryTileLoopPosition;
-    std::memcpy(_s6.patrol_areas, gStaffPatrolAreas, sizeof(_s6.patrol_areas));
-    std::memcpy(_s6.staff_modes, gStaffModes, sizeof(_s6.staff_modes));
+    ExportStaffPatrolAreas();
     // unk_13CA73E
     // pad_13CA73F
     // unk_13CA740
@@ -456,11 +599,11 @@ uint32_t S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32_t
 {
     int32_t value = 0x70093A;
     value -= initialCash;
-    value = ror32(value, 5);
+    value = Numerics::ror32(value, 5);
     value -= bankLoan;
-    value = ror32(value, 7);
+    value = Numerics::ror32(value, 7);
     value += maxBankLoan;
-    value = ror32(value, 3);
+    value = Numerics::ror32(value, 3);
     return value;
 }
 
@@ -468,9 +611,9 @@ void S6Exporter::ExportParkName()
 {
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
     auto stringId = AllocateUserString(park.Name);
-    if (stringId != std::nullopt)
+    if (stringId.has_value())
     {
-        _s6.park_name = *stringId;
+        _s6.park_name = stringId.value();
         _s6.park_name_args = 0;
     }
     else
@@ -486,7 +629,7 @@ void S6Exporter::ExportRides()
     const Ride nullRide{};
     for (int32_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
     {
-        const auto* src = get_ride(index);
+        const auto* src = get_ride(static_cast<ride_id_t>(index));
         if (src == nullptr)
         {
             src = &nullRide;
@@ -528,9 +671,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     {
         // Custom name, allocate user string for ride
         auto stringId = AllocateUserString(src->custom_name);
-        if (stringId != std::nullopt)
+        if (stringId.has_value())
         {
-            dst->name = *stringId;
+            dst->name = stringId.value();
             dst->name_arguments = 0;
             useDefaultName = false;
         }
@@ -547,9 +690,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
         dst->name_arguments_number = src->default_name_number;
     }
 
-    if (src->overall_view.isNull())
+    if (src->overall_view.IsNull())
     {
-        dst->overall_view.setNull();
+        dst->overall_view.SetNull();
     }
     else
     {
@@ -559,9 +702,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
     {
-        if (src->stations[i].Start.isNull())
+        if (src->stations[i].Start.IsNull())
         {
-            dst->station_starts[i].setNull();
+            dst->station_starts[i].SetNull();
         }
         else
         {
@@ -574,14 +717,14 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
         dst->train_at_station[i] = src->stations[i].TrainAtStation;
 
         TileCoordsXYZD entrance = ride_get_entrance_location(src, i);
-        if (entrance.isNull())
-            dst->entrances[i].setNull();
+        if (entrance.IsNull())
+            dst->entrances[i].SetNull();
         else
             dst->entrances[i] = { static_cast<uint8_t>(entrance.x), static_cast<uint8_t>(entrance.y) };
 
         TileCoordsXYZD exit = ride_get_exit_location(src, i);
-        if (exit.isNull())
-            dst->exits[i].setNull();
+        if (exit.IsNull())
+            dst->exits[i].SetNull();
         else
             dst->exits[i] = { static_cast<uint8_t>(exit.x), static_cast<uint8_t>(exit.y) };
 
@@ -637,9 +780,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     // pad_106[0x2];
     dst->testing_flags = src->testing_flags;
 
-    if (src->CurTestTrackLocation.isNull())
+    if (src->CurTestTrackLocation.IsNull())
     {
-        dst->cur_test_track_location.setNull();
+        dst->cur_test_track_location.SetNull();
     }
     else
     {
@@ -693,7 +836,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     // pad_14E[0x02];
 
     dst->total_customers = src->total_customers;
-    dst->total_profit = src->total_profit;
+    dst->total_profit = ToMoney32(src->total_profit);
     dst->popularity = src->popularity;
     dst->popularity_time_out = src->popularity_time_out;
     dst->popularity_next = src->popularity_next;
@@ -743,7 +886,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->connected_message_throttle = src->connected_message_throttle;
 
     dst->income_per_hour = src->income_per_hour;
-    dst->profit = src->profit;
+    dst->profit = ToMoney32(src->profit);
 
     for (uint8_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
@@ -808,9 +951,9 @@ void S6Exporter::ExportRideMeasurements()
 {
     // Get all the ride measurements
     std::vector<Ride*> ridesWithMeasurements;
-    for (ride_id_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
+    for (size_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {
-        auto ride = get_ride(i);
+        auto ride = get_ride(static_cast<ride_id_t>(i));
         if (ride != nullptr && ride->measurement != nullptr)
         {
             ridesWithMeasurements.push_back(ride);
@@ -835,8 +978,8 @@ void S6Exporter::ExportRideMeasurements()
         ExportRideMeasurement(_s6.ride_measurements[i], *src->measurement.get());
 
         auto rideId = src->id;
-        dst.ride_index = rideId;
-        _s6.rides[rideId].measurement_index = i;
+        dst.ride_index = static_cast<uint8_t>(rideId);
+        _s6.rides[dst.ride_index].measurement_index = i;
         i++;
     }
 }
@@ -946,6 +1089,65 @@ void S6Exporter::ExportMarketingCampaigns()
     }
 }
 
+void S6Exporter::RebuildEntitySpatialLocation(const TileCoordsXY& loc)
+{
+    uint16_t previous = SPRITE_INDEX_NULL;
+    for (auto* entity : EntityTileList(loc.ToCoordsXY()))
+    {
+        if (previous != SPRITE_INDEX_NULL)
+        {
+            _s6.sprites[previous].unknown.next_in_quadrant = entity->sprite_index;
+        }
+        previous = entity->sprite_index;
+    }
+    if (previous != SPRITE_INDEX_NULL)
+    {
+        _s6.sprites[previous].unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+    }
+}
+
+void S6Exporter::ExportStaffPatrolAreas()
+{
+    std::fill(std::begin(_s6.staff_modes), std::end(_s6.staff_modes), RCT2StaffMode::None);
+    std::fill(std::begin(_s6.patrol_areas), std::end(_s6.patrol_areas), 0);
+
+    auto staffId = 0;
+    for (auto* staff : EntityList<Staff>())
+    {
+        if (staff->HasPatrolArea())
+        {
+            const size_t staffPatrolOffset = staffId * STAFF_PATROL_AREA_SIZE;
+            std::copy(
+                std::begin(staff->PatrolInfo->Data), std::end(staff->PatrolInfo->Data), &_s6.patrol_areas[staffPatrolOffset]);
+            _s6.staff_modes[staffId] = RCT2StaffMode::Patrol;
+        }
+        else
+        {
+            _s6.staff_modes[staffId] = RCT2StaffMode::Walk;
+        }
+
+        _s6.sprites[staff->sprite_index].peep.staff_id = staffId;
+
+        staffId++;
+    }
+
+    constexpr auto hasData = [](const auto& datapoint) { return datapoint != 0; };
+    for (const auto type : { StaffType::Handyman, StaffType::Mechanic, StaffType::Security, StaffType::Entertainer })
+    {
+        const size_t staffPatrolOffset = (EnumValue(type) + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
+        const auto& area = GetMergedPatrolArea(type);
+        std::copy(std::begin(area.Data), std::end(area.Data), &_s6.patrol_areas[staffPatrolOffset]);
+        if (std::any_of(std::begin(area.Data), std::end(area.Data), hasData))
+        {
+            _s6.staff_modes[EnumValue(type) + STAFF_MAX_COUNT] = RCT2StaffMode::Patrol;
+        }
+        else
+        {
+            _s6.staff_modes[EnumValue(type) + STAFF_MAX_COUNT] = RCT2StaffMode::Walk;
+        }
+    }
+}
+
 void S6Exporter::RebuildEntityLinks()
 {
     // Rebuild next/previous linked list entity indexs
@@ -954,6 +1156,9 @@ void S6Exporter::RebuildEntityLinks()
            RCT12EntityLinkListOffset::Peep, RCT12EntityLinkListOffset::TrainHead, RCT12EntityLinkListOffset::Vehicle })
     {
         uint16_t previous = SPRITE_INDEX_NULL;
+        // Intialise Head to NULL for situations where there are no entities of this type.
+        _s6.sprite_lists_head[EnumValue(list) >> 1] = SPRITE_INDEX_NULL;
+
         for (auto& entity : _s6.sprites)
         {
             if (entity.unknown.linked_list_type_offset == list)
@@ -975,28 +1180,21 @@ void S6Exporter::RebuildEntityLinks()
     }
 
     // Rebuild next_in_quadrant linked list entity indexs
+    // This in theory is not required but to be on the safe side we are rebuilding it.
     for (auto x = 0; x < 255; ++x)
     {
         for (auto y = 0; y < 255; ++y)
         {
-            uint16_t previous = SPRITE_INDEX_NULL;
-            for (auto* entity : EntityTileList(TileCoordsXY{ x, y }.ToCoordsXY()))
-            {
-                if (previous != SPRITE_INDEX_NULL)
-                {
-                    _s6.sprites[previous].unknown.next_in_quadrant = entity->sprite_index;
-                }
-                previous = entity->sprite_index;
-            }
-            if (previous != SPRITE_INDEX_NULL)
-            {
-                _s6.sprites[previous].unknown.next_in_quadrant = SPRITE_INDEX_NULL;
-            }
+            RebuildEntitySpatialLocation(TileCoordsXY{ x, y });
         }
     }
+    // Rebuild next_in_quadrant linked list for LOCATION_NULL
+    TileCoordsXY invalid;
+    invalid.SetNull();
+    RebuildEntitySpatialLocation(invalid);
 }
 
-constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
+constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const EntityBase* src)
 {
     RCT12EntityLinkListOffset output = RCT12EntityLinkListOffset::Free;
     switch (src->Type)
@@ -1004,7 +1202,7 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
         case EntityType::Vehicle:
         {
             auto veh = src->As<Vehicle>();
-            if (veh && veh->IsHead())
+            if (veh != nullptr && veh->IsHead())
             {
                 output = RCT12EntityLinkListOffset::TrainHead;
             }
@@ -1038,7 +1236,7 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
     return output;
 }
 
-constexpr RCT12SpriteIdentifier GetRCT2SpriteIdentifier(const SpriteBase* src)
+constexpr RCT12SpriteIdentifier GetRCT2SpriteIdentifier(const EntityBase* src)
 {
     RCT12SpriteIdentifier output = RCT12SpriteIdentifier::Null;
     switch (src->Type)
@@ -1070,7 +1268,7 @@ constexpr RCT12SpriteIdentifier GetRCT2SpriteIdentifier(const SpriteBase* src)
     return output;
 }
 
-void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
+void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const EntityBase* src)
 {
     dst->sprite_identifier = GetRCT2SpriteIdentifier(src);
     dst->linked_list_type_offset = GetRCT2LinkListOffset(src);
@@ -1078,15 +1276,15 @@ void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const Sprite
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
     dst->flags = 0;
-    dst->x = src->x;
-    dst->y = src->y;
-    dst->z = src->z;
+    dst->x = static_cast<int16_t>(src->x);
+    dst->y = static_cast<int16_t>(src->y);
+    dst->z = static_cast<int16_t>(src->z);
     dst->sprite_width = src->sprite_width;
     dst->sprite_height_positive = src->sprite_height_positive;
-    dst->sprite_left = src->sprite_left;
-    dst->sprite_top = src->sprite_top;
-    dst->sprite_right = src->sprite_right;
-    dst->sprite_bottom = src->sprite_bottom;
+    dst->sprite_left = src->SpriteRect.GetLeft();
+    dst->sprite_top = src->SpriteRect.GetTop();
+    dst->sprite_right = src->SpriteRect.GetRight();
+    dst->sprite_bottom = src->SpriteRect.GetBottom();
     dst->sprite_direction = src->sprite_direction;
 }
 
@@ -1101,15 +1299,15 @@ template<> void S6Exporter::ExportEntity(RCT2SpriteVehicle* dst, const Vehicle* 
     dst->remaining_distance = src->remaining_distance;
     dst->velocity = src->velocity;
     dst->acceleration = src->acceleration;
-    dst->ride = src->ride;
+    dst->ride = static_cast<uint8_t>(src->ride);
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
     if (ride != nullptr && ride->mode == RideMode::BoatHire && src->status == Vehicle::Status::TravellingBoat)
     {
-        if (src->BoatLocation.isNull())
+        if (src->BoatLocation.IsNull())
         {
-            dst->boat_location.setNull();
+            dst->boat_location.SetNull();
         }
         else
         {
@@ -1161,8 +1359,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpriteVehicle* dst, const Vehicle* 
     dst->powered_acceleration = src->powered_acceleration;
     dst->dodgems_collision_direction = src->dodgems_collision_direction;
     dst->animation_frame = src->animation_frame;
-    dst->var_C8 = src->var_C8;
-    dst->var_CA = src->var_CA;
+    dst->animationState = src->animationState;
     dst->scream_sound_id = static_cast<uint8_t>(src->scream_sound_id);
     dst->TrackSubposition = static_cast<uint8_t>(src->TrackSubposition);
     dst->var_CE = src->var_CE;
@@ -1170,7 +1367,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpriteVehicle* dst, const Vehicle* 
     dst->lost_time_out = src->lost_time_out;
     dst->vertical_drop_countdown = src->vertical_drop_countdown;
     dst->var_D3 = src->var_D3;
-    dst->mini_golf_current_animation = src->mini_golf_current_animation;
+    dst->mini_golf_current_animation = EnumValue(src->mini_golf_current_animation);
     dst->mini_golf_flags = src->mini_golf_flags;
     dst->ride_subtype = OpenRCT2EntryIndexToRCTEntryIndex(src->ride_subtype);
     dst->colours_extended = src->colours_extended;
@@ -1195,9 +1392,22 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Guest* src)
     dst->intensity = static_cast<uint8_t>(src->Intensity);
     dst->nausea_tolerance = EnumValue(src->NauseaTolerance);
     dst->paid_on_drink = src->PaidOnDrink;
-    for (size_t i = 0; i < std::size(src->RideTypesBeenOn); i++)
+    auto* typeHistory = OpenRCT2::RideUse::GetTypeHistory().GetAll(src->sprite_index);
+    if (typeHistory != nullptr)
     {
-        dst->ride_types_been_on[i] = src->RideTypesBeenOn[i];
+        for (auto typeId : *typeHistory)
+        {
+            dst->ride_types_been_on[typeId / 8] |= (1 << (typeId % 8));
+        }
+    }
+    auto* rideHistory = OpenRCT2::RideUse::GetHistory().GetAll(src->sprite_index);
+    if (rideHistory != nullptr)
+    {
+        for (auto rideId : *rideHistory)
+        {
+            const auto rideIndex = EnumValue(rideId);
+            dst->rides_been_on[rideIndex / 8] |= (1 << (rideIndex % 8));
+        }
     }
     dst->item_extra_flags = static_cast<uint32_t>(src->GetItemFlags() >> 32);
     dst->photo1_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo1RideRef);
@@ -1206,10 +1416,6 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Guest* src)
     dst->photo4_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo4RideRef);
     dst->next_in_queue = src->GuestNextInQueue;
     dst->time_in_queue = src->TimeInQueue;
-    for (size_t i = 0; i < std::size(src->RidesBeenOn); i++)
-    {
-        dst->rides_been_on[i] = src->RidesBeenOn[i];
-    }
     dst->cash_in_pocket = src->CashInPocket;
     dst->cash_spent = src->CashSpent;
     dst->park_entry_time = src->ParkEntryTime;
@@ -1221,7 +1427,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Guest* src)
         auto srcThought = &src->Thoughts[i];
         auto dstThought = &dst->thoughts[i];
         dstThought->type = static_cast<uint8_t>(srcThought->type);
-        dstThought->item = srcThought->item;
+        dstThought->item = static_cast<uint8_t>(srcThought->item);
         dstThought->freshness = srcThought->freshness;
         dstThought->fresh_timeout = srcThought->fresh_timeout;
     }
@@ -1257,7 +1463,6 @@ template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Staff* src)
     dst->staff_type = static_cast<uint8_t>(src->AssignedStaffType);
     dst->mechanic_time_since_call = src->MechanicTimeSinceCall;
     dst->park_entry_time = src->HireDate;
-    dst->staff_id = src->StaffId;
     dst->staff_orders = src->StaffOrders;
     dst->staff_mowing_timeout = src->StaffMowingTimeout;
     dst->paid_to_enter = src->StaffLawnsMown;
@@ -1274,9 +1479,9 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     if (src->Name != nullptr)
     {
         auto stringId = AllocateUserString(src->Name);
-        if (stringId != std::nullopt)
+        if (stringId.has_value())
         {
-            dst->name_string_idx = *stringId;
+            dst->name_string_idx = stringId.value();
             generateName = false;
         }
         else
@@ -1343,10 +1548,27 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     dst->id = src->Id;
     dst->path_check_optimisation = src->PathCheckOptimisation;
     dst->peep_flags = src->PeepFlags;
-    dst->pathfind_goal = src->PathfindGoal;
+    if (src->PathfindGoal.IsNull())
+    {
+        dst->pathfind_goal = { 0xFF, 0xFF, 0xFF, INVALID_DIRECTION };
+    }
+    else
+    {
+        dst->pathfind_goal = { static_cast<uint8_t>(src->PathfindGoal.x), static_cast<uint8_t>(src->PathfindGoal.y),
+                               static_cast<uint8_t>(src->PathfindGoal.z), src->PathfindGoal.direction };
+    }
     for (size_t i = 0; i < std::size(src->PathfindHistory); i++)
     {
-        dst->pathfind_history[i] = src->PathfindHistory[i];
+        if (src->PathfindHistory[i].IsNull())
+        {
+            dst->pathfind_history[i] = { 0xFF, 0xFF, 0xFF, INVALID_DIRECTION };
+        }
+        else
+        {
+            dst->pathfind_history[i] = { static_cast<uint8_t>(src->PathfindHistory[i].x),
+                                         static_cast<uint8_t>(src->PathfindHistory[i].y),
+                                         static_cast<uint8_t>(src->PathfindHistory[i].z), src->PathfindHistory[i].direction };
+        }
     }
     dst->no_action_frame_num = src->WalkingFrameNum;
 }
@@ -1518,7 +1740,14 @@ void S6Exporter::ExportBanners()
     {
         auto src = GetBanner(i);
         auto dst = &_s6.banners[i];
-        ExportBanner(*dst, *src);
+        if (src != nullptr)
+        {
+            ExportBanner(*dst, *src);
+        }
+        else
+        {
+            ExportBanner(*dst, {});
+        }
     }
 }
 
@@ -1542,9 +1771,9 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         bannerText.append(src.text);
 
         auto stringId = AllocateUserString(bannerText);
-        if (stringId != std::nullopt)
+        if (stringId.has_value())
         {
-            dst.string_idx = *stringId;
+            dst.string_idx = stringId.value();
         }
 
         if (src.flags & BANNER_FLAG_LINKED_TO_RIDE)
@@ -1572,9 +1801,10 @@ void S6Exporter::ExportMapAnimations()
         auto& dst = _s6.map_animations[i];
 
         dst.type = src.type;
+        // In RCT12MapAnimation, the x and y coordinates use big coords, while the z coordinate uses small coords.
         dst.x = src.location.x;
         dst.y = src.location.y;
-        dst.baseZ = src.location.z;
+        dst.baseZ = src.location.z / COORDS_Z_STEP;
     }
 }
 
@@ -1644,7 +1874,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, const TileElement* src
             auto dst2 = dst->AsPath();
             auto src2 = src->AsPath();
 
-            dst2->SetPathEntryIndex(src2->GetSurfaceEntryIndex());
+            dst2->SetPathEntryIndex(src2->GetLegacyPathEntryIndex());
             dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
             dst2->SetSloped(src2->IsSloped());
             dst2->SetSlopeDirection(src2->GetSlopeDirection());
@@ -1686,8 +1916,8 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, const TileElement* src
             // Skipping IsHighlighted()
 
             // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-            auto ride = get_ride(dst2->GetRideIndex());
-            if (ride)
+            auto ride = get_ride(static_cast<ride_id_t>(dst2->GetRideIndex()));
+            if (ride != nullptr)
             {
                 if (ride->type == RIDE_TYPE_MAZE)
                 {
@@ -1735,7 +1965,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, const TileElement* src
             dst2->SetRideIndex(OpenRCT2RideIdToRCT12RideId(src2->GetRideIndex()));
             dst2->SetStationIndex(src2->GetStationIndex());
             dst2->SetSequenceIndex(src2->GetSequenceIndex());
-            dst2->SetPathType(src2->GetPathType());
+            dst2->SetPathType(src2->GetLegacyPathEntryIndex());
 
             break;
         }

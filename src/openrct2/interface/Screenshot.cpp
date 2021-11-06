@@ -161,26 +161,24 @@ std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
     // Get a free screenshot path
     auto path = screenshot_get_next_path();
 
-    if (path == std::nullopt)
+    if (!path.has_value())
     {
         return "";
     }
 
-    if (WriteDpiToFile(path->c_str(), dpi, gPalette))
+    if (WriteDpiToFile(path.value(), dpi, gPalette))
     {
-        return *path;
+        return path.value();
     }
-    else
-    {
-        return "";
-    }
+
+    return "";
 }
 
 std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pixels)
 {
     auto path = screenshot_get_next_path();
 
-    if (path == std::nullopt)
+    if (!path.has_value())
     {
         return "";
     }
@@ -196,8 +194,8 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
         image.Depth = 32;
         image.Stride = width * 4;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
-        Imaging::WriteToFile(path->c_str(), image, IMAGE_FORMAT::PNG_32);
-        return *path;
+        Imaging::WriteToFile(path.value(), image, IMAGE_FORMAT::PNG_32);
+        return path.value();
     }
     catch (const std::exception& e)
     {
@@ -375,7 +373,7 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& vi
         drawingEngine = tempDrawingEngine.get();
     }
     dpi.DrawingEngine = drawingEngine;
-    viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
+    viewport_render(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } });
 }
 
 void screenshot_giant()
@@ -384,7 +382,7 @@ void screenshot_giant()
     try
     {
         auto path = screenshot_get_next_path();
-        if (path == std::nullopt)
+        if (!path.has_value())
         {
             throw std::runtime_error("Giant screenshot failed, unable to find a suitable destination path.");
         }
@@ -412,7 +410,7 @@ void screenshot_giant()
         dpi = CreateDPI(viewport);
 
         RenderViewport(nullptr, viewport, dpi);
-        WriteDpiToFile(path->c_str(), &dpi, gPalette);
+        WriteDpiToFile(path.value(), &dpi, gPalette);
 
         // Show user that screenshot saved successfully
         Formatter ft;
@@ -765,34 +763,32 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
         }
         return *path;
     }
-    else
+
+    auto screenshotDirectory = fs::u8path(screenshot_get_directory());
+    auto screenshotPath = fs::absolute(screenshotDirectory / filename);
+
+    // Check the filename isn't attempting to leave the screenshot directory for security
+    if (!IsPathChildOf(screenshotPath, screenshotDirectory))
     {
-        auto screenshotDirectory = fs::u8path(screenshot_get_directory());
-        auto screenshotPath = fs::absolute(screenshotDirectory / filename);
-
-        // Check the filename isn't attempting to leave the screenshot directory for security
-        if (!IsPathChildOf(screenshotPath, screenshotDirectory))
-        {
-            throw std::runtime_error("Filename is not a child of the screenshot directory.");
-        }
-
-        auto directory = screenshotPath.parent_path();
-        if (!fs::is_directory(directory))
-        {
-            if (!fs::create_directory(directory, screenshotDirectory))
-            {
-                throw std::runtime_error("Unable to create directory.");
-            }
-        }
-
-        return screenshotPath.string();
+        throw std::runtime_error("Filename is not a child of the screenshot directory.");
     }
+
+    auto directory = screenshotPath.parent_path();
+    if (!fs::is_directory(directory))
+    {
+        if (!fs::create_directory(directory, screenshotDirectory))
+        {
+            throw std::runtime_error("Unable to create directory.");
+        }
+    }
+
+    return screenshotPath.string();
 }
 
 void CaptureImage(const CaptureOptions& options)
 {
     rct_viewport viewport{};
-    if (options.View)
+    if (options.View.has_value())
     {
         viewport.width = options.View->Width;
         viewport.height = options.View->Height;

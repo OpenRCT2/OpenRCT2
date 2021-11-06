@@ -46,7 +46,7 @@ constexpr const RideTypeDescriptor CarRideRTD =
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 8, 3, 5 }),
     SET_FIELD(BuildCosts, { 25, 5, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 50),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

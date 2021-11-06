@@ -16,7 +16,7 @@
 #include "../util/Util.h"
 #include "Sprite.h"
 
-template<> bool SpriteBase::Is<Balloon>() const
+template<> bool EntityBase::Is<Balloon>() const
 {
     return Type == EntityType::Balloon;
 }

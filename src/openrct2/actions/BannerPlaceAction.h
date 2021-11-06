@@ -11,17 +11,21 @@
 
 #include "GameAction.h"
 
+struct BannerPlaceActionResult
+{
+    BannerIndex bannerId = BANNER_INDEX_NULL;
+};
+
 DEFINE_GAME_ACTION(BannerPlaceAction, GameCommand::PlaceBanner, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
     ObjectEntryIndex _bannerType{ BANNER_NULL };
-    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
     uint8_t _primaryColour{};
 
 public:
     BannerPlaceAction() = default;
-    BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour);
+    BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 

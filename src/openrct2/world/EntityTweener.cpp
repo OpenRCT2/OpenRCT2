@@ -8,29 +8,29 @@
  *****************************************************************************/
 #include "EntityTweener.h"
 
-#include "../peep/Peep.h"
+#include "../peep/Guest.h"
+#include "../peep/Staff.h"
 #include "../ride/Vehicle.h"
 #include "EntityList.h"
 #include "Sprite.h"
 
 #include <cmath>
-
 void EntityTweener::PopulateEntities()
 {
     for (auto ent : EntityList<Guest>())
     {
         Entities.push_back(ent);
-        PrePos.emplace_back(ent->x, ent->y, ent->z);
+        PrePos.emplace_back(ent->GetLocation());
     }
     for (auto ent : EntityList<Staff>())
     {
         Entities.push_back(ent);
-        PrePos.emplace_back(ent->x, ent->y, ent->z);
+        PrePos.emplace_back(ent->GetLocation());
     }
     for (auto ent : EntityList<Vehicle>())
     {
         Entities.push_back(ent);
-        PrePos.emplace_back(ent->x, ent->y, ent->z);
+        PrePos.emplace_back(ent->GetLocation());
     }
 }
 
@@ -52,12 +52,12 @@ void EntityTweener::PostTick()
         }
         else
         {
-            PostPos.emplace_back(ent->x, ent->y, ent->z);
+            PostPos.emplace_back(ent->GetLocation());
         }
     }
 }
 
-void EntityTweener::RemoveEntity(SpriteBase* entity)
+void EntityTweener::RemoveEntity(EntityBase* entity)
 {
     if (!entity->Is<Peep>() && !entity->Is<Vehicle>())
     {

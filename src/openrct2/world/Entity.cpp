@@ -11,6 +11,7 @@
 
 #include "../core/DataSerialiser.h"
 #include "../peep/Peep.h"
+#include "../peep/Staff.h"
 #include "../ride/Vehicle.h"
 #include "Balloon.h"
 #include "Duck.h"
@@ -18,7 +19,7 @@
 #include "MoneyEffect.h"
 #include "Particle.h"
 
-static void EntityBaseSerialise(SpriteBase& base, DataSerialiser& stream)
+static void EntityBaseSerialise(EntityBase& base, DataSerialiser& stream)
 {
     stream << base.Type;
     stream << base.sprite_index;
@@ -186,9 +187,7 @@ void Guest::Serialise(DataSerialiser& stream)
     stream << TimeToConsume;
     stream << Intensity;
     stream << NauseaTolerance;
-    stream << RideTypesBeenOn;
     stream << TimeInQueue;
-    stream << RidesBeenOn;
     stream << CashInPocket;
     stream << CashSpent;
     stream << Photo1RideRef;
@@ -225,7 +224,6 @@ void Staff::Serialise(DataSerialiser& stream)
     stream << AssignedStaffType;
     stream << MechanicTimeSinceCall;
     stream << HireDate;
-    stream << StaffId;
     stream << StaffOrders;
     stream << StaffMowingTimeout;
     stream << StaffLawnsMown;
@@ -280,8 +278,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << powered_acceleration;
     stream << dodgems_collision_direction;
     stream << animation_frame;
-    stream << var_C8;
-    stream << var_CA;
+    stream << animationState;
     stream << scream_sound_id;
     stream << TrackSubposition;
     stream << var_CE;

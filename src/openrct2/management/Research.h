@@ -62,7 +62,6 @@ struct ResearchItem
 
     bool IsNull() const;
     void SetNull();
-    bool Equals(const ResearchItem* otherItem) const;
     bool Exists() const;
     bool IsAlwaysResearched() const;
     rct_string_id GetName() const;
@@ -127,6 +126,8 @@ struct ResearchItem
             category = static_cast<ResearchCategory>(oldResearchItem.category);
         }
     }
+
+    bool operator==(const ResearchItem& rhs) const;
 };
 
 // Only used to mark as null nowadays. Deprecated. TODO: remove.
@@ -175,7 +176,7 @@ void research_populate_list_random();
 
 void research_finish_item(ResearchItem* researchItem);
 void research_insert(ResearchItem&& item, bool researched);
-void research_remove(ResearchItem* researchItem);
+void ResearchRemove(const ResearchItem& researchItem);
 
 bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);

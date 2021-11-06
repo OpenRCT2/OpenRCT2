@@ -11,7 +11,7 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../peep/Peep.h"
+#include "../../peep/Guest.h"
 #include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
@@ -32,7 +32,8 @@ static constexpr const uint32_t space_rings_fence_sprites[] = {
 };
 
 /** rct2: 0x00768A3B */
-static void paint_space_rings_structure(paint_session* session, Ride* ride, uint8_t direction, uint32_t segment, int32_t height)
+static void paint_space_rings_structure(
+    paint_session* session, const Ride* ride, uint8_t direction, uint32_t segment, int32_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -66,7 +67,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
         }
 
         uint32_t imageId = (baseImageId + frameNum) | imageColourFlags;
-        PaintAddImageAsParent(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 20, 23 }, { -10, -10, height });
 
         if (vehicle != nullptr && vehicle->num_peeps > 0)
         {
@@ -86,10 +87,9 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
 
 /** rct2: 0x00767C40 */
 static void paint_space_rings(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -100,27 +100,28 @@ static void paint_space_rings(
 
     uint32_t imageId;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
+    StationObject* stationObject = ride_get_station_object(ride);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_SPACE_RINGS_FENCE_SW | session->TrackColours[SCHEME_MISC];
-                PaintAddImageAsParent(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2);
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 2 });
             }
-            if (track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_SPACE_RINGS_FENCE_SE | session->TrackColours[SCHEME_MISC];
-                PaintAddImageAsParent(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2);
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 2 });
             }
             break;
         default:
             track_paint_util_paint_fences(
-                session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+                session, edges, position, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
                 space_rings_fence_sprites, session->CurrentRotation);
             break;
     }

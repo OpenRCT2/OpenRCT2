@@ -27,7 +27,6 @@ NetworkConnection::NetworkConnection()
 
 NetworkConnection::~NetworkConnection()
 {
-    delete[] _lastDisconnectReason;
 }
 
 NetworkReadPacket NetworkConnection::ReadPacket()
@@ -61,13 +60,14 @@ NetworkReadPacket NetworkConnection::ReadPacket()
 
         // NOTE: For compatibility reasons for the master server we need to remove sizeof(Header.Id) from the size.
         // Previously the Id field was not part of the header rather part of the body.
-        header.Size -= sizeof(header.Id);
+        header.Size -= std::min<uint16_t>(header.Size, sizeof(header.Id));
 
         // Fall-through: Read rest of packet.
     }
 
     // Read packet body.
     {
+        // NOTE: BytesTransfered includes the header length, this will not underflow.
         const size_t missingLength = header.Size - (InboundPacket.BytesTransferred - sizeof(header));
 
         uint8_t buffer[NetworkBufferSize];
@@ -191,23 +191,12 @@ bool NetworkConnection::ReceivedPacketRecently()
 
 const utf8* NetworkConnection::GetLastDisconnectReason() const
 {
-    return this->_lastDisconnectReason;
+    return this->_lastDisconnectReason.c_str();
 }
 
-void NetworkConnection::SetLastDisconnectReason(const utf8* src)
+void NetworkConnection::SetLastDisconnectReason(std::string_view src)
 {
-    if (src == nullptr)
-    {
-        delete[] _lastDisconnectReason;
-        _lastDisconnectReason = nullptr;
-        return;
-    }
-
-    if (_lastDisconnectReason == nullptr)
-    {
-        _lastDisconnectReason = new utf8[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
-    }
-    String::Set(_lastDisconnectReason, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, src);
+    _lastDisconnectReason = src;
 }
 
 void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void* args)

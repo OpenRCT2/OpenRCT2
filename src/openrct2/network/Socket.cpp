@@ -164,10 +164,8 @@ public:
         {
             return reinterpret_cast<const sockaddr_in*>(&_address)->sin_port;
         }
-        else
-        {
-            return reinterpret_cast<const sockaddr_in6*>(&_address)->sin6_port;
-        }
+
+        return reinterpret_cast<const sockaddr_in6*>(&_address)->sin6_port;
     }
 
     std::string GetHostname() const override
@@ -233,17 +231,16 @@ private:
             log_error("Resolution error message: %s.", gai_strerror(errorcode));
             return false;
         }
+
         if (result == nullptr)
         {
             return false;
         }
-        else
-        {
-            std::memcpy(ss, result->ai_addr, result->ai_addrlen);
-            *ss_len = static_cast<socklen_t>(result->ai_addrlen);
-            freeaddrinfo(result);
-            return true;
-        }
+
+        std::memcpy(ss, result->ai_addr, result->ai_addrlen);
+        *ss_len = static_cast<socklen_t>(result->ai_addrlen);
+        freeaddrinfo(result);
+        return true;
     }
 };
 
@@ -579,7 +576,8 @@ public:
             *sizeReceived = 0;
             return NetworkReadPacket::Disconnected;
         }
-        else if (readBytes == SOCKET_ERROR)
+
+        if (readBytes == SOCKET_ERROR)
         {
             *sizeReceived = 0;
 #    ifndef _WIN32
@@ -598,16 +596,12 @@ public:
             {
                 return NetworkReadPacket::Disconnected;
             }
-            else
-            {
-                return NetworkReadPacket::NoData;
-            }
+
+            return NetworkReadPacket::NoData;
         }
-        else
-        {
-            *sizeReceived = readBytes;
-            return NetworkReadPacket::Success;
-        }
+
+        *sizeReceived = readBytes;
+        return NetworkReadPacket::Success;
     }
 
     void Close() override
@@ -810,15 +804,13 @@ public:
             *sizeReceived = 0;
             return NetworkReadPacket::NoData;
         }
-        else
+
+        *sizeReceived = readBytes;
+        if (sender != nullptr)
         {
-            *sizeReceived = readBytes;
-            if (sender != nullptr)
-            {
-                *sender = std::make_unique<NetworkEndpoint>(reinterpret_cast<sockaddr*>(&senderAddr), senderAddrLen);
-            }
-            return NetworkReadPacket::Success;
+            *sender = std::make_unique<NetworkEndpoint>(reinterpret_cast<sockaddr*>(&senderAddr), senderAddrLen);
         }
+        return NetworkReadPacket::Success;
     }
 
     void Close() override

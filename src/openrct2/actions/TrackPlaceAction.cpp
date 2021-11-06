@@ -9,35 +9,19 @@
 
 #include "TrackPlaceAction.h"
 
+#include "../core/Numerics.hpp"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
-#include "../util/Util.h"
+#include "../util/Math.hpp"
+#include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
-TrackPlaceActionResult::TrackPlaceActionResult()
-    : GameActions::Result(GameActions::Status::Ok, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
-{
-}
-
-TrackPlaceActionResult::TrackPlaceActionResult(GameActions::Status error)
-    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
-{
-}
-
-TrackPlaceActionResult::TrackPlaceActionResult(GameActions::Status error, rct_string_id message)
-    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
-{
-}
-
-TrackPlaceActionResult::TrackPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args)
-    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message, args)
-{
-}
+using namespace OpenRCT2::TrackMetaData;
 
 TrackPlaceAction::TrackPlaceAction(
     NetworkRideId_t rideIndex, int32_t trackType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
@@ -84,43 +68,45 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
-        return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_NONE);
+        log_warning("Invalid ride for track placement, rideIndex = %d", EnumValue(_rideIndex));
+        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
-        return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_NONE);
+        log_warning("Invalid ride subtype for track placement, rideIndex = %d", EnumValue(_rideIndex));
+        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     if (!direction_valid(_origin.direction))
     {
         log_warning("Invalid direction for track placement, direction = %d", _origin.direction);
-        return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    auto res = std::make_unique<TrackPlaceActionResult>();
+    auto res = MakeResult();
     res->Expenditure = ExpenditureType::RideConstruction;
     res->Position.x = _origin.x + 16;
     res->Position.y = _origin.y + 16;
     res->Position.z = _origin.z;
 
-    res->GroundFlags = 0;
+    auto resultData = TrackPlaceActionResult{};
 
     uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
 
     if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
     {
-        return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Disallowed, STR_NOT_ALLOWED_TO_MODIFY_STATION);
+        return MakeResult(
+            GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
     }
 
     if (!(GetActionFlags() & GameActions::Flags::AllowWhilePaused))
     {
         if (game_is_paused() && !gCheatsBuildInPauseMode)
         {
-            return std::make_unique<TrackPlaceActionResult>(
-                GameActions::Status::Disallowed, STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
+            return MakeResult(
+                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
         }
     }
 
@@ -130,31 +116,37 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
             {
-                return std::make_unique<TrackPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE);
             }
         }
         else if (_trackType == TrackElemType::CableLiftHill)
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
             {
-                return std::make_unique<TrackPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE);
             }
         }
         // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
         if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED)
             && !ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_LIFT_HILL_STEEP) && !gCheatsEnableChainLiftOnAllTrack)
         {
-            if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_IS_STEEP_UP)
+            const auto& ted = GetTrackElementDescriptor(_trackType);
+            if (ted.Flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
             {
-                return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Disallowed, STR_TOO_STEEP_FOR_LIFT_HILL);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_TOO_STEEP_FOR_LIFT_HILL);
             }
         }
     }
 
     money32 cost = 0;
-    const rct_preview_track* trackBlock = TrackBlocks[_trackType];
+    const auto& ted = GetTrackElementDescriptor(_trackType);
+    const rct_preview_track* trackBlock = ted.Block;
     uint32_t numElements = 0;
     // First check if any of the track pieces are outside the park
     for (; trackBlock->index != 0xFF; trackBlock++)
@@ -164,7 +156,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
 
         if (!LocationValid(tileCoords) || (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode))
         {
-            return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(
+                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
         numElements++;
     }
@@ -172,30 +165,35 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     if (!CheckMapCapacity(numElements))
     {
         log_warning("Not enough free map elements to place track.");
-        return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
+        return MakeResult(
+            GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+            STR_TILE_ELEMENT_LIMIT_REACHED);
     }
+
     if (!gCheatsAllowTrackPlaceInvalidHeights)
     {
-        if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
+        if (ted.Flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
         {
             if ((_origin.z & 0x0F) != 8)
             {
-                return std::make_unique<TrackPlaceActionResult>(
-                    GameActions::Status::InvalidParameters, STR_CONSTRUCTION_ERR_UNKNOWN);
+                return MakeResult(
+                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_CONSTRUCTION_ERR_UNKNOWN);
             }
         }
         else
         {
             if ((_origin.z & 0x0F) != 0)
             {
-                return std::make_unique<TrackPlaceActionResult>(
-                    GameActions::Status::InvalidParameters, STR_CONSTRUCTION_ERR_UNKNOWN);
+                return MakeResult(
+                    GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_CONSTRUCTION_ERR_UNKNOWN);
             }
         }
     }
 
     // If that is not the case, then perform the remaining checks
-    trackBlock = TrackBlocks[_trackType];
+    trackBlock = ted.Block;
 
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
@@ -205,7 +203,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
 
         if (mapLoc.z < 16)
         {
-            return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_TOO_LOW);
+            return MakeResult(
+                GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
         }
 
         int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
@@ -225,7 +224,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
 
         if (clearanceZ > MAX_TRACK_HEIGHT)
         {
-            return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_TOO_HIGH);
+            return MakeResult(
+                GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
 
         uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
@@ -251,56 +251,64 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             }
         }
 
-        uint8_t mapGroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        if (res->GroundFlags != 0 && (res->GroundFlags & mapGroundFlags) == 0)
+        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
         {
-            return std::make_unique<TrackPlaceActionResult>(
-                GameActions::Status::Disallowed, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
+            return MakeResult(
+                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
         }
 
-        res->GroundFlags = mapGroundFlags;
-
-        if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
+        resultData.GroundFlags = mapGroundFlags;
+        if (ted.Flags & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
         {
-            if (res->GroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
-                return std::make_unique<TrackPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
         }
 
-        if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
+        if (ted.Flags & TRACK_ELEM_FLAG_ONLY_UNDERWATER)
         { // No element has this flag
-            if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER)
+            if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
             {
-                return std::make_unique<TrackPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_UNDERWATER);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_CAN_ONLY_BUILD_THIS_UNDERWATER);
             }
         }
 
-        if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER && !gCheatsDisableClearanceChecks)
+        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !gCheatsDisableClearanceChecks)
         {
-            return std::make_unique<TrackPlaceActionResult>(
-                GameActions::Status::Disallowed, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
+            return MakeResult(
+                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !byte_9D8150)
+        if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !_trackDesignDrawingPreview)
         {
             auto surfaceElement = map_get_surface_element_at(mapLoc);
             if (surfaceElement == nullptr)
-                return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Unknown, STR_NONE);
+            {
+                return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            }
 
             auto waterHeight = surfaceElement->GetWaterHeight();
             if (waterHeight == 0)
             {
-                return std::make_unique<TrackPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_CAN_ONLY_BUILD_THIS_ON_WATER);
             }
 
             if (waterHeight != baseZ)
             {
-                return std::make_unique<TrackPlaceActionResult>(
-                    GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                    STR_CAN_ONLY_BUILD_THIS_ON_WATER);
             }
             waterHeight -= LAND_HEIGHT_STEP;
             if (waterHeight == surfaceElement->GetBaseZ())
@@ -309,25 +317,29 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
                 if (slope == TILE_ELEMENT_SLOPE_W_CORNER_DN || slope == TILE_ELEMENT_SLOPE_S_CORNER_DN
                     || slope == TILE_ELEMENT_SLOPE_E_CORNER_DN || slope == TILE_ELEMENT_SLOPE_N_CORNER_DN)
                 {
-                    return std::make_unique<TrackPlaceActionResult>(
-                        GameActions::Status::Disallowed, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                    return MakeResult(
+                        GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                        STR_CAN_ONLY_BUILD_THIS_ON_WATER);
                 }
             }
         }
 
-        int32_t entranceDirections = TrackSequenceProperties[_trackType][0];
+        int32_t entranceDirections = ted.SequenceProperties[0];
         if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
         {
             if (!track_add_station_element({ mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign))
             {
-                return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Unknown, gGameCommandErrorText);
+                return MakeResult(
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText);
             }
         }
 
         // 6c5648 12 push
         auto surfaceElement = map_get_surface_element_at(mapLoc);
         if (surfaceElement == nullptr)
-            return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Unknown, STR_NONE);
+        {
+            return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        }
 
         if (!gCheatsDisableSupportLimits)
         {
@@ -347,9 +359,11 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
                 }
 
                 ride_height /= COORDS_Z_PER_TINY_Z;
-                if (ride_height > maxHeight && !byte_9D8150)
+                if (ride_height > maxHeight && !_trackDesignDrawingPreview)
                 {
-                    return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Disallowed, STR_TOO_HIGH_FOR_SUPPORTS);
+                    return MakeResult(
+                        GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                        STR_TOO_HIGH_FOR_SUPPORTS);
                 }
             }
         }
@@ -364,10 +378,12 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= TrackPricing[_trackType];
+    price *= ted.Price;
 
     price >>= 16;
     res->Cost = cost + ((price / 2) * 10);
+    res->SetData(std::move(resultData));
+
     return res;
 }
 
@@ -376,34 +392,32 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
-        return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters);
+        log_warning("Invalid ride for track placement, rideIndex = %d", EnumValue(_rideIndex));
+        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
-        return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters);
+        log_warning("Invalid ride subtype for track placement, rideIndex = %d", EnumValue(_rideIndex));
+        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    auto res = std::make_unique<TrackPlaceActionResult>();
+    auto res = MakeResult();
     res->Expenditure = ExpenditureType::RideConstruction;
     res->Position.x = _origin.x + 16;
     res->Position.y = _origin.y + 16;
     res->Position.z = _origin.z;
 
-    res->GroundFlags = 0;
+    auto resultData = TrackPlaceActionResult{};
 
     uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
 
-    const uint8_t(*wallEdges)[16];
-    wallEdges = &TrackSequenceElementAllowedWallEdges[_trackType];
+    const auto& ted = GetTrackElementDescriptor(_trackType);
+    const auto& wallEdges = ted.SequenceElementAllowedWallEdges;
 
     money32 cost = 0;
-    const rct_preview_track* trackBlock = TrackBlocks[_trackType];
-
-    trackBlock = TrackBlocks[_trackType];
+    const rct_preview_track* trackBlock = ted.Block;
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
@@ -450,9 +464,9 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             else
             {
                 // Remove walls in the directions this track intersects
-                uint8_t intersectingDirections = (*wallEdges)[blockIndex];
+                uint8_t intersectingDirections = wallEdges[blockIndex];
                 intersectingDirections ^= 0x0F;
-                intersectingDirections = rol4(intersectingDirections, _origin.direction);
+                intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
                 for (int32_t i = 0; i < NumOrthogonalDirections; i++)
                 {
                     if (intersectingDirections & (1 << i))
@@ -463,19 +477,23 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             }
         }
 
-        uint8_t mapGroundFlags = canBuild->GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-        if (res->GroundFlags != 0 && (res->GroundFlags & mapGroundFlags) == 0)
+        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
         {
-            return std::make_unique<TrackPlaceActionResult>(
-                GameActions::Status::Disallowed, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
+            return MakeResult(
+                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
         }
 
-        res->GroundFlags = mapGroundFlags;
+        resultData.GroundFlags = mapGroundFlags;
 
         // 6c5648 12 push
         auto surfaceElement = map_get_surface_element_at(mapLoc);
         if (surfaceElement == nullptr)
-            return std::make_unique<TrackPlaceActionResult>(GameActions::Status::Unknown, STR_NONE);
+        {
+            return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        }
 
         int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
         if (supportHeight < 0)
@@ -533,15 +551,15 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         }
 
         int32_t entranceDirections = 0;
-        if (!ride->overall_view.isNull())
+        if (!ride->overall_view.IsNull())
         {
             if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
             {
-                entranceDirections = TrackSequenceProperties[_trackType][0];
+                entranceDirections = ted.SequenceProperties[0];
             }
         }
 
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.isNull())
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.IsNull())
         {
             ride->overall_view = mapLoc;
         }
@@ -549,8 +567,10 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         auto* trackElement = TileElementInsert<TrackElement>(mapLoc, quarterTile.GetBaseQuarterOccupied());
         if (trackElement == nullptr)
         {
-            log_warning("Cannot create track element for ride = %d", static_cast<int32_t>(_rideIndex));
-            return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements);
+            log_warning("Cannot create track element for ride = %d", EnumValue(_rideIndex));
+            return MakeResult(
+                GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         trackElement->SetClearanceZ(clearanceZ);
@@ -559,6 +579,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         trackElement->SetSequenceIndex(trackBlock->index);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetTrackType(_trackType);
+        trackElement->SetRideType(ride->type);
         trackElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
         switch (_trackType)
@@ -596,7 +617,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         }
         trackElement->SetColourScheme(_colour);
 
-        entranceDirections = TrackSequenceProperties[_trackType][0];
+        entranceDirections = ted.SequenceProperties[0];
         if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
         {
             uint8_t availableDirections = entranceDirections & 0x0F;
@@ -628,7 +649,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             {
                 track_add_station_element({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
             }
-            sub_6CB945(ride);
+            ride->ValidateStations();
             ride->UpdateMaxVehicles();
         }
 
@@ -652,16 +673,19 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= TrackPricing[_trackType];
+    price *= ted.Price;
 
     price >>= 16;
     res->Cost = cost + ((price / 2) * 10);
+    res->SetData(std::move(resultData));
+
     return res;
 }
 
 bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
 {
-    for (const rct_preview_track* trackBlock = TrackBlocks[_trackType]; trackBlock->index != 0xFF; trackBlock++)
+    const auto& ted = GetTrackElementDescriptor(_trackType);
+    for (const rct_preview_track* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
     {
         auto rotatedTrack = CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction);
 

@@ -25,6 +25,7 @@
 #include <openrct2/actions/SmallSceneryRemoveAction.h>
 #include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/peep/Staff.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
@@ -63,7 +64,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
     info = get_map_coordinates_from_pos(
@@ -79,11 +80,9 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
     {
         if (info.SpriteType == ViewportInteractionItem::Entity && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
             return info;
-        else
-        {
-            info.SpriteType = ViewportInteractionItem::None;
-            return info;
-        }
+
+        info.SpriteType = ViewportInteractionItem::None;
+        return info;
     }
 
     switch (info.SpriteType)
@@ -250,7 +249,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gEditorStep != EditorStep::RollercoasterDesigner)
         return info;
 
     constexpr auto flags = static_cast<int32_t>(
@@ -375,7 +374,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 stationIndex = tileElement->AsTrack()->GetStationIndex();
 
             for (i = stationIndex; i >= 0; i--)
-                if (ride->stations[i].Start.isNull())
+                if (ride->stations[i].Start.IsNull())
                     stationIndex--;
             stationIndex++;
             ft.Add<uint16_t>(stationIndex);
@@ -423,15 +422,19 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         case ViewportInteractionItem::Banner:
         {
             auto banner = tileElement->AsBanner()->GetBanner();
-            auto* bannerEntry = get_banner_entry(banner->type);
+            if (banner != nullptr)
+            {
+                auto* bannerEntry = get_banner_entry(banner->type);
 
-            auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-            banner->FormatTextTo(ft, /*addColour*/ true);
-            ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-            ft.Add<rct_string_id>(bannerEntry->name);
-            SetMapTooltip(ft);
-            return info;
+                auto ft = Formatter();
+                ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                banner->FormatTextTo(ft, /*addColour*/ true);
+                ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                ft.Add<rct_string_id>(bannerEntry->name);
+                SetMapTooltip(ft);
+                return info;
+            }
+            break;
         }
         default:
             break;
@@ -709,11 +712,11 @@ PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t 
 {
     for (auto peep : EntityList<T>())
     {
-        if (peep->sprite_left == LOCATION_NULL)
+        if (peep->x == LOCATION_NULL)
             continue;
 
-        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - viewportCoords.x)
-            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - viewportCoords.y);
+        auto distance = abs(((peep->SpriteRect.GetLeft() + peep->SpriteRect.GetRight()) / 2) - viewportCoords.x)
+            + abs(((peep->SpriteRect.GetTop() + peep->SpriteRect.GetBottom()) / 2) - viewportCoords.y);
         if (distance > maxDistance)
             continue;
 
@@ -757,7 +760,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY ret{};
-        ret.setNull();
+        ret.SetNull();
         return ret;
     }
     auto viewport = window->viewport;
@@ -767,7 +770,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
 
     if (info.SpriteType == ViewportInteractionItem::None)
     {
-        initialPos.setNull();
+        initialPos.SetNull();
         return initialPos;
     }
 

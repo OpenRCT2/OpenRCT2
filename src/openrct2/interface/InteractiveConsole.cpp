@@ -194,7 +194,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    int32_t res = set_operating_setting(ride_index, RideSetSetting::RideType, type);
+                    int32_t res = set_operating_setting(static_cast<ride_id_t>(ride_index), RideSetSetting::RideType, type);
                     if (res == MONEY32_UNDEFINED)
                     {
                         if (!gCheatsAllowArbitraryRideTypeChanges)
@@ -224,7 +224,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(ride_index);
+                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
                     if (mode >= static_cast<uint8_t>(RideMode::Count))
                     {
                         console.WriteFormatLine("Invalid ride mode.");
@@ -256,7 +256,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(ride_index);
+                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
                     if (mass <= 0)
                     {
                         console.WriteFormatLine("Friction value must be strictly positive");
@@ -294,7 +294,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(ride_index);
+                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
                     if (excitement <= 0)
                     {
                         console.WriteFormatLine("Excitement value must be strictly positive");
@@ -325,7 +325,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(ride_index);
+                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
                     if (intensity <= 0)
                     {
                         console.WriteFormatLine("Intensity value must be strictly positive");
@@ -356,7 +356,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(ride_index);
+                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
                     if (nausea <= 0)
                     {
                         console.WriteFormatLine("Nausea value must be strictly positive");
@@ -426,7 +426,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                        auto rideSetPrice = RideSetPriceAction(static_cast<ride_id_t>(rideId), price, true);
                         GameActions::Execute(&rideSetPrice);
                     }
                 }
@@ -774,7 +774,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "current_loan" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gBankLoan = std::clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), gMaxBankLoan);
+            gBankLoan = std::clamp<money64>(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), gMaxBankLoan);
             console.Execute("get current_loan");
         }
         else if (argv[0] == "max_loan" && invalidArguments(&invalidArgs, int_valid[0]))
@@ -1172,13 +1172,27 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         bool invalidTitle = false;
         if (argv[0] == "object_selection" && invalidArguments(&invalidTitle, !title))
         {
-            // Only this window should be open for safety reasons
-            window_close_all();
-            context_open_window(WC_EDITOR_OBJECT_SELECTION);
+            if (network_get_mode() != NETWORK_MODE_NONE)
+            {
+                console.WriteLineError("Cannot open this window in multiplayer mode.");
+            }
+            else
+            {
+                // Only this window should be open for safety reasons
+                window_close_all();
+                context_open_window(WC_EDITOR_OBJECT_SELECTION);
+            }
         }
         else if (argv[0] == "inventions_list" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WC_EDITOR_INVENTION_LIST);
+            if (network_get_mode() != NETWORK_MODE_NONE)
+            {
+                console.WriteLineError("Cannot open this window in multiplayer mode.");
+            }
+            else
+            {
+                context_open_window(WC_EDITOR_INVENTION_LIST);
+            }
         }
         else if (argv[0] == "scenario_options" && invalidArguments(&invalidTitle, !title))
         {
@@ -1186,7 +1200,14 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "objective_options" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+            if (network_get_mode() != NETWORK_MODE_NONE)
+            {
+                console.WriteLineError("Cannot open this window in multiplayer mode.");
+            }
+            else
+            {
+                context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+            }
         }
         else if (argv[0] == "options")
         {
@@ -1259,15 +1280,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
 
     int32_t staffCount = GetEntityListCount(EntityType::Staff);
 
-    int32_t bannerCount = 0;
-    for (BannerIndex i = 0; i < MAX_BANNERS; ++i)
-    {
-        auto banner = GetBanner(i);
-        if (!banner->IsNull())
-        {
-            bannerCount++;
-        }
-    }
+    auto bannerCount = GetNumBanners();
 
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
     console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
@@ -1390,19 +1403,15 @@ static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return 0;
     }
-    else
+
+    if (!argv.empty())
     {
-        if (!argv.empty())
-        {
-            network_send_chat(argv[0].c_str());
-            return 1;
-        }
-        else
-        {
-            console.WriteFormatLine("Input your message");
-            return 0;
-        }
+        network_send_chat(argv[0].c_str());
+        return 1;
     }
+
+    console.WriteFormatLine("Input your message");
+    return 0;
 }
 
 static int32_t cc_replay_startrecord(InteractiveConsole& console, const arguments_t& argv)
@@ -1765,6 +1774,7 @@ static constexpr const utf8* console_variable_table[] = {
     "cheat_disable_support_limits",
     "current_rotation",
 };
+
 static constexpr const utf8* console_window_table[] = {
     "object_selection",
     "inventions_list",
@@ -1772,8 +1782,9 @@ static constexpr const utf8* console_window_table[] = {
     "objective_options",
     "options",
     "themes",
-    "title_sequences"
+    "title_sequences",
 };
+// clang-format on
 
 static constexpr const console_command console_command_table[] = {
     { "abort", cc_abort, "Calls std::abort(), for testing purposes only.", "abort" },
@@ -1788,19 +1799,22 @@ static constexpr const console_command console_command_table[] = {
     { "get", cc_get, "Gets the value of the specified variable.", "get <variable>" },
     { "help", cc_help, "Lists commands or info about a command.", "help [command]" },
     { "hide", cc_hide, "Hides the console.", "hide" },
-    { "load_object", cc_load_object, "Loads the object file into the scenario.\n"
-                                    "Loading a scenery group will not load its associated objects.\n"
-                                    "This is a safer method opposed to \"open object_selection\".",
-                                    "load_object <objectfilenodat>" },
+    { "load_object", cc_load_object,
+      "Loads the object file into the scenario.\n"
+      "Loading a scenery group will not load its associated objects.\n"
+      "This is a safer method opposed to \"open object_selection\".",
+      "load_object <objectfilenodat>" },
     { "load_park", cc_load_park, "Load park from save directory or by absolute path", "load_park <filename>" },
     { "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
     { "open", cc_open, "Opens the window with the give name.", "open <window>." },
     { "quit", cc_close, "Closes the console.", "quit" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences" },
-    { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
-    { "remove_floating_objects", cc_remove_floating_objects, "Removes floating objects", "remove_floating_objects"},
+    { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.",
+      "remove_unused_objects" },
+    { "remove_floating_objects", cc_remove_floating_objects, "Removes floating objects", "remove_floating_objects" },
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
-    { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]" },
+    { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.",
+      "save_park [name]" },
     { "say", cc_say, "Say to other players.", "say <message>" },
     { "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
@@ -1808,15 +1822,15 @@ static constexpr const console_command console_command_table[] = {
     { "terminate", cc_terminate, "Calls std::terminate(), for testing purposes only.", "terminate" },
     { "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set.", "variables" },
     { "windows", cc_windows, "Lists all the windows that can be opened.", "windows" },
-    { "replay_startrecord", cc_replay_startrecord, "Starts recording a new replay.", "replay_startrecord <name> [max_ticks]"},
-    { "replay_stoprecord", cc_replay_stoprecord, "Stops recording a new replay.", "replay_stoprecord"},
-    { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
-    { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
-    { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
-    { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random guest, 1 = Remove random guest ]"},
-
+    { "replay_startrecord", cc_replay_startrecord, "Starts recording a new replay.", "replay_startrecord <name> [max_ticks]" },
+    { "replay_stoprecord", cc_replay_stoprecord, "Stops recording a new replay.", "replay_stoprecord" },
+    { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>" },
+    { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop" },
+    { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps",
+      "replay_normalise <input file> <output file>" },
+    { "mp_desync", cc_mp_desync, "Forces a multiplayer desync",
+      "cc_mp_desync [desync_type, 0 = Random t-shirt color on random guest, 1 = Remove random guest ]" },
 };
-// clang-format on
 
 static int32_t cc_windows(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {

@@ -36,6 +36,7 @@
 #include "../windows/Intent.h"
 #include "../world/Balloon.h"
 #include "../world/Climate.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/EntityTweener.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
@@ -74,12 +75,11 @@ static void* _crowdSoundChannel = nullptr;
 
 static void peep_128_tick_update(Peep* peep, int32_t index);
 static void peep_release_balloon(Guest* peep, int16_t spawn_height);
-// clang-format off
 
 static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
     PeepActionSpriteType::None,
     PeepActionSpriteType::HoldMat,
-    PeepActionSpriteType::StaffMower
+    PeepActionSpriteType::StaffMower,
 };
 
 static PeepActionSpriteType PeepActionToSpriteTypeMap[] = {
@@ -113,21 +113,16 @@ static PeepActionSpriteType PeepActionToSpriteTypeMap[] = {
     PeepActionSpriteType::Disgust,
     PeepActionSpriteType::DrawPicture,
     PeepActionSpriteType::BeingWatched,
-    PeepActionSpriteType::WithdrawMoney
+    PeepActionSpriteType::WithdrawMoney,
 };
 
 const bool gSpriteTypeToSlowWalkMap[] = {
-    false, false, false, false, false, false, false, false,
-    false, false, false, true,  false, false, true,  true,
-    true,  true,  true,  false, true,  false, true,  true,
-    true,  false, false, true,  true,  false, false, true,
-    true,  true,  true,  true,  true,  true,  false, true,
-    false, true,  true,  true,  true,  true,  true,  true,
+    false, false, false, false, false, false, false, false, false, false, false, true, false, false, true,  true,
+    true,  true,  true,  false, true,  false, true,  true,  true,  false, false, true, true,  false, false, true,
+    true,  true,  true,  true,  true,  true,  false, true,  false, true,  true,  true, true,  true,  true,  true,
 };
 
-// clang-format on
-
-template<> bool SpriteBase::Is<Peep>() const
+template<> bool EntityBase::Is<Peep>() const
 {
     return Type == EntityType::Guest || Type == EntityType::Staff;
 }
@@ -313,17 +308,16 @@ PeepActionSpriteType Peep::GetActionSpriteType()
     { // PeepActionType::None1 or PeepActionType::None2
         return PeepSpecialSpriteToSpriteTypeMap[SpecialSprite];
     }
-    else if (EnumValue(Action) < std::size(PeepActionToSpriteTypeMap))
+
+    if (EnumValue(Action) < std::size(PeepActionToSpriteTypeMap))
     {
         return PeepActionToSpriteTypeMap[EnumValue(Action)];
     }
-    else
-    {
-        openrct2_assert(
-            EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle,
-            "Invalid peep action %u", EnumValue(Action));
-        return PeepActionSpriteType::None;
-    }
+
+    openrct2_assert(
+        EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle, "Invalid peep action %u",
+        EnumValue(Action));
+    return PeepActionSpriteType::None;
 }
 
 /*
@@ -374,7 +368,12 @@ void Peep::StateReset()
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static constexpr const CoordsXY word_981D7C[4] = { { -2, 0 }, { 0, 2 }, { 2, 0 }, { 0, -2 } };
+static constexpr const CoordsXY word_981D7C[4] = {
+    { -2, 0 },
+    { 0, 2 },
+    { 2, 0 },
+    { 0, -2 },
+};
 
 std::optional<CoordsXY> Peep::UpdateAction()
 {
@@ -474,14 +473,17 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
-    // Create sick at location
-    Litter::Create({ x, y, z, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    const auto curLoc = GetLocation();
+    Litter::Create({ curLoc, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
-    static constexpr OpenRCT2::Audio::SoundId coughs[4] = { OpenRCT2::Audio::SoundId::Cough1, OpenRCT2::Audio::SoundId::Cough2,
-                                                            OpenRCT2::Audio::SoundId::Cough3,
-                                                            OpenRCT2::Audio::SoundId::Cough4 };
+    static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
+        OpenRCT2::Audio::SoundId::Cough1,
+        OpenRCT2::Audio::SoundId::Cough2,
+        OpenRCT2::Audio::SoundId::Cough3,
+        OpenRCT2::Audio::SoundId::Cough4,
+    };
     auto soundId = coughs[scenario_rand() & 3];
-    OpenRCT2::Audio::Play3D(soundId, { x, y, z });
+    OpenRCT2::Audio::Play3D(soundId, curLoc);
 
     return { { x, y } };
 }
@@ -574,13 +576,15 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
 {
     auto* pathElement = map_get_path_element_at(location);
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
-    if (!pathElement)
+    if (pathElement == nullptr)
     {
         tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(location.ToCoordsXYZ()));
     }
-
-    if (!tileElement)
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);
+    if (tileElement == nullptr)
+    {
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+    }
 
     // Set the coordinate of destination to be exactly
     // in the middle of a tile.
@@ -588,20 +592,18 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
 
     if (!map_is_location_owned(destination))
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::NotOwned, STR_ERR_CANT_PLACE_PERSON_HERE);
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::NotOwned, STR_ERR_CANT_PLACE_PERSON_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (auto res = MapCanConstructAt({ destination, destination.z, destination.z + (1 * 8) }, { 0b1111, 0 });
         res->Error != GameActions::Status::Ok)
     {
-        if (res->ErrorMessage.GetStringId() != STR_RAISE_OR_LOWER_LAND_FIRST)
+        const auto stringId = std::get<rct_string_id>(res->ErrorMessage);
+        if (stringId != STR_RAISE_OR_LOWER_LAND_FIRST && stringId != STR_FOOTPATH_IN_THE_WAY)
         {
-            if (res->ErrorMessage.GetStringId() != STR_FOOTPATH_IN_THE_WAY)
-            {
-                return std::make_unique<GameActions::Result>(
-                    GameActions::Status::NoClearance, STR_ERR_CANT_PLACE_PERSON_HERE, res->ErrorMessage.GetStringId(),
-                    res->ErrorMessageArgs.data());
-            }
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::NoClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res->ErrorMessageArgs.data());
         }
     }
 
@@ -653,7 +655,7 @@ void peep_sprite_remove(Peep* peep)
     }
     else
     {
-        gStaffModes[staff->StaffId] = StaffMode::None;
+        staff->ClearPatrolArea();
         staff_update_greyed_patrol_areas();
 
         News::DisableNewsItems(News::ItemType::Peep, staff->sprite_index);
@@ -713,7 +715,7 @@ void Peep::UpdateFalling()
     }
 
     // If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-    TileElement* tile_element = map_get_first_element_at({ x, y });
+    TileElement* tile_element = map_get_first_element_at(CoordsXY{ x, y });
     TileElement* saved_map = nullptr;
     int32_t saved_height = 0;
 
@@ -752,7 +754,7 @@ void Peep::UpdateFalling()
                         {
                             // Drop balloon if held
                             peep_release_balloon(guest, height);
-                            guest->InsertNewThought(PeepThoughtType::Drowning, PEEP_THOUGHT_ITEM_NONE);
+                            guest->InsertNewThought(PeepThoughtType::Drowning);
                         }
 
                         Action = PeepActionType::Drowning;
@@ -844,7 +846,7 @@ void Peep::UpdatePicked()
     auto* guest = As<Guest>();
     if (SubState == 13 && guest != nullptr)
     {
-        guest->InsertNewThought(PeepThoughtType::Help, PEEP_THOUGHT_ITEM_NONE);
+        guest->InsertNewThought(PeepThoughtType::Help);
     }
 }
 
@@ -887,8 +889,7 @@ static void peep_update_thoughts(Guest* peep)
                     // Clear top thought, push others up
                     if (i < PEEP_MAX_THOUGHTS - 2)
                     {
-                        memmove(
-                            &peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+                        memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(PeepThought) * (PEEP_MAX_THOUGHTS - i - 1));
                     }
                     peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
                 }
@@ -1179,15 +1180,15 @@ void peep_update_crowd_noise()
 
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->sprite_left == LOCATION_NULL)
+        if (peep->x == LOCATION_NULL)
             continue;
-        if (viewport->viewPos.x > peep->sprite_right)
+        if (viewport->viewPos.x > peep->SpriteRect.GetRight())
             continue;
-        if (viewport->viewPos.x + viewport->view_width < peep->sprite_left)
+        if (viewport->viewPos.x + viewport->view_width < peep->SpriteRect.GetLeft())
             continue;
-        if (viewport->viewPos.y > peep->sprite_bottom)
+        if (viewport->viewPos.y > peep->SpriteRect.GetBottom())
             continue;
-        if (viewport->viewPos.y + viewport->view_height < peep->sprite_top)
+        if (viewport->viewPos.y + viewport->view_height < peep->SpriteRect.GetTop())
             continue;
 
         visiblePeeps += peep->State == PeepState::Queuing ? 1 : 2;
@@ -1460,6 +1461,13 @@ void Peep::FormatActionTo(Formatter& ft) const
     }
 }
 
+static constexpr const rct_string_id _staffNames[] = {
+    STR_HANDYMAN_X,
+    STR_MECHANIC_X,
+    STR_SECURITY_GUARD_X,
+    STR_ENTERTAINER_X,
+};
+
 void Peep::FormatNameTo(Formatter& ft) const
 {
     if (Name == nullptr)
@@ -1467,20 +1475,13 @@ void Peep::FormatNameTo(Formatter& ft) const
         auto* staff = As<Staff>();
         if (staff != nullptr)
         {
-            static constexpr const rct_string_id staffNames[] = {
-                STR_HANDYMAN_X,
-                STR_MECHANIC_X,
-                STR_SECURITY_GUARD_X,
-                STR_ENTERTAINER_X,
-            };
-
             auto staffNameIndex = static_cast<uint8_t>(staff->AssignedStaffType);
-            if (staffNameIndex > sizeof(staffNames))
+            if (staffNameIndex >= std::size(_staffNames))
             {
                 staffNameIndex = 0;
             }
 
-            ft.Add<rct_string_id>(staffNames[staffNameIndex]);
+            ft.Add<rct_string_id>(_staffNames[staffNameIndex]);
             ft.Add<uint32_t>(Id);
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
@@ -1514,17 +1515,15 @@ bool Peep::SetName(std::string_view value)
         Name = nullptr;
         return true;
     }
-    else
+
+    auto newNameMemory = static_cast<char*>(std::malloc(value.size() + 1));
+    if (newNameMemory != nullptr)
     {
-        auto newNameMemory = static_cast<char*>(std::malloc(value.size() + 1));
-        if (newNameMemory != nullptr)
-        {
-            std::memcpy(newNameMemory, value.data(), value.size());
-            newNameMemory[value.size()] = '\0';
-            std::free(Name);
-            Name = newNameMemory;
-            return true;
-        }
+        std::memcpy(newNameMemory, value.data(), value.size());
+        newNameMemory[value.size()] = '\0';
+        std::free(Name);
+        Name = newNameMemory;
+        return true;
     }
     return false;
 }
@@ -1836,15 +1835,13 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                     found = true;
                     break;
                 }
-                else
+
+                if (z != nextTileElement->base_height)
                 {
-                    if (z != nextTileElement->base_height)
-                    {
-                        continue;
-                    }
-                    found = true;
-                    break;
+                    continue;
                 }
+                found = true;
+                break;
             } while (!(nextTileElement++)->IsLastForTile());
         }
 
@@ -1935,7 +1932,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
         {
             if ((scenario_rand() & 0xFFFF) <= 10922)
             {
-                guest->InsertNewThought(PeepThoughtType::Vandalism, PEEP_THOUGHT_ITEM_NONE);
+                guest->InsertNewThought(PeepThoughtType::Vandalism);
                 guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
             }
             vandalThoughtTimeout = 3;
@@ -1964,7 +1961,8 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
             crowded++;
             continue;
         }
-        else if (auto litter = entity->As<Litter>(); litter != nullptr)
+
+        if (auto litter = entity->As<Litter>(); litter != nullptr)
         {
             if (abs(litter->z - guest->NextLoc.z) > 16)
                 continue;
@@ -1980,7 +1978,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
     if (crowded >= 10 && guest->State == PeepState::Walking && (scenario_rand() & 0xFFFF) <= 21845)
     {
-        guest->InsertNewThought(PeepThoughtType::Crowded, PEEP_THOUGHT_ITEM_NONE);
+        guest->InsertNewThought(PeepThoughtType::Crowded);
         guest->HappinessTarget = std::max(0, guest->HappinessTarget - 14);
     }
 
@@ -2006,7 +2004,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
         if (total_sick >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            guest->InsertNewThought(PeepThoughtType::PathDisgusting, PEEP_THOUGHT_ITEM_NONE);
+            guest->InsertNewThought(PeepThoughtType::PathDisgusting);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
             // Reset disgusting time
             guest->DisgustingCount |= 0xC0;
@@ -2032,7 +2030,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
         if (total_litter >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            guest->InsertNewThought(PeepThoughtType::BadLitter, PEEP_THOUGHT_ITEM_NONE);
+            guest->InsertNewThought(PeepThoughtType::BadLitter);
             guest->HappinessTarget = std::max(0, guest->HappinessTarget - 17);
             // Reset litter time
             guest->LitterCount |= 0xC0;
@@ -2061,7 +2059,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
     auto* guest = peep->As<Guest>();
     if (map_is_location_owned({ coords, z }))
     {
-        if (guest && guest->OutsideOfPark)
+        if (guest != nullptr && guest->OutsideOfPark)
         {
             peep_return_to_centre_of_tile(guest);
             return;
@@ -2298,7 +2296,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     }
 
     std::optional<CoordsXY> loc;
-    if (!(loc = UpdateAction()))
+    if (loc = UpdateAction(); !loc.has_value())
     {
         pathing_result |= PATHING_DESTINATION_REACHED;
         uint8_t result = 0;
@@ -2316,7 +2314,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         if (result != 0)
             return;
 
-        if (!(loc = UpdateAction()))
+        if (loc = UpdateAction(); !loc.has_value())
             return;
     }
 
@@ -2360,7 +2358,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             tile_result = tileElement;
             return;
         }
-        else if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
             if (peep_interact_with_shop(this, { newLoc, tileElement }))
             {
@@ -2458,7 +2457,9 @@ rct_string_id get_real_name_string_id_from_id(uint32_t id)
     // Generate a name_string_idx from the peep Id using bit twiddling
     uint16_t ax = static_cast<uint16_t>(id + 0xF0B);
     uint16_t dx = 0;
-    static constexpr uint16_t twiddlingBitOrder[] = { 4, 9, 3, 7, 5, 8, 2, 1, 6, 0, 12, 11, 13, 10 };
+    static constexpr uint16_t twiddlingBitOrder[] = {
+        4, 9, 3, 7, 5, 8, 2, 1, 6, 0, 12, 11, 13, 10,
+    };
     for (size_t i = 0; i < std::size(twiddlingBitOrder); i++)
     {
         dx |= (ax & (1 << twiddlingBitOrder[i]) ? 1 : 0) << i;

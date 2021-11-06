@@ -68,20 +68,20 @@ GameActions::Result::Ptr FootpathAdditionRemoveAction::Query() const
     if (tileElement == nullptr)
     {
         log_warning("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto pathElement = tileElement->AsPath();
     if (pathElement == nullptr)
     {
         log_warning("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     if (!pathElement->AdditionIsGhost() && (GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         log_warning("Tried to remove non ghost during ghost removal.");
-        return MakeResult(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS);
+        return MakeResult(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_NONE);
     }
     auto res = MakeResult();
     res->Position = _loc;
@@ -102,7 +102,7 @@ GameActions::Result::Ptr FootpathAdditionRemoveAction::Execute() const
     if (pathElement == nullptr)
     {
         log_error("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     pathElement->SetAddition(0);

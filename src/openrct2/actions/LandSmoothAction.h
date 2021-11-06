@@ -19,7 +19,10 @@ private:
     uint8_t _selectionType{};
     bool _isLowering{};
 
-    constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_LOWER_LAND_HERE, STR_CANT_RAISE_LAND_HERE };
+    constexpr static rct_string_id _ErrorTitles[] = {
+        STR_CANT_LOWER_LAND_HERE,
+        STR_CANT_RAISE_LAND_HERE,
+    };
 
 public:
     LandSmoothAction() = default;

@@ -21,6 +21,9 @@ namespace OpenRCT2::TileInspector
 {
     using GameActionResultPtr = std::unique_ptr<GameActions::Result>;
 
+    void SetSelectedElement(const TileElement* elem);
+    bool IsElementSelected(const TileElement* elem);
+
     GameActionResultPtr InsertCorruptElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
     GameActionResultPtr RemoveElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
     GameActionResultPtr SwapElementsAt(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting);
@@ -28,7 +31,7 @@ namespace OpenRCT2::TileInspector
     GameActionResultPtr PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting);
     GameActionResultPtr SortElementsAt(const CoordsXY& loc, bool isExecuting);
     GameActionResultPtr AnyBaseHeightOffset(const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting);
-    GameActionResultPtr SurfaceShowParkFences(const CoordsXY& loc, bool enabled, bool isExecuting);
+    GameActionResultPtr SurfaceShowParkFences(const CoordsXY& loc, bool showFences, bool isExecuting);
     GameActionResultPtr SurfaceToggleCorner(const CoordsXY& loc, int32_t cornerIndex, bool isExecuting);
     GameActionResultPtr SurfaceToggleDiagonal(const CoordsXY& loc, bool isExecuting);
     GameActionResultPtr PathSetSloped(const CoordsXY& loc, int32_t elementIndex, bool sloped, bool isExecuting);

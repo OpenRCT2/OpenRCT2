@@ -32,9 +32,9 @@ enum
  *  rct2: 0x0076522A
  */
 static void paint_motionsimulator_vehicle(
-    paint_session* session, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height, const TileElement* tileElement)
+    paint_session* session, const Ride* ride, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
-    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     if (ride == nullptr)
         return;
 
@@ -83,32 +83,38 @@ static void paint_motionsimulator_vehicle(
         case 0:
             // Simulator
             imageId = simulatorImageId;
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 20, 44 }, { offsetX, offsetY, offsetZ });
             // Stairs
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
             PaintAddImageAsChild(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
             // Stairs (rail)
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 2, 44, offsetZ, offsetX, offsetY + 32, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 2, 44 }, { offsetX, offsetY + 32, offsetZ });
             break;
         case 1:
             // Simulator
             imageId = simulatorImageId;
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 20, 44 }, { offsetX, offsetY, offsetZ });
             // Stairs
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
             PaintAddImageAsChild(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ);
             // Stairs (rail)
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 2, 20, 44, offsetZ, offsetX + 34, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 2, 20, 44 }, { offsetX + 34, offsetY, offsetZ });
             break;
         case 2:
             // Stairs (rail)
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 2, 44, offsetZ, offsetX, offsetY - 10, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 2, 44 }, { offsetX, offsetY - 10, offsetZ });
             // Stairs
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY + 5, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 20, 44 }, { offsetX, offsetY + 5, offsetZ });
             // Simulator
             imageId = simulatorImageId;
             PaintAddImageAsChild(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY + 5, offsetZ);
@@ -116,10 +122,12 @@ static void paint_motionsimulator_vehicle(
         case 3:
             // Stairs (rail)
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 2, 20, 44, offsetZ, offsetX - 10, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 2, 20, 44 }, { offsetX - 10, offsetY, offsetZ });
             // Stairs
             imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsParent(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX + 5, offsetY, offsetZ);
+            PaintAddImageAsParent(
+                session, imageId, { offsetX, offsetY, offsetZ }, { 20, 20, 44 }, { offsetX + 5, offsetY, offsetZ });
             // Simulator
             imageId = simulatorImageId;
             PaintAddImageAsChild(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX + 5, offsetY, offsetZ);
@@ -132,34 +140,38 @@ static void paint_motionsimulator_vehicle(
 
 /** rct2: 0x008A85C4 */
 static void paint_motionsimulator(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 
     int32_t edges = edges_2x2[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    auto ride = get_ride(rideIndex);
+    StationObject* stationObject = nullptr;
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
+
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
+            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
             fenceSpritesRope, session->CurrentRotation);
     }
 
     switch (trackSequence)
     {
         case 1:
-            paint_motionsimulator_vehicle(session, 16, -16, direction, height, tileElement);
+            paint_motionsimulator_vehicle(session, ride, 16, -16, direction, height, trackElement);
             break;
         case 2:
-            paint_motionsimulator_vehicle(session, -16, 16, direction, height, tileElement);
+            paint_motionsimulator_vehicle(session, ride, -16, 16, direction, height, trackElement);
             break;
         case 3:
-            paint_motionsimulator_vehicle(session, -16, -16, direction, height, tileElement);
+            paint_motionsimulator_vehicle(session, ride, -16, -16, direction, height, trackElement);
             break;
     }
 

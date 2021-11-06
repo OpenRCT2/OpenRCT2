@@ -188,28 +188,28 @@ void InputManager::Process(const InputEvent& e)
             }
             return;
         }
-        else if (gChatOpen)
+
+        if (gChatOpen)
         {
             ProcessChat(e);
             return;
         }
-        else
+
+        if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
-            if (e.DeviceKind == InputDeviceKind::Keyboard)
+            auto w = window_find_by_class(WC_TEXTINPUT);
+            if (w != nullptr)
             {
-                auto w = window_find_by_class(WC_TEXTINPUT);
-                if (w != nullptr)
+                if (e.State == InputEventState::Release)
                 {
-                    if (e.State == InputEventState::Release)
-                    {
-                        window_text_input_key(w, e.Button);
-                    }
-                    return;
+                    window_text_input_key(w, e.Button);
                 }
-                else if (gUsingWidgetTextBox)
-                {
-                    return;
-                }
+                return;
+            }
+
+            if (gUsingWidgetTextBox)
+            {
+                return;
             }
         }
     }

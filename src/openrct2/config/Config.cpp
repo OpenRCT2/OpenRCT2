@@ -37,8 +37,6 @@
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
 
-#include <memory>
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
@@ -565,7 +563,7 @@ namespace Config
     {
         try
         {
-            auto reader = std::unique_ptr<IIniReader>(CreateDefaultIniReader());
+            auto reader = CreateDefaultIniReader();
             ReadGeneral(reader.get());
             ReadInterface(reader.get());
             ReadSound(reader.get());
@@ -586,7 +584,7 @@ namespace Config
         try
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
-            auto reader = std::unique_ptr<IIniReader>(CreateIniReader(&fs));
+            auto reader = CreateIniReader(&fs);
             ReadGeneral(reader.get());
             ReadInterface(reader.get());
             ReadSound(reader.get());
@@ -610,7 +608,7 @@ namespace Config
             Path::CreateDirectory(directory);
 
             auto fs = FileStream(path, FILE_MODE_WRITE);
-            auto writer = std::unique_ptr<IIniWriter>(CreateIniWriter(&fs));
+            auto writer = CreateIniWriter(&fs);
             WriteGeneral(writer.get());
             WriteInterface(writer.get());
             WriteSound(writer.get());
@@ -739,7 +737,8 @@ namespace Config
         desc.filters[1].pattern = "*";
         desc.filters[2].name = nullptr;
 
-        desc.initial_directory = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME).c_str();
+        const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+        desc.initial_directory = userHomePath.c_str();
 
         return platform_open_common_file_dialog(installerPath, &desc, 4096);
     }
@@ -1002,7 +1001,7 @@ bool RCT1DataPresentAtLocation(const utf8* path)
 
 bool CsgIsUsable(const rct_gx& csg)
 {
-    return csg.header.total_size == RCT1_LL_CSG1_DAT_FILE_SIZE && csg.header.num_entries == RCT1_NUM_LL_CSG_ENTRIES;
+    return csg.header.total_size == RCT1::RCT1_LL_CSG1_DAT_FILE_SIZE && csg.header.num_entries == RCT1::RCT1_NUM_LL_CSG_ENTRIES;
 }
 
 bool CsgAtLocationIsUsable(const utf8* path)

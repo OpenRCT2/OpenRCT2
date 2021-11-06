@@ -14,7 +14,7 @@
 #include "../config/Config.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
-#include "../peep/Peep.h"
+#include "../peep/Guest.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"

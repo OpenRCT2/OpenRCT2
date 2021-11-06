@@ -7,14 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _VEHICLE_H_
-#define _VEHICLE_H_
+#pragma once
 
 #include "../audio/audio.h"
 #include "../common.h"
 #include "../ride/RideTypes.h"
+#include "../world/EntityBase.h"
 #include "../world/Location.hpp"
-#include "../world/SpriteBase.h"
 #include "Station.h"
 #include "VehicleColour.h"
 #include "VehicleEntry.h"
@@ -52,7 +51,9 @@ struct SoundIdVolume;
 constexpr const uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
 constexpr const uint16_t VehicleTrackTypeMask = 0b1111111111111100;
 
-struct Vehicle : SpriteBase
+enum class MiniGolfAnimation : uint8_t;
+
+struct Vehicle : EntityBase
 {
     static constexpr auto cEntityType = EntityType::Vehicle;
 
@@ -62,7 +63,7 @@ struct Vehicle : SpriteBase
         Tail,
     };
 
-    enum class Status
+    enum class Status : uint8_t
     {
         MovingToEndOfStation,
         WaitingForPassengers,
@@ -181,8 +182,7 @@ struct Vehicle : SpriteBase
     };
     uint8_t animation_frame;
     uint8_t pad_C6[0x2];
-    uint16_t var_C8;
-    uint16_t var_CA;
+    uint32_t animationState;
     OpenRCT2::Audio::SoundId scream_sound_id;
     VehicleTrackSubposition TrackSubposition;
     union
@@ -198,7 +198,7 @@ struct Vehicle : SpriteBase
     uint16_t lost_time_out;
     int8_t vertical_drop_countdown;
     uint8_t var_D3;
-    uint8_t mini_golf_current_animation;
+    MiniGolfAnimation mini_golf_current_animation;
     uint8_t mini_golf_flags;
     ObjectEntryIndex ride_subtype;
     uint8_t colours_extended;
@@ -323,6 +323,7 @@ private:
     void UpdateCrashSetup();
     void UpdateCollisionSetup();
     int32_t UpdateMotionDodgems();
+    void UpdateAnimationAnimalFlying();
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
     bool CurrentTowerElementIsTop();
@@ -374,6 +375,40 @@ struct train_ref
 {
     Vehicle* head;
     Vehicle* tail;
+};
+
+namespace MiniGolfFlag
+{
+    constexpr uint8_t Flag0 = (1 << 0);
+    constexpr uint8_t Flag1 = (1 << 1);
+    constexpr uint8_t Flag2 = (1 << 2);
+    constexpr uint8_t Flag3 = (1 << 3);
+    constexpr uint8_t Flag4 = (1 << 4);
+    constexpr uint8_t Flag5 = (1 << 5); // transitioning between hole
+} // namespace MiniGolfFlag
+
+enum class MiniGolfState : int16_t
+{
+    Unk0,
+    Unk1, // Unused
+    Unk2,
+    Unk3,
+    Unk4,
+    Unk5,
+    Unk6,
+};
+
+enum class MiniGolfAnimation : uint8_t
+{
+    Walk,
+    PlaceBallDown,
+    SwingLeft,
+    PickupBall,
+    Jump,
+    PlaceBallUp,
+    PuttLeft,
+    Swing,
+    Putt,
 };
 
 enum : uint32_t
@@ -437,7 +472,8 @@ enum
     VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER,
     VEHICLE_ENTRY_ANIMATION_HELICARS,
     VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES,
-    VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER
+    VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER,
+    VEHICLE_ENTRY_ANIMATION_ANIMAL_FLYING // OpenRCT2-specific feature
 };
 
 enum : uint32_t
@@ -563,5 +599,3 @@ extern int32_t _vehicleUnkF64E10;
 extern uint8_t _vehicleF64E2C;
 extern Vehicle* _vehicleFrontVehicle;
 extern CoordsXYZ unk_F64E20;
-
-#endif

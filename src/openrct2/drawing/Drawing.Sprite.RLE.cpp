@@ -12,9 +12,9 @@
 #include <algorithm>
 #include <cstring>
 
-template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteMagnify(DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp, size_t TZoom>
+static void FASTCALL DrawRLESpriteMagnify(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
 {
-    auto dpi = args.DPI;
     auto src0 = args.SourceImage.offset;
     auto dst0 = args.DestinationBits;
     auto srcX = args.SrcX;
@@ -23,7 +23,7 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
     auto height = args.Height;
     auto& paletteMap = args.PalMap;
     auto zoom = 1 << TZoom;
-    auto dstLineWidth = (static_cast<size_t>(dpi->width) << TZoom) + dpi->pitch;
+    auto dstLineWidth = (static_cast<size_t>(dpi.width) << TZoom) + dpi.pitch;
 
     // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
     if (srcY < 0)
@@ -83,9 +83,9 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
     }
 }
 
-template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteMinify(DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp, size_t TZoom>
+static void FASTCALL DrawRLESpriteMinify(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
 {
-    auto dpi = args.DPI;
     auto src0 = args.SourceImage.offset;
     auto dst0 = args.DestinationBits;
     auto srcX = args.SrcX;
@@ -93,7 +93,7 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
     auto width = args.Width;
     auto height = args.Height;
     auto zoom = 1 << TZoom;
-    auto dstLineWidth = (static_cast<size_t>(dpi->width) >> TZoom) + dpi->pitch;
+    auto dstLineWidth = (static_cast<size_t>(dpi.width) >> TZoom) + dpi.pitch;
 
     // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
     if (srcY < 0)
@@ -178,28 +178,28 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
     }
 }
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
 {
-    auto zoom_level = static_cast<int8_t>(args.DPI->zoom_level);
+    auto zoom_level = static_cast<int8_t>(dpi.zoom_level);
     switch (zoom_level)
     {
         case -2:
-            DrawRLESpriteMagnify<TBlendOp, 2>(args);
+            DrawRLESpriteMagnify<TBlendOp, 2>(dpi, args);
             break;
         case -1:
-            DrawRLESpriteMagnify<TBlendOp, 1>(args);
+            DrawRLESpriteMagnify<TBlendOp, 1>(dpi, args);
             break;
         case 0:
-            DrawRLESpriteMinify<TBlendOp, 0>(args);
+            DrawRLESpriteMinify<TBlendOp, 0>(dpi, args);
             break;
         case 1:
-            DrawRLESpriteMinify<TBlendOp, 1>(args);
+            DrawRLESpriteMinify<TBlendOp, 1>(dpi, args);
             break;
         case 2:
-            DrawRLESpriteMinify<TBlendOp, 2>(args);
+            DrawRLESpriteMinify<TBlendOp, 2>(dpi, args);
             break;
         case 3:
-            DrawRLESpriteMinify<TBlendOp, 3>(args);
+            DrawRLESpriteMinify<TBlendOp, 3>(dpi, args);
             break;
         default:
             assert(false);
@@ -213,25 +213,25 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(DrawSpriteArgs
  *  rct2: 0x0067AA18
  * @param imageId Only flags are used.
  */
-void FASTCALL gfx_rle_sprite_to_buffer(DrawSpriteArgs& args)
+void FASTCALL gfx_rle_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
 {
     if (args.Image.HasPrimary())
     {
         if (args.Image.IsBlended())
         {
-            DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC | BLEND_DST>(args);
+            DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC | BLEND_DST>(dpi, args);
         }
         else
         {
-            DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC>(args);
+            DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC>(dpi, args);
         }
     }
     else if (args.Image.IsBlended())
     {
-        DrawRLESprite<BLEND_TRANSPARENT | BLEND_DST>(args);
+        DrawRLESprite<BLEND_TRANSPARENT | BLEND_DST>(dpi, args);
     }
     else
     {
-        DrawRLESprite<BLEND_TRANSPARENT>(args);
+        DrawRLESprite<BLEND_TRANSPARENT>(dpi, args);
     }
 }

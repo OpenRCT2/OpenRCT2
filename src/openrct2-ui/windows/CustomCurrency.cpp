@@ -35,11 +35,11 @@ enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
 
 static rct_widget window_custom_currency_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CHEAT_CURRENCY_FORMAT), // NB: 3 widgets
-    MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY                ),
-    MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                           ),
-    MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH       ),
-    { WIDGETS_END },
+    MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
+    MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),
+    MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                 ),
+    MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH ),
+    WIDGETS_END,
 };
 
 
@@ -134,7 +134,7 @@ static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widg
 
         case WIDX_SYMBOL_TEXT:
             window_text_input_raw_open(
-                w, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
+                w, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC, {},
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, CURRENCY_SYMBOL_MAX_SIZE);
             break;
     }
@@ -146,7 +146,7 @@ static void custom_currency_window_mouseup(rct_window* w, rct_widgetindex widget
     {
         case WIDX_RATE:
             window_text_input_open(
-                w, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, STR_FORMAT_INTEGER,
+                w, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, {}, STR_FORMAT_INTEGER,
                 static_cast<uint32_t>(CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate), CURRENCY_RATE_MAX_NUM_DIGITS);
             break;
     }
@@ -212,7 +212,7 @@ static void custom_currency_window_text_input([[maybe_unused]] struct rct_window
 static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto ft = Formatter::Common();
-    ft.Add<int32_t>(100);
+    ft.Add<money64>(MONEY(10, 0));
 
     WindowDrawWidgets(w, dpi);
 
@@ -241,5 +241,5 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_string_id stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
         ? STR_PREFIX
         : STR_SUFFIX;
-    DrawTextBasic(dpi, drawPos, stringId, w, { w->colours[1] });
+    DrawTextBasic(dpi, drawPos, stringId, {}, { w->colours[1] });
 }

@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+#include <string>
+
 enum class CursorID : uint8_t
 {
     Arrow,

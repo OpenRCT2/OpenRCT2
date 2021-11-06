@@ -41,8 +41,6 @@ enum class DISPLAY_TYPE {
     DISPLAY_UNITS
 };
 
-static DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
-
 #pragma region Widgets
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
@@ -59,379 +57,353 @@ static rct_widget window_view_clipping_widgets[] = {
     MakeWidget        ({     11, 105}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
     MakeWidget        ({     11, 126}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
 
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 #pragma endregion
 
-#pragma region Members
-
-static CoordsXY _selectionStart;
-static CoordsXY _previousClipSelectionA;
-static CoordsXY _previousClipSelectionB;
-static bool _toolActive;
-static bool _dragging;
-
-#pragma endregion
-
-#pragma region Events
-
-static void window_view_clipping_close_button(rct_window* w);
-static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_view_clipping_mousedown(rct_window*w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_view_clipping_update(rct_window* w);
-static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_view_clipping_tool_up(rct_window* w, rct_widgetindex, const ScreenCoordsXY&);
-static void window_view_clipping_invalidate(rct_window* w);
-static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_view_clipping_scrollgetsize(rct_window* w, int scrollIndex, int* width, int* height);
-static void window_view_clipping_close();
-
-static rct_window_event_list window_view_clipping_events([](auto& events)
-{
-    events.close = &window_view_clipping_close_button;
-    events.mouse_up = &window_view_clipping_mouseup;
-    events.mouse_down = &window_view_clipping_mousedown;
-    events.update = &window_view_clipping_update;
-    events.tool_update = &window_view_clipping_tool_update;
-    events.tool_down = &window_view_clipping_tool_down;
-    events.tool_drag = &window_view_clipping_tool_drag;
-    events.tool_up = &window_view_clipping_tool_up;
-    events.get_scroll_size = &window_view_clipping_scrollgetsize;
-    events.invalidate = &window_view_clipping_invalidate;
-    events.paint = &window_view_clipping_paint;
-});
 // clang-format on
-
-#pragma endregion
-
-static void window_view_clipping_set_clipheight(rct_window* w, const uint8_t clipheight)
+class ViewClippingWindow final : public Window
 {
-    gClipHeight = clipheight;
-    rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
-    const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
-    w->scrolls[0].h_left = static_cast<int16_t>(std::ceil(clip_height_ratio * (w->scrolls[0].h_right - (widget->width() - 1))));
-}
+private:
+    CoordsXY _selectionStart;
+    CoordsXY _previousClipSelectionA;
+    CoordsXY _previousClipSelectionB;
+    bool _toolActive{ false };
+    bool _dragging{ false };
+    static inline DISPLAY_TYPE _clipHeightDisplayType;
 
-rct_window* window_view_clipping_open()
-{
-    rct_window* window;
-
-    // Get the main viewport to set the view clipping flag.
-    rct_window* mainWindow = window_get_main();
-
-    // Check if window is already open
-    window = window_find_by_class(WC_VIEW_CLIPPING);
-    if (window != nullptr)
+public:
+    void OnCloseButton()
     {
-        return window;
+        OnClose();
     }
 
-    // Window is not open - create it.
-    window = WindowCreate(ScreenCoordsXY(32, 32), WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
-    window->widgets = window_view_clipping_widgets;
-    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
-        | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)
-        | (1ULL << WIDX_CLIP_SELECTOR) | (1ULL << WIDX_CLIP_CLEAR);
-    window->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
-
-    WindowInitScrollWidgets(window);
-
-    // Initialise the clip height slider from the current clip height value.
-    window_view_clipping_set_clipheight(window, gClipHeight);
-
-    window_push_others_below(window);
-
-    // Turn on view clipping when the window is opened.
-    if (mainWindow != nullptr)
+    void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
-        mainWindow->Invalidate();
+        // mouseup appears to be used for buttons, checkboxes
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                window_close(this);
+                break;
+            case WIDX_CLIP_CHECKBOX_ENABLE:
+            {
+                // Toggle height clipping.
+                rct_window* mainWindow = window_get_main();
+                if (mainWindow != nullptr)
+                {
+                    mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
+                    mainWindow->Invalidate();
+                }
+                this->Invalidate();
+                break;
+            }
+            case WIDX_CLIP_HEIGHT_VALUE:
+                // Toggle display of the cut height value in RAW vs UNITS
+                if (_clipHeightDisplayType == DISPLAY_TYPE::DISPLAY_RAW)
+                {
+                    _clipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
+                }
+                else
+                {
+                    _clipHeightDisplayType = DISPLAY_TYPE::DISPLAY_RAW;
+                }
+                this->Invalidate();
+                break;
+            case WIDX_CLIP_SELECTOR:
+                // Activate the selection tool
+                tool_set(this, WIDX_BACKGROUND, Tool::Crosshair);
+                _toolActive = true;
+                _dragging = false;
+
+                // Reset clip selection to show all tiles
+                _previousClipSelectionA = gClipSelectionA;
+                _previousClipSelectionB = gClipSelectionB;
+                gClipSelectionA = { 0, 0 };
+                gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
+                gfx_invalidate_screen();
+                break;
+            case WIDX_CLIP_CLEAR:
+                if (IsActive())
+                {
+                    _toolActive = false;
+                    tool_cancel();
+                }
+                gClipSelectionA = { 0, 0 };
+                gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
+                gfx_invalidate_screen();
+                break;
+        }
     }
 
-    _toolActive = false;
-    _dragging = false;
-
-    return window;
-}
-
-static void window_view_clipping_close()
-{
-    // Turn off view clipping when the window is closed.
-    rct_window* mainWindow = window_get_main();
-    if (mainWindow != nullptr)
+    void OnMouseDown(rct_widgetindex widgetIndex) override
     {
-        mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
-        mainWindow->Invalidate();
+        rct_window* mainWindow;
+
+        switch (widgetIndex)
+        {
+            case WIDX_CLIP_HEIGHT_INCREASE:
+                if (gClipHeight < 255)
+                    SetClipHeight(gClipHeight + 1);
+                mainWindow = window_get_main();
+                if (mainWindow != nullptr)
+                    mainWindow->Invalidate();
+                break;
+            case WIDX_CLIP_HEIGHT_DECREASE:
+                if (gClipHeight > 0)
+                    SetClipHeight(gClipHeight - 1);
+                mainWindow = window_get_main();
+                if (mainWindow != nullptr)
+                    mainWindow->Invalidate();
+                break;
+        }
     }
-}
 
-static void window_view_clipping_close_button(rct_window* w)
-{
-    window_view_clipping_close();
-}
-
-// Returns true when the tool is active
-static bool window_view_clipping_tool_is_active()
-{
-    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
-        return false;
-    if (gCurrentToolWidget.window_classification != WC_VIEW_CLIPPING)
-        return false;
-    return _toolActive;
-}
-
-static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    rct_window* mainWindow;
-
-    // mouseup appears to be used for buttons, checkboxes
-    switch (widgetIndex)
+    void OnUpdate() override
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        case WIDX_CLIP_CHECKBOX_ENABLE:
-            // Toggle height clipping.
-            mainWindow = window_get_main();
+        const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
+        const rct_scroll* const scroll = &this->scrolls[0];
+        const int16_t scroll_width = widget.width() - 1;
+        const uint8_t clip_height = static_cast<uint8_t>(
+            (static_cast<float>(scroll->h_left) / (scroll->h_right - scroll_width)) * 255);
+        if (clip_height != gClipHeight)
+        {
+            gClipHeight = clip_height;
+
+            // Update the main window accordingly.
+            rct_window* mainWindow = window_get_main();
             if (mainWindow != nullptr)
             {
-                mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
                 mainWindow->Invalidate();
             }
-            w->Invalidate();
-            break;
-        case WIDX_CLIP_HEIGHT_VALUE:
-            // Toggle display of the cut height value in RAW vs UNITS
-            if (gClipHeightDisplayType == DISPLAY_TYPE::DISPLAY_RAW)
-            {
-                gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
-            }
-            else
-            {
-                gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_RAW;
-            }
-            w->Invalidate();
-            break;
-        case WIDX_CLIP_SELECTOR:
-            // Activate the selection tool
-            tool_set(w, WIDX_BACKGROUND, Tool::Crosshair);
-            _toolActive = true;
-            _dragging = false;
+        }
 
-            // Reset clip selection to show all tiles
-            _previousClipSelectionA = gClipSelectionA;
-            _previousClipSelectionB = gClipSelectionB;
-            gClipSelectionA = { 0, 0 };
-            gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
-            gfx_invalidate_screen();
-            break;
-        case WIDX_CLIP_CLEAR:
-            if (window_view_clipping_tool_is_active())
-            {
-                _toolActive = false;
-                tool_cancel();
-            }
-            gClipSelectionA = { 0, 0 };
-            gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
-            gfx_invalidate_screen();
-            break;
+        // Restore previous selection if the tool has been interrupted
+        if (_toolActive && !IsActive())
+        {
+            _toolActive = false;
+            gClipSelectionA = _previousClipSelectionA;
+            gClipSelectionB = _previousClipSelectionB;
+        }
+
+        widget_invalidate(this, WIDX_CLIP_HEIGHT_SLIDER);
     }
-}
 
-static void window_view_clipping_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-{
-    rct_window* mainWindow = window_get_main();
-
-    switch (widgetIndex)
+    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        case WIDX_CLIP_HEIGHT_INCREASE:
-            if (gClipHeight < 255)
-                window_view_clipping_set_clipheight(w, gClipHeight + 1);
-            mainWindow = window_get_main();
-            if (mainWindow != nullptr)
-                mainWindow->Invalidate();
-            break;
-        case WIDX_CLIP_HEIGHT_DECREASE:
-            if (gClipHeight > 0)
-                window_view_clipping_set_clipheight(w, gClipHeight - 1);
-            mainWindow = window_get_main();
-            if (mainWindow != nullptr)
-                mainWindow->Invalidate();
-            break;
+        if (_dragging)
+        {
+            return;
+        }
+
+        int32_t direction;
+        auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+        if (mapCoords.has_value())
+        {
+            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+            map_invalidate_tile_full(gMapSelectPositionA);
+            gMapSelectPositionA = gMapSelectPositionB = mapCoords.value();
+            map_invalidate_tile_full(mapCoords.value());
+            gMapSelectType = MAP_SELECT_TYPE_FULL;
+        }
     }
-}
 
-static void window_view_clipping_update(rct_window* w)
-{
-    const rct_widget* const widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
-    const rct_scroll* const scroll = &w->scrolls[0];
-    const int16_t scroll_width = widget->width() - 1;
-    const uint8_t clip_height = static_cast<uint8_t>(
-        (static_cast<float>(scroll->h_left) / (scroll->h_right - scroll_width)) * 255);
-    if (clip_height != gClipHeight)
+    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        gClipHeight = clip_height;
+        int32_t direction;
+        auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+        if (mapCoords.has_value())
+        {
+            _dragging = true;
+            _selectionStart = mapCoords.value();
+        }
+    }
 
-        // Update the main window accordingly.
+    void OnToolDrag(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        if (!_dragging)
+        {
+            return;
+        }
+
+        int32_t direction;
+        auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+        if (mapCoords)
+        {
+            map_invalidate_selection_rect();
+            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+            gMapSelectPositionA.x = std::min(_selectionStart.x, mapCoords->x);
+            gMapSelectPositionB.x = std::max(_selectionStart.x, mapCoords->x);
+            gMapSelectPositionA.y = std::min(_selectionStart.y, mapCoords->y);
+            gMapSelectPositionB.y = std::max(_selectionStart.y, mapCoords->y);
+            gMapSelectType = MAP_SELECT_TYPE_FULL;
+            map_invalidate_selection_rect();
+        }
+    }
+
+    void OnToolUp(rct_widgetindex, const ScreenCoordsXY&) override
+    {
+        gClipSelectionA = gMapSelectPositionA;
+        gClipSelectionB = gMapSelectPositionB;
+        _toolActive = false;
+        tool_cancel();
+        gfx_invalidate_screen();
+    }
+
+    void OnPrepareDraw() override
+    {
+        WidgetScrollUpdateThumbs(this, WIDX_CLIP_HEIGHT_SLIDER);
+
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
+            WidgetSetCheckboxValue(this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+        }
+
+        if (IsActive())
+        {
+            this->pressed_widgets |= 1ULL << WIDX_CLIP_SELECTOR;
+        }
+        else
+        {
+            this->pressed_widgets &= ~(1ULL << WIDX_CLIP_SELECTOR);
+        }
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        WindowDrawWidgets(this, &dpi);
+
+        // Clip height value
+        auto screenCoords = this->windowPos + ScreenCoordsXY{ 8, this->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
+        DrawTextBasic(&dpi, screenCoords, STR_VIEW_CLIPPING_HEIGHT_VALUE, {}, { this->colours[0] });
+
+        screenCoords = this->windowPos
+            + ScreenCoordsXY{ this->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1, this->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
+
+        switch (_clipHeightDisplayType)
+        {
+            case DISPLAY_TYPE::DISPLAY_RAW:
+            default:
+            {
+                auto ft = Formatter();
+                ft.Add<int32_t>(static_cast<int32_t>(gClipHeight));
+
+                // Printing the raw value.
+                DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { this->colours[0] });
+                break;
+            }
+            case DISPLAY_TYPE::DISPLAY_UNITS:
+            {
+                // Print the value in the configured height label type:
+                if (gConfigGeneral.show_height_as_units)
+                {
+                    // Height label is Units.
+                    auto ft = Formatter();
+                    ft.Add<fixed16_1dp>(static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0)));
+                    DrawTextBasic(
+                        &dpi, screenCoords, STR_UNIT1DP_NO_SUFFIX, ft,
+                        { this->colours[0] }); // Printing the value in Height Units.
+                }
+                else
+                {
+                    // Height label is Real Values.
+                    // Print the value in the configured measurement units.
+                    switch (gConfigGeneral.measurement_format)
+                    {
+                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::SI:
+                        {
+                            auto ft = Formatter();
+                            ft.Add<fixed32_2dp>(
+                                static_cast<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50)));
+                            DrawTextBasic(&dpi, screenCoords, STR_UNIT2DP_SUFFIX_METRES, ft, { this->colours[0] });
+                            break;
+                        }
+                        case MeasurementFormat::Imperial:
+                        {
+                            auto ft = Formatter();
+                            ft.Add<fixed16_1dp>(
+                                static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0)));
+                            DrawTextBasic(&dpi, screenCoords, STR_UNIT1DP_SUFFIX_FEET, ft, { this->colours[0] });
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+    {
+        return { 1000, 0 };
+    }
+
+    void OnOpen() override
+    {
+        this->widgets = window_view_clipping_widgets;
+        this->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
+            | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)
+            | (1ULL << WIDX_CLIP_SELECTOR) | (1ULL << WIDX_CLIP_CLEAR);
+        this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
+        WindowInitScrollWidgets(this);
+
+        _clipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
+
+        // Initialise the clip height slider from the current clip height value.
+        this->SetClipHeight(gClipHeight);
+
+        window_push_others_below(this);
+
+        // Get the main viewport to set the view clipping flag.
+        rct_window* mainWindow = window_get_main();
+
+        // Turn on view clipping when the window is opened.
+        if (mainWindow != nullptr)
+        {
+            mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
             mainWindow->Invalidate();
         }
     }
 
-    // Restore previous selection if the tool has been interrupted
-    if (_toolActive && !window_view_clipping_tool_is_active())
+private:
+    void OnClose() override
     {
-        _toolActive = false;
-        gClipSelectionA = _previousClipSelectionA;
-        gClipSelectionB = _previousClipSelectionB;
+        // Turn off view clipping when the window is closed.
+        rct_window* mainWindow = window_get_main();
+        if (mainWindow != nullptr)
+        {
+            mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
+            mainWindow->Invalidate();
+        }
     }
 
-    widget_invalidate(w, WIDX_CLIP_HEIGHT_SLIDER);
-}
+    void SetClipHeight(const uint8_t clipHeight)
+    {
+        gClipHeight = clipHeight;
+        const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
+        const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
+        this->scrolls[0].h_left = static_cast<int16_t>(
+            std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget.width() - 1))));
+    }
 
-static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    bool IsActive()
+    {
+        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+            return false;
+        if (gCurrentToolWidget.window_classification != WC_VIEW_CLIPPING)
+            return false;
+        return _toolActive;
+    }
+};
+
+rct_window* window_view_clipping_open()
 {
-    if (_dragging)
+    auto* window = window_bring_to_front_by_class(WC_VIEW_CLIPPING);
+    if (window == nullptr)
     {
-        return;
+        window = WindowCreate<ViewClippingWindow>(WC_VIEW_CLIPPING, ScreenCoordsXY(32, 32), WW, WH);
     }
-
-    int32_t direction;
-    auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
-    if (mapCoords)
-    {
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-        map_invalidate_tile_full(gMapSelectPositionA);
-        gMapSelectPositionA = gMapSelectPositionB = *mapCoords;
-        map_invalidate_tile_full(*mapCoords);
-        gMapSelectType = MAP_SELECT_TYPE_FULL;
-    }
-}
-
-static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    int32_t direction;
-    auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
-    if (mapCoords)
-    {
-        _dragging = true;
-        _selectionStart = *mapCoords;
-    }
-}
-
-static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    if (!_dragging)
-    {
-        return;
-    }
-
-    int32_t direction;
-    auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
-    if (mapCoords)
-    {
-        map_invalidate_selection_rect();
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-        gMapSelectPositionA.x = std::min(_selectionStart.x, mapCoords->x);
-        gMapSelectPositionB.x = std::max(_selectionStart.x, mapCoords->x);
-        gMapSelectPositionA.y = std::min(_selectionStart.y, mapCoords->y);
-        gMapSelectPositionB.y = std::max(_selectionStart.y, mapCoords->y);
-        gMapSelectType = MAP_SELECT_TYPE_FULL;
-        map_invalidate_selection_rect();
-    }
-}
-
-static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&)
-{
-    gClipSelectionA = gMapSelectPositionA;
-    gClipSelectionB = gMapSelectPositionB;
-    _toolActive = false;
-    tool_cancel();
-    gfx_invalidate_screen();
-}
-
-static void window_view_clipping_invalidate(rct_window* w)
-{
-    WidgetScrollUpdateThumbs(w, WIDX_CLIP_HEIGHT_SLIDER);
-
-    rct_window* mainWindow = window_get_main();
-    if (mainWindow != nullptr)
-    {
-        WidgetSetCheckboxValue(w, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
-    }
-
-    if (window_view_clipping_tool_is_active())
-    {
-        w->pressed_widgets |= 1ULL << WIDX_CLIP_SELECTOR;
-    }
-    else
-    {
-        w->pressed_widgets &= ~(1ULL << WIDX_CLIP_SELECTOR);
-    }
-}
-
-static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-
-    // Clip height value
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
-    DrawTextBasic(dpi, screenCoords, STR_VIEW_CLIPPING_HEIGHT_VALUE, {}, { w->colours[0] });
-
-    screenCoords = w->windowPos
-        + ScreenCoordsXY{ w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1, w->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
-
-    fixed16_1dp clipHeightValueInUnits;
-    fixed32_2dp clipHeightValueInMeters;
-    fixed16_1dp clipHeightValueInFeet;
-    int32_t clipHeightRawValue = static_cast<int32_t>(gClipHeight);
-    switch (gClipHeightDisplayType)
-    {
-        case DISPLAY_TYPE::DISPLAY_RAW:
-        default:
-            DrawTextBasic(
-                dpi, screenCoords, STR_FORMAT_INTEGER, &clipHeightRawValue, { w->colours[0] }); // Printing the raw value.
-            break;
-
-        case DISPLAY_TYPE::DISPLAY_UNITS:
-            // Print the value in the configured height label type:
-            if (gConfigGeneral.show_height_as_units == 1)
-            {
-                // Height label is Units.
-                clipHeightValueInUnits = static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0));
-                DrawTextBasic(
-                    dpi, screenCoords, STR_UNIT1DP_NO_SUFFIX, &clipHeightValueInUnits,
-                    { w->colours[0] }); // Printing the value in Height Units.
-            }
-            else
-            {
-                // Height label is Real Values.
-                // Print the value in the configured measurement units.
-                switch (gConfigGeneral.measurement_format)
-                {
-                    case MeasurementFormat::Metric:
-                    case MeasurementFormat::SI:
-                        clipHeightValueInMeters = static_cast<fixed32_2dp>(
-                            FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
-                        DrawTextBasic(
-                            dpi, screenCoords, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, { w->colours[0] });
-                        break;
-                    case MeasurementFormat::Imperial:
-                        clipHeightValueInFeet = static_cast<fixed16_1dp>(
-                            FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
-                        DrawTextBasic(dpi, screenCoords, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, { w->colours[0] });
-                        break;
-                }
-            }
-    }
-}
-
-static void window_view_clipping_scrollgetsize(rct_window* w, int scrollIndex, int* width, int* height)
-{
-    *width = 1000;
+    return window;
 }

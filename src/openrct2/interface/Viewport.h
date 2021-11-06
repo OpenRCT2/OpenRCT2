@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _VIEWPORT_H_
-#define _VIEWPORT_H_
+#pragma once
 
 #include "../world/Location.hpp"
 #include "Window.h"
@@ -21,11 +20,12 @@ struct paint_session;
 struct RecordedPaintSession;
 struct paint_struct;
 struct rct_drawpixelinfo;
-struct Peep;
 struct TileElement;
 struct rct_window;
+struct EntityBase;
+struct Guest;
+struct Staff;
 union paint_entry;
-struct SpriteBase;
 
 enum
 {
@@ -78,7 +78,7 @@ struct InteractionInfo
     union
     {
         TileElement* Element = nullptr;
-        SpriteBase* Entity;
+        EntityBase* Entity;
     };
     ViewportInteractionItem SpriteType = ViewportInteractionItem::None;
 };
@@ -104,22 +104,20 @@ extern uint8_t gCurrentRotation;
 
 void viewport_init_all();
 std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_viewport* viewport);
-void viewport_create(
-    rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, int32_t zoom, CoordsXYZ centrePos,
-    char flags, uint16_t sprite);
+void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
 void viewport_remove(rct_viewport* viewport);
-void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t maxZoom = -1);
+void viewports_invalidate(const ScreenRect& screenRect, int32_t maxZoom = -1);
 void viewport_update_position(rct_window* window);
 void viewport_update_sprite_follow(rct_window* window);
 void viewport_update_smart_sprite_follow(rct_window* window);
-viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep);
-void viewport_update_smart_staff_follow(rct_window* window, Peep* peep);
+void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep);
+void viewport_update_smart_staff_follow(rct_window* window, const Staff* peep);
 void viewport_update_smart_vehicle_follow(rct_window* window);
 void viewport_render(
-    rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    rct_drawpixelinfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 void viewport_paint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
+    const rct_viewport* viewport, rct_drawpixelinfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions = nullptr);
 
 CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords);
@@ -148,18 +146,16 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
 
-void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
+void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenRect);
 
 std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rct_viewport** viewport);
-std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int16_t z);
+std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int32_t z);
 std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenCoords, uint8_t* quadrant);
-std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* quadrant);
+std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* quadrant);
 std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoords, uint8_t* side);
-std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* side);
+std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* side);
 
 uint8_t get_current_rotation();
-int16_t get_height_marker_offset();
+int32_t get_height_marker_offset();
 
 void viewport_set_saved_view();
-
-#endif

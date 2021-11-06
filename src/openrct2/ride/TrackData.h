@@ -16,21 +16,12 @@
 constexpr const uint8_t MaxSequencesPerPiece = 16;
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
-extern const rct_track_coordinates TrackCoordinates[TrackElemType::Count];
-
-extern const uint8_t TrackSequenceProperties[TrackElemType::Count][MaxSequencesPerPiece];
-
-extern const rct_preview_track* TrackBlocks[TrackElemType::Count];
-
-extern const uint8_t TrackPieceLengths[TrackElemType::Count];
 
 struct track_curve_chain
 {
     int32_t next;
     int32_t previous;
 };
-
-extern const track_curve_chain gTrackCurveChain[TrackElemType::Count];
 
 struct track_descriptor
 {
@@ -43,11 +34,24 @@ struct track_descriptor
     uint8_t track_element;
 };
 
+enum
+{
+    NO_SPIN,
+    L8_SPIN,
+    R8_SPIN,
+    LR_SPIN,
+    RL_SPIN,
+    L7_SPIN,
+    R7_SPIN,
+    L5_SPIN,
+    R5_SPIN,
+    RC_SPIN, // Rotation Control Spin
+    SP_SPIN, // Special rapids Spin
+    L9_SPIN,
+    R9_SPIN
+};
+
 extern const track_descriptor gTrackDescriptors[142];
-
-extern const track_type_t AlternativeTrackTypes[TrackElemType::Count];
-
-extern const money32 TrackPricing[TrackElemType::Count];
 
 struct dodgems_track_size
 {
@@ -67,10 +71,32 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
         return { 4, 4, 59, 123 };
     return { 0, 0, 0, 0 };
 }
-extern const track_type_t TrackElementMirrorMap[TrackElemType::Count];
 
-extern const uint32_t TrackHeightMarkerPositions[TrackElemType::Count];
+struct TrackElementDescriptor
+{
+    rct_track_coordinates Coordinates;
 
-extern const uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][16];
+    rct_preview_track* Block;
+    uint8_t PieceLength;
+    track_curve_chain CurveChain;
+    track_type_t AlternativeType;
+    money32 Price;
+    track_type_t MirrorElement;
+    uint32_t HeightMarkerPositions;
+    uint16_t Flags;
 
-extern const uint16_t TrackFlags[TrackElemType::Count];
+    std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
+    std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;
+
+    rct_trackdefinition Definition;
+    uint8_t SpinFunction;
+};
+
+namespace OpenRCT2
+{
+    namespace TrackMetaData
+    {
+        void Init();
+        const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type);
+    } // namespace TrackMetaData
+} // namespace OpenRCT2

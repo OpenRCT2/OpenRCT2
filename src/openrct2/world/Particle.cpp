@@ -15,12 +15,12 @@
 
 #include <iterator>
 
-template<> bool SpriteBase::Is<VehicleCrashParticle>() const
+template<> bool EntityBase::Is<VehicleCrashParticle>() const
 {
     return Type == EntityType::CrashedVehicleParticle;
 }
 
-template<> bool SpriteBase::Is<CrashSplashParticle>() const
+template<> bool EntityBase::Is<CrashSplashParticle>() const
 {
     return Type == EntityType::CrashSplash;
 }

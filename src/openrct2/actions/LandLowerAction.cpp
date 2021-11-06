@@ -63,9 +63,9 @@ GameActions::Result::Ptr LandLowerAction::QueryExecute(bool isExecuting) const
 
     // Keep big coordinates within map boundaries
     auto aX = std::max<decltype(_range.GetLeft())>(32, _range.GetLeft());
-    auto bX = std::min<decltype(_range.GetRight())>(gMapSizeMaxXY, _range.GetRight());
+    auto bX = std::min<decltype(_range.GetRight())>(GetMapSizeMaxXY(), _range.GetRight());
     auto aY = std::max<decltype(_range.GetTop())>(32, _range.GetTop());
-    auto bY = std::min<decltype(_range.GetBottom())>(gMapSizeMaxXY, _range.GetBottom());
+    auto bY = std::min<decltype(_range.GetBottom())>(GetMapSizeMaxXY(), _range.GetBottom());
 
     MapRange validRange = MapRange{ aX, aY, bX, bY };
 
@@ -134,10 +134,8 @@ GameActions::Result::Ptr LandLowerAction::QueryExecute(bool isExecuting) const
 
     if (!withinOwnership)
     {
-        GameActions::Result::Ptr ownerShipResult = std::make_unique<GameActions::Result>(
-            GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
-        ownerShipResult->ErrorTitle = STR_CANT_LOWER_LAND_HERE;
-        return ownerShipResult;
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::Disallowed, STR_CANT_LOWER_LAND_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     // Force ride construction to recheck area

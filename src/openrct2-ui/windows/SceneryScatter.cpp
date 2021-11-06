@@ -47,7 +47,7 @@ static rct_widget window_scenery_scatter_widgets[] = {
     MakeRemapWidget({ 7, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW   ), // low amount
     MakeRemapWidget({31, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM), // medium amount
     MakeRemapWidget({55, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH  ), // high amount
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 // clang-format on
 
@@ -171,15 +171,17 @@ static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widg
 static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widgetindex)
 {
     uint8_t maxlen = 0;
+    Formatter ft;
+
     switch (widgetindex)
     {
         case WIDX_PREVIEW:
-            TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
-            TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
+            ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+            ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
             maxlen = 3;
             break;
     }
-    window_text_input_open(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, maxlen);
+    window_text_input_open(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxlen);
 }
 
 static void window_scenery_scatter_invalidate(rct_window* w)
@@ -216,8 +218,8 @@ static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto preview = window_scenery_scatter_widgets[WIDX_PREVIEW];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + preview.midX(), w->windowPos.y + preview.midY() };
-        DrawTextBasic(
-            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gWindowSceneryScatterSize,
-            { TextAlignment::CENTRE });
+        auto ft = Formatter();
+        ft.Add<uint16_t>(gWindowSceneryScatterSize);
+        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
     }
 }

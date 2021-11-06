@@ -18,8 +18,11 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
+
+using namespace OpenRCT2::TrackMetaData;
 
 MazeSetTrackAction::MazeSetTrackAction(
     const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
@@ -107,19 +110,19 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
         auto constructResult = MapCanConstructAt({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 });
         if (constructResult->Error != GameActions::Status::Ok)
         {
-            return MakeResult(
-                GameActions::Status::NoClearance, res->ErrorTitle.GetStringId(), constructResult->ErrorMessage.GetStringId(),
-                constructResult->ErrorMessageArgs.data());
+            constructResult->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            return constructResult;
         }
 
-        if (constructResult->GroundFlags & ELEMENT_IS_UNDERWATER)
+        const auto clearanceData = constructResult->GetData<ConstructClearResult>();
+        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
         {
             res->Error = GameActions::Status::NoClearance;
             res->ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
             return res;
         }
 
-        if (constructResult->GroundFlags & ELEMENT_IS_UNDERGROUND)
+        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
             res->Error = GameActions::Status::NoClearance;
             res->ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
@@ -134,7 +137,8 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
             return res;
         }
 
-        money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+        const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
+        money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
         res->Cost = price / 2 * 10;
 
         return res;
@@ -169,7 +173,8 @@ GameActions::Result::Ptr MazeSetTrackAction::Execute() const
     auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
     if (tileElement == nullptr)
     {
-        money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+        const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
+        money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
         res->Cost = price / 2 * 10;
 
         auto startLoc = _loc.ToTileStart();
@@ -179,6 +184,7 @@ GameActions::Result::Ptr MazeSetTrackAction::Execute() const
 
         trackElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
         trackElement->SetTrackType(TrackElemType::Maze);
+        trackElement->SetRideType(ride->type);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetMazeEntry(0xFFFF);
         trackElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
@@ -289,7 +295,7 @@ GameActions::Result::Ptr MazeSetTrackAction::Execute() const
     if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
     {
         tile_element_remove(tileElement);
-        sub_6CB945(ride);
+        ride->ValidateStations();
         ride->maze_tiles--;
     }
 

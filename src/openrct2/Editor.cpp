@@ -26,6 +26,7 @@
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "peep/Guest.h"
 #include "peep/Staff.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
@@ -47,6 +48,8 @@
 
 using namespace OpenRCT2;
 
+EditorStep gEditorStep;
+
 namespace Editor
 {
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
@@ -61,15 +64,18 @@ namespace Editor
 
     static void object_list_load()
     {
+        auto* context = GetContext();
+
+        // Unload objects first, the repository is re-populated which owns the objects.
+        auto& objectManager = context->GetObjectManager();
+        objectManager.UnloadAll();
+
         // Scan objects if necessary
-        auto context = GetContext();
         const auto& localisationService = context->GetLocalisationService();
         auto& objectRepository = context->GetObjectRepository();
         objectRepository.LoadOrConstruct(localisationService.GetCurrentLanguage());
 
         // Reset loaded objects to just defaults
-        auto& objectManager = context->GetObjectManager();
-        objectManager.UnloadAll();
         objectManager.LoadDefaultObjects();
     }
 
@@ -84,9 +90,9 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gS6Info.editor_step = EditorStep::ObjectSelection;
+        gEditorStep = EditorStep::ObjectSelection;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gS6Info.category = SCENARIO_CATEGORY_OTHER;
+        gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -130,17 +136,15 @@ namespace Editor
         }
         gParkFlags |= PARK_FLAGS_NO_MONEY;
 
-        safe_strcpy(gS6Info.name, gScenarioName.c_str(), sizeof(gS6Info.name));
-        safe_strcpy(gS6Info.details, gScenarioDetails.c_str(), sizeof(gS6Info.details));
-        gS6Info.objective_type = gScenarioObjective.Type;
-        gS6Info.objective_arg_1 = gScenarioObjective.Year;
-        gS6Info.objective_arg_2 = gScenarioObjective.Currency;
-        gS6Info.objective_arg_3 = gScenarioObjective.NumGuests;
         climate_reset(gClimate);
 
+        // Clear the scenario completion status
+        gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+        gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gS6Info.editor_step = EditorStep::ObjectiveSelection;
-        gS6Info.category = SCENARIO_CATEGORY_OTHER;
+        gEditorStep = EditorStep::ObjectiveSelection;
+        gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         News::InitQueue();
         context_open_window_view(WV_EDITOR_MAIN);
@@ -162,7 +166,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
-        gS6Info.editor_step = EditorStep::ObjectSelection;
+        gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -183,7 +187,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
-        gS6Info.editor_step = EditorStep::ObjectSelection;
+        gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -242,7 +246,7 @@ namespace Editor
         load_from_sv4(path);
         ClearMapForEditing(true);
 
-        gS6Info.editor_step = EditorStep::LandscapeEditor;
+        gEditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -256,7 +260,7 @@ namespace Editor
         load_from_sc4(path);
         ClearMapForEditing(false);
 
-        gS6Info.editor_step = EditorStep::LandscapeEditor;
+        gEditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -285,7 +289,7 @@ namespace Editor
 
         ClearMapForEditing(loadedFromSave);
 
-        gS6Info.editor_step = EditorStep::LandscapeEditor;
+        gEditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -297,16 +301,7 @@ namespace Editor
     static void ClearMapForEditing(bool fromSave)
     {
         map_remove_all_rides();
-
-        //
-        for (BannerIndex i = 0; i < MAX_BANNERS; i++)
-        {
-            auto banner = GetBanner(i);
-            if (banner->IsNull())
-            {
-                banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            }
-        }
+        UnlinkAllRideBanners();
 
         ride_init_all();
 
@@ -354,12 +349,12 @@ namespace Editor
             gGuestInitialCash = std::clamp(
                 gGuestInitialCash, static_cast<money16>(MONEY(10, 00)), static_cast<money16>(MAX_ENTRANCE_FEE));
 
-            gInitialCash = std::min(gInitialCash, 100000);
+            gInitialCash = std::min<money64>(gInitialCash, 100000);
             finance_reset_cash_to_initial();
 
-            gBankLoan = std::clamp(gBankLoan, MONEY(0, 00), MONEY(5000000, 00));
+            gBankLoan = std::clamp<money64>(gBankLoan, MONEY(0, 00), MONEY(5000000, 00));
 
-            gMaxBankLoan = std::clamp(gMaxBankLoan, MONEY(0, 00), MONEY(5000000, 00));
+            gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, MONEY(0, 00), MONEY(5000000, 00));
 
             gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 80);
         }
@@ -380,15 +375,15 @@ namespace Editor
             return;
         }
 
-        switch (gS6Info.editor_step)
+        switch (gEditorStep)
         {
             case EditorStep::ObjectSelection:
-                if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))
+                if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION) != nullptr)
                 {
                     return;
                 }
 
-                if (window_find_by_class(WC_INSTALL_TRACK))
+                if (window_find_by_class(WC_INSTALL_TRACK) != nullptr)
                 {
                     return;
                 }
@@ -401,7 +396,7 @@ namespace Editor
                 context_open_window(WC_EDITOR_OBJECT_SELECTION);
                 break;
             case EditorStep::InventionsListSetUp:
-                if (window_find_by_class(WC_EDITOR_INVENTION_LIST))
+                if (window_find_by_class(WC_EDITOR_INVENTION_LIST) != nullptr)
                 {
                     return;
                 }
@@ -409,7 +404,7 @@ namespace Editor
                 context_open_window(WC_EDITOR_INVENTION_LIST);
                 break;
             case EditorStep::OptionsSelection:
-                if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS))
+                if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS) != nullptr)
                 {
                     return;
                 }
@@ -417,7 +412,7 @@ namespace Editor
                 context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
                 break;
             case EditorStep::ObjectiveSelection:
-                if (window_find_by_class(WC_EDITOR_OBJECTIVE_OPTIONS))
+                if (window_find_by_class(WC_EDITOR_OBJECTIVE_OPTIONS) != nullptr)
                 {
                     return;
                 }

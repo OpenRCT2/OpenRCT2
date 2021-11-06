@@ -84,7 +84,7 @@ GameActions::Result::Ptr SmallScenerySetColourAction::QueryExecute(bool isExecut
     if (sceneryElement == nullptr)
     {
         log_error("Small scenery not found at: x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(sceneryElement->IsGhost()))

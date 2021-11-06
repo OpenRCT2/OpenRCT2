@@ -9,13 +9,13 @@
 
 #pragma once
 
-#include "SpriteBase.h"
+#include "EntityBase.h"
 
 class DataSerialiser;
 struct CoordsXYZ;
 struct CoordsXYZD;
 
-struct Litter : SpriteBase
+struct Litter : EntityBase
 {
     enum class Type : uint8_t
     {
@@ -40,4 +40,5 @@ struct Litter : SpriteBase
     static void RemoveAt(const CoordsXYZ& litterPos);
     void Serialise(DataSerialiser& stream);
     rct_string_id GetName() const;
+    uint32_t GetAge() const;
 };

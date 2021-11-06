@@ -71,7 +71,7 @@ GameActions::Result::Ptr StaffSetNameAction::Execute() const
     auto curName = staff->GetName();
     if (curName == _name)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Ok, STR_NONE);
+        return std::make_unique<GameActions::Result>();
     }
 
     if (!staff->SetName(_name))
@@ -85,8 +85,7 @@ GameActions::Result::Ptr StaffSetNameAction::Execute() const
     context_broadcast_intent(&intent);
 
     auto res = std::make_unique<GameActions::Result>();
-    res->Position.x = staff->x;
-    res->Position.y = staff->y;
-    res->Position.z = staff->z;
+    res->Position = staff->GetLocation();
+
     return res;
 }

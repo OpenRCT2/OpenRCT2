@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _RIDE_H_
-#define _RIDE_H_
+#pragma once
 
 #include "../common.h"
 #include "../localisation/Formatter.h"
@@ -309,7 +308,7 @@ public:
     // Various flags stating whether a window needs to be refreshed
     uint8_t window_invalidate_flags;
     uint32_t total_customers;
-    money32 total_profit;
+    money64 total_profit;
     uint8_t popularity;
     uint8_t popularity_time_out; // Updated every purchase and ?possibly by time?
     uint8_t popularity_next;     // When timeout reached this will be the next popularity
@@ -359,11 +358,11 @@ public:
     uint8_t not_fixed_timeout;
     uint8_t last_crash_type;
     uint8_t connected_message_throttle;
-    money32 income_per_hour;
-    money32 profit;
+    money64 income_per_hour;
+    money64 profit;
     TrackColour track_colour[NUM_COLOUR_SCHEMES];
-    uint8_t music;
-    uint8_t entrance_style;
+    ObjectEntryIndex music;
+    ObjectEntryIndex entrance_style;
     uint16_t vehicle_change_timeout;
     uint8_t num_block_brakes;
     uint8_t lift_hill_speed;
@@ -393,7 +392,7 @@ private:
     void UpdateQueueLength(StationIndex stationIndex);
     bool CreateVehicles(const CoordsXYE& element, bool isApplying);
     void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
-    money32 CalculateIncomePerHour() const;
+    money64 CalculateIncomePerHour() const;
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;
 
@@ -425,6 +424,7 @@ public:
     bool SupportsStatus(RideStatus s) const;
 
     void StopGuestsQueuing();
+    void ValidateStations();
 
     bool Open(bool isApplying);
     bool Test(RideStatus newStatus, bool isApplying);
@@ -451,7 +451,7 @@ public:
     static void UpdateAll();
     static bool NameExists(std::string_view name, ride_id_t excludeRideId = RIDE_ID_NULL);
 
-    std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
+    [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
 
     uint64_t GetAvailableModes() const;
     const RideTypeDescriptor& GetRideTypeDescriptor() const;
@@ -466,6 +466,13 @@ public:
 
     uint8_t GetNumShelteredSections() const;
     void IncreaseNumShelteredSections();
+
+    void RemoveVehicles();
+    /**
+     * Updates all pieces of the ride to match the internal ride type. (Track pieces can have different ride types from the ride
+     * they belong to, to enable “merging”.)
+     */
+    void UpdateRideTypeForAllPieces();
 };
 
 #pragma pack(push, 1)
@@ -879,17 +886,17 @@ enum
     RIDE_CRASH_TYPE_FATALITIES = 8
 };
 
-enum
+enum class RideConstructionState : uint8_t
 {
-    RIDE_CONSTRUCTION_STATE_0,
-    RIDE_CONSTRUCTION_STATE_FRONT,
-    RIDE_CONSTRUCTION_STATE_BACK,
-    RIDE_CONSTRUCTION_STATE_SELECTED,
-    RIDE_CONSTRUCTION_STATE_PLACE,
-    RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT,
-    RIDE_CONSTRUCTION_STATE_MAZE_BUILD,
-    RIDE_CONSTRUCTION_STATE_MAZE_MOVE,
-    RIDE_CONSTRUCTION_STATE_MAZE_FILL
+    State0,
+    Front,
+    Back,
+    Selected,
+    Place,
+    EntranceExit,
+    MazeBuild,
+    MazeMove,
+    MazeFill
 };
 
 enum
@@ -1084,7 +1091,7 @@ extern uint16_t _numCurrentPossibleRideConfigurations;
 extern uint16_t _numCurrentPossibleSpecialTrackPieces;
 
 extern uint32_t _currentTrackCurve;
-extern uint8_t _rideConstructionState;
+extern RideConstructionState _rideConstructionState;
 extern ride_id_t _currentRideIndex;
 
 extern CoordsXYZ _currentTrackBegin;
@@ -1112,12 +1119,12 @@ extern CoordsXYZD _unkF440C5;
 extern uint8_t gRideEntranceExitPlaceType;
 extern ride_id_t gRideEntranceExitPlaceRideIndex;
 extern StationIndex gRideEntranceExitPlaceStationIndex;
-extern uint8_t gRideEntranceExitPlacePreviousRideConstructionState;
+extern RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
 extern uint8_t gRideEntranceExitPlaceDirection;
 
 extern bool gGotoStartPlacementMode;
 
-extern uint8_t gLastEntranceStyle;
+extern ObjectEntryIndex gLastEntranceStyle;
 
 int32_t ride_get_count();
 void ride_init_all();
@@ -1146,11 +1153,11 @@ void ride_breakdown_add_news_item(Ride* ride);
 Staff* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
-std::optional<CoordsXYZ> sub_6C683D(
+std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
-TileElement* ride_get_station_start_track_element(Ride* ride, StationIndex stationIndex);
+TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex stationIndex);
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);
 void ride_set_status(Ride* ride, RideStatus status);
 void ride_set_name(Ride* ride, const char* name, uint32_t flags);
@@ -1217,9 +1224,7 @@ enum class RideSetSetting : uint8_t;
 money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t value);
 money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
 
-void sub_6CB945(Ride* ride);
-
-void sub_6C94D8();
+void UpdateGhostTrackAndArrow();
 
 void ride_reset_all_names();
 
@@ -1252,5 +1257,3 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
-
-#endif

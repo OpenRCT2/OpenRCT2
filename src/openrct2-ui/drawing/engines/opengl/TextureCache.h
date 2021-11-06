@@ -101,8 +101,8 @@ public:
         _atlasWidth = atlasWidth;
         _atlasHeight = atlasHeight;
 
-        _cols = _atlasWidth / _imageSize;
-        _rows = _atlasHeight / _imageSize;
+        _cols = std::max(1, _atlasWidth / _imageSize);
+        _rows = std::max(1, _atlasHeight / _imageSize);
 
         _freeSlots.resize(_cols * _rows);
         for (size_t i = 0; i < _freeSlots.size(); i++)
@@ -221,6 +221,7 @@ public:
     void InvalidateImage(uint32_t image);
     BasicTextureInfo GetOrLoadImageTexture(uint32_t image);
     BasicTextureInfo GetOrLoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap);
+    BasicTextureInfo GetOrLoadBitmapTexture(uint32_t image, const void* pixels, size_t width, size_t height);
 
     GLuint GetAtlasesTexture();
     GLuint GetPaletteTexture();
@@ -233,6 +234,7 @@ private:
     AtlasTextureInfo LoadImageTexture(uint32_t image);
     AtlasTextureInfo LoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap);
     AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
+    AtlasTextureInfo LoadBitmapTexture(uint32_t image, const void* pixels, size_t width, size_t height);
     static rct_drawpixelinfo GetImageAsDPI(uint32_t image, uint32_t tertiaryColour);
     static rct_drawpixelinfo GetGlyphAsDPI(uint32_t image, const PaletteMap& paletteMap);
     void FreeTextures();

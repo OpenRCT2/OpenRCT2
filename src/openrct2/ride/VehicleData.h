@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _VEHICLE_DATA_H
-#define _VEHICLE_DATA_H
+#pragma once
 
 #include "../common.h"
 
@@ -31,5 +30,3 @@ extern const int32_t dword_9A2930[];
 extern const int32_t dword_9A2970[];
 
 extern const int32_t SpriteDirectionToSoundDirection[];
-
-#endif

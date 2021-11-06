@@ -22,7 +22,9 @@
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 109;
 static constexpr const int32_t WW = 350;
-constexpr uint16_t SELECTED_RIDE_UNDEFINED = 0xFFFF;
+
+constexpr auto SELECTED_RIDE_UNDEFINED = RIDE_ID_NULL;
+constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
 
 // clang-format off
 enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
@@ -47,7 +49,7 @@ static rct_widget window_new_campaign_widgets[] = {
     MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
     MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
     MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 // clang-format on
 
@@ -205,9 +207,9 @@ public:
                 else
                 {
                     int32_t numItems = 0;
-                    for (auto rideId : RideList)
+                    for (auto rideIndex : RideList)
                     {
-                        auto curRide = get_ride(rideId);
+                        auto curRide = get_ride(rideIndex);
                         if (curRide != nullptr)
                         {
                             // HACK until dropdown items have longer argument buffers
@@ -252,7 +254,8 @@ public:
                 break;
             case WIDX_START_BUTTON:
             {
-                auto gameAction = ParkMarketingAction(campaign.campaign_type, campaign.RideId, campaign.no_weeks);
+                auto gameAction = ParkMarketingAction(
+                    campaign.campaign_type, static_cast<int32_t>(campaign.RideId), campaign.no_weeks);
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
@@ -322,7 +325,7 @@ public:
                 widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
                 widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
-                if (campaign.ShopItemId != SELECTED_RIDE_UNDEFINED)
+                if (campaign.ShopItemId != SELECTED_ITEM_UNDEFINED)
                 {
                     widgets[WIDX_RIDE_DROPDOWN].text = GetShopItemDescriptor(ShopItem(campaign.ShopItemId)).Naming.Plural;
                 }
@@ -346,20 +349,24 @@ public:
 
         // Number of weeks
         rct_widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
+        auto ft = Formatter();
+        ft.Add<int16_t>(campaign.no_weeks);
         DrawTextBasic(
             &dpi, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
-            campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, &campaign.no_weeks, { colours[0] });
+            campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, ft, { colours[0] });
 
         screenCoords = windowPos + ScreenCoordsXY{ 14, 60 };
 
         // Price per week
-        money32 pricePerWeek = AdvertisingCampaignPricePerWeek[campaign.campaign_type];
-        DrawTextBasic(&dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, &pricePerWeek);
+        ft = Formatter();
+        ft.Add<money64>(AdvertisingCampaignPricePerWeek[campaign.campaign_type]);
+        DrawTextBasic(&dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
         screenCoords.y += 13;
 
         // Total price
-        money32 totalPrice = AdvertisingCampaignPricePerWeek[campaign.campaign_type] * campaign.no_weeks;
-        DrawTextBasic(&dpi, screenCoords, STR_MARKETING_TOTAL_COST, &totalPrice);
+        ft = Formatter();
+        ft.Add<money64>(AdvertisingCampaignPricePerWeek[campaign.campaign_type] * campaign.no_weeks);
+        DrawTextBasic(&dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
     }
 };
 

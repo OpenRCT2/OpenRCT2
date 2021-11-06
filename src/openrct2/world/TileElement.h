@@ -26,6 +26,9 @@ struct rct_footpath_entry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
 class TerrainEdgeObject;
+class FootpathObject;
+class FootpathSurfaceObject;
+class FootpathRailingsObject;
 using track_type_t = uint16_t;
 
 constexpr const uint8_t MAX_ELEMENT_HEIGHT = 255;
@@ -260,34 +263,35 @@ struct PathElement : TileElementBase
     static constexpr TileElementType ElementType = TileElementType::Path;
 
 private:
-    PathSurfaceIndex SurfaceIndex; // 5
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    PathRailingsIndex RailingsIndex; // 7
-#pragma clang diagnostic pop
-    uint8_t Additions;       // 8 (0 means no addition)
-    uint8_t EdgesAndCorners; // 9 (edges in lower 4 bits, corners in upper 4)
-    uint8_t Flags2;          // 10
-    uint8_t SlopeDirection;  // 11
+    ObjectEntryIndex SurfaceIndex;  // 5
+    ObjectEntryIndex RailingsIndex; // 7
+    uint8_t Additions;              // 9 (0 means no addition)
+    uint8_t EdgesAndCorners;        // 10 (edges in lower 4 bits, corners in upper 4)
+    uint8_t Flags2;                 // 11
+    uint8_t SlopeDirection;         // 12
     union
     {
-        uint8_t AdditionStatus; // 12, only used for litter bins
-        ride_id_t rideIndex;    // 12
+        uint8_t AdditionStatus; // 13, only used for litter bins
+        ride_id_t rideIndex;    // 13
     };
-    ::StationIndex StationIndex; // 14
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0F[1];
-#pragma clang diagnostic pop
+    ::StationIndex StationIndex; // 15
 
 public:
-    PathSurfaceIndex GetSurfaceEntryIndex() const;
-    PathSurfaceEntry* GetSurfaceEntry() const;
-    void SetSurfaceEntryIndex(PathSurfaceIndex newIndex);
+    ObjectEntryIndex GetLegacyPathEntryIndex() const;
+    const FootpathObject* GetLegacyPathEntry() const;
+    void SetLegacyPathEntryIndex(ObjectEntryIndex newIndex);
+    bool HasLegacyPathEntry() const;
 
-    PathRailingsIndex GetRailingEntryIndex() const;
-    PathRailingsEntry* GetRailingEntry() const;
-    void SetRailingEntryIndex(PathRailingsIndex newIndex);
+    ObjectEntryIndex GetSurfaceEntryIndex() const;
+    const FootpathSurfaceObject* GetSurfaceEntry() const;
+    void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
+
+    ObjectEntryIndex GetRailingsEntryIndex() const;
+    const FootpathRailingsObject* GetRailingsEntry() const;
+    void SetRailingsEntryIndex(ObjectEntryIndex newIndex);
+
+    const PathSurfaceDescriptor* GetSurfaceDescriptor() const;
+    const PathRailingsDescriptor* GetRailingsDescriptor() const;
 
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
@@ -374,14 +378,14 @@ private:
     };
     uint8_t Flags2;
     ride_id_t RideIndex;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad[2];
-#pragma clang diagnostic pop
+    ride_type_t RideType;
 
 public:
     track_type_t GetTrackType() const;
     void SetTrackType(track_type_t newEntryIndex);
+
+    ride_type_t GetRideType() const;
+    void SetRideType(const ride_type_t rideType);
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
@@ -569,11 +573,12 @@ private:
     uint8_t entranceType;      // 5
     uint8_t SequenceIndex;     // 6. Only uses the lower nibble.
     uint8_t StationIndex;      // 7
-    PathSurfaceIndex PathType; // 8
-    ride_id_t rideIndex;       // 9
+    ObjectEntryIndex PathType; // 8
+    ride_id_t rideIndex;       // A
+    uint8_t flags2;            // C
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0C[4];
+    uint8_t pad_0D[3];
 #pragma clang diagnostic pop
 
 public:
@@ -589,8 +594,19 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    PathSurfaceIndex GetPathType() const;
-    void SetPathType(PathSurfaceIndex newPathType);
+    bool HasLegacyPathEntry() const;
+
+    ObjectEntryIndex GetLegacyPathEntryIndex() const;
+    const FootpathObject* GetLegacyPathEntry() const;
+    void SetLegacyPathEntryIndex(ObjectEntryIndex newPathType);
+
+    ObjectEntryIndex GetSurfaceEntryIndex() const;
+    const FootpathSurfaceObject* GetSurfaceEntry() const;
+    void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
+
+    const PathSurfaceDescriptor* GetPathSurfaceDescriptor() const;
+
+    int32_t GetDirections() const;
 };
 assert_struct_size(EntranceElement, 16);
 

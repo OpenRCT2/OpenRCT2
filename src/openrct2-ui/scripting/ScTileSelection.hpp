@@ -45,11 +45,9 @@ namespace OpenRCT2::Scripting
                 range.Set("rightBottom", rightBottom.Take());
                 return range.Take();
             }
-            else
-            {
-                duk_push_null(_ctx);
-                return DukValue::take_from_stack(_ctx);
-            }
+
+            duk_push_null(_ctx);
+            return DukValue::take_from_stack(_ctx);
         }
 
         void range_set(DukValue value)
@@ -139,7 +137,6 @@ namespace OpenRCT2::Scripting
     private:
         static std::optional<CoordsXY> GetCoordsXY(const DukValue& dukCoords)
         {
-            std::optional<CoordsXY> result;
             if (dukCoords.type() == DukValue::Type::OBJECT)
             {
                 auto dukX = dukCoords["x"];
@@ -148,16 +145,15 @@ namespace OpenRCT2::Scripting
                     auto dukY = dukCoords["y"];
                     if (dukY.type() == DukValue::Type::NUMBER)
                     {
-                        result = { dukX.as_int(), dukY.as_int() };
+                        return CoordsXY(dukX.as_int(), dukY.as_int());
                     }
                 }
             }
-            return result;
+            return std::nullopt;
         }
 
         static std::optional<MapRange> GetMapRange(const DukValue& dukMapRange)
         {
-            std::optional<MapRange> result;
             if (dukMapRange.type() == DukValue::Type::OBJECT)
             {
                 auto leftTop = GetCoordsXY(dukMapRange["leftTop"]);
@@ -166,11 +162,11 @@ namespace OpenRCT2::Scripting
                     auto rightBottom = GetCoordsXY(dukMapRange["rightBottom"]);
                     if (rightBottom.has_value())
                     {
-                        result = MapRange(leftTop->x, leftTop->y, rightBottom->x, rightBottom->y);
+                        return MapRange(leftTop->x, leftTop->y, rightBottom->x, rightBottom->y);
                     }
                 }
             }
-            return result;
+            return std::nullopt;
         }
     };
 } // namespace OpenRCT2::Scripting

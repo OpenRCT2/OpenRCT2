@@ -51,9 +51,6 @@ enum WINDOW_ABOUT_WIDGET_IDX {
     WIDX_JOIN_DISCORD,
     WIDX_CONTRIBUTORS,
     WIDX_COPYRIGHT,
-
-    // About RCT2
-    WIDX_MUSIC_CREDITS = WIDX_PAGE_START,
 };
 
 #define WIDGETS_MAIN \
@@ -73,13 +70,12 @@ static rct_widget window_about_openrct2_widgets[] = {
     MakeWidget({168, 115 + 72}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
     MakeWidget({10, 250},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_2), // Contributors
     MakeWidget({10, 300},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_3), // Copyright
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static rct_widget window_about_rct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT}, {200, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS), // music credits button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_about_page_widgets[] = {
@@ -92,7 +88,7 @@ static rct_widget *window_about_page_widgets[] = {
 
 static uint64_t window_about_page_enabled_widgets[] = {
     DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_COPY_BUILD_INFO) | (1ULL << WIDX_CHANGELOG) | (1ULL << WIDX_JOIN_DISCORD),
-    DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_MUSIC_CREDITS),
+    DEFAULT_ENABLED_WIDGETS,
 };
 
 static void window_about_openrct2_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -252,9 +248,6 @@ static void window_about_rct2_mouseup(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_TAB_ABOUT_OPENRCT2:
         case WIDX_TAB_ABOUT_RCT2:
             window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
-            break;
-        case WIDX_MUSIC_CREDITS:
-            context_open_window(WC_MUSIC_CREDITS);
             break;
     }
 }

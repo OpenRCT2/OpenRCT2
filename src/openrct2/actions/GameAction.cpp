@@ -34,55 +34,6 @@ using namespace OpenRCT2;
 
 namespace GameActions
 {
-    Result::Result(GameActions::Status error, rct_string_id message)
-    {
-        Error = error;
-        ErrorMessage = message;
-    }
-
-    Result::Result(GameActions::Status error, rct_string_id title, rct_string_id message)
-    {
-        Error = error;
-        ErrorTitle = title;
-        ErrorMessage = message;
-    }
-
-    Result::Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args)
-    {
-        Error = error;
-        ErrorTitle = title;
-        ErrorMessage = message;
-        std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());
-    }
-
-    std::string GameActions::Result::GetErrorTitle() const
-    {
-        std::string title;
-        if (auto error = ErrorTitle.AsString())
-        {
-            title = *error;
-        }
-        else
-        {
-            title = format_string(ErrorTitle.GetStringId(), ErrorMessageArgs.data());
-        }
-        return title;
-    }
-
-    std::string GameActions::Result::GetErrorMessage() const
-    {
-        std::string message;
-        if (auto error = ErrorMessage.AsString())
-        {
-            message = *error;
-        }
-        else
-        {
-            message = format_string(ErrorMessage.GetStringId(), ErrorMessageArgs.data());
-        }
-        return message;
-    }
-
     struct QueuedGameAction
     {
         uint32_t tick;
@@ -335,7 +286,7 @@ namespace GameActions
     {
         if (network_get_mode() == NETWORK_MODE_CLIENT)
             return "cl";
-        else if (network_get_mode() == NETWORK_MODE_SERVER)
+        if (network_get_mode() == NETWORK_MODE_SERVER)
             return "sv";
         return "sp";
     }
@@ -492,7 +443,7 @@ namespace GameActions
                         network_add_player_money_spent(playerIndex, result->Cost);
                     }
 
-                    if (!result->Position.isNull())
+                    if (!result->Position.IsNull())
                     {
                         network_set_player_last_action_coord(playerIndex, result->Position);
                     }
@@ -502,7 +453,7 @@ namespace GameActions
                     bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
                     bool recordAction = false;
-                    if (replayManager)
+                    if (replayManager != nullptr)
                     {
                         if (replayManager->IsRecording() && commandExecutes)
                             recordAction = true;

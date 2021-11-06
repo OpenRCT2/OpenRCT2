@@ -32,6 +32,11 @@ enum DRAWING_ENGINE_FLAGS
      * Whether or not the engine will only draw changed blocks of the screen each frame.
      */
     DEF_DIRTY_OPTIMISATIONS = 1 << 0,
+
+    /**
+     * The drawing engine is capable of processing the drawing in parallel.
+     */
+    DEF_PARALLEL_DRAWING = 1 << 1,
 };
 
 struct rct_drawpixelinfo;
@@ -66,7 +71,7 @@ namespace OpenRCT2::Drawing
         virtual void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) abstract;
         virtual std::string Screenshot() abstract;
 
-        virtual IDrawingContext* GetDrawingContext(rct_drawpixelinfo* dpi) abstract;
+        virtual IDrawingContext* GetDrawingContext() abstract;
         virtual rct_drawpixelinfo* GetDrawingPixelInfo() abstract;
 
         virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
@@ -79,17 +84,15 @@ namespace OpenRCT2::Drawing
         virtual ~IDrawingEngineFactory()
         {
         }
-        virtual std::unique_ptr<IDrawingEngine> Create(
+        [[nodiscard]] virtual std::unique_ptr<IDrawingEngine> Create(
             DrawingEngine type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
     };
 
     struct IWeatherDrawer
     {
-        virtual ~IWeatherDrawer()
-        {
-        }
+        virtual ~IWeatherDrawer() = default;
         virtual void Draw(
-            int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+            rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
             const uint8_t* weatherpattern) abstract;
     };
 } // namespace OpenRCT2::Drawing

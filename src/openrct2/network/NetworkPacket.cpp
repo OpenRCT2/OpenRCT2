@@ -66,40 +66,45 @@ void NetworkPacket::Write(const void* bytes, size_t size)
     Data.insert(Data.end(), src, src + size);
 }
 
-void NetworkPacket::WriteString(const utf8* string)
+void NetworkPacket::WriteString(std::string_view s)
 {
-    Write(reinterpret_cast<const uint8_t*>(string), strlen(string) + 1);
+    Write(s.data(), s.size());
+    Data.push_back(0);
 }
 
 const uint8_t* NetworkPacket::Read(size_t size)
 {
-    if (BytesRead + size > Header.Size)
+    if (BytesRead + size > Data.size())
     {
         return nullptr;
     }
-    else
-    {
-        uint8_t* data = &GetData()[BytesRead];
-        BytesRead += size;
-        return data;
-    }
+
+    const uint8_t* data = Data.data() + BytesRead;
+    BytesRead += size;
+    return data;
 }
 
-const utf8* NetworkPacket::ReadString()
+std::string_view NetworkPacket::ReadString()
 {
-    char* str = reinterpret_cast<char*>(&GetData()[BytesRead]);
-    char* strend = str;
-    while (BytesRead < Header.Size && *strend != 0)
+    if (BytesRead >= Data.size())
+        return {};
+
+    const char* str = reinterpret_cast<const char*>(Data.data() + BytesRead);
+
+    size_t stringLen = 0;
+    while (BytesRead < Data.size() && str[stringLen] != '\0')
     {
         BytesRead++;
-        strend++;
+        stringLen++;
     }
-    if (*strend != 0)
-    {
-        return nullptr;
-    }
+
+    if (str[stringLen] != '\0')
+        return {};
+
+    // Skip null terminator.
     BytesRead++;
-    return str;
+
+    return std::string_view(str, stringLen);
 }
 
 #endif

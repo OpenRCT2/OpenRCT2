@@ -13,10 +13,10 @@
 #include "../ride/Ride.h"
 #include "Map.h"
 
-#define DECRYPT_MONEY(money) (static_cast<money32>(rol32((money) ^ 0xF4EC9621, 13)))
-#define ENCRYPT_MONEY(money) (static_cast<money32>(ror32((money), 13) ^ 0xF4EC9621))
-
 #define MAX_ENTRANCE_FEE MONEY(200, 00)
+
+constexpr const uint8_t ParkRatingHistoryUndefined = std::numeric_limits<uint8_t>::max();
+constexpr const uint32_t GuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();
 
 enum : uint32_t
 {
@@ -59,16 +59,16 @@ namespace OpenRCT2
         bool IsOpen() const;
 
         uint16_t GetParkRating() const;
-        money32 GetParkValue() const;
-        money32 GetCompanyValue() const;
+        money64 GetParkValue() const;
+        money64 GetCompanyValue() const;
 
         void Initialise();
         void Update(const Date& date);
 
         int32_t CalculateParkSize() const;
         int32_t CalculateParkRating() const;
-        money32 CalculateParkValue() const;
-        money32 CalculateCompanyValue() const;
+        money64 CalculateParkValue() const;
+        money64 CalculateCompanyValue() const;
         static uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
 
         Guest* GenerateGuest();
@@ -77,7 +77,7 @@ namespace OpenRCT2
         void UpdateHistories();
 
     private:
-        money32 CalculateRideValue(const Ride* ride) const;
+        money64 CalculateRideValue(const Ride* ride) const;
         money16 CalculateTotalRideValueForMoney() const;
         uint32_t CalculateSuggestedMaxGuests() const;
         uint32_t CalculateGuestGenerationProbability() const;
@@ -87,22 +87,22 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-extern uint32_t gParkFlags;
+extern uint64_t gParkFlags;
 extern uint16_t gParkRating;
 extern money16 gParkEntranceFee;
 extern uint16_t gParkSize;
 extern money16 gLandPrice;
 extern money16 gConstructionRightsPrice;
 
-extern uint32_t gTotalAdmissions;
-extern money32 gTotalIncomeFromAdmissions;
+extern uint64_t gTotalAdmissions;
+extern money64 gTotalIncomeFromAdmissions;
 
-extern money32 gParkValue;
-extern money32 gCompanyValue;
+extern money64 gParkValue;
+extern money64 gCompanyValue;
 
 extern int16_t gParkRatingCasualtyPenalty;
 extern uint8_t gParkRatingHistory[32];
-extern uint8_t gGuestsInParkHistory[32];
+extern uint32_t gGuestsInParkHistory[32];
 extern int32_t _guestGenerationProbability;
 extern uint32_t _suggestedGuestMaximum;
 

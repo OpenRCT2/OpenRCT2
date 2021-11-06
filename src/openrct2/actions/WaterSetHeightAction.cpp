@@ -11,6 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
+#include "../world/ConstructionClearance.h"
 #include "../world/Park.h"
 #include "../world/Surface.h"
 
@@ -67,7 +68,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return MakeResult(GameActions::Status::Unknown, STR_NONE);
+        return MakeResult(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     int32_t zHigh = surfaceElement->GetBaseZ();
@@ -85,12 +86,11 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
 
     if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2->Error != GameActions::Status::Ok)
     {
-        return MakeResult(
-            GameActions::Status::NoClearance, STR_NONE, res2->ErrorMessage.GetStringId(), res2->ErrorMessageArgs.data());
+        return res2;
     }
     if (surfaceElement->HasTrackThatNeedsWater())
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_NONE);
+        return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
     }
 
     res->Cost = 250;
@@ -113,7 +113,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Execute() const
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     if (_height > surfaceElement->base_height)
@@ -133,7 +133,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Execute() const
 
 rct_string_id WaterSetHeightAction::CheckParameters() const
 {
-    if (_coords.x > gMapSizeMaxXY || _coords.y > gMapSizeMaxXY)
+    if (_coords.x > GetMapSizeMaxXY() || _coords.y > GetMapSizeMaxXY())
     {
         return STR_OFF_EDGE_OF_MAP;
     }

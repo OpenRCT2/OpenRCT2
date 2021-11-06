@@ -16,9 +16,11 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/peep/Guest.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/util/Math.hpp>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
@@ -60,7 +62,7 @@ static rct_widget window_guest_list_widgets[] = {
     MakeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
     MakeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
     MakeWidget({  3, 72}, {344, 255}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_BOTH                                      ), // guest list
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 // clang-format on
 
@@ -182,7 +184,7 @@ public:
         {
             case GuestListFilterType::GuestsOnRide:
             {
-                auto guestRide = get_ride(index);
+                auto guestRide = get_ride(static_cast<ride_id_t>(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<rct_string_id>(
@@ -198,7 +200,7 @@ public:
             }
             case GuestListFilterType::GuestsInQueue:
             {
-                auto guestRide = get_ride(index);
+                auto guestRide = get_ride(static_cast<ride_id_t>(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_QUEUING_FOR);
@@ -213,7 +215,7 @@ public:
             }
             case GuestListFilterType::GuestsThinkingAboutRide:
             {
-                auto guestRide = get_ride(index);
+                auto guestRide = get_ride(static_cast<ride_id_t>(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_NONE);
@@ -301,7 +303,7 @@ public:
                 else
                 {
                     window_text_input_raw_open(
-                        this, WIDX_FILTER_BY_NAME, STR_GUESTS_FILTER_BY_NAME, STR_GUESTS_ENTER_NAME_TO_SEARCH,
+                        this, WIDX_FILTER_BY_NAME, STR_GUESTS_FILTER_BY_NAME, STR_GUESTS_ENTER_NAME_TO_SEARCH, {},
                         _filterName.c_str(), 32);
                 }
                 break;
@@ -321,8 +323,13 @@ public:
                 _selectedPage = 0;
                 _numPages = 1;
                 widgets[WIDX_TRACKING].type = WindowWidgetType::Empty;
-                widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::Empty;
-                if (_selectedTab == TabId::Individual)
+                if (_selectedTab == TabId::Summarised)
+                {
+                    widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::Empty;
+                    SetWidgetPressed(WIDX_FILTER_BY_NAME, false);
+                    _filterName.clear();
+                }
+                else if (_selectedTab == TabId::Individual)
                 {
                     widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
                     widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
@@ -576,6 +583,7 @@ public:
                     _selectedTab = TabId::Individual;
                     widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
                     Invalidate();
+                    widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
                     scrolls[0].v_top = 0;
                     RefreshList();
                 }
@@ -668,7 +676,7 @@ private:
                 rct_string_id format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, FilterPaletteID::PaletteDarken1);
+                    gfx_filter_rect(&dpi, { 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1 }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -738,7 +746,7 @@ private:
                 rct_string_id format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT, FilterPaletteID::PaletteDarken1);
+                    gfx_filter_rect(&dpi, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -807,7 +815,7 @@ private:
 
     bool IsRefreshOfGroupsRequired()
     {
-        uint32_t tick256 = floor2(gScenarioTicks, 256);
+        uint32_t tick256 = floor2(gCurrentTicks, 256);
         if (_selectedView == _lastFindGroupsSelectedView)
         {
             if (_lastFindGroupsWait != 0 || _lastFindGroupsTick == tick256)
@@ -834,7 +842,7 @@ private:
 
     void RefreshGroups()
     {
-        _lastFindGroupsTick = floor2(gScenarioTicks, 256);
+        _lastFindGroupsTick = floor2(gCurrentTicks, 256);
         _lastFindGroupsSelectedView = _selectedView;
         _lastFindGroupsWait = 320;
         _groups.clear();

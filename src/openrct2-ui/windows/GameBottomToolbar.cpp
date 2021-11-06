@@ -21,6 +21,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
+#include <openrct2/peep/Guest.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
@@ -62,7 +63,7 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
     MakeWidget({498,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right outset panel
     MakeWidget({500,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right inset panel
     MakeWidget({500,  2}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Date
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 uint8_t gToolbarDirtyFlags;
@@ -174,12 +175,12 @@ static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex wi
 
                 auto subjectLoc = News::GetSubjectLocation(newsItem->Type, newsItem->Assoc);
 
-                if (subjectLoc == std::nullopt)
+                if (!subjectLoc.has_value())
                     break;
 
                 rct_window* mainWindow = window_get_main();
                 if (mainWindow != nullptr)
-                    window_scroll_to_location(mainWindow, *subjectLoc);
+                    window_scroll_to_location(mainWindow, subjectLoc.value());
             }
             break;
         case WIDX_RIGHT_OUTSET:
@@ -198,8 +199,8 @@ static OpenRCT2String window_game_bottom_toolbar_tooltip(
     switch (widgetIndex)
     {
         case WIDX_MONEY:
-            ft.Add<int32_t>(gCurrentProfit);
-            ft.Add<int32_t>(gParkValue);
+            ft.Add<money64>(gCurrentProfit);
+            ft.Add<money64>(gParkValue);
             break;
         case WIDX_PARK_RATING:
             ft.Add<int16_t>(gParkRating);
@@ -315,7 +316,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
         // Find out if the news item is no longer valid
         auto subjectLoc = News::GetSubjectLocation(newsItem->Type, newsItem->Assoc);
 
-        if (subjectLoc == std::nullopt)
+        if (!subjectLoc.has_value())
             w->disabled_widgets |= (1ULL << WIDX_NEWS_LOCATE);
 
         if (!(newsItem->TypeHasSubject()))
@@ -350,26 +351,25 @@ void window_game_bottom_toolbar_invalidate_news_item()
  */
 static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
+    auto leftWidget = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
+    auto rightWidget = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET];
+    auto middleWidget = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+
     // Draw panel grey backgrounds
-    gfx_filter_rect(
-        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top,
-        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom, FilterPaletteID::Palette51);
-    gfx_filter_rect(
-        dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top,
-        w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, FilterPaletteID::Palette51);
+    auto leftTop = w->windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
+    auto rightBottom = w->windowPos + ScreenCoordsXY{ leftWidget.right, leftWidget.bottom };
+    gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+
+    leftTop = w->windowPos + ScreenCoordsXY{ rightWidget.left, rightWidget.top };
+    rightBottom = w->windowPos + ScreenCoordsXY{ rightWidget.right, rightWidget.bottom };
+    gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
 
     if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
-        gfx_filter_rect(
-            dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left,
-            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top,
-            w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right,
-            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, FilterPaletteID::Palette51);
+        leftTop = w->windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
+        rightBottom = w->windowPos + ScreenCoordsXY{ middleWidget.right, middleWidget.bottom };
+        gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
     WindowDrawWidgets(w, dpi);
@@ -414,7 +414,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
                    : NOT_TRANSLUCENT(w->colours[0]));
         rct_string_id stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
         auto ft = Formatter();
-        ft.Add<money32>(gCash);
+        ft.Add<money64>(gCash);
         DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 

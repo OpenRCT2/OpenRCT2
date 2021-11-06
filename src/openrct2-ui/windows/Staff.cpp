@@ -35,14 +35,15 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WW = 190;
 static constexpr const int32_t WH = 180;
 
-// clang-format off
-enum WINDOW_STAFF_PAGE {
+enum WINDOW_STAFF_PAGE
+{
     WINDOW_STAFF_OVERVIEW,
     WINDOW_STAFF_OPTIONS,
     WINDOW_STAFF_STATISTICS,
 };
 
-enum WINDOW_STAFF_WIDGET_IDX {
+enum WINDOW_STAFF_WIDGET_IDX
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -70,6 +71,7 @@ enum WINDOW_STAFF_WIDGET_IDX {
 validate_global_widx(WC_PEEP, WIDX_PATROL);
 validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
+// clang-format off
 #define MAIN_STAFF_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     MakeWidget({ 0, 43}, {190, 137}, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */ \
@@ -86,7 +88,7 @@ static rct_widget window_staff_overview_widgets[] = {
     MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_STAFF_TIP    ), // Rename Button
     MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP), // Locate Button
     MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_DEMOLISH,   STR_FIRE_STAFF_TIP    ), // Fire Button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 //0x9AF910
@@ -98,63 +100,65 @@ static rct_widget window_staff_options_widgets[] = {
     MakeWidget     ({      5, 101}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 4
     MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                            ), // Costume Dropdown
     MakeWidget     ({WW - 17,  51}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
+// clang-format on
 
-//0x9AF9F4
+// 0x9AF9F4
 static rct_widget window_staff_stats_widgets[] = {
     MAIN_STAFF_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
-static rct_widget *window_staff_page_widgets[] = {
+static rct_widget* window_staff_page_widgets[] = {
     window_staff_overview_widgets,
     window_staff_options_widgets,
-    window_staff_stats_widgets
+    window_staff_stats_widgets,
 };
 
 static void window_staff_set_page(rct_window* w, int32_t page);
 static void window_staff_disable_widgets(rct_window* w);
-static void window_staff_unknown_05(rct_window *w);
+static void window_staff_unknown_05(rct_window* w);
 static void window_staff_viewport_init(rct_window* w);
 
-static void window_staff_overview_close(rct_window *w);
-static void window_staff_overview_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_overview_resize(rct_window *w);
-static void window_staff_overview_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_staff_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_staff_overview_close(rct_window* w);
+static void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_staff_overview_resize(rct_window* w);
+static void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_staff_overview_update(rct_window* w);
-static void window_staff_overview_invalidate(rct_window *w);
-static void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_staff_overview_invalidate(rct_window* w);
+static void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_staff_overview_viewport_rotate(rct_window *w);
+static void window_staff_overview_tool_abort(rct_window* w, rct_widgetindex widgetIndex);
+static void window_staff_overview_text_input(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void window_staff_overview_viewport_rotate(rct_window* w);
+static void window_staff_follow(rct_window* w);
+static void window_staff_show_locate_dropdown(rct_window* w, rct_widget* widget);
 
-static void window_staff_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_staff_options_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_staff_options_update(rct_window* w);
-static void window_staff_options_invalidate(rct_window *w);
-static void window_staff_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_staff_options_invalidate(rct_window* w);
+static void window_staff_options_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_staff_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_staff_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_staff_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 
-static void window_staff_stats_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_stats_resize(rct_window *w);
+static void window_staff_stats_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_staff_stats_resize(rct_window* w);
 static void window_staff_stats_update(rct_window* w);
-static void window_staff_stats_invalidate(rct_window *w);
-static void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_staff_stats_invalidate(rct_window* w);
+static void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 void window_staff_set_colours();
 
 // 0x992AEC
-static rct_window_event_list window_staff_overview_events([](auto& events)
-{
+static rct_window_event_list window_staff_overview_events([](auto& events) {
     events.close = &window_staff_overview_close;
     events.mouse_up = &window_staff_overview_mouseup;
     events.resize = &window_staff_overview_resize;
@@ -173,8 +177,7 @@ static rct_window_event_list window_staff_overview_events([](auto& events)
 });
 
 // 0x992B5C
-static rct_window_event_list window_staff_options_events([](auto& events)
-{
+static rct_window_event_list window_staff_options_events([](auto& events) {
     events.mouse_up = &window_staff_options_mouseup;
     events.resize = &window_staff_stats_resize;
     events.mouse_down = &window_staff_options_mousedown;
@@ -186,8 +189,7 @@ static rct_window_event_list window_staff_options_events([](auto& events)
 });
 
 // 0x992BCC
-static rct_window_event_list window_staff_stats_events([](auto& events)
-{
+static rct_window_event_list window_staff_stats_events([](auto& events) {
     events.mouse_up = &window_staff_stats_mouseup;
     events.resize = &window_staff_stats_resize;
     events.unknown_05 = &window_staff_unknown_05;
@@ -196,12 +198,13 @@ static rct_window_event_list window_staff_stats_events([](auto& events)
     events.paint = &window_staff_stats_paint;
 });
 
-static rct_window_event_list *window_staff_page_events[] = {
+static rct_window_event_list* window_staff_page_events[] = {
     &window_staff_overview_events,
     &window_staff_options_events,
-    &window_staff_stats_events
+    &window_staff_stats_events,
 };
 
+// clang-format off
 static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
@@ -265,7 +268,6 @@ rct_window* window_staff_open(Peep* peep)
 
         w->number = peep->sprite_index;
         w->page = 0;
-        w->viewport_focus_coordinates.y = 0;
         w->frame_no = 0;
         w->highlighted_item = 0;
 
@@ -356,7 +358,7 @@ void window_staff_set_page(rct_window* w, int32_t page)
     }
 
     int32_t listen = 0;
-    if (page == WINDOW_STAFF_OVERVIEW && w->page == WINDOW_STAFF_OVERVIEW && w->viewport)
+    if (page == WINDOW_STAFF_OVERVIEW && w->page == WINDOW_STAFF_OVERVIEW && w->viewport != nullptr)
     {
         if (!(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
             listen = 1;
@@ -382,7 +384,7 @@ void window_staff_set_page(rct_window* w, int32_t page)
     WindowInitScrollWidgets(w);
     w->Invalidate();
 
-    if (listen && w->viewport)
+    if (listen && w->viewport != nullptr)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
 
@@ -408,20 +410,17 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_TAB_3:
             window_staff_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
-        case WIDX_LOCATE:
-            w->ScrollToViewport();
-            break;
         case WIDX_PICKUP:
         {
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
-            nullLoc.setNull();
+            nullLoc.SetNull();
             PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
                 rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
-                if (wind)
+                if (wind != nullptr)
                 {
                     tool_set(wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
                 }
@@ -440,7 +439,7 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         {
             auto peepName = peep->GetName();
             window_text_input_raw_open(
-                w, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, peepName.c_str(), 32);
+                w, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, {}, peepName.c_str(), 32);
             break;
         }
     }
@@ -484,8 +483,7 @@ void window_staff_overview_resize(rct_window* w)
     }
 
     rct_viewport* viewport = w->viewport;
-
-    if (viewport)
+    if (viewport != nullptr)
     {
         int32_t new_width = w->width - 30;
         int32_t new_height = w->height - 62;
@@ -509,30 +507,34 @@ void window_staff_overview_resize(rct_window* w)
  */
 void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    if (widgetIndex != WIDX_PATROL)
+    switch (widgetIndex)
     {
-        return;
-    }
+        case WIDX_LOCATE:
+            window_staff_show_locate_dropdown(w, widget);
+            break;
+        case WIDX_PATROL:
+        {
+            // Dropdown names
+            gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
+            gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
 
-    // Dropdown names
-    gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
-    gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
+            auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
+            int32_t extray = widget->height() + 1;
+            WindowDropdownShowText(dropdownPos, extray, w->colours[1], 0, 2);
+            gDropdownDefaultIndex = 0;
 
-    auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
-    int32_t extray = widget->height() + 1;
-    WindowDropdownShowText(dropdownPos, extray, w->colours[1], 0, 2);
-    gDropdownDefaultIndex = 0;
+            const auto peep = GetStaff(w);
+            if (peep == nullptr)
+            {
+                return;
+            }
 
-    const auto peep = GetStaff(w);
-    if (peep == nullptr)
-    {
-        return;
-    }
-
-    // Disable clear patrol area if no area is set.
-    if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
-    {
-        Dropdown::SetDisabled(1, true);
+            // Disable clear patrol area if no area is set.
+            if (!peep->HasPatrolArea())
+            {
+                Dropdown::SetDisabled(1, true);
+            }
+        }
     }
 }
 
@@ -542,38 +544,63 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
  */
 void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    if (widgetIndex != WIDX_PATROL)
+    switch (widgetIndex)
     {
-        return;
-    }
+        case WIDX_LOCATE:
+        {
+            if (dropdownIndex == 0)
+            {
+                w->ScrollToViewport();
+            }
+            else if (dropdownIndex == 1)
+            {
+                window_staff_follow(w);
+            }
+            break;
+        }
+        case WIDX_PATROL:
+        {
+            // Clear patrol
+            if (dropdownIndex == 1)
+            {
+                const auto peep = GetStaff(w);
+                if (peep == nullptr)
+                {
+                    return;
+                }
 
-    // Clear patrol
-    if (dropdownIndex == 1)
-    {
-        const auto peep = GetStaff(w);
-        if (peep == nullptr)
-        {
-            return;
+                auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
+                    peep->sprite_index, {}, StaffSetPatrolAreaMode::ClearAll);
+                GameActions::Execute(&staffSetPatrolAreaAction);
+            }
+            else
+            {
+                if (!tool_set(w, widgetIndex, Tool::WalkDown))
+                {
+                    show_gridlines();
+                    gStaffDrawPatrolAreas = w->number;
+                    gfx_invalidate_screen();
+                }
+            }
+            break;
         }
-        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-        {
-            gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
-        }
-        assert(gStaffModes[peep->StaffId] == StaffMode::Patrol);
-        gStaffModes[peep->StaffId] = StaffMode::Walk;
+    }
+}
 
-        gfx_invalidate_screen();
-        staff_update_greyed_patrol_areas();
-    }
-    else
-    {
-        if (!tool_set(w, widgetIndex, Tool::WalkDown))
-        {
-            show_gridlines();
-            gStaffDrawPatrolAreas = w->number;
-            gfx_invalidate_screen();
-        }
-    }
+static void window_staff_show_locate_dropdown(rct_window* w, rct_widget* widget)
+{
+    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+
+    WindowDropdownShowText(
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
+    gDropdownDefaultIndex = 0;
+}
+
+static void window_staff_follow(rct_window* w)
+{
+    rct_window* w_main = window_get_main();
+    window_follow_sprite(w_main, w->number);
 }
 
 /**
@@ -922,7 +949,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_staff_stats_tab_paint(w, dpi);
 
     // Draw the viewport no sound sprite
-    if (w->viewport)
+    if (w->viewport != nullptr)
     {
         window_draw_viewport(dpi, w);
         rct_viewport* viewport = w->viewport;
@@ -940,9 +967,9 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     auto ft = Formatter();
     peep->FormatActionTo(ft);
-    rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
-    auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top };
-    int32_t width = widget->width();
+    const auto& widget = w->widgets[WIDX_BTM_LABEL];
+    auto screenPos = w->windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
+    int32_t width = widget.width();
     DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
 }
 
@@ -955,16 +982,14 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_2];
-
     int32_t image_id = SPR_TAB_STAFF_OPTIONS_0;
-
     if (w->page == WINDOW_STAFF_OPTIONS)
     {
         image_id += (w->frame_no / 2) % 7;
     }
 
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_2];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
     gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
@@ -977,16 +1002,14 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_3];
-
     int32_t image_id = SPR_TAB_STATS_0;
-
     if (w->page == WINDOW_STAFF_STATISTICS)
     {
         image_id += (w->frame_no / 4) % 7;
     }
 
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_3];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
     gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
@@ -998,10 +1021,10 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_1];
-    int32_t width = widget->width() - 1;
-    int32_t height = widget->height() - 1;
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
+    const auto& widget = w->widgets[WIDX_TAB_1];
+    int32_t width = widget.width() - 1;
+    int32_t height = widget.height() - 1;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
     if (w->page == WINDOW_STAFF_OVERVIEW)
         height++;
 
@@ -1071,7 +1094,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         auto ft = Formatter();
-        ft.Add<money32>(GetStaffWage(peep->AssignedStaffType));
+        ft.Add<money64>(GetStaffWage(peep->AssignedStaffType));
         DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1138,7 +1161,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
-    if (!mapCoords.isNull())
+    if (!mapCoords.IsNull())
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
@@ -1185,7 +1208,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         TileElement* tileElement;
         auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
-        if (destCoords.isNull())
+        if (destCoords.IsNull())
             return;
 
         PeepPickupAction pickupAction{
@@ -1203,7 +1226,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     {
         auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-        if (destCoords.isNull())
+        if (destCoords.IsNull())
             return;
 
         auto staff = TryGetEntity<Staff>(w->number);
@@ -1218,7 +1241,9 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
         }
-        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, destCoords);
+        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
+            w->number, destCoords,
+            _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
         GameActions::Execute(&staffSetPatrolAreaAction);
     }
 }
@@ -1239,7 +1264,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
 
     auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-    if (destCoords.isNull())
+    if (destCoords.IsNull())
         return;
 
     auto staff = TryGetEntity<Staff>(w->number);
@@ -1252,7 +1277,9 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && !patrolAreaValue)
         return; // Since area is already the value we want, skip...
 
-    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, destCoords);
+    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
+        w->number, destCoords,
+        _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
     GameActions::Execute(&staffSetPatrolAreaAction);
 }
 
@@ -1314,9 +1341,7 @@ void window_staff_viewport_init(rct_window* w)
     if (w->page != WINDOW_STAFF_OVERVIEW)
         return;
 
-    sprite_focus focus = {};
-
-    focus.sprite_id = w->number;
+    std::optional<Focus> focus;
 
     const auto peep = GetStaff(w);
     if (peep == nullptr)
@@ -1324,23 +1349,16 @@ void window_staff_viewport_init(rct_window* w)
         return;
     }
 
-    if (peep->State == PeepState::Picked)
+    if (peep->State != PeepState::Picked)
     {
-        focus.sprite_id = SPRITE_INDEX_NULL;
-    }
-    else
-    {
-        focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-        focus.rotation = get_current_rotation();
+        focus = Focus(peep->sprite_index);
     }
 
     uint16_t viewport_flags;
 
-    if (w->viewport)
+    if (w->viewport != nullptr)
     {
-        // Check all combos, for now skipping y and rot
-        if (focus.sprite_id == w->viewport_focus_sprite.sprite_id && focus.type == w->viewport_focus_sprite.type
-            && focus.rotation == w->viewport_focus_sprite.rotation)
+        if (focus == w->focus)
             return;
 
         viewport_flags = w->viewport->flags;
@@ -1355,28 +1373,25 @@ void window_staff_viewport_init(rct_window* w)
 
     window_event_invalidate_call(w);
 
-    w->viewport_focus_sprite.sprite_id = focus.sprite_id;
-    w->viewport_focus_sprite.type = focus.type;
-    w->viewport_focus_sprite.rotation = focus.rotation;
+    w->focus = focus;
 
     if (peep->State != PeepState::Picked)
     {
-        if (!(w->viewport))
+        if (w->viewport == nullptr)
         {
-            rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
+            const auto& view_widget = w->widgets[WIDX_VIEWPORT];
 
-            auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
-            int32_t width = view_widget->width() - 1;
-            int32_t height = view_widget->height() - 1;
+            auto screenPos = ScreenCoordsXY{ view_widget.left + 1 + w->windowPos.x, view_widget.top + 1 + w->windowPos.y };
+            int32_t width = view_widget.width() - 1;
+            int32_t height = view_widget.height() - 1;
 
-            viewport_create(
-                w, screenPos, width, height, 0, { 0, 0, 0 }, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
+            viewport_create(w, screenPos, width, height, focus.value());
             w->flags |= WF_NO_SCROLLING;
             w->Invalidate();
         }
     }
 
-    if (w->viewport)
+    if (w->viewport != nullptr)
         w->viewport->flags = viewport_flags;
     w->Invalidate();
 }

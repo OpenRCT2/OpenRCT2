@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _MAP_HELPERS_H_
-#define _MAP_HELPERS_H_
+#pragma once
 
 #include "../common.h"
 
@@ -22,5 +21,3 @@ enum
 
 int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b);
 int32_t tile_smooth(int32_t x, int32_t y);
-
-#endif

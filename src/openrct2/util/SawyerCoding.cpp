@@ -9,6 +9,7 @@
 
 #include "SawyerCoding.h"
 
+#include "../core/Numerics.hpp"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
 #include "Util.h"
@@ -113,10 +114,10 @@ size_t sawyercoding_decode_sc4(const uint8_t* src, uint8_t* dst, size_t length, 
 
     for (size_t i = 0x60018; i <= std::min(decodedLength - 1, static_cast<size_t>(0x1F8350)); i += 4)
     {
-        dst[i + 1] = ror8(dst[i + 1], 3);
+        dst[i + 1] = Numerics::ror8(dst[i + 1], 3);
 
         uint32_t* code = reinterpret_cast<uint32_t*>(&dst[i]);
-        *code = rol32(*code, 9);
+        *code = Numerics::rol32(*code, 9);
     }
 
     return decodedLength;
@@ -148,7 +149,7 @@ size_t sawyercoding_encode_td6(const uint8_t* src, uint8_t* dst, size_t length)
     {
         uint8_t new_byte = ((checksum & 0xFF) + dst[i]) & 0xFF;
         checksum = (checksum & 0xFFFFFF00) + new_byte;
-        checksum = rol32(checksum, 3);
+        checksum = Numerics::rol32(checksum, 3);
     }
     checksum -= 0x1D4C1;
 
@@ -167,7 +168,7 @@ int32_t sawyercoding_validate_track_checksum(const uint8_t* src, size_t length)
     {
         uint8_t new_byte = ((checksum & 0xFF) + src[i]) & 0xFF;
         checksum = (checksum & 0xFFFFFF00) + new_byte;
-        checksum = rol32(checksum, 3);
+        checksum = Numerics::rol32(checksum, 3);
     }
 
     if (checksum - 0x1D4C1 == file_checksum)
@@ -383,7 +384,7 @@ static void encode_chunk_rotate(uint8_t* buffer, size_t length)
     uint8_t code = 1;
     for (i = 0; i < length; i++)
     {
-        buffer[i] = rol8(buffer[i], code);
+        buffer[i] = Numerics::rol8(buffer[i], code);
         code = (code + 2) % 8;
     }
 }
@@ -401,7 +402,7 @@ int32_t sawyercoding_detect_file_type(const uint8_t* src, size_t length)
     for (i = 0; i < length - 4; i++)
     {
         actualChecksum = (actualChecksum & 0xFFFFFF00) | (((actualChecksum & 0xFF) + static_cast<uint8_t>(src[i])) & 0xFF);
-        actualChecksum = rol32(actualChecksum, 3);
+        actualChecksum = Numerics::rol32(actualChecksum, 3);
     }
 
     return sawyercoding_detect_rct1_version(checksum - actualChecksum);
@@ -414,12 +415,12 @@ int32_t sawyercoding_detect_rct1_version(int32_t gameVersion)
 
     if (gameVersion >= 108000 && gameVersion < 110000)
         return (FILE_VERSION_RCT1 | fileType);
-    else if (gameVersion >= 110000 && gameVersion < 120000)
+    if (gameVersion >= 110000 && gameVersion < 120000)
         return (FILE_VERSION_RCT1_AA | fileType);
-    else if (gameVersion >= 120000 && gameVersion < 130000)
+    if (gameVersion >= 120000 && gameVersion < 130000)
         return (FILE_VERSION_RCT1_LL | fileType);
     // RCTOA Acres sets this, and possibly some other user-created scenarios as well
-    else if (gameVersion == 0)
+    if (gameVersion == 0)
         return (FILE_VERSION_RCT1_LL | fileType);
 
     return -1;

@@ -50,7 +50,7 @@ GameActions::Result::Ptr ParkMarketingAction::Query() const
 {
     if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_NONE);
     }
     if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
     {
@@ -70,7 +70,7 @@ GameActions::Result::Ptr ParkMarketingAction::Execute() const
     campaign.Flags = MarketingCampaignFlags::FIRST_WEEK;
     if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
     {
-        campaign.RideId = _item;
+        campaign.RideId = static_cast<ride_id_t>(_item);
     }
     else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
     {

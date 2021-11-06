@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../interface/Viewport.h"
+#include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Entity.h"
@@ -32,7 +33,12 @@ struct swinging_ship_bound_box
 };
 
 /** rct2: 0x008A83B0 */
-static constexpr const uint32_t swinging_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
+static constexpr const uint32_t swinging_ship_base_sprite_offset[] = {
+    0,
+    9,
+    0,
+    9,
+};
 
 /** rct2: 0x008A83C0 */
 static constexpr const swinging_ship_bound_box swinging_ship_data[] = {
@@ -57,7 +63,7 @@ static constexpr const uint32_t swinging_ship_frame_sprites[][2] = {
 
 /** rct2: 0x4AF254 */
 static void paint_swinging_ship_structure(
-    paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     uint32_t imageId, baseImageId;
 
@@ -113,8 +119,8 @@ static void paint_swinging_ship_structure(
 
     imageId = swinging_ship_frame_sprites[(direction & 1)][0] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(
-        session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
-        height);
+        session, imageId, { xOffset, yOffset, height }, { bounds.length_x, bounds.length_y, 80 },
+        { bounds.offset_x, bounds.offset_y, height });
 
     imageId = baseImageId | imageColourFlags;
     PaintAddImageAsChild(
@@ -173,10 +179,9 @@ static void paint_swinging_ship_structure(
 
 /** rct2: 0x008A85C4 */
 static void paint_swinging_ship(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -185,120 +190,136 @@ static void paint_swinging_ship(
     uint32_t imageId;
     bool hasFence;
 
+    StationObject* stationObject = nullptr;
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
+
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {
-        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
     else if (direction & 1)
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
-        imageId = SPR_STATION_BASE_A_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+        if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+        {
+            imageId = SPR_STATION_BASE_A_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
+        }
     }
     else
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
-        imageId = SPR_STATION_BASE_A_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+        if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+        {
+            imageId = SPR_STATION_BASE_A_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
+        }
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-    if (direction & 1)
+    if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
-        if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
+        if (direction & 1)
         {
-            hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, tileElement, ride, session->CurrentRotation);
-            if (relativeTrackSequence == 2)
+            if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE)
-                    | session->TrackColours[SCHEME_TRACK];
-            }
-            else
-            {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE)
-                    | session->TrackColours[SCHEME_TRACK];
-            }
-            PaintAddImageAsChild(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height + 9);
-
-            imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE)
-                | session->TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, 24, 0, 8, 32, 1, height + 9);
-
-            hasFence = track_paint_util_has_fence(EDGE_SW, session->MapPosition, tileElement, ride, session->CurrentRotation);
-            if (relativeTrackSequence == 3)
-            {
-                if (hasFence)
+                hasFence = track_paint_util_has_fence(
+                    EDGE_NE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+                if (relativeTrackSequence == 2)
                 {
-                    imageId = SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE | session->TrackColours[SCHEME_TRACK];
-                    PaintAddImageAsParent(session, imageId, 31, 0, 1, 32, 7, height + 11);
+                    imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE)
+                        | session->TrackColours[SCHEME_TRACK];
                 }
                 else
                 {
+                    imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE)
+                        | session->TrackColours[SCHEME_TRACK];
+                }
+                PaintAddImageAsChild(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height + 9);
+
+                imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE)
+                    | session->TrackColours[SCHEME_TRACK];
+                PaintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
+
+                hasFence = track_paint_util_has_fence(
+                    EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+                if (relativeTrackSequence == 3)
+                {
+                    if (hasFence)
+                    {
+                        imageId = SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE | session->TrackColours[SCHEME_TRACK];
+                        PaintAddImageAsParent(session, imageId, { 31, 0, height + 11 }, { 1, 32, 7 });
+                    }
+                    else
+                    {
+                        imageId = SPR_STATION_FENCE_SMALL_SW_NE | session->TrackColours[SCHEME_TRACK];
+                        PaintAddImageAsParent(session, imageId, { 23, 31, height + 11 }, { 8, 1, 7 });
+                    }
+
                     imageId = SPR_STATION_FENCE_SMALL_SW_NE | session->TrackColours[SCHEME_TRACK];
-                    PaintAddImageAsParent(session, imageId, 23, 31, 8, 1, 7, height + 11);
+                    PaintAddImageAsParent(session, imageId, { 0, 31, height + 11 }, { 8, 1, 7 });
                 }
-
-                imageId = SPR_STATION_FENCE_SMALL_SW_NE | session->TrackColours[SCHEME_TRACK];
-                PaintAddImageAsParent(session, imageId, 0, 31, 8, 1, 7, height + 11);
-            }
-            else if (hasFence)
-            {
-                imageId = SPR_STATION_FENCE_NW_SE | session->TrackColours[SCHEME_TRACK];
-                PaintAddImageAsParent(session, imageId, 31, 0, 1, 32, 7, height + 11);
+                else if (hasFence)
+                {
+                    imageId = SPR_STATION_FENCE_NW_SE | session->TrackColours[SCHEME_TRACK];
+                    PaintAddImageAsParent(session, imageId, { 31, 0, height + 11 }, { 1, 32, 7 });
+                }
             }
         }
-    }
-    else
-    {
-        if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
+        else
         {
-            hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, tileElement, ride, session->CurrentRotation);
-            if (relativeTrackSequence == 2)
+            if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE)
-                    | session->TrackColours[SCHEME_TRACK];
-            }
-            else
-            {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE)
-                    | session->TrackColours[SCHEME_TRACK];
-            }
-            PaintAddImageAsChild(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height + 9);
-
-            imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE)
-                | session->TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, 0, 24, 32, 8, 1, height + 9);
-
-            hasFence = track_paint_util_has_fence(EDGE_SE, session->MapPosition, tileElement, ride, session->CurrentRotation);
-            if (relativeTrackSequence == 3)
-            {
-                if (hasFence)
+                hasFence = track_paint_util_has_fence(
+                    EDGE_NW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+                if (relativeTrackSequence == 2)
                 {
-                    imageId = SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE | session->TrackColours[SCHEME_TRACK];
-                    PaintAddImageAsParent(session, imageId, 0, 31, 32, 1, 7, height + 11);
+                    imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE)
+                        | session->TrackColours[SCHEME_TRACK];
                 }
                 else
                 {
-                    imageId = SPR_STATION_FENCE_SMALL_NW_SE | session->TrackColours[SCHEME_TRACK];
-                    PaintAddImageAsParent(session, imageId, 31, 23, 1, 8, 7, height + 11);
+                    imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE)
+                        | session->TrackColours[SCHEME_TRACK];
                 }
+                PaintAddImageAsChild(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height + 9);
 
-                imageId = SPR_STATION_FENCE_SMALL_NW_SE | session->TrackColours[SCHEME_TRACK];
-                PaintAddImageAsParent(session, imageId, 31, 0, 1, 8, 7, height + 11);
-            }
-            else if (hasFence)
-            {
-                imageId = SPR_STATION_FENCE_SW_NE | session->TrackColours[SCHEME_TRACK];
-                PaintAddImageAsParent(session, imageId, 0, 31, 32, 1, 7, height + 11);
+                imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE)
+                    | session->TrackColours[SCHEME_TRACK];
+                PaintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
+
+                hasFence = track_paint_util_has_fence(
+                    EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+                if (relativeTrackSequence == 3)
+                {
+                    if (hasFence)
+                    {
+                        imageId = SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE | session->TrackColours[SCHEME_TRACK];
+                        PaintAddImageAsParent(session, imageId, { 0, 31, height + 11 }, { 32, 1, 7 });
+                    }
+                    else
+                    {
+                        imageId = SPR_STATION_FENCE_SMALL_NW_SE | session->TrackColours[SCHEME_TRACK];
+                        PaintAddImageAsParent(session, imageId, { 31, 23, height + 11 }, { 1, 8, 7 });
+                    }
+
+                    imageId = SPR_STATION_FENCE_SMALL_NW_SE | session->TrackColours[SCHEME_TRACK];
+                    PaintAddImageAsParent(session, imageId, { 31, 0, height + 11 }, { 1, 8, 7 });
+                }
+                else if (hasFence)
+                {
+                    imageId = SPR_STATION_FENCE_SW_NE | session->TrackColours[SCHEME_TRACK];
+                    PaintAddImageAsParent(session, imageId, { 0, 31, height + 11 }, { 32, 1, 7 });
+                }
             }
         }
     }
-
     switch (relativeTrackSequence)
     {
         case 1:

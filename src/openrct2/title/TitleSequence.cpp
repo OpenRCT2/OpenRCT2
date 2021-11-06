@@ -53,7 +53,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const std::string& path)
     auto ext = Path::GetExtension(path);
     if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
     {
-        auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(path, ZIP_ACCESS::READ));
+        auto zip = Zip::TryOpen(path, ZIP_ACCESS::READ);
         if (zip == nullptr)
         {
             Console::Error::WriteLine("Unable to open '%s'", path.c_str());
@@ -103,7 +103,7 @@ std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(const TitleS
         const auto& filename = seq.Saves[index];
         if (seq.IsZip)
         {
-            auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(seq.Path, ZIP_ACCESS::READ));
+            auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::READ);
             if (zip != nullptr)
             {
                 auto data = zip->GetFileData(filename);
@@ -425,7 +425,7 @@ static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
             parts[part * 128 + cindex] = 0;
             return;
         }
-        else if (c == '#')
+        if (c == '#')
         {
             parts[part * 128 + cindex] = 0;
             comment = 1;

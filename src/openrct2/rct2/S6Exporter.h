@@ -26,8 +26,9 @@ namespace OpenRCT2
 struct Litter;
 struct ObjectRepositoryItem;
 struct RCT12SpriteBase;
+struct EntityBase;
+struct Peep;
 union rct_sprite;
-struct SpriteBase;
 
 /**
  * Class to export RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
@@ -50,7 +51,7 @@ public:
     void ExportRide(rct2_ride* dst, const Ride* src);
     void ExportEntities();
     template<typename RCT12_T, typename OpenRCT2_T> void ExportEntity(RCT12_T* dst, const OpenRCT2_T* src);
-    void ExportEntityCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src);
+    void ExportEntityCommonProperties(RCT12SpriteBase* dst, const EntityBase* src);
     void ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src);
 
 private:
@@ -78,4 +79,6 @@ private:
     std::optional<uint16_t> AllocateUserString(std::string_view value);
     void ExportUserStrings();
     void RebuildEntityLinks();
+    void RebuildEntitySpatialLocation(const TileCoordsXY& loc);
+    void ExportStaffPatrolAreas();
 };

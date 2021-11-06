@@ -20,6 +20,7 @@
 #include "Localisation.h"
 
 #include <algorithm>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -62,7 +63,7 @@ private:
     ScenarioOverride* _currentScenarioOverride = nullptr;
 
 public:
-    static LanguagePack* FromFile(uint16_t id, const utf8* path)
+    static std::unique_ptr<LanguagePack> FromFile(uint16_t id, const utf8* path)
     {
         Guard::ArgumentNotNull(path);
 
@@ -90,15 +91,15 @@ public:
         }
 
         // Parse the memory as text
-        LanguagePack* result = FromText(id, fileData);
+        auto result = FromText(id, fileData);
 
         Memory::Free(fileData);
         return result;
     }
 
-    static LanguagePack* FromText(uint16_t id, const utf8* text)
+    static std::unique_ptr<LanguagePack> FromText(uint16_t id, const utf8* text)
     {
-        return new LanguagePack(id, text);
+        return std::make_unique<LanguagePack>(id, text);
     }
 
     LanguagePack(uint16_t id, const utf8* text)
@@ -157,12 +158,11 @@ public:
             {
                 return _scenarioOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
-            else
-            {
-                return nullptr;
-            }
+
+            return nullptr;
         }
-        else if (stringId >= ObjectOverrideBase)
+
+        if (stringId >= ObjectOverrideBase)
         {
             int32_t offset = stringId - ObjectOverrideBase;
             int32_t ooIndex = offset / ObjectOverrideMaxStringCount;
@@ -173,22 +173,16 @@ public:
             {
                 return _objectOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
-            else
-            {
-                return nullptr;
-            }
+
+            return nullptr;
         }
-        else
+
+        if ((_strings.size() > static_cast<size_t>(stringId)) && !_strings[stringId].empty())
         {
-            if ((_strings.size() > static_cast<size_t>(stringId)) && !_strings[stringId].empty())
-            {
-                return _strings[stringId].c_str();
-            }
-            else
-            {
-                return nullptr;
-            }
+            return _strings[stringId].c_str();
         }
+
+        return nullptr;
     }
 
     rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) override
@@ -468,7 +462,8 @@ private:
                 // Unexpected new line, ignore line entirely
                 return;
             }
-            else if (!IsWhitespace(codepoint) && codepoint != ':')
+
+            if (!IsWhitespace(codepoint) && codepoint != ':')
             {
                 reader->Skip();
                 sb.Append(codepoint);
@@ -579,13 +574,13 @@ private:
 
 namespace LanguagePackFactory
 {
-    ILanguagePack* FromFile(uint16_t id, const utf8* path)
+    std::unique_ptr<ILanguagePack> FromFile(uint16_t id, const utf8* path)
     {
         auto languagePack = LanguagePack::FromFile(id, path);
         return languagePack;
     }
 
-    ILanguagePack* FromText(uint16_t id, const utf8* text)
+    std::unique_ptr<ILanguagePack> FromText(uint16_t id, const utf8* text)
     {
         auto languagePack = LanguagePack::FromText(id, text);
         return languagePack;

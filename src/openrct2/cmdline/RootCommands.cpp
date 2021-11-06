@@ -26,7 +26,6 @@
 
 #include <ctime>
 #include <iterator>
-#include <memory>
 #include <string>
 
 #ifdef USE_BREAKPAD
@@ -388,11 +387,9 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
         Console::WriteLine("Updated config.ini");
         return EXITCODE_OK;
     }
-    else
-    {
-        Console::Error::WriteLine("Unable to update config.ini");
-        return EXITCODE_FAIL;
-    }
+
+    Console::Error::WriteLine("Unable to update config.ini");
+    return EXITCODE_FAIL;
 }
 
 static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator* enumerator)
@@ -406,7 +403,7 @@ static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumer
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
 
-    auto context = std::unique_ptr<OpenRCT2::IContext>(OpenRCT2::CreateContext());
+    auto context = OpenRCT2::CreateContext();
     auto env = context->GetPlatformEnvironment();
     auto objectRepository = CreateObjectRepository(env);
     objectRepository->Construct(gConfigGeneral.language);

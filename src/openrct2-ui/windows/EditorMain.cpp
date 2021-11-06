@@ -24,7 +24,7 @@ static rct_window_event_list window_editor_main_events([](auto& events) {
 
 static rct_widget window_editor_main_widgets[] = {
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 /**
@@ -40,14 +40,14 @@ rct_window* window_editor_main_open()
         &window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
     window->widgets = window_editor_main_widgets;
 
-    viewport_create(window, window->windowPos, window->width, window->height, 0, { 0x0FFF, 0x0FFF, 0 }, 0x1, SPRITE_INDEX_NULL);
+    viewport_create(window, window->windowPos, window->width, window->height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
     window->viewport->flags |= 0x0400;
 
     gCurrentRotation = 0;
     gShowGridLinesRefCount = 0;
     gShowLandRightsRefCount = 0;
     gShowConstuctionRightsRefCount = 0;
-    window_footpath_reset_selected_path();
+    WindowFootpathResetSelectedPath();
 
     context_open_window(WC_TOP_TOOLBAR);
     context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
@@ -62,5 +62,5 @@ rct_window* window_editor_main_open()
  */
 static void window_editor_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
+    viewport_render(dpi, w->viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
 }

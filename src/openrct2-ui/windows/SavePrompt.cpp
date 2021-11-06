@@ -42,7 +42,7 @@ static rct_widget window_save_prompt_widgets[] = {
     MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
     MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
     MakeWidget({174, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_CANCEL   ), // cancel
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
@@ -57,7 +57,7 @@ static rct_widget window_quit_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
     MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
     MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static constexpr const rct_string_id window_save_prompt_labels[][2] = {
@@ -121,7 +121,7 @@ rct_window* window_save_prompt_open()
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_SAVE_PROMPT);
-    if (window)
+    if (window != nullptr)
     {
         window_close(window);
     }
@@ -208,38 +208,36 @@ static void window_save_prompt_mouseup(rct_window* w, rct_widgetindex widgetInde
         }
         return;
     }
-    else
-    {
-        switch (widgetIndex)
-        {
-            case WIDX_SAVE:
-            {
-                Intent* intent;
 
-                if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
-                {
-                    intent = new Intent(WC_LOADSAVE);
-                    intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                    intent->putExtra(INTENT_EXTRA_PATH, std::string{ gS6Info.name });
-                }
-                else
-                {
-                    intent = static_cast<Intent*>(create_save_game_as_intent());
-                }
-                window_close(w);
-                intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_save_prompt_callback));
-                context_open_intent(intent);
-                delete intent;
-                break;
+    switch (widgetIndex)
+    {
+        case WIDX_SAVE:
+        {
+            Intent* intent;
+
+            if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
+            {
+                intent = new Intent(WC_LOADSAVE);
+                intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
             }
-            case WIDX_DONT_SAVE:
-                game_load_or_quit_no_save_prompt();
-                return;
-            case WIDX_CLOSE:
-            case WIDX_CANCEL:
-                window_close(w);
-                return;
+            else
+            {
+                intent = static_cast<Intent*>(create_save_game_as_intent());
+            }
+            window_close(w);
+            intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_save_prompt_callback));
+            context_open_intent(intent);
+            delete intent;
+            break;
         }
+        case WIDX_DONT_SAVE:
+            game_load_or_quit_no_save_prompt();
+            return;
+        case WIDX_CLOSE:
+        case WIDX_CANCEL:
+            window_close(w);
+            return;
     }
 }
 

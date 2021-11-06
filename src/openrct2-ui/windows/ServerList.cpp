@@ -40,8 +40,8 @@ static std::future<std::tuple<std::vector<ServerListEntry>, rct_string_id>> _fet
 static uint32_t _numPlayersOnline = 0;
 static rct_string_id _statusText = STR_SERVER_LIST_CONNECTING;
 
-// clang-format off
-enum {
+enum
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -52,39 +52,42 @@ enum {
     WIDX_START_SERVER
 };
 
-enum {
+enum
+{
     WIDX_LIST_REMOVE,
     WIDX_LIST_SPECTATE
 };
 
+// clang-format off
 static rct_widget window_server_list_widgets[] = {
     MakeWidget({  0,  0}, {341, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
-    MakeWidget({  1,  1}, {338, 14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
-    MakeWidget({327,  2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary  , STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
-    MakeWidget({100, 20}, {245, 12}, WindowWidgetType::TextBox, WindowColour::Secondary                                         ), // player name text box
+    MakeWidget({  1,  1}, {338, 14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
+    MakeWidget({327,  2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
+    MakeWidget({100, 20}, {245, 12}, WindowWidgetType::TextBox,  WindowColour::Secondary                                         ), // player name text box
     MakeWidget({  6, 37}, {332, 14}, WindowWidgetType::Scroll,   WindowColour::Secondary                                         ), // server list
     MakeWidget({  6, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
     MakeWidget({112, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
     MakeWidget({218, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
+// clang-format on
 
-static void window_server_list_close(rct_window *w);
-static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_server_list_resize(rct_window *w);
-static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_server_list_update(rct_window *w);
-static void window_server_list_scroll_getsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_server_list_scroll_mousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_server_list_scroll_mouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static OpenRCT2String window_server_list_tooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
-static void window_server_list_invalidate(rct_window *w);
-static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void window_server_list_close(rct_window* w);
+static void window_server_list_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_server_list_resize(rct_window* w);
+static void window_server_list_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_server_list_update(rct_window* w);
+static void window_server_list_scroll_getsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_server_list_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static OpenRCT2String window_server_list_tooltip(
+    rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
+static void window_server_list_invalidate(rct_window* w);
+static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_server_list_events([](auto& events)
-{
+static rct_window_event_list window_server_list_events([](auto& events) {
     events.close = &window_server_list_close;
     events.mouse_up = &window_server_list_mouseup;
     events.resize = &window_server_list_resize;
@@ -99,7 +102,6 @@ static rct_window_event_list window_server_list_events([](auto& events)
     events.paint = &window_server_list_paint;
     events.scroll_paint = &window_server_list_scrollpaint;
 });
-// clang-format on
 
 enum
 {
@@ -107,10 +109,9 @@ enum
     DDIDX_FAVOURITE
 };
 
-static int32_t _hoverButtonIndex = -1;
+static bool _showNetworkVersionTooltip = false;
 static std::string _version;
 
-static void server_list_get_item_button(int32_t buttonIndex, int32_t x, int32_t y, int32_t width, int32_t* outX, int32_t* outY);
 static void join_server(std::string address);
 static void server_list_fetch_servers_begin();
 static void server_list_fetch_servers_check(rct_window* w);
@@ -194,7 +195,7 @@ static void window_server_list_mouseup(rct_window* w, rct_widgetindex widgetInde
             server_list_fetch_servers_begin();
             break;
         case WIDX_ADD_SERVER:
-            window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, STR_NONE, 0, 128);
+            window_text_input_open(w, widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, STR_NONE, 0, 128);
             break;
         case WIDX_START_SERVER:
             context_open_window(WC_SERVER_START);
@@ -260,7 +261,7 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
     {
         const auto& server = _serverList.GetServer(serverIndex);
 
-        auto listWidget = &w->widgets[WIDX_LIST];
+        const auto& listWidget = w->widgets[WIDX_LIST];
 
         gDropdownItemsFormat[0] = STR_JOIN_GAME;
         if (server.Favourite)
@@ -271,52 +272,36 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
         {
             gDropdownItemsFormat[1] = STR_ADD_TO_FAVOURITES;
         }
-        auto dropdownPos = ScreenCoordsXY{ w->windowPos.x + listWidget->left + screenCoords.x + 2 - w->scrolls[0].h_left,
-                                           w->windowPos.y + listWidget->top + screenCoords.y + 2 - w->scrolls[0].v_top };
+        auto dropdownPos = ScreenCoordsXY{ w->windowPos.x + listWidget.left + screenCoords.x + 2 - w->scrolls[0].h_left,
+                                           w->windowPos.y + listWidget.top + screenCoords.y + 2 - w->scrolls[0].v_top };
         WindowDropdownShowText(dropdownPos, 0, COLOUR_GREY, 0, 2);
     }
 }
 
 static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    // Item
-    int32_t index = screenCoords.y / ITEM_HEIGHT;
-    if (index < 0 || index >= w->no_list_items)
+    auto& listWidget = w->widgets[WIDX_LIST];
+
+    int32_t itemIndex = screenCoords.y / ITEM_HEIGHT;
+    bool showNetworkVersionTooltip = false;
+    if (itemIndex < 0 || itemIndex >= w->no_list_items)
     {
-        index = -1;
+        itemIndex = -1;
+    }
+    else
+    {
+        const int32_t iconX = listWidget.width() - SCROLLBAR_WIDTH - 7 - 10;
+        showNetworkVersionTooltip = screenCoords.x > iconX;
     }
 
-    int32_t hoverButtonIndex = -1;
-    if (index != -1)
+    if (w->selected_list_item != itemIndex || _showNetworkVersionTooltip != showNetworkVersionTooltip)
     {
-        int32_t width = w->widgets[WIDX_LIST].width();
-        int32_t sy = index * ITEM_HEIGHT;
-        for (int32_t i = 0; i < 2; i++)
-        {
-            int32_t bx, by;
+        w->selected_list_item = itemIndex;
+        _showNetworkVersionTooltip = showNetworkVersionTooltip;
 
-            server_list_get_item_button(i, 0, sy, width, &bx, &by);
-            if (screenCoords.x >= bx && screenCoords.y >= by && screenCoords.x < bx + 24 && screenCoords.y < by + 24)
-            {
-                hoverButtonIndex = i;
-                break;
-            }
-        }
-    }
-
-    int32_t width = w->widgets[WIDX_LIST].width();
-    int32_t right = width - 3 - 14 - 10;
-    if (screenCoords.x < right)
-    {
-        w->widgets[WIDX_LIST].tooltip = STR_NONE;
+        listWidget.tooltip = showNetworkVersionTooltip ? static_cast<rct_string_id>(STR_NETWORK_VERSION_TIP) : STR_NONE;
         window_tooltip_close();
-    }
 
-    if (w->selected_list_item != index || _hoverButtonIndex != hoverButtonIndex)
-    {
-        w->selected_list_item = index;
-        _hoverButtonIndex = hoverButtonIndex;
-        window_tooltip_close();
         w->Invalidate();
     }
 }
@@ -401,19 +386,19 @@ static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
 
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, nullptr,
-        { COLOUR_WHITE });
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {}, { COLOUR_WHITE });
 
     // Draw version number
     std::string version = network_get_version();
-    const char* versionCStr = version.c_str();
+    auto ft = Formatter();
+    ft.Add<const char*>(version.c_str());
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION,
-        static_cast<void*>(&versionCStr), { COLOUR_WHITE });
-
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, static_cast<void*>(&_numPlayersOnline),
+        dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
         { COLOUR_WHITE });
+
+    ft = Formatter();
+    ft.Add<uint32_t>(_numPlayersOnline);
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, ft, { COLOUR_WHITE });
 }
 
 static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -421,11 +406,11 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    int32_t width = w->widgets[WIDX_LIST].width();
+    auto& listWidget = w->widgets[WIDX_LIST];
+    int32_t width = listWidget.width();
 
     ScreenCoordsXY screenCoords;
     screenCoords.y = 0;
-    w->widgets[WIDX_LIST].tooltip = STR_NONE;
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
         if (screenCoords.y >= dpi->y + dpi->height)
@@ -437,9 +422,8 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         // Draw hover highlight
         if (highlighted)
         {
-            gfx_filter_rect(dpi, 0, screenCoords.y, width, screenCoords.y + ITEM_HEIGHT, FilterPaletteID::PaletteDarken1);
+            gfx_filter_rect(dpi, { 0, screenCoords.y, width, screenCoords.y + ITEM_HEIGHT }, FilterPaletteID::PaletteDarken1);
             _version = serverDetails.Version;
-            w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
         }
 
         colour_t colour = w->colours[1];
@@ -510,12 +494,6 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
         screenCoords.y += ITEM_HEIGHT;
     }
-}
-
-static void server_list_get_item_button(int32_t buttonIndex, int32_t x, int32_t y, int32_t width, int32_t* outX, int32_t* outY)
-{
-    *outX = width - 3 - 36 - (30 * buttonIndex);
-    *outY = y + 2;
 }
 
 static void join_server(std::string address)

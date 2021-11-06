@@ -33,12 +33,15 @@
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
+#include "../core/Numerics.hpp"
 #include "../core/String.hpp"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathObject.h"
+#include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
@@ -56,6 +59,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackDesign.h"
 #include "TrackDesignRepository.h"
 #include "Vehicle.h"
 
@@ -65,27 +69,15 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::TrackMetaData;
 
-struct map_backup
-{
-    TileElement tile_elements[MAX_TILE_ELEMENTS];
-    TileElement* tile_pointers[MAX_TILE_TILE_ELEMENT_POINTERS];
-    TileElement* next_free_tile_element;
-    uint16_t map_size_units;
-    uint16_t map_size_units_minus_2;
-    uint16_t map_size;
-    uint8_t current_rotation;
-};
-
-TrackDesign* gActiveTrackDesign;
 bool gTrackDesignSceneryToggle;
 static CoordsXYZ _trackPreviewMin;
 static CoordsXYZ _trackPreviewMax;
 static CoordsXYZ _trackPreviewOrigin;
 
-bool byte_9D8150;
+bool _trackDesignDrawingPreview;
 static uint8_t _trackDesignPlaceOperation;
-static money32 _trackDesignPlaceCost;
 static int16_t _trackDesignPlaceZ;
 static int16_t _trackDesignPlaceSceneryZ;
 
@@ -101,11 +93,18 @@ static void track_design_preview_clear_map();
 rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
 {
     type = ride.type;
-    auto object = object_entry_get_object(ObjectType::Ride, ride.subtype);
 
-    // Note we are only copying rct_object_entry in size and
-    // not the extended as we don't need the chunk size.
-    std::memcpy(&vehicle_object, object->GetObjectEntry(), sizeof(rct_object_entry));
+    auto object = object_entry_get_object(ObjectType::Ride, ride.subtype);
+    if (object != nullptr)
+    {
+        auto entry = object->GetObjectEntry();
+        if (entry.IsEmpty())
+        {
+            // TODO create a new error message for `JSON objects are unsupported`
+            return STR_UNKNOWN_OBJECT_TYPE;
+        }
+        vehicle_object = ObjectEntryDescriptor(entry);
+    }
 
     ride_mode = ride.mode;
     colour_scheme = ride.colour_scheme_type & 3;
@@ -165,10 +164,8 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
     {
         return CreateTrackDesignMaze(ride);
     }
-    else
-    {
-        return CreateTrackDesignTrack(ride);
-    }
+
+    return CreateTrackDesignTrack(ride);
 }
 
 rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
@@ -185,9 +182,10 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     auto trackType = trackElement.element->AsTrack()->GetTrackType();
     uint8_t direction = trackElement.element->GetDirection();
     _saveDirection = direction;
-    auto newCoords = sub_6C683D({ trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+    auto newCoords = GetTrackElementOriginAndApplyChanges(
+        { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
-    if (newCoords == std::nullopt)
+    if (!newCoords.has_value())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
@@ -195,8 +193,9 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     trackElement.y = newCoords->y;
     z = newCoords->z;
 
-    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackElement.element->AsTrack()->GetTrackType()];
-    auto trackBlock = TrackBlocks[trackType];
+    const auto& ted = GetTrackElementDescriptor(trackElement.element->AsTrack()->GetTrackType());
+    const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
+    const auto* trackBlock = ted.Block;
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
@@ -240,15 +239,15 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         z = trackElement.element->GetBaseZ();
         direction = trackElement.element->GetDirection();
         trackType = trackElement.element->AsTrack()->GetTrackType();
-        newCoords = sub_6C683D({ trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+        newCoords = GetTrackElementOriginAndApplyChanges(
+            { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
 
-        if (newCoords == std::nullopt)
+        if (!newCoords.has_value())
         {
             break;
         }
         trackElement.x = newCoords->x;
         trackElement.y = newCoords->y;
-        z = newCoords->z;
 
         if (track_elements.size() > TD6MaxTrackElements)
         {
@@ -273,7 +272,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
                 location = ride_get_exit_location(&ride, station_index);
             }
 
-            if (location.isNull())
+            if (location.IsNull())
             {
                 continue;
             }
@@ -327,7 +326,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         }
     }
 
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { 4096, 4096, 0 });
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
 
     // Resave global vars for scenery reasons.
     _trackPreviewOrigin = startPos;
@@ -359,7 +358,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     {
         for (; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
         {
-            auto tileElement = map_get_first_element_at({ x, y });
+            auto tileElement = map_get_first_element_at(CoordsXY{ x, y });
             do
             {
                 if (tileElement == nullptr)
@@ -387,7 +386,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     }
 
     auto location = ride_get_entrance_location(&ride, 0);
-    if (location.isNull())
+    if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
@@ -416,7 +415,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     maze_elements.push_back(mazeEntrance);
 
     location = ride_get_exit_location(&ride, 0);
-    if (location.isNull())
+    if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
@@ -446,7 +445,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = _trackPreviewOrigin.z;
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { 4096, 4096, 0 });
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(PreviewRideId), { 4096, 4096, 0 });
     _trackPreviewOrigin = { startLoc.x, startLoc.y, startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -465,7 +464,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
     {
         for (tile.x = 0; tile.x < MAXIMUM_MAP_SIZE_BIG; tile.x += COORDS_XY_STEP)
         {
-            tile.element = map_get_first_element_at({ tile.x, tile.y });
+            tile.element = map_get_first_element_at(CoordsXY{ tile.x, tile.y });
             do
             {
                 if (tile.element == nullptr)
@@ -601,7 +600,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(track_rail_colour);
     stream << DS_TAG(track_support_colour);
     stream << DS_TAG(flags2);
-    stream << DS_TAG(vehicle_object);
+    stream << DS_TAG(vehicle_object.Entry);
     stream << DS_TAG(space_required_x);
     stream << DS_TAG(space_required_y);
     stream << DS_TAG(vehicle_additional_colour);
@@ -638,18 +637,150 @@ std::unique_ptr<TrackDesign> track_design_open(const utf8* path)
  */
 static void track_design_load_scenery_objects(TrackDesign* td6)
 {
-    object_manager_unload_all_objects();
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    objectManager.UnloadAll();
 
     // Load ride object
-    rct_object_entry* rideEntry = &td6->vehicle_object;
-    object_manager_load_object(rideEntry);
+    if (td6->vehicle_object.HasValue())
+    {
+        objectManager.LoadObject(td6->vehicle_object);
+    }
 
     // Load scenery objects
     for (const auto& scenery : td6->scenery_elements)
     {
-        const rct_object_entry* sceneryEntry = &scenery.scenery_object;
-        object_manager_load_object(sceneryEntry);
+        if (scenery.scenery_object.HasValue())
+        {
+            objectManager.LoadObject(scenery.scenery_object);
+        }
     }
+}
+
+struct TrackSceneryEntry
+{
+    ObjectType Type = ObjectType::None;
+    ObjectEntryIndex Index = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex SecondaryIndex = OBJECT_ENTRY_INDEX_NULL; // For footpath railing
+};
+
+static ObjectEntryIndex TrackDesignGetDefaultSurfaceIndex(bool isQueue)
+{
+    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
+    {
+        auto footpathSurfaceObj = GetPathSurfaceEntry(i);
+        if (footpathSurfaceObj != nullptr)
+        {
+            if (footpathSurfaceObj->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+            {
+                continue;
+            }
+
+            if (isQueue != ((footpathSurfaceObj->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            {
+                continue;
+            }
+
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+static ObjectEntryIndex TrackDesignGetDefaultRailingIndex()
+{
+    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
+    {
+        auto footpathRailingsObj = GetPathRailingsEntry(i);
+        if (footpathRailingsObj != nullptr)
+        {
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+static ObjectEntryIndex TrackDesignGetDefaultPathIndex(bool isQueue)
+{
+    for (ObjectEntryIndex i = 0; i < MAX_PATH_OBJECTS; i++)
+    {
+        auto legacyPathEntry = GetLegacyFootpathEntry(i);
+        if (legacyPathEntry != nullptr)
+        {
+            const auto& surfaceDescriptor = isQueue ? legacyPathEntry->GetQueueSurfaceDescriptor()
+                                                    : legacyPathEntry->GetPathSurfaceDescriptor();
+            if (surfaceDescriptor.IsEditorOnly())
+            {
+                continue;
+            }
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(const TrackDesignSceneryElement& scenery)
+{
+    TrackSceneryEntry result;
+
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    if (scenery.scenery_object.GetType() == ObjectType::Paths)
+    {
+        auto footpathMapping = GetFootpathSurfaceId(scenery.scenery_object, true, scenery.IsQueue());
+        if (footpathMapping == nullptr)
+        {
+            // Check if legacy path object is loaded
+            auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+            if (obj != nullptr)
+            {
+                result.Type = obj->GetObjectType();
+                result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+            }
+            else
+            {
+                result.Type = ObjectType::FootpathSurface;
+            }
+        }
+        else
+        {
+            result.Type = ObjectType::FootpathSurface;
+            result.Index = objectMgr.GetLoadedObjectEntryIndex(
+                ObjectEntryDescriptor(scenery.IsQueue() ? footpathMapping->QueueSurface : footpathMapping->NormalSurface));
+            result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
+        }
+
+        if (result.Index == OBJECT_ENTRY_INDEX_NULL)
+            result.Index = TrackDesignGetDefaultSurfaceIndex(scenery.IsQueue());
+        if (result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
+            result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
+
+        // NOTE: This block can be deleted in the NSF branch.
+        if (result.Index == OBJECT_ENTRY_INDEX_NULL)
+        {
+            result.Type = ObjectType::Paths;
+            result.Index = TrackDesignGetDefaultPathIndex(scenery.IsQueue());
+        }
+
+        if (result.Index == OBJECT_ENTRY_INDEX_NULL)
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return {};
+        }
+    }
+    else
+    {
+        auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+        if (obj != nullptr)
+        {
+            result.Type = obj->GetObjectType();
+            result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+        }
+        else
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return {};
+        }
+    }
+    return result;
 }
 
 /**
@@ -658,26 +789,19 @@ static void track_design_load_scenery_objects(TrackDesign* td6)
  */
 static void track_design_mirror_scenery(TrackDesign* td6)
 {
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     for (auto& scenery : td6->scenery_elements)
     {
-        ObjectType entry_type{ 0 };
-        ObjectEntryIndex entryIndex{ 0 };
-        if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entryIndex))
-        {
-            entry_type = scenery.scenery_object.GetType();
-            if (entry_type != ObjectType::Paths)
-            {
-                continue;
-            }
+        auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
+        if (!entryInfo)
+            continue;
 
-            entryIndex = 0;
-        }
-
-        switch (entry_type)
+        auto obj = objectMgr.GetLoadedObject(entryInfo->Type, entryInfo->Index);
+        switch (obj->GetObjectType())
         {
             case ObjectType::LargeScenery:
             {
-                auto* sceneryEntry = static_cast<LargeSceneryEntry*>(object_entry_get_chunk(entry_type, entryIndex));
+                auto* sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
                 for (rct_large_scenery_tile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++)
                 {
@@ -722,13 +846,13 @@ static void track_design_mirror_scenery(TrackDesign* td6)
             }
             case ObjectType::SmallScenery:
             {
-                auto* sceneryEntry = static_cast<SmallSceneryEntry*>(object_entry_get_chunk(entry_type, entryIndex));
+                auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
                 scenery.y = -scenery.y;
 
-                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
                 {
                     scenery.flags ^= (1 << 0);
-                    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
                     {
                         scenery.flags ^= (1 << 2);
                     }
@@ -752,6 +876,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 break;
             }
             case ObjectType::Paths:
+            case ObjectType::FootpathSurface:
             {
                 scenery.y = -scenery.y;
 
@@ -767,7 +892,6 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 break;
             }
             default:
-                // This switch processes only ObjectType for Scenery items.
                 break;
         }
     }
@@ -781,7 +905,8 @@ static void track_design_mirror_ride(TrackDesign* td6)
 {
     for (auto& track : td6->track_elements)
     {
-        track.type = TrackElementMirrorMap[track.type];
+        const auto& ted = GetTrackElementDescriptor(track.type);
+        track.type = ted.MirrorElement;
     }
 
     for (auto& entrance : td6->entrance_elements)
@@ -863,54 +988,11 @@ static void track_design_update_max_min_coordinates(const CoordsXYZ& coords)
                          std::max(_trackPreviewMax.z, coords.z) };
 }
 
-static bool TrackDesignPlaceSceneryElementGetEntry(
-    ObjectType& entry_type, ObjectEntryIndex& entry_index, const TrackDesignSceneryElement& scenery)
-{
-    if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
-    {
-        entry_type = scenery.scenery_object.GetType();
-        if (entry_type != ObjectType::Paths)
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return true;
-        }
-
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return true;
-        }
-
-        entry_index = 0;
-        for (PathSurfaceEntry* path = get_path_surface_entry(0);
-             entry_index < object_entry_group_counts[EnumValue(ObjectType::Paths)];
-             path = get_path_surface_entry(entry_index), entry_index++)
-        {
-            if (path == nullptr)
-            {
-                return true;
-            }
-            if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
-            {
-                return true;
-            }
-        }
-
-        if (entry_index == object_entry_group_counts[EnumValue(ObjectType::Paths)])
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return true;
-        }
-    }
-    return false;
-}
-
 static bool TrackDesignPlaceSceneryElementRemoveGhost(
     CoordsXY mapCoord, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
-    ObjectType entry_type;
-    ObjectEntryIndex entry_index;
-    if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
+    auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
+    if (!entryInfo)
     {
         return true;
     }
@@ -925,24 +1007,22 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
     std::unique_ptr<GameAction> ga;
-    switch (entry_type)
+    switch (entryInfo->Type)
     {
         case ObjectType::SmallScenery:
         {
             uint8_t quadrant = (scenery.flags >> 2) + _currentTrackPieceDirection;
             quadrant &= 3;
 
-            auto* sceneryEntry = get_small_scenery_entry(entry_index);
-            if (!(!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)
-                  && scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
-                && scenery_small_entry_has_flag(
-                    sceneryEntry,
+            auto* sceneryEntry = get_small_scenery_entry(entryInfo->Index);
+            if (!(!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
+                && sceneryEntry->HasFlag(
                     SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
             {
                 quadrant = 0;
             }
 
-            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entry_index);
+            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entryInfo->Index);
             break;
         }
         case ObjectType::LargeScenery:
@@ -952,6 +1032,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
             break;
         case ObjectType::Paths:
+        case ObjectType::FootpathSurface:
             ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
@@ -970,41 +1051,44 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(const TrackDesignSceneryElem
         _trackDesignPlaceSceneryZ = z;
     }
 
-    ObjectType entry_type;
-    ObjectEntryIndex entry_index;
-    TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery);
-
+    TrackDesignPlaceSceneryElementGetEntry(scenery);
     return true;
 }
 
-static bool TrackDesignPlaceSceneryElement(
+static std::optional<money32> TrackDesignPlaceSceneryElement(
     CoordsXY mapCoord, uint8_t mode, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
         track_design_add_selection_tile(mapCoord);
-        return true;
+        return 0;
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST && mode == 0)
     {
-        return TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ);
+        if (TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ))
+            return 0;
+
+        return std::nullopt;
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
     {
-        return TrackDesignPlaceSceneryElementGetPlaceZ(scenery);
+        if (TrackDesignPlaceSceneryElementGetPlaceZ(scenery))
+            return 0;
+
+        return std::nullopt;
     }
 
+    money32 totalCost = 0;
     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY || _trackDesignPlaceOperation == PTD_OPERATION_PLACE
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
     {
-        ObjectType entry_type;
-        ObjectEntryIndex entry_index;
-        if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
+        auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
+        if (!entryInfo)
         {
-            return true;
+            return 0;
         }
 
         money32 cost;
@@ -1012,17 +1096,17 @@ static bool TrackDesignPlaceSceneryElement(
         uint8_t flags;
         uint8_t quadrant;
 
-        switch (entry_type)
+        switch (entryInfo->Type)
         {
             case ObjectType::SmallScenery:
             {
                 if (mode != 0)
                 {
-                    return true;
+                    return 0;
                 }
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return true;
+                    return 0;
                 }
 
                 rotation += scenery.flags;
@@ -1052,7 +1136,7 @@ static bool TrackDesignPlaceSceneryElement(
                 gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
                 auto smallSceneryPlace = SmallSceneryPlaceAction(
-                    { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entry_index, scenery.primary_colour,
+                    { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primary_colour,
                     scenery.secondary_colour);
 
                 smallSceneryPlace.SetFlags(flags);
@@ -1066,11 +1150,11 @@ static bool TrackDesignPlaceSceneryElement(
             {
                 if (mode != 0)
                 {
-                    return true;
+                    return 0;
                 }
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return true;
+                    return 0;
                 }
 
                 rotation += scenery.flags;
@@ -1098,7 +1182,8 @@ static bool TrackDesignPlaceSceneryElement(
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
                 auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                    { mapCoord.x, mapCoord.y, z, rotation }, entry_index, scenery.primary_colour, scenery.secondary_colour);
+                    { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primary_colour,
+                    scenery.secondary_colour);
                 sceneryPlaceAction.SetFlags(flags);
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&sceneryPlaceAction)
                                                            : GameActions::QueryNested(&sceneryPlaceAction);
@@ -1110,11 +1195,11 @@ static bool TrackDesignPlaceSceneryElement(
             {
                 if (mode != 0)
                 {
-                    return true;
+                    return 0;
                 }
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return true;
+                    return 0;
                 }
 
                 z = scenery.z * COORDS_Z_STEP + originZ;
@@ -1141,7 +1226,7 @@ static bool TrackDesignPlaceSceneryElement(
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
                 auto wallPlaceAction = WallPlaceAction(
-                    entry_index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primary_colour, scenery.secondary_colour,
+                    entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primary_colour, scenery.secondary_colour,
                     (scenery.flags & 0xFC) >> 2);
                 wallPlaceAction.SetFlags(flags);
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&wallPlaceAction)
@@ -1151,19 +1236,16 @@ static bool TrackDesignPlaceSceneryElement(
                 break;
             }
             case ObjectType::Paths:
+            case ObjectType::FootpathSurface:
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
-                    return true;
+                    return 0;
                 }
 
                 z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
                 if (mode == 0)
                 {
-                    if (scenery.flags & (1 << 7))
-                    {
-                        // dh
-                        entry_index |= (1 << 7);
-                    }
+                    auto isQueue = scenery.IsQueue();
 
                     uint8_t bh = ((scenery.flags & 0xF) << rotation);
                     flags = bh >> 4;
@@ -1193,8 +1275,14 @@ static bool TrackDesignPlaceSceneryElement(
                     }
                     uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
                     uint8_t edges = bh & 0xF;
+                    PathConstructFlags constructFlags = 0;
+                    if (isQueue)
+                        constructFlags |= PathConstructFlag::IsQueue;
+                    if (entryInfo->Type == ObjectType::Paths)
+                        constructFlags |= PathConstructFlag::IsLegacyPathObject;
                     auto footpathPlaceAction = FootpathPlaceFromTrackAction(
-                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entry_index, edges);
+                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entryInfo->Index, entryInfo->SecondaryIndex,
+                        edges, constructFlags);
                     footpathPlaceAction.SetFlags(flags);
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
                                                                : GameActions::QueryNested(&footpathPlaceAction);
@@ -1205,14 +1293,14 @@ static bool TrackDesignPlaceSceneryElement(
                 {
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
-                        return true;
+                        return 0;
                     }
 
                     auto* pathElement = map_get_path_element_at({ mapCoord.x / 32, mapCoord.y / 32, z });
 
                     if (pathElement == nullptr)
                     {
-                        return true;
+                        return 0;
                     }
 
                     footpath_queue_chain_reset();
@@ -1234,41 +1322,43 @@ static bool TrackDesignPlaceSceneryElement(
                     }
                     footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
                     footpath_update_queue_chains();
-                    return true;
+                    return 0;
                 }
                 break;
             default:
                 _trackDesignPlaceStateSceneryUnavailable = true;
-                return true;
+                return 0;
         }
-        _trackDesignPlaceCost = add_clamp_money32(_trackDesignPlaceCost, cost);
+        totalCost = add_clamp_money32(totalCost, cost);
         if (_trackDesignPlaceOperation != PTD_OPERATION_PLACE)
         {
             if (cost == MONEY32_UNDEFINED)
             {
-                _trackDesignPlaceCost = MONEY32_UNDEFINED;
+                totalCost = MONEY32_UNDEFINED;
             }
         }
-        if (_trackDesignPlaceCost != MONEY32_UNDEFINED)
+        if (totalCost != MONEY32_UNDEFINED)
         {
-            return true;
+            return totalCost;
         }
         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE)
         {
-            return true;
+            return totalCost;
         }
-        return false;
+        return std::nullopt;
     }
-    return true;
+    return totalCost;
 }
 
 /**
  *
  *  rct2: 0x006D0964
  */
-static int32_t track_design_place_all_scenery(
-    const std::vector<TrackDesignSceneryElement>& sceneryList, int32_t originX, int32_t originY, int32_t originZ)
+static std::optional<money32> track_design_place_all_scenery(
+    const std::vector<TrackDesignSceneryElement>& sceneryList, const CoordsXYZ& origin)
 {
+    money32 cost = 0;
+
     for (uint8_t mode = 0; mode <= 1; mode++)
     {
         if (!sceneryList.empty())
@@ -1284,23 +1374,26 @@ static int32_t track_design_place_all_scenery(
         for (const auto& scenery : sceneryList)
         {
             uint8_t rotation = _currentTrackPieceDirection;
-            TileCoordsXY tileCoords = { originX / COORDS_XY_STEP, originY / COORDS_XY_STEP };
+            TileCoordsXY tileCoords = TileCoordsXY(origin);
             TileCoordsXY offsets = { scenery.x, scenery.y };
             tileCoords += offsets.Rotate(rotation);
 
-            auto mapCoord = CoordsXYZ{ tileCoords.ToCoordsXY(), originZ };
+            auto mapCoord = CoordsXYZ{ tileCoords.ToCoordsXY(), origin.z };
             track_design_update_max_min_coordinates(mapCoord);
 
-            if (!TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, originZ))
+            auto placementCost = TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, origin.z);
+            if (!placementCost.has_value() || placementCost == MONEY32_UNDEFINED)
             {
-                return 0;
+                return std::nullopt;
             }
+            cost += placementCost.value();
         }
     }
-    return 1;
+
+    return cost;
 }
 
-static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords, Ride* ride)
+static std::optional<money32> track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords, Ride* ride)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
@@ -1310,7 +1403,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
     }
 
     _trackDesignPlaceZ = 0;
-    _trackDesignPlaceCost = 0;
+    money32 totalCost = 0;
 
     for (const auto& maze_element : td6->maze_elements)
     {
@@ -1414,7 +1507,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                     }
                     break;
                 default:
-                    maze_entry = rol16(maze_element.maze_entry, rotation * 4);
+                    maze_entry = Numerics::rol16(maze_element.maze_entry, rotation * 4);
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                     {
@@ -1447,12 +1540,11 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                     break;
             }
 
-            _trackDesignPlaceCost += cost;
+            totalCost += cost;
 
             if (cost == MONEY32_UNDEFINED)
             {
-                _trackDesignPlaceCost = cost;
-                return 0;
+                return std::nullopt;
             }
         }
 
@@ -1499,10 +1591,10 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
     }
 
     _trackPreviewOrigin = coords;
-    return 1;
+    return totalCost;
 }
 
-static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, Ride* ride)
+static std::optional<money32> track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, Ride* ride)
 {
     _trackPreviewOrigin = origin;
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
@@ -1513,7 +1605,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
     }
 
     _trackDesignPlaceZ = 0;
-    _trackDesignPlaceCost = 0;
+    money32 totalCost = 0;
     uint8_t rotation = _currentTrackPieceDirection;
 
     // Track elements
@@ -1521,13 +1613,14 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
     for (const auto& track : td6->track_elements)
     {
         auto trackType = track.type;
+        const auto& ted = GetTrackElementDescriptor(trackType);
 
         track_design_update_max_min_coordinates(newCoords);
 
         switch (_trackDesignPlaceOperation)
         {
             case PTD_OPERATION_DRAW_OUTLINES:
-                for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+                for (const rct_preview_track* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     track_design_update_max_min_coordinates({ tile, newCoords.z });
@@ -1536,8 +1629,8 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                 break;
             case PTD_OPERATION_REMOVE_GHOST:
             {
-                const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
-                const rct_preview_track* trackBlock = TrackBlocks[trackType];
+                const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
+                const rct_preview_track* trackBlock = ted.Block;
                 int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
@@ -1551,7 +1644,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
             case PTD_OPERATION_PLACE_GHOST:
             case PTD_OPERATION_PLACE_TRACK_PREVIEW:
             {
-                const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
+                const rct_track_coordinates* trackCoordinates = &ted.Coordinates;
 
                 // di
                 int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
@@ -1599,18 +1692,17 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                                                            : GameActions::QueryNested(&trackPlaceAction);
                 money32 cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
 
-                _trackDesignPlaceCost += cost;
+                totalCost += cost;
                 if (cost == MONEY32_UNDEFINED)
                 {
-                    _trackDesignPlaceCost = cost;
-                    return false;
+                    return std::nullopt;
                 }
                 break;
             }
             case PTD_OPERATION_GET_PLACE_Z:
             {
-                int32_t tempZ = newCoords.z - TrackCoordinates[trackType].z_begin;
-                for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+                int32_t tempZ = newCoords.z - ted.Coordinates.z_begin;
+                for (const rct_preview_track* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     if (!map_is_location_valid(tile))
@@ -1621,7 +1713,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                     auto surfaceElement = map_get_surface_element_at(tile);
                     if (surfaceElement == nullptr)
                     {
-                        return false;
+                        return std::nullopt;
                     }
 
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
@@ -1649,13 +1741,13 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
             }
         }
 
-        const rct_track_coordinates* track_coordinates = &TrackCoordinates[trackType];
+        const rct_track_coordinates& track_coordinates = ted.Coordinates;
         auto offsetAndRotatedTrack = CoordsXY{ newCoords }
-            + CoordsXY{ track_coordinates->x, track_coordinates->y }.Rotate(rotation);
+            + CoordsXY{ track_coordinates.x, track_coordinates.y }.Rotate(rotation);
 
-        newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates->z_begin + track_coordinates->z_end };
-        rotation = (rotation + track_coordinates->rotation_end - track_coordinates->rotation_begin) & 3;
-        if (track_coordinates->rotation_end & (1 << 2))
+        newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates.z_begin + track_coordinates.z_end };
+        rotation = (rotation + track_coordinates.rotation_end - track_coordinates.rotation_begin) & 3;
+        if (track_coordinates.rotation_end & (1 << 2))
         {
             rotation |= (1 << 2);
         }
@@ -1694,8 +1786,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                     newCoords.z += entrance.z;
                     if (tile_element == nullptr)
                     {
-                        _trackDesignPlaceCost = MONEY32_UNDEFINED;
-                        return false;
+                        return std::nullopt;
                     }
 
                     do
@@ -1736,12 +1827,11 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                         auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
                                                                    : GameActions::QueryNested(&rideEntranceExitPlaceAction);
 
-                        _trackDesignPlaceCost += res->Cost;
+                        totalCost += res->Cost;
 
                         if (res->Error != GameActions::Status::Ok)
                         {
-                            _trackDesignPlaceCost = MONEY32_UNDEFINED;
-                            return false;
+                            return std::nullopt;
                         }
                         _trackDesignPlaceStateEntranceExitPlaced = true;
                         break;
@@ -1755,14 +1845,11 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                     auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
                     if (res->Error != GameActions::Status::Ok)
                     {
-                        _trackDesignPlaceCost = MONEY32_UNDEFINED;
-                        return false;
+                        return std::nullopt;
                     }
-                    else
-                    {
-                        _trackDesignPlaceCost += res->Cost;
-                        _trackDesignPlaceStateEntranceExitPlaced = true;
-                    }
+
+                    totalCost += res->Cost;
+                    _trackDesignPlaceStateEntranceExitPlaced = true;
                 }
                 break;
             }
@@ -1771,10 +1858,10 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST)
     {
-        sub_6CB945(ride);
+        ride->ValidateStations();
         ride->Delete();
     }
-    return true;
+    return totalCost;
 }
 
 /**
@@ -1790,7 +1877,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
  * bl == 6, Clear white outlined track.
  *  rct2: 0x006D01B3
  */
-int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
+money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
 {
     // Previously byte_F4414E was cleared here
     _trackDesignPlaceStatePlaceScenery = placeScenery;
@@ -1811,24 +1898,26 @@ int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
     _trackPreviewMax = coords;
 
     _trackDesignPlaceSceneryZ = 0;
-    uint8_t track_place_success = 0;
+    std::optional<money32> trackPlaceCost;
     if (td6->type == RIDE_TYPE_MAZE)
     {
-        track_place_success = track_design_place_maze(td6, coords, ride);
+        trackPlaceCost = track_design_place_maze(td6, coords, ride);
     }
     else
     {
-        track_place_success = track_design_place_ride(td6, coords, ride);
+        trackPlaceCost = track_design_place_ride(td6, coords, ride);
     }
 
     // Scenery elements
-    if (track_place_success)
+    if (trackPlaceCost.has_value())
     {
-        if (!track_design_place_all_scenery(
-                td6->scenery_elements, _trackPreviewOrigin.x, _trackPreviewOrigin.y, _trackPreviewOrigin.z))
+        auto sceneryCost = track_design_place_all_scenery(td6->scenery_elements, _trackPreviewOrigin);
+        if (!sceneryCost.has_value())
         {
-            return _trackDesignPlaceCost;
+            return MONEY32_UNDEFINED;
         }
+
+        trackPlaceCost = trackPlaceCost.value() + sceneryCost.value();
     }
 
     // 0x6D0FE6
@@ -1846,7 +1935,8 @@ int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeSc
         // from _trackDesignPlaceZ, causing bug #259.
         return _trackDesignPlaceZ - _trackDesignPlaceSceneryZ;
     }
-    return _trackDesignPlaceCost;
+
+    return trackPlaceCost.has_value() ? trackPlaceCost.value() : MONEY32_UNDEFINED;
 }
 
 static money32 track_design_ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
@@ -1855,8 +1945,7 @@ static money32 track_design_ride_create_command(int32_t type, int32_t subType, i
     auto gameAction = RideCreateAction(type, subType, 0, 0);
     gameAction.SetFlags(flags);
 
-    auto r = GameActions::ExecuteNested(&gameAction);
-    const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
+    auto res = GameActions::ExecuteNested(&gameAction);
 
     // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
     if (res->Error != GameActions::Status::Ok)
@@ -1864,7 +1953,7 @@ static money32 track_design_ride_create_command(int32_t type, int32_t subType, i
         return MONEY32_UNDEFINED;
     }
 
-    *outRideIndex = res->rideIndex;
+    *outRideIndex = res->GetData<ride_id_t>();
 
     return res->Cost;
 }
@@ -1880,12 +1969,8 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     *outRide = nullptr;
     *flags = 0;
 
-    ObjectType entry_type;
-    ObjectEntryIndex entry_index;
-    if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
-    {
-        entry_index = OBJECT_ENTRY_INDEX_NULL;
-    }
+    auto& objManager = GetContext()->GetObjectManager();
+    auto entry_index = objManager.GetLoadedObjectEntryIndex(td6->vehicle_object);
 
     ride_id_t rideIndex;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
@@ -1899,7 +1984,13 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         return false;
 
     ride->custom_name = {};
-    ride->entrance_style = td6->entrance_style;
+
+    auto stationIdentifier = GetStationIdentifierFromStyle(td6->entrance_style);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
+    {
+        ride->entrance_style = gLastEntranceStyle;
+    }
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
@@ -1920,14 +2011,15 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         }
     }
 
-    byte_9D8150 = true;
+    _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
     uint32_t backup_park_flags = gParkFlags;
     gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
     int32_t mapSize = gMapSize << 4;
 
     _currentTrackPieceDirection = 0;
-    int32_t z = place_virtual_track(td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), { mapSize, mapSize, 16 });
+    int32_t z = place_virtual_track(
+        td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(PreviewRideId), { mapSize, mapSize, 16 });
 
     if (_trackDesignPlaceStateHasScenery)
     {
@@ -1949,7 +2041,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 
     if (resultCost != MONEY32_UNDEFINED)
     {
-        if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
+        if (entry_index == OBJECT_ENTRY_INDEX_NULL)
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
@@ -1959,18 +2051,16 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         }
 
         _currentTrackPieceDirection = backup_rotation;
-        byte_9D8150 = false;
+        _trackDesignDrawingPreview = false;
         *cost = resultCost;
         *outRide = ride;
         return true;
     }
-    else
-    {
-        _currentTrackPieceDirection = backup_rotation;
-        ride->Delete();
-        byte_9D8150 = false;
-        return false;
-    }
+
+    _currentTrackPieceDirection = backup_rotation;
+    ride->Delete();
+    _trackDesignDrawingPreview = false;
+    return false;
 }
 
 #pragma region Track Design Preview
@@ -2057,22 +2147,13 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
     dpi.DrawingEngine = drawingEngine.get();
 
-    CoordsXY offset = { size_x / 2, size_y / 2 };
+    const ScreenCoordsXY offset = { size_x / 2, size_y / 2 };
     for (uint8_t i = 0; i < 4; i++)
     {
         gCurrentRotation = i;
 
-        auto screenCoords = translate_3d_to_2d_with_z(i, centre);
-        screenCoords.x -= offset.x;
-        screenCoords.y -= offset.y;
-
-        int32_t left = screenCoords.x;
-        int32_t top = screenCoords.y;
-        int32_t right = left + size_x;
-        int32_t bottom = top + size_y;
-
-        view.viewPos = { left, top };
-        viewport_paint(&view, &dpi, left, top, right, bottom);
+        view.viewPos = translate_3d_to_2d_with_z(i, centre) - offset;
+        viewport_paint(&view, &dpi, { view.viewPos, view.viewPos + ScreenCoordsXY{ size_x, size_y } });
 
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
     }
@@ -2089,8 +2170,6 @@ static void track_design_preview_clear_map()
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    gMapSizeUnits = 255 * COORDS_XY_STEP;
-    gMapSizeMinus2 = (264 * 32) - 2;
     gMapSize = 256;
 
     // Reserve ~8 elements per tile

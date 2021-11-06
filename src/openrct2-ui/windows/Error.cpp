@@ -24,7 +24,7 @@ enum {
 
 static rct_widget window_error_widgets[] = {
     MakeWidget({0, 0}, {200, 42}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static void window_error_unknown5(rct_window *w);

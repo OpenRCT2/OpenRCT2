@@ -49,6 +49,7 @@ namespace OpenRCT2
 
             paint_session* CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags);
             void ReleaseSession(paint_session* session);
+            ~Painter();
 
         private:
             void PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text);

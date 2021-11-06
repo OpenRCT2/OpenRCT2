@@ -17,6 +17,9 @@
 
 #include <string>
 #include <string_view>
+#include <vector>
+
+class ObjectList;
 
 using track_type_t = uint16_t;
 using RCT12TrackType = uint8_t;
@@ -25,6 +28,8 @@ constexpr uint8_t RCT2_STRING_FORMAT_ARG_START = 123;
 constexpr uint8_t RCT2_STRING_FORMAT_ARG_END = 141;
 constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_START = 142;
 constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_END = 156;
+
+constexpr const uint8_t RCT12_MAX_RIDE_OBJECTS = 128;
 
 constexpr const uint8_t RCT12_MAX_RIDES_IN_PARK = 255;
 constexpr const uint8_t RCT12_MAX_AWARDS = 4;
@@ -84,6 +89,11 @@ constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 
 constexpr const uint16_t RCT12VehicleTrackDirectionMask = 0b0000000000000011;
 constexpr const uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
+
+constexpr const uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max();
+
+constexpr const uint8_t RCT12GuestsInParkHistoryFactor = 20;
+constexpr const uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
@@ -191,12 +201,12 @@ struct RCT12xy8
         uint16_t xy;
     };
 
-    bool isNull() const
+    bool IsNull() const
     {
         return xy == RCT12_XY8_UNDEFINED;
     }
 
-    void setNull()
+    void SetNull()
     {
         xy = RCT12_XY8_UNDEFINED;
     }
@@ -932,3 +942,35 @@ std::string ConvertFormattedStringToRCT2(std::string_view buffer, size_t maxLeng
 std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength);
 track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType);
 RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType);
+std::string_view GetStationIdentifierFromStyle(uint8_t style);
+std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
+
+static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
+
+money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
+money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue);
+
+template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
+{
+    std::vector<uint16_t> ridesTypesBeenOn;
+    for (uint16_t i = 0; i < RCT12_MAX_RIDE_OBJECTS; i++)
+    {
+        if (srcPeep->ride_types_been_on[i / 8] & (1 << (i % 8)))
+        {
+            ridesTypesBeenOn.push_back(i);
+        }
+    }
+    return ridesTypesBeenOn;
+}
+template<typename T> std::vector<ride_id_t> RCT12GetRidesBeenOn(T* srcPeep)
+{
+    std::vector<ride_id_t> ridesBeenOn;
+    for (uint16_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
+    {
+        if (srcPeep->rides_been_on[i / 8] & (1 << (i % 8)))
+        {
+            ridesBeenOn.push_back(static_cast<ride_id_t>(i));
+        }
+    }
+    return ridesBeenOn;
+}

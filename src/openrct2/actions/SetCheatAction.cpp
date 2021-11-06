@@ -18,6 +18,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
+#include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
@@ -68,18 +69,18 @@ GameActions::Result::Ptr SetCheatAction::Query() const
 {
     if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::Count))
     {
-        MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     ParametersRange validRange = GetParameterRange(static_cast<CheatType>(_cheatType.id));
 
     if (_param1 < validRange.first.first || _param1 > validRange.first.second)
     {
-        MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     if (_param2 < validRange.second.first || _param2 > validRange.second.second)
     {
-        MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     return MakeResult();
@@ -242,7 +243,7 @@ GameActions::Result::Ptr SetCheatAction::Execute() const
         default:
         {
             log_error("Unabled cheat: %d", _cheatType.id);
-            MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+            MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
         }
         break;
     }
@@ -683,7 +684,7 @@ void SetCheatAction::SetStaffSpeed(uint8_t value) const
 void SetCheatAction::OwnAllLand() const
 {
     const int32_t min = 32;
-    const int32_t max = gMapSizeUnits - 32;
+    const int32_t max = GetMapSizeUnits() - 32;
 
     for (CoordsXY coords = { min, min }; coords.y <= max; coords.y += COORDS_XY_STEP)
     {

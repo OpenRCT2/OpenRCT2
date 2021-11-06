@@ -61,19 +61,22 @@ const rct_string_id StaffCostumeNames[] = {
 };
 // clang-format on
 
-// Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their StaffId
-// Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
-uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
-StaffMode gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
 uint16_t gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
 
+static PatrolArea _mergedPatrolAreas[EnumValue(StaffType::Count)];
+
+const PatrolArea& GetMergedPatrolArea(const StaffType type)
+{
+    return _mergedPatrolAreas[EnumValue(type)];
+}
+
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
 
-template<> bool SpriteBase::Is<Staff>() const
+template<> bool EntityBase::Is<Staff>() const
 {
     return Type == EntityType::Staff;
 }
@@ -84,12 +87,6 @@ template<> bool SpriteBase::Is<Staff>() const
  */
 void staff_reset_modes()
 {
-    for (int32_t i = 0; i < STAFF_MAX_COUNT; i++)
-        gStaffModes[i] = StaffMode::None;
-
-    for (int32_t i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)); i++)
-        gStaffModes[i] = StaffMode::Walk;
-
     staff_update_greyed_patrol_areas();
 }
 
@@ -120,12 +117,13 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
     }
 
     auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
-    hireStaffAction.SetCallback([=](const GameAction*, const StaffHireNewActionResult* res) -> void {
+    hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
         if (res->Error != GameActions::Status::Ok)
             return;
 
+        auto actionResult = res->GetData<StaffHireNewActionResult>();
         // Open window for new staff.
-        auto* staff = GetEntity<Staff>(res->peepSriteIndex);
+        auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
         auto intent = Intent(WC_PEEP);
         intent.putExtra(INTENT_EXTRA_PEEP, staff);
         context_open_intent(&intent);
@@ -141,23 +139,27 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
  */
 void staff_update_greyed_patrol_areas()
 {
-    for (int32_t staff_type = 0; staff_type < static_cast<uint8_t>(StaffType::Count); ++staff_type)
+    for (int32_t staffType = 0; staffType < EnumValue(StaffType::Count); ++staffType)
     {
-        int32_t staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
-        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-        {
-            gStaffPatrolAreas[staffPatrolOffset + i] = 0;
-        }
+        // Reset all of the merged data for the type.
+        auto& mergedData = _mergedPatrolAreas[staffType].Data;
+        std::fill(std::begin(mergedData), std::end(mergedData), 0);
 
-        for (auto peep : EntityList<Staff>())
+        for (auto staff : EntityList<Staff>())
         {
-            if (static_cast<uint8_t>(peep->AssignedStaffType) == staff_type)
+            if (EnumValue(staff->AssignedStaffType) != staffType)
             {
-                int32_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
-                for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-                {
-                    gStaffPatrolAreas[staffPatrolOffset + i] |= gStaffPatrolAreas[peepPatrolOffset + i];
-                }
+                continue;
+            }
+            if (!staff->HasPatrolArea())
+            {
+                continue;
+            }
+
+            auto staffData = staff->PatrolInfo->Data;
+            for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+            {
+                mergedData[i] |= staffData[i];
             }
         }
     }
@@ -174,7 +176,7 @@ bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
         return false;
 
     // Check if staff has patrol area
-    if (gStaffModes[StaffId] != StaffMode::Patrol)
+    if (!HasPatrolArea())
         return true;
 
     return IsPatrolAreaSet(loc);
@@ -364,39 +366,46 @@ void Staff::ResetStats()
 
 static std::pair<int32_t, int32_t> getPatrolAreaOffsetIndex(const CoordsXY& coords)
 {
-    // Patrol areas are 4 * 4 tiles (32 * 4) = 128 = 2^^7
-    auto hash = ((coords.x & 0x1F80) >> 7) | ((coords.y & 0x1F80) >> 1);
-    return { hash >> 5, hash & 0x1F };
-}
-
-static bool staff_is_patrol_area_set(int32_t staffIndex, const CoordsXY& coords)
-{
-    // Patrol quads are stored in a bit map (8 patrol quads per byte).
-    // Each patrol quad is 4x4.
-    // Therefore there are in total 64 x 64 patrol quads in the 256 x 256 map.
-    // At the end of the array (after the slots for individual staff members),
-    // there are slots that save the combined patrol area for every staff type.
-
-    int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    return gStaffPatrolAreas[peepOffset + offset] & (1UL << bitIndex);
+    auto tilePos = TileCoordsXY(coords);
+    auto x = tilePos.x / 4;
+    auto y = tilePos.y / 4;
+    auto bitIndex = (y * STAFF_PATROL_AREA_BLOCKS_PER_LINE) + x;
+    auto byteIndex = int32_t(bitIndex / 32);
+    auto byteBitIndex = int32_t(bitIndex % 32);
+    return { byteIndex, byteBitIndex };
 }
 
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
 {
-    return staff_is_patrol_area_set(StaffId, coords);
+    if (PatrolInfo != nullptr)
+    {
+        auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
+        return PatrolInfo->Data[offset] & (1UL << bitIndex);
+    }
+    return false;
 }
 
 bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords)
 {
-    return staff_is_patrol_area_set(STAFF_MAX_COUNT + static_cast<uint8_t>(type), coords);
+    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
+    return _mergedPatrolAreas[EnumValue(type)].Data[offset] & (1UL << bitIndex);
 }
 
-void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value)
+void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
 {
-    int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
+    if (PatrolInfo == nullptr)
+    {
+        if (value)
+        {
+            PatrolInfo = new PatrolArea();
+        }
+        else
+        {
+            return;
+        }
+    }
     auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    uint32_t* addr = &gStaffPatrolAreas[peepOffset + offset];
+    auto* addr = &PatrolInfo->Data[offset];
     if (value)
     {
         *addr |= (1 << bitIndex);
@@ -407,11 +416,19 @@ void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool valu
     }
 }
 
-void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords)
+void Staff::ClearPatrolArea()
 {
-    int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    gStaffPatrolAreas[peepOffset + offset] ^= (1 << bitIndex);
+    delete PatrolInfo;
+    PatrolInfo = nullptr;
+}
+
+bool Staff::HasPatrolArea() const
+{
+    if (PatrolInfo == nullptr)
+        return false;
+
+    constexpr auto hasData = [](const auto& datapoint) { return datapoint != 0; };
+    return std::any_of(std::begin(PatrolInfo->Data), std::end(PatrolInfo->Data), hasData);
 }
 
 /**
@@ -712,7 +729,7 @@ Direction Staff::MechanicDirectionSurface() const
     if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection) && (scenario_rand() & 1))
     {
         auto location = ride_get_exit_location(ride, CurrentRideStation);
-        if (location.isNull())
+        if (location.IsNull())
         {
             location = ride_get_entrance_location(ride, CurrentRideStation);
         }
@@ -793,12 +810,12 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
         TileCoordsXYZD location = ride_get_exit_location(ride, CurrentRideStation);
-        if (location.isNull())
+        if (location.IsNull())
         {
             location = ride_get_entrance_location(ride, CurrentRideStation);
 
             // If no entrance is present either. This is an incorrect state.
-            if (location.isNull())
+            if (location.IsNull())
             {
                 return MechanicDirectionPathRand(pathDirections);
             }
@@ -1150,10 +1167,10 @@ void Staff::UpdateMowing()
 
     while (true)
     {
-        if (auto loc = UpdateAction())
+        if (auto loc = UpdateAction(); loc.has_value())
         {
             int16_t checkZ = tile_element_height(*loc);
-            MoveTo({ *loc, checkZ });
+            MoveTo({ loc.value(), checkZ });
             return;
         }
 
@@ -1237,7 +1254,7 @@ void Staff::UpdateWatering()
 
             auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
-            if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
                 continue;
 
             tile_element->AsSmallScenery()->SetAge(0);
@@ -1344,14 +1361,14 @@ void Staff::UpdateSweeping()
     if (Action == PeepActionType::StaffSweep && ActionFrame == 8)
     {
         // Remove sick at this location
-        Litter::RemoveAt({ x, y, z });
+        Litter::RemoveAt(GetLocation());
         StaffLitterSwept++;
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         int16_t actionZ = GetZOnSlope((*loc).x, (*loc).y);
-        MoveTo({ *loc, actionZ });
+        MoveTo({ loc.value(), actionZ });
         return;
     }
 
@@ -1380,7 +1397,7 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    if (ride_get_exit_location(ride, CurrentRideStation).isNull())
+    if (ride_get_exit_location(ride, CurrentRideStation).IsNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         SetState(PeepState::Falling);
@@ -1435,7 +1452,7 @@ void Staff::UpdateHeadingToInspect()
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exit_index).isNull())
+            if (!ride_get_exit_location(ride, exit_index).IsNull())
             {
                 return;
             }
@@ -1453,7 +1470,7 @@ void Staff::UpdateHeadingToInspect()
     }
 
     int16_t delta_y = abs(GetLocation().y - GetDestination().y);
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
 
@@ -1462,7 +1479,7 @@ void Staff::UpdateHeadingToInspect()
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, newZ });
+        MoveTo({ loc.value(), newZ });
         return;
     }
 
@@ -1495,7 +1512,7 @@ void Staff::UpdateAnswering()
         peep_window_state_update(this);
         return;
     }
-    else if (SubState == 1)
+    if (SubState == 1)
     {
         if (IsActionWalking())
         {
@@ -1509,7 +1526,7 @@ void Staff::UpdateAnswering()
         Invalidate();
         return;
     }
-    else if (SubState <= 3)
+    if (SubState <= 3)
     {
         MechanicTimeSinceCall++;
         if (MechanicTimeSinceCall > 2500)
@@ -1542,7 +1559,7 @@ void Staff::UpdateAnswering()
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exit_index).isNull())
+            if (!ride_get_exit_location(ride, exit_index).IsNull())
             {
                 return;
             }
@@ -1562,7 +1579,7 @@ void Staff::UpdateAnswering()
     }
 
     int16_t delta_y = abs(y - GetDestination().y);
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
 
@@ -1571,7 +1588,7 @@ void Staff::UpdateAnswering()
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, newZ });
+        MoveTo({ loc.value(), newZ });
         return;
     }
 
@@ -1624,7 +1641,7 @@ bool Staff::UpdatePatrollingFindWatering()
 
             auto* sceneryEntry = tile_element->AsSmallScenery()->GetEntry();
 
-            if (sceneryEntry == nullptr || !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (sceneryEntry == nullptr || !sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
             {
                 continue;
             }
@@ -1989,7 +2006,7 @@ static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
         (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
         (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
         (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
-    )
+    ),
 };
 // clang-format on
 
@@ -2155,9 +2172,9 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride)
         SetDestination(destination, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
 
@@ -2275,7 +2292,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
         }
 
         auto stationPos = ride->stations[CurrentRideStation].GetStart();
-        if (stationPos.isNull())
+        if (stationPos.IsNull())
         {
             return true;
         }
@@ -2305,9 +2322,9 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
         SetDestination(stationPos, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
 
@@ -2361,7 +2378,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
         }
 
         auto stationPosition = ride->stations[CurrentRideStation].GetStart();
-        if (stationPosition.isNull())
+        if (stationPosition.IsNull())
         {
             return true;
         }
@@ -2411,9 +2428,9 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
         SetDestination(destination, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
 
@@ -2489,7 +2506,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 
     if (ActionFrame == 0x13 || ActionFrame == 0x19 || ActionFrame == 0x1F || ActionFrame == 0x25 || ActionFrame == 0x2B)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::MechanicFix, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::MechanicFix, GetLocation());
     }
 
     return false;
@@ -2505,11 +2522,11 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
     if (!firstRun)
     {
         auto stationPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
-        if (stationPosition.isNull())
+        if (stationPosition.IsNull())
         {
             stationPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
 
-            if (stationPosition.isNull())
+            if (stationPosition.IsNull())
             {
                 return true;
             }
@@ -2524,15 +2541,13 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
         SetDestination(stationPosition, 2);
     }
 
-    if (auto loc = UpdateAction())
+    if (auto loc = UpdateAction(); loc.has_value())
     {
-        MoveTo({ *loc, z });
+        MoveTo({ loc.value(), z });
         return false;
     }
-    else
-    {
-        return true;
-    }
+
+    return true;
 }
 
 /**
@@ -2587,11 +2602,11 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
     if (!firstRun)
     {
         auto exitPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
-        if (exitPosition.isNull())
+        if (exitPosition.IsNull())
         {
             exitPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
 
-            if (exitPosition.isNull())
+            if (exitPosition.IsNull())
             {
                 SetState(PeepState::Falling);
                 return false;
@@ -2608,7 +2623,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
     }
 
     int16_t xy_distance;
-    if (auto loc = UpdateAction(xy_distance))
+    if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
         uint16_t stationHeight = ride->stations[CurrentRideStation].GetBaseZ();
 
@@ -2617,7 +2632,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
             stationHeight += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
-        MoveTo({ *loc, stationHeight });
+        MoveTo({ loc.value(), stationHeight });
         return false;
     }
     SetState(PeepState::Falling);

@@ -37,6 +37,7 @@ TileCoordsXY windowTileInspectorTile;
 int32_t windowTileInspectorElementCount = 0;
 int32_t windowTileInspectorSelectedIndex;
 
+using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::TileInspector
 {
     static bool SwapTileElements(const CoordsXY& loc, int16_t first, int16_t second)
@@ -95,7 +96,7 @@ namespace OpenRCT2::TileInspector
     {
         // Make sure there is enough space for the new element
         if (!MapCheckCapacityAndReorganise(loc))
-            return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -106,14 +107,14 @@ namespace OpenRCT2::TileInspector
             if (corruptElement == nullptr)
             {
                 log_warning("Failed to insert corrupt element.");
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
             }
 
             // Set the base height to be the same as the selected element
             TileElement* const selectedElement = map_get_nth_element_at(loc, elementIndex + 1);
             if (selectedElement == nullptr)
             {
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
             }
             corruptElement->base_height = corruptElement->clearance_height = selectedElement->base_height;
 
@@ -207,11 +208,11 @@ namespace OpenRCT2::TileInspector
             TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
             if (tileElement == nullptr)
             {
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
             }
 
             auto largeScenery = tileElement->AsLargeScenery();
-            if (largeScenery)
+            if (largeScenery != nullptr)
             {
                 // Only delete the banner entry if there are no other parts of the large scenery to delete
                 if (numLargeScenerySequences(loc, largeScenery) == 1)
@@ -255,7 +256,7 @@ namespace OpenRCT2::TileInspector
         {
             if (!SwapTileElements(loc, first, second))
             {
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
             }
             map_invalidate_tile_full(loc);
 
@@ -283,7 +284,7 @@ namespace OpenRCT2::TileInspector
             TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
             if (tileElement == nullptr)
             {
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
             }
             switch (tileElement->GetType())
             {
@@ -361,7 +362,7 @@ namespace OpenRCT2::TileInspector
         // Make sure there is enough space for the new element
         if (!MapCheckCapacityAndReorganise(loc))
         {
-            return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::NoFreeElements, STR_NONE, STR_NONE);
         }
 
         auto tileLoc = TileCoordsXY(loc);
@@ -373,17 +374,18 @@ namespace OpenRCT2::TileInspector
             if (bannerIndex != BANNER_INDEX_NULL)
             {
                 // The element to be pasted refers to a banner index - make a copy of it
-                auto newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
-                if (newBannerIndex == BANNER_INDEX_NULL)
+                auto newBanner = CreateBanner();
+                if (newBanner == nullptr)
                 {
-                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                    log_error("No free banners available");
+                    return std::make_unique<GameActions::Result>(
+                        GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
                 }
-                auto& newBanner = *GetBanner(newBannerIndex);
-                newBanner = *GetBanner(bannerIndex);
-                newBanner.position = tileLoc;
+
+                newBanner->position = tileLoc;
 
                 // Use the new banner index
-                element.SetBannerIndex(newBannerIndex);
+                element.SetBannerIndex(newBanner->id);
             }
 
             // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set
@@ -421,7 +423,7 @@ namespace OpenRCT2::TileInspector
         {
             const TileElement* const firstElement = map_get_first_element_at(loc);
             if (firstElement == nullptr)
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
             // Count elements on tile
             int32_t numElement = 0;
@@ -481,17 +483,17 @@ namespace OpenRCT2::TileInspector
         {
             return std::make_unique<GameActions::Result>(GameActions::Status::TooLow, STR_CANT_LOWER_ELEMENT_HERE, STR_TOO_LOW);
         }
-        else if (newBaseHeight > MAX_ELEMENT_HEIGHT)
+        if (newBaseHeight > MAX_ELEMENT_HEIGHT)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::TooHigh, STR_CANT_RAISE_ELEMENT_HERE, STR_TOO_HIGH);
         }
-        else if (newClearanceHeight < 0)
+        if (newClearanceHeight < 0)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::NoClearance, STR_CANT_LOWER_ELEMENT_HERE, STR_NO_CLEARANCE);
         }
-        else if (newClearanceHeight > MAX_ELEMENT_HEIGHT)
+        if (newClearanceHeight > MAX_ELEMENT_HEIGHT)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::NoClearance, STR_CANT_RAISE_ELEMENT_HERE, STR_NO_CLEARANCE);
@@ -503,7 +505,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
         if (tileElement == nullptr)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         auto heightValidationResult = ValidateTileHeight(tileElement, heightOffset);
         if (heightValidationResult->Error != GameActions::Status::Ok)
@@ -555,7 +557,7 @@ namespace OpenRCT2::TileInspector
 
         // No surface element on tile
         if (surfaceelement == nullptr)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -581,53 +583,41 @@ namespace OpenRCT2::TileInspector
 
         // No surface element on tile
         if (surfaceElement == nullptr)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
             const uint8_t originalSlope = surfaceElement->GetSlope();
-            const bool diagonal = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
-
             uint8_t newSlope = surfaceElement->GetSlope() ^ (1 << cornerIndex);
-            surfaceElement->SetSlope(newSlope);
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height + 2;
-            }
-            else
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height;
-            }
 
             // All corners are raised
-            if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if ((newSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
-                uint8_t slope = TILE_ELEMENT_SLOPE_FLAT;
-
-                if (diagonal)
+                newSlope = TILE_ELEMENT_SLOPE_FLAT;
+                if ((originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
                 {
                     switch (originalSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     {
                         case TILE_ELEMENT_SLOPE_S_CORNER_DN:
-                            slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                            newSlope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
                             break;
                         case TILE_ELEMENT_SLOPE_W_CORNER_DN:
-                            slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                            newSlope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
                             break;
                         case TILE_ELEMENT_SLOPE_N_CORNER_DN:
-                            slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                            newSlope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
                             break;
                         case TILE_ELEMENT_SLOPE_E_CORNER_DN:
-                            slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                            newSlope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
                             break;
                     }
                 }
-                surfaceElement->SetSlope(slope);
 
-                // Update base and clearance heights
                 surfaceElement->base_height += 2;
-                surfaceElement->clearance_height = surfaceElement->base_height + (diagonal ? 2 : 0);
+                surfaceElement->clearance_height = surfaceElement->base_height;
             }
+
+            surfaceElement->SetSlope(newSlope);
 
             map_invalidate_tile_full(loc);
 
@@ -646,24 +636,12 @@ namespace OpenRCT2::TileInspector
 
         // No surface element on tile
         if (surfaceElement == nullptr)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
             uint8_t newSlope = surfaceElement->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
             surfaceElement->SetSlope(newSlope);
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height + 4;
-            }
-            else if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height + 2;
-            }
-            else
-            {
-                surfaceElement->clearance_height = surfaceElement->base_height;
-            }
 
             map_invalidate_tile_full(loc);
 
@@ -681,7 +659,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const pathElement = map_get_nth_element_at(loc, elementIndex);
 
         if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -703,7 +681,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const pathElement = map_get_nth_element_at(loc, elementIndex);
 
         if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -725,7 +703,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const pathElement = map_get_nth_element_at(loc, elementIndex);
 
         if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -748,11 +726,11 @@ namespace OpenRCT2::TileInspector
         TileElement* const entranceElement = map_get_nth_element_at(loc, elementIndex);
 
         if (entranceElement == nullptr || entranceElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         auto ride = get_ride(entranceElement->AsEntrance()->GetRideIndex());
         if (ride == nullptr)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -788,7 +766,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const wallElement = map_get_nth_element_at(loc, elementIndex);
 
         if (wallElement == nullptr || wallElement->GetType() != TILE_ELEMENT_TYPE_WALL)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -812,7 +790,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const wallElement = map_get_nth_element_at(loc, elementIndex);
 
         if (wallElement == nullptr || wallElement->GetType() != TILE_ELEMENT_TYPE_WALL)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -840,7 +818,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
 
         if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -852,9 +830,10 @@ namespace OpenRCT2::TileInspector
             auto rideIndex = trackElement->AsTrack()->GetRideIndex();
             auto ride = get_ride(rideIndex);
             if (ride == nullptr)
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
-            auto trackBlock = TrackBlocks[type];
+            const auto& ted = GetTrackElementDescriptor(type);
+            const auto* trackBlock = ted.Block;
             trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
             uint8_t originDirection = trackElement->GetDirection();
@@ -866,7 +845,7 @@ namespace OpenRCT2::TileInspector
             originY = static_cast<int16_t>(coords.y);
             originZ -= trackBlock->z;
 
-            trackBlock = TrackBlocks[type];
+            trackBlock = ted.Block;
             for (; trackBlock->index != 255; trackBlock++)
             {
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
@@ -878,7 +857,7 @@ namespace OpenRCT2::TileInspector
                 if (tileElement == nullptr)
                 {
                     log_error("Track map element part not found!");
-                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
                 }
 
                 // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is
@@ -912,7 +891,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
 
         if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -935,9 +914,10 @@ namespace OpenRCT2::TileInspector
             auto rideIndex = trackElement->AsTrack()->GetRideIndex();
             auto ride = get_ride(rideIndex);
             if (ride == nullptr)
-                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
-            auto trackBlock = TrackBlocks[type];
+            const auto& ted = GetTrackElementDescriptor(type);
+            auto trackBlock = ted.Block;
             trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
             uint8_t originDirection = trackElement->GetDirection();
@@ -949,7 +929,7 @@ namespace OpenRCT2::TileInspector
             originY = static_cast<int16_t>(coords.y);
             originZ -= trackBlock->z;
 
-            trackBlock = TrackBlocks[type];
+            trackBlock = ted.Block;
             for (; trackBlock->index != 255; trackBlock++)
             {
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
@@ -961,7 +941,7 @@ namespace OpenRCT2::TileInspector
                 if (tileElement == nullptr)
                 {
                     log_error("Track map element part not found!");
-                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
                 }
 
                 // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is
@@ -993,7 +973,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
 
         if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -1016,7 +996,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
 
         if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -1039,7 +1019,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
 
         if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -1066,7 +1046,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
 
         if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -1090,7 +1070,7 @@ namespace OpenRCT2::TileInspector
         TileElement* const bannerElement = map_get_nth_element_at(loc, elementIndex);
 
         if (bannerElement == nullptr || bannerElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -1112,10 +1092,10 @@ namespace OpenRCT2::TileInspector
         TileElement* const corruptElement = map_get_nth_element_at(loc, elementIndex);
 
         if (corruptElement == nullptr || corruptElement->GetType() != TILE_ELEMENT_TYPE_CORRUPT)
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (corruptElement->IsLastForTile())
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
         {
@@ -1129,6 +1109,20 @@ namespace OpenRCT2::TileInspector
         }
 
         return std::make_unique<GameActions::Result>();
+    }
+
+    // NOTE: The pointer is exclusively used to determine the  current selection,
+    // do not access the data, points to potentially invalid memory.
+    static const TileElement* _highlightedElement = nullptr;
+
+    void SetSelectedElement(const TileElement* elem)
+    {
+        _highlightedElement = elem;
+    }
+
+    bool IsElementSelected(const TileElement* elem)
+    {
+        return _highlightedElement == elem;
     }
 
 } // namespace OpenRCT2::TileInspector

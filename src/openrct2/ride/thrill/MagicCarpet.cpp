@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../interface/Viewport.h"
+#include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Entity.h"
@@ -42,20 +43,25 @@ struct bound_box
 };
 
 /** rct2: 0x01428220 */
-static constexpr const int16_t MagicCarpetOscillationZ[] = { -2, -1, 1,  5,  10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76,
-                                                             77, 76, 74, 70, 65, 59, 52, 45, 37, 30, 23, 16, 10, 5,  1,  -1 };
+static constexpr const int16_t MagicCarpetOscillationZ[] = {
+    -2, -1, 1, 5, 10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76, 77, 76, 74, 70, 65, 59, 52, 45, 37, 30, 23, 16, 10, 5, 1, -1,
+};
 
 /** rct2: 0x01428260 */
-static constexpr const int8_t MagicCarpetOscillationXY[] = { 0,   6,   12,  18,  23,  27,  30,  31,  32,  31,  30,
-                                                             27,  23,  18,  12,  6,   0,   -5,  -11, -17, -22, -26,
-                                                             -29, -30, -31, -30, -29, -26, -22, -17, -11, -5 };
+static constexpr const int8_t MagicCarpetOscillationXY[] = {
+    0, 6,  12,  18,  23,  27,  30,  31,  32,  31,  30,  27,  23,  18,  12,  6,
+    0, -5, -11, -17, -22, -26, -29, -30, -31, -30, -29, -26, -22, -17, -11, -5,
+};
 
 /** rct2: 0x014281F0 */
 static constexpr const bound_box MagicCarpetBounds[] = {
-    { 0, 8, 32, 16 }, { 8, 0, 16, 32 }, { 0, 8, 32, 16 }, { 8, 0, 16, 32 }
+    { 0, 8, 32, 16 },
+    { 8, 0, 16, 32 },
+    { 0, 8, 32, 16 },
+    { 8, 0, 16, 32 },
 };
 
-static Vehicle* get_first_vehicle(Ride* ride)
+static const Vehicle* get_first_vehicle(const Ride* ride)
 {
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
@@ -84,9 +90,7 @@ static void paint_magic_carpet_frame(
     imageId |= session->TrackColours[SCHEME_TRACK];
     if (plane == PLANE_BACK)
     {
-        PaintAddImageAsParent(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
-            bbOffset.x, bbOffset.y, bbOffset.z);
+        PaintAddImageAsParent(session, imageId, offset, { bbSize.x, bbSize.y, 127 }, bbOffset);
     }
     else
     {
@@ -120,8 +124,8 @@ static void paint_magic_carpet_pendulum(
 }
 
 static void paint_magic_carpet_vehicle(
-    paint_session* session, Ride* ride, uint8_t direction, uint32_t swingImageId, CoordsXYZ offset, const CoordsXYZ& bbOffset,
-    const CoordsXYZ& bbSize)
+    paint_session* session, const Ride* ride, uint8_t direction, uint32_t swingImageId, CoordsXYZ offset,
+    const CoordsXYZ& bbOffset, const CoordsXYZ& bbSize)
 {
     rct_ride_entry* rideEntry = ride->GetRideEntry();
     uint32_t vehicleImageId = rideEntry->vehicles[0].base_image_id + direction;
@@ -159,7 +163,7 @@ static void paint_magic_carpet_vehicle(
     rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        Vehicle* vehicle = get_first_vehicle(ride);
+        auto* vehicle = get_first_vehicle(ride);
         if (vehicle != nullptr)
         {
             uint32_t baseImageId = IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (vehicleImageId + 4);
@@ -178,10 +182,10 @@ static void paint_magic_carpet_vehicle(
 
 /** rct2: 0x00899104 */
 static void paint_magic_carpet_structure(
-    paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
-    Vehicle* vehicle = get_first_vehicle(ride);
+    auto* vehicle = get_first_vehicle(ride);
 
     uint32_t swingImageId = 0;
     if (vehicle != nullptr)
@@ -215,8 +219,8 @@ static void paint_magic_carpet_structure(
 
 /** rct2: 0x00898514 */
 static void paint_magic_carpet(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
@@ -239,13 +243,18 @@ static void paint_magic_carpet(
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             }
+            StationObject* stationObject = nullptr;
+            if (ride != nullptr)
+                stationObject = ride_get_station_object(ride);
 
-            uint32_t imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
-            PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+            if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+            {
+                uint32_t imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
+            }
             break;
     }
 
-    auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
         switch (relativeTrackSequence)

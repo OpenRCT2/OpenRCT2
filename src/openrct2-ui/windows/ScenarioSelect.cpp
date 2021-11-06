@@ -86,7 +86,7 @@ static rct_widget window_scenarioselect_widgets[] = {
     MakeRemapWidget({594, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 7
     MakeRemapWidget({685, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 8
     MakeWidget     ({  3, 54}, { WW - SidebarWidth, 276 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static constexpr const rct_string_id ScenarioOriginStringIds[] = {
@@ -147,8 +147,8 @@ static int32_t ScenarioSelectGetWindowWidth()
     // Shrink the window if we're showing scenarios by difficulty level.
     if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && !_titleEditor)
         return 610;
-    else
-        return WW;
+
+    return WW;
 }
 
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor)
@@ -196,7 +196,6 @@ rct_window* window_scenarioselect_open(std::function<void(std::string_view)> cal
     initialise_list_items(window);
 
     WindowInitScrollWidgets(window);
-    window->viewport_focus_coordinates.var_480 = -1;
     window->highlighted_scenario = nullptr;
 
     return window;
@@ -246,16 +245,16 @@ static void window_scenarioselect_init_tabs(rct_window* w)
     int32_t x = 3;
     for (int32_t i = 0; i < NumTabs; i++)
     {
-        rct_widget* widget = &w->widgets[i + WIDX_TAB1];
+        auto& widget = w->widgets[i + WIDX_TAB1];
         if (!(showPages & (1 << i)))
         {
-            widget->type = WindowWidgetType::Empty;
+            widget.type = WindowWidgetType::Empty;
             continue;
         }
 
-        widget->type = WindowWidgetType::Tab;
-        widget->left = x;
-        widget->right = x + 90;
+        widget.type = WindowWidgetType::Tab;
+        widget.left = x;
+        widget.right = x + 90;
         x += 91;
     }
 }
@@ -493,9 +492,9 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         shorten_path(path, sizeof(path), scenario->path, w->width - 6, FontSpriteBase::MEDIUM);
 
         const utf8* pathPtr = path;
-        DrawTextBasic(
-            dpi, w->windowPos + ScreenCoordsXY{ 3, w->height - 3 - 11 }, STR_STRING, static_cast<void*>(&pathPtr),
-            { w->colours[1] });
+        auto ft = Formatter();
+        ft.Add<const char*>(pathPtr);
+        DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 3, w->height - 3 - 11 }, STR_STRING, ft, { w->colours[1] });
     }
 
     // Scenario name
@@ -535,7 +534,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             ft.Add<uint16_t>(scenario->objective_arg_2);
         else
-            ft.Add<money32>(scenario->objective_arg_2);
+            ft.Add<money64>(scenario->objective_arg_2);
     }
     screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
@@ -551,7 +550,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(completedByName);
-        ft.Add<money32>(scenario->highscore->company_value);
+        ft.Add<money64>(scenario->highscore->company_value);
         screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
     }
 }
@@ -564,8 +563,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     rct_string_id highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
     rct_string_id unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
 
-    rct_widget* listWidget = &w->widgets[WIDX_SCENARIOLIST];
-    int32_t listWidth = listWidget->width() - 12;
+    const auto& listWidget = w->widgets[WIDX_SCENARIOLIST];
+    int32_t listWidth = listWidget.width() - 12;
 
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 
@@ -597,7 +596,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 bool isHighlighted = w->highlighted_scenario == scenario;
                 if (isHighlighted)
                 {
-                    gfx_filter_rect(dpi, 0, y, w->width, y + scenarioItemHeight - 1, FilterPaletteID::PaletteDarken1);
+                    gfx_filter_rect(dpi, { 0, y, w->width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
                 }
 
                 bool isCompleted = scenario->highscore != nullptr;

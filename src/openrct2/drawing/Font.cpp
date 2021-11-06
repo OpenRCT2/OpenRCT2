@@ -19,7 +19,11 @@
 #include <iterator>
 #include <unordered_map>
 
-static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = { 6, 10, 10 };
+static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = {
+    6,
+    10,
+    10,
+};
 
 static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT][FONT_SPRITE_GLYPH_COUNT];
 static uint8_t _additionalSpriteFontCharacterWidth[FONT_SIZE_COUNT][SPR_G2_GLYPH_COUNT] = {};
@@ -306,7 +310,8 @@ int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t c
         }
         return _additionalSpriteFontCharacterWidth[baseFontIndex][glyphIndex];
     }
-    else if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(FONT_SPRITE_GLYPH_COUNT))
+
+    if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(FONT_SPRITE_GLYPH_COUNT))
     {
         log_warning("Invalid glyph index %u", glyphIndex);
         glyphIndex = 0;
@@ -362,13 +367,8 @@ int32_t font_get_line_height(FontSpriteBase fontSpriteBase)
     {
         return gCurrentTTFFontSet->size[fontSize].line_height;
     }
-    else
-    {
 #endif // NO_TTF
-        return SpriteFontLineHeight[fontSize];
-#ifndef NO_TTF
-    }
-#endif // NO_TTF
+    return SpriteFontLineHeight[fontSize];
 }
 
 int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase)
@@ -434,8 +434,6 @@ bool font_supports_string(const utf8* text, int32_t fontSize)
     {
         return font_supports_string_ttf(text, fontSize);
     }
-    else
-    {
-        return font_supports_string_sprite(text);
-    }
+
+    return font_supports_string_sprite(text);
 }

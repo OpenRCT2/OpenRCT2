@@ -13,26 +13,20 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
-class LargeSceneryPlaceActionResult final : public GameActions::Result
+struct LargeSceneryPlaceActionResult
 {
-public:
-    LargeSceneryPlaceActionResult();
-    LargeSceneryPlaceActionResult(GameActions::Status error);
-    LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message);
-    LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args);
-
     uint8_t GroundFlags{ 0 };
     int32_t firstTileHeight{ 0 };
+    BannerIndex bannerId = BANNER_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GameCommand::PlaceLargeScenery, LargeSceneryPlaceActionResult)
+DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GameCommand::PlaceLargeScenery, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
     ObjectEntryIndex _sceneryType{ OBJECT_ENTRY_INDEX_NULL };
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
-    BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
     LargeSceneryPlaceAction() = default;

@@ -35,7 +35,7 @@ static rct_widget window_water_widgets[] = {
     MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , SPR_LAND_TOOL_SIZE_0,   STR_NONE),                     // preview box
     MakeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
     MakeRemapWidget({43, 32}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP),  // increment size
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 // clang-format on
 
@@ -51,8 +51,8 @@ public:
         window_push_others_below(this);
 
         gLandToolSize = 1;
-        gWaterToolRaiseCost = MONEY32_UNDEFINED;
-        gWaterToolLowerCost = MONEY32_UNDEFINED;
+        gWaterToolRaiseCost = MONEY64_UNDEFINED;
+        gWaterToolLowerCost = MONEY64_UNDEFINED;
     }
 
     void OnClose() override
@@ -146,9 +146,9 @@ public:
         // Draw number for tool sizes bigger than 7
         if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
         {
-            DrawTextBasic(
-                &dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize,
-                { TextAlignment::CENTRE });
+            auto ft = Formatter();
+            ft.Add<uint16_t>(gLandToolSize);
+            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
 
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -156,16 +156,20 @@ public:
             // Draw raise cost amount
             screenCoords = { window_water_widgets[WIDX_PREVIEW].midX() + windowPos.x,
                              window_water_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
-            if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
+            if (gWaterToolRaiseCost != MONEY64_UNDEFINED && gWaterToolRaiseCost != 0)
             {
-                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, &gWaterToolRaiseCost, { TextAlignment::CENTRE });
+                auto ft = Formatter();
+                ft.Add<money64>(gWaterToolRaiseCost);
+                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
             screenCoords.y += 10;
 
             // Draw lower cost amount
-            if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
+            if (gWaterToolLowerCost != MONEY64_UNDEFINED && gWaterToolLowerCost != 0)
             {
-                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, &gWaterToolLowerCost, { TextAlignment::CENTRE });
+                auto ft = Formatter();
+                ft.Add<money64>(gWaterToolLowerCost);
+                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
     }
@@ -173,9 +177,10 @@ public:
 private:
     void InputSize()
     {
-        TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
-        TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
-        window_text_input_open(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, 3);
+        Formatter ft;
+        ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+        ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+        window_text_input_open(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 };
 

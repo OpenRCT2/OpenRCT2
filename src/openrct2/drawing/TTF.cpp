@@ -19,6 +19,7 @@
 
 #    include "../OpenRCT2.h"
 #    include "../config/Config.h"
+#    include "../core/Numerics.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Localisation.h"
 #    include "../localisation/LocalisationService.h"
@@ -186,7 +187,7 @@ static uint32_t ttf_surface_cache_hash(TTF_Font* font, std::string_view text)
     uint32_t hash = static_cast<uint32_t>(((reinterpret_cast<uintptr_t>(font) * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
     for (auto c : text)
     {
-        hash = ror32(hash, 3) ^ (c * 13);
+        hash = Numerics::ror32(hash, 3) ^ (c * 13);
     }
     return hash;
 }
@@ -372,10 +373,8 @@ static TTFSurface* ttf_render(TTF_Font* font, std::string_view text)
     {
         return TTF_RenderUTF8_Shaded(font, buffer.c_str(), 0x000000FF, 0x000000FF);
     }
-    else
-    {
-        return TTF_RenderUTF8_Solid(font, buffer.c_str(), 0x000000FF);
-    }
+
+    return TTF_RenderUTF8_Solid(font, buffer.c_str(), 0x000000FF);
 }
 
 void ttf_free_surface(TTFSurface* surface)

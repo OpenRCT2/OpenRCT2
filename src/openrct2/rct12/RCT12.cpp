@@ -13,6 +13,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../ride/Track.h"
+#include "../scenario/Scenario.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
 #include "../world/LargeScenery.h"
@@ -435,10 +436,8 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
     {
         return typeA | (typeB << 2);
     }
-    else
-    {
-        return -1;
-    }
+
+    return -1;
 }
 
 colour_t RCT12WallElement::GetRCT1WallColour() const
@@ -1045,7 +1044,7 @@ ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId)
     if (rideId == RCT12_RIDE_ID_NULL)
         return RIDE_ID_NULL;
 
-    return rideId;
+    return static_cast<ride_id_t>(rideId);
 }
 
 RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId)
@@ -1053,7 +1052,7 @@ RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId)
     if (rideId == RIDE_ID_NULL)
         return RCT12_RIDE_ID_NULL;
 
-    return rideId;
+    return static_cast<RCT12RideId>(rideId);
 }
 
 static bool RCT12IsFormatChar(codepoint_t c)
@@ -1281,11 +1280,9 @@ std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength)
                     rct2encoded.resize(i);
                     break;
                 }
-                else
-                {
-                    // Skip the next two bytes which represent the unicode character
-                    i += 2;
-                }
+
+                // Skip the next two bytes which represent the unicode character
+                i += 2;
             }
         }
     }
@@ -1348,4 +1345,82 @@ RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
     }
 
     return origTrackType;
+}
+
+static constexpr std::string_view _stationStyles[] = {
+    "rct2.station.plain",          "rct2.station.wooden", "rct2.station.canvas_tent", "rct2.station.castle_grey",
+    "rct2.station.castle_brown",   "rct2.station.jungle", "rct2.station.log",         "rct2.station.classical",
+    "rct2.station.abstract",       "rct2.station.snow",   "rct2.station.pagoda",      "rct2.station.space",
+    "openrct2.station.noentrance",
+};
+
+static constexpr std::string_view _musicStyles[] = {
+    "rct2.music.dodgems",
+    "rct2.music.fairground",
+    "rct2.music.roman",
+    "rct2.music.oriental",
+    "rct2.music.martian",
+    "rct2.music.jungle",
+    "rct2.music.egyptian",
+    "rct2.music.toyland",
+    "", // CIRCUS
+    "rct2.music.space",
+    "rct2.music.horror",
+    "rct2.music.techno",
+    "rct2.music.gentle",
+    "rct2.music.summer",
+    "rct2.music.water",
+    "rct2.music.wildwest",
+    "rct2.music.jurassic",
+    "rct2.music.rock1",
+    "rct2.music.ragtime",
+    "rct2.music.fantasy",
+    "rct2.music.rock2",
+    "rct2.music.ice",
+    "rct2.music.snow",
+    "rct2.music.custom1",
+    "rct2.music.custom2",
+    "rct2.music.medieval",
+    "rct2.music.urban",
+    "rct2.music.organ",
+    "rct2.music.mechanical",
+    "rct2.music.modern",
+    "rct2.music.pirate",
+    "rct2.music.rock3",
+    "rct2.music.candy",
+};
+
+std::string_view GetStationIdentifierFromStyle(uint8_t style)
+{
+    if (style < std::size(_stationStyles))
+    {
+        return _stationStyles[style];
+    }
+    return {};
+}
+
+std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
+{
+    auto it = std::find(std::begin(_musicStyles), std::end(_musicStyles), identifier);
+    if (it != std::end(_musicStyles))
+    {
+        return std::distance(std::begin(_musicStyles), it);
+    }
+    return std::nullopt;
+}
+
+money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue)
+{
+    if (origValue == RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+        return COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+
+    return ToMoney64(origValue);
+}
+
+money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue)
+{
+    if (origValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+        return RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+
+    return ToMoney32(origValue);
 }

@@ -38,7 +38,7 @@ GameActions::Result::Ptr ParkSetResearchFundingAction::Query() const
 {
     if (_fundingAmount >= RESEARCH_FUNDING_COUNT)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     return MakeResult();
 }

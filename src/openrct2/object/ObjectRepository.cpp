@@ -21,6 +21,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
+#include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Localisation.h"
@@ -76,7 +77,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 27;
+    static constexpr uint16_t VERSION = 28;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -113,8 +114,10 @@ public:
         if (object != nullptr)
         {
             ObjectRepositoryItem item = {};
+            item.Type = object->GetObjectType();
+            item.Generation = object->GetGeneration();
             item.Identifier = object->GetIdentifier();
-            item.ObjectEntry = *object->GetObjectEntry();
+            item.ObjectEntry = object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
             item.Authors = object->GetAuthors();
@@ -128,6 +131,8 @@ public:
 protected:
     void Serialise(DataSerialiser& ds, ObjectRepositoryItem& item) const override
     {
+        ds << item.Type;
+        ds << item.Generation;
         ds << item.Identifier;
         ds << item.ObjectEntry;
         ds << item.Path;
@@ -136,7 +141,7 @@ protected:
         ds << item.Sources;
         ds << item.Authors;
 
-        switch (item.ObjectEntry.GetType())
+        switch (item.Type)
         {
             case ObjectType::Ride:
                 ds << item.RideInfo.RideFlags;
@@ -148,6 +153,9 @@ protected:
                 ds << item.SceneryGroupInfo.Entries;
                 break;
             }
+            case ObjectType::FootpathSurface:
+                ds << item.FootpathSurfaceInfo.Flags;
+                break;
             default:
                 // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
                 break;
@@ -256,28 +264,26 @@ public:
         {
             return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path);
         }
-        else if (String::Equals(extension, ".parkobj", true))
+        if (String::Equals(extension, ".parkobj", true))
         {
             return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path);
         }
-        else
-        {
-            return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path.c_str());
-        }
+
+        return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path.c_str());
     }
 
-    void RegisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) override
+    void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) override
     {
         ObjectRepositoryItem* item = &_items[ori->Id];
 
         Guard::Assert(item->LoadedObject == nullptr, GUARD_LINE);
-        item->LoadedObject = object;
+        item->LoadedObject = std::move(object);
     }
 
     void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) override
     {
         ObjectRepositoryItem* item = &_items[ori->Id];
-        if (item->LoadedObject == object)
+        if (item->LoadedObject.get() == object)
         {
             item->LoadedObject = nullptr;
         }
@@ -297,7 +303,7 @@ public:
         else
         {
             log_verbose("Adding object: [%s]", objectName);
-            auto path = GetPathForNewObject(objectName);
+            auto path = GetPathForNewObject(ObjectGeneration::DAT, objectName);
             try
             {
                 SaveObject(path, objectEntry, data, dataSize);
@@ -310,10 +316,10 @@ public:
         }
     }
 
-    void AddObjectFromFile(std::string_view objectName, const void* data, size_t dataSize) override
+    void AddObjectFromFile(ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) override
     {
         log_verbose("Adding object: [%s]", std::string(objectName).c_str());
-        auto path = GetPathForNewObject(objectName);
+        auto path = GetPathForNewObject(generation, objectName);
         try
         {
             File::WriteAllBytes(path, data, dataSize);
@@ -414,7 +420,15 @@ private:
 
     bool AddItem(const ObjectRepositoryItem& item)
     {
-        auto conflict = FindObject(&item.ObjectEntry);
+        const ObjectRepositoryItem* conflict{};
+        if (item.ObjectEntry.name[0] != '\0')
+        {
+            conflict = FindObject(&item.ObjectEntry);
+        }
+        if (conflict == nullptr)
+        {
+            conflict = FindObject(item.Identifier);
+        }
         if (conflict == nullptr)
         {
             size_t index = _items.size();
@@ -425,15 +439,16 @@ private:
             {
                 _newItemMap[item.Identifier] = index;
             }
-            _itemMap[item.ObjectEntry] = index;
+            if (!item.ObjectEntry.IsEmpty())
+            {
+                _itemMap[item.ObjectEntry] = index;
+            }
             return true;
         }
-        else
-        {
-            Console::Error::WriteLine("Object conflict: '%s'", conflict->Path.c_str());
-            Console::Error::WriteLine("               : '%s'", item.Path.c_str());
-            return false;
-        }
+
+        Console::Error::WriteLine("Object conflict: '%s'", conflict->Path.c_str());
+        Console::Error::WriteLine("               : '%s'", item.Path.c_str());
+        return false;
     }
 
     void ScanObject(const std::string& path)
@@ -554,45 +569,53 @@ private:
         return salt;
     }
 
-    std::string GetPathForNewObject(std::string_view name)
+    std::string GetPathForNewObject(ObjectGeneration generation, std::string_view name)
     {
         // Get object directory and create it if it doesn't exist
         auto userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
         Path::CreateDirectory(userObjPath);
 
         // Find a unique file name
-        auto fileName = GetFileNameForNewObject(name);
-        auto fullPath = Path::Combine(userObjPath, fileName + ".DAT");
+        auto fileName = GetFileNameForNewObject(generation, name);
+        auto extension = (generation == ObjectGeneration::DAT ? ".DAT" : ".parkobj");
+        auto fullPath = Path::Combine(userObjPath, fileName + extension);
         auto counter = 1U;
         while (File::Exists(fullPath))
         {
             counter++;
-            fullPath = Path::Combine(userObjPath, String::StdFormat("%s-%02X.DAT", fileName.c_str(), counter));
+            fullPath = Path::Combine(userObjPath, String::StdFormat("%s-%02X%s", fileName.c_str(), counter, extension));
         }
 
         return fullPath;
     }
 
-    std::string GetFileNameForNewObject(std::string_view name)
+    std::string GetFileNameForNewObject(ObjectGeneration generation, std::string_view name)
     {
-        // Trim name
-        char normalisedName[9] = { 0 };
-        auto maxLength = std::min<size_t>(name.size(), 8);
-        for (size_t i = 0; i < maxLength; i++)
+        if (generation == ObjectGeneration::DAT)
         {
-            if (name[i] != ' ')
+            // Trim name
+            char normalisedName[9] = { 0 };
+            auto maxLength = std::min<size_t>(name.size(), 8);
+            for (size_t i = 0; i < maxLength; i++)
             {
-                normalisedName[i] = toupper(name[i]);
+                if (name[i] != ' ')
+                {
+                    normalisedName[i] = toupper(name[i]);
+                }
+                else
+                {
+                    normalisedName[i] = '\0';
+                    break;
+                }
             }
-            else
-            {
-                normalisedName[i] = '\0';
-                break;
-            }
-        }
 
-        // Convert to UTF-8 filename
-        return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+            // Convert to UTF-8 filename
+            return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+        }
+        else
+        {
+            return std::string(name);
+        }
     }
 
     void WritePackedObject(OpenRCT2::IStream* stream, const rct_object_entry* entry)
@@ -606,7 +629,7 @@ private:
         // Read object data from file
         auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FILE_MODE_OPEN);
         auto fileEntry = fs.ReadValue<rct_object_entry>();
-        if (!object_entry_compare(entry, &fileEntry))
+        if (*entry != fileEntry)
         {
             throw std::runtime_error("Header found in object file does not match object to pack.");
         }
@@ -631,14 +654,16 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
 
     // Do not count our new object types as custom yet, otherwise the game
     // will try to pack them into saved games.
-    auto type = object->ObjectEntry.GetType();
-    if (type > ObjectType::ScenarioText)
+    if (object->Type > ObjectType::ScenarioText)
     {
         return false;
     }
 
     switch (object->GetFirstSourceGame())
     {
+        case ObjectSourceGame::RCT1:
+        case ObjectSourceGame::AddedAttractions:
+        case ObjectSourceGame::LoopyLandscapes:
         case ObjectSourceGame::RCT2:
         case ObjectSourceGame::WackyWorlds:
         case ObjectSourceGame::TimeTwister:
@@ -717,51 +742,17 @@ const ObjectRepositoryItem* object_repository_find_object_by_name(const char* na
     return objectRepository.FindObjectLegacy(name);
 }
 
-bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b)
-{
-    // If an official object don't bother checking checksum
-    if ((a->flags & 0xF0) || (b->flags & 0xF0))
-    {
-        if (a->GetType() != b->GetType())
-        {
-            return false;
-        }
-        int32_t match = memcmp(a->name, b->name, 8);
-        if (match)
-        {
-            return false;
-        }
-    }
-    else
-    {
-        if (a->flags != b->flags)
-        {
-            return false;
-        }
-        int32_t match = memcmp(a->name, b->name, 8);
-        if (match)
-        {
-            return false;
-        }
-        if (a->checksum != b->checksum)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength)
 {
     const uint8_t* entryBytePtr = reinterpret_cast<const uint8_t*>(entry);
 
     uint32_t checksum = 0xF369A75B;
     checksum ^= entryBytePtr[0];
-    checksum = rol32(checksum, 11);
+    checksum = Numerics::rol32(checksum, 11);
     for (int32_t i = 4; i < 12; i++)
     {
         checksum ^= entryBytePtr[i];
-        checksum = rol32(checksum, 11);
+        checksum = Numerics::rol32(checksum, 11);
     }
 
     const uint8_t* dataBytes = reinterpret_cast<const uint8_t*>(data);
@@ -772,12 +763,12 @@ int32_t object_calculate_checksum(const rct_object_entry* entry, const void* dat
         {
             checksum ^= dataBytes[j];
         }
-        checksum = rol32(checksum, 11);
+        checksum = Numerics::rol32(checksum, 11);
     }
     for (size_t i = dataLength32; i < dataLength; i++)
     {
         checksum ^= dataBytes[i];
-        checksum = rol32(checksum, 11);
+        checksum = Numerics::rol32(checksum, 11);
     }
 
     return static_cast<int32_t>(checksum);

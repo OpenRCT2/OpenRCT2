@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _RIDE_DATA_H_
-#define _RIDE_DATA_H_
+#pragma once
 
 #define TRACK_COLOUR_PRESETS(...)                                                                                              \
     {                                                                                                                          \
@@ -168,7 +167,7 @@ struct RideTypeDescriptor
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts;
     money16 DefaultPrices[NUM_SHOP_ITEMS_PER_RIDE];
-    uint8_t DefaultMusic;
+    std::string_view DefaultMusic;
     /** rct2: 0x0097D7CB */
     ShopItemIndex PhotoItem;
     /** rct2: 0x0097D21E */
@@ -296,6 +295,20 @@ constexpr const RideComponentName RideComponentNames[] =
 };
 // clang-format on
 
+constexpr std::string_view MUSIC_OBJECT_DODGEMS = "rct2.music.dodgems";
+constexpr std::string_view MUSIC_OBJECT_EGYPTIAN = "rct2.music.egyptian";
+constexpr std::string_view MUSIC_OBJECT_FAIRGROUND = "rct2.music.fairground";
+constexpr std::string_view MUSIC_OBJECT_GENTLE = "rct2.music.gentle";
+constexpr std::string_view MUSIC_OBJECT_HORROR = "rct2.music.horror";
+constexpr std::string_view MUSIC_OBJECT_PIRATE = "rct2.music.pirate";
+constexpr std::string_view MUSIC_OBJECT_ROCK_1 = "rct2.music.rock1";
+constexpr std::string_view MUSIC_OBJECT_ROCK_2 = "rct2.music.rock2";
+constexpr std::string_view MUSIC_OBJECT_ROCK_3 = "rct2.music.rock3";
+constexpr std::string_view MUSIC_OBJECT_SUMMER = "rct2.music.summer";
+constexpr std::string_view MUSIC_OBJECT_TECHNO = "rct2.music.techno";
+constexpr std::string_view MUSIC_OBJECT_WATER = "rct2.music.water";
+constexpr std::string_view MUSIC_OBJECT_WILD_WEST = "rct2.music.wildwest";
+
 constexpr const RideComponentName& GetRideComponentName(const RideComponentType type)
 {
     return RideComponentNames[EnumValue(type)];
@@ -344,7 +357,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 0, 0, 1 }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
+    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
@@ -365,5 +378,3 @@ constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 {
     return rideType < std::size(RideTypeDescriptors);
 }
-
-#endif

@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _TRACK_DESIGN_H_
-#define _TRACK_DESIGN_H_
+#pragma once
 
 #include "../common.h"
 #include "../object/Object.h"
@@ -33,13 +32,18 @@ struct TrackDesignEntranceElement
 /* Track Scenery entry  size: 0x16 */
 struct TrackDesignSceneryElement
 {
-    rct_object_entry scenery_object; // 0x00
-    int8_t x;                        // 0x10
-    int8_t y;                        // 0x11
-    int8_t z;                        // 0x12
-    uint8_t flags;                   // 0x13 direction quadrant tertiary colour
-    uint8_t primary_colour;          // 0x14
-    uint8_t secondary_colour;        // 0x15
+    ObjectEntryDescriptor scenery_object;
+    int8_t x;
+    int8_t y;
+    int8_t z;
+    uint8_t flags;
+    uint8_t primary_colour;
+    uint8_t secondary_colour;
+
+    bool IsQueue() const
+    {
+        return (flags & (1 << 7)) != 0;
+    }
 };
 
 /**
@@ -115,7 +119,7 @@ struct TrackDesign
     uint8_t track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];
     uint8_t track_support_colour[RCT12_NUM_COLOUR_SCHEMES];
     uint32_t flags2;
-    rct_object_entry vehicle_object;
+    ObjectEntryDescriptor vehicle_object;
     uint8_t space_required_x;
     uint8_t space_required_y;
     uint8_t vehicle_additional_colour[RCT2_MAX_CARS_PER_TRAIN];
@@ -192,20 +196,21 @@ enum
     MAZE_ELEMENT_TYPE_EXIT = (1 << 7)
 };
 
-extern TrackDesign* gActiveTrackDesign;
+static constexpr ride_id_t PreviewRideId = static_cast<ride_id_t>(0);
+
 extern bool gTrackDesignSceneryToggle;
 
-extern bool byte_9D8150;
+extern bool _trackDesignDrawingPreview;
 
 extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;
 extern ride_id_t gTrackDesignSaveRideIndex;
 
-std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
+[[nodiscard]] std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
 
 void track_design_mirror(TrackDesign* td6);
 
-int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords);
+money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
@@ -226,5 +231,3 @@ bool track_design_are_entrance_and_exit_placed();
 
 extern std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 extern std::vector<const TileElement*> _trackSavedTileElements;
-
-#endif

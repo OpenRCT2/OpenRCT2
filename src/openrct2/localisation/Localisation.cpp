@@ -392,8 +392,9 @@ void format_string_to_upper(utf8* dest, size_t size, rct_string_id format, const
 
 void format_readable_size(char* buf, size_t bufSize, uint64_t sizeBytes)
 {
-    constexpr uint32_t SizeTable[] = { STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE,
-                                       STR_SIZE_TERABYTE };
+    constexpr uint32_t SizeTable[] = {
+        STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE, STR_SIZE_TERABYTE,
+    };
 
     double size = sizeBytes;
     size_t idx = 0;
@@ -445,8 +446,7 @@ money32 string_to_money(const char* string_to_monetise)
         {
             if (hasDecSep)
                 return MONEY32_UNDEFINED;
-            else
-                hasDecSep = true;
+            hasDecSep = true;
 
             // Replace localised decimal separator with an English one.
             *dst_ptr++ = '.';
@@ -457,8 +457,7 @@ money32 string_to_money(const char* string_to_monetise)
         {
             if (hasMinus)
                 return MONEY32_UNDEFINED;
-            else
-                hasMinus = true;
+            hasMinus = true;
         }
         else
         {

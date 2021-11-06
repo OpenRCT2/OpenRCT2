@@ -21,6 +21,7 @@
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Park.h"
+#include "../../world/TileInspector.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
@@ -29,13 +30,14 @@
  *
  *  rct2: 0x0066508C, 0x00665540
  */
-static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
+static void ride_entrance_exit_paint(
+    paint_session* session, uint8_t direction, int32_t height, const EntranceElement& tile_element)
 {
-    uint8_t is_exit = tile_element->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
+    uint8_t is_exit = tile_element.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
-        if (tile_element->AsEntrance()->GetRideIndex() != gTrackDesignSaveRideIndex)
+        if (tile_element.GetRideIndex() != gTrackDesignSaveRideIndex)
             return;
     }
 
@@ -47,7 +49,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
             lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, height + 45, LightType::Lantern3);
         }
 
-        switch (tile_element->GetDirection())
+        switch (tile_element.GetDirection())
         {
             case 0:
                 lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 16, LightType::Lantern2);
@@ -65,7 +67,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     }
 #endif
 
-    auto ride = get_ride(tile_element->AsEntrance()->GetRideIndex());
+    auto ride = get_ride(tile_element.GetRideIndex());
     if (ride == nullptr)
     {
         return;
@@ -92,9 +94,16 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     session->InteractionType = ViewportInteractionItem::Ride;
     uint32_t entranceImageId = 0;
 
-    if (tile_element->IsGhost())
+    if (tile_element.IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
+        image_id = CONSTRUCTION_MARKER;
+        entranceImageId = image_id;
+        if (transparant_image_id)
+            transparant_image_id = image_id;
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&tile_element)))
+    {
         image_id = CONSTRUCTION_MARKER;
         entranceImageId = image_id;
         if (transparant_image_id)
@@ -120,7 +129,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     int16_t lengthY = (direction & 1) ? 28 : 2;
     int16_t lengthX = (direction & 1) ? 2 : 28;
 
-    PaintAddImageAsParent(session, image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height);
+    PaintAddImageAsParent(session, image_id, { 0, 0, height }, { lengthX, lengthY, ah }, { 2, 2, height });
 
     if (transparant_image_id)
     {
@@ -139,7 +148,8 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     image_id += 4;
 
     PaintAddImageAsParent(
-        session, image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height);
+        session, image_id, { 0, 0, height }, { lengthX, lengthY, ah },
+        { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height });
 
     if (transparant_image_id)
     {
@@ -158,7 +168,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    if (!is_exit && !(tile_element->IsGhost()) && tile_element->AsEntrance()->GetRideIndex() != RIDE_ID_NULL
+    if (!is_exit && !(tile_element.IsGhost()) && tile_element.GetRideIndex() != RIDE_ID_NULL
         && stationObj->ScrollingMode != SCROLLING_MODE_NONE)
     {
         auto ft = Formatter();
@@ -196,7 +206,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     {
         image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
@@ -208,7 +218,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
  *
  *  rct2: 0x006658ED
  */
-static void park_entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
+static void park_entrance_paint(paint_session* session, uint8_t direction, int32_t height, const EntranceElement& tile_element)
 {
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
@@ -222,21 +232,27 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
 
     session->InteractionType = ViewportInteractionItem::ParkEntrance;
     uint32_t image_id, ghost_id = 0;
-    if (tile_element->IsGhost())
+    if (tile_element.IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
+        ghost_id = CONSTRUCTION_MARKER;
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&tile_element)))
+    {
         ghost_id = CONSTRUCTION_MARKER;
     }
 
     // Index to which part of the entrance
     // Middle, left, right
-    uint8_t part_index = tile_element->AsEntrance()->GetSequenceIndex();
-    PathSurfaceEntry* path_entry = nullptr;
+    uint8_t part_index = tile_element.GetSequenceIndex();
+    const PathSurfaceDescriptor* surfaceDescriptor = nullptr;
 
     // The left and right of the park entrance often have this set to 127.
     // So only attempt to get the footpath type if we're dealing with the middle bit of the entrance.
     if (part_index == 0)
-        path_entry = get_path_surface_entry(tile_element->AsEntrance()->GetPathType());
+    {
+        surfaceDescriptor = tile_element.GetPathSurfaceDescriptor();
+    }
 
     rct_entrance_type* entrance;
     uint8_t di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;
@@ -244,10 +260,10 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     switch (part_index)
     {
         case 0:
-            if (path_entry != nullptr)
+            if (surfaceDescriptor != nullptr)
             {
-                image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
-                PaintAddImageAsParent(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height);
+                image_id = (surfaceDescriptor->Image + 5 * (1 + (direction & 1))) | ghost_id;
+                PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 0x1C, 0 }, { 0, 2, height });
             }
 
             entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(ObjectType::ParkEntrance, 0));
@@ -256,7 +272,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 return;
             }
             image_id = (entrance->image_id + direction * 3) | ghost_id;
-            PaintAddImageAsParent(session, image_id, 0, 0, 0x1C, 0x1C, 0x2F, height, 2, 2, height + 32);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 0x1C, 0x1C, 0x2F }, { 2, 2, height + 32 });
 
             if ((direction + 1) & (1 << 1))
                 break;
@@ -309,7 +325,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 return;
             }
             image_id = (entrance->image_id + part_index + direction * 3) | ghost_id;
-            PaintAddImageAsParent(session, image_id, 0, 0, 0x1A, di, 0x4F, height, 3, 3, height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 0x1A, di, 0x4F }, { 3, 3, height });
             break;
     }
 
@@ -318,7 +334,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     {
         image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 80, 0x20);
@@ -328,30 +344,30 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
  *
  *  rct2: 0x00664FD4
  */
-void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
+void PaintEntrance(paint_session* session, uint8_t direction, int32_t height, const EntranceElement& entranceElement)
 {
     session->InteractionType = ViewportInteractionItem::Label;
 
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
-        if (entrance_get_directions(tile_element) & 0xF)
+        if (entranceElement.GetDirections() & 0xF)
         {
-            int32_t z = tile_element->GetBaseZ() + 3;
+            int32_t z = entranceElement.GetBaseZ() + 3;
             uint32_t image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
             image_id -= gMapBaseZ;
 
-            PaintAddImageAsParent(session, image_id, 16, 16, 1, 1, 0, height, 31, 31, z + 64);
+            PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 1, 1, 0 }, { 31, 31, z + 64 });
         }
     }
 
-    switch (tile_element->AsEntrance()->GetEntranceType())
+    switch (entranceElement.GetEntranceType())
     {
         case ENTRANCE_TYPE_RIDE_ENTRANCE:
         case ENTRANCE_TYPE_RIDE_EXIT:
-            ride_entrance_exit_paint(session, direction, height, tile_element);
+            ride_entrance_exit_paint(session, direction, height, entranceElement);
             break;
         case ENTRANCE_TYPE_PARK_ENTRANCE:
-            park_entrance_paint(session, direction, height, tile_element);
+            park_entrance_paint(session, direction, height, entranceElement);
             break;
     }
 }

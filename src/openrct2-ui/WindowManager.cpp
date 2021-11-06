@@ -79,8 +79,6 @@ public:
                 return window_mapgen_open();
             case WC_MULTIPLAYER:
                 return window_multiplayer_open();
-            case WC_MUSIC_CREDITS:
-                return window_music_credits_open();
             case WC_CONSTRUCT_RIDE:
                 return window_new_ride_open();
             case WC_PARK_INFORMATION:
@@ -158,10 +156,7 @@ public:
                 {
                     return this->OpenWindow(WC_RESEARCH);
                 }
-                else
-                {
-                    return window_new_ride_open_research();
-                }
+                return window_new_ride_open_research();
             case WV_MAZE_CONSTRUCTION:
                 return window_maze_construction_open();
             case WV_NETWORK_PASSWORD:
@@ -186,9 +181,9 @@ public:
             case WD_BANNER:
                 return window_banner_open(id);
             case WD_DEMOLISH_RIDE:
-                return window_ride_demolish_prompt_open(get_ride(id));
+                return window_ride_demolish_prompt_open(get_ride(static_cast<ride_id_t>(id)));
             case WD_REFURBISH_RIDE:
-                return window_ride_refurbish_prompt_open(get_ride(id));
+                return window_ride_refurbish_prompt_open(get_ride(static_cast<ride_id_t>(id)));
             case WD_NEW_CAMPAIGN:
                 return window_new_campaign_open(id);
             case WD_SIGN:
@@ -258,7 +253,7 @@ public:
             case WC_OBJECT_LOAD_ERROR:
             {
                 std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
-                const rct_object_entry* objects = static_cast<rct_object_entry*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
+                auto objects = static_cast<const ObjectEntryDescriptor*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
                 size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
                 window_object_load_error_open(const_cast<utf8*>(path.c_str()), count, objects);
 
@@ -266,7 +261,8 @@ public:
             }
             case WC_RIDE:
             {
-                auto ride = get_ride(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+                const auto rideId = static_cast<ride_id_t>(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+                auto ride = get_ride(rideId);
                 return ride == nullptr ? nullptr : window_ride_main_open(ride);
             }
             case WC_TRACK_DESIGN_PLACE:
@@ -345,13 +341,13 @@ public:
                 if (w == nullptr || w->number != rideIndex)
                 {
                     window_close_construction_windows();
-                    _currentRideIndex = rideIndex;
-                    w = OpenWindow(WC_RIDE_CONSTRUCTION);
+                    _currentRideIndex = static_cast<ride_id_t>(rideIndex);
+                    OpenWindow(WC_RIDE_CONSTRUCTION);
                 }
                 else
                 {
                     ride_construction_invalidate_current_track();
-                    _currentRideIndex = rideIndex;
+                    _currentRideIndex = static_cast<ride_id_t>(rideIndex);
                 }
                 break;
             }
@@ -397,7 +393,7 @@ public:
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
                 auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                auto w = window_find_by_number(WC_RIDE, vehicle->ride);
+                auto w = window_find_by_number(WC_RIDE, EnumValue(vehicle->ride));
                 if (w == nullptr)
                     return;
 

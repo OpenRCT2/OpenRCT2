@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -20,7 +21,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
-#include <openrct2/peep/Peep.h>
+#include <openrct2/peep/Guest.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
@@ -35,8 +36,8 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 157;
 static constexpr const int32_t WW = 192;
 
-// clang-format off
-enum WINDOW_GUEST_PAGE {
+enum WINDOW_GUEST_PAGE
+{
     WINDOW_GUEST_OVERVIEW,
     WINDOW_GUEST_STATS,
     WINDOW_GUEST_RIDES,
@@ -46,7 +47,8 @@ enum WINDOW_GUEST_PAGE {
     WINDOW_GUEST_DEBUG
 };
 
-enum WINDOW_GUEST_WIDGET_IDX {
+enum WINDOW_GUEST_WIDGET_IDX
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -74,17 +76,18 @@ validate_global_widx(WC_PEEP, WIDX_PICKUP);
 
 static constexpr int32_t TabWidth = 30;
 
-#define MAIN_GUEST_WIDGETS \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0, 43}, {192, 114}, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */ \
-    MakeTab   ({  3, 17}, STR_SHOW_GUEST_VIEW_TIP                        ), /* Tab 1 */ \
-    MakeTab   ({ 34, 17}, STR_SHOW_GUEST_NEEDS_TIP                       ), /* Tab 2 */ \
-    MakeTab   ({ 65, 17}, STR_SHOW_GUEST_VISITED_RIDES_TIP               ), /* Tab 3 */ \
-    MakeTab   ({ 96, 17}, STR_SHOW_GUEST_FINANCE_TIP                     ), /* Tab 4 */ \
-    MakeTab   ({127, 17}, STR_SHOW_GUEST_THOUGHTS_TIP                    ), /* Tab 5 */ \
-    MakeTab   ({158, 17}, STR_SHOW_GUEST_ITEMS_TIP                       ), /* Tab 6 */ \
-    MakeTab   ({189, 17}, STR_DEBUG_TIP                                  )  /* Tab 7 */
+#define MAIN_GUEST_WIDGETS                                                                                                     \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
+        MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */                   \
+        MakeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */                    \
+        MakeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */                    \
+        MakeTab({ 65, 17 }, STR_SHOW_GUEST_VISITED_RIDES_TIP),                                  /* Tab 3 */                    \
+        MakeTab({ 96, 17 }, STR_SHOW_GUEST_FINANCE_TIP),                                        /* Tab 4 */                    \
+        MakeTab({ 127, 17 }, STR_SHOW_GUEST_THOUGHTS_TIP),                                      /* Tab 5 */                    \
+        MakeTab({ 158, 17 }, STR_SHOW_GUEST_ITEMS_TIP),                                         /* Tab 6 */                    \
+        MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
 
+// clang-format off
 static rct_widget window_guest_overview_widgets[] = {
     MAIN_GUEST_WIDGETS,
     MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
@@ -94,50 +97,53 @@ static rct_widget window_guest_overview_widgets[] = {
     MakeWidget({167,  69}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
     MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
     MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
+// clang-format on
 
 static rct_widget window_guest_stats_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_rides_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    MakeWidget({3, 57}, {186, 87}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
-    { WIDGETS_END },
+    MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_finance_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_thoughts_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_inventory_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_guest_debug_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 // 0x981D0C
-static rct_widget *window_guest_page_widgets[] = {
+// clang-format off
+static rct_widget* window_guest_page_widgets[] = {
     window_guest_overview_widgets,
     window_guest_stats_widgets,
     window_guest_rides_widgets,
     window_guest_finance_widgets,
     window_guest_thoughts_widgets,
     window_guest_inventory_widgets,
-    window_guest_debug_widgets
+    window_guest_debug_widgets,
 };
+// clang-format on
 
 static void window_guest_set_page(rct_window* w, int32_t page);
 static void window_guest_disable_widgets(rct_window* w);
@@ -145,47 +151,52 @@ static void window_guest_viewport_init(rct_window* w);
 static void window_guest_common_resize(rct_window* w);
 static void window_guest_common_invalidate(rct_window* w);
 
-static void window_guest_overview_close(rct_window *w);
-static void window_guest_overview_resize(rct_window *w);
-static void window_guest_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
-static void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_guest_overview_invalidate(rct_window *w);
-static void window_guest_overview_viewport_rotate(rct_window *w);
+static void window_guest_overview_close(rct_window* w);
+static void window_guest_overview_resize(rct_window* w);
+static void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex);
+static void window_guest_overview_mouse_down(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_guest_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_guest_overview_invalidate(rct_window* w);
+static void window_guest_overview_viewport_rotate(rct_window* w);
 static void window_guest_overview_update(rct_window* w);
-static void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void window_guest_overview_text_input(rct_window* w, rct_widgetindex widgetIndex, char* text);
 static void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_guest_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
+static void window_guest_overview_tool_abort(rct_window* w, rct_widgetindex widgetIndex);
+static void window_guest_follow(rct_window* w);
+static void window_guest_show_locate_dropdown(rct_window* w, rct_widget* widget);
 
-static void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
+static void window_guest_mouse_up(rct_window* w, rct_widgetindex widgetIndex);
 
-static void window_guest_stats_update(rct_window *w);
-static void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_stats_update(rct_window* w);
+static void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_guest_rides_update(rct_window *w);
-static void window_guest_rides_scroll_get_size(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_guest_rides_scroll_mouse_down(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_guest_rides_scroll_mouse_over(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_guest_rides_invalidate(rct_window *w);
-static void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void window_guest_rides_update(rct_window* w);
+static void window_guest_rides_scroll_get_size(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void window_guest_rides_scroll_mouse_down(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_guest_rides_scroll_mouse_over(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void window_guest_rides_invalidate(rct_window* w);
+static void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-static void window_guest_finance_update(rct_window *w);
-static void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_finance_update(rct_window* w);
+static void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_guest_thoughts_update(rct_window *w);
-static void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_thoughts_update(rct_window* w);
+static void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_guest_inventory_update(rct_window *w);
-static void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_guest_inventory_update(rct_window* w);
+static void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_guest_debug_update(rct_window *w);
-static void window_guest_debug_paint(rct_window *w, rct_drawpixelinfo* dpi);
+static void window_guest_debug_update(rct_window* w);
+static void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_guest_overview_events([](auto& events)
-{
+static rct_window_event_list window_guest_overview_events([](auto& events) {
     events.close = &window_guest_overview_close;
     events.mouse_up = &window_guest_overview_mouse_up;
+    events.mouse_down = &window_guest_overview_mouse_down;
+    events.dropdown = &window_guest_overview_dropdown;
     events.resize = &window_guest_overview_resize;
     events.update = &window_guest_overview_update;
     events.tool_update = &window_guest_overview_tool_update;
@@ -197,8 +208,7 @@ static rct_window_event_list window_guest_overview_events([](auto& events)
     events.paint = &window_guest_overview_paint;
 });
 
-static rct_window_event_list window_guest_stats_events([](auto& events)
-{
+static rct_window_event_list window_guest_stats_events([](auto& events) {
     events.mouse_up = &window_guest_mouse_up;
     events.resize = &window_guest_common_resize;
     events.update = &window_guest_stats_update;
@@ -206,8 +216,7 @@ static rct_window_event_list window_guest_stats_events([](auto& events)
     events.paint = &window_guest_stats_paint;
 });
 
-static rct_window_event_list window_guest_rides_events([](auto& events)
-{
+static rct_window_event_list window_guest_rides_events([](auto& events) {
     events.mouse_up = &window_guest_mouse_up;
     events.resize = &window_guest_common_resize;
     events.update = &window_guest_rides_update;
@@ -219,8 +228,7 @@ static rct_window_event_list window_guest_rides_events([](auto& events)
     events.scroll_paint = &window_guest_rides_scroll_paint;
 });
 
-static rct_window_event_list window_guest_finance_events([](auto& events)
-{
+static rct_window_event_list window_guest_finance_events([](auto& events) {
     events.mouse_up = &window_guest_mouse_up;
     events.resize = &window_guest_common_resize;
     events.update = &window_guest_finance_update;
@@ -228,8 +236,7 @@ static rct_window_event_list window_guest_finance_events([](auto& events)
     events.paint = &window_guest_finance_paint;
 });
 
-static rct_window_event_list window_guest_thoughts_events([](auto& events)
-{
+static rct_window_event_list window_guest_thoughts_events([](auto& events) {
     events.mouse_up = &window_guest_mouse_up;
     events.resize = &window_guest_common_resize;
     events.update = &window_guest_thoughts_update;
@@ -237,8 +244,7 @@ static rct_window_event_list window_guest_thoughts_events([](auto& events)
     events.paint = &window_guest_thoughts_paint;
 });
 
-static rct_window_event_list window_guest_inventory_events([](auto& events)
-{
+static rct_window_event_list window_guest_inventory_events([](auto& events) {
     events.mouse_up = &window_guest_mouse_up;
     events.resize = &window_guest_common_resize;
     events.update = &window_guest_inventory_update;
@@ -246,8 +252,7 @@ static rct_window_event_list window_guest_inventory_events([](auto& events)
     events.paint = &window_guest_inventory_paint;
 });
 
-static rct_window_event_list window_guest_debug_events([](auto& events)
-{
+static rct_window_event_list window_guest_debug_events([](auto& events) {
     events.mouse_up = &window_guest_mouse_up;
     events.resize = &window_guest_common_resize;
     events.update = &window_guest_debug_update;
@@ -256,14 +261,15 @@ static rct_window_event_list window_guest_debug_events([](auto& events)
 });
 
 // 0x981D24
-static rct_window_event_list *window_guest_page_events[] = {
+// clang-format off
+static rct_window_event_list* window_guest_page_events[] = {
     &window_guest_overview_events,
     &window_guest_stats_events,
     &window_guest_rides_events,
     &window_guest_finance_events,
     &window_guest_thoughts_events,
     &window_guest_inventory_events,
-    &window_guest_debug_events
+    &window_guest_debug_events,
 };
 
 void window_guest_set_colours();
@@ -336,19 +342,19 @@ static constexpr const uint32_t window_guest_page_enabled_widgets[] = {
     (1ULL << WIDX_TAB_4) |
     (1ULL << WIDX_TAB_5) |
     (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7)
-};
-
-static constexpr const rct_size16 window_guest_page_sizes[][2] = {
-    { 192, 159, 500, 450 },     // WINDOW_GUEST_OVERVIEW
-    { 192, 180, 192, 180 },     // WINDOW_GUEST_STATS
-    { 192, 180, 500, 400 },     // WINDOW_GUEST_RIDES
-    { 210, 148, 210, 148 },     // WINDOW_GUEST_FINANCE
-    { 192, 159, 500, 450 },     // WINDOW_GUEST_THOUGHTS
-    { 192, 159, 500, 450 },     // WINDOW_GUEST_INVENTORY
-    { 192, 171, 192, 171 }      // WINDOW_GUEST_DEBUG
+    (1ULL << WIDX_TAB_7),
 };
 // clang-format on
+
+static constexpr const rct_size16 window_guest_page_sizes[][2] = {
+    { 192, 159, 500, 450 }, // WINDOW_GUEST_OVERVIEW
+    { 192, 180, 192, 180 }, // WINDOW_GUEST_STATS
+    { 192, 180, 500, 400 }, // WINDOW_GUEST_RIDES
+    { 210, 148, 210, 148 }, // WINDOW_GUEST_FINANCE
+    { 192, 159, 500, 450 }, // WINDOW_GUEST_THOUGHTS
+    { 192, 159, 500, 450 }, // WINDOW_GUEST_INVENTORY
+    { 192, 171, 192, 171 }, // WINDOW_GUEST_DEBUG
+};
 
 static Guest* GetGuest(rct_window* w)
 {
@@ -391,7 +397,6 @@ rct_window* window_guest_open(Peep* peep)
         window->enabled_widgets = window_guest_page_enabled_widgets[0];
         window->number = peep->sprite_index;
         window->page = 0;
-        window->viewport_focus_coordinates.y = 0;
         window->frame_no = 0;
         window->list_information_type = 0;
         window->picked_peep_frame = 0;
@@ -403,8 +408,6 @@ rct_window* window_guest_open(Peep* peep)
         window->max_height = 450;
         window->no_list_items = 0;
         window->selected_list_item = -1;
-
-        window->viewport_focus_coordinates.y = -1;
     }
 
     window->page = 0;
@@ -585,13 +588,13 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             }
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
-            nullLoc.setNull();
+            nullLoc.SetNull();
             PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
                 rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
-                if (wind)
+                if (wind != nullptr)
                 {
                     tool_set(wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
                 }
@@ -602,12 +605,10 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_RENAME:
         {
             auto peepName = peep->GetName();
-            window_text_input_raw_open(w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, peepName.c_str(), 32);
+            window_text_input_raw_open(
+                w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, {}, peepName.c_str(), 32);
             break;
         }
-        case WIDX_LOCATE:
-            w->ScrollToViewport();
-            break;
         case WIDX_TRACK:
         {
             uint32_t flags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
@@ -617,6 +618,51 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
         }
         break;
     }
+}
+
+static void window_guest_overview_mouse_down(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_LOCATE:
+            window_guest_show_locate_dropdown(w, widget);
+            break;
+    }
+}
+
+static void window_guest_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_LOCATE:
+        {
+            if (dropdownIndex == 0)
+            {
+                w->ScrollToViewport();
+            }
+            else if (dropdownIndex == 1)
+            {
+                window_guest_follow(w);
+            }
+            break;
+        }
+    }
+}
+
+static void window_guest_show_locate_dropdown(rct_window* w, rct_widget* widget)
+{
+    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+
+    WindowDropdownShowText(
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
+    gDropdownDefaultIndex = 0;
+}
+
+static void window_guest_follow(rct_window* w)
+{
+    rct_window* w_main = window_get_main();
+    window_follow_sprite(w_main, w->number);
 }
 
 /**
@@ -631,7 +677,7 @@ void window_guest_set_page(rct_window* w, int32_t page)
             tool_cancel();
     }
     int32_t listen = 0;
-    if (page == WINDOW_GUEST_OVERVIEW && w->page == WINDOW_GUEST_OVERVIEW && w->viewport)
+    if (page == WINDOW_GUEST_OVERVIEW && w->page == WINDOW_GUEST_OVERVIEW && w->viewport != nullptr)
     {
         if (!(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
             listen = 1;
@@ -656,7 +702,7 @@ void window_guest_set_page(rct_window* w, int32_t page)
     WindowInitScrollWidgets(w);
     w->Invalidate();
 
-    if (listen && w->viewport)
+    if (listen && w->viewport != nullptr)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 }
 
@@ -680,16 +726,12 @@ void window_guest_viewport_init(rct_window* w)
         return;
     }
 
-    auto focus = viewport_update_smart_guest_follow(w, peep);
+    viewport_update_smart_guest_follow(w, peep);
     bool reCreateViewport = false;
     uint16_t origViewportFlags{};
     if (w->viewport != nullptr)
     {
-        // Check all combos, for now skipping y and rot
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x
-            && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
-            && focus.coordinate.z == w->viewport_focus_coordinates.z
-            && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation)
+        if (w->focus.has_value())
             return;
 
         origViewportFlags = w->viewport->flags;
@@ -700,22 +742,14 @@ void window_guest_viewport_init(rct_window* w)
 
     window_event_invalidate_call(w);
 
-    w->viewport_focus_coordinates.x = focus.coordinate.x;
-    w->viewport_focus_coordinates.y = focus.coordinate.y;
-    w->viewport_focus_coordinates.z = focus.coordinate.z;
-    w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
-
     if (peep->State != PeepState::Picked && w->viewport == nullptr)
     {
-        auto view_widget = &w->widgets[WIDX_VIEWPORT];
-        auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
-        int32_t width = view_widget->width() - 1;
-        int32_t height = view_widget->height() - 1;
+        const auto& view_widget = w->widgets[WIDX_VIEWPORT];
+        auto screenPos = ScreenCoordsXY{ view_widget.left + 1 + w->windowPos.x, view_widget.top + 1 + w->windowPos.y };
+        int32_t width = view_widget.width() - 1;
+        int32_t height = view_widget.height() - 1;
 
-        viewport_create(
-            w, screenPos, width, height, 0,
-            { focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, focus.coordinate.z },
-            focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
+        viewport_create(w, screenPos, width, height, w->focus.value());
         if (w->viewport != nullptr && reCreateViewport)
         {
             w->viewport->flags = origViewportFlags;
@@ -736,10 +770,10 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_1];
-    int32_t width = widget->width() - 1;
-    int32_t height = widget->height() - 1;
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
+    const auto& widget = w->widgets[WIDX_TAB_1];
+    int32_t width = widget.width() - 1;
+    int32_t height = widget.height() - 1;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
     if (w->page == WINDOW_GUEST_OVERVIEW)
         height++;
 
@@ -808,8 +842,8 @@ static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_2];
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_2];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
     const auto peep = GetGuest(w);
     if (peep == nullptr)
@@ -846,8 +880,8 @@ static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_3];
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_3];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
     int32_t image_id = SPR_TAB_RIDE_0;
 
@@ -868,8 +902,8 @@ static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi
     if (w->disabled_widgets & (1ULL << WIDX_TAB_4))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_4];
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_4];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
     int32_t image_id = SPR_TAB_FINANCES_SUMMARY_0;
 
@@ -890,8 +924,8 @@ static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     if (w->disabled_widgets & (1ULL << WIDX_TAB_5))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_5];
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_5];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
     int32_t image_id = SPR_TAB_THOUGHTS_0;
 
@@ -912,8 +946,8 @@ static void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* d
     if (w->disabled_widgets & (1ULL << WIDX_TAB_6))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_6];
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_6];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
     gfx_draw_sprite(dpi, ImageId(SPR_TAB_GUEST_INVENTORY), screenCoords);
 }
@@ -923,8 +957,8 @@ static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->disabled_widgets & (1ULL << WIDX_TAB_7))
         return;
 
-    rct_widget* widget = &w->widgets[WIDX_TAB_7];
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    const auto& widget = w->widgets[WIDX_TAB_7];
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
     int32_t image_id = SPR_TAB_GEARS_0;
     if (w->page == WINDOW_GUEST_DEBUG)
@@ -951,7 +985,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_guest_debug_tab_paint(w, dpi);
 
     // Draw the viewport no sound sprite
-    if (w->viewport)
+    if (w->viewport != nullptr)
     {
         window_draw_viewport(dpi, w);
         rct_viewport* viewport = w->viewport;
@@ -968,22 +1002,22 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
-    auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top - 1 };
+    const auto& actionLabelWidget = w->widgets[WIDX_ACTION_LBL];
+    auto screenPos = w->windowPos + ScreenCoordsXY{ actionLabelWidget.midX(), actionLabelWidget.top - 1 };
 
     {
         auto ft = Formatter();
         peep->FormatActionTo(ft);
-        int32_t width = widget->width();
+        int32_t width = actionLabelWidget.width();
         DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
     }
 
     // Draw the marquee thought
-    widget = &w->widgets[WIDX_MARQUEE];
-    auto width = widget->width() - 3;
-    int32_t left = widget->left + 2 + w->windowPos.x;
-    int32_t top = widget->top + w->windowPos.y;
-    int32_t height = widget->height();
+    const auto& marqueeWidget = w->widgets[WIDX_MARQUEE];
+    auto width = marqueeWidget.width() - 3;
+    int32_t left = marqueeWidget.left + 2 + w->windowPos.x;
+    int32_t top = marqueeWidget.top + w->windowPos.y;
+    int32_t height = marqueeWidget.height();
     rct_drawpixelinfo dpi_marquee;
     if (!clip_drawpixelinfo(&dpi_marquee, dpi, { left, top }, width, height))
     {
@@ -1009,7 +1043,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    screenPos.x = widget->width() - w->list_information_type;
+    screenPos.x = marqueeWidget.width() - w->list_information_type;
     {
         auto ft = Formatter();
         peep_thought_set_format_args(&peep->Thoughts[i], ft);
@@ -1099,7 +1133,7 @@ void window_guest_overview_update(rct_window* w)
                 int32_t random = util_rand() & 0xFFFF;
                 if (random <= 0x2AAA)
                 {
-                    peep->InsertNewThought(PeepThoughtType::Watched, PEEP_THOUGHT_ITEM_NONE);
+                    peep->InsertNewThought(PeepThoughtType::Watched);
                 }
             }
         }
@@ -1131,7 +1165,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
-    if (!mapCoords.isNull())
+    if (!mapCoords.IsNull())
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
@@ -1179,7 +1213,7 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     TileElement* tileElement;
     auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
-    if (destCoords.isNull())
+    if (destCoords.IsNull())
         return;
 
     PeepPickupAction pickupAction{
@@ -1376,7 +1410,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t guestEntryTime = peep->GetParkEntryTime();
     if (guestEntryTime != -1)
     {
-        int32_t timeInPark = (gScenarioTicks - guestEntryTime) >> 11;
+        int32_t timeInPark = (gCurrentTicks - guestEntryTime) >> 11;
         auto ft = Formatter();
         ft.Add<uint16_t>(timeInPark & 0xFFFF);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
@@ -1446,7 +1480,7 @@ void window_guest_rides_update(rct_window* w)
     }
 
     // Every 2048 ticks do a full window_invalidate
-    int32_t number_of_ticks = gScenarioTicks - guest->GetParkEntryTime();
+    int32_t number_of_ticks = gCurrentTicks - guest->GetParkEntryTime();
     if (!(number_of_ticks & 0x7FF))
         w->Invalidate();
 
@@ -1455,7 +1489,7 @@ void window_guest_rides_update(rct_window* w)
     {
         if (ride.IsRide() && guest->HasRidden(&ride))
         {
-            w->list_item_positions[curr_list_position] = ride.id;
+            w->list_item_positions[curr_list_position] = EnumValue(ride.id);
             curr_list_position++;
         }
     }
@@ -1602,11 +1636,12 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         rct_string_id stringId = STR_BLACK_STRING;
         if (list_index == w->selected_list_item)
         {
-            gfx_filter_rect(dpi, 0, y, 800, y + 9, FilterPaletteID::PaletteDarken1);
+            gfx_filter_rect(dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
 
-        auto ride = get_ride(w->list_item_positions[list_index]);
+        const auto rideId = static_cast<ride_id_t>(w->list_item_positions[list_index]);
+        auto ride = get_ride(rideId);
         if (ride != nullptr)
         {
             auto ft = Formatter();
@@ -1657,7 +1692,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Cash in pocket
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->CashInPocket);
+        ft.Add<money64>(peep->CashInPocket);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_IN_POCKET, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1665,7 +1700,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Cash spent
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->CashSpent);
+        ft.Add<money64>(peep->CashSpent);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_SPENT, ft);
         screenCoords.y += LIST_ROW_HEIGHT * 2;
     }
@@ -1677,14 +1712,14 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid to enter
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidToEnter);
+        ft.Add<money64>(peep->PaidToEnter);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     // Paid on rides
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnRides);
+        ft.Add<money64>(peep->PaidOnRides);
         ft.Add<uint16_t>(peep->GuestNumRides);
         if (peep->GuestNumRides != 1)
         {
@@ -1699,7 +1734,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on food
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnFood);
+        ft.Add<money64>(peep->PaidOnFood);
         ft.Add<uint16_t>(peep->AmountOfFood);
         if (peep->AmountOfFood != 1)
         {
@@ -1715,7 +1750,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on drinks
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnDrink);
+        ft.Add<money64>(peep->PaidOnDrink);
         ft.Add<uint16_t>(peep->AmountOfDrinks);
         if (peep->AmountOfDrinks != 1)
         {
@@ -1730,7 +1765,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on souvenirs
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnSouvenirs);
+        ft.Add<money64>(peep->PaidOnSouvenirs);
         ft.Add<uint16_t>(peep->AmountOfSouvenirs);
         if (peep->AmountOfSouvenirs != 1)
         {

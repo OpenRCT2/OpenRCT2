@@ -121,22 +121,20 @@ public:
         {
             return zipFileStat.size;
         }
-        else
-        {
-            return 0;
-        }
+
+        return 0;
     }
 
     std::vector<uint8_t> GetFileData(std::string_view path) const override
     {
         std::vector<uint8_t> result;
         auto index = GetIndexFromPath(path);
-        if (index)
+        if (index.has_value())
         {
-            auto dataSize = GetFileSize(*index);
+            auto dataSize = GetFileSize(index.value());
             if (dataSize > 0 && dataSize < SIZE_MAX)
             {
-                auto zipFile = zip_fopen_index(_zip, *index, 0);
+                auto zipFile = zip_fopen_index(_zip, index.value(), 0);
                 if (zipFile != nullptr)
                 {
                     result.resize(static_cast<size_t>(dataSize));
@@ -155,9 +153,9 @@ public:
     std::unique_ptr<IStream> GetFileStream(std::string_view path) const override
     {
         auto index = GetIndexFromPath(path);
-        if (index)
+        if (index.has_value())
         {
-            return std::make_unique<ZipItemStream>(_zip, *index);
+            return std::make_unique<ZipItemStream>(_zip, index.value());
         }
         return {};
     }
@@ -171,9 +169,9 @@ public:
 
         auto source = zip_source_buffer(_zip, writeBuffer.data(), writeBuffer.size(), 0);
         auto index = GetIndexFromPath(path);
-        if (index)
+        if (index.has_value())
         {
-            zip_replace(_zip, *index, source);
+            zip_replace(_zip, index.value(), source);
         }
         else
         {
@@ -184,9 +182,9 @@ public:
     void DeleteFile(std::string_view path) override
     {
         auto index = GetIndexFromPath(path);
-        if (index)
+        if (index.has_value())
         {
-            zip_delete(_zip, *index);
+            zip_delete(_zip, index.value());
         }
         else
         {
@@ -306,11 +304,9 @@ private:
             {
                 return 0;
             }
-            else
-            {
-                _pos += readBytes;
-                return static_cast<uint64_t>(readBytes);
-            }
+
+            _pos += readBytes;
+            return static_cast<uint64_t>(readBytes);
         }
 
         const void* GetData() const override

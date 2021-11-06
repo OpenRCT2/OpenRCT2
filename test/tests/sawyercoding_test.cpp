@@ -118,56 +118,64 @@ TEST_F(SawyerCodingTest, invalid1)
 {
     OpenRCT2::MemoryStream ms(invalid1, sizeof(invalid1));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid2)
 {
     OpenRCT2::MemoryStream ms(invalid2, sizeof(invalid2));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid3)
 {
     OpenRCT2::MemoryStream ms(invalid3, sizeof(invalid3));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid4)
 {
     OpenRCT2::MemoryStream ms(invalid4, sizeof(invalid4));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid5)
 {
     OpenRCT2::MemoryStream ms(invalid5, sizeof(invalid5));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid6)
 {
     OpenRCT2::MemoryStream ms(invalid6, sizeof(invalid6));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, invalid7)
 {
     OpenRCT2::MemoryStream ms(invalid7, sizeof(invalid7));
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), SawyerChunkException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), SawyerChunkException);
 }
 
 TEST_F(SawyerCodingTest, empty)
 {
     OpenRCT2::MemoryStream ms(empty, 0);
     SawyerChunkReader reader(&ms);
-    EXPECT_THROW(reader.ReadChunk(), IOException);
+    std::shared_ptr<SawyerChunk> ptr;
+    EXPECT_THROW(ptr = reader.ReadChunk(), IOException);
 }
 
 // 1024 bytes of random data
@@ -495,20 +503,35 @@ const uint8_t SawyerCodingTest::rotatedata[] = {
     0x40, 0x7d, 0xf4, 0xfa, 0x2f, 0x6b, 0x93, 0x44, 0x5e,
 };
 
-const uint8_t SawyerCodingTest::invalid1[] = { 0x02, 0x04, 0x00, 0x00, 0x00, 0xd4, 0xff, 0xce, 0xcf, 0x2e, 0x00 };
+const uint8_t SawyerCodingTest::invalid1[] = {
+    0x02, 0x04, 0x00, 0x00, 0x00, 0xd4, 0xff, 0xce, 0xcf, 0x2e, 0x00,
+};
 
-const uint8_t SawyerCodingTest::invalid2[] = { 0x02, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x27, 0x3f, 0x01, 0x00 };
+const uint8_t SawyerCodingTest::invalid2[] = {
+    0x02, 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x27, 0x3f, 0x01, 0x00,
+};
 
-const uint8_t SawyerCodingTest::invalid3[] = { 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                               0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x73 };
+const uint8_t SawyerCodingTest::invalid3[] = {
+    0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x73,
+};
 
-const uint8_t SawyerCodingTest::invalid4[] = { 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00 };
+const uint8_t SawyerCodingTest::invalid4[] = {
+    0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+};
 
-const uint8_t SawyerCodingTest::invalid5[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0xdf, 0x00, 0x00 };
+const uint8_t SawyerCodingTest::invalid5[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0xdf, 0x00, 0x00,
+};
 
-const uint8_t SawyerCodingTest::invalid6[] = { 0x02, 0x02, 0x00, 0x00, 0x00, 0x28, 0x7f };
+const uint8_t SawyerCodingTest::invalid6[] = {
+    0x02, 0x02, 0x00, 0x00, 0x00, 0x28, 0x7f,
+};
 
-const uint8_t SawyerCodingTest::invalid7[] = { 0x01, 0x01, 0x00, 0x00, 0x00, 0x00 };
+const uint8_t SawyerCodingTest::invalid7[] = {
+    0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
+};
 
 // This needs to be non-empty to satisfy MSVC. We still pass zero as length.
-const uint8_t SawyerCodingTest::empty[] = { 0x00 };
+const uint8_t SawyerCodingTest::empty[] = {
+    0x00,
+};

@@ -23,13 +23,11 @@
  *  rct2: 0x007630DE
  */
 static void facility_paint_setup(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
-    bool hasSupports = wooden_a_supports_paint_setup(
-        session, direction & 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
+    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3]);
 
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -52,8 +50,8 @@ static void facility_paint_setup(
         uint32_t foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS)
             | session->TrackColours[SCHEME_3];
         PaintAddImageAsParent(
-            session, foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2,
-            height);
+            session, foundationImageId, { 0, 0, height }, { lengthX, lengthY, 29 },
+            { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height });
 
         // Door image or base
         PaintAddImageAsChild(
@@ -63,19 +61,20 @@ static void facility_paint_setup(
     {
         // Door image or base
         PaintAddImageAsParent(
-            session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height);
+            session, imageId, { 0, 0, height }, { lengthX, lengthY, 29 },
+            { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height });
     }
 
     // Base image if door was drawn
     if (direction == 1)
     {
         imageId += 2;
-        PaintAddImageAsParent(session, imageId, 0, 0, 2, 28, 29, height, 28, 2, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 28, 29 }, { 28, 2, height });
     }
     else if (direction == 2)
     {
         imageId += 4;
-        PaintAddImageAsParent(session, imageId, 0, 0, 28, 2, 29, height, 2, 28, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 2, 29 }, { 2, 28, height });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

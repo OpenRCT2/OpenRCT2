@@ -76,7 +76,7 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const
         // Check if allowed to remove item
         if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
-            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_IS_TREE))
+            if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             {
                 res->Error = GameActions::Status::NoClearance;
                 res->ErrorTitle = STR_CANT_REMOVE_THIS;
@@ -111,7 +111,7 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Execute() const
     auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     res->Cost = entry->removal_price * 10;

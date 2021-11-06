@@ -13,6 +13,7 @@
 #include "BannerSetColourAction.h"
 #include "BannerSetNameAction.h"
 #include "BannerSetStyleAction.h"
+#include "ChangeMapSizeAction.h"
 #include "ClearAction.h"
 #include "ClimateSetAction.h"
 #include "CustomAction.h"
@@ -172,6 +173,7 @@ namespace GameActions
         Register<GuestSetFlagsAction>();
         Register<ParkSetDateAction>();
         Register<SetCheatAction>();
+        Register<ChangeMapSizeAction>();
 #ifdef ENABLE_SCRIPTING
         Register<CustomAction>();
 #endif

@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../core/Numerics.hpp"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
@@ -45,23 +46,23 @@ enum
  * rct: 0x004ACF4A
  */
 static void maze_paint_setup(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
-    uint16_t maze_entry = tileElement->AsTrack()->GetMazeEntry();
-    maze_entry = rol16(maze_entry, direction * 4);
+    uint16_t maze_entry = trackElement.GetMazeEntry();
+    maze_entry = Numerics::rol16(maze_entry, direction * 4);
 
     uint32_t rotation = session->CurrentRotation;
     // draw ground
     int32_t image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
     PaintAddImageAsParent(session, image_id, { 0, 0, height }, { 32, 32, 0 });
 
-    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
+    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
     int32_t base_image_id = 0;
-    switch (get_ride(rideIndex)->track_colour[0].supports)
+    switch (ride->track_colour[0].supports)
     {
         case 0:
             base_image_id = SPR_MAZE_BASE_BRICK;

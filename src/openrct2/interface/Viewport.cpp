@@ -19,12 +19,14 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../paint/Paint.h"
+#include "../peep/Guest.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../util/Math.hpp"
 #include "../world/Climate.h"
 #include "../world/EntityList.h"
 #include "../world/Map.h"
@@ -106,7 +108,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
     // If the start location was invalid
     // propagate the invalid location to the output.
     // This fixes a bug that caused the game to enter an infinite loop.
-    if (loc.isNull())
+    if (loc.IsNull())
     {
         return std::nullopt;
     }
@@ -115,6 +117,30 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
     screenCoord.x -= viewport->view_width / 2;
     screenCoord.y -= viewport->view_height / 2;
     return { screenCoord };
+}
+
+CoordsXYZ Focus::GetPos() const
+{
+    return std::visit(
+        [](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, Focus::CoordinateFocus>)
+                return arg;
+            else if constexpr (std::is_same_v<T, Focus::EntityFocus>)
+            {
+                auto* centreEntity = GetEntity(arg);
+                if (centreEntity != nullptr)
+                {
+                    return CoordsXYZ{ centreEntity->x, centreEntity->y, centreEntity->z };
+                }
+                else
+                {
+                    log_error("Invalid entity for focus.");
+                    return CoordsXYZ{};
+                }
+            }
+        },
+        data);
 }
 
 /**
@@ -134,9 +160,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
  *  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
  *  w:      esi
  */
-void viewport_create(
-    rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, int32_t zoom, CoordsXYZ centrePos,
-    char flags, uint16_t sprite)
+void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus)
 {
     rct_viewport* viewport = nullptr;
     if (_viewports.size() >= MAX_VIEWPORT_COUNT)
@@ -151,11 +175,7 @@ void viewport_create(
     viewport->pos = screenCoords;
     viewport->width = width;
     viewport->height = height;
-
-    if (!(flags & VIEWPORT_FOCUS_TYPE_COORDINATE))
-    {
-        zoom = 0;
-    }
+    const auto zoom = focus.zoom;
 
     viewport->view_width = width << zoom;
     viewport->view_height = height << zoom;
@@ -166,27 +186,19 @@ void viewport_create(
         viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
     w->viewport = viewport;
 
-    if (flags & VIEWPORT_FOCUS_TYPE_SPRITE)
-    {
-        w->viewport_target_sprite = sprite;
-        auto* centreEntity = GetEntity(sprite);
-        if (centreEntity != nullptr)
-        {
-            centrePos = { centreEntity->x, centreEntity->y, centreEntity->z };
-        }
-        else
-        {
-            log_error("Invalid entity for viewport.");
-            return;
-        }
-    }
-    else
-    {
-        w->viewport_target_sprite = SPRITE_INDEX_NULL;
-    }
+    CoordsXYZ centrePos = focus.GetPos();
+    w->viewport_target_sprite = std::visit(
+        [](auto&& arg) {
+            using T = std::decay_t<decltype(arg)>;
+            if constexpr (std::is_same_v<T, Focus::CoordinateFocus>)
+                return SPRITE_INDEX_NULL;
+            else if constexpr (std::is_same_v<T, Focus::EntityFocus>)
+                return arg;
+        },
+        focus.data);
 
     auto centreLoc = centre_2d_coordinates(centrePos, viewport);
-    if (!centreLoc)
+    if (!centreLoc.has_value())
     {
         log_error("Invalid location for viewport.");
         return;
@@ -206,13 +218,13 @@ void viewport_remove(rct_viewport* viewport)
     _viewports.erase(it);
 }
 
-void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t maxZoom)
+void viewports_invalidate(const ScreenRect& screenRect, int32_t maxZoom)
 {
     for (auto& vp : _viewports)
     {
         if (maxZoom == -1 || vp.zoom <= maxZoom)
         {
-            viewport_invalidate(&vp, left, top, right, bottom);
+            viewport_invalidate(&vp, screenRect);
         }
     }
 }
@@ -225,7 +237,7 @@ void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bott
  */
 CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
 {
-    int16_t height = 0;
+    int32_t height = 0;
 
     uint32_t rotation = get_current_rotation();
     CoordsXY pos{};
@@ -236,10 +248,15 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
 
         // HACK: This is to prevent the x and y values being set to values outside
         // of the map. This can happen when the height is larger than the map size.
-        int16_t max = gMapSizeMinus2;
+        auto max = GetMapSizeMinus2();
         if (pos.x > max && pos.y > max)
         {
-            const CoordsXY corr[] = { { -1, -1 }, { 1, -1 }, { 1, 1 }, { -1, 1 } };
+            static constexpr CoordsXY corr[] = {
+                { -1, -1 },
+                { 1, -1 },
+                { 1, 1 },
+                { -1, 1 },
+            };
             pos.x += corr[rotation].x * height;
             pos.y += corr[rotation].y * height;
         }
@@ -327,10 +344,10 @@ static void viewport_redraw_after_shift(
     }
     else
     {
-        int16_t left = viewport->pos.x;
-        int16_t right = viewport->pos.x + viewport->width;
-        int16_t top = viewport->pos.y;
-        int16_t bottom = viewport->pos.y + viewport->height;
+        auto left = viewport->pos.x;
+        auto right = viewport->pos.x + viewport->width;
+        auto top = viewport->pos.y;
+        auto bottom = viewport->pos.y + viewport->height;
 
         // if moved more than the viewport size
         if (abs(coords.x) < viewport->width && abs(coords.y) < viewport->height)
@@ -341,14 +358,14 @@ static void viewport_redraw_after_shift(
             if (coords.x > 0)
             {
                 // draw left
-                int16_t _right = viewport->pos.x + coords.x;
+                auto _right = viewport->pos.x + coords.x;
                 window_draw_all(dpi, left, top, _right, bottom);
                 left += coords.x;
             }
             else if (coords.x < 0)
             {
                 // draw right
-                int16_t _left = viewport->pos.x + viewport->width + coords.x;
+                auto _left = viewport->pos.x + viewport->width + coords.x;
                 window_draw_all(dpi, _left, top, right, bottom);
                 right += coords.x;
             }
@@ -375,7 +392,7 @@ static void viewport_redraw_after_shift(
 }
 
 static void viewport_shift_pixels(
-    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int16_t x_diff, int16_t y_diff)
+    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x_diff, int32_t y_diff)
 {
     auto it = window_get_iterator(window);
     for (; it != g_window_list.end(); it++)
@@ -429,8 +446,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
     // Note: do not do the subtraction and then divide!
     // Note: Due to arithmetic shift != /zoom a shift will have to be used
     // hopefully when 0x006E7FF3 is finished this can be converted to /zoom.
-    int16_t x_diff = (viewport->viewPos.x / viewport->zoom) - (coords.x / viewport->zoom);
-    int16_t y_diff = (viewport->viewPos.y / viewport->zoom) - (coords.y / viewport->zoom);
+    auto x_diff = (viewport->viewPos.x / viewport->zoom) - (coords.x / viewport->zoom);
+    auto y_diff = (viewport->viewPos.y / viewport->zoom) - (coords.y / viewport->zoom);
 
     viewport->viewPos = coords;
 
@@ -514,7 +531,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
 // rct2: 0x006E7A15
 static void viewport_set_underground_flag(int32_t underground, rct_window* window, rct_viewport* viewport)
 {
-    if (window->classification != WC_MAIN_WINDOW)
+    if (window->classification != WC_MAIN_WINDOW
+        || (window->classification == WC_MAIN_WINDOW && window->viewport_smart_follow_sprite != SPRITE_INDEX_NULL))
     {
         if (!underground)
         {
@@ -543,7 +561,7 @@ void viewport_update_position(rct_window* window)
     window_event_resize_call(window);
 
     rct_viewport* viewport = window->viewport;
-    if (!viewport)
+    if (viewport == nullptr)
         return;
 
     if (window->viewport_smart_follow_sprite != SPRITE_INDEX_NULL)
@@ -578,23 +596,23 @@ void viewport_update_position(rct_window* window)
     }
 
     // Clamp to the map maximum value (scenario specific)
-    if (mapCoord.x > gMapSizeMinus2)
+    if (mapCoord.x > GetMapSizeMinus2())
     {
-        mapCoord.x = gMapSizeMinus2;
+        mapCoord.x = GetMapSizeMinus2();
         at_map_edge = 1;
     }
-    if (mapCoord.y > gMapSizeMinus2)
+    if (mapCoord.y > GetMapSizeMinus2())
     {
-        mapCoord.y = gMapSizeMinus2;
+        mapCoord.y = GetMapSizeMinus2();
         at_map_edge = 1;
     }
 
     if (at_map_edge)
     {
         auto centreLoc = centre_2d_coordinates({ mapCoord, 0 }, viewport);
-        if (centreLoc)
+        if (centreLoc.has_value())
         {
-            window->savedViewPos = *centreLoc;
+            window->savedViewPos = centreLoc.value();
         }
     }
 
@@ -640,7 +658,7 @@ void viewport_update_position(rct_window* window)
 
 void viewport_update_sprite_follow(rct_window* window)
 {
-    if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport)
+    if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport != nullptr)
     {
         auto* sprite = GetEntity(window->viewport_target_sprite);
         if (sprite == nullptr)
@@ -652,8 +670,8 @@ void viewport_update_sprite_follow(rct_window* window)
 
         viewport_set_underground_flag(underground, window, window->viewport);
 
-        auto centreLoc = centre_2d_coordinates({ sprite->x, sprite->y, sprite->z }, window->viewport);
-        if (centreLoc)
+        auto centreLoc = centre_2d_coordinates(sprite->GetLocation(), window->viewport);
+        if (centreLoc.has_value())
         {
             window->savedViewPos = *centreLoc;
             viewport_move(*centreLoc, window, window->viewport);
@@ -664,134 +682,104 @@ void viewport_update_sprite_follow(rct_window* window)
 void viewport_update_smart_sprite_follow(rct_window* window)
 {
     auto entity = TryGetEntity(window->viewport_smart_follow_sprite);
-    if (entity == nullptr)
+    if (entity == nullptr || entity->Type == EntityType::Null)
     {
-        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-        window->viewport_target_sprite = SPRITE_INDEX_NULL;
-    }
-    else if (entity->Type == EntityType::Guest || entity->Type == EntityType::Staff)
-    {
-        Peep* peep = TryGetEntity<Peep>(window->viewport_smart_follow_sprite);
-        if (peep == nullptr)
-        {
-            // will never happen
-            window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-            window->viewport_target_sprite = SPRITE_INDEX_NULL;
-            return;
-        }
-
-        if (peep->Is<Guest>())
-            viewport_update_smart_guest_follow(window, peep);
-        else if (peep->Is<Staff>())
-            viewport_update_smart_staff_follow(window, peep);
-    }
-    else if (entity->Type == EntityType::Vehicle)
-    {
-        viewport_update_smart_vehicle_follow(window);
-    }
-    else if (entity->Type != EntityType::Null)
-    {
-        window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
-        window->viewport_target_sprite = window->viewport_smart_follow_sprite;
-    }
-    else
-    {
-        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-        window->viewport_target_sprite = SPRITE_INDEX_NULL;
-    }
-}
-
-viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep)
-{
-    viewport_focus focus{};
-    focus.type = VIEWPORT_FOCUS_TYPE_SPRITE;
-    focus.sprite.sprite_id = peep->sprite_index;
-
-    if (peep->State == PeepState::Picked)
-    {
-        focus.sprite.sprite_id = SPRITE_INDEX_NULL;
-        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-        window->viewport_target_sprite = SPRITE_INDEX_NULL;
-        return focus;
-    }
-    else
-    {
-        bool overallFocus = true;
-        if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide
-            || (peep->State == PeepState::LeavingRide && peep->x == LOCATION_NULL))
-        {
-            auto ride = get_ride(peep->CurrentRide);
-            if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
-            {
-                auto train = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
-                if (train != nullptr)
-                {
-                    const auto car = train->GetCar(peep->CurrentCar);
-                    if (car != nullptr)
-                    {
-                        focus.sprite.sprite_id = car->sprite_index;
-                        overallFocus = false;
-                    }
-                }
-            }
-        }
-        if (peep->x == LOCATION_NULL && overallFocus)
-        {
-            auto ride = get_ride(peep->CurrentRide);
-            if (ride != nullptr)
-            {
-                auto xy = ride->overall_view.ToTileCentre();
-                focus.type = VIEWPORT_FOCUS_TYPE_COORDINATE;
-                focus.coordinate.x = xy.x;
-                focus.coordinate.y = xy.y;
-                focus.coordinate.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
-                focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
-            }
-        }
-        else
-        {
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-            focus.sprite.pad_486 &= 0xFFFF;
-        }
-        focus.coordinate.rotation = get_current_rotation();
-    }
-
-    window->viewport_focus_sprite = focus.sprite;
-    window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
-    return focus;
-}
-
-void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
-{
-    sprite_focus focus = {};
-
-    focus.sprite_id = window->viewport_smart_follow_sprite;
-
-    if (peep->State == PeepState::Picked)
-    {
-        // focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
         return;
     }
-    else
+
+    switch (entity->Type)
     {
-        focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+        case EntityType::Vehicle:
+            viewport_update_smart_vehicle_follow(window);
+            break;
+
+        case EntityType::Guest:
+            viewport_update_smart_guest_follow(window, entity->As<Guest>());
+            break;
+
+        case EntityType::Staff:
+            viewport_update_smart_staff_follow(window, entity->As<Staff>());
+            break;
+
+        default: // All other types don't need any "smart" following; steam particle, duck, money effect, etc.
+            window->focus = Focus(window->viewport_smart_follow_sprite);
+            window->viewport_target_sprite = window->viewport_smart_follow_sprite;
+            break;
+    }
+}
+
+void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
+{
+    Focus focus = Focus(peep->sprite_index);
+    window->viewport_target_sprite = peep->sprite_index;
+
+    if (peep->State == PeepState::Picked)
+    {
+        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
+        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        window->focus = std::nullopt; // No focus
+        return;
     }
 
-    window->viewport_focus_sprite = focus;
-    window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
+    bool overallFocus = true;
+    if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide
+        || (peep->State == PeepState::LeavingRide && peep->x == LOCATION_NULL))
+    {
+        auto ride = get_ride(peep->CurrentRide);
+        if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+        {
+            auto train = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
+            if (train != nullptr)
+            {
+                const auto car = train->GetCar(peep->CurrentCar);
+                if (car != nullptr)
+                {
+                    focus = Focus(car->sprite_index);
+                    overallFocus = false;
+                    window->viewport_target_sprite = car->sprite_index;
+                }
+            }
+        }
+    }
+
+    if (peep->x == LOCATION_NULL && overallFocus)
+    {
+        auto ride = get_ride(peep->CurrentRide);
+        if (ride != nullptr)
+        {
+            auto xy = ride->overall_view.ToTileCentre();
+            CoordsXYZ coordFocus;
+            coordFocus.x = xy.x;
+            coordFocus.y = xy.y;
+            coordFocus.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
+            focus = Focus(coordFocus);
+            window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        }
+    }
+
+    window->focus = focus;
+}
+
+void viewport_update_smart_staff_follow(rct_window* window, const Staff* peep)
+{
+    if (peep->State == PeepState::Picked)
+    {
+        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
+        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        window->focus = std::nullopt;
+        return;
+    }
+
+    window->focus = Focus(window->viewport_smart_follow_sprite);
+    window->viewport_target_sprite = window->viewport_smart_follow_sprite;
 }
 
 void viewport_update_smart_vehicle_follow(rct_window* window)
 {
-    // Can be expanded in the future if needed
-    sprite_focus focus = {};
-
-    focus.sprite_id = window->viewport_smart_follow_sprite;
-
-    window->viewport_focus_sprite = focus;
-    window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
+    window->focus = Focus(window->viewport_smart_follow_sprite);
+    window->viewport_target_sprite = window->viewport_smart_follow_sprite;
 }
 
 /**
@@ -805,45 +793,43 @@ void viewport_update_smart_vehicle_follow(rct_window* window)
  *  ebp: bottom
  */
 void viewport_render(
-    rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    rct_drawpixelinfo* dpi, const rct_viewport* viewport, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* sessions)
 {
-    if (right <= viewport->pos.x)
+    auto [topLeft, bottomRight] = screenRect;
+
+    if (bottomRight.x <= viewport->pos.x)
         return;
-    if (bottom <= viewport->pos.y)
+    if (bottomRight.y <= viewport->pos.y)
         return;
-    if (left >= viewport->pos.x + viewport->width)
+    if (topLeft.x >= viewport->pos.x + viewport->width)
         return;
-    if (top >= viewport->pos.y + viewport->height)
+    if (topLeft.y >= viewport->pos.y + viewport->height)
         return;
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
-    int32_t l = left, t = top, r = right, b = bottom;
+    const auto dirtyBoxTopLeft = topLeft;
+    const auto dirtyBoxTopRight = bottomRight - ScreenCoordsXY{ 1, 1 };
 #endif
 
-    left = std::max<int32_t>(left - viewport->pos.x, 0);
-    right = std::min<int32_t>(right - viewport->pos.x, viewport->width);
-    top = std::max<int32_t>(top - viewport->pos.y, 0);
-    bottom = std::min<int32_t>(bottom - viewport->pos.y, viewport->height);
+    topLeft -= viewport->pos;
+    topLeft = ScreenCoordsXY{
+        std::max(topLeft.x, 0) * viewport->zoom,
+        std::max(topLeft.y, 0) * viewport->zoom,
+    } + viewport->viewPos;
 
-    left = left * viewport->zoom;
-    right = right * viewport->zoom;
-    top = top * viewport->zoom;
-    bottom = bottom * viewport->zoom;
+    bottomRight -= viewport->pos;
+    bottomRight = ScreenCoordsXY{
+        std::min(bottomRight.x, viewport->width) * viewport->zoom,
+        std::min(bottomRight.y, viewport->height) * viewport->zoom,
+    } + viewport->viewPos;
 
-    left += viewport->viewPos.x;
-    right += viewport->viewPos.x;
-    top += viewport->viewPos.y;
-    bottom += viewport->viewPos.y;
-
-    viewport_paint(viewport, dpi, left, top, right, bottom, sessions);
+    viewport_paint(viewport, dpi, { topLeft, bottomRight }, sessions);
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
+    // FIXME g_viewport_list doesn't exist anymore
     if (viewport != g_viewport_list)
-    {
-        gfx_fill_rect_inset(dpi, l, t, r - 1, b - 1, 0x2, INSET_RECT_F_30);
-        return;
-    }
+        gfx_fill_rect_inset(dpi, { dirtyBoxTopLeft, dirtyBoxTopRight }, 0x2, INSET_RECT_F_30);
 #endif
 }
 
@@ -945,8 +931,6 @@ static void viewport_paint_column(paint_session* session)
     {
         PaintDrawMoneyStructs(&session->DPI, session->PSStringHead);
     }
-
-    PaintSessionFree(session);
 }
 
 /**
@@ -960,34 +944,33 @@ static void viewport_paint_column(paint_session* session)
  *  ebp: bottom
  */
 void viewport_paint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
+    const rct_viewport* viewport, rct_drawpixelinfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* recorded_sessions)
 {
     uint32_t viewFlags = viewport->flags;
-    uint16_t width = right - left;
-    uint16_t height = bottom - top;
-    uint16_t bitmask = viewport->zoom >= 0 ? 0xFFFF & (0xFFFF * viewport->zoom) : 0xFFFF;
+    uint32_t width = screenRect.GetWidth();
+    uint32_t height = screenRect.GetHeight();
+    uint32_t bitmask = viewport->zoom >= 0 ? 0xFFFFFFFF & (0xFFFFFFFF * viewport->zoom) : 0xFFFFFFFF;
+    ScreenCoordsXY topLeft = screenRect.Point1;
 
     width &= bitmask;
     height &= bitmask;
-    left &= bitmask;
-    top &= bitmask;
-    right = left + width;
-    bottom = top + height;
+    topLeft.x &= bitmask;
+    topLeft.y &= bitmask;
 
-    int16_t x = static_cast<int16_t>(left - static_cast<int16_t>(viewport->viewPos.x & bitmask));
+    auto x = topLeft.x - static_cast<int32_t>(viewport->viewPos.x & bitmask);
     x = x / viewport->zoom;
     x += viewport->pos.x;
 
-    int16_t y = static_cast<int16_t>(top - static_cast<int16_t>(viewport->viewPos.y & bitmask));
+    auto y = topLeft.y - static_cast<int32_t>(viewport->viewPos.y & bitmask);
     y = y / viewport->zoom;
     y += viewport->pos.y;
 
     rct_drawpixelinfo dpi1;
     dpi1.DrawingEngine = dpi->DrawingEngine;
     dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
-    dpi1.x = left;
-    dpi1.y = top;
+    dpi1.x = topLeft.x;
+    dpi1.y = topLeft.y;
     dpi1.width = width;
     dpi1.height = height;
     dpi1.pitch = (dpi->width + dpi->pitch) - (width / viewport->zoom);
@@ -995,10 +978,10 @@ void viewport_paint(
     dpi1.remX = std::max(0, dpi->x - x);
     dpi1.remY = std::max(0, dpi->y - y);
 
-    // make sure, the compare operation is done in int16_t to avoid the loop becoming an infiniteloop.
+    // make sure, the compare operation is done in int32_t to avoid the loop becoming an infiniteloop.
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
-    const int16_t rightBorder = dpi1.x + dpi1.width;
-    const int16_t alignedX = floor2(dpi1.x, 32);
+    auto rightBorder = dpi1.x + dpi1.width;
+    auto alignedX = floor2(dpi1.x, 32);
 
     _paintColumns.clear();
 
@@ -1012,16 +995,22 @@ void viewport_paint(
         _paintJobs.reset();
     }
 
+    bool useParallelDrawing = false;
+    if (useMultithreading && (dpi->DrawingEngine->GetFlags() & DEF_PARALLEL_DRAWING))
+    {
+        useParallelDrawing = true;
+    }
+
     // Create space to record sessions and keep track which index is being drawn
     size_t index = 0;
     if (recorded_sessions != nullptr)
     {
-        const uint16_t columnSize = rightBorder - alignedX;
-        const uint16_t columnCount = (columnSize + 31) / 32;
+        auto columnSize = rightBorder - alignedX;
+        auto columnCount = (columnSize + 31) / 32;
         recorded_sessions->resize(columnCount);
     }
 
-    // Splits the area into 32 pixel columns and renders them
+    // Generate and sort columns.
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
         paint_session* session = PaintSessionAlloc(&dpi1, viewFlags);
@@ -1030,17 +1019,17 @@ void viewport_paint(
         rct_drawpixelinfo& dpi2 = session->DPI;
         if (x >= dpi2.x)
         {
-            int16_t leftPitch = x - dpi2.x;
+            auto leftPitch = x - dpi2.x;
             dpi2.width -= leftPitch;
             dpi2.bits += leftPitch / dpi2.zoom_level;
             dpi2.pitch += leftPitch / dpi2.zoom_level;
             dpi2.x = x;
         }
 
-        int16_t paintRight = dpi2.x + dpi2.width;
+        auto paintRight = dpi2.x + dpi2.width;
         if (paintRight >= x + 32)
         {
-            int16_t rightPitch = paintRight - x - 32;
+            auto rightPitch = paintRight - x - 32;
             paintRight -= rightPitch;
             dpi2.pitch += rightPitch / dpi2.zoom_level;
         }
@@ -1062,9 +1051,27 @@ void viewport_paint(
         _paintJobs->Join();
     }
 
-    for (auto column : _paintColumns)
+    // Paint columns.
+    for (auto* session : _paintColumns)
     {
-        viewport_paint_column(column);
+        if (useParallelDrawing)
+        {
+            _paintJobs->AddTask([session]() -> void { viewport_paint_column(session); });
+        }
+        else
+        {
+            viewport_paint_column(session);
+        }
+    }
+    if (useParallelDrawing)
+    {
+        _paintJobs->Join();
+    }
+
+    // Release resources.
+    for (auto* session : _paintColumns)
+    {
+        PaintSessionFree(session);
     }
 }
 
@@ -1090,7 +1097,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
 std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords, int32_t* direction)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     int32_t my_direction;
@@ -1102,8 +1109,8 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
     }
     else
     {
-        int16_t mod_x = mapCoords->x & 0x1F;
-        int16_t mod_y = mapCoords->y & 0x1F;
+        auto mod_x = mapCoords->x & 0x1F;
+        auto mod_y = mapCoords->y & 0x1F;
         if (mod_x <= 16)
         {
             if (mod_y < 16)
@@ -1143,16 +1150,14 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
 
 void rct_viewport::Invalidate() const
 {
-    viewport_invalidate(this, viewPos.x, viewPos.y, viewPos.x + view_width, viewPos.y + view_height);
+    viewport_invalidate(this, { viewPos, viewPos + ScreenCoordsXY{ view_width, view_height } });
 }
 
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
 {
-    constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
-
     // Reverse of translate_3d_to_2d_with_z
     CoordsXY ret = { coords.y - coords.x / 2 + z, coords.y + coords.x / 2 + z };
-    auto inverseRotation = inverseRotationMapping[get_current_rotation()];
+    auto inverseRotation = DirectionFlipXAxis(get_current_rotation());
     return ret.Rotate(inverseRotation);
 }
 
@@ -1376,9 +1381,9 @@ static bool is_pixel_present_bmp(
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
-static bool is_pixel_present_rle(const uint8_t* esi, int16_t x_start_point, int16_t y_start_point, int32_t round)
+static bool is_pixel_present_rle(const uint8_t* esi, int32_t x_start_point, int32_t y_start_point, int32_t round)
 {
-    uint16_t start_offset = esi[y_start_point * 2] | (esi[y_start_point * 2 + 1] << 8);
+    uint32_t start_offset = esi[y_start_point * 2] | (esi[y_start_point * 2 + 1] << 8);
     const uint8_t* ebx = esi + start_offset;
 
     uint8_t last_data_line = 0;
@@ -1489,8 +1494,8 @@ static bool is_sprite_interacted_with_palette_set(
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
             rct_drawpixelinfo zoomed_dpi = {
                 /* .bits = */ dpi->bits,
-                /* .x = */ static_cast<int16_t>(dpi->x >> 1),
-                /* .y = */ static_cast<int16_t>(dpi->y >> 1),
+                /* .x = */ dpi->x >> 1,
+                /* .y = */ dpi->y >> 1,
                 /* .height = */ dpi->height,
                 /* .width = */ dpi->width,
                 /* .pitch = */ dpi->pitch,
@@ -1511,8 +1516,8 @@ static bool is_sprite_interacted_with_palette_set(
     }
 
     origin.y += g1->y_offset;
-    int16_t yStartPoint = 0;
-    int16_t height = g1->height;
+    int32_t yStartPoint = 0;
+    int32_t height = g1->height;
     if (dpi->zoom_level != 0)
     {
         if (height % 2)
@@ -1537,7 +1542,7 @@ static bool is_sprite_interacted_with_palette_set(
     }
 
     origin.y = floor2(origin.y, round);
-    int16_t yEndPoint = height;
+    int32_t yEndPoint = height;
     origin.y -= dpi->y;
     if (origin.y < 0)
     {
@@ -1562,8 +1567,8 @@ static bool is_sprite_interacted_with_palette_set(
         }
     }
 
-    int16_t xStartPoint = 0;
-    int16_t xEndPoint = g1->width;
+    int32_t xStartPoint = 0;
+    int32_t xEndPoint = g1->width;
 
     origin.x += g1->x_offset;
     origin.x = floor2(origin.x, round);
@@ -1625,9 +1630,9 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, c
         {
             index &= 0x1F;
         }
-        if (auto pm = GetPaletteMapForColour(index))
+        if (auto pm = GetPaletteMapForColour(index); pm.has_value())
         {
-            paletteMap = *pm;
+            paletteMap = pm.value();
         }
     }
     else
@@ -1717,8 +1722,8 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
         viewLoc += myviewport->viewPos;
         if (myviewport->zoom > 0)
         {
-            viewLoc.x &= (0xFFFF * myviewport->zoom) & 0xFFFF;
-            viewLoc.y &= (0xFFFF * myviewport->zoom) & 0xFFFF;
+            viewLoc.x &= (0xFFFFFFFF * myviewport->zoom) & 0xFFFFFFFF;
+            viewLoc.y &= (0xFFFFFFFF * myviewport->zoom) & 0xFFFFFFFF;
         }
         rct_drawpixelinfo dpi;
         dpi.x = viewLoc.x;
@@ -1737,9 +1742,9 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
 }
 
 /**
- * Left, top, right and bottom represent 2D map coordinates at zoom 0.
+ * screenRect represents 2D map coordinates at zoom 0.
  */
-void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenRect)
 {
     // if unknown viewport visibility, use the containing window to discover the status
     if (viewport->visibility == VisibilityCache::Unknown)
@@ -1759,31 +1764,23 @@ void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top
     if (viewport->visibility == VisibilityCache::Covered)
         return;
 
-    int32_t viewportLeft = viewport->viewPos.x;
-    int32_t viewportTop = viewport->viewPos.y;
-    int32_t viewportRight = viewport->viewPos.x + viewport->view_width;
-    int32_t viewportBottom = viewport->viewPos.y + viewport->view_height;
-    if (right > viewportLeft && bottom > viewportTop)
+    auto [topLeft, bottomRight] = screenRect;
+    const auto [viewportRight, viewportBottom] = viewport->viewPos
+        + ScreenCoordsXY{ viewport->view_width, viewport->view_height };
+
+    if (bottomRight.x > viewport->viewPos.x && bottomRight.y > viewport->viewPos.y)
     {
-        left = std::max(left, viewportLeft);
-        top = std::max(top, viewportTop);
-        right = std::min(right, viewportRight);
-        bottom = std::min(bottom, viewportBottom);
+        topLeft = { std::max(topLeft.x, viewport->viewPos.x), std::max(topLeft.y, viewport->viewPos.y) };
+        topLeft -= viewport->viewPos;
+        topLeft = { topLeft.x / viewport->zoom, topLeft.y / viewport->zoom };
+        topLeft += viewport->pos;
 
-        left -= viewportLeft;
-        top -= viewportTop;
-        right -= viewportLeft;
-        bottom -= viewportTop;
-        left = left / viewport->zoom;
-        top = top / viewport->zoom;
-        right = right / viewport->zoom;
-        bottom = bottom / viewport->zoom;
-        left += viewport->pos.x;
-        top += viewport->pos.y;
-        right += viewport->pos.x;
-        bottom += viewport->pos.y;
+        bottomRight = { std::max(bottomRight.x, viewportRight), std::max(bottomRight.y, viewportBottom) };
+        bottomRight -= viewport->viewPos;
+        bottomRight = { bottomRight.x / viewport->zoom, bottomRight.y / viewport->zoom };
+        bottomRight += viewport->pos;
 
-        gfx_set_dirty_blocks({ { left, top }, { right, bottom } });
+        gfx_set_dirty_blocks({ topLeft, bottomRight });
     }
 }
 
@@ -1852,7 +1849,7 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
  *
  *  rct2: 0x006894D4
  */
-std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int16_t z)
+std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int32_t z)
 {
     rct_viewport* viewport = viewport_find_from_point(screenCoords);
     if (viewport == nullptr)
@@ -1877,7 +1874,7 @@ std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoo
 std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenCoords, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *quadrant = map_get_tile_quadrant(*mapCoords);
@@ -1888,10 +1885,10 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenC
  *
  *  rct2: 0x0068964B
  */
-std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* quadrant)
+std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *quadrant = map_get_tile_quadrant(*mapCoords);
@@ -1905,7 +1902,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& 
 std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoords, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *side = map_get_tile_side(*mapCoords);
@@ -1916,10 +1913,10 @@ std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoord
  *
  *  rct2: 0x006896DC
  */
-std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* side)
+std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
-    if (!mapCoords)
+    if (!mapCoords.has_value())
         return std::nullopt;
 
     *side = map_get_tile_side(*mapCoords);
@@ -1949,7 +1946,7 @@ uint8_t get_current_rotation()
     return rotation_masked;
 }
 
-int16_t get_height_marker_offset()
+int32_t get_height_marker_offset()
 {
     // Height labels in units
     if (gConfigGeneral.show_height_as_units)
@@ -1983,8 +1980,6 @@ ZoomLevel ZoomLevel::min()
     {
         return -2;
     }
-    else
-    {
-        return 0;
-    }
+
+    return 0;
 }

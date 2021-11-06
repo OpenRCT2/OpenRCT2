@@ -18,7 +18,7 @@
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(
-    paint_session* session, Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -57,7 +57,8 @@ static void paint_twist_structure(
 
     uint32_t structureFrameNum = frameNum % 24;
     uint32_t imageId = (baseImageId + structureFrameNum) | imageColourFlags;
-    PaintAddImageAsParent(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
+    PaintAddImageAsParent(
+        session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { xOffset + 16, yOffset + 16, height });
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
@@ -79,10 +80,9 @@ static void paint_twist_structure(
 
 /** rct2: 0x0076D858 */
 static void paint_twist(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -92,27 +92,28 @@ static void paint_twist(
 
     uint32_t imageId;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_MISC], height, floorSpritesCork);
+    StationObject* stationObject = ride_get_station_object(ride);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, session->MapPosition, tileElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_FENCE_ROPE_SW | session->TrackColours[SCHEME_MISC];
-                PaintAddImageAsParent(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 3);
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 3 });
             }
-            if (track_paint_util_has_fence(EDGE_SE, session->MapPosition, tileElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_FENCE_ROPE_SE | session->TrackColours[SCHEME_MISC];
-                PaintAddImageAsParent(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3);
+                PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
             }
             break;
         default:
             track_paint_util_paint_fences(
-                session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+                session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
                 fenceSpritesRope, session->CurrentRotation);
             break;
     }

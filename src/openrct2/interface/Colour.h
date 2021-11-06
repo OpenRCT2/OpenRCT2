@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _COLOUR_H_
-#define _COLOUR_H_
+#pragma once
 
 #include "../common.h"
 
@@ -52,7 +51,9 @@ enum : colour_t
     COLOUR_BRIGHT_PINK,
     COLOUR_LIGHT_PINK,
 
-    COLOUR_COUNT
+    COLOUR_COUNT,
+
+    COLOUR_NULL = 255,
 };
 
 /**
@@ -216,6 +217,4 @@ namespace Colour
 
 #ifndef NO_TTF
 uint8_t blendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
-#endif
-
 #endif

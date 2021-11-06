@@ -28,14 +28,13 @@ extern std::vector<uint8_t> _objectSelectionFlags;
 extern int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 
 bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType);
+bool editor_check_object_group_at_least_one_surface_selected(bool queue);
 void editor_object_flags_free();
 void unload_unselected_objects();
 void sub_6AB211();
 void reset_selected_object_count_and_size();
 void finish_object_selection();
 bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item);
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, std::string_view identifier);
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const rct_object_entry* entry);
 bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& entry);
 
 /**

@@ -43,7 +43,7 @@ static rct_widget window_land_rights_widgets[] = {
     MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_RIGHTS_TIP ), // increment size
     MakeRemapWidget({22, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_LAND_RIGHTS,         STR_BUY_LAND_RIGHTS_TIP           ), // land rights
     MakeRemapWidget({52, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_CONSTRUCTION_RIGHTS, STR_BUY_CONSTRUCTION_RIGHTS_TIP   ), // construction rights
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_land_rights_close(rct_window *w);
@@ -203,9 +203,10 @@ static void window_land_rights_textinput(rct_window* w, rct_widgetindex widgetIn
 
 static void window_land_rights_inputsize(rct_window* w)
 {
-    TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
-    TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
-    window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, 3);
+    Formatter ft;
+    ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+    ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+    window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
 }
 
 static void window_land_rights_update(rct_window* w)
@@ -262,16 +263,19 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        DrawTextBasic(
-            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize, { TextAlignment::CENTRE });
+        auto ft = Formatter();
+        ft.Add<uint16_t>(gLandToolSize);
+        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
     }
 
     // Draw cost amount
     if (_landRightsCost != MONEY32_UNDEFINED && _landRightsCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
+        auto ft = Formatter();
+        ft.Add<money64>(_landRightsCost);
         screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + w->windowPos.x,
                          window_land_rights_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 32 };
-        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &_landRightsCost, { TextAlignment::CENTRE });
+        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
     }
 }
 
@@ -282,7 +286,7 @@ static void window_land_rights_tool_update_land_rights(const ScreenCoordsXY& scr
 
     auto mapTile = screen_get_map_xy(screenCoords, nullptr);
 
-    if (!mapTile)
+    if (!mapTile.has_value())
     {
         if (_landRightsCost != MONEY32_UNDEFINED)
         {

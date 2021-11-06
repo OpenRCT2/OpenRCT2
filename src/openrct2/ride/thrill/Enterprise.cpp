@@ -18,7 +18,7 @@
 
 /** rct2: 0x008A2ABC */
 static void paint_enterprise_structure(
-    paint_session* session, Ride* ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TileElement* tileElement)
+    paint_session* session, const Ride* ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TrackElement& trackElement)
 {
     height += 7;
 
@@ -40,7 +40,7 @@ static void paint_enterprise_structure(
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    uint32_t imageOffset = tileElement->GetDirectionWithOffset(session->CurrentRotation);
+    uint32_t imageOffset = trackElement.GetDirectionWithOffset(session->CurrentRotation);
     if (vehicle != nullptr)
     {
         imageOffset = (vehicle->Pitch << 2) + (((vehicle->sprite_direction >> 3) + session->CurrentRotation) % 4);
@@ -53,7 +53,7 @@ static void paint_enterprise_structure(
     }
 
     uint32_t imageId = (baseImageId + imageOffset) | imageColourFlags;
-    PaintAddImageAsParent(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
+    PaintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { 0, 0, height });
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
@@ -79,10 +79,9 @@ static void paint_enterprise_structure(
 
 /** rct2: 0x008A1584 */
 static void paint_enterprise(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -90,53 +89,54 @@ static void paint_enterprise(
 
     int32_t edges = edges_4x4[trackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
+    StationObject* stationObject = ride_get_station_object(ride);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesRope,
+        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesRope,
         session->CurrentRotation);
 
     switch (trackSequence)
     {
         case 5:
-            paint_enterprise_structure(session, ride, 16, 16, height, tileElement);
+            paint_enterprise_structure(session, ride, 16, 16, height, trackElement);
             break;
         case 6:
-            paint_enterprise_structure(session, ride, 16, -16, height, tileElement);
+            paint_enterprise_structure(session, ride, 16, -16, height, trackElement);
             break;
         case 10:
-            paint_enterprise_structure(session, ride, -16, -16, height, tileElement);
+            paint_enterprise_structure(session, ride, -16, -16, height, trackElement);
             break;
         case 9:
-            paint_enterprise_structure(session, ride, -16, 16, height, tileElement);
+            paint_enterprise_structure(session, ride, -16, 16, height, trackElement);
             break;
 
         case 0:
-            paint_enterprise_structure(session, ride, 48, 48, height, tileElement);
+            paint_enterprise_structure(session, ride, 48, 48, height, trackElement);
             break;
         case 3:
-            paint_enterprise_structure(session, ride, 48, -48, height, tileElement);
+            paint_enterprise_structure(session, ride, 48, -48, height, trackElement);
             break;
         case 15:
-            paint_enterprise_structure(session, ride, -48, -48, height, tileElement);
+            paint_enterprise_structure(session, ride, -48, -48, height, trackElement);
             break;
         case 12:
-            paint_enterprise_structure(session, ride, -48, 48, height, tileElement);
+            paint_enterprise_structure(session, ride, -48, 48, height, trackElement);
             break;
 
         case 7:
-            paint_enterprise_structure(session, ride, 16, -48, height, tileElement);
+            paint_enterprise_structure(session, ride, 16, -48, height, trackElement);
             break;
         case 11:
-            paint_enterprise_structure(session, ride, -16, -48, height, tileElement);
+            paint_enterprise_structure(session, ride, -16, -48, height, trackElement);
             break;
         case 14:
-            paint_enterprise_structure(session, ride, -48, -16, height, tileElement);
+            paint_enterprise_structure(session, ride, -48, -16, height, trackElement);
             break;
         case 13:
-            paint_enterprise_structure(session, ride, -48, 16, height, tileElement);
+            paint_enterprise_structure(session, ride, -48, 16, height, trackElement);
             break;
     }
 

@@ -27,10 +27,10 @@
 namespace SingleRailRC
 {
     static void TrackFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -91,8 +91,8 @@ namespace SingleRailRC
     }
 
     static void TrackStation(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         static constexpr const uint32_t imageIds[4][3] = {
             { (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 0), (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 0), SPR_STATION_BASE_B_SW_NE },
@@ -101,7 +101,7 @@ namespace SingleRailRC
             { (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 1), (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 1), SPR_STATION_BASE_B_NW_SE },
         };
 
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
+        if (trackElement.GetTrackType() == TrackElemType::EndStation)
         {
             PaintAddImageAsParentRotated(
                 session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
@@ -117,17 +117,17 @@ namespace SingleRailRC
             session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 2, height - 2, 0, 2,
             height);
         track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
-        track_paint_util_draw_station_2(session, rideIndex, direction, height, tileElement, 4, 7);
+        track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 4, 7);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 
     static void Track25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -203,10 +203,10 @@ namespace SingleRailRC
     }
 
     static void Track60DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -282,10 +282,10 @@ namespace SingleRailRC
     }
 
     static void TrackFlatTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -361,10 +361,10 @@ namespace SingleRailRC
     }
 
     static void Track25DegUpTo60DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -452,10 +452,10 @@ namespace SingleRailRC
     }
 
     static void Track60DegUpTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -543,10 +543,10 @@ namespace SingleRailRC
     }
 
     static void Track25DegUpToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -622,50 +622,50 @@ namespace SingleRailRC
     }
 
     static void Track25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track60DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track60DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackFlatTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track25DegUpToFlat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownTo60DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track60DegUpTo25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track60DegDownTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track25DegUpTo60DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackFlatTo25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track90DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -704,15 +704,15 @@ namespace SingleRailRC
     }
 
     static void Track90DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track90DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track60DegUpTo90DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -760,15 +760,15 @@ namespace SingleRailRC
     }
 
     static void Track90DegDownTo60DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track60DegUpTo90DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track90DegUpTo60DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -808,8 +808,8 @@ namespace SingleRailRC
     }
 
     static void Track60DegDownTo90DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -851,8 +851,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftQuarterTurn3(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -979,16 +979,16 @@ namespace SingleRailRC
     }
 
     static void TrackRightQuarterTurn3(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackLeftQuarterTurn3(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackLeftQuarterTurn5(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -1188,16 +1188,16 @@ namespace SingleRailRC
     }
 
     static void TrackRightQuarterTurn5(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackLeftQuarterTurn5(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackLeftEighthToDiag(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -1361,8 +1361,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightEighthToDiag(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -1526,29 +1526,29 @@ namespace SingleRailRC
     }
 
     static void TrackLeftEighthToOrthogonal(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-        TrackRightEighthToDiag(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightEighthToOrthogonal(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-        TrackLeftEighthToDiag(session, rideIndex, trackSequence, (direction + 3) & 3, height, tileElement);
+        TrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
     }
 
     static void TrackDiagFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1578,7 +1578,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1608,7 +1608,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1638,7 +1638,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1699,13 +1699,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1735,7 +1735,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1765,7 +1765,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1795,7 +1795,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1856,13 +1856,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegUpToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1892,7 +1892,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1922,7 +1922,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1952,7 +1952,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2013,13 +2013,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiagFlatTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2049,7 +2049,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2079,7 +2079,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2109,7 +2109,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2170,13 +2170,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2206,7 +2206,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2236,7 +2236,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2266,7 +2266,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2327,13 +2327,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiagFlatTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2362,7 +2362,7 @@ namespace SingleRailRC
                     0);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2391,7 +2391,7 @@ namespace SingleRailRC
                     0);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2420,7 +2420,7 @@ namespace SingleRailRC
                     0);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2482,13 +2482,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegDownToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2518,7 +2518,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2548,7 +2548,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2578,7 +2578,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2639,13 +2639,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag60DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2675,7 +2675,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2705,7 +2705,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2735,7 +2735,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2796,13 +2796,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegUpTo60DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2832,7 +2832,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2862,7 +2862,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2892,7 +2892,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2953,13 +2953,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag60DegUpTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2989,7 +2989,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3019,7 +3019,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3049,7 +3049,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3110,13 +3110,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag60DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3146,7 +3146,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3176,7 +3176,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3206,7 +3206,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3267,13 +3267,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegDownTo60DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3303,7 +3303,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3333,7 +3333,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3363,7 +3363,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3424,13 +3424,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag60DegDownTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3460,7 +3460,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3490,7 +3490,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3520,7 +3520,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3581,8 +3581,8 @@ namespace SingleRailRC
     }
 
     static void TrackFlatToLeftBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -3624,8 +3624,8 @@ namespace SingleRailRC
     }
 
     static void TrackFlatToRightBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -3667,22 +3667,22 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBankToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackFlatToRightBank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackFlatToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBankToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackFlatToLeftBank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackFlatToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBankTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -3731,8 +3731,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightBankTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -3781,8 +3781,8 @@ namespace SingleRailRC
     }
 
     static void Track25DegUpToLeftBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -3831,8 +3831,8 @@ namespace SingleRailRC
     }
 
     static void Track25DegUpToRightBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -3881,36 +3881,36 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBankTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track25DegUpToRightBank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBankTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track25DegUpToLeftBank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToLeftBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightBankTo25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToRightBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftBankTo25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -3946,15 +3946,15 @@ namespace SingleRailRC
     }
 
     static void TrackRightBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftBank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackDiagFlatToLeftBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4040,8 +4040,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiagFlatToRightBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4127,8 +4127,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiagLeftBankToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4214,8 +4214,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiagRightBankToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4301,8 +4301,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiagLeftBankTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4388,8 +4388,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiagRightBankTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4475,8 +4475,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegUpToLeftBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4562,8 +4562,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegUpToRightBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4649,8 +4649,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiagLeftBankTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4734,8 +4734,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiagRightBankTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4819,8 +4819,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegDownToLeftBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4906,8 +4906,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiag25DegDownToRightBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -4993,8 +4993,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiagLeftBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -5076,8 +5076,8 @@ namespace SingleRailRC
     }
 
     static void TrackDiagRightBank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -5159,8 +5159,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftQuarterTurn3Bank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -5295,16 +5295,16 @@ namespace SingleRailRC
     }
 
     static void TrackRightQuarterTurn3Bank(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackLeftQuarterTurn3Bank(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackBankedLeftQuarterTurn5(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -5512,16 +5512,16 @@ namespace SingleRailRC
     }
 
     static void TrackBankedRightQuarterTurn5(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackBankedLeftQuarterTurn5(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackLeftEighthBankToDiag(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -5685,8 +5685,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightEighthBankToDiag(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -5850,24 +5850,24 @@ namespace SingleRailRC
     }
 
     static void TrackLeftEighthBankToOrthogonal(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-        TrackRightEighthBankToDiag(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightEighthBankToOrthogonal(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-        TrackLeftEighthBankToDiag(session, rideIndex, trackSequence, (direction + 3) & 3, height, tileElement);
+        TrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
     }
 
     static void TrackLeftQuarterTurn3Tile25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -5964,8 +5964,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightQuarterTurn3Tile25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -6068,24 +6068,24 @@ namespace SingleRailRC
     }
 
     static void TrackLeftQuarterTurn3Tile25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackRightQuarterTurn3Tile25DegUp(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
+        TrackRightQuarterTurn3Tile25DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
     }
 
     static void TrackRightQuarterTurn3Tile25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackLeftQuarterTurn3Tile25DegUp(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftQuarterTurn3Tile25DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackLeftQuarterTurn525DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -6285,8 +6285,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightQuarterTurn525DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -6486,24 +6486,24 @@ namespace SingleRailRC
     }
 
     static void TrackLeftQuarterTurn525DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackRightQuarterTurn525DegUp(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
+        TrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
     }
 
     static void TrackRightQuarterTurn525DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackLeftQuarterTurn525DegUp(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackLeftQuarterTurn160DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -6546,8 +6546,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightQuarterTurn160DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -6590,22 +6590,22 @@ namespace SingleRailRC
     }
 
     static void TrackLeftQuarterTurn160DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightQuarterTurn160DegUp(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
+        TrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
     }
 
     static void TrackRightQuarterTurn160DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftQuarterTurn160DegUp(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackLeftQuarterTurn190DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -6656,8 +6656,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightQuarterTurn190DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -6708,22 +6708,22 @@ namespace SingleRailRC
     }
 
     static void TrackLeftQuarterTurn190DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightQuarterTurn190DegUp(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
+        TrackRightQuarterTurn190DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
     }
 
     static void TrackRightQuarterTurn190DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftQuarterTurn190DegUp(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftQuarterTurn190DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void Track25DegUpToLeftBanked25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -6774,8 +6774,8 @@ namespace SingleRailRC
     }
 
     static void Track25DegUpToRightBanked25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -6826,8 +6826,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBanked25DegUpTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -6878,8 +6878,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightBanked25DegUpTo25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -6930,36 +6930,36 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBanked25DegDownTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track25DegUpToRightBanked25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBanked25DegDownTo25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track25DegUpToLeftBanked25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToLeftBanked25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightBanked25DegUpTo25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownToRightBanked25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftBanked25DegUpTo25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBankedFlatToLeftBanked25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7006,8 +7006,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightBankedFlatToRightBanked25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7054,8 +7054,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBanked25DegUpToLeftBankedFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7102,8 +7102,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightBanked25DegUpToRightBankedFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7150,36 +7150,36 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBankedFlatToLeftBanked25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightBanked25DegUpToRightBankedFlat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackRightBanked25DegUpToRightBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBankedFlatToRightBanked25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftBanked25DegUpToLeftBankedFlat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBanked25DegDownToLeftBankedFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightBankedFlatToRightBanked25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackRightBankedFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBanked25DegDownToRightBankedFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftBankedFlatToLeftBanked25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegUpLeftBanked(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7226,8 +7226,8 @@ namespace SingleRailRC
     }
 
     static void Track25DegUpRightBanked(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7274,22 +7274,22 @@ namespace SingleRailRC
     }
 
     static void Track25DegDownLeftBanked(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track25DegUpRightBanked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track25DegDownRightBanked(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track25DegUpLeftBanked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackFlatToLeftBanked25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7340,8 +7340,8 @@ namespace SingleRailRC
     }
 
     static void TrackFlatToRightBanked25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7392,8 +7392,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBanked25DegUpToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7444,8 +7444,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightBanked25DegUpToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -7496,36 +7496,36 @@ namespace SingleRailRC
     }
 
     static void TrackFlatToLeftBanked25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightBanked25DegUpToFlat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackFlatToRightBanked25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftBanked25DegUpToFlat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBanked25DegDownToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackFlatToRightBanked25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBanked25DegDownToFlat(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackFlatToLeftBanked25DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackLeftBankedQuarterTurn3Tile25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -7622,8 +7622,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightBankedQuarterTurn3Tile25DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -7726,24 +7726,24 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBankedQuarterTurn3Tile25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackRightBankedQuarterTurn3Tile25DegUp(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
+        TrackRightBankedQuarterTurn3Tile25DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
     }
 
     static void TrackRightBankedQuarterTurn3Tile25DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackLeftBankedQuarterTurn3Tile25DegUp(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftBankedQuarterTurn3Tile25DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackLeftBankedQuarterTurn525DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -7943,8 +7943,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightBankedQuarterTurn525DegUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -8144,24 +8144,24 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBankedQuarterTurn525DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackRightBankedQuarterTurn525DegUp(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
+        TrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
     }
 
     static void TrackRightBankedQuarterTurn525DegDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackLeftBankedQuarterTurn525DegUp(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackSBendLeft(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -8314,8 +8314,8 @@ namespace SingleRailRC
     }
 
     static void TrackSBendRight(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -8468,8 +8468,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftHalfBankedHelixUpSmall(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -8735,8 +8735,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightHalfBankedHelixUpSmall(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -9002,8 +9002,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftHalfBankedHelixDownSmall(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         if (trackSequence >= 4)
         {
@@ -9011,12 +9011,12 @@ namespace SingleRailRC
             direction = (direction - 1) & 3;
         }
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackRightHalfBankedHelixUpSmall(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
+        TrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
     }
 
     static void TrackRightHalfBankedHelixDownSmall(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         if (trackSequence >= 4)
         {
@@ -9024,12 +9024,12 @@ namespace SingleRailRC
             direction = (direction + 1) & 3;
         }
         trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        TrackLeftHalfBankedHelixUpSmall(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackLeftHalfBankedHelixUpLarge(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -9440,8 +9440,8 @@ namespace SingleRailRC
         }
     }
     static void TrackRightHalfBankedHelixUpLarge(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -9865,8 +9865,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftHalfBankedHelixDownLarge(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         if (trackSequence >= 7)
         {
@@ -9874,12 +9874,12 @@ namespace SingleRailRC
             direction = (direction - 1) & 3;
         }
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackRightHalfBankedHelixUpLarge(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
+        TrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
     }
 
     static void TrackRightHalfBankedHelixDownLarge(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         if (trackSequence >= 7)
         {
@@ -9887,12 +9887,12 @@ namespace SingleRailRC
             direction = (direction + 1) & 3;
         }
         trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        TrackLeftHalfBankedHelixUpLarge(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void TrackLeftBarrelRollUpToDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -10072,8 +10072,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightBarrelRollUpToDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -10253,22 +10253,22 @@ namespace SingleRailRC
     }
 
     static void TrackLeftBarrelRollDownToUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftBarrelRollUpToDown(session, rideIndex, 2 - trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackLeftBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackRightBarrelRollDownToUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightBarrelRollUpToDown(session, rideIndex, 2 - trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackRightBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackHalfLoopUp(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -10408,15 +10408,15 @@ namespace SingleRailRC
     }
 
     static void TrackHalfLoopDown(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackHalfLoopUp(session, rideIndex, 3 - trackSequence, direction, height, tileElement);
+        TrackHalfLoopUp(session, ride, 3 - trackSequence, direction, height, trackElement);
     }
 
     static void TrackBrakes(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -10444,8 +10444,8 @@ namespace SingleRailRC
     }
 
     static void TrackOnRidePhoto(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -10494,15 +10494,15 @@ namespace SingleRailRC
                     0, height, 0, 6, height + 3);
                 break;
         }
-        track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
+        track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
     }
 
     static void TrackFlatTo60DegUpLongBase(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -10670,8 +10670,8 @@ namespace SingleRailRC
         }
     }
     static void Track60DegUpToFlatLongBase(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -10840,22 +10840,22 @@ namespace SingleRailRC
     }
 
     static void TrackFlatTo60DegDownLongBase(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track60DegUpToFlatLongBase(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);
+        Track60DegUpToFlatLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track60DegDownToFlatLongBase(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackFlatTo60DegUpLongBase(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackFlatTo60DegUpLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackBlockBrakes(
-        paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (direction)
         {
@@ -10883,8 +10883,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftCorkscrewUp(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -11000,8 +11000,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightCorkscrewUp(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -11115,22 +11115,22 @@ namespace SingleRailRC
     }
 
     static void TrackLeftCorkscrewDown(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightCorkscrewUp(session, rideIndex, 2 - trackSequence, (direction + 1) & 3, height, tileElement);
+        TrackRightCorkscrewUp(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
     }
 
     static void TrackRightCorkscrewDown(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftCorkscrewUp(session, rideIndex, 2 - trackSequence, (direction - 1) & 3, height, tileElement);
+        TrackLeftCorkscrewUp(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
     }
 
     static void Track90DegToInvertedFlatQuarterLoopUp(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -11238,15 +11238,15 @@ namespace SingleRailRC
     }
 
     static void TrackInvertedFlatTo90DegQuarterLoopDown(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track90DegToInvertedFlatQuarterLoopUp(session, rideIndex, 2 - trackSequence, direction, height, tileElement);
+        Track90DegToInvertedFlatQuarterLoopUp(session, ride, 2 - trackSequence, direction, height, trackElement);
     }
 
     static void TrackLeftBankToLeftQuarterTurn3Tile25DegUp(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -11347,8 +11347,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightBankToRightQuarterTurn3Tile25DegUp(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -11449,8 +11449,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftQuarterTurn3Tile25DegDownToLeftBank(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -11551,8 +11551,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightQuarterTurn3Tile25DegDownToRightBank(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -11653,8 +11653,8 @@ namespace SingleRailRC
     }
 
     static void TrackLeftLargeHalfLoopUp(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -11925,8 +11925,8 @@ namespace SingleRailRC
     }
 
     static void TrackRightLargeHalfLoopUp(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
@@ -12197,24 +12197,24 @@ namespace SingleRailRC
     }
 
     static void TrackRightLargeHalfLoopDown(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackRightLargeHalfLoopUp(session, rideIndex, 6 - trackSequence, direction, height, tileElement);
+        TrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
     }
 
     static void TrackLeftLargeHalfLoopDown(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackLeftLargeHalfLoopUp(session, rideIndex, 6 - trackSequence, direction, height, tileElement);
+        TrackLeftLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
     }
 
     static void TrackFlatTo60DegUp(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -12320,10 +12320,10 @@ namespace SingleRailRC
     }
 
     static void Track60DegUpToFlat(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -12415,27 +12415,27 @@ namespace SingleRailRC
     }
 
     static void TrackFlatTo60DegDown(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        Track60DegUpToFlat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        Track60DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void Track60DegDownToFlat(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
-        TrackFlatTo60DegUp(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+        TrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
     static void TrackDiagFlatTo60DegUp(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12465,7 +12465,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 64, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12495,7 +12495,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 64, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12525,7 +12525,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 64, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12586,13 +12586,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag60DegUpToFlat(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12622,7 +12622,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12652,7 +12652,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12682,7 +12682,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12743,13 +12743,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiagFlatTo60DegDown(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12779,7 +12779,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12809,7 +12809,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12839,7 +12839,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12900,13 +12900,13 @@ namespace SingleRailRC
     }
 
     static void TrackDiag60DegDownToFlat(
-        paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-        const TileElement* tileElement)
+        paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
     {
         switch (trackSequence)
         {
             case 0:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12936,7 +12936,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 64, 0x20);
                 break;
             case 1:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12966,7 +12966,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 64, 0x20);
                 break;
             case 2:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -12996,7 +12996,7 @@ namespace SingleRailRC
                 paint_util_set_general_support_height(session, height + 64, 0x20);
                 break;
             case 3:
-                if (tileElement->AsTrack()->HasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {

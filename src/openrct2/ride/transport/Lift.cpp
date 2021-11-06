@@ -39,16 +39,16 @@ static void paint_lift_cage(paint_session* session, int8_t index, uint32_t colou
     uint32_t imageId;
 
     imageId = lift_cage_sprites[1 + index][0] | colourFlags;
-    PaintAddImageAsParent(session, imageId, 0, 0, 2, 2, 30, height, 2, 2, height);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 2, 2, height });
 
     imageId = lift_cage_sprites[1 + index][1] | colourFlags;
-    PaintAddImageAsParent(session, imageId, 0, 0, 2, 2, 30, height, 28, 28, height);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 28, 28, height });
 }
 
 /** rct2: 0x0076C6CC */
 static void paint_lift_base(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -75,13 +75,12 @@ static void paint_lift_base(
     int32_t edges = edges_3x3[trackSequence];
 
     uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
-    PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
 
-    auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
+            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
             fenceSpritesMetalB, session->CurrentRotation);
     }
 
@@ -120,8 +119,8 @@ static void paint_lift_base(
 
 /** rct2: 0x0076C6DC */
 static void paint_lift_tower_section(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     if (trackSequence == 1)
     {

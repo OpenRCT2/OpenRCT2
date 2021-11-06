@@ -99,40 +99,40 @@ static rct_widget window_park_entrance_widgets[] = {
     MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,                 STR_NAME_PARK_TIP                       ), // rename
     MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_PARK_TIP                      ),
     MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_PARK_TIP                       ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_rating_widgets[] = {
     MAIN_PARK_WIDGETS(255),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_guests_widgets[] = {
     MAIN_PARK_WIDGETS(255),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
     MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_stats_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_park_awards_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_park_page_widgets[] = {
@@ -142,7 +142,7 @@ static rct_widget *window_park_page_widgets[] = {
     window_park_price_widgets,
     window_park_stats_widgets,
     window_park_objective_widgets,
-    window_park_awards_widgets
+    window_park_awards_widgets,
 };
 
 #pragma endregion
@@ -273,7 +273,7 @@ static rct_window_event_list *window_park_page_events[] = {
     &window_park_price_events,
     &window_park_stats_events,
     &window_park_objective_events,
-    &window_park_awards_events
+    &window_park_awards_events,
 };
 
 #pragma endregion
@@ -351,7 +351,7 @@ static uint32_t window_park_page_enabled_widgets[] = {
     (1ULL << WIDX_TAB_4) |
     (1ULL << WIDX_TAB_5) |
     (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7)
+    (1ULL << WIDX_TAB_7),
 };
 
 static uint32_t window_park_page_hold_down_widgets[] = {
@@ -364,7 +364,7 @@ static uint32_t window_park_page_hold_down_widgets[] = {
 
     0,
     0,
-    0
+    0,
 };
 
 #pragma endregion
@@ -415,7 +415,6 @@ static rct_window* window_park_open()
     w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
     w->number = 0;
     w->page = WINDOW_PARK_PAGE_ENTRANCE;
-    w->viewport_focus_coordinates.y = 0;
     w->frame_no = 0;
     w->list_information_type = std::numeric_limits<uint16_t>::max();
     w->numberOfStaff = -1;
@@ -459,8 +458,6 @@ rct_window* window_park_entrance_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.y = -1;
-        window->viewport_focus_coordinates.x = -1;
     }
 
     window->page = WINDOW_PARK_PAGE_ENTRANCE;
@@ -516,7 +513,7 @@ static void window_park_entrance_mouseup(rct_window* w, rct_widgetindex widgetIn
         {
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
             window_text_input_raw_open(
-                w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, park.Name.c_str(), USER_STRING_MAX_LENGTH);
+                w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), USER_STRING_MAX_LENGTH);
             break;
         }
         case WIDX_CLOSE_LIGHT:
@@ -738,22 +735,16 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_park_init_viewport(rct_window* w)
 {
-    int32_t x, y, z, r, xy, zr, viewportFlags;
-    x = y = z = r = xy = zr = 0;
+    int32_t viewportFlags;
 
     if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
         return;
 
+    std::optional<Focus> focus = std::nullopt;
     if (!gParkEntrances.empty())
     {
         const auto& entrance = gParkEntrances[0];
-        x = entrance.x + 16;
-        y = entrance.y + 16;
-        z = entrance.z + 32;
-        r = get_current_rotation();
-
-        xy = IMAGE_TYPE_TRANSPARENT | (y << 16) | x;
-        zr = (z << 16) | (r << 8);
+        focus = Focus(CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 });
     }
 
     if (w->viewport == nullptr)
@@ -769,13 +760,9 @@ static void window_park_init_viewport(rct_window* w)
     // Call invalidate event
     window_event_invalidate_call(w);
 
-    w->viewport_focus_coordinates.x = x;
-    w->viewport_focus_coordinates.y = y;
-    w->viewport_focus_sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
-    w->viewport_focus_coordinates.z = z;
-    w->viewport_focus_coordinates.rotation = r;
+    w->focus = focus;
 
-    if (zr != 0xFFFF)
+    if (focus.has_value())
     {
         // Create viewport
         if (w->viewport == nullptr)
@@ -783,8 +770,7 @@ static void window_park_init_viewport(rct_window* w)
             rct_widget* viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
             viewport_create(
                 w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                viewportWidget->width() - 1, viewportWidget->height() - 1, 0, { x, y, z },
-                w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, SPRITE_INDEX_NULL);
+                viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
             w->flags |= (1 << 2);
             w->Invalidate();
         }
@@ -811,8 +797,6 @@ rct_window* window_park_rating_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.x = -1;
-        window->viewport_focus_coordinates.y = -1;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
@@ -898,7 +882,9 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
-    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, &gParkRating);
+    auto ft = Formatter();
+    ft.Add<uint16_t>(gParkRating);
+    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
     // Graph border
     gfx_fill_rect_inset(
@@ -912,7 +898,7 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 200;
-        auto ft = Formatter();
+        ft = Formatter();
         ft.Add<uint32_t>(axisValue);
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
@@ -945,8 +931,6 @@ rct_window* window_park_guests_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.x = -1;
-        window->viewport_focus_coordinates.y = -1;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
@@ -1033,8 +1017,9 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
-    DrawTextBasic(
-        dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark);
+    auto ft = Formatter();
+    ft.Add<uint32_t>(gNumGuestsInPark);
+    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
     // Graph border
     gfx_fill_rect_inset(
@@ -1048,7 +1033,7 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 1000;
-        auto ft = Formatter();
+        ft = Formatter();
         ft.Add<uint32_t>(axisValue);
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
@@ -1062,7 +1047,20 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Graph
     screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-    Graph::Draw(dpi, gGuestsInParkHistory, 32, screenPos);
+    uint8_t cappedHistory[32];
+    for (size_t i = 0; i < std::size(cappedHistory); i++)
+    {
+        auto value = gGuestsInParkHistory[i];
+        if (value != std::numeric_limits<uint32_t>::max())
+        {
+            cappedHistory[i] = static_cast<uint8_t>(std::min<uint32_t>(value, 5000) / 20);
+        }
+        else
+        {
+            cappedHistory[i] = std::numeric_limits<uint8_t>::max();
+        }
+    }
+    Graph::Draw(dpi, cappedHistory, static_cast<int32_t>(std::size(cappedHistory)), screenPos);
 }
 
 #pragma endregion
@@ -1181,12 +1179,16 @@ static void window_park_price_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_PAGE_BACKGROUND].left + 4, w->widgets[WIDX_PAGE_BACKGROUND].top + 30 };
-    DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions);
+    auto ft = Formatter();
+    ft.Add<money64>(gTotalIncomeFromAdmissions);
+    DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
-    money32 parkEntranceFee = park_get_entrance_fee();
+    money64 parkEntranceFee = park_get_entrance_fee();
     auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PRICE].left + 1, w->widgets[WIDX_PRICE].top + 1 };
-    DrawTextBasic(dpi, screenCoords, stringId, &parkEntranceFee, { w->colours[1] });
+    ft = Formatter();
+    ft.Add<money64>(parkEntranceFee);
+    DrawTextBasic(dpi, screenCoords, stringId, ft, { w->colours[1] });
 }
 
 #pragma endregion
@@ -1336,8 +1338,6 @@ rct_window* window_park_objective_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.x = -1;
-        window->viewport_focus_coordinates.y = -1;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
@@ -1382,7 +1382,7 @@ static void window_park_objective_mouseup(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_ENTER_NAME:
             window_text_input_open(
-                w, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, 0, 0, 32);
+                w, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0, 32);
             break;
     }
 }
@@ -1489,14 +1489,14 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
         else
-            ft.Add<money32>(gScenarioObjective.Currency);
+            ft.Add<money64>(gScenarioObjective.Currency);
     }
 
     screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
     screenCoords.y += 5;
 
     // Objective outcome
-    if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
+    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
     {
         if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
         {
@@ -1507,7 +1507,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Objective completed
             ft = Formatter();
-            ft.Add<money32>(gScenarioCompletedCompanyValue);
+            ft.Add<money64>(gScenarioCompletedCompanyValue);
             DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
         }
     }
@@ -1529,8 +1529,6 @@ rct_window* window_park_awards_open()
     if (window == nullptr)
     {
         window = window_park_open();
-        window->viewport_focus_coordinates.x = -1;
-        window->viewport_focus_coordinates.y = -1;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))

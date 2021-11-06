@@ -42,8 +42,8 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
     auto normRange = _range.Normalise();
     auto x0 = std::max(normRange.GetLeft(), 32);
     auto y0 = std::max(normRange.GetTop(), 32);
-    auto x1 = std::min(normRange.GetRight(), static_cast<int32_t>(gMapSizeMaxXY));
-    auto y1 = std::min(normRange.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY));
+    auto x1 = std::min(normRange.GetRight(), GetMapSizeMaxXY());
+    auto y1 = std::min(normRange.GetBottom(), GetMapSizeMaxXY());
 
     MapRange validRange{ x0, y0, x1, y1 };
 
@@ -53,7 +53,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (_surfaceStyle > 0x1F)
         {
             log_error("Invalid surface style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -62,7 +62,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (surfaceObj == nullptr)
         {
             log_error("Invalid surface style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
 
@@ -71,7 +71,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (_edgeStyle > 0xF)
         {
             log_error("Invalid edge style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
@@ -79,7 +79,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (edgeObj == nullptr)
         {
             log_error("Invalid edge style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
 
@@ -160,8 +160,8 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Execute() const
     auto normRange = _range.Normalise();
     auto x0 = std::max(normRange.GetLeft(), 32);
     auto y0 = std::max(normRange.GetTop(), 32);
-    auto x1 = std::min(normRange.GetRight(), static_cast<int32_t>(gMapSizeMaxXY));
-    auto y1 = std::min(normRange.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY));
+    auto x1 = std::min(normRange.GetRight(), GetMapSizeMaxXY());
+    auto y1 = std::min(normRange.GetBottom(), GetMapSizeMaxXY());
 
     MapRange validRange{ x0, y0, x1, y1 };
 

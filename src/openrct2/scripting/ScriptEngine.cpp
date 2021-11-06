@@ -17,27 +17,38 @@
 #    include "../actions/RideCreateAction.h"
 #    include "../actions/StaffHireNewAction.h"
 #    include "../config/Config.h"
+#    include "../core/EnumMap.hpp"
 #    include "../core/File.h"
 #    include "../core/FileScanner.h"
 #    include "../core/Path.hpp"
 #    include "../interface/InteractiveConsole.h"
 #    include "../platform/Platform2.h"
 #    include "Duktape.hpp"
-#    include "ScCheats.hpp"
-#    include "ScClimate.hpp"
-#    include "ScConsole.hpp"
-#    include "ScContext.hpp"
-#    include "ScDate.hpp"
-#    include "ScDisposable.hpp"
-#    include "ScEntity.hpp"
-#    include "ScMap.hpp"
-#    include "ScNetwork.hpp"
-#    include "ScObject.hpp"
-#    include "ScPark.hpp"
-#    include "ScRide.hpp"
-#    include "ScScenario.hpp"
-#    include "ScSocket.hpp"
-#    include "ScTile.hpp"
+#    include "bindings/entity/ScEntity.hpp"
+#    include "bindings/entity/ScGuest.hpp"
+#    include "bindings/entity/ScLitter.hpp"
+#    include "bindings/entity/ScPeep.hpp"
+#    include "bindings/entity/ScStaff.hpp"
+#    include "bindings/entity/ScVehicle.hpp"
+#    include "bindings/game/ScCheats.hpp"
+#    include "bindings/game/ScConsole.hpp"
+#    include "bindings/game/ScContext.hpp"
+#    include "bindings/game/ScDisposable.hpp"
+#    include "bindings/network/ScNetwork.hpp"
+#    include "bindings/network/ScPlayer.hpp"
+#    include "bindings/network/ScPlayerGroup.hpp"
+#    include "bindings/network/ScSocket.hpp"
+#    include "bindings/object/ScObject.hpp"
+#    include "bindings/ride/ScRide.hpp"
+#    include "bindings/ride/ScRideStation.hpp"
+#    include "bindings/world/ScClimate.hpp"
+#    include "bindings/world/ScDate.hpp"
+#    include "bindings/world/ScMap.hpp"
+#    include "bindings/world/ScPark.hpp"
+#    include "bindings/world/ScParkMessage.hpp"
+#    include "bindings/world/ScScenario.hpp"
+#    include "bindings/world/ScTile.hpp"
+#    include "bindings/world/ScTileElement.hpp"
 
 #    include <iostream>
 #    include <stdexcept>
@@ -178,12 +189,10 @@ private:
                     }
                     break;
                 }
-                else
+
+                if (duk_get_prop_index(_context, -1, i))
                 {
-                    if (duk_get_prop_index(_context, -1, i))
-                    {
-                        Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
-                    }
+                    Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
                 }
             }
             _ss << " ]";
@@ -400,6 +409,7 @@ void ScriptEngine::Initialise()
     ScTile::Register(ctx);
     ScTileElement::Register(ctx);
     ScEntity::Register(ctx);
+    ScLitter::Register(ctx);
     ScVehicle::Register(ctx);
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
@@ -724,12 +734,10 @@ DukValue ScriptEngine::ExecutePluginCall(
         {
             return DukValue::take_from_stack(_context);
         }
-        else
-        {
-            auto message = duk_safe_to_string(_context, -1);
-            LogPluginInfo(plugin, message);
-            duk_pop(_context);
-        }
+
+        auto message = duk_safe_to_string(_context, -1);
+        LogPluginInfo(plugin, message);
+        duk_pop(_context);
     }
     return DukValue();
 }
@@ -787,13 +795,11 @@ std::unique_ptr<GameActions::Result> ScriptEngine::QueryOrExecuteCustomGameActio
         }
         return DukToGameActionResult(dukResult);
     }
-    else
-    {
-        auto action = std::make_unique<GameActions::Result>();
-        action->Error = GameActions::Status::Unknown;
-        action->ErrorTitle = "Unknown custom action";
-        return action;
-    }
+
+    auto action = std::make_unique<GameActions::Result>();
+    action->Error = GameActions::Status::Unknown;
+    action->ErrorTitle = "Unknown custom action";
+    return action;
 }
 
 std::unique_ptr<GameActions::Result> ScriptEngine::DukToGameActionResult(const DukValue& d)
@@ -867,7 +873,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
     {
         obj.Set("cost", result->Cost);
     }
-    if (!result->Position.isNull())
+    if (!result->Position.IsNull())
     {
         obj.Set("position", ToDuk(_context, result->Position));
     }
@@ -879,18 +885,21 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
 
     if (action.GetType() == GameCommand::CreateRide)
     {
-        auto& rideCreateResult = static_cast<RideCreateGameActionResult&>(*result.get());
-        if (rideCreateResult.rideIndex != RIDE_ID_NULL)
+        if (result->Error == GameActions::Status::Ok)
         {
-            obj.Set("ride", rideCreateResult.rideIndex);
+            const auto rideIndex = result->GetData<ride_id_t>();
+            obj.Set("ride", EnumValue(rideIndex));
         }
     }
     else if (action.GetType() == GameCommand::HireNewStaffMember)
     {
-        auto& staffHireResult = static_cast<StaffHireNewActionResult&>(*result.get());
-        if (staffHireResult.peepSriteIndex != SPRITE_INDEX_NULL)
+        if (result->Error == GameActions::Status::Ok)
         {
-            obj.Set("peep", staffHireResult.peepSriteIndex);
+            const auto actionResult = result->GetData<StaffHireNewActionResult>();
+            if (actionResult.StaffEntityId != SPRITE_INDEX_NULL)
+            {
+                obj.Set("peep", actionResult.StaffEntityId);
+            }
         }
     }
 
@@ -987,7 +996,8 @@ public:
     }
 };
 
-const static std::unordered_map<std::string, GameCommand> ActionNameToType = {
+// clang-format off
+const static EnumMap<GameCommand> ActionNameToType = {
     { "balloonpress", GameCommand::BalloonPress },
     { "bannerplace", GameCommand::PlaceBanner },
     { "bannerremove", GameCommand::RemoveBanner },
@@ -1067,21 +1077,21 @@ const static std::unordered_map<std::string, GameCommand> ActionNameToType = {
     { "waterraise", GameCommand::RaiseWater },
     { "watersetheight", GameCommand::SetWaterHeight }
 };
+// clang-format on
 
 static std::string GetActionName(GameCommand commandId)
 {
-    auto it = std::find_if(
-        ActionNameToType.begin(), ActionNameToType.end(), [commandId](const auto& kvp) { return kvp.second == commandId; });
+    auto it = ActionNameToType.find(commandId);
     if (it != ActionNameToType.end())
     {
-        return it->first;
+        return std::string{ it->first };
     }
     return {};
 }
 
-static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& actionid)
+static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& name)
 {
-    auto result = ActionNameToType.find(actionid);
+    auto result = ActionNameToType.find(name);
     if (result != ActionNameToType.end())
     {
         return GameActions::Create(result->second);
@@ -1172,23 +1182,21 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
         }
         return action;
     }
+
+    // Serialise args to json so that it can be sent
+    auto ctx = args.context();
+    if (args.type() == DukValue::Type::OBJECT)
+    {
+        args.push();
+    }
     else
     {
-        // Serialise args to json so that it can be sent
-        auto ctx = args.context();
-        if (args.type() == DukValue::Type::OBJECT)
-        {
-            args.push();
-        }
-        else
-        {
-            duk_push_object(ctx);
-        }
-        auto jsonz = duk_json_encode(ctx, -1);
-        auto json = std::string(jsonz);
-        duk_pop(ctx);
-        return std::make_unique<CustomAction>(actionid, json);
+        duk_push_object(ctx);
     }
+    auto jsonz = duk_json_encode(ctx, -1);
+    auto json = std::string(jsonz);
+    duk_pop(ctx);
+    return std::make_unique<CustomAction>(actionid, json);
 }
 
 void ScriptEngine::InitSharedStorage()
@@ -1394,12 +1402,10 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
     {
         return true;
     }
-    else
-    {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto& execInfo = scriptEngine.GetExecInfo();
-        return execInfo.IsGameStateMutable();
-    }
+
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& execInfo = scriptEngine.GetExecInfo();
+    return execInfo.IsGameStateMutable();
 }
 
 void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
@@ -1415,6 +1421,22 @@ void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
             duk_error(ctx, DUK_ERR_ERROR, "Game state is not mutable in this context.");
         }
     }
+}
+
+int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
+{
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& execInfo = scriptEngine.GetExecInfo();
+
+    // Commands from the in-game console do not have a plug-in set
+    auto plugin = execInfo.GetCurrentPlugin();
+    if (plugin == nullptr)
+    {
+        // For in-game console, default to the current API version
+        return OPENRCT2_PLUGIN_API_VERSION;
+    }
+
+    return plugin->GetTargetAPIVersion();
 }
 
 #endif

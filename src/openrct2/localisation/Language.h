@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _LANGUAGE_H_
-#define _LANGUAGE_H_
+#pragma once
 
 #include "../common.h"
 #include "../drawing/Font.h"
@@ -115,27 +114,23 @@ constexpr utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
         dst[0] = static_cast<utf8>(codepoint);
         return dst + 1;
     }
-    else if (codepoint <= 0x7FF)
+    if (codepoint <= 0x7FF)
     {
         dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
         dst[1] = 0x80 | (codepoint & 0x3F);
         return dst + 2;
     }
-    else if (codepoint <= 0xFFFF)
+    if (codepoint <= 0xFFFF)
     {
         dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
         dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
         dst[2] = 0x80 | (codepoint & 0x3F);
         return dst + 3;
     }
-    else
-    {
-        dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
-        dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
-        dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
-        dst[3] = 0x80 | (codepoint & 0x3F);
-        return dst + 4;
-    }
-}
 
-#endif
+    dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
+    dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
+    dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
+    dst[3] = 0x80 | (codepoint & 0x3F);
+    return dst + 4;
+}

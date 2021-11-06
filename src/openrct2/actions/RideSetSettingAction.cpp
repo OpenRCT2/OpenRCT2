@@ -45,8 +45,8 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride: #%d.", static_cast<int32_t>(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+        log_warning("Invalid ride: #%d.", EnumValue(_rideIndex));
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
     }
 
     switch (_setting)
@@ -66,7 +66,7 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
             if (!ride_is_mode_valid(ride) && !gCheatsShowAllOperatingModes)
             {
                 log_warning("Invalid ride mode: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::Departure:
@@ -75,28 +75,29 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
             if (_value > 250)
             {
                 log_warning("Invalid minimum waiting time: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::MaxWaitingTime:
             if (_value > 250)
             {
                 log_warning("Invalid maximum waiting time: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::Operation:
             if (!ride_is_valid_operation_option(ride))
             {
                 log_warning("Invalid operation option value: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, GetOperationErrorMessage(ride));
+                return MakeResult(
+                    GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, GetOperationErrorMessage(ride));
             }
             break;
         case RideSetSetting::InspectionInterval:
             if (_value > RIDE_INSPECTION_NEVER)
             {
                 log_warning("Invalid inspection interval: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::Music:
@@ -108,7 +109,7 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
             if (musicObj == nullptr)
             {
                 log_warning("Invalid music style: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         }
@@ -116,7 +117,7 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
             if (!ride_is_valid_lift_hill_speed(ride))
             {
                 log_warning("Invalid lift hill speed: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::NumCircuits:
@@ -130,19 +131,19 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
             if (!ride_is_valid_num_circuits())
             {
                 log_warning("Invalid number of circuits: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::RideType:
             if (!gCheatsAllowArbitraryRideTypeChanges)
             {
                 log_warning("Arbitrary ride type changes not allowed.");
-                return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE);
+                return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         default:
             log_warning("Invalid RideSetSetting: %u", static_cast<uint8_t>(_setting));
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
     }
 
     return std::make_unique<GameActions::Result>();
@@ -153,8 +154,8 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride: #%d.", static_cast<int32_t>(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
+        log_warning("Invalid ride: #%d.", EnumValue(_rideIndex));
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
     }
 
     switch (_setting)
@@ -223,17 +224,18 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
             break;
         case RideSetSetting::RideType:
             ride->type = _value;
+            ride->UpdateRideTypeForAllPieces();
             gfx_invalidate_screen();
             break;
     }
 
     auto res = std::make_unique<GameActions::Result>();
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };
     }
-    window_invalidate_by_number(WC_RIDE, _rideIndex);
+    window_invalidate_by_number(WC_RIDE, EnumValue(_rideIndex));
     return res;
 }
 
@@ -291,9 +293,6 @@ rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
             {
                 return STR_CANT_CHANGE_THIS;
             }
-            else
-            {
-                return STR_CANT_CHANGE_LAUNCH_SPEED;
-            }
+            return STR_CANT_CHANGE_LAUNCH_SPEED;
     }
 }

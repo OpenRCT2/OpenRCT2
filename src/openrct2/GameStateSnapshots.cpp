@@ -10,7 +10,8 @@
 #include "GameStateSnapshots.h"
 
 #include "core/CircularBuffer.h"
-#include "peep/Peep.h"
+#include "peep/Guest.h"
+#include "peep/Staff.h"
 #include "ride/Vehicle.h"
 #include "world/Balloon.h"
 #include "world/Duck.h"
@@ -39,6 +40,21 @@ struct GameStateSnapshot_t
     OpenRCT2::MemoryStream storedSprites;
     OpenRCT2::MemoryStream parkParameters;
 
+    template<typename T> bool EntitySizeCheck(DataSerialiser& ds)
+    {
+        uint32_t size = sizeof(T);
+        ds << size;
+        if (ds.IsLoading())
+        {
+            return size == sizeof(T);
+        }
+        return true;
+    }
+    template<typename... T> bool EntitiesSizeCheck(DataSerialiser& ds)
+    {
+        return (EntitySizeCheck<T>(ds) && ...);
+    }
+
     // Must pass a function that can access the sprite.
     void SerialiseSprites(std::function<rct_sprite*(const size_t)> getEntity, const size_t numSprites, bool saving)
     {
@@ -64,6 +80,13 @@ struct GameStateSnapshot_t
             numSavedSprites = static_cast<uint32_t>(indexTable.size());
         }
 
+        // Encodes and checks the size of each of the entity so that we
+        // can fail gracefully when fields added/removed
+        if (!EntitiesSizeCheck<Vehicle, Guest, Staff, Litter, MoneyEffect, Balloon, Duck, JumpingFountain, SteamParticle>(ds))
+        {
+            log_error("Entity index corrupted!");
+            return;
+        }
         ds << numSavedSprites;
 
         if (loading)
@@ -200,13 +223,13 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     }
 
     void CompareSpriteDataCommon(
-        const SpriteBase& spriteBase, const SpriteBase& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const EntityBase& spriteBase, const EntityBase& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(SpriteBase, Type);
-        COMPARE_FIELD(SpriteBase, sprite_index);
-        COMPARE_FIELD(SpriteBase, x);
-        COMPARE_FIELD(SpriteBase, y);
-        COMPARE_FIELD(SpriteBase, z);
+        COMPARE_FIELD(EntityBase, Type);
+        COMPARE_FIELD(EntityBase, sprite_index);
+        COMPARE_FIELD(EntityBase, x);
+        COMPARE_FIELD(EntityBase, y);
+        COMPARE_FIELD(EntityBase, z);
         /* Only relevant for rendering, does not affect game state.
         COMPARE_FIELD(SpriteBase, sprite_width);
         COMPARE_FIELD(SpriteBase, sprite_height_negative);
@@ -216,7 +239,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(SpriteBase, sprite_right);
         COMPARE_FIELD(SpriteBase, sprite_bottom);
         */
-        COMPARE_FIELD(SpriteBase, sprite_direction);
+        COMPARE_FIELD(EntityBase, sprite_direction);
     }
 
     void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange_t& changeData) const
@@ -253,10 +276,16 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, InteractionRideIndex);
         COMPARE_FIELD(Peep, Id);
         COMPARE_FIELD(Peep, PathCheckOptimisation);
-        COMPARE_FIELD(Peep, PathfindGoal);
+        COMPARE_FIELD(Peep, PathfindGoal.x);
+        COMPARE_FIELD(Peep, PathfindGoal.y);
+        COMPARE_FIELD(Peep, PathfindGoal.z);
+        COMPARE_FIELD(Peep, PathfindGoal.direction);
         for (int i = 0; i < 4; i++)
         {
-            COMPARE_FIELD(Peep, PathfindHistory[i]);
+            COMPARE_FIELD(Peep, PathfindHistory[i].x);
+            COMPARE_FIELD(Peep, PathfindHistory[i].y);
+            COMPARE_FIELD(Peep, PathfindHistory[i].z);
+            COMPARE_FIELD(Peep, PathfindHistory[i].direction);
         }
         COMPARE_FIELD(Peep, WalkingFrameNum);
     }
@@ -268,7 +297,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Staff, AssignedStaffType);
         COMPARE_FIELD(Staff, MechanicTimeSinceCall);
         COMPARE_FIELD(Staff, HireDate);
-        COMPARE_FIELD(Staff, StaffId);
         COMPARE_FIELD(Staff, StaffOrders);
         COMPARE_FIELD(Staff, StaffMowingTimeout);
         COMPARE_FIELD(Staff, StaffRidesFixed);
@@ -294,20 +322,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, Intensity);
         COMPARE_FIELD(Guest, NauseaTolerance);
         COMPARE_FIELD(Guest, PaidOnDrink);
-        for (int i = 0; i < 16; i++)
-        {
-            COMPARE_FIELD(Guest, RideTypesBeenOn[i]);
-        }
         COMPARE_FIELD(Guest, ItemFlags);
         COMPARE_FIELD(Guest, Photo2RideRef);
         COMPARE_FIELD(Guest, Photo3RideRef);
         COMPARE_FIELD(Guest, Photo4RideRef);
         COMPARE_FIELD(Guest, GuestNextInQueue);
         COMPARE_FIELD(Guest, TimeInQueue);
-        for (int i = 0; i < 32; i++)
-        {
-            COMPARE_FIELD(Guest, RidesBeenOn[i]);
-        }
 
         COMPARE_FIELD(Guest, CashInPocket);
         COMPARE_FIELD(Guest, CashSpent);
@@ -317,7 +337,10 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Guest, PreviousRideTimeOut);
         for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
         {
-            COMPARE_FIELD(Guest, Thoughts[i]);
+            COMPARE_FIELD(Guest, Thoughts[i].type);
+            COMPARE_FIELD(Guest, Thoughts[i].item);
+            COMPARE_FIELD(Guest, Thoughts[i].freshness);
+            COMPARE_FIELD(Guest, Thoughts[i].fresh_timeout);
         }
         COMPARE_FIELD(Guest, GuestHeadingToRideId);
         COMPARE_FIELD(Guest, GuestIsLostCountdown);
@@ -404,8 +427,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         {
             COMPARE_FIELD(Vehicle, pad_C6[i]);
         }
-        COMPARE_FIELD(Vehicle, var_C8);
-        COMPARE_FIELD(Vehicle, var_CA);
+        COMPARE_FIELD(Vehicle, animationState);
         COMPARE_FIELD(Vehicle, scream_sound_id);
         COMPARE_FIELD(Vehicle, TrackSubposition);
         COMPARE_FIELD(Vehicle, num_laps);
@@ -723,7 +745,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         auto outputBuffer = GetCompareDataText(cmpData);
 
         FILE* fp = fopen(fileName.c_str(), "wt");
-        if (!fp)
+        if (fp == nullptr)
             return false;
 
         fputs(outputBuffer.c_str(), fp);

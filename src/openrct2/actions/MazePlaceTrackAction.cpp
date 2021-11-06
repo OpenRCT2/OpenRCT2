@@ -11,6 +11,9 @@
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../world/ConstructionClearance.h"
+
+using namespace OpenRCT2::TrackMetaData;
 
 MazePlaceTrackAction::MazePlaceTrackAction(const CoordsXYZ& location, NetworkRideId_t rideIndex, uint16_t mazeEntry)
     : _loc(location)
@@ -91,14 +94,15 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
         return canBuild;
     }
 
-    if (canBuild->GroundFlags & ELEMENT_IS_UNDERWATER)
+    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
     {
         res->Error = GameActions::Status::NoClearance;
         res->ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
         return res;
     }
 
-    if (canBuild->GroundFlags & ELEMENT_IS_UNDERGROUND)
+    if (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         res->Error = GameActions::Status::NoClearance;
         res->ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
@@ -113,7 +117,8 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
         return res;
     }
 
-    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
+    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
     res->Cost = canBuild->Cost + price / 2 * 10;
 
     return res;
@@ -154,7 +159,8 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
         return canBuild;
     }
 
-    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+    const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
+    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
     res->Cost = canBuild->Cost + price / 2 * 10;
 
     auto startLoc = _loc.ToTileStart();
@@ -164,6 +170,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
 
     trackElement->SetClearanceZ(clearanceHeight);
     trackElement->SetTrackType(TrackElemType::Maze);
+    trackElement->SetRideType(ride->type);
     trackElement->SetRideIndex(_rideIndex);
     trackElement->SetMazeEntry(_mazeEntry);
     trackElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);

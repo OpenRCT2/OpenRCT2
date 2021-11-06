@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _EDITOR_H_
-#define _EDITOR_H_
+#pragma once
 
 #include "common.h"
 #include "object/Object.h"
@@ -44,6 +43,6 @@ enum class EditorStep : uint8_t
     Invalid = 255,         // 255
 };
 
-void editor_open_windows_for_current_step();
+extern EditorStep gEditorStep;
 
-#endif
+void editor_open_windows_for_current_step();

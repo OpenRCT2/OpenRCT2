@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _DATE_H_
-#define _DATE_H_
+#pragma once
 
 #include "../common.h"
 
@@ -64,5 +63,3 @@ bool date_is_day_start(int32_t monthTicks);
 bool date_is_week_start(int32_t monthTicks);
 bool date_is_fortnight_start(int32_t monthTicks);
 bool date_is_month_start(int32_t monthTicks);
-
-#endif

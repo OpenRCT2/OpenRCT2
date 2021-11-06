@@ -161,8 +161,8 @@ static constexpr const uint32_t LogFlumeTrackFlatImageIds[4][2] = {
 };
 
 static void paint_log_flume_track_flat(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     uint32_t imageId = LogFlumeTrackFlatImageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = LogFlumeTrackFlatImageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
@@ -182,8 +182,8 @@ static void paint_log_flume_track_flat(
 }
 
 static void paint_log_flume_track_station(
-    paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     uint32_t imageId = LogFlumeTrackFlatImageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3);
@@ -196,7 +196,7 @@ static void paint_log_flume_track_station(
     {
         imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
     }
-    PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
     if (direction & 1)
     {
@@ -209,7 +209,7 @@ static void paint_log_flume_track_station(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station_3(session, rideIndex, direction, height + 2, height, tileElement);
+    track_paint_util_draw_station_3(session, ride, direction, height + 2, height, trackElement);
     // Covers shouldn't be offset by +2
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -219,8 +219,8 @@ static void paint_log_flume_track_station(
 }
 
 static void paint_log_flume_track_25_deg_up(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_LOG_FLUME_25_DEG_UP_SW_NE, SPR_LOG_FLUME_25_DEG_UP_FRONT_SW_NE },
@@ -254,8 +254,8 @@ static void paint_log_flume_track_25_deg_up(
 }
 
 static void paint_log_flume_track_flat_to_25_deg_up(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_SW_NE, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
@@ -289,8 +289,8 @@ static void paint_log_flume_track_flat_to_25_deg_up(
 }
 
 static void paint_log_flume_track_25_deg_up_to_flat(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_SW_NE, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
@@ -324,8 +324,8 @@ static void paint_log_flume_track_25_deg_up_to_flat(
 }
 
 static void paint_log_flume_track_25_deg_down(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_LOG_FLUME_25_DEG_DOWN_SW_NE, SPR_LOG_FLUME_25_DEG_UP_FRONT_NE_SW },
@@ -359,8 +359,8 @@ static void paint_log_flume_track_25_deg_down(
 }
 
 static void paint_log_flume_track_flat_to_25_deg_down(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_SW_NE, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
@@ -394,8 +394,8 @@ static void paint_log_flume_track_flat_to_25_deg_down(
 }
 
 static void paint_log_flume_track_25_deg_down_to_flat(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_SW_NE, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
@@ -429,26 +429,34 @@ static void paint_log_flume_track_25_deg_down_to_flat(
 }
 
 static void paint_log_flume_track_s_bend_left(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][4][2] = {
-        { { SPR_LOG_FLUME_3_TURN_NE_NW_NE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_0 },
-          { SPR_LOG_FLUME_3_TURN_NE_NW_NE_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_1 },
-          { SPR_LOG_FLUME_3_TURN_NE_NW_NE_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_2 },
-          { SPR_LOG_FLUME_3_TURN_NE_NW_NE_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_3 } },
-        { { SPR_LOG_FLUME_3_TURN_NW_SW_NW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_0 },
-          { SPR_LOG_FLUME_3_TURN_NW_SW_NW_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_1 },
-          { SPR_LOG_FLUME_3_TURN_NW_SW_NW_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_2 },
-          { SPR_LOG_FLUME_3_TURN_NW_SW_NW_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_3 } },
-        { { SPR_LOG_FLUME_3_TURN_SW_SE_SW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_3 },
-          { SPR_LOG_FLUME_3_TURN_SW_SE_SW_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_2 },
-          { SPR_LOG_FLUME_3_TURN_SW_SE_SW_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_1 },
-          { SPR_LOG_FLUME_3_TURN_SW_SE_SW_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_0 } },
-        { { SPR_LOG_FLUME_3_TURN_SE_NE_SE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_3 },
-          { SPR_LOG_FLUME_3_TURN_SE_NE_SE_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_2 },
-          { SPR_LOG_FLUME_3_TURN_SE_NE_SE_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_1 },
-          { SPR_LOG_FLUME_3_TURN_SE_NE_SE_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_0 } },
+        {
+            { SPR_LOG_FLUME_3_TURN_NE_NW_NE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_0 },
+            { SPR_LOG_FLUME_3_TURN_NE_NW_NE_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_1 },
+            { SPR_LOG_FLUME_3_TURN_NE_NW_NE_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_2 },
+            { SPR_LOG_FLUME_3_TURN_NE_NW_NE_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_3 },
+        },
+        {
+            { SPR_LOG_FLUME_3_TURN_NW_SW_NW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_0 },
+            { SPR_LOG_FLUME_3_TURN_NW_SW_NW_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_1 },
+            { SPR_LOG_FLUME_3_TURN_NW_SW_NW_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_2 },
+            { SPR_LOG_FLUME_3_TURN_NW_SW_NW_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_3 },
+        },
+        {
+            { SPR_LOG_FLUME_3_TURN_SW_SE_SW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_3 },
+            { SPR_LOG_FLUME_3_TURN_SW_SE_SW_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_2 },
+            { SPR_LOG_FLUME_3_TURN_SW_SE_SW_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_1 },
+            { SPR_LOG_FLUME_3_TURN_SW_SE_SW_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NE_NW_NE_SEQ_0 },
+        },
+        {
+            { SPR_LOG_FLUME_3_TURN_SE_NE_SE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_3 },
+            { SPR_LOG_FLUME_3_TURN_SE_NE_SE_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_2 },
+            { SPR_LOG_FLUME_3_TURN_SE_NE_SE_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_1 },
+            { SPR_LOG_FLUME_3_TURN_SE_NE_SE_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NW_SW_NW_SEQ_0 },
+        },
     };
 
     uint32_t imageId = imageIds[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
@@ -524,26 +532,34 @@ static void paint_log_flume_track_s_bend_left(
 }
 
 static void paint_log_flume_track_s_bend_right(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][4][2] = {
-        { { SPR_LOG_FLUME_3_TURN_NE_SE_NE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_0 },
-          { SPR_LOG_FLUME_3_TURN_NE_SE_NE_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_1 },
-          { SPR_LOG_FLUME_3_TURN_NE_SE_NE_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_2 },
-          { SPR_LOG_FLUME_3_TURN_NE_SE_NE_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_3 } },
-        { { SPR_LOG_FLUME_3_TURN_SE_SW_SE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_0 },
-          { SPR_LOG_FLUME_3_TURN_SE_SW_SE_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_1 },
-          { SPR_LOG_FLUME_3_TURN_SE_SW_SE_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_2 },
-          { SPR_LOG_FLUME_3_TURN_SE_SW_SE_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_3 } },
-        { { SPR_LOG_FLUME_3_TURN_SW_NW_SW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_3 },
-          { SPR_LOG_FLUME_3_TURN_SW_NW_SW_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_2 },
-          { SPR_LOG_FLUME_3_TURN_SW_NW_SW_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_1 },
-          { SPR_LOG_FLUME_3_TURN_SW_NW_SW_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_0 } },
-        { { SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_3 },
-          { SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_2 },
-          { SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_1 },
-          { SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_0 } },
+        {
+            { SPR_LOG_FLUME_3_TURN_NE_SE_NE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_0 },
+            { SPR_LOG_FLUME_3_TURN_NE_SE_NE_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_1 },
+            { SPR_LOG_FLUME_3_TURN_NE_SE_NE_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_2 },
+            { SPR_LOG_FLUME_3_TURN_NE_SE_NE_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_3 },
+        },
+        {
+            { SPR_LOG_FLUME_3_TURN_SE_SW_SE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_0 },
+            { SPR_LOG_FLUME_3_TURN_SE_SW_SE_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_1 },
+            { SPR_LOG_FLUME_3_TURN_SE_SW_SE_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_2 },
+            { SPR_LOG_FLUME_3_TURN_SE_SW_SE_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_3 },
+        },
+        {
+            { SPR_LOG_FLUME_3_TURN_SW_NW_SW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_3 },
+            { SPR_LOG_FLUME_3_TURN_SW_NW_SW_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_2 },
+            { SPR_LOG_FLUME_3_TURN_SW_NW_SW_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_1 },
+            { SPR_LOG_FLUME_3_TURN_SW_NW_SW_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_NE_SE_NE_SEQ_0 },
+        },
+        {
+            { SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_3 },
+            { SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_1, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_2 },
+            { SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_1 },
+            { SPR_LOG_FLUME_3_TURN_NW_NE_NW_SEQ_3, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SE_SEQ_0 },
+        },
     };
 
     uint32_t imageId = imageIds[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
@@ -617,8 +633,8 @@ static void paint_log_flume_track_s_bend_right(
 }
 
 static void paint_log_flume_track_left_quarter_turn_3_tiles(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][3] = {
         { SPR_LOG_FLUME_3_TURN_NW_SW_SEQ_0, SPR_LOG_FLUME_3_TURN_NW_SW_SEQ_2, SPR_LOG_FLUME_3_TURN_NW_SW_SEQ_3 },
@@ -628,14 +644,26 @@ static void paint_log_flume_track_left_quarter_turn_3_tiles(
     };
 
     static constexpr const uint32_t imageIdsFront[4][3] = {
-        { SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_2,
-          SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_3 },
-        { SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_2,
-          SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_3 },
-        { SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_2,
-          SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_3 },
-        { SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_2,
-          SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_3 },
+        {
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_0,
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_2,
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_3,
+        },
+        {
+            SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_0,
+            SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_2,
+            SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_3,
+        },
+        {
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_0,
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_2,
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_3,
+        },
+        {
+            SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_0,
+            SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_2,
+            SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_3,
+        },
     };
 
     track_paint_util_left_quarter_turn_3_tiles_paint(
@@ -684,8 +712,8 @@ static void paint_log_flume_track_left_quarter_turn_3_tiles(
 }
 
 static void paint_log_flume_track_right_quarter_turn_3_tiles(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][3] = {
         { SPR_LOG_FLUME_3_TURN_NW_NE_SEQ_0, SPR_LOG_FLUME_3_TURN_NW_NE_SEQ_2, SPR_LOG_FLUME_3_TURN_NW_NE_SEQ_3 },
@@ -695,14 +723,26 @@ static void paint_log_flume_track_right_quarter_turn_3_tiles(
     };
 
     static constexpr const uint32_t imageIdsFront[4][3] = {
-        { SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_2,
-          SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_3 },
-        { SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_2,
-          SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_3 },
-        { SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_2,
-          SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_3 },
-        { SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_2,
-          SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_3 },
+        {
+            SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_0,
+            SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_2,
+            SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_3,
+        },
+        {
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_0,
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_2,
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_SE_SEQ_3,
+        },
+        {
+            SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_0,
+            SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_2,
+            SPR_LOG_FLUME_3_TURN_FRONT_SE_SW_SEQ_3,
+        },
+        {
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_0,
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_2,
+            SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_3,
+        },
     };
 
     track_paint_util_right_quarter_turn_3_tiles_paint_2(
@@ -751,11 +791,11 @@ static void paint_log_flume_track_right_quarter_turn_3_tiles(
 }
 
 static void paint_log_flume_track_on_ride_photo(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     uint32_t imageId = SPR_STATION_BASE_D | IMAGE_TYPE_REMAP;
-    PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
     if (direction & 1)
     {
@@ -774,7 +814,7 @@ static void paint_log_flume_track_on_ride_photo(
     imageId = LogFlumeTrackFlatImageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 21, height, 0, 27, height + 5);
 
-    track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
+    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -782,8 +822,8 @@ static void paint_log_flume_track_on_ride_photo(
 }
 
 static void paint_log_flume_track_reverser(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
         { SPR_LOG_FLUME_REVERSER_SW_NE, SPR_LOG_FLUME_REVERSER_FRONT_SW_NE },

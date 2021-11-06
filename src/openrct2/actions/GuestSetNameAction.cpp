@@ -83,7 +83,7 @@ GameActions::Result::Ptr GuestSetNameAction::Execute() const
     auto curName = guest->GetName();
     if (curName == _name)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Ok, STR_NONE);
+        return std::make_unique<GameActions::Result>();
     }
 
     if (!guest->SetName(_name))
@@ -100,8 +100,7 @@ GameActions::Result::Ptr GuestSetNameAction::Execute() const
     context_broadcast_intent(&intent);
 
     auto res = std::make_unique<GameActions::Result>();
-    res->Position.x = guest->x;
-    res->Position.y = guest->y;
-    res->Position.z = guest->z;
+    res->Position = guest->GetLocation();
+
     return res;
 }

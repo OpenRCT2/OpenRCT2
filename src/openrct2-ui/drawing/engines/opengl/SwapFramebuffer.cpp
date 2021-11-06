@@ -27,6 +27,11 @@ SwapFramebuffer::SwapFramebuffer(int32_t width, int32_t height)
     glClearBufferfv(GL_DEPTH, 0, depthValueTransparent);
 }
 
+SwapFramebuffer::~SwapFramebuffer()
+{
+    glDeleteTextures(1, &_backDepth);
+}
+
 void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader& shader, GLuint paletteTex)
 {
     _mixFramebuffer.Bind();

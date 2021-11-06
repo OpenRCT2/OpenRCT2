@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _MAP_H_
-#define _MAP_H_
+#pragma once
 
 #include "../common.h"
 #include "Location.hpp"
@@ -101,11 +100,21 @@ extern const TileCoordsXY TileDirectionDelta[];
 extern TileCoordsXY gWidePathTileLoopPosition;
 extern uint16_t gGrassSceneryTileLoopPosition;
 
-extern int16_t gMapSizeUnits;
-extern int16_t gMapSizeMinus2;
-extern int16_t gMapSize;
-extern int16_t gMapSizeMaxXY;
-extern int16_t gMapBaseZ;
+extern int32_t gMapSize;
+extern int32_t gMapBaseZ;
+
+inline int32_t GetMapSizeUnits()
+{
+    return (gMapSize - 1) * COORDS_XY_STEP;
+}
+inline int32_t GetMapSizeMinus2()
+{
+    return (gMapSize * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2);
+}
+inline int32_t GetMapSizeMaxXY()
+{
+    return GetMapSizeUnits() - 1;
+}
 
 extern uint16_t gMapSelectFlags;
 extern uint16_t gMapSelectType;
@@ -126,8 +135,8 @@ extern bool gClearSmallScenery;
 extern bool gClearLargeScenery;
 extern bool gClearFootpath;
 
-extern uint16_t gLandRemainingOwnershipSales;
-extern uint16_t gLandRemainingConstructionSales;
+extern uint32_t gLandRemainingOwnershipSales;
+extern uint32_t gLandRemainingConstructionSales;
 
 extern bool gMapLandRightsUpdateSuccess;
 
@@ -182,7 +191,8 @@ void map_init(int32_t size);
 
 void map_count_remaining_land_rights();
 void map_strip_ghost_flag_from_elements();
-TileElement* map_get_first_element_at(const CoordsXY& elementPos);
+TileElement* map_get_first_element_at(const CoordsXY& tilePos);
+TileElement* map_get_first_element_at(const TileCoordsXY& tilePos);
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n);
 void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements);
 int32_t map_height_from_slope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
@@ -222,21 +232,6 @@ template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupied
     auto* element = tile_element_insert(loc, occupiedQuadrants, T::ElementType);
     return (element != nullptr) ? element->template as<T>() : nullptr;
 }
-
-namespace GameActions
-{
-    class Result;
-    class ConstructClearResult;
-} // namespace GameActions
-
-using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-
-int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
-    uint8_t crossingMode = CREATE_CROSSING_MODE_NONE, bool isTree = false);
-std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 
 struct tile_element_iterator
 {
@@ -295,11 +290,9 @@ TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_
 TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex);
 
 bool map_is_location_at_edge(const CoordsXY& loc);
-void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Result& res);
 
 uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos);
 
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
-void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8_t ownership);
-
-#endif
+void FixLandOwnershipTilesWithOwnership(
+    std::initializer_list<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade = false);

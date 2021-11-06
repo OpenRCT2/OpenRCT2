@@ -145,7 +145,7 @@ namespace OpenRCT2
 
     using FormatBuffer = FormatBufferBase<char>;
 
-    using FormatArg_t = std::variant<uint16_t, int32_t, const char*, std::string>;
+    using FormatArg_t = std::variant<uint16_t, int32_t, int64_t, const char*, std::string>;
 
     class FmtString
     {
@@ -243,13 +243,11 @@ namespace OpenRCT2
                             FormatRealName(ss, stringId);
                             return FormatString(ss, stack, argN...);
                         }
-                        else
-                        {
-                            auto subfmt = GetFmtStringById(stringId);
-                            auto subit = subfmt.begin();
-                            stack.push(subit);
-                            return FormatString(ss, stack, argN...);
-                        }
+
+                        auto subfmt = GetFmtStringById(stringId);
+                        auto subit = subfmt.begin();
+                        stack.push(subit);
+                        return FormatString(ss, stack, argN...);
                     }
                 }
                 else if (FormatTokenTakesArgument(token.kind))
@@ -257,10 +255,8 @@ namespace OpenRCT2
                     FormatArgument(ss, token.kind, arg0);
                     return FormatString(ss, stack, argN...);
                 }
-                else
-                {
-                    ss << token.text;
-                }
+
+                ss << token.text;
             }
             stack.pop();
         }

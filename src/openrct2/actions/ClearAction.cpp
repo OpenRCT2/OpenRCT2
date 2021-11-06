@@ -72,8 +72,8 @@ GameActions::Result::Ptr ClearAction::QueryExecute(bool executing) const
 
     auto x0 = std::max(_range.GetLeft(), 32);
     auto y0 = std::max(_range.GetTop(), 32);
-    auto x1 = std::min(_range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY));
-    auto y1 = std::min(_range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY));
+    auto x1 = std::min(_range.GetRight(), GetMapSizeMaxXY());
+    auto y1 = std::min(_range.GetBottom(), GetMapSizeMaxXY());
 
     for (int32_t y = y0; y <= y1; y += COORDS_XY_STEP)
     {
@@ -214,7 +214,7 @@ void ClearAction::ResetClearLargeSceneryFlag()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
             do
             {
                 if (tileElement == nullptr)

@@ -331,7 +331,7 @@ void lightfx_prepare_light_list()
                 int32_t minDist = 0;
                 int32_t baseHeight = (-999) * COORDS_Z_STEP;
 
-                if (interactionType != ViewportInteractionItem::Entity && tileElement)
+                if (interactionType != ViewportInteractionItem::Entity && tileElement != nullptr)
                 {
                     baseHeight = tileElement->GetBaseZ();
                 }
@@ -440,7 +440,7 @@ void lightfx_swap_buffers()
 void lightfx_update_viewport_settings()
 {
     rct_window* mainWindow = window_get_main();
-    if (mainWindow)
+    if (mainWindow != nullptr)
     {
         rct_viewport* viewport = window_get_viewport(mainWindow);
         _current_view_x_back = viewport->viewPos.x;
@@ -684,7 +684,7 @@ static void LightfxAdd3DLight(const CoordsXYZ& loc, const LightType lightType)
     LightfxAdd3DLight(((loc.x << 16) | loc.y), LightFXQualifier::Map, loc.z, loc, lightType);
 }
 
-void LightfxAdd3DLight(const SpriteBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType)
+void LightfxAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType)
 {
     LightfxAdd3DLight(entity.sprite_index, LightFXQualifier::Entity, id, loc, lightType);
 }
@@ -710,6 +710,8 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
     };
 
     auto ride = vehicle->GetRide();
+    if (ride == nullptr)
+        return;
 
     switch (ride->type)
     {

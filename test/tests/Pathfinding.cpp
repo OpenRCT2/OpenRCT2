@@ -1,7 +1,7 @@
 #include "TestData.h"
 #include "openrct2/core/StringReader.h"
+#include "openrct2/peep/Guest.h"
 #include "openrct2/peep/GuestPathfinding.h"
-#include "openrct2/peep/Peep.h"
 #include "openrct2/ride/Station.h"
 #include "openrct2/scenario/Scenario.h"
 
@@ -64,7 +64,7 @@ protected:
         return nullptr;
     }
 
-    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps, int targetRideID)
+    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps, ride_id_t targetRideID)
     {
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
@@ -109,7 +109,7 @@ protected:
             peep->PerformNextAction(pathingResult);
             ++step;
 
-            *pos = TileCoordsXYZ(CoordsXYZ(peep->x, peep->y, peep->z));
+            *pos = TileCoordsXYZ(peep->GetLocation());
 
             EXPECT_PRED_FORMAT1(AssertIsNotForbiddenPosition, *pos);
 

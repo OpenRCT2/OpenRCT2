@@ -11,21 +11,17 @@
 
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../world/Banner.h"
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
-class WallPlaceActionResult final : public GameActions::Result
+struct WallPlaceActionResult
 {
-public:
-    WallPlaceActionResult();
-    WallPlaceActionResult(GameActions::Status err);
-    WallPlaceActionResult(GameActions::Status err, rct_string_id msg);
-    WallPlaceActionResult(GameActions::Status error, rct_string_id msg, uint8_t* args);
-
-    TileElement* tileElement = nullptr;
+    int32_t BaseHeight{};
+    BannerIndex BannerId = BANNER_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(WallPlaceAction, GameCommand::PlaceWall, WallPlaceActionResult)
+DEFINE_GAME_ACTION(WallPlaceAction, GameCommand::PlaceWall, GameActions::Result)
 {
 private:
     ObjectEntryIndex _wallType{ OBJECT_ENTRY_INDEX_NULL };
@@ -34,7 +30,6 @@ private:
     int32_t _primaryColour{ COLOUR_BLACK };
     int32_t _secondaryColour{ COLOUR_BLACK };
     int32_t _tertiaryColour{ COLOUR_BLACK };
-    BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
     WallPlaceAction() = default;

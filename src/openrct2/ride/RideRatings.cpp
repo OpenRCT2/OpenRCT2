@@ -159,10 +159,10 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
 {
     ride_id_t currentRide = state.CurrentRide;
 
-    currentRide++;
-    if (currentRide >= MAX_RIDES)
+    currentRide = static_cast<ride_id_t>(EnumValue(currentRide) + 1);
+    if (currentRide >= static_cast<ride_id_t>(MAX_RIDES))
     {
-        currentRide = 0;
+        currentRide = {};
     }
 
     auto ride = get_ride(currentRide);
@@ -237,7 +237,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
             {
                 int32_t entranceIndex = tileElement->AsTrack()->GetStationIndex();
                 state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (ride_get_entrance_location(ride, entranceIndex).isNull())
+                if (ride_get_entrance_location(ride, entranceIndex).IsNull())
                 {
                     state.StationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
@@ -285,7 +285,7 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
     ride_ratings_calculate(state, ride);
     ride_ratings_calculate_value(ride);
 
-    window_invalidate_by_number(WC_RIDE, state.CurrentRide);
+    window_invalidate_by_number(WC_RIDE, EnumValue(state.CurrentRide));
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
@@ -386,10 +386,10 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (!ride->stations[i].Start.isNull())
+        if (!ride->stations[i].Start.IsNull())
         {
             state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride_get_entrance_location(ride, i).isNull())
+            if (ride_get_entrance_location(ride, i).IsNull())
             {
                 state.StationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
@@ -591,7 +591,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
                 break;
             case TILE_ELEMENT_TYPE_PATH:
                 // Bonus for normal path
-                if (tileElement->AsPath()->GetSurfaceEntryIndex() != 0)
+                if (tileElement->AsPath()->GetLegacyPathEntryIndex() != 0)
                 {
                     if (tileElement->GetClearanceZ() == inputTileElement->GetBaseZ())
                     {
@@ -753,7 +753,7 @@ static void ride_ratings_calculate(RideRatingUpdateState& state, Ride* ride)
 
         // Create event args object
         auto obj = DukObject(ctx);
-        obj.Set("rideId", ride->id);
+        obj.Set("rideId", EnumValue(ride->id));
         obj.Set("excitement", originalExcitement);
         obj.Set("intensity", originalIntensity);
         obj.Set("nausea", originalNausea);
@@ -789,7 +789,7 @@ static void ride_ratings_calculate_value(Ride* ride)
         { 120, 81, 256, 0 },  // 0.32x
         { 128, 81, 512, 0 },  // 0.16x
         { 200, 81, 1024, 0 }, // 0.08x
-        { 200, 9, 16, 0 }     // 0.56x "easter egg"
+        { 200, 9, 16, 0 },    // 0.56x "easter egg"
     };
 
 #ifdef ORIGINAL_RATINGS
@@ -803,7 +803,7 @@ static void ride_ratings_calculate_value(Ride* ride)
         { 120, 81, 256, 0 },  // 0.32x
         { 128, 81, 512, 0 },  // 0.16x
         { 200, 81, 1024, 0 }, // 0.08x
-        { 200, 9, 16, 0 }     // 0.56x "easter egg"
+        { 200, 9, 16, 0 },    // 0.56x "easter egg"
     };
 #endif
 
@@ -1463,7 +1463,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
              xx++)
         {
             // Count scenery items on this tile
-            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy }.ToCoordsXY());
+            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy });
             if (tileElement == nullptr)
                 continue;
             do

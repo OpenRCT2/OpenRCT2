@@ -28,7 +28,7 @@ static rct_widget window_network_status_widgets[] = {
     MakeWidget({  0, 0}, {441, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                   ), // panel / background
     MakeWidget({  1, 1}, {438, 14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({427, 2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static char window_network_status_text[1024];
@@ -95,7 +95,7 @@ rct_window* window_network_status_open_password()
     if (window == nullptr)
         return nullptr;
 
-    window_text_input_raw_open(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, _password, 32);
+    window_text_input_raw_open(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, _password, 32);
 
     return window;
 }

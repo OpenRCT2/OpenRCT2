@@ -23,8 +23,8 @@ struct Vehicle;
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
-extern ScenerySelection gWindowSceneryTabSelections[];
-extern uint8_t gWindowSceneryActiveTabIndex;
+extern std::vector<ScenerySelection> gWindowSceneryTabSelections;
+extern size_t gWindowSceneryActiveTabIndex;
 extern bool gWindowSceneryScatterEnabled;
 extern uint16_t gWindowSceneryScatterSize;
 extern ScatterToolDensity gWindowSceneryScatterDensity;
@@ -47,14 +47,13 @@ rct_window* window_editor_main_open();
 rct_window* window_editor_objective_options_open();
 rct_window* window_editor_scenario_options_open();
 rct_window* window_footpath_open();
-void window_footpath_reset_selected_path();
+void WindowFootpathResetSelectedPath();
 rct_window* window_guest_open(Peep* peep);
 rct_window* window_land_open();
 rct_window* window_land_rights_open();
 rct_window* window_main_open();
 rct_window* window_mapgen_open();
 rct_window* window_multiplayer_open();
-rct_window* window_music_credits_open();
 rct_window* window_news_open();
 rct_window* window_news_options_open();
 rct_window* window_options_open();
@@ -155,16 +154,16 @@ void window_network_status_close();
 void window_text_input_key(rct_window* w, char keychar);
 void window_text_input_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength);
+    const Formatter& descriptionArgs, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength);
 void window_text_input_raw_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const_utf8string existing_text, int32_t maxLength);
+    const Formatter& descriptionArgs, const_utf8string existing_text, int32_t maxLength);
 
 void window_text_input_open(
     std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
     std::function<void(std::string_view)> okCallback, std::function<void()> cancelCallback);
 
-rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects);
+rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects);
 
 rct_window* window_ride_construction_open();
 void window_ride_construction_update_active_elements_impl();

@@ -11,6 +11,7 @@
 
 #include "../common.h"
 
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -30,6 +31,6 @@ struct ILanguagePack
 
 namespace LanguagePackFactory
 {
-    ILanguagePack* FromFile(uint16_t id, const utf8* path);
-    ILanguagePack* FromText(uint16_t id, const utf8* text);
+    std::unique_ptr<ILanguagePack> FromFile(uint16_t id, const utf8* path);
+    std::unique_ptr<ILanguagePack> FromText(uint16_t id, const utf8* text);
 } // namespace LanguagePackFactory

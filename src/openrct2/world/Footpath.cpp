@@ -20,6 +20,8 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/FootpathObject.h"
+#include "../object/FootpathRailingsObject.h"
+#include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../paint/VirtualFloor.h"
@@ -38,8 +40,10 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2::TrackMetaData;
 void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElement* tileElement);
 
+FootpathSelection gFootpathSelection;
 ProvisionalFootpath gProvisionalFootpath;
 uint16_t gFootpathSelectedId;
 CoordsXYZ gFootpathConstructFromPosition;
@@ -65,7 +69,12 @@ const CoordsXY BenchUseOffsets[8] = {
 };
 
 /** rct2: 0x00981D6C, 0x00981D6E */
-const CoordsXY DirectionOffsets[4] = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
+const CoordsXY DirectionOffsets[4] = {
+    { -1, 0 },
+    { 0, 1 },
+    { 1, 0 },
+    { 0, -1 },
+};
 
 // rct2: 0x0097B974
 static constexpr const uint16_t EntranceDirections[] = {
@@ -94,16 +103,14 @@ static constexpr const uint8_t connected_path_count[] = {
     4, // 0b1111
 };
 
-int32_t entrance_get_directions(const TileElement* tileElement)
+int32_t EntranceElement::GetDirections() const
 {
-    uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
-    uint8_t sequence = tileElement->AsEntrance()->GetSequenceIndex();
-    return EntranceDirections[(entranceType * 8) + sequence];
+    return EntranceDirections[(GetEntranceType() * 8) + GetSequenceIndex()];
 }
 
-static bool entrance_has_direction(TileElement* tileElement, int32_t direction)
+static bool entrance_has_direction(const EntranceElement& entranceElement, int32_t direction)
 {
-    return entrance_get_directions(tileElement) & (1 << (direction & 3));
+    return entranceElement.GetDirections() & (1 << (direction & 3));
 }
 
 TileElement* map_get_footpath_element(const CoordsXYZ& coords)
@@ -138,21 +145,25 @@ money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags)
  *
  *  rct2: 0x006A76FF
  */
-money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int32_t slope)
+money32 footpath_provisional_set(
+    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
+    PathConstructFlags constructFlags)
 {
     money32 cost;
 
     footpath_provisional_remove();
 
-    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type);
+    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
     cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     if (res->Error == GameActions::Status::Ok)
     {
-        gProvisionalFootpath.Type = type;
+        gProvisionalFootpath.SurfaceIndex = type;
+        gProvisionalFootpath.RailingsIndex = railingsType;
         gProvisionalFootpath.Position = footpathLoc;
         gProvisionalFootpath.Slope = slope;
+        gProvisionalFootpath.ConstructFlags = constructFlags;
         gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
@@ -245,7 +256,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY position{};
-        position.setNull();
+        position.SetNull();
         return position;
     }
     auto viewport = window->viewport;
@@ -258,7 +269,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
         if (info.SpriteType == ViewportInteractionItem::None)
         {
             auto position = info.Loc;
-            position.setNull();
+            position.SetNull();
             return position;
         }
     }
@@ -343,7 +354,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
     if (window == nullptr || window->viewport == nullptr)
     {
         CoordsXY ret{};
-        ret.setNull();
+        ret.SetNull();
         return ret;
     }
     auto viewport = window->viewport;
@@ -353,7 +364,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
         && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        int32_t directions = entrance_get_directions(*tileElement);
+        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
             int32_t bx = bitscanforward(directions);
@@ -370,7 +381,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
         EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath, ViewportInteractionItem::Ride));
     if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        int32_t directions = entrance_get_directions(*tileElement);
+        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
         if (directions & 0x0F)
         {
             int32_t bx = (*tileElement)->GetDirectionWithOffset(bitscanforward(directions));
@@ -580,19 +591,16 @@ static int32_t rct_neighbour_compare(const void* a, const void* b)
     uint8_t vb = (static_cast<const rct_neighbour*>(b))->order;
     if (va < vb)
         return 1;
-    else if (va > vb)
+    if (va > vb)
         return -1;
-    else
-    {
-        uint8_t da = (static_cast<const rct_neighbour*>(a))->direction;
-        uint8_t db = (static_cast<const rct_neighbour*>(b))->direction;
-        if (da < db)
-            return -1;
-        else if (da > db)
-            return 1;
-        else
-            return 0;
-    }
+
+    uint8_t da = (static_cast<const rct_neighbour*>(a))->direction;
+    uint8_t db = (static_cast<const rct_neighbour*>(b))->direction;
+    if (da < db)
+        return -1;
+    if (da > db)
+        return 1;
+    return 0;
 }
 
 static void neighbour_list_init(rct_neighbour_list* neighbourList)
@@ -854,7 +862,7 @@ static void loc_6A6D7E(
                         }
                         return;
                     }
-                    else if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
+                    if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
                     {
                         if (tileElement->AsPath()->IsSloped()
                             && tileElement->AsPath()->GetSlopeDirection() == direction_reverse(direction))
@@ -882,13 +890,15 @@ static void loc_6A6D7E(
 
                         const auto trackType = tileElement->AsTrack()->GetTrackType();
                         const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
-                        if (!(TrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
+                        const auto& ted = GetTrackElementDescriptor(trackType);
+                        if (!(ted.SequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
                         {
                             return;
                         }
                         uint16_t dx = direction_reverse(
                             (direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
-                        if (!(TrackSequenceProperties[trackType][trackSequence] & (1 << dx)))
+
+                        if (!(ted.SequenceProperties[trackSequence] & (1 << dx)))
                         {
                             return;
                         }
@@ -903,7 +913,8 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                     if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
-                        if (entrance_has_direction(tileElement, direction_reverse(direction - tileElement->GetDirection())))
+                        if (entrance_has_direction(
+                                *(tileElement->AsEntrance()), direction_reverse(direction - tileElement->GetDirection())))
                         {
                             if (query)
                             {
@@ -941,7 +952,8 @@ static void loc_6A6C85(
 
     if (tileElementPos.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        if (!entrance_has_direction(tileElementPos.element, direction - tileElementPos.element->GetDirection()))
+        if (!entrance_has_direction(
+                *(tileElementPos.element->AsEntrance()), direction - tileElementPos.element->GetDirection()))
         {
             return;
         }
@@ -962,12 +974,13 @@ static void loc_6A6C85(
 
         const auto trackType = tileElementPos.element->AsTrack()->GetTrackType();
         const uint8_t trackSequence = tileElementPos.element->AsTrack()->GetSequenceIndex();
-        if (!(TrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        if (!(ted.SequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
         {
             return;
         }
         uint16_t dx = (direction - tileElementPos.element->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
-        if (!(TrackSequenceProperties[trackType][trackSequence] & (1 << dx)))
+        if (!(ted.SequenceProperties[trackSequence] & (1 << dx)))
         {
             return;
         }
@@ -1215,10 +1228,10 @@ void footpath_update_queue_chains()
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {
             TileCoordsXYZD location = ride_get_entrance_location(ride, i);
-            if (location.isNull())
+            if (location.IsNull())
                 continue;
 
-            TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
+            TileElement* tileElement = map_get_first_element_at(location);
             if (tileElement != nullptr)
             {
                 do
@@ -1412,7 +1425,7 @@ static int32_t footpath_is_connected_to_map_edge_helper(CoordsXYZ footpathPos, i
 
             edges = tileElement->AsPath()->GetEdges();
             currentTile.direction = direction_reverse(currentTile.direction);
-            if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY))
+            if (!tileElement->IsLastForTile() && !(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY))
             {
                 int elementIndex = 1;
                 // Loop over all elements and cull appropriate edges
@@ -1422,12 +1435,10 @@ static int32_t footpath_is_connected_to_map_edge_helper(CoordsXYZ footpathPos, i
                         break;
                     if (tileElement[elementIndex].GetType() != TILE_ELEMENT_TYPE_BANNER)
                     {
-                        ++elementIndex;
                         continue;
                     }
                     edges &= tileElement[elementIndex].AsBanner()->GetAllowedEdges();
-                    ++elementIndex;
-                } while (!tileElement[elementIndex].IsLastForTile());
+                } while (!tileElement[elementIndex++].IsLastForTile());
             }
 
             // Exclude the direction we came from
@@ -1640,37 +1651,108 @@ void PathElement::SetAdditionIsGhost(bool isGhost)
         Flags2 |= FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST;
 }
 
-PathSurfaceIndex PathElement::GetSurfaceEntryIndex() const
+ObjectEntryIndex PathElement::GetLegacyPathEntryIndex() const
 {
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
+        return SurfaceIndex;
+
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+const FootpathObject* PathElement::GetLegacyPathEntry() const
+{
+    return GetLegacyFootpathEntry(GetLegacyPathEntryIndex());
+}
+
+void PathElement::SetLegacyPathEntryIndex(ObjectEntryIndex newIndex)
+{
+    SurfaceIndex = newIndex;
+    RailingsIndex = OBJECT_ENTRY_INDEX_NULL;
+    Flags2 |= FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
+}
+
+bool PathElement::HasLegacyPathEntry() const
+{
+    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
+}
+
+const PathSurfaceDescriptor* PathElement::GetSurfaceDescriptor() const
+{
+    if (HasLegacyPathEntry())
+    {
+        const auto* legacyPathEntry = GetLegacyPathEntry();
+        if (legacyPathEntry == nullptr)
+            return nullptr;
+
+        if (IsQueue())
+            return &legacyPathEntry->GetQueueSurfaceDescriptor();
+
+        return &legacyPathEntry->GetPathSurfaceDescriptor();
+    }
+
+    const auto* surfaceEntry = GetSurfaceEntry();
+    if (surfaceEntry == nullptr)
+        return nullptr;
+
+    return &surfaceEntry->GetDescriptor();
+}
+
+const PathRailingsDescriptor* PathElement::GetRailingsDescriptor() const
+{
+    if (HasLegacyPathEntry())
+    {
+        const auto* legacyPathEntry = GetLegacyPathEntry();
+        if (legacyPathEntry == nullptr)
+            return nullptr;
+
+        return &legacyPathEntry->GetPathRailingsDescriptor();
+    }
+
+    const auto* railingsEntry = GetRailingsEntry();
+    if (railingsEntry == nullptr)
+        return nullptr;
+
+    return &railingsEntry->GetDescriptor();
+}
+
+ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
+{
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
+        return OBJECT_ENTRY_INDEX_NULL;
+
     return SurfaceIndex;
 }
 
-PathRailingsIndex PathElement::GetRailingEntryIndex() const
+const FootpathSurfaceObject* PathElement::GetSurfaceEntry() const
 {
-    return GetSurfaceEntryIndex();
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
 }
 
-PathSurfaceEntry* PathElement::GetSurfaceEntry() const
+void PathElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
 {
-    if (!IsQueue())
-        return get_path_surface_entry(GetSurfaceEntryIndex());
-    else
-        return get_path_surface_entry(GetSurfaceEntryIndex() + MAX_PATH_OBJECTS);
+    SurfaceIndex = newIndex;
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
-PathRailingsEntry* PathElement::GetRailingEntry() const
+ObjectEntryIndex PathElement::GetRailingsEntryIndex() const
 {
-    return get_path_railings_entry(GetRailingEntryIndex());
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
+        return OBJECT_ENTRY_INDEX_NULL;
+
+    return RailingsIndex;
 }
 
-void PathElement::SetSurfaceEntryIndex(PathSurfaceIndex newIndex)
+const FootpathRailingsObject* PathElement::GetRailingsEntry() const
 {
-    SurfaceIndex = newIndex & ~FOOTPATH_ELEMENT_INSERT_QUEUE;
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathRailingsObject*>(objMgr.GetLoadedObject(ObjectType::FootpathRailings, GetRailingsEntryIndex()));
 }
 
-void PathElement::SetRailingEntryIndex(PathRailingsIndex newEntryIndex)
+void PathElement::SetRailingsEntryIndex(ObjectEntryIndex newEntryIndex)
 {
-    log_verbose("Setting railing entry index to %d", newEntryIndex);
+    RailingsIndex = newEntryIndex;
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
 uint8_t PathElement::GetQueueBannerDirection() const
@@ -1686,7 +1768,8 @@ void PathElement::SetQueueBannerDirection(uint8_t direction)
 
 bool PathElement::ShouldDrawPathOverSupports() const
 {
-    return (GetRailingEntry()->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
+    // TODO: make this an actual decision of the tile element.
+    return (GetRailingsDescriptor()->Flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
 }
 
 void PathElement::SetShouldDrawPathOverSupports(bool on)
@@ -2065,7 +2148,7 @@ static void footpath_remove_edges_towards(const CoordsXYRangedZ& footPathPos, in
 // entrances and exits, shops, paths).
 bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved)
 {
-    TileElement* tileElement = map_get_first_element_at(coords.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(coords);
     if (tileElement == nullptr)
         return false;
     do
@@ -2082,7 +2165,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
                     if (!tileElement->AsPath()->IsSloped())
                         // The footpath is flat, it can be connected to from any direction
                         return true;
-                    else if (tileElement->AsPath()->GetSlopeDirection() == direction_reverse(coords.direction))
+                    if (tileElement->AsPath()->GetSlopeDirection() == direction_reverse(coords.direction))
                         // The footpath is sloped and its lowest point matches the edge connection
                         return true;
                 }
@@ -2105,10 +2188,11 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
 
                     const auto trackType = tileElement->AsTrack()->GetTrackType();
                     const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
-                    if (TrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
+                    const auto& ted = GetTrackElementDescriptor(trackType);
+                    if (ted.SequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
                     {
                         uint16_t dx = ((coords.direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
-                        if (TrackSequenceProperties[trackType][trackSequence] & (1 << dx))
+                        if (ted.SequenceProperties[trackSequence] & (1 << dx))
                         {
                             // Track element has the flags required for the given direction
                             return true;
@@ -2119,7 +2203,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (tileElement->base_height == coords.z)
                 {
-                    if (entrance_has_direction(tileElement, coords.direction - tileElement->GetDirection()))
+                    if (entrance_has_direction(*(tileElement->AsEntrance()), coords.direction - tileElement->GetDirection()))
                     {
                         // Entrance wants to be connected towards the given direction
                         return true;
@@ -2244,32 +2328,35 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
         tileElement->AsPath()->SetEdgesAndCorners(0);
 }
 
-PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
+const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
-    PathSurfaceEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    // TODO: Change when moving to the new save format.
-    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex % MAX_PATH_OBJECTS);
-    if (obj != nullptr)
-    {
-        if (entryIndex < MAX_PATH_OBJECTS)
-            result = (static_cast<FootpathObject*>(obj))->GetPathSurfaceEntry();
-        else
-            result = (static_cast<FootpathObject*>(obj))->GetQueueEntry();
-    }
-    return result;
-}
-
-PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex)
-{
-    PathRailingsEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
-    if (obj != nullptr)
-    {
-        result = (static_cast<FootpathObject*>(obj))->GetPathRailingsEntry();
-    }
-    return result;
+    if (obj == nullptr)
+        return nullptr;
+
+    const FootpathObject* footpathObject = (static_cast<FootpathObject*>(obj));
+    return footpathObject;
+}
+
+const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
+    if (obj == nullptr)
+        return nullptr;
+
+    return static_cast<FootpathSurfaceObject*>(obj);
+}
+
+const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex);
+    if (obj == nullptr)
+        return nullptr;
+
+    return static_cast<FootpathRailingsObject*>(obj);
 }
 
 ride_id_t PathElement::GetRideIndex() const

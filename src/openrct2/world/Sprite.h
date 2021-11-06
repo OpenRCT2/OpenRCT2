@@ -7,11 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _SPRITE_H_
-#define _SPRITE_H_
+#pragma once
 
 #include "../common.h"
-#include "SpriteBase.h"
+#include "EntityBase.h"
 
 #include <array>
 
@@ -23,7 +22,12 @@
 union rct_sprite
 {
     uint8_t pad_00[0x200];
-    SpriteBase base;
+    EntityBase base;
+    // Provide a constructor as EntityBase is not trivialy constructable
+    rct_sprite()
+        : pad_00()
+    {
+    }
 };
 assert_struct_size(rct_sprite, 0x200);
 
@@ -39,13 +43,11 @@ struct rct_sprite_checksum
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_misc_update_all();
-void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite);
-void sprite_remove(SpriteBase* sprite);
+void sprite_set_coordinates(const CoordsXYZ& spritePos, EntityBase* sprite);
+void sprite_remove(EntityBase* sprite);
 uint16_t remove_floating_sprites();
 
 rct_sprite_checksum sprite_checksum();
 
-void sprite_set_flashing(SpriteBase* sprite, bool flashing);
-bool sprite_get_flashing(SpriteBase* sprite);
-
-#endif
+void sprite_set_flashing(EntityBase* sprite, bool flashing);
+bool sprite_get_flashing(EntityBase* sprite);

@@ -24,7 +24,7 @@ enum
 
 static rct_widget window_title_logo_widgets[] = {
     MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex);

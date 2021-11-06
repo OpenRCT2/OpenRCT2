@@ -17,6 +17,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
+#include "../peep/RideUseSystem.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ui/UiContext.h"
@@ -117,7 +118,7 @@ GameActions::Result::Ptr RideDemolishAction::Execute() const
             return RefurbishRide(ride);
     }
 
-    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS);
+    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
 }
 
 GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
@@ -128,105 +129,18 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     ride_remove_peeps(ride);
     ride->StopGuestsQueuing();
 
-    sub_6CB945(ride);
+    ride->ValidateStations();
     ride_clear_leftover_entrances(ride);
-    News::DisableNewsItems(News::ItemType::Ride, _rideIndex);
 
-    for (BannerIndex i = 0; i < MAX_BANNERS; i++)
-    {
-        auto banner = GetBanner(i);
-        if (!banner->IsNull() && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
-        {
-            banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner->text = {};
-        }
-    }
+    const auto rideId = ride->id;
+    News::DisableNewsItems(News::ItemType::Ride, EnumValue(rideId));
 
+    UnlinkAllBannersForRide(ride->id);
+
+    RideUse::GetHistory().RemoveValue(ride->id);
     for (auto peep : EntityList<Guest>())
     {
-        uint8_t ride_id_bit = _rideIndex % 8;
-        uint8_t ride_id_offset = _rideIndex / 8;
-
-        // clear ride from potentially being in RidesBeenOn
-        peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
-        if (peep->State == PeepState::Watching)
-        {
-            if (peep->CurrentRide == _rideIndex)
-            {
-                peep->CurrentRide = RIDE_ID_NULL;
-                if (peep->TimeToStand >= 50)
-                {
-                    // make peep stop watching the ride
-                    peep->TimeToStand = 50;
-                }
-            }
-        }
-
-        // remove any free voucher for this ride from peep
-        if (peep->HasItem(ShopItem::Voucher))
-        {
-            if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Voucher);
-            }
-        }
-
-        // remove any photos of this ride from peep
-        if (peep->HasItem(ShopItem::Photo))
-        {
-            if (peep->Photo1RideRef == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Photo);
-            }
-        }
-        if (peep->HasItem(ShopItem::Photo2))
-        {
-            if (peep->Photo2RideRef == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Photo2);
-            }
-        }
-        if (peep->HasItem(ShopItem::Photo3))
-        {
-            if (peep->Photo3RideRef == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Photo3);
-            }
-        }
-        if (peep->HasItem(ShopItem::Photo4))
-        {
-            if (peep->Photo4RideRef == _rideIndex)
-            {
-                peep->RemoveItem(ShopItem::Photo4);
-            }
-        }
-
-        if (peep->GuestHeadingToRideId == _rideIndex)
-        {
-            peep->GuestHeadingToRideId = RIDE_ID_NULL;
-        }
-        if (peep->FavouriteRide == _rideIndex)
-        {
-            peep->FavouriteRide = RIDE_ID_NULL;
-        }
-
-        for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
-        {
-            // Don't touch items after the first NONE thought as they are not valid
-            // fixes issues with clearing out bad thought data in multiplayer
-            if (peep->Thoughts[i].type == PeepThoughtType::None)
-                break;
-
-            if (peep->Thoughts[i].type != PeepThoughtType::None && peep->Thoughts[i].item == _rideIndex)
-            {
-                // Clear top thought, push others up
-                memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
-                peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
-                peep->Thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
-                // Next iteration, check the new thought at this index
-                i--;
-            }
-        }
+        peep->RemoveRideFromMemory(ride->id);
     }
 
     MarketingCancelCampaignsForRide(_rideIndex);
@@ -235,7 +149,7 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     res->Expenditure = ExpenditureType::RideConstruction;
     res->Cost = refundPrice;
 
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto xy = ride->overall_view.ToTileCentre();
         res->Position = { xy, tile_element_height(xy) };
@@ -245,12 +159,9 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
     gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
     // Close windows related to the demolished ride
-    if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
-    {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
-    }
-    window_close_by_number(WC_RIDE, _rideIndex);
-    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
+    window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(rideId));
+    window_close_by_number(WC_RIDE, EnumValue(rideId));
+    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, EnumValue(rideId));
     window_close_by_class(WC_NEW_CAMPAIGN);
 
     // Refresh windows that display the ride name
@@ -357,13 +268,13 @@ GameActions::Result::Ptr RideDemolishAction::RefurbishRide(Ride* ride) const
 
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };
     }
 
-    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
+    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, EnumValue(_rideIndex));
 
     return res;
 }

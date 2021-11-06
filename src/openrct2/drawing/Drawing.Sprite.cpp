@@ -56,15 +56,15 @@ sprite_peep_pickup_starts[15] =
 
 static inline uint32_t rctc_to_rct2_index(uint32_t image)
 {
-    if      (                  image <  1542) return image;
-    else if (image >=  1574 && image <  4983) return image - 32;
-    else if (image >=  4986 && image < 17189) return image - 35;
-    else if (image >= 17191 && image < 18121) return image - 37;
-    else if (image >= 18123 && image < 23800) return image - 39;
-    else if (image >= 23804 && image < 24670) return image - 43;
-    else if (image >= 24674 && image < 28244) return image - 47;
-    else if (image >= 28246                 ) return image - 49;
-    else throw std::runtime_error("Invalid RCTC g1.dat file");
+    if (                  image <  1542) return image;
+    if (image >=  1574 && image <  4983) return image - 32;
+    if (image >=  4986 && image < 17189) return image - 35;
+    if (image >= 17191 && image < 18121) return image - 37;
+    if (image >= 18123 && image < 23800) return image - 39;
+    if (image >= 23804 && image < 24670) return image - 43;
+    if (image >= 24674 && image < 28244) return image - 47;
+    if (image >= 28246                 ) return image - 49;
+    throw std::runtime_error("Invalid RCTC g1.dat file");
 }
 // clang-format on
 
@@ -371,36 +371,34 @@ static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId im
         }
         return GetPaletteMapForColour(paletteId);
     }
-    else
+
+    auto paletteMap = PaletteMap(gPeepPalette);
+    if (imageId.HasTertiary())
     {
-        auto paletteMap = PaletteMap(gPeepPalette);
-        if (imageId.HasTertiary())
-        {
-            paletteMap = PaletteMap(gOtherPalette);
-            auto tertiaryPaletteMap = GetPaletteMapForColour(imageId.GetTertiary());
-            if (tertiaryPaletteMap)
-            {
-                paletteMap.Copy(
-                    PALETTE_OFFSET_REMAP_TERTIARY, *tertiaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
-            }
-        }
-
-        auto primaryPaletteMap = GetPaletteMapForColour(imageId.GetPrimary());
-        if (primaryPaletteMap)
+        paletteMap = PaletteMap(gOtherPalette);
+        auto tertiaryPaletteMap = GetPaletteMapForColour(imageId.GetTertiary());
+        if (tertiaryPaletteMap.has_value())
         {
             paletteMap.Copy(
-                PALETTE_OFFSET_REMAP_PRIMARY, *primaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
+                PALETTE_OFFSET_REMAP_TERTIARY, tertiaryPaletteMap.value(), PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
         }
-
-        auto secondaryPaletteMap = GetPaletteMapForColour(imageId.GetSecondary());
-        if (secondaryPaletteMap)
-        {
-            paletteMap.Copy(
-                PALETTE_OFFSET_REMAP_SECONDARY, *secondaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
-        }
-
-        return paletteMap;
     }
+
+    auto primaryPaletteMap = GetPaletteMapForColour(imageId.GetPrimary());
+    if (primaryPaletteMap.has_value())
+    {
+        paletteMap.Copy(
+            PALETTE_OFFSET_REMAP_PRIMARY, primaryPaletteMap.value(), PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
+    }
+
+    auto secondaryPaletteMap = GetPaletteMapForColour(imageId.GetSecondary());
+    if (secondaryPaletteMap.has_value())
+    {
+        paletteMap.Copy(
+            PALETTE_OFFSET_REMAP_SECONDARY, secondaryPaletteMap.value(), PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
+    }
+
+    return paletteMap;
 }
 
 void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& spriteCoords)
@@ -575,19 +573,19 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     // Move the pointer to the start point of the destination
     dest_pointer += ((dpi->width / zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
 
-    DrawSpriteArgs args(dpi, imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
-    gfx_sprite_to_buffer(args);
+    DrawSpriteArgs args(imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
+    gfx_sprite_to_buffer(*dpi, args);
 }
 
-void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args)
+void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
 {
     if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
     {
-        gfx_rle_sprite_to_buffer(args);
+        gfx_rle_sprite_to_buffer(dpi, args);
     }
     else if (!(args.SourceImage.flags & G1_FLAG_1))
     {
-        gfx_bmp_sprite_to_buffer(args);
+        gfx_bmp_sprite_to_buffer(dpi, args);
     }
 }
 
@@ -665,11 +663,13 @@ const rct_g1_element* gfx_get_g1_element(int32_t image_id)
     {
         return nullptr;
     }
-    else if (offset == SPR_TEMP)
+
+    if (offset == SPR_TEMP)
     {
         return &_g1Temp;
     }
-    else if (offset < SPR_RCTC_G1_END)
+
+    if (offset < SPR_RCTC_G1_END)
     {
         if (offset < _g1.elements.size())
         {
@@ -683,10 +683,8 @@ const rct_g1_element* gfx_get_g1_element(int32_t image_id)
         {
             return &_g2.elements[idx];
         }
-        else
-        {
-            log_warning("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
-        }
+
+        log_warning("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
     }
     else if (offset < SPR_CSG_END)
     {
@@ -697,10 +695,8 @@ const rct_g1_element* gfx_get_g1_element(int32_t image_id)
             {
                 return &_csg.elements[idx];
             }
-            else
-            {
-                log_warning("Invalid entry in csg.dat requested, idx = %u.", idx);
-            }
+
+            log_warning("Invalid entry in csg.dat requested, idx = %u.", idx);
         }
     }
     else if (offset < SPR_SCROLLING_TEXT_END)
@@ -794,31 +790,28 @@ size_t g1_calculate_data_size(const rct_g1_element* g1)
     {
         return g1->width * 3;
     }
-    else if (g1->flags & G1_FLAG_RLE_COMPRESSION)
+
+    if (g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
         if (g1->offset == nullptr)
         {
             return 0;
         }
-        else
+
+        auto idx = (g1->height - 1) * 2;
+        uint16_t offset = g1->offset[idx] | (g1->offset[idx + 1] << 8);
+        uint8_t* ptr = g1->offset + offset;
+        bool endOfLine = false;
+        do
         {
-            auto idx = (g1->height - 1) * 2;
-            uint16_t offset = g1->offset[idx] | (g1->offset[idx + 1] << 8);
-            uint8_t* ptr = g1->offset + offset;
-            bool endOfLine = false;
-            do
-            {
-                uint8_t chunk0 = *ptr++;
-                ptr++; // offset
-                uint8_t chunkSize = chunk0 & 0x7F;
-                ptr += chunkSize;
-                endOfLine = (chunk0 & 0x80) != 0;
-            } while (!endOfLine);
-            return ptr - g1->offset;
-        }
+            uint8_t chunk0 = *ptr++;
+            ptr++; // offset
+            uint8_t chunkSize = chunk0 & 0x7F;
+            ptr += chunkSize;
+            endOfLine = (chunk0 & 0x80) != 0;
+        } while (!endOfLine);
+        return ptr - g1->offset;
     }
-    else
-    {
-        return g1->width * g1->height;
-    }
+
+    return g1->width * g1->height;
 }

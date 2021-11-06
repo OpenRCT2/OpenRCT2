@@ -10,6 +10,7 @@
 #include "SawyerEncoding.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Numerics.hpp"
 #include "RCT12.h"
 
 #include <algorithm>
@@ -80,7 +81,7 @@ namespace SawyerEncoding
             {
                 uint8_t newByte = ((checksum & 0xFF) + *data) & 0xFF;
                 checksum = (checksum & 0xFFFFFF00) + newByte;
-                checksum = rol32(checksum, 3);
+                checksum = Numerics::rol32(checksum, 3);
             }
 
             uint32_t fileChecksum = stream->ReadValue<uint32_t>();
@@ -89,12 +90,12 @@ namespace SawyerEncoding
 
             if (checksum - 0x1D4C1 == fileChecksum)
                 return RCT12TrackDesignVersion::TD6;
-            else if (checksum - 0x1A67C == fileChecksum)
+            if (checksum - 0x1A67C == fileChecksum)
                 return RCT12TrackDesignVersion::TD4;
-            else if (checksum - 0x1A650 == fileChecksum)
+            if (checksum - 0x1A650 == fileChecksum)
                 return RCT12TrackDesignVersion::TD4;
-            else
-                return RCT12TrackDesignVersion::unknown;
+
+            return RCT12TrackDesignVersion::unknown;
         }
         catch (const std::exception&)
         {

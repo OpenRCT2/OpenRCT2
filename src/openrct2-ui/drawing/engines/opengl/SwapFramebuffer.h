@@ -33,6 +33,7 @@ private:
 
 public:
     SwapFramebuffer(int32_t width, int32_t height);
+    ~SwapFramebuffer();
 
     const OpenGLFramebuffer& GetFinalFramebuffer() const
     {

@@ -33,6 +33,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2::TrackMetaData;
+
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 constexpr size_t AVAILABILITY_STRING_SIZE = 256;
 static constexpr const int32_t WH = 382;
@@ -149,7 +151,7 @@ static constexpr const char RideTypeViewOrder[] = {
     RIDE_TYPE_INFORMATION_KIOSK,
     RIDE_TYPE_FIRST_AID,
     RIDE_TYPE_CASH_MACHINE,
-    RIDE_TYPE_TOILETS
+    RIDE_TYPE_TOILETS,
 };
 
 #pragma endregion
@@ -162,7 +164,7 @@ enum {
     WINDOW_NEW_RIDE_PAGE_WATER,
     WINDOW_NEW_RIDE_PAGE_SHOP,
     WINDOW_NEW_RIDE_PAGE_RESEARCH,
-    WINDOW_NEW_RIDE_PAGE_COUNT
+    WINDOW_NEW_RIDE_PAGE_COUNT,
 };
 
 #pragma region Widgets
@@ -202,7 +204,7 @@ static rct_widget window_new_ride_widgets[] = {
     MakeWidget({  3, 124}, {290,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_LAST_DEVELOPMENT                                          ),
     MakeWidget({265, 161}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary , 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
     MakeWidget({265,  68}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary , SPR_FINANCE,                  STR_FINANCES_RESEARCH_TIP       ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 #pragma endregion
@@ -245,10 +247,14 @@ static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE
     STR_NEW_SHOPS_STALLS,
     STR_RESEARCH_AND_DEVELOPMENT,
 };
-
-static constexpr const int32_t window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
-static constexpr const int32_t window_new_ride_tab_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
 // clang-format on
+
+static constexpr const int32_t window_new_ride_tab_animation_loops[] = {
+    20, 32, 10, 72, 24, 28, 16,
+};
+static constexpr const int32_t window_new_ride_tab_animation_divisor[] = {
+    4, 8, 2, 4, 4, 4, 2,
+};
 
 static void window_new_ride_set_page(rct_window* w, int32_t page);
 static void window_new_ride_refresh_widget_sizing(rct_window* w);
@@ -598,8 +604,9 @@ static void window_new_ride_set_pressed_tab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + _windowNewRideCurrentTab);
 }
 
-static constexpr const int32_t ThrillRidesTabAnimationSequence[] = { 5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0,
-                                                                     0, 0, 0, 1, 2, 3, 4, 0, 0, 0 };
+static constexpr const int32_t ThrillRidesTabAnimationSequence[] = {
+    5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0,
+};
 
 static void window_new_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
 {
@@ -819,8 +826,8 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         {
             if (rideEntry->ride_type[i] == listItem->Type)
                 break;
-            else
-                imageId++;
+
+            imageId++;
         }
 
         gfx_draw_sprite_raw_masked(dpi, coords + ScreenCoordsXY{ 2, 2 }, SPR_NEW_RIDE_MASK, imageId);
@@ -941,9 +948,10 @@ static void window_new_ride_paint_ride_information(
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Get price of ride
-        int32_t unk2 = GetRideTypeDescriptor(item.Type).StartTrackPiece;
-        money32 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
-        price *= TrackPricing[unk2];
+        int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
+        money64 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
+        const auto& ted = GetTrackElementDescriptor(startPieceId);
+        price *= ted.Price;
         price = (price >> 17) * 10 * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
         //
@@ -952,7 +960,7 @@ static void window_new_ride_paint_ride_information(
             stringId = STR_NEW_RIDE_COST_FROM;
 
         ft = Formatter();
-        ft.Add<money32>(price);
+        ft.Add<money64>(price);
         DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, { TextAlignment::RIGHT });
     }
 }

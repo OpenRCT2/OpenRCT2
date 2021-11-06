@@ -131,7 +131,8 @@ namespace OpenRCT2
                     current = token(FormatToken::Move, str.substr(startIndex, i - startIndex), p);
                     return;
                 }
-                else if (inner == "INLINE_SPRITE")
+
+                if (inner == "INLINE_SPRITE")
                 {
                     uint32_t p = 0;
                     auto p0 = ParseNumericToken(str, i);
@@ -178,12 +179,12 @@ namespace OpenRCT2
         {
             return token(FormatToken::Escaped, sztoken);
         }
-        else if (sztoken.size() >= 2 && sztoken[0] == '{' && sztoken[1] != '{')
+        if (sztoken.size() >= 2 && sztoken[0] == '{' && sztoken[1] != '{')
         {
             auto kind = FormatTokenFromString(sztoken.substr(1, len - 2));
             return token(kind, sztoken);
         }
-        else if (sztoken == "\n" || sztoken == "\r")
+        if (sztoken == "\n" || sztoken == "\r")
         {
             return token(FormatToken::Newline, sztoken);
         }
@@ -618,6 +619,7 @@ namespace OpenRCT2
     template void FormatArgument(FormatBuffer&, FormatToken, uint32_t);
     template void FormatArgument(FormatBuffer&, FormatToken, uint64_t);
     template void FormatArgument(FormatBuffer&, FormatToken, const char*);
+    template void FormatArgument(FormatBuffer&, FormatToken, std::string_view);
 
     bool IsRealNameStringId(rct_string_id id)
     {
@@ -656,6 +658,10 @@ namespace OpenRCT2
         else if (std::holds_alternative<int32_t>(value))
         {
             FormatArgument(ss, token, std::get<int32_t>(value));
+        }
+        else if (std::holds_alternative<int64_t>(value))
+        {
+            FormatArgument(ss, token, std::get<int64_t>(value));
         }
         else if (std::holds_alternative<const char*>(value))
         {
@@ -755,10 +761,12 @@ namespace OpenRCT2
                 case FormatToken::Comma32:
                 case FormatToken::Int32:
                 case FormatToken::Comma2dp32:
-                case FormatToken::Currency2dp:
-                case FormatToken::Currency:
                 case FormatToken::Sprite:
                     anyArgs.push_back(ReadFromArgs<int32_t>(args));
+                    break;
+                case FormatToken::Currency2dp:
+                case FormatToken::Currency:
+                    anyArgs.push_back(ReadFromArgs<int64_t>(args));
                     break;
                 case FormatToken::UInt16:
                 case FormatToken::MonthYear:

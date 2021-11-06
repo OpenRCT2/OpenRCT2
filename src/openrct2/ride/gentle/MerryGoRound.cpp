@@ -16,21 +16,24 @@
 #include "../Vehicle.h"
 
 /** rct2: 0x0142805C */
-static constexpr const uint32_t merry_go_round_rider_offsets[] = { 0, 32, 64, 96, 16, 48, 80, 112 };
+static constexpr const uint32_t merry_go_round_rider_offsets[] = {
+    0, 32, 64, 96, 16, 48, 80, 112,
+};
 
 /** rct2: 0x0142807C */
-static constexpr const uint16_t merry_go_round_breakdown_vibration[] = { 0, 1, 2, 3, 4, 3, 2, 1, 0, 0 };
+static constexpr const uint16_t merry_go_round_breakdown_vibration[] = {
+    0, 1, 2, 3, 4, 3, 2, 1, 0, 0,
+};
 
 /**
  * rct2: 0x0076287D
  */
 static void paint_merry_go_round_structure(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
     height += 7;
 
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -104,44 +107,47 @@ static void paint_merry_go_round_structure(
  * rct2: 0x00761B0C
  */
 static void paint_merry_go_round(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
+    StationObject* stationObject = nullptr;
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
 
-    auto ride = get_ride(rideIndex);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
             fenceSpritesRope, session->CurrentRotation);
     }
 
     switch (trackSequence)
     {
         case 1:
-            paint_merry_go_round_structure(session, rideIndex, direction, 32, 32, height);
+            paint_merry_go_round_structure(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_merry_go_round_structure(session, rideIndex, direction, 32, -32, height);
+            paint_merry_go_round_structure(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_merry_go_round_structure(session, rideIndex, direction, 0, -32, height);
+            paint_merry_go_round_structure(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_merry_go_round_structure(session, rideIndex, direction, -32, 32, height);
+            paint_merry_go_round_structure(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_merry_go_round_structure(session, rideIndex, direction, -32, -32, height);
+            paint_merry_go_round_structure(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_merry_go_round_structure(session, rideIndex, direction, -32, 0, height);
+            paint_merry_go_round_structure(session, ride, direction, -32, 0, height);
             break;
     }
 

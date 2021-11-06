@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _PLATFORM_H_
-#define _PLATFORM_H_
+#pragma once
 
 #include "../common.h"
 #include "../config/Config.h"
@@ -97,7 +96,6 @@ bool platform_ensure_directory_exists(const utf8* path);
 bool platform_directory_delete(const utf8* path);
 std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path);
 bool platform_lock_single_instance();
-bool platform_place_string_on_clipboard(utf8* target);
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
 int32_t platform_get_drives();
@@ -167,5 +165,3 @@ public:
 void platform_android_init_class_loader();
 jclass platform_android_find_class(JNIEnv* env, const char* name);
 #endif // __ANDROID__
-
-#endif

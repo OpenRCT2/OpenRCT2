@@ -18,11 +18,10 @@
  * rct2: 0x0077084A
  */
 static void paint_circus_tent(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
+    paint_session* session, const Ride* ride, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -44,7 +43,8 @@ static void paint_circus_tent(
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
     }
 
-    PaintAddImageAsParent(session, imageId | imageColourFlags, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3);
+    PaintAddImageAsParent(
+        session, imageId | imageColourFlags, { al, cl, height + 3 }, { 24, 24, 47 }, { al + 16, cl + 16, height + 3 });
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType = ViewportInteractionItem::Ride;
@@ -53,44 +53,47 @@ static void paint_circus_tent(
  * rct2: 0x0076FAD4
  */
 static void paint_circus(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
+    StationObject* stationObject = nullptr;
+    if (ride != nullptr)
+        stationObject = ride_get_station_object(ride);
 
-    auto ride = get_ride(rideIndex);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
+            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
             fenceSpritesRope, session->CurrentRotation);
     }
 
     switch (trackSequence)
     {
         case 1:
-            paint_circus_tent(session, rideIndex, direction, 32, 32, height);
+            paint_circus_tent(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_circus_tent(session, rideIndex, direction, 32, -32, height);
+            paint_circus_tent(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_circus_tent(session, rideIndex, direction, 0, -32, height);
+            paint_circus_tent(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_circus_tent(session, rideIndex, direction, -32, 32, height);
+            paint_circus_tent(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_circus_tent(session, rideIndex, direction, -32, -32, height);
+            paint_circus_tent(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_circus_tent(session, rideIndex, direction, -32, 0, height);
+            paint_circus_tent(session, ride, direction, -32, 0, height);
             break;
     }
 

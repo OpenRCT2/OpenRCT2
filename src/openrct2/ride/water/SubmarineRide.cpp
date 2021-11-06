@@ -62,7 +62,8 @@ void vehicle_visual_submarine(
 
     image_id = baseImage_id | imageFlags;
     paint_struct* ps = PaintAddImageAsParent(
-        session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z);
+        session, image_id, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
+        { bb.offset_x, bb.offset_y, bb.offset_z + z });
     if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
@@ -70,7 +71,7 @@ void vehicle_visual_submarine(
 
     image_id = (baseImage_id + 1) | imageFlags;
     ps = PaintAddImageAsParent(
-        session, image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10);
+        session, image_id, { 0, 0, z }, { bb.length_x, bb.length_y, 2 }, { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 });
     if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
@@ -81,10 +82,9 @@ void vehicle_visual_submarine(
 #endif
 
 static void submarine_ride_paint_track_station(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
-    auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return;
 
@@ -95,20 +95,20 @@ static void submarine_ride_paint_track_station(
     if (direction & 1)
     {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower);
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
 
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
-            session, ride, stationObj, session->MapPosition, direction, height, tileElement, session->CurrentRotation);
+            session, ride, stationObj, session->MapPosition, direction, height, trackElement, session->CurrentRotation);
     }
     else
     {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower);
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
 
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
-            session, ride, stationObj, session->MapPosition, direction, height, tileElement, session->CurrentRotation);
+            session, ride, stationObj, session->MapPosition, direction, height, trackElement, session->CurrentRotation);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -116,8 +116,8 @@ static void submarine_ride_paint_track_station(
 }
 
 static void submarine_ride_paint_track_flat(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     int32_t heightLower = height - 16;
     uint32_t imageId;
@@ -125,13 +125,13 @@ static void submarine_ride_paint_track_flat(
     if (direction & 1)
     {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower);
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 20, 32, 3 }, { 6, 0, heightLower });
         paint_util_push_tunnel_right(session, heightLower, TUNNEL_0);
     }
     else
     {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower);
+        PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { 32, 20, 3 }, { 0, 6, heightLower });
         paint_util_push_tunnel_left(session, heightLower, TUNNEL_0);
     }
 
@@ -148,8 +148,8 @@ static void submarine_ride_paint_track_flat(
 }
 
 static void submarine_ride_paint_track_left_quarter_turn_3_tiles(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
         session, 3, height - 16, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
@@ -179,19 +179,24 @@ static void submarine_ride_paint_track_left_quarter_turn_3_tiles(
     paint_util_set_general_support_height(session, height + 16, 0x20);
 }
 
-static constexpr const uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = {
+    3,
+    1,
+    2,
+    0,
+};
 static void submarine_ride_paint_track_right_quarter_turn_3_tiles(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     trackSequence = submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
     submarine_ride_paint_track_left_quarter_turn_3_tiles(
-        session, rideIndex, trackSequence, (direction + 3) % 4, height, tileElement);
+        session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 static void submarine_ride_paint_track_left_quarter_turn_1_tile(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_1_tile_paint(
         session, 1, height - 16, 0, direction, session->TrackColours[SCHEME_TRACK],
@@ -204,11 +209,11 @@ static void submarine_ride_paint_track_left_quarter_turn_1_tile(
 }
 
 static void submarine_ride_paint_track_right_quarter_turn_1_tile(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     submarine_ride_paint_track_left_quarter_turn_1_tile(
-        session, rideIndex, trackSequence, (direction + 3) % 4, height, tileElement);
+        session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 /**

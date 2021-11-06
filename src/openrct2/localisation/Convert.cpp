@@ -149,11 +149,9 @@ std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId)
         // The code page used by RCT2 was not quite 1252 as some codes were used for Polish characters.
         return DecodeConvertWithTable(src, encoding_convert_rct2_to_unicode);
     }
-    else
-    {
-        auto decoded = DecodeToMultiByte(src);
-        return String::Convert(decoded, codePage, CODE_PAGE::CP_UTF8);
-    }
+
+    auto decoded = DecodeToMultiByte(src);
+    return String::Convert(decoded, codePage, CODE_PAGE::CP_UTF8);
 }
 
 std::string utf8_to_rct2(std::string_view src)

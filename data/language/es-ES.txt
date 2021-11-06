@@ -1736,7 +1736,7 @@ STR_2383    :Agua
 STR_2384    :{WINDOW_COLOUR_2}Tu objetivo:
 STR_2385    :{BLACK}Ninguno
 STR_2386    :{BLACK}Tener al menos {COMMA16} visitantes en tu parque a finales de {MONTHYEAR}, con una valoración del parque de al menos 600
-STR_2387    :{BLACK}Conseguir un valor del parque {POP16}{POP16}{CURRENCY} a final de {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Conseguir un valor del parque {POP16}{POP16}{CURRENCY} a final de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}¡Diviértete!
 STR_2389    :{BLACK}¡Construye el mejor {STRINGID} que puedas!
 STR_2390    :{BLACK}Tener al menos 10 tipos de montañas rusas distintas operando en el parque, cada una con un valor de emoción de al menos 6.00
@@ -2056,51 +2056,6 @@ STR_2854    :{RED}¡Los visitantes no encuentran la entrada de {STRINGID}!{NEWLI
 STR_2855    :{RED}¡{STRINGID} no tiene un camino de salida!{NEWLINE}Construye un camino desde la salida de la atracción.
 STR_2858    :No puedes iniciar una campaña publicitaria…
 STR_2861    :{WINDOW_COLOUR_2}Bajo licencia a Infogrames Interactive Inc.
-STR_2862    :Agradecimientos musicales…
-STR_2863    :Agradecimientos musicales
-STR_2864    :{WINDOW_COLOUR_2}Marcha - Children of the Regiment:   (Fucik) sin copyright
-STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}La Bella Española:   (Robert Vollstedt) Copyright Control
-STR_2867    :{WINDOW_COLOUR_2}Viaje de bodas:   (Tradicional)
-STR_2868    :{WINDOW_COLOUR_2}Cuentos de los bosques de Viena:   (Johann Strauss) sin copyright
-STR_2869    :{WINDOW_COLOUR_2}Danza Slava:   (Tradicional)
-STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Tradicional)
-STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Tradicional)
-STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) sin copyright
-STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) sin copyright
-STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Tradicional)
-STR_2875    :{WINDOW_COLOUR_2}Grabaciones originales (P) 1976 C.J.Mears Organization, usados con permisos
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Música Principal:   (Allister Brimble) copyright © Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics “Liquid Grooves”)
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Esquema de color principal
 STR_2972    :Esquema de color alternativo 1
 STR_2973    :Esquema de color alternativo 2
@@ -2875,7 +2830,7 @@ STR_5554    :Activar herramienta de montaña
 STR_5555    :Muestra vehículos de otros tipos de vía
 STR_5556    :Expulsar jugador
 STR_5557    :Mantener conex. tras desincronización (Multijugador)
-STR_5558    :Se debe reiniciar para aplicar los cambios
+STR_5558    :Esta configuración solo tendrá efecto después de que haya reiniciado OpenRCT2
 STR_5559    :Inspecciones 10m
 STR_5560    :Establece el tiempo de inspección a 'Cada 10 minutos' en todas las atracciones
 STR_5561    :No se pudo cargar el idioma.
@@ -3431,7 +3386,7 @@ STR_6157    :Consola
 STR_6158    :No se pudo cargar este archivo…{NEWLINE}Versión RCT incompatible: {COMMA16}
 STR_6159    :Próximo Suave
 STR_6160    :{WINDOW_COLOUR_2}Vehículos Disponibles: {BLACK}{STRING}
-STR_6161    :Alternar Líneas de Cuadrícula
+STR_6161    :Alternar líneas de cuadrícula
 STR_6162    :Ratón Giratorio Salvaje
 STR_6163    :Carros con forma de ratón atraviesan giros cerrados y caídas cortas, mientras giran gentilmente para desorientar a los pasajeros.
 STR_6164    :{WHITE}❌
@@ -3649,12 +3604,26 @@ STR_6400    :He descargado el instalador sin conexión de GOG, pero no está ins
 STR_6401    :Ya instalé RollerCoaster Tycoon 2
 STR_6402    :OpenRCT2 Data Setup Configuración de datos OpenRCT2
 STR_6403    :Elige el opcion que aplica mejor a ti.
-STR_6404    :Please select the GOG RollerCoaster Tycoon 2 installer. Por favor, elige el Instalador de GOG OpenRCT2
+STR_6404    :Por favor selecciona el instalador de GOG de RollerCoaster Tycoon 2.
 STR_6405    :Elige Instalador de GOG
 STR_6406    :Instalador de GOG RollerCoaster Tycoon 2
 STR_6407    :Puede tardar unos minutos.
-STR_6408    :Please install “innoextract” to extract GOG Installer, then restart OpenRCT2. Instale "innoextract" para extraer el Instalador de GOG y luego reinicie OpenRCT2.
+STR_6408    :Por favor instala "innoextract" para extraer el instalador de GOG y luego reinica OpenRCT2.
 STR_6409    :El archivo seleccionado no es el Instalador sin conexión de GOG para RollerCoaster Tycoon 2. Puede que hayas descargado GOG Galaxy downloader stub o ha seleccionado el archivo incorrecto.
+STR_6433    :Eliminar
+STR_6434    :Eliminar todos los edificios para este atajo.
+STR_6435    :{WINDOW_COLOUR_2}Vándalos detenidos: {BLACK}{COMMA16}
+STR_6436    :Activar/desactivar invisibilidad
+STR_6437    :Invisible
+STR_6438    :I
+STR_6439    :Inspector de cuadrícula: Activar/desactivar invisibilidad
+STR_6440    :Agua transparente
+STR_6454    :No se puede cambiar el nombre del banner…
+STR_6455    :No se puede cambiar el nombre del señal…
+STR_6456    :Captura de pantalla gigante
+STR_6457    :Informar un error en GitHub
+STR_6458    :Siga esto en la Vista Principal
+
 ##############
 # Escenarios #
 ##############

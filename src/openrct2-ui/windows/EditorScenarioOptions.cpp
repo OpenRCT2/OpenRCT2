@@ -129,7 +129,7 @@ static rct_widget window_editor_scenario_options_financial_widgets[] = {
     MakeSpinnerWidgets({168,  99}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
     MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
     MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static rct_widget window_editor_scenario_options_guests_widgets[] = {
@@ -144,7 +144,7 @@ static rct_widget window_editor_scenario_options_guests_widgets[] = {
     MakeSpinnerWidgets({268,  99}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
     MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
     MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static rct_widget window_editor_scenario_options_park_widgets[] = {
@@ -165,13 +165,13 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
     MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
     MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
     MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static rct_widget *window_editor_scenario_options_widgets[] = {
     window_editor_scenario_options_financial_widgets,
     window_editor_scenario_options_guests_widgets,
-    window_editor_scenario_options_park_widgets
+    window_editor_scenario_options_park_widgets,
 };
 
 #pragma endregion
@@ -237,7 +237,7 @@ static rct_window_event_list window_scenario_options_park_events([](auto& events
 static rct_window_event_list *window_editor_scenario_options_page_events[] = {
     &window_scenario_options_financial_events,
     &window_scenario_options_guests_events,
-    &window_scenario_options_park_events
+    &window_scenario_options_park_events,
 };
 
 #pragma endregion
@@ -288,7 +288,7 @@ static uint64_t window_editor_scenario_options_page_enabled_widgets[] = {
         (1ULL << WIDX_FORBID_LANDSCAPE_CHANGES) |
         (1ULL << WIDX_FORBID_HIGH_CONSTRUCTION) |
         (1ULL << WIDX_HARD_PARK_RATING) |
-        (1ULL << WIDX_HARD_GUEST_GENERATION)
+        (1ULL << WIDX_HARD_GUEST_GENERATION),
 };
 
 static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
@@ -313,7 +313,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
         (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
         (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
         (1ULL << WIDX_ENTRY_PRICE_INCREASE) |
-        (1ULL << WIDX_ENTRY_PRICE_DECREASE)
+        (1ULL << WIDX_ENTRY_PRICE_DECREASE),
 };
 // clang-format on
 
@@ -474,9 +474,8 @@ static void window_editor_scenario_options_financial_resize(rct_window* w)
 static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
 {
     int32_t i;
-    rct_widget* dropdownWidget;
 
-    dropdownWidget = &w->widgets[WIDX_CLIMATE];
+    const auto& dropdownWidget = w->widgets[WIDX_CLIMATE];
 
     for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
     {
@@ -484,8 +483,8 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
         gDropdownItemsArgs[i] = ClimateNames[i];
     }
     WindowDropdownShowTextCustomWidth(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, Dropdown::Flag::StayOpen, static_cast<uint8_t>(ClimateType::Count), dropdownWidget->width() - 3);
+        { w->windowPos.x + dropdownWidget.left, w->windowPos.y + dropdownWidget.top }, dropdownWidget.height() + 1,
+        w->colours[1], 0, Dropdown::Flag::StayOpen, static_cast<uint8_t>(ClimateType::Count), dropdownWidget.width() - 3);
     Dropdown::SetChecked(static_cast<uint8_t>(gClimate), true);
 }
 
@@ -683,46 +682,53 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
     WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
-    if (w->widgets[WIDX_INITIAL_CASH].type != WindowWidgetType::Empty)
+    const auto& initialCashWidget = w->widgets[WIDX_INITIAL_CASH];
+    if (initialCashWidget.type != WindowWidgetType::Empty)
     {
-        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INITIAL_CASH].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, initialCashWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_INIT_CASH_LABEL);
 
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_CASH].left + 1, w->widgets[WIDX_INITIAL_CASH].top };
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gInitialCash);
+        screenCoords = w->windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
+        auto ft = Formatter();
+        ft.Add<money64>(gInitialCash);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
-    if (w->widgets[WIDX_INITIAL_LOAN].type != WindowWidgetType::Empty)
+    const auto& initialLoanWidget = w->widgets[WIDX_INITIAL_LOAN];
+    if (initialLoanWidget.type != WindowWidgetType::Empty)
     {
-        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INITIAL_LOAN].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, initialLoanWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_INIT_LOAN_LABEL);
 
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_LOAN].left + 1, w->widgets[WIDX_INITIAL_LOAN].top };
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gBankLoan);
+        screenCoords = w->windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
+        auto ft = Formatter();
+        ft.Add<money64>(gBankLoan);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
-    if (w->widgets[WIDX_MAXIMUM_LOAN].type != WindowWidgetType::Empty)
+    const auto& maximumLoanWidget = w->widgets[WIDX_MAXIMUM_LOAN];
+    if (maximumLoanWidget.type != WindowWidgetType::Empty)
     {
-        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_MAXIMUM_LOAN].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, maximumLoanWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_MAX_LOAN_LABEL);
 
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_MAXIMUM_LOAN].left + 1, w->widgets[WIDX_MAXIMUM_LOAN].top };
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan);
+        screenCoords = w->windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
+        auto ft = Formatter();
+        ft.Add<money64>(gMaxBankLoan);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
-    if (w->widgets[WIDX_INTEREST_RATE].type != WindowWidgetType::Empty)
+    const auto& interestRateWidget = w->widgets[WIDX_INTEREST_RATE];
+    if (interestRateWidget.type != WindowWidgetType::Empty)
     {
-        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INTEREST_RATE].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, interestRateWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_INTEREST_RATE_LABEL);
 
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_INTEREST_RATE].left + 1, w->widgets[WIDX_INTEREST_RATE].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ interestRateWidget.left + 1, interestRateWidget.top };
 
-        int16_t interestRate = std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX);
-        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &interestRate);
+        auto ft = Formatter();
+        ft.Add<int16_t>(std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX));
+        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
     }
 }
 
@@ -955,54 +961,57 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
  */
 static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t arg;
     ScreenCoordsXY screenCoords{};
 
     WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
-    if (w->widgets[WIDX_CASH_PER_GUEST].type != WindowWidgetType::Empty)
+    const auto& cashPerGuestWidget = w->widgets[WIDX_CASH_PER_GUEST];
+    if (cashPerGuestWidget.type != WindowWidgetType::Empty)
     {
         // Cash per guest label
-        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CASH_PER_GUEST].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, cashPerGuestWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_CASH_PER_GUEST_LABEL);
 
         // Cash per guest value
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_CASH_PER_GUEST].left + 1, w->widgets[WIDX_CASH_PER_GUEST].top };
-        arg = gGuestInitialCash;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        screenCoords = w->windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
+        auto ft = Formatter();
+        ft.Add<money64>(gGuestInitialCash);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
     // Guest initial happiness label
-    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
+    const auto& initialHappinessWidget = w->widgets[WIDX_GUEST_INITIAL_HAPPINESS];
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, initialHappinessWidget.top };
     DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HAPPINESS);
 
     // Guest initial happiness value
-    screenCoords = w->windowPos
-        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
-    arg = (gGuestInitialHappiness * 100) / 255;
-    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
+    screenCoords = w->windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
+    auto ft = Formatter();
+    ft.Add<uint16_t>((gGuestInitialHappiness * 100) / 255);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
     // Guest initial hunger label
-    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
+    const auto& initialHungerWidget = w->widgets[WIDX_GUEST_INITIAL_HUNGER];
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, initialHungerWidget.top };
     DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HUNGER);
 
     // Guest initial hunger value
-    screenCoords = w->windowPos
-        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
-    arg = ((255 - gGuestInitialHunger) * 100) / 255;
-    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
+    screenCoords = w->windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
+    ft = Formatter();
+    ft.Add<uint16_t>(((255 - gGuestInitialHunger) * 100) / 255);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
     // Guest initial thirst label
-    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
+    const auto& initialThirstWidget = w->widgets[WIDX_GUEST_INITIAL_THIRST];
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, initialThirstWidget.top };
     DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_THIRST);
 
     // Guest initial thirst value
-    screenCoords = w->windowPos
-        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
-    arg = ((255 - gGuestInitialThirst) * 100) / 255;
-    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
+    screenCoords = w->windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
+    ft = Formatter();
+    ft.Add<uint16_t>(((255 - gGuestInitialThirst) * 100) / 255);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 }
 
 #pragma endregion
@@ -1316,77 +1325,81 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
  */
 static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t arg;
     ScreenCoordsXY screenCoords{};
-    rct_string_id stringId;
 
     WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
-    if (w->widgets[WIDX_LAND_COST].type != WindowWidgetType::Empty)
+    const auto& landCostWidget = w->widgets[WIDX_LAND_COST];
+    if (landCostWidget.type != WindowWidgetType::Empty)
     {
         // Cost to buy land label
-        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_LAND_COST].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, landCostWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_LAND_COST_LABEL);
 
         // Cost to buy land value
-        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LAND_COST].left + 1, w->widgets[WIDX_LAND_COST].top };
-        arg = gLandPrice;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        screenCoords = w->windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
+        auto ft = Formatter();
+        ft.Add<money64>(gLandPrice);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
-    if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WindowWidgetType::Empty)
+    const auto& constructionRightsCostWidget = w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST];
+    if (constructionRightsCostWidget.type != WindowWidgetType::Empty)
     {
         // Cost to buy construction rights label
-        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, constructionRightsCostWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_RIGHTS_COST_LABEL);
 
         // Cost to buy construction rights value
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1,
-                              w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
-        arg = gConstructionRightsPrice;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        screenCoords = w->windowPos + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
+        auto ft = Formatter();
+        ft.Add<money64>(gConstructionRightsPrice);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
-    if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WindowWidgetType::Empty)
+    const auto& payForParkOrRidesWidget = w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES];
+    if (payForParkOrRidesWidget.type != WindowWidgetType::Empty)
     {
         // Pay for park or rides label
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1, w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.left + 1, payForParkOrRidesWidget.top };
 
+        auto ft = Formatter();
         // Pay for park and/or rides value
         if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-            stringId = STR_PAID_ENTRY_PAID_RIDES;
+            ft.Add<rct_string_id>(STR_PAID_ENTRY_PAID_RIDES);
         else if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-            stringId = STR_FREE_PARK_ENTER;
+            ft.Add<rct_string_id>(STR_FREE_PARK_ENTER);
         else
-            stringId = STR_PAY_PARK_ENTER;
+            ft.Add<rct_string_id>(STR_PAY_PARK_ENTER);
 
-        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 
-    if (w->widgets[WIDX_ENTRY_PRICE].type != WindowWidgetType::Empty)
+    const auto& entryPriceWidget = w->widgets[WIDX_ENTRY_PRICE];
+    if (entryPriceWidget.type != WindowWidgetType::Empty)
     {
         // Entry price label
-        screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8, w->widgets[WIDX_ENTRY_PRICE].top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ entryPriceWidget.right + 8, entryPriceWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
 
         // Entry price value
-        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_ENTRY_PRICE].left + 1, w->widgets[WIDX_ENTRY_PRICE].top };
-        arg = gParkEntranceFee;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        screenCoords = w->windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
+        auto ft = Formatter();
+        ft.Add<money64>(gParkEntranceFee);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
     }
 
     // Climate label
-    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CLIMATE].top };
+    const auto& climateWidget = w->widgets[WIDX_CLIMATE];
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, climateWidget.top };
     DrawTextBasic(dpi, screenCoords, STR_CLIMATE_LABEL);
 
     // Climate value
-    screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CLIMATE].left + 1, w->widgets[WIDX_CLIMATE].top };
-    stringId = ClimateNames[static_cast<uint8_t>(gClimate)];
-    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
+    screenCoords = w->windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
+    auto ft = Formatter();
+    ft.Add<rct_string_id>(ClimateNames[static_cast<uint8_t>(gClimate)]);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 }
 
 #pragma endregion

@@ -36,14 +36,14 @@ static rct_widget window_ride_demolish_widgets[] = {
     WINDOW_SHIM_WHITE(STR_DEMOLISH_RIDE, WW, WH),
     MakeWidget({     10, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_DEMOLISH          ),
     MakeWidget({WW - 95, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static rct_widget window_ride_refurbish_widgets[] = {
     WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
     MakeWidget({     10, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_REFURBISH         ),
     MakeWidget({WW - 95, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -84,7 +84,7 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     w->widgets = window_ride_demolish_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_DEMOLISH);
     WindowInitScrollWidgets(w);
-    w->number = ride->id;
+    w->rideId = ride->id;
     _demolishRideCost = -ride_get_refund_price(ride);
 
     return w;
@@ -109,7 +109,7 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
     w->widgets = window_ride_refurbish_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_REFURBISH);
     WindowInitScrollWidgets(w);
-    w->number = ride->id;
+    w->rideId = ride->id;
     _demolishRideCost = -ride_get_refund_price(ride);
 
     return w;
@@ -125,7 +125,7 @@ static void window_ride_demolish_mouseup(rct_window* w, rct_widgetindex widgetIn
     {
         case WIDX_DEMOLISH:
         {
-            auto ride = get_ride(w->number);
+            auto ride = get_ride(w->rideId);
             ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
             break;
         }
@@ -142,7 +142,7 @@ static void window_ride_refurbish_mouseup(rct_window* w, rct_widgetindex widgetI
     {
         case WIDX_REFURBISH:
         {
-            auto ride = get_ride(w->number);
+            auto ride = get_ride(w->rideId);
             ride_action_modify(ride, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
             break;
         }
@@ -161,13 +161,13 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    auto ride = get_ride(w->number);
+    auto ride = get_ride(w->rideId);
     if (ride != nullptr)
     {
         auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID : STR_DEMOLISH_RIDE_ID_MONEY;
         auto ft = Formatter();
         ride->FormatNameTo(ft);
-        ft.Add<money32>(_demolishRideCost);
+        ft.Add<money64>(_demolishRideCost);
 
         ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
         DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
@@ -178,13 +178,13 @@ static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    auto ride = get_ride(w->number);
+    auto ride = get_ride(w->rideId);
     if (ride != nullptr)
     {
         auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY : STR_REFURBISH_RIDE_ID_MONEY;
         auto ft = Formatter();
         ride->FormatNameTo(ft);
-        ft.Add<money32>(_demolishRideCost / 2);
+        ft.Add<money64>(_demolishRideCost / 2);
 
         ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
         DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });

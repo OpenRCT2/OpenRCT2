@@ -9,6 +9,7 @@
 
 #include "Addresses.h"
 
+#include <array>
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Colour.h>
@@ -33,7 +34,6 @@ rct_sprite* sprite_list = RCT2_ADDRESS(0x010E63BC, rct_sprite);
 bool gCheatsEnableAllDrawableTrackPieces = false;
 
 Ride gRideList[MAX_RIDES];
-int16_t gMapSizeUnits;
 int16_t gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 ride_id_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
@@ -73,18 +73,25 @@ uint8_t get_current_rotation()
 }
 
 int object_entry_group_counts[] = {
-    128, // rides
-    252, // small scenery
-    128, // large scenery
-    128, // walls
-    32,  // banners
-    16,  // paths
-    15,  // path bits
-    19,  // scenery sets
-    1,   // park entrance
-    1,   // water
-    1    // scenario text
+    128, // ObjectType::Ride
+    252, // ObjectType::SmallScenery
+    128, // ObjectType::LargeScenery
+    128, // ObjectType::Walls
+    32,  // ObjectType::Banners
+    16,  // ObjectType::Paths
+    15,  // ObjectType::PathBits
+    19,  // ObjectType::SceneryGroup
+    1,   // ObjectType::ParkEntrance
+    1,   // ObjectType::Water
+    1,   // ObjectType::ScenarioText
+    0,   // ObjectType::TerrainSurface
+    0,   // ObjectType::TerrainEdge
+    0,   // ObjectType::Station
+    0,   // ObjectType::Music
+    0,   // ObjectType::FootpathSurface
+    0,   // ObjectType::FootpathRailings
 };
+static_assert(std::size(object_entry_group_counts) == EnumValue(ObjectType::Count));
 
 GeneralConfiguration gConfigGeneral;
 uint16_t gMapSelectFlags;
@@ -212,7 +219,7 @@ TileElement* map_get_first_element_at(const CoordsXY& elementPos)
     return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * 256];
 }
 
-int16_t get_height_marker_offset()
+int32_t get_height_marker_offset()
 {
     return 0;
 }
@@ -887,3 +894,10 @@ namespace OpenRCT2
         return nullptr;
     }
 } // namespace OpenRCT2
+
+ScreenCoordsXY translate_3d_to_2d_with_z(int32_t rotation, const CoordsXYZ& pos)
+{
+    auto rotated = pos.Rotate(rotation);
+    // Use right shift to avoid issues like #9301
+    return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
+}

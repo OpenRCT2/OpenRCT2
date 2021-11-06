@@ -157,19 +157,19 @@ namespace String
         {
             return { 1 };
         }
-        else if (v.size() >= 2 && ((v[0] & 0xE0) == 0xC0))
+        if (v.size() >= 2 && ((v[0] & 0xE0) == 0xC0))
         {
             return { 2 };
         }
-        else if (v.size() >= 3 && ((v[0] & 0xF0) == 0xE0))
+        if (v.size() >= 3 && ((v[0] & 0xF0) == 0xE0))
         {
             return { 3 };
         }
-        else if (v.size() >= 4 && ((v[0] & 0xF8) == 0xF0))
+        if (v.size() >= 4 && ((v[0] & 0xF8) == 0xF0))
         {
             return { 4 };
         }
-        return {};
+        return std::nullopt;
     }
 
     /**
@@ -178,6 +178,8 @@ namespace String
      */
     std::string_view UTF8Truncate(std::string_view v, size_t size);
 
+    // Escapes special characters in a string to the percentage equivalent that can be used in URLs.
+    std::string URLEncode(std::string_view value);
 } // namespace String
 
 class CodepointView

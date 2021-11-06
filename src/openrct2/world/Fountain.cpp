@@ -28,7 +28,7 @@ enum class PATTERN
     FAST_RANDOM_CHASERS,
 };
 
-static constexpr const std::array<CoordsXY, 8> _fountainDirectionsNegative = {
+static constexpr const std::array _fountainDirectionsNegative = {
     CoordsXY{ -COORDS_XY_STEP, 0 },
     CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
     CoordsXY{ 0, 0 },
@@ -39,23 +39,27 @@ static constexpr const std::array<CoordsXY, 8> _fountainDirectionsNegative = {
     CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
 };
 
-static constexpr const std::array<CoordsXY, 8> _fountainDirectionsPositive = { CoordsXY{ COORDS_XY_STEP, 0 },
-                                                                               CoordsXY{ 0, 0 },
-                                                                               CoordsXY{ 0, COORDS_XY_STEP },
-                                                                               CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
-                                                                               CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
-                                                                               CoordsXY{ COORDS_XY_STEP, 0 },
-                                                                               CoordsXY{ 0, 0 },
-                                                                               CoordsXY{ 0, COORDS_XY_STEP } };
+static constexpr const std::array _fountainDirectionsPositive = {
+    CoordsXY{ COORDS_XY_STEP, 0 },
+    CoordsXY{ 0, 0 },
+    CoordsXY{ 0, COORDS_XY_STEP },
+    CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
+    CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
+    CoordsXY{ COORDS_XY_STEP, 0 },
+    CoordsXY{ 0, 0 },
+    CoordsXY{ 0, COORDS_XY_STEP },
+};
 constexpr auto _FountainChanceOfStoppingEdgeMode = 0x3333;   // 0.200
 constexpr auto _FountainChanceOfStoppingRandomMode = 0x2000; // 0.125
 
 // rct2: 0x0097F040
-const uint8_t _fountainDirections[] = { 0, 1, 2, 3, 0, 1, 2, 3 };
+const uint8_t _fountainDirections[] = {
+    0, 1, 2, 3, 0, 1, 2, 3,
+};
 
 // rct2: 0x0097F048
 const uint8_t _fountainDirectionFlags[] = {
-    0, 0, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, 0, 0
+    0, 0, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, 0, 0,
 };
 
 // rct2: 0x0097F050
@@ -67,10 +71,10 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::GOTO_EDGE,                                              // RACING_PAIRS
     FOUNTAIN_FLAG::FAST | FOUNTAIN_FLAG::GOTO_EDGE | FOUNTAIN_FLAG::SPLIT, // SPLITTING_CHASERS
     0,                                                                     // DOPEY_JUMPERS
-    FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
+    FOUNTAIN_FLAG::FAST,                                                   // FAST_RANDOM_CHASERS
 };
 
-template<> bool SpriteBase::Is<JumpingFountain>() const
+template<> bool EntityBase::Is<JumpingFountain>() const
 {
     return Type == EntityType::JumpingFountain;
 }

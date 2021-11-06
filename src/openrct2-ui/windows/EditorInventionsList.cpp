@@ -55,12 +55,12 @@ static rct_widget window_editor_inventions_list_widgets[] = {
     MakeWidget({375, 343}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
     MakeWidget({375, 358}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
     MakeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static rct_widget window_editor_inventions_list_drag_widgets[] = {
     MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 #pragma endregion
@@ -155,14 +155,14 @@ static void move_research_item(ResearchItem* beforeItem, int32_t scrollIndex)
         w->Invalidate();
     }
 
-    research_remove(&_editorInventionsListDraggedItem);
+    ResearchRemove(_editorInventionsListDraggedItem);
 
     auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
     if (beforeItem != nullptr)
     {
         for (size_t i = 0; i < researchList.size(); i++)
         {
-            if (researchList[i].Equals(beforeItem))
+            if (researchList[i] == *beforeItem)
             {
                 researchList.insert((researchList.begin() + i), _editorInventionsListDraggedItem);
                 return;
@@ -497,7 +497,6 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
 {
     rct_widget* widget;
     ResearchItem* researchItem;
-    rct_string_id stringId;
     int32_t width;
 
     WindowDrawWidgets(w, dpi);
@@ -566,8 +565,9 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
 
     // Item category
     screenPos.x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
-    stringId = researchItem->GetCategoryInventionString();
-    DrawTextBasic(dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, &stringId);
+    ft = Formatter();
+    ft.Add<rct_string_id>(researchItem->GetCategoryInventionString());
+    DrawTextBasic(dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
 }
 
 /**
@@ -607,10 +607,10 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
                 bottom = itemY;
             }
 
-            gfx_filter_rect(dpi, 0, top, boxWidth, bottom, FilterPaletteID::PaletteDarken1);
+            gfx_filter_rect(dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
         }
 
-        if (researchItem.Equals(&_editorInventionsListDraggedItem))
+        if (researchItem == _editorInventionsListDraggedItem)
             continue;
 
         // TODO: this parameter by itself produces very light text.

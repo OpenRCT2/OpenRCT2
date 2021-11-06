@@ -12,8 +12,8 @@
 #include "Paint.h"
 
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
+    paint_session* session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
+    int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset)
 {
     if (direction & 1)
     {
@@ -21,37 +21,59 @@ paint_struct* PaintAddImageAsParentRotated(
             session, image_id, { y_offset, x_offset, z_offset },
             { bound_box_length_y, bound_box_length_x, bound_box_length_z });
     }
-    else
-    {
-        return PaintAddImageAsParent(
-            session, image_id, { x_offset, y_offset, z_offset },
-            { bound_box_length_x, bound_box_length_y, bound_box_length_z });
-    }
+
+    return PaintAddImageAsParent(
+        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z });
 }
 
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
+    int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset,
+    int32_t bound_box_offset_x, int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
     if (direction & 1)
     {
         return PaintAddImageAsParent(
-            session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
-            bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
+            session, image_id, { y_offset, x_offset, z_offset }, { bound_box_length_y, bound_box_length_x, bound_box_length_z },
+            { bound_box_offset_y, bound_box_offset_x, bound_box_offset_z });
     }
-    else
+
+    return PaintAddImageAsParent(
+        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
+        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
+}
+
+paint_struct* PaintAddImageAsParentRotated(
+    paint_session* session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
+{
+    if (direction & 1)
     {
         return PaintAddImageAsParent(
-            session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
-            bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
+            { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
     }
+
+    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize, boundBoxOffset);
+}
+
+paint_struct* PaintAddImageAsParentRotated(
+    paint_session* session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize)
+{
+    if (direction & 1)
+    {
+        return PaintAddImageAsParent(
+            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z });
+    }
+
+    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize);
 }
 
 paint_struct* PaintAddImageAsChildRotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
+    int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset,
+    int32_t bound_box_offset_x, int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
     if (direction & 1)
     {
@@ -59,12 +81,24 @@ paint_struct* PaintAddImageAsChildRotated(
             session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
             bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
     }
-    else
+
+    return PaintAddImageAsChild(
+        session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
+        bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+}
+
+paint_struct* PaintAddImageAsChildRotated(
+    paint_session* session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
+{
+    if (direction & 1)
     {
         return PaintAddImageAsChild(
-            session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
-            bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+            session, image_id, { offset.y, offset.x, offset.z }, { boundBoxSize.y, boundBoxSize.x, boundBoxSize.z },
+            { boundBoxOffset.y, boundBoxOffset.x, boundBoxOffset.z });
     }
+
+    return PaintAddImageAsChild(session, image_id, offset, boundBoxSize, boundBoxOffset);
 }
 
 void paint_util_push_tunnel_rotated(paint_session* session, uint8_t direction, uint16_t height, uint8_t type)

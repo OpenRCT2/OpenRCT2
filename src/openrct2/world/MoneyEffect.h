@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "SpriteBase.h"
+#include "EntityBase.h"
 
 class DataSerialiser;
 struct CoordsXYZ;
@@ -20,13 +20,13 @@ struct MoneyEffect : MiscEntity
     uint16_t MoveDelay;
     uint8_t NumMovements;
     uint8_t Vertical;
-    money32 Value;
+    money64 Value;
     int16_t OffsetX;
     uint16_t Wiggle;
 
-    static void CreateAt(money32 value, const CoordsXYZ& effectPos, bool vertical);
-    static void Create(money32 value, const CoordsXYZ& loc);
+    static void CreateAt(money64 value, const CoordsXYZ& effectPos, bool vertical);
+    static void Create(money64 value, const CoordsXYZ& loc);
     void Update();
-    std::pair<rct_string_id, money32> GetStringId() const;
+    std::pair<rct_string_id, money64> GetStringId() const;
     void Serialise(DataSerialiser& stream);
 };

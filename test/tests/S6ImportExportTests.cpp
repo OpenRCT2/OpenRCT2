@@ -78,7 +78,7 @@ static bool ImportSave(MemoryStream& stream, std::unique_ptr<IContext>& context,
 
     auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
     auto loadResult = importer->LoadFromStream(&stream, false);
-    objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
+    objManager.LoadObjects(loadResult.RequiredObjects);
     importer->Import();
 
     GameInit(retainSpatialIndices);
@@ -262,7 +262,8 @@ TEST(SeaDecrypt, DecryptSea)
     auto path = TestData::GetParkPath("volcania.sea");
     auto decrypted = DecryptSea(path);
     auto sha1 = Crypt::SHA1(decrypted.data(), decrypted.size());
-    std::array<uint8_t, 20> expected = { 0x1B, 0x85, 0xFC, 0xC0, 0xE8, 0x9B, 0xBE, 0x72, 0xD9, 0x1F,
-                                         0x6E, 0xC8, 0xB1, 0xFF, 0xEC, 0x70, 0x2A, 0x72, 0x05, 0xBB };
+    std::array<uint8_t, 20> expected = {
+        0x1B, 0x85, 0xFC, 0xC0, 0xE8, 0x9B, 0xBE, 0x72, 0xD9, 0x1F, 0x6E, 0xC8, 0xB1, 0xFF, 0xEC, 0x70, 0x2A, 0x72, 0x05, 0xBB,
+    };
     ASSERT_EQ(sha1, expected);
 }

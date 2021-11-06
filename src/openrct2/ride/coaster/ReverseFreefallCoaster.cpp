@@ -196,30 +196,30 @@ static constexpr const uint32_t reverse_freefall_rc_track_pieces_vertical_suppor
 };
 
 static void paint_reverse_freefall_rc_flat(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     if (direction & 1)
     {
         uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
         uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void paint_reverse_freefall_rc_station(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     uint32_t imageId;
 
@@ -227,42 +227,39 @@ static void paint_reverse_freefall_rc_station(
     {
         // height -= 2 (height - 2)
         imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 32, 28, 1 }, { 0, 2, height });
         // height += 2 (height)
 
         imageId = reverse_freefall_rc_track_pieces_station[direction] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
-        wooden_a_supports_paint_setup(
-            session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+        wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
     {
         // height -= 2 (height - 2)
         imageId = SPR_STATION_BASE_B_NW_SE | session->TrackColours[SCHEME_MISC];
-        PaintAddImageAsParent(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { 28, 32, 1 }, { 2, 0, height });
         // height += 2 (height)
 
         imageId = reverse_freefall_rc_track_pieces_station[direction] | session->TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
 
-        wooden_a_supports_paint_setup(
-            session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+        wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    auto ride = get_ride(rideIndex);
     if (ride != nullptr)
-        track_paint_util_draw_station_platform(session, ride, direction, height, 5, tileElement);
+        track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 5, trackElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void paint_reverse_freefall_rc_slope(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     TESTPAINT_IGNORE_ALL();
 
@@ -307,13 +304,12 @@ static void paint_reverse_freefall_rc_slope(
                 PaintAddImageAsChildRotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
             }
 
-            wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
             break;
         case 5:
-            if (wooden_a_supports_paint_setup(
-                    session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr))
+            if (wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]))
             {
                 uint32_t floorImageId;
                 if (direction & 1)
@@ -324,7 +320,7 @@ static void paint_reverse_freefall_rc_slope(
                 {
                     floorImageId = SPR_FLOOR_PLANKS | session->TrackColours[SCHEME_SUPPORTS];
                 }
-                PaintAddImageAsParent(session, floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
+                PaintAddImageAsParent(session, floorImageId, { 0, 0, height }, { 26, 26, 126 }, { 3, 3, height });
                 PaintAddImageAsChildRotated(
                     session, direction, supportsImageId, 0, 0, isDirection03 ? 26 : 18, 26, 126, height, isDirection03 ? 3 : 11,
                     3, height);
@@ -349,7 +345,7 @@ static void paint_reverse_freefall_rc_slope(
                 PaintAddImageAsParentRotated(session, direction, trackImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
                 PaintAddImageAsChildRotated(session, direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
             }
-            wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
             break;
@@ -357,8 +353,8 @@ static void paint_reverse_freefall_rc_slope(
 }
 
 static void paint_reverse_freefall_rc_vertical(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     uint32_t supportsImageId, trackImageId;
     switch (trackSequence)
@@ -366,7 +362,7 @@ static void paint_reverse_freefall_rc_vertical(
         case 0:
             supportsImageId = reverse_freefall_rc_track_pieces_vertical_supports[direction]
                 | session->TrackColours[SCHEME_SUPPORTS];
-            PaintAddImageAsParent(session, supportsImageId, 0, 0, 26, 26, 79, height, 3, 3, height);
+            PaintAddImageAsParent(session, supportsImageId, { 0, 0, height }, { 26, 26, 79 }, { 3, 3, height });
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 80, 0x20);
             break;
@@ -388,8 +384,8 @@ static void paint_reverse_freefall_rc_vertical(
 }
 
 static void paint_reverse_freefall_rc_onride_photo(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement)
+    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4] = {
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
@@ -401,7 +397,7 @@ static void paint_reverse_freefall_rc_onride_photo(
     // The straight track without booster is borrowed from the APVC.
     // It has one track colour, instead of the two that the Reverse Freefall Colour has.
     uint32_t colour = session->TrackColours[SCHEME_TRACK];
-    if (!tileElement->IsGhost() && !tileElement->AsTrack()->IsHighlighted())
+    if (!trackElement.IsGhost() && !trackElement.IsHighlighted())
     {
         // Replace remap colour 1 (bits 19-23) with a copy of remap colour 2 (bits 24-28).
         colour_t colour2 = (colour >> 24) & 31;
@@ -412,9 +408,9 @@ static void paint_reverse_freefall_rc_onride_photo(
     uint32_t imageId = imageIds[direction] | colour;
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
+    track_paint_util_onride_photo_paint(session, direction, height + 3, trackElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

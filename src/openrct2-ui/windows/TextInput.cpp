@@ -34,7 +34,7 @@ static rct_widget window_text_input_widgets[] = {
     WINDOW_SHIM(STR_NONE, WW, WH),
     MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
     MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 class TextInputWindow final : public Window
@@ -47,6 +47,7 @@ private:
 
     std::string _description;
     rct_string_id _descriptionStringId = STR_NONE;
+    Formatter _descriptionArgs;
 
     std::function<void(std::string_view)> _callback;
     std::function<void()> _cancelCallback;
@@ -89,10 +90,11 @@ public:
         }
     }
 
-    void SetTitle(rct_string_id title, rct_string_id description)
+    void SetTitle(rct_string_id title, rct_string_id description, const Formatter& decriptionArgs)
     {
         _titleStringId = title;
         _descriptionStringId = description;
+        _descriptionArgs = decriptionArgs;
     }
 
     void SetTitle(std::string_view title, std::string_view description)
@@ -202,14 +204,15 @@ public:
 
         if (_descriptionStringId == STR_NONE)
         {
-            auto* text = _description.c_str();
+            auto ft = Formatter();
+            ft.Add<const char*>(_description.c_str());
             DrawTextWrapped(
-                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, &text, { colours[1], TextAlignment::CENTRE });
+                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
         }
         else
         {
             DrawTextWrapped(
-                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, &TextInputDescriptionArgs,
+                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, _descriptionArgs,
                 { colours[1], TextAlignment::CENTRE });
         }
 
@@ -370,7 +373,7 @@ private:
 
 void window_text_input_raw_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    const_utf8string existing_text, int32_t maxLength)
+    const Formatter& descriptionArgs, const_utf8string existing_text, int32_t maxLength)
 {
     window_close_by_class(WC_TEXTINPUT);
 
@@ -379,7 +382,7 @@ void window_text_input_raw_open(
     if (w != nullptr)
     {
         w->SetParentWindow(call_w, call_widget);
-        w->SetTitle(title, description);
+        w->SetTitle(title, description, descriptionArgs);
         w->SetText(existing_text, maxLength);
     }
 }
@@ -400,10 +403,10 @@ void window_text_input_open(
 
 void window_text_input_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
-    rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
+    const Formatter& descriptionArgs, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     auto existingText = format_string(existing_text, &existing_args);
-    window_text_input_raw_open(call_w, call_widget, title, description, existingText.c_str(), maxLength);
+    window_text_input_raw_open(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
 }
 
 void window_text_input_key(rct_window* w, char keychar)

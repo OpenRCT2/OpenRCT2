@@ -79,6 +79,6 @@ namespace OpenRCT2::Audio
         IAudioMixer* Create();
     }
 
-    std::unique_ptr<IAudioContext> CreateAudioContext();
+    [[nodiscard]] std::unique_ptr<IAudioContext> CreateAudioContext();
 
 } // namespace OpenRCT2::Audio

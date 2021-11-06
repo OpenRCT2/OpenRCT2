@@ -73,7 +73,7 @@ static rct_widget window_loadsave_widgets[] =
     MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // Date
     MakeWidget({               4,      68}, {342, 303}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL                                            ), // File list
     MakeWidget({               4, WH - 24}, {197,  19}, WindowWidgetType::Button,       WindowColour::Primary  , STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // Use native browser
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 #pragma endregion
@@ -450,12 +450,12 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 
         case WIDX_NEW_FILE:
             window_text_input_open(
-                w, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, STR_STRING,
+                w, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, {}, STR_STRING,
                 reinterpret_cast<uintptr_t>(_defaultPath.c_str()), 64);
             break;
 
         case WIDX_NEW_FOLDER:
-            window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, "", 64);
+            window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
             break;
 
         case WIDX_BROWSE:
@@ -714,8 +714,10 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw name button indicator.
     rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
+    ft = Formatter();
+    ft.Add<rct_string_id>(id);
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 }, STR_NAME, &id,
+        dpi, w->windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 }, STR_NAME, ft,
         { COLOUR_GREY });
 
     // Date button text
@@ -727,8 +729,10 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
         id = STR_NONE;
 
     rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
+    ft = Formatter();
+    ft.Add<rct_string_id>(id);
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 }, STR_DATE, &id,
+        dpi, w->windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 }, STR_DATE, ft,
         { COLOUR_GREY });
 }
 
@@ -755,7 +759,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (i == w->selected_list_item)
         {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT, FilterPaletteID::PaletteDarken1);
+            gfx_filter_rect(dpi, { 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
         }
         // display a marker next to the currently loaded game file
         if (_listItems[i].loaded)
@@ -1057,7 +1061,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             save_path(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
             int32_t parkFlagsBackup = gParkFlags;
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-            gS6Info.editor_step = EditorStep::Invalid;
+            gEditorStep = EditorStep::Invalid;
             safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
             int32_t success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
             gParkFlags = parkFlagsBackup;
@@ -1071,7 +1075,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             else
             {
                 context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
-                gS6Info.editor_step = EditorStep::ObjectiveSelection;
+                gEditorStep = EditorStep::ObjectiveSelection;
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1138,7 +1142,7 @@ static rct_widget window_overwrite_prompt_widgets[] = {
     { WindowWidgetType::Button, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
     { WindowWidgetType::Button, 0, OVERWRITE_WW - 95, OVERWRITE_WW - 11, OVERWRITE_WH - 20, OVERWRITE_WH - 9,
       STR_SAVE_PROMPT_CANCEL, STR_NONE },
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex);

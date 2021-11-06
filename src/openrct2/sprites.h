@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _SPRITES_H_
-#define _SPRITES_H_
+#pragma once
 
 #include "drawing/ScrollingText.h"
 #include "rct1/RCT1.h"
@@ -865,7 +864,9 @@ enum
 
     SPR_G2_VIEW = SPR_G2_BEGIN + 137,
 
-    SPR_G2_CHAR_BEGIN = SPR_G2_BEGIN + 138,
+    SPR_G2_PATH_RAILINGS_TAB = SPR_G2_BEGIN + 138,
+
+    SPR_G2_CHAR_BEGIN = SPR_G2_BEGIN + 139,
 
     SPR_G2_AE_UPPER = SPR_G2_CHAR_BEGIN,
     SPR_G2_AE_LOWER = SPR_G2_CHAR_BEGIN + 1,
@@ -1090,7 +1091,7 @@ enum
     SPR_G2_END = SPR_G2_SINGLE_RAIL_END,
 
     SPR_CSG_BEGIN = SPR_G2_END,
-    SPR_CSG_END = SPR_CSG_BEGIN + RCT1_NUM_LL_CSG_ENTRIES,
+    SPR_CSG_END = SPR_CSG_BEGIN + RCT1::RCT1_NUM_LL_CSG_ENTRIES,
 
     SPR_SCROLLING_TEXT_START = SPR_CSG_END,
     SPR_SCROLLING_TEXT_END = SPR_SCROLLING_TEXT_START + OpenRCT2::MaxScrollingTextEntries,
@@ -1098,5 +1099,3 @@ enum
     SPR_IMAGE_LIST_BEGIN = SPR_SCROLLING_TEXT_END,
     SPR_IMAGE_LIST_END = 0x7FFFE
 };
-
-#endif

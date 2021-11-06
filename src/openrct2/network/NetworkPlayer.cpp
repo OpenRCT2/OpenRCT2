@@ -15,7 +15,7 @@
 #    include "../localisation/Localisation.h"
 #    include "NetworkPacket.h"
 
-void NetworkPlayer::SetName(const std::string& name)
+void NetworkPlayer::SetName(std::string_view name)
 {
     // 36 == 31 + strlen(" #255");
     Name = name.substr(0, 36);
@@ -23,7 +23,7 @@ void NetworkPlayer::SetName(const std::string& name)
 
 void NetworkPlayer::Read(NetworkPacket& packet)
 {
-    const utf8* name = packet.ReadString();
+    auto name = packet.ReadString();
     SetName(name);
     packet >> Id >> Flags >> Group >> LastAction >> LastActionCoord.x >> LastActionCoord.y >> LastActionCoord.z >> MoneySpent
         >> CommandsRan;

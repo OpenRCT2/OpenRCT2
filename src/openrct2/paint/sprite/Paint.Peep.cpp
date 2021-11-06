@@ -10,7 +10,7 @@
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
-#include "../../peep/Peep.h"
+#include "../../peep/Guest.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
 
@@ -25,31 +25,26 @@ template<> void PaintEntity(paint_session* session, const Peep* peep, int32_t im
     {
         if (peep->Is<Staff>())
         {
-            int16_t peep_x, peep_y, peep_z;
-
-            peep_x = peep->x;
-            peep_y = peep->y;
-            peep_z = peep->z;
-
+            auto loc = peep->GetLocation();
             switch (peep->sprite_direction)
             {
                 case 0:
-                    peep_x -= 10;
+                    loc.x -= 10;
                     break;
                 case 8:
-                    peep_y += 10;
+                    loc.y += 10;
                     break;
                 case 16:
-                    peep_x += 10;
+                    loc.x += 10;
                     break;
                 case 24:
-                    peep_y -= 10;
+                    loc.y -= 10;
                     break;
                 default:
                     return;
             }
 
-            LightfxAdd3DLight(*peep, 0, { peep_x, peep_y, peep_z }, LightType::Spot1);
+            LightfxAdd3DLight(*peep, 0, loc, LightType::Spot1);
         }
     }
 #endif
@@ -80,7 +75,7 @@ template<> void PaintEntity(paint_session* session, const Peep* peep, int32_t im
         + imageOffset * 4;
     uint32_t imageId = baseImageId | peep->TshirtColour << 19 | peep->TrousersColour << 24 | IMAGE_TYPE_REMAP
         | IMAGE_TYPE_REMAP_2_PLUS;
-    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
+    PaintAddImageAsParent(session, imageId, { 0, 0, peep->z }, { 1, 1, 11 }, { 0, 0, peep->z + 5 });
     auto* guest = peep->As<Guest>();
     if (guest != nullptr)
     {

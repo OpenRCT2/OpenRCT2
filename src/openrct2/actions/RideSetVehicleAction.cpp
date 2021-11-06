@@ -25,9 +25,11 @@
 #include "../util/Util.h"
 #include "../world/Park.h"
 
-constexpr static rct_string_id SetVehicleTypeErrorTitle[] = { STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
-                                                              STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
-                                                              STR_RIDE_SET_VEHICLE_TYPE_FAIL };
+constexpr static rct_string_id SetVehicleTypeErrorTitle[] = {
+    STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
+    STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
+    STR_RIDE_SET_VEHICLE_TYPE_FAIL,
+};
 
 RideSetVehicleAction::RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour)
     : _rideIndex(rideIndex)
@@ -68,7 +70,7 @@ GameActions::Result::Ptr RideSetVehicleAction::Query() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -92,13 +94,13 @@ GameActions::Result::Ptr RideSetVehicleAction::Query() const
             if (!ride_is_vehicle_type_valid(ride))
             {
                 log_error("Invalid vehicle type. type = %d", _value);
-                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
+                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             auto rideEntry = get_ride_entry(_value);
             if (rideEntry == nullptr)
             {
                 log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
-                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
+                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
             // Validate preset
@@ -106,14 +108,14 @@ GameActions::Result::Ptr RideSetVehicleAction::Query() const
             if (_colour >= presetList->count && _colour != 255 && _colour != 0)
             {
                 log_error("Unknown vehicle colour preset. colour = %d", _colour);
-                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
+                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             break;
         }
 
         default:
             log_error("Unknown vehicle command. type = %d", _type);
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
     return std::make_unique<GameActions::Result>();
@@ -126,7 +128,7 @@ GameActions::Result::Ptr RideSetVehicleAction::Execute() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
     switch (_type)
@@ -149,7 +151,7 @@ GameActions::Result::Ptr RideSetVehicleAction::Execute() const
             if (rideEntry == nullptr)
             {
                 log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
-                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
+                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
             auto clampValue = _value;
             if (!gCheatsDisableTrainLengthLimit)
@@ -171,7 +173,7 @@ GameActions::Result::Ptr RideSetVehicleAction::Execute() const
             if (rideEntry == nullptr)
             {
                 log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
-                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
+                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
 
             ride_set_vehicle_colours_to_random_preset(ride, _colour);
@@ -185,21 +187,21 @@ GameActions::Result::Ptr RideSetVehicleAction::Execute() const
 
         default:
             log_error("Unknown vehicle command. type = %d", _type);
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
     ride->num_circuits = 1;
     ride->UpdateMaxVehicles();
 
     auto res = std::make_unique<GameActions::Result>();
-    if (!ride->overall_view.isNull())
+    if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(res->Position) };
     }
 
     auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);
-    intent.putExtra(INTENT_EXTRA_RIDE_ID, _rideIndex);
+    intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(_rideIndex));
     context_broadcast_intent(&intent);
 
     gfx_invalidate_screen();

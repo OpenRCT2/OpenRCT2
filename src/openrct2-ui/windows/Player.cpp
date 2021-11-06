@@ -23,6 +23,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <utility>
 
 // clang-format off
 enum WINDOW_PLAYER_PAGE {
@@ -62,17 +63,17 @@ static rct_widget window_player_overview_widgets[] = {
     MakeWidget({179, 45}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_LOCATE,         STR_LOCATE_PLAYER_TIP), // Locate button
     MakeWidget({179, 69}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_DEMOLISH,       STR_KICK_PLAYER_TIP  ), // Kick button
     MakeWidget({  3, 60}, {175, 61}, WindowWidgetType::Viewport, WindowColour::Secondary                                           ), // Viewport
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget window_player_statistics_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static rct_widget *window_player_page_widgets[] = {
     window_player_overview_widgets,
-    window_player_statistics_widgets
+    window_player_statistics_widgets,
 };
 
 #pragma endregion
@@ -119,7 +120,7 @@ static rct_window_event_list window_player_statistics_events([](auto& events)
 
 static rct_window_event_list *window_player_page_events[] = {
     &window_player_overview_events,
-    &window_player_statistics_events
+    &window_player_statistics_events,
 };
 
 #pragma endregion
@@ -140,7 +141,7 @@ static uint32_t window_player_page_enabled_widgets[] = {
 
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2)
+    (1ULL << WIDX_TAB_2),
 };
 // clang-format on
 
@@ -154,7 +155,6 @@ rct_window* window_player_open(uint8_t id)
         window = WindowCreateAutoPos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
         window->number = id;
         window->page = 0;
-        window->viewport_focus_coordinates.y = 0;
         window->frame_no = 0;
         window->list_information_type = 0;
         window->picked_peep_frame = 0;
@@ -163,10 +163,9 @@ rct_window* window_player_open(uint8_t id)
         window->min_height = 134;
         window->max_width = 500;
         window->max_height = 450;
+
         window->no_list_items = 0;
         window->selected_list_item = -1;
-
-        window->viewport_focus_coordinates.y = -1;
     }
 
     window->page = 0;
@@ -265,8 +264,9 @@ void window_player_overview_mouse_down(rct_window* w, rct_widgetindex widgetInde
 
 void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
-    if (player == -1)
+    const auto playerId = static_cast<uint8_t>(w->number);
+    const auto playerIdx = network_get_player_index(playerId);
+    if (playerIdx == -1)
     {
         return;
     }
@@ -274,12 +274,13 @@ void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     {
         return;
     }
-    int32_t group = network_get_group_id(dropdownIndex);
-    auto playerSetGroupAction = PlayerSetGroupAction(w->number, group);
-    playerSetGroupAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+    const auto groupId = network_get_group_id(dropdownIndex);
+    const auto windowHandle = std::make_pair(w->classification, w->number);
+    auto playerSetGroupAction = PlayerSetGroupAction(playerId, groupId);
+    playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error == GameActions::Status::Ok)
         {
-            w->Invalidate();
+            window_invalidate_by_number(windowHandle.first, windowHandle.second);
         }
     });
     GameActions::Execute(&playerSetGroupAction);
@@ -546,8 +547,8 @@ static void window_player_set_page(rct_window* w, int32_t page)
     {
         if (w->viewport == nullptr)
         {
-            viewport_create(
-                w, w->windowPos, w->width, w->height, 0, TileCoordsXYZ(128, 128, 0).ToCoordsXYZ(), 1, SPRITE_INDEX_NULL);
+            const auto focus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
+            viewport_create(w, w->windowPos, w->width, w->height, focus);
             w->flags |= WF_NO_SCROLLING;
             window_event_invalidate_call(w);
             window_player_update_viewport(w, false);
@@ -607,7 +608,7 @@ static void window_player_update_viewport(rct_window* w, bool scroll)
         if (coord.x != 0 || coord.y != 0 || coord.z != 0)
         {
             auto centreLoc = centre_2d_coordinates(coord, viewport);
-            if (!centreLoc)
+            if (!centreLoc.has_value())
             {
                 return;
             }
@@ -617,13 +618,13 @@ static void window_player_update_viewport(rct_window* w, bool scroll)
                 scroll = false;
             }
 
-            if (!scroll || w->savedViewPos != centreLoc)
+            if (!scroll || w->savedViewPos != centreLoc.value())
             {
                 w->flags |= WF_SCROLLING_TO_LOCATION;
-                w->savedViewPos = *centreLoc;
+                w->savedViewPos = centreLoc.value();
                 if (!scroll)
                 {
-                    w->viewport->viewPos = *centreLoc;
+                    w->viewport->viewPos = centreLoc.value();
                 }
                 widget_invalidate(w, WIDX_VIEWPORT);
             }

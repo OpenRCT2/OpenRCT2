@@ -14,6 +14,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/peep/Staff.h>
 #include <openrct2/world/Entity.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
@@ -34,7 +35,7 @@ static rct_widget window_staff_fire_widgets[] = {
     WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
     MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
     MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-    { WIDGETS_END }
+    WIDGETS_END,
 };
 
 static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex);

@@ -62,7 +62,7 @@ The following people are not part of the development team, but have been contrib
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
-* Kelson Blakewood (spacek531) - title sequences for release versions 0.0.4 through 0.1.2, title sequences using milliseconds
+* Kelson Blakewood (spacek531) - title sequences, title sequence features, vehicle features
 * Hugo Wallenburg (Goddesen) - Misc.
 * Edward Calver (X7123M3-256) - New Hybrid Coaster track, extended sprite toolchain, more vehicle cheats, misc.
 * Matte Andersson (Nubbie) - Misc, UX
@@ -91,8 +91,9 @@ The following people are not part of the development team, but have been contrib
 * Jim Verheijde (Jimver) - Make handymen less likely to get stuck in queue lines, misc.
 * Helio Batimarqui (batimarqui) - Misc.
 * Keith Stellyes (keithstellyes) - Misc.
-* Bas Cantrijn (Basssiiie) - Misc.
+* Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
+* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes
 
 ## Bug fixes
 * (KirilAngelov)
@@ -172,6 +173,12 @@ The following people are not part of the development team, but have been contrib
 * Emre Aydin (aemreaydin)
 * Daniel Karandikar (DKarandikar)
 * Struan Clark (xtruan)
+* Kane Shaw (seifer7)
+* Saad Rehman (SaadRehmanCS)
+* (ocalhoun6)
+* Sean Payne (seanmajorpayne)
+* Soham Roy (sohamroy19)
+* Gaven Rendell (Rendello)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -182,6 +189,7 @@ The following people are not part of the development team, but have been contrib
 * Michał Janiszewski (janisozaur) - Linux, Travis CI
 * Lewis Fox (LRFLEW) - macOS
 * Andrew Rimpici (Andy608) - macOS
+* Adam Bloom (adam-bloom) - macOS, CI
 
 ## Documentation
 * (honzi)

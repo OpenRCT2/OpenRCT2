@@ -19,7 +19,7 @@
 #    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "../management/Finance.h"
-#    include "../peep/Peep.h"
+#    include "../peep/Guest.h"
 #    include "../platform/Platform2.h"
 #    include "../platform/platform.h"
 #    include "../util/Util.h"

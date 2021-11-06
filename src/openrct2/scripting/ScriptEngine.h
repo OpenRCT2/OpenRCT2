@@ -46,7 +46,10 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 31;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 38;
+
+    // Versions marking breaking changes.
+    static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
 
 #    ifndef DISABLE_NETWORK
     class ScSocketBase;
@@ -217,12 +220,12 @@ namespace OpenRCT2::Scripting
 
         void AddNetworkPlugin(std::string_view code);
 
-        std::unique_ptr<GameActions::Result> QueryOrExecuteCustomGameAction(
+        [[nodiscard]] std::unique_ptr<GameActions::Result> QueryOrExecuteCustomGameAction(
             std::string_view id, std::string_view args, bool isExecute);
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActions::Result>& result, bool isExecute);
-        std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
+        [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
 
         void SaveSharedStorage();
 
@@ -246,8 +249,9 @@ namespace OpenRCT2::Scripting
         void AutoReloadPlugins();
         void ProcessREPL();
         void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
-        std::unique_ptr<GameActions::Result> DukToGameActionResult(const DukValue& d);
-        DukValue GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActions::Result>& result);
+        [[nodiscard]] std::unique_ptr<GameActions::Result> DukToGameActionResult(const DukValue& d);
+        [[nodiscard]] DukValue GameActionResultToDuk(
+            const GameAction& action, const std::unique_ptr<GameActions::Result>& result);
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
         static ExpenditureType StringToExpenditureType(std::string_view expenditureType);
 
@@ -264,6 +268,8 @@ namespace OpenRCT2::Scripting
 
     bool IsGameStateMutable();
     void ThrowIfGameStateNotMutable();
+    int32_t GetTargetAPIVersion();
+
     std::string Stringify(const DukValue& value);
 
 } // namespace OpenRCT2::Scripting

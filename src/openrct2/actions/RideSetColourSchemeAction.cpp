@@ -50,7 +50,7 @@ GameActions::Result::Ptr RideSetColourSchemeAction::Query() const
 {
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
     }
     return std::make_unique<GameActions::Result>();
 }
@@ -61,7 +61,7 @@ GameActions::Result::Ptr RideSetColourSchemeAction::Execute() const
     res->Expenditure = ExpenditureType::RideConstruction;
     res->ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
-    sub_6C683D(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
+    GetTrackElementOriginAndApplyChanges(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
 
     return res;
 }

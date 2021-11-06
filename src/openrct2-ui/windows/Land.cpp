@@ -47,7 +47,7 @@ static rct_widget window_land_widgets[] = {
     MakeRemapWidget({54,  63}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
     MakeWidget     ({ 2, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
     MakeWidget     ({49, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_VERTICAL_LAND_TIP), // wall texture
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 // clang-format on
 
@@ -59,9 +59,10 @@ private:
 
     void InputSize()
     {
-        TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
-        TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
-        window_text_input_open(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, 3);
+        Formatter ft;
+        ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+        ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+        window_text_input_open(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 
 public:
@@ -81,8 +82,8 @@ public:
         gLandPaintMode = false;
         _selectedFloorTexture = 0;
         _selectedWallTexture = 0;
-        gLandToolRaiseCost = MONEY32_UNDEFINED;
-        gLandToolLowerCost = MONEY32_UNDEFINED;
+        gLandToolRaiseCost = MONEY64_UNDEFINED;
+        gLandToolLowerCost = MONEY64_UNDEFINED;
     }
 
     void OnClose() override
@@ -256,7 +257,7 @@ public:
     {
         ScreenCoordsXY screenCoords;
         int32_t numTiles;
-        money32 price;
+        money64 price;
         rct_widget* previewWidget = &widgets[WIDX_PREVIEW];
 
         DrawWidgets(dpi);
@@ -264,10 +265,10 @@ public:
         // Draw number for tool sizes bigger than 7
         if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
         {
+            auto ft = Formatter();
+            ft.Add<uint16_t>(gLandToolSize);
             screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->midY() };
-            DrawTextBasic(
-                &dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize,
-                { TextAlignment::CENTRE });
+            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
         else if (gLandMountainMode)
         {
@@ -283,13 +284,21 @@ public:
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             // Draw raise cost amount
-            if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
-                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, &gLandToolRaiseCost, { TextAlignment::CENTRE });
+            if (gLandToolRaiseCost != MONEY64_UNDEFINED && gLandToolRaiseCost != 0)
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(gLandToolRaiseCost);
+                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+            }
             screenCoords.y += 10;
 
             // Draw lower cost amount
-            if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
-                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, &gLandToolLowerCost, { TextAlignment::CENTRE });
+            if (gLandToolLowerCost != MONEY64_UNDEFINED && gLandToolLowerCost != 0)
+            {
+                auto ft = Formatter();
+                ft.Add<money64>(gLandToolLowerCost);
+                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+            }
             screenCoords.y += 50;
 
             // Draw paint price
@@ -302,18 +311,18 @@ public:
                     objManager.GetLoadedObject(ObjectType::TerrainSurface, gLandToolTerrainSurface));
                 if (surfaceObj != nullptr)
                 {
-                    price += numTiles * surfaceObj->Price;
+                    price += numTiles * static_cast<money64>(surfaceObj->Price);
                 }
             }
 
             if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
-                price += numTiles * 100;
+                price += numTiles * 100LL;
 
             if (price != 0)
             {
                 auto ft = Formatter();
-                ft.Add<money32>(price);
-                DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft.Data(), { TextAlignment::CENTRE });
+                ft.Add<money64>(price);
+                DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
     }

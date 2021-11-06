@@ -322,7 +322,7 @@ STR_0933    :Prima occorre modificare l'altezza del terreno
 STR_0934    :L'entrata dell'attrazione è d'intralcio
 STR_0935    :L'uscita dell'attrazione è d'intralcio
 STR_0936    :L'entrata del parco è d'intralcio
-STR_0937    :Visualizza le opzioni
+STR_0937    :Opzioni visuale
 STR_0938    :Regola l'altezza e la pendenza del terreno
 STR_0939    :Visuale sotterranea/interna
 STR_0940    :Nascondi terreno
@@ -382,7 +382,7 @@ STR_0993    :Demolisci l'attrazione
 STR_0994    :Demolisci
 STR_0995    :{WINDOW_COLOUR_1}Si è sicuri di voler demolire completamente {STRINGID}?
 STR_0996    :Visuale generale
-STR_0997    :Seleziona la visuale
+STR_0997    :Visuale selezione
 STR_0998    :Non è possibile collocare altre stazioni per questa attrazione
 STR_0999    :È necessaria una piattaforma stazione
 STR_1000    :Il tracciato non costituisce un circuito completo
@@ -412,7 +412,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} carrozze per treno
 STR_1024    :{COMMA16} carrozza per treno
 STR_1025    :{COMMA16} carrozze per treno
 STR_1026    :Piattaforma della stazione troppo lunga!
-STR_1027    :Individualo nella visuale principale
+STR_1027    :Individua nella visuale principale
 STR_1028    :Fuori dalla mappa!
 STR_1029    :Non si può costruire contemporaneamente sopra e sotto l'acqua!
 STR_1030    :Si può costruire solo sott'acqua!
@@ -764,11 +764,11 @@ STR_1374    :1/2 giro morte gr. (dx)
 STR_1375    :Trasferimento in alto
 STR_1376    :Trasferimento in basso
 STR_1377    :Avvitamento ond. (sx)
-STR_1378    :Avvitamento ond.  (dx)
+STR_1378    :Avvitamento ond. (dx)
 STR_1379    :Invertitore (sinistra)
 STR_1380    :Invertitore (destra)
-STR_1381    :Sal. x traino in curva (sx)
-STR_1382    :Sal. x  traino in curva (dx)
+STR_1381    :Salita trainata curva (sx)
+STR_1382    :Salita trainata curva (sx)
 STR_1383    :1/4 di giro della morte
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Altre configurazioni del tracciato
@@ -1739,7 +1739,7 @@ STR_2383    :Acqua
 STR_2384    :{WINDOW_COLOUR_2}Il tuo obiettivo:
 STR_2385    :{BLACK}Nessuno
 STR_2386    :{BLACK}Avere almeno {COMMA16} visitatori nel parco entro la fine di {MONTHYEAR}, con una valutazione del parco di almeno 600
-STR_2387    :{BLACK}Far raggiungere al parco un valore di almeno {POP16}{POP16}{CURRENCY} entro la fine di  {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Far raggiungere al parco un valore di almeno {POP16}{POP16}{CURRENCY} entro la fine di  {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Divertirsi!
 STR_2389    :{BLACK}Costruire il migliore {STRINGID} si possa!
 STR_2390    :{BLACK}Avere 10 tipi diversi di ottovolante nel parco, ognuno con un livello di divertimento di almeno 6.00
@@ -2058,51 +2058,6 @@ STR_2854    :{RED}I visitatori non riescono a raggiungere l'entrata a {STRINGID}
 STR_2855    :{RED}{STRINGID} non è dotato di un percorso alla sua uscita!{NEWLINE}Costruisci un percorso che parta dall'uscita dell'attrazione
 STR_2858    :Impossibile avviare la campagna di marketing…
 STR_2861    :{WINDOW_COLOUR_2}Concesso in licenza a Infogrames Interactive
-STR_2862    :Riconoscimenti dei brani musicali…
-STR_2863    :Riconoscimento dei brani musicali
-STR_2864    :{WINDOW_COLOUR_2}Marcia - I Bambini del Reggimento:   (Fucik) senza copyright
-STR_2865    :{WINDOW_COLOUR_2}Serenata di Heyken:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) senza copyright
-STR_2867    :{WINDOW_COLOUR_2}Viaggio della sposa:   (Tradizionale)
-STR_2868    :{WINDOW_COLOUR_2}Racconti dei boschi di Vienna:   (Johann Strauss) senza copyright
-STR_2869    :{WINDOW_COLOUR_2}Danza slava:   (Tradizionale)
-STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Tradizionale)
-STR_2871    :{WINDOW_COLOUR_2}Il Biondo Marinaio:   (Tradizionale)
-STR_2872    :{WINDOW_COLOUR_2}Overture - Il poeta e il Contadino:   (Suppe) senza copyright
-STR_2873    :{WINDOW_COLOUR_2}Medley di waltzer:   (Johann Strauss) senza copyright
-STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Tradizionale)
-STR_2875    :{WINDOW_COLOUR_2}Orginal Recordings (P) 1976 C.J.Mears Organisation, usati per loro concessione
-STR_2876    :{WINDOW_COLOUR_2}Musica dei titoli di RollerCoaster Tycoon 2:   (Allister Brimble) copyright © Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Sample forniti da Spectrasonics “Liquid Grooves”)
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, eseguita da Peter James Adcock) registrazione © Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Modello decorativo principale
 STR_2972    :Modello decorativo alternativo 1
 STR_2973    :Modello decorativo alternativo 2
@@ -2112,15 +2067,15 @@ STR_2976    :Dipingi una determinata area di quest'attrazione secondo il modello
 STR_2977    :Nome del dipendente
 STR_2978    :Digita il nome di questo dipendente:
 STR_2979    :Impossibile battezzare il dipendente…
-STR_2980    :Troppe insegne nella partita
+STR_2980    :Troppi cartelli nella partita
 STR_2981    :{RED}Vietato l'ingresso
-STR_2982    :Testo dell'insegna
-STR_2983    :Digita il testo di questa insegna:
-STR_2984    :Impossibile fissare il testo dell'insegna…
-STR_2985    :Insegna
-STR_2986    :Modifica il testo dell'insegna
-STR_2987    :Imposta quest'insegna come cartello di “Vietato l'ingresso” per i visitatori
-STR_2988    :Demolisci questa insegna
+STR_2982    :Testo del cartello
+STR_2983    :Digita il testo di questo cartello:
+STR_2984    :Impossibile impostare il testo del cartello…
+STR_2985    :Cartello
+STR_2986    :Modifica il testo del cartello
+STR_2987    :Imposta questo cartello come “Vietato l'ingresso” per i visitatori
+STR_2988    :Demolisci questo cartello
 STR_2989    :Scegli il colore principale
 STR_2990    :Scegli il colore del testo
 STR_2991    :Insegna
@@ -2559,7 +2514,7 @@ STR_5204    :Lista attrazioni
 STR_5205    :Visitatore
 STR_5206    :Lista visitatori
 STR_5207    :Personale
-STR_5208    :Lista personale
+STR_5208    :Lista del personale
 STR_5209    :Cartello
 STR_5210    :Selezione oggetti
 STR_5211    :Lista delle invenzioni
@@ -2798,7 +2753,7 @@ STR_5470    :Scorri la mappa a sinistra
 STR_5471    :Scorri la mappa in basso
 STR_5472    :Scorri la mappa a destra
 STR_5473    :Ciclo giorno/notte
-STR_5474    :Mostra testo nei cartelli in maiuscolo
+STR_5474    :Mostra testo in maiuscolo nei cartelli
 STR_5475    :{COMMA16} settimane
 STR_5476    :Hardware
 STR_5477    :Rendering della Mappa
@@ -3646,7 +3601,7 @@ STR_6392    :Impossibile trovare {STRING} in questo percorso.
 STR_6393    :Selezione obiettivo
 STR_6394    :Obiettivo
 STR_6395    :Manutenzione
-STR_6396    :Disattiva screensaver e risparmio energetico dello schermo
+STR_6396    :Disattiva screensaver e autospegnimento schermo
 STR_6397    :Se attivato, le funzionalità di screensaver e di risparmio energetico dello schermo saranno disabilitate mentre OpenRCT2 è in esecuzione.
 STR_6398    :Il file contiene tipi di percorsi non supportati. Aggiornare a una nuova versione di OpenRCT2.
 STR_6399    :OpenRCT2 necessita dei file originali di RollerCoaster Tycoon 2 per funzionare. Impostare la variabile “game_path” nel file config.ini al percorso nel quale è installato RollerCoaster Tycoon 2, dopodiché riavviare OpenRCT2.
@@ -3704,6 +3659,11 @@ STR_6450    :{BLACK}“{STRING}”
 STR_6451    :{BLACK}“{STRING}” - {STRING}
 STR_6452    :{WINDOW_COLOUR_2}Vende: {BLACK}{STRING}
 STR_6453    :Copia info versione
+STR_6454    :Impossibile rinominare il cartello…
+STR_6455    :Impossibile rinominare l’insegna…
+STR_6456    :Screenshot gigante
+STR_6457    :Segnala un bug su GitHub
+STR_6458    :Segui sulla visuale principale
 
 
 #############

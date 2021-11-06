@@ -11,7 +11,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include <memory>
 #    include <openrct2/Context.h>
 #    include <openrct2/Game.h>
 #    include <openrct2/OpenRCT2.h>
@@ -209,9 +208,9 @@ namespace OpenRCT2::Scripting
                     try
                     {
                         auto& objectMgr = GetContext()->GetObjectManager();
-                        auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(handle->HintPath));
+                        auto parkImporter = ParkImporter::Create(handle->HintPath);
                         auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
-                        objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                        objectMgr.LoadObjects(result.RequiredObjects);
                         parkImporter->Import();
 
                         auto old = gLoadKeepWindowsOpen;
@@ -249,7 +248,7 @@ namespace OpenRCT2::Scripting
                     return i;
                 }
             }
-            return {};
+            return std::nullopt;
         }
     };
 
@@ -490,7 +489,7 @@ namespace OpenRCT2::Scripting
                     return i;
                 }
             }
-            return {};
+            return std::nullopt;
         }
 
         const TitleSequenceManagerItem* GetItem() const

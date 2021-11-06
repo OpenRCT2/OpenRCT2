@@ -48,7 +48,7 @@ static rct_widget window_install_track_widgets[] = {
     MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_SCENERY,                          STR_TOGGLE_SCENERY_TIP),
     MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
     MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
-    { WIDGETS_END },
+    WIDGETS_END,
 };
 
 static void window_install_track_close(rct_window *w);
@@ -94,7 +94,7 @@ rct_window* window_install_track_open(const utf8* path)
         log_error("Failed to load track (ride type null): %s", path);
         return nullptr;
     }
-    if (object_manager_load_object(&_trackDesign->vehicle_object) == nullptr)
+    if (object_manager_load_object(&_trackDesign->vehicle_object.Entry) == nullptr)
     {
         log_error("Failed to load track (vehicle load fail): %s", path);
         return nullptr;
@@ -242,7 +242,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
 
-        const auto* objectEntry = object_manager_load_object(&td6->vehicle_object);
+        const auto* objectEntry = object_manager_load_object(&td6->vehicle_object.Entry);
         if (objectEntry != nullptr)
         {
             auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
@@ -399,7 +399,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (td6->cost != 0)
     {
         auto ft = Formatter();
-        ft.Add<uint32_t>(td6->cost);
+        ft.Add<money64>(td6->cost);
         DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
     }
 }
@@ -445,7 +445,7 @@ static void window_install_track_design(rct_window* w)
         log_info("%s already exists, prompting user for a different track design name", destPath);
         context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
         window_text_input_raw_open(
-            w, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN, STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME,
+            w, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN, STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME, {},
             _trackName.c_str(), 255);
     }
     else

@@ -7,10 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _CHAT_H_
-#define _CHAT_H_
+#pragma once
 
 #include "../common.h"
+
+#include <string_view>
 
 #define CHAT_HISTORY_SIZE 10
 #define CHAT_INPUT_SIZE 1024
@@ -38,9 +39,7 @@ void chat_init();
 void chat_update();
 void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColour);
 
-void chat_history_add(const char* src);
+void chat_history_add(std::string_view s);
 void chat_input(ChatInput input);
 
 int32_t chat_string_wrapped_get_height(void* args, int32_t width);
-
-#endif

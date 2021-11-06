@@ -41,7 +41,6 @@
 std::list<std::shared_ptr<rct_window>> g_window_list;
 rct_window* gWindowAudioExclusive;
 
-uint16_t TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
 char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
 int32_t gMaxTextBoxInputLength = 0;
@@ -229,7 +228,7 @@ void window_close(rct_window* w)
         g_window_list.erase(itWindow);
 }
 
-template<typename _TPred> static void window_close_by_condition(_TPred pred, uint32_t flags = WindowCloseFlags::None)
+template<typename TPred> static void window_close_by_condition(TPred pred, uint32_t flags = WindowCloseFlags::None)
 {
     bool listUpdated;
     do
@@ -349,7 +348,7 @@ void window_close_top()
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        if (gS6Info.editor_step != EditorStep::LandscapeEditor)
+        if (gEditorStep != EditorStep::LandscapeEditor)
             return;
     }
 
@@ -428,15 +427,16 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
     rct_widgetindex widget_index = -1;
     for (int32_t i = 0;; i++)
     {
-        rct_widget* widget = &w->widgets[i];
-        if (widget->type == WindowWidgetType::Last)
+        const auto& widget = w->widgets[i];
+        if (widget.type == WindowWidgetType::Last)
         {
             break;
         }
-        else if (widget->type != WindowWidgetType::Empty && widget->IsVisible())
+
+        if (widget.type != WindowWidgetType::Empty && widget.IsVisible())
         {
-            if (screenCoords.x >= w->windowPos.x + widget->left && screenCoords.x <= w->windowPos.x + widget->right
-                && screenCoords.y >= w->windowPos.y + widget->top && screenCoords.y <= w->windowPos.y + widget->bottom)
+            if (screenCoords.x >= w->windowPos.x + widget.left && screenCoords.x <= w->windowPos.x + widget.right
+                && screenCoords.y >= w->windowPos.y + widget.top && screenCoords.y <= w->windowPos.y + widget.bottom)
             {
                 widget_index = i;
             }
@@ -445,8 +445,11 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
 
     // Return next widget if a dropdown
     if (widget_index != -1)
-        if (w->widgets[widget_index].type == WindowWidgetType::DropdownMenu)
+    {
+        const auto& widget = w->widgets[widget_index];
+        if (widget.type == WindowWidgetType::DropdownMenu)
             widget_index++;
+    }
 
     // Return the widget index
     return widget_index;
@@ -458,7 +461,7 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
  *
  * @param window The window to invalidate (esi).
  */
-template<typename _TPred> static void window_invalidate_by_condition(_TPred pred)
+template<typename TPred> static void window_invalidate_by_condition(TPred pred)
 {
     window_visit_each([pred](rct_window* w) {
         if (pred(w))
@@ -502,8 +505,6 @@ void window_invalidate_all()
  */
 void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_widget* widget;
-
     assert(w != nullptr);
 #ifdef DEBUG
     for (int32_t i = 0; i <= widgetIndex; i++)
@@ -512,15 +513,15 @@ void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
     }
 #endif
 
-    widget = &w->widgets[widgetIndex];
-    if (widget->left == -2)
+    const auto& widget = w->widgets[widgetIndex];
+    if (widget.left == -2)
         return;
 
-    gfx_set_dirty_blocks({ { w->windowPos + ScreenCoordsXY{ widget->left, widget->top } },
-                           { w->windowPos + ScreenCoordsXY{ widget->right + 1, widget->bottom + 1 } } });
+    gfx_set_dirty_blocks({ { w->windowPos + ScreenCoordsXY{ widget.left, widget.top } },
+                           { w->windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
 }
 
-template<typename _TPred> static void widget_invalidate_by_condition(_TPred pred)
+template<typename TPred> static void widget_invalidate_by_condition(TPred pred)
 {
     window_visit_each([pred](rct_window* w) {
         if (pred(w))
@@ -567,7 +568,6 @@ void window_update_scroll_widgets(rct_window* w)
 {
     int32_t scrollIndex, width, height, scrollPositionChanged;
     rct_widgetindex widgetIndex;
-    rct_scroll* scroll;
     rct_widget* widget;
 
     widgetIndex = 0;
@@ -578,32 +578,32 @@ void window_update_scroll_widgets(rct_window* w)
         if (widget->type != WindowWidgetType::Scroll)
             continue;
 
-        scroll = &w->scrolls[scrollIndex];
+        auto& scroll = w->scrolls[scrollIndex];
         width = 0;
         height = 0;
         window_get_scroll_size(w, scrollIndex, &width, &height);
         if (height == 0)
         {
-            scroll->v_top = 0;
+            scroll.v_top = 0;
         }
         else if (width == 0)
         {
-            scroll->h_left = 0;
+            scroll.h_left = 0;
         }
         width++;
         height++;
 
         scrollPositionChanged = 0;
-        if ((widget->content & SCROLL_HORIZONTAL) && width != scroll->h_right)
+        if ((widget->content & SCROLL_HORIZONTAL) && width != scroll.h_right)
         {
             scrollPositionChanged = 1;
-            scroll->h_right = width;
+            scroll.h_right = width;
         }
 
-        if ((widget->content & SCROLL_VERTICAL) && height != scroll->v_bottom)
+        if ((widget->content & SCROLL_VERTICAL) && height != scroll.v_bottom)
         {
             scrollPositionChanged = 1;
-            scroll->v_bottom = height;
+            scroll.v_bottom = height;
         }
 
         if (scrollPositionChanged)
@@ -623,7 +623,8 @@ int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index
     assert(w != nullptr);
     for (i = 0; i < widget_index; i++)
     {
-        if (w->widgets[i].type == WindowWidgetType::Scroll)
+        const auto& widget = w->widgets[i];
+        if (widget.type == WindowWidgetType::Scroll)
             result++;
     }
     return result;
@@ -732,7 +733,7 @@ void window_push_others_right(rct_window* window)
         w->Invalidate();
         if (window->windowPos.x + window->width + 13 >= context_get_width())
             return;
-        uint16_t push_amount = window->windowPos.x + window->width - w->windowPos.x + 3;
+        auto push_amount = window->windowPos.x + window->width - w->windowPos.x + 3;
         w->windowPos.x += push_amount;
         w->Invalidate();
         if (w->viewport != nullptr)
@@ -806,7 +807,7 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
 {
     assert(w != nullptr);
     window_unfollow_sprite(w);
-    if (w->viewport)
+    if (w->viewport != nullptr)
     {
         int16_t height = tile_element_height(coords);
         if (coords.z < height - 16)
@@ -834,15 +835,15 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
             bool found = false;
             while (!found)
             {
-                int16_t x2 = w->viewport->pos.x + static_cast<int16_t>(w->viewport->width * window_scroll_locations[i][0]);
-                int16_t y2 = w->viewport->pos.y + static_cast<int16_t>(w->viewport->height * window_scroll_locations[i][1]);
+                auto x2 = w->viewport->pos.x + static_cast<int32_t>(w->viewport->width * window_scroll_locations[i][0]);
+                auto y2 = w->viewport->pos.y + static_cast<int32_t>(w->viewport->height * window_scroll_locations[i][1]);
 
                 auto it = window_get_iterator(w);
                 for (; it != g_window_list.end(); it++)
                 {
                     auto w2 = (*it).get();
-                    int16_t x1 = w2->windowPos.x - 10;
-                    int16_t y1 = w2->windowPos.y - 10;
+                    auto x1 = w2->windowPos.x - 10;
+                    auto y1 = w2->windowPos.y - 10;
                     if (x2 >= x1 && x2 <= w2->width + x1 + 20)
                     {
                         if (y2 >= y1 && y2 <= w2->height + y1 + 20)
@@ -871,8 +872,8 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
             if (!(w->flags & WF_NO_SCROLLING))
             {
                 w->savedViewPos = screenCoords
-                    - ScreenCoordsXY{ static_cast<int16_t>(w->viewport->view_width * window_scroll_locations[i][0]),
-                                      static_cast<int16_t>(w->viewport->view_height * window_scroll_locations[i][1]) };
+                    - ScreenCoordsXY{ static_cast<int32_t>(w->viewport->view_width * window_scroll_locations[i][0]),
+                                      static_cast<int32_t>(w->viewport->view_height * window_scroll_locations[i][1]) };
                 w->flags |= WF_SCROLLING_TO_LOCATION;
             }
         }
@@ -910,7 +911,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 
     // other != viewport probably triggers on viewports in ride or guest window?
     // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
-    if (!mapXYCoords || other != viewport)
+    if (!mapXYCoords.has_value() || other != viewport)
     {
         auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
 
@@ -927,9 +928,9 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 
     auto centreLoc = centre_2d_coordinates(coords, viewport);
 
-    if (centreLoc)
+    if (centreLoc.has_value())
     {
-        w->savedViewPos = *centreLoc;
+        w->savedViewPos = centreLoc.value();
         viewport->viewPos = *centreLoc;
     }
 
@@ -940,7 +941,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 }
 
 void window_viewport_get_map_coords_by_cursor(
-    rct_window* w, int16_t* map_x, int16_t* map_y, int16_t* offset_x, int16_t* offset_y)
+    rct_window* w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
 {
     // Get mouse position to offset against.
     auto mouseCoords = context_get_cursor_position_scaled();
@@ -971,13 +972,13 @@ void window_viewport_get_map_coords_by_cursor(
     *offset_y = (w->savedViewPos.y - (centreLoc->y + rebased_y)) * w->viewport->zoom;
 }
 
-void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y)
+void window_viewport_centre_tile_around_cursor(rct_window* w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
 {
     // Get viewport coordinates centring around the tile.
     int32_t z = tile_element_height({ map_x, map_y });
     auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w->viewport);
 
-    if (!centreLoc)
+    if (!centreLoc.has_value())
     {
         log_error("Invalid location.");
         return;
@@ -1019,10 +1020,10 @@ void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
         return;
 
     // Zooming to cursor? Remember where we're pointing at the moment.
-    int16_t saved_map_x = 0;
-    int16_t saved_map_y = 0;
-    int16_t offset_x = 0;
-    int16_t offset_y = 0;
+    int32_t saved_map_x = 0;
+    int32_t saved_map_y = 0;
+    int32_t offset_x = 0;
+    int32_t offset_y = 0;
     if (gConfigGeneral.zoom_to_cursor && atCursor)
     {
         window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
@@ -1082,11 +1083,11 @@ void main_window_zoom(bool zoomIn, bool atCursor)
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EditorStep::LandscapeEditor)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gEditorStep == EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
         {
-            rct_window* mainWindow = window_get_main();
+            auto* mainWindow = window_get_main();
             if (mainWindow != nullptr)
                 window_zoom_set(mainWindow, mainWindow->viewport->zoom + (zoomIn ? -1 : 1), atCursor);
         }
@@ -1245,7 +1246,7 @@ static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t le
  */
 void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
+    viewport_render(dpi, w->viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
 }
 
 void window_set_position(rct_window* w, const ScreenCoordsXY& screenCoords)
@@ -1281,8 +1282,8 @@ void window_resize(rct_window* w, int32_t dw, int32_t dh)
     w->Invalidate();
 
     // Clamp new size to minimum and maximum
-    w->width = std::clamp<int16_t>(w->width + dw, w->min_width, w->max_width);
-    w->height = std::clamp<int16_t>(w->height + dh, w->min_height, w->max_height);
+    w->width = std::clamp<int32_t>(w->width + dw, w->min_width, w->max_width);
+    w->height = std::clamp<int32_t>(w->height + dh, w->min_height, w->max_height);
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
@@ -1290,8 +1291,9 @@ void window_resize(rct_window* w, int32_t dw, int32_t dh)
     // Update scroll widgets
     for (int32_t i = 0; i < 3; i++)
     {
-        w->scrolls[i].h_right = WINDOW_SCROLL_UNDEFINED;
-        w->scrolls[i].v_bottom = WINDOW_SCROLL_UNDEFINED;
+        auto& scroll = w->scrolls[i];
+        scroll.h_right = WINDOW_SCROLL_UNDEFINED;
+        scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
     }
     window_update_scroll_widgets(w);
 
@@ -1338,10 +1340,8 @@ bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool)
             tool_cancel();
             return true;
         }
-        else
-        {
-            tool_cancel();
-        }
+
+        tool_cancel();
     }
 
     input_set_flag(INPUT_FLAG_TOOL_ACTIVE, true);
@@ -1462,9 +1462,10 @@ void window_event_unknown_08_call(rct_window* w)
 
 void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->tool_update != nullptr)
-            w->event_handlers->tool_update(w, widgetIndex, screenCoords);
+    if (w->event_handlers == nullptr)
+        w->OnToolUpdate(widgetIndex, screenCoords);
+    else if (w->event_handlers->tool_update != nullptr)
+        w->event_handlers->tool_update(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -1477,16 +1478,18 @@ void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, con
 
 void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->tool_drag != nullptr)
-            w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
+    if (w->event_handlers == nullptr)
+        w->OnToolDrag(widgetIndex, screenCoords);
+    else if (w->event_handlers->tool_drag != nullptr)
+        w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->tool_up != nullptr)
-            w->event_handlers->tool_up(w, widgetIndex, screenCoords);
+    if (w->event_handlers == nullptr)
+        w->OnToolUp(widgetIndex, screenCoords);
+    else if (w->event_handlers->tool_up != nullptr)
+        w->event_handlers->tool_up(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex)
@@ -1581,14 +1584,13 @@ OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex wi
     {
         return w->OnTooltip(widgetIndex, fallback);
     }
-    else if (w->event_handlers->tooltip != nullptr)
+
+    if (w->event_handlers->tooltip != nullptr)
     {
         return w->event_handlers->tooltip(w, widgetIndex, fallback);
     }
-    else
-    {
-        return { fallback, {} };
-    }
+
+    return { fallback, {} };
 }
 
 CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -1629,18 +1631,6 @@ void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32
         w->OnScrollDraw(scrollIndex, *dpi);
     else if (w->event_handlers->scroll_paint != nullptr)
         w->event_handlers->scroll_paint(w, dpi, scrollIndex);
-}
-
-/**
- * Bubbles an item one position up in the window list.  This is done by swapping
- * the two locations.
- *  rct2: New function not from rct2
- */
-void window_bubble_list_item(rct_window* w, int32_t item_position)
-{
-    char swap = w->list_item_positions[item_position];
-    w->list_item_positions[item_position] = w->list_item_positions[item_position + 1];
-    w->list_item_positions[item_position + 1] = swap;
 }
 
 /**
@@ -1721,7 +1711,7 @@ void window_resize_gui(int32_t width, int32_t height)
  */
 void window_resize_gui_scenario_editor(int32_t width, int32_t height)
 {
-    rct_window* mainWind = window_get_main();
+    auto* mainWind = window_get_main();
     if (mainWind != nullptr)
     {
         rct_viewport* viewport = mainWind->viewport;
@@ -1762,8 +1752,9 @@ void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetin
     {
         if (!(w->disabled_widgets & (1LL << i)))
         {
-            w->widgets[i].left = x;
-            w->widgets[i].right = x + tab_width;
+            auto& widget = w->widgets[i];
+            widget.left = x;
+            widget.right = x + tab_width;
             x += tab_width + 1;
         }
     }
@@ -1812,7 +1803,7 @@ void window_update_viewport_ride_music()
 
 static void window_snap_left(rct_window* w, int32_t proximity)
 {
-    auto mainWindow = window_get_main();
+    const auto* mainWindow = window_get_main();
     auto wBottom = w->windowPos.y + w->height;
     auto wLeftProximity = w->windowPos.x - (proximity * 2);
     auto wRightProximity = w->windowPos.x + (proximity * 2);
@@ -1842,7 +1833,7 @@ static void window_snap_left(rct_window* w, int32_t proximity)
 
 static void window_snap_top(rct_window* w, int32_t proximity)
 {
-    auto mainWindow = window_get_main();
+    const auto* mainWindow = window_get_main();
     auto wRight = w->windowPos.x + w->width;
     auto wTopProximity = w->windowPos.y - (proximity * 2);
     auto wBottomProximity = w->windowPos.y + (proximity * 2);
@@ -1872,7 +1863,7 @@ static void window_snap_top(rct_window* w, int32_t proximity)
 
 static void window_snap_right(rct_window* w, int32_t proximity)
 {
-    auto mainWindow = window_get_main();
+    const auto* mainWindow = window_get_main();
     auto wRight = w->windowPos.x + w->width;
     auto wBottom = w->windowPos.y + w->height;
     auto wLeftProximity = wRight - (proximity * 2);
@@ -1902,7 +1893,7 @@ static void window_snap_right(rct_window* w, int32_t proximity)
 
 static void window_snap_bottom(rct_window* w, int32_t proximity)
 {
-    auto mainWindow = window_get_main();
+    const auto* mainWindow = window_get_main();
     auto wRight = w->windowPos.x + w->width;
     auto wBottom = w->windowPos.y + w->height;
     auto wTopProximity = wBottom - (proximity * 2);
@@ -2090,7 +2081,7 @@ bool window_is_visible(rct_window* w)
  * right (dx)
  * bottom (bp)
  */
-void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom)
+void window_draw_all(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     auto windowDPI = dpi->Crop({ left, top }, { right - left, bottom - top });
     window_visit_each([&windowDPI, left, top, right, bottom](rct_window* w) {
@@ -2194,64 +2185,64 @@ rct_windowclass window_get_classification(rct_window* window)
  */
 void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
 {
-    rct_widget* widget = &w->widgets[widget_index];
-    rct_scroll* scroll = &w->scrolls[window_get_scroll_data_index(w, widget_index)];
+    const auto& widget = w->widgets[widget_index];
+    auto& scroll = w->scrolls[window_get_scroll_data_index(w, widget_index)];
 
-    if (scroll->flags & HSCROLLBAR_VISIBLE)
+    if (scroll.flags & HSCROLLBAR_VISIBLE)
     {
-        int32_t view_size = widget->width() - 21;
-        if (scroll->flags & VSCROLLBAR_VISIBLE)
+        int32_t view_size = widget.width() - 21;
+        if (scroll.flags & VSCROLLBAR_VISIBLE)
             view_size -= 11;
-        int32_t x = scroll->h_left * view_size;
-        if (scroll->h_right != 0)
-            x /= scroll->h_right;
-        scroll->h_thumb_left = x + 11;
+        int32_t x = scroll.h_left * view_size;
+        if (scroll.h_right != 0)
+            x /= scroll.h_right;
+        scroll.h_thumb_left = x + 11;
 
-        x = widget->width() - 2;
-        if (scroll->flags & VSCROLLBAR_VISIBLE)
+        x = widget.width() - 2;
+        if (scroll.flags & VSCROLLBAR_VISIBLE)
             x -= 11;
-        x += scroll->h_left;
-        if (scroll->h_right != 0)
-            x = (x * view_size) / scroll->h_right;
+        x += scroll.h_left;
+        if (scroll.h_right != 0)
+            x = (x * view_size) / scroll.h_right;
         x += 11;
         view_size += 10;
-        scroll->h_thumb_right = std::min(x, view_size);
+        scroll.h_thumb_right = std::min(x, view_size);
 
-        if (scroll->h_thumb_right - scroll->h_thumb_left < 20)
+        if (scroll.h_thumb_right - scroll.h_thumb_left < 20)
         {
-            double barPosition = (scroll->h_thumb_right * 1.0) / view_size;
+            double barPosition = (scroll.h_thumb_right * 1.0) / view_size;
 
-            scroll->h_thumb_left = static_cast<uint16_t>(std::lround(scroll->h_thumb_left - (20 * barPosition)));
-            scroll->h_thumb_right = static_cast<uint16_t>(std::lround(scroll->h_thumb_right + (20 * (1 - barPosition))));
+            scroll.h_thumb_left = static_cast<uint16_t>(std::lround(scroll.h_thumb_left - (20 * barPosition)));
+            scroll.h_thumb_right = static_cast<uint16_t>(std::lround(scroll.h_thumb_right + (20 * (1 - barPosition))));
         }
     }
 
-    if (scroll->flags & VSCROLLBAR_VISIBLE)
+    if (scroll.flags & VSCROLLBAR_VISIBLE)
     {
-        int32_t view_size = widget->height() - 21;
-        if (scroll->flags & HSCROLLBAR_VISIBLE)
+        int32_t view_size = widget.height() - 21;
+        if (scroll.flags & HSCROLLBAR_VISIBLE)
             view_size -= 11;
-        int32_t y = scroll->v_top * view_size;
-        if (scroll->v_bottom != 0)
-            y /= scroll->v_bottom;
-        scroll->v_thumb_top = y + 11;
+        int32_t y = scroll.v_top * view_size;
+        if (scroll.v_bottom != 0)
+            y /= scroll.v_bottom;
+        scroll.v_thumb_top = y + 11;
 
-        y = widget->height() - 2;
-        if (scroll->flags & HSCROLLBAR_VISIBLE)
+        y = widget.height() - 2;
+        if (scroll.flags & HSCROLLBAR_VISIBLE)
             y -= 11;
-        y += scroll->v_top;
-        if (scroll->v_bottom != 0)
-            y = (y * view_size) / scroll->v_bottom;
+        y += scroll.v_top;
+        if (scroll.v_bottom != 0)
+            y = (y * view_size) / scroll.v_bottom;
         y += 11;
         view_size += 10;
-        scroll->v_thumb_bottom = std::min(y, view_size);
+        scroll.v_thumb_bottom = std::min(y, view_size);
 
-        if (scroll->v_thumb_bottom - scroll->v_thumb_top < 20)
+        if (scroll.v_thumb_bottom - scroll.v_thumb_top < 20)
         {
-            double barPosition = (scroll->v_thumb_bottom * 1.0) / view_size;
+            double barPosition = (scroll.v_thumb_bottom * 1.0) / view_size;
 
-            scroll->v_thumb_top = static_cast<uint16_t>(std::lround(scroll->v_thumb_top - (20 * barPosition)));
-            scroll->v_thumb_bottom = static_cast<uint16_t>(std::lround(scroll->v_thumb_bottom + (20 * (1 - barPosition))));
+            scroll.v_thumb_top = static_cast<uint16_t>(std::lround(scroll.v_thumb_top - (20 * barPosition)));
+            scroll.v_thumb_bottom = static_cast<uint16_t>(std::lround(scroll.v_thumb_bottom + (20 * (1 - barPosition))));
         }
     }
 }

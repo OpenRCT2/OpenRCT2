@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _DRAWING_H_
-#define _DRAWING_H_
+#pragma once
 
 #include "../common.h"
 #include "../interface/Colour.h"
@@ -105,11 +104,11 @@ struct rct_gx
 struct rct_drawpixelinfo
 {
     uint8_t* bits{};
-    int16_t x{};
-    int16_t y{};
-    int16_t width{};
-    int16_t height{};
-    int16_t pitch{}; // note: this is actually (pitch - width)
+    int32_t x{};
+    int32_t y{};
+    int32_t width{};
+    int32_t height{};
+    int32_t pitch{}; // note: this is actually (pitch - width)
     ZoomLevel zoom_level{};
 
     /**
@@ -544,7 +543,6 @@ public:
 
 struct DrawSpriteArgs
 {
-    rct_drawpixelinfo* DPI;
     ImageId Image;
     const PaletteMap& PalMap;
     const rct_g1_element& SourceImage;
@@ -555,10 +553,9 @@ struct DrawSpriteArgs
     uint8_t* DestinationBits;
 
     DrawSpriteArgs(
-        rct_drawpixelinfo* dpi, ImageId image, const PaletteMap& palMap, const rct_g1_element& sourceImage, int32_t srcX,
-        int32_t srcY, int32_t width, int32_t height, uint8_t* destinationBits)
-        : DPI(dpi)
-        , Image(image)
+        ImageId image, const PaletteMap& palMap, const rct_g1_element& sourceImage, int32_t srcX, int32_t srcY, int32_t width,
+        int32_t height, uint8_t* destinationBits)
+        : Image(image)
         , PalMap(palMap)
         , SourceImage(sourceImage)
         , SrcX(srcX)
@@ -660,8 +657,8 @@ extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
 extern const FilterPaletteID GlassPaletteIds[COLOUR_COUNT];
-extern uint8_t gPeepPalette[256];
-extern uint8_t gOtherPalette[256];
+extern thread_local uint8_t gPeepPalette[256];
+extern thread_local uint8_t gOtherPalette[256];
 extern uint8_t text_palette[];
 extern const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT];
 
@@ -695,7 +692,6 @@ void gfx_draw_dashed_line(
 // rect
 void gfx_fill_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour);
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
-void gfx_filter_rect(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FilterPaletteID palette);
 void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
@@ -714,9 +710,9 @@ void gfx_object_free_images(uint32_t baseImageId, uint32_t count);
 void gfx_object_check_all_images_freed();
 size_t ImageListGetUsedCount();
 size_t ImageListGetMaximum();
-void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args);
-void FASTCALL gfx_bmp_sprite_to_buffer(DrawSpriteArgs& args);
-void FASTCALL gfx_rle_sprite_to_buffer(DrawSpriteArgs& args);
+void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
+void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
+void FASTCALL gfx_rle_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, ImageId image_id, const ScreenCoordsXY& coords);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, const ScreenCoordsXY& coords, uint32_t tertiary_colour);
 void FASTCALL
@@ -790,5 +786,3 @@ std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
 
 #include "NewDrawing.h"
-
-#endif

@@ -46,6 +46,7 @@
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
+#include "network/NetworkBase.h"
 #include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -53,6 +54,7 @@
 #include "platform/Crash.h"
 #include "platform/Platform2.h"
 #include "platform/platform.h"
+#include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
@@ -108,6 +110,9 @@ namespace OpenRCT2
 #ifdef ENABLE_SCRIPTING
         ScriptEngine _scriptEngine;
 #endif
+#ifndef DISABLE_NETWORK
+        NetworkBase _network;
+#endif
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
@@ -150,6 +155,9 @@ namespace OpenRCT2
 #ifdef ENABLE_SCRIPTING
             , _scriptEngine(_stdInOutConsole, *env)
 #endif
+#ifndef DISABLE_NETWORK
+            , _network(*this)
+#endif
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -164,7 +172,9 @@ namespace OpenRCT2
             //       If objects use GetContext() in their destructor things won't go well.
 
             GameActions::ClearQueue();
-            network_close();
+#ifndef DISABLE_NETWORK
+            _network.Close();
+#endif
             window_close_all();
 
             // Unload objects after closing all windows, this is to overcome windows like
@@ -256,10 +266,17 @@ namespace OpenRCT2
             return _drawingEngine.get();
         }
 
-        virtual Paint::Painter* GetPainter() override
+        Paint::Painter* GetPainter() override
         {
             return _painter.get();
         }
+
+#ifndef DISABLE_NETWORK
+        NetworkBase& GetNetwork() override
+        {
+            return _network;
+        }
+#endif
 
         int32_t RunOpenRCT2(int argc, const char** argv) override
         {
@@ -395,6 +412,7 @@ namespace OpenRCT2
                 }
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
+            TrackMetaData::Init();
 
             _objectRepository = CreateObjectRepository(_env);
             _objectManager = CreateObjectManager(*_objectRepository);
@@ -463,7 +481,6 @@ namespace OpenRCT2
                 gGameSoundsOff = !gConfigSound.master_sound_enabled;
             }
 
-            network_set_env(_env);
             chat_init();
             CopyOriginalUserFilesOver();
 
@@ -478,7 +495,7 @@ namespace OpenRCT2
 #endif
             }
 
-            gScenarioTicks = 0;
+            gCurrentTicks = 0;
             input_reset_place_obj_modifier();
             viewport_init_all();
 
@@ -524,7 +541,7 @@ namespace OpenRCT2
                 {
                     drawingEngine->Initialise();
                     drawingEngine->SetVSync(gConfigGeneral.use_vsync);
-                    _drawingEngine = std::unique_ptr<IDrawingEngine>(std::move(drawingEngine));
+                    _drawingEngine = std::move(drawingEngine);
                 }
                 catch (const std::exception& ex)
                 {
@@ -571,15 +588,13 @@ namespace OpenRCT2
                     }
                     return true;
                 }
-                else
+
+                auto fs = FileStream(path, FILE_MODE_OPEN);
+                if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
                 {
-                    auto fs = FileStream(path, FILE_MODE_OPEN);
-                    if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
-                    {
-                        return false;
-                    }
-                    return true;
+                    return false;
                 }
+                return true;
             }
             catch (const std::exception& e)
             {
@@ -627,7 +642,7 @@ namespace OpenRCT2
                 // so reload the title screen if that happens.
                 loadTitleScreenFirstOnFail = true;
 
-                _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                _objectManager->LoadObjects(result.RequiredObjects);
                 parkImporter->Import();
                 gScenarioSavePath = path;
                 gCurrentLoadedPath = path;
@@ -638,40 +653,51 @@ namespace OpenRCT2
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 
+#ifndef DISABLE_NETWORK
                 bool sendMap = false;
+#endif
                 if (info.Type == FILE_TYPE::SAVED_GAME)
                 {
-                    if (network_get_mode() == NETWORK_MODE_CLIENT)
+#ifndef DISABLE_NETWORK
+                    if (_network.GetMode() == NETWORK_MODE_CLIENT)
                     {
-                        network_close();
+                        _network.Close();
                     }
+#endif
                     game_load_init();
-                    if (network_get_mode() == NETWORK_MODE_SERVER)
+#ifndef DISABLE_NETWORK
+                    if (_network.GetMode() == NETWORK_MODE_SERVER)
                     {
                         sendMap = true;
                     }
+#endif
                 }
                 else
                 {
                     scenario_begin();
-                    if (network_get_mode() == NETWORK_MODE_SERVER)
+#ifndef DISABLE_NETWORK
+                    if (_network.GetMode() == NETWORK_MODE_SERVER)
                     {
                         sendMap = true;
                     }
-                    if (network_get_mode() == NETWORK_MODE_CLIENT)
+                    if (_network.GetMode() == NETWORK_MODE_CLIENT)
                     {
-                        network_close();
+                        _network.Close();
                     }
+#endif
                 }
                 // This ensures that the newly loaded save reflects the user's
                 // 'show real names of guests' option, now that it's a global setting
                 peep_update_names(gConfigGeneral.show_real_names_of_guests);
+#ifndef DISABLE_NETWORK
                 if (sendMap)
                 {
-                    network_send_map();
+                    _network.Server_Send_MAP();
                 }
+#endif
+
 #ifdef USE_BREAKPAD
-                if (network_get_mode() == NETWORK_MODE_NONE)
+                if (_network.GetMode() == NETWORK_MODE_NONE)
                 {
                     start_silent_record();
                 }
@@ -689,7 +715,7 @@ namespace OpenRCT2
                 // which the window function doesn't like
                 auto intent = Intent(WC_OBJECT_LOAD_ERROR);
                 intent.putExtra(INTENT_EXTRA_PATH, path);
-                intent.putExtra(INTENT_EXTRA_LIST, const_cast<rct_object_entry*>(e.MissingObjects.data()));
+                intent.putExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
                 intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
 
                 auto windowManager = _uiContext->GetWindowManager();
@@ -871,13 +897,13 @@ namespace OpenRCT2
 
                         if (String::IsNullOrEmpty(gCustomPassword))
                         {
-                            network_set_password(gConfigNetwork.default_password.c_str());
+                            _network.SetPassword(gConfigNetwork.default_password.c_str());
                         }
                         else
                         {
-                            network_set_password(gCustomPassword);
+                            _network.SetPassword(gCustomPassword);
                         }
-                        network_begin_server(gNetworkStartPort, gNetworkStartAddress);
+                        _network.BeginServer(gNetworkStartPort, gNetworkStartAddress);
                     }
                     else
 #endif // DISABLE_NETWORK
@@ -907,7 +933,7 @@ namespace OpenRCT2
                 {
                     gNetworkStartPort = gConfigNetwork.default_port;
                 }
-                network_begin_client(gNetworkStartHost, gNetworkStartPort);
+                _network.BeginClient(gNetworkStartHost, gNetworkStartPort);
             }
 #endif // DISABLE_NETWORK
 
@@ -1128,6 +1154,7 @@ namespace OpenRCT2
                     DIRID::SEQUENCE,
                     DIRID::REPLAY,
                     DIRID::LOG_DESYNCS,
+                    DIRID::CRASH,
                 });
         }
 
@@ -1503,11 +1530,6 @@ utf8* platform_open_directory_browser(const utf8* title)
         log_error(ex.what());
         return nullptr;
     }
-}
-
-bool platform_place_string_on_clipboard(utf8* target)
-{
-    return GetContext()->GetUiContext()->SetClipboardText(target);
 }
 
 /**

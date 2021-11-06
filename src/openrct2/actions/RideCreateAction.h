@@ -11,16 +11,7 @@
 
 #include "GameAction.h"
 
-class RideCreateGameActionResult final : public GameActions::Result
-{
-public:
-    RideCreateGameActionResult();
-    RideCreateGameActionResult(GameActions::Status error, rct_string_id message);
-
-    ride_id_t rideIndex = RIDE_ID_NULL;
-};
-
-DEFINE_GAME_ACTION(RideCreateAction, GameCommand::CreateRide, RideCreateGameActionResult)
+DEFINE_GAME_ACTION(RideCreateAction, GameCommand::CreateRide, GameActions::Result)
 {
 private:
     ObjectEntryIndex _rideType{ OBJECT_ENTRY_INDEX_NULL };
