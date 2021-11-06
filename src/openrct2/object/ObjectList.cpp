@@ -44,21 +44,26 @@ int32_t object_entry_group_counts[] = {
 static_assert(std::size(object_entry_group_counts) == EnumValue(ObjectType::Count));
 
 // 98DA2C
-// clang-format off
 int32_t object_entry_group_encoding[] = {
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_ROTATE,
+    CHUNK_ENCODING_RLE,    // Ride
+    CHUNK_ENCODING_RLE,    // SmallScenery
+    CHUNK_ENCODING_RLE,    // LargeScenery
+    CHUNK_ENCODING_RLE,    // Walls
+    CHUNK_ENCODING_RLE,    // Banners
+    CHUNK_ENCODING_RLE,    // Paths
+    CHUNK_ENCODING_RLE,    // PathBits
+    CHUNK_ENCODING_RLE,    // SceneryGroup
+    CHUNK_ENCODING_RLE,    // ParkEntrance
+    CHUNK_ENCODING_RLE,    // Water
+    CHUNK_ENCODING_ROTATE, // ScenarioText
+    CHUNK_ENCODING_NONE,   // TerrainSurface
+    CHUNK_ENCODING_NONE,   // TerrainEdge
+    CHUNK_ENCODING_NONE,   // Station
+    CHUNK_ENCODING_NONE,   // Music
+    CHUNK_ENCODING_NONE,   // FootpathSurface
+    CHUNK_ENCODING_NONE,   // FootpathRailings
 };
-// clang-format on
+static_assert(std::size(object_entry_group_encoding) == EnumValue(ObjectType::Count));
 
 ObjectList::const_iterator::const_iterator(const ObjectList* parent, bool end)
 {
