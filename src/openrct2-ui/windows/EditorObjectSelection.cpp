@@ -1485,30 +1485,16 @@ static bool filter_string(const ObjectRepositoryItem* item)
     // Get ride type
     const char* rideTypeName = language_get_string(get_ride_type_string_id(item));
 
-    // Get object name (ride/vehicle for rides) and type name (rides only)
-    char name_lower[MAX_PATH];
-    char type_lower[MAX_PATH];
-    char object_path[MAX_PATH];
-    char filter_lower[sizeof(_filter_string)];
-    safe_strcpy(name_lower, item->Name.c_str(), MAX_PATH);
-    safe_strcpy(type_lower, rideTypeName, MAX_PATH);
-    safe_strcpy(object_path, item->Path.c_str(), MAX_PATH);
-    safe_strcpy(filter_lower, _filter_string, sizeof(_filter_string));
-
-    // Make use of lowercase characters only
-    for (int32_t i = 0; name_lower[i] != '\0'; i++)
-        name_lower[i] = static_cast<char>(tolower(static_cast<unsigned char>(name_lower[i])));
-    for (int32_t i = 0; type_lower[i] != '\0'; i++)
-        type_lower[i] = static_cast<char>(tolower(static_cast<unsigned char>(type_lower[i])));
-    for (int32_t i = 0; object_path[i] != '\0'; i++)
-        object_path[i] = static_cast<char>(tolower(static_cast<unsigned char>(object_path[i])));
-    for (int32_t i = 0; filter_lower[i] != '\0'; i++)
-        filter_lower[i] = static_cast<char>(tolower(static_cast<unsigned char>(filter_lower[i])));
+    // Get object name (ride/vehicle for rides) and type name (rides only) in uppercase
+    const auto nameUpper = String::ToUpper(item->Name);
+    const auto typeUpper = String::ToUpper(rideTypeName);
+    const auto pathUpper = String::ToUpper(item->Path);
+    const auto filterUpper = String::ToUpper(_filter_string);
 
     // Check if the searched string exists in the name, ride type, or filename
-    bool inName = strstr(name_lower, filter_lower) != nullptr;
-    bool inRideType = (item->ObjectEntry.GetType() == ObjectType::Ride) && strstr(type_lower, filter_lower) != nullptr;
-    bool inPath = strstr(object_path, filter_lower) != nullptr;
+    bool inName = nameUpper.find(filterUpper) != std::string::npos;
+    bool inRideType = (item->ObjectEntry.GetType() == ObjectType::Ride) && typeUpper.find(filterUpper) != std::string::npos;
+    bool inPath = pathUpper.find(filterUpper) != std::string::npos;
 
     return inName || inRideType || inPath;
 }
