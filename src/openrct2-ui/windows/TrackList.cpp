@@ -89,21 +89,14 @@ private:
             return;
         }
 
-        // Convert filter to lowercase
-        utf8 filterStringLower[sizeof(_filterString)];
-        String::Set(filterStringLower, sizeof(filterStringLower), _filterString);
-        for (int32_t i = 0; filterStringLower[i] != '\0'; i++)
-            filterStringLower[i] = static_cast<utf8>(tolower(static_cast<unsigned char>(filterStringLower[i])));
+        // Convert filter to uppercase
+        const auto filterStringUpper = String::ToUpper(_filterString);
 
         // Fill the set with indices for tracks that match the filter
         for (uint16_t i = 0; i < _trackDesigns.size(); i++)
         {
-            utf8 trackNameLower[USER_STRING_MAX_LENGTH];
-            String::Set(trackNameLower, sizeof(trackNameLower), _trackDesigns[i].name);
-            for (int32_t j = 0; trackNameLower[j] != '\0'; j++)
-                trackNameLower[j] = static_cast<utf8>(tolower(static_cast<unsigned char>(trackNameLower[j])));
-
-            if (strstr(trackNameLower, filterStringLower) != nullptr)
+            const auto trackNameUpper = String::ToUpper(_trackDesigns[i].name);
+            if (trackNameUpper.find(filterStringUpper) != std::string::npos)
             {
                 _filteredTrackIds.push_back(i);
             }
