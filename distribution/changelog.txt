@@ -1,4 +1,7 @@
-0.3.4.1+ (in development)
+0.3.5+ (in development)
+------------------------------------------------------------------------
+
+0.3.5 (2021-11-06)
 ------------------------------------------------------------------------
 - Feature: [#3868] Initial support for using TTF in OpenGL mode (still contains bugs).
 - Feature: [#7682] Follow ride/guest/staff in main window viewport.
