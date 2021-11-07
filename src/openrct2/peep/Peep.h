@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
-#include "../core/Identifier.hpp"
 #include "../ride/RideTypes.h"
 #include "../ride/Station.h"
 #include "../util/Util.h"
@@ -33,7 +33,6 @@ namespace GameActions
 {
     class Result;
 }
-using ParkEntranceIndex = TIdentifier<uint8_t, std::numeric_limits<uint8_t>::max(), struct ParkEntranceIndexTag>;
 
 enum class StaffType : uint8_t
 {

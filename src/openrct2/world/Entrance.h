@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
-#include "../core/Identifier.hpp"
 #include "Location.hpp"
 #include "Map.h"
 
@@ -44,8 +44,6 @@ extern CoordsXYZD gParkEntranceGhostPosition;
 #define MAX_PARK_ENTRANCES 256
 
 constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
-
-using ParkEntranceIndex = TIdentifier<uint8_t, std::numeric_limits<uint8_t>::max(), struct ParkEntranceIndexTag>;
 
 extern std::vector<CoordsXYZD> gParkEntrances;
 

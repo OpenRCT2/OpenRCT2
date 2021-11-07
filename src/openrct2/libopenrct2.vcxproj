@@ -209,6 +209,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateSnapshots.h" />
+    <ClInclude Include="Identifiers.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="interface\Chat.h" />
     <ClInclude Include="interface\Colour.h" />
