@@ -1,5 +1,7 @@
 0.3.5+ (in development)
 ------------------------------------------------------------------------
+- Improved: [#12869] The Tile Inspector window’s layout has been tweaked slightly.
+- Fix: [#15620] Placing track designs at locations blocked by anything results in wrong error message.
 - Fix: [#15843] Tile Inspector can be resized too small.
 
 0.3.5 (2021-11-06)
@@ -57,7 +59,6 @@
 - Fix: [#15851] Incorrect percentage chance of jumping with Katie Smith cheat.
 - Fix: [#15858] Joanne Barton and Emma Garrell cheat incorrectly not applying effects to self.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
-- Improved: [#12869] The Tile Inspector window’s layout has been tweaked slightly.
 - Improved: [#13524] macOS arm64 native (universal) app
 - Improved: [#15538] Software rendering can now draw in parallel when Multithreading is enabled.
 - Change: [#8601] Revert ToonTower base block fix to re-enable support blocking.
