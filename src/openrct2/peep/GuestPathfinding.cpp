@@ -1736,15 +1736,15 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
 static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
 {
     // If entrance no longer exists, choose a new one
-    if ((peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->ChosenParkEntrance >= gParkEntrances.size())
+    if ((peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->ChosenParkEntrance.ToUnderlying() >= gParkEntrances.size())
     {
-        peep->ChosenParkEntrance = PARK_ENTRANCE_INDEX_NULL;
+        peep->ChosenParkEntrance = ParkEntranceIndex::Null;
         peep->PeepFlags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
     }
 
     if (!(peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN))
     {
-        uint8_t chosenEntrance = PARK_ENTRANCE_INDEX_NULL;
+        ParkEntranceIndex chosenEntrance = ParkEntranceIndex::Null;
         uint16_t nearestDist = 0xFFFF;
         uint8_t entranceNum = 0;
         for (const auto& entrance : gParkEntrances)
@@ -1753,19 +1753,19 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
             if (dist < nearestDist)
             {
                 nearestDist = dist;
-                chosenEntrance = entranceNum;
+                chosenEntrance = ParkEntranceIndex::FromUnderlying(entranceNum);
             }
             entranceNum++;
         }
 
-        if (chosenEntrance == 0xFF)
+        if (chosenEntrance == ParkEntranceIndex::Null)
             return guest_path_find_aimless(peep, edges);
 
         peep->ChosenParkEntrance = chosenEntrance;
         peep->PeepFlags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
     }
 
-    const auto& entrance = gParkEntrances[peep->ChosenParkEntrance];
+    const auto& entrance = gParkEntrances[peep->ChosenParkEntrance.ToUnderlying()];
 
     gPeepPathFindGoalPosition = TileCoordsXYZ(entrance);
     gPeepPathFindIgnoreForeignQueues = true;
