@@ -43,15 +43,6 @@ enum class WindowWidgetType : uint8_t
 constexpr const auto WIDGETS_END = rct_widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
 #define BAR_BLINK (1u << 31)
 
-#define SPINNER_INCREASE(l, r, t, b) (r) - 12, (r)-1, (t) + 1, (b)-1
-#define SPINNER_DECREASE(l, r, t, b) (r) - 25, (r)-13, (t) + 1, (b)-1
-#define SPINNER_WIDGETS(colour, left, right, top, bottom, text, tooltip)                                                       \
-    { WindowWidgetType::Spinner, colour, left, right, top, bottom, text, tooltip },                                            \
-        { WindowWidgetType::Button, colour, SPINNER_INCREASE(left, right, top, bottom), STR_NUMERIC_UP, STR_NONE },            \
-    {                                                                                                                          \
-        WindowWidgetType::Button, colour, SPINNER_DECREASE(left, right, top, bottom), STR_NUMERIC_DOWN, STR_NONE               \
-    }
-
 enum
 {
     SCROLL_HORIZONTAL = (1 << 0),
