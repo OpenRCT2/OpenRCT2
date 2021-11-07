@@ -55,7 +55,7 @@ enum class LightFXQualifier : uint8_t
 
 struct lightlist_entry
 {
-    int16_t x, y, z;
+    CoordsXYZ loc;
     ScreenCoordsXY viewCoords;
     LightType lightType;
     uint8_t lightIntensity;
@@ -63,7 +63,6 @@ struct lightlist_entry
     LightFXQualifier qualifier;
     uint8_t lightID;
     uint8_t lightLinger;
-    uint8_t pad[1];
 };
 
 static lightlist_entry _LightListA[16000];
@@ -197,15 +196,11 @@ void lightfx_prepare_light_list()
     {
         lightlist_entry* entry = &_LightListFront[light];
 
-        if (entry->z == 0x7FFF)
+        if (entry->loc.z == 0x7FFF)
         {
             entry->lightIntensity = 0xFF;
             continue;
         }
-
-        CoordsXYZ coord_3d = { /* .x = */ entry->x,
-                               /* .y = */ entry->y,
-                               /* .z = */ entry->z };
 
         int32_t posOnScreenX = entry->viewCoords.x - _current_view_x_front;
         int32_t posOnScreenY = entry->viewCoords.y - _current_view_y_front;
@@ -336,10 +331,10 @@ void lightfx_prepare_light_list()
                     baseHeight = tileElement->GetBaseZ();
                 }
 
-                minDist = (baseHeight - coord_3d.z) / 2;
+                minDist = (baseHeight - entry->loc.z) / 2;
 
-                int32_t deltaX = mapCoord.x - coord_3d.x;
-                int32_t deltaY = mapCoord.y - coord_3d.y;
+                int32_t deltaX = mapCoord.x - entry->loc.x;
+                int32_t deltaY = mapCoord.y - entry->loc.y;
 
                 int32_t projDot = (dirVecX * deltaX + dirVecY * deltaY) / 1000;
 
@@ -477,7 +472,7 @@ void lightfx_render_lights_to_frontbuffer()
         int32_t inRectCentreX = entry->viewCoords.x;
         int32_t inRectCentreY = entry->viewCoords.y;
 
-        if (entry->z != 0x7FFF)
+        if (entry->loc.z != 0x7FFF)
         {
             inRectCentreX -= _current_view_x_front;
             inRectCentreY -= _current_view_y_front;
@@ -649,9 +644,7 @@ static void LightfxAdd3DLight(
         if (entry->lightID != id)
             continue;
 
-        entry->x = loc.x;
-        entry->y = loc.y;
-        entry->z = loc.z;
+        entry->loc = loc;
         entry->viewCoords = translate_3d_to_2d_with_z(get_current_rotation(), loc);
         entry->lightType = lightType;
         entry->lightIntensity = 0xFF;
@@ -665,9 +658,7 @@ static void LightfxAdd3DLight(
 
     lightlist_entry* entry = &_LightListBack[LightListCurrentCountBack++];
 
-    entry->x = loc.x;
-    entry->y = loc.y;
-    entry->z = loc.z;
+    entry->loc = loc;
     entry->viewCoords = translate_3d_to_2d_with_z(get_current_rotation(), loc);
     entry->lightType = lightType;
     entry->lightIntensity = 0xFF;
