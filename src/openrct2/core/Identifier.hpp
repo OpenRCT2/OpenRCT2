@@ -26,17 +26,15 @@ private:
     {
     }
 
-public:
-    static constexpr auto Null = ValueType::Null;
-
-    TIdentifier(const ValueType other)
+    explicit TIdentifier(const ValueType other)
         : _handle{ other }
     {
     }
 
+public:
     static constexpr TIdentifier GetNull() noexcept
     {
-        return Null;
+        return TIdentifier{ ValueType::Null };
     }
 
     static constexpr TIdentifier FromUnderlying(const T val) noexcept
