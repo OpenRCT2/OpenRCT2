@@ -34,6 +34,11 @@ public:
     {
     }
 
+    static constexpr TIdentifier GetNull() noexcept
+    {
+        return Null;
+    }
+
     static constexpr TIdentifier FromUnderlying(const T val) noexcept
     {
         return TIdentifier{ val };

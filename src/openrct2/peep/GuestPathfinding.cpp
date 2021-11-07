@@ -1744,7 +1744,7 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
 
     if (!(peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN))
     {
-        ParkEntranceIndex chosenEntrance = ParkEntranceIndex::Null;
+        auto chosenEntrance = ParkEntranceIndex::GetNull();
         uint16_t nearestDist = 0xFFFF;
         uint8_t entranceNum = 0;
         for (const auto& entrance : gParkEntrances)
