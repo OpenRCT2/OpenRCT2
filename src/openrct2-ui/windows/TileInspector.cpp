@@ -1141,9 +1141,13 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
                     gDropdownItemsArgs[0] = STR_TILE_INSPECTOR_WALL_FLAT;
                     gDropdownItemsArgs[1] = STR_TILE_INSPECTOR_WALL_SLOPED_LEFT;
                     gDropdownItemsArgs[2] = STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT;
-                    WindowDropdownShowTextCustomWidth(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                        Dropdown::Flag::StayOpen, 3, widget->width() - 3);
+                    WindowDropdownShowTextCustomWidth({ w->windowPos.x + widget->left, w->windowPos.y + widget->top },
+                                                      widget->height() + 1,
+                                                      w->colours[1],
+                                                      0,
+                                                      Dropdown::Flag::StayOpen,
+                                                      3,
+                                                      widget->width() - 3);
 
                     // Set current value as checked
                     Dropdown::SetChecked(tileElement->AsWall()->GetSlope(), true);
@@ -1928,8 +1932,11 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     ft = Formatter();
                     ride->FormatNameTo(ft);
-                    DrawTextBasic(
-                        dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, ft, { w->colours[1] });
+                    DrawTextBasic(dpi,
+                                  screenCoords + ScreenCoordsXY{ 0, 11 },
+                                  STR_TILE_INSPECTOR_TRACK_RIDE_NAME,
+                                  ft,
+                                  { w->colours[1] });
                 }
 
                 // Ride type. Individual pieces may be of a different ride type from the ride it belongs to.
@@ -2007,15 +2014,21 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     };
                     ft = Formatter();
                     ft.Add<rct_string_id>(quadrant_string_idx[quadrant]);
-                    DrawTextBasic(
-                        dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_SCENERY_QUADRANT, ft, { w->colours[1] });
+                    DrawTextBasic(dpi,
+                                  screenCoords + ScreenCoordsXY{ 0, 11 },
+                                  STR_TILE_INSPECTOR_SCENERY_QUADRANT,
+                                  ft,
+                                  { w->colours[1] });
                 }
 
                 // Scenery ID
                 ft = Formatter();
                 ft.Add<ObjectEntryIndex>(tileElement->AsSmallScenery()->GetEntryIndex());
-                DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, ft, { w->colours[1] });
+                DrawTextBasic(dpi,
+                              screenCoords + ScreenCoordsXY{ 0, 22 },
+                              STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX,
+                              ft,
+                              { w->colours[1] });
 
                 // Properties
                 // Raise / Lower
@@ -2090,8 +2103,11 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     // Ride ID
                     ft = Formatter();
                     ft.Add<ride_id_t>(tileElement->AsEntrance()->GetRideIndex());
-                    DrawTextBasic(
-                        dpi, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, ft, { w->colours[1] });
+                    DrawTextBasic(dpi,
+                                  screenCoords + ScreenCoordsXY{ 0, 22 },
+                                  STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID,
+                                  ft,
+                                  { w->colours[1] });
                     // Station index
                     int16_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
                     ft = Formatter();
