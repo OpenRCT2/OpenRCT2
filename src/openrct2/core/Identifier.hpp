@@ -21,17 +21,19 @@ template<typename T, T TNullValue, typename TTag> class TIdentifier
     } _handle;
 
 private:
-    explicit TIdentifier(const T index)
+    explicit constexpr TIdentifier(const T index)
         : _handle{ static_cast<ValueType>(index) }
     {
     }
 
-    explicit TIdentifier(const ValueType other)
+    explicit constexpr TIdentifier(const ValueType other)
         : _handle{ other }
     {
     }
 
 public:
+    constexpr TIdentifier() = default;
+
     static constexpr TIdentifier GetNull() noexcept
     {
         return TIdentifier{ ValueType::Null };
