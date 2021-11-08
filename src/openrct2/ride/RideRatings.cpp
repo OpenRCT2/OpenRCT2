@@ -2871,7 +2871,7 @@ void ride_ratings_calculate_3d_cinema(Ride* ride, RideRatingUpdateState& state)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-    ride->unreliability_factor = 21;
+    ride->unreliability_factor = 12;
     set_unreliability_factor(ride);
 
     // Base ratings
@@ -3832,7 +3832,7 @@ void ride_ratings_calculate_flying_saucers(Ride* ride, RideRatingUpdateState& st
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-    ride->unreliability_factor = 32;
+    ride->unreliability_factor = 17;
     set_unreliability_factor(ride);
 
     RatingTuple ratings = {
