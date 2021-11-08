@@ -1,5 +1,6 @@
 0.3.5+ (in development)
 ------------------------------------------------------------------------
+- Fix: [#15844] Tile Inspector inconsistent text colour. 
 - Improved: [#12869] The Tile Inspector window’s layout has been tweaked slightly.
 - Fix: [#15620] Placing track designs at locations blocked by anything results in wrong error message.
 - Fix: [#15843] Tile Inspector can be resized too small.
