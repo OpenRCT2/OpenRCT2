@@ -1394,7 +1394,13 @@ rct_window* window_ride_open_track(TileElement* tileElement)
  */
 rct_window* window_ride_open_vehicle(Vehicle* vehicle)
 {
+    if (vehicle == nullptr)
+        return nullptr;
+
     Vehicle* headVehicle = vehicle->TrainHead();
+    if (headVehicle == nullptr)
+        return nullptr;
+
     uint16_t headVehicleSpriteIndex = headVehicle->sprite_index;
     auto ride = headVehicle->GetRide();
     if (ride == nullptr)
