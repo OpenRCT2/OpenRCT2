@@ -154,6 +154,8 @@
 - Improved: [#14193] [Plugin] Change single quotes to double quotes in openrct2.d.ts.
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
 - Change: [#13857] Change Rotation Control Toggle to track element number 256
+- Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
+- Removed: [#14186] Network traffic window (replaced by plug-in).
 - Fix: [#4605, #11912] Water palettes are not updated properly when selected in Object Selection.
 - Fix: [#7772] Hacked vehicles may incorrectly not mark a vehicle object as in use causing accidental removal when remove_unused_objects is used.
 - Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once.
@@ -183,8 +185,6 @@
 - Fix: [#14095] Holding down [-][+] buttons does not decrease/increase number of circuits.
 - Fix: [#14225] Desync when ‘allow early scenario completion’ is enabled.
 - Fix: [#14247] Scenarios from RCT1 allow hiring too many staff.
-- Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
-- Removed: [#14186] Network traffic window (replaced by plug-in).
 
 0.3.2 (2020-11-01)
 ------------------------------------------------------------------------
@@ -300,6 +300,7 @@
 - Change: [#11898] The ‘openrct-data-path’ command-line argument has been renamed to ‘openrct2-data-path’.
 - Change: [#11944] The ride list sort mode is now remembered for the duration of the game.
 - Change: The required version of macOS has been increased to 10.14 (Mojave) for plugin support.
+- Removed: [#11820] Twitch support (relied on a server that has been down for a few years).
 - Fix: [#1013] Negative length displayed in Ride window.
 - Fix: [#1148] Research funding dropdown not shown in finances window.
 - Fix: [#5451] Guests scream on every descent, no matter how small.
@@ -350,7 +351,6 @@
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
 - Fix: Brakes keep working during ‘Brakes failure’.
 - Fix: Guests maze pathfinding prefers a specific direction (original bug).
-- Removed: [#11820] Twitch support (relied on a server that has been down for a few years).
 
 0.2.6 (2020-04-17)
 ------------------------------------------------------------------------
@@ -399,6 +399,7 @@
 - Improved: [#10970] Introduced optional light effects for vehicles at night.
 - Change: [#1164] Use available translations for shortcut key bindings.
 - Change: [#10997] Speed is automatically reset to normal upon scenario completion.
+- Removed: [#6898] LOADMM and LOADRCT1 title sequence commands (use LOADSC instead).
 - Fix: [#2485] Hide Vertical Faces not applied to the edges of water.
 - Fix: [#5249] No collision detection when building ride entrance at heights > 85.5m.
 - Fix: [#6766] Changelog window doesn’t open on some platforms.
@@ -434,7 +435,6 @@
 - Fix: [#11001] Rides list does not use natural sorting.
 - Fix: [objects#54] Stage Coach cars are not considered covered by the game.
 - Fix: [objects#56] Handymen cut grass incorrectly.
-- Removed: [#6898] LOADMM and LOADRCT1 title sequence commands (use LOADSC instead).
 
 0.2.4 (2019-10-28)
 ------------------------------------------------------------------------
@@ -582,6 +582,7 @@
 - Improved: [#8107] Support Discord release of RCT2.
 - Improved: [#8491] Highlight entrance and exit with different colours in track design previews.
 - Improved: Almost completely new Hungarian translation.
+- Removed: [#7929] Support for scenario text objects.
 - Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.
 - Fix: [#4094] Coasters with long flat-to-steep pieces offer them in diagonal mode (original bug).
 - Fix: [#5684] Player list can desync between clients and server and can crash.
@@ -639,7 +640,6 @@
 - Fix: [#8804] Raising water shows money effect at the bottom rather than new height.
 - Fix: [#8811] Some fields in the sv6 save file not being copied correctly.
 - Fix: [#8824] Invalid read in footpath_chain_ride_queue.
-- Removed: [#7929] Support for scenario text objects.
 
 0.2.1 (2018-08-26)
 ------------------------------------------------------------------------
@@ -795,6 +795,7 @@
 - Improved: Major translation updates for Japanese and Polish.
 - Improved: Added 24x24, 48x48, and 96x96 icon resolutions.
 - Change: [#6384] On macOS, address ‘NSFileHandlingPanel’ deprecation by using ‘NSModalResponse’ instead.
+- Removed: [#6772] RCT2 interop removed.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#996, #2589, #2875] Viewport scrolling no longer shakes or gets stuck.
 - Fix: [#1185] Close button colour of prompt windows does not match.
@@ -881,7 +882,6 @@
 - Fix: Remove consecutive thoughts about a ride being demolished.
 - Fix: Water raft vehicles stop spinning when going up slopes.
 - Fix: Incorrect spin is applied to coasters on S-bends and other turns.
-- Removed: [#6772] RCT2 interop removed.
 
 0.1.1 (2017-08-09)
 ------------------------------------------------------------------------
@@ -992,6 +992,8 @@
 - Improved: Remove duplicate ride penalty for closed rides.
 - Improved: Make shortcut keys window larger and resizable.
 - Improved: INI configuration file now case-insensitive.
+- Removed: known_issues.txt no longer used, check issue tracker on GitHub.
+- Removed: version build from msbuild & NSIS.
 - Fix: [#1992] Felicity Anderson Cheat can crash the game, as well as blocking queues.
 - Fix: [#4493] Provide tooltip for disabled price field.
 - Fix: [#4689] Object selection tabs sometimes flicker.
@@ -1023,8 +1025,6 @@
 - Fix: Extraneous window tabs show up on MacOS 10.12.
 - Fix: Potential for integer overflow in ride length.
 - Fix: Vehicles erroneously removed when removing all guests.
-- Removed: known_issues.txt no longer used, check issue tracker on GitHub.
-- Removed: version build from msbuild & NSIS.
 
 
 0.0.6 (2017-01-29)
@@ -1089,6 +1089,8 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Change: The maximum height of Junior Roller Coasters is now 14 units, like it was in RCT1.
 - Change: Multiplayer groups are now stored in JSON format.
 - Change: MinGW builds dropped support for Windows XP.
+- Removed: BMP screenshots.
+- Removed: Intamin and Phoenix easter eggs.
 - Fix: [#933] On-ride photo price sometimes gets reset to £2 when using ‘same price in whole park’ (original bug).
 - Fix: [#1038] Guest List is out of order.
 - Fix: [#1238] Track place window does not fully adjust to custom colour scheme.
@@ -1112,8 +1114,6 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Fix: [#3915] Restore horizontal and vertical scrollbar behaviour from RCT2 when clicking on one of the scrollbars.
 - Fix: Lay-down Roller Coasters from RCT1 saves are imported with an incorrect vehicle type (not reported).
 - Fix: High lateral G-forces penalty applied too early (not reported).
-- Removed: BMP screenshots.
-- Removed: Intamin and Phoenix easter eggs.
 
 0.0.4-beta (2016-04-15)
 ------------------------------------------------------------------------
@@ -1160,6 +1160,7 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Change: SDL2 upgraded from 2.0.3 to 2.0.4.
 - Change: argparse dropped in return for bespoke command line parsing implementation.
 - Change: Integrated breakpad for (manual) crash reporting.
+- Removed: Anti-cheat code that detected money hack attempts.
 - Fix: Dated autosave files are not created on OSX and Linux.
 - Fix: Title sequence directories are not deleted when title sequence is deleted on OSX and Linux.
 - Fix: Tile not highlighted when placing staff members.
@@ -1186,7 +1187,6 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Fix: [#3063] Search exe directory for SSL bundle as well as CWD.
 - Fix: [#3120] Negative cash in finance window is not red.
 - Fix: [#4134] Can’t enable park-wide photo price for log flume and river rapids.
-- Removed: Anti-cheat code that detected money hack attempts.
 
 0.0.3.1-beta (2015-12-04)
 ------------------------------------------------------------------------
@@ -1240,6 +1240,8 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Improved: DirectDraw, DirectInput, DirectPlay and DirectSound dependencies are no longer used.
 - Change: Autosave is now measured in real-time rather than in-game date.
 - Change: Hacked rides no longer have their reliability set to 0.
+- Removed: Six Flags branding and limitations.
+- Removed: Infogrames disclaimer.
 - Fix: When placing a track, the preview will now use the same orientation as the ghost.
 - Fix: Grouping vehicles by track type no longer interferes with research.
 - Fix: Fix corrupt map elements when loading a game.
@@ -1257,8 +1259,6 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Fix: The path tool and tracked-ride construction tool no longer interfere with one another in certain situations (original bug).
 - Fix: Building a flat ride partially out of park boundaries will no longer trigger a misleading ‘too high for supports’ message (original bug).
 - Fix: On-ride photos are now factored into the calculations of a ride’s income and profit per hour (original bug).
-- Removed: Six Flags branding and limitations.
-- Removed: Infogrames disclaimer.
 
 0.0.2-beta (2015-06-21)
 ------------------------------------------------------------------------
