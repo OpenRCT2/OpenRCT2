@@ -1823,16 +1823,6 @@ private:
     }
 };
 
-/**
- *
- *  rct2: 0x00667F11
- */
-rct_window* window_park_open()
-{
-    auto window = WindowCreate<ParkWindow>(WC_PARK_INFORMATION, 230, 174 + 9, WF_10);
-    return window;
-}
-
 rct_window* window_park_entrance_open()
 {
     auto window = WindowFocusOrCreate<ParkWindow>(WC_PARK_INFORMATION, 230, 174 + 9, WF_10);
