@@ -3161,56 +3161,56 @@ STR_5930    :Details groot decor
 STR_5931    :Details lichtkrant
 STR_5932    :Details ongeldig element
 STR_5933    :Eigenschappen
-STR_5934    :{WINDOW_COLOUR_2}Terreinoppervlak: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Zijkant terrein: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Landeigendom: {BLACK}{STRINGID}
+STR_5934    :Terreinoppervlak: {BLACK}{STRINGID}
+STR_5935    :Zijkant terrein: {BLACK}{STRINGID}
+STR_5936    :Landeigendom: {BLACK}{STRINGID}
 STR_5937    :Niet in bezit en niet te koop
-STR_5938    :{WINDOW_COLOUR_2}Waterniveau: {BLACK}{COMMA16}
+STR_5938    :Waterniveau: {BLACK}{COMMA16}
 STR_5939    :Parkafscheiding verwijderen
 STR_5940    :Parkafscheiding herstellen
-STR_5941    :{WINDOW_COLOUR_2}Hoogte onderkant:
-STR_5942    :{WINDOW_COLOUR_2}Naam pad: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Extra’s: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Extra’s: {BLACK}Geen
-STR_5945    :{WINDOW_COLOUR_2}Verbonden randen:
-STR_5946    :{WINDOW_COLOUR_2}Attractietype: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Attractie-ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Attractienaam: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Ketting
-STR_5950    :{WINDOW_COLOUR_2}Wijzigingen op hele baanonderdeel doorvoeren
-STR_5951    :{WINDOW_COLOUR_2}Baanonderdeel-ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Volgnummer: {BLACK}{COMMA16}
+STR_5941    :Hoogte onderkant:
+STR_5942    :Naam pad: {BLACK}{STRINGID}
+STR_5943    :Extra’s: {BLACK}{STRINGID}
+STR_5944    :Extra’s: {BLACK}Geen
+STR_5945    :Verbonden randen:
+STR_5946    :Attractietype: {BLACK}{STRINGID}
+STR_5947    :Attractie-ID: {BLACK}{COMMA16}
+STR_5948    :Attractienaam: {BLACK}{STRINGID}
+STR_5949    :Ketting
+STR_5950    :Wijzigingen op hele baanonderdeel doorvoeren
+STR_5951    :Baanonderdeel-ID: {BLACK}{COMMA16}
+STR_5952    :Volgnummer: {BLACK}{COMMA16}
 STR_5953    :Elementen op het huidige vakje sorteren op de hoogte van de onderkant.
-STR_5954    :{WINDOW_COLOUR_2}Decorleeftijd: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Gekozen hoek: {BLACK}{STRINGID}
+STR_5954    :Decorleeftijd: {BLACK}{COMMA16}
+STR_5955    :Gekozen hoek: {BLACK}{STRINGID}
 STR_5956    :Zuidwest
 STR_5957    :Noordwest
 STR_5958    :Noordoost
 STR_5959    :Zuidoost
-STR_5960    :{WINDOW_COLOUR_2}Gekozen hoek:
-STR_5961    :{WINDOW_COLOUR_2}Volgnummer: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Botsingsdetectie:
-STR_5963    :{WINDOW_COLOUR_2}Verhoogde hoeken:
-STR_5964    :{WINDOW_COLOUR_2}Diagonaal
-STR_5965    :{WINDOW_COLOUR_2}Ingangsype: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Gedeelte parkingang: {BLACK}{STRINGID}
+STR_5960    :Gekozen hoek:
+STR_5961    :Volgnummer: {BLACK}{COMMA16}
+STR_5962    :Botsingsdetectie:
+STR_5963    :Verhoogde hoeken:
+STR_5964    :Diagonaal
+STR_5965    :Ingangsype: {BLACK}{STRINGID}
+STR_5966    :Gedeelte parkingang: {BLACK}{STRINGID}
 STR_5967    :Midden
 STR_5968    :Links
 STR_5969    :Rechts
-STR_5970    :{WINDOW_COLOUR_2}Ingang-ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Uitgang-ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Attractie-ID: {BLACK}{COMMA16}
+STR_5970    :Ingang-ID: {BLACK}{COMMA16}
+STR_5971    :Uitgang-ID: {BLACK}{COMMA16}
+STR_5972    :Attractie-ID: {BLACK}{COMMA16}
 STR_5973    :Tegen volgend element plaatsen
 STR_5974    :Wijzigt de hoogte van de onderkant en bovenkant zodat die aansluit op het volgende element op dit vakje. Dit maakt het makkelijker om op dit vakje te bouwen.
 STR_5975    :Helling:
 STR_5976    :Vlak
 STR_5977    :Rechterkant omhoog
 STR_5978    :Linkerkant omhoog
-STR_5979    :{WINDOW_COLOUR_2}Muurtype: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Tekst op lichtkrant: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Geen lichtkrant
-STR_5982    :{WINDOW_COLOUR_2}Type groot decor: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}ID groot decorstuk: {BLACK}{COMMA16}
+STR_5979    :Muurtype: {BLACK}{COMMA16}
+STR_5980    :Tekst op lichtkrant: {BLACK}{STRINGID}
+STR_5981    :Geen lichtkrant
+STR_5982    :Type groot decor: {BLACK}{COMMA16}
+STR_5983    :ID groot decorstuk: {BLACK}{COMMA16}
 STR_5984    :Geblokkeerde paden:
 STR_5985    :Nieuwe map
 STR_5986    :Naam voor de nieuwe map:
@@ -3482,7 +3482,7 @@ STR_6273    :Muziek
 STR_6274    :Kan kleurenschema niet instellen…
 STR_6275    :{WINDOW_COLOUR_2}Stationsstijl:
 STR_6276    :{RED}Bezoekers komen vast te zitten in {STRINGID}, mogelijk door een ongeldig attractietype of ongeldige bedrijfsmodus.
-STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{STRINGID}
+STR_6277    :Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Aantal autosaves
 STR_6279    :Het aantal autosaves dat moet worden bewaard.
 STR_6280    :Chat
@@ -3515,9 +3515,9 @@ STR_6315    :{WINDOW_COLOUR_2}Pathfind-doel: {BLACK}{INT32}, {INT32}, {INT32} ri
 STR_6316    :{WINDOW_COLOUR_2}Pathfind-geschiedenis:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} richting {INT32}
 STR_6318    :Netwerkdesynchronisatie gedetecteerd.{NEWLINE}Logbestand: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Blokrem is gesloten
-STR_6320    :{WINDOW_COLOUR_2}Mag niet worden verwijderd
-STR_6321    :{WINDOW_COLOUR_2}Straatmeubel is kapot
+STR_6319    :Blokrem is gesloten
+STR_6320    :Mag niet worden verwijderd
+STR_6321    :Straatmeubel is kapot
 STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
 STR_6323    :Simulatie
 STR_6324    :Simuleren
@@ -3563,7 +3563,7 @@ STR_6363    :Tekst is naar het klembord gekopieerd.
 STR_6364    :{RED}{COMMA16} persoon is om het leven gekomen bij een ongeluk in {STRINGID}
 STR_6365    :Slachtoffers bij ongelukken in attracties
 STR_6366    :Vastgelopen of afgeslagen voertuigen
-STR_6367    :{WINDOW_COLOUR_2}Animatieframe:
+STR_6367    :Animatieframe:
 STR_6368    :Om compatibiliteitsredenen wordt het afgeraden om OpenRCT2 te draaien via Wine. OpenRCT2 heeft eigen versies voor macOS, Linux, FreeBSD en OpenBSD.
 STR_6369    :Sta bouwen van attracties op ongeldige hoogtes toe
 STR_6370    :Maakt het mogelijk om attracties te bouwen op “tussenhoogtes”.

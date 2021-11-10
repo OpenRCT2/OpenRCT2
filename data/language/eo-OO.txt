@@ -3162,56 +3162,56 @@ STR_5930    :Detaloj de granda pejzaĵo
 STR_5931    :Detaloj de rubando
 STR_5932    :Detaloj de difektita elemento
 STR_5933    :Ecoj
-STR_5934    :{WINDOW_COLOUR_2}Teksturo de tereno: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Flanko de tereno: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Proprieto de bieno: {BLACK}{STRINGID}
+STR_5934    :Teksturo de tereno: {BLACK}{STRINGID}
+STR_5935    :Flanko de tereno: {BLACK}{STRINGID}
+STR_5936    :Proprieto de bieno: {BLACK}{STRINGID}
 STR_5937    :Ne estas posedata kaj ne aĉetebla
-STR_5938    :{WINDOW_COLOUR_2}Akvonivelo: {BLACK}{COMMA16}
+STR_5938    :Akvonivelo: {BLACK}{COMMA16}
 STR_5939    :Forigi parkobarilojn
 STR_5940    :Restaŭri parkobarilojn
-STR_5941    :{WINDOW_COLOUR_2}Baza alteco:
-STR_5942    :{WINDOW_COLOUR_2}Dosierindiko: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Adicioj: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Adicioj: {BLACK}Neniu
-STR_5945    :{WINDOW_COLOUR_2}Kunligitaj randoj:
-STR_5946    :{WINDOW_COLOUR_2}Tipo de atrakcio: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Identigilo de atrakcio: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Nomo de atrakcio: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Ĉenlifto
-STR_5950    :{WINDOW_COLOUR_2}Apliki ŝanĝojn al tuta trakoparto
-STR_5951    :{WINDOW_COLOUR_2}Identigilo de trakoparto: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Sinsekvonumero: {BLACK}{COMMA16}
+STR_5941    :Baza alteco:
+STR_5942    :Dosierindiko: {BLACK}{STRINGID}
+STR_5943    :Adicioj: {BLACK}{STRINGID}
+STR_5944    :Adicioj: {BLACK}Neniu
+STR_5945    :Kunligitaj randoj:
+STR_5946    :Tipo de atrakcio: {BLACK}{STRINGID}
+STR_5947    :Identigilo de atrakcio: {BLACK}{COMMA16}
+STR_5948    :Nomo de atrakcio: {BLACK}{STRINGID}
+STR_5949    :Ĉenlifto
+STR_5950    :Apliki ŝanĝojn al tuta trakoparto
+STR_5951    :Identigilo de trakoparto: {BLACK}{COMMA16}
+STR_5952    :Sinsekvonumero: {BLACK}{COMMA16}
 STR_5953    :Ordigi la mapelementojn sur la nuna bloko laŭ iliaj bazaj altecoj.
-STR_5954    :{WINDOW_COLOUR_2}Aĝo de pejzaĵo: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Lokado de kvadranto: {BLACK}{STRINGID}
+STR_5954    :Aĝo de pejzaĵo: {BLACK}{COMMA16}
+STR_5955    :Lokado de kvadranto: {BLACK}{STRINGID}
 STR_5956    :Sudokcidento
 STR_5957    :Nordokcidento
 STR_5958    :Nordoriento
 STR_5959    :Sudoriento
-STR_5960    :{WINDOW_COLOUR_2}Lokado de kvadranto:
-STR_5961    :{WINDOW_COLOUR_2}Eniga indekso: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Koliziditektado:
-STR_5963    :{WINDOW_COLOUR_2}Altitaj anguloj:
-STR_5964    :{WINDOW_COLOUR_2}Diagonala
-STR_5965    :{WINDOW_COLOUR_2}Tipo de enirejo: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Parto de parkenirejo: {BLACK}{STRINGID}
+STR_5960    :Lokado de kvadranto:
+STR_5961    :Eniga indekso: {BLACK}{COMMA16}
+STR_5962    :Koliziditektado:
+STR_5963    :Altitaj anguloj:
+STR_5964    :Diagonala
+STR_5965    :Tipo de enirejo: {BLACK}{STRINGID}
+STR_5966    :Parto de parkenirejo: {BLACK}{STRINGID}
 STR_5967    :Meza
 STR_5968    :Maldekstra
 STR_5969    :Dekstra
-STR_5970    :{WINDOW_COLOUR_2}Identigilo de enirejo: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Identigilo de elirejo: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Identigilo de atrakcio: {BLACK}{COMMA16}
+STR_5970    :Identigilo de enirejo: {BLACK}{COMMA16}
+STR_5971    :Identigilo de elirejo: {BLACK}{COMMA16}
+STR_5972    :Identigilo de atrakcio: {BLACK}{COMMA16}
 STR_5973    :Krampi al sekva
 STR_5974    :Ŝanĝas la bazan kaj interspacan altecojn tiel, ke ili samu kun la sekva elemento sur la nuna bloko. Ĉi tio faciligas konstruon sur ĉi tiu bloko.
 STR_5975    :Dekliveco:
 STR_5976    :Plata
 STR_5977    :Dekstra flanko supren
 STR_5978    :Maldekstra flanko supren
-STR_5979    :{WINDOW_COLOUR_2}Tipo de muro: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Teksto de rubando: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Ne estas rubando
-STR_5982    :{WINDOW_COLOUR_2}Tipo de granda pejzaĝo: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Parto-identigilo de granda pejzaĝo: {BLACK}{COMMA16}
+STR_5979    :Tipo de muro: {BLACK}{COMMA16}
+STR_5980    :Teksto de rubando: {BLACK}{STRINGID}
+STR_5981    :Ne estas rubando
+STR_5982    :Tipo de granda pejzaĝo: {BLACK}{COMMA16}
+STR_5983    :Parto-identigilo de granda pejzaĝo: {BLACK}{COMMA16}
 STR_5984    :Blokitaj trotuaroj:
 STR_5985    :Nova dosierujo
 STR_5986    :Tajpu la nomon de la nova dosierujo.
@@ -3483,7 +3483,7 @@ STR_6273    :Muziko
 STR_6274    :Ne eblas agordi kolorskemon…
 STR_6275    :{WINDOW_COLOUR_2}Staciostilo:
 STR_6276    :{RED}{STRINGID} havas gastojn staŭlitajn, eble pro nevalida atrakciotipo aŭ reĝimo de funkciiado.
-STR_6277    :{WINDOW_COLOUR_2}Stacioindekso: {BLACK}{STRINGID}
+STR_6277    :Stacioindekso: {BLACK}{STRINGID}
 STR_6278    :Kiomo por aŭtokonservi
 STR_6279    :Nombro de aŭtokonservaĵoj por konservi
 STR_6280    :Por babili
@@ -3516,9 +3516,9 @@ STR_6315    :{WINDOW_COLOUR_2}Celo de vojotrovo: {BLACK}{INT32}, {INT32}, {INT32
 STR_6316    :{WINDOW_COLOUR_2}Historio de vojotrovo:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :Dissinkronigo de reto detektita.{NEWLINE}Protokolo-dosiero: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Bremso de Blokparto Fermita
-STR_6320    :{WINDOW_COLOUR_2}Nemalkonstruebla
-STR_6321    :{WINDOW_COLOUR_2}Aldonaĵo difektas
+STR_6319    :Bremso de Blokparto Fermita
+STR_6320    :Nemalkonstruebla
+STR_6321    :Aldonaĵo difektas
 STR_6322    :{WINDOW_COLOUR_2}Identigilo de rastrumeto: {BLACK}{INT32}
 STR_6323    :Simulas
 STR_6324    :Simuli
@@ -3564,7 +3564,7 @@ STR_6363    :Teksto kopiita al tondujo
 STR_6364    :{RED}{COMMA16} homo mortis pro akcidento sur {STRINGID}
 STR_6365    :Mortoj sur atrakcio
 STR_6366    :Veturiloj staŭlitaj
-STR_6367    :{WINDOW_COLOUR_2}Kadro de animacio:
+STR_6367    :Kadro de animacio:
 STR_6368    :Por kialoj de kongruo, ne estas rekomendita por lanĉi OpenRCT2 per Wine. OpenRCT2 funkciigas indiĝene sur macOS, Linukso, FreeBSD kaj OpenBSD.
 STR_6369    :Permesi konstruadon de trako al nevalidaj altecoj
 STR_6370    :Permesas metadon de trakpartoj al iu ajn intervalo de altecoj

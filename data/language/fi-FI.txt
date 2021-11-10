@@ -3169,56 +3169,56 @@ STR_5930    :Suurmaisemoinnin tiedot
 STR_5931    :Bannerin tiedot
 STR_5932    :Vioittuneen elementin tiedot
 STR_5933    :Ominaisuudet
-STR_5934    :{WINDOW_COLOUR_2}Maastokuviointi: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Maaston sivu: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Maan omistajuus: {BLACK}{STRINGID}
+STR_5934    :Maastokuviointi: {BLACK}{STRINGID}
+STR_5935    :Maaston sivu: {BLACK}{STRINGID}
+STR_5936    :Maan omistajuus: {BLACK}{STRINGID}
 STR_5937    :Ei omistettu eikä myynnissä
-STR_5938    :{WINDOW_COLOUR_2}Veden taso: {BLACK}{COMMA16}
+STR_5938    :Veden taso: {BLACK}{COMMA16}
 STR_5939    :Poista puiston aidat
 STR_5940    :Palauta puiston aidat
-STR_5941    :{WINDOW_COLOUR_2}Pohjakorkeus:
-STR_5942    :{WINDOW_COLOUR_2}Polun nimi: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Lisäosat: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Lisäosat: {BLACK}Ei mitään
-STR_5945    :{WINDOW_COLOUR_2}Yhdistetyt reunat:
-STR_5946    :{WINDOW_COLOUR_2}Laitetyyppi: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Laitetunnus: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Laitteen nimi: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Nostomäki
-STR_5950    :{WINDOW_COLOUR_2}Sovella muutokset koko rataosaan
-STR_5951    :{WINDOW_COLOUR_2}Rataosatunnus: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Jaksonumero: {BLACK}{COMMA16}
+STR_5941    :Pohjakorkeus:
+STR_5942    :Polun nimi: {BLACK}{STRINGID}
+STR_5943    :Lisäosat: {BLACK}{STRINGID}
+STR_5944    :Lisäosat: {BLACK}Ei mitään
+STR_5945    :Yhdistetyt reunat:
+STR_5946    :Laitetyyppi: {BLACK}{STRINGID}
+STR_5947    :Laitetunnus: {BLACK}{COMMA16}
+STR_5948    :Laitteen nimi: {BLACK}{STRINGID}
+STR_5949    :Nostomäki
+STR_5950    :Sovella muutokset koko rataosaan
+STR_5951    :Rataosatunnus: {BLACK}{COMMA16}
+STR_5952    :Jaksonumero: {BLACK}{COMMA16}
 STR_5953    :Järjestä tasoelementit nykyisessä ruudussa korkeuksiensa mukaan.
-STR_5954    :{WINDOW_COLOUR_2}Maisemoinnin ikä: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Sijoituksen neljäsosa: {BLACK}{STRINGID}
+STR_5954    :Maisemoinnin ikä: {BLACK}{COMMA16}
+STR_5955    :Sijoituksen neljäsosa: {BLACK}{STRINGID}
 STR_5956    :Lounas
 STR_5957    :Luode
 STR_5958    :Koillinen
 STR_5959    :Kaakko
-STR_5960    :{WINDOW_COLOUR_2}Sijoituksen neljäsosa:
-STR_5961    :{WINDOW_COLOUR_2}Indeksi: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Törmäystunnistus:
-STR_5963    :{WINDOW_COLOUR_2}Nostetut kulmat:
-STR_5964    :{WINDOW_COLOUR_2}Viisto
-STR_5965    :{WINDOW_COLOUR_2}Sisäänkäynnin tyyppi: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Puistosisäänkäynnin osa: {BLACK}{STRINGID}
+STR_5960    :Sijoituksen neljäsosa:
+STR_5961    :Indeksi: {BLACK}{COMMA16}
+STR_5962    :Törmäystunnistus:
+STR_5963    :Nostetut kulmat:
+STR_5964    :Viisto
+STR_5965    :Sisäänkäynnin tyyppi: {BLACK}{STRINGID}
+STR_5966    :Puistosisäänkäynnin osa: {BLACK}{STRINGID}
 STR_5967    :Keski
 STR_5968    :Vasen
 STR_5969    :Oikea
-STR_5970    :{WINDOW_COLOUR_2}Sisäänkäyntitunnus: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Uloskäyntitunnus: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Laitetunnus: {BLACK}{COMMA16}
+STR_5970    :Sisäänkäyntitunnus: {BLACK}{COMMA16}
+STR_5971    :Uloskäyntitunnus: {BLACK}{COMMA16}
+STR_5972    :Laitetunnus: {BLACK}{COMMA16}
 STR_5973    :Kiinnitä seuraavaan
 STR_5974    :Muuttaa perus- ja vapaakorkeuden samaan tasoon kuin tämän ruudun seuraava elementti. Tämä tekee tälle ruudulle rakentamisesta helpompaa.
 STR_5975    :Mäki:
 STR_5976    :Tasainen
 STR_5977    :Oikea puoli ylös
 STR_5978    :Vasen puoli ylös
-STR_5979    :{WINDOW_COLOUR_2}Seinän tyyppi: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Bannerin teksti: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Ei banneri
-STR_5982    :{WINDOW_COLOUR_2}Suurmaisemoinnin tyyppi: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Suurmaisemoinnin tunnus: {BLACK}{COMMA16}
+STR_5979    :Seinän tyyppi: {BLACK}{COMMA16}
+STR_5980    :Bannerin teksti: {BLACK}{STRINGID}
+STR_5981    :Ei banneri
+STR_5982    :Suurmaisemoinnin tyyppi: {BLACK}{COMMA16}
+STR_5983    :Suurmaisemoinnin tunnus: {BLACK}{COMMA16}
 STR_5984    :Estetyt polut:
 STR_5985    :Uusi kansio
 STR_5986    :Anna nimi uudelle kansiolle.
@@ -3490,7 +3490,7 @@ STR_6273    :Musiikki
 STR_6274    :Väriskeemaa ei voi valita…
 STR_6275    :{WINDOW_COLOUR_2}Aseman tyyli:
 STR_6276    :{RED}Kävijät juuttuvat kohteeseen {STRINGID}, mahdollisesti väärän laitetyypin tai toimintatilan johdosta.
-STR_6277    :{WINDOW_COLOUR_2}Aseman numero: {BLACK}{STRINGID}
+STR_6277    :Aseman numero: {BLACK}{STRINGID}
 STR_6278    :Tallennuksien määrä
 STR_6279    :Kuinka monta automaattista tallennusta tulisi pitää
 STR_6280    :Keskustelu
@@ -3523,9 +3523,9 @@ STR_6315    :{WINDOW_COLOUR_2}Polunetsintä: {BLACK}{INT32}, {INT32}, {INT32} su
 STR_6316    :{WINDOW_COLOUR_2}Polunetsinnän historia:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} suunta {INT32}
 STR_6318    :Verkkopelin epätahdistus havaittu.{NEWLINE}Lokitiedosto: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Lohkojarru kiinni
-STR_6320    :{WINDOW_COLOUR_2}Hajoutumaton
-STR_6321    :{WINDOW_COLOUR_2}Lisäosa on hajonnut
+STR_6319    :Lohkojarru kiinni
+STR_6320    :Hajoutumaton
+STR_6321    :Lisäosa on hajonnut
 STR_6322    :{WINDOW_COLOUR_2}Spritetunnus: {BLACK}{INT32}
 STR_6323    :Simuloidaan
 STR_6324    :Simuloi
@@ -3571,7 +3571,7 @@ STR_6363    :Kopioitu leikepöydälle
 STR_6364    :{RED}{COMMA16} henkilö on kuollut laitteen {STRINGID} onnettomuudessa
 STR_6365    :Laitteen uhrit
 STR_6366    :Juuttuneet vaunut
-STR_6367    :{WINDOW_COLOUR_2}Animaatiokehys:
+STR_6367    :Animaatiokehys:
 STR_6368    :Yhteensopivuussyistä emme suosittele että käytät OpenRCT2:ta Winen kautta. OpenRCT2 tukee natiivisti macOSia, Linuxia, FreeBSD:tä ja OpenBSD:tä.
 STR_6369    :Salli radan rakennus vääriin korkeuksiin
 STR_6370    :Sallii radan sijoituksen mihin tahansa korkeuteen

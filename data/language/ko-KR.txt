@@ -3165,56 +3165,56 @@ STR_5930    :대형 풍경 상세정보
 STR_5931    :팻말 상세정보
 STR_5932    :손상된 요소 상세정보
 STR_5933    :속성
-STR_5934    :{WINDOW_COLOUR_2}지형 표면: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}지형 절벽: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}땅 소유 정보: {BLACK}{STRINGID}
+STR_5934    :지형 표면: {BLACK}{STRINGID}
+STR_5935    :지형 절벽: {BLACK}{STRINGID}
+STR_5936    :땅 소유 정보: {BLACK}{STRINGID}
 STR_5937    :소유주 없음, 판매 중이지 않음
-STR_5938    :{WINDOW_COLOUR_2}수면 고도: {BLACK}{COMMA16}
+STR_5938    :수면 고도: {BLACK}{COMMA16}
 STR_5939    :공원 울타리 제거
 STR_5940    :공원 울타리 복구
-STR_5941    :{WINDOW_COLOUR_2}기본 높이:
-STR_5942    :{WINDOW_COLOUR_2}보도 이름: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}기물: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}기물: {BLACK}없음
-STR_5945    :{WINDOW_COLOUR_2}연결된 면:
-STR_5946    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}놀이기구 ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}놀이기구 이름: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}체인 리프트
-STR_5950    :{WINDOW_COLOUR_2}전체 트랙 조각에 변경사항 적용
-STR_5951    :{WINDOW_COLOUR_2}트랙 조각 ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}시퀀스 번호: {BLACK}{COMMA16}
+STR_5941    :기본 높이:
+STR_5942    :보도 이름: {BLACK}{STRINGID}
+STR_5943    :기물: {BLACK}{STRINGID}
+STR_5944    :기물: {BLACK}없음
+STR_5945    :연결된 면:
+STR_5946    :놀이기구 종류: {BLACK}{STRINGID}
+STR_5947    :놀이기구 ID: {BLACK}{COMMA16}
+STR_5948    :놀이기구 이름: {BLACK}{STRINGID}
+STR_5949    :체인 리프트
+STR_5950    :전체 트랙 조각에 변경사항 적용
+STR_5951    :트랙 조각 ID: {BLACK}{COMMA16}
+STR_5952    :시퀀스 번호: {BLACK}{COMMA16}
 STR_5953    :현재 칸 위의 맵 요소를 기본 높이 순으로 정렬합니다.
-STR_5954    :{WINDOW_COLOUR_2}풍경 나이: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}1/4칸 위치: {BLACK}{STRINGID}
+STR_5954    :풍경 나이: {BLACK}{COMMA16}
+STR_5955    :1/4칸 위치: {BLACK}{STRINGID}
 STR_5956    :남서
 STR_5957    :북서
 STR_5958    :북동
 STR_5959    :남동
-STR_5960    :{WINDOW_COLOUR_2}1/4칸 위치:
-STR_5961    :{WINDOW_COLOUR_2}엔트리 인덱스: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}겹침 탐지:
-STR_5963    :{WINDOW_COLOUR_2}올라간 구석:
-STR_5964    :{WINDOW_COLOUR_2}대각선
-STR_5965    :{WINDOW_COLOUR_2}입구 종류: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}공원 입구 조각: {BLACK}{STRINGID}
+STR_5960    :1/4칸 위치:
+STR_5961    :엔트리 인덱스: {BLACK}{COMMA16}
+STR_5962    :겹침 탐지:
+STR_5963    :올라간 구석:
+STR_5964    :대각선
+STR_5965    :입구 종류: {BLACK}{STRINGID}
+STR_5966    :공원 입구 조각: {BLACK}{STRINGID}
 STR_5967    :중간
 STR_5968    :왼쪽
 STR_5969    :오른쪽
-STR_5970    :{WINDOW_COLOUR_2}입구 ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}출구 ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}놀이기구 ID: {BLACK}{COMMA16}
+STR_5970    :입구 ID: {BLACK}{COMMA16}
+STR_5971    :출구 ID: {BLACK}{COMMA16}
+STR_5972    :놀이기구 ID: {BLACK}{COMMA16}
 STR_5973    :다음 요소로
 STR_5974    :기본 높이와 객체 높이를 변경하여 현재 칸 위에 있는 다음 요소와 같은 높이로 만듭니다. 이 작업은 이 칸에서의 건설 행위를 더욱 쉽게 만들어줍니다.
 STR_5975    :경사:
 STR_5976    :평평함
 STR_5977    :우측이 올라감
 STR_5978    :좌측이 올라감
-STR_5979    :{WINDOW_COLOUR_2}울타리 종류: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}팻말 문구: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}팻말이 아님
-STR_5982    :{WINDOW_COLOUR_2}대형 풍경 종류: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}대형 풍경 조각 ID: {BLACK}{COMMA16}
+STR_5979    :울타리 종류: {BLACK}{COMMA16}
+STR_5980    :팻말 문구: {BLACK}{STRINGID}
+STR_5981    :팻말이 아님
+STR_5982    :대형 풍경 종류: {BLACK}{COMMA16}
+STR_5983    :대형 풍경 조각 ID: {BLACK}{COMMA16}
 STR_5984    :막힌 보도:
 STR_5985    :새 폴더
 STR_5986    :새 폴더의 이름을 입력하세요.
@@ -3486,7 +3486,7 @@ STR_6273    :음악
 STR_6274    :색상을 지정할 수 없습니다…
 STR_6275    :{WINDOW_COLOUR_2}정거장 스타일:
 STR_6276    :{RED}{STRINGID}의 손님이 올바르지 않은 놀이기구 종류나 운행 모드로 인해 끼었습니다.
-STR_6277    :{WINDOW_COLOUR_2}정거장 번호: {BLACK}{STRINGID}
+STR_6277    :정거장 번호: {BLACK}{STRINGID}
 STR_6278    :자동 저장 개수
 STR_6279    :보관되는 자동 저장 파일의 개수입니다.
 STR_6280    :채팅
@@ -3519,9 +3519,9 @@ STR_6315    :{WINDOW_COLOUR_2}경로탐색 목표: {BLACK}{INT32}, {INT32}, {INT
 STR_6316    :{WINDOW_COLOUR_2}경로탐색 기록:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} 방향 {INT32}
 STR_6318    :네트워크 비동기화가 감지되었습니다.{NEWLINE}로그 파일: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}블록 브레이크 닫기
-STR_6320    :{WINDOW_COLOUR_2}파괴 불가
-STR_6321    :{WINDOW_COLOUR_2}기물 부서짐
+STR_6319    :블록 브레이크 닫기
+STR_6320    :파괴 불가
+STR_6321    :기물 부서짐
 STR_6322    :{WINDOW_COLOUR_2}스프라이트 ID: {BLACK}{INT32}
 STR_6323    :가상 운행 중
 STR_6324    :가상 운행
@@ -3567,7 +3567,7 @@ STR_6363    :텍스트를 클립보드에 복사하였습니다
 STR_6364    :{RED}{COMMA16}명의 손님이 {STRINGID} 사고로 사망하였습니다!
 STR_6365    :놀이기구 사상자
 STR_6366    :끼거나 움직이지 않는 놀이기구
-STR_6367    :{WINDOW_COLOUR_2}애니메이션 프레임:
+STR_6367    :애니메이션 프레임:
 STR_6368    :호환성의 이유로, OpenRCT2를 Wine에서 실행하는 것을 권장하지 않습니다. OpenRCT2는 macOS, Linux, FreeBSD, OpenBSD에서 실행하는 것을 기본적으로 지원합니다.
 STR_6369    :올바르지 않은 높이에 트랙 짓기 허용
 STR_6370    :어떤 높이에나 트랙 조각을 놓을 수 있게 됩니다

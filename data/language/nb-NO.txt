@@ -3163,56 +3163,56 @@ STR_5930    :Stor pynt-detaljer
 STR_5931    :Bannerdetaljer
 STR_5932    :Korrupt element-detaljer
 STR_5933    :Egenskaper
-STR_5934    :{WINDOW_COLOUR_2}Terrengtekstur: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Terrengkant: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Landeierskap: {BLACK}{STRINGID}
+STR_5934    :Terrengtekstur: {BLACK}{STRINGID}
+STR_5935    :Terrengkant: {BLACK}{STRINGID}
+STR_5936    :Landeierskap: {BLACK}{STRINGID}
 STR_5937    :Ikke eid og ikke til salgs
-STR_5938    :{WINDOW_COLOUR_2}Vannivå: {BLACK}{COMMA16}
+STR_5938    :Vannivå: {BLACK}{COMMA16}
 STR_5939    :Fjern parkgjerder
 STR_5940    :Gjenopprett parkgjerder
-STR_5941    :{WINDOW_COLOUR_2}Grunnhøyde:
-STR_5942    :{WINDOW_COLOUR_2}Navn på gangsti: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Tillegg: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Tillegg: {BLACK}Ingen
-STR_5945    :{WINDOW_COLOUR_2}Tilliggende kanter:
-STR_5946    :{WINDOW_COLOUR_2}Attraksjonstype: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Attraksjons-ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Attraksonsnavn: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Trekk
-STR_5950    :{WINDOW_COLOUR_2}Påfør endringer på banedel
-STR_5951    :{WINDOW_COLOUR_2}Baneeleent-ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Sekvensnummer: {BLACK}{COMMA16}
+STR_5941    :Grunnhøyde:
+STR_5942    :Navn på gangsti: {BLACK}{STRINGID}
+STR_5943    :Tillegg: {BLACK}{STRINGID}
+STR_5944    :Tillegg: {BLACK}Ingen
+STR_5945    :Tilliggende kanter:
+STR_5946    :Attraksjonstype: {BLACK}{STRINGID}
+STR_5947    :Attraksjons-ID: {BLACK}{COMMA16}
+STR_5948    :Attraksonsnavn: {BLACK}{STRINGID}
+STR_5949    :Trekk
+STR_5950    :Påfør endringer på banedel
+STR_5951    :Baneeleent-ID: {BLACK}{COMMA16}
+STR_5952    :Sekvensnummer: {BLACK}{COMMA16}
 STR_5953    :Sorter elementer på denne ruten basert på grunnhøyde.
-STR_5954    :{WINDOW_COLOUR_2}Pyntalder: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Kvadrantposisjon: {BLACK}{STRINGID}
+STR_5954    :Pyntalder: {BLACK}{COMMA16}
+STR_5955    :Kvadrantposisjon: {BLACK}{STRINGID}
 STR_5956    :Sørvest
 STR_5957    :Nordvest
 STR_5958    :Nordøst
 STR_5959    :Sørøst
-STR_5960    :{WINDOW_COLOUR_2}Kvadrantposisjon:
-STR_5961    :{WINDOW_COLOUR_2}Oppføringsindeks: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Kollisjonsdeteksjon:
-STR_5963    :{WINDOW_COLOUR_2}Opphøyde hjørner:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Inngangstype: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Parkinngangsdel: {BLACK}{STRINGID}
+STR_5960    :Kvadrantposisjon:
+STR_5961    :Oppføringsindeks: {BLACK}{COMMA16}
+STR_5962    :Kollisjonsdeteksjon:
+STR_5963    :Opphøyde hjørner:
+STR_5964    :Diagonal
+STR_5965    :Inngangstype: {BLACK}{STRINGID}
+STR_5966    :Parkinngangsdel: {BLACK}{STRINGID}
 STR_5967    :Midten
 STR_5968    :Venstre
 STR_5969    :Høyre
-STR_5970    :{WINDOW_COLOUR_2}Inngangs-ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Utgangs-ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Attraksjons-ID: {BLACK}{COMMA16}
+STR_5970    :Inngangs-ID: {BLACK}{COMMA16}
+STR_5971    :Utgangs-ID: {BLACK}{COMMA16}
+STR_5972    :Attraksjons-ID: {BLACK}{COMMA16}
 STR_5973    :Fest til neste
 STR_5974    :Endrer grunn- og klareringshøyden til å være lik neste element på denne ruten. Dette gjør det enklere å bygge på ruten.
 STR_5975    :Helning:
 STR_5976    :Vannrett
 STR_5977    :Høyre side opp
 STR_5978    :Venstre side opp
-STR_5979    :{WINDOW_COLOUR_2}Gjerdetype: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Bannertekst: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Ikke et banner
-STR_5982    :{WINDOW_COLOUR_2}Stor pynt-type: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Stor pynt-element-ID: {BLACK}{COMMA16}
+STR_5979    :Gjerdetype: {BLACK}{COMMA16}
+STR_5980    :Bannertekst: {BLACK}{STRINGID}
+STR_5981    :Ikke et banner
+STR_5982    :Stor pynt-type: {BLACK}{COMMA16}
+STR_5983    :Stor pynt-element-ID: {BLACK}{COMMA16}
 STR_5984    :Blokkerte gangstier:
 STR_5985    :Ny mappe
 STR_5986    :Skriv inn navnet på den nye mappen.
@@ -3486,7 +3486,7 @@ STR_6273    :Musikk
 STR_6274    :Kan ikke sette fargevalg…
 STR_6275    :{WINDOW_COLOUR_2}Stasjon-stil:
 STR_6276    :{RED}Gjester sitter fast i {STRINGID}, mulig grunnet ugyldig attraksjonstype eller operasjonsmodus.
-STR_6277    :{WINDOW_COLOUR_2}Stasjonsindeks: {BLACK}{STRINGID}
+STR_6277    :Stasjonsindeks: {BLACK}{STRINGID}
 STR_6278    :Antall autolagringer
 STR_6279    :Antall automatiske lagringer som blir beholdt
 STR_6280    :Chat
@@ -3520,9 +3520,9 @@ STR_6315    :{WINDOW_COLOUR_2}Stifinner: {BLACK}{INT32}, {INT32}, {INT32} retnin
 STR_6316    :{WINDOW_COLOUR_2}Stifinnerhistorie:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} retning {INT32}
 STR_6318    :Mistet synkronisering med server.{NEWLINE}Loggfil: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Blokkbremser stengt
-STR_6320    :{WINDOW_COLOUR_2}Kan ikke ødelegges
-STR_6321    :{WINDOW_COLOUR_2}Gangstitillegg er ødelagt
+STR_6319    :Blokkbremser stengt
+STR_6320    :Kan ikke ødelegges
+STR_6321    :Gangstitillegg er ødelagt
 STR_6322    :{WINDOW_COLOUR_2}Sprite-ID: {BLACK}{INT32}
 STR_6323    :Simulerer
 STR_6324    :Simuler

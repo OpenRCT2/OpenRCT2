@@ -3167,56 +3167,56 @@ STR_5930    :巨型景物詳情
 STR_5931    :橫額詳情
 STR_5932    :已毀壞元素詳情
 STR_5933    :屬性
-STR_5934    :{WINDOW_COLOUR_2}地型素材: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}地型邊緣: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}土地擁有權: {BLACK}{STRINGID}
+STR_5934    :地型素材: {BLACK}{STRINGID}
+STR_5935    :地型邊緣: {BLACK}{STRINGID}
+STR_5936    :土地擁有權: {BLACK}{STRINGID}
 STR_5937    :並未擁有亦並不可買
-STR_5938    :{WINDOW_COLOUR_2}水位: {BLACK}{COMMA16}
+STR_5938    :水位: {BLACK}{COMMA16}
 STR_5939    :移除樂園邊界
 STR_5940    :還原樂園邊界
-STR_5941    :{WINDOW_COLOUR_2}地面高度:
-STR_5942    :{WINDOW_COLOUR_2}道路名稱: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}附加物品: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}附加物品: {BLACK}暫無
-STR_5945    :{WINDOW_COLOUR_2}已連接的邊緣:
-STR_5946    :{WINDOW_COLOUR_2}遊樂設施種類: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}遊樂設施編號: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}遊樂設施名稱: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}鏈條坡道
-STR_5950    :{WINDOW_COLOUR_2}將改變應用於整個軌道組件中
-STR_5951    :{WINDOW_COLOUR_2}軌道組件編號: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}次序數目: {BLACK}{COMMA16}
+STR_5941    :地面高度:
+STR_5942    :道路名稱: {BLACK}{STRINGID}
+STR_5943    :附加物品: {BLACK}{STRINGID}
+STR_5944    :附加物品: {BLACK}暫無
+STR_5945    :已連接的邊緣:
+STR_5946    :遊樂設施種類: {BLACK}{STRINGID}
+STR_5947    :遊樂設施編號: {BLACK}{COMMA16}
+STR_5948    :遊樂設施名稱: {BLACK}{STRINGID}
+STR_5949    :鏈條坡道
+STR_5950    :將改變應用於整個軌道組件中
+STR_5951    :軌道組件編號: {BLACK}{COMMA16}
+STR_5952    :次序數目: {BLACK}{COMMA16}
 STR_5953    :以底部高度排序目前網格上的地圖元素
-STR_5954    :{WINDOW_COLOUR_2}景物年齡: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Quadrant放置: {BLACK}{STRINGID}
+STR_5954    :景物年齡: {BLACK}{COMMA16}
+STR_5955    :Quadrant放置: {BLACK}{STRINGID}
 STR_5956    :西南
 STR_5957    :西北
 STR_5958    :東北
 STR_5959    :東南
-STR_5960    :{WINDOW_COLOUR_2}Quadrant放置:
-STR_5961    :{WINDOW_COLOUR_2}入口編號: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}衝突檢測:
-STR_5963    :{WINDOW_COLOUR_2}已升起的角落:
-STR_5964    :{WINDOW_COLOUR_2}斜角
-STR_5965    :{WINDOW_COLOUR_2}入口類型: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}樂園入口部份: {BLACK}{STRINGID}
+STR_5960    :Quadrant放置:
+STR_5961    :入口編號: {BLACK}{COMMA16}
+STR_5962    :衝突檢測:
+STR_5963    :已升起的角落:
+STR_5964    :斜角
+STR_5965    :入口類型: {BLACK}{STRINGID}
+STR_5966    :樂園入口部份: {BLACK}{STRINGID}
 STR_5967    :中間
 STR_5968    :左
 STR_5969    :右
-STR_5970    :{WINDOW_COLOUR_2}入口編號: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}出口編號: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}遊樂設施編號: {BLACK}{COMMA16}
+STR_5970    :入口編號: {BLACK}{COMMA16}
+STR_5971    :出口編號: {BLACK}{COMMA16}
+STR_5972    :遊樂設施編號: {BLACK}{COMMA16}
 STR_5973    :與下一地圖元素並列
 STR_5974    :將此元素的底部及清空高度與下一元素調整成一致. 此舉會讓於此網格上建造得更加容易.
 STR_5975    :坡道:
 STR_5976    :平坦
 STR_5977    :右邊向上
 STR_5978    :左邊向上
-STR_5979    :{WINDOW_COLOUR_2}圍欄類型: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}橫額文字: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}不是橫額
-STR_5982    :{WINDOW_COLOUR_2}巨型景物類型: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}巨型景物組件編號: {BLACK}{COMMA16}
+STR_5979    :圍欄類型: {BLACK}{COMMA16}
+STR_5980    :橫額文字: {BLACK}{STRINGID}
+STR_5981    :不是橫額
+STR_5982    :巨型景物類型: {BLACK}{COMMA16}
+STR_5983    :巨型景物組件編號: {BLACK}{COMMA16}
 STR_5984    :被擋住的道路:
 STR_5985    :建立新文件夾
 STR_5986    :請輸入新文件夾的名字
@@ -3491,7 +3491,7 @@ STR_6273    :音樂
 STR_6274    :無法設置色彩選配…
 STR_6275    :{WINDOW_COLOUR_2}車站風格:
 STR_6276    :{RED}有遊客於{STRINGID}中卡住, 可能因為使用了非法的遊樂設施種類或運作模式.
-STR_6277    :{WINDOW_COLOUR_2}車站索引: {BLACK}{COMMA16}
+STR_6277    :車站索引: {BLACK}{COMMA16}
 STR_6278    :自動存檔數量
 STR_6279    :設置該保留的自動存檔數量
 STR_6280    :聊天
@@ -3524,9 +3524,9 @@ STR_6315    :{WINDOW_COLOUR_2}尋路目標: {BLACK}{INT32}, {INT32}, {INT32} 方
 STR_6316    :{WINDOW_COLOUR_2}尋路歷史:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} 方向 {INT32}
 STR_6318    :檢測到網絡不同步.{NEWLINE}記錄檔: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}關閉區域煞車
-STR_6320    :{WINDOW_COLOUR_2}永不損壞
-STR_6321    :{WINDOW_COLOUR_2}附加物品已損壞
+STR_6319    :關閉區域煞車
+STR_6320    :永不損壞
+STR_6321    :附加物品已損壞
 STR_6322    :{WINDOW_COLOUR_2}元素ID: {BLACK}{INT32}
 STR_6323    :模擬運作中
 STR_6324    :模擬
@@ -3572,7 +3572,7 @@ STR_6363    :複製文字到剪貼簿
 STR_6364    :{RED}{COMMA16}人已於{STRINGID}的意外中喪生
 STR_6365    :於遊樂設施中發生的傷亡
 STR_6366    :卡住或被停止了的車輛
-STR_6367    :{WINDOW_COLOUR_2}動畫影格:
+STR_6367    :動畫影格:
 STR_6368    :因為兼容性原因, 不建議以Wine上運行OpenRCT2. OpenRCT2能原生支援macOS, Linux, FreeBSD及OpenBSD.
 STR_6369    :允許在不合理的高度上建造軌道
 STR_6370    :{SMALLFONT}{BLACK}允許在任何高度上放置軌道選項

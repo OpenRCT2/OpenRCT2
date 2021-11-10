@@ -3163,56 +3163,56 @@ STR_5930    :تفاصيل المشهد الكبير
 STR_5931    :تفاصيل اليافطة
 STR_5932    :تفاصيل العناصر الفاسدة
 STR_5933    :الخصائص
-STR_5934    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Land ownership: {BLACK}{STRINGID}
+STR_5934    :Terrain texture: {BLACK}{STRINGID}
+STR_5935    :Terrain edge: {BLACK}{STRINGID}
+STR_5936    :Land ownership: {BLACK}{STRINGID}
 STR_5937    :Not owned and not for sale
-STR_5938    :{WINDOW_COLOUR_2}Water level: {BLACK}{COMMA16}
+STR_5938    :Water level: {BLACK}{COMMA16}
 STR_5939    :Remove park fences
 STR_5940    :Restore park fences
-STR_5941    :{WINDOW_COLOUR_2}ارتفاع القاعدة:
-STR_5942    :{WINDOW_COLOUR_2}أسم المسار: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}الإضافات: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}الإضافات: {BLACK}لا شئ
-STR_5945    :{WINDOW_COLOUR_2}حواف متصلة:
-STR_5946    :{WINDOW_COLOUR_2}نوع الرحلة: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}معرف الرحلة: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}أسم الرحلة: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Chain lift
-STR_5950    :{WINDOW_COLOUR_2}Apply changes to entire track piece
-STR_5951    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
+STR_5941    :ارتفاع القاعدة:
+STR_5942    :أسم المسار: {BLACK}{STRINGID}
+STR_5943    :الإضافات: {BLACK}{STRINGID}
+STR_5944    :الإضافات: {BLACK}لا شئ
+STR_5945    :حواف متصلة:
+STR_5946    :نوع الرحلة: {BLACK}{STRINGID}
+STR_5947    :معرف الرحلة: {BLACK}{COMMA16}
+STR_5948    :أسم الرحلة: {BLACK}{STRINGID}
+STR_5949    :Chain lift
+STR_5950    :Apply changes to entire track piece
+STR_5951    :Track piece ID: {BLACK}{COMMA16}
+STR_5952    :Sequence number: {BLACK}{COMMA16}
 STR_5953    :Sort the map elements on the current tile based on their base height.
-STR_5954    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}وضع حالة رباعي: {BLACK}{STRINGID}
+STR_5954    :Scenery age: {BLACK}{COMMA16}
+STR_5955    :وضع حالة رباعي: {BLACK}{STRINGID}
 STR_5956    :جنوب غرب
 STR_5957    :الشمال الغربي
 STR_5958    :شمالي شرقي
 STR_5959    :الجنوب الشرقي
-STR_5960    :{WINDOW_COLOUR_2}وضع حالة رباعي:
-STR_5961    :{WINDOW_COLOUR_2}فهرس المدخل: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}كشف التصادم:
-STR_5963    :{WINDOW_COLOUR_2}زوايا مرتفعة:
-STR_5964    :{WINDOW_COLOUR_2}مائل
-STR_5965    :{WINDOW_COLOUR_2}نوع المدخل: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}جزء مدخل الحديقة: {BLACK}{STRINGID}
+STR_5960    :وضع حالة رباعي:
+STR_5961    :فهرس المدخل: {BLACK}{COMMA16}
+STR_5962    :كشف التصادم:
+STR_5963    :زوايا مرتفعة:
+STR_5964    :مائل
+STR_5965    :نوع المدخل: {BLACK}{STRINGID}
+STR_5966    :جزء مدخل الحديقة: {BLACK}{STRINGID}
 STR_5967    :وسط
 STR_5968    :شمال
 STR_5969    :يمين
-STR_5970    :{WINDOW_COLOUR_2}مُعرف المدخل: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}مُعرف المخرج: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}مُعرف الرحلة: {BLACK}{COMMA16}
+STR_5970    :مُعرف المدخل: {BLACK}{COMMA16}
+STR_5971    :مُعرف المخرج: {BLACK}{COMMA16}
+STR_5972    :مُعرف الرحلة: {BLACK}{COMMA16}
 STR_5973    :تسلق إلي الأعلي
 STR_5974    :Changes the base- and clearance height so that it’s at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
 STR_5975    :إنحدار:
 STR_5976    :مستوي
 STR_5977    :الجانب الأيمن الأعلى
 STR_5978    :الجانب الأيسر لأعلى
-STR_5979    :{WINDOW_COLOUR_2}نوع الحائط: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}كتابة اليافطة: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}ليست يافطة
-STR_5982    :{WINDOW_COLOUR_2}نوع المشهد الكبير: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}معرّف قطعة المشاهد الكبيرة: {BLACK}{COMMA16}
+STR_5979    :نوع الحائط: {BLACK}{COMMA16}
+STR_5980    :كتابة اليافطة: {BLACK}{STRINGID}
+STR_5981    :ليست يافطة
+STR_5982    :نوع المشهد الكبير: {BLACK}{COMMA16}
+STR_5983    :معرّف قطعة المشاهد الكبيرة: {BLACK}{COMMA16}
 STR_5984    ::المسارات المقفلة
 STR_5985    :مجلد جديد
 STR_5986    :.أدخل الأسم للمجلد الجديد
@@ -3480,7 +3480,7 @@ STR_6273    :الموسيقي
 STR_6274    :…لا يمكن تحديد مخطط اللون
 STR_6275    :{WINDOW_COLOUR_2}نمط المحطة
 STR_6276    :{RED}{STRINGID} .هل علق الزوار؟ ربما يكون هذا بسبب أفعوانية غير صالحة أو وضع تشغيل غير صالح
-STR_6277    :{WINDOW_COLOUR_2} {BLACK}{STRINGID} :فهرسة المحطة
+STR_6277    :{BLACK}{STRINGID} :فهرسة المحطة
 STR_6278    :عدد ملفات الحفظ التلقائي
 STR_6279    :عدد ملفات الحفظ التلقائي التي يجب إبقائها في المرة الواحدة
 STR_6280    :الدردشة
@@ -3512,9 +3512,9 @@ STR_6315    :{WINDOW_COLOUR_2}هدف مُحدد المسار: {BLACK}{INT32}, {I
 STR_6316    :{WINDOW_COLOUR_2}تاريخ مُحدد المسار:
 STR_6317    :{BLACK}{INT32}، {INT32}، {INT32} مسار {INT32}
 STR_6318    :{STRING} :ملف السجل {NEWLINE}.تم إكتشاف إنفصال عن الشبكة 
-STR_6319    :{WINDOW_COLOUR_2}مكابح البلوك مغلقة
-STR_6320    :{WINDOW_COLOUR_2}غير قابل للتدمير
-STR_6321    :{WINDOW_COLOUR_2}الإضافة متضررة
+STR_6319    :مكابح البلوك مغلقة
+STR_6320    :غير قابل للتدمير
+STR_6321    :الإضافة متضررة
 STR_6322    :{WINDOW_COLOUR_2} {BLACK}{INT32} :رقم النقش المتحرك
 STR_6323    :يُحاكي
 STR_6324    :حاكي

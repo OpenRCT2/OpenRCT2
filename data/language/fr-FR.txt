@@ -3169,56 +3169,56 @@ STR_5930    :Détails du grand décor
 STR_5931    :Détails de la bannière
 STR_5932    :Détails de l’élément corrompu
 STR_5933    :Propriétés
-STR_5934    :{WINDOW_COLOUR_2}Texture du terrain : {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Bords du terrain : {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Propriété du terrain : {BLACK}{STRINGID}
+STR_5934    :Texture du terrain : {BLACK}{STRINGID}
+STR_5935    :Bords du terrain : {BLACK}{STRINGID}
+STR_5936    :Propriété du terrain : {BLACK}{STRINGID}
 STR_5937    :Pas acquis et pas à vendre
-STR_5938    :{WINDOW_COLOUR_2}Niveau de l’eau : {BLACK}{COMMA16}
+STR_5938    :Niveau de l’eau : {BLACK}{COMMA16}
 STR_5939    :Suppr. clôtures du parc
 STR_5940    :Restaur. clôtures du parc
-STR_5941    :{WINDOW_COLOUR_2}Hauteur de base :
-STR_5942    :{WINDOW_COLOUR_2}Nom de l’allée : {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Ajouts : {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Ajouts : {BLACK}aucun
-STR_5945    :{WINDOW_COLOUR_2}Côtés connectés :
-STR_5946    :{WINDOW_COLOUR_2}Type d’attraction : {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}ID de l’attraction : {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Nom de l’attraction : {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Remontée à chaîne
-STR_5950    :{WINDOW_COLOUR_2}Appliquer les changements à tout l’élément de voie
-STR_5951    :{WINDOW_COLOUR_2}ID de l’élément de voie : {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Numéro de séquence : {BLACK}{COMMA16}
+STR_5941    :Hauteur de base :
+STR_5942    :Nom de l’allée : {BLACK}{STRINGID}
+STR_5943    :Ajouts : {BLACK}{STRINGID}
+STR_5944    :Ajouts : {BLACK}aucun
+STR_5945    :Côtés connectés :
+STR_5946    :Type d’attraction : {BLACK}{STRINGID}
+STR_5947    :ID de l’attraction : {BLACK}{COMMA16}
+STR_5948    :Nom de l’attraction : {BLACK}{STRINGID}
+STR_5949    :Remontée à chaîne
+STR_5950    :Appliquer les changements à tout l’élément de voie
+STR_5951    :ID de l’élément de voie : {BLACK}{COMMA16}
+STR_5952    :Numéro de séquence : {BLACK}{COMMA16}
 STR_5953    :Trier les éléments sur la case actuelle en fonction de leur hauteur de base
-STR_5954    :{WINDOW_COLOUR_2}Âge du décor : {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Placement sur la case : {BLACK}{STRINGID}
+STR_5954    :Âge du décor : {BLACK}{COMMA16}
+STR_5955    :Placement sur la case : {BLACK}{STRINGID}
 STR_5956    :Sud-Ouest
 STR_5957    :Nord-Ouest
 STR_5958    :Nord-Est
 STR_5959    :Sud-Est
-STR_5960    :{WINDOW_COLOUR_2}Placement sur la case :
-STR_5961    :{WINDOW_COLOUR_2}Index : {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Détection de collision :
-STR_5963    :{WINDOW_COLOUR_2}Coins relevés :
-STR_5964    :{WINDOW_COLOUR_2}Diagonale
-STR_5965    :{WINDOW_COLOUR_2}Type d’entrée : {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Partie de l’entrée : {BLACK}{STRINGID}
+STR_5960    :Placement sur la case :
+STR_5961    :Index : {BLACK}{COMMA16}
+STR_5962    :Détection de collision :
+STR_5963    :Coins relevés :
+STR_5964    :Diagonale
+STR_5965    :Type d’entrée : {BLACK}{STRINGID}
+STR_5966    :Partie de l’entrée : {BLACK}{STRINGID}
 STR_5967    :milieu
 STR_5968    :gauche
 STR_5969    :droite
-STR_5970    :{WINDOW_COLOUR_2}ID de l’entrée : {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}ID de la sortie : {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}ID de l’attraction : {BLACK}{COMMA16}
+STR_5970    :ID de l’entrée : {BLACK}{COMMA16}
+STR_5971    :ID de la sortie : {BLACK}{COMMA16}
+STR_5972    :ID de l’attraction : {BLACK}{COMMA16}
 STR_5973    :Attacher au suivant
 STR_5974    :Change les hauteurs de base et de collision pour qu’elles soient les mêmes que l’élément suivant sur la case. Rend la construction plus facile sur cette case.
 STR_5975    :Pente :
 STR_5976    :plat
 STR_5977    :côté droit vers le haut
 STR_5978    :côté gauche vers le haut
-STR_5979    :{WINDOW_COLOUR_2}Type de clôture : {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Texte de bannière : {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Pas une bannière
-STR_5982    :{WINDOW_COLOUR_2}Type de grand décor : {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}ID de la pièce de grand décor : {BLACK}{COMMA16}
+STR_5979    :Type de clôture : {BLACK}{COMMA16}
+STR_5980    :Texte de bannière : {BLACK}{STRINGID}
+STR_5981    :Pas une bannière
+STR_5982    :Type de grand décor : {BLACK}{COMMA16}
+STR_5983    :ID de la pièce de grand décor : {BLACK}{COMMA16}
 STR_5984    :Allées bloquées :
 STR_5985    :Nv. dossier
 STR_5986    :Entrez le nom du nouveau dossier :
@@ -3490,7 +3490,7 @@ STR_6273    :Musique
 STR_6274    :Impossible de définir la palette de couleurs…
 STR_6275    :{WINDOW_COLOUR_2}Style de quai :
 STR_6276    :{RED}{STRINGID} a des visiteurs coincés, probablement à cause d’un type d’attraction invalide ou du mode d’opération
-STR_6277    :{WINDOW_COLOUR_2}Index du quai : {BLACK}{STRINGID}
+STR_6277    :Index du quai : {BLACK}{STRINGID}
 STR_6278    :Nombre de sauv. auto. :
 STR_6279    :Nombre de sauvegardes automatiques à conserver
 STR_6280    :Chat
@@ -3523,9 +3523,9 @@ STR_6315    :{WINDOW_COLOUR_2}Objectif recherche chemin : {BLACK}{INT32}, {INT3
 STR_6316    :{WINDOW_COLOUR_2}Historique recherche chemin :
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :Desynchronisation réseau détectée.{NEWLINE}Fichier journal : {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Bloc de frein fermé
-STR_6320    :{WINDOW_COLOUR_2}Indestructible
-STR_6321    :{WINDOW_COLOUR_2}L’ajout est cassé
+STR_6319    :Bloc de frein fermé
+STR_6320    :Indestructible
+STR_6321    :L’ajout est cassé
 STR_6322    :{WINDOW_COLOUR_2}Identifiant image-objet : {BLACK}{INT32}
 STR_6323    :Simulation
 STR_6324    :Simuler
@@ -3571,7 +3571,7 @@ STR_6363    :Texte copié dans le presse-papier
 STR_6364    :{RED}{COMMA16} personne sont décédées dans un accident sur {STRINGID}
 STR_6365    :Victimes de l’attraction
 STR_6366    :Véhicules coincés ou au point mort
-STR_6367    :{WINDOW_COLOUR_2}Image de l’animation :
+STR_6367    :Image de l’animation :
 STR_6368    :Pour des raisons de compatibilité, il n’est pas recommandé d’exécuter OpenRCT2 avec Wine. OpenRCT2 supporte nativement macOS, Linux, FreeBSD et OpenBSD.
 STR_6369    :Autoriser la construction de voies {NEWLINE}à des hauteurs invalides
 STR_6370    :Autorise le placement de morceaux de voie à n’importe quelle hauteur

@@ -3157,56 +3157,56 @@ STR_5930    :Büyük dekorasyon bilgileri
 STR_5931    :Banner bilgileri
 STR_5932    :Arızalı madde bilgileri
 STR_5933    :Özellikler
-STR_5934    :{WINDOW_COLOUR_2}Zemin türü: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Duvar türü: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Arazi durumu: {BLACK}{STRINGID}
+STR_5934    :Zemin türü: {BLACK}{STRINGID}
+STR_5935    :Duvar türü: {BLACK}{STRINGID}
+STR_5936    :Arazi durumu: {BLACK}{STRINGID}
 STR_5937    :Hazine malı ve satılık değil
-STR_5938    :{WINDOW_COLOUR_2}Su seviyesi: {BLACK}{COMMA16}
+STR_5938    :Su seviyesi: {BLACK}{COMMA16}
 STR_5939    :Park sınırını kaldır
 STR_5940    :Park sınırını geri ekle
-STR_5941    :{WINDOW_COLOUR_2}Yükseklik seviyesi:
-STR_5942    :{WINDOW_COLOUR_2}Yol türü: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Eklenti: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Eklenti: {BLACK}Yok
-STR_5945    :{WINDOW_COLOUR_2}Bağlantı noktaları:
-STR_5946    :{WINDOW_COLOUR_2}Tür: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Isim: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Tırmanma zinciri
-STR_5950    :{WINDOW_COLOUR_2}Değişiklikleri tüm raylara uygula
-STR_5951    :{WINDOW_COLOUR_2}Parça ID'si: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Seviye sıralama numarası: {BLACK}{COMMA16}
+STR_5941    :Yükseklik seviyesi:
+STR_5942    :Yol türü: {BLACK}{STRINGID}
+STR_5943    :Eklenti: {BLACK}{STRINGID}
+STR_5944    :Eklenti: {BLACK}Yok
+STR_5945    :Bağlantı noktaları:
+STR_5946    :Tür: {BLACK}{STRINGID}
+STR_5947    :ID: {BLACK}{COMMA16}
+STR_5948    :Isim: {BLACK}{STRINGID}
+STR_5949    :Tırmanma zinciri
+STR_5950    :Değişiklikleri tüm raylara uygula
+STR_5951    :Parça ID'si: {BLACK}{COMMA16}
+STR_5952    :Seviye sıralama numarası: {BLACK}{COMMA16}
 STR_5953    :Maddeleri yükseklik seviyesine göre sırala
-STR_5954    :{WINDOW_COLOUR_2}Dekorasyon yaşı: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Kare içindeki pozisyonu: {BLACK}{STRINGID}
+STR_5954    :Dekorasyon yaşı: {BLACK}{COMMA16}
+STR_5955    :Kare içindeki pozisyonu: {BLACK}{STRINGID}
 STR_5956    :Güneybatı
 STR_5957    :Kuzeybatı
 STR_5958    :Kuzeydoğu
 STR_5959    :Güneydoğu
-STR_5960    :{WINDOW_COLOUR_2}Kare içindeki pozisyonu:
-STR_5961    :{WINDOW_COLOUR_2}Kayıt endeksi: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Çarpışma tespidi:
-STR_5963    :{WINDOW_COLOUR_2}Kenar yükseltme:
-STR_5964    :{WINDOW_COLOUR_2}Eğimli
-STR_5965    :{WINDOW_COLOUR_2}Giriş türü: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Park girişi yönü: {BLACK}{STRINGID}
+STR_5960    :Kare içindeki pozisyonu:
+STR_5961    :Kayıt endeksi: {BLACK}{COMMA16}
+STR_5962    :Çarpışma tespidi:
+STR_5963    :Kenar yükseltme:
+STR_5964    :Eğimli
+STR_5965    :Giriş türü: {BLACK}{STRINGID}
+STR_5966    :Park girişi yönü: {BLACK}{STRINGID}
 STR_5967    :Orta
 STR_5968    :Sol
 STR_5969    :Sağ
-STR_5970    :{WINDOW_COLOUR_2}Giriş ID'si: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Çıkış ID'si: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Alet ID'si: {BLACK}{COMMA16}
+STR_5970    :Giriş ID'si: {BLACK}{COMMA16}
+STR_5971    :Çıkış ID'si: {BLACK}{COMMA16}
+STR_5972    :Alet ID'si: {BLACK}{COMMA16}
 STR_5973    :Bir sonrakine yapıştır
 STR_5974    :Arızalı maddenin taban ve açıklık yükseğini seçdiğiniz maddeden kopyalayıp arızalı maddeye ekleyiniz
 STR_5975    :Eğim:
 STR_5976    :Düz
 STR_5977    :Sağ taraf yukarı
 STR_5978    :Sol taraf yukarı
-STR_5979    :{WINDOW_COLOUR_2}Duvar türü: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Banner metni: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Banner değil
-STR_5982    :{WINDOW_COLOUR_2}Büyük dekorasyon türü: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Büyük dekorasyon ID'si: {BLACK}{COMMA16}
+STR_5979    :Duvar türü: {BLACK}{COMMA16}
+STR_5980    :Banner metni: {BLACK}{STRINGID}
+STR_5981    :Banner değil
+STR_5982    :Büyük dekorasyon türü: {BLACK}{COMMA16}
+STR_5983    :Büyük dekorasyon ID'si: {BLACK}{COMMA16}
 STR_5984    :Blocked paths:
 STR_5985    :Yeni klasör
 STR_5986    :Yeni klasör ismi giriniz
