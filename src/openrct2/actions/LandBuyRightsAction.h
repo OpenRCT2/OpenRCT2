@@ -18,7 +18,7 @@ enum class LandBuyRightSetting : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(LandBuyRightsAction, GameCommand::BuyLandRights, GameActions::Result)
+class LandBuyRightsAction final : public GameActionBase<GameCommand::BuyLandRights>
 {
 private:
     MapRange _range;
@@ -36,7 +36,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

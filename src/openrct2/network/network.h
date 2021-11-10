@@ -25,7 +25,7 @@
 #include <string_view>
 #include <vector>
 
-struct GameAction;
+class GameAction;
 struct Peep;
 struct CoordsXYZ;
 namespace GameActions

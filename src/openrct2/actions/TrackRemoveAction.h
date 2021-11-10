@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(TrackRemoveAction, GameCommand::RemoveTrack, GameActions::Result)
+class TrackRemoveAction final : public GameActionBase<GameCommand::RemoveTrack>
 {
 private:
     track_type_t _trackType{};
@@ -22,11 +22,11 @@ public:
     TrackRemoveAction() = default;
     TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override final;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

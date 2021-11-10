@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SurfaceSetStyleAction, GameCommand::ChangeSurfaceStyle, GameActions::Result)
+class SurfaceSetStyleAction final : public GameActionBase<GameCommand::ChangeSurfaceStyle>
 {
 private:
     MapRange _range;
@@ -22,7 +22,7 @@ public:
     SurfaceSetStyleAction() = default;
     SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle);
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

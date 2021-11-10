@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerSetColourAction, GameCommand::SetBannerColour, GameActions::Result)
+class BannerSetColourAction final : public GameActionBase<GameCommand::SetBannerColour>
 {
 private:
     CoordsXYZD _loc;
@@ -21,11 +21,11 @@ public:
     BannerSetColourAction() = default;
     BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

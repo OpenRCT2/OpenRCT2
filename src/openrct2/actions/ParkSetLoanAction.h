@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetLoanAction, GameCommand::SetCurrentLoan, GameActions::Result)
+class ParkSetLoanAction final : public GameActionBase<GameCommand::SetCurrentLoan>
 {
 private:
     money32 _value{ MONEY32_UNDEFINED };
@@ -20,11 +20,11 @@ public:
     ParkSetLoanAction() = default;
     ParkSetLoanAction(money32 value);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

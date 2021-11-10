@@ -16,7 +16,7 @@ struct BannerPlaceActionResult
     BannerIndex bannerId = BANNER_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(BannerPlaceAction, GameCommand::PlaceBanner, GameActions::Result)
+class BannerPlaceAction final : public GameActionBase<GameCommand::PlaceBanner>
 {
 private:
     CoordsXYZD _loc;
@@ -27,11 +27,11 @@ public:
     BannerPlaceAction() = default;
     BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

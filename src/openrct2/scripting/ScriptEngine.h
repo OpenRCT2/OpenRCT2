@@ -31,7 +31,7 @@
 struct duk_hthread;
 typedef struct duk_hthread duk_context;
 
-struct GameAction;
+class GameAction;
 namespace GameActions
 {
     class Result;

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetNameAction, GameCommand::SetParkName, GameActions::Result)
+class ParkSetNameAction final : public GameActionBase<GameCommand::SetParkName>
 {
 private:
     std::string _name;
@@ -20,11 +20,11 @@ public:
     ParkSetNameAction() = default;
     ParkSetNameAction(const std::string& name);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

@@ -19,7 +19,7 @@ enum class PeepPickupType : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(PeepPickupAction, GameCommand::PickupGuest, GameActions::Result)
+class PeepPickupAction final : public GameActionBase<GameCommand::PickupGuest>
 {
 private:
     PeepPickupType _type{ PeepPickupType::Count };
@@ -33,10 +33,10 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 
 private:
-    void CancelConcurrentPickups(Peep * pickedPeep) const;
+    void CancelConcurrentPickups(Peep* pickedPeep) const;
 };

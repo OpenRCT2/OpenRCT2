@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathAdditionRemoveAction, GameCommand::RemoveFootpathAddition, GameActions::Result)
+class FootpathAdditionRemoveAction final : public GameActionBase<GameCommand::RemoveFootpathAddition>
 {
 private:
     CoordsXYZ _loc;
@@ -20,11 +20,11 @@ public:
     FootpathAdditionRemoveAction() = default;
     FootpathAdditionRemoveAction(const CoordsXYZ& loc);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

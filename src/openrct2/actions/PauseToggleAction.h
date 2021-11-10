@@ -13,7 +13,7 @@
 
 // Clang format is broken for small game actions
 // clang-format off
-DEFINE_GAME_ACTION(PauseToggleAction, GameCommand::TogglePause, GameActions::Result)
+class PauseToggleAction final : public GameActionBase<GameCommand::TogglePause>
 {
 public:
     PauseToggleAction() = default;
