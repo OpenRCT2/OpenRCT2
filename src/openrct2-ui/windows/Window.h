@@ -80,6 +80,7 @@ rct_window* window_finances_open();
 rct_window* window_finances_research_open();
 
 // WC_PARK_INFORMATION
+rct_window* window_park_open();
 rct_window* window_park_awards_open();
 rct_window* window_park_entrance_open();
 rct_window* window_park_guests_open();
