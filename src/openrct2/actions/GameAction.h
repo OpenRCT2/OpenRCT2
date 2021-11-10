@@ -252,13 +252,6 @@ public:
         return GameActionNameQuery<TType>::Name();
     }
 
-    void SetCallback(std::function<void(const struct GameAction*, const TResultType*)> typedCallback)
-    {
-        GameAction::SetCallback([typedCallback](const GameAction* ga, const GameActions::Result* result) {
-            typedCallback(ga, static_cast<const TResultType*>(result));
-        });
-    }
-
 protected:
     template<class... TTypes> static constexpr std::unique_ptr<TResultType> MakeResult(TTypes&&... args)
     {
