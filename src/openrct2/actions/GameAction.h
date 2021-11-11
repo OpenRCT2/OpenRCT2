@@ -257,7 +257,6 @@ namespace GameActions
     using GameActionFactory = GameAction* (*)();
 
     void Initialize();
-    void Register();
     bool IsValidId(uint32_t id);
     const char* GetName(GameCommand id);
 
@@ -284,14 +283,5 @@ namespace GameActions
     // This should be used from within game actions.
     GameActions::Result::Ptr QueryNested(const GameAction* action);
     GameActions::Result::Ptr ExecuteNested(const GameAction* action);
-
-    GameActionFactory Register(GameCommand id, GameActionFactory action);
-
-    template<typename T> static GameActionFactory Register()
-    {
-        GameActionFactory factory = []() -> GameAction* { return new T(); };
-        Register(T::TYPE, factory);
-        return factory;
-    }
 
 } // namespace GameActions

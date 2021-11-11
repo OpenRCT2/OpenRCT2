@@ -158,16 +158,6 @@ namespace GameActions
         _actionQueue.clear();
     }
 
-    void Initialize()
-    {
-        static bool initialized = false;
-        if (initialized)
-            return;
-
-        Register();
-        initialized = true;
-    }
-
     GameAction::Ptr Clone(const GameAction* action)
     {
         std::unique_ptr<GameAction> ga = GameActions::Create(action->GetType());
