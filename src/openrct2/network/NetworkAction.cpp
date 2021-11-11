@@ -51,9 +51,7 @@ const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> N
     NetworkAction{
         STR_ACTION_CHAT,
         "PERMISSION_CHAT",
-        {
-            GameCommand::Chat,
-        },
+        {},
     },
     NetworkAction{
         STR_ACTION_TERRAFORM,
@@ -244,16 +242,12 @@ const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> N
     NetworkAction{
         STR_ACTION_TOGGLE_SCENERY_CLUSTER,
         "PERMISSION_TOGGLE_SCENERY_CLUSTER",
-        {
-            GameCommand::ToggleSceneryCluster,
-        },
+        {},
     },
     NetworkAction{
         STR_ACTION_PASSWORDLESS_LOGIN,
         "PERMISSION_PASSWORDLESS_LOGIN",
-        {
-            GameCommand::PasswordlessLogin,
-        },
+        {},
     },
     NetworkAction{
         STR_ACTION_MODIFY_TILE,
