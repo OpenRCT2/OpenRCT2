@@ -94,29 +94,31 @@
 
 namespace GameActions
 {
-    static std::array<GameActionFactory, EnumValue(GameCommand::Count)> _actions{};
-    static std::array<const char*, EnumValue(GameCommand::Count)> _actionNames{};
+    struct GameActionEntry
+    {
+        GameActionFactory factory{};
+        const char* name{};
+    };
 
-    static void Register(GameCommand id, GameActionFactory factory, const char* name)
+    using GameActionRegistry = std::array<GameActionEntry, EnumValue(GameCommand::Count)>;
+
+    static constexpr void Register(GameActionRegistry& registry, GameCommand id, GameActionFactory factory, const char* name)
     {
         const auto idx = static_cast<size_t>(id);
-
-        Guard::Assert(idx < std::size(_actions));
-        Guard::ArgumentNotNull(factory);
-
-        _actions[idx] = factory;
-        _actionNames[idx] = name;
+        registry[idx] = { factory, name };
     }
 
-    template<typename T> static void Register(const char* name)
+    template<typename T> static constexpr void Register(GameActionRegistry& registry, const char* name)
     {
         GameActionFactory factory = []() -> GameAction* { return new T(); };
-        Register(T::TYPE, factory, name);
+        Register(registry, T::TYPE, factory, name);
     }
 
-    void Register()
+    static constexpr GameActionRegistry BuildRegistry()
     {
-#define REGISTER_ACTION(type) Register<type>(#type)
+        GameActionRegistry registry{};
+
+#define REGISTER_ACTION(type) Register<type>(registry, #type)
 
         REGISTER_ACTION(BalloonPressAction);
         REGISTER_ACTION(BannerPlaceAction);
@@ -203,28 +205,28 @@ namespace GameActions
 #endif
 
 #undef REGISTER_ACTION
+
+        return registry;
     }
+
+    static constexpr GameActionRegistry _registry = BuildRegistry();
 
     const char* GetName(GameCommand id)
     {
-        Initialize();
-
         const auto idx = static_cast<size_t>(id);
-        Guard::IndexInRange(idx, _actionNames);
+        Guard::IndexInRange(idx, _registry);
 
-        return _actionNames[idx];
+        return _registry[idx].name;
     }
 
     std::unique_ptr<GameAction> Create(GameCommand id)
     {
-        Initialize();
-
         const auto idx = static_cast<size_t>(id);
 
         GameAction* result = nullptr;
-        if (idx < std::size(_actions))
+        if (idx < std::size(_registry))
         {
-            GameActionFactory factory = _actions[idx];
+            GameActionFactory factory = _registry[idx].factory;
             if (factory != nullptr)
             {
                 result = factory();
@@ -236,21 +238,11 @@ namespace GameActions
 
     bool IsValidId(uint32_t id)
     {
-        if (id < std::size(_actions))
+        if (id < std::size(_registry))
         {
-            return _actions[id] != nullptr;
+            return _registry[id].factory != nullptr;
         }
         return false;
-    }
-
-    void Initialize()
-    {
-        static bool initialized = false;
-        if (initialized)
-            return;
-
-        Register();
-        initialized = true;
     }
 
 } // namespace GameActions

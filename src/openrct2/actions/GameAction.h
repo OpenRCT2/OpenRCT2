@@ -256,7 +256,6 @@ namespace GameActions
 {
     using GameActionFactory = GameAction* (*)();
 
-    void Initialize();
     bool IsValidId(uint32_t id);
     const char* GetName(GameCommand id);
 
