@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallScenerySetColourAction, GameCommand::SetSceneryColour, GameActions::Result)
+class SmallScenerySetColourAction final : public GameActionBase<GameCommand::SetSceneryColour>
 {
 private:
     CoordsXYZ _loc;
@@ -27,7 +27,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

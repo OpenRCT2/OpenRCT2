@@ -12,7 +12,7 @@
 #include "../world/Entrance.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideEntranceExitPlaceAction, GameCommand::PlaceRideEntranceOrExit, GameActions::Result)
+class RideEntranceExitPlaceAction final : public GameActionBase<GameCommand::PlaceRideEntranceOrExit>
 {
 private:
     CoordsXY _loc;
@@ -26,11 +26,11 @@ public:
     RideEntranceExitPlaceAction(
         const CoordsXY& loc, Direction direction, ride_id_t rideIndex, StationIndex stationNum, bool isExit);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

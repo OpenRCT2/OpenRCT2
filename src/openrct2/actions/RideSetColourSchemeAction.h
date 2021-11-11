@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideSetColourSchemeAction, GameCommand::SetColourScheme, GameActions::Result)
+class RideSetColourSchemeAction final : public GameActionBase<GameCommand::SetColourScheme>
 {
 private:
     CoordsXYZD _loc;
@@ -22,11 +22,11 @@ public:
     RideSetColourSchemeAction() = default;
     RideSetColourSchemeAction(const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SetParkEntranceFeeAction, GameCommand::SetParkEntranceFee, GameActions::Result)
+class SetParkEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
 {
 private:
     money16 _fee{ MONEY16_UNDEFINED };
@@ -20,11 +20,11 @@ public:
     SetParkEntranceFeeAction() = default;
     SetParkEntranceFeeAction(money16 fee);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

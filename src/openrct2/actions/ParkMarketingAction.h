@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkMarketingAction, GameCommand::StartMarketingCampaign, GameActions::Result)
+class ParkMarketingAction final : public GameActionBase<GameCommand::StartMarketingCampaign>
 {
 private:
     int32_t _type{};
@@ -22,11 +22,11 @@ public:
     ParkMarketingAction() = default;
     ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

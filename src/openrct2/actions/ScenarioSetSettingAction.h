@@ -38,7 +38,7 @@ enum class ScenarioSetSetting : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(ScenarioSetSettingAction, GameCommand::EditScenarioOptions, GameActions::Result)
+class ScenarioSetSettingAction final : public GameActionBase<GameCommand::EditScenarioOptions>
 {
 private:
     ScenarioSetSetting _setting{ ScenarioSetSetting::Count };
@@ -57,7 +57,7 @@ public:
         return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

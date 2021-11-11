@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LargeSceneryRemoveAction, GameCommand::RemoveLargeScenery, GameActions::Result)
+class LargeSceneryRemoveAction final : public GameActionBase<GameCommand::RemoveLargeScenery>
 {
 private:
     CoordsXYZD _loc;
@@ -21,11 +21,11 @@ public:
     LargeSceneryRemoveAction() = default;
     LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

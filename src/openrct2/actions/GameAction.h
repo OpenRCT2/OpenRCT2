@@ -92,11 +92,11 @@ public:
     }
 };
 
-struct GameAction
+class GameAction
 {
 public:
     using Ptr = std::unique_ptr<GameAction>;
-    using Callback_t = std::function<void(const struct GameAction*, const GameActions::Result*)>;
+    using Callback_t = std::function<void(const class GameAction*, const GameActions::Result*)>;
 
 private:
     GameCommand const _type;
@@ -114,7 +114,7 @@ public:
 
     virtual ~GameAction() = default;
 
-    virtual const char* GetName() const = 0;
+    const char* GetName() const;
 
     virtual void AcceptParameters(GameActionParameterVisitor&)
     {
@@ -235,11 +235,9 @@ template<GameCommand TId> struct GameActionNameQuery
 {
 };
 
-template<GameCommand TType, typename TResultType> struct GameActionBase : GameAction
+template<GameCommand TType> struct GameActionBase : GameAction
 {
 public:
-    using Result = TResultType;
-
     static constexpr GameCommand TYPE = TType;
 
     GameActionBase()
@@ -247,15 +245,10 @@ public:
     {
     }
 
-    virtual const char* GetName() const override
-    {
-        return GameActionNameQuery<TType>::Name();
-    }
-
 protected:
-    template<class... TTypes> static constexpr std::unique_ptr<TResultType> MakeResult(TTypes&&... args)
+    template<class... TTypes> static std::unique_ptr<GameActions::Result> MakeResult(TTypes&&... args)
     {
-        return std::make_unique<TResultType>(std::forward<TTypes>(args)...);
+        return std::make_unique<GameActions::Result>(std::forward<TTypes>(args)...);
     }
 };
 
@@ -263,9 +256,8 @@ namespace GameActions
 {
     using GameActionFactory = GameAction* (*)();
 
-    void Initialize();
-    void Register();
     bool IsValidId(uint32_t id);
+    const char* GetName(GameCommand id);
 
     // Halts the queue processing until ResumeQueue is called, any calls to ProcessQueue
     // will have no effect during suspension. It has no effect of actions that will not
@@ -290,26 +282,5 @@ namespace GameActions
     // This should be used from within game actions.
     GameActions::Result::Ptr QueryNested(const GameAction* action);
     GameActions::Result::Ptr ExecuteNested(const GameAction* action);
-
-    GameActionFactory Register(GameCommand id, GameActionFactory action);
-
-    template<typename T> static GameActionFactory Register()
-    {
-        GameActionFactory factory = []() -> GameAction* { return new T(); };
-        Register(T::TYPE, factory);
-        return factory;
-    }
-
-    // clang-format off
-#define DEFINE_GAME_ACTION(cls, id, res)                                         \
-    template<> struct GameActionNameQuery<id>                                    \
-    {                                                                            \
-        static const char* Name()                                                \
-        {                                                                        \
-            return #cls;                                                         \
-        }                                                                        \
-    };                                                                           \
-    struct cls final : public GameActionBase<id, res>
-    // clang-format on
 
 } // namespace GameActions

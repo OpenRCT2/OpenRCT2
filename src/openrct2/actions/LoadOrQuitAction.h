@@ -17,7 +17,7 @@ enum class LoadOrQuitModes : uint8_t
     CloseSavePrompt
 };
 
-DEFINE_GAME_ACTION(LoadOrQuitAction, GameCommand::LoadOrQuit, GameActions::Result)
+class LoadOrQuitAction final : public GameActionBase<GameCommand::LoadOrQuit>
 {
 private:
     LoadOrQuitModes _mode{};
@@ -29,7 +29,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LandRaiseAction, GameCommand::RaiseLand, GameActions::Result)
+class LandRaiseAction final : public GameActionBase<GameCommand::RaiseLand>
 {
 private:
     CoordsXY _coords;
@@ -24,7 +24,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LandSetHeightAction, GameCommand::SetLandHeight, GameActions::Result)
+class LandSetHeightAction final : public GameActionBase<GameCommand::SetLandHeight>
 {
 private:
     CoordsXY _coords;
@@ -24,7 +24,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 
@@ -34,16 +34,16 @@ private:
     money32 GetSmallSceneryRemovalCost() const;
     void SmallSceneryRemoval() const;
     rct_string_id CheckRideSupports() const;
-    TileElement* CheckFloatingStructures(TileElement * surfaceElement, uint8_t zCorner) const;
-    TileElement* CheckUnremovableObstructions(TileElement * surfaceElement, uint8_t zCorner) const;
-    money32 GetSurfaceHeightChangeCost(SurfaceElement * surfaceElement) const;
-    void SetSurfaceHeight(TileElement * surfaceElement) const;
+    TileElement* CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const;
+    TileElement* CheckUnremovableObstructions(TileElement* surfaceElement, uint8_t zCorner) const;
+    money32 GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const;
+    void SetSurfaceHeight(TileElement* surfaceElement) const;
 
     /**
      *
      *  rct2: 0x00663CB9
      */
     static int32_t map_set_land_height_clear_func(
-        TileElement * *tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
+        TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
         [[maybe_unused]] money32* price);
 };

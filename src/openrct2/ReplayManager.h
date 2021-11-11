@@ -15,7 +15,7 @@
 #include <set>
 #include <string>
 
-struct GameAction;
+class GameAction;
 
 namespace OpenRCT2
 {

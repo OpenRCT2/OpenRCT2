@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffFireAction, GameCommand::FireStaffMember, GameActions::Result)
+class StaffFireAction final : public GameActionBase<GameCommand::FireStaffMember>
 {
 private:
     uint16_t _spriteId{ SPRITE_INDEX_NULL };
@@ -22,7 +22,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

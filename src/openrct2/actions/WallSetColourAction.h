@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(WallSetColourAction, GameCommand::SetWallColour, GameActions::Result)
+class WallSetColourAction final : public GameActionBase<GameCommand::SetWallColour>
 {
 private:
     CoordsXYZD _loc;
@@ -25,7 +25,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

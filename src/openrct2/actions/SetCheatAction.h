@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SetCheatAction, GameCommand::Cheat, GameActions::Result)
+class SetCheatAction final : public GameActionBase<GameCommand::Cheat>
 {
     using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
 
@@ -24,11 +24,11 @@ public:
     SetCheatAction() = default;
     SetCheatAction(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

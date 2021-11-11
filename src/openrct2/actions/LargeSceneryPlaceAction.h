@@ -20,7 +20,7 @@ struct LargeSceneryPlaceActionResult
     BannerIndex bannerId = BANNER_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GameCommand::PlaceLargeScenery, GameActions::Result)
+class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLargeScenery>
 {
 private:
     CoordsXYZD _loc;
@@ -34,17 +34,17 @@ public:
     LargeSceneryPlaceAction(
         const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 
 private:
-    int16_t GetTotalNumTiles(rct_large_scenery_tile * tiles) const;
-    bool CheckMapCapacity(rct_large_scenery_tile * tiles, int16_t numTiles) const;
-    int16_t GetMaxSurfaceHeight(rct_large_scenery_tile * tiles) const;
-    void SetNewLargeSceneryElement(LargeSceneryElement & sceneryElement, uint8_t tileNum) const;
+    int16_t GetTotalNumTiles(rct_large_scenery_tile* tiles) const;
+    bool CheckMapCapacity(rct_large_scenery_tile* tiles, int16_t numTiles) const;
+    int16_t GetMaxSurfaceHeight(rct_large_scenery_tile* tiles) const;
+    void SetNewLargeSceneryElement(LargeSceneryElement& sceneryElement, uint8_t tileNum) const;
 };

@@ -18,7 +18,7 @@ enum class StaffSetPatrolAreaMode : uint8_t
     ClearAll
 };
 
-DEFINE_GAME_ACTION(StaffSetPatrolAreaAction, GameCommand::SetStaffPatrol, GameActions::Result)
+class StaffSetPatrolAreaAction final : public GameActionBase<GameCommand::SetStaffPatrol>
 {
 private:
     uint16_t _spriteId{ SPRITE_INDEX_NULL };
@@ -31,7 +31,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlayerKickAction, GameCommand::KickPlayer, GameActions::Result)
+class PlayerKickAction final : public GameActionBase<GameCommand::KickPlayer>
 {
 private:
     NetworkPlayerId_t _playerId{ -1 };
@@ -23,7 +23,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };
