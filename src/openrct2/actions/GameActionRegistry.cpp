@@ -102,16 +102,20 @@ namespace GameActions
 
     using GameActionRegistry = std::array<GameActionEntry, EnumValue(GameCommand::Count)>;
 
-    static constexpr void Register(GameActionRegistry& registry, GameCommand id, GameActionFactory factory, const char* name)
+    template<GameCommand TId>
+    static constexpr void Register(GameActionRegistry& registry, GameActionFactory factory, const char* name)
     {
-        const auto idx = static_cast<size_t>(id);
+        constexpr auto idx = static_cast<size_t>(TId);
+
+        static_assert(idx < EnumValue(GameCommand::Count));
+
         registry[idx] = { factory, name };
     }
 
     template<typename T> static constexpr void Register(GameActionRegistry& registry, const char* name)
     {
         GameActionFactory factory = []() -> GameAction* { return new T(); };
-        Register(registry, T::TYPE, factory, name);
+        Register<T::TYPE>(registry, factory, name);
     }
 
     static constexpr GameActionRegistry BuildRegistry()
