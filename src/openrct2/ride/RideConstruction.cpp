@@ -1221,7 +1221,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
             {
                 const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                if (std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN)
                 {
                     if (trackElement->GetTrackType() == TrackElemType::Maze)
                     {
@@ -1378,7 +1378,7 @@ void Ride::ValidateStations()
 
                     ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
                     // keep searching for a station piece (coaster station, tower ride base, shops, and flat ride base)
-                    if (!(ted->SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!(std::get<0>(ted->SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1428,7 +1428,7 @@ void Ride::ValidateStations()
                         continue;
 
                     ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (!(ted->SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!(std::get<0>(ted->SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
