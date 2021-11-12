@@ -185,7 +185,6 @@ namespace OpenRCT2::Scripting
             {
                 result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(sprite->sprite_index)));
             }
-            
         }
         else if (type == "litter")
         {
