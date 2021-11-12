@@ -93,7 +93,7 @@ The following people are not part of the development team, but have been contrib
 * Keith Stellyes (keithstellyes) - Misc.
 * Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
-* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes
+* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
 
 ## Bug fixes
 * (KirilAngelov)

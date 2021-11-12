@@ -167,6 +167,73 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
+    std::vector<DukValue> OpenRCT2::Scripting::ScMap::getAllEntitiesOnTile(const std::string& type, int32_t x, int32_t y) const
+    {
+        const auto pos = CoordsXY(x, y);
+
+        std::vector<DukValue> result;
+        if (type == "balloon")
+        {
+            for (auto sprite : EntityTileList<Balloon>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "car")
+        {
+            for (auto sprite : EntityTileList<Vehicle>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(sprite->sprite_index)));
+            }
+            
+        }
+        else if (type == "litter")
+        {
+            for (auto sprite : EntityTileList<Litter>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "duck")
+        {
+            for (auto sprite : EntityTileList<Duck>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "peep")
+        {
+            for (auto sprite : EntityTileList<Guest>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+            }
+            for (auto sprite : EntityTileList<Staff>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "guest")
+        {
+            for (auto sprite : EntityTileList<Guest>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "staff")
+        {
+            for (auto sprite : EntityTileList<Staff>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+            }
+        }
+        else
+        {
+            duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
+        }
+
+        return result;
+    }
+
     template<typename TEntityType, typename TScriptType>
     DukValue createEntityType(duk_context* ctx, const DukValue& initializer)
     {
@@ -252,6 +319,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScMap::getTile, "getTile");
         dukglue_register_method(ctx, &ScMap::getEntity, "getEntity");
         dukglue_register_method(ctx, &ScMap::getAllEntities, "getAllEntities");
+        dukglue_register_method(ctx, &ScMap::getAllEntitiesOnTile, "getAllEntitiesOnTile");
         dukglue_register_method(ctx, &ScMap::createEntity, "createEntity");
     }
 

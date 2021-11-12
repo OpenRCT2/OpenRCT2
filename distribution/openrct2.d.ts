@@ -604,6 +604,15 @@ declare global {
         getAllEntities(type: "staff"): Staff[];
         getAllEntities(type: "car"): Car[];
         getAllEntities(type: "litter"): Litter[];
+        getAllEntitiesOnTile(type: EntityType, x: number, y: number): Entity[];
+        /**
+         * @deprecated since version 34, use guest or staff instead.
+         */
+        getAllEntitiesOnTile(type: "peep", x: number, y: number): Peep[];
+        getAllEntitiesOnTile(type: "guest", x: number, y: number): Guest[];
+        getAllEntitiesOnTile(type: "staff", x: number, y: number): Staff[];
+        getAllEntitiesOnTile(type: "car", x: number, y: number): Car[];
+        getAllEntitiesOnTile(type: "litter", x: number, y: number): Litter[];
         createEntity(type: EntityType, initializer: object): Entity;
     }
 
