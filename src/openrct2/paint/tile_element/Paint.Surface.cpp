@@ -442,8 +442,9 @@ static uint8_t viewport_surface_paint_setup_get_relative_slope(const SurfaceElem
 /**
  *  rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
  */
+template<edge_t TEdge>
 static void viewport_surface_smoothen_edge(
-    paint_session* session, enum edge_t edge, struct tile_descriptor self, struct tile_descriptor neighbour)
+    paint_session* session, const tile_descriptor& self, const tile_descriptor& neighbour)
 {
     if (neighbour.tile_element == nullptr)
         return;
@@ -452,7 +453,7 @@ static void viewport_surface_smoothen_edge(
     uint8_t neighbourCorners[2] = { 0 };
     uint8_t ownCorners[2] = { 0 };
 
-    switch (edge)
+    switch (TEdge)
     {
         case EDGE_BOTTOMLEFT:
             maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT;
@@ -491,7 +492,7 @@ static void viewport_surface_smoothen_edge(
     }
 
     uint8_t dh = 0, cl = 0;
-    switch (edge)
+    switch (TEdge)
     {
         case EDGE_BOTTOMLEFT:
             dh = byte_97B524[byte_97B444[self.slope]];
@@ -1270,10 +1271,10 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
     if (zoomLevel <= 0 && has_surface && !(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         && !(session->ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && gConfigGeneral.landscape_smoothing)
     {
-        viewport_surface_smoothen_edge(session, EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
-        viewport_surface_smoothen_edge(session, EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
-        viewport_surface_smoothen_edge(session, EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
-        viewport_surface_smoothen_edge(session, EDGE_BOTTOMRIGHT, tileDescriptors[0], tileDescriptors[2]);
+        viewport_surface_smoothen_edge<EDGE_TOPLEFT>(session, tileDescriptors[0], tileDescriptors[3]);
+        viewport_surface_smoothen_edge<EDGE_TOPRIGHT>(session, tileDescriptors[0], tileDescriptors[4]);
+        viewport_surface_smoothen_edge<EDGE_BOTTOMLEFT>(session, tileDescriptors[0], tileDescriptors[1]);
+        viewport_surface_smoothen_edge<EDGE_BOTTOMRIGHT>(session, tileDescriptors[0], tileDescriptors[2]);
     }
 
     if ((session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session->ViewFlags & VIEWPORT_FLAG_HIDE_BASE)
