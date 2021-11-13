@@ -453,36 +453,37 @@ static void viewport_surface_smoothen_edge(
     uint8_t neighbourCorners[2] = { 0 };
     uint8_t ownCorners[2] = { 0 };
 
-    switch (TEdge)
+    if constexpr (TEdge == EDGE_BOTTOMLEFT)
     {
-        case EDGE_BOTTOMLEFT:
-            maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT;
-            neighbourCorners[0] = neighbour.corner_heights.top;
-            neighbourCorners[1] = neighbour.corner_heights.right;
-            ownCorners[0] = self.corner_heights.left;
-            ownCorners[1] = self.corner_heights.bottom;
-            break;
-        case EDGE_BOTTOMRIGHT:
-            maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_RIGHT;
-            neighbourCorners[0] = neighbour.corner_heights.top;
-            neighbourCorners[1] = neighbour.corner_heights.left;
-            ownCorners[0] = self.corner_heights.right;
-            ownCorners[1] = self.corner_heights.bottom;
-            break;
-        case EDGE_TOPLEFT:
-            maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_LEFT;
-            neighbourCorners[0] = neighbour.corner_heights.right;
-            neighbourCorners[1] = neighbour.corner_heights.bottom;
-            ownCorners[0] = self.corner_heights.top;
-            ownCorners[1] = self.corner_heights.left;
-            break;
-        case EDGE_TOPRIGHT:
-            maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_RIGHT;
-            neighbourCorners[0] = neighbour.corner_heights.left;
-            neighbourCorners[1] = neighbour.corner_heights.bottom;
-            ownCorners[0] = self.corner_heights.top;
-            ownCorners[1] = self.corner_heights.right;
-            break;
+        maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT;
+        neighbourCorners[0] = neighbour.corner_heights.top;
+        neighbourCorners[1] = neighbour.corner_heights.right;
+        ownCorners[0] = self.corner_heights.left;
+        ownCorners[1] = self.corner_heights.bottom;
+    }
+    if constexpr (TEdge == EDGE_BOTTOMRIGHT)
+    {
+        maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_RIGHT;
+        neighbourCorners[0] = neighbour.corner_heights.top;
+        neighbourCorners[1] = neighbour.corner_heights.left;
+        ownCorners[0] = self.corner_heights.right;
+        ownCorners[1] = self.corner_heights.bottom;
+    }
+    if constexpr (TEdge == EDGE_TOPLEFT)
+    {
+        maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_LEFT;
+        neighbourCorners[0] = neighbour.corner_heights.right;
+        neighbourCorners[1] = neighbour.corner_heights.bottom;
+        ownCorners[0] = self.corner_heights.top;
+        ownCorners[1] = self.corner_heights.left;
+    }
+    if constexpr (TEdge == EDGE_TOPRIGHT)
+    {
+        maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_RIGHT;
+        neighbourCorners[0] = neighbour.corner_heights.left;
+        neighbourCorners[1] = neighbour.corner_heights.bottom;
+        ownCorners[0] = self.corner_heights.top;
+        ownCorners[1] = self.corner_heights.right;
     }
 
     if (ownCorners[0] != neighbourCorners[0] || ownCorners[1] != neighbourCorners[1])
@@ -492,27 +493,25 @@ static void viewport_surface_smoothen_edge(
     }
 
     uint8_t dh = 0, cl = 0;
-    switch (TEdge)
+    if constexpr (TEdge == EDGE_BOTTOMLEFT)
     {
-        case EDGE_BOTTOMLEFT:
-            dh = byte_97B524[byte_97B444[self.slope]];
-            cl = byte_97B54A[byte_97B444[neighbour.slope]];
-            break;
-
-        case EDGE_TOPLEFT:
-            dh = byte_97B537[byte_97B444[self.slope]];
-            cl = byte_97B55D[byte_97B444[neighbour.slope]];
-            break;
-
-        case EDGE_BOTTOMRIGHT:
-            dh = byte_97B55D[byte_97B444[self.slope]];
-            cl = byte_97B537[byte_97B444[neighbour.slope]];
-            break;
-
-        case EDGE_TOPRIGHT:
-            dh = byte_97B54A[byte_97B444[self.slope]];
-            cl = byte_97B524[byte_97B444[neighbour.slope]];
-            break;
+        dh = byte_97B524[byte_97B444[self.slope]];
+        cl = byte_97B54A[byte_97B444[neighbour.slope]];
+    }
+    if constexpr (TEdge == EDGE_TOPLEFT)
+    {
+        dh = byte_97B537[byte_97B444[self.slope]];
+        cl = byte_97B55D[byte_97B444[neighbour.slope]];
+    }
+    if constexpr (TEdge == EDGE_BOTTOMRIGHT)
+    {
+        dh = byte_97B55D[byte_97B444[self.slope]];
+        cl = byte_97B537[byte_97B444[neighbour.slope]];
+    }
+    if constexpr (TEdge == EDGE_TOPRIGHT)
+    {
+        dh = byte_97B54A[byte_97B444[self.slope]];
+        cl = byte_97B524[byte_97B444[neighbour.slope]];
     }
 
     if (self.terrain == neighbour.terrain)
@@ -575,40 +574,39 @@ static void viewport_surface_draw_tile_side_bottom(
     CoordsXY tunnelTopBoundBoxOffset = { 0, 0 };
 
     const tunnel_entry* tunnelArray;
-    switch (TEdge)
+    if constexpr (TEdge == EDGE_BOTTOMLEFT)
     {
-        case EDGE_BOTTOMLEFT:
-            cornerHeight1 = self.corner_heights.left;
-            cornerHeight2 = self.corner_heights.bottom;
+        cornerHeight1 = self.corner_heights.left;
+        cornerHeight2 = self.corner_heights.bottom;
 
-            neighbourCornerHeight1 = neighbour.corner_heights.top;
-            neighbourCornerHeight2 = neighbour.corner_heights.right;
+        neighbourCornerHeight1 = neighbour.corner_heights.top;
+        neighbourCornerHeight2 = neighbour.corner_heights.right;
 
-            offset.x = 30;
-            bounds.y = 30;
-            tunnelBounds.x = 32;
-            tunnelTopBoundBoxOffset.y = 31;
+        offset.x = 30;
+        bounds.y = 30;
+        tunnelBounds.x = 32;
+        tunnelTopBoundBoxOffset.y = 31;
 
-            tunnelArray = session->LeftTunnels;
-            break;
+        tunnelArray = session->LeftTunnels;
+    }
+    else if constexpr (TEdge == EDGE_BOTTOMRIGHT)
+    {
+        cornerHeight1 = self.corner_heights.right;
+        cornerHeight2 = self.corner_heights.bottom;
 
-        case EDGE_BOTTOMRIGHT:
-            cornerHeight1 = self.corner_heights.right;
-            cornerHeight2 = self.corner_heights.bottom;
+        neighbourCornerHeight1 = neighbour.corner_heights.top;
+        neighbourCornerHeight2 = neighbour.corner_heights.left;
 
-            neighbourCornerHeight1 = neighbour.corner_heights.top;
-            neighbourCornerHeight2 = neighbour.corner_heights.left;
+        offset.y = 30;
+        bounds.x = 30;
+        tunnelBounds.y = 32;
+        tunnelTopBoundBoxOffset.x = 31;
 
-            offset.y = 30;
-            bounds.x = 30;
-            tunnelBounds.y = 32;
-            tunnelTopBoundBoxOffset.x = 31;
-
-            tunnelArray = session->RightTunnels;
-            break;
-
-        default:
-            return;
+        tunnelArray = session->RightTunnels;
+    }
+    else
+    {
+        return;
     }
 
     bool neighbourIsClippedAway = (session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && !tile_is_inside_clip_view(neighbour);
@@ -798,32 +796,31 @@ static void viewport_surface_draw_tile_side_top(
     CoordsXY offset = { 0, 0 };
     CoordsXY bounds = { 0, 0 };
 
-    switch (TEdge)
+    if constexpr (TEdge == EDGE_TOPLEFT)
     {
-        case EDGE_TOPLEFT:
-            cornerHeight1 = self.corner_heights.top;
-            cornerHeight2 = self.corner_heights.left;
+        cornerHeight1 = self.corner_heights.top;
+        cornerHeight2 = self.corner_heights.left;
 
-            neighbourCornerHeight1 = neighbour.corner_heights.right;
-            neighbourCornerHeight2 = neighbour.corner_heights.bottom;
+        neighbourCornerHeight1 = neighbour.corner_heights.right;
+        neighbourCornerHeight2 = neighbour.corner_heights.bottom;
 
-            offset.y = -2;
-            bounds.x = 30;
-            break;
+        offset.y = -2;
+        bounds.x = 30;
+    }
+    else if constexpr (TEdge == EDGE_TOPRIGHT)
+    {
+        cornerHeight1 = self.corner_heights.top;
+        cornerHeight2 = self.corner_heights.right;
 
-        case EDGE_TOPRIGHT:
-            cornerHeight1 = self.corner_heights.top;
-            cornerHeight2 = self.corner_heights.right;
+        neighbourCornerHeight1 = neighbour.corner_heights.left;
+        neighbourCornerHeight2 = neighbour.corner_heights.bottom;
 
-            neighbourCornerHeight1 = neighbour.corner_heights.left;
-            neighbourCornerHeight2 = neighbour.corner_heights.bottom;
-
-            offset.x = -2;
-            bounds.y = 30;
-            break;
-
-        default:
-            return;
+        offset.x = -2;
+        bounds.y = 30;
+    }
+    else
+    {
+        return;
     }
 
     // save ecx
