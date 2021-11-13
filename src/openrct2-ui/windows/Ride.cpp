@@ -6220,7 +6220,7 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
         const bool previousMeasurement = x > measurement->current_item;
 
-        // Draw the current line in gray.
+        // Draw the current line in grey.
         gfx_fill_rect(dpi, { { x, top }, { x, bottom } }, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
 
         // Draw red over extreme values (if supported by graph type).
