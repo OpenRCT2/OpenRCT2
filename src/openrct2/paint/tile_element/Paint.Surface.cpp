@@ -649,7 +649,7 @@ static void viewport_surface_draw_tile_side_bottom(
         base_image_id = get_edge_image(edgeStyle, 1);
     }
 
-    if (TEdge == EDGE_BOTTOMRIGHT)
+    if constexpr (TEdge == EDGE_BOTTOMRIGHT)
     {
         base_image_id += 5;
     }
@@ -779,9 +779,10 @@ static void viewport_surface_draw_water_side_bottom(
     viewport_surface_draw_tile_side_bottom<TEdge>(session, height, edgeStyle, self, neighbour, true);
 }
 
+template<edge_t TEdge>
 static void viewport_surface_draw_tile_side_top(
-    paint_session* session, enum edge_t edge, uint16_t height, uint8_t terrain, struct tile_descriptor self,
-    struct tile_descriptor neighbour, bool isWater)
+    paint_session* session, uint16_t height, uint8_t terrain, const tile_descriptor& self, const tile_descriptor& neighbour,
+    bool isWater)
 {
     // From big Z to tiny Z
     height /= COORDS_Z_PER_TINY_Z;
@@ -794,7 +795,7 @@ static void viewport_surface_draw_tile_side_top(
     CoordsXY offset = { 0, 0 };
     CoordsXY bounds = { 0, 0 };
 
-    switch (edge)
+    switch (TEdge)
     {
         case EDGE_TOPLEFT:
             cornerHeight1 = self.corner_heights.top;
@@ -857,19 +858,19 @@ static void viewport_surface_draw_tile_side_top(
         {
             base_image_id = get_edge_image(terrain, 1); // var_04
         }
-        base_image_id += (edge == EDGE_TOPLEFT ? 5 : 0);
+        base_image_id += (TEdge == EDGE_TOPLEFT ? 5 : 0);
     }
     else
     {
         if (!(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
             const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
-            const uint32_t image_id = get_edge_image(terrain, 3) + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
+            const uint32_t image_id = get_edge_image(terrain, 3) + (TEdge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
             const int16_t y = (height - cornerHeight1) * COORDS_Z_PER_TINY_Z;
             PaintAttachToPreviousPS(session, image_id, 0, y);
             return;
         }
-        base_image_id = get_edge_image(terrain, 1) + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
+        base_image_id = get_edge_image(terrain, 1) + (TEdge == EDGE_TOPLEFT ? 5 : 0); // var_04
     }
 
     uint8_t cur_height = std::min(neighbourCornerHeight2, neighbourCornerHeight1);
@@ -923,21 +924,21 @@ static void viewport_surface_draw_tile_side_top(
 /**
  *  rct2: 0x0065F63B, 0x0065F77D
  */
+template<edge_t TEdge>
 static void viewport_surface_draw_land_side_top(
-    paint_session* session, enum edge_t edge, uint16_t height, uint8_t terrain, struct tile_descriptor self,
-    struct tile_descriptor neighbour)
+    paint_session* session, uint16_t height, uint8_t terrain, const tile_descriptor& self, const tile_descriptor& neighbour)
 {
-    viewport_surface_draw_tile_side_top(session, edge, height, terrain, self, neighbour, false);
+    viewport_surface_draw_tile_side_top<TEdge>(session, height, terrain, self, neighbour, false);
 }
 
 /**
  *  rct2: 0x0066039B, 0x006604F1
  */
+template<edge_t TEdge>
 static void viewport_surface_draw_water_side_top(
-    paint_session* session, enum edge_t edge, uint16_t height, uint8_t terrain, struct tile_descriptor self,
-    struct tile_descriptor neighbour)
+    paint_session* session, uint16_t height, uint8_t terrain, const tile_descriptor& self, const tile_descriptor& neighbour)
 {
-    viewport_surface_draw_tile_side_top(session, edge, height, terrain, self, neighbour, true);
+    viewport_surface_draw_tile_side_top<TEdge>(session, height, terrain, self, neighbour, true);
 }
 
 static std::pair<int32_t, int32_t> surface_get_height_above_water(
@@ -1294,8 +1295,8 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
             log_verbose("edgeStyle: %d", edgeStyle);
         }
 
-        viewport_surface_draw_land_side_top(session, EDGE_TOPLEFT, height, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
-        viewport_surface_draw_land_side_top(session, EDGE_TOPRIGHT, height, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
+        viewport_surface_draw_land_side_top<EDGE_TOPLEFT>(session, height, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
+        viewport_surface_draw_land_side_top<EDGE_TOPRIGHT>(session, height, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
         viewport_surface_draw_land_side_bottom<EDGE_BOTTOMLEFT>(
             session, height, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
         viewport_surface_draw_land_side_bottom<EDGE_BOTTOMRIGHT>(
@@ -1338,10 +1339,10 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
                 session, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
             viewport_surface_draw_water_side_bottom<EDGE_BOTTOMRIGHT>(
                 session, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
-            viewport_surface_draw_water_side_top(
-                session, EDGE_TOPLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
-            viewport_surface_draw_water_side_top(
-                session, EDGE_TOPRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
+            viewport_surface_draw_water_side_top<EDGE_TOPLEFT>(
+                session, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
+            viewport_surface_draw_water_side_top<EDGE_TOPRIGHT>(
+                session, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
         }
     }
 
