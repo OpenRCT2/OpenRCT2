@@ -18,10 +18,6 @@ struct rct_s6_data;
 
 enum class GameCommand : int32_t
 {
-    PasswordlessLogin = -3,
-    ToggleSceneryCluster = -2,
-    Chat = -1,
-
     SetRideAppearance,        // GA
     SetLandHeight,            // GA
     TogglePause,              // GA

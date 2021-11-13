@@ -2578,7 +2578,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
         if (connection.AuthStatus == NetworkAuth::Verified)
         {
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
-            passwordless = group->CanPerformCommand(GameCommand::PasswordlessLogin);
+            passwordless = group->CanPerformAction(NetworkPermission::PasswordlessLogin);
         }
         if (gameversion != network_get_version())
         {
@@ -2885,7 +2885,7 @@ void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacke
     if (connection.Player != nullptr)
     {
         NetworkGroup* group = GetGroupByID(connection.Player->Group);
-        if (group == nullptr || !group->CanPerformCommand(GameCommand::Chat))
+        if (group == nullptr || !group->CanPerformAction(NetworkPermission::Chat))
         {
             return;
         }
