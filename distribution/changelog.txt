@@ -1,6 +1,7 @@
 0.3.5+ (in development)
 ------------------------------------------------------------------------
 - Improved: [#12869] The Tile Inspector window’s layout has been tweaked slightly.
+- Change: [#15899] Weird bonus for path 0 - likely intended as a queue bonus (original bug).
 - Fix: [#15620] Placing track designs at locations blocked by anything results in wrong error message.
 - Fix: [#15843] Tile Inspector can be resized too small.
 - Fix: [#15844] Tile Inspector has inconsistent text colours.
