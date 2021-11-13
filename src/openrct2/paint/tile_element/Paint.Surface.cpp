@@ -561,10 +561,9 @@ static bool tile_is_inside_clip_view(const tile_descriptor& tile)
     return true;
 }
 
-template<edge_t TEdge>
+template<edge_t TEdge, bool TIsWater>
 static void viewport_surface_draw_tile_side_bottom(
-    paint_session* session, uint16_t height, uint8_t edgeStyle, const tile_descriptor& self, const tile_descriptor& neighbour,
-    bool isWater)
+    paint_session* session, uint16_t height, uint8_t edgeStyle, const tile_descriptor& self, const tile_descriptor& neighbour)
 {
     // From big Z to tiny Z
     height /= COORDS_Z_PER_TINY_Z;
@@ -621,17 +620,20 @@ static void viewport_surface_draw_tile_side_bottom(
         neighbourCornerHeight1 = MINIMUM_LAND_HEIGHT / 2;
     }
 
-    if (isWater && neighbour.tile_element != nullptr)
+    if constexpr (TIsWater)
     {
-        auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (COORDS_Z_STEP * 2);
-        if (waterHeight == height && !neighbourIsClippedAway)
+        if (neighbour.tile_element != nullptr)
         {
-            // Don't draw the edge when the neighbour's water level is the same
-            return;
-        }
+            auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (COORDS_Z_STEP * 2);
+            if (waterHeight == height && !neighbourIsClippedAway)
+            {
+                // Don't draw the edge when the neighbour's water level is the same
+                return;
+            }
 
-        cornerHeight1 = height;
-        cornerHeight2 = height;
+            cornerHeight1 = height;
+            cornerHeight2 = height;
+        }
     }
 
     if (cornerHeight1 <= neighbourCornerHeight1 && cornerHeight2 <= neighbourCornerHeight2)
@@ -705,6 +707,8 @@ static void viewport_surface_draw_tile_side_bottom(
                 tunnelIndex++;
             }
 
+            // NOTE: Dynamic assignment here avoids a compiler warning since the statement is not fully constexpr.
+            bool isWater = TIsWater;
             if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
                 PaintAddImageAsParent(session, base_image_id, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
@@ -766,7 +770,7 @@ template<edge_t TEdge>
 static void viewport_surface_draw_land_side_bottom(
     paint_session* session, uint16_t height, uint8_t edgeStyle, const tile_descriptor& self, const tile_descriptor& neighbour)
 {
-    viewport_surface_draw_tile_side_bottom<TEdge>(session, height, edgeStyle, self, neighbour, false);
+    viewport_surface_draw_tile_side_bottom<TEdge, false>(session, height, edgeStyle, self, neighbour);
 }
 
 /**
@@ -776,7 +780,7 @@ template<edge_t TEdge>
 static void viewport_surface_draw_water_side_bottom(
     paint_session* session, uint16_t height, uint8_t edgeStyle, const tile_descriptor& self, const tile_descriptor& neighbour)
 {
-    viewport_surface_draw_tile_side_bottom<TEdge>(session, height, edgeStyle, self, neighbour, true);
+    viewport_surface_draw_tile_side_bottom<TEdge, true>(session, height, edgeStyle, self, neighbour);
 }
 
 template<edge_t TEdge>
