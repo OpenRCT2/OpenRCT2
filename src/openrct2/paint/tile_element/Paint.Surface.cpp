@@ -990,7 +990,7 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
     const corner_height& cornerHeights = corner_heights[surfaceShape];
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
-    tile_descriptor selfDescriptor = {
+    const tile_descriptor selfDescriptor = {
         TileCoordsXY(base),
         elementPtr,
         static_cast<uint8_t>(terrain_type),
