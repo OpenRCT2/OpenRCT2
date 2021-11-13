@@ -1711,7 +1711,7 @@ namespace RCT1
                         auto pathType = src2->GetPathType();
                         if (pathType == 0)
                         {
-                            pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
+                            pathType = RCT1_FOOTPATH_TYPE_TARMAC_GREY;
                         }
                         auto entryIndex = _pathTypeToEntryMap[pathType];
                         dst2->SetLegacyPathEntryIndex(entryIndex & 0x7F);

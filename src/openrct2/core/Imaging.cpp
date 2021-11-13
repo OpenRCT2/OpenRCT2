@@ -124,7 +124,7 @@ namespace Imaging
             }
             else if (bitDepth == 8 && !expandTo32)
             {
-                // 8-bit paletted or grayscale
+                // 8-bit paletted or greyscale
                 Guard::Assert(rowBytes == pngWidth, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {

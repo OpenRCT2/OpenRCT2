@@ -1265,12 +1265,12 @@ namespace RCT1
             "PATHDIRT",  // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
             "TARMACG ",  // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
 
-            "TARMAC  ",  // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
+            "TARMAC  ",  // RCT1_FOOTPATH_TYPE_TARMAC_GREY
             "PATHSPCE",  // RCT1_FOOTPATH_TYPE_TARMAC_RED
             "TARMACB ",  // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
             "TARMACG ",  // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
 
-            "PATHDIRT",  // RCT1_FOOTPATH_TYPE_DIRT_RED
+            "PATHDIRT",  // RCT1_FOOTPATH_TYPE_DIRT_BROWN
             "PATHASH ",  // RCT1_FOOTPATH_TYPE_DIRT_BLACK
             "        ",
             "        ",
@@ -1280,13 +1280,13 @@ namespace RCT1
             "        ",
             "        ",
 
-            "ROAD    ",  // RCT1_FOOTPATH_TYPE_ROADS
+            "ROAD    ",  // RCT1_FOOTPATH_TYPE_ROAD
             "        ",
             "        ",
             "        ",
 
-            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_PINK
-            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_GRAY
+            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_BROWN
+            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_GREY
             "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_RED
             "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_GREEN
         };
