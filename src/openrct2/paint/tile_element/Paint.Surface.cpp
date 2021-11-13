@@ -783,10 +783,9 @@ static void viewport_surface_draw_water_side_bottom(
     viewport_surface_draw_tile_side_bottom<TEdge, true>(session, height, edgeStyle, self, neighbour);
 }
 
-template<edge_t TEdge>
+template<edge_t TEdge, bool TIsWater>
 static void viewport_surface_draw_tile_side_top(
-    paint_session* session, uint16_t height, uint8_t terrain, const tile_descriptor& self, const tile_descriptor& neighbour,
-    bool isWater)
+    paint_session* session, uint16_t height, uint8_t terrain, const tile_descriptor& self, const tile_descriptor& neighbour)
 {
     // From big Z to tiny Z
     height /= COORDS_Z_PER_TINY_Z;
@@ -835,7 +834,7 @@ static void viewport_surface_draw_tile_side_top(
     }
     else
     {
-        if (isWater)
+        if constexpr (TIsWater)
         {
             auto waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() / (COORDS_Z_STEP * 2);
             if (height == waterHeight)
@@ -855,7 +854,7 @@ static void viewport_surface_draw_tile_side_top(
 
     uint32_t base_image_id;
 
-    if (isWater)
+    if constexpr (TIsWater)
     {
         base_image_id = get_edge_image(terrain, 2); // var_08
         if (session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
@@ -898,7 +897,7 @@ static void viewport_surface_draw_tile_side_top(
 
     neighbourCornerHeight1 = cornerHeight2;
 
-    if (isWater)
+    if constexpr (TIsWater)
     {
         offset.x = 0;
         offset.y = 0;
@@ -932,7 +931,7 @@ template<edge_t TEdge>
 static void viewport_surface_draw_land_side_top(
     paint_session* session, uint16_t height, uint8_t terrain, const tile_descriptor& self, const tile_descriptor& neighbour)
 {
-    viewport_surface_draw_tile_side_top<TEdge>(session, height, terrain, self, neighbour, false);
+    viewport_surface_draw_tile_side_top<TEdge, false>(session, height, terrain, self, neighbour);
 }
 
 /**
@@ -942,7 +941,7 @@ template<edge_t TEdge>
 static void viewport_surface_draw_water_side_top(
     paint_session* session, uint16_t height, uint8_t terrain, const tile_descriptor& self, const tile_descriptor& neighbour)
 {
-    viewport_surface_draw_tile_side_top<TEdge>(session, height, terrain, self, neighbour, true);
+    viewport_surface_draw_tile_side_top<TEdge, true>(session, height, terrain, self, neighbour);
 }
 
 static std::pair<int32_t, int32_t> surface_get_height_above_water(
