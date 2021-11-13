@@ -377,8 +377,6 @@ namespace ObjectFactory
     {
         if (s == "ride")
             return ObjectType::Ride;
-        if (s == "footpath")
-            return ObjectType::Paths;
         if (s == "footpath_banner")
             return ObjectType::Banners;
         if (s == "footpath_item")
