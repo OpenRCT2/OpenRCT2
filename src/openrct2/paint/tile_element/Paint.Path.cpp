@@ -1083,7 +1083,6 @@ void path_paint_box_support(
             session, image_id | imageFlags, { 0, 0, height }, { boundBoxSize, 0 },
             { boundBoxOffset, height + boundingBoxZOffset });
 
-        // TODO: Revert this when path import works correctly.
         if (!pathElement.IsQueue() && !(pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
             // don't draw
@@ -1224,7 +1223,6 @@ void path_paint_pole_support(
             session, bridgeImage | imageFlags, { 0, 0, height }, { boundBoxSize, 0 },
             { boundBoxOffset, height + boundingBoxZOffset });
 
-        // TODO: Revert this when path import works correctly.
         if (pathElement.IsQueue() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
             PaintAddImageAsChild(
