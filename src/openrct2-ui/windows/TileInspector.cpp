@@ -78,7 +78,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX
     WIDX_COLUMN_CLEARANCEHEIGHT,
     WIDX_COLUMN_GHOSTFLAG,
     WIDX_COLUMN_LASTFLAG,
-    WIDX_COLUMN_DIRECTION, // ~hjort96
+    WIDX_COLUMN_DIRECTION,
     WIDX_GROUPBOX_DETAILS,
     WIDX_GROUPBOX_PROPERTIES,
 
@@ -173,7 +173,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX
 static constexpr const rct_string_id WINDOW_TITLE = STR_TILE_INSPECTOR_TITLE;
 
 // Window sizes
-static constexpr const int32_t WW = 432; // 400;
+static constexpr const int32_t WW = 400;
 static constexpr const int32_t WH = 170;
 constexpr int32_t MIN_WW = WW;
 constexpr int32_t MAX_WW = WW;
@@ -188,7 +188,7 @@ constexpr auto ToolbarButtonOffsetX = ScreenSize{ -24, 0 };
 
 // List's column offsets
 constexpr auto TypeColumnXY = ScreenCoordsXY{ 3, 42 };
-constexpr auto TypeColumnSize = ScreenSize{ 287, 14 };
+constexpr auto TypeColumnSize = ScreenSize{ 255, 14 };
 constexpr auto BaseHeightColumnXY = TypeColumnXY + ScreenSize{ TypeColumnSize.width, 0 };
 constexpr auto BaseHeightColumnSize = ScreenSize{ 30, 14 };
 constexpr auto ClearanceHeightColumnXY = BaseHeightColumnXY + ScreenCoordsXY{ BaseHeightColumnSize.width, 0 };
@@ -197,7 +197,6 @@ constexpr auto GhostFlagColumnXY = ClearanceHeightColumnXY + ScreenCoordsXY{ Cle
 constexpr auto GhostFlagColumnSize = ScreenSize{ 15, 14 };
 constexpr auto LastFlagColumnXY = GhostFlagColumnXY + ScreenCoordsXY{ GhostFlagColumnSize.width, 0 };
 constexpr auto LastFlagColumnSize = ScreenSize{ 32, 14 };
-// ~hjort96 
 constexpr auto DirectionColumnXY = LastFlagColumnXY + ScreenCoordsXY{ LastFlagColumnSize.width, 0 };
 constexpr auto DirectionColumnSize = ScreenSize{ 32, 14 };
 
@@ -247,7 +246,7 @@ constexpr ScreenCoordsXY CheckboxGroupOffset(
     MakeWidget(ClearanceHeightColumnXY, ClearanceHeightColumnSize, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, STR_TILE_INSPECTOR_CLEARANCE_HEIGHT), /* Clearance height */  \
     MakeWidget(GhostFlagColumnXY,       GhostFlagColumnSize,       WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */        \
     MakeWidget(LastFlagColumnXY,        LastFlagColumnSize,        WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */ \
-    MakeWidget(DirectionColumnXY,       DirectionColumnSize,       WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_DIRECTION_SHORT,        STR_TILE_INSPECTOR_DIRECTION),        /* ~hjort96 Direction */         \
+    MakeWidget(DirectionColumnXY,       DirectionColumnSize,       WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_DIRECTION_SHORT,        STR_TILE_INSPECTOR_DIRECTION),        /* Direction */         \
     /* Group boxes */ \
     MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_NONE,                               STR_NONE ), /* Details group box */     \
     MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, STR_NONE )  /* Properties group box */
@@ -2410,11 +2409,9 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LastFlagColumnXY.x, 0 }, stringFormat, ft);
         }
 
-        // ~hjort96 Add Drawing code here
-        const auto d = tileElement->GetDirection();
         ft = Formatter();
         ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
-        ft.Add<int32_t>(d);
+        ft.Add<int32_t>(tileElement->GetDirection());
         DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ DirectionColumnXY.x, 0 }, stringFormat, ft);
 
         screenCoords.y -= SCROLLABLE_ROW_HEIGHT;
