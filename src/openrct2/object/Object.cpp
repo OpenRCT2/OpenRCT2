@@ -92,8 +92,10 @@ bool ObjectEntryDescriptor::operator==(const ObjectEntryDescriptor& rhs) const
     {
         return Entry == rhs.Entry;
     }
-
-    return Type == rhs.Type && Identifier == rhs.Identifier;
+    else
+    {
+        return Type == rhs.Type && Identifier == rhs.Identifier;
+    }
 }
 
 bool ObjectEntryDescriptor::operator!=(const ObjectEntryDescriptor& rhs) const
