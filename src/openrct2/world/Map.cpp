@@ -150,6 +150,61 @@ void SetTileElements(std::vector<TileElement>&& tileElements)
     _tileElementsInUse = _tileElements.size();
 }
 
+static TileElement GetDefaultSurfaceElement()
+{
+    TileElement el;
+    el.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+    el.SetLastForTile(true);
+    el.base_height = 14;
+    el.clearance_height = 14;
+    el.AsSurface()->SetWaterHeight(0);
+    el.AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+    el.AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+    el.AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+    el.AsSurface()->SetParkFences(0);
+    el.AsSurface()->SetSurfaceStyle(0);
+    el.AsSurface()->SetEdgeStyle(0);
+    return el;
+}
+
+std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
+{
+    std::vector<TileElement> newElements;
+    newElements.reserve(std::max(MIN_TILE_ELEMENTS, _tileElements.size()));
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            auto oldSize = newElements.size();
+
+            // Add all non-ghost elements
+            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            if (element != nullptr)
+            {
+                do
+                {
+                    if (!element->IsGhost())
+                    {
+                        newElements.push_back(*element);
+                    }
+                } while (!(element++)->IsLastForTile());
+            }
+
+            // Insert default surface element if no elements were added
+            auto newSize = newElements.size();
+            if (oldSize == newSize)
+            {
+                newElements.push_back(GetDefaultSurfaceElement());
+            }
+
+            // Ensure last element of tile has last flag set
+            auto& lastEl = newElements.back();
+            lastEl.SetLastForTile(true);
+        }
+    }
+    return newElements;
+}
+
 static void ReorganiseTileElements(size_t capacity)
 {
     context_setcurrentcursor(CursorID::ZZZ);
@@ -163,18 +218,7 @@ static void ReorganiseTileElements(size_t capacity)
             const auto* element = map_get_first_element_at(TileCoordsXY{ x, y });
             if (element == nullptr)
             {
-                auto& newElement = newElements.emplace_back();
-                newElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                newElement.SetLastForTile(true);
-                newElement.base_height = 14;
-                newElement.clearance_height = 14;
-                newElement.AsSurface()->SetWaterHeight(0);
-                newElement.AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-                newElement.AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                newElement.AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-                newElement.AsSurface()->SetParkFences(0);
-                newElement.AsSurface()->SetSurfaceStyle(0);
-                newElement.AsSurface()->SetEdgeStyle(0);
+                newElements.push_back(GetDefaultSurfaceElement());
             }
             else
             {
