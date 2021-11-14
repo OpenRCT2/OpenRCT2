@@ -751,8 +751,8 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->proposed_num_vehicles = src->proposed_num_vehicles;
     dst->proposed_num_cars_per_train = src->proposed_num_cars_per_train;
     dst->max_trains = src->max_trains;
-    dst->SetMinCarsPerTrain(src->GetMinCarsPerTrain());
-    dst->SetMaxCarsPerTrain(src->GetMaxCarsPerTrain());
+    dst->SetMinCarsPerTrain(src->MinCarsPerTrain);
+    dst->SetMaxCarsPerTrain(src->MaxCarsPerTrain);
     dst->min_waiting_time = src->min_waiting_time;
     dst->max_waiting_time = src->max_waiting_time;
 

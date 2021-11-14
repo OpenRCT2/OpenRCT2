@@ -851,8 +851,8 @@ namespace RCT1
             dst->max_waiting_time = src->max_waiting_time;
             dst->operation_option = src->operation_option;
             dst->num_circuits = 1;
-            dst->SetMinCarsPerTrain(rideEntry->min_cars_in_train);
-            dst->SetMaxCarsPerTrain(rideEntry->max_cars_in_train);
+            dst->MinCarsPerTrain = rideEntry->min_cars_in_train;
+            dst->MaxCarsPerTrain = rideEntry->max_cars_in_train;
 
             // RCT1 used 5mph / 8 km/h for every lift hill
             dst->lift_hill_speed = 5;
