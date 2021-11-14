@@ -167,70 +167,72 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
-    std::vector<DukValue> OpenRCT2::Scripting::ScMap::getAllEntitiesOnTile(const std::string& type, int32_t x, int32_t y) const
+    std::vector<DukValue> OpenRCT2::Scripting::ScMap::getAllEntitiesOnTile(const std::string& type, const DukValue& tile) const
     {
-        const auto pos = CoordsXY(x, y);
+        try
+        {
+            // Get the tile position
+            const auto pos = CoordsXY(tile["x"].as_int(), tile["y"].as_int());
 
-        std::vector<DukValue> result;
-        if (type == "balloon")
-        {
-            for (auto sprite : EntityTileList<Balloon>(pos))
-            {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
-            }
-        }
-        else if (type == "car")
-        {
-            for (auto sprite : EntityTileList<Vehicle>(pos))
-            {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(sprite->sprite_index)));
-            }
-        }
-        else if (type == "litter")
-        {
-            for (auto sprite : EntityTileList<Litter>(pos))
-            {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->sprite_index)));
-            }
-        }
-        else if (type == "duck")
-        {
-            for (auto sprite : EntityTileList<Duck>(pos))
-            {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
-            }
-        }
-        else if (type == "peep")
-        {
-            for (auto sprite : EntityTileList<Guest>(pos))
-            {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
-            }
-            for (auto sprite : EntityTileList<Staff>(pos))
-            {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
-            }
-        }
-        else if (type == "guest")
-        {
-            for (auto sprite : EntityTileList<Guest>(pos))
-            {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
-            }
-        }
-        else if (type == "staff")
-        {
-            for (auto sprite : EntityTileList<Staff>(pos))
-            {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
-            }
-        }
-        else
-        {
-            duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
-        }
+            // Declare a vector that will hold the result to return
+            std::vector<DukValue> result;
 
-        return result;
+            // Use EntityTileList to iterate all entities of the given type on the tile, and push them to result
+            if (type == "balloon")
+            {
+                for (auto sprite : EntityTileList<Balloon>(pos))
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                }
+            }
+            else if (type == "car")
+            {
+                for (auto sprite : EntityTileList<Vehicle>(pos))
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(sprite->sprite_index)));
+                }
+            }
+            else if (type == "litter")
+            {
+                for (auto sprite : EntityTileList<Litter>(pos))
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->sprite_index)));
+                }
+            }
+            else if (type == "duck")
+            {
+                for (auto sprite : EntityTileList<Duck>(pos))
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                }
+            }
+            else if (type == "guest")
+            {
+                for (auto sprite : EntityTileList<Guest>(pos))
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+                }
+            }
+            else if (type == "staff")
+            {
+                for (auto sprite : EntityTileList<Staff>(pos))
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+                }
+            }
+            else
+            {
+                // If the given type isn't valid, throw an error
+                duk_error(_context, DUK_ERR_ERROR, "Invalid entity type: %s", type.c_str());
+            }
+
+            return result;
+        }
+        catch (const DukException&)
+        {
+            // Throw an error if an invalid Tile argument was passed
+            duk_error(_context, DUK_ERR_ERROR, "Invalid tile argument.");
+        }
     }
 
     template<typename TEntityType, typename TScriptType>

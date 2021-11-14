@@ -42,7 +42,7 @@ namespace OpenRCT2::Scripting
 
         std::vector<DukValue> getAllEntities(const std::string& type) const;
 
-        std::vector<DukValue> getAllEntitiesOnTile(const std::string& type, int32_t x, int32_t y) const;
+        std::vector<DukValue> getAllEntitiesOnTile(const std::string& type, const DukValue& tile) const;
 
         DukValue createEntity(const std::string& type, const DukValue& initializer);
 
