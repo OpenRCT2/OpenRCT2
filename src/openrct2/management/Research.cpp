@@ -732,34 +732,17 @@ void research_remove_flags()
 
 static void ResearchRemoveNullItems(std::vector<ResearchItem>& items)
 {
-    for (auto it = items.begin(); it != items.end();)
-    {
-        auto& researchItem = *it;
+    const auto it = std::remove_if(std::begin(items), std::end(items), [](const ResearchItem& researchItem) {
         if (researchItem.type == Research::EntryType::Ride)
         {
-            const auto* rideEntry = get_ride_entry(researchItem.entryIndex);
-            if (rideEntry == nullptr)
-            {
-                it = items.erase(it);
-            }
-            else
-            {
-                it++;
-            }
+            return get_ride_entry(researchItem.entryIndex) == nullptr;
         }
         else
         {
-            const auto* sceneryGroupEntry = get_scenery_group_entry(researchItem.entryIndex);
-            if (sceneryGroupEntry == nullptr)
-            {
-                it = items.erase(it);
-            }
-            else
-            {
-                it++;
-            }
+            return get_scenery_group_entry(researchItem.entryIndex) == nullptr;
         }
-    }
+    });
+    items.erase(it, std::end(items));
 }
 
 static void research_mark_item_as_researched(const ResearchItem& item)
