@@ -174,7 +174,7 @@ static constexpr const uint8_t ConstructionPreviewImages[][4] = {
 static void window_footpath_mousedown_direction(int32_t direction);
 static void window_footpath_mousedown_slope(int32_t slope);
 static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget* widget, bool showQueues);
-static void window_footpath_show_railings_types_dialog(rct_window* w, rct_widget* widget);
+static void WindowFootpathShowRailingsTypesDialog(rct_window* w, rct_widget* widget);
 static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& screenCoords);
 static void window_footpath_set_selection_start_bridge_at_point(const ScreenCoordsXY& screenCoords);
 static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoords);
@@ -309,7 +309,7 @@ static void window_footpath_mousedown(rct_window* w, rct_widgetindex widgetIndex
             window_footpath_show_footpath_types_dialog(w, widget, true);
             break;
         case WIDX_RAILINGS_TYPE:
-            window_footpath_show_railings_types_dialog(w, widget);
+            WindowFootpathShowRailingsTypesDialog(w, widget);
             break;
         case WIDX_DIRECTION_NW:
             window_footpath_mousedown_direction(0);
@@ -773,7 +773,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
         gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
 }
 
-static void window_footpath_show_railings_types_dialog(rct_window* w, rct_widget* widget)
+static void WindowFootpathShowRailingsTypesDialog(rct_window* w, rct_widget* widget)
 {
     uint32_t numRailingsTypes = 0;
     // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
