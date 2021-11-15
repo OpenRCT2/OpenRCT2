@@ -188,17 +188,17 @@ constexpr auto ToolbarButtonOffsetX = ScreenSize{ -24, 0 };
 
 // List's column offsets
 constexpr auto TypeColumnXY = ScreenCoordsXY{ 3, 42 };
-constexpr auto TypeColumnSize = ScreenSize{ 255, 14 };
+constexpr auto TypeColumnSize = ScreenSize{ 272, 14 };
 constexpr auto BaseHeightColumnXY = TypeColumnXY + ScreenSize{ TypeColumnSize.width, 0 };
 constexpr auto BaseHeightColumnSize = ScreenSize{ 30, 14 };
 constexpr auto ClearanceHeightColumnXY = BaseHeightColumnXY + ScreenCoordsXY{ BaseHeightColumnSize.width, 0 };
 constexpr auto ClearanceHeightColumnSize = ScreenSize{ 30, 14 };
-constexpr auto GhostFlagColumnXY = ClearanceHeightColumnXY + ScreenCoordsXY{ ClearanceHeightColumnSize.width, 0 };
+constexpr auto DirectionColumnXY = ClearanceHeightColumnXY + ScreenCoordsXY{ ClearanceHeightColumnSize.width, 0 };
+constexpr auto DirectionColumnSize = ScreenSize{ 15, 14 };
+constexpr auto GhostFlagColumnXY = DirectionColumnXY + ScreenCoordsXY{ DirectionColumnSize.width, 0 };
 constexpr auto GhostFlagColumnSize = ScreenSize{ 15, 14 };
 constexpr auto LastFlagColumnXY = GhostFlagColumnXY + ScreenCoordsXY{ GhostFlagColumnSize.width, 0 };
 constexpr auto LastFlagColumnSize = ScreenSize{ 32, 14 };
-constexpr auto DirectionColumnXY = LastFlagColumnXY + ScreenCoordsXY{ LastFlagColumnSize.width, 0 };
-constexpr auto DirectionColumnSize = ScreenSize{ 32, 14 };
 
 constexpr int32_t PADDING_BOTTOM = 15;
 constexpr int32_t GROUPBOX_PADDING = 6;
@@ -2409,6 +2409,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LastFlagColumnXY.x, 0 }, stringFormat, ft);
         }
 
+        // Direction
         ft = Formatter();
         ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
         ft.Add<int32_t>(tileElement->GetDirection());
