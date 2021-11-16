@@ -1027,9 +1027,11 @@ void Ride::Update()
     // Various things include news messages
     if (lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
     {
-        // Breakdown updates are distributed, only one ride can update the breakdown status per tick.
-        const auto updatingRideId = (gCurrentTicks / 2) % MAX_RIDES;
-        if (static_cast<ride_id_t>(updatingRideId) == id)
+        // Breakdown updates originally were performed when (id == (gCurrentTicks / 2) & 0xFF)
+        // with the increased MAX_RIDES the update is tied to the first byte of the id this allows
+        // for identical balance with vanilla.
+        const auto updatingRideByte = static_cast<uint8_t>((gCurrentTicks / 2) & 0xFF);
+        if (updatingRideByte == static_cast<uint8_t>(id))
             ride_breakdown_status_update(this);
     }
 
