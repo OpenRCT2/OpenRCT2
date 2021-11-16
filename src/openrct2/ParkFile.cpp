@@ -1792,7 +1792,17 @@ namespace OpenRCT2
         cs.ReadWrite(entity.powered_acceleration);
         cs.ReadWrite(entity.dodgems_collision_direction);
         cs.ReadWrite(entity.animation_frame);
-        cs.ReadWrite(entity.animationState);
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion <= 2)
+        {
+            uint16_t lower = 0, upper = 0;
+            cs.ReadWrite(lower);
+            cs.ReadWrite(upper);
+            entity.animationState = lower | (upper << 16);
+        }
+        else
+        {
+            cs.ReadWrite(entity.animationState);
+        }
         cs.ReadWrite(entity.scream_sound_id);
         cs.ReadWrite(entity.TrackSubposition);
         cs.ReadWrite(entity.var_CE);
@@ -1912,9 +1922,18 @@ namespace OpenRCT2
         cs.ReadWrite(guest.RejoinQueueTimeout);
         cs.ReadWrite(guest.PreviousRide);
         cs.ReadWrite(guest.PreviousRideTimeOut);
-        cs.ReadWriteArray(guest.Thoughts, [&cs](PeepThought& thought) {
+        cs.ReadWriteArray(guest.Thoughts, [version = os.GetHeader().TargetVersion, &cs](PeepThought& thought) {
             cs.ReadWrite(thought.type);
-            cs.ReadWrite(thought.item);
+            if (version <= 2)
+            {
+                int16_t item;
+                cs.ReadWrite(item);
+                thought.item = item;
+            }
+            else
+            {
+                cs.ReadWrite(thought.item);
+            }
             cs.ReadWrite(thought.freshness);
             cs.ReadWrite(thought.fresh_timeout);
             return true;
@@ -2007,6 +2026,10 @@ namespace OpenRCT2
         cs.ReadWrite(entity.AssignedStaffType);
         cs.ReadWrite(entity.MechanicTimeSinceCall);
         cs.ReadWrite(entity.HireDate);
+        if (os.GetHeader().TargetVersion <= 2)
+        {
+            cs.Ignore<uint8_t>();
+        }
         cs.ReadWrite(entity.StaffOrders);
         cs.ReadWrite(entity.StaffMowingTimeout);
         cs.ReadWrite(entity.StaffLawnsMown);
