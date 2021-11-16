@@ -1888,7 +1888,10 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
                 for (auto* trackElement : TileElementsView<TrackElement>(location))
                 {
                     auto rideIndex = trackElement->GetRideIndex();
-                    rideConsideration[EnumValue(rideIndex)] = true;
+                    if (rideIndex != RIDE_ID_NULL)
+                    {
+                        rideConsideration[EnumValue(rideIndex)] = true;
+                    }
                 }
             }
         }
