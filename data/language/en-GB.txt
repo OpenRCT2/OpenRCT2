@@ -3656,6 +3656,8 @@ STR_6455    :Can’t rename sign…
 STR_6456    :Giant Screenshot
 STR_6457    :Report a bug on GitHub
 STR_6458    :Follow this on Main View
+STR_6460    :D
+STR_6461    :Direction
 
 #############
 # Scenarios #
