@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../OpenRCT2.h"
 #include "../actions/BannerRemoveAction.h"
 #include "../actions/FootpathAdditionRemoveAction.h"
 #include "../actions/LargeSceneryRemoveAction.h"
@@ -291,6 +292,12 @@ int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry)
 
 bool IsSceneryAvailableToBuild(const ScenerySelection& item)
 {
+    // All scenery can be built when in the scenario editor
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        return true;
+    }
+
     if (!gCheatsIgnoreResearchStatus)
     {
         if (!scenery_is_invented(item))
