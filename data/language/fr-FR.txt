@@ -1,6 +1,8 @@
 # STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
+# Follow the translation guidelines here:
+# https://github.com/OpenRCT2/Localisation/wiki/Translator-guidelines:-fr_FR
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Montagnes russes en spirales
@@ -3663,6 +3665,8 @@ STR_6455    :Impossible de renommer le panneau…
 STR_6456    :Capture d’écran géante
 STR_6457    :Signaler un bug sur GitHub
 STR_6458    :Suivre sur la vue principale
+STR_6460    :O
+STR_6461    :Orientation
 
 #############
 # Scenarios #
