@@ -167,12 +167,13 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
-    std::vector<DukValue> OpenRCT2::Scripting::ScMap::getAllEntitiesOnTile(const std::string& type, const DukValue& tile) const
+    std::vector<DukValue> OpenRCT2::Scripting::ScMap::getAllEntitiesOnTile(
+        const std::string& type, const DukValue& tilePos) const
     {
         try
         {
             // Get the tile position
-            const auto pos = CoordsXY(tile["x"].as_int(), tile["y"].as_int());
+            const auto pos = CoordsXY(tilePos["x"].as_int(), tilePos["y"].as_int());
 
             // Declare a vector that will hold the result to return
             std::vector<DukValue> result;
@@ -230,8 +231,8 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException&)
         {
-            // Throw an error if an invalid Tile argument was passed
-            duk_error(_context, DUK_ERR_ERROR, "Invalid tile argument.");
+            // Throw an error if an invalid tilePos argument was passed
+            duk_error(_context, DUK_ERR_ERROR, "Invalid tilePos argument.");
         }
     }
 

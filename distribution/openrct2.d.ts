@@ -604,11 +604,11 @@ declare global {
         getAllEntities(type: "staff"): Staff[];
         getAllEntities(type: "car"): Car[];
         getAllEntities(type: "litter"): Litter[];
-        getAllEntitiesOnTile(type: EntityType, tile: Tile): Entity[];
-        getAllEntitiesOnTile(type: "guest", tile: Tile): Guest[];
-        getAllEntitiesOnTile(type: "staff", tile: Tile): Staff[];
-        getAllEntitiesOnTile(type: "car", tile: Tile): Car[];
-        getAllEntitiesOnTile(type: "litter", tile: Tile): Litter[];
+        getAllEntitiesOnTile(type: EntityType, tilePos: CoordsXY): Entity[];
+        getAllEntitiesOnTile(type: "guest", tilePos: CoordsXY): Guest[];
+        getAllEntitiesOnTile(type: "staff", tilePos: CoordsXY): Staff[];
+        getAllEntitiesOnTile(type: "car", tilePos: CoordsXY): Car[];
+        getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
         createEntity(type: EntityType, initializer: object): Entity;
     }
 
