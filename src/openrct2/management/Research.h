@@ -117,13 +117,20 @@ struct ResearchItem
         }
         else
         {
-            entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
-            auto* rideEntry = get_ride_entry(entryIndex);
-            baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
-                                                : oldResearchItem.baseRideType;
             type = Research::EntryType{ oldResearchItem.type };
+            entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
             flags = oldResearchItem.flags;
             category = static_cast<ResearchCategory>(oldResearchItem.category);
+            if (type == Research::EntryType::Ride)
+            {
+                auto* rideEntry = get_ride_entry(entryIndex);
+                baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
+                                                    : oldResearchItem.baseRideType;
+            }
+            else
+            {
+                baseRideType = 0;
+            }
         }
     }
 

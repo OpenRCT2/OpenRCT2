@@ -355,6 +355,7 @@ static void remove_selected_objects_from_research(const ObjectEntryDescriptor& d
                 ResearchItem tmp = {};
                 tmp.type = Research::EntryType::Scenery;
                 tmp.entryIndex = entryIndex;
+                tmp.baseRideType = 0;
                 ResearchRemove(tmp);
                 break;
             }

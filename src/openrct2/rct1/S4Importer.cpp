@@ -2289,6 +2289,7 @@ namespace RCT1
                     dst->entryIndex = entryIndex;
                     dst->type = Research::EntryType::Scenery;
                     dst->category = ResearchCategory::SceneryGroup;
+                    dst->baseRideType = 0;
                     dst->flags = 0;
                 }
             }
