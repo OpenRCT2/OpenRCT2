@@ -3655,6 +3655,8 @@ STR_6455    :Kan de tekst van dit bord niet veranderen…
 STR_6456    :Reuzenscreenshot
 STR_6457    :Bug rapporteren op GitHub
 STR_6458    :Volgen in het hoofdvenster
+STR_6460    :R
+STR_6461    :Richting
 
 #############
 # Scenarios #

@@ -3656,6 +3656,8 @@ STR_6455    :Ne povas renomi surskribaĵon…
 STR_6456    :Giganta Ekrankopio
 STR_6457    :Raporti cimon sur GitHub
 STR_6458    :Sekvi ĉi tion en Ĉefa Vido
+STR_6460    :D
+STR_6461    :Direkto
 
 #############
 # Scenarios #
