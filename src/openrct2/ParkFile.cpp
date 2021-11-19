@@ -80,26 +80,25 @@ namespace OpenRCT2
     namespace ParkFileChunkType
     {
         // clang-format off
-//        constexpr uint32_t RESERVED_0       = 0x00;
-
-        constexpr uint32_t AUTHORING        = 0x01;
-        constexpr uint32_t OBJECTS          = 0x02;
-        constexpr uint32_t SCENARIO         = 0x03;
-        constexpr uint32_t GENERAL          = 0x04;
-        constexpr uint32_t CLIMATE          = 0x05;
-        constexpr uint32_t PARK             = 0x06;
-//        constexpr uint32_t HISTORY          = 0x07;
-        constexpr uint32_t RESEARCH         = 0x08;
-        constexpr uint32_t NOTIFICATIONS    = 0x09;
-        constexpr uint32_t INTERFACE        = 0x20;
-        constexpr uint32_t TILES            = 0x30;
-        constexpr uint32_t ENTITIES          = 0x31;
-        constexpr uint32_t RIDES            = 0x32;
-        constexpr uint32_t BANNERS          = 0x33;
-//        constexpr uint32_t STAFF            = 0x35;
-        constexpr uint32_t CHEATS           = 0x36;
-        constexpr uint32_t RESTRICTED_OBJECTS = 0x37;
-        constexpr uint32_t PACKED_OBJECTS   = 0x80;
+//      constexpr uint32_t RESERVED_0           = 0x00;
+        constexpr uint32_t AUTHORING            = 0x01;
+        constexpr uint32_t OBJECTS              = 0x02;
+        constexpr uint32_t SCENARIO             = 0x03;
+        constexpr uint32_t GENERAL              = 0x04;
+        constexpr uint32_t CLIMATE              = 0x05;
+        constexpr uint32_t PARK                 = 0x06;
+//      constexpr uint32_t HISTORY              = 0x07;
+        constexpr uint32_t RESEARCH             = 0x08;
+        constexpr uint32_t NOTIFICATIONS        = 0x09;
+        constexpr uint32_t INTERFACE            = 0x20;
+        constexpr uint32_t TILES                = 0x30;
+        constexpr uint32_t ENTITIES             = 0x31;
+        constexpr uint32_t RIDES                = 0x32;
+        constexpr uint32_t BANNERS              = 0x33;
+//      constexpr uint32_t STAFF                = 0x35;
+        constexpr uint32_t CHEATS               = 0x36;
+        constexpr uint32_t RESTRICTED_OBJECTS   = 0x37;
+        constexpr uint32_t PACKED_OBJECTS       = 0x80;
         // clang-format on
     }; // namespace ParkFileChunkType
 
