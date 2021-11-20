@@ -371,11 +371,13 @@ struct Ride
     uint8_t num_circuits;
     CoordsXYZ CableLiftLoc;
     uint16_t cable_lift;
-    // These fields are used to warn users about issues.
+
+    // These two fields are used to warn users about issues.
     // Such issue can be hacked rides with incompatible options set.
     // They don't require export/import.
     uint8_t current_issues;
     uint32_t last_issue_time;
+
     RideStation stations[MAX_STATIONS];
     uint16_t inversions;
     uint16_t holes;

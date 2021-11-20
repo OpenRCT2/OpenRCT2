@@ -72,10 +72,10 @@ static void UpdateFootpathsFromMapping(
 namespace OpenRCT2
 {
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x5;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x6;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x5;
+    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x6;
 
     namespace ParkFileChunkType
     {
@@ -1224,6 +1224,11 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.sheltered_length);
                     cs.ReadWrite(ride.var_11C);
                     cs.ReadWrite(ride.num_sheltered_sections);
+                    if (version > 5)
+                    {
+                        cs.ReadWrite(ride.sheltered_eighths);
+                        cs.ReadWrite(ride.holes);
+                    }
                     cs.ReadWrite(ride.current_test_station);
                     cs.ReadWrite(ride.num_block_brakes);
                     cs.ReadWrite(ride.total_air_time);
