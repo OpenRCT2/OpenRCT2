@@ -9,6 +9,7 @@
 - Fix: [#15878] Crash when opening a ride window for a corrupted vehicle.
 - Fix: [#15908] Crash when track elements have no ride assigned.
 - Fix: [#15919] Research status incorrectly considered for scenery when in editor modes.
+- Fix: Track designs of some coaster types are incorrectly exported to TD6.
 
 0.3.5 (2021-11-06)
 ------------------------------------------------------------------------
