@@ -48,7 +48,7 @@ bool T6Exporter::SaveTrack(const utf8* path)
 bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
 {
     OpenRCT2::MemoryStream tempStream;
-    tempStream.WriteValue<uint8_t>(_trackDesign->type);
+    tempStream.WriteValue<uint8_t>(OpenRCT2RideTypeToRCT2RideType(_trackDesign->type));
     tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_type);
     tempStream.WriteValue<uint32_t>(_trackDesign->flags);
     tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
