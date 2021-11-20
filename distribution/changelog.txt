@@ -8,6 +8,7 @@
 - Fix: [#15844] Tile Inspector has inconsistent text colours.
 - Fix: [#15878] Crash when opening a ride window for a corrupted vehicle.
 - Fix: [#15908] Crash when track elements have no ride assigned.
+- Fix: [#15919] Research status incorrectly considered for scenery when in editor modes.
 
 0.3.5 (2021-11-06)
 ------------------------------------------------------------------------
