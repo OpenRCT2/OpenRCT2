@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "Location.hpp"
+
 #include <cassert>
 #include <cstdint>
 #include <vector>
