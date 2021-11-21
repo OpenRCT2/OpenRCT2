@@ -370,8 +370,9 @@ std::vector<ScenerySelection>& GetRestrictedScenery()
     return _restrictedScenery;
 }
 
-void RestrictAllMiscScenery()
+static std::vector<ScenerySelection> GetAllMiscScenery()
 {
+    std::vector<ScenerySelection> miscScenery;
     std::vector<ScenerySelection> nonMiscScenery;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
@@ -395,9 +396,28 @@ void RestrictAllMiscScenery()
             {
                 if (std::find(std::begin(nonMiscScenery), std::end(nonMiscScenery), sceneryItem) == std::end(nonMiscScenery))
                 {
-                    _restrictedScenery.push_back(sceneryItem);
+                    miscScenery.push_back(sceneryItem);
                 }
             }
+        }
+    }
+    return miscScenery;
+}
+
+void RestrictAllMiscScenery()
+{
+    auto miscScenery = GetAllMiscScenery();
+    _restrictedScenery.insert(_restrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
+}
+
+void MarkAllUnrestrictedSceneryAsInvented()
+{
+    auto miscScenery = GetAllMiscScenery();
+    for (const auto& sceneryItem : miscScenery)
+    {
+        if (std::find(_restrictedScenery.begin(), _restrictedScenery.end(), sceneryItem) == _restrictedScenery.end())
+        {
+            scenery_set_invented(sceneryItem);
         }
     }
 }

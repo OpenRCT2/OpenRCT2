@@ -794,6 +794,7 @@ static void ResearchRebuildInventedTables()
 
         research_mark_item_as_researched(item);
     }
+    MarkAllUnrestrictedSceneryAsInvented();
 }
 
 static void ResearchAddAllMissingItems(bool isResearched)
