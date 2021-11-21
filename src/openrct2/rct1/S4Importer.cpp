@@ -1540,12 +1540,13 @@ namespace RCT1
                 RCT1_MAX_MAP_SIZE, _s4.tile_elements, std::size(_s4.tile_elements));
 
             std::vector<TileElement> tileElements;
+            const auto maxSize = std::min<uint16_t>(RCT1_MAX_MAP_SIZE, _s4.map_size);
             for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
             {
                 for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
                 {
                     auto tileAdded = false;
-                    if (coords.x < RCT1_MAX_MAP_SIZE && coords.y < RCT1_MAX_MAP_SIZE)
+                    if (coords.x < maxSize && coords.y < maxSize)
                     {
                         // This is the equivalent of map_get_first_element_at(x, y), but on S4 data.
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);

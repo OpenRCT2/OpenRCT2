@@ -1091,6 +1091,7 @@ public:
         std::vector<TileElement> tileElements;
         bool nextElementInvisible = false;
         bool restOfTileInvisible = false;
+        const auto maxSize = std::min(RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.map_size);
         for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
             for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
@@ -1099,7 +1100,7 @@ public:
                 restOfTileInvisible = false;
 
                 auto tileAdded = false;
-                if (coords.x < RCT2_MAXIMUM_MAP_SIZE_TECHNICAL && coords.y < RCT2_MAXIMUM_MAP_SIZE_TECHNICAL)
+                if (coords.x < maxSize && coords.y < maxSize)
                 {
                     const auto* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                     if (srcElement != nullptr)
