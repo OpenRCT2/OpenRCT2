@@ -497,7 +497,8 @@ namespace OpenRCT2
                 cs.ReadWrite(gSavedView.y);
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    gSavedViewZoom = static_cast<ZoomLevel>(cs.Read<int8_t>());
+                    auto savedZoomlevel = static_cast<ZoomLevel>(cs.Read<int8_t>());
+                    gSavedViewZoom = std::clamp(savedZoomlevel, ZoomLevel::min(), ZoomLevel::max());
                 }
                 else
                 {
