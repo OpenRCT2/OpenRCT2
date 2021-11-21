@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../actions/GameActionResult.h"
 #include "../common.h"
 #include "../object/Object.h"
 #include "../rct12/RCT12.h"
@@ -18,6 +19,20 @@
 struct Ride;
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
+
+struct TrackDesignState
+{
+    CoordsXYZ PreviewMin;
+    CoordsXYZ PreviewMax;
+    CoordsXYZ Origin;
+    uint8_t PlaceOperation{};
+    int16_t PlaceZ{};
+    int16_t PlaceSceneryZ{};
+    bool EntranceExitPlaced{};
+    bool HasScenery{};
+    bool PlaceScenery{};
+    bool IsReplay{};
+};
 
 /* Track Entrance entry */
 struct TrackDesignEntranceElement
@@ -134,14 +149,14 @@ struct TrackDesign
     std::string name;
 
 public:
-    rct_string_id CreateTrackDesign(const Ride& ride);
-    rct_string_id CreateTrackDesignScenery();
+    rct_string_id CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
+    rct_string_id CreateTrackDesignScenery(TrackDesignState& tds);
     void Serialise(DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;
-    rct_string_id CreateTrackDesignTrack(const Ride& ride);
-    rct_string_id CreateTrackDesignMaze(const Ride& ride);
+    rct_string_id CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
+    rct_string_id CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
     CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 
@@ -206,16 +221,20 @@ extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;
 extern ride_id_t gTrackDesignSaveRideIndex;
 
-[[nodiscard]] std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
+[[nodiscard]] std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path);
 
-void track_design_mirror(TrackDesign* td6);
+void TrackDesignMirror(TrackDesign* td6);
 
-money32 place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords);
+GameActions::Result::Ptr TrackDesignPlace(
+    TrackDesign* td6, uint32_t flags, bool placeScenery, Ride* ride, const CoordsXYZ& coords);
+void TrackDesignPreviewRemoveGhosts(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords);
+void TrackDesignPreviewDrawOutlines(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords);
+int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride* ride, const CoordsXYZ& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels);
+void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

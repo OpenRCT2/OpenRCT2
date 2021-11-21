@@ -21,12 +21,6 @@
 #include "RideSetSettingAction.h"
 #include "RideSetVehicleAction.h"
 
-static int32_t place_virtual_track(
-    const TrackDesign& td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& loc)
-{
-    return place_virtual_track(const_cast<TrackDesign*>(&td6), ptdOperation, placeScenery, ride, loc);
-}
-
 TrackDesignAction::TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td)
     : _loc(location)
     , _td(td)
@@ -95,26 +89,36 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
         return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    money32 cost = 0;
-
     bool placeScenery = true;
-    cost = place_virtual_track(_td, PTD_OPERATION_PLACE_QUERY, placeScenery, ride, _loc);
+
+    uint32_t flags = 0;
+    if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        flags |= GAME_COMMAND_FLAG_GHOST;
+    if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
+        flags |= GAME_COMMAND_FLAG_REPLAY;
+
+    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        cost = place_virtual_track(_td, PTD_OPERATION_PLACE_QUERY, placeScenery, ride, _loc);
+        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
     }
 
-    rct_string_id error_reason = gGameCommandErrorText;
     auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
     gameAction.SetFlags(GetFlags());
 
     GameActions::ExecuteNested(&gameAction);
-    if (cost == MONEY32_UNDEFINED)
+
+    if (queryRes->Error != GameActions::Status::Ok)
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, error_reason);
+        res->Error = queryRes->Error;
+        res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        res->ErrorMessage = queryRes->ErrorMessage;
+        res->ErrorMessageArgs = queryRes->ErrorMessageArgs;
+        return res;
     }
-    res->Cost = cost;
+
+    res->Cost = queryRes->Cost;
     res->SetData(ride_id_t{ RIDE_ID_NULL });
 
     return res;
@@ -157,42 +161,52 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
         return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    money32 cost = 0;
-
+    // Query first, this is required again to determine if scenery is available.
     bool placeScenery = true;
-    cost = place_virtual_track(_td, PTD_OPERATION_PLACE_QUERY, placeScenery, ride, _loc);
+
+    uint32_t flags = 0;
+    if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        flags |= GAME_COMMAND_FLAG_GHOST;
+    if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
+        flags |= GAME_COMMAND_FLAG_REPLAY;
+
+    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        cost = place_virtual_track(_td, PTD_OPERATION_PLACE_QUERY, placeScenery, ride, _loc);
+        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
     }
 
-    if (cost != MONEY32_UNDEFINED)
+    if (queryRes->Error != GameActions::Status::Ok)
     {
-        uint8_t operation;
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        {
-            operation = PTD_OPERATION_PLACE_GHOST;
-        }
-        else
-        {
-            operation = PTD_OPERATION_PLACE;
-        }
-        if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
-        {
-            operation |= PTD_OPERATION_FLAG_IS_REPLAY;
-        }
-        cost = place_virtual_track(_td, operation, placeScenery, ride, _loc);
-    }
-
-    if (cost == MONEY32_UNDEFINED)
-    {
-        rct_string_id error_reason = gGameCommandErrorText;
         auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
         gameAction.SetFlags(GetFlags());
-
         GameActions::ExecuteNested(&gameAction);
-        return MakeResult(GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, error_reason);
+
+        res->Error = queryRes->Error;
+        res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        res->ErrorMessage = queryRes->ErrorMessage;
+        res->ErrorMessageArgs = queryRes->ErrorMessageArgs;
+
+        return res;
+    }
+
+    // Execute.
+    flags |= GAME_COMMAND_FLAG_APPLY;
+
+    auto execRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+    if (execRes->Error != GameActions::Status::Ok)
+    {
+        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        gameAction.SetFlags(GetFlags());
+        GameActions::ExecuteNested(&gameAction);
+
+        res->Error = execRes->Error;
+        res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        res->ErrorMessage = execRes->ErrorMessage;
+        res->ErrorMessageArgs = execRes->ErrorMessageArgs;
+
+        return res;
     }
 
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
@@ -250,7 +264,7 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
         gameAction.SetFlags(GetFlags());
         r = GameActions::ExecuteNested(&gameAction);
     }
-    res->Cost = cost;
+    res->Cost = execRes->Cost;
     res->SetData(ride_id_t{ ride->id });
 
     return res;

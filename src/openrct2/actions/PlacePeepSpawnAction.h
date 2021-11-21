@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlacePeepSpawnAction, GameCommand::PlacePeepSpawn, GameActions::Result)
+class PlacePeepSpawnAction final : public GameActionBase<GameCommand::PlacePeepSpawn>
 {
 private:
     CoordsXYZD _location;
@@ -22,7 +22,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

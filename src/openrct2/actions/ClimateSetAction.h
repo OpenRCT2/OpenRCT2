@@ -12,7 +12,7 @@
 #include "../world/Climate.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ClimateSetAction, GameCommand::SetClimate, GameActions::Result)
+class ClimateSetAction final : public GameActionBase<GameCommand::SetClimate>
 {
 private:
     ClimateType _climate{};
@@ -21,11 +21,11 @@ public:
     ClimateSetAction() = default;
     ClimateSetAction(ClimateType climate);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

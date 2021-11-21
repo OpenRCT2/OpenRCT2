@@ -521,7 +521,7 @@
     <ClCompile Include="actions\FootpathRemoveAction.cpp" />
     <ClCompile Include="actions\GameAction.cpp" />
     <ClCompile Include="actions\GameActionCompat.cpp" />
-    <ClCompile Include="actions\GameActionRegistration.cpp" />
+    <ClCompile Include="actions\GameActionRegistry.cpp" />
     <ClCompile Include="actions\GameActionResult.cpp" />
     <ClCompile Include="actions\GuestSetFlagsAction.cpp" />
     <ClCompile Include="actions\GuestSetNameAction.cpp" />

@@ -385,7 +385,7 @@ private:
     {
         ReadCentrePixel(&_pixelAfterOverlay);
 
-        // Detect an active Steam overlay by checking if the centre pixel is changed by the gray fade.
+        // Detect an active Steam overlay by checking if the centre pixel is changed by the grey fade.
         // Will not be triggered by applications rendering to corners, like FRAPS, MSI Afterburner and Friends popups.
         bool newOverlayActive = _pixelBeforeOverlay != _pixelAfterOverlay;
 

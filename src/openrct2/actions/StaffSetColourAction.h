@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetColourAction, GameCommand::SetStaffColour, GameActions::Result)
+class StaffSetColourAction final : public GameActionBase<GameCommand::SetStaffColour>
 {
 private:
     uint8_t _staffType{};
@@ -23,7 +23,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

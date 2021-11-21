@@ -12,7 +12,7 @@
 #include "../peep/Staff.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetCostumeAction, GameCommand::SetStaffCostume, GameActions::Result)
+class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffCostume>
 {
 private:
     uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
@@ -24,7 +24,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

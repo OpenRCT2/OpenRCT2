@@ -586,6 +586,13 @@ public:
         }
     }
 
+    bool IsFlatRide(const uint8_t rct12RideIndex)
+    {
+        if (rct12RideIndex == RCT12_RIDE_ID_NULL)
+            return false;
+        return _isFlatRide[rct12RideIndex];
+    }
+
     void ImportRide(Ride* dst, const rct2_ride* src, const ride_id_t rideIndex)
     {
         *dst = {};
@@ -705,8 +712,8 @@ public:
         dst->proposed_num_vehicles = src->proposed_num_vehicles;
         dst->proposed_num_cars_per_train = src->proposed_num_cars_per_train;
         dst->max_trains = src->max_trains;
-        dst->SetMinCarsPerTrain(src->GetMinCarsPerTrain());
-        dst->SetMaxCarsPerTrain(src->GetMaxCarsPerTrain());
+        dst->MinCarsPerTrain = src->GetMinCarsPerTrain();
+        dst->MaxCarsPerTrain = src->GetMaxCarsPerTrain();
         dst->min_waiting_time = src->min_waiting_time;
         dst->max_waiting_time = src->max_waiting_time;
 
@@ -903,7 +910,7 @@ public:
         dst.State = src.state;
         if (src.current_ride < RCT12_MAX_RIDES_IN_PARK && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors))
             dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
-                src.proximity_track_type, _s6.rides[src.current_ride].type, _isFlatRide[src.current_ride]);
+                src.proximity_track_type, _s6.rides[src.current_ride].type, IsFlatRide(src.current_ride));
         else
             dst.ProximityTrackType = 0xFF;
         dst.ProximityBaseHeight = src.proximity_base_height;
@@ -1246,7 +1253,7 @@ public:
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
                 track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
 
-                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, rideType, _isFlatRide[src2->GetRideIndex()]));
+                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, rideType, IsFlatRide(src2->GetRideIndex())));
                 dst2->SetRideType(rideType);
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
@@ -1728,7 +1735,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
         dst->SetTrackType(src->GetTrackType());
         // RotationControlToggle and Booster are saved as the same track piece ID
         // Which one the vehicle is using must be determined
-        if (_isFlatRide[src->ride])
+        if (IsFlatRide(src->ride))
         {
             dst->SetTrackType(RCT12FlatTrackTypeToOpenRCT2(src->GetTrackType()));
         }

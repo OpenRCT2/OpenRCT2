@@ -3165,56 +3165,56 @@ STR_5930    :Information om stora dekorationer
 STR_5931    :Banderollinformation
 STR_5932    :Information om korrupt element
 STR_5933    :Egenskaper
-STR_5934    :{WINDOW_COLOUR_2}Terrängtextur: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Terrängkant: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Ägd mark: {BLACK}{STRINGID}
+STR_5934    :Terrängtextur: {BLACK}{STRINGID}
+STR_5935    :Terrängkant: {BLACK}{STRINGID}
+STR_5936    :Ägd mark: {BLACK}{STRINGID}
 STR_5937    :Inte ägd och inte till salu
-STR_5938    :{WINDOW_COLOUR_2}Vattennivå: {BLACK}{COMMA16}
+STR_5938    :Vattennivå: {BLACK}{COMMA16}
 STR_5939    :Ta bort parkstängsel
 STR_5940    :Återställ parkstängsel
-STR_5941    :{WINDOW_COLOUR_2}Bashöjd:
-STR_5942    :{WINDOW_COLOUR_2}Gångnamn: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Tillägg: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Tillägg: {BLACK}Ingen
-STR_5945    :{WINDOW_COLOUR_2}Anslutna kanter:
-STR_5946    :{WINDOW_COLOUR_2}Åktur typ: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Åktursidentifikation: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Åktursnamn: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Kedjelyft
-STR_5950    :{WINDOW_COLOUR_2}Verkställ ändringar för hela spåret
-STR_5951    :{WINDOW_COLOUR_2}Spårdels-ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Sekvensnummer: {BLACK}{COMMA16}
+STR_5941    :Bashöjd:
+STR_5942    :Gångnamn: {BLACK}{STRINGID}
+STR_5943    :Tillägg: {BLACK}{STRINGID}
+STR_5944    :Tillägg: {BLACK}Ingen
+STR_5945    :Anslutna kanter:
+STR_5946    :Åktur typ: {BLACK}{STRINGID}
+STR_5947    :Åktursidentifikation: {BLACK}{COMMA16}
+STR_5948    :Åktursnamn: {BLACK}{STRINGID}
+STR_5949    :Kedjelyft
+STR_5950    :Verkställ ändringar för hela spåret
+STR_5951    :Spårdels-ID: {BLACK}{COMMA16}
+STR_5952    :Sekvensnummer: {BLACK}{COMMA16}
 STR_5953    :Sortera element på den valda rutan baserat på deras höjd.
-STR_5954    :{WINDOW_COLOUR_2}Dekorationens ålder: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Placering i väderstreck: {BLACK}{STRINGID}
+STR_5954    :Dekorationens ålder: {BLACK}{COMMA16}
+STR_5955    :Placering i väderstreck: {BLACK}{STRINGID}
 STR_5956    :Sydväst
 STR_5957    :Nordväst
 STR_5958    :Nordost
 STR_5959    :Sydost
-STR_5960    :{WINDOW_COLOUR_2}Placering i väderstreck:
-STR_5961    :{WINDOW_COLOUR_2}Entré-index: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Kollisionsdetektering:
-STR_5963    :{WINDOW_COLOUR_2}Upphöjda hörn:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Entrétyp: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Parkentré-del: {BLACK}{STRINGID}
+STR_5960    :Placering i väderstreck:
+STR_5961    :Entré-index: {BLACK}{COMMA16}
+STR_5962    :Kollisionsdetektering:
+STR_5963    :Upphöjda hörn:
+STR_5964    :Diagonal
+STR_5965    :Entrétyp: {BLACK}{STRINGID}
+STR_5966    :Parkentré-del: {BLACK}{STRINGID}
 STR_5967    :Mitten
 STR_5968    :Vänster
 STR_5969    :Höger
-STR_5970    :{WINDOW_COLOUR_2}Entré-id: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Utgångs-id: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Åkturs-id: {BLACK}{COMMA16}
+STR_5970    :Entré-id: {BLACK}{COMMA16}
+STR_5971    :Utgångs-id: {BLACK}{COMMA16}
+STR_5972    :Åkturs-id: {BLACK}{COMMA16}
 STR_5973    :Fäst till nästa
 STR_5974    :Ändra bas- och frihöjd så det är samma som nästa element på den valda rutan. Genom att göra detta blir det lättare bygga på denna ruta.
 STR_5975    :Backe:
 STR_5976    :Plan
 STR_5977    :Höger sida upp
 STR_5978    :Vänster sida upp
-STR_5979    :{WINDOW_COLOUR_2}Stängsel typ: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Banderoll text: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Inte en banderoll
-STR_5982    :{WINDOW_COLOUR_2}Stor dekoration typ: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Stor dekorationsdels-id: {BLACK}{COMMA16}
+STR_5979    :Stängsel typ: {BLACK}{COMMA16}
+STR_5980    :Banderoll text: {BLACK}{STRINGID}
+STR_5981    :Inte en banderoll
+STR_5982    :Stor dekoration typ: {BLACK}{COMMA16}
+STR_5983    :Stor dekorationsdels-id: {BLACK}{COMMA16}
 STR_5984    :Blockerade gångar:
 STR_5985    :Ny mapp
 STR_5986    :Skriv in namnet på den nya mappen.
@@ -3486,7 +3486,7 @@ STR_6273    :Musik
 STR_6274    :Kan inte välja färgschema…
 STR_6275    :{WINDOW_COLOUR_2}Stationsstil:
 STR_6276    :{RED}{STRINGID} har besökare som sitter fast, troligen på grund av ogiltig typ av åktur eller felaktigt körläge.
-STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{STRINGID}
+STR_6277    :Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Antal autosparningar
 STR_6279    :Antal automatiska sparningar att behålla
 STR_6280    :Chatt
@@ -3519,9 +3519,9 @@ STR_6315    :{WINDOW_COLOUR_2}Sök efter mål: {BLACK}{INT32}, {INT32}, {INT32} 
 STR_6316    :{WINDOW_COLOUR_2}Sök efter historik:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} riktning {INT32}
 STR_6318    :Synkroniseringsfel upptäckt över nätverket.{NEWLINE}Loggfil: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Blockera Bromsa Stängd
-STR_6320    :{WINDOW_COLOUR_2}Oförstörbar
-STR_6321    :{WINDOW_COLOUR_2}Addition fungerar inte
+STR_6319    :Blockera Bromsa Stängd
+STR_6320    :Oförstörbar
+STR_6321    :Addition fungerar inte
 STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
 STR_6323    :Simulerar
 STR_6324    :Simulera
@@ -3567,7 +3567,7 @@ STR_6363    :Text kopierad till urklipp
 STR_6364    :{RED}{COMMA16} person omkom i en olycka på {STRINGID}
 STR_6365    :Omkomna
 STR_6366    :Vagnar som fastnat eller stannat upp
-STR_6367    :{WINDOW_COLOUR_2}Animationsruta:
+STR_6367    :Animationsruta:
 STR_6368    :Av kompatibilitetsskäl är det inte rekommenderat att köra OpenRCT2 med Wine. OpenRCT2 har direkt stöd för macOS, Linux, FreeBSD och OpenBSD.
 STR_6369    :Tillåt spårbygge på ogiltiga höjder
 STR_6370    :Tillåter bygge av spårdelar på alla höjdintervall

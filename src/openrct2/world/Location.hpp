@@ -25,6 +25,34 @@ constexpr const auto NumOrthogonalDirections = 4;
 
 constexpr int32_t COORDS_NULL = 0xFFFF8000;
 
+struct ScreenSize
+{
+    int32_t width{};
+    int32_t height{};
+
+    constexpr ScreenSize() = default;
+    constexpr ScreenSize(int32_t _width, int32_t _height)
+        : width(_width)
+        , height(_height)
+    {
+    }
+
+    constexpr bool operator==(const ScreenSize& other) const
+    {
+        return width == other.width && height == other.height;
+    }
+
+    constexpr bool operator!=(const ScreenSize& other) const
+    {
+        return !(*this == other);
+    }
+
+    constexpr ScreenSize operator*(int32_t scalar) const
+    {
+        return ScreenSize{ width * scalar, height * scalar };
+    }
+};
+
 struct ScreenCoordsXY
 {
     int32_t x{};
@@ -61,35 +89,22 @@ struct ScreenCoordsXY
         return { x + rhs.x, y + rhs.y };
     }
 
+    constexpr const ScreenCoordsXY operator+(const ScreenSize& rhs) const
+    {
+        return { x + rhs.width, y + rhs.height };
+    }
+
+    constexpr const ScreenCoordsXY operator-(const ScreenSize& rhs) const
+    {
+        return { x - rhs.width, y - rhs.height };
+    }
+
     constexpr bool operator==(const ScreenCoordsXY& other) const
     {
         return x == other.x && y == other.y;
     }
 
     constexpr bool operator!=(const ScreenCoordsXY& other) const
-    {
-        return !(*this == other);
-    }
-};
-
-struct ScreenSize
-{
-    int32_t width{};
-    int32_t height{};
-
-    constexpr ScreenSize() = default;
-    constexpr ScreenSize(int32_t _width, int32_t _height)
-        : width(_width)
-        , height(_height)
-    {
-    }
-
-    constexpr bool operator==(const ScreenSize& other) const
-    {
-        return width == other.width && height == other.height;
-    }
-
-    constexpr bool operator!=(const ScreenSize& other) const
     {
         return !(*this == other);
     }

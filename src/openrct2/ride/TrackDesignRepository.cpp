@@ -75,7 +75,7 @@ public:
 public:
     std::tuple<bool, TrackRepositoryItem> Create(int32_t, const std::string& path) const override
     {
-        auto td6 = track_design_open(path.c_str());
+        auto td6 = TrackDesignImport(path.c_str());
         if (td6 != nullptr)
         {
             TrackRepositoryItem item;

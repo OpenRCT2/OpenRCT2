@@ -3158,56 +3158,56 @@ STR_5930    :大景色物ディテール
 STR_5931    :バナー・ディテール
 STR_5932    :破損要素ディテール
 STR_5933    :Properties
-STR_5934    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Land ownership: {BLACK}{STRINGID}
+STR_5934    :Terrain texture: {BLACK}{STRINGID}
+STR_5935    :Terrain edge: {BLACK}{STRINGID}
+STR_5936    :Land ownership: {BLACK}{STRINGID}
 STR_5937    :Not owned and not for sale
-STR_5938    :{WINDOW_COLOUR_2}Water level: {BLACK}{COMMA16}
+STR_5938    :Water level: {BLACK}{COMMA16}
 STR_5939    :Remove park fences
 STR_5940    :Restore park fences
-STR_5941    :{WINDOW_COLOUR_2}Base height:
-STR_5942    :{WINDOW_COLOUR_2}Path name: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Additions: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Additions: {BLACK}None
-STR_5945    :{WINDOW_COLOUR_2}Connected edges:
-STR_5946    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Chain lift
-STR_5950    :{WINDOW_COLOUR_2}Apply changes to entire track piece
-STR_5951    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
+STR_5941    :Base height:
+STR_5942    :Path name: {BLACK}{STRINGID}
+STR_5943    :Additions: {BLACK}{STRINGID}
+STR_5944    :Additions: {BLACK}None
+STR_5945    :Connected edges:
+STR_5946    :Ride type: {BLACK}{STRINGID}
+STR_5947    :Ride ID: {BLACK}{COMMA16}
+STR_5948    :Ride name: {BLACK}{STRINGID}
+STR_5949    :Chain lift
+STR_5950    :Apply changes to entire track piece
+STR_5951    :Track piece ID: {BLACK}{COMMA16}
+STR_5952    :Sequence number: {BLACK}{COMMA16}
 STR_5953    :Sort the map elements on the current tile based on their base height.
-STR_5954    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
+STR_5954    :Scenery age: {BLACK}{COMMA16}
+STR_5955    :Quadrant placement: {BLACK}{STRINGID}
 STR_5956    :南西
 STR_5957    :北西
 STR_5958    :北東
 STR_5959    :南東
-STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
-STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Collision detection:
-STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Entrance type: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Park entrance part: {BLACK}{STRINGID}
+STR_5960    :Quadrant placement:
+STR_5961    :Entry index: {BLACK}{COMMA16}
+STR_5962    :Collision detection:
+STR_5963    :Raised Corners:
+STR_5964    :Diagonal
+STR_5965    :Entrance type: {BLACK}{STRINGID}
+STR_5966    :Park entrance part: {BLACK}{STRINGID}
 STR_5967    :中
 STR_5968    :左
 STR_5969    :右
-STR_5970    :{WINDOW_COLOUR_2}入口のID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}出口のID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}ライドのID: {BLACK}{COMMA16}
+STR_5970    :入口のID: {BLACK}{COMMA16}
+STR_5971    :出口のID: {BLACK}{COMMA16}
+STR_5972    :ライドのID: {BLACK}{COMMA16}
 STR_5973    :Clamp to next
 STR_5974    :Changes the base- and clearance height so that it's at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
 STR_5975    :Slope:
 STR_5976    :Flat
 STR_5977    :Right side up
 STR_5978    :Left side up
-STR_5979    :{WINDOW_COLOUR_2}Wall type: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Banner text: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Not a banner
-STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Large scenery piece ID: {BLACK}{COMMA16}
+STR_5979    :Wall type: {BLACK}{COMMA16}
+STR_5980    :Banner text: {BLACK}{STRINGID}
+STR_5981    :Not a banner
+STR_5982    :Large scenery type: {BLACK}{COMMA16}
+STR_5983    :Large scenery piece ID: {BLACK}{COMMA16}
 STR_5984    :Blocked paths:
 STR_5985    :新しいフォルダ
 STR_5986    :新しいフォルダの名を入力して下さい。
@@ -3479,7 +3479,7 @@ STR_6273    :音楽
 STR_6274    :配色の設定できません…
 STR_6275    :{WINDOW_COLOUR_2}乗り場スタイル:
 STR_6276    :{RED}{STRINGID}には来客が行き詰まっています。無効な配車タイプまたは操作モードが原因である可能性があります。
-STR_6277    :{WINDOW_COLOUR_2}乗り場インデックス: {BLACK}{STRINGID}
+STR_6277    :乗り場インデックス: {BLACK}{STRINGID}
 STR_6278    :自動保存量
 STR_6279    :保たれるべきで自動保存の数
 STR_6280    :チャット
@@ -3512,9 +3512,9 @@ STR_6315    :{WINDOW_COLOUR_2}経路探索の目標: {BLACK}{INT32}, {INT32}, {I
 STR_6316    :{WINDOW_COLOUR_2}経路探索の歴史:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} 方 {INT32}
 STR_6318    :Network desync detected.{NEWLINE}Log file: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Block Brake Closed
-STR_6320    :{WINDOW_COLOUR_2}Indestructible
-STR_6321    :{WINDOW_COLOUR_2}Addition is broken
+STR_6319    :Block Brake Closed
+STR_6320    :Indestructible
+STR_6321    :Addition is broken
 STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :シミュレーション中
 STR_6324    :シミュレーション

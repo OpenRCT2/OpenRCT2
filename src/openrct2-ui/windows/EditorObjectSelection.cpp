@@ -148,7 +148,7 @@ validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 static bool _window_editor_object_selection_widgets_initialised;
 static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {600, 357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
+    MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
     MakeWidget({  4, 60}, {288, 327}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
     MakeWidget({391, 45}, {114, 115}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
@@ -384,7 +384,7 @@ rct_window* window_editor_object_selection_open()
     reset_selected_object_count_and_size();
 
     window = WindowCreateCentred(
-        600, 400, &window_editor_object_selection_events, WC_EDITOR_OBJECT_SELECTION, WF_10 | WF_RESIZABLE);
+        WW, WH, &window_editor_object_selection_events, WC_EDITOR_OBJECT_SELECTION, WF_10 | WF_RESIZABLE);
     window->widgets = _window_editor_object_selection_widgets.data();
     window->widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
@@ -404,8 +404,8 @@ rct_window* window_editor_object_selection_open()
     window->selected_tab = 0;
     window->selected_list_item = -1;
     window->object_entry = nullptr;
-    window->min_width = 600;
-    window->min_height = 400;
+    window->min_width = WW;
+    window->min_height = WH;
     window->max_width = 1200;
     window->max_height = 1000;
 
@@ -566,7 +566,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
 
 static void window_editor_object_selection_resize(rct_window* w)
 {
-    window_set_resize(w, 600, 400, 1200, 1000);
+    window_set_resize(w, WW, WH, 1200, 1000);
 }
 
 void window_editor_object_selection_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
@@ -886,8 +886,8 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     }
 
     w->widgets[WIDX_FILTER_DROPDOWN].type = WindowWidgetType::Button;
-    w->widgets[WIDX_LIST].right = w->width - (600 - 587) - x;
-    w->widgets[WIDX_PREVIEW].left = w->width - (600 - 537) - (x / 2);
+    w->widgets[WIDX_LIST].right = w->width - (WW - 587) - x;
+    w->widgets[WIDX_PREVIEW].left = w->width - (WW - 537) - (x / 2);
     w->widgets[WIDX_PREVIEW].right = w->widgets[WIDX_PREVIEW].left + 113;
     w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].right = w->widgets[WIDX_LIST].right;
 
@@ -1485,30 +1485,16 @@ static bool filter_string(const ObjectRepositoryItem* item)
     // Get ride type
     const char* rideTypeName = language_get_string(get_ride_type_string_id(item));
 
-    // Get object name (ride/vehicle for rides) and type name (rides only)
-    char name_lower[MAX_PATH];
-    char type_lower[MAX_PATH];
-    char object_path[MAX_PATH];
-    char filter_lower[sizeof(_filter_string)];
-    safe_strcpy(name_lower, item->Name.c_str(), MAX_PATH);
-    safe_strcpy(type_lower, rideTypeName, MAX_PATH);
-    safe_strcpy(object_path, item->Path.c_str(), MAX_PATH);
-    safe_strcpy(filter_lower, _filter_string, sizeof(_filter_string));
-
-    // Make use of lowercase characters only
-    for (int32_t i = 0; name_lower[i] != '\0'; i++)
-        name_lower[i] = static_cast<char>(tolower(name_lower[i]));
-    for (int32_t i = 0; type_lower[i] != '\0'; i++)
-        type_lower[i] = static_cast<char>(tolower(type_lower[i]));
-    for (int32_t i = 0; object_path[i] != '\0'; i++)
-        object_path[i] = static_cast<char>(tolower(object_path[i]));
-    for (int32_t i = 0; filter_lower[i] != '\0'; i++)
-        filter_lower[i] = static_cast<char>(tolower(filter_lower[i]));
+    // Get object name (ride/vehicle for rides) and type name (rides only) in uppercase
+    const auto nameUpper = String::ToUpper(item->Name);
+    const auto typeUpper = String::ToUpper(rideTypeName);
+    const auto pathUpper = String::ToUpper(item->Path);
+    const auto filterUpper = String::ToUpper(_filter_string);
 
     // Check if the searched string exists in the name, ride type, or filename
-    bool inName = strstr(name_lower, filter_lower) != nullptr;
-    bool inRideType = (item->ObjectEntry.GetType() == ObjectType::Ride) && strstr(type_lower, filter_lower) != nullptr;
-    bool inPath = strstr(object_path, filter_lower) != nullptr;
+    bool inName = nameUpper.find(filterUpper) != std::string::npos;
+    bool inRideType = (item->ObjectEntry.GetType() == ObjectType::Ride) && typeUpper.find(filterUpper) != std::string::npos;
+    bool inPath = pathUpper.find(filterUpper) != std::string::npos;
 
     return inName || inRideType || inPath;
 }

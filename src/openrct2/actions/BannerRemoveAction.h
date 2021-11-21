@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerRemoveAction, GameCommand::RemoveBanner, GameActions::Result)
+class BannerRemoveAction final : public GameActionBase<GameCommand::RemoveBanner>
 {
 private:
     CoordsXYZD _loc;
@@ -20,11 +20,11 @@ public:
     BannerRemoveAction() = default;
     BannerRemoveAction(const CoordsXYZD& loc);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

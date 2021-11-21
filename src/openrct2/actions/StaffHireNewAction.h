@@ -17,7 +17,7 @@ struct StaffHireNewActionResult
     uint16_t StaffEntityId = SPRITE_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(StaffHireNewAction, GameCommand::HireNewStaffMember, GameActions::Result)
+class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaffMember>
 {
 private:
     bool _autoPosition{};
@@ -29,15 +29,15 @@ public:
     StaffHireNewAction() = default;
     StaffHireNewAction(bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 
 private:
     GameActions::Result::Ptr QueryExecute(bool execute) const;
-    void AutoPositionNewStaff(Peep * newPeep) const;
+    void AutoPositionNewStaff(Peep* newPeep) const;
 };

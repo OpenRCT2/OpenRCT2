@@ -31,7 +31,7 @@ jobs:
       - name: Commit and push
         working-directory: OpenRCT2
         run: |
-          if [[ $(git status -s) ]]; then
+          if [[ $(git status --porcelain) ]]; then
               echo "Committing and pushing..."
               git add .
               git config --global user.name "OpenRCT2 git bot"

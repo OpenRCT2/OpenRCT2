@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideSetPriceAction, GameCommand::SetRidePrice, GameActions::Result)
+class RideSetPriceAction final : public GameActionBase<GameCommand::SetRidePrice>
 {
 private:
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
@@ -22,11 +22,11 @@ public:
     RideSetPriceAction() = default;
     RideSetPriceAction(ride_id_t rideIndex, money16 price, bool primaryPrice);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

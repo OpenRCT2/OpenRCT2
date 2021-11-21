@@ -292,8 +292,8 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
 
     ride->num_circuits = 1;
     ride->mode = ride->GetDefaultMode();
-    ride->SetMinCarsPerTrain(rideEntry->min_cars_in_train);
-    ride->SetMaxCarsPerTrain(rideEntry->max_cars_in_train);
+    ride->MinCarsPerTrain = rideEntry->min_cars_in_train;
+    ride->MaxCarsPerTrain = rideEntry->max_cars_in_train;
     ride_set_vehicle_colours_to_random_preset(ride, _colour2);
     window_invalidate_by_class(WC_RIDE_LIST);
 

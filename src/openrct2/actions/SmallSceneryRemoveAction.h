@@ -12,7 +12,7 @@
 #include "../world/TileElement.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GameCommand::RemoveScenery, GameActions::Result)
+class SmallSceneryRemoveAction final : public GameActionBase<GameCommand::RemoveScenery>
 {
 private:
     CoordsXYZ _loc;
@@ -23,11 +23,11 @@ public:
     SmallSceneryRemoveAction() = default;
     SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

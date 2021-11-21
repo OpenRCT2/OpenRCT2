@@ -14,6 +14,7 @@
 #    include "../../../Context.h"
 #    include "../../../actions/NetworkModifyGroupAction.h"
 #    include "../../../actions/PlayerSetGroupAction.h"
+#    include "../../../core/String.hpp"
 #    include "../../../network/NetworkAction.h"
 #    include "../../../network/network.h"
 #    include "../../Duktape.hpp"
@@ -56,19 +57,14 @@ namespace OpenRCT2::Scripting
         auto result = s.substr(sizeof("PERMISSION_") - 1);
         for (auto& c : result)
         {
-            c = std::tolower(c);
+            c = std::tolower(static_cast<unsigned char>(c));
         }
         return result;
     }
 
     static std::string TransformPermissionKeyToInternal(const std::string& s)
     {
-        auto result = "PERMISSION_" + s;
-        for (auto& c : result)
-        {
-            c = std::toupper(c);
-        }
-        return result;
+        return "PERMISSION_" + String::ToUpper(s);
     }
 #    endif
 

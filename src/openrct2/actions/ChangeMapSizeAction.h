@@ -12,16 +12,16 @@
 #include "../world/Map.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ChangeMapSizeAction, GameCommand::ChangeMapSize, GameActions::Result)
+class ChangeMapSizeAction final : public GameActionBase<GameCommand::ChangeMapSize>
 {
 public:
     ChangeMapSizeAction() = default;
     ChangeMapSizeAction(const int32_t targetSize);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

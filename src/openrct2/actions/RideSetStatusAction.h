@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideSetStatusAction, GameCommand::SetRideStatus, GameActions::Result)
+class RideSetStatusAction final : public GameActionBase<GameCommand::SetRideStatus>
 {
 private:
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
@@ -21,11 +21,11 @@ public:
     RideSetStatusAction() = default;
     RideSetStatusAction(ride_id_t rideIndex, RideStatus status);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

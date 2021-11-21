@@ -597,6 +597,12 @@ bool scenery_group_is_invented(int32_t sgIndex)
         return false;
     }
 
+    // All scenery is temporarily invented when in the scenario editor
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        return true;
+    }
+
     if (gCheatsIgnoreResearchStatus)
     {
         return true;
