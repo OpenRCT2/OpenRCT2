@@ -1540,7 +1540,7 @@ namespace RCT1
                 RCT1_MAX_MAP_SIZE, _s4.tile_elements, std::size(_s4.tile_elements));
 
             std::vector<TileElement> tileElements;
-            const auto maxSize = std::min<uint16_t>(RCT1_MAX_MAP_SIZE, _s4.map_size);
+            const auto maxSize = _s4.map_size == 0 ? RCT1_MAX_MAP_SIZE : _s4.map_size;
             for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
             {
                 for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
