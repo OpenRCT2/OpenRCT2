@@ -1561,6 +1561,7 @@ namespace RCT1
                             auto dstElement = tileElements.data() + originalSize;
                             auto numAddedElements = ImportTileElement(dstElement, srcElement);
                             tileElements.resize(originalSize + numAddedElements);
+                            tileAdded = true;
                         } while (!(srcElement++)->IsLastForTile());
                     }
 
