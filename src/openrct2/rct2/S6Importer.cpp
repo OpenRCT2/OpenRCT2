@@ -1096,51 +1096,51 @@ public:
                 nextElementInvisible = false;
                 restOfTileInvisible = false;
 
-                if (coords.x >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL || coords.y >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL)
+                auto tileAdded = false;
+                if (coords.x < RCT2_MAXIMUM_MAP_SIZE_TECHNICAL && coords.y < RCT2_MAXIMUM_MAP_SIZE_TECHNICAL)
                 {
+                    const auto* srcElement = tilePointerIndex.GetFirstElementAt(coords);
+                    if (srcElement != nullptr)
+                    {
+                        do
+                        {
+                            if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+                            {
+                                continue;
+                            }
+
+                            auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
+                            if (tileElementType == RCT12TileElementType::Corrupt)
+                            {
+                                // One property of corrupt elements was to hide tops of tower tracks, and to avoid the next
+                                // element from being hidden, multiple consecutive corrupt elements were sometimes used. This
+                                // would essentially toggle the flag, so we inverse nextElementInvisible here instead of always
+                                // setting it to true.
+                                nextElementInvisible = !nextElementInvisible;
+                                continue;
+                            }
+                            if (tileElementType == RCT12TileElementType::EightCarsCorrupt14
+                                || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
+                            {
+                                restOfTileInvisible = true;
+                                continue;
+                            }
+
+                            auto& dstElement = tileElements.emplace_back();
+                            ImportTileElement(&dstElement, srcElement, nextElementInvisible || restOfTileInvisible);
+                            nextElementInvisible = false;
+                            tileAdded = true;
+                        } while (!(srcElement++)->IsLastForTile());
+                    }
+                }
+
+                if (!tileAdded)
+                {
+                    // Add a default surface element, we always need at least one element per tile
                     auto& dstElement = tileElements.emplace_back();
                     dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
                     dstElement.SetLastForTile(true);
-                    continue;
                 }
-
-                RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
-                // This might happen with damaged parks. Make sure there is *something* to avoid crashes.
-                if (srcElement == nullptr)
-                {
-                    auto& dstElement = tileElements.emplace_back();
-                    dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                    dstElement.SetLastForTile(true);
-                    continue;
-                }
-
-                do
-                {
-                    if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
-                    {
-                        continue;
-                    }
-
-                    auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
-                    if (tileElementType == RCT12TileElementType::Corrupt)
-                    {
-                        // One property of corrupt elements was to hide tops of tower tracks, and to avoid the next element from
-                        // being hidden, multiple consecutive corrupt elements were sometimes used. This would essentially
-                        // toggle the flag, so we inverse nextElementInvisible here instead of always setting it to true.
-                        nextElementInvisible = !nextElementInvisible;
-                        continue;
-                    }
-                    if (tileElementType == RCT12TileElementType::EightCarsCorrupt14
-                        || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
-                    {
-                        restOfTileInvisible = true;
-                        continue;
-                    }
-
-                    auto& dstElement = tileElements.emplace_back();
-                    ImportTileElement(&dstElement, srcElement, nextElementInvisible || restOfTileInvisible);
-                    nextElementInvisible = false;
-                } while (!(srcElement++)->IsLastForTile());
 
                 // Set last element flag in case the original last element was never added
                 if (tileElements.size() > 0)

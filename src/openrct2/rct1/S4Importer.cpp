@@ -1542,13 +1542,8 @@ namespace RCT1
             {
                 for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
                 {
-                    if (coords.x >= RCT1_MAX_MAP_SIZE || coords.y >= RCT1_MAX_MAP_SIZE)
-                    {
-                        auto& dstElement = tileElements.emplace_back();
-                        dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                        dstElement.SetLastForTile(true);
-                    }
-                    else
+                    auto tileAdded = false;
+                    if (coords.x < RCT1_MAX_MAP_SIZE && coords.y < RCT1_MAX_MAP_SIZE)
                     {
                         // This is the equivalent of map_get_first_element_at(x, y), but on S4 data.
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
@@ -1564,12 +1559,20 @@ namespace RCT1
                             auto numAddedElements = ImportTileElement(dstElement, srcElement);
                             tileElements.resize(originalSize + numAddedElements);
                         } while (!(srcElement++)->IsLastForTile());
+                    }
 
-                        // Set last element flag in case the original last element was never added
-                        if (tileElements.size() > 0)
-                        {
-                            tileElements.back().SetLastForTile(true);
-                        }
+                    if (!tileAdded)
+                    {
+                        // Add a default surface element, we always need at least one element per tile
+                        auto& dstElement = tileElements.emplace_back();
+                        dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                        dstElement.SetLastForTile(true);
+                    }
+
+                    // Set last element flag in case the original last element was never added
+                    if (tileElements.size() > 0)
+                    {
+                        tileElements.back().SetLastForTile(true);
                     }
                 }
             }
