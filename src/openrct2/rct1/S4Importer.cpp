@@ -63,6 +63,7 @@
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "../world/TilePointerIndex.hpp"
 #include "../world/Wall.h"
 #include "RCT1.h"
 #include "Tables.h"
@@ -1535,7 +1536,8 @@ namespace RCT1
             gMapBaseZ = 7;
 
             // Build tile pointer cache (needed to get the first element at a certain location)
-            auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT1_MAX_MAP_SIZE, _s4.tile_elements);
+            auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
+                RCT1_MAX_MAP_SIZE, _s4.tile_elements, std::size(_s4.tile_elements));
 
             std::vector<TileElement> tileElements;
             for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)

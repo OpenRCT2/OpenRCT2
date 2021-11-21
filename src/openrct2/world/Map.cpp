@@ -43,6 +43,7 @@
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../world/TilePointerIndex.hpp"
 #include "Banner.h"
 #include "Climate.h"
 #include "Footpath.h"
@@ -146,7 +147,7 @@ const std::vector<TileElement>& GetTileElements()
 void SetTileElements(std::vector<TileElement>&& tileElements)
 {
     _tileElements = std::move(tileElements);
-    _tileIndex = TilePointerIndex<TileElement>(MAXIMUM_MAP_SIZE_TECHNICAL, _tileElements.data());
+    _tileIndex = TilePointerIndex<TileElement>(MAXIMUM_MAP_SIZE_TECHNICAL, _tileElements.data(), _tileElements.size());
     _tileElementsInUse = _tileElements.size();
 }
 

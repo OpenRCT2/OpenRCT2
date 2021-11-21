@@ -69,6 +69,7 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "../world/TilePointerIndex.hpp"
 
 #include <algorithm>
 #include <bitset>
@@ -1084,7 +1085,8 @@ public:
     void ImportTileElements()
     {
         // Build tile pointer cache (needed to get the first element at a certain location)
-        auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements);
+        auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
+            RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements, std::size(_s6.tile_elements));
 
         std::vector<TileElement> tileElements;
         bool nextElementInvisible = false;
