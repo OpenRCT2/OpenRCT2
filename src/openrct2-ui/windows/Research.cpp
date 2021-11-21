@@ -193,7 +193,7 @@ rct_window* window_research_open()
         w->page = 0;
         w->frame_no = 0;
         w->disabled_widgets = 0;
-        research_update_uncompleted_types();
+        ResearchUpdateUncompletedTypes();
     }
 
     w->page = 0;

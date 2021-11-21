@@ -17,6 +17,7 @@
 #include "../ride/VehicleColour.h"
 #include "../world/EntityList.h"
 
+#include <tuple>
 #include <vector>
 
 constexpr const uint8_t RCT2_MAX_STAFF = 200;

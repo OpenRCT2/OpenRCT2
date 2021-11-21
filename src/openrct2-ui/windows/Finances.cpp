@@ -387,7 +387,7 @@ rct_window* window_finances_open()
         w->number = 0;
         w->frame_no = 0;
 
-        research_update_uncompleted_types();
+        ResearchUpdateUncompletedTypes();
     }
 
     w->page = WINDOW_FINANCES_PAGE_SUMMARY;

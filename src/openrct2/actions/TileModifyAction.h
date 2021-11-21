@@ -15,7 +15,7 @@ enum class TileModifyType : uint8_t
 {
     AnyRemove,
     AnySwap,
-    AnyInsertCorrupt,
+    AnyToggleInvisilibity,
     AnyRotate,
     AnyPaste,
     AnySort,
@@ -37,7 +37,6 @@ enum class TileModifyType : uint8_t
     ScenerySetQuarterLocation,
     ScenerySetQuarterCollision,
     BannerToggleBlockingEdge,
-    CorruptClamp,
     Count,
 };
 

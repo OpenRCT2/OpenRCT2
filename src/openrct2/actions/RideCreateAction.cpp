@@ -286,7 +286,13 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     ride->income_per_hour = MONEY64_UNDEFINED;
     ride->profit = MONEY64_UNDEFINED;
     ride->connected_message_throttle = 0;
-    ride->entrance_style = 0;
+
+    ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+    {
+        ride->entrance_style = gLastEntranceStyle;
+    }
+
     ride->num_block_brakes = 0;
     ride->guests_favourite = 0;
 

@@ -415,6 +415,19 @@ namespace OpenRCT2::Scripting
         return dukCoords.Take();
     }
 
+    template<> ObjectEntryIndex inline FromDuk(const DukValue& d)
+    {
+        if (d.type() == DukValue::Type::NUMBER)
+        {
+            auto value = d.as_int();
+            if (value >= 0 && value <= std::numeric_limits<ObjectEntryIndex>::max())
+            {
+                return static_cast<ObjectEntryIndex>(value);
+            }
+        }
+        return OBJECT_ENTRY_INDEX_NULL;
+    }
+
 } // namespace OpenRCT2::Scripting
 
 #endif

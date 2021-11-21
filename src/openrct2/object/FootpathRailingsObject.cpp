@@ -88,6 +88,7 @@ void FootpathRailingsObject::ReadJson(IReadObjectContext* context, json_t& root)
             {
                 { "hasSupportImages", RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
                 { "hasElevatedPathImages", RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS },
+                { "noQueueBanner", RAILING_ENTRY_FLAG_NO_QUEUE_BANNER },
             });
     }
 
