@@ -1,4 +1,4 @@
-0.3.5+ (in development)
+0.3.5.1 (2021-11-21)
 ------------------------------------------------------------------------
 - Improved: [#12825, #12869] The Tile Inspector window’s layout has been tweaked slightly.
 - Change: [#15899] Weird bonus for path 0 - likely intended as a queue bonus (original bug).
