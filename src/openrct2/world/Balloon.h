@@ -14,9 +14,10 @@
 class DataSerialiser;
 struct CoordsXYZ;
 
-struct Balloon : MiscEntity
+struct Balloon : EntityBase
 {
     static constexpr auto cEntityType = EntityType::Balloon;
+    uint16_t frame;
     uint16_t popped;
     uint8_t time_to_move;
     uint8_t colour;
