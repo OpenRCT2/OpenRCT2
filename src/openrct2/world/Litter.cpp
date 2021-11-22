@@ -3,7 +3,6 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/StringIds.h"
-#include "../scenario/Scenario.h"
 #include "EntityList.h"
 #include "Map.h"
 #include "Sprite.h"

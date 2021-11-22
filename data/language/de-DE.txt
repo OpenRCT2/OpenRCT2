@@ -3159,56 +3159,56 @@ STR_5930    :Details große Szenerie
 STR_5931    :Bannerdetails
 STR_5932    :Details fehlerhaftes Element
 STR_5933    :Eigenschaften
-STR_5934    :{WINDOW_COLOUR_2}Geländetextur: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Geländekante: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Landbesitz: {BLACK}{STRINGID}
+STR_5934    :Geländetextur: {BLACK}{STRINGID}
+STR_5935    :Geländekante: {BLACK}{STRINGID}
+STR_5936    :Landbesitz: {BLACK}{STRINGID}
 STR_5937    :Nicht in Besitz und nicht zum Verkauf
-STR_5938    :{WINDOW_COLOUR_2}Wasserhöhe: {BLACK}{COMMA16}
+STR_5938    :Wasserhöhe: {BLACK}{COMMA16}
 STR_5939    :Parkzäune entfernen
 STR_5940    :Parkzäune wiederherst.
-STR_5941    :{WINDOW_COLOUR_2}Basishöhe:
-STR_5942    :{WINDOW_COLOUR_2}Wegname: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Zusätze: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Zusätze: {BLACK}Keine
-STR_5945    :{WINDOW_COLOUR_2}Verbundene Kanten:
-STR_5946    :{WINDOW_COLOUR_2}Attraktionstyp: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Attraktions-ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Attraktionsname: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Kettenlift
-STR_5950    :{WINDOW_COLOUR_2}Änderungen auf gesamtes Streckenstück anwenden
-STR_5951    :{WINDOW_COLOUR_2}Streckenstück-ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Reihennummer: {BLACK}{COMMA16}
+STR_5941    :Basishöhe:
+STR_5942    :Wegname: {BLACK}{STRINGID}
+STR_5943    :Zusätze: {BLACK}{STRINGID}
+STR_5944    :Zusätze: {BLACK}Keine
+STR_5945    :Verbundene Kanten:
+STR_5946    :Attraktionstyp: {BLACK}{STRINGID}
+STR_5947    :Attraktions-ID: {BLACK}{COMMA16}
+STR_5948    :Attraktionsname: {BLACK}{STRINGID}
+STR_5949    :Kettenlift
+STR_5950    :Änderungen auf gesamtes Streckenstück anwenden
+STR_5951    :Streckenstück-ID: {BLACK}{COMMA16}
+STR_5952    :Reihennummer: {BLACK}{COMMA16}
 STR_5953    :Kartenelemente auf aktueller Kachel{NEWLINE}nach ihrer Basishöhe sortieren
-STR_5954    :{WINDOW_COLOUR_2}Szeneriealter: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Quadrantplatzierung: {BLACK}{STRINGID}
+STR_5954    :Szeneriealter: {BLACK}{COMMA16}
+STR_5955    :Quadrantplatzierung: {BLACK}{STRINGID}
 STR_5956    :Südwest
 STR_5957    :Nordwest
 STR_5958    :Nordost
 STR_5959    :Südost
-STR_5960    :{WINDOW_COLOUR_2}Quadrantplatzierung:
-STR_5961    :{WINDOW_COLOUR_2}Eintragsindex: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Kollisionserkennung:
-STR_5963    :{WINDOW_COLOUR_2}Angehobene Ecken:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Eingangstyp: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Parkeingangsteil: {BLACK}{STRINGID}
+STR_5960    :Quadrantplatzierung:
+STR_5961    :Eintragsindex: {BLACK}{COMMA16}
+STR_5962    :Kollisionserkennung:
+STR_5963    :Angehobene Ecken:
+STR_5964    :Diagonal
+STR_5965    :Eingangstyp: {BLACK}{STRINGID}
+STR_5966    :Parkeingangsteil: {BLACK}{STRINGID}
 STR_5967    :Mitte
 STR_5968    :Links
 STR_5969    :Rechts
-STR_5970    :{WINDOW_COLOUR_2}Eingangs-ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Ausgangs-ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Attraktions-ID: {BLACK}{COMMA16}
+STR_5970    :Eingangs-ID: {BLACK}{COMMA16}
+STR_5971    :Ausgangs-ID: {BLACK}{COMMA16}
+STR_5972    :Attraktions-ID: {BLACK}{COMMA16}
 STR_5973    :An nächsten heften
 STR_5974    :Ändert die Basis- und lichte Höhe, sodass{NEWLINE}sie der des nächsten Elements auf der aktuellen Kachel entspricht
 STR_5975    :Steigung:
 STR_5976    :Flach
 STR_5977    :Rechte Seite hoch
 STR_5978    :Linke Seite hoch
-STR_5979    :{WINDOW_COLOUR_2}Zauntyp: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Bannertext: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Kein Banner
-STR_5982    :{WINDOW_COLOUR_2}Großer Szenerietyp: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Großes Szeneriestück-ID: {BLACK}{COMMA16}
+STR_5979    :Zauntyp: {BLACK}{COMMA16}
+STR_5980    :Bannertext: {BLACK}{STRINGID}
+STR_5981    :Kein Banner
+STR_5982    :Großer Szenerietyp: {BLACK}{COMMA16}
+STR_5983    :Großes Szeneriestück-ID: {BLACK}{COMMA16}
 STR_5984    :Blockierte Wege:
 STR_5985    :Neuer Ordner
 STR_5986    :Name des neuen Ordners eingeben:
@@ -3480,7 +3480,7 @@ STR_6273    :Musik
 STR_6274    :Farbschema kann nicht gesetzt werden…
 STR_6275    :{WINDOW_COLOUR_2}Stil der Station:
 STR_6276    :{RED}{STRINGID} hat steckengebliebene Gäste, möglicherweise aufgrund eines ungültigen Streckentyps oder Betriebsmodus.
-STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{STRINGID}
+STR_6277    :Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Autosaveanzahl:
 STR_6279    :Anzahl der Autosaves, die{NEWLINE}behalten werden sollen
 STR_6280    :Chat
@@ -3513,9 +3513,9 @@ STR_6315    :{WINDOW_COLOUR_2}Wegfindungsziel: {BLACK}{INT32}, {INT32}, {INT32} 
 STR_6316    :{WINDOW_COLOUR_2}Wegfindungshistorie:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} Richtung {INT32}
 STR_6318    :Netzwerkdesynchronisation erkannt.{NEWLINE}Logdatei: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Blockbremse geschlossen
-STR_6320    :{WINDOW_COLOUR_2}Unzerstörbar
-STR_6321    :{WINDOW_COLOUR_2}Zusatz ist kaputt
+STR_6319    :Blockbremse geschlossen
+STR_6320    :Unzerstörbar
+STR_6321    :Zusatz ist kaputt
 STR_6322    :{WINDOW_COLOUR_2}Sprite-ID: {BLACK}{INT32}
 STR_6323    :Simulierend
 STR_6324    :Simulieren
@@ -3561,7 +3561,7 @@ STR_6363    :Text in die Zwischenablage kopiert
 STR_6364    :{RED}{COMMA16} Person starb bei einem Unfall auf {STRINGID}
 STR_6365    :Opfer von Fahrgeschäften
 STR_6366    :Feststeckende Fahrzeuge
-STR_6367    :{WINDOW_COLOUR_2}Animations-Frame:
+STR_6367    :Animations-Frame:
 STR_6368    :Aus Kompabilitätsgründen wird es nicht empfohlen, OpenRCT2 mit Wine auszuführen. OpenRCT2 funktioniert auf macOS, Linux, FreeBSD und OpenBSD.
 STR_6369    :Streckenbau an ungültigen Höhen erlauben
 STR_6370    :Erlaubt Platzierung von Streckenteilen an beliebigen Höhenintervallen

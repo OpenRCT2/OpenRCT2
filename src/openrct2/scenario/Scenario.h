@@ -162,12 +162,11 @@ extern std::string gScenarioName;
 extern std::string gScenarioDetails;
 extern std::string gScenarioCompletedBy;
 extern std::string gScenarioSavePath;
-extern char gScenarioExpansionPacks[3256];
 extern bool gFirstTimeSaving;
 extern uint16_t gSavedAge;
 extern uint32_t gLastAutoSaveUpdate;
 
-extern char gScenarioFileName[260];
+extern std::string gScenarioFileName;
 
 void load_from_sc6(const char* path);
 void scenario_begin();

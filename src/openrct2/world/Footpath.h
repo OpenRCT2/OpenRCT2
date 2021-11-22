@@ -29,8 +29,6 @@ constexpr auto FootpathMinHeight = 2 * COORDS_Z_STEP;
 constexpr auto PATH_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
 
-class FootpathObject;
-
 enum class RailingEntrySupportType : uint8_t
 {
     Box = 0,
@@ -176,6 +174,7 @@ enum
 {
     RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
     RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS = (1 << 1), // When elevated
+    RAILING_ENTRY_FLAG_NO_QUEUE_BANNER = (1 << 2),
 };
 
 enum

@@ -95,6 +95,7 @@ void StationObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "hasSecondaryColour", STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR },
                 { "isTransparent", STATION_OBJECT_FLAGS::IS_TRANSPARENT },
                 { "noPlatforms", STATION_OBJECT_FLAGS::NO_PLATFORMS },
+                { "hasShelter", STATION_OBJECT_FLAGS::HAS_SHELTER },
             });
     }
 

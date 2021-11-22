@@ -46,9 +46,9 @@ enum
     PROXIMITY_WATER_LOW,                    // 0x0138B59A
     PROXIMITY_WATER_HIGH,                   // 0x0138B59C
     PROXIMITY_SURFACE_TOUCH,                // 0x0138B59E
-    PROXIMITY_PATH_ZERO_OVER,               // 0x0138B5A0
-    PROXIMITY_PATH_ZERO_TOUCH_ABOVE,        // 0x0138B5A2
-    PROXIMITY_PATH_ZERO_TOUCH_UNDER,        // 0x0138B5A4
+    PROXIMITY_QUEUE_PATH_OVER,              // 0x0138B5A0
+    PROXIMITY_QUEUE_PATH_TOUCH_ABOVE,       // 0x0138B5A2
+    PROXIMITY_QUEUE_PATH_TOUCH_UNDER,       // 0x0138B5A4
     PROXIMITY_PATH_TOUCH_ABOVE,             // 0x0138B5A6
     PROXIMITY_PATH_TOUCH_UNDER,             // 0x0138B5A8
     PROXIMITY_OWN_TRACK_TOUCH_ABOVE,        // 0x0138B5AA
@@ -166,7 +166,7 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
     }
 
     auto ride = get_ride(currentRide);
-    if (ride != nullptr && ride->status != RideStatus::Closed)
+    if (ride != nullptr && ride->status != RideStatus::Closed && !(ride->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
         state.State = RIDE_RATINGS_STATE_INITIALISE;
     }
@@ -590,8 +590,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
                 }
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                // Bonus for normal path
-                if (tileElement->AsPath()->GetLegacyPathEntryIndex() != 0)
+                if (!tileElement->AsPath()->IsQueue())
                 {
                     if (tileElement->GetClearanceZ() == inputTileElement->GetBaseZ())
                     {
@@ -604,18 +603,17 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
                 }
                 else
                 {
-                    // Bonus for path in first object entry
                     if (tileElement->GetClearanceZ() <= inputTileElement->GetBaseZ())
                     {
-                        proximity_score_increment(state, PROXIMITY_PATH_ZERO_OVER);
+                        proximity_score_increment(state, PROXIMITY_QUEUE_PATH_OVER);
                     }
                     if (tileElement->GetClearanceZ() == inputTileElement->GetBaseZ())
                     {
-                        proximity_score_increment(state, PROXIMITY_PATH_ZERO_TOUCH_ABOVE);
+                        proximity_score_increment(state, PROXIMITY_QUEUE_PATH_TOUCH_ABOVE);
                     }
                     if (tileElement->GetBaseZ() == inputTileElement->GetClearanceZ())
                     {
-                        proximity_score_increment(state, PROXIMITY_PATH_ZERO_TOUCH_UNDER);
+                        proximity_score_increment(state, PROXIMITY_QUEUE_PATH_TOUCH_UNDER);
                     }
                 }
                 break;
@@ -1072,9 +1070,9 @@ static uint32_t ride_ratings_get_proximity_score(RideRatingUpdateState& state)
     result += get_proximity_score_helper_1(scores[PROXIMITY_WATER_LOW], 10, 0x020000);
     result += get_proximity_score_helper_1(scores[PROXIMITY_WATER_HIGH], 40, 0x00A000);
     result += get_proximity_score_helper_1(scores[PROXIMITY_SURFACE_TOUCH], 70, 0x01B6DB);
-    result += get_proximity_score_helper_1(scores[PROXIMITY_PATH_ZERO_OVER] + 8, 12, 0x064000);
-    result += get_proximity_score_helper_3(scores[PROXIMITY_PATH_ZERO_TOUCH_ABOVE], 40);
-    result += get_proximity_score_helper_3(scores[PROXIMITY_PATH_ZERO_TOUCH_UNDER], 45);
+    result += get_proximity_score_helper_1(scores[PROXIMITY_QUEUE_PATH_OVER] + 8, 12, 0x064000);
+    result += get_proximity_score_helper_3(scores[PROXIMITY_QUEUE_PATH_TOUCH_ABOVE], 40);
+    result += get_proximity_score_helper_3(scores[PROXIMITY_QUEUE_PATH_TOUCH_UNDER], 45);
     result += get_proximity_score_helper_2(scores[PROXIMITY_PATH_TOUCH_ABOVE], 10, 20, 0x03C000);
     result += get_proximity_score_helper_2(scores[PROXIMITY_PATH_TOUCH_UNDER], 10, 20, 0x044000);
     result += get_proximity_score_helper_2(scores[PROXIMITY_OWN_TRACK_TOUCH_ABOVE], 10, 15, 0x035555);

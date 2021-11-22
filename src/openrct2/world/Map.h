@@ -19,10 +19,10 @@
 #define MINIMUM_LAND_HEIGHT 2
 #define MAXIMUM_LAND_HEIGHT 142
 #define MINIMUM_WATER_HEIGHT 2
-#define MAXIMUM_WATER_HEIGHT 58
+#define MAXIMUM_WATER_HEIGHT 142
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 15
-#define MAXIMUM_MAP_SIZE_TECHNICAL 256
+#define MAXIMUM_MAP_SIZE_TECHNICAL 1001
 #define MINIMUM_MAP_SIZE_PRACTICAL (MINIMUM_MAP_SIZE_TECHNICAL - 2)
 #define MAXIMUM_MAP_SIZE_PRACTICAL (MAXIMUM_MAP_SIZE_TECHNICAL - 2)
 constexpr const int32_t MAXIMUM_MAP_SIZE_BIG = COORDS_XY_STEP * MAXIMUM_MAP_SIZE_TECHNICAL;
@@ -32,10 +32,10 @@ constexpr const int32_t MINIMUM_LAND_HEIGHT_BIG = MINIMUM_LAND_HEIGHT * COORDS_Z
 
 #define MAP_MINIMUM_X_Y (-MAXIMUM_MAP_SIZE_TECHNICAL)
 
-constexpr const uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x30000;
+constexpr const uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x1000000;
 constexpr const uint32_t MAX_TILE_ELEMENTS = MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 512;
 #define MAX_TILE_TILE_ELEMENT_POINTERS (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL)
-#define MAX_PEEP_SPAWNS 2
+#define MAX_PEEP_SPAWNS 256
 
 #define TILE_UNDEFINED_TILE_ELEMENT NULL
 
@@ -144,48 +144,12 @@ constexpr auto SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT = 0x20;
 extern const uint8_t tile_element_lower_styles[9][32];
 extern const uint8_t tile_element_raise_styles[9][32];
 
-template<typename T> class TilePointerIndex
-{
-    std::vector<T*> TilePointers;
-    uint16_t MapSize{};
-
-public:
-    TilePointerIndex() = default;
-
-    explicit TilePointerIndex(const uint16_t mapSize, T* tileElements)
-    {
-        MapSize = mapSize;
-        const uint16_t MaxTileElementPointers = MapSize * MapSize;
-        TilePointers.reserve(MaxTileElementPointers);
-
-        T* tileElement = tileElements;
-        for (size_t y = 0; y < MapSize; y++)
-        {
-            for (size_t x = 0; x < MapSize; x++)
-            {
-                TilePointers.emplace_back(tileElement);
-                while (!(tileElement++)->IsLastForTile())
-                    ;
-            }
-        }
-    }
-
-    T* GetFirstElementAt(TileCoordsXY coords)
-    {
-        return TilePointers[coords.x + (coords.y * MapSize)];
-    }
-
-    void SetTile(TileCoordsXY coords, T* tileElement)
-    {
-        TilePointers[coords.x + (coords.y * MapSize)] = tileElement;
-    }
-};
-
 void ReorganiseTileElements();
 const std::vector<TileElement>& GetTileElements();
 void SetTileElements(std::vector<TileElement>&& tileElements);
 void StashMap();
 void UnstashMap();
+std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
 
 void map_init(int32_t size);
 

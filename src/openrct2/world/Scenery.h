@@ -300,4 +300,8 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item);
 bool IsSceneryItemRestricted(const ScenerySelection& item);
 void ClearRestrictedScenery();
 void RestrictAllMiscScenery();
+void MarkAllUnrestrictedSceneryAsInvented();
 std::vector<ScenerySelection>& GetRestrictedScenery();
+
+ObjectType GetObjectTypeFromSceneryType(uint8_t type);
+uint8_t GetSceneryTypeFromObjectType(ObjectType type);

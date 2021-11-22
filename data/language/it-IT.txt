@@ -3168,57 +3168,57 @@ STR_5930    :Dettagli scenario grande
 STR_5931    :Dettagli cartelli
 STR_5932    :Dettagli elemento corrotto
 STR_5933    :Proprietà
-STR_5934    :{WINDOW_COLOUR_2}Texture terreno: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Bordo terreno: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Proprietà terreno: {BLACK}{STRINGID}
+STR_5934    :Texture terreno: {BLACK}{STRINGID}
+STR_5935    :Bordo terreno: {BLACK}{STRINGID}
+STR_5936    :Proprietà terreno: {BLACK}{STRINGID}
 STR_5937    :Non posseduto e non in vendita
-STR_5938    :{WINDOW_COLOUR_2}Livello acqua: {BLACK}{COMMA16}
+STR_5938    :Livello acqua: {BLACK}{COMMA16}
 STR_5939    :Rimuovi recinzione parco
 STR_5940    :Ripristina recinzione parco
-STR_5941    :{WINDOW_COLOUR_2}Altezza della base:
-STR_5942    :{WINDOW_COLOUR_2}Nome sentiero: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Aggiunte: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Aggiunte: {BLACK}Nessuna
-STR_5945    :{WINDOW_COLOUR_2}Spigoli connessi:
-STR_5946    :{WINDOW_COLOUR_2}Tipo percorso: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}ID percorso: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Nome attrazione: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Catena di traino
-STR_5950    :{WINDOW_COLOUR_2}Applica cambiamenti a tutto il pezzo di percorso
-STR_5951    :{WINDOW_COLOUR_2}ID pezzo di percorso: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Numero sequenza: {BLACK}{COMMA16}
+STR_5941    :Altezza della base:
+STR_5942    :Nome sentiero: {BLACK}{STRINGID}
+STR_5943    :Aggiunte: {BLACK}{STRINGID}
+STR_5944    :Aggiunte: {BLACK}Nessuna
+STR_5945    :Spigoli connessi:
+STR_5946    :Tipo percorso: {BLACK}{STRINGID}
+STR_5947    :ID percorso: {BLACK}{COMMA16}
+STR_5948    :Nome attrazione: {BLACK}{STRINGID}
+STR_5949    :Catena di traino
+STR_5950    :Applica cambiamenti a tutto il pezzo di percorso
+STR_5951    :ID pezzo di percorso: {BLACK}{COMMA16}
+STR_5952    :Numero sequenza: {BLACK}{COMMA16}
 STR_5953    :Ordina gli elementi della mappa nell'attuale cella in ordine di altezza della loro base.
-STR_5954    :{WINDOW_COLOUR_2}Età scenario: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Posizione quadrante: {BLACK}{STRINGID}
+STR_5954    :Età scenario: {BLACK}{COMMA16}
+STR_5955    :Posizione quadrante: {BLACK}{STRINGID}
 STR_5956    :Sud-ovest
 STR_5957    :Nord-ovest
 STR_5958    :Nord-est
 STR_5959    :Sud-est
-STR_5960    :{WINDOW_COLOUR_2}Posizione quadrante:
+STR_5960    :Posizione quadrante:
 # TODO da rivedere la seguente stringa
-STR_5961    :{WINDOW_COLOUR_2}Indice elemento: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Rilevamento collisioni:
-STR_5963    :{WINDOW_COLOUR_2}Angoli rialzati:
-STR_5964    :{WINDOW_COLOUR_2}Diagonale
-STR_5965    :{WINDOW_COLOUR_2}Tipo entrata: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Parte ingresso del parco: {BLACK}{STRINGID}
+STR_5961    :Indice elemento: {BLACK}{COMMA16}
+STR_5962    :Rilevamento collisioni:
+STR_5963    :Angoli rialzati:
+STR_5964    :Diagonale
+STR_5965    :Tipo entrata: {BLACK}{STRINGID}
+STR_5966    :Parte ingresso del parco: {BLACK}{STRINGID}
 STR_5967    :Centro
 STR_5968    :Sinistra
 STR_5969    :Destra
-STR_5970    :{WINDOW_COLOUR_2}ID ingresso: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}ID uscita: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}ID percorso: {BLACK}{COMMA16}
+STR_5970    :ID ingresso: {BLACK}{COMMA16}
+STR_5971    :ID uscita: {BLACK}{COMMA16}
+STR_5972    :ID percorso: {BLACK}{COMMA16}
 STR_5973    :Attacca al successivo
 STR_5974    :Cambia l'altezza di base e dei margini affinché sia la stessa del successivo elemento sull'attuale cella. Ciò permette di costruire più facilmente su questa cella.
 STR_5975    :Inclinazione:
 STR_5976    :Piatto
 STR_5977    :Lato destro su
 STR_5978    :Lato sinistro su
-STR_5979    :{WINDOW_COLOUR_2}Tipo recinzione: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Testo cartello: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Non è un cartello
-STR_5982    :{WINDOW_COLOUR_2}Tipo scenario grande: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}ID pezzo di scenario grande: {BLACK}{COMMA16}
+STR_5979    :Tipo recinzione: {BLACK}{COMMA16}
+STR_5980    :Testo cartello: {BLACK}{STRINGID}
+STR_5981    :Non è un cartello
+STR_5982    :Tipo scenario grande: {BLACK}{COMMA16}
+STR_5983    :ID pezzo di scenario grande: {BLACK}{COMMA16}
 STR_5984    :Sentieri bloccati:
 STR_5985    :Nuova cartella
 STR_5986    :Inserire il nome della nuova cartella.
@@ -3491,7 +3491,7 @@ STR_6273    :Musica
 STR_6274    :Impossibile impostare schema colore…
 STR_6275    :{WINDOW_COLOUR_2}Stile stazione:
 STR_6276    :{RED}{STRINGID} ha ospiti bloccati, probabilmente a causa di un errato tipo di attrazione o modalità operativa.
-STR_6277    :{WINDOW_COLOUR_2}Indice stazione: {BLACK}{STRINGID}
+STR_6277    :Indice stazione: {BLACK}{STRINGID}
 STR_6278    :Numero autosalvataggi
 STR_6279    :Numero di autosalvataggi da mantenere
 STR_6280    :Chat
@@ -3524,9 +3524,9 @@ STR_6315    :{WINDOW_COLOUR_2}Obiettivo Pathfind: {BLACK}{INT32}, {INT32}, {INT3
 STR_6316    :{WINDOW_COLOUR_2}Storico Pathfind:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :Network desync rilevato.{NEWLINE}File log: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Blocco freno chiuso
-STR_6320    :{WINDOW_COLOUR_2}Indistruttibile
-STR_6321    :{WINDOW_COLOUR_2}L'aggiunta è rotta
+STR_6319    :Blocco freno chiuso
+STR_6320    :Indistruttibile
+STR_6321    :L'aggiunta è rotta
 STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulazione
 STR_6324    :Simula
@@ -3572,7 +3572,7 @@ STR_6363    :Testo copiato negli appunti
 STR_6365    :Vittime attrazioni
 STR_6366    :Veicoli fermi o incastrati
 STR_6364    :{RED}{COMMA16} persona rimasta uccisa in un incidente su {STRINGID}
-STR_6367    :{WINDOW_COLOUR_2}Fotogramma animazione:
+STR_6367    :Fotogramma animazione:
 STR_6368    :Per motivi di compatibilità, non è consigliato eseguire OpenRCT2 tramite Wine. OpenRCT2 offre supporto nativo per macOS, Linux, FreeBSD and OpenBSD.
 STR_6369    :Permetti costruzione percorsi ad altezze non valide
 STR_6370    :Permette di collocare pezzi di percorso a qualsiasi intervallo di altezza

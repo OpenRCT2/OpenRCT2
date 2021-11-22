@@ -3165,56 +3165,56 @@ STR_5930    :Detalls de la decoració gran
 STR_5931    :Detalls del cartell
 STR_5932    :Detalls de l'element corrupte
 STR_5933    :Propietats
-STR_5934    :{WINDOW_COLOUR_2}Textura del terreny: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Vora del terreny: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Propietari del terreny: {BLACK}{STRINGID}
+STR_5934    :Textura del terreny: {BLACK}{STRINGID}
+STR_5935    :Vora del terreny: {BLACK}{STRINGID}
+STR_5936    :Propietari del terreny: {BLACK}{STRINGID}
 STR_5937    :Sense propietari ni a la venta
-STR_5938    :{WINDOW_COLOUR_2}Nivell de l'aigua: {BLACK}{COMMA16}
+STR_5938    :Nivell de l'aigua: {BLACK}{COMMA16}
 STR_5939    :Treu les tanques del parc
 STR_5940    :Restaura les tanques del parc
-STR_5941    :{WINDOW_COLOUR_2}Alçada base:
-STR_5942    :{WINDOW_COLOUR_2}Nom del camí: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Afegits: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Afegits: {BLACK}cap
-STR_5945    :{WINDOW_COLOUR_2}Vores connectades:
-STR_5946    :{WINDOW_COLOUR_2}Tipus d'atracció: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Id d'atracció: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Nom de l'atracció: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Cadena d'elevació
-STR_5950    :{WINDOW_COLOUR_2}Aplica els canvis a la via sencera.
-STR_5951    :{WINDOW_COLOUR_2}Id de secció: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Número de seqüència: {BLACK}{COMMA16}
+STR_5941    :Alçada base:
+STR_5942    :Nom del camí: {BLACK}{STRINGID}
+STR_5943    :Afegits: {BLACK}{STRINGID}
+STR_5944    :Afegits: {BLACK}cap
+STR_5945    :Vores connectades:
+STR_5946    :Tipus d'atracció: {BLACK}{STRINGID}
+STR_5947    :Id d'atracció: {BLACK}{COMMA16}
+STR_5948    :Nom de l'atracció: {BLACK}{STRINGID}
+STR_5949    :Cadena d'elevació
+STR_5950    :Aplica els canvis a la via sencera.
+STR_5951    :Id de secció: {BLACK}{COMMA16}
+STR_5952    :Número de seqüència: {BLACK}{COMMA16}
 STR_5953    :Ordena els elements del mapa de la casella seleccionada segons la seva alçada base.
-STR_5954    :{WINDOW_COLOUR_2}Edat de la decoració: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Posició al quadrant: {BLACK}{STRINGID}
+STR_5954    :Edat de la decoració: {BLACK}{COMMA16}
+STR_5955    :Posició al quadrant: {BLACK}{STRINGID}
 STR_5956    :Sud-oest
 STR_5957    :Nord-oest
 STR_5958    :Nord-est
 STR_5959    :Sud-est
-STR_5960    :{WINDOW_COLOUR_2}Posició al quadrant:
-STR_5961    :{WINDOW_COLOUR_2}Índex d'entrada: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Detecció de col·lisions:
-STR_5963    :{WINDOW_COLOUR_2}Cantonades aixecades:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Tipus d'entrada: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Part de l'entrada al parc: {BLACK}{STRINGID}
+STR_5960    :Posició al quadrant:
+STR_5961    :Índex d'entrada: {BLACK}{COMMA16}
+STR_5962    :Detecció de col·lisions:
+STR_5963    :Cantonades aixecades:
+STR_5964    :Diagonal
+STR_5965    :Tipus d'entrada: {BLACK}{STRINGID}
+STR_5966    :Part de l'entrada al parc: {BLACK}{STRINGID}
 STR_5967    :Mig
 STR_5968    :Esquerra
 STR_5969    :Dreta
-STR_5970    :{WINDOW_COLOUR_2}Id d'entrada: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Id de sortida: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Id d'atracció: {BLACK}{COMMA16}
+STR_5970    :Id d'entrada: {BLACK}{COMMA16}
+STR_5971    :Id de sortida: {BLACK}{COMMA16}
+STR_5972    :Id d'atracció: {BLACK}{COMMA16}
 STR_5973    :Subjecta al següent
 STR_5974    :Canvia la base i els límits de funcionament de manera que siguin els mateixos que el proper element d'aquesta casella. Això fa que sigui més fàcil construir en aquesta casella.
 STR_5975    :Inclinació:
 STR_5976    :plana
 STR_5977    :costat dret a dalt
 STR_5978    :costat esquerre a dalt
-STR_5979    :{WINDOW_COLOUR_2}Tipus de tanca: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Text del cartell: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}No és un cartell
-STR_5982    :{WINDOW_COLOUR_2}Tipus de decoració gran: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Id de peça d'escenari gran: {BLACK}{COMMA16}
+STR_5979    :Tipus de tanca: {BLACK}{COMMA16}
+STR_5980    :Text del cartell: {BLACK}{STRINGID}
+STR_5981    :No és un cartell
+STR_5982    :Tipus de decoració gran: {BLACK}{COMMA16}
+STR_5983    :Id de peça d'escenari gran: {BLACK}{COMMA16}
 STR_5984    :Camins blocats:
 STR_5985    :Nova carpeta
 STR_5986    :Escriviu el nom de la carpeta nova
@@ -3486,7 +3486,7 @@ STR_6273    :Música
 STR_6274    :No es poden establir els colors…
 STR_6275    :{WINDOW_COLOUR_2}Estil d'estació:
 STR_6276    :{RED}Hi ha visitants bloquejats en {STRINGID}, probablement a causa d'un tipus d'atracció no vàlid o un mode d'operació incorrecte.
-STR_6277    :{WINDOW_COLOUR_2}Índex d'estació: {BLACK}{STRINGID}
+STR_6277    :Índex d'estació: {BLACK}{STRINGID}
 STR_6278    :Nombre de desades automàtiques:
 STR_6279    :Nombre de desades automàtiques que es mantindran.
 STR_6280    :Xat
@@ -3519,9 +3519,9 @@ STR_6315    :{WINDOW_COLOUR_2}Objectiu de l'encaminador: {BLACK}{INT32}, {INT32}
 STR_6316    :{WINDOW_COLOUR_2}Historial de l'encaminador:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :S'ha detectat una dessincronització amb la xarxa.{NEWLINE}Fitxer de registre: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Frens de bloc tancats
-STR_6320    :{WINDOW_COLOUR_2}Indestructible
-STR_6321    :{WINDOW_COLOUR_2}L'adició està trencada
+STR_6319    :Frens de bloc tancats
+STR_6320    :Indestructible
+STR_6321    :L'adició està trencada
 STR_6322    :{WINDOW_COLOUR_2}ID de l'sprite: {BLACK}{INT32}
 STR_6323    :S'està simulant
 STR_6324    :Simula
@@ -3567,7 +3567,7 @@ STR_6363    :S'ha copiat el text al porta-retalls.
 STR_6364    :{RED}{COMMA16} persona ha mort en l'accident de {STRINGID}
 STR_6365    :Morts en atraccions
 STR_6366    :Vehicles parats o avariats
-STR_6367    :{WINDOW_COLOUR_2}Fotograma:
+STR_6367    :Fotograma:
 STR_6368    :Per motius de compatibilitat, no es recomana executar l'OpenRCT2 amb el Wine. L'OpenRCT2 té versions natives per a macOS, Linux, FreeBSD i OpenBSD.
 STR_6369    :Permet la construcció de vies a alçades no vàlides
 STR_6370    :Permet posar trossos de via en qualsevol alçada.

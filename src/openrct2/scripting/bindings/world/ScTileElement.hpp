@@ -112,7 +112,7 @@ namespace OpenRCT2::Scripting
         void hasCableLift_set(bool value);
 
         DukValue object_get() const;
-        void object_set(uint32_t value);
+        void object_set(const DukValue& value);
 
         bool isHidden_get() const;
         void isHidden_set(bool hide);
@@ -172,6 +172,12 @@ namespace OpenRCT2::Scripting
         DukValue addition_get() const;
         void addition_set(const DukValue& value);
 
+        DukValue surfaceObject_get() const;
+        void surfaceObject_set(const DukValue& value);
+
+        DukValue railingsObject_get() const;
+        void railingsObject_set(const DukValue& value);
+
         DukValue additionStatus_get() const;
         void additionStatus_set(uint8_t value);
 
@@ -182,7 +188,10 @@ namespace OpenRCT2::Scripting
         void isAdditionGhost_set(bool value);
 
         DukValue footpathObject_get() const;
-        void footpathObject_set(uint8_t value);
+        void footpathObject_set(const DukValue& value);
+
+        DukValue footpathSurfaceObject_get() const;
+        void footpathSurfaceObject_set(const DukValue& value);
 
         DukValue direction_get() const;
         void direction_set(uint8_t value);

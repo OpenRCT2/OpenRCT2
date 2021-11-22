@@ -15,7 +15,7 @@ enum class TileModifyType : uint8_t
 {
     AnyRemove,
     AnySwap,
-    AnyInsertCorrupt,
+    AnyToggleInvisilibity,
     AnyRotate,
     AnyPaste,
     AnySort,
@@ -37,11 +37,10 @@ enum class TileModifyType : uint8_t
     ScenerySetQuarterLocation,
     ScenerySetQuarterCollision,
     BannerToggleBlockingEdge,
-    CorruptClamp,
     Count,
 };
 
-DEFINE_GAME_ACTION(TileModifyAction, GameCommand::ModifyTile, GameActions::Result)
+class TileModifyAction final : public GameActionBase<GameCommand::ModifyTile>
 {
 private:
     CoordsXY _loc;
@@ -57,7 +56,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

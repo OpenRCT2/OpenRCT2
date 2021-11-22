@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SignSetStyleAction, GameCommand::SetSignStyle, GameActions::Result)
+class SignSetStyleAction final : public GameActionBase<GameCommand::SetSignStyle>
 {
 private:
     BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
@@ -25,7 +25,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

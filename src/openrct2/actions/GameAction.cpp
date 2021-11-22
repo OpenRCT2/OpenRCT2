@@ -60,30 +60,9 @@ namespace GameActions
         }
     };
 
-    static GameActionFactory _actions[EnumValue(GameCommand::Count)];
     static std::multiset<QueuedGameAction> _actionQueue;
     static uint32_t _nextUniqueId = 0;
     static bool _suspended = false;
-
-    GameActionFactory Register(GameCommand id, GameActionFactory factory)
-    {
-        const auto idx = static_cast<size_t>(id);
-
-        Guard::Assert(idx < std::size(_actions));
-        Guard::ArgumentNotNull(factory);
-
-        _actions[idx] = factory;
-        return factory;
-    }
-
-    bool IsValidId(uint32_t id)
-    {
-        if (id < std::size(_actions))
-        {
-            return _actions[id] != nullptr;
-        }
-        return false;
-    }
 
     void SuspendQueue()
     {
@@ -177,38 +156,6 @@ namespace GameActions
     void ClearQueue()
     {
         _actionQueue.clear();
-    }
-
-    void Initialize()
-    {
-        static bool initialized = false;
-        if (initialized)
-            return;
-
-        Register();
-
-        initialized = true;
-    }
-
-    std::unique_ptr<GameAction> Create(GameCommand id)
-    {
-        Initialize();
-
-        const auto idx = static_cast<size_t>(id);
-
-        GameAction* result = nullptr;
-        if (idx < std::size(_actions))
-        {
-            GameActionFactory factory = _actions[idx];
-            if (factory != nullptr)
-            {
-                result = factory();
-            }
-        }
-#ifdef _DEBUG
-        Guard::ArgumentNotNull(result, "Attempting to create unregistered gameaction: %u", id);
-#endif
-        return std::unique_ptr<GameAction>(result);
     }
 
     GameAction::Ptr Clone(const GameAction* action)
@@ -515,6 +462,11 @@ namespace GameActions
         return ExecuteInternal(action, false);
     }
 } // namespace GameActions
+
+const char* GameAction::GetName() const
+{
+    return GameActions::GetName(_type);
+}
 
 bool GameAction::LocationValid(const CoordsXY& coords) const
 {

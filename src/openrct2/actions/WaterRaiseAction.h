@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(WaterRaiseAction, GameCommand::RaiseWater, GameActions::Result)
+class WaterRaiseAction final : public GameActionBase<GameCommand::RaiseWater>
 {
 private:
     MapRange _range;
@@ -22,7 +22,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

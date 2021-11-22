@@ -19,7 +19,7 @@ struct SmallSceneryPlaceActionResult
     uint8_t SceneryQuadrant{};
 };
 
-DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GameCommand::PlaceScenery, GameActions::Result)
+class SmallSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceScenery>
 {
 private:
     CoordsXYZD _loc;
@@ -33,12 +33,12 @@ public:
     SmallSceneryPlaceAction(
         const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint32_t GetCooldownTime() const override;
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

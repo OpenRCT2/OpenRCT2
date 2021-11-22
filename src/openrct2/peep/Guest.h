@@ -407,6 +407,7 @@ private:
     void UpdateRideShopApproach();
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
+    void UpdateRidePrepareForExit();
     void loc_68F9F3();
     void loc_68FA89();
     int32_t CheckEasterEggName(int32_t index) const;

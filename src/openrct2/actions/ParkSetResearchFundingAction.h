@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetResearchFundingAction, GameCommand::SetResearchFunding, GameActions::Result)
+class ParkSetResearchFundingAction final : public GameActionBase<GameCommand::SetResearchFunding>
 {
 private:
     // TODO change to std::optional when C++17
@@ -24,7 +24,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

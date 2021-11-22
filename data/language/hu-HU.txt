@@ -3129,56 +3129,56 @@ STR_5930    :Nagy díszlet részletei
 STR_5931    :Hirdetőtábla részletei
 STR_5932    :Sérült elem részletei
 STR_5933    :Tulajdonságok
-STR_5934    :{WINDOW_COLOUR_2}Terep textúrája: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Terep széle: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Földtulajdon: {BLACK}{STRINGID}
+STR_5934    :Terep textúrája: {BLACK}{STRINGID}
+STR_5935    :Terep széle: {BLACK}{STRINGID}
+STR_5936    :Földtulajdon: {BLACK}{STRINGID}
 STR_5937    :Nincs tulajdonban és nem eladó
-STR_5938    :{WINDOW_COLOUR_2}Vízszint: {BLACK}{COMMA16}
+STR_5938    :Vízszint: {BLACK}{COMMA16}
 STR_5939    :Park kerítésének eltávolítása
 STR_5940    :Park kerítésének visszaállítása
-STR_5941    :{WINDOW_COLOUR_2}Alapmagasság:
-STR_5942    :{WINDOW_COLOUR_2}Út neve: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Extrák: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Extrák: {BLACK}Semmi
-STR_5945    :{WINDOW_COLOUR_2}Összekapcsolt szélek:
-STR_5946    :{WINDOW_COLOUR_2}Játék típusa: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Játék ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Játék neve: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Láncos felvonó
-STR_5950    :{WINDOW_COLOUR_2}Változtatások alkalmazása a teljes pályaelemre
-STR_5951    :{WINDOW_COLOUR_2}Pályaelem ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Sorszám: {BLACK}{COMMA16}
+STR_5941    :Alapmagasság:
+STR_5942    :Út neve: {BLACK}{STRINGID}
+STR_5943    :Extrák: {BLACK}{STRINGID}
+STR_5944    :Extrák: {BLACK}Semmi
+STR_5945    :Összekapcsolt szélek:
+STR_5946    :Játék típusa: {BLACK}{STRINGID}
+STR_5947    :Játék ID: {BLACK}{COMMA16}
+STR_5948    :Játék neve: {BLACK}{STRINGID}
+STR_5949    :Láncos felvonó
+STR_5950    :Változtatások alkalmazása a teljes pályaelemre
+STR_5951    :Pályaelem ID: {BLACK}{COMMA16}
+STR_5952    :Sorszám: {BLACK}{COMMA16}
 STR_5953    :A jelenlegi mező térképelemeinek alapmagasság szerinti rendezése.
-STR_5954    :{WINDOW_COLOUR_2}Díszlet kora: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Kvadráns helyzet: {BLACK}{STRINGID}
+STR_5954    :Díszlet kora: {BLACK}{COMMA16}
+STR_5955    :Kvadráns helyzet: {BLACK}{STRINGID}
 STR_5956    :Délnyugat
 STR_5957    :Északnyugat
 STR_5958    :Északkelet
 STR_5959    :Délkelet
-STR_5960    :{WINDOW_COLOUR_2}Kvadráns helyzet:
-STR_5961    :{WINDOW_COLOUR_2}Belépési index: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Ütközésérzékelés:
-STR_5963    :{WINDOW_COLOUR_2}Megemelt sarkok:
-STR_5964    :{WINDOW_COLOUR_2}Átlós
-STR_5965    :{WINDOW_COLOUR_2}Bejárat típusa: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Parkbejárat része: {BLACK}{STRINGID}
+STR_5960    :Kvadráns helyzet:
+STR_5961    :Belépési index: {BLACK}{COMMA16}
+STR_5962    :Ütközésérzékelés:
+STR_5963    :Megemelt sarkok:
+STR_5964    :Átlós
+STR_5965    :Bejárat típusa: {BLACK}{STRINGID}
+STR_5966    :Parkbejárat része: {BLACK}{STRINGID}
 STR_5967    :Középső
 STR_5968    :Bal
 STR_5969    :Jobb
-STR_5970    :{WINDOW_COLOUR_2}Bejárat ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Kijárat ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Játék ID: {BLACK}{COMMA16}
+STR_5970    :Bejárat ID: {BLACK}{COMMA16}
+STR_5971    :Kijárat ID: {BLACK}{COMMA16}
+STR_5972    :Játék ID: {BLACK}{COMMA16}
 STR_5973    :Következőhöz erősítés
 STR_5974    :Megváltoztatja az alap- és az űrszelvénymagasságot, hogy megegyezzen a jelenlegi mező következő elemével. Ez megkönnyíti az építkezést ezen a mezőn
 STR_5975    :Elhajlás:
 STR_5976    :Egyenes
 STR_5977    :Jobbról felfelé
 STR_5978    :Balról felfelé
-STR_5979    :{WINDOW_COLOUR_2}Fal típusa: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Hirdetőtábla szövege: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Nem hirdetőtábla
-STR_5982    :{WINDOW_COLOUR_2}Nagy díszlet típusa: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Nagy díszletelem ID: {BLACK}{COMMA16}
+STR_5979    :Fal típusa: {BLACK}{COMMA16}
+STR_5980    :Hirdetőtábla szövege: {BLACK}{STRINGID}
+STR_5981    :Nem hirdetőtábla
+STR_5982    :Nagy díszlet típusa: {BLACK}{COMMA16}
+STR_5983    :Nagy díszletelem ID: {BLACK}{COMMA16}
 STR_5984    :Blokkolt utak:
 STR_5985    :Új mappa
 STR_5986    :Írd be az új mappa nevét.
@@ -3445,7 +3445,7 @@ STR_6273    :Zene
 STR_6274    :Nem állítható be színséma…
 STR_6275    :{WINDOW_COLOUR_2}Állomás stílusa:
 STR_6276    :A vendégek beragadnak itt: {RED}{STRINGID}. Lehet, hogy érvénytelen játéktípus vagy működési mód okozza.
-STR_6277    :{WINDOW_COLOUR_2}Állomás index: {BLACK}{STRINGID}
+STR_6277    :Állomás index: {BLACK}{STRINGID}
 STR_6278    :Automentések száma
 STR_6279    :A megőrzendő automentések száma
 STR_6280    :Chat
@@ -3478,9 +3478,9 @@ STR_6315    :{WINDOW_COLOUR_2}Útkeresési cél: {BLACK}{INT32}, {INT32}, {INT32
 STR_6316    :{WINDOW_COLOUR_2}Útkeresési előzmények:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} irány {INT32}
 STR_6318    :Hálózati szinkronizációs hiba észlelve.{NEWLINE}Naplófájl: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Blokkolófék zárva
-STR_6320    :{WINDOW_COLOUR_2}Elpusztíthatatlan
-STR_6321    :{WINDOW_COLOUR_2}Törött hozzáadott elem
+STR_6319    :Blokkolófék zárva
+STR_6320    :Elpusztíthatatlan
+STR_6321    :Törött hozzáadott elem
 STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Szimuláció folyamatban
 STR_6324    :Szimulálás
@@ -3526,7 +3526,7 @@ STR_6363    :A szöveg a vágólapra másolva
 STR_6364    :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
 STR_6365    :Játékok áldozatai
 STR_6366    :Beragadt vagy elakadt járművek
-STR_6367    :{WINDOW_COLOUR_2}Animációs képkocka:
+STR_6367    :Animációs képkocka:
 STR_6368    :Kompatibilitási okok miatt nem javasolt az OpenRCT2 Wine-al történő futtatása. Az OpenRCT2 natív macOS, Linux, FreeBSD és OpenBSD támogatással rendelkezik.
 STR_6369    :Pályaépítés érvénytelen magasságokban
 STR_6370    :Lehetővé teszi, hogy bármely köztes magasságban lehessen pályarészeket elhelyezni

@@ -3162,56 +3162,56 @@ STR_5930    :Szczegóły dużej scenerii
 STR_5931    :Szczegóły banneru
 STR_5932    :Szczegóły uszkodzonych elementów
 STR_5933    :Właściwości
-STR_5934    :{WINDOW_COLOUR_2}Tekstura terenu: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Krawędź terenu: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Własność terenu: {BLACK}{STRINGID}
+STR_5934    :Tekstura terenu: {BLACK}{STRINGID}
+STR_5935    :Krawędź terenu: {BLACK}{STRINGID}
+STR_5936    :Własność terenu: {BLACK}{STRINGID}
 STR_5937    :Nie zakupione i nie na sprzedaż
-STR_5938    :{WINDOW_COLOUR_2}Poziom wody: {BLACK}{COMMA16}
+STR_5938    :Poziom wody: {BLACK}{COMMA16}
 STR_5939    :Usuń ogrodzenie parku
 STR_5940    :Przywróć ogrodzenie parku
-STR_5941    :{WINDOW_COLOUR_2}Bazowa wysokość:
-STR_5942    :{WINDOW_COLOUR_2}Adres ścieżki: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Dodatki: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Dodatki: {BLACK}Brak
-STR_5945    :{WINDOW_COLOUR_2}Połączone krawędzie:
-STR_5946    :{WINDOW_COLOUR_2}Typ przejażdżki: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}ID przejażdżki: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Nazwa przejażdżki: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Wyciągarka
-STR_5950    :{WINDOW_COLOUR_2}Zastosuj zmiany dla całego elementu trasy
-STR_5951    :{WINDOW_COLOUR_2}ID elementu trasy: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Numer sekwencji: {BLACK}{COMMA16}
+STR_5941    :Bazowa wysokość:
+STR_5942    :Adres ścieżki: {BLACK}{STRINGID}
+STR_5943    :Dodatki: {BLACK}{STRINGID}
+STR_5944    :Dodatki: {BLACK}Brak
+STR_5945    :Połączone krawędzie:
+STR_5946    :Typ przejażdżki: {BLACK}{STRINGID}
+STR_5947    :ID przejażdżki: {BLACK}{COMMA16}
+STR_5948    :Nazwa przejażdżki: {BLACK}{STRINGID}
+STR_5949    :Wyciągarka
+STR_5950    :Zastosuj zmiany dla całego elementu trasy
+STR_5951    :ID elementu trasy: {BLACK}{COMMA16}
+STR_5952    :Numer sekwencji: {BLACK}{COMMA16}
 STR_5953    :Posortuj elementy mapy na podstawie ich wysokości.
-STR_5954    :{WINDOW_COLOUR_2}Wiek scenografii: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Umiejscowienie ćwiartki: {BLACK}{STRINGID}
+STR_5954    :Wiek scenografii: {BLACK}{COMMA16}
+STR_5955    :Umiejscowienie ćwiartki: {BLACK}{STRINGID}
 STR_5956    :Południowy-zachód
 STR_5957    :Północny-zachód
 STR_5958    :Północny-wschód
 STR_5959    :Południowy-wschód
-STR_5960    :{WINDOW_COLOUR_2}Umiejscowienie ćwiartki:
-STR_5961    :{WINDOW_COLOUR_2}Indeks wejścia: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Wykrycie kolizji:
-STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
-STR_5964    :{WINDOW_COLOUR_2}Przekątna
-STR_5965    :{WINDOW_COLOUR_2}Typ wejścia: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Typ wejścia do parku: {BLACK}{STRINGID}
+STR_5960    :Umiejscowienie ćwiartki:
+STR_5961    :Indeks wejścia: {BLACK}{COMMA16}
+STR_5962    :Wykrycie kolizji:
+STR_5963    :Raised Corners:
+STR_5964    :Przekątna
+STR_5965    :Typ wejścia: {BLACK}{STRINGID}
+STR_5966    :Typ wejścia do parku: {BLACK}{STRINGID}
 STR_5967    :Pośrodku
 STR_5968    :Lewo
 STR_5969    :Prawo
-STR_5970    :{WINDOW_COLOUR_2}ID Wejścia: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}ID wyjścia: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}ID Tras: {BLACK}{COMMA16}
+STR_5970    :ID Wejścia: {BLACK}{COMMA16}
+STR_5971    :ID wyjścia: {BLACK}{COMMA16}
+STR_5972    :ID Tras: {BLACK}{COMMA16}
 STR_5973    :Zaczep z następnym
 STR_5974    :Zmienia wysokość podstawy i prześwitu tak, aby znajdowały się one na tym samym poziomie co następny element na bieżącej platformie. Ułatwia to budowę na tej samej platformie.
 STR_5975    :Nachylenie:
 STR_5976    :Płaszczyzna
 STR_5977    :Prawą stroną do góry
 STR_5978    :Lewą stroną do góry
-STR_5979    :{WINDOW_COLOUR_2}Typ muru: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Tekst baneru: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}To nie jest baner
-STR_5982    :{WINDOW_COLOUR_2}Rodzaj dużej scenerii: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}ID elementu dużej scenerii: {BLACK}{COMMA16}
+STR_5979    :Typ muru: {BLACK}{COMMA16}
+STR_5980    :Tekst baneru: {BLACK}{STRINGID}
+STR_5981    :To nie jest baner
+STR_5982    :Rodzaj dużej scenerii: {BLACK}{COMMA16}
+STR_5983    :ID elementu dużej scenerii: {BLACK}{COMMA16}
 STR_5984    :Zablokowane ścieżki:
 STR_5985    :Nowy katalog
 STR_5986    :Wprowadź nazwę nowego katalogu.
@@ -3483,7 +3483,7 @@ STR_6273    :Muzyka
 STR_6274    :Nie można ustawić schematu koloru…
 STR_6275    :{WINDOW_COLOUR_2}Styl stacji:
 STR_6276    :Na {RED}{STRINGID} utykają goście, prawdopodobnie z powodu nieprawidłowego typu atrakcji albo trybu operowania.
-STR_6277    :{WINDOW_COLOUR_2}Numer stacji: {BLACK}{STRINGID}
+STR_6277    :Numer stacji: {BLACK}{STRINGID}
 STR_6278    :Liczba autozapisów
 STR_6279    :Liczba autozapisów powinna zostać zachowana
 STR_6280    :Czat
@@ -3516,9 +3516,9 @@ STR_6315    :{WINDOW_COLOUR_2}Cel wykrywania ścieżki: {BLACK}{INT32}, {INT32},
 STR_6316    :{WINDOW_COLOUR_2}Historia wykrywania ścieżki:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} folder {INT32}
 STR_6318    :Desynchronizacja sieci.{NEWLINE}Plik z logami: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Hamulec blokowy zamknięty
-STR_6320    :{WINDOW_COLOUR_2}Niezniszczalne
-STR_6321    :{WINDOW_COLOUR_2}Dodatek jest uszkodzony
+STR_6319    :Hamulec blokowy zamknięty
+STR_6320    :Niezniszczalne
+STR_6321    :Dodatek jest uszkodzony
 STR_6322    :{WINDOW_COLOUR_2}Identyfikator sprite'a: {BLACK}{INT32}
 STR_6323    :Symulowanie
 STR_6324    :Symuluj
@@ -3564,7 +3564,7 @@ STR_6363    :Tekst skopiowany do schowka
 STR_6364    :{RED}{COMMA16} osoba zmarła w wypadku na {STRINGID}
 STR_6365    :Ofiary atrakcji
 STR_6366    :Zablokowane pojazdy
-STR_6367    :{WINDOW_COLOUR_2}Klatka animacji:
+STR_6367    :Klatka animacji:
 STR_6368    :Z powodów kompatybilności nie zaleca się uruchamiania OpenRCT2 na Wine. OpenRCT2 działa poprawnie na macOS, Linux, FreeBSD i OpenBSD.
 STR_6369    :Zezwól na budowanie torów na dowolnych wysokościach
 STR_6370    :Zezwala na ustawianie fragmentów torów na dowolnych interwałach wysokościowych

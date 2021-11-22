@@ -76,7 +76,7 @@ void research_reset_items()
  *
  *  rct2: 0x00684BAE
  */
-void research_update_uncompleted_types()
+void ResearchUpdateUncompletedTypes()
 {
     int32_t uncompletedResearchTypes = 0;
 
@@ -354,7 +354,7 @@ void research_update()
                 gResearchProgress = 0;
                 gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
                 research_calculate_expected_date();
-                research_update_uncompleted_types();
+                ResearchUpdateUncompletedTypes();
                 research_invalidate_related_windows();
                 break;
             case RESEARCH_STAGE_FINISHED_ALL:
@@ -393,6 +393,12 @@ void research_reset_current_item()
  */
 static void research_insert_unresearched(ResearchItem&& item)
 {
+    // First check to make sure that entry is not already accounted for
+    if (item.Exists())
+    {
+        return;
+    }
+
     gResearchItemsUninvented.push_back(std::move(item));
 }
 
@@ -523,8 +529,7 @@ bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool resea
 {
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
-        auto tmpItem = ResearchItem(
-            Research::EntryType::Scenery, entryIndex, RIDE_TYPE_NULL, ResearchCategory::SceneryGroup, 0);
+        auto tmpItem = ResearchItem(Research::EntryType::Scenery, entryIndex, 0, ResearchCategory::SceneryGroup, 0);
         research_insert(std::move(tmpItem), researched);
         return true;
     }
@@ -595,6 +600,12 @@ bool scenery_group_is_invented(int32_t sgIndex)
     if (sgEntry == nullptr || sgEntry->entry_count == 0)
     {
         return false;
+    }
+
+    // All scenery is temporarily invented when in the scenario editor
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        return true;
     }
 
     if (gCheatsIgnoreResearchStatus)
@@ -718,103 +729,108 @@ void research_remove_flags()
     }
 }
 
-void research_fix()
+static void ResearchRemoveNullItems(std::vector<ResearchItem>& items)
 {
-    // Fix invalid research items
-    for (auto it = gResearchItemsInvented.begin(); it != gResearchItemsInvented.end();)
-    {
-        auto& researchItem = *it;
+    const auto it = std::remove_if(std::begin(items), std::end(items), [](const ResearchItem& researchItem) {
         if (researchItem.type == Research::EntryType::Ride)
         {
-            rct_ride_entry* rideEntry = get_ride_entry(researchItem.entryIndex);
-            if (rideEntry == nullptr)
-            {
-                it = gResearchItemsInvented.erase(it);
-            }
-            else
-            {
-                it++;
-            }
+            return get_ride_entry(researchItem.entryIndex) == nullptr;
         }
         else
         {
-            rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.entryIndex);
-            if (sceneryGroupEntry == nullptr)
-            {
-                it = gResearchItemsInvented.erase(it);
-            }
-            else
-            {
-                it++;
-            }
+            return get_scenery_group_entry(researchItem.entryIndex) == nullptr;
         }
-    }
-    for (auto it = gResearchItemsUninvented.begin(); it != gResearchItemsUninvented.end();)
+    });
+    items.erase(it, std::end(items));
+}
+
+static void research_mark_item_as_researched(const ResearchItem& item)
+{
+    if (item.type == Research::EntryType::Ride)
     {
-        auto& researchItem = *it;
-        if (researchItem.type == Research::EntryType::Ride)
+        const auto* rideEntry = get_ride_entry(item.entryIndex);
+        if (rideEntry != nullptr)
         {
-            rct_ride_entry* rideEntry = get_ride_entry(researchItem.entryIndex);
-            if (rideEntry == nullptr)
+            ride_entry_set_invented(item.entryIndex);
+            for (auto rideType : rideEntry->ride_type)
             {
-                it = gResearchItemsUninvented.erase(it);
-            }
-            else
-            {
-                it++;
-            }
-        }
-        else
-        {
-            rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.entryIndex);
-            if (sceneryGroupEntry == nullptr)
-            {
-                it = gResearchItemsUninvented.erase(it);
-            }
-            else
-            {
-                it++;
-            }
-        }
-    }
-
-    research_update_uncompleted_types();
-    if (gResearchUncompletedCategories == 0)
-        gResearchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
-
-    // Sometimes ride entries are not in the research table.
-    // If all research is done, simply insert all of them as researched.
-    // For good measure, also include scenery groups.
-    if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
-    {
-        for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
-        {
-            const rct_ride_entry* rideEntry = get_ride_entry(i);
-
-            if (rideEntry != nullptr)
-            {
-                research_insert_ride_entry(i, true);
-                ride_entry_set_invented(i);
-
-                for (uint8_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+                if (rideType != RIDE_TYPE_NULL)
                 {
-                    uint32_t rideType = rideEntry->ride_type[j];
-                    if (rideType != RIDE_TYPE_NULL)
-                    {
-                        ride_type_set_invented(rideEntry->ride_type[j]);
-                    }
+                    ride_type_set_invented(rideType);
                 }
             }
         }
-
-        for (uint8_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    }
+    else if (item.type == Research::EntryType::Scenery)
+    {
+        const auto sgEntry = get_scenery_group_entry(item.entryIndex);
+        if (sgEntry != nullptr)
         {
-            const rct_scenery_group_entry* groupEntry = get_scenery_group_entry(i);
-
-            if (groupEntry != nullptr)
-                research_insert_scenery_group_entry(i, true);
+            for (auto i = 0; i < sgEntry->entry_count; i++)
+            {
+                auto sceneryEntryIndex = sgEntry->scenery_entries[i];
+                scenery_set_invented(sceneryEntryIndex);
+            }
         }
     }
+}
+
+static void ResearchRebuildInventedTables()
+{
+    set_every_ride_type_not_invented();
+    set_every_ride_entry_invented();
+    set_every_ride_entry_not_invented();
+    set_all_scenery_items_not_invented();
+    for (const auto& item : gResearchItemsInvented)
+    {
+        // Ignore item, if the research of it is in progress
+        if (gResearchProgressStage == RESEARCH_STAGE_DESIGNING || gResearchProgressStage == RESEARCH_STAGE_COMPLETING_DESIGN)
+        {
+            if (item == gResearchNextItem)
+            {
+                continue;
+            }
+        }
+
+        research_mark_item_as_researched(item);
+    }
+    MarkAllUnrestrictedSceneryAsInvented();
+}
+
+static void ResearchAddAllMissingItems(bool isResearched)
+{
+    for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
+    {
+        const auto* rideEntry = get_ride_entry(i);
+        if (rideEntry != nullptr)
+        {
+            research_insert_ride_entry(i, isResearched);
+        }
+    }
+
+    for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    {
+        const auto* groupEntry = get_scenery_group_entry(i);
+        if (groupEntry != nullptr)
+        {
+            research_insert_scenery_group_entry(i, isResearched);
+        }
+    }
+}
+
+void ResearchFix()
+{
+    // Remove null entries from the research list
+    ResearchRemoveNullItems(gResearchItemsInvented);
+    ResearchRemoveNullItems(gResearchItemsUninvented);
+
+    // Add missing entries to the research list
+    // If research is complete, mark all the missing items as available
+    ResearchAddAllMissingItems(gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL);
+
+    // Now rebuild all the tables that say whether a ride or scenery item is invented
+    ResearchRebuildInventedTables();
+    ResearchUpdateUncompletedTypes();
 }
 
 void research_items_make_all_unresearched()

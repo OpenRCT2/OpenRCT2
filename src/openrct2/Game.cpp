@@ -501,7 +501,7 @@ void game_fix_save_vars()
         }
     }
 
-    research_fix();
+    ResearchFix();
 
     // Fix banner list pointing to NULL map elements
     banner_reset_broken_index();
@@ -514,6 +514,8 @@ void game_fix_save_vars()
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
     fix_park_entrance_locations();
+
+    staff_update_greyed_patrol_areas();
 }
 
 void game_load_init()
@@ -617,7 +619,7 @@ void save_game_cmd(const utf8* name /* = nullptr */)
         char savePath[MAX_PATH];
         platform_get_user_directory(savePath, "save", sizeof(savePath));
         safe_strcat_path(savePath, name, sizeof(savePath));
-        path_append_extension(savePath, ".sv6", sizeof(savePath));
+        path_append_extension(savePath, ".park", sizeof(savePath));
         save_game_with_name(savePath);
     }
 }
@@ -660,7 +662,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     auto environment = GetContext()->GetPlatformEnvironment();
     auto folderDirectory = environment->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
-    char const* fileFilter = "autosave_*.sv6";
+    char const* fileFilter = "autosave_*.park";
     if (processLandscapeFolder)
     {
         folderDirectory = environment->GetDirectoryPath(DIRBASE::USER, DIRID::LANDSCAPE);
@@ -721,7 +723,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 void game_autosave()
 {
     const char* subDirectory = "save";
-    const char* fileExtension = ".sv6";
+    const char* fileExtension = ".park";
     uint32_t saveFlags = 0x80000000;
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
@@ -824,7 +826,7 @@ void game_load_or_quit_no_save_prompt()
 void start_silent_record()
 {
     std::string name = Path::Combine(
-        OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DIRBASE::USER), "debug_replay.sv6r");
+        OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DIRBASE::USER), "debug_replay.parkrep");
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (replayManager->StartRecording(name, OpenRCT2::k_MaxReplayTicks, OpenRCT2::IReplayManager::RecordType::SILENT))
     {

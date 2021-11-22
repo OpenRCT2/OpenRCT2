@@ -21,6 +21,7 @@ enum
     FILE_EXTENSION_SC6,
     FILE_EXTENSION_SV6,
     FILE_EXTENSION_TD6,
+    FILE_EXTENSION_PARK,
 };
 
 #include <string>
@@ -37,6 +38,7 @@ enum class FILE_TYPE
     SAVED_GAME,
     SCENARIO,
     TRACK_DESIGN,
+    PARK,
 };
 
 struct ClassifiedFileInfo

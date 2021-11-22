@@ -14,7 +14,7 @@
 class DataSerialiser;
 struct CoordsXY;
 
-struct Duck : MiscEntity
+struct Duck : EntityBase
 {
     static constexpr auto cEntityType = EntityType::Duck;
     enum class DuckState : uint8_t
@@ -25,6 +25,7 @@ struct Duck : MiscEntity
         DoubleDrink,
         FlyAway,
     };
+    uint16_t frame;
     int16_t target_x;
     int16_t target_y;
     DuckState state;

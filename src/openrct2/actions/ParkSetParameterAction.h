@@ -19,7 +19,7 @@ enum class ParkParameter : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(ParkSetParameterAction, GameCommand::SetParkOpen, GameActions::Result)
+class ParkSetParameterAction final : public GameActionBase<GameCommand::SetParkOpen>
 {
 private:
     ParkParameter _parameter{ ParkParameter::Count };
@@ -38,7 +38,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkEntranceRemoveAction, GameCommand::RemoveParkEntrance, GameActions::Result)
+class ParkEntranceRemoveAction final : public GameActionBase<GameCommand::RemoveParkEntrance>
 {
 private:
     CoordsXYZ _loc;
@@ -22,7 +22,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

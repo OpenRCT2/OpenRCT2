@@ -69,8 +69,3 @@ struct EntityBase
         return Is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
     }
 };
-
-struct MiscEntity : EntityBase
-{
-    uint16_t frame;
-};

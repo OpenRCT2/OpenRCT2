@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "../ride/Station.h"
@@ -32,7 +33,6 @@ namespace GameActions
 {
     class Result;
 }
-using ParkEntranceIndex = uint8_t;
 
 enum class StaffType : uint8_t
 {

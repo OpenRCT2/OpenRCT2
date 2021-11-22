@@ -1394,7 +1394,13 @@ rct_window* window_ride_open_track(TileElement* tileElement)
  */
 rct_window* window_ride_open_vehicle(Vehicle* vehicle)
 {
+    if (vehicle == nullptr)
+        return nullptr;
+
     Vehicle* headVehicle = vehicle->TrainHead();
+    if (headVehicle == nullptr)
+        return nullptr;
+
     uint16_t headVehicleSpriteIndex = headVehicle->sprite_index;
     auto ride = headVehicle->GetRide();
     if (ride == nullptr)
@@ -2832,10 +2838,10 @@ static OpenRCT2String window_ride_vehicle_tooltip(
 
             auto ft = Formatter();
             ft.Increment(16);
-            ft.Add<uint16_t>(std::max(uint8_t(1), ride->GetMaxCarsPerTrain()) - rideEntry->zero_cars);
+            ft.Add<uint16_t>(std::max(uint8_t(1), ride->MaxCarsPerTrain) - rideEntry->zero_cars);
 
             rct_string_id stringId = GetRideComponentName(RideComponentType::Car).singular;
-            if (ride->GetMaxCarsPerTrain() - rideEntry->zero_cars > 1)
+            if (ride->MaxCarsPerTrain - rideEntry->zero_cars > 1)
             {
                 stringId = GetRideComponentName(RideComponentType::Car).plural;
             }
@@ -6214,7 +6220,7 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
         const bool previousMeasurement = x > measurement->current_item;
 
-        // Draw the current line in gray.
+        // Draw the current line in grey.
         gfx_fill_rect(dpi, { { x, top }, { x, bottom } }, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
 
         // Draw red over extreme values (if supported by graph type).

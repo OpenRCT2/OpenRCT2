@@ -26,7 +26,7 @@ enum class RideSetSetting : uint8_t
     RideType,
 };
 
-DEFINE_GAME_ACTION(RideSetSettingAction, GameCommand::SetRideSetting, GameActions::Result)
+class RideSetSettingAction final : public GameActionBase<GameCommand::SetRideSetting>
 {
 private:
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
@@ -37,18 +37,18 @@ public:
     RideSetSettingAction() = default;
     RideSetSettingAction(ride_id_t rideIndex, RideSetSetting setting, uint8_t value);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 
 private:
-    bool ride_is_mode_valid(Ride * ride) const;
-    bool ride_is_valid_lift_hill_speed(Ride * ride) const;
+    bool ride_is_mode_valid(Ride* ride) const;
+    bool ride_is_valid_lift_hill_speed(Ride* ride) const;
     bool ride_is_valid_num_circuits() const;
-    bool ride_is_valid_operation_option(Ride * ride) const;
-    rct_string_id GetOperationErrorMessage(Ride * ride) const;
+    bool ride_is_valid_operation_option(Ride* ride) const;
+    rct_string_id GetOperationErrorMessage(Ride* ride) const;
 };

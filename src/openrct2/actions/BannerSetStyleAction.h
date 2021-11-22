@@ -21,7 +21,7 @@ enum class BannerSetStyleType : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(BannerSetStyleAction, GameCommand::SetBannerStyle, GameActions::Result)
+class BannerSetStyleAction final : public GameActionBase<GameCommand::SetBannerStyle>
 {
 private:
     BannerSetStyleType _type{ BannerSetStyleType::Count };
@@ -30,13 +30,13 @@ private:
 
 public:
     BannerSetStyleAction() = default;
-    BannerSetStyleAction(BannerSetStyleType type, uint8_t bannerIndex, uint8_t parameter);
+    BannerSetStyleAction(BannerSetStyleType type, BannerIndex bannerIndex, uint8_t parameter);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

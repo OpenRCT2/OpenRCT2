@@ -37,7 +37,7 @@ static constexpr const uint8_t byte_993D0C[] = {
 };
 // clang-format on
 
-DEFINE_GAME_ACTION(MazeSetTrackAction, GameCommand::SetMazeTrack, GameActions::Result)
+class MazeSetTrackAction final : public GameActionBase<GameCommand::SetMazeTrack>
 {
 private:
     CoordsXYZD _loc;
@@ -49,8 +49,8 @@ public:
     MazeSetTrackAction() = default;
     MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
-    void Serialise(DataSerialiser & stream) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

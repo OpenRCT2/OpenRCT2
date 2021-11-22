@@ -3162,56 +3162,56 @@ STR_5930    :Detalhes de cenário grande
 STR_5931    :Detalhes de banner
 STR_5932    :Detalhes de elemento corrompido
 STR_5933    :Propriedades
-STR_5934    :{WINDOW_COLOUR_2}Textura do terreno: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Borda do terreno: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Posse de terra: {BLACK}{STRINGID}
+STR_5934    :Textura do terreno: {BLACK}{STRINGID}
+STR_5935    :Borda do terreno: {BLACK}{STRINGID}
+STR_5936    :Posse de terra: {BLACK}{STRINGID}
 STR_5937    :Não comprado e não está à venda
-STR_5938    :{WINDOW_COLOUR_2}Nível da água: {BLACK}{COMMA16}
+STR_5938    :Nível da água: {BLACK}{COMMA16}
 STR_5939    :Remover cercas do parque
 STR_5940    :Restaurar cercas do parque
-STR_5941    :{WINDOW_COLOUR_2}Altura da base:
-STR_5942    :{WINDOW_COLOUR_2}Nome do caminho: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Adições: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Adições: {BLACK}Nenhuma
-STR_5945    :{WINDOW_COLOUR_2}Bordas conectadas:
-STR_5946    :{WINDOW_COLOUR_2}Tipo de atração: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}ID da atração: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Nome da atração: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Corrente de elevação
-STR_5950    :{WINDOW_COLOUR_2}Aplicar mudanças para a pista toda
-STR_5951    :{WINDOW_COLOUR_2}ID do pedaço de pista: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Número sequencial: {BLACK}{COMMA16}
+STR_5941    :Altura da base:
+STR_5942    :Nome do caminho: {BLACK}{STRINGID}
+STR_5943    :Adições: {BLACK}{STRINGID}
+STR_5944    :Adições: {BLACK}Nenhuma
+STR_5945    :Bordas conectadas:
+STR_5946    :Tipo de atração: {BLACK}{STRINGID}
+STR_5947    :ID da atração: {BLACK}{COMMA16}
+STR_5948    :Nome da atração: {BLACK}{STRINGID}
+STR_5949    :Corrente de elevação
+STR_5950    :Aplicar mudanças para a pista toda
+STR_5951    :ID do pedaço de pista: {BLACK}{COMMA16}
+STR_5952    :Número sequencial: {BLACK}{COMMA16}
 STR_5953    :Sortear os elementos do mapa no azulejo atual baseado em sua altura base.
-STR_5954    :{WINDOW_COLOUR_2}Idade do cenário: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Posicionamento em quadrante: {BLACK}{STRINGID}
+STR_5954    :Idade do cenário: {BLACK}{COMMA16}
+STR_5955    :Posicionamento em quadrante: {BLACK}{STRINGID}
 STR_5956    :Sudoeste
 STR_5957    :Noroeste
 STR_5958    :Nordeste
 STR_5959    :Sudeste
-STR_5960    :{WINDOW_COLOUR_2}Posicionamento em quadrante:
-STR_5961    :{WINDOW_COLOUR_2}Índice de entrada: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Detecção de colisão:
-STR_5963    :{WINDOW_COLOUR_2}Cantos elevados:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Tipo de entrada: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Parte de entrada do parque: {BLACK}{STRINGID}
+STR_5960    :Posicionamento em quadrante:
+STR_5961    :Índice de entrada: {BLACK}{COMMA16}
+STR_5962    :Detecção de colisão:
+STR_5963    :Cantos elevados:
+STR_5964    :Diagonal
+STR_5965    :Tipo de entrada: {BLACK}{STRINGID}
+STR_5966    :Parte de entrada do parque: {BLACK}{STRINGID}
 STR_5967    :Meio
 STR_5968    :Esquerda
 STR_5969    :Direita
-STR_5970    :{WINDOW_COLOUR_2}ID da entrada: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}ID da saída: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}ID da atração: {BLACK}{COMMA16}
+STR_5970    :ID da entrada: {BLACK}{COMMA16}
+STR_5971    :ID da saída: {BLACK}{COMMA16}
+STR_5972    :ID da atração: {BLACK}{COMMA16}
 STR_5973    :Prender ao próximo
 STR_5974    :Muda a base e a altura de segurança para que sejam as mesmas que o próximo elemento no azulejo atual. Fazendo isto fica mais fácil de construir neste azulejo.
 STR_5975    :Inclinação:
 STR_5976    :Reto
 STR_5977    :Direita para cima
 STR_5978    :Esquerda para cima
-STR_5979    :{WINDOW_COLOUR_2}Tipo de cerca: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Texto do banner: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Não é um banner
-STR_5982    :{WINDOW_COLOUR_2}Tipo de cenário grande: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}ID da peça de cenário grande: {BLACK}{COMMA16}
+STR_5979    :Tipo de cerca: {BLACK}{COMMA16}
+STR_5980    :Texto do banner: {BLACK}{STRINGID}
+STR_5981    :Não é um banner
+STR_5982    :Tipo de cenário grande: {BLACK}{COMMA16}
+STR_5983    :ID da peça de cenário grande: {BLACK}{COMMA16}
 STR_5984    :Caminhos bloqueados:
 STR_5985    :Nova pasta
 STR_5986    :Insira o nome da nova pasta.
@@ -3483,7 +3483,7 @@ STR_6273    :Música
 STR_6274    :Impossível definir esquema de cor…
 STR_6275    :{WINDOW_COLOUR_2}Estilo da estação:
 STR_6276    :{RED}{STRINGID} está deixando visitantes presos, possivelmente por um tipo de brinquedo ou modo de operação inválido.
-STR_6277    :{WINDOW_COLOUR_2}Índice de estação: {BLACK}{STRINGID}
+STR_6277    :Índice de estação: {BLACK}{STRINGID}
 STR_6278    :Quantidade de Autosave
 STR_6279    :Número de autosaves que devem ser guardados
 STR_6280    :Bate-papo
@@ -3516,9 +3516,9 @@ STR_6315    :{WINDOW_COLOUR_2}Objetivo de Desbravamento: {BLACK}{INT32}, {INT32}
 STR_6316    :{WINDOW_COLOUR_2}Histórico de Desbravamento:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :Assincronia de rede detectada.{NEWLINE}Arquivo de registro: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Freios Bloqueadores Fechados
-STR_6320    :{WINDOW_COLOUR_2}Indestrutível
-STR_6321    :{WINDOW_COLOUR_2}Adição quebrada
+STR_6319    :Freios Bloqueadores Fechados
+STR_6320    :Indestrutível
+STR_6321    :Adição quebrada
 STR_6322    :{WINDOW_COLOUR_2}Id da Sprite: {BLACK}{INT32}
 STR_6323    :Simulando
 STR_6324    :Simular
@@ -3564,7 +3564,7 @@ STR_6363    :Texto copiado para a área de transferência
 STR_6364    :{RED}{COMMA16} pessoa morreu em um acidente em {STRINGID}
 STR_6365    :Acidentes em atrações
 STR_6366    :Veículos presos ou parados
-STR_6367    :{WINDOW_COLOUR_2}Quadro de animação:
+STR_6367    :Quadro de animação:
 STR_6368    :Por questão de compatibilidade, não é recomendado executar o OpenRCT2 com Wine. O OpenRCT2 tem suporte nativo a macOS, Linux, FreeBSD e OpenBSD.
 STR_6369    :Permitir construção de trilhos em alturas inválidas
 STR_6370    :Permite a construção de trilhos em qualquer intervalo de altura

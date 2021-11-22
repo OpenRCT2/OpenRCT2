@@ -1475,7 +1475,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     if (HasItem(shopItem))
     {
-        InsertNewThought(PeepThoughtType::AlreadyGot, EnumValue(shopItem));
+        InsertNewThought(PeepThoughtType::AlreadyGot, shopItem);
         return false;
     }
 
@@ -1484,7 +1484,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
         int32_t food = bitscanforward(GetFoodOrDrinkFlags());
         if (food != -1)
         {
-            InsertNewThought(PeepThoughtType::HaventFinished, food);
+            InsertNewThought(PeepThoughtType::HaventFinished, static_cast<ShopItem>(food));
             return false;
         }
 
@@ -1533,7 +1533,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
             }
             if (price > CashInPocket)
             {
-                InsertNewThought(PeepThoughtType::CantAffordItem, EnumValue(shopItem));
+                InsertNewThought(PeepThoughtType::CantAffordItem, shopItem);
                 return false;
             }
         }
@@ -1888,7 +1888,10 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
                 for (auto* trackElement : TileElementsView<TrackElement>(location))
                 {
                     auto rideIndex = trackElement->GetRideIndex();
-                    rideConsideration[EnumValue(rideIndex)] = true;
+                    if (rideIndex != RIDE_ID_NULL)
+                    {
+                        rideConsideration[EnumValue(rideIndex)] = true;
+                    }
                 }
             }
         }
@@ -2324,17 +2327,11 @@ bool Guest::HasRidden(const Ride* ride) const
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
 {
-    // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
-    rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
-
     OpenRCT2::RideUse::GetTypeHistory().Add(sprite_index, rideType);
 }
 
 bool Guest::HasRiddenRideType(int32_t rideType) const
 {
-    // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
-    rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
-
     return OpenRCT2::RideUse::GetTypeHistory().Contains(sprite_index, rideType);
 }
 
@@ -2541,7 +2538,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
     {
         chosen_train = ride->stations[CurrentRideStation].TrainAtStation;
     }
-    if (chosen_train == RideStation::NO_TRAIN || chosen_train >= MAX_VEHICLES_PER_RIDE)
+    if (chosen_train >= MAX_VEHICLES_PER_RIDE)
     {
         return false;
     }
@@ -4273,45 +4270,39 @@ void Guest::UpdateRideLeaveVehicle()
  *
  *  rct2: 0x0069376A
  */
-static void peep_update_ride_prepare_for_exit(Peep* peep)
+void Guest::UpdateRidePrepareForExit()
 {
-    auto ride = get_ride(peep->CurrentRide);
-    if (ride == nullptr || peep->CurrentRideStation >= std::size(ride->stations))
+    auto ride = get_ride(CurrentRide);
+    if (ride == nullptr || CurrentRideStation >= std::size(ride->stations))
         return;
 
-    auto exit = ride_get_exit_location(ride, peep->CurrentRideStation);
-    int16_t x = exit.x;
-    int16_t y = exit.y;
-    uint8_t exit_direction = exit.direction;
+    auto exit = ride_get_exit_location(ride, CurrentRideStation);
 
-    x *= 32;
-    y *= 32;
-    x += 16;
-    y += 16;
+    auto newDestination = exit.ToCoordsXY().ToTileCentre();
 
-    int16_t x_shift = DirectionOffsets[exit_direction].x;
-    int16_t y_shift = DirectionOffsets[exit_direction].y;
+    auto xShift = DirectionOffsets[exit.direction].x;
+    auto yShift = DirectionOffsets[exit.direction].y;
 
-    int16_t shift_multiplier = 20;
+    int16_t shiftMultiplier = 20;
 
-    rct_ride_entry* ride_type = get_ride_entry(ride->subtype);
-    if (ride_type != nullptr)
+    rct_ride_entry* rideEntry = ride->GetRideEntry();
+    if (rideEntry != nullptr)
     {
-        rct_ride_entry_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
-        if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+        rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[rideEntry->default_vehicle];
+        if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
         {
-            shift_multiplier = 32;
+            shiftMultiplier = 32;
         }
     }
 
-    x_shift *= shift_multiplier;
-    y_shift *= shift_multiplier;
+    xShift *= shiftMultiplier;
+    yShift *= shiftMultiplier;
 
-    x -= x_shift;
-    y -= y_shift;
+    newDestination.x -= xShift;
+    newDestination.y -= yShift;
 
-    peep->SetDestination({ x, y }, 2);
-    peep->RideSubState = PeepRideSubState::InExit;
+    SetDestination(newDestination, 2);
+    RideSubState = PeepRideSubState::InExit;
 }
 
 /**
@@ -4326,7 +4317,7 @@ void Guest::UpdateRideApproachExit()
         return;
     }
 
-    peep_update_ride_prepare_for_exit(this);
+    UpdateRidePrepareForExit();
 }
 
 /**
@@ -4485,7 +4476,7 @@ void Guest::UpdateRideApproachExitWaypoints()
     {
         if ((Var37 & 3) == 3)
         {
-            peep_update_ride_prepare_for_exit(this);
+            UpdateRidePrepareForExit();
             return;
         }
 
@@ -4729,7 +4720,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
     {
         if (waypoint == 3)
         {
-            peep_update_ride_prepare_for_exit(this);
+            UpdateRidePrepareForExit();
             return;
         }
 
@@ -4798,7 +4789,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (Var37 == 16)
     {
-        peep_update_ride_prepare_for_exit(this);
+        UpdateRidePrepareForExit();
         return;
     }
 

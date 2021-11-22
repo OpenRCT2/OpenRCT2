@@ -29,7 +29,7 @@ enum class PermissionState : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(NetworkModifyGroupAction, GameCommand::ModifyGroups, GameActions::Result)
+class NetworkModifyGroupAction final : public GameActionBase<GameCommand::ModifyGroups>
 {
 private:
     ModifyGroupType _type{ ModifyGroupType::Count };
@@ -46,7 +46,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

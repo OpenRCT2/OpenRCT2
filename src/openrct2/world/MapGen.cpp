@@ -86,7 +86,8 @@ static constexpr const char* SnowTrees[] = {
 
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
 static constexpr const std::string_view BaseTerrain[] = {
-    "rct2.surface.grass", "rct2.surface.sand", "rct2.surface.sandbrown", "rct2.surface.dirt", "rct2.surface.ice",
+    "rct2.terrain_surface.grass", "rct2.terrain_surface.sand", "rct2.terrain_surface.sand_brown",
+    "rct2.terrain_surface.dirt",  "rct2.terrain_surface.ice",
 };
 
 static void mapgen_place_trees();
@@ -152,12 +153,12 @@ void mapgen_generate(mapgen_settings* settings)
     if (edgeTexture.empty())
     {
         // Base edge type on surface type
-        if (floorTexture == "rct2.surface.dirt")
-            edgeTexture = "rct2.edge.woodred";
-        else if (floorTexture == "rct2.surface.ice")
-            edgeTexture = "rct2.edge.ice";
+        if (floorTexture == "rct2.terrain_surface.dirt")
+            edgeTexture = "rct2.terrain_edge.wood_red";
+        else if (floorTexture == "rct2.terrain_surface.ice")
+            edgeTexture = "rct2.terrain_edge.ice";
         else
-            edgeTexture = "rct2.edge.rock";
+            edgeTexture = "rct2.terrain_edge.rock";
     }
 
     auto floorTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(floorTexture));
@@ -204,15 +205,15 @@ void mapgen_generate(mapgen_settings* settings)
 
     // Add sandy beaches
     std::string beachTexture = std::string(floorTexture);
-    if (settings->floor == -1 && floorTexture == "rct2.surface.grass")
+    if (settings->floor == -1 && floorTexture == "rct2.terrain_surface.grass")
     {
         switch (util_rand() % 4)
         {
             case 0:
-                beachTexture = "rct2.surface.sand";
+                beachTexture = "rct2.terrain_surface.sand";
                 break;
             case 1:
-                beachTexture = "rct2.surface.sandbrown";
+                beachTexture = "rct2.terrain_surface.sand_brown";
                 break;
         }
     }
@@ -257,19 +258,20 @@ static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
 static bool MapGenSurfaceTakesGrassTrees(const TerrainSurfaceObject& surface)
 {
     const auto& id = surface.GetIdentifier();
-    return id == "rct2.surface.grass" || id == "rct2.surface.grassclumps" || id == "rct2.surface.dirt";
+    return id == "rct2.terrain_surface.grass" || id == "rct2.terrain_surface.grass_clumps" || id == "rct2.terrain_surface.dirt";
 }
 
 static bool MapGenSurfaceTakesSandTrees(const TerrainSurfaceObject& surface)
 {
     const auto& id = surface.GetIdentifier();
-    return id == "rct2.surface.sand" || id == "rct2.surface.sandbrown" || id == "rct2.surface.sandred";
+    return id == "rct2.terrain_surface.sand" || id == "rct2.terrain_surface.sand_brown"
+        || id == "rct2.terrain_surface.sand_red";
 }
 
 static bool MapGenSurfaceTakesSnowTrees(const TerrainSurfaceObject& surface)
 {
     const auto& id = surface.GetIdentifier();
-    return id == "rct2.surface.ice";
+    return id == "rct2.terrain_surface.ice";
 }
 
 /**

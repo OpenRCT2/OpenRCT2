@@ -71,18 +71,19 @@ int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const Coord
 }
 
 static bool MapLoc68BABCShouldContinue(
-    TileElement* tileElement, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, uint8_t flags, money32& price,
+    TileElement** tileElementPtr, const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, uint8_t flags, money32& price,
     uint8_t crossingMode, bool canBuildCrossing)
 {
     if (clearFunc != nullptr)
     {
-        if (!clearFunc(&tileElement, pos, flags, &price))
+        if (!clearFunc(tileElementPtr, pos, flags, &price))
         {
             return true;
         }
     }
 
     // Crossing mode 1: building track over path
+    auto tileElement = *tileElementPtr;
     if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_PATH
         && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue() && !tileElement->AsPath()->IsSloped())
     {
@@ -153,7 +154,7 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     if (MapLoc68BABCShouldContinue(
-                            tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
+                            &tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
                     {
                         continue;
                     }
@@ -250,7 +251,7 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
                     continue;
                 }
 
-                if (MapLoc68BABCShouldContinue(tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
+                if (MapLoc68BABCShouldContinue(&tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
                 {
                     continue;
                 }

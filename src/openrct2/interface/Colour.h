@@ -68,15 +68,15 @@ enum
 enum : uint8_t
 {
     PALETTE_INDEX_0 = 0,     // Transparent
-    PALETTE_INDEX_10 = 10,   // Black (0-dark), Dark gray (0)
+    PALETTE_INDEX_10 = 10,   // Black (0-dark), Dark grey (0)
     PALETTE_INDEX_11 = 11,   // Black (middark)
-    PALETTE_INDEX_12 = 12,   // Black (midlight), Dark gray (1-darkest)
-    PALETTE_INDEX_14 = 14,   // Black (lighter), Dark gray (dark)
+    PALETTE_INDEX_12 = 12,   // Black (midlight), Dark grey (1-darkest)
+    PALETTE_INDEX_14 = 14,   // Black (lighter), Dark grey (dark)
     PALETTE_INDEX_13 = 13,   //
     PALETTE_INDEX_16 = 16,   //
-    PALETTE_INDEX_17 = 17,   // Black (11), Dark gray (light), White (dark)
-    PALETTE_INDEX_20 = 20,   // Dark gray (10), White (light)
-    PALETTE_INDEX_21 = 21,   // Dark gray (11), White (lighter-11)
+    PALETTE_INDEX_17 = 17,   // Black (11), Dark grey (light), White (dark)
+    PALETTE_INDEX_20 = 20,   // Dark grey (10), White (light)
+    PALETTE_INDEX_21 = 21,   // Dark grey (11), White (lighter-11)
     PALETTE_INDEX_40 = 40,   //
     PALETTE_INDEX_42 = 42,   // Light Brown (lighter), Saturated brown (11)
     PALETTE_INDEX_46 = 46,   // Tertiary remap 0  / Yellow (darkest)

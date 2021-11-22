@@ -3164,56 +3164,56 @@ STR_5930    :Large scenery details
 STR_5931    :Banner details
 STR_5932    :Corrupt element details
 STR_5933    :Properties
-STR_5934    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Land ownership: {BLACK}{STRINGID}
+STR_5934    :Terrain texture: {BLACK}{STRINGID}
+STR_5935    :Terrain edge: {BLACK}{STRINGID}
+STR_5936    :Land ownership: {BLACK}{STRINGID}
 STR_5937    :Not owned and not for sale
-STR_5938    :{WINDOW_COLOUR_2}Water level: {BLACK}{COMMA16}
+STR_5938    :Water level: {BLACK}{COMMA16}
 STR_5939    :Remove park fences
 STR_5940    :Restore park fences
-STR_5941    :{WINDOW_COLOUR_2}Base height:
-STR_5942    :{WINDOW_COLOUR_2}Path name: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Additions: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Additions: {BLACK}None
-STR_5945    :{WINDOW_COLOUR_2}Connected edges:
-STR_5946    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Chain lift
-STR_5950    :{WINDOW_COLOUR_2}Apply changes to entire track piece
-STR_5951    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
+STR_5941    :Base height:
+STR_5942    :Path name: {BLACK}{STRINGID}
+STR_5943    :Additions: {BLACK}{STRINGID}
+STR_5944    :Additions: {BLACK}None
+STR_5945    :Connected edges:
+STR_5946    :Ride type: {BLACK}{STRINGID}
+STR_5947    :Ride ID: {BLACK}{COMMA16}
+STR_5948    :Ride name: {BLACK}{STRINGID}
+STR_5949    :Chain lift
+STR_5950    :Apply changes to entire track piece
+STR_5951    :Track piece ID: {BLACK}{COMMA16}
+STR_5952    :Sequence number: {BLACK}{COMMA16}
 STR_5953    :Sort the map elements on the current tile based on their base height.
-STR_5954    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
+STR_5954    :Scenery age: {BLACK}{COMMA16}
+STR_5955    :Quadrant placement: {BLACK}{STRINGID}
 STR_5956    :Southwest
 STR_5957    :Northwest
 STR_5958    :Northeast
 STR_5959    :Southeast
-STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
-STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Collision detection:
-STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Entrance type: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Park entrance part: {BLACK}{STRINGID}
+STR_5960    :Quadrant placement:
+STR_5961    :Entry index: {BLACK}{COMMA16}
+STR_5962    :Collision detection:
+STR_5963    :Raised Corners:
+STR_5964    :Diagonal
+STR_5965    :Entrance type: {BLACK}{STRINGID}
+STR_5966    :Park entrance part: {BLACK}{STRINGID}
 STR_5967    :Middle
 STR_5968    :Left
 STR_5969    :Right
-STR_5970    :{WINDOW_COLOUR_2}Entrance ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Exit ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
+STR_5970    :Entrance ID: {BLACK}{COMMA16}
+STR_5971    :Exit ID: {BLACK}{COMMA16}
+STR_5972    :Ride ID: {BLACK}{COMMA16}
 STR_5973    :Clamp to next
 STR_5974    :Changes the base- and clearance height so that it’s at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
 STR_5975    :Slope:
 STR_5976    :Flat
 STR_5977    :Right side up
 STR_5978    :Left side up
-STR_5979    :{WINDOW_COLOUR_2}Wall type: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Banner text: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Not a banner
-STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Large scenery piece ID: {BLACK}{COMMA16}
+STR_5979    :Wall type: {BLACK}{COMMA16}
+STR_5980    :Banner text: {BLACK}{STRINGID}
+STR_5981    :Not a banner
+STR_5982    :Large scenery type: {BLACK}{COMMA16}
+STR_5983    :Large scenery piece ID: {BLACK}{COMMA16}
 STR_5984    :Blocked paths:
 STR_5985    :New folder
 STR_5986    :Type the name of the new folder.
@@ -3485,7 +3485,7 @@ STR_6273    :Music
 STR_6274    :Can’t set colour scheme…
 STR_6275    :{WINDOW_COLOUR_2}Station style:
 STR_6276    :{RED}{STRINGID} has guests getting stuck, possibly due to invalid ride type or operating mode.
-STR_6277    :{WINDOW_COLOUR_2}Station index: {BLACK}{STRINGID}
+STR_6277    :Station index: {BLACK}{STRINGID}
 STR_6278    :Autosave amount
 STR_6279    :Number of autosaves that should be kept
 STR_6280    :Chat
@@ -3518,9 +3518,9 @@ STR_6315    :{WINDOW_COLOUR_2}Pathfind Goal: {BLACK}{INT32}, {INT32}, {INT32} di
 STR_6316    :{WINDOW_COLOUR_2}Pathfind history:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :Network desync detected.{NEWLINE}Log file: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Block Brake Closed
-STR_6320    :{WINDOW_COLOUR_2}Indestructible
-STR_6321    :{WINDOW_COLOUR_2}Addition is broken
+STR_6319    :Block Brake Closed
+STR_6320    :Indestructible
+STR_6321    :Addition is broken
 STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulating
 STR_6324    :Simulate
@@ -3566,7 +3566,7 @@ STR_6363    :Copied text to clipboard
 STR_6364    :{RED}{COMMA16} person has died in an accident on {STRINGID}
 STR_6365    :Ride casualties
 STR_6366    :Stuck or stalled vehicles
-STR_6367    :{WINDOW_COLOUR_2}Animation frame:
+STR_6367    :Animation frame:
 STR_6368    :For compatibility reasons, it is not recommended to run OpenRCT2 with Wine. OpenRCT2 has native support for macOS, Linux, FreeBSD and OpenBSD.
 STR_6369    :Allow building track at invalid heights
 STR_6370    :Allows placing track pieces at any height interval

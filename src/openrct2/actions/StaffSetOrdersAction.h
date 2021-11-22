@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetOrdersAction, GameCommand::SetStaffOrders, GameActions::Result)
+class StaffSetOrdersAction final : public GameActionBase<GameCommand::SetStaffOrders>
 {
 private:
     uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
@@ -23,7 +23,7 @@ public:
 
     uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };

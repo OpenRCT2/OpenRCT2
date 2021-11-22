@@ -1278,15 +1278,12 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
         spriteCount += GetEntityListCount(EntityType(i));
     }
 
-    int32_t staffCount = GetEntityListCount(EntityType::Staff);
-
     auto bannerCount = GetNumBanners();
 
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
     console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, MAX_RIDES);
-    console.WriteFormatLine("Staff: %d/%d", staffCount, STAFF_MAX_COUNT);
     console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());
     return 0;
 }
@@ -1430,9 +1427,9 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const argument
 
     std::string name = argv[0];
 
-    if (!String::EndsWith(name, ".sv6r", true))
+    if (!String::EndsWith(name, ".parkrep", true))
     {
-        name += ".sv6r";
+        name += ".parkrep";
     }
     std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
         OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::REPLAY);
@@ -1573,9 +1570,9 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_
     std::string inputFile = argv[0];
     std::string outputFile = argv[1];
 
-    if (!String::EndsWith(outputFile, ".sv6r", true))
+    if (!String::EndsWith(outputFile, ".parkrep", true))
     {
-        outputFile += ".sv6r";
+        outputFile += ".parkrep";
     }
     std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
         OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::REPLAY);

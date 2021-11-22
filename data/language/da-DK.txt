@@ -3162,56 +3162,56 @@ STR_5930    :Stort sceneri detaljer
 STR_5931    :Banner detaljer
 STR_5932    :Fejl element detaljer
 STR_5933    :Egenskaber
-STR_5934    :{WINDOW_COLOUR_2}Terræn tekstur: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Terræn kant: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Ejendomsret til jord: {BLACK}{STRINGID}
+STR_5934    :Terræn tekstur: {BLACK}{STRINGID}
+STR_5935    :Terræn kant: {BLACK}{STRINGID}
+STR_5936    :Ejendomsret til jord: {BLACK}{STRINGID}
 STR_5937    :Ikke ejet, og ikke til salg
-STR_5938    :{WINDOW_COLOUR_2}Vandniveau: {BLACK}{COMMA16}
+STR_5938    :Vandniveau: {BLACK}{COMMA16}
 STR_5939    :Fjern park hegn
 STR_5940    :Gendan park hegn
-STR_5941    :{WINDOW_COLOUR_2}Basis højde:
-STR_5942    :{WINDOW_COLOUR_2}Sti navn: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Tilføjelser: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Tilføjelser: {BLACK}Ingen
-STR_5945    :{WINDOW_COLOUR_2}Forbundende kanter:
-STR_5946    :{WINDOW_COLOUR_2}Forlystelses type: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Forlystelses ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Forlystelses navn: {BLACK}{STRINGID}
-STR_5949    :{WINDOW_COLOUR_2}Kæde hejs
-STR_5950    :{WINDOW_COLOUR_2}Anvend på hele sporstykket
-STR_5951    :{WINDOW_COLOUR_2}Sporstykke ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Sekvens nummer: {BLACK}{COMMA16}
+STR_5941    :Basis højde:
+STR_5942    :Sti navn: {BLACK}{STRINGID}
+STR_5943    :Tilføjelser: {BLACK}{STRINGID}
+STR_5944    :Tilføjelser: {BLACK}Ingen
+STR_5945    :Forbundende kanter:
+STR_5946    :Forlystelses type: {BLACK}{STRINGID}
+STR_5947    :Forlystelses ID: {BLACK}{COMMA16}
+STR_5948    :Forlystelses navn: {BLACK}{STRINGID}
+STR_5949    :Kæde hejs
+STR_5950    :Anvend på hele sporstykket
+STR_5951    :Sporstykke ID: {BLACK}{COMMA16}
+STR_5952    :Sekvens nummer: {BLACK}{COMMA16}
 STR_5953    :Sorter kortelementerne på det aktuelle felt baseret på deres basishøjde.
-STR_5954    :{WINDOW_COLOUR_2}alder på sceneri: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Kvadrant placering: {BLACK}{STRINGID}
+STR_5954    :alder på sceneri: {BLACK}{COMMA16}
+STR_5955    :Kvadrant placering: {BLACK}{STRINGID}
 STR_5956    :Sydvest
 STR_5957    :Nordvest
 STR_5958    :Nordøst
 STR_5959    :Sydøst
-STR_5960    :{WINDOW_COLOUR_2}Kvadrant placering:
-STR_5961    :{WINDOW_COLOUR_2}Indgangsindeks: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Kollisionsdetektering:
-STR_5963    :{WINDOW_COLOUR_2}Forhøjede hjørner:
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Indgangs type: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Park indgangs part: {BLACK}{STRINGID}
+STR_5960    :Kvadrant placering:
+STR_5961    :Indgangsindeks: {BLACK}{COMMA16}
+STR_5962    :Kollisionsdetektering:
+STR_5963    :Forhøjede hjørner:
+STR_5964    :Diagonal
+STR_5965    :Indgangs type: {BLACK}{STRINGID}
+STR_5966    :Park indgangs part: {BLACK}{STRINGID}
 STR_5967    :Midten
 STR_5968    :Venstre
 STR_5969    :Højre
-STR_5970    :{WINDOW_COLOUR_2}Indgangs ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Udgangs ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Forlystelses ID: {BLACK}{COMMA16}
+STR_5970    :Indgangs ID: {BLACK}{COMMA16}
+STR_5971    :Udgangs ID: {BLACK}{COMMA16}
+STR_5972    :Forlystelses ID: {BLACK}{COMMA16}
 STR_5973    :Fastlås til næste
 STR_5974    :Ændrer basis- og frigangshøjden, så den er på samme som det næste element på den aktuelle felt. Dette gør det nemmere at bygge videre på dette felt.
 STR_5975    :Bakke:
 STR_5976    :Flad
 STR_5977    :Højre side op
 STR_5978    :Venstre side op
-STR_5979    :{WINDOW_COLOUR_2}Væg type: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Banner tekst: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}Ikke et banner
-STR_5982    :{WINDOW_COLOUR_2}Stort sceneri type: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Stort sceneri enhed ID: {BLACK}{COMMA16}
+STR_5979    :Væg type: {BLACK}{COMMA16}
+STR_5980    :Banner tekst: {BLACK}{STRINGID}
+STR_5981    :Ikke et banner
+STR_5982    :Stort sceneri type: {BLACK}{COMMA16}
+STR_5983    :Stort sceneri enhed ID: {BLACK}{COMMA16}
 STR_5984    :Blokerede stier:
 STR_5985    :Ny mappe
 STR_5986    :Angiv navnet på den nye mappe.
@@ -3483,7 +3483,7 @@ STR_6273    :Musik
 STR_6274    :Kan ikke sætte farveskema…
 STR_6275    :{WINDOW_COLOUR_2}Stations stil:
 STR_6276    :{RED}{STRINGID} har fastklemte gæster, muligvis på grund af forkert forlystelsetype eller operations tilstand.
-STR_6277    :{WINDOW_COLOUR_2}Stations index: {BLACK}{STRINGID}
+STR_6277    :Stations index: {BLACK}{STRINGID}
 STR_6278    :Autogem mængde
 STR_6279    :Antallet af automatisk gemte spil der skal beholdes
 STR_6280    :Chat
@@ -3516,9 +3516,9 @@ STR_6315    :{WINDOW_COLOUR_2}Stisøger Goal: {BLACK}{INT32}, {INT32}, {INT32} r
 STR_6316    :{WINDOW_COLOUR_2}Stisøger historie:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} ret {INT32}
 STR_6318    :Netværks synkroniseringsfejl.{NEWLINE}Log fil: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Blok Bremse tilkoblet
-STR_6320    :{WINDOW_COLOUR_2}Uforgængelig
-STR_6321    :{WINDOW_COLOUR_2}Tilføjelse defekt
+STR_6319    :Blok Bremse tilkoblet
+STR_6320    :Uforgængelig
+STR_6321    :Tilføjelse defekt
 STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulérer
 STR_6324    :Simulér
@@ -3564,7 +3564,7 @@ STR_6363    :Kopierede tekst til udklipsholder
 STR_6364    :{RED}{COMMA16} person døde i forlystelsen {STRINGID}
 STR_6365    :Forlystelse tilskadekommende
 STR_6366    :Fastlåste eller blokerede køretøjer
-STR_6367    :{WINDOW_COLOUR_2}Animations billede:
+STR_6367    :Animations billede:
 STR_6368    :Af kompatibilitetshensyn anbefales det ikke at køre OpenRCT2 med Wine. OpenRCT2 har indbygget understøttelse af macOS, Linux, FreeBSD og OpenBSD.
 STR_6369    :Tillad bygning af spor i ugyldige højder
 STR_6370    :Gør det muligt at placere sporstykker i ethvert højdeniveau

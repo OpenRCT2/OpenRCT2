@@ -16,7 +16,7 @@ struct TrackPlaceActionResult
     uint8_t GroundFlags{ 0 };
 };
 
-DEFINE_GAME_ACTION(TrackPlaceAction, GameCommand::PlaceTrack, GameActions::Result)
+class TrackPlaceAction final : public GameActionBase<GameCommand::PlaceTrack>
 {
 private:
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
@@ -34,11 +34,11 @@ public:
         NetworkRideId_t rideIndex, int32_t trackType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
         int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign);
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override;
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override final;
 
-    void Serialise(DataSerialiser & stream) override;
+    void Serialise(DataSerialiser& stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 

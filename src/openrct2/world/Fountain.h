@@ -21,10 +21,11 @@ enum class JumpingFountainType : uint8_t
     Snow
 };
 
-struct JumpingFountain : MiscEntity
+struct JumpingFountain : EntityBase
 {
     static constexpr auto cEntityType = EntityType::JumpingFountain;
 
+    uint16_t frame;
     JumpingFountainType FountainType;
     uint8_t NumTicksAlive;
     uint8_t FountainFlags;
