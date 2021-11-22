@@ -58,7 +58,7 @@ public:
     void OnClose() override
     {
         // If the tool wasn't changed, turn tool off
-        if (scenery_tool_is_active())
+        if (WaterToolIsActive())
         {
             tool_cancel();
         }
@@ -101,7 +101,7 @@ public:
     void OnUpdate() override
     {
         // Close window if another tool is open
-        if (!scenery_tool_is_active())
+        if (!WaterToolIsActive())
         {
             Close();
         }

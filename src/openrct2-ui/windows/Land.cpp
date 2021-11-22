@@ -89,7 +89,7 @@ public:
     void OnClose() override
     {
         // If the tool wasn't changed, turn tool off
-        if (scenery_tool_is_active())
+        if (LandToolIsActive())
             tool_cancel();
     }
 
@@ -209,7 +209,7 @@ public:
 
     void OnUpdate() override
     {
-        if (!scenery_tool_is_active())
+        if (!LandToolIsActive())
             Close();
     }
 

@@ -81,7 +81,7 @@ public:
 
     void OnClose() override
     {
-        if (scenery_tool_is_active())
+        if (ClearSceneryToolIsActive())
             tool_cancel();
     }
 
@@ -155,7 +155,7 @@ public:
     {
         frame_no++;
         // Close window if another tool is open
-        if (!scenery_tool_is_active())
+        if (!ClearSceneryToolIsActive())
             Close();
     }
 
