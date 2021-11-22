@@ -11,7 +11,6 @@
 
 #include <openrct2/common.h>
 
-// NOLINTBEGIN
 #ifdef OPENGL_NO_LINK
 
 // BEGIN [Do not define 1.1 function signatures]
@@ -113,7 +112,6 @@ using PFNGLGETTEXIMAGEPROC = void(APIENTRYP)(GLenum target, GLint level, GLenum 
 #    undef OPENGL_PROC
 
 #endif /* OPENGL_NO_LINK */
-// NOLINTEND
 
 inline void CheckGLError()
 {
