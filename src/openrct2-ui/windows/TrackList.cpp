@@ -749,7 +749,7 @@ public:
     }
 };
 
-rct_window* window_track_list_open(const RideSelection item)
+rct_window* WindowTrackListOpen(const RideSelection item)
 {
     window_close_construction_windows();
     ScreenCoordsXY screenPos{};

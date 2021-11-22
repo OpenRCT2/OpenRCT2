@@ -2441,7 +2441,7 @@ private:
  *
  *  rct2: 0x006BAC5B
  */
-rct_window* window_options_open()
+rct_window* WindowOptionsOpen()
 {
     auto* window = window_bring_to_front_by_class(WC_OPTIONS);
     if (window == nullptr)
