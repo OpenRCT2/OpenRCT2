@@ -43,45 +43,45 @@ static rct_widget window_editor_bottom_toolbar_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_editor_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_editor_bottom_toolbar_invalidate(rct_window *w);
-static void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowEditorBottomToolbarMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorBottomToolbarInvalidate(rct_window *w);
+static void WindowEditorBottomToolbarPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_editor_bottom_toolbar_jump_back_to_object_selection();
-static void window_editor_bottom_toolbar_jump_back_to_landscape_editor();
-static void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up();
-static void window_editor_bottom_toolbar_jump_back_to_options_selection();
+static void WindowEditorBottomToolbarJumpBackToObjectSelection();
+static void WindowEditorBottomToolbarJumpBackToLandscapeEditor();
+static void WindowEditorBottomToolbarJumpBackToInventionListSetUp();
+static void WindowEditorBottomToolbarJumpBackToOptionsSelection();
 
-static void window_editor_bottom_toolbar_jump_forward_from_object_selection();
-static void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up();
-static void window_editor_bottom_toolbar_jump_forward_to_options_selection();
-static void window_editor_bottom_toolbar_jump_forward_to_objective_selection();
-static void window_editor_bottom_toolbar_jump_forward_to_save_scenario();
+static void WindowEditorBottomToolbarJumpForwardFromObjectSelection();
+static void WindowEditorBottomToolbarJumpForwardToInventionListSetUp();
+static void WindowEditorBottomToolbarJumpForwardToOptionsSelection();
+static void WindowEditorBottomToolbarJumpForwardToObjectiveSelection();
+static void WindowEditorBottomToolbarJumpForwardToSaveScenario();
 
 static rct_window_event_list window_editor_bottom_toolbar_events([](auto& events)
 {
-    events.mouse_up = &window_editor_bottom_toolbar_mouseup;
-    events.invalidate = &window_editor_bottom_toolbar_invalidate;
-    events.paint = &window_editor_bottom_toolbar_paint;
+    events.mouse_up = &WindowEditorBottomToolbarMouseup;
+    events.invalidate = &WindowEditorBottomToolbarInvalidate;
+    events.paint = &WindowEditorBottomToolbarPaint;
 });
 
 static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
     nullptr,
-    window_editor_bottom_toolbar_jump_back_to_object_selection,
-    window_editor_bottom_toolbar_jump_back_to_landscape_editor,
-    window_editor_bottom_toolbar_jump_back_to_invention_list_set_up,
-    window_editor_bottom_toolbar_jump_back_to_options_selection,
+    WindowEditorBottomToolbarJumpBackToObjectSelection,
+    WindowEditorBottomToolbarJumpBackToLandscapeEditor,
+    WindowEditorBottomToolbarJumpBackToInventionListSetUp,
+    WindowEditorBottomToolbarJumpBackToOptionsSelection,
     nullptr,
-    window_editor_bottom_toolbar_jump_back_to_object_selection,
+    WindowEditorBottomToolbarJumpBackToObjectSelection,
     nullptr,
 };
 
 static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
-    window_editor_bottom_toolbar_jump_forward_from_object_selection,
-    window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up,
-    window_editor_bottom_toolbar_jump_forward_to_options_selection,
-    window_editor_bottom_toolbar_jump_forward_to_objective_selection,
-    window_editor_bottom_toolbar_jump_forward_to_save_scenario,
+    WindowEditorBottomToolbarJumpForwardFromObjectSelection,
+    WindowEditorBottomToolbarJumpForwardToInventionListSetUp,
+    WindowEditorBottomToolbarJumpForwardToOptionsSelection,
+    WindowEditorBottomToolbarJumpForwardToObjectiveSelection,
+    WindowEditorBottomToolbarJumpForwardToSaveScenario,
     nullptr,
     nullptr,
     nullptr,
@@ -103,7 +103,7 @@ static constexpr const rct_string_id EditorStepNames[] = {
  * Creates the main editor top toolbar window.
  * rct2: 0x0066F052 (part of 0x0066EF38)
  */
-rct_window* window_editor_bottom_toolbar_open()
+rct_window* WindowEditorBottomToolbarOpen()
 {
     rct_window* window = WindowCreate(
         ScreenCoordsXY(0, context_get_height() - 32), context_get_width(), 32, &window_editor_bottom_toolbar_events,
@@ -123,7 +123,7 @@ rct_window* window_editor_bottom_toolbar_open()
  *
  *  rct2: 0x0066F619
  */
-void window_editor_bottom_toolbar_jump_back_to_object_selection()
+void WindowEditorBottomToolbarJumpBackToObjectSelection()
 {
     window_close_all();
     gEditorStep = EditorStep::ObjectSelection;
@@ -134,7 +134,7 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection()
  *
  *  rct2: 0x0066F62C
  */
-void window_editor_bottom_toolbar_jump_back_to_landscape_editor()
+void WindowEditorBottomToolbarJumpBackToLandscapeEditor()
 {
     window_close_all();
     set_all_scenery_items_invented();
@@ -148,7 +148,7 @@ void window_editor_bottom_toolbar_jump_back_to_landscape_editor()
  *
  *  rct2: 0x0066F64E
  */
-static void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up()
+static void WindowEditorBottomToolbarJumpBackToInventionListSetUp()
 {
     window_close_all();
     context_open_window(WC_EDITOR_INVENTION_LIST);
@@ -160,7 +160,7 @@ static void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up()
  *
  *  rct2: 0x0066F666
  */
-void window_editor_bottom_toolbar_jump_back_to_options_selection()
+void WindowEditorBottomToolbarJumpBackToOptionsSelection()
 {
     window_close_all();
     context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
@@ -172,7 +172,7 @@ void window_editor_bottom_toolbar_jump_back_to_options_selection()
  *
  *  rct2: 0x006AB1CE
  */
-static bool window_editor_bottom_toolbar_check_object_selection()
+static bool WindowEditorBottomToolbarCheckObjectSelection()
 {
     rct_window* w;
 
@@ -197,9 +197,9 @@ static bool window_editor_bottom_toolbar_check_object_selection()
  *
  *  rct2: 0x0066F6B0
  */
-void window_editor_bottom_toolbar_jump_forward_from_object_selection()
+void WindowEditorBottomToolbarJumpForwardFromObjectSelection()
 {
-    if (!window_editor_bottom_toolbar_check_object_selection())
+    if (!WindowEditorBottomToolbarCheckObjectSelection())
         return;
 
     finish_object_selection();
@@ -217,7 +217,7 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
  *
  *  rct2: 0x0066F758
  */
-void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up()
+void WindowEditorBottomToolbarJumpForwardToInventionListSetUp()
 {
     auto [checksPassed, errorString] = Editor::CheckPark();
     if (checksPassed)
@@ -238,7 +238,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up()
  *
  *  rct2: 0x0066f790
  */
-void window_editor_bottom_toolbar_jump_forward_to_options_selection()
+void WindowEditorBottomToolbarJumpForwardToOptionsSelection()
 {
     window_close_all();
     context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
@@ -250,7 +250,7 @@ void window_editor_bottom_toolbar_jump_forward_to_options_selection()
  *
  *  rct2: 0x0066f7a8
  */
-void window_editor_bottom_toolbar_jump_forward_to_objective_selection()
+void WindowEditorBottomToolbarJumpForwardToObjectiveSelection()
 {
     window_close_all();
     context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
@@ -262,7 +262,7 @@ void window_editor_bottom_toolbar_jump_forward_to_objective_selection()
  *
  *  rct2: 0x0066F7C0
  */
-void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
+void WindowEditorBottomToolbarJumpForwardToSaveScenario()
 {
     if (!scenario_prepare_for_save())
     {
@@ -282,7 +282,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
  *
  *  rct2: 0x0066F5AE
  */
-static void window_editor_bottom_toolbar_mouseup([[maybe_unused]] rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorBottomToolbarMouseup([[maybe_unused]] rct_window* w, rct_widgetindex widgetIndex)
 {
     if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
     {
@@ -298,13 +298,13 @@ static void window_editor_bottom_toolbar_mouseup([[maybe_unused]] rct_window* w,
     }
 }
 
-static void hide_previous_step_button()
+static void HidePreviousStepButton()
 {
     window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::Empty;
     window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::Empty;
 }
 
-static void hide_next_step_button()
+static void HideNextStepButton()
 {
     window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::Empty;
     window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
@@ -314,7 +314,7 @@ static void hide_next_step_button()
  *
  *  rct2: 0x0066F1C9
  */
-void window_editor_bottom_toolbar_invalidate(rct_window* w)
+void WindowEditorBottomToolbarInvalidate(rct_window* w)
 {
     ColourSchemeUpdateByClass(
         w, (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
@@ -332,24 +332,24 @@ void window_editor_bottom_toolbar_invalidate(rct_window* w)
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        hide_previous_step_button();
-        hide_next_step_button();
+        HidePreviousStepButton();
+        HideNextStepButton();
     }
     else
     {
         if (gEditorStep == EditorStep::ObjectSelection)
         {
-            hide_previous_step_button();
+            HidePreviousStepButton();
         }
         else if (gEditorStep == EditorStep::RollercoasterDesigner)
         {
-            hide_next_step_button();
+            HideNextStepButton();
         }
         else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
         {
             if (GetNumFreeEntities() != MAX_ENTITIES || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
             {
-                hide_previous_step_button();
+                HidePreviousStepButton();
             }
         }
     }
@@ -359,7 +359,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window* w)
  *
  *  rct2: 0x0066F25C
  */
-void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
+void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     bool drawPreviousButton = false;
     bool drawNextButton = false;

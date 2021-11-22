@@ -83,25 +83,25 @@ static rct_widget window_news_options_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_news_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_news_options_update(rct_window *w);
-static void window_news_options_invalidate(rct_window *w);
-static void window_news_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowNewsOptionsMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowNewsOptionsUpdate(rct_window *w);
+static void WindowNewsOptionsInvalidate(rct_window *w);
+static void WindowNewsOptionsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_news_options_events([](auto& events)
 {
-    events.mouse_up = &window_news_options_mouseup;
-    events.update = &window_news_options_update;
-    events.invalidate = &window_news_options_invalidate;
-    events.paint = &window_news_options_paint;
+    events.mouse_up = &WindowNewsOptionsMouseup;
+    events.update = &WindowNewsOptionsUpdate;
+    events.invalidate = &WindowNewsOptionsInvalidate;
+    events.paint = &WindowNewsOptionsPaint;
 });
 // clang-format on
 
-static void window_news_options_set_page(rct_window* w, int32_t page);
-static void window_news_options_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi);
-static bool* get_notification_value_ptr(const notification_def* ndef);
+static void WindowNewsOptionsSetPage(rct_window* w, int32_t page);
+static void WindowNewsOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi);
+static bool* GetNotificationValuePtr(const notification_def* ndef);
 
-rct_window* window_news_options_open()
+rct_window* WindowNewsOptionsOpen()
 {
     rct_window* window;
 
@@ -122,7 +122,7 @@ rct_window* window_news_options_open()
     return window;
 }
 
-static void window_news_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowNewsOptionsMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -132,7 +132,7 @@ static void window_news_options_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_TAB_PARK:
         case WIDX_TAB_RIDE:
         case WIDX_TAB_GUEST:
-            window_news_options_set_page(w, widgetIndex - WIDX_TAB_PARK);
+            WindowNewsOptionsSetPage(w, widgetIndex - WIDX_TAB_PARK);
             break;
         default:
         {
@@ -149,7 +149,7 @@ static void window_news_options_mouseup(rct_window* w, rct_widgetindex widgetInd
                     if (matchIndex == checkBoxIndex)
                     {
                         // Toggle value
-                        bool* configValue = get_notification_value_ptr(ndef);
+                        bool* configValue = GetNotificationValuePtr(ndef);
                         *configValue = !(*configValue);
 
                         config_save_default();
@@ -165,13 +165,13 @@ static void window_news_options_mouseup(rct_window* w, rct_widgetindex widgetInd
     }
 }
 
-static void window_news_options_update(rct_window* w)
+static void WindowNewsOptionsUpdate(rct_window* w)
 {
     w->frame_no++;
     widget_invalidate(w, WIDX_TAB_PARK + w->page);
 }
 
-static void window_news_options_invalidate(rct_window* w)
+static void WindowNewsOptionsInvalidate(rct_window* w)
 {
     // Set pressed tab
     w->pressed_widgets &= ~(1ULL << WIDX_TAB_PARK);
@@ -200,7 +200,7 @@ static void window_news_options_invalidate(rct_window* w)
         checkboxWidget->bottom = checkboxWidget->top + LIST_ROW_HEIGHT + 3;
         checkboxWidget->text = ndef->caption;
 
-        const bool* configValue = get_notification_value_ptr(ndef);
+        const bool* configValue = GetNotificationValuePtr(ndef);
         WidgetSetCheckboxValue(w, checkboxWidgetIndex, *configValue);
 
         checkboxWidgetIndex++;
@@ -231,13 +231,13 @@ static void window_news_options_invalidate(rct_window* w)
     }
 }
 
-static void window_news_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowNewsOptionsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    window_news_options_draw_tab_images(w, dpi);
+    WindowNewsOptionsDrawTabImages(w, dpi);
 }
 
-static void window_news_options_set_page(rct_window* w, int32_t page)
+static void WindowNewsOptionsSetPage(rct_window* w, int32_t page)
 {
     if (w->page != page)
     {
@@ -258,7 +258,7 @@ const int32_t window_news_option_tab_animation_frames[] = {
     8,
 };
 
-static void window_news_options_draw_tab_image(rct_window* w, rct_drawpixelinfo* dpi, int32_t page, int32_t spriteIndex)
+static void WindowNewsOptionsDrawTabImage(rct_window* w, rct_drawpixelinfo* dpi, int32_t page, int32_t spriteIndex)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_PARK + page;
 
@@ -279,14 +279,14 @@ static void window_news_options_draw_tab_image(rct_window* w, rct_drawpixelinfo*
     }
 }
 
-static void window_news_options_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowNewsOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_news_options_draw_tab_image(w, dpi, NOTIFICATION_CATEGORY_PARK, SPR_TAB_PARK);
-    window_news_options_draw_tab_image(w, dpi, NOTIFICATION_CATEGORY_RIDE, SPR_TAB_RIDE_0);
-    window_news_options_draw_tab_image(w, dpi, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
+    WindowNewsOptionsDrawTabImage(w, dpi, NOTIFICATION_CATEGORY_PARK, SPR_TAB_PARK);
+    WindowNewsOptionsDrawTabImage(w, dpi, NOTIFICATION_CATEGORY_RIDE, SPR_TAB_RIDE_0);
+    WindowNewsOptionsDrawTabImage(w, dpi, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
 }
 
-static bool* get_notification_value_ptr(const notification_def* ndef)
+static bool* GetNotificationValuePtr(const notification_def* ndef)
 {
     bool* configValue = reinterpret_cast<bool*>(reinterpret_cast<size_t>(&gConfigNotifications) + ndef->config_offset);
     return configValue;

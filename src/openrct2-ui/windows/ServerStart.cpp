@@ -65,25 +65,25 @@ static rct_widget window_server_start_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_server_start_close(rct_window *w);
-static void window_server_start_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_server_start_update(rct_window *w);
-static void window_server_start_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_server_start_invalidate(rct_window *w);
-static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowServerStartClose(rct_window *w);
+static void WindowServerStartMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowServerStartUpdate(rct_window *w);
+static void WindowServerStartTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowServerStartInvalidate(rct_window *w);
+static void WindowServerStartPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_server_start_events([](auto& events)
 {
-    events.close = &window_server_start_close;
-    events.mouse_up = &window_server_start_mouseup;
-    events.update = &window_server_start_update;
-    events.text_input = &window_server_start_textinput;
-    events.invalidate = &window_server_start_invalidate;
-    events.paint = &window_server_start_paint;
+    events.close = &WindowServerStartClose;
+    events.mouse_up = &WindowServerStartMouseup;
+    events.update = &WindowServerStartUpdate;
+    events.text_input = &WindowServerStartTextinput;
+    events.invalidate = &WindowServerStartInvalidate;
+    events.paint = &WindowServerStartPaint;
 });
 // clang-format on
 
-rct_window* window_server_start_open()
+rct_window* WindowServerStartOpen()
 {
     rct_window* window;
 
@@ -125,11 +125,11 @@ rct_window* window_server_start_open()
     return window;
 }
 
-static void window_server_start_close(rct_window* w)
+static void WindowServerStartClose(rct_window* w)
 {
 }
 
-static void window_server_start_scenarioselect_callback(const utf8* path)
+static void WindowServerStartScenarioselectCallback(const utf8* path)
 {
     network_set_password(_password);
     if (context_load_park_from_file(path))
@@ -138,7 +138,7 @@ static void window_server_start_scenarioselect_callback(const utf8* path)
     }
 }
 
-static void window_server_start_loadsave_callback(int32_t result, const utf8* path)
+static void WindowServerStartLoadsaveCallback(int32_t result, const utf8* path)
 {
     if (result == MODAL_RESULT_OK && context_load_park_from_file(path))
     {
@@ -146,7 +146,7 @@ static void window_server_start_loadsave_callback(int32_t result, const utf8* pa
     }
 }
 
-static void window_server_start_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowServerStartMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -190,19 +190,19 @@ static void window_server_start_mouseup(rct_window* w, rct_widgetindex widgetInd
             w->Invalidate();
             break;
         case WIDX_START_SERVER:
-            window_scenarioselect_open(window_server_start_scenarioselect_callback, false);
+            WindowScenarioselectOpen(WindowServerStartScenarioselectCallback, false);
             break;
         case WIDX_LOAD_SERVER:
             network_set_password(_password);
             auto intent = Intent(WC_LOADSAVE);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_server_start_loadsave_callback));
+            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowServerStartLoadsaveCallback));
             context_open_intent(&intent);
             break;
     }
 }
 
-static void window_server_start_update(rct_window* w)
+static void WindowServerStartUpdate(rct_window* w)
 {
     if (gCurrentTextBox.window.classification == w->classification && gCurrentTextBox.window.number == w->number)
     {
@@ -214,7 +214,7 @@ static void window_server_start_update(rct_window* w)
     }
 }
 
-static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     if (text == nullptr)
         return;
@@ -305,7 +305,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
     }
 }
 
-static void window_server_start_invalidate(rct_window* w)
+static void WindowServerStartInvalidate(rct_window* w)
 {
     ColourSchemeUpdateByClass(w, WC_SERVER_LIST);
 
@@ -315,7 +315,7 @@ static void window_server_start_invalidate(rct_window* w)
     ft.Add<uint16_t>(gConfigNetwork.maxplayers);
 }
 
-static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowServerStartPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 

@@ -46,34 +46,34 @@ static rct_widget window_land_rights_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_land_rights_close(rct_window *w);
-static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_land_rights_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_land_rights_update(rct_window *w);
-static void window_land_rights_invalidate(rct_window *w);
-static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_land_rights_inputsize(rct_window *w);
-static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_land_rights_toolabort(rct_window *w, rct_widgetindex widgetIndex);
-static bool land_rights_tool_is_active();
+static void WindowLandRightsClose(rct_window *w);
+static void WindowLandRightsMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowLandRightsMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void WindowLandRightsUpdate(rct_window *w);
+static void WindowLandRightsInvalidate(rct_window *w);
+static void WindowLandRightsPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowLandRightsTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowLandRightsInputsize(rct_window *w);
+static void WindowLandRightsToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowLandRightsTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowLandRightsTooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowLandRightsToolabort(rct_window *w, rct_widgetindex widgetIndex);
+static bool LandRightsToolIsActive();
 
 
 static rct_window_event_list window_land_rights_events([](auto& events)
 {
-    events.close = &window_land_rights_close;
-    events.mouse_up = &window_land_rights_mouseup;
-    events.mouse_down = &window_land_rights_mousedown;
-    events.update = &window_land_rights_update;
-    events.tool_update = &window_land_rights_toolupdate;
-    events.tool_down = &window_land_rights_tooldown;
-    events.tool_drag = &window_land_rights_tooldrag;
-    events.tool_abort = &window_land_rights_toolabort;
-    events.text_input = &window_land_rights_textinput;
-    events.invalidate = &window_land_rights_invalidate;
-    events.paint = &window_land_rights_paint;
+    events.close = &WindowLandRightsClose;
+    events.mouse_up = &WindowLandRightsMouseup;
+    events.mouse_down = &WindowLandRightsMousedown;
+    events.update = &WindowLandRightsUpdate;
+    events.tool_update = &WindowLandRightsToolupdate;
+    events.tool_down = &WindowLandRightsTooldown;
+    events.tool_drag = &WindowLandRightsTooldrag;
+    events.tool_abort = &WindowLandRightsToolabort;
+    events.text_input = &WindowLandRightsTextinput;
+    events.invalidate = &WindowLandRightsInvalidate;
+    events.paint = &WindowLandRightsPaint;
 });
 // clang-format on
 
@@ -83,7 +83,7 @@ constexpr uint8_t LAND_RIGHTS_MODE_BUY_LAND = 1;
 static uint8_t _landRightsMode;
 static money32 _landRightsCost;
 
-rct_window* window_land_rights_open()
+rct_window* WindowLandRightsOpen()
 {
     rct_window* window;
 
@@ -119,7 +119,7 @@ rct_window* window_land_rights_open()
     return window;
 }
 
-static void window_land_rights_close(rct_window* w)
+static void WindowLandRightsClose(rct_window* w)
 {
     if (gLandRemainingConstructionSales == 0)
     {
@@ -127,11 +127,11 @@ static void window_land_rights_close(rct_window* w)
     }
 
     // If the tool wasn't changed, turn tool off
-    if (land_rights_tool_is_active())
+    if (LandRightsToolIsActive())
         tool_cancel();
 }
 
-static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowLandRightsMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -139,7 +139,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_close(w);
             break;
         case WIDX_PREVIEW:
-            window_land_rights_inputsize(w);
+            WindowLandRightsInputsize(w);
             break;
         case WIDX_BUY_LAND_RIGHTS:
             if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
@@ -162,7 +162,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
     }
 }
 
-static void window_land_rights_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowLandRightsMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -183,7 +183,7 @@ static void window_land_rights_mousedown(rct_window* w, rct_widgetindex widgetIn
     }
 }
 
-static void window_land_rights_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowLandRightsTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     int32_t size;
     char* end;
@@ -201,23 +201,23 @@ static void window_land_rights_textinput(rct_window* w, rct_widgetindex widgetIn
     }
 }
 
-static void window_land_rights_inputsize(rct_window* w)
+static void WindowLandRightsInputsize(rct_window* w)
 {
     Formatter ft;
     ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
     ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
-    window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+    WindowTextInputOpen(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
 }
 
-static void window_land_rights_update(rct_window* w)
+static void WindowLandRightsUpdate(rct_window* w)
 {
     w->frame_no++;
     // Close window if another tool is open
-    if (!land_rights_tool_is_active())
+    if (!LandRightsToolIsActive())
         window_close(w);
 }
 
-static void window_land_rights_invalidate(rct_window* w)
+static void WindowLandRightsInvalidate(rct_window* w)
 {
     // Set the preview image button to be pressed down
     w->pressed_widgets |= (1ULL << WIDX_PREVIEW)
@@ -254,7 +254,7 @@ static void window_land_rights_invalidate(rct_window* w)
     }
 }
 
-static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowLandRightsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + window_land_rights_widgets[WIDX_PREVIEW].midX(),
                                         w->windowPos.y + window_land_rights_widgets[WIDX_PREVIEW].midY() };
@@ -279,7 +279,7 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-static void window_land_rights_tool_update_land_rights(const ScreenCoordsXY& screenCoords)
+static void WindowLandRightsToolUpdateLandRights(const ScreenCoordsXY& screenCoords)
 {
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -365,7 +365,7 @@ static void window_land_rights_tool_update_land_rights(const ScreenCoordsXY& scr
  *
  *  rct2: 0x0066822A
  */
-static void window_land_rights_toolabort(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowLandRightsToolabort(rct_window* w, rct_widgetindex widgetIndex)
 {
     hide_gridlines();
     if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
@@ -382,16 +382,16 @@ static void window_land_rights_toolabort(rct_window* w, rct_widgetindex widgetIn
  *
  *  rct2: 0x006681D1
  */
-static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowLandRightsToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    window_land_rights_tool_update_land_rights(screenCoords);
+    WindowLandRightsToolUpdateLandRights(screenCoords);
 }
 
 /**
  *
  *  rct2: 0x006681E6
  */
-static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowLandRightsTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
     {
@@ -419,7 +419,7 @@ static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006681FB
  */
-static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowLandRightsTooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
     {
@@ -443,7 +443,7 @@ static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetInd
     }
 }
 
-static bool land_rights_tool_is_active()
+static bool LandRightsToolIsActive()
 {
     if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;

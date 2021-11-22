@@ -37,7 +37,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        int32_t left_get() const
+        int32_t LeftGet() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void left_set(int32_t value)
+        void LeftSet(int32_t value)
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -55,7 +55,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t top_get() const
+        int32_t TopGet() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -64,7 +64,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void top_set(int32_t value)
+        void TopSet(int32_t value)
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -73,7 +73,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t right_get() const
+        int32_t RightGet() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -82,7 +82,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void right_set(int32_t value)
+        void RightSet(int32_t value)
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -91,7 +91,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t bottom_get() const
+        int32_t BottomGet() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -100,7 +100,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void bottom_set(int32_t value)
+        void BottomSet(int32_t value)
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -109,11 +109,11 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t rotation_get() const
+        int32_t RotationGet() const
         {
             return get_current_rotation();
         }
-        void rotation_set(int32_t value)
+        void RotationSet(int32_t value)
         {
             if (value >= 0 && value < 4)
             {
@@ -128,7 +128,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t zoom_get() const
+        int32_t ZoomGet() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -137,7 +137,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void zoom_set(int32_t value)
+        void ZoomSet(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -146,7 +146,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint32_t visibilityFlags_get() const
+        uint32_t VisibilityFlagsGet() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -155,7 +155,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void visibilityFlags_set(uint32_t value)
+        void VisibilityFlagsSet(uint32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -172,7 +172,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        DukValue getCentrePosition() const
+        DukValue GetCentrePosition() const
         {
             auto viewport = GetViewport();
             if (viewport != nullptr)
@@ -191,7 +191,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        void moveTo(DukValue position)
+        void MoveTo(DukValue position)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -211,7 +211,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        void scrollTo(DukValue position)
+        void ScrollTo(DukValue position)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -227,17 +227,17 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScViewport::left_get, &ScViewport::left_set, "left");
-            dukglue_register_property(ctx, &ScViewport::top_get, &ScViewport::top_set, "top");
-            dukglue_register_property(ctx, &ScViewport::right_get, &ScViewport::right_set, "right");
-            dukglue_register_property(ctx, &ScViewport::bottom_get, &ScViewport::bottom_set, "bottom");
-            dukglue_register_property(ctx, &ScViewport::rotation_get, &ScViewport::rotation_set, "rotation");
-            dukglue_register_property(ctx, &ScViewport::zoom_get, &ScViewport::zoom_set, "zoom");
+            dukglue_register_property(ctx, &ScViewport::LeftGet, &ScViewport::LeftSet, "left");
+            dukglue_register_property(ctx, &ScViewport::TopGet, &ScViewport::TopSet, "top");
+            dukglue_register_property(ctx, &ScViewport::RightGet, &ScViewport::RightSet, "right");
+            dukglue_register_property(ctx, &ScViewport::BottomGet, &ScViewport::BottomSet, "bottom");
+            dukglue_register_property(ctx, &ScViewport::RotationGet, &ScViewport::RotationSet, "rotation");
+            dukglue_register_property(ctx, &ScViewport::ZoomGet, &ScViewport::ZoomSet, "zoom");
             dukglue_register_property(
-                ctx, &ScViewport::visibilityFlags_get, &ScViewport::visibilityFlags_set, "visibilityFlags");
-            dukglue_register_method(ctx, &ScViewport::getCentrePosition, "getCentrePosition");
-            dukglue_register_method(ctx, &ScViewport::moveTo, "moveTo");
-            dukglue_register_method(ctx, &ScViewport::scrollTo, "scrollTo");
+                ctx, &ScViewport::VisibilityFlagsGet, &ScViewport::VisibilityFlagsSet, "visibilityFlags");
+            dukglue_register_method(ctx, &ScViewport::GetCentrePosition, "getCentrePosition");
+            dukglue_register_method(ctx, &ScViewport::MoveTo, "moveTo");
+            dukglue_register_method(ctx, &ScViewport::ScrollTo, "scrollTo");
         }
 
     private:

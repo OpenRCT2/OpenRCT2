@@ -280,7 +280,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
     switch (_inputState)
     {
         case InputState::Reset:
-            window_tooltip_reset(screenCoords);
+            WindowTooltipReset(screenCoords);
             // fall-through
         case InputState::Normal:
             switch (state)
@@ -936,7 +936,7 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, r
         WidgetScrollGetPart(w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
 
         if (scroll_part != SCROLL_PART_VIEW)
-            window_tooltip_close();
+            WindowTooltipClose();
         else
         {
             window_event_scroll_mouseover_call(w, scrollId, newScreenCoords);
@@ -1374,7 +1374,7 @@ void InputStateWidgetPressed(
         if (gDropdownIsColour && gDropdownLastColourHover != dropdown_index)
         {
             gDropdownLastColourHover = dropdown_index;
-            window_tooltip_close();
+            WindowTooltipClose();
 
             static constexpr const rct_string_id colourTooltips[] = {
                 STR_COLOUR_BLACK_TIP,
@@ -1410,7 +1410,7 @@ void InputStateWidgetPressed(
                 STR_COLOUR_BRIGHT_PINK_TIP,
                 STR_COLOUR_LIGHT_PINK_TIP,
             };
-            window_tooltip_show(OpenRCT2String{ colourTooltips[dropdown_index], {} }, screenCoords);
+            WindowTooltipShow(OpenRCT2String{ colourTooltips[dropdown_index], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
@@ -1429,7 +1429,7 @@ void InputStateWidgetPressed(
     else
     {
         gDropdownLastColourHover = -1;
-        window_tooltip_close();
+        WindowTooltipClose();
     }
 }
 
@@ -1443,7 +1443,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
             if (_tooltipNotShownTicks > 50 && w != nullptr && WidgetIsVisible(w, widgetIndex))
             {
                 gTooltipTimeout = 0;
-                window_tooltip_open(w, widgetIndex, screenCoords);
+                WindowTooltipOpen(w, widgetIndex, screenCoords);
             }
         }
 
@@ -1458,7 +1458,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
             || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex
             || !WidgetIsVisible(w, widgetIndex))
         {
-            window_tooltip_close();
+            WindowTooltipClose();
         }
 
         gTooltipTimeout += gCurrentDeltaTime;

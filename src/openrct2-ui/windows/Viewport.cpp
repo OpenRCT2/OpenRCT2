@@ -80,7 +80,7 @@ public:
         if (viewport == nullptr)
         {
             Close();
-            window_error_open("Unexpected Error", "Failed to create viewport window.");
+            WindowErrorOpen("Unexpected Error", "Failed to create viewport window.");
             return;
         }
 
@@ -214,7 +214,7 @@ public:
     }
 };
 
-rct_window* window_viewport_open()
+rct_window* WindowViewportOpen()
 {
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();

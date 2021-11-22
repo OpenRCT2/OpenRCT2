@@ -32,7 +32,7 @@ public:
     void Init() override
     {
         ThemeManagerInitialise();
-        window_new_ride_init_vars();
+        window_staff_list_init_vars();
     }
 
     rct_window* OpenWindow(rct_windowclass wc) override
@@ -40,43 +40,43 @@ public:
         switch (wc)
         {
             case WC_ABOUT:
-                return window_about_open();
+                return WindowAboutOpen();
             case WC_BOTTOM_TOOLBAR:
-                return window_game_bottom_toolbar_open();
+                return WindowGameBottomToolbarOpen();
             case WC_CHANGELOG:
                 return OpenView(WV_CHANGELOG);
             case WC_CHEATS:
-                return window_cheats_open();
+                return WindowCheatsOpen();
             case WC_CLEAR_SCENERY:
-                return window_clear_scenery_open();
+                return WindowClearSceneryOpen();
             case WC_CUSTOM_CURRENCY_CONFIG:
-                return custom_currency_window_open();
+                return CustomCurrencyWindowOpen();
             case WC_DEBUG_PAINT:
-                return window_debug_paint_open();
+                return WindowDebugPaintOpen();
             case WC_EDITOR_INVENTION_LIST:
-                return window_editor_inventions_list_open();
+                return WindowEditorInventionsListOpen();
             case WC_EDITOR_OBJECT_SELECTION:
-                return window_editor_object_selection_open();
+                return WindowEditorObjectSelectionOpen();
             case WC_EDITOR_OBJECTIVE_OPTIONS:
-                return window_editor_objective_options_open();
+                return WindowEditorObjectiveOptionsOpen();
             case WC_EDITOR_SCENARIO_OPTIONS:
-                return window_editor_scenario_options_open();
+                return WindowEditorScenarioOptionsOpen();
             case WC_FINANCES:
-                return window_finances_open();
+                return WindowFinancesOpen();
             case WC_FOOTPATH:
-                return window_footpath_open();
+                return WindowFootpathOpen();
             case WC_GUEST_LIST:
                 return window_guest_list_open();
             case WC_LAND:
-                return window_land_open();
+                return WindowLandOpen();
             case WC_LAND_RIGHTS:
-                return window_land_rights_open();
+                return WindowLandRightsOpen();
             case WC_MAIN_WINDOW:
-                return window_main_open();
+                return WindowMainOpen();
             case WC_MAP:
-                return window_map_open();
+                return WindowMapOpen();
             case WC_MAPGEN:
-                return window_mapgen_open();
+                return WindowMapgenOpen();
             case WC_MULTIPLAYER:
                 return window_multiplayer_open();
             case WC_CONSTRUCT_RIDE:

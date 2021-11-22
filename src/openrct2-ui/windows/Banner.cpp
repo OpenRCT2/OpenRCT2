@@ -297,7 +297,7 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* window_banner_open(rct_windownumber number)
+rct_window* WindowBannerOpen(rct_windownumber number)
 {
     auto w = static_cast<BannerWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 

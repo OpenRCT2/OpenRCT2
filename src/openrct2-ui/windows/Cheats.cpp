@@ -1199,7 +1199,7 @@ private:
     }
 };
 
-rct_window* window_cheats_open()
+rct_window* WindowCheatsOpen()
 {
     auto* window = window_bring_to_front_by_class(WC_CHEATS);
     if (window == nullptr)

@@ -41,17 +41,17 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        int32_t classification_get() const
+        int32_t ClassificationGet() const
         {
             return static_cast<int32_t>(_class);
         }
 
-        int32_t number_get() const
+        int32_t NumberGet() const
         {
             return static_cast<int32_t>(_number);
         }
 
-        int32_t x_get() const
+        int32_t XGet() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -60,7 +60,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void x_set(int32_t value)
+        void XSet(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -68,7 +68,7 @@ namespace OpenRCT2::Scripting
                 window_set_position(w, { value, w->windowPos.y });
             }
         }
-        int32_t y_get() const
+        int32_t YGet() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -77,7 +77,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void y_set(int32_t value)
+        void YSet(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -85,7 +85,7 @@ namespace OpenRCT2::Scripting
                 window_set_position(w, { w->windowPos.x, value });
             }
         }
-        int32_t width_get() const
+        int32_t WidthGet() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -94,7 +94,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void width_set(int32_t value)
+        void WidthSet(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -102,7 +102,7 @@ namespace OpenRCT2::Scripting
                 window_resize(w, value - w->width, 0);
             }
         }
-        int32_t height_get() const
+        int32_t HeightGet() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -111,7 +111,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void height_set(int32_t value)
+        void HeightSet(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -119,7 +119,7 @@ namespace OpenRCT2::Scripting
                 window_resize(w, 0, value - w->height);
             }
         }
-        int32_t minWidth_get() const
+        int32_t MinWidthGet() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -128,7 +128,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void minWidth_set(int32_t value)
+        void MinWidthSet(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -136,7 +136,7 @@ namespace OpenRCT2::Scripting
                 window_set_resize(w, value, w->min_height, w->max_width, w->max_height);
             }
         }
-        int32_t maxWidth_get() const
+        int32_t MaxWidthGet() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -145,7 +145,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void maxWidth_set(int32_t value)
+        void MaxWidthSet(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -153,7 +153,7 @@ namespace OpenRCT2::Scripting
                 window_set_resize(w, w->min_width, w->min_height, value, w->max_height);
             }
         }
-        int32_t minHeight_get() const
+        int32_t MinHeightGet() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -162,7 +162,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void minHeight_set(int32_t value)
+        void MinHeightSet(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -170,7 +170,7 @@ namespace OpenRCT2::Scripting
                 window_set_resize(w, w->min_width, value, w->max_width, w->max_height);
             }
         }
-        int32_t maxHeight_get() const
+        int32_t MaxHeightGet() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -179,7 +179,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void maxHeight_set(int32_t value)
+        void MaxHeightSet(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -187,7 +187,7 @@ namespace OpenRCT2::Scripting
                 window_set_resize(w, w->min_width, w->min_height, w->max_width, value);
             }
         }
-        bool isSticky_get() const
+        bool IsStickyGet() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -197,7 +197,7 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        std::vector<DukValue> widgets_get() const
+        std::vector<DukValue> WidgetsGet() const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -215,7 +215,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        std::vector<int32_t> colours_get() const
+        std::vector<int32_t> ColoursGet() const
         {
             std::vector<int32_t> result;
             auto w = GetWindow();
@@ -229,7 +229,7 @@ namespace OpenRCT2::Scripting
             }
             return result;
         }
-        void colours_set(std::vector<int32_t> colours)
+        void ColoursSet(std::vector<int32_t> colours)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -250,7 +250,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::string title_get() const
+        std::string TitleGet() const
         {
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
@@ -259,7 +259,7 @@ namespace OpenRCT2::Scripting
             }
             return {};
         }
-        void title_set(std::string value)
+        void TitleSet(std::string value)
         {
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
@@ -268,7 +268,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t tabIndex_get() const
+        int32_t TabIndexGet() const
         {
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
@@ -278,7 +278,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        void close()
+        void Close()
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -287,7 +287,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        DukValue findWidget(std::string name) const
+        DukValue FindWidget(std::string name) const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto w = GetWindow();
@@ -302,7 +302,7 @@ namespace OpenRCT2::Scripting
             return GetObjectAsDukValue<ScWidget>(ctx, nullptr);
         }
 
-        void bringToFront()
+        void BringToFront()
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -314,25 +314,25 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScWindow::classification_get, nullptr, "classification");
-            dukglue_register_property(ctx, &ScWindow::number_get, nullptr, "number");
-            dukglue_register_property(ctx, &ScWindow::x_get, &ScWindow::x_set, "x");
-            dukglue_register_property(ctx, &ScWindow::y_get, &ScWindow::y_set, "y");
-            dukglue_register_property(ctx, &ScWindow::width_get, &ScWindow::width_set, "width");
-            dukglue_register_property(ctx, &ScWindow::height_get, &ScWindow::height_set, "height");
-            dukglue_register_property(ctx, &ScWindow::minWidth_get, &ScWindow::minWidth_set, "minWidth");
-            dukglue_register_property(ctx, &ScWindow::maxWidth_get, &ScWindow::maxWidth_set, "maxWidth");
-            dukglue_register_property(ctx, &ScWindow::minHeight_get, &ScWindow::minHeight_set, "minHeight");
-            dukglue_register_property(ctx, &ScWindow::maxHeight_get, &ScWindow::maxHeight_set, "maxHeight");
-            dukglue_register_property(ctx, &ScWindow::isSticky_get, nullptr, "isSticky");
-            dukglue_register_property(ctx, &ScWindow::widgets_get, nullptr, "widgets");
-            dukglue_register_property(ctx, &ScWindow::colours_get, &ScWindow::colours_set, "colours");
-            dukglue_register_property(ctx, &ScWindow::title_get, &ScWindow::title_set, "title");
-            dukglue_register_property(ctx, &ScWindow::tabIndex_get, nullptr, "tabIndex");
+            dukglue_register_property(ctx, &ScWindow::ClassificationGet, nullptr, "classification");
+            dukglue_register_property(ctx, &ScWindow::NumberGet, nullptr, "number");
+            dukglue_register_property(ctx, &ScWindow::XGet, &ScWindow::XSet, "x");
+            dukglue_register_property(ctx, &ScWindow::YGet, &ScWindow::YSet, "y");
+            dukglue_register_property(ctx, &ScWindow::WidthGet, &ScWindow::WidthSet, "width");
+            dukglue_register_property(ctx, &ScWindow::HeightGet, &ScWindow::HeightSet, "height");
+            dukglue_register_property(ctx, &ScWindow::MinWidthGet, &ScWindow::MinWidthSet, "minWidth");
+            dukglue_register_property(ctx, &ScWindow::MaxWidthGet, &ScWindow::MaxWidthSet, "maxWidth");
+            dukglue_register_property(ctx, &ScWindow::MinHeightGet, &ScWindow::MinHeightSet, "minHeight");
+            dukglue_register_property(ctx, &ScWindow::MaxHeightGet, &ScWindow::MaxHeightSet, "maxHeight");
+            dukglue_register_property(ctx, &ScWindow::IsStickyGet, nullptr, "isSticky");
+            dukglue_register_property(ctx, &ScWindow::WidgetsGet, nullptr, "widgets");
+            dukglue_register_property(ctx, &ScWindow::ColoursGet, &ScWindow::ColoursSet, "colours");
+            dukglue_register_property(ctx, &ScWindow::TitleGet, &ScWindow::TitleSet, "title");
+            dukglue_register_property(ctx, &ScWindow::TabIndexGet, nullptr, "tabIndex");
 
-            dukglue_register_method(ctx, &ScWindow::close, "close");
-            dukglue_register_method(ctx, &ScWindow::findWidget, "findWidget");
-            dukglue_register_method(ctx, &ScWindow::bringToFront, "bringToFront");
+            dukglue_register_method(ctx, &ScWindow::Close, "close");
+            dukglue_register_method(ctx, &ScWindow::FindWidget, "findWidget");
+            dukglue_register_method(ctx, &ScWindow::BringToFront, "bringToFront");
         }
 
     private:

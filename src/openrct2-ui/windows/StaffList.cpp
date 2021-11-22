@@ -456,7 +456,7 @@ public:
             if (closestStaffMember != nullptr)
             {
                 tool_cancel();
-                auto* staffWindow = window_staff_open(closestStaffMember);
+                auto* staffWindow = WindowStaffOpen(closestStaffMember);
                 window_event_dropdown_call(staffWindow, WC_PEEP__WIDX_PATROL, 0);
             }
             else
@@ -664,7 +664,7 @@ private:
     }
 };
 
-rct_window* window_staff_list_open()
+rct_window* WindowStaffListOpen()
 {
     return WindowFocusOrCreate<StaffListWindow>(WC_STAFF_LIST, WW, WH, WF_10 | WF_RESIZABLE);
 }

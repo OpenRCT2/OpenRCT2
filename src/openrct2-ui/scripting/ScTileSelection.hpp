@@ -28,7 +28,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        DukValue range_get() const
+        DukValue RangeGet() const
         {
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
@@ -50,7 +50,7 @@ namespace OpenRCT2::Scripting
             return DukValue::take_from_stack(_ctx);
         }
 
-        void range_set(DukValue value)
+        void RangeSet(DukValue value)
         {
             map_invalidate_selection_rect();
             if (value.type() == DukValue::Type::OBJECT)
@@ -73,7 +73,7 @@ namespace OpenRCT2::Scripting
             map_invalidate_selection_rect();
         }
 
-        DukValue tiles_get() const
+        DukValue TilesGet() const
         {
             duk_push_array(_ctx);
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
@@ -93,7 +93,7 @@ namespace OpenRCT2::Scripting
             return DukValue::take_from_stack(_ctx);
         }
 
-        void tiles_set(DukValue value)
+        void TilesSet(DukValue value)
         {
             map_invalidate_map_selection_tiles();
             gMapSelectionTiles.clear();
@@ -130,8 +130,8 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScTileSelection::range_get, &ScTileSelection::range_set, "range");
-            dukglue_register_property(ctx, &ScTileSelection::tiles_get, &ScTileSelection::tiles_set, "tiles");
+            dukglue_register_property(ctx, &ScTileSelection::RangeGet, &ScTileSelection::RangeSet, "range");
+            dukglue_register_property(ctx, &ScTileSelection::TilesGet, &ScTileSelection::TilesSet, "tiles");
         }
 
     private:

@@ -312,7 +312,7 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* window_sign_open(rct_windownumber number)
+rct_window* WindowSignOpen(rct_windownumber number)
 {
     auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 
@@ -335,7 +335,7 @@ rct_window* window_sign_open(rct_windownumber number)
  *
  *  rct2: 0x6E5F52
  */
-rct_window* window_sign_small_open(rct_windownumber number)
+rct_window* WindowSignSmallOpen(rct_windownumber number)
 {
     auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 
