@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "ScPeep.hpp"
+#    include "../ride/ScRide.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -82,6 +83,34 @@ namespace OpenRCT2::Scripting
 
         uint8_t lostCountdown_get() const;
         void lostCountdown_set(uint8_t value);
+
+        int32_t headingToRideId_get() const;
+        void headingToRideId_set(int32_t value);
+
+        void removeAllItems();
+
+        std::vector<DukValue> inventory_get() const;
+
+        void giveItem(int32_t value);
+
+        void removeItem(int32_t value);
+
+        uint8_t voucherType_get() const;
+        void voucherType_set(uint8_t value);
+
+        uint8_t voucherId_get() const;
+        void voucherId_set(uint8_t value);
+
+        int32_t previousRide_get() const;
+
+        int32_t currentRide_get() const;
+
+        uint8_t currentRideStation_get() const;
+
+        int32_t interactionRide_get() const;
+
+        uint8_t peepState_get() const;
+
     };
 
 } // namespace OpenRCT2::Scripting

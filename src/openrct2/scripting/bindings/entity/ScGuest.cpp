@@ -10,8 +10,11 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "ScGuest.hpp"
-
 #    include "../../../peep/Guest.h"
+#    include "../../../peep/Peep.h"
+#    include "../../../ride/Ride.h"
+#    include "../../../ride/ShopItem.h"
+#    include "../../../management/Marketing.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -43,6 +46,18 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::isInPark_get, nullptr, "isInPark");
         dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
         dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
+        dukglue_register_property(ctx, &ScGuest::headingToRideId_get, &ScGuest::headingToRideId_set, "headingToRideId");
+        dukglue_register_property(ctx, &ScGuest::inventory_get, nullptr, "inventory");
+        dukglue_register_method(ctx, &ScGuest::giveItem, "giveItem");
+        dukglue_register_method(ctx, &ScGuest::removeItem, "removeItem");
+        dukglue_register_method(ctx, &ScGuest::removeAllItems, "removeAllItems");
+        dukglue_register_property(ctx, &ScGuest::voucherType_get, &ScGuest::voucherType_set, "voucherType");
+        dukglue_register_property(ctx, &ScGuest::voucherId_get, &ScGuest::voucherId_set, "voucherId");
+        dukglue_register_property(ctx, &ScGuest::previousRide_get, nullptr, "previousRide");
+        dukglue_register_property(ctx, &ScGuest::currentRide_get, nullptr, "currentRide");
+        dukglue_register_property(ctx, &ScGuest::currentRideStation_get, nullptr, "currentRideStation");
+        dukglue_register_property(ctx, &ScGuest::interactionRide_get, nullptr, "interactionRide");
+        dukglue_register_property(ctx, &ScGuest::peepState_get, nullptr, "peepState");
     }
 
     Guest* ScGuest::GetGuest() const
@@ -335,6 +350,157 @@ namespace OpenRCT2::Scripting
         {
             peep->GuestIsLostCountdown = value;
         }
+    }
+
+        int32_t ScGuest::headingToRideId_get() const
+    {
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            return EnumValue(peep->GuestHeadingToRideId);
+        }
+        return EnumValue(RIDE_ID_NULL);
+    }
+    void ScGuest::headingToRideId_set(int32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            peep->GuestHeadingToRideId = static_cast<ride_id_t>(value);
+        }
+    }
+
+    std::vector<DukValue> ScGuest::inventory_get() const
+    {
+        auto peep = GetGuest();
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        std::vector<DukValue> inventory;
+
+        if (peep != nullptr)
+        {
+            for (int i = 0; i < 53; i++)
+            {
+                if (peep->HasItem(static_cast<ShopItem>(i)))
+                    {
+                        inventory.push_back(ToDuk<int32_t>(ctx, i));
+                    };
+            };
+            
+        };
+        return inventory;
+    } 
+
+    void ScGuest::removeAllItems()
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            peep->RemoveAllItems();
+        }
+    }
+
+    void ScGuest::giveItem(int32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+            {
+                peep->GiveItem(static_cast<ShopItem>(value));
+            }
+    }
+
+    void ScGuest::removeItem(int32_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+            {
+                peep->RemoveItem(static_cast<ShopItem>(value));
+            }
+
+    }
+
+    uint8_t ScGuest::voucherType_get() const
+    {
+        auto peep = GetGuest();
+        if (peep != nullptr)
+            {
+                switch (peep->VoucherType)
+                    {
+                        case VOUCHER_TYPE_PARK_ENTRY_FREE:
+                            return 0;
+                        case VOUCHER_TYPE_RIDE_FREE:
+                            return 1;
+                        case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
+                            return 2;
+                        case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
+                            return 3;
+                    }
+             }
+        return 255;
+    }   
+    void ScGuest::voucherType_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetGuest();
+            if (peep != nullptr)
+                {
+                    peep->VoucherType = value;
+                }
+        }
+
+    uint8_t ScGuest::voucherId_get() const
+        {
+            auto peep = GetGuest();
+            return peep != nullptr && static_cast<int>(peep->VoucherShopItem) > 0 ? static_cast<uint8_t>(peep->VoucherShopItem) : static_cast<uint8_t>(255);
+        }
+    void ScGuest::voucherId_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto peep = GetGuest();
+            if (peep != nullptr)
+                {
+                    if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE)
+                        {
+                            peep->VoucherRideId = static_cast<ride_id_t>(value);
+                        }
+                    else
+                        {
+                            peep->VoucherShopItem = static_cast<ShopItem>(value);
+                        }
+                }
+        }
+
+    int32_t ScGuest::previousRide_get() const
+    {
+        auto peep = GetGuest();
+        return peep != nullptr ? EnumValue(peep->PreviousRide) : EnumValue(RIDE_ID_NULL);
+    }
+ 
+    int32_t ScGuest::currentRide_get() const
+    {
+        auto peep = GetGuest();
+        return peep != nullptr ? EnumValue(peep->CurrentRide) : EnumValue(RIDE_ID_NULL);
+    }
+
+    uint8_t ScGuest::currentRideStation_get() const
+    {
+        auto peep = GetGuest();
+        return peep != nullptr ? static_cast<uint8_t>(peep->CurrentRideStation) : 0;
+    }
+
+    int32_t ScGuest::interactionRide_get() const
+    {
+        auto peep = GetGuest();
+        return peep != nullptr ? EnumValue(peep->InteractionRideIndex) : EnumValue(RIDE_ID_NULL);
+    }
+
+    uint8_t ScGuest::peepState_get() const
+    {   
+        auto peep = GetGuest();
+        return peep != nullptr ? EnumValue(peep->State) : 0;
     }
 
 } // namespace OpenRCT2::Scripting
