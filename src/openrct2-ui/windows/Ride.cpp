@@ -547,8 +547,7 @@ static void WindowRideVehicleResize(rct_window* w);
 static void WindowRideVehicleMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void WindowRideVehicleDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void WindowRideVehicleUpdate(rct_window* w);
-static OpenRCT2String WindowRideVehicleTooltip(
-    rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
+static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
 static void WindowRideVehicleInvalidate(rct_window* w);
 static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
@@ -607,8 +606,7 @@ static void WindowRideGraphsMousedown(rct_window* w, rct_widgetindex widgetIndex
 static void WindowRideGraphsUpdate(rct_window* w);
 static void WindowRideGraphsScrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
 static void WindowRideGraphs15(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
-static OpenRCT2String WindowRideGraphsTooltip(
-    rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
+static OpenRCT2String WindowRideGraphsTooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
 static void WindowRideGraphsInvalidate(rct_window* w);
 static void WindowRideGraphsPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
@@ -2802,8 +2800,7 @@ static void WindowRideVehicleUpdate(rct_window* w)
     widget_invalidate(w, WIDX_TAB_2);
 }
 
-static OpenRCT2String WindowRideVehicleTooltip(
-    rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback)
+static OpenRCT2String WindowRideVehicleTooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback)
 {
     auto ride = get_ride(w->rideId);
     if (ride == nullptr)
@@ -4653,8 +4650,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (WindowRideHasTrackColour(ride, 1))
     {
         window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = WindowRideGetColourButtonImage(
-            trackColour.additional);
+        window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = WindowRideGetColourButtonImage(trackColour.additional);
     }
     else
     {

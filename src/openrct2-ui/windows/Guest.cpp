@@ -605,8 +605,7 @@ void WindowGuestOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_RENAME:
         {
             auto peepName = peep->GetName();
-            WindowTextInputRawOpen(
-                w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, {}, peepName.c_str(), 32);
+            WindowTextInputRawOpen(w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, {}, peepName.c_str(), 32);
             break;
         }
         case WIDX_TRACK:

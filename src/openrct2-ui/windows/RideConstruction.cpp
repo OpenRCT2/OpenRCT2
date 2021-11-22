@@ -859,9 +859,7 @@ static void WindowRideConstructionResize(rct_window* w)
         case TRACK_SLOPE_DOWN_60:
             disabledWidgets |= (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
             if (!IsTrackEnabled(TRACK_SLOPE_LONG)
-                && !(
-                    IsTrackEnabled(TRACK_SLOPE_STEEP_LONG)
-                    && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
+                && !(IsTrackEnabled(TRACK_SLOPE_STEEP_LONG) && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
             {
                 disabledWidgets |= (1ULL << WIDX_LEVEL);
             }
@@ -872,9 +870,7 @@ static void WindowRideConstructionResize(rct_window* w)
         case TRACK_SLOPE_UP_60:
             disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN);
             if (!IsTrackEnabled(TRACK_SLOPE_LONG)
-                && !(
-                    IsTrackEnabled(TRACK_SLOPE_STEEP_LONG)
-                    && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
+                && !(IsTrackEnabled(TRACK_SLOPE_STEEP_LONG) && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
             {
                 disabledWidgets |= (1ULL << WIDX_LEVEL);
             }

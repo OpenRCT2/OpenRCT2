@@ -629,8 +629,7 @@ static void WindowTitleCommandEditorUpdate(rct_window* w)
     }
 }
 
-static void WindowTitleCommandEditorToolDown(
-    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTitleCommandEditorToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     auto info = ViewportInteractionGetItemLeft(screenCoords);
 

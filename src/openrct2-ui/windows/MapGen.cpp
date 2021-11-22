@@ -520,8 +520,7 @@ static void WindowMapgenBaseMouseup(rct_window* w, rct_widgetindex widgetIndex)
             ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
-            WindowTextInputOpen(
-                w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
+            WindowTextInputOpen(w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
             break;
         case WIDX_BASE_HEIGHT:
             ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);

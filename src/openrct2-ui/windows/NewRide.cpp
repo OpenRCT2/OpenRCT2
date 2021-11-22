@@ -630,8 +630,7 @@ static void WindowNewRideDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
 {
     WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_TRANSPORT, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0);
     WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_GENTLE, SPR_TAB_RIDES_GENTLE_0);
-    WindowNewRideDrawTabImage(
-        dpi, w, WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0);
+    WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0);
     WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_THRILL, SPR_TAB_RIDES_THRILL_0);
     WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_WATER, SPR_TAB_RIDES_WATER_0);
     WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_SHOP, SPR_TAB_RIDES_SHOP_0);
@@ -785,8 +784,7 @@ static void WindowNewRidePaint(rct_window* w, rct_drawpixelinfo* dpi)
         RideSelection item;
         item = w->new_ride.HighlightedRide;
         if (item.Type != RIDE_TYPE_NULL || item.EntryIndex != OBJECT_ENTRY_INDEX_NULL)
-            WindowNewRidePaintRideInformation(
-                w, dpi, item, w->windowPos + ScreenCoordsXY{ 3, w->height - 64 }, w->width - 6);
+            WindowNewRidePaintRideInformation(w, dpi, item, w->windowPos + ScreenCoordsXY{ 3, w->height - 64 }, w->width - 6);
     }
     else
     {

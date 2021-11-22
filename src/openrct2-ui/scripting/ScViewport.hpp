@@ -233,8 +233,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScViewport::BottomGet, &ScViewport::BottomSet, "bottom");
             dukglue_register_property(ctx, &ScViewport::RotationGet, &ScViewport::RotationSet, "rotation");
             dukglue_register_property(ctx, &ScViewport::ZoomGet, &ScViewport::ZoomSet, "zoom");
-            dukglue_register_property(
-                ctx, &ScViewport::VisibilityFlagsGet, &ScViewport::VisibilityFlagsSet, "visibilityFlags");
+            dukglue_register_property(ctx, &ScViewport::VisibilityFlagsGet, &ScViewport::VisibilityFlagsSet, "visibilityFlags");
             dukglue_register_method(ctx, &ScViewport::GetCentrePosition, "getCentrePosition");
             dukglue_register_method(ctx, &ScViewport::MoveTo, "moveTo");
             dukglue_register_method(ctx, &ScViewport::ScrollTo, "scrollTo");

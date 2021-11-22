@@ -671,8 +671,7 @@ static void WindowEditorObjectSelectionScrollgetsize(rct_window* w, int32_t scro
  *
  *  rct2: 0x006AB0B6
  */
-static void WindowEditorObjectSelectionScrollMousedown(
-    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowEditorObjectSelectionScrollMousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     // Used for in-game object selection cheat to prevent crashing the game
     // when windows attempt to draw objects that don't exist any more
@@ -739,8 +738,7 @@ static void WindowEditorObjectSelectionScrollMousedown(
  *
  *  rct2: 0x006AB079
  */
-static void WindowEditorObjectSelectionScrollMouseover(
-    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowEditorObjectSelectionScrollMouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t selectedObject = GetObjectFromObjectSelection(GetSelectedObjectType(w), screenCoords.y);
     if (selectedObject != -1)

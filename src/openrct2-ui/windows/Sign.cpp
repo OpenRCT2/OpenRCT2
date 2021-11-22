@@ -65,8 +65,7 @@ private:
         if (banner != nullptr)
         {
             auto bannerText = banner->GetText();
-            WindowTextInputRawOpen(
-                this, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, {}, bannerText.c_str(), 32);
+            WindowTextInputRawOpen(this, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, {}, bannerText.c_str(), 32);
         }
     }
 

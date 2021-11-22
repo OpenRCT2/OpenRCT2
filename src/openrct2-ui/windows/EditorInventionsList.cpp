@@ -371,8 +371,7 @@ static void WindowEditorInventionsListScrollgetheight(rct_window* w, int32_t scr
  *
  *  rct2: 0x006852D4
  */
-static void WindowEditorInventionsListScrollmousedown(
-    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowEditorInventionsListScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     ResearchItem* researchItem;
 
@@ -392,8 +391,7 @@ static void WindowEditorInventionsListScrollmousedown(
  *
  *  rct2: 0x00685275
  */
-static void WindowEditorInventionsListScrollmouseover(
-    rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowEditorInventionsListScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     ResearchItem* researchItem;
 
@@ -760,8 +758,7 @@ static void WindowEditorInventionsListDragPaint(rct_window* w, rct_drawpixelinfo
     DrawTextBasic(dpi, screenCoords, drawString, ft, { COLOUR_BLACK | COLOUR_FLAG_OUTLINE });
 }
 
-static std::pair<rct_string_id, Formatter> WindowEditorInventionsListPrepareName(
-    const ResearchItem* researchItem, bool withGap)
+static std::pair<rct_string_id, Formatter> WindowEditorInventionsListPrepareName(const ResearchItem* researchItem, bool withGap)
 {
     rct_string_id drawString;
     rct_string_id stringId = researchItem->GetName();

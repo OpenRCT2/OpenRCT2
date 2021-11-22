@@ -246,8 +246,7 @@ namespace Graph
             return;
         }
 
-        const auto info = FinanceTooltipInfoFromMoney(
-            history, ChartMaxDataCount, modifier, offset, chartFrame, cursorPosition);
+        const auto info = FinanceTooltipInfoFromMoney(history, ChartMaxDataCount, modifier, offset, chartFrame, cursorPosition);
 
         if (info.money == MONEY64_UNDEFINED)
         {
