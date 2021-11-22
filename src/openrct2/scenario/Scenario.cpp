@@ -134,7 +134,7 @@ void scenario_begin()
     char savePath[MAX_PATH];
     platform_get_user_directory(savePath, "save", sizeof(savePath));
     safe_strcat_path(savePath, park.Name.c_str(), sizeof(savePath));
-    path_append_extension(savePath, ".sv6", sizeof(savePath));
+    path_append_extension(savePath, ".park", sizeof(savePath));
     gScenarioSavePath = savePath;
 
     gCurrentExpenditure = 0;
