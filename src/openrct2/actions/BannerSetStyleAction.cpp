@@ -16,7 +16,7 @@
 #include "../world/Banner.h"
 #include "GameAction.h"
 
-BannerSetStyleAction::BannerSetStyleAction(BannerSetStyleType type, uint8_t bannerIndex, uint8_t parameter)
+BannerSetStyleAction::BannerSetStyleAction(BannerSetStyleType type, BannerIndex bannerIndex, uint8_t parameter)
     : _type(type)
     , _bannerIndex(bannerIndex)
     , _parameter(parameter)

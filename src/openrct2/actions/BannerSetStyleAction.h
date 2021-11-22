@@ -30,7 +30,7 @@ private:
 
 public:
     BannerSetStyleAction() = default;
-    BannerSetStyleAction(BannerSetStyleType type, uint8_t bannerIndex, uint8_t parameter);
+    BannerSetStyleAction(BannerSetStyleType type, BannerIndex bannerIndex, uint8_t parameter);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
