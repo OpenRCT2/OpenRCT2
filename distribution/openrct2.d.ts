@@ -1068,7 +1068,7 @@ declare global {
         start: CoordsXYZ;
         length: number;
         entrance: CoordsXYZD;
-        exit: CoordsXYZD
+        exit: CoordsXYZD;
         queueTime: number;
         queueLength: number;
     }
