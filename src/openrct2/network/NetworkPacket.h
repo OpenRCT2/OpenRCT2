@@ -16,14 +16,15 @@
 #include <memory>
 #include <vector>
 
-#pragma pack(push, 1)
 struct PacketHeader
 {
     uint16_t Size = 0;
+    // Need padding here to ensure proper alignment for NetworkCommand Id later on, which is uint32_t and can be passed via
+    // const-ref to functions requiring proper alignment, e.g. ByteSwapBE
+    uint16_t Padding{};
     NetworkCommand Id = NetworkCommand::Invalid;
 };
-static_assert(sizeof(PacketHeader) == 6);
-#pragma pack(pop)
+static_assert(sizeof(PacketHeader) == 8);
 
 struct NetworkPacket final
 {
