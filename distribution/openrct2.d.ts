@@ -1068,7 +1068,9 @@ declare global {
         start: CoordsXYZ;
         length: number;
         entrance: CoordsXYZD;
-        exit: CoordsXYZD;
+        exit: CoordsXYZD
+        queueTime: number;
+        queueLength: number;
     }
 
     type EntityType =
@@ -1468,6 +1470,73 @@ declare global {
          * Countdown between 0 and 255 that keeps track of how long the guest has been looking for its current destination.
          */
         lostCountdown: number;
+
+        /**
+         * ID of the ride, shop, or facility a guest is specifically heading towards, if any.
+         */
+        headingToRideId: number;
+
+        /**
+         * ID of shop or ride that guest previously visited, but did not "use" (e.g. queue full, too intense, not hungry, etc.).
+         * This prevents guests from getting stuck in a loop of visiting a ride or shop they won't/can't use. Is cleared after a
+         * certain number of ticks.
+         */
+        readonly previousRide: number;
+
+        /**
+         * The ID of the current shop or ride, if any. Populated by a ride id when a guest is queueing for a ride,
+         * riding a ride, watching a ride, or visiting a shop. Not regularly cleared after written to; use interactionRide
+         * to specifically get ride a guest is queueing for or riding.
+         */
+        readonly currentRide: number;
+
+        /**
+         * The ID of the ride that a guest is currently interacting with, i.e. queueing for or riding.
+         */
+        readonly interactionRide: number;
+
+        /**
+         * The index of the station a guest is using/used for a ride. Written when guest enters queue, cleared when they are leaving the ride.
+         */
+
+        readonly currentRideStation: number;
+
+        /**
+         * Enum value of the current peepState (e.g. Falling, Walking, Queueing, etc)
+         */
+        readonly peepState: number;
+
+        /**
+        * Returns array of IDs representing items held by the guest.
+        */
+        inventory: number[];
+
+        /**
+         * Adds a given item to a guest's inventory.
+         * @param itemID The enum index of the item to give to the guest.
+         */
+        giveItem(itemID: number): void;
+
+        /**
+         * Removes a given item to a guest's inventory.
+         * @param itemID The enum index of the item to remove from the guest.
+         */
+        removeItem(itemID: number): void;
+
+        /**
+         * Removes all items from a guest's inventory.
+         */
+        removeAllItems(): void;
+
+        /**
+         * ID of voucher type; returns 255 if none held.
+         */
+        voucherType: number
+
+        /**
+         * ID of ride or item associated with voucher held by guest.
+         */
+        voucherId: number
     }
 
     /**
