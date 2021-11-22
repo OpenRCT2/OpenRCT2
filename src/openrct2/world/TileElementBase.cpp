@@ -50,6 +50,19 @@ void TileElementBase::SetLastForTile(bool on)
         Flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
 }
 
+bool TileElementBase::IsInvisible() const
+{
+    return (this->Flags & TILE_ELEMENT_FLAG_INVISIBLE) != 0;
+}
+
+void TileElementBase::SetInvisible(bool on)
+{
+    if (on)
+        Flags |= TILE_ELEMENT_FLAG_INVISIBLE;
+    else
+        Flags &= ~TILE_ELEMENT_FLAG_INVISIBLE;
+}
+
 bool TileElementBase::IsGhost() const
 {
     return (this->Flags & TILE_ELEMENT_FLAG_GHOST) != 0;

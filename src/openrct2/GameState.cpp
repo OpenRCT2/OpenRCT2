@@ -80,6 +80,9 @@ void GameState::InitAll(int32_t mapSize)
     context_broadcast_intent(&intent);
 
     load_palette();
+
+    CheatsReset();
+    ClearRestrictedScenery();
 }
 
 /**

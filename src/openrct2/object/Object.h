@@ -385,7 +385,6 @@ extern int32_t object_entry_group_counts[];
 extern int32_t object_entry_group_encoding[];
 
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
-bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry_type, ObjectEntryIndex* entryIndex);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
 const rct_object_entry* object_list_find(rct_object_entry* entry);

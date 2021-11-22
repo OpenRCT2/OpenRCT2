@@ -117,13 +117,20 @@ struct ResearchItem
         }
         else
         {
-            entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
-            auto* rideEntry = get_ride_entry(entryIndex);
-            baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
-                                                : oldResearchItem.baseRideType;
             type = Research::EntryType{ oldResearchItem.type };
+            entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
             flags = oldResearchItem.flags;
             category = static_cast<ResearchCategory>(oldResearchItem.category);
+            if (type == Research::EntryType::Ride)
+            {
+                auto* rideEntry = get_ride_entry(entryIndex);
+                baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
+                                                    : oldResearchItem.baseRideType;
+            }
+            else
+            {
+                baseRideType = 0;
+            }
         }
     }
 
@@ -169,7 +176,7 @@ extern uint8_t gResearchUncompletedCategories;
 extern bool gSilentResearch;
 
 void research_reset_items();
-void research_update_uncompleted_types();
+void ResearchUpdateUncompletedTypes();
 void research_update();
 void research_reset_current_item();
 void research_populate_list_random();
@@ -199,7 +206,7 @@ void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
 void set_every_ride_entry_not_invented();
 void research_remove_flags();
-void research_fix();
+void ResearchFix();
 
 void research_items_make_all_unresearched();
 void research_items_make_all_researched();

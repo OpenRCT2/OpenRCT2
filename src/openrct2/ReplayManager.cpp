@@ -13,6 +13,7 @@
 #include "Game.h"
 #include "GameStateSnapshots.h"
 #include "OpenRCT2.h"
+#include "ParkFile.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "actions/FootpathPlaceAction.h"
@@ -28,7 +29,7 @@
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "rct2/S6Exporter.h"
+#include "scenario/Scenario.h"
 #include "world/EntityTweener.h"
 #include "world/Park.h"
 #include "world/Sprite.h"
@@ -98,7 +99,7 @@ namespace OpenRCT2
 
     class ReplayManager final : public IReplayManager
     {
-        static constexpr uint16_t ReplayVersion = 4;
+        static constexpr uint16_t ReplayVersion = 10;
         static constexpr uint32_t ReplayMagic = 0x5243524F; // ORCR.
         static constexpr int ReplayCompressionLevel = 9;
         static constexpr int NormalRecordingChecksumTicks = 1;
@@ -246,10 +247,9 @@ namespace OpenRCT2
             auto& objManager = context->GetObjectManager();
             auto objects = objManager.GetPackableObjects();
 
-            auto s6exporter = std::make_unique<S6Exporter>();
-            s6exporter->ExportObjectsList = objects;
-            s6exporter->Export();
-            s6exporter->SaveGame(&replayData->parkData);
+            auto exporter = std::make_unique<ParkFileExporter>();
+            exporter->ExportObjectsList = objects;
+            exporter->Export(replayData->parkData);
 
             replayData->timeRecorded = std::chrono::seconds(std::time(nullptr)).count();
 
@@ -521,7 +521,7 @@ namespace OpenRCT2
 
                 auto context = GetContext();
                 auto& objManager = context->GetObjectManager();
-                auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
+                auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
 
                 auto loadResult = importer->LoadFromStream(&data.parkData, false);
                 objManager.LoadObjects(loadResult.RequiredObjects);
@@ -533,12 +533,6 @@ namespace OpenRCT2
                 // Load all map global variables.
                 DataSerialiser parkParamsDs(false, data.parkParams);
                 SerialiseParkParameters(parkParamsDs);
-
-                // New cheats might not be serialised, make sure they are using their defaults.
-                CheatsReset();
-
-                DataSerialiser cheatDataDs(false, data.cheatData);
-                SerialiseCheats(cheatDataDs);
 
                 game_load_init();
                 fix_invalid_vehicle_sprite_sizes();
@@ -609,9 +603,9 @@ namespace OpenRCT2
             MemoryStream stream;
 
             std::string fileName = file;
-            if (fileName.size() < 5 || fileName.substr(fileName.size() - 5) != ".sv6r")
+            if (fileName.size() < 5 || fileName.substr(fileName.size() - 5) != ".parkrep")
             {
-                fileName += ".sv6r";
+                fileName += ".parkrep";
             }
 
             std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);

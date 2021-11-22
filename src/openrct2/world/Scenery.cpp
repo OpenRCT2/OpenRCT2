@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../OpenRCT2.h"
 #include "../actions/BannerRemoveAction.h"
 #include "../actions/FootpathAdditionRemoveAction.h"
 #include "../actions/LargeSceneryRemoveAction.h"
@@ -291,6 +292,12 @@ int32_t wall_entry_get_door_sound(const WallSceneryEntry* wallEntry)
 
 bool IsSceneryAvailableToBuild(const ScenerySelection& item)
 {
+    // All scenery can be built when in the scenario editor
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        return true;
+    }
+
     if (!gCheatsIgnoreResearchStatus)
     {
         if (!scenery_is_invented(item))
@@ -299,7 +306,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         }
     }
 
-    if (!gCheatsSandboxMode)
+    if (!gCheatsSandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         if (IsSceneryItemRestricted(item))
         {
@@ -363,8 +370,9 @@ std::vector<ScenerySelection>& GetRestrictedScenery()
     return _restrictedScenery;
 }
 
-void RestrictAllMiscScenery()
+static std::vector<ScenerySelection> GetAllMiscScenery()
 {
+    std::vector<ScenerySelection> miscScenery;
     std::vector<ScenerySelection> nonMiscScenery;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
@@ -388,9 +396,66 @@ void RestrictAllMiscScenery()
             {
                 if (std::find(std::begin(nonMiscScenery), std::end(nonMiscScenery), sceneryItem) == std::end(nonMiscScenery))
                 {
-                    _restrictedScenery.push_back(sceneryItem);
+                    miscScenery.push_back(sceneryItem);
                 }
             }
         }
+    }
+    return miscScenery;
+}
+
+void RestrictAllMiscScenery()
+{
+    auto miscScenery = GetAllMiscScenery();
+    _restrictedScenery.insert(_restrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
+}
+
+void MarkAllUnrestrictedSceneryAsInvented()
+{
+    auto miscScenery = GetAllMiscScenery();
+    for (const auto& sceneryItem : miscScenery)
+    {
+        if (std::find(_restrictedScenery.begin(), _restrictedScenery.end(), sceneryItem) == _restrictedScenery.end())
+        {
+            scenery_set_invented(sceneryItem);
+        }
+    }
+}
+
+ObjectType GetObjectTypeFromSceneryType(uint8_t type)
+{
+    switch (type)
+    {
+        case SCENERY_TYPE_SMALL:
+            return ObjectType::SmallScenery;
+        case SCENERY_TYPE_PATH_ITEM:
+            return ObjectType::PathBits;
+        case SCENERY_TYPE_WALL:
+            return ObjectType::Walls;
+        case SCENERY_TYPE_LARGE:
+            return ObjectType::LargeScenery;
+        case SCENERY_TYPE_BANNER:
+            return ObjectType::Banners;
+        default:
+            throw std::runtime_error("Invalid scenery type");
+    }
+}
+
+uint8_t GetSceneryTypeFromObjectType(ObjectType type)
+{
+    switch (type)
+    {
+        case ObjectType::SmallScenery:
+            return SCENERY_TYPE_SMALL;
+        case ObjectType::PathBits:
+            return SCENERY_TYPE_PATH_ITEM;
+        case ObjectType::Walls:
+            return SCENERY_TYPE_WALL;
+        case ObjectType::LargeScenery:
+            return SCENERY_TYPE_LARGE;
+        case ObjectType::Banners:
+            return SCENERY_TYPE_BANNER;
+        default:
+            throw std::runtime_error("Invalid object type");
     }
 }

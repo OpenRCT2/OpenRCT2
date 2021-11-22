@@ -217,6 +217,23 @@ void fix_park_entrance_locations(void)
         gParkEntrances.end());
 }
 
+void UpdateParkEntranceLocations()
+{
+    gParkEntrances.clear();
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        auto entranceElement = it.element->AsEntrance();
+        if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
+            && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
+        {
+            auto entrance = TileCoordsXYZD(it.x, it.y, it.element->base_height, it.element->GetDirection()).ToCoordsXYZD();
+            gParkEntrances.push_back(entrance);
+        }
+    }
+}
+
 uint8_t EntranceElement::GetStationIndex() const
 {
     return StationIndex;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include "Object.h"
+#include "common.h"
+#include "core/Identifier.hpp"
 
-extern const std::string_view MinimumRequiredObjects[2];
-extern const std::string_view DefaultSelectedObjects[103];
-extern const std::string_view DesignerSelectedObjects[38];
+#include <limits>
+
+using ParkEntranceIndex = TIdentifier<uint8_t, std::numeric_limits<uint8_t>::max(), struct ParkEntranceIndexTag>;

@@ -166,7 +166,7 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
     }
 
     auto ride = get_ride(currentRide);
-    if (ride != nullptr && ride->status != RideStatus::Closed)
+    if (ride != nullptr && ride->status != RideStatus::Closed && !(ride->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
         state.State = RIDE_RATINGS_STATE_INITIALISE;
     }

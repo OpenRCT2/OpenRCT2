@@ -1026,8 +1026,14 @@ void Ride::Update()
 
     // Various things include news messages
     if (lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
-        if (((gCurrentTicks >> 1) & 255) == static_cast<uint32_t>(id))
+    {
+        // Breakdown updates originally were performed when (id == (gCurrentTicks / 2) & 0xFF)
+        // with the increased MAX_RIDES the update is tied to the first byte of the id this allows
+        // for identical balance with vanilla.
+        const auto updatingRideByte = static_cast<uint8_t>((gCurrentTicks / 2) & 0xFF);
+        if (updatingRideByte == static_cast<uint8_t>(id))
             ride_breakdown_status_update(this);
+    }
 
     ride_inspection_update(this);
 
@@ -1274,6 +1280,7 @@ static void ride_breakdown_update(Ride* ride)
 {
     if (gCurrentTicks & 255)
         return;
+
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         return;
 
@@ -5413,12 +5420,7 @@ bool ride_has_adjacent_station(Ride* ride)
 bool ride_has_station_shelter(Ride* ride)
 {
     auto stationObj = ride_get_station_object(ride);
-    if (network_get_mode() != NETWORK_MODE_NONE)
-    {
-        // The server might run in headless mode so no images will be loaded, only check for stations.
-        return stationObj != nullptr;
-    }
-    return stationObj != nullptr && stationObj->BaseImageId != 0;
+    return stationObj != nullptr && (stationObj->Flags & STATION_OBJECT_FLAGS::HAS_SHELTER);
 }
 
 bool ride_has_ratings(const Ride* ride)
@@ -5788,4 +5790,38 @@ void Ride::UpdateRideTypeForAllPieces()
             } while (!(tileElement++)->IsLastForTile());
         }
     }
+}
+
+std::vector<ride_id_t> GetTracklessRides()
+{
+    // Iterate map and build list of seen ride IDs
+    std::vector<bool> seen;
+    seen.resize(256);
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        auto trackEl = it.element->AsTrack();
+        if (trackEl != nullptr && !trackEl->IsGhost())
+        {
+            auto rideId = static_cast<size_t>(trackEl->GetRideIndex());
+            if (rideId >= seen.size())
+            {
+                seen.resize(rideId + 1);
+            }
+            seen[rideId] = true;
+        }
+    }
+
+    // Get all rides that did not get seen during map iteration
+    const auto& rideManager = GetRideManager();
+    std::vector<ride_id_t> result;
+    for (const auto& ride : rideManager)
+    {
+        if (seen.size() <= static_cast<size_t>(ride.id) || !seen[static_cast<size_t>(ride.id)])
+        {
+            result.push_back(ride.id);
+        }
+    }
+    return result;
 }

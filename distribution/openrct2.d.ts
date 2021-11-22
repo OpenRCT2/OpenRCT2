@@ -362,7 +362,9 @@ declare global {
         "terrain_surface" |
         "terrain_edge" |
         "station" |
-        "music";
+        "music" |
+        "footpath_surface" |
+        "footpath_railings";
 
     type HookType =
         "interval.tick" | "interval.day" |
@@ -623,6 +625,8 @@ declare global {
         type: "footpath";
 
         object: number;
+        surfaceObject: number;
+        railingsObject: number;
 
         edges: number;
         corners: number;
@@ -693,6 +697,7 @@ declare global {
         station: number;
         sequence: number;
         footpathObject: number;
+        footpathSurfaceObject: number;
     }
 
     interface LargeSceneryElement extends BaseTileElement {

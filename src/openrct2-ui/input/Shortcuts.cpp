@@ -533,9 +533,6 @@ static void ShortcutIncreaseElementHeight()
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE;
                 break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_CORRUPT:
-                action = WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE;
-                break;
             case TileInspectorPage::Default:
                 break;
         }
@@ -576,9 +573,6 @@ static void ShortcutDecreaseElementHeight()
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE;
-                break;
-            case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_CORRUPT:
-                action = WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE;
                 break;
             case TileInspectorPage::Default:
                 break;
@@ -857,7 +851,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::WindowRideConstructionBuild, STR_SHORTCUT_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", []() { ShortcutConstructionBuildCurrent(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", []() { ShortcutConstructionDemolishCurrent(); });
 
-    RegisterShortcut(ShortcutId::WindowTileInspectorInsertCorrupt, STR_SHORTCUT_INSERT_CORRPUT_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT); });
+    RegisterShortcut(ShortcutId::WindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_TOGGLE_INVISIBILITY); });
     RegisterShortcut(ShortcutId::WindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_COPY); });
     RegisterShortcut(ShortcutId::WindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE); });
     RegisterShortcut(ShortcutId::WindowTileInspectorRemove, STR_SHORTCUT_REMOVE_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE); });

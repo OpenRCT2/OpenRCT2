@@ -111,13 +111,6 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         }
     }
 
-    auto numStaff = GetEntityListCount(EntityType::Staff);
-    if (numStaff == STAFF_MAX_COUNT)
-    {
-        // Too many staff members exist already.
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_STAFF_IN_GAME);
-    }
-
     Staff* newPeep = CreateEntity<Staff>();
     if (newPeep == nullptr)
     {

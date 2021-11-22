@@ -141,9 +141,11 @@ namespace OpenRCT2
         virtual bool Initialise() abstract;
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
-        virtual bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail = false) abstract;
+        virtual bool LoadParkFromFile(
+            const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
         virtual bool LoadParkFromStream(
-            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false) abstract;
+            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
+            bool asScenario = false) abstract;
         virtual void WriteLine(const std::string& s) abstract;
         virtual void WriteErrorLine(const std::string& s) abstract;
         virtual void Finish() abstract;

@@ -16,6 +16,7 @@
 #include <string>
 #include <string_view>
 #include <tuple>
+#include <vector>
 
 struct ILanguagePack;
 struct IObjectManager;
@@ -36,6 +37,7 @@ namespace OpenRCT2::Localisation
         std::unique_ptr<ILanguagePack> _languageFallback;
         std::unique_ptr<ILanguagePack> _languageCurrent;
         std::stack<rct_string_id> _availableObjectStringIds;
+        std::vector<std::string> _objectStrings;
 
     public:
         int32_t GetCurrentLanguage() const

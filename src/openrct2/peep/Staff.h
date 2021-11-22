@@ -15,7 +15,6 @@
 
 class DataSerialiser;
 
-#define STAFF_MAX_COUNT 200
 // The number of elements in the gStaffPatrolAreas array per staff member. Every bit in the array represents a 4x4 square.
 // Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
 constexpr size_t STAFF_PATROL_AREA_BLOCKS_PER_LINE = MAXIMUM_MAP_SIZE_TECHNICAL / 4;
