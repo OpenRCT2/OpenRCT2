@@ -1695,7 +1695,7 @@ static void WindowRideRename(rct_window* w)
     if (ride != nullptr)
     {
         auto rideName = ride->GetName();
-        window_text_input_raw_open(
+        WindowTextInputRawOpen(
             w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, {}, rideName.c_str(), 32);
     }
 }
@@ -6468,7 +6468,7 @@ static void WindowRideIncomeMouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (ride != nullptr)
             {
                 money_to_string(static_cast<money32>(ride->price[0]), _moneyInputText, MONEY_STRING_MAXLENGTH, true);
-                window_text_input_raw_open(
+                WindowTextInputRawOpen(
                     w, WIDX_PRIMARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText,
                     MONEY_STRING_MAXLENGTH);
             }
@@ -6482,7 +6482,7 @@ static void WindowRideIncomeMouseup(rct_window* w, rct_widgetindex widgetIndex)
             money32 price32 = static_cast<money32>(WindowRideIncomeGetSecondaryPrice(w));
 
             money_to_string(price32, _moneyInputText, MONEY_STRING_MAXLENGTH, true);
-            window_text_input_raw_open(
+            WindowTextInputRawOpen(
                 w, WIDX_SECONDARY_PRICE, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneyInputText, MONEY_STRING_MAXLENGTH);
         }
         break;

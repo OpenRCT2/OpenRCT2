@@ -371,15 +371,15 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, rct_widgetind
         case WIDX_PARK_NAME:
         {
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-            window_text_input_raw_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), 32);
+            WindowTextInputRawOpen(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), 32);
             break;
         }
         case WIDX_SCENARIO_NAME:
-            window_text_input_raw_open(
+            WindowTextInputRawOpen(
                 w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, {}, gScenarioName.c_str(), 64);
             break;
         case WIDX_DETAILS:
-            window_text_input_raw_open(
+            WindowTextInputRawOpen(
                 w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, {}, gScenarioDetails.c_str(), 256);
             break;
     }

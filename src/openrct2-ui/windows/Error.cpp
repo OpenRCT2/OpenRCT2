@@ -51,7 +51,7 @@ rct_window* WindowErrorOpen(rct_string_id title, rct_string_id message, const Fo
 {
     auto titlez = format_string(title, args.Data());
     auto messagez = format_string(message, args.Data());
-    return window_error_open(titlez, messagez);
+    return WindowErrorOpen(titlez, messagez);
 }
 
 rct_window* WindowErrorOpen(std::string_view title, std::string_view message)

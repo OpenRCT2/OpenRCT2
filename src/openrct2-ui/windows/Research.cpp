@@ -560,7 +560,7 @@ static void WindowResearchFundingPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
     WindowResearchDrawTabImages(dpi, w);
 
-    window_research_funding_page_paint(w, dpi, WIDX_RESEARCH_FUNDING);
+    WindowResearchFundingPagePaint(w, dpi, WIDX_RESEARCH_FUNDING);
 }
 
 void WindowResearchFundingPagePaint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex)

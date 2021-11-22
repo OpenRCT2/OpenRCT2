@@ -163,7 +163,7 @@ rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titl
     if (window != nullptr)
         return window;
 
-    return window_scenarioselect_open(
+    return WindowScenarioselectOpen(
         [callback](std::string_view scenario) { callback(std::string(scenario).c_str()); }, titleEditor, titleEditor);
 }
 

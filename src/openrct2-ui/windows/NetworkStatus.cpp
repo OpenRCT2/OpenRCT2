@@ -95,7 +95,7 @@ rct_window* WindowNetworkStatusOpenPassword()
     if (window == nullptr)
         return nullptr;
 
-    window_text_input_raw_open(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, _password, 32);
+    WindowTextInputRawOpen(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, _password, 32);
 
     return window;
 }

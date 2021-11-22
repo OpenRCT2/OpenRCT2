@@ -1936,7 +1936,7 @@ private:
                 this->Invalidate();
                 break;
             case WIDX_TITLE_SEQUENCE_BUTTON:
-                window_title_editor_open(0);
+                WindowTitleEditorOpen(0);
                 break;
             case WIDX_SCENARIO_UNLOCKING:
                 gConfigGeneral.scenario_unlocking_enabled ^= 1;

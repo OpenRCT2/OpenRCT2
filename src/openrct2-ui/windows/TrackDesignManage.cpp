@@ -137,7 +137,7 @@ static void WindowTrackManageMouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_RENAME:
-            window_text_input_raw_open(
+            WindowTextInputRawOpen(
                 w, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, {},
                 _trackDesignFileReference->name, 127);
             break;

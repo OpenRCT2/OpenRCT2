@@ -133,7 +133,7 @@ static void CustomCurrencyWindowMousedown(rct_window* w, rct_widgetindex widgetI
             break;
 
         case WIDX_SYMBOL_TEXT:
-            window_text_input_raw_open(
+            WindowTextInputRawOpen(
                 w, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC, {},
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, CURRENCY_SYMBOL_MAX_SIZE);
             break;

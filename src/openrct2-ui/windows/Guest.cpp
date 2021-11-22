@@ -380,7 +380,7 @@ rct_window* WindowGuestOpen(Peep* peep)
     }
     if (peep->Is<Staff>())
     {
-        return window_staff_open(peep);
+        return WindowStaffOpen(peep);
     }
 
     rct_window* window;
@@ -605,7 +605,7 @@ void WindowGuestOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_RENAME:
         {
             auto peepName = peep->GetName();
-            window_text_input_raw_open(
+            WindowTextInputRawOpen(
                 w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, {}, peepName.c_str(), 32);
             break;
         }

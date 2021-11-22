@@ -302,7 +302,7 @@ public:
                 }
                 else
                 {
-                    window_text_input_raw_open(
+                    WindowTextInputRawOpen(
                         this, WIDX_FILTER_BY_NAME, STR_GUESTS_FILTER_BY_NAME, STR_GUESTS_ENTER_NAME_TO_SEARCH, {},
                         _filterName.c_str(), 32);
                 }

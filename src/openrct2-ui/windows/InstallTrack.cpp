@@ -444,7 +444,7 @@ static void WindowInstallTrackDesign(rct_window* w)
     {
         log_info("%s already exists, prompting user for a different track design name", destPath);
         context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
-        window_text_input_raw_open(
+        WindowTextInputRawOpen(
             w, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN, STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME, {},
             _trackName.c_str(), 255);
     }
