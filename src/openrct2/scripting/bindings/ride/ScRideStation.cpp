@@ -32,6 +32,8 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRideStation::length_get, &ScRideStation::length_set, "length");
         dukglue_register_property(ctx, &ScRideStation::entrance_get, &ScRideStation::entrance_set, "entrance");
         dukglue_register_property(ctx, &ScRideStation::exit_get, &ScRideStation::exit_set, "exit");
+        dukglue_register_property(ctx, &ScRideStation::queueTime_get, nullptr, "queueTime");
+        dukglue_register_property(ctx, &ScRideStation::queueLength_get, nullptr, "queueLength");
     }
 
     DukValue ScRideStation::start_get() const
@@ -128,6 +130,27 @@ namespace OpenRCT2::Scripting
         }
         return nullptr;
     }
+
+    uint8_t ScRideStation::queueTime_get() const
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            return station->QueueTime;
+        }
+        return 0;
+    }
+
+        uint16_t ScRideStation::queueLength_get() const
+    {
+        auto station = GetRideStation();
+        if (station != nullptr)
+        {
+            return station->QueueLength;
+        }
+        return 0;
+    }
+
 
 } // namespace OpenRCT2::Scripting
 

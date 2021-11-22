@@ -47,6 +47,10 @@ namespace OpenRCT2::Scripting
         void exit_set(const DukValue& value);
 
         RideStation* GetRideStation() const;
+
+        uint8_t queueTime_get() const;
+
+        uint16_t queueLength_get() const;
     };
 
 } // namespace OpenRCT2::Scripting
