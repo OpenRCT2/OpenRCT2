@@ -40,9 +40,9 @@ GameActions::Result BalloonPressAction::Query() const
     if (balloon == nullptr)
     {
         log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
 GameActions::Result BalloonPressAction::Execute() const
@@ -51,10 +51,10 @@ GameActions::Result BalloonPressAction::Execute() const
     if (balloon == nullptr)
     {
         log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     balloon->Press();
 
-    return MakeResult();
+    return GameActions::Result();
 }

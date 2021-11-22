@@ -52,18 +52,20 @@ GameActions::Result FootpathRemoveAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(
+            GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(
+            GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     TileElement* footpathElement = GetFootpathElement();
     if (footpathElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
     }
 
     res.Cost = GetRefundPrice(footpathElement);
@@ -111,7 +113,7 @@ GameActions::Result FootpathRemoveAction::Execute() const
     }
     else
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
     }
 
     res.Cost += GetRefundPrice(footpathElement);
@@ -160,7 +162,7 @@ money32 FootpathRemoveAction::GetRefundPrice(TileElement* footpathElement) const
  */
 GameActions::Result FootpathRemoveAction::RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const
 {
-    auto result = MakeResult();
+    auto result = GameActions::Result();
     while (!(tileElement++)->IsLastForTile())
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)

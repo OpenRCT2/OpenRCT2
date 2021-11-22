@@ -46,7 +46,7 @@ GameActions::Result RideSetSettingAction::Query() const
     if (ride == nullptr)
     {
         log_warning("Invalid ride: #%d.", EnumValue(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
     }
 
     switch (_setting)
@@ -54,19 +54,20 @@ GameActions::Result RideSetSettingAction::Query() const
         case RideSetSetting::Mode:
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
             }
 
             if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
             {
-                return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
+                return GameActions::Result(
+                    GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
             }
 
             if (!ride_is_mode_valid(ride) && !gCheatsShowAllOperatingModes)
             {
                 log_warning("Invalid ride mode: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::Departure:
@@ -75,21 +76,21 @@ GameActions::Result RideSetSettingAction::Query() const
             if (_value > 250)
             {
                 log_warning("Invalid minimum waiting time: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::MaxWaitingTime:
             if (_value > 250)
             {
                 log_warning("Invalid maximum waiting time: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::Operation:
             if (!ride_is_valid_operation_option(ride))
             {
                 log_warning("Invalid operation option value: %u", _value);
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, GetOperationErrorMessage(ride));
             }
             break;
@@ -97,7 +98,7 @@ GameActions::Result RideSetSettingAction::Query() const
             if (_value > RIDE_INSPECTION_NEVER)
             {
                 log_warning("Invalid inspection interval: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::Music:
@@ -109,7 +110,7 @@ GameActions::Result RideSetSettingAction::Query() const
             if (musicObj == nullptr)
             {
                 log_warning("Invalid music style: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         }
@@ -117,13 +118,13 @@ GameActions::Result RideSetSettingAction::Query() const
             if (!ride_is_valid_lift_hill_speed(ride))
             {
                 log_warning("Invalid lift hill speed: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::NumCircuits:
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT && _value > 1)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE,
                     STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL);
             }
@@ -131,19 +132,19 @@ GameActions::Result RideSetSettingAction::Query() const
             if (!ride_is_valid_num_circuits())
             {
                 log_warning("Invalid number of circuits: %u", _value);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         case RideSetSetting::RideType:
             if (!gCheatsAllowArbitraryRideTypeChanges)
             {
                 log_warning("Arbitrary ride type changes not allowed.");
-                return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+                return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
             }
             break;
         default:
             log_warning("Invalid RideSetSetting: %u", static_cast<uint8_t>(_setting));
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
     }
 
     return GameActions::Result();
@@ -155,7 +156,7 @@ GameActions::Result RideSetSettingAction::Execute() const
     if (ride == nullptr)
     {
         log_warning("Invalid ride: #%d.", EnumValue(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
     }
 
     switch (_setting)

@@ -332,7 +332,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
 
     int32_t centreZ = tile_element_height(_coords);
 
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.ErrorTitle = _ErrorTitles[_isLowering ? 0 : 1];
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords.x, _coords.y, centreZ };
@@ -608,7 +608,8 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
         }
         default:
             log_error("Invalid map selection %u", _selectionType);
-            return MakeResult(GameActions::Status::InvalidParameters, std::get<rct_string_id>(res.ErrorTitle), STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, std::get<rct_string_id>(res.ErrorTitle), STR_NONE);
     } // switch selectionType
 
     // Raise / lower the land tool selection area

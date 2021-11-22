@@ -244,12 +244,6 @@ public:
         : GameAction(TYPE)
     {
     }
-
-protected:
-    template<class... TTypes> static GameActions::Result MakeResult(TTypes&&... args)
-    {
-        return GameActions::Result(std::forward<TTypes>(args)...);
-    }
 };
 
 namespace GameActions

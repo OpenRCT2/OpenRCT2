@@ -80,17 +80,17 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST, STR_NONE);
     }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, STR_NONE);
     }
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
     }
 
     auto* entranceElement = FindEntranceElement(
@@ -101,10 +101,10 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
         log_warning(
             "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, EnumValue(_rideIndex),
             _stationNum);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    return MakeResult();
+    return GameActions::Result();
 }
 
 GameActions::Result RideEntranceExitRemoveAction::Execute() const
@@ -132,10 +132,10 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
         log_warning(
             "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, EnumValue(_rideIndex),
             _stationNum);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = tile_element_height(res.Position);

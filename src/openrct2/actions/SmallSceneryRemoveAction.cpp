@@ -58,13 +58,14 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     res.Cost = entry->removal_price * 10;
@@ -98,7 +99,8 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     TileElement* tileElement = FindSceneryElement();
     if (tileElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     return res;
@@ -111,7 +113,8 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
     auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     res.Cost = entry->removal_price * 10;
@@ -121,7 +124,8 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
     TileElement* tileElement = FindSceneryElement();
     if (tileElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     res.Position.z = tile_element_height(res.Position);

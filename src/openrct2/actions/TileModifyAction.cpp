@@ -49,9 +49,9 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
 {
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
     }
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     switch (_setting)
     {
         case TileModifyType::AnyRemove:
@@ -212,7 +212,7 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
         }
         default:
             log_error("invalid instruction");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     res.Position.x = _loc.x;

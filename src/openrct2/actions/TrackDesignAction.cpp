@@ -49,7 +49,7 @@ void TrackDesignAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result TrackDesignAction::Query() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
@@ -58,7 +58,8 @@ GameActions::Result TrackDesignAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
@@ -79,7 +80,7 @@ GameActions::Result TrackDesignAction::Query() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
     const auto rideIndex = r.GetData<ride_id_t>();
@@ -87,7 +88,7 @@ GameActions::Result TrackDesignAction::Query() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     bool placeScenery = true;
@@ -127,7 +128,7 @@ GameActions::Result TrackDesignAction::Query() const
 
 GameActions::Result TrackDesignAction::Execute() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
@@ -151,7 +152,7 @@ GameActions::Result TrackDesignAction::Execute() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
     const auto rideIndex = r.GetData<ride_id_t>();
@@ -159,7 +160,7 @@ GameActions::Result TrackDesignAction::Execute() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     // Query first, this is required again to determine if scenery is available.

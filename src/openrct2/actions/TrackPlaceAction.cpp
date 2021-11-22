@@ -69,22 +69,25 @@ GameActions::Result TrackPlaceAction::Query() const
     if (ride == nullptr)
     {
         log_warning("Invalid ride for track placement, rideIndex = %d", EnumValue(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
         log_warning("Invalid ride subtype for track placement, rideIndex = %d", EnumValue(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     if (!direction_valid(_origin.direction))
     {
         log_warning("Invalid direction for track placement, direction = %d", _origin.direction);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Position.x = _origin.x + 16;
     res.Position.y = _origin.y + 16;
@@ -96,7 +99,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
     {
-        return MakeResult(
+        return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NOT_ALLOWED_TO_MODIFY_STATION);
     }
 
@@ -104,7 +107,7 @@ GameActions::Result TrackPlaceAction::Query() const
     {
         if (game_is_paused() && !gCheatsBuildInPauseMode)
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                 STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
         }
@@ -116,7 +119,7 @@ GameActions::Result TrackPlaceAction::Query() const
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE);
             }
@@ -125,7 +128,7 @@ GameActions::Result TrackPlaceAction::Query() const
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE);
             }
@@ -137,7 +140,7 @@ GameActions::Result TrackPlaceAction::Query() const
             const auto& ted = GetTrackElementDescriptor(_trackType);
             if (ted.Flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_TOO_STEEP_FOR_LIFT_HILL);
             }
@@ -156,7 +159,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
         if (!LocationValid(tileCoords) || (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode))
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
         numElements++;
@@ -165,7 +168,7 @@ GameActions::Result TrackPlaceAction::Query() const
     if (!CheckMapCapacity(numElements))
     {
         log_warning("Not enough free map elements to place track.");
-        return MakeResult(
+        return GameActions::Result(
             GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
             STR_TILE_ELEMENT_LIMIT_REACHED);
     }
@@ -176,7 +179,7 @@ GameActions::Result TrackPlaceAction::Query() const
         {
             if ((_origin.z & 0x0F) != 8)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_CONSTRUCTION_ERR_UNKNOWN);
             }
@@ -185,7 +188,7 @@ GameActions::Result TrackPlaceAction::Query() const
         {
             if ((_origin.z & 0x0F) != 0)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_CONSTRUCTION_ERR_UNKNOWN);
             }
@@ -203,7 +206,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
         if (mapLoc.z < 16)
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
         }
 
@@ -224,7 +227,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
         if (clearanceZ > MAX_TRACK_HEIGHT)
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
 
@@ -255,7 +258,7 @@ GameActions::Result TrackPlaceAction::Query() const
         uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                 STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
         }
@@ -265,7 +268,7 @@ GameActions::Result TrackPlaceAction::Query() const
         {
             if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             }
@@ -275,7 +278,7 @@ GameActions::Result TrackPlaceAction::Query() const
         { // No element has this flag
             if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_CAN_ONLY_BUILD_THIS_UNDERWATER);
             }
@@ -283,7 +286,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
         if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !gCheatsDisableClearanceChecks)
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                 STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
@@ -293,20 +296,21 @@ GameActions::Result TrackPlaceAction::Query() const
             auto surfaceElement = map_get_surface_element_at(mapLoc);
             if (surfaceElement == nullptr)
             {
-                return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+                return GameActions::Result(
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
             }
 
             auto waterHeight = surfaceElement->GetWaterHeight();
             if (waterHeight == 0)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_CAN_ONLY_BUILD_THIS_ON_WATER);
             }
 
             if (waterHeight != baseZ)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_CAN_ONLY_BUILD_THIS_ON_WATER);
             }
@@ -317,7 +321,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 if (slope == TILE_ELEMENT_SLOPE_W_CORNER_DN || slope == TILE_ELEMENT_SLOPE_S_CORNER_DN
                     || slope == TILE_ELEMENT_SLOPE_E_CORNER_DN || slope == TILE_ELEMENT_SLOPE_N_CORNER_DN)
                 {
-                    return MakeResult(
+                    return GameActions::Result(
                         GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                         STR_CAN_ONLY_BUILD_THIS_ON_WATER);
                 }
@@ -329,7 +333,7 @@ GameActions::Result TrackPlaceAction::Query() const
         {
             if (!track_add_station_element({ mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign))
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText);
             }
         }
@@ -338,7 +342,7 @@ GameActions::Result TrackPlaceAction::Query() const
         auto surfaceElement = map_get_surface_element_at(mapLoc);
         if (surfaceElement == nullptr)
         {
-            return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
         }
 
         if (!gCheatsDisableSupportLimits)
@@ -361,7 +365,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 ride_height /= COORDS_Z_PER_TINY_Z;
                 if (ride_height > maxHeight && !_trackDesignDrawingPreview)
                 {
-                    return MakeResult(
+                    return GameActions::Result(
                         GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                         STR_TOO_HIGH_FOR_SUPPORTS);
                 }
@@ -393,17 +397,19 @@ GameActions::Result TrackPlaceAction::Execute() const
     if (ride == nullptr)
     {
         log_warning("Invalid ride for track placement, rideIndex = %d", EnumValue(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
         log_warning("Invalid ride subtype for track placement, rideIndex = %d", EnumValue(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Position.x = _origin.x + 16;
     res.Position.y = _origin.y + 16;
@@ -481,7 +487,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                 STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
         }
@@ -492,7 +498,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         auto surfaceElement = map_get_surface_element_at(mapLoc);
         if (surfaceElement == nullptr)
         {
-            return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
         }
 
         int32_t supportHeight = baseZ - surfaceElement->GetBaseZ();
@@ -568,7 +574,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         if (trackElement == nullptr)
         {
             log_warning("Cannot create track element for ride = %d", EnumValue(_rideIndex));
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                 STR_TILE_ELEMENT_LIMIT_REACHED);
         }

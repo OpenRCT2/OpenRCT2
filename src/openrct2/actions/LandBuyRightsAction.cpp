@@ -60,7 +60,7 @@ GameActions::Result LandBuyRightsAction::Execute() const
 
 GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
 
     MapRange normRange = _range.Normalise();
     // Keep big coordinates within map boundaries
@@ -104,17 +104,17 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
     if (_setting >= LandBuyRightSetting::Count)
     {
         log_warning("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
-        return MakeResult(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
     }
 
     SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_NONE);
     }
 
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     switch (_setting)
     {
         case LandBuyRightSetting::BuyLand: // 0
@@ -126,7 +126,8 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
                 || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
             {
-                return MakeResult(GameActions::Status::NotOwned, _ErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
+                return GameActions::Result(
+                    GameActions::Status::NotOwned, _ErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
             }
             if (isExecuting)
             {
@@ -145,7 +146,7 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
                 || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::NotOwned, _ErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
             }
 
@@ -160,6 +161,6 @@ GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const Coor
 
         default:
             log_warning("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
-            return MakeResult(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
     }
 }

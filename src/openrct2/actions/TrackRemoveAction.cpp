@@ -50,7 +50,7 @@ void TrackRemoveAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result TrackRemoveAction::Query() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Position.x = _origin.x + 16;
     res.Position.y = _origin.y + 16;
     res.Position.z = _origin.z;
@@ -111,12 +111,12 @@ GameActions::Result TrackRemoveAction::Query() const
         log_warning(
             "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
             _origin.direction, _sequence);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
     }
 
     if (tileElement->AsTrack()->IsIndestructible())
     {
-        return MakeResult(
+        return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS,
             STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
     }
@@ -128,13 +128,13 @@ GameActions::Result TrackRemoveAction::Query() const
     if (ride == nullptr)
     {
         log_warning("Ride not found. ride index = %d.", rideIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
     }
 
     if (ride->type >= RIDE_TYPE_COUNT)
     {
         log_warning("Ride type not found. ride type = %d.", ride->type);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
     const rct_preview_track* trackBlock = ted.Block;
@@ -161,7 +161,7 @@ GameActions::Result TrackRemoveAction::Query() const
 
         if (!LocationValid(mapLoc))
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::NotOwned, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
         map_invalidate_tile_full(mapLoc);
@@ -200,7 +200,7 @@ GameActions::Result TrackRemoveAction::Query() const
             log_warning(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
                 _origin.direction, trackBlock->index);
-            return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
         }
 
         int32_t entranceDirections = ted.SequenceProperties[0];
@@ -208,7 +208,8 @@ GameActions::Result TrackRemoveAction::Query() const
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
             {
-                return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
+                return GameActions::Result(
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
             }
         }
 
@@ -216,7 +217,7 @@ GameActions::Result TrackRemoveAction::Query() const
         if (surfaceElement == nullptr)
         {
             log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
-            return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
         }
 
         int8_t _support_height = tileElement->base_height - surfaceElement->base_height;
@@ -243,7 +244,7 @@ GameActions::Result TrackRemoveAction::Query() const
 
 GameActions::Result TrackRemoveAction::Execute() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Position.x = _origin.x + 16;
     res.Position.y = _origin.y + 16;
     res.Position.z = _origin.z;
@@ -304,7 +305,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         log_warning(
             "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
             _origin.direction, _sequence);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
     }
 
     ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
@@ -315,7 +316,7 @@ GameActions::Result TrackRemoveAction::Execute() const
     if (ride == nullptr)
     {
         log_warning("Ride not found. ride index = %d.", rideIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
     const rct_preview_track* trackBlock = ted.Block;
@@ -375,7 +376,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             log_warning(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
                 _origin.direction, trackBlock->index);
-            return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
         }
 
         int32_t entranceDirections = ted.SequenceProperties[0];
@@ -383,7 +384,8 @@ GameActions::Result TrackRemoveAction::Execute() const
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
             {
-                return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
+                return GameActions::Result(
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
             }
         }
 
@@ -391,7 +393,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         if (surfaceElement == nullptr)
         {
             log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
-            return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
         }
 
         int8_t _support_height = tileElement->base_height - surfaceElement->base_height;
@@ -410,7 +412,8 @@ GameActions::Result TrackRemoveAction::Execute() const
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, GAME_COMMAND_FLAG_APPLY))
             {
-                return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
+                return GameActions::Result(
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
             }
         }
 

@@ -47,9 +47,9 @@ GameActions::Result ParkSetNameAction::Query() const
 {
     if (_name.empty())
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
 GameActions::Result ParkSetNameAction::Execute() const
@@ -62,5 +62,5 @@ GameActions::Result ParkSetNameAction::Execute() const
         scrolling_text_invalidate();
         gfx_invalidate_screen();
     }
-    return MakeResult();
+    return GameActions::Result();
 }

@@ -50,11 +50,11 @@ GameActions::Result ParkMarketingAction::Query() const
 {
     if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_NONE);
     }
     if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
     {
-        return MakeResult(
+        return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN,
             STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
     }
@@ -87,7 +87,7 @@ GameActions::Result ParkMarketingAction::Execute() const
 
 GameActions::Result ParkMarketingAction::CreateResult() const
 {
-    auto result = MakeResult();
+    auto result = GameActions::Result();
     result.ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
     result.Expenditure = ExpenditureType::Marketing;
     result.Cost = CalculatePrice();

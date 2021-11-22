@@ -65,7 +65,7 @@ GameActions::Result LandSetRightsAction::Execute() const
 
 GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
 
     MapRange normRange = _range.Normalise();
     // Keep big coordinates within map boundaries
@@ -85,7 +85,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
-        return MakeResult(GameActions::Status::NotInEditorMode, STR_NONE, STR_LAND_NOT_FOR_SALE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_NONE, STR_LAND_NOT_FOR_SALE);
     }
 
     // Game command modified to accept selection size
@@ -117,10 +117,10 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     switch (_setting)
     {
         case LandSetRightSetting::UnownLand:
@@ -204,6 +204,6 @@ GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const Coor
         }
         default:
             log_warning("Tried calling set land rights with an incorrect setting. setting = %u", _setting);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 }

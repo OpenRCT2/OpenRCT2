@@ -35,32 +35,32 @@ void WaterSetHeightAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result WaterSetHeightAction::Query() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords, _height * COORDS_Z_STEP };
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
         && gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
 
     rct_string_id errorMsg = CheckParameters();
     if (errorMsg != STR_NONE)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, errorMsg);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, errorMsg);
     }
 
     if (!LocationValid(_coords))
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
         if (!map_is_location_in_park(_coords))
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
 
@@ -68,7 +68,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return MakeResult(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     int32_t zHigh = surfaceElement->GetBaseZ();
@@ -90,7 +90,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     }
     if (surfaceElement->HasTrackThatNeedsWater())
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
     }
 
     res.Cost = 250;
@@ -100,7 +100,7 @@ GameActions::Result WaterSetHeightAction::Query() const
 
 GameActions::Result WaterSetHeightAction::Execute() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords, _height * COORDS_Z_STEP };
 

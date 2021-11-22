@@ -54,7 +54,7 @@ GameActions::Result LandLowerAction::Execute() const
 
 GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     size_t tableRow = _selectionType;
 
     // The selections between MAP_SELECT_TYPE_FULL and MAP_SELECT_TYPE_EDGE_0 are not included in the tables

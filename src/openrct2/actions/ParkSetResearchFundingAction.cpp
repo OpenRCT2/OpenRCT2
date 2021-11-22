@@ -38,9 +38,9 @@ GameActions::Result ParkSetResearchFundingAction::Query() const
 {
     if (_fundingAmount >= RESEARCH_FUNDING_COUNT)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
 GameActions::Result ParkSetResearchFundingAction::Execute() const
@@ -50,5 +50,5 @@ GameActions::Result ParkSetResearchFundingAction::Execute() const
 
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_RESEARCH));
-    return MakeResult();
+    return GameActions::Result();
 }

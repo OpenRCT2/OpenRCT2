@@ -35,10 +35,10 @@ GameActions::Result ParkSetParameterAction::Query() const
 {
     if (_parameter >= ParkParameter::Count)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
     return res;
 }
@@ -66,10 +66,10 @@ GameActions::Result ParkSetParameterAction::Execute() const
             window_invalidate_by_class(WC_RIDE);
             break;
         default:
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
     return res;
 }

@@ -35,7 +35,7 @@ void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result SurfaceSetStyleAction::Query() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
     res.Expenditure = ExpenditureType::Landscaping;
 
@@ -53,7 +53,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
         if (_surfaceStyle > 0x1F)
         {
             log_error("Invalid surface style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -62,7 +62,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
         if (surfaceObj == nullptr)
         {
             log_error("Invalid surface style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
 
@@ -71,7 +71,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
         if (_edgeStyle > 0xF)
         {
             log_error("Invalid edge style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
@@ -79,7 +79,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
         if (edgeObj == nullptr)
         {
             log_error("Invalid edge style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
 
@@ -95,7 +95,8 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
         && (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
 
     money32 surfaceCost = 0;
@@ -153,7 +154,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
 GameActions::Result SurfaceSetStyleAction::Execute() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
     res.Expenditure = ExpenditureType::Landscaping;
 

@@ -48,7 +48,7 @@ GameActions::Result TrackSetBrakeSpeedAction::Execute() const
 
 GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
 
     res.Position = _loc;
     res.Position.x += 16;
@@ -57,14 +57,14 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_NONE);
     }
 
     TileElement* tileElement = map_get_track_element_at_of_type(_loc, _trackType);
     if (tileElement == nullptr)
     {
         log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     if (isExecuting)

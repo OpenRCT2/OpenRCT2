@@ -44,13 +44,13 @@ void BannerSetStyleAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result BannerSetStyleAction::Query() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
 
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_error("Invalid banner index: index = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     res.Expenditure = ExpenditureType::Landscaping;
@@ -62,7 +62,7 @@ GameActions::Result BannerSetStyleAction::Query() const
     if (tileElement == nullptr)
     {
         log_error("Could not find banner index = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     switch (_type)
@@ -71,7 +71,7 @@ GameActions::Result BannerSetStyleAction::Query() const
             if (_parameter > 31)
             {
                 log_error("Invalid primary colour: colour = %u", _parameter);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
             }
             break;
 
@@ -79,32 +79,32 @@ GameActions::Result BannerSetStyleAction::Query() const
             if (_parameter > 13)
             {
                 log_error("Invalid text colour: colour = %u", _parameter);
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
             }
             break;
         case BannerSetStyleType::NoEntry:
             if (tileElement->AsBanner() == nullptr)
             {
                 log_error("Tile element was not a banner.");
-                return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+                return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
             }
             break;
         default:
             log_error("Invalid type: %u", _type);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
     return res;
 }
 
 GameActions::Result BannerSetStyleAction::Execute() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
 
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_error("Invalid banner index: index = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     res.Expenditure = ExpenditureType::Landscaping;
@@ -116,7 +116,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
     if (tileElement == nullptr)
     {
         log_error("Could not find banner index = %u", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     switch (_type)
@@ -133,7 +133,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
             if (bannerElement == nullptr)
             {
                 log_error("Tile element was not a banner.");
-                return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+                return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
             }
 
             banner->flags &= ~BANNER_FLAG_NO_ENTRY;
@@ -148,7 +148,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
         }
         default:
             log_error("Invalid type: %u", _type);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);

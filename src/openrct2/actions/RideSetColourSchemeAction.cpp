@@ -50,7 +50,8 @@ GameActions::Result RideSetColourSchemeAction::Query() const
 {
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
     }
     return GameActions::Result();
 }

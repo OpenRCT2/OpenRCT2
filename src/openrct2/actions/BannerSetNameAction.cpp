@@ -48,9 +48,9 @@ GameActions::Result BannerSetNameAction::Query() const
     if (banner == nullptr)
     {
         log_warning("Invalid banner id, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
 GameActions::Result BannerSetNameAction::Execute() const
@@ -59,7 +59,7 @@ GameActions::Result BannerSetNameAction::Execute() const
     if (banner == nullptr)
     {
         log_warning("Invalid banner id, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
     }
 
     banner->text = _name;
@@ -71,5 +71,5 @@ GameActions::Result BannerSetNameAction::Execute() const
     scrolling_text_invalidate();
     gfx_invalidate_screen();
 
-    return MakeResult();
+    return GameActions::Result();
 }

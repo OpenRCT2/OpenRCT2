@@ -46,7 +46,7 @@ GameActions::Result ParkSetLoanAction::Query() const
     {
         if (_value > gMaxBankLoan)
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
         }
     }
@@ -54,10 +54,11 @@ GameActions::Result ParkSetLoanAction::Query() const
     {
         if (loanDifference > gCash)
         {
-            return MakeResult(GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
+            return GameActions::Result(
+                GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
         }
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
 GameActions::Result ParkSetLoanAction::Execute() const
@@ -67,5 +68,5 @@ GameActions::Result ParkSetLoanAction::Execute() const
 
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
-    return MakeResult();
+    return GameActions::Result();
 }

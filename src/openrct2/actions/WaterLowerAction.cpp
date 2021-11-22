@@ -42,7 +42,7 @@ GameActions::Result WaterLowerAction::Execute() const
 
 GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
 
     // Keep big coordinates within map boundaries
     auto aX = std::max<decltype(_range.GetLeft())>(32, _range.GetLeft());

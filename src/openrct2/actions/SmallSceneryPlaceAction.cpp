@@ -81,7 +81,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     {
         surfaceHeight = waterHeight;
     }
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     auto centre = _loc.ToTileCentre();
     res.Position.x = centre.x;
     res.Position.y = centre.y;
@@ -94,23 +94,24 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+        return GameActions::Result(
+            GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     if (!_trackDesignDrawingPreview && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto* sceneryEntry = get_small_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto quadrant = _quadrant;
@@ -157,7 +158,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
         && !map_is_location_owned({ _loc.x, _loc.y, targetHeight }))
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     auto* surfaceElement = map_get_surface_element_at(_loc);
@@ -167,7 +168,8 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         int32_t water_height = surfaceElement->GetWaterHeight() - 1;
         if (water_height > targetHeight)
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+            return GameActions::Result(
+                GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
     }
 
@@ -175,14 +177,15 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     {
         if (isOnWater)
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+            return GameActions::Result(
+                GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
         }
 
         if (surfaceElement != nullptr && surfaceElement->GetWaterHeight() > 0)
         {
             if (surfaceElement->GetWaterHeight() > targetHeight)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
             }
         }
@@ -191,7 +194,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     if (!gCheatsDisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE)) && !supportsRequired
         && !isOnWater && surfaceElement != nullptr && (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
     }
 
     if (!gCheatsDisableSupportLimits && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE)) && supportsRequired)
@@ -202,13 +205,15 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
             {
                 if (surfaceElement->GetWaterHeight() > 0 || (surfaceElement->GetBaseZ()) != targetHeight)
                 {
-                    return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
+                    return GameActions::Result(
+                        GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
                 }
             }
         }
         else
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+            return GameActions::Result(
+                GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
         }
     }
 
@@ -284,7 +289,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     {
         surfaceHeight = waterHeight;
     }
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     auto centre = _loc.ToTileCentre();
     res.Position.x = centre.x;
     res.Position.y = centre.y;
@@ -298,7 +303,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     auto* sceneryEntry = get_small_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto quadrant = _quadrant;
@@ -403,7 +408,8 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
         CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
     if (sceneryElement == nullptr)
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+        return GameActions::Result(
+            GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     sceneryElement->SetDirection(_loc.direction);

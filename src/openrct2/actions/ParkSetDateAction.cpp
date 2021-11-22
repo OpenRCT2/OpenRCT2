@@ -46,14 +46,14 @@ GameActions::Result ParkSetDateAction::Query() const
 {
     if (_year <= 0 || _year > MAX_YEAR || _month <= 0 || _month > MONTH_COUNT || _day <= 0 || _day > 31)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    return MakeResult();
+    return GameActions::Result();
 }
 
 GameActions::Result ParkSetDateAction::Execute() const
 {
     date_set(_year, _month, _day);
-    return MakeResult();
+    return GameActions::Result();
 }

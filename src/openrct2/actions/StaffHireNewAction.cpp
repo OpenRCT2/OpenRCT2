@@ -75,7 +75,7 @@ GameActions::Result StaffHireNewAction::Execute() const
 
 GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::Wages;
 
     if (_staffType >= static_cast<uint8_t>(StaffType::Count))
@@ -83,12 +83,12 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         // Invalid staff type.
         log_error("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
 
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
     }
 
     if (GetNumFreeEntities() < 400)
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
     }
 
     if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
@@ -98,7 +98,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
             // Invalid entertainer costume
             log_error("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
         }
 
         uint32_t availableCostumes = staff_get_available_entertainer_costumes();
@@ -107,7 +107,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
             // Entertainer costume unavailable
             log_error("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
         }
     }
 
@@ -115,7 +115,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
     if (newPeep == nullptr)
     {
         // Too many peeps exist already.
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
     }
 
     if (execute == false)

@@ -43,7 +43,7 @@ void WallSetColourAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result WallSetColourAction::Query() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_REPAINT_THIS;
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
@@ -53,12 +53,12 @@ GameActions::Result WallSetColourAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_in_park(_loc) && !gCheatsSandboxMode)
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     auto wallElement = map_get_wall_element_at(_loc);
@@ -66,7 +66,7 @@ GameActions::Result WallSetColourAction::Query() const
     {
         log_error(
             "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(wallElement->IsGhost()))
@@ -78,19 +78,19 @@ GameActions::Result WallSetColourAction::Query() const
     if (wallEntry == nullptr)
     {
         log_error("Could not find wall object");
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_primaryColour > 31)
     {
         log_error("Primary colour invalid: colour = %d", _primaryColour);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_secondaryColour > 31)
     {
         log_error("Secondary colour invalid: colour = %d", _secondaryColour);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
@@ -98,7 +98,7 @@ GameActions::Result WallSetColourAction::Query() const
         if (_tertiaryColour > 31)
         {
             log_error("Tertiary colour invalid: colour = %d", _tertiaryColour);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
     return res;
@@ -106,7 +106,7 @@ GameActions::Result WallSetColourAction::Query() const
 
 GameActions::Result WallSetColourAction::Execute() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_REPAINT_THIS;
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
@@ -118,7 +118,7 @@ GameActions::Result WallSetColourAction::Execute() const
     {
         log_error(
             "Could not find wall element at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(wallElement->IsGhost()))
@@ -130,7 +130,7 @@ GameActions::Result WallSetColourAction::Execute() const
     if (wallEntry == nullptr)
     {
         log_error("Could not find wall object");
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     wallElement->SetPrimaryColour(_primaryColour);

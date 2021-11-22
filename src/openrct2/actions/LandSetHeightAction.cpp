@@ -75,7 +75,7 @@ GameActions::Result LandSetHeightAction::Query() const
             TileElement* tileElement = CheckTreeObstructions();
             if (tileElement != nullptr)
             {
-                auto res = MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+                auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
                 map_obstruction_set_error_text(tileElement, res);
                 return res;
             }
@@ -103,13 +103,13 @@ GameActions::Result LandSetHeightAction::Query() const
     auto* pathElement = map_get_footpath_element(oldCoords);
     if (pathElement != nullptr && pathElement->AsPath()->IsLevelCrossing(oldCoords))
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, STR_NONE);
     }
 
     TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
     if (tileElement != nullptr)
     {
-        auto res = MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+        auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
         map_obstruction_set_error_text(tileElement, res);
         return res;
     }
@@ -138,7 +138,7 @@ GameActions::Result LandSetHeightAction::Query() const
         tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);
         if (tileElement != nullptr)
         {
-            auto res = MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+            auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
             map_obstruction_set_error_text(tileElement, res);
             return res;
         }

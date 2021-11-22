@@ -49,7 +49,7 @@ GameActions::Result ClearAction::Execute() const
 
 GameActions::Result ClearAction::CreateResult() const
 {
-    auto result = MakeResult();
+    auto result = GameActions::Result();
     result.ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
     result.Expenditure = ExpenditureType::Landscaping;
 

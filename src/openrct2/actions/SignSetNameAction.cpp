@@ -49,9 +49,9 @@ GameActions::Result SignSetNameAction::Query() const
     if (banner == nullptr)
     {
         log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
 GameActions::Result SignSetNameAction::Execute() const
@@ -60,7 +60,7 @@ GameActions::Result SignSetNameAction::Execute() const
     if (banner == nullptr)
     {
         log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
 
     if (!_name.empty())
@@ -89,5 +89,5 @@ GameActions::Result SignSetNameAction::Execute() const
 
     scrolling_text_invalidate();
     gfx_invalidate_screen();
-    return MakeResult();
+    return GameActions::Result();
 }

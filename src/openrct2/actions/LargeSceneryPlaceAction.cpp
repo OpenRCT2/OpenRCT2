@@ -49,7 +49,7 @@ void LargeSceneryPlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result LargeSceneryPlaceAction::Query() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
     res.Expenditure = ExpenditureType::Landscaping;
     int16_t surfaceHeight = tile_element_height(_loc);
@@ -66,20 +66,20 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         log_error(
             "Invalid game command for scenery placement, primaryColour = %u, secondaryColour = %u", _primaryColour,
             _secondaryColour);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     if (_sceneryType >= MAX_LARGE_SCENERY_OBJECTS)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto* sceneryEntry = get_large_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->tiles);
@@ -97,7 +97,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         if (HasReachedBannerLimit())
         {
             log_error("No free banners available");
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
     }
@@ -132,11 +132,12 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         {
             if ((clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER) || (clearanceData.GroundFlags & ELEMENT_IS_UNDERGROUND))
             {
-                return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+                return GameActions::Result(
+                    GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
             }
             if (resultData.GroundFlags && !(resultData.GroundFlags & tempSceneryGroundFlags))
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE,
                     STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
             }
@@ -146,19 +147,21 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
         if (!LocationValid(curTile) || map_is_edge(curTile))
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned({ curTile, zLow }) && !gCheatsSandboxMode)
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(
+                GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
 
     if (!CheckMapCapacity(sceneryEntry->tiles, totalNumTiles))
     {
         log_error("No free map elements available");
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+        return GameActions::Result(
+            GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     // Force ride construction to recheck area
@@ -172,7 +175,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
 GameActions::Result LargeSceneryPlaceAction::Execute() const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
     res.Expenditure = ExpenditureType::Landscaping;
 
@@ -189,13 +192,13 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     if (sceneryEntry == nullptr)
     {
         log_error("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     if (sceneryEntry->tiles == nullptr)
     {
         log_error("Invalid large scenery object, sceneryType = %u", _sceneryType);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
@@ -215,7 +218,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         if (banner == nullptr)
         {
             log_error("No free banners available");
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
 
