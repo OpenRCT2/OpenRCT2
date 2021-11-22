@@ -47,9 +47,9 @@ void RideSetPriceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_price) << DS_TAG(_primaryPrice);
 }
 
-GameActions::Result::Ptr RideSetPriceAction::Query() const
+GameActions::Result RideSetPriceAction::Query() const
 {
-    GameActions::Result::Ptr res = GameActions::Result();
+    GameActions::Result res = GameActions::Result();
 
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -68,9 +68,9 @@ GameActions::Result::Ptr RideSetPriceAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr RideSetPriceAction::Execute() const
+GameActions::Result RideSetPriceAction::Execute() const
 {
-    GameActions::Result::Ptr res = GameActions::Result();
+    GameActions::Result res = GameActions::Result();
     res.Expenditure = ExpenditureType::ParkRideTickets;
 
     auto ride = get_ride(_rideIndex);

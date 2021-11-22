@@ -40,7 +40,7 @@ void RideSetSettingAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_setting) << DS_TAG(_value);
 }
 
-GameActions::Result::Ptr RideSetSettingAction::Query() const
+GameActions::Result RideSetSettingAction::Query() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -149,7 +149,7 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr RideSetSettingAction::Execute() const
+GameActions::Result RideSetSettingAction::Execute() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)

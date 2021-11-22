@@ -33,7 +33,7 @@ void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle);
 }
 
-GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
+GameActions::Result SurfaceSetStyleAction::Query() const
 {
     auto res = MakeResult();
     res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
@@ -151,7 +151,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr SurfaceSetStyleAction::Execute() const
+GameActions::Result SurfaceSetStyleAction::Execute() const
 {
     auto res = MakeResult();
     res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;

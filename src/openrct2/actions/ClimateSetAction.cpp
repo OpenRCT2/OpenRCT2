@@ -31,7 +31,7 @@ void ClimateSetAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_climate);
 }
 
-GameActions::Result::Ptr ClimateSetAction::Query() const
+GameActions::Result ClimateSetAction::Query() const
 {
     if (_climate >= ClimateType::Count)
     {
@@ -41,7 +41,7 @@ GameActions::Result::Ptr ClimateSetAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr ClimateSetAction::Execute() const
+GameActions::Result ClimateSetAction::Execute() const
 {
     gClimate = ClimateType{ _climate };
 

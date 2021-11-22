@@ -47,7 +47,7 @@ uint16_t FootpathPlaceFromTrackAction::GetActionFlags() const
     return GameAction::GetActionFlags();
 }
 
-GameActions::Result::Ptr FootpathPlaceFromTrackAction::Query() const
+GameActions::Result FootpathPlaceFromTrackAction::Query() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
@@ -81,7 +81,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::Query() const
     return ElementInsertQuery(std::move(res));
 }
 
-GameActions::Result::Ptr FootpathPlaceFromTrackAction::Execute() const
+GameActions::Result FootpathPlaceFromTrackAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
@@ -101,7 +101,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::Execute() const
     return ElementInsertExecute(std::move(res));
 }
 
-GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions::Result::Ptr res) const
+GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions::Result res) const
 {
     bool entrancePath = false, entranceIsSamePath = false;
 
@@ -172,7 +172,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
     return res;
 }
 
-GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(GameActions::Result::Ptr res) const
+GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActions::Result res) const
 {
     bool entrancePath = false, entranceIsSamePath = false;
 

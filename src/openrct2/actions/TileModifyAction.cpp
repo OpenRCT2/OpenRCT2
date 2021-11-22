@@ -35,17 +35,17 @@ void TileModifyAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_setting) << DS_TAG(_value1) << DS_TAG(_value2) << DS_TAG(_pasteElement);
 }
 
-GameActions::Result::Ptr TileModifyAction::Query() const
+GameActions::Result TileModifyAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr TileModifyAction::Execute() const
+GameActions::Result TileModifyAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
+GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
 {
     if (!LocationValid(_loc))
     {

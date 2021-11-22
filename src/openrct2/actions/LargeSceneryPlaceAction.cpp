@@ -47,7 +47,7 @@ void LargeSceneryPlaceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
 }
 
-GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
+GameActions::Result LargeSceneryPlaceAction::Query() const
 {
     auto res = MakeResult();
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -170,7 +170,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
+GameActions::Result LargeSceneryPlaceAction::Execute() const
 {
     auto res = MakeResult();
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;

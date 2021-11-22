@@ -46,7 +46,7 @@ void ParkMarketingAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
 }
 
-GameActions::Result::Ptr ParkMarketingAction::Query() const
+GameActions::Result ParkMarketingAction::Query() const
 {
     if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
     {
@@ -62,7 +62,7 @@ GameActions::Result::Ptr ParkMarketingAction::Query() const
     return CreateResult();
 }
 
-GameActions::Result::Ptr ParkMarketingAction::Execute() const
+GameActions::Result ParkMarketingAction::Execute() const
 {
     MarketingCampaign campaign{};
     campaign.Type = _type;
@@ -85,7 +85,7 @@ GameActions::Result::Ptr ParkMarketingAction::Execute() const
     return CreateResult();
 }
 
-GameActions::Result::Ptr ParkMarketingAction::CreateResult() const
+GameActions::Result ParkMarketingAction::CreateResult() const
 {
     auto result = MakeResult();
     result.ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;

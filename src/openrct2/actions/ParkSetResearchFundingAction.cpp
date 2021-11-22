@@ -34,7 +34,7 @@ void ParkSetResearchFundingAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_priorities) << DS_TAG(_fundingAmount);
 }
 
-GameActions::Result::Ptr ParkSetResearchFundingAction::Query() const
+GameActions::Result ParkSetResearchFundingAction::Query() const
 {
     if (_fundingAmount >= RESEARCH_FUNDING_COUNT)
     {
@@ -43,7 +43,7 @@ GameActions::Result::Ptr ParkSetResearchFundingAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr ParkSetResearchFundingAction::Execute() const
+GameActions::Result ParkSetResearchFundingAction::Execute() const
 {
     gResearchPriorities = _priorities;
     gResearchFundingLevel = _fundingAmount;

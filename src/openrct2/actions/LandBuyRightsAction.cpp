@@ -48,17 +48,17 @@ void LandBuyRightsAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_range) << DS_TAG(_setting);
 }
 
-GameActions::Result::Ptr LandBuyRightsAction::Query() const
+GameActions::Result LandBuyRightsAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr LandBuyRightsAction::Execute() const
+GameActions::Result LandBuyRightsAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr LandBuyRightsAction::QueryExecute(bool isExecuting) const
+GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
 
@@ -99,7 +99,7 @@ GameActions::Result::Ptr LandBuyRightsAction::QueryExecute(bool isExecuting) con
     return res;
 }
 
-GameActions::Result::Ptr LandBuyRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
+GameActions::Result LandBuyRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
 {
     if (_setting >= LandBuyRightSetting::Count)
     {

@@ -29,7 +29,7 @@ void StaffFireAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_spriteId);
 }
 
-GameActions::Result::Ptr StaffFireAction::Query() const
+GameActions::Result StaffFireAction::Query() const
 {
     if (_spriteId >= MAX_ENTITIES)
     {
@@ -47,7 +47,7 @@ GameActions::Result::Ptr StaffFireAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr StaffFireAction::Execute() const
+GameActions::Result StaffFireAction::Execute() const
 {
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)

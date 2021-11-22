@@ -45,7 +45,7 @@ void RideSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr RideSetNameAction::Query() const
+GameActions::Result RideSetNameAction::Query() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -63,7 +63,7 @@ GameActions::Result::Ptr RideSetNameAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr RideSetNameAction::Execute() const
+GameActions::Result RideSetNameAction::Execute() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)

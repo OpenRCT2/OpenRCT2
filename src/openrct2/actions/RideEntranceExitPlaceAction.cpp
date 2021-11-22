@@ -47,7 +47,7 @@ void RideEntranceExitPlaceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_direction) << DS_TAG(_rideIndex) << DS_TAG(_stationNum) << DS_TAG(_isExit);
 }
 
-GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
+GameActions::Result RideEntranceExitPlaceAction::Query() const
 {
     const auto errorTitle = _isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                     : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
@@ -126,7 +126,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
+GameActions::Result RideEntranceExitPlaceAction::Execute() const
 {
     // Remember when in unknown station num mode rideIndex is unknown and z is set
     // When in known station num mode rideIndex is known and z is unknown
@@ -217,7 +217,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
     return res;
 }
 
-GameActions::Result::Ptr RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit)
+GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit)
 {
     const auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                    : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;

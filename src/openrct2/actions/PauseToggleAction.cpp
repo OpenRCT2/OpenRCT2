@@ -14,12 +14,12 @@ uint16_t PauseToggleAction::GetActionFlags() const
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
-GameActions::Result::Ptr PauseToggleAction::Query() const
+GameActions::Result PauseToggleAction::Query() const
 {
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr PauseToggleAction::Execute() const
+GameActions::Result PauseToggleAction::Execute() const
 {
     pause_toggle();
     return GameActions::Result();

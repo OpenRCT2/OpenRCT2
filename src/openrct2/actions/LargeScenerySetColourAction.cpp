@@ -34,17 +34,17 @@ void LargeScenerySetColourAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_tileIndex) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
 }
 
-GameActions::Result::Ptr LargeScenerySetColourAction::Query() const
+GameActions::Result LargeScenerySetColourAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr LargeScenerySetColourAction::Execute() const
+GameActions::Result LargeScenerySetColourAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecuting) const
+GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::Landscaping;

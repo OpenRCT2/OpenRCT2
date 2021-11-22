@@ -52,9 +52,9 @@ void RideSetStatusAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_status);
 }
 
-GameActions::Result::Ptr RideSetStatusAction::Query() const
+GameActions::Result RideSetStatusAction::Query() const
 {
-    GameActions::Result::Ptr res = GameActions::Result();
+    GameActions::Result res = GameActions::Result();
 
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -112,9 +112,9 @@ GameActions::Result::Ptr RideSetStatusAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr RideSetStatusAction::Execute() const
+GameActions::Result RideSetStatusAction::Execute() const
 {
-    GameActions::Result::Ptr res = GameActions::Result();
+    GameActions::Result res = GameActions::Result();
     res.Expenditure = ExpenditureType::RideRunningCosts;
 
     auto ride = get_ride(_rideIndex);

@@ -42,17 +42,17 @@ void LandLowerAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType);
 }
 
-GameActions::Result::Ptr LandLowerAction::Query() const
+GameActions::Result LandLowerAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr LandLowerAction::Execute() const
+GameActions::Result LandLowerAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr LandLowerAction::QueryExecute(bool isExecuting) const
+GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
     size_t tableRow = _selectionType;

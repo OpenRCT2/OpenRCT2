@@ -40,7 +40,7 @@ void PlaceParkEntranceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_pathType);
 }
 
-GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
+GameActions::Result PlaceParkEntranceAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
@@ -102,7 +102,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
+GameActions::Result PlaceParkEntranceAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::LandPurchase;

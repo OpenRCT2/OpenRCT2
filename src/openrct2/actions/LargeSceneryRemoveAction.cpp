@@ -48,7 +48,7 @@ void LargeSceneryRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_tileIndex);
 }
 
-GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
+GameActions::Result LargeSceneryRemoveAction::Query() const
 {
     auto res = GameActions::Result();
 
@@ -120,7 +120,7 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
+GameActions::Result LargeSceneryRemoveAction::Execute() const
 {
     auto res = GameActions::Result();
 

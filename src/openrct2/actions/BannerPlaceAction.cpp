@@ -44,7 +44,7 @@ void BannerPlaceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_bannerType) << DS_TAG(_primaryColour);
 }
 
-GameActions::Result::Ptr BannerPlaceAction::Query() const
+GameActions::Result BannerPlaceAction::Query() const
 {
     auto res = MakeResult();
     res.Position.x = _loc.x + 16;
@@ -101,7 +101,7 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr BannerPlaceAction::Execute() const
+GameActions::Result BannerPlaceAction::Execute() const
 {
     auto res = MakeResult();
     res.Position.x = _loc.x + 16;

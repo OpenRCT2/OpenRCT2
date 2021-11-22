@@ -54,7 +54,7 @@ void GuestSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_spriteIndex) << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr GuestSetNameAction::Query() const
+GameActions::Result GuestSetNameAction::Query() const
 {
     if (_spriteIndex >= MAX_ENTITIES)
     {
@@ -71,7 +71,7 @@ GameActions::Result::Ptr GuestSetNameAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr GuestSetNameAction::Execute() const
+GameActions::Result GuestSetNameAction::Execute() const
 {
     auto guest = TryGetEntity<Guest>(_spriteIndex);
     if (guest == nullptr)

@@ -114,7 +114,7 @@ static bool MapLoc68BABCShouldContinue(
  *  ebp = clearFunc
  *  bl = bl
  */
-GameActions::Result::Ptr MapCanConstructWithClearAt(
+GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
 {
     auto res = GameActions::Result();
@@ -268,7 +268,7 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
     return res;
 }
 
-GameActions::Result::Ptr MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
+GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
 {
     return MapCanConstructWithClearAt(pos, nullptr, bl, 0);
 }

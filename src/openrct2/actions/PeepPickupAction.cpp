@@ -35,7 +35,7 @@ void PeepPickupAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_type) << DS_TAG(_spriteId) << DS_TAG(_loc) << DS_TAG(_owner);
 }
 
-GameActions::Result::Ptr PeepPickupAction::Query() const
+GameActions::Result PeepPickupAction::Query() const
 {
     if (_spriteId >= MAX_ENTITIES || _spriteId == SPRITE_INDEX_NULL)
     {
@@ -104,7 +104,7 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr PeepPickupAction::Execute() const
+GameActions::Result PeepPickupAction::Execute() const
 {
     Peep* const peep = TryGetEntity<Peep>(_spriteId);
     if (peep == nullptr)

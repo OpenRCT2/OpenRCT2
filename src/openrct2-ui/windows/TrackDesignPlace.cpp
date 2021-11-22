@@ -225,9 +225,9 @@ static void window_track_place_update(rct_window* w)
             window_close(w);
 }
 
-static GameActions::Result::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t flags)
+static GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t flags)
 {
-    GameActions::Result::Ptr res;
+    GameActions::Result res;
     for (int32_t i = 0; i < 7; i++, loc.z += 8)
     {
         auto tdAction = TrackDesignAction(CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);

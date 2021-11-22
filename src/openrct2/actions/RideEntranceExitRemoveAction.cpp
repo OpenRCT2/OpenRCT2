@@ -69,7 +69,7 @@ static TileElement* FindEntranceElement(
     return nullptr;
 }
 
-GameActions::Result::Ptr RideEntranceExitRemoveAction::Query() const
+GameActions::Result RideEntranceExitRemoveAction::Query() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -107,7 +107,7 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr RideEntranceExitRemoveAction::Execute() const
+GameActions::Result RideEntranceExitRemoveAction::Execute() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)

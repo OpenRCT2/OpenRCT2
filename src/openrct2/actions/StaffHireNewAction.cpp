@@ -63,17 +63,17 @@ void StaffHireNewAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_autoPosition) << DS_TAG(_staffType) << DS_TAG(_entertainerType) << DS_TAG(_staffOrders);
 }
 
-GameActions::Result::Ptr StaffHireNewAction::Query() const
+GameActions::Result StaffHireNewAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr StaffHireNewAction::Execute() const
+GameActions::Result StaffHireNewAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
+GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::Wages;

@@ -61,7 +61,6 @@ namespace GameActions
     class Result final
     {
     public:
-        using Ptr = Result;
         using StringVariant = std::variant<std::string, rct_string_id>;
 
         GameActions::Status Error = GameActions::Status::Ok;

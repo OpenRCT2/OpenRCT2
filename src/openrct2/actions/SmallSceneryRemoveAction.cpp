@@ -52,9 +52,9 @@ void SmallSceneryRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType);
 }
 
-GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const
+GameActions::Result SmallSceneryRemoveAction::Query() const
 {
-    GameActions::Result::Ptr res = GameActions::Result();
+    GameActions::Result res = GameActions::Result();
 
     if (!LocationValid(_loc))
     {
@@ -104,9 +104,9 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr SmallSceneryRemoveAction::Execute() const
+GameActions::Result SmallSceneryRemoveAction::Execute() const
 {
-    GameActions::Result::Ptr res = GameActions::Result();
+    GameActions::Result res = GameActions::Result();
 
     auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)

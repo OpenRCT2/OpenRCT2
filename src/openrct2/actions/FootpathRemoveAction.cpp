@@ -43,7 +43,7 @@ void FootpathRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc);
 }
 
-GameActions::Result::Ptr FootpathRemoveAction::Query() const
+GameActions::Result FootpathRemoveAction::Query() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
@@ -71,7 +71,7 @@ GameActions::Result::Ptr FootpathRemoveAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr FootpathRemoveAction::Execute() const
+GameActions::Result FootpathRemoveAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
@@ -158,7 +158,7 @@ money32 FootpathRemoveAction::GetRefundPrice(TileElement* footpathElement) const
  *
  *  rct2: 0x006BA23E
  */
-GameActions::Result::Ptr FootpathRemoveAction::RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const
+GameActions::Result FootpathRemoveAction::RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const
 {
     auto result = MakeResult();
     while (!(tileElement++)->IsLastForTile())

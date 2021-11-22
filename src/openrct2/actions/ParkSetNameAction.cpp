@@ -43,7 +43,7 @@ void ParkSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr ParkSetNameAction::Query() const
+GameActions::Result ParkSetNameAction::Query() const
 {
     if (_name.empty())
     {
@@ -52,7 +52,7 @@ GameActions::Result::Ptr ParkSetNameAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr ParkSetNameAction::Execute() const
+GameActions::Result ParkSetNameAction::Execute() const
 {
     // Do a no-op if new name is the same as the current name is the same
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();

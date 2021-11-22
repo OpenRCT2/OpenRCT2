@@ -41,7 +41,7 @@ void WallSetColourAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour) << DS_TAG(_tertiaryColour);
 }
 
-GameActions::Result::Ptr WallSetColourAction::Query() const
+GameActions::Result WallSetColourAction::Query() const
 {
     auto res = MakeResult();
     res.ErrorTitle = STR_CANT_REPAINT_THIS;
@@ -104,7 +104,7 @@ GameActions::Result::Ptr WallSetColourAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr WallSetColourAction::Execute() const
+GameActions::Result WallSetColourAction::Execute() const
 {
     auto res = MakeResult();
     res.ErrorTitle = STR_CANT_REPAINT_THIS;

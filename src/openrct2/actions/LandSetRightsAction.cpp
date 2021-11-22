@@ -53,17 +53,17 @@ void LandSetRightsAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_range) << DS_TAG(_setting) << DS_TAG(_ownership);
 }
 
-GameActions::Result::Ptr LandSetRightsAction::Query() const
+GameActions::Result LandSetRightsAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr LandSetRightsAction::Execute() const
+GameActions::Result LandSetRightsAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr LandSetRightsAction::QueryExecute(bool isExecuting) const
+GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
 
@@ -111,7 +111,7 @@ GameActions::Result::Ptr LandSetRightsAction::QueryExecute(bool isExecuting) con
     return res;
 }
 
-GameActions::Result::Ptr LandSetRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
+GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
 {
     SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)

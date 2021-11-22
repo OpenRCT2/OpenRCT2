@@ -135,7 +135,7 @@ money32 maze_set_track(
     auto gameAction = MazeSetTrackAction({ x, y, z, direction }, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);
 
-    GameActions::Result::Ptr res;
+    GameActions::Result res;
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
         res = GameActions::Query(&gameAction);

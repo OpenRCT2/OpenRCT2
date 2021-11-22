@@ -45,7 +45,7 @@ void FootpathAdditionPlaceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_pathItemType);
 }
 
-GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
+GameActions::Result FootpathAdditionPlaceAction::Query() const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::Landscaping;
@@ -139,7 +139,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
+GameActions::Result FootpathAdditionPlaceAction::Execute() const
 {
     auto res = MakeResult();
     res.Position = _loc;

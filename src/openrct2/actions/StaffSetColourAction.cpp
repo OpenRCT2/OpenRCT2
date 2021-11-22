@@ -36,7 +36,7 @@ void StaffSetColourAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_staffType) << DS_TAG(_colour);
 }
 
-GameActions::Result::Ptr StaffSetColourAction::Query() const
+GameActions::Result StaffSetColourAction::Query() const
 {
     auto staffType = static_cast<StaffType>(_staffType);
     if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
@@ -46,7 +46,7 @@ GameActions::Result::Ptr StaffSetColourAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr StaffSetColourAction::Execute() const
+GameActions::Result StaffSetColourAction::Execute() const
 {
     // Update global uniform colour property
     if (!staff_set_colour(static_cast<StaffType>(_staffType), _colour))

@@ -58,7 +58,7 @@ void RideSetVehicleAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_colour);
 }
 
-GameActions::Result::Ptr RideSetVehicleAction::Query() const
+GameActions::Result RideSetVehicleAction::Query() const
 {
     if (_type >= RideSetVehicleType::Count)
     {
@@ -120,7 +120,7 @@ GameActions::Result::Ptr RideSetVehicleAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr RideSetVehicleAction::Execute() const
+GameActions::Result RideSetVehicleAction::Execute() const
 {
     auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
     auto ride = get_ride(_rideIndex);

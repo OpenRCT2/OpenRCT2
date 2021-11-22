@@ -65,7 +65,7 @@ void RideCreateAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_colour1) << DS_TAG(_colour2);
 }
 
-GameActions::Result::Ptr RideCreateAction::Query() const
+GameActions::Result RideCreateAction::Query() const
 {
     auto rideIndex = GetNextFreeRideId();
     if (rideIndex == RIDE_ID_NULL)
@@ -109,7 +109,7 @@ GameActions::Result::Ptr RideCreateAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr RideCreateAction::Execute() const
+GameActions::Result RideCreateAction::Execute() const
 {
     rct_ride_entry* rideEntry;
     auto res = MakeResult();

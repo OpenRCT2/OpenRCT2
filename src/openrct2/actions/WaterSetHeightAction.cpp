@@ -33,7 +33,7 @@ void WaterSetHeightAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_coords) << DS_TAG(_height);
 }
 
-GameActions::Result::Ptr WaterSetHeightAction::Query() const
+GameActions::Result WaterSetHeightAction::Query() const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::Landscaping;
@@ -98,7 +98,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr WaterSetHeightAction::Execute() const
+GameActions::Result WaterSetHeightAction::Execute() const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::Landscaping;

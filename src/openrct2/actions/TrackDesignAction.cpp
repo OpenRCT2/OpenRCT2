@@ -47,7 +47,7 @@ void TrackDesignAction::Serialise(DataSerialiser& stream)
     _td.Serialise(stream);
 }
 
-GameActions::Result::Ptr TrackDesignAction::Query() const
+GameActions::Result TrackDesignAction::Query() const
 {
     auto res = MakeResult();
     res.Position.x = _loc.x + 16;
@@ -125,7 +125,7 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr TrackDesignAction::Execute() const
+GameActions::Result TrackDesignAction::Execute() const
 {
     auto res = MakeResult();
     res.Position.x = _loc.x + 16;

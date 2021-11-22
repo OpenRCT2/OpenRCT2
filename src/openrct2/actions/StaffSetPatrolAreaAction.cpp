@@ -32,7 +32,7 @@ void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_spriteId) << DS_TAG(_loc) << DS_TAG(_mode);
 }
 
-GameActions::Result::Ptr StaffSetPatrolAreaAction::Query() const
+GameActions::Result StaffSetPatrolAreaAction::Query() const
 {
     if (_spriteId >= MAX_ENTITIES)
     {
@@ -68,7 +68,7 @@ static void InvalidatePatrolTile(const CoordsXY& loc)
     }
 }
 
-GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
+GameActions::Result StaffSetPatrolAreaAction::Execute() const
 {
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)

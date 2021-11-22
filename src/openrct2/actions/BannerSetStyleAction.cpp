@@ -42,7 +42,7 @@ void BannerSetStyleAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_type) << DS_TAG(_bannerIndex) << DS_TAG(_parameter);
 }
 
-GameActions::Result::Ptr BannerSetStyleAction::Query() const
+GameActions::Result BannerSetStyleAction::Query() const
 {
     auto res = MakeResult();
 
@@ -96,7 +96,7 @@ GameActions::Result::Ptr BannerSetStyleAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr BannerSetStyleAction::Execute() const
+GameActions::Result BannerSetStyleAction::Execute() const
 {
     auto res = MakeResult();
 

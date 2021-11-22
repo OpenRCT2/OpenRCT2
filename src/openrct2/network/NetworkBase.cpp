@@ -3457,7 +3457,7 @@ void network_chat_show_server_greeting()
     }
 }
 
-GameActions::Result::Ptr network_set_player_group(
+GameActions::Result network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
@@ -3516,7 +3516,7 @@ GameActions::Result::Ptr network_set_player_group(
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr network_modify_groups(
+GameActions::Result network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting)
 {
@@ -3647,7 +3647,7 @@ GameActions::Result::Ptr network_modify_groups(
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
+GameActions::Result network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     NetworkPlayer* player = network.GetPlayerByID(playerId);
@@ -4097,18 +4097,18 @@ const char* network_get_group_name(uint32_t index)
     return "";
 };
 
-GameActions::Result::Ptr network_set_player_group(
+GameActions::Result network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
     return GameActions::Result();
 }
-GameActions::Result::Ptr network_modify_groups(
+GameActions::Result network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting)
 {
     return GameActions::Result();
 }
-GameActions::Result::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
+GameActions::Result network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
 {
     return GameActions::Result();
 }

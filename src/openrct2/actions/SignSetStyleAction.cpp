@@ -37,7 +37,7 @@ void SignSetStyleAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_bannerIndex) << DS_TAG(_mainColour) << DS_TAG(_textColour) << DS_TAG(_isLarge);
 }
 
-GameActions::Result::Ptr SignSetStyleAction::Query() const
+GameActions::Result SignSetStyleAction::Query() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
@@ -74,7 +74,7 @@ GameActions::Result::Ptr SignSetStyleAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr SignSetStyleAction::Execute() const
+GameActions::Result SignSetStyleAction::Execute() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)

@@ -35,7 +35,7 @@ void MazePlaceTrackAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_rideIndex) << DS_TAG(_mazeEntry);
 }
 
-GameActions::Result::Ptr MazePlaceTrackAction::Query() const
+GameActions::Result MazePlaceTrackAction::Query() const
 {
     auto res = GameActions::Result();
 
@@ -124,7 +124,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
+GameActions::Result MazePlaceTrackAction::Execute() const
 {
     auto res = GameActions::Result();
 

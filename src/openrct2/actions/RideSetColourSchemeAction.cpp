@@ -46,7 +46,7 @@ void RideSetColourSchemeAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_newColourScheme);
 }
 
-GameActions::Result::Ptr RideSetColourSchemeAction::Query() const
+GameActions::Result RideSetColourSchemeAction::Query() const
 {
     if (!LocationValid(_loc))
     {
@@ -55,9 +55,9 @@ GameActions::Result::Ptr RideSetColourSchemeAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr RideSetColourSchemeAction::Execute() const
+GameActions::Result RideSetColourSchemeAction::Execute() const
 {
-    GameActions::Result::Ptr res = GameActions::Result();
+    GameActions::Result res = GameActions::Result();
     res.Expenditure = ExpenditureType::RideConstruction;
     res.ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 

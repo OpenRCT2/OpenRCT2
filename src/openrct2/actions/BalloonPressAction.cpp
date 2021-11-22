@@ -34,7 +34,7 @@ void BalloonPressAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_spriteIndex);
 }
 
-GameActions::Result::Ptr BalloonPressAction::Query() const
+GameActions::Result BalloonPressAction::Query() const
 {
     auto balloon = TryGetEntity<Balloon>(_spriteIndex);
     if (balloon == nullptr)
@@ -45,7 +45,7 @@ GameActions::Result::Ptr BalloonPressAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr BalloonPressAction::Execute() const
+GameActions::Result BalloonPressAction::Execute() const
 {
     auto balloon = TryGetEntity<Balloon>(_spriteIndex);
     if (balloon == nullptr)

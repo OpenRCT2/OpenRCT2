@@ -38,9 +38,9 @@ void WallRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc);
 }
 
-GameActions::Result::Ptr WallRemoveAction::Query() const
+GameActions::Result WallRemoveAction::Query() const
 {
-    GameActions::Result::Ptr res = GameActions::Result();
+    GameActions::Result res = GameActions::Result();
     res.Cost = 0;
     res.Expenditure = ExpenditureType::Landscaping;
 
@@ -67,9 +67,9 @@ GameActions::Result::Ptr WallRemoveAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr WallRemoveAction::Execute() const
+GameActions::Result WallRemoveAction::Execute() const
 {
-    GameActions::Result::Ptr res = GameActions::Result();
+    GameActions::Result res = GameActions::Result();
     res.Cost = 0;
     res.Expenditure = ExpenditureType::Landscaping;
 

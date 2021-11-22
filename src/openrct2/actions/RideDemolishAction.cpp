@@ -54,7 +54,7 @@ void RideDemolishAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_modifyType);
 }
 
-GameActions::Result::Ptr RideDemolishAction::Query() const
+GameActions::Result RideDemolishAction::Query() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -71,7 +71,7 @@ GameActions::Result::Ptr RideDemolishAction::Query() const
             STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
     }
 
-    GameActions::Result::Ptr result = GameActions::Result();
+    GameActions::Result result = GameActions::Result();
 
     if (_modifyType == RIDE_MODIFY_RENEW)
     {
@@ -98,7 +98,7 @@ GameActions::Result::Ptr RideDemolishAction::Query() const
     return result;
 }
 
-GameActions::Result::Ptr RideDemolishAction::Execute() const
+GameActions::Result RideDemolishAction::Execute() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -118,7 +118,7 @@ GameActions::Result::Ptr RideDemolishAction::Execute() const
     return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
 }
 
-GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
+GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
 {
     money32 refundPrice = DemolishTracks();
 
@@ -252,7 +252,7 @@ money32 RideDemolishAction::DemolishTracks() const
     return refundPrice;
 }
 
-GameActions::Result::Ptr RideDemolishAction::RefurbishRide(Ride* ride) const
+GameActions::Result RideDemolishAction::RefurbishRide(Ride* ride) const
 {
     auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::RideConstruction;

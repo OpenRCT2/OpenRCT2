@@ -45,17 +45,17 @@ void LandSmoothAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType) << DS_TAG(_isLowering);
 }
 
-GameActions::Result::Ptr LandSmoothAction::Query() const
+GameActions::Result LandSmoothAction::Query() const
 {
     return SmoothLand(false);
 }
 
-GameActions::Result::Ptr LandSmoothAction::Execute() const
+GameActions::Result LandSmoothAction::Execute() const
 {
     return SmoothLand(true);
 }
 
-GameActions::Result::Ptr LandSmoothAction::SmoothLandTile(
+GameActions::Result LandSmoothAction::SmoothLandTile(
     int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
 {
     int32_t targetBaseZ = surfaceElement->base_height;
@@ -316,7 +316,7 @@ money32 LandSmoothAction::SmoothLandRowByCorner(
     return totalCost;
 }
 
-GameActions::Result::Ptr LandSmoothAction::SmoothLand(bool isExecuting) const
+GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
 {
     const bool raiseLand = !_isLowering;
     const int32_t selectionType = _selectionType;
@@ -612,7 +612,7 @@ GameActions::Result::Ptr LandSmoothAction::SmoothLand(bool isExecuting) const
     } // switch selectionType
 
     // Raise / lower the land tool selection area
-    GameActions::Result::Ptr result;
+    GameActions::Result result;
     if (raiseLand)
     {
         auto raiseLandAction = LandRaiseAction({ _coords.x, _coords.y }, validRange, selectionType);

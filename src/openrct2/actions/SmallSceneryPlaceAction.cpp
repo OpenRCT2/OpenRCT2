@@ -64,7 +64,7 @@ void SmallSceneryPlaceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
 }
 
-GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
+GameActions::Result SmallSceneryPlaceAction::Query() const
 {
     bool isOnWater = false;
     bool supportsRequired = false;
@@ -268,7 +268,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
+GameActions::Result SmallSceneryPlaceAction::Execute() const
 {
     bool supportsRequired = false;
     if (_loc.z != 0)

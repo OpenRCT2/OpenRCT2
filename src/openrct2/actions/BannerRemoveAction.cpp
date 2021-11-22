@@ -40,7 +40,7 @@ void BannerRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc);
 }
 
-GameActions::Result::Ptr BannerRemoveAction::Query() const
+GameActions::Result BannerRemoveAction::Query() const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::Landscaping;
@@ -84,7 +84,7 @@ GameActions::Result::Ptr BannerRemoveAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr BannerRemoveAction::Execute() const
+GameActions::Result BannerRemoveAction::Execute() const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::Landscaping;

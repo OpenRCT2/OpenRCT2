@@ -48,7 +48,7 @@ void TrackRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_trackType) << DS_TAG(_sequence) << DS_TAG(_origin);
 }
 
-GameActions::Result::Ptr TrackRemoveAction::Query() const
+GameActions::Result TrackRemoveAction::Query() const
 {
     auto res = MakeResult();
     res.Position.x = _origin.x + 16;
@@ -241,7 +241,7 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr TrackRemoveAction::Execute() const
+GameActions::Result TrackRemoveAction::Execute() const
 {
     auto res = MakeResult();
     res.Position.x = _origin.x + 16;

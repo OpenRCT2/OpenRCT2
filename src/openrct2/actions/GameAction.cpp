@@ -142,7 +142,7 @@ namespace GameActions
 
             Guard::Assert(action != nullptr);
 
-            GameActions::Result::Ptr result = Execute(action);
+            GameActions::Result result = Execute(action);
             if (result.Error == GameActions::Status::Ok && network_get_mode() == NETWORK_MODE_SERVER)
             {
                 // Relay this action to all other clients.
@@ -188,14 +188,14 @@ namespace GameActions
         return false;
     }
 
-    static GameActions::Result::Ptr QueryInternal(const GameAction* action, bool topLevel)
+    static GameActions::Result QueryInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
         if (topLevel && !CheckActionInPausedMode(actionFlags))
         {
-            GameActions::Result::Ptr result = GameActions::Result();
+            GameActions::Result result = GameActions::Result();
 
             result.Error = GameActions::Status::GamePaused;
             result.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -219,12 +219,12 @@ namespace GameActions
         return result;
     }
 
-    GameActions::Result::Ptr Query(const GameAction* action)
+    GameActions::Result Query(const GameAction* action)
     {
         return QueryInternal(action, true);
     }
 
-    GameActions::Result::Ptr QueryNested(const GameAction* action)
+    GameActions::Result QueryNested(const GameAction* action)
     {
         return QueryInternal(action, false);
     }
@@ -260,7 +260,7 @@ namespace GameActions
         action->Serialise(ds);
     }
 
-    static void LogActionFinish(ActionLogContext_t& ctx, const GameAction* action, const GameActions::Result::Ptr& result)
+    static void LogActionFinish(ActionLogContext_t& ctx, const GameAction* action, const GameActions::Result& result)
     {
         MemoryStream& output = ctx.output;
 
@@ -283,7 +283,7 @@ namespace GameActions
         network_append_server_log(text);
     }
 
-    static GameActions::Result::Ptr ExecuteInternal(const GameAction* action, bool topLevel)
+    static GameActions::Result ExecuteInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
@@ -306,7 +306,7 @@ namespace GameActions
             }
         }
 
-        GameActions::Result::Ptr result = QueryInternal(action, topLevel);
+        GameActions::Result result = QueryInternal(action, topLevel);
 #ifdef ENABLE_SCRIPTING
         if (result.Error == GameActions::Status::Ok
             && ((network_get_mode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
@@ -451,12 +451,12 @@ namespace GameActions
         return result;
     }
 
-    GameActions::Result::Ptr Execute(const GameAction* action)
+    GameActions::Result Execute(const GameAction* action)
     {
         return ExecuteInternal(action, true);
     }
 
-    GameActions::Result::Ptr ExecuteNested(const GameAction* action)
+    GameActions::Result ExecuteNested(const GameAction* action)
     {
         return ExecuteInternal(action, false);
     }

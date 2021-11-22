@@ -58,7 +58,7 @@ void WallPlaceAction::Serialise(DataSerialiser& stream)
            << DS_TAG(_tertiaryColour);
 }
 
-GameActions::Result::Ptr WallPlaceAction::Query() const
+GameActions::Result WallPlaceAction::Query() const
 {
     auto res = MakeResult();
     res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
@@ -262,7 +262,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr WallPlaceAction::Execute() const
+GameActions::Result WallPlaceAction::Execute() const
 {
     auto res = MakeResult();
     res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
@@ -484,7 +484,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
  *
  *  rct2: 0x006E5C1A
  */
-GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
+GameActions::Result WallPlaceAction::WallCheckObstruction(
     WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const
 {
     *wallAcrossTrack = false;

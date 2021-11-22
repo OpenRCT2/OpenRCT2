@@ -38,7 +38,7 @@ void ParkSetLoanAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_value);
 }
 
-GameActions::Result::Ptr ParkSetLoanAction::Query() const
+GameActions::Result ParkSetLoanAction::Query() const
 {
     auto currentLoan = gBankLoan;
     auto loanDifference = currentLoan - _value;
@@ -60,7 +60,7 @@ GameActions::Result::Ptr ParkSetLoanAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr ParkSetLoanAction::Execute() const
+GameActions::Result ParkSetLoanAction::Execute() const
 {
     gCash -= (gBankLoan - _value);
     gBankLoan = _value;

@@ -63,7 +63,7 @@ void TrackPlaceAction::Serialise(DataSerialiser& stream)
            << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags);
 }
 
-GameActions::Result::Ptr TrackPlaceAction::Query() const
+GameActions::Result TrackPlaceAction::Query() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -387,7 +387,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr TrackPlaceAction::Execute() const
+GameActions::Result TrackPlaceAction::Execute() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)

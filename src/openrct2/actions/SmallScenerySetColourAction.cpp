@@ -47,17 +47,17 @@ void SmallScenerySetColourAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
 }
 
-GameActions::Result::Ptr SmallScenerySetColourAction::Query() const
+GameActions::Result SmallScenerySetColourAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr SmallScenerySetColourAction::Execute() const
+GameActions::Result SmallScenerySetColourAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr SmallScenerySetColourAction::QueryExecute(bool isExecuting) const
+GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::Landscaping;

@@ -45,7 +45,7 @@ void LandSetHeightAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_coords) << DS_TAG(_height) << DS_TAG(_style);
 }
 
-GameActions::Result::Ptr LandSetHeightAction::Query() const
+GameActions::Result LandSetHeightAction::Query() const
 {
     if (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
@@ -149,7 +149,7 @@ GameActions::Result::Ptr LandSetHeightAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr LandSetHeightAction::Execute() const
+GameActions::Result LandSetHeightAction::Execute() const
 {
     money32 cost = MONEY(0, 0);
     auto surfaceHeight = tile_element_height(_coords);

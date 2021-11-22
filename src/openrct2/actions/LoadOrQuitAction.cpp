@@ -30,12 +30,12 @@ void LoadOrQuitAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_mode) << DS_TAG(_savePromptMode);
 }
 
-GameActions::Result::Ptr LoadOrQuitAction::Query() const
+GameActions::Result LoadOrQuitAction::Query() const
 {
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr LoadOrQuitAction::Execute() const
+GameActions::Result LoadOrQuitAction::Execute() const
 {
     auto mode = static_cast<LoadOrQuitModes>(_mode);
     switch (mode)

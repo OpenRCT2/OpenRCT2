@@ -54,7 +54,7 @@ void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_spriteIndex) << DS_TAG(_costume);
 }
 
-GameActions::Result::Ptr StaffSetCostumeAction::Query() const
+GameActions::Result StaffSetCostumeAction::Query() const
 {
     if (_spriteIndex >= MAX_ENTITIES)
     {
@@ -77,7 +77,7 @@ GameActions::Result::Ptr StaffSetCostumeAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr StaffSetCostumeAction::Execute() const
+GameActions::Result StaffSetCostumeAction::Execute() const
 {
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)

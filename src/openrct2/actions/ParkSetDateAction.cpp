@@ -42,7 +42,7 @@ void ParkSetDateAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_year) << DS_TAG(_month) << DS_TAG(_day);
 }
 
-GameActions::Result::Ptr ParkSetDateAction::Query() const
+GameActions::Result ParkSetDateAction::Query() const
 {
     if (_year <= 0 || _year > MAX_YEAR || _month <= 0 || _month > MONTH_COUNT || _day <= 0 || _day > 31)
     {
@@ -52,7 +52,7 @@ GameActions::Result::Ptr ParkSetDateAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr ParkSetDateAction::Execute() const
+GameActions::Result ParkSetDateAction::Execute() const
 {
     date_set(_year, _month, _day);
     return MakeResult();

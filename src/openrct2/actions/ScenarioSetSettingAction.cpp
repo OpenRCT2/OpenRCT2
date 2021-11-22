@@ -26,7 +26,7 @@ void ScenarioSetSettingAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_setting) << DS_TAG(_value);
 }
 
-GameActions::Result::Ptr ScenarioSetSettingAction::Query() const
+GameActions::Result ScenarioSetSettingAction::Query() const
 {
     if (_setting >= ScenarioSetSetting::Count)
     {
@@ -37,7 +37,7 @@ GameActions::Result::Ptr ScenarioSetSettingAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr ScenarioSetSettingAction::Execute() const
+GameActions::Result ScenarioSetSettingAction::Execute() const
 {
     switch (_setting)
     {

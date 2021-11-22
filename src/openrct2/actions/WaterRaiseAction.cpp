@@ -30,17 +30,17 @@ void WaterRaiseAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_range);
 }
 
-GameActions::Result::Ptr WaterRaiseAction::Query() const
+GameActions::Result WaterRaiseAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr WaterRaiseAction::Execute() const
+GameActions::Result WaterRaiseAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr WaterRaiseAction::QueryExecute(bool isExecuting) const
+GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
 

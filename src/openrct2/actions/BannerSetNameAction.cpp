@@ -42,7 +42,7 @@ void BannerSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr BannerSetNameAction::Query() const
+GameActions::Result BannerSetNameAction::Query() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
@@ -53,7 +53,7 @@ GameActions::Result::Ptr BannerSetNameAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr BannerSetNameAction::Execute() const
+GameActions::Result BannerSetNameAction::Execute() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)

@@ -217,12 +217,12 @@ public:
     /**
      * Query the result of the game action without changing the game state.
      */
-    virtual GameActions::Result::Ptr Query() const abstract;
+    virtual GameActions::Result Query() const abstract;
 
     /**
      * Apply the game action and change the game state.
      */
-    virtual GameActions::Result::Ptr Execute() const abstract;
+    virtual GameActions::Result Execute() const abstract;
 
     bool LocationValid(const CoordsXY& coords) const;
 };
@@ -276,11 +276,11 @@ namespace GameActions
     GameAction::Ptr Clone(const GameAction* action);
 
     // This should be used if a round trip is to be expected.
-    GameActions::Result::Ptr Query(const GameAction* action);
-    GameActions::Result::Ptr Execute(const GameAction* action);
+    GameActions::Result Query(const GameAction* action);
+    GameActions::Result Execute(const GameAction* action);
 
     // This should be used from within game actions.
-    GameActions::Result::Ptr QueryNested(const GameAction* action);
-    GameActions::Result::Ptr ExecuteNested(const GameAction* action);
+    GameActions::Result QueryNested(const GameAction* action);
+    GameActions::Result ExecuteNested(const GameAction* action);
 
 } // namespace GameActions

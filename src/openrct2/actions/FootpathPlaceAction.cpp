@@ -61,7 +61,7 @@ void FootpathPlaceAction::Serialise(DataSerialiser& stream)
            << DS_TAG(_constructFlags);
 }
 
-GameActions::Result::Ptr FootpathPlaceAction::Query() const
+GameActions::Result FootpathPlaceAction::Query() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
@@ -110,7 +110,7 @@ GameActions::Result::Ptr FootpathPlaceAction::Query() const
     return ElementUpdateQuery(tileElement, std::move(res));
 }
 
-GameActions::Result::Ptr FootpathPlaceAction::Execute() const
+GameActions::Result FootpathPlaceAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
@@ -196,7 +196,7 @@ bool FootpathPlaceAction::IsSameAsEntranceElement(const EntranceElement& entranc
     return entranceElement.GetSurfaceEntryIndex() == _type;
 }
 
-GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateQuery(PathElement* pathElement, GameActions::Result res) const
+GameActions::Result FootpathPlaceAction::ElementUpdateQuery(PathElement* pathElement, GameActions::Result res) const
 {
     if (!IsSameAsPathElement(pathElement))
     {
@@ -210,7 +210,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateQuery(PathElement* pa
     return res;
 }
 
-GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* pathElement, GameActions::Result res) const
+GameActions::Result FootpathPlaceAction::ElementUpdateExecute(PathElement* pathElement, GameActions::Result res) const
 {
     if (!IsSameAsPathElement(pathElement))
     {
@@ -263,7 +263,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* 
     return res;
 }
 
-GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Result res) const
+GameActions::Result FootpathPlaceAction::ElementInsertQuery(GameActions::Result res) const
 {
     bool entrancePath = false, entranceIsSamePath = false;
 
@@ -331,7 +331,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
     return res;
 }
 
-GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::Result res) const
+GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Result res) const
 {
     bool entrancePath = false, entranceIsSamePath = false;
 

@@ -36,17 +36,17 @@ void TrackSetBrakeSpeedAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_brakeSpeed);
 }
 
-GameActions::Result::Ptr TrackSetBrakeSpeedAction::Query() const
+GameActions::Result TrackSetBrakeSpeedAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr TrackSetBrakeSpeedAction::Execute() const
+GameActions::Result TrackSetBrakeSpeedAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) const
+GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
 

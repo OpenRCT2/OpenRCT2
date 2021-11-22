@@ -37,7 +37,7 @@ void SetParkEntranceFeeAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_fee);
 }
 
-GameActions::Result::Ptr SetParkEntranceFeeAction::Query() const
+GameActions::Result SetParkEntranceFeeAction::Query() const
 {
     bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
     bool forceFreeEntry = !park_entry_price_unlocked();
@@ -52,7 +52,7 @@ GameActions::Result::Ptr SetParkEntranceFeeAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr SetParkEntranceFeeAction::Execute() const
+GameActions::Result SetParkEntranceFeeAction::Execute() const
 {
     gParkEntranceFee = _fee;
     window_invalidate_by_class(WC_PARK_INFORMATION);

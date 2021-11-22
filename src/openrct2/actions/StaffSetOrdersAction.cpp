@@ -35,7 +35,7 @@ void StaffSetOrdersAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_spriteIndex) << DS_TAG(_ordersId);
 }
 
-GameActions::Result::Ptr StaffSetOrdersAction::Query() const
+GameActions::Result StaffSetOrdersAction::Query() const
 {
     if (_spriteIndex >= MAX_ENTITIES)
     {
@@ -53,7 +53,7 @@ GameActions::Result::Ptr StaffSetOrdersAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr StaffSetOrdersAction::Execute() const
+GameActions::Result StaffSetOrdersAction::Execute() const
 {
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)

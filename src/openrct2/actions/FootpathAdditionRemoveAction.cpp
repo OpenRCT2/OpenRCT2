@@ -42,7 +42,7 @@ void FootpathAdditionRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc);
 }
 
-GameActions::Result::Ptr FootpathAdditionRemoveAction::Query() const
+GameActions::Result FootpathAdditionRemoveAction::Query() const
 {
     if (!LocationValid(_loc))
     {
@@ -89,7 +89,7 @@ GameActions::Result::Ptr FootpathAdditionRemoveAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr FootpathAdditionRemoveAction::Execute() const
+GameActions::Result FootpathAdditionRemoveAction::Execute() const
 {
     auto tileElement = map_get_footpath_element(_loc);
     auto pathElement = tileElement->AsPath();

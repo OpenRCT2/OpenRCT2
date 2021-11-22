@@ -31,7 +31,7 @@ void ParkSetParameterAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_parameter) << DS_TAG(_value);
 }
 
-GameActions::Result::Ptr ParkSetParameterAction::Query() const
+GameActions::Result ParkSetParameterAction::Query() const
 {
     if (_parameter >= ParkParameter::Count)
     {
@@ -43,7 +43,7 @@ GameActions::Result::Ptr ParkSetParameterAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr ParkSetParameterAction::Execute() const
+GameActions::Result ParkSetParameterAction::Execute() const
 {
     switch (_parameter)
     {

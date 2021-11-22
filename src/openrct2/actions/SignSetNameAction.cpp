@@ -43,7 +43,7 @@ void SignSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr SignSetNameAction::Query() const
+GameActions::Result SignSetNameAction::Query() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
@@ -54,7 +54,7 @@ GameActions::Result::Ptr SignSetNameAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr SignSetNameAction::Execute() const
+GameActions::Result SignSetNameAction::Execute() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)

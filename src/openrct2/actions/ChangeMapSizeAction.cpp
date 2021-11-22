@@ -31,7 +31,7 @@ void ChangeMapSizeAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_targetSize);
 }
 
-GameActions::Result::Ptr ChangeMapSizeAction::Query() const
+GameActions::Result ChangeMapSizeAction::Query() const
 {
     if (_targetSize >= MAXIMUM_MAP_SIZE_TECHNICAL)
     {
@@ -44,7 +44,7 @@ GameActions::Result::Ptr ChangeMapSizeAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr ChangeMapSizeAction::Execute() const
+GameActions::Result ChangeMapSizeAction::Execute() const
 {
     while (gMapSize != _targetSize)
     {

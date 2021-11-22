@@ -37,17 +37,17 @@ void ClearAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_range) << DS_TAG(_itemsToClear);
 }
 
-GameActions::Result::Ptr ClearAction::Query() const
+GameActions::Result ClearAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr ClearAction::Execute() const
+GameActions::Result ClearAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr ClearAction::CreateResult() const
+GameActions::Result ClearAction::CreateResult() const
 {
     auto result = MakeResult();
     result.ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
@@ -61,7 +61,7 @@ GameActions::Result::Ptr ClearAction::CreateResult() const
     return result;
 }
 
-GameActions::Result::Ptr ClearAction::QueryExecute(bool executing) const
+GameActions::Result ClearAction::QueryExecute(bool executing) const
 {
     auto result = CreateResult();
 

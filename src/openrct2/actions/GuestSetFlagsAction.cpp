@@ -37,7 +37,7 @@ void GuestSetFlagsAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_peepId) << DS_TAG(_newFlags);
 }
 
-GameActions::Result::Ptr GuestSetFlagsAction::Query() const
+GameActions::Result GuestSetFlagsAction::Query() const
 {
     auto* peep = TryGetEntity<Guest>(_peepId);
     if (peep == nullptr)
@@ -48,7 +48,7 @@ GameActions::Result::Ptr GuestSetFlagsAction::Query() const
     return GameActions::Result();
 }
 
-GameActions::Result::Ptr GuestSetFlagsAction::Execute() const
+GameActions::Result GuestSetFlagsAction::Execute() const
 {
     auto* peep = TryGetEntity<Guest>(_peepId);
     if (peep == nullptr)

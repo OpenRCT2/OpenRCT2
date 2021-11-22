@@ -35,7 +35,7 @@ void PlacePeepSpawnAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
 }
 
-GameActions::Result::Ptr PlacePeepSpawnAction::Query() const
+GameActions::Result PlacePeepSpawnAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
@@ -77,7 +77,7 @@ GameActions::Result::Ptr PlacePeepSpawnAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr PlacePeepSpawnAction::Execute() const
+GameActions::Result PlacePeepSpawnAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::LandPurchase;

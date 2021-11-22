@@ -31,7 +31,7 @@ void ParkEntranceRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc);
 }
 
-GameActions::Result::Ptr ParkEntranceRemoveAction::Query() const
+GameActions::Result ParkEntranceRemoveAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
@@ -52,7 +52,7 @@ GameActions::Result::Ptr ParkEntranceRemoveAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr ParkEntranceRemoveAction::Execute() const
+GameActions::Result ParkEntranceRemoveAction::Execute() const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::LandPurchase;

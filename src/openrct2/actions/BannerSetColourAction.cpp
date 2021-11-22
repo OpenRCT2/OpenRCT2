@@ -39,17 +39,17 @@ void BannerSetColourAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_primaryColour);
 }
 
-GameActions::Result::Ptr BannerSetColourAction::Query() const
+GameActions::Result BannerSetColourAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr BannerSetColourAction::Execute() const
+GameActions::Result BannerSetColourAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr BannerSetColourAction::QueryExecute(bool isExecuting) const
+GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
     res.Expenditure = ExpenditureType::Landscaping;

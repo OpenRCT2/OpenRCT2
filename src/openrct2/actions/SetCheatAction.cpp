@@ -65,7 +65,7 @@ void SetCheatAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_cheatType) << DS_TAG(_param1) << DS_TAG(_param2);
 }
 
-GameActions::Result::Ptr SetCheatAction::Query() const
+GameActions::Result SetCheatAction::Query() const
 {
     if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::Count))
     {
@@ -86,7 +86,7 @@ GameActions::Result::Ptr SetCheatAction::Query() const
     return MakeResult();
 }
 
-GameActions::Result::Ptr SetCheatAction::Execute() const
+GameActions::Result SetCheatAction::Execute() const
 {
     switch (static_cast<CheatType>(_cheatType.id))
     {
