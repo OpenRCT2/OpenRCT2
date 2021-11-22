@@ -1580,7 +1580,7 @@ namespace OpenRCT2
                     cs.ReadWriteArray(guest->Thoughts, [&cs](PeepThought& thought) {
                         cs.ReadWrite(thought.type);
 
-                        uint8_t item;
+                        uint8_t item{};
                         cs.ReadWrite(item);
                         if (item == 255)
                         {
