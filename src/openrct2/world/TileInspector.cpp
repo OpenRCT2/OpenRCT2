@@ -137,7 +137,7 @@ namespace OpenRCT2::TileInspector
      * @param y The y coordinate of the tile
      * @param elementIndex The nth element on this tile
      */
-    GameActionResultPtr RemoveElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting)
+    GameActions::Result RemoveElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting)
     {
         if (isExecuting)
         {
@@ -187,7 +187,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr SwapElementsAt(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting)
+    GameActions::Result SwapElementsAt(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting)
     {
         if (isExecuting)
         {
@@ -212,7 +212,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr RotateElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting)
+    GameActions::Result RotateElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting)
     {
         if (isExecuting)
         {
@@ -294,7 +294,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr ToggleInvisibilityOfElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting)
+    GameActions::Result ToggleInvisibilityOfElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting)
     {
         if (!isExecuting)
         {
@@ -314,7 +314,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting)
+    GameActions::Result PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting)
     {
         // Make sure there is enough space for the new element
         if (!MapCheckCapacityAndReorganise(loc))
@@ -373,7 +373,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr SortElementsAt(const CoordsXY& loc, bool isExecuting)
+    GameActions::Result SortElementsAt(const CoordsXY& loc, bool isExecuting)
     {
         if (isExecuting)
         {
@@ -431,7 +431,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    static GameActionResultPtr ValidateTileHeight(TileElement* const tileElement, int8_t heightOffset)
+    static GameActions::Result ValidateTileHeight(TileElement* const tileElement, int8_t heightOffset)
     {
         int16_t newBaseHeight = static_cast<int16_t>(tileElement->base_height + heightOffset);
         int16_t newClearanceHeight = static_cast<int16_t>(tileElement->clearance_height + heightOffset);
@@ -454,7 +454,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr AnyBaseHeightOffset(const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting)
+    GameActions::Result AnyBaseHeightOffset(const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting)
     {
         TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
         if (tileElement == nullptr)
@@ -504,7 +504,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr SurfaceShowParkFences(const CoordsXY& loc, bool showFences, bool isExecuting)
+    GameActions::Result SurfaceShowParkFences(const CoordsXY& loc, bool showFences, bool isExecuting)
     {
         auto* const surfaceelement = map_get_surface_element_at(loc);
 
@@ -530,7 +530,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr SurfaceToggleCorner(const CoordsXY& loc, int32_t cornerIndex, bool isExecuting)
+    GameActions::Result SurfaceToggleCorner(const CoordsXY& loc, int32_t cornerIndex, bool isExecuting)
     {
         auto* const surfaceElement = map_get_surface_element_at(loc);
 
@@ -583,7 +583,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr SurfaceToggleDiagonal(const CoordsXY& loc, bool isExecuting)
+    GameActions::Result SurfaceToggleDiagonal(const CoordsXY& loc, bool isExecuting)
     {
         auto* const surfaceElement = map_get_surface_element_at(loc);
 
@@ -607,7 +607,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr PathSetSloped(const CoordsXY& loc, int32_t elementIndex, bool sloped, bool isExecuting)
+    GameActions::Result PathSetSloped(const CoordsXY& loc, int32_t elementIndex, bool sloped, bool isExecuting)
     {
         TileElement* const pathElement = map_get_nth_element_at(loc, elementIndex);
 
@@ -629,7 +629,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr PathSetBroken(const CoordsXY& loc, int32_t elementIndex, bool broken, bool isExecuting)
+    GameActions::Result PathSetBroken(const CoordsXY& loc, int32_t elementIndex, bool broken, bool isExecuting)
     {
         TileElement* const pathElement = map_get_nth_element_at(loc, elementIndex);
 
@@ -651,7 +651,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr PathToggleEdge(const CoordsXY& loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting)
+    GameActions::Result PathToggleEdge(const CoordsXY& loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting)
     {
         TileElement* const pathElement = map_get_nth_element_at(loc, elementIndex);
 
@@ -674,7 +674,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr EntranceMakeUsable(const CoordsXY& loc, int32_t elementIndex, bool isExecuting)
+    GameActions::Result EntranceMakeUsable(const CoordsXY& loc, int32_t elementIndex, bool isExecuting)
     {
         TileElement* const entranceElement = map_get_nth_element_at(loc, elementIndex);
 
@@ -714,7 +714,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr WallSetSlope(const CoordsXY& loc, int32_t elementIndex, int32_t slopeValue, bool isExecuting)
+    GameActions::Result WallSetSlope(const CoordsXY& loc, int32_t elementIndex, int32_t slopeValue, bool isExecuting)
     {
         TileElement* const wallElement = map_get_nth_element_at(loc, elementIndex);
 
@@ -737,7 +737,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr WallAnimationFrameOffset(
+    GameActions::Result WallAnimationFrameOffset(
         const CoordsXY& loc, int16_t elementIndex, int8_t animationFrameOffset, bool isExecuting)
     {
         TileElement* const wallElement = map_get_nth_element_at(loc, elementIndex);
@@ -763,7 +763,7 @@ namespace OpenRCT2::TileInspector
 
     // Changes the height of all track elements that belong to the same track piece
     // Broxzier: Copied from track_remove and stripped of unneeded code, but I think this should be smaller
-    GameActionResultPtr TrackBaseHeightOffset(const CoordsXY& loc, int32_t elementIndex, int8_t offset, bool isExecuting)
+    GameActions::Result TrackBaseHeightOffset(const CoordsXY& loc, int32_t elementIndex, int8_t offset, bool isExecuting)
     {
         if (offset == 0)
             return GameActions::Result();
@@ -838,7 +838,7 @@ namespace OpenRCT2::TileInspector
     // Sets chainlift, optionally for an entire track block
     // Broxzier: Basically a copy of the above function, with just two different lines... should probably be combined
     // somehow
-    GameActionResultPtr TrackSetChain(
+    GameActions::Result TrackSetChain(
         const CoordsXY& loc, int32_t elementIndex, bool entireTrackBlock, bool setChain, bool isExecuting)
     {
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
@@ -921,7 +921,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr TrackSetBlockBrake(const CoordsXY& loc, int32_t elementIndex, bool blockBrake, bool isExecuting)
+    GameActions::Result TrackSetBlockBrake(const CoordsXY& loc, int32_t elementIndex, bool blockBrake, bool isExecuting)
     {
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
 
@@ -943,7 +943,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr TrackSetIndestructible(
+    GameActions::Result TrackSetIndestructible(
         const CoordsXY& loc, int32_t elementIndex, bool isIndestructible, bool isExecuting)
     {
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
@@ -966,7 +966,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr ScenerySetQuarterLocation(
+    GameActions::Result ScenerySetQuarterLocation(
         const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting)
     {
         TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
@@ -993,7 +993,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr ScenerySetQuarterCollision(
+    GameActions::Result ScenerySetQuarterCollision(
         const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting)
     {
         TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
@@ -1018,7 +1018,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActionResultPtr BannerToggleBlockingEdge(const CoordsXY& loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting)
+    GameActions::Result BannerToggleBlockingEdge(const CoordsXY& loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting)
     {
         TileElement* const bannerElement = map_get_nth_element_at(loc, elementIndex);
 
