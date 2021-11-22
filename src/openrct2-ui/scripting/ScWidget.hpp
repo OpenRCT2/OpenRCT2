@@ -44,9 +44,9 @@ namespace OpenRCT2::Scripting
         static DukValue ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex);
 
     private:
-        std::shared_ptr<ScWindow> WindowGet() const;
+        std::shared_ptr<ScWindow> window_get() const;
 
-        std::string NameGet() const
+        std::string name_get() const
         {
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
@@ -56,7 +56,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        void NameSet(const std::string& value)
+        void name_set(const std::string& value)
         {
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
@@ -65,7 +65,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::string TypeGet() const
+        std::string type_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -120,7 +120,7 @@ namespace OpenRCT2::Scripting
             return "unknown";
         }
 
-        int32_t XGet() const
+        int32_t x_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -129,7 +129,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void XSet(int32_t value)
+        void x_set(int32_t value)
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -164,7 +164,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t YGet() const
+        int32_t y_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -173,7 +173,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void YSet(int32_t value)
+        void y_set(int32_t value)
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -208,7 +208,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t WidthGet() const
+        int32_t width_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -217,7 +217,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void WidthSet(int32_t value)
+        void width_set(int32_t value)
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -251,7 +251,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int32_t HeightGet() const
+        int32_t height_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -260,7 +260,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void HeightSet(int32_t value)
+        void height_set(int32_t value)
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -291,7 +291,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool IsDisabledGet() const
+        bool isDisabled_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -300,7 +300,7 @@ namespace OpenRCT2::Scripting
             }
             return false;
         }
-        void IsDisabledSet(bool value)
+        void isDisabled_set(bool value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -323,7 +323,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool IsVisibleGet() const
+        bool isVisible_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -332,7 +332,7 @@ namespace OpenRCT2::Scripting
             }
             return false;
         }
-        void IsVisibleSet(bool value)
+        void isVisible_set(bool value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -356,7 +356,7 @@ namespace OpenRCT2::Scripting
         }
 
     protected:
-        std::string TextGet() const
+        std::string text_get() const
         {
             if (IsCustomWindow())
             {
@@ -369,7 +369,7 @@ namespace OpenRCT2::Scripting
             return "";
         }
 
-        void TextSet(std::string value)
+        void text_set(std::string value)
         {
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
@@ -427,13 +427,13 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScButtonWidget>(ctx);
-            dukglue_register_property(ctx, &ScButtonWidget::BorderGet, &ScButtonWidget::BorderSet, "border");
-            dukglue_register_property(ctx, &ScButtonWidget::IsPressedGet, &ScButtonWidget::IsPressedSet, "isPressed");
-            dukglue_register_property(ctx, &ScButtonWidget::ImageGet, &ScButtonWidget::ImageSet, "image");
+            dukglue_register_property(ctx, &ScButtonWidget::border_get, &ScButtonWidget::border_set, "border");
+            dukglue_register_property(ctx, &ScButtonWidget::isPressed_get, &ScButtonWidget::isPressed_set, "isPressed");
+            dukglue_register_property(ctx, &ScButtonWidget::image_get, &ScButtonWidget::image_set, "image");
         }
 
     private:
-        bool BorderGet() const
+        bool border_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr)
@@ -442,7 +442,7 @@ namespace OpenRCT2::Scripting
             }
             return false;
         }
-        void BorderSet(bool value)
+        void border_set(bool value)
         {
             auto widget = GetWidget();
             if (widget != nullptr && (widget->type == WindowWidgetType::FlatBtn || widget->type == WindowWidgetType::ImgBtn))
@@ -455,7 +455,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool IsPressedGet() const
+        bool isPressed_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -464,7 +464,7 @@ namespace OpenRCT2::Scripting
             }
             return false;
         }
-        void IsPressedSet(bool value)
+        void isPressed_set(bool value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -474,7 +474,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint32_t ImageGet() const
+        uint32_t image_get() const
         {
             auto widget = GetWidget();
             if (widget != nullptr && widget->type == WindowWidgetType::FlatBtn)
@@ -483,7 +483,7 @@ namespace OpenRCT2::Scripting
             }
             return 0;
         }
-        void ImageSet(uint32_t value)
+        void image_set(uint32_t value)
         {
             auto widget = GetWidget();
             if (widget != nullptr && widget->type == WindowWidgetType::FlatBtn)
@@ -505,11 +505,11 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScCheckBoxWidget>(ctx);
-            dukglue_register_property(ctx, &ScCheckBoxWidget::IsCheckedGet, &ScCheckBoxWidget::IsCheckedSet, "isChecked");
+            dukglue_register_property(ctx, &ScCheckBoxWidget::isChecked_get, &ScCheckBoxWidget::isChecked_set, "isChecked");
         }
 
     private:
-        bool IsCheckedGet() const
+        bool isChecked_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -518,7 +518,7 @@ namespace OpenRCT2::Scripting
             }
             return false;
         }
-        void IsCheckedSet(bool value)
+        void isChecked_set(bool value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -540,11 +540,11 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScColourPickerWidget>(ctx);
-            dukglue_register_property(ctx, &ScColourPickerWidget::ColourGet, &ScColourPickerWidget::ColourSet, "colour");
+            dukglue_register_property(ctx, &ScColourPickerWidget::colour_get, &ScColourPickerWidget::colour_set, "colour");
         }
 
     private:
-        colour_t ColourGet() const
+        colour_t colour_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -553,7 +553,7 @@ namespace OpenRCT2::Scripting
             }
             return COLOUR_BLACK;
         }
-        void ColourSet(colour_t value)
+        void colour_set(colour_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -575,13 +575,13 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScDropdownWidget>(ctx);
-            dukglue_register_property(ctx, &ScDropdownWidget::ItemsGet, &ScDropdownWidget::ItemsSet, "items");
+            dukglue_register_property(ctx, &ScDropdownWidget::items_get, &ScDropdownWidget::items_set, "items");
             dukglue_register_property(
-                ctx, &ScDropdownWidget::SelectedIndexGet, &ScDropdownWidget::SelectedIndexSet, "selectedIndex");
+                ctx, &ScDropdownWidget::selectedIndex_get, &ScDropdownWidget::selectedIndex_set, "selectedIndex");
         }
 
     private:
-        int32_t SelectedIndexGet() const
+        int32_t selectedIndex_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -590,7 +590,7 @@ namespace OpenRCT2::Scripting
             }
             return -1;
         }
-        void SelectedIndexSet(int32_t value)
+        void selectedIndex_set(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -599,7 +599,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::vector<std::string> ItemsGet() const
+        std::vector<std::string> items_get() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -609,7 +609,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        void ItemsSet(const std::vector<std::string>& value)
+        void items_set(const std::vector<std::string>& value)
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -630,7 +630,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScGroupBoxWidget>(ctx);
-            dukglue_register_property(ctx, &ScGroupBoxWidget::TextGet, &ScGroupBoxWidget::TextSet, "text");
+            dukglue_register_property(ctx, &ScGroupBoxWidget::text_get, &ScGroupBoxWidget::text_set, "text");
         }
     };
 
@@ -645,12 +645,12 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScLabelWidget>(ctx);
-            dukglue_register_property(ctx, &ScLabelWidget::TextGet, &ScLabelWidget::TextSet, "text");
-            dukglue_register_property(ctx, &ScLabelWidget::TextAlignGet, &ScLabelWidget::TextAlignSet, "textAlign");
+            dukglue_register_property(ctx, &ScLabelWidget::text_get, &ScLabelWidget::text_set, "text");
+            dukglue_register_property(ctx, &ScLabelWidget::textAlign_get, &ScLabelWidget::textAlign_set, "textAlign");
         }
 
     private:
-        std::string TextAlignGet() const
+        std::string textAlign_get() const
         {
             auto* widget = GetWidget();
             if (widget != nullptr)
@@ -663,7 +663,7 @@ namespace OpenRCT2::Scripting
             return "left";
         }
 
-        void TextAlignSet(const std::string& value)
+        void textAlign_set(const std::string& value)
         {
             auto* widget = GetWidget();
             if (widget != nullptr)
@@ -687,20 +687,20 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScListViewWidget>(ctx);
-            dukglue_register_property(ctx, &ScListViewWidget::CanSelectGet, &ScListViewWidget::CanSelectSet, "canSelect");
-            dukglue_register_property(ctx, &ScListViewWidget::IsStripedGet, &ScListViewWidget::IsStripedSet, "isStriped");
-            dukglue_register_property(ctx, &ScListViewWidget::ScrollbarsGet, &ScListViewWidget::ScrollbarsSet, "scrollbars");
+            dukglue_register_property(ctx, &ScListViewWidget::canSelect_get, &ScListViewWidget::canSelect_set, "canSelect");
+            dukglue_register_property(ctx, &ScListViewWidget::isStriped_get, &ScListViewWidget::isStriped_set, "isStriped");
+            dukglue_register_property(ctx, &ScListViewWidget::scrollbars_get, &ScListViewWidget::scrollbars_set, "scrollbars");
             dukglue_register_property(
-                ctx, &ScListViewWidget::ShowColumnHeadersGet, &ScListViewWidget::ShowColumnHeadersSet, "showColumnHeaders");
-            dukglue_register_property(ctx, &ScListViewWidget::HighlightedCellGet, nullptr, "highlightedCell");
+                ctx, &ScListViewWidget::showColumnHeaders_get, &ScListViewWidget::showColumnHeaders_set, "showColumnHeaders");
+            dukglue_register_property(ctx, &ScListViewWidget::highlightedCell_get, nullptr, "highlightedCell");
             dukglue_register_property(
-                ctx, &ScListViewWidget::SelectedCellGet, &ScListViewWidget::SelectedCellSet, "selectedCell");
-            dukglue_register_property(ctx, &ScListViewWidget::ColumnsGet, &ScListViewWidget::ColumnsSet, "columns");
-            dukglue_register_property(ctx, &ScListViewWidget::ItemsGet, &ScListViewWidget::ItemsSet, "items");
+                ctx, &ScListViewWidget::selectedCell_get, &ScListViewWidget::selectedCell_set, "selectedCell");
+            dukglue_register_property(ctx, &ScListViewWidget::columns_get, &ScListViewWidget::columns_set, "columns");
+            dukglue_register_property(ctx, &ScListViewWidget::items_get, &ScListViewWidget::items_set, "items");
         }
 
     private:
-        bool CanSelectGet() const
+        bool canSelect_get() const
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -710,7 +710,7 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        void CanSelectSet(bool value)
+        void canSelect_set(bool value)
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -719,7 +719,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool IsStripedGet() const
+        bool isStriped_get() const
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -729,7 +729,7 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        void IsStripedSet(bool value)
+        void isStriped_set(bool value)
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -738,7 +738,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        DukValue ScrollbarsGet() const
+        DukValue scrollbars_get() const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto scrollType = ScrollbarType::None;
@@ -750,7 +750,7 @@ namespace OpenRCT2::Scripting
             return ToDuk(ctx, scrollType);
         }
 
-        void ScrollbarsSet(const DukValue& value)
+        void scrollbars_set(const DukValue& value)
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -759,7 +759,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        bool ShowColumnHeadersGet() const
+        bool showColumnHeaders_get() const
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -769,7 +769,7 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        void ShowColumnHeadersSet(bool value)
+        void showColumnHeaders_set(bool value)
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -778,7 +778,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        DukValue HighlightedCellGet()
+        DukValue highlightedCell_get()
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto listView = GetListView();
@@ -789,7 +789,7 @@ namespace OpenRCT2::Scripting
             return ToDuk(ctx, nullptr);
         }
 
-        DukValue SelectedCellGet()
+        DukValue selectedCell_get()
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto listView = GetListView();
@@ -800,7 +800,7 @@ namespace OpenRCT2::Scripting
             return ToDuk(ctx, nullptr);
         }
 
-        void SelectedCellSet(const DukValue& value)
+        void selectedCell_set(const DukValue& value)
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -809,7 +809,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::vector<std::vector<std::string>> ItemsGet()
+        std::vector<std::vector<std::string>> items_get()
         {
             std::vector<std::vector<std::string>> result;
             auto listView = GetListView();
@@ -823,7 +823,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        void ItemsSet(const DukValue& value)
+        void items_set(const DukValue& value)
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -832,7 +832,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::vector<DukValue> ColumnsGet()
+        std::vector<DukValue> columns_get()
         {
             std::vector<DukValue> result;
             auto listView = GetListView();
@@ -847,7 +847,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        void ColumnsSet(const DukValue& value)
+        void columns_set(const DukValue& value)
         {
             auto listView = GetListView();
             if (listView != nullptr)
@@ -878,7 +878,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScSpinnerWidget>(ctx);
-            dukglue_register_property(ctx, &ScSpinnerWidget::TextGet, &ScSpinnerWidget::TextSet, "text");
+            dukglue_register_property(ctx, &ScSpinnerWidget::text_get, &ScSpinnerWidget::text_set, "text");
         }
     };
 
@@ -893,11 +893,11 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScTextBoxWidget>(ctx);
-            dukglue_register_property(ctx, &ScTextBoxWidget::MaxLengthGet, &ScTextBoxWidget::MaxLengthSet, "maxLength");
+            dukglue_register_property(ctx, &ScTextBoxWidget::maxLength_get, &ScTextBoxWidget::maxLength_set, "maxLength");
         }
 
     private:
-        int32_t MaxLengthGet() const
+        int32_t maxLength_get() const
         {
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
@@ -907,7 +907,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        void MaxLengthSet(int32_t value)
+        void maxLength_set(int32_t value)
         {
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())
@@ -928,11 +928,11 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScViewportWidget>(ctx);
-            dukglue_register_property(ctx, &ScViewportWidget::ViewportGet, nullptr, "viewport");
+            dukglue_register_property(ctx, &ScViewportWidget::viewport_get, nullptr, "viewport");
         }
 
     private:
-        std::shared_ptr<ScViewport> ViewportGet() const
+        std::shared_ptr<ScViewport> viewport_get() const
         {
             auto w = GetWindow();
             if (w != nullptr && IsCustomWindow())

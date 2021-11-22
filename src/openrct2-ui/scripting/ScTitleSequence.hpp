@@ -154,12 +154,12 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::string FileNameGet() const
+        std::string fileName_get() const
         {
             return _fileName;
         }
 
-        void FileNameSet(const std::string& value)
+        void fileName_set(const std::string& value)
         {
             if (value == _fileName)
                 return;
@@ -181,7 +181,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        void Delete()
+        void delete_()
         {
             auto seq = LoadTitleSequence(_titleSequencePath);
             if (seq != nullptr)
@@ -195,7 +195,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        void Load()
+        void load()
         {
             auto seq = LoadTitleSequence(_titleSequencePath);
             if (seq != nullptr)
@@ -233,9 +233,9 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScTitleSequencePark::FileNameGet, &ScTitleSequencePark::FileNameSet, "fileName");
-            dukglue_register_method(ctx, &ScTitleSequencePark::Delete, "delete");
-            dukglue_register_method(ctx, &ScTitleSequencePark::Load, "load");
+            dukglue_register_property(ctx, &ScTitleSequencePark::fileName_get, &ScTitleSequencePark::fileName_set, "fileName");
+            dukglue_register_method(ctx, &ScTitleSequencePark::delete_, "delete");
+            dukglue_register_method(ctx, &ScTitleSequencePark::load, "load");
         }
 
     private:
@@ -264,7 +264,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::string NameGet() const
+        std::string name_get() const
         {
             const auto* item = GetItem();
             if (item != nullptr)
@@ -274,7 +274,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        void NameSet(const std::string& value)
+        void name_set(const std::string& value)
         {
             auto index = GetManagerIndex();
             if (index)
@@ -287,7 +287,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        std::string PathGet() const
+        std::string path_get() const
         {
             const auto* item = GetItem();
             if (item != nullptr)
@@ -297,7 +297,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        bool IsDirectoryGet() const
+        bool isDirectory_get() const
         {
             const auto* item = GetItem();
             if (item != nullptr)
@@ -307,7 +307,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        bool IsReadOnlyGet() const
+        bool isReadOnly_get() const
         {
             const auto* item = GetItem();
             if (item != nullptr)
@@ -317,7 +317,7 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        std::vector<std::shared_ptr<ScTitleSequencePark>> ParksGet() const
+        std::vector<std::shared_ptr<ScTitleSequencePark>> parks_get() const
         {
             std::vector<std::shared_ptr<ScTitleSequencePark>> result;
             auto titleSeq = LoadTitleSequence(_path);
@@ -331,7 +331,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        std::vector<DukValue> CommandsGet() const
+        std::vector<DukValue> commands_get() const
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto ctx = scriptEngine.GetContext();
@@ -348,7 +348,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        void CommandsSet(const std::vector<DukValue>& value)
+        void commands_set(const std::vector<DukValue>& value)
         {
             std::vector<TitleCommand> commands;
             for (const auto& v : value)
@@ -362,14 +362,14 @@ namespace OpenRCT2::Scripting
             TitleSequenceSave(*titleSeq);
         }
 
-        void AddPark(const std::string& path, const std::string& fileName)
+        void addPark(const std::string& path, const std::string& fileName)
         {
             auto titleSeq = LoadTitleSequence(_path);
             TitleSequenceAddPark(*titleSeq, path.c_str(), fileName.c_str());
             TitleSequenceSave(*titleSeq);
         }
 
-        std::shared_ptr<ScTitleSequence> Clone(const std::string& name) const
+        std::shared_ptr<ScTitleSequence> clone(const std::string& name) const
         {
             auto copyIndex = GetManagerIndex();
             if (copyIndex)
@@ -384,7 +384,7 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        void Delete()
+        void delete_()
         {
             auto index = GetManagerIndex();
             if (index)
@@ -394,16 +394,16 @@ namespace OpenRCT2::Scripting
             _path = {};
         }
 
-        bool IsPlayingGet() const
+        bool isPlaying_get() const
         {
             auto index = GetManagerIndex();
             return index && title_is_previewing_sequence() && *index == title_get_current_sequence();
         }
 
-        DukValue PositionGet() const
+        DukValue position_get() const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (IsPlayingGet())
+            if (isPlaying_get())
             {
                 auto* player = static_cast<ITitleSequencePlayer*>(title_get_sequence_player());
                 if (player != nullptr)
@@ -414,7 +414,7 @@ namespace OpenRCT2::Scripting
             return ToDuk(ctx, nullptr);
         }
 
-        void Play()
+        void play()
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto index = GetManagerIndex();
@@ -431,10 +431,10 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        void Seek(int32_t position)
+        void seek(int32_t position)
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (IsPlayingGet())
+            if (isPlaying_get())
             {
                 auto* player = static_cast<ITitleSequencePlayer*>(title_get_sequence_player());
                 try
@@ -449,9 +449,9 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        void Stop()
+        void stop()
         {
-            if (IsPlayingGet())
+            if (isPlaying_get())
             {
                 title_stop_previewing_sequence();
             }
@@ -460,21 +460,21 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScTitleSequence::NameGet, &ScTitleSequence::NameSet, "name");
-            dukglue_register_property(ctx, &ScTitleSequence::PathGet, nullptr, "path");
-            dukglue_register_property(ctx, &ScTitleSequence::IsDirectoryGet, nullptr, "isDirectory");
-            dukglue_register_property(ctx, &ScTitleSequence::IsReadOnlyGet, nullptr, "isReadOnly");
-            dukglue_register_property(ctx, &ScTitleSequence::ParksGet, nullptr, "parks");
-            dukglue_register_property(ctx, &ScTitleSequence::CommandsGet, &ScTitleSequence::CommandsSet, "commands");
-            dukglue_register_property(ctx, &ScTitleSequence::IsPlayingGet, nullptr, "isPlaying");
-            dukglue_register_property(ctx, &ScTitleSequence::PositionGet, nullptr, "position");
-            dukglue_register_method(ctx, &ScTitleSequence::AddPark, "addPark");
-            dukglue_register_method(ctx, &ScTitleSequence::Clone, "clone");
-            dukglue_register_method(ctx, &ScTitleSequence::Delete, "delete");
+            dukglue_register_property(ctx, &ScTitleSequence::name_get, &ScTitleSequence::name_set, "name");
+            dukglue_register_property(ctx, &ScTitleSequence::path_get, nullptr, "path");
+            dukglue_register_property(ctx, &ScTitleSequence::isDirectory_get, nullptr, "isDirectory");
+            dukglue_register_property(ctx, &ScTitleSequence::isReadOnly_get, nullptr, "isReadOnly");
+            dukglue_register_property(ctx, &ScTitleSequence::parks_get, nullptr, "parks");
+            dukglue_register_property(ctx, &ScTitleSequence::commands_get, &ScTitleSequence::commands_set, "commands");
+            dukglue_register_property(ctx, &ScTitleSequence::isPlaying_get, nullptr, "isPlaying");
+            dukglue_register_property(ctx, &ScTitleSequence::position_get, nullptr, "position");
+            dukglue_register_method(ctx, &ScTitleSequence::addPark, "addPark");
+            dukglue_register_method(ctx, &ScTitleSequence::clone, "clone");
+            dukglue_register_method(ctx, &ScTitleSequence::delete_, "delete");
 
-            dukglue_register_method(ctx, &ScTitleSequence::Play, "play");
-            dukglue_register_method(ctx, &ScTitleSequence::Seek, "seek");
-            dukglue_register_method(ctx, &ScTitleSequence::Stop, "stop");
+            dukglue_register_method(ctx, &ScTitleSequence::play, "play");
+            dukglue_register_method(ctx, &ScTitleSequence::seek, "seek");
+            dukglue_register_method(ctx, &ScTitleSequence::stop, "stop");
         }
 
     private:
@@ -506,7 +506,7 @@ namespace OpenRCT2::Scripting
     class ScTitleSequenceManager
     {
     private:
-        std::vector<std::shared_ptr<ScTitleSequence>> TitleSequencesGet() const
+        std::vector<std::shared_ptr<ScTitleSequence>> titleSequences_get() const
         {
             std::vector<std::shared_ptr<ScTitleSequence>> result;
             auto count = TitleSequenceManager::GetCount();
@@ -518,7 +518,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        std::shared_ptr<ScTitleSequence> Create(const std::string& name)
+        std::shared_ptr<ScTitleSequence> create(const std::string& name)
         {
             auto index = TitleSequenceManager::CreateItem(name.c_str());
             auto* item = TitleSequenceManager::GetItem(index);
@@ -532,8 +532,8 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScTitleSequenceManager::TitleSequencesGet, nullptr, "titleSequences");
-            dukglue_register_method(ctx, &ScTitleSequenceManager::Create, "create");
+            dukglue_register_property(ctx, &ScTitleSequenceManager::titleSequences_get, nullptr, "titleSequences");
+            dukglue_register_method(ctx, &ScTitleSequenceManager::create, "create");
         }
     };
 } // namespace OpenRCT2::Scripting
