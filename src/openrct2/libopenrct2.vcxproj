@@ -169,6 +169,7 @@
     <ClInclude Include="core\GroupVector.hpp" />
     <ClInclude Include="core\Guard.hpp" />
     <ClInclude Include="core\Http.h" />
+    <ClInclude Include="core\Identifier.hpp" />
     <ClInclude Include="core\Imaging.h" />
     <ClInclude Include="core\IStream.hpp" />
     <ClInclude Include="core\JobPool.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateSnapshots.h" />
+    <ClInclude Include="Identifiers.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="interface\Chat.h" />
     <ClInclude Include="interface\Colour.h" />

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "Location.hpp"
 #include "Map.h"
@@ -43,9 +44,6 @@ extern CoordsXYZD gParkEntranceGhostPosition;
 #define MAX_PARK_ENTRANCES 256
 
 constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
-
-using ParkEntranceIndex = uint8_t;
-constexpr const ParkEntranceIndex PARK_ENTRANCE_INDEX_NULL = 255;
 
 extern std::vector<CoordsXYZD> gParkEntrances;
 
