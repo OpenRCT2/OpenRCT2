@@ -58,23 +58,23 @@ GameActions::Result::Ptr StaffSetCostumeAction::Query() const
 {
     if (_spriteIndex >= MAX_ENTITIES)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
         log_warning("Invalid game command for sprite %u", _spriteIndex);
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto spriteType = EntertainerCostumeToSprite(_costume);
     if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
     {
         log_warning("Invalid game command for sprite %u", _spriteIndex);
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr StaffSetCostumeAction::Execute() const
@@ -83,7 +83,7 @@ GameActions::Result::Ptr StaffSetCostumeAction::Execute() const
     if (staff == nullptr)
     {
         log_warning("Invalid game command for sprite %u", _spriteIndex);
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto spriteType = EntertainerCostumeToSprite(_costume);
@@ -101,8 +101,8 @@ GameActions::Result::Ptr StaffSetCostumeAction::Execute() const
     auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
     context_broadcast_intent(&intent);
 
-    auto res = std::make_unique<GameActions::Result>();
-    res->Position = staff->GetLocation();
+    auto res = GameActions::Result();
+    res.Position = staff->GetLocation();
 
     return res;
 }

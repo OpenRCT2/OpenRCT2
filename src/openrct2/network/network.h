@@ -77,12 +77,12 @@ void network_set_player_group(uint32_t index, uint32_t groupindex);
 [[nodiscard]] uint8_t network_get_group_id(uint32_t index);
 [[nodiscard]] int32_t network_get_num_groups();
 [[nodiscard]] const char* network_get_group_name(uint32_t index);
-[[nodiscard]] std::unique_ptr<GameActions::Result> network_set_player_group(
+[[nodiscard]] GameActions::Result network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
-[[nodiscard]] std::unique_ptr<GameActions::Result> network_modify_groups(
+[[nodiscard]] GameActions::Result network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting);
-[[nodiscard]] std::unique_ptr<GameActions::Result> network_kick_player(NetworkPlayerId_t playerId, bool isExecuting);
+[[nodiscard]] GameActions::Result network_kick_player(NetworkPlayerId_t playerId, bool isExecuting);
 [[nodiscard]] uint8_t network_get_default_group();
 [[nodiscard]] int32_t network_get_num_actions();
 [[nodiscard]] rct_string_id network_get_action_name_string_id(uint32_t index);

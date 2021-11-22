@@ -47,11 +47,11 @@ void BannerPlaceAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr BannerPlaceAction::Query() const
 {
     auto res = MakeResult();
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
     if (!LocationValid(_loc))
     {
@@ -96,7 +96,7 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
         log_error("Invalid banner object type. bannerType = ", _bannerType);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
-    res->Cost = bannerEntry->price;
+    res.Cost = bannerEntry->price;
 
     return res;
 }
@@ -104,11 +104,11 @@ GameActions::Result::Ptr BannerPlaceAction::Query() const
 GameActions::Result::Ptr BannerPlaceAction::Execute() const
 {
     auto res = MakeResult();
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
@@ -136,7 +136,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     banner->colour = _primaryColour;
     banner->position = TileCoordsXY(_loc);
 
-    res->SetData(BannerPlaceActionResult{ banner->id });
+    res.SetData(BannerPlaceActionResult{ banner->id });
     auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
     Guard::Assert(bannerElement != nullptr);
 
@@ -149,7 +149,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     map_invalidate_tile_full(_loc);
     map_animation_create(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
 
-    res->Cost = bannerEntry->price;
+    res.Cost = bannerEntry->price;
     return res;
 }
 

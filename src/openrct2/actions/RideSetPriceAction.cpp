@@ -49,7 +49,7 @@ void RideSetPriceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr RideSetPriceAction::Query() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
+    GameActions::Result::Ptr res = GameActions::Result();
 
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -70,8 +70,8 @@ GameActions::Result::Ptr RideSetPriceAction::Query() const
 
 GameActions::Result::Ptr RideSetPriceAction::Execute() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
-    res->Expenditure = ExpenditureType::ParkRideTickets;
+    GameActions::Result::Ptr res = GameActions::Result();
+    res.Expenditure = ExpenditureType::ParkRideTickets;
 
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
@@ -90,7 +90,7 @@ GameActions::Result::Ptr RideSetPriceAction::Execute() const
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res->Position = { location, tile_element_height(location) };
+        res.Position = { location, tile_element_height(location) };
     }
 
     ShopItem shopItem;

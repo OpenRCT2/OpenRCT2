@@ -44,12 +44,12 @@ void WallSetColourAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr WallSetColourAction::Query() const
 {
     auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_REPAINT_THIS;
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
+    res.ErrorTitle = STR_CANT_REPAINT_THIS;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
 
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     if (!LocationValid(_loc))
     {
@@ -107,11 +107,11 @@ GameActions::Result::Ptr WallSetColourAction::Query() const
 GameActions::Result::Ptr WallSetColourAction::Execute() const
 {
     auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_REPAINT_THIS;
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.ErrorTitle = STR_CANT_REPAINT_THIS;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     auto wallElement = map_get_wall_element_at(_loc);
     if (wallElement == nullptr)

@@ -36,8 +36,8 @@ void WaterSetHeightAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr WaterSetHeightAction::Query() const
 {
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = { _coords, _height * COORDS_Z_STEP };
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = { _coords, _height * COORDS_Z_STEP };
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
         && gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
@@ -84,7 +84,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
         zLow = temp;
     }
 
-    if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2->Error != GameActions::Status::Ok)
+    if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2.Error != GameActions::Status::Ok)
     {
         return res2;
     }
@@ -93,7 +93,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
         return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
     }
 
-    res->Cost = 250;
+    res.Cost = 250;
 
     return res;
 }
@@ -101,8 +101,8 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
 GameActions::Result::Ptr WaterSetHeightAction::Execute() const
 {
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = { _coords, _height * COORDS_Z_STEP };
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = { _coords, _height * COORDS_Z_STEP };
 
     int32_t surfaceHeight = tile_element_height(_coords);
     footpath_remove_litter({ _coords, surfaceHeight });
@@ -113,7 +113,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Execute() const
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     if (_height > surfaceElement->base_height)
@@ -126,7 +126,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Execute() const
     }
     map_invalidate_tile_full(_coords);
 
-    res->Cost = 250;
+    res.Cost = 250;
 
     return res;
 }

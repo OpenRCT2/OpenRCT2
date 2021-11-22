@@ -76,7 +76,7 @@ GameActions::Result::Ptr StaffHireNewAction::Execute() const
 GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
 {
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Wages;
+    res.Expenditure = ExpenditureType::Wages;
 
     if (_staffType >= static_cast<uint8_t>(StaffType::Count))
     {
@@ -123,7 +123,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         // In query we just want to see if we can obtain a sprite slot.
         sprite_remove(newPeep);
 
-        res->SetData(StaffHireNewActionResult{ SPRITE_INDEX_NULL });
+        res.SetData(StaffHireNewActionResult{ SPRITE_INDEX_NULL });
     }
     else
     {
@@ -210,7 +210,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
 
         newPeep->PatrolInfo = nullptr;
 
-        res->SetData(StaffHireNewActionResult{ newPeep->sprite_index });
+        res.SetData(StaffHireNewActionResult{ newPeep->sprite_index });
     }
 
     return res;

@@ -572,7 +572,7 @@ void Peep::PickupAbort(int32_t old_x)
 
 // Returns GameActions::Status::OK when a peep can be dropped at the given location. When apply is set to true the peep gets
 // dropped.
-std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, bool apply)
+GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
 {
     auto* pathElement = map_get_path_element_at(location);
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
@@ -582,8 +582,7 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
     }
     if (tileElement == nullptr)
     {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
     }
 
     // Set the coordinate of destination to be exactly
@@ -592,18 +591,17 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
 
     if (!map_is_location_owned(destination))
     {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::NotOwned, STR_ERR_CANT_PLACE_PERSON_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_ERR_CANT_PLACE_PERSON_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (auto res = MapCanConstructAt({ destination, destination.z, destination.z + (1 * 8) }, { 0b1111, 0 });
-        res->Error != GameActions::Status::Ok)
+        res.Error != GameActions::Status::Ok)
     {
-        const auto stringId = std::get<rct_string_id>(res->ErrorMessage);
+        const auto stringId = std::get<rct_string_id>(res.ErrorMessage);
         if (stringId != STR_RAISE_OR_LOWER_LAND_FIRST && stringId != STR_FOOTPATH_IN_THE_WAY)
         {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::NoClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res->ErrorMessageArgs.data());
+            return GameActions::Result(
+                GameActions::Status::NoClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res.ErrorMessageArgs.data());
         }
     }
 
@@ -626,7 +624,7 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
         }
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 /**

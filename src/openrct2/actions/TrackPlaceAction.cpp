@@ -85,10 +85,10 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     }
 
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::RideConstruction;
-    res->Position.x = _origin.x + 16;
-    res->Position.y = _origin.y + 16;
-    res->Position.z = _origin.z;
+    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Position.x = _origin.x + 16;
+    res.Position.y = _origin.y + 16;
+    res.Position.z = _origin.z;
 
     auto resultData = TrackPlaceActionResult{};
 
@@ -234,12 +234,12 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             : CREATE_CROSSING_MODE_NONE;
         auto canBuild = MapCanConstructWithClearAt(
             { mapLoc, baseZ, clearanceZ }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
-        if (canBuild->Error != GameActions::Status::Ok)
+        if (canBuild.Error != GameActions::Status::Ok)
         {
-            canBuild->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;
         }
-        cost += canBuild->Cost;
+        cost += canBuild.Cost;
 
         // When building a level crossing, remove any pre-existing path furniture.
         if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH)
@@ -251,7 +251,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             }
         }
 
-        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
         {
@@ -381,8 +381,8 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
     price *= ted.Price;
 
     price >>= 16;
-    res->Cost = cost + ((price / 2) * 10);
-    res->SetData(std::move(resultData));
+    res.Cost = cost + ((price / 2) * 10);
+    res.SetData(std::move(resultData));
 
     return res;
 }
@@ -404,10 +404,10 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     }
 
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::RideConstruction;
-    res->Position.x = _origin.x + 16;
-    res->Position.y = _origin.y + 16;
-    res->Position.z = _origin.z;
+    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Position.x = _origin.x + 16;
+    res.Position.y = _origin.y + 16;
+    res.Position.z = _origin.z;
 
     auto resultData = TrackPlaceActionResult{};
 
@@ -447,12 +447,12 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         auto canBuild = MapCanConstructWithClearAt(
             mapLocWithClearance, &map_place_non_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
             crossingMode);
-        if (canBuild->Error != GameActions::Status::Ok)
+        if (canBuild.Error != GameActions::Status::Ok)
         {
-            canBuild->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;
         }
-        cost += canBuild->Cost;
+        cost += canBuild.Cost;
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
         {
@@ -477,7 +477,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             }
         }
 
-        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
         {
@@ -676,8 +676,8 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
     price *= ted.Price;
 
     price >>= 16;
-    res->Cost = cost + ((price / 2) * 10);
-    res->SetData(std::move(resultData));
+    res.Cost = cost + ((price / 2) * 10);
+    res.SetData(std::move(resultData));
 
     return res;
 }

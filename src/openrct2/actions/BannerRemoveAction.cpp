@@ -43,11 +43,11 @@ void BannerRemoveAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr BannerRemoveAction::Query() const
 {
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
-    res->ErrorTitle = STR_CANT_REMOVE_THIS;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
+    res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
     if (!LocationValid(_loc) || !map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
     {
@@ -78,7 +78,7 @@ GameActions::Result::Ptr BannerRemoveAction::Query() const
     auto* bannerEntry = get_banner_entry(banner->type);
     if (bannerEntry != nullptr)
     {
-        res->Cost = -((bannerEntry->price * 3) / 4);
+        res.Cost = -((bannerEntry->price * 3) / 4);
     }
 
     return res;
@@ -87,11 +87,11 @@ GameActions::Result::Ptr BannerRemoveAction::Query() const
 GameActions::Result::Ptr BannerRemoveAction::Execute() const
 {
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
-    res->ErrorTitle = STR_CANT_REMOVE_THIS;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
+    res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
     BannerElement* bannerElement = GetBannerElementAt();
     if (bannerElement == nullptr)
@@ -117,7 +117,7 @@ GameActions::Result::Ptr BannerRemoveAction::Execute() const
     auto* bannerEntry = get_banner_entry(banner->type);
     if (bannerEntry != nullptr)
     {
-        res->Cost = -((bannerEntry->price * 3) / 4);
+        res.Cost = -((bannerEntry->price * 3) / 4);
     }
 
     reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();

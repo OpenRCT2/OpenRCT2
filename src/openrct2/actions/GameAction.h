@@ -246,9 +246,9 @@ public:
     }
 
 protected:
-    template<class... TTypes> static std::unique_ptr<GameActions::Result> MakeResult(TTypes&&... args)
+    template<class... TTypes> static GameActions::Result MakeResult(TTypes&&... args)
     {
-        return std::make_unique<GameActions::Result>(std::forward<TTypes>(args)...);
+        return GameActions::Result(std::forward<TTypes>(args)...);
     }
 };
 

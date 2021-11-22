@@ -55,7 +55,7 @@ GameActions::Result::Ptr RideSetAppearanceAction::Query() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     switch (_type)
@@ -66,7 +66,7 @@ GameActions::Result::Ptr RideSetAppearanceAction::Query() const
             if (_index >= std::size(ride->track_colour))
             {
                 log_warning("Invalid game command, index %d out of bounds", _index);
-                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
             }
             break;
         case RideSetAppearanceType::VehicleColourBody:
@@ -75,7 +75,7 @@ GameActions::Result::Ptr RideSetAppearanceAction::Query() const
             if (_index >= std::size(ride->vehicle_colours))
             {
                 log_warning("Invalid game command, index %d out of bounds", _index);
-                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
             }
             break;
         case RideSetAppearanceType::VehicleColourScheme:
@@ -83,10 +83,10 @@ GameActions::Result::Ptr RideSetAppearanceAction::Query() const
             break;
         default:
             log_warning("Invalid game command, type %d not recognised", _type);
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr RideSetAppearanceAction::Execute() const
@@ -95,7 +95,7 @@ GameActions::Result::Ptr RideSetAppearanceAction::Execute() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     switch (_type)
@@ -141,11 +141,11 @@ GameActions::Result::Ptr RideSetAppearanceAction::Execute() const
     }
     window_invalidate_by_number(WC_RIDE, EnumValue(_rideIndex));
 
-    auto res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res->Position = { location, tile_element_height(location) };
+        res.Position = { location, tile_element_height(location) };
     }
 
     return res;

@@ -50,16 +50,16 @@ void LargeSceneryRemoveAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
 
     const uint32_t flags = GetFlags();
 
     int32_t z = tile_element_height(_loc);
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = z;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = 0;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = z;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Cost = 0;
 
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
@@ -115,21 +115,21 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
     }
 
     if (calculate_cost)
-        res->Cost = sceneryEntry->removal_price * 10;
+        res.Cost = sceneryEntry->removal_price * 10;
 
     return res;
 }
 
 GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
 
     int32_t z = tile_element_height(_loc);
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = z;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = 0;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = z;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Cost = 0;
 
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
@@ -181,7 +181,7 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
         }
     }
 
-    res->Cost = sceneryEntry->removal_price * 10;
+    res.Cost = sceneryEntry->removal_price * 10;
 
     return res;
 }

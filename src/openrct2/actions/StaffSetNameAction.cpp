@@ -43,19 +43,17 @@ GameActions::Result::Ptr StaffSetNameAction::Query() const
 {
     if (_spriteIndex >= MAX_ENTITIES)
     {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }
 
     auto staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
         log_warning("Invalid game command for sprite %u", _spriteIndex);
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr StaffSetNameAction::Execute() const
@@ -64,19 +62,18 @@ GameActions::Result::Ptr StaffSetNameAction::Execute() const
     if (staff == nullptr)
     {
         log_warning("Invalid game command for sprite %u", _spriteIndex);
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }
 
     auto curName = staff->GetName();
     if (curName == _name)
     {
-        return std::make_unique<GameActions::Result>();
+        return GameActions::Result();
     }
 
     if (!staff->SetName(_name))
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
     }
 
     gfx_invalidate_screen();
@@ -84,8 +81,8 @@ GameActions::Result::Ptr StaffSetNameAction::Execute() const
     auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
     context_broadcast_intent(&intent);
 
-    auto res = std::make_unique<GameActions::Result>();
-    res->Position = staff->GetLocation();
+    auto res = GameActions::Result();
+    res.Position = staff->GetLocation();
 
     return res;
 }

@@ -104,7 +104,7 @@ GameActions::Result::Ptr RideCreateAction::Query() const
     }
 
     auto res = MakeResult();
-    res->SetData(ride_id_t{ rideIndex });
+    res.SetData(ride_id_t{ rideIndex });
 
     return res;
 }
@@ -303,8 +303,8 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     ride_set_vehicle_colours_to_random_preset(ride, _colour2);
     window_invalidate_by_class(WC_RIDE_LIST);
 
-    res->Expenditure = ExpenditureType::RideConstruction;
-    res->SetData(ride_id_t{ rideIndex });
+    res.Expenditure = ExpenditureType::RideConstruction;
+    res.SetData(ride_id_t{ rideIndex });
 
     return res;
 }

@@ -39,7 +39,7 @@ GameActions::Result::Ptr ParkSetParameterAction::Query() const
     }
 
     auto res = MakeResult();
-    res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
+    res.ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
     return res;
 }
 
@@ -70,6 +70,6 @@ GameActions::Result::Ptr ParkSetParameterAction::Execute() const
     }
 
     auto res = MakeResult();
-    res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
+    res.ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
     return res;
 }

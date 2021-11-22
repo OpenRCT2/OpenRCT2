@@ -53,9 +53,9 @@ GameActions::Result::Ptr BannerSetStyleAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::Landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
-    res->Position = { location, tile_element_height(location) };
+    res.Position = { location, tile_element_height(location) };
 
     TileElement* tileElement = banner_get_tile_element(_bannerIndex);
 
@@ -107,9 +107,9 @@ GameActions::Result::Ptr BannerSetStyleAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::Landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
-    res->Position = { location, tile_element_height(location) };
+    res.Position = { location, tile_element_height(location) };
 
     TileElement* tileElement = banner_get_tile_element(_bannerIndex);
 

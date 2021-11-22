@@ -1808,9 +1808,9 @@ static void window_ride_construction_construct(rct_window* w)
     }
     auto res = GameActions::Execute(&trackPlaceAction);
     // Used by some functions
-    if (res->Error != GameActions::Status::Ok)
+    if (res.Error != GameActions::Status::Ok)
     {
-        if (auto* error = std::get_if<rct_string_id>(&res->ErrorMessage))
+        if (auto* error = std::get_if<rct_string_id>(&res.ErrorMessage))
             gGameCommandErrorText = *error;
         else
             gGameCommandErrorText = STR_NONE;
@@ -1819,10 +1819,10 @@ static void window_ride_construction_construct(rct_window* w)
     else
     {
         gGameCommandErrorText = STR_NONE;
-        _trackPlaceCost = res->Cost;
+        _trackPlaceCost = res.Cost;
     }
 
-    if (res->Error != GameActions::Status::Ok)
+    if (res.Error != GameActions::Status::Ok)
     {
         return;
     }
@@ -1833,7 +1833,7 @@ static void window_ride_construction_construct(rct_window* w)
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
     }
 
-    const auto resultData = res->GetData<TrackPlaceActionResult>();
+    const auto resultData = res.GetData<TrackPlaceActionResult>();
     if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         viewport_set_visibility(1);

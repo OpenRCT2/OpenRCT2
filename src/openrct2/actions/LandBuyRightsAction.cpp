@@ -75,8 +75,8 @@ GameActions::Result::Ptr LandBuyRightsAction::QueryExecute(bool isExecuting) con
                       (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
     centre.z = tile_element_height(centre);
 
-    res->Position = centre;
-    res->Expenditure = ExpenditureType::LandPurchase;
+    res.Position = centre;
+    res.Expenditure = ExpenditureType::LandPurchase;
 
     // Game command modified to accept selection size
     for (auto y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
@@ -86,9 +86,9 @@ GameActions::Result::Ptr LandBuyRightsAction::QueryExecute(bool isExecuting) con
             if (!LocationValid({ x, y }))
                 continue;
             auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
-            if (result->Error == GameActions::Status::Ok)
+            if (result.Error == GameActions::Status::Ok)
             {
-                res->Cost += result->Cost;
+                res.Cost += result.Cost;
             }
         }
     }
@@ -133,7 +133,7 @@ GameActions::Result::Ptr LandBuyRightsAction::map_buy_land_rights_for_tile(const
                 surfaceElement->SetOwnership(OWNERSHIP_OWNED);
                 update_park_fences_around_tile(loc);
             }
-            res->Cost = gLandPrice;
+            res.Cost = gLandPrice;
             return res;
 
         case LandBuyRightSetting::BuyConstructionRights: // 2
@@ -155,7 +155,7 @@ GameActions::Result::Ptr LandBuyRightsAction::map_buy_land_rights_for_tile(const
                 uint16_t baseZ = surfaceElement->GetBaseZ();
                 map_invalidate_tile({ loc, baseZ, baseZ + 16 });
             }
-            res->Cost = gConstructionRightsPrice;
+            res.Cost = gConstructionRightsPrice;
             return res;
 
         default:

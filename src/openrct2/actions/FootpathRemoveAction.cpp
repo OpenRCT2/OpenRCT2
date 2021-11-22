@@ -45,10 +45,10 @@ void FootpathRemoveAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr FootpathRemoveAction::Query() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
-    res->Cost = 0;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = { _loc.x + 16, _loc.y + 16, _loc.z };
+    auto res = GameActions::Result();
+    res.Cost = 0;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
     if (!LocationValid(_loc))
     {
@@ -66,17 +66,17 @@ GameActions::Result::Ptr FootpathRemoveAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
     }
 
-    res->Cost = GetRefundPrice(footpathElement);
+    res.Cost = GetRefundPrice(footpathElement);
 
     return res;
 }
 
 GameActions::Result::Ptr FootpathRemoveAction::Execute() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
-    res->Cost = 0;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = { _loc.x + 16, _loc.y + 16, _loc.z };
+    auto res = GameActions::Result();
+    res.Cost = 0;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
@@ -89,9 +89,9 @@ GameActions::Result::Ptr FootpathRemoveAction::Execute() const
     {
         footpath_queue_chain_reset();
         auto bannerRes = RemoveBannersAtElement(_loc, footpathElement);
-        if (bannerRes->Error == GameActions::Status::Ok)
+        if (bannerRes.Error == GameActions::Status::Ok)
         {
-            res->Cost += bannerRes->Cost;
+            res.Cost += bannerRes.Cost;
         }
         footpath_remove_edges_at(_loc, footpathElement);
         map_invalidate_tile_full(_loc);
@@ -114,7 +114,7 @@ GameActions::Result::Ptr FootpathRemoveAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
     }
 
-    res->Cost += GetRefundPrice(footpathElement);
+    res.Cost += GetRefundPrice(footpathElement);
 
     return res;
 }
@@ -175,9 +175,9 @@ GameActions::Result::Ptr FootpathRemoveAction::RemoveBannersAtElement(const Coor
         bannerRemoveAction.SetFlags(bannerFlags);
         auto res = GameActions::ExecuteNested(&bannerRemoveAction);
         // Ghost removal is free
-        if (res->Error == GameActions::Status::Ok && !isGhost)
+        if (res.Error == GameActions::Status::Ok && !isGhost)
         {
-            result->Cost += res->Cost;
+            result.Cost += res.Cost;
         }
         tileElement--;
     }

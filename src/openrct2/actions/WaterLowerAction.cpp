@@ -52,16 +52,16 @@ GameActions::Result::Ptr WaterLowerAction::QueryExecute(bool isExecuting) const
 
     MapRange validRange = MapRange{ aX, aY, bX, bY };
 
-    res->Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
-    res->Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
-    int16_t z = tile_element_height(res->Position);
-    int16_t waterHeight = tile_element_water_height(res->Position);
+    res.Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
+    res.Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
+    int16_t z = tile_element_height(res.Position);
+    int16_t waterHeight = tile_element_water_height(res.Position);
     if (waterHeight != 0)
     {
         z = waterHeight;
     }
-    res->Position.z = z;
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.Position.z = z;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     uint8_t minHeight = GetLowestHeight(validRange);
     bool hasChanged = false;
@@ -98,14 +98,14 @@ GameActions::Result::Ptr WaterLowerAction::QueryExecute(bool isExecuting) const
             waterSetHeightAction.SetFlags(GetFlags());
             auto result = isExecuting ? GameActions::ExecuteNested(&waterSetHeightAction)
                                       : GameActions::QueryNested(&waterSetHeightAction);
-            if (result->Error == GameActions::Status::Ok)
+            if (result.Error == GameActions::Status::Ok)
             {
-                res->Cost += result->Cost;
+                res.Cost += result.Cost;
                 hasChanged = true;
             }
             else
             {
-                result->ErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
+                result.ErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
                 return result;
             }
         }
@@ -113,14 +113,14 @@ GameActions::Result::Ptr WaterLowerAction::QueryExecute(bool isExecuting) const
 
     if (!withinOwnership)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_LOWER_WATER_LEVEL_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         ;
     }
 
     if (isExecuting && hasChanged)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res->Position);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res.Position);
     }
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;

@@ -75,7 +75,7 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Query() const
     if (ride == nullptr)
     {
         log_warning("Invalid ride id %d for entrance/exit removal", EnumValue(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
@@ -113,7 +113,7 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Execute() const
     if (ride == nullptr)
     {
         log_warning("Invalid ride id %d for entrance/exit removal", EnumValue(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
@@ -136,9 +136,9 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Execute() const
     }
 
     auto res = MakeResult();
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = tile_element_height(res->Position);
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = tile_element_height(res.Position);
 
     footpath_queue_chain_reset();
     maze_entrance_hedge_replacement({ _loc, entranceElement });

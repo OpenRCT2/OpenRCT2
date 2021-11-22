@@ -50,12 +50,12 @@ void LargeSceneryPlaceAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
 {
     auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+    res.Expenditure = ExpenditureType::Landscaping;
     int16_t surfaceHeight = tile_element_height(_loc);
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = surfaceHeight;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = surfaceHeight;
 
     auto resultData = LargeSceneryPlaceActionResult{};
 
@@ -90,7 +90,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         maxHeight = _loc.z;
     }
 
-    res->Position.z = maxHeight;
+    res.Position.z = maxHeight;
 
     if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
@@ -118,15 +118,15 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
         auto canBuild = MapCanConstructWithClearAt(
             { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE,
             isTree);
-        if (canBuild->Error != GameActions::Status::Ok)
+        if (canBuild.Error != GameActions::Status::Ok)
         {
-            canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+            canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
             return canBuild;
         }
 
-        supportsCost += canBuild->Cost;
+        supportsCost += canBuild.Cost;
 
-        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         int32_t tempSceneryGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (!gCheatsDisableClearanceChecks)
         {
@@ -164,8 +164,8 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
-    res->Cost = (sceneryEntry->price * 10) + supportsCost;
-    res->SetData(std::move(resultData));
+    res.Cost = (sceneryEntry->price * 10) + supportsCost;
+    res.SetData(std::move(resultData));
 
     return res;
 }
@@ -173,13 +173,13 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Query() const
 GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
 {
     auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     int16_t surfaceHeight = tile_element_height(_loc);
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = surfaceHeight;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = surfaceHeight;
 
     auto resultData = LargeSceneryPlaceActionResult{};
 
@@ -205,7 +205,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         maxHeight = _loc.z;
     }
 
-    res->Position.z = maxHeight;
+    res.Position.z = maxHeight;
 
     // Allocate banner
     Banner* banner = nullptr;
@@ -252,19 +252,19 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         auto canBuild = MapCanConstructWithClearAt(
             { curTile, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE,
             isTree);
-        if (canBuild->Error != GameActions::Status::Ok)
+        if (canBuild.Error != GameActions::Status::Ok)
         {
             if (banner != nullptr)
             {
                 DeleteBanner(banner->id);
             }
-            canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+            canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
             return canBuild;
         }
 
-        supportsCost += canBuild->Cost;
+        supportsCost += canBuild.Cost;
 
-        const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+        const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         resultData.GroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
@@ -299,8 +299,8 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
-    res->Cost = (sceneryEntry->price * 10) + supportsCost;
-    res->SetData(std::move(resultData));
+    res.Cost = (sceneryEntry->price * 10) + supportsCost;
+    res.SetData(std::move(resultData));
 
     return res;
 }

@@ -43,18 +43,18 @@ GameActions::Result::Ptr SetParkEntranceFeeAction::Query() const
     bool forceFreeEntry = !park_entry_price_unlocked();
     if (noMoney || forceFreeEntry)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
     }
     if (_fee < MONEY_FREE || _fee > MAX_ENTRANCE_FEE)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr SetParkEntranceFeeAction::Execute() const
 {
     gParkEntranceFee = _fee;
     window_invalidate_by_class(WC_PARK_INFORMATION);
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }

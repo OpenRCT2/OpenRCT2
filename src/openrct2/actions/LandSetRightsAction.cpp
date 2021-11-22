@@ -80,8 +80,8 @@ GameActions::Result::Ptr LandSetRightsAction::QueryExecute(bool isExecuting) con
                       (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
     centre.z = tile_element_height(centre);
 
-    res->Position = centre;
-    res->Expenditure = ExpenditureType::LandPurchase;
+    res.Position = centre;
+    res.Expenditure = ExpenditureType::LandPurchase;
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
@@ -96,9 +96,9 @@ GameActions::Result::Ptr LandSetRightsAction::QueryExecute(bool isExecuting) con
             if (!LocationValid({ x, y }))
                 continue;
             auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
-            if (result->Error == GameActions::Status::Ok)
+            if (result.Error == GameActions::Status::Ok)
             {
-                res->Cost += result->Cost;
+                res.Cost += result.Cost;
             }
         }
     }
@@ -183,7 +183,7 @@ GameActions::Result::Ptr LandSetRightsAction::map_buy_land_rights_for_tile(const
                 }
             }
 
-            res->Cost = gLandPrice;
+            res.Cost = gLandPrice;
             if (isExecuting)
             {
                 if (_ownership != OWNERSHIP_UNOWNED)

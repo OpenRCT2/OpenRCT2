@@ -51,17 +51,16 @@ GameActions::Result::Ptr RideSetNameAction::Query() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 
     if (!_name.empty() && Ride::NameExists(_name, ride->id))
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERROR_EXISTING_NAME);
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr RideSetNameAction::Execute() const
@@ -70,8 +69,7 @@ GameActions::Result::Ptr RideSetNameAction::Execute() const
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 
     if (_name.empty())
@@ -92,9 +90,9 @@ GameActions::Result::Ptr RideSetNameAction::Execute() const
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
-    auto res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
     auto location = ride->overall_view.ToTileCentre();
-    res->Position = { location, tile_element_height(location) };
+    res.Position = { location, tile_element_height(location) };
 
     return res;
 }

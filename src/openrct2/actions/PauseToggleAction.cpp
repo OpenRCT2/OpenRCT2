@@ -16,11 +16,11 @@ uint16_t PauseToggleAction::GetActionFlags() const
 
 GameActions::Result::Ptr PauseToggleAction::Query() const
 {
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr PauseToggleAction::Execute() const
 {
     pause_toggle();
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }

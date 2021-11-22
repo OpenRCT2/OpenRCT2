@@ -84,8 +84,8 @@ GameActions::Result::Ptr FootpathAdditionRemoveAction::Query() const
         return MakeResult(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_NONE);
     }
     auto res = MakeResult();
-    res->Position = _loc;
-    res->Cost = MONEY(0, 0);
+    res.Position = _loc;
+    res.Cost = MONEY(0, 0);
     return res;
 }
 
@@ -109,7 +109,7 @@ GameActions::Result::Ptr FootpathAdditionRemoveAction::Execute() const
     map_invalidate_tile_full(_loc);
 
     auto res = MakeResult();
-    res->Position = _loc;
-    res->Cost = MONEY(0, 0);
+    res.Position = _loc;
+    res.Cost = MONEY(0, 0);
     return res;
 }

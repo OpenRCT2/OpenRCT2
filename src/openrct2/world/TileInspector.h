@@ -19,7 +19,7 @@ namespace GameActions
 
 namespace OpenRCT2::TileInspector
 {
-    using GameActionResultPtr = std::unique_ptr<GameActions::Result>;
+    using GameActionResultPtr = GameActions::Result;
 
     void SetSelectedElement(const TileElement* elem);
     bool IsElementSelected(const TileElement* elem);

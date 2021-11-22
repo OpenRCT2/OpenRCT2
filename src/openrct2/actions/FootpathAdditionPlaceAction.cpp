@@ -48,8 +48,8 @@ void FootpathAdditionPlaceAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
 {
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = _loc;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = _loc;
     if (!LocationValid(_loc))
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
@@ -124,7 +124,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
         }
 
-        res->Cost = pathBitEntry->price;
+        res.Cost = pathBitEntry->price;
     }
 
     // Should place a ghost?
@@ -142,8 +142,8 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
 GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
 {
     auto res = MakeResult();
-    res->Position = _loc;
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.Position = _loc;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     auto tileElement = map_get_footpath_element(_loc);
     auto pathElement = tileElement->AsPath();
@@ -169,7 +169,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
             return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
 
-        res->Cost = pathBitEntry->price;
+        res.Cost = pathBitEntry->price;
     }
 
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST)

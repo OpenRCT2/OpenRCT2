@@ -35,10 +35,10 @@ GameActions::Result::Ptr ClimateSetAction::Query() const
 {
     if (_climate >= ClimateType::Count)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr ClimateSetAction::Execute() const
@@ -47,5 +47,5 @@ GameActions::Result::Ptr ClimateSetAction::Execute() const
 
     gfx_invalidate_screen();
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }

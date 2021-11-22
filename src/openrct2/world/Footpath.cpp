@@ -135,10 +135,10 @@ money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags)
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         auto res = GameActions::Execute(&action);
-        return res->Cost;
+        return res.Cost;
     }
     auto res = GameActions::Query(&action);
-    return res->Cost;
+    return res.Cost;
 }
 
 /**
@@ -156,8 +156,8 @@ money32 footpath_provisional_set(
     auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
-    if (res->Error == GameActions::Status::Ok)
+    cost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY32_UNDEFINED;
+    if (res.Error == GameActions::Status::Ok)
     {
         gProvisionalFootpath.SurfaceIndex = type;
         gProvisionalFootpath.RailingsIndex = railingsType;
@@ -181,7 +181,7 @@ money32 footpath_provisional_set(
 
     if (!scenery_tool_is_active())
     {
-        if (res->Error != GameActions::Status::Ok)
+        if (res.Error != GameActions::Status::Ok)
         {
             // If we can't build this, don't show a virtual floor.
             virtual_floor_set_height(0);

@@ -143,7 +143,7 @@ namespace GameActions
             Guard::Assert(action != nullptr);
 
             GameActions::Result::Ptr result = Execute(action);
-            if (result->Error == GameActions::Status::Ok && network_get_mode() == NETWORK_MODE_SERVER)
+            if (result.Error == GameActions::Status::Ok && network_get_mode() == NETWORK_MODE_SERVER)
             {
                 // Relay this action to all other clients.
                 network_send_game_action(action);
@@ -195,25 +195,25 @@ namespace GameActions
         uint16_t actionFlags = action->GetActionFlags();
         if (topLevel && !CheckActionInPausedMode(actionFlags))
         {
-            GameActions::Result::Ptr result = std::make_unique<GameActions::Result>();
+            GameActions::Result::Ptr result = GameActions::Result();
 
-            result->Error = GameActions::Status::GamePaused;
-            result->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-            result->ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+            result.Error = GameActions::Status::GamePaused;
+            result.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+            result.ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 
             return result;
         }
 
         auto result = action->Query();
 
-        if (result->Error == GameActions::Status::Ok)
+        if (result.Error == GameActions::Status::Ok)
         {
-            if (!finance_check_affordability(result->Cost, action->GetFlags()))
+            if (!finance_check_affordability(result.Cost, action->GetFlags()))
             {
-                result->Error = GameActions::Status::InsufficientFunds;
-                result->ErrorTitle = STR_CANT_DO_THIS;
-                result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
-                Formatter(result->ErrorMessageArgs.data()).Add<uint32_t>(result->Cost);
+                result.Error = GameActions::Status::InsufficientFunds;
+                result.ErrorTitle = STR_CANT_DO_THIS;
+                result.ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
+                Formatter(result.ErrorMessageArgs.data()).Add<uint32_t>(result.Cost);
             }
         }
         return result;
@@ -266,9 +266,9 @@ namespace GameActions
 
         char temp[128] = {};
 
-        if (result->Error != GameActions::Status::Ok)
+        if (result.Error != GameActions::Status::Ok)
         {
-            snprintf(temp, sizeof(temp), ") Failed, %u", static_cast<uint32_t>(result->Error));
+            snprintf(temp, sizeof(temp), ") Failed, %u", static_cast<uint32_t>(result.Error));
         }
         else
         {
@@ -297,11 +297,10 @@ namespace GameActions
             if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
             {
                 // TODO: Introduce proper error.
-                GameActions::Result::Ptr result = std::make_unique<GameActions::Result>();
-
-                result->Error = GameActions::Status::GamePaused;
-                result->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-                result->ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+                auto result = GameActions::Result();
+                result.Error = GameActions::Status::GamePaused;
+                result.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+                result.ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 
                 return result;
             }
@@ -309,7 +308,7 @@ namespace GameActions
 
         GameActions::Result::Ptr result = QueryInternal(action, topLevel);
 #ifdef ENABLE_SCRIPTING
-        if (result->Error == GameActions::Status::Ok
+        if (result.Error == GameActions::Status::Ok
             && ((network_get_mode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -317,7 +316,7 @@ namespace GameActions
             // Script hooks may now have changed the game action result...
         }
 #endif
-        if (result->Error == GameActions::Status::Ok)
+        if (result.Error == GameActions::Status::Ok)
         {
             if (topLevel)
             {
@@ -353,7 +352,7 @@ namespace GameActions
             // Execute the action, changing the game state
             result = action->Execute();
 #ifdef ENABLE_SCRIPTING
-            if (result->Error == GameActions::Status::Ok)
+            if (result.Error == GameActions::Status::Ok)
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();
                 scriptEngine.RunGameActionHooks(*action, result, true);
@@ -368,13 +367,13 @@ namespace GameActions
                 return result;
 
             // Update money balance
-            if (result->Error == GameActions::Status::Ok && finance_check_money_required(flags) && result->Cost != 0)
+            if (result.Error == GameActions::Status::Ok && finance_check_money_required(flags) && result.Cost != 0)
             {
-                finance_payment(result->Cost, result->Expenditure);
-                MoneyEffect::Create(result->Cost, result->Position);
+                finance_payment(result.Cost, result.Expenditure);
+                MoneyEffect::Create(result.Cost, result.Position);
             }
 
-            if (!(actionFlags & GameActions::Flags::ClientOnly) && result->Error == GameActions::Status::Ok)
+            if (!(actionFlags & GameActions::Flags::ClientOnly) && result.Error == GameActions::Status::Ok)
             {
                 if (network_get_mode() != NETWORK_MODE_NONE)
                 {
@@ -385,14 +384,14 @@ namespace GameActions
                         playerIndex != -1, "Unable to find player %u for game action %u", playerId, action->GetType());
 
                     network_set_player_last_action(playerIndex, action->GetType());
-                    if (result->Cost != 0)
+                    if (result.Cost != 0)
                     {
-                        network_add_player_money_spent(playerIndex, result->Cost);
+                        network_add_player_money_spent(playerIndex, result.Cost);
                     }
 
-                    if (!result->Position.IsNull())
+                    if (!result.Position.IsNull())
                     {
-                        network_set_player_last_action_coord(playerIndex, result->Position);
+                        network_set_player_last_action_coord(playerIndex, result.Position);
                     }
                 }
                 else
@@ -425,7 +424,7 @@ namespace GameActions
         auto cb = action->GetCallback();
         if (cb != nullptr)
         {
-            cb(action, result.get());
+            cb(action, &result);
         }
 
         // Only show errors when its not a ghost and not a preview and also top level action.
@@ -443,10 +442,10 @@ namespace GameActions
             }
         }
 
-        if (result->Error != GameActions::Status::Ok && shouldShowError)
+        if (result.Error != GameActions::Status::Ok && shouldShowError)
         {
             auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-            windowManager->ShowError(result->GetErrorTitle(), result->GetErrorMessage());
+            windowManager->ShowError(result.GetErrorTitle(), result.GetErrorMessage());
         }
 
         return result;

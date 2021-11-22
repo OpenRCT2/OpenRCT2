@@ -58,17 +58,17 @@ GameActions::Result::Ptr GuestSetNameAction::Query() const
 {
     if (_spriteIndex >= MAX_ENTITIES)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
     }
 
     auto guest = TryGetEntity<Guest>(_spriteIndex);
     if (guest == nullptr)
     {
         log_warning("Invalid game command for sprite %u", _spriteIndex);
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr GuestSetNameAction::Execute() const
@@ -77,18 +77,18 @@ GameActions::Result::Ptr GuestSetNameAction::Execute() const
     if (guest == nullptr)
     {
         log_warning("Invalid game command for sprite %u", _spriteIndex);
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
     }
 
     auto curName = guest->GetName();
     if (curName == _name)
     {
-        return std::make_unique<GameActions::Result>();
+        return GameActions::Result();
     }
 
     if (!guest->SetName(_name))
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
     }
 
     // Easter egg functions are for guests only
@@ -99,8 +99,8 @@ GameActions::Result::Ptr GuestSetNameAction::Execute() const
     auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
     context_broadcast_intent(&intent);
 
-    auto res = std::make_unique<GameActions::Result>();
-    res->Position = guest->GetLocation();
+    auto res = GameActions::Result();
+    res.Position = guest->GetLocation();
 
     return res;
 }

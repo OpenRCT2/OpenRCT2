@@ -51,10 +51,10 @@ void TrackRemoveAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr TrackRemoveAction::Query() const
 {
     auto res = MakeResult();
-    res->Position.x = _origin.x + 16;
-    res->Position.y = _origin.y + 16;
-    res->Position.z = _origin.z;
-    res->Expenditure = ExpenditureType::RideConstruction;
+    res.Position.x = _origin.x + 16;
+    res.Position.y = _origin.y + 16;
+    res.Position.z = _origin.z;
+    res.Expenditure = ExpenditureType::RideConstruction;
 
     // Stations require some massaging of the track type for comparing
     auto comparableTrackType = _trackType;
@@ -147,9 +147,9 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
     startLoc.x -= rotatedTrack.x;
     startLoc.y -= rotatedTrack.y;
     startLoc.z -= rotatedTrack.z;
-    res->Position.x = startLoc.x;
-    res->Position.y = startLoc.y;
-    res->Position.z = startLoc.z;
+    res.Position.x = startLoc.x;
+    res.Position.y = startLoc.y;
+    res.Position.z = startLoc.z;
 
     money32 cost = 0;
 
@@ -237,17 +237,17 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
     else
         price *= -10;
 
-    res->Cost = price;
+    res.Cost = price;
     return res;
 }
 
 GameActions::Result::Ptr TrackRemoveAction::Execute() const
 {
     auto res = MakeResult();
-    res->Position.x = _origin.x + 16;
-    res->Position.y = _origin.y + 16;
-    res->Position.z = _origin.z;
-    res->Expenditure = ExpenditureType::RideConstruction;
+    res.Position.x = _origin.x + 16;
+    res.Position.y = _origin.y + 16;
+    res.Position.z = _origin.z;
+    res.Expenditure = ExpenditureType::RideConstruction;
 
     // Stations require some massaging of the track type for comparing
     auto comparableTrackType = _trackType;
@@ -328,9 +328,9 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
     startLoc.x -= rotatedTrackLoc.x;
     startLoc.y -= rotatedTrackLoc.y;
     startLoc.z -= rotatedTrackLoc.z;
-    res->Position.x = startLoc.x;
-    res->Position.y = startLoc.y;
-    res->Position.z = startLoc.z;
+    res.Position.x = startLoc.x;
+    res.Position.y = startLoc.y;
+    res.Position.z = startLoc.z;
     money32 cost = 0;
 
     trackBlock = ted.Block;
@@ -485,6 +485,6 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
     else
         price *= -10;
 
-    res->Cost = price;
+    res.Cost = price;
     return res;
 }

@@ -83,13 +83,13 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     }
     auto res = MakeResult();
     auto centre = _loc.ToTileCentre();
-    res->Position.x = centre.x;
-    res->Position.y = centre.y;
-    res->Position.z = surfaceHeight;
+    res.Position.x = centre.x;
+    res.Position.y = centre.y;
+    res.Position.z = surfaceHeight;
     if (_loc.z != 0)
     {
         surfaceHeight = _loc.z;
-        res->Position.z = surfaceHeight;
+        res.Position.z = surfaceHeight;
     }
 
     if (!LocationValid(_loc))
@@ -252,18 +252,18 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
-    if (canBuild->Error != GameActions::Status::Ok)
+    if (canBuild.Error != GameActions::Status::Ok)
     {
-        canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         return canBuild;
     }
 
-    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-    res->SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
+    res.SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
 
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = (sceneryEntry->price * 10) + canBuild->Cost;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Cost = (sceneryEntry->price * 10) + canBuild.Cost;
 
     return res;
 }
@@ -286,13 +286,13 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     }
     auto res = MakeResult();
     auto centre = _loc.ToTileCentre();
-    res->Position.x = centre.x;
-    res->Position.y = centre.y;
-    res->Position.z = surfaceHeight;
+    res.Position.x = centre.x;
+    res.Position.y = centre.y;
+    res.Position.z = surfaceHeight;
     if (_loc.z != 0)
     {
         surfaceHeight = _loc.z;
-        res->Position.z = surfaceHeight;
+        res.Position.z = surfaceHeight;
     }
 
     auto* sceneryEntry = get_small_scenery_entry(_sceneryType);
@@ -390,14 +390,14 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
         CREATE_CROSSING_MODE_NONE, isTree);
-    if (canBuild->Error != GameActions::Status::Ok)
+    if (canBuild.Error != GameActions::Status::Ok)
     {
-        canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         return canBuild;
     }
 
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = (sceneryEntry->price * 10) + canBuild->Cost;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Cost = (sceneryEntry->price * 10) + canBuild.Cost;
 
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>(
         CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
@@ -419,10 +419,9 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
         sceneryElement->SetNeedsSupports();
     }
 
-    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-    res->SetData(
-        SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
+    res.SetData(SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
 
     map_invalidate_tile_full(_loc);
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))

@@ -50,10 +50,10 @@ GameActions::Result::Ptr TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting
 {
     auto res = MakeResult();
 
-    res->Position = _loc;
-    res->Position.x += 16;
-    res->Position.y += 16;
-    res->Expenditure = ExpenditureType::RideConstruction;
+    res.Position = _loc;
+    res.Position.x += 16;
+    res.Position.y += 16;
+    res.Expenditure = ExpenditureType::RideConstruction;
 
     if (!LocationValid(_loc))
     {

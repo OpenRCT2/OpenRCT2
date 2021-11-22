@@ -47,11 +47,11 @@ GameActions::Result::Ptr LargeScenerySetColourAction::Execute() const
 GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = tile_element_height(_loc);
-    res->ErrorTitle = STR_CANT_REPAINT_THIS;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = tile_element_height(_loc);
+    res.ErrorTitle = STR_CANT_REPAINT_THIS;
 
     if (_loc.x < 0 || _loc.y < 0 || _loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY())
     {

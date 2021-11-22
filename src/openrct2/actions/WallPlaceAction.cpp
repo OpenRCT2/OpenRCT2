@@ -61,16 +61,16 @@ void WallPlaceAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr WallPlaceAction::Query() const
 {
     auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
-    res->Position = _loc;
+    res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
+    res.Position = _loc;
 
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position.x += 16;
-    res->Position.y += 16;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position.x += 16;
+    res.Position.y += 16;
 
     if (_loc.z == 0)
     {
-        res->Position.z = tile_element_height(res->Position);
+        res.Position.z = tile_element_height(res.Position);
     }
 
     if (!LocationValid(_loc))
@@ -244,7 +244,7 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
     {
         auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
-        if (result->Error != GameActions::Status::Ok)
+        if (result.Error != GameActions::Status::Ok)
         {
             return result;
         }
@@ -255,9 +255,9 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    res->Cost = wallEntry->price;
+    res.Cost = wallEntry->price;
 
-    res->SetData(WallPlaceActionResult{});
+    res.SetData(WallPlaceActionResult{});
 
     return res;
 }
@@ -265,16 +265,16 @@ GameActions::Result::Ptr WallPlaceAction::Query() const
 GameActions::Result::Ptr WallPlaceAction::Execute() const
 {
     auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
-    res->Position = _loc;
+    res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
+    res.Position = _loc;
 
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position.x += 16;
-    res->Position.y += 16;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position.x += 16;
+    res.Position.y += 16;
 
-    if (res->Position.z == 0)
+    if (res.Position.z == 0)
     {
-        res->Position.z = tile_element_height(res->Position);
+        res.Position.z = tile_element_height(res.Position);
     }
 
     uint8_t edgeSlope = 0;
@@ -318,7 +318,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
     {
         auto result = WallCheckObstruction(wallEntry, targetHeight / COORDS_Z_STEP, clearanceHeight, &wallAcrossTrack);
-        if (result->Error != GameActions::Status::Ok)
+        if (result.Error != GameActions::Status::Ok)
         {
             return result;
         }
@@ -376,10 +376,10 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
     map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);
     map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
-    res->Cost = wallEntry->price;
+    res.Cost = wallEntry->price;
 
     const auto bannerId = banner != nullptr ? banner->id : BANNER_INDEX_NULL;
-    res->SetData(WallPlaceActionResult{ wallElement->GetBaseZ(), bannerId });
+    res.SetData(WallPlaceActionResult{ wallElement->GetBaseZ(), bannerId });
 
     return res;
 }
@@ -513,7 +513,7 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
             if (_edge == direction)
             {
                 auto res = MakeResult(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
-                map_obstruction_set_error_text(tileElement, *res);
+                map_obstruction_set_error_text(tileElement, res);
                 return res;
             }
             continue;
@@ -524,12 +524,12 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
         switch (elementType)
         {
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                map_obstruction_set_error_text(tileElement, *res);
+                map_obstruction_set_error_text(tileElement, res);
                 return res;
             case TILE_ELEMENT_TYPE_PATH:
                 if (tileElement->AsPath()->GetEdges() & (1 << _edge))
                 {
-                    map_obstruction_set_error_text(tileElement, *res);
+                    map_obstruction_set_error_text(tileElement, res);
                     return res;
                 }
                 break;
@@ -548,7 +548,7 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
                 int32_t direction = ((_edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                 if (!(tile.flags & (1 << direction)))
                 {
-                    map_obstruction_set_error_text(tileElement, *res);
+                    map_obstruction_set_error_text(tileElement, res);
                     return res;
                 }
                 break;
@@ -558,7 +558,7 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
                 auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
                 {
-                    map_obstruction_set_error_text(tileElement, *res);
+                    map_obstruction_set_error_text(tileElement, res);
                     return res;
                 }
                 break;

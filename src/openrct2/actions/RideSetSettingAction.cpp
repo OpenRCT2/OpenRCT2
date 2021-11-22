@@ -146,7 +146,7 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
             return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_NONE);
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr RideSetSettingAction::Execute() const
@@ -229,11 +229,11 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
             break;
     }
 
-    auto res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res->Position = { location, tile_element_height(location) };
+        res.Position = { location, tile_element_height(location) };
     }
     window_invalidate_by_number(WC_RIDE, EnumValue(_rideIndex));
     return res;

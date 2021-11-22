@@ -215,9 +215,9 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
             return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    res->Position.x = _loc.x;
-    res->Position.y = _loc.y;
-    res->Position.z = tile_element_height(_loc);
+    res.Position.x = _loc.x;
+    res.Position.y = _loc.y;
+    res.Position.z = tile_element_height(_loc);
 
     return res;
 }

@@ -60,11 +60,11 @@ GameActions::Result::Ptr SmallScenerySetColourAction::Execute() const
 GameActions::Result::Ptr SmallScenerySetColourAction::QueryExecute(bool isExecuting) const
 {
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
-    res->ErrorTitle = STR_CANT_REPAINT_THIS;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
+    res.ErrorTitle = STR_CANT_REPAINT_THIS;
 
     if (!LocationValid(_loc))
     {

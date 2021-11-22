@@ -39,9 +39,9 @@ GameActions::Result::Ptr ParkEntranceRemoveAction::Query() const
     }
 
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::LandPurchase;
-    res->Position = _loc;
-    res->ErrorTitle = STR_CANT_REMOVE_THIS;
+    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Position = _loc;
+    res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
     auto entranceIndex = park_entrance_get_index(_loc);
     if (!LocationValid(_loc) || entranceIndex == -1)
@@ -55,9 +55,9 @@ GameActions::Result::Ptr ParkEntranceRemoveAction::Query() const
 GameActions::Result::Ptr ParkEntranceRemoveAction::Execute() const
 {
     auto res = MakeResult();
-    res->Expenditure = ExpenditureType::LandPurchase;
-    res->Position = _loc;
-    res->ErrorTitle = STR_CANT_REMOVE_THIS;
+    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Position = _loc;
+    res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
     auto entranceIndex = park_entrance_get_index(_loc);
     if (entranceIndex == -1)

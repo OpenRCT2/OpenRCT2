@@ -32,7 +32,7 @@ void LoadOrQuitAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr LoadOrQuitAction::Query() const
 {
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 GameActions::Result::Ptr LoadOrQuitAction::Execute() const
@@ -51,5 +51,5 @@ GameActions::Result::Ptr LoadOrQuitAction::Execute() const
             game_load_or_quit_no_save_prompt();
             break;
     }
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }

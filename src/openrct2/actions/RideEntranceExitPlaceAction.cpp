@@ -83,9 +83,9 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
         rideEntranceExitRemove.SetFlags(GetFlags());
 
         auto result = GameActions::QueryNested(&rideEntranceExitRemove);
-        if (result->Error != GameActions::Status::Ok)
+        if (result.Error != GameActions::Status::Ok)
         {
-            result->ErrorTitle = errorTitle;
+            result.ErrorTitle = errorTitle;
             return result;
         }
     }
@@ -103,13 +103,13 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags());
-    if (canBuild->Error != GameActions::Status::Ok)
+    if (canBuild.Error != GameActions::Status::Ok)
     {
-        canBuild->ErrorTitle = errorTitle;
+        canBuild.ErrorTitle = errorTitle;
         return canBuild;
     }
 
-    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
     {
         return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
@@ -121,8 +121,8 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Query() const
     }
 
     auto res = MakeResult();
-    res->Position = { _loc.ToTileCentre(), z };
-    res->Expenditure = ExpenditureType::RideConstruction;
+    res.Position = { _loc.ToTileCentre(), z };
+    res.Expenditure = ExpenditureType::RideConstruction;
     return res;
 }
 
@@ -152,9 +152,9 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
         rideEntranceExitRemove.SetFlags(GetFlags());
 
         auto result = GameActions::ExecuteNested(&rideEntranceExitRemove);
-        if (result->Error != GameActions::Status::Ok)
+        if (result.Error != GameActions::Status::Ok)
         {
-            result->ErrorTitle = errorTitle;
+            result.ErrorTitle = errorTitle;
             return result;
         }
     }
@@ -169,15 +169,15 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
     auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY);
-    if (canBuild->Error != GameActions::Status::Ok)
+    if (canBuild.Error != GameActions::Status::Ok)
     {
-        canBuild->ErrorTitle = errorTitle;
+        canBuild.ErrorTitle = errorTitle;
         return canBuild;
     }
 
     auto res = MakeResult();
-    res->Position = { _loc.ToTileCentre(), z };
-    res->Expenditure = ExpenditureType::RideConstruction;
+    res.Position = { _loc.ToTileCentre(), z };
+    res.Expenditure = ExpenditureType::RideConstruction;
 
     auto* entranceElement = TileElementInsert<EntranceElement>(CoordsXYZ{ _loc, z }, 0b1111);
     Guard::Assert(entranceElement != nullptr);
@@ -234,13 +234,13 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::TrackPlaceQuery(const Coor
     int16_t baseZ = loc.z;
     int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
     auto canBuild = MapCanConstructWithClearAt({ loc, baseZ, clearZ }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, 0);
-    if (canBuild->Error != GameActions::Status::Ok)
+    if (canBuild.Error != GameActions::Status::Ok)
     {
-        canBuild->ErrorTitle = errorTitle;
+        canBuild.ErrorTitle = errorTitle;
         return canBuild;
     }
 
-    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER)
     {
         return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
@@ -251,7 +251,7 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::TrackPlaceQuery(const Coor
         return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_TOO_HIGH);
     }
     auto res = MakeResult();
-    res->Position = { loc.ToTileCentre(), tile_element_height(loc) };
-    res->Expenditure = ExpenditureType::RideConstruction;
+    res.Position = { loc.ToTileCentre(), tile_element_height(loc) };
+    res.Expenditure = ExpenditureType::RideConstruction;
     return res;
 }

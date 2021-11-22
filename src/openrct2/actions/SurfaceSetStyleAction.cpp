@@ -36,8 +36,8 @@ void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
 GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
 {
     auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     auto normRange = _range.Normalise();
     auto x0 = std::max(normRange.GetLeft(), 32);
@@ -87,9 +87,9 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
     auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
     auto heightMid = tile_element_height({ xMid, yMid });
 
-    res->Position.x = xMid;
-    res->Position.y = yMid;
-    res->Position.z = heightMid;
+    res.Position.x = xMid;
+    res.Position.y = yMid;
+    res.Position.z = heightMid;
 
     // Do nothing if not in editor, sandbox mode or landscaping is forbidden
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
@@ -146,7 +146,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
             }
         }
     }
-    res->Cost = surfaceCost + edgeCost;
+    res.Cost = surfaceCost + edgeCost;
 
     return res;
 }
@@ -154,8 +154,8 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
 GameActions::Result::Ptr SurfaceSetStyleAction::Execute() const
 {
     auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     auto normRange = _range.Normalise();
     auto x0 = std::max(normRange.GetLeft(), 32);
@@ -169,9 +169,9 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Execute() const
     auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
     auto heightMid = tile_element_height({ xMid, yMid });
 
-    res->Position.x = xMid;
-    res->Position.y = yMid;
-    res->Position.z = heightMid;
+    res.Position.x = xMid;
+    res.Position.y = yMid;
+    res.Position.z = heightMid;
 
     money32 surfaceCost = 0;
     money32 edgeCost = 0;
@@ -236,7 +236,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Execute() const
             }
         }
     }
-    res->Cost = surfaceCost + edgeCost;
+    res.Cost = surfaceCost + edgeCost;
 
     return res;
 }

@@ -61,7 +61,7 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
     {
         case PeepPickupType::Pickup:
         {
-            res->Position = peep->GetLocation();
+            res.Position = peep->GetLocation();
             if (!peep->CanBePickedUp())
             {
                 return MakeResult(GameActions::Status::Disallowed, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
@@ -83,16 +83,16 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
         }
         break;
         case PeepPickupType::Cancel:
-            res->Position = peep->GetLocation();
+            res.Position = peep->GetLocation();
             break;
         case PeepPickupType::Place:
-            res->Position = _loc;
+            res.Position = _loc;
             if (network_get_pickup_peep(_owner) != peep)
             {
                 return MakeResult(GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
             }
 
-            if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2->Error != GameActions::Status::Ok)
+            if (auto res2 = peep->Place(TileCoordsXYZ(_loc), false); res2.Error != GameActions::Status::Ok)
             {
                 return res2;
             }
@@ -119,7 +119,7 @@ GameActions::Result::Ptr PeepPickupAction::Execute() const
     {
         case PeepPickupType::Pickup:
         {
-            res->Position = peep->GetLocation();
+            res.Position = peep->GetLocation();
 
             Peep* existing = network_get_pickup_peep(_owner);
             if (existing != nullptr)
@@ -148,7 +148,7 @@ GameActions::Result::Ptr PeepPickupAction::Execute() const
         break;
         case PeepPickupType::Cancel:
         {
-            res->Position = peep->GetLocation();
+            res.Position = peep->GetLocation();
 
             Peep* const pickedUpPeep = network_get_pickup_peep(_owner);
             if (pickedUpPeep != nullptr)
@@ -160,8 +160,8 @@ GameActions::Result::Ptr PeepPickupAction::Execute() const
         }
         break;
         case PeepPickupType::Place:
-            res->Position = _loc;
-            if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2->Error != GameActions::Status::Ok)
+            res.Position = _loc;
+            if (auto res2 = peep->Place(TileCoordsXYZ(_loc), true); res2.Error != GameActions::Status::Ok)
             {
                 return res2;
             }
