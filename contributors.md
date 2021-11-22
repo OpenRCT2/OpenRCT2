@@ -180,6 +180,7 @@ The following people are not part of the development team, but have been contrib
 * Soham Roy (sohamroy19)
 * Gaven Rendell (Rendello)
 * Christian Haase (chrhaase)
+* Cory Sanin (CorySanin)
 
 ## Toolchain
 * (Balletie) - macOS
