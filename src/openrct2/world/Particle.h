@@ -15,9 +15,10 @@
 class DataSerialiser;
 struct CoordsXYZ;
 
-struct VehicleCrashParticle : MiscEntity
+struct VehicleCrashParticle : EntityBase
 {
     static constexpr auto cEntityType = EntityType::CrashedVehicleParticle;
+    uint16_t frame;
     uint16_t time_to_live;
     uint8_t colour[2];
     uint16_t crashed_sprite_base;
@@ -32,33 +33,37 @@ struct VehicleCrashParticle : MiscEntity
     void Serialise(DataSerialiser& stream);
 };
 
-struct CrashSplashParticle : MiscEntity
+struct CrashSplashParticle : EntityBase
 {
     static constexpr auto cEntityType = EntityType::CrashSplash;
+    uint16_t frame;
     static void Create(const CoordsXYZ& splashPos);
     void Update();
     void Serialise(DataSerialiser& stream);
 };
 
-struct ExplosionFlare : MiscEntity
+struct ExplosionFlare : EntityBase
 {
     static constexpr auto cEntityType = EntityType::ExplosionFlare;
+    uint16_t frame;
     static void Create(const CoordsXYZ& flarePos);
     void Update();
     void Serialise(DataSerialiser& stream);
 };
 
-struct ExplosionCloud : MiscEntity
+struct ExplosionCloud : EntityBase
 {
     static constexpr auto cEntityType = EntityType::ExplosionCloud;
+    uint16_t frame;
     static void Create(const CoordsXYZ& cloudPos);
     void Update();
     void Serialise(DataSerialiser& stream);
 };
 
-struct SteamParticle : MiscEntity
+struct SteamParticle : EntityBase
 {
     static constexpr auto cEntityType = EntityType::SteamParticle;
+    uint16_t frame;
     uint16_t time_to_move;
 
     static void Create(const CoordsXYZ& coords);

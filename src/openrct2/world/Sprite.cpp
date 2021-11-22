@@ -92,11 +92,6 @@ constexpr bool EntityTypeIsMiscEntity(const EntityType type)
     }
 }
 
-template<> bool EntityBase::Is<MiscEntity>() const
-{
-    return EntityTypeIsMiscEntity(Type);
-}
-
 template<> bool EntityBase::Is<SteamParticle>() const
 {
     return Type == EntityType::SteamParticle;

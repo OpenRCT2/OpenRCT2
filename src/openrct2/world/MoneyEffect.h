@@ -14,9 +14,11 @@
 class DataSerialiser;
 struct CoordsXYZ;
 
-struct MoneyEffect : MiscEntity
+struct MoneyEffect : EntityBase
 {
     static constexpr auto cEntityType = EntityType::MoneyEffect;
+
+    uint16_t frame;
     uint16_t MoveDelay;
     uint8_t NumMovements;
     uint8_t Vertical;

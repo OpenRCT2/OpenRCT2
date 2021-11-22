@@ -454,7 +454,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataMoneyEffect(
         const MoneyEffect& spriteBase, const MoneyEffect& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
+        COMPARE_FIELD(MoneyEffect, frame);
         COMPARE_FIELD(MoneyEffect, MoveDelay);
         COMPARE_FIELD(MoneyEffect, NumMovements);
         COMPARE_FIELD(MoneyEffect, Vertical);
@@ -466,7 +466,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataSteamParticle(
         const SteamParticle& spriteBase, const SteamParticle& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
+        COMPARE_FIELD(SteamParticle, frame);
         COMPARE_FIELD(SteamParticle, time_to_move);
     }
 
@@ -474,7 +474,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const VehicleCrashParticle& spriteBase, const VehicleCrashParticle& spriteCmp,
         GameStateSpriteChange_t& changeData) const
     {
-        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
+        COMPARE_FIELD(VehicleCrashParticle, frame);
         COMPARE_FIELD(VehicleCrashParticle, time_to_live);
         for (int i = 0; i < 2; i++)
         {
@@ -491,7 +491,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
 
     void CompareSpriteDataDuck(const Duck& spriteBase, const Duck& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
+        COMPARE_FIELD(Duck, frame);
         COMPARE_FIELD(Duck, target_x);
         COMPARE_FIELD(Duck, target_y);
         COMPARE_FIELD(Duck, state);
@@ -500,7 +500,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataBalloon(
         const Balloon& spriteBase, const Balloon& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
+        COMPARE_FIELD(Balloon, frame);
         COMPARE_FIELD(Balloon, popped);
         COMPARE_FIELD(Balloon, time_to_move);
         COMPARE_FIELD(Balloon, colour);
@@ -509,7 +509,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataJumpingFountain(
         const JumpingFountain& spriteBase, const JumpingFountain& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
+        COMPARE_FIELD(JumpingFountain, frame);
         COMPARE_FIELD(JumpingFountain, NumTicksAlive);
         COMPARE_FIELD(JumpingFountain, FountainFlags);
         COMPARE_FIELD(JumpingFountain, TargetX);
@@ -518,10 +518,22 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(JumpingFountain, FountainType);
     }
 
-    void CompareSpriteDataMisc(
-        const MiscEntity& spriteBase, const MiscEntity& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataExplosionCloud(
+        const ExplosionCloud& spriteBase, const ExplosionCloud& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(MiscEntity, frame);
+        COMPARE_FIELD(ExplosionCloud, frame);
+    }
+
+    void CompareSpriteDataCrashSplash(
+        const CrashSplashParticle& spriteBase, const CrashSplashParticle& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(CrashSplashParticle, frame);
+    }
+
+    void CompareSpriteDataExplosionFlare(
+        const ExplosionFlare& spriteBase, const ExplosionFlare& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(ExplosionFlare, frame);
     }
 
     void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const
@@ -563,10 +575,18 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                         static_cast<const VehicleCrashParticle&>(spriteCmp.base), changeData);
                     break;
                 case EntityType::ExplosionCloud:
+                    CompareSpriteDataExplosionCloud(
+                        static_cast<const ExplosionCloud&>(spriteBase.base), static_cast<const ExplosionCloud&>(spriteCmp.base),
+                        changeData);
+                    break;
                 case EntityType::CrashSplash:
+                    CompareSpriteDataCrashSplash(
+                        static_cast<const CrashSplashParticle&>(spriteBase.base),
+                        static_cast<const CrashSplashParticle&>(spriteCmp.base), changeData);
+                    break;
                 case EntityType::ExplosionFlare:
-                    CompareSpriteDataMisc(
-                        static_cast<const MiscEntity&>(spriteBase.base), static_cast<const MiscEntity&>(spriteCmp.base),
+                    CompareSpriteDataExplosionFlare(
+                        static_cast<const ExplosionFlare&>(spriteBase.base), static_cast<const ExplosionFlare&>(spriteCmp.base),
                         changeData);
                     break;
                 case EntityType::JumpingFountain:
