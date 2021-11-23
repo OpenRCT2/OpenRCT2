@@ -7,12 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <charconv>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Scenery.h>
 
@@ -87,8 +86,7 @@ public:
                 maxLength = 3;
                 break;
         }
-        WindowTextInputOpen(
-            this, widgetIndex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxLength);
+        WindowTextInputOpen(this, widgetIndex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxLength);
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
@@ -140,16 +138,14 @@ public:
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
 
-        int32_t size = 0;
-        const auto res = std::from_chars(text.data(), text.data() + text.size(), size);
+        const auto res = String::Parse<int32_t>(text);
 
-        if (res.ec == std::errc())
+        if (res.has_value())
         {
             switch (widgetIndex)
             {
                 case WIDX_PREVIEW:
-                    size = std::clamp<int32_t>(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
-                    gWindowSceneryScatterSize = size;
+                    gWindowSceneryScatterSize = std::clamp<int32_t>(res.value(), MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
                     break;
             }
             Invalidate();
