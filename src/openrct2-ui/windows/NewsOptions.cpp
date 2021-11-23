@@ -54,7 +54,7 @@ static constexpr const NotificationDef NewsItemOptionDefinitions[] = {
     { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_DIED,                        offsetof(NotificationConfiguration, guest_died)                         },
 };
 
-enum WINDOW_NEWS_OPTIONS_WIDGET_IDX {
+enum WindowNewsOptionsWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

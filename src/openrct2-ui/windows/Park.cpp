@@ -36,7 +36,7 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 224;
 
 // clang-format off
-enum WINDOW_PARK_PAGE {
+enum WindowParkPage {
     WINDOW_PARK_PAGE_ENTRANCE,
     WINDOW_PARK_PAGE_RATING,
     WINDOW_PARK_PAGE_GUESTS,
@@ -46,7 +46,7 @@ enum WINDOW_PARK_PAGE {
     WINDOW_PARK_PAGE_AWARDS
 };
 
-enum WINDOW_PARK_WIDGET_IDX {
+enum WindowParkWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

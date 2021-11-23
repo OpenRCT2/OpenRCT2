@@ -21,7 +21,7 @@ static constexpr const int32_t WH = 77;
 static constexpr const int32_t WW = 76;
 
 // clang-format off
-enum WINDOW_WATER_WIDGET_IDX {
+enum WindowWaterWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

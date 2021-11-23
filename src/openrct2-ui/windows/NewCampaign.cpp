@@ -27,7 +27,7 @@ constexpr auto SELECTED_RIDE_UNDEFINED = RIDE_ID_NULL;
 constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
 
 // clang-format off
-enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
+enum WindowNewCampaignWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

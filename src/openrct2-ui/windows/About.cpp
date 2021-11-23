@@ -31,7 +31,7 @@ enum
     WINDOW_ABOUT_PAGE_RCT2,
 };
 
-enum WINDOW_ABOUT_WIDGET_IDX {
+enum WindowAboutWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

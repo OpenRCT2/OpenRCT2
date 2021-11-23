@@ -110,7 +110,7 @@ validate_global_widx(WC_TOP_TOOLBAR, WIDX_WATER);
 validate_global_widx(WC_TOP_TOOLBAR, WIDX_SCENERY);
 validate_global_widx(WC_TOP_TOOLBAR, WIDX_PATH);
 
-enum FILE_MENU_DDIDX
+enum FileMenuDdidx
 {
     DDIDX_NEW_GAME = 0,
     DDIDX_LOAD_GAME = 1,
@@ -129,7 +129,7 @@ enum FILE_MENU_DDIDX
     DDIDX_EXIT_OPENRCT2 = 14,
 };
 
-enum TOP_TOOLBAR_VIEW_MENU_DDIDX
+enum TopToolbarViewMenuDdidx
 {
     DDIDX_UNDERGROUND_INSIDE = 0,
     DDIDX_TRANSPARENT_WATER = 1,
@@ -152,7 +152,7 @@ enum TOP_TOOLBAR_VIEW_MENU_DDIDX
     TOP_TOOLBAR_VIEW_MENU_COUNT,
 };
 
-enum TOP_TOOLBAR_DEBUG_DDIDX
+enum TopToolbarDebugDdidx
 {
     DDIDX_CONSOLE = 0,
     DDIDX_DEBUG_PAINT = 1,
@@ -160,7 +160,7 @@ enum TOP_TOOLBAR_DEBUG_DDIDX
     TOP_TOOLBAR_DEBUG_COUNT,
 };
 
-enum TOP_TOOLBAR_NETWORK_DDIDX
+enum TopToolbarNetworkDdidx
 {
     DDIDX_MULTIPLAYER = 0,
     DDIDX_MULTIPLAYER_RECONNECT = 1,

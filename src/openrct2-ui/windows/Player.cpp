@@ -26,14 +26,14 @@
 #include <utility>
 
 // clang-format off
-enum WINDOW_PLAYER_PAGE {
+enum WindowPlayerPage {
     WINDOW_PLAYER_PAGE_OVERVIEW,
     WINDOW_PLAYER_PAGE_STATISTICS,
 };
 
 #pragma region Widgets
 
-enum WINDOW_PLAYER_WIDGET_IDX {
+enum WindowPlayerWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

@@ -25,7 +25,7 @@ static constexpr const int32_t WH = 280;
 static constexpr const int32_t WW_SC_MAX = 1200;
 static constexpr const int32_t WH_SC_MAX = 800;
 
-enum WINDOW_SHORTCUT_WIDGET_IDX
+enum WindowShortcutWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

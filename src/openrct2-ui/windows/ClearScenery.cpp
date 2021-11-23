@@ -16,7 +16,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
-enum WINDOW_CLEAR_SCENERY_WIDGET_IDX
+enum WindowClearSceneryWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

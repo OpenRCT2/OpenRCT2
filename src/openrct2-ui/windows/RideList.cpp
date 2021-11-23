@@ -37,7 +37,7 @@ enum
     PAGE_COUNT
 };
 
-enum WINDOW_RIDE_LIST_WIDGET_IDX
+enum WindowRideListWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

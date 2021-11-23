@@ -120,7 +120,7 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
 
 #pragma region Widgets
 
-enum WINDOW_EDITOR_OBJECT_SELECTION_WIDGET_IDX {
+enum WindowEditorObjectSelectionWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

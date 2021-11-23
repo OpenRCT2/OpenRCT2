@@ -17,7 +17,7 @@
 // clang-format off
 static char _password[33];
 
-enum WINDOW_NETWORK_STATUS_WIDGET_IDX {
+enum WindowNetworkStatusWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

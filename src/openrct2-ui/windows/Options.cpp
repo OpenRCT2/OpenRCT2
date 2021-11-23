@@ -43,7 +43,7 @@
 #include <openrct2/util/Util.h>
 
 // clang-format off
-enum WINDOW_OPTIONS_PAGE {
+enum WindowOptionsPage {
     WINDOW_OPTIONS_PAGE_DISPLAY,
     WINDOW_OPTIONS_PAGE_RENDERING,
     WINDOW_OPTIONS_PAGE_CULTURE,
@@ -56,7 +56,7 @@ enum WINDOW_OPTIONS_PAGE {
 
 #pragma region Widgets
 
-enum WINDOW_OPTIONS_WIDGET_IDX {
+enum WindowOptionsWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

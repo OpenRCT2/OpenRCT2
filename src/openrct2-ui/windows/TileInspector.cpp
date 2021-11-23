@@ -56,7 +56,7 @@ static constexpr const rct_string_id WallSlopeStringIds[] = {
     STR_TILE_INSPECTOR_WALL_ANIMATION_FRAME,
 };
 
-enum WINDOW_TILE_INSPECTOR_WIDGET_IDX
+enum WindowTileInspectorWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

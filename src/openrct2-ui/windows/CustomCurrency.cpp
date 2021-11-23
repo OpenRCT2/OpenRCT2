@@ -21,7 +21,7 @@ static constexpr const int32_t WH = 100;
 static constexpr const int32_t WW = 400;
 
 // clang-format off
-enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
+enum WindowCustomCurrencyWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

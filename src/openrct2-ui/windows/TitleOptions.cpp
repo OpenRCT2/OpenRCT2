@@ -15,7 +15,7 @@
 #include <openrct2/localisation/Localisation.h>
 
 // clang-format off
-enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
+enum WindowTitleOptionsWidgetIdx {
     WIDX_OPTIONS,
 };
 

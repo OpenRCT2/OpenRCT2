@@ -250,7 +250,7 @@ private:
 #endif
 
 // clang-format off
-enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
+enum WindowObjectLoadErrorWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

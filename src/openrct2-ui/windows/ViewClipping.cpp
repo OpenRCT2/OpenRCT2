@@ -21,7 +21,7 @@
 #include <openrct2/world/Location.hpp>
 
 // clang-format off
-enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
+enum WindowViewClippingWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -36,7 +36,7 @@ enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_CLIP_CLEAR,
 };
 
-enum class DISPLAY_TYPE {
+enum class DisplayType {
     DisplayRaw,
     DisplayUnits
 };
@@ -71,7 +71,7 @@ private:
     CoordsXY _previousClipSelectionB;
     bool _toolActive{ false };
     bool _dragging{ false };
-    static inline DISPLAY_TYPE _clipHeightDisplayType;
+    static inline DisplayType _clipHeightDisplayType;
 
 public:
     void OnCloseButton()
@@ -101,13 +101,13 @@ public:
             }
             case WIDX_CLIP_HEIGHT_VALUE:
                 // Toggle display of the cut height value in RAW vs UNITS
-                if (_clipHeightDisplayType == DISPLAY_TYPE::DisplayRaw)
+                if (_clipHeightDisplayType == DisplayType::DisplayRaw)
                 {
-                    _clipHeightDisplayType = DISPLAY_TYPE::DisplayUnits;
+                    _clipHeightDisplayType = DisplayType::DisplayUnits;
                 }
                 else
                 {
-                    _clipHeightDisplayType = DISPLAY_TYPE::DisplayRaw;
+                    _clipHeightDisplayType = DisplayType::DisplayRaw;
                 }
                 this->Invalidate();
                 break;
@@ -284,7 +284,7 @@ public:
 
         switch (_clipHeightDisplayType)
         {
-            case DISPLAY_TYPE::DisplayRaw:
+            case DisplayType::DisplayRaw:
             default:
             {
                 auto ft = Formatter();
@@ -294,7 +294,7 @@ public:
                 DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { this->colours[0] });
                 break;
             }
-            case DISPLAY_TYPE::DisplayUnits:
+            case DisplayType::DisplayUnits:
             {
                 // Print the value in the configured height label type:
                 if (gConfigGeneral.show_height_as_units)
@@ -349,7 +349,7 @@ public:
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(this);
 
-        _clipHeightDisplayType = DISPLAY_TYPE::DisplayUnits;
+        _clipHeightDisplayType = DisplayType::DisplayUnits;
 
         // Initialise the clip height slider from the current clip height value.
         this->SetClipHeight(gClipHeight);

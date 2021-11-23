@@ -60,7 +60,7 @@ static constexpr const rct_string_id WeatherTypes[] =
     STR_BLIZZARD,
 };
 
-enum WINDOW_CHEATS_WIDGET_IDX
+enum WindowCheatsWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

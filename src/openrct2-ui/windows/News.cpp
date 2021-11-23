@@ -25,7 +25,7 @@ static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
 // clang-format off
-enum WINDOW_NEWS_WIDGET_IDX {
+enum WindowNewsWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
