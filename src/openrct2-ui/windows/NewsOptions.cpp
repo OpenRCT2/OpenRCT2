@@ -27,13 +27,13 @@ enum {
     NOTIFICATION_CATEGORY_GUEST
 };
 
-struct notification_def {
+struct NotificationDef {
     uint8_t category;
     rct_string_id caption;
     size_t config_offset;
 };
 
-static constexpr const notification_def NewsItemOptionDefinitions[] = {
+static constexpr const NotificationDef NewsItemOptionDefinitions[] = {
     { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_AWARD,                        offsetof(NotificationConfiguration, park_award)                         },
     { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,  offsetof(NotificationConfiguration, park_marketing_campaign_finished)   },
     { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_WARNINGS,                     offsetof(NotificationConfiguration, park_warnings)                      },
@@ -99,7 +99,7 @@ static rct_window_event_list window_news_options_events([](auto& events)
 
 static void WindowNewsOptionsSetPage(rct_window* w, int32_t page);
 static void WindowNewsOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi);
-static bool* GetNotificationValuePtr(const notification_def* ndef);
+static bool* GetNotificationValuePtr(const NotificationDef* ndef);
 
 rct_window* WindowNewsOptionsOpen()
 {
@@ -142,7 +142,7 @@ static void WindowNewsOptionsMouseup(rct_window* w, rct_widgetindex widgetIndex)
                 int32_t matchIndex = 0;
                 for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
                 {
-                    const notification_def* ndef = &NewsItemOptionDefinitions[i];
+                    const NotificationDef* ndef = &NewsItemOptionDefinitions[i];
                     if (ndef->category != w->page)
                         continue;
 
@@ -187,7 +187,7 @@ static void WindowNewsOptionsInvalidate(rct_window* w)
     rct_widget* checkboxWidget = &w->widgets[checkboxWidgetIndex];
     for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
     {
-        const notification_def* ndef = &NewsItemOptionDefinitions[i];
+        const NotificationDef* ndef = &NewsItemOptionDefinitions[i];
         if (ndef->category != w->page)
             continue;
 
@@ -286,7 +286,7 @@ static void WindowNewsOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi
     WindowNewsOptionsDrawTabImage(w, dpi, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
 }
 
-static bool* GetNotificationValuePtr(const notification_def* ndef)
+static bool* GetNotificationValuePtr(const NotificationDef* ndef)
 {
     bool* configValue = reinterpret_cast<bool*>(reinterpret_cast<size_t>(&gConfigNotifications) + ndef->config_offset);
     return configValue;

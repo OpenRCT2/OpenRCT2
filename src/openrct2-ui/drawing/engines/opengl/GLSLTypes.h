@@ -17,7 +17,7 @@
 
 namespace detail
 {
-    template<typename T_> struct vec2
+    template<typename T_> struct Vec2
     {
         using ValueType = T_;
 
@@ -35,10 +35,10 @@ namespace detail
         };
     };
 
-    template struct vec2<GLfloat>;
-    template struct vec2<GLint>;
+    template struct Vec2<GLfloat>;
+    template struct Vec2<GLint>;
 
-    template<typename T_> struct vec3
+    template<typename T_> struct Vec3
     {
         using ValueType = T_;
 
@@ -62,10 +62,10 @@ namespace detail
         };
     };
 
-    template struct vec3<GLfloat>;
-    template struct vec3<GLint>;
+    template struct Vec3<GLfloat>;
+    template struct Vec3<GLint>;
 
-    template<typename T_> struct vec4
+    template<typename T_> struct Vec4
     {
         using ValueType = T_;
 
@@ -95,18 +95,18 @@ namespace detail
         };
     };
 
-    template struct vec4<GLfloat>;
-    template struct vec4<GLint>;
+    template struct Vec4<GLfloat>;
+    template struct Vec4<GLint>;
 
 } // namespace detail
 
-using vec2 = detail::vec2<GLfloat>;
-using ivec2 = detail::vec2<GLint>;
+using vec2 = detail::Vec2<GLfloat>;
+using ivec2 = detail::Vec2<GLint>;
 
-using vec3 = detail::vec3<GLfloat>;
-using ivec3 = detail::vec3<GLint>;
+using vec3 = detail::Vec3<GLfloat>;
+using ivec3 = detail::Vec3<GLint>;
 
-using vec4 = detail::vec4<GLfloat>;
-using ivec4 = detail::vec4<GLint>;
+using vec4 = detail::Vec4<GLfloat>;
+using ivec4 = detail::Vec4<GLint>;
 
 #pragma pack(pop)
