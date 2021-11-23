@@ -890,7 +890,7 @@ static constexpr const WindowRideMazeDesignOption MazeOptions[] = {
     { STR_RIDE_DESIGN_MAZE_WOODEN_FENCES, SPR_RIDE_DESIGN_PREVIEW_MAZE_WOODEN_FENCES },
 };
 
-struct RctWindowGraphsYAxis
+struct GraphsYAxis
 {
     uint8_t interval;
     int8_t unit;
@@ -899,7 +899,7 @@ struct RctWindowGraphsYAxis
 };
 
 /** rct2: 0x0098DD98 */
-static constexpr const RctWindowGraphsYAxis window_graphs_y_axi[] = {
+static constexpr const GraphsYAxis window_graphs_y_axi[] = {
     { 11, 0, 10, STR_RIDE_STATS_VELOCITY_FORMAT }, // GRAPH_VELOCITY
     { 10, 0, 15, STR_RIDE_STATS_ALTITUDE_FORMAT }, // GRAPH_ALTITUDE
     { 13, -3, 1, STR_RIDE_STATS_G_FORCE_FORMAT },  // GRAPH_VERTICAL
@@ -3008,7 +3008,7 @@ static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-struct RctVehiclePaintinfo
+struct VehicleDrawInfo
 {
     int16_t x;
     int16_t y;
@@ -3016,7 +3016,7 @@ struct RctVehiclePaintinfo
     int32_t tertiary_colour;
 };
 
-static RctVehiclePaintinfo _sprites_to_draw[144];
+static VehicleDrawInfo _sprites_to_draw[144];
 
 /**
  *
@@ -3044,7 +3044,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
     // For each train
     for (int32_t i = 0; i < ride->num_vehicles; i++)
     {
-        RctVehiclePaintinfo* nextSpriteToDraw = _sprites_to_draw;
+        VehicleDrawInfo* nextSpriteToDraw = _sprites_to_draw;
         int32_t x = startX;
         int32_t y = startY;
 
@@ -3094,12 +3094,12 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 
         if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER)
         {
-            RctVehiclePaintinfo tmp = *(nextSpriteToDraw - 1);
+            VehicleDrawInfo tmp = *(nextSpriteToDraw - 1);
             *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
             *(nextSpriteToDraw - 2) = tmp;
         }
 
-        RctVehiclePaintinfo* current = nextSpriteToDraw;
+        VehicleDrawInfo* current = nextSpriteToDraw;
         while (--current >= _sprites_to_draw)
             gfx_draw_sprite(dpi, current->sprite_index, { current->x, current->y }, current->tertiary_colour);
 
