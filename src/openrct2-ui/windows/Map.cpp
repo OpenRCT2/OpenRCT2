@@ -589,7 +589,7 @@ static void WindowMapScrollmousedown(rct_window* w, int32_t scrollIndex, const S
         window_scroll_to_location(mainWindow, { mapCoords, mapZ });
     }
 
-    if (scenery_tool_is_active())
+    if (LandToolIsActive())
     {
         // Set land terrain
         int32_t landToolSize = std::max<int32_t>(1, gLandToolSize);
