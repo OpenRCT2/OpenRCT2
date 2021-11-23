@@ -51,27 +51,27 @@ static rct_widget window_scenery_scatter_widgets[] = {
 };
 // clang-format on
 
-static void window_scenery_scatter_close(rct_window* w);
-static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_scenery_scatter_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_scenery_scatter_invalidate(rct_window* w);
-static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
-static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widgetindex);
+static void WindowSceneryScatterClose(rct_window* w);
+static void WindowSceneryScatterMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowSceneryScatterMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowSceneryScatterInvalidate(rct_window* w);
+static void WindowSceneryScatterPaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowSceneryScatterTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void WindowSceneryScatterInputsize(rct_window* w, rct_widgetindex widgetindex);
 
 // clang-format off
 static rct_window_event_list window_clear_scenery_events([](auto& events)
 {
-    events.close = &window_scenery_scatter_close;
-    events.mouse_up = &window_scenery_scatter_mouseup;
-    events.mouse_down = &window_scenery_scatter_mousedown;
-    events.text_input = &window_scenery_scatter_textinput;
-    events.invalidate = &window_scenery_scatter_invalidate;
-    events.paint = &window_scenery_scatter_paint;
+    events.close = &WindowSceneryScatterClose;
+    events.mouse_up = &WindowSceneryScatterMouseup;
+    events.mouse_down = &WindowSceneryScatterMousedown;
+    events.text_input = &WindowSceneryScatterTextinput;
+    events.invalidate = &WindowSceneryScatterInvalidate;
+    events.paint = &WindowSceneryScatterPaint;
 });
 // clang-format on
 
-rct_window* window_scenery_scatter_open()
+rct_window* WindowSceneryScatterOpen()
 {
     rct_window* window;
 
@@ -96,12 +96,12 @@ rct_window* window_scenery_scatter_open()
     return window;
 }
 
-static void window_scenery_scatter_close([[maybe_unused]] rct_window* w)
+static void WindowSceneryScatterClose([[maybe_unused]] rct_window* w)
 {
     gWindowSceneryScatterEnabled = false;
 }
 
-static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowSceneryScatterMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -110,7 +110,7 @@ static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widget
             break;
 
         case WIDX_PREVIEW:
-            window_scenery_scatter_inputsize(w, widgetIndex);
+            WindowSceneryScatterInputsize(w, widgetIndex);
             break;
 
         case WIDX_DENSITY_LOW:
@@ -127,7 +127,7 @@ static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widget
     }
 }
 
-static void window_scenery_scatter_mousedown(rct_window* w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget* widget)
+static void WindowSceneryScatterMousedown(rct_window* w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -145,7 +145,7 @@ static void window_scenery_scatter_mousedown(rct_window* w, rct_widgetindex widg
     }
 }
 
-static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowSceneryScatterTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     int32_t size;
     char* end;
@@ -168,7 +168,7 @@ static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widg
     }
 }
 
-static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widgetindex)
+static void WindowSceneryScatterInputsize(rct_window* w, rct_widgetindex widgetindex)
 {
     uint8_t maxlen = 0;
     Formatter ft;
@@ -181,10 +181,10 @@ static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widg
             maxlen = 3;
             break;
     }
-    window_text_input_open(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxlen);
+    WindowTextInputOpen(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxlen);
 }
 
-static void window_scenery_scatter_invalidate(rct_window* w)
+static void WindowSceneryScatterInvalidate(rct_window* w)
 {
     // Set the preview image button to be pressed down
     w->pressed_widgets = (1ULL << WIDX_PREVIEW);
@@ -209,7 +209,7 @@ static void window_scenery_scatter_invalidate(rct_window* w)
     window_scenery_scatter_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
 }
 
-static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowSceneryScatterPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 

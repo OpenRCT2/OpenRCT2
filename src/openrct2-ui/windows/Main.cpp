@@ -20,11 +20,11 @@ static rct_widget window_main_widgets[] = {
     WIDGETS_END,
 };
 
-void window_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
+void WindowMainPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_main_events([](auto& events)
 {
-    events.paint = &window_main_paint;
+    events.paint = &WindowMainPaint;
 });
 // clang-format on
 
@@ -32,7 +32,7 @@ static rct_window_event_list window_main_events([](auto& events)
  * Creates the main window that holds the main viewport.
  *  rct2: 0x0066B3E8
  */
-rct_window* window_main_open()
+rct_window* WindowMainOpen()
 {
     window_main_widgets[0].right = context_get_width();
     window_main_widgets[0].bottom = context_get_height();
@@ -58,7 +58,7 @@ rct_window* window_main_open()
  * This function immediately jumps to 0x00685BE1 this is the second function
  * decompiled.
  */
-void window_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
+void WindowMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     viewport_render(dpi, w->viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
 }

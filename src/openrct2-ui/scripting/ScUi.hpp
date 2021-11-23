@@ -215,7 +215,7 @@ namespace OpenRCT2::Scripting
 
         void showError(const std::string& title, const std::string& message)
         {
-            window_error_open(title, message);
+            WindowErrorOpen(title, message);
         }
 
         void showTextInput(const DukValue& desc)
@@ -229,7 +229,7 @@ namespace OpenRCT2::Scripting
                 auto initialValue = AsOrDefault(desc["initialValue"], "");
                 auto maxLength = AsOrDefault(desc["maxLength"], MaxLengthAllowed);
                 auto callback = desc["callback"];
-                window_text_input_open(
+                WindowTextInputOpen(
                     title, description, initialValue, std::clamp(maxLength, 0, MaxLengthAllowed),
                     [this, plugin, callback](std::string_view value) {
                         auto dukValue = ToDuk(_scriptEngine.GetContext(), value);
@@ -266,7 +266,7 @@ namespace OpenRCT2::Scripting
                 else
                     throw DukException();
 
-                window_loadsave_open(
+                WindowLoadsaveOpen(
                     loadSaveType, defaultPath,
                     [this, plugin, callback](int32_t result, std::string_view path) {
                         if (result == MODAL_RESULT_OK)
@@ -288,7 +288,7 @@ namespace OpenRCT2::Scripting
             auto plugin = _scriptEngine.GetExecInfo().GetCurrentPlugin();
             auto callback = desc["callback"];
 
-            window_scenarioselect_open(
+            WindowScenarioselectOpen(
                 [this, plugin, callback](std::string_view path) {
                     auto dukValue = GetScenarioFile(path);
                     _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);

@@ -302,7 +302,7 @@ public:
                 }
                 else
                 {
-                    window_text_input_raw_open(
+                    WindowTextInputRawOpen(
                         this, WIDX_FILTER_BY_NAME, STR_GUESTS_FILTER_BY_NAME, STR_GUESTS_ENTER_NAME_TO_SEARCH, {},
                         _filterName.c_str(), 32);
                 }
@@ -564,7 +564,7 @@ public:
                         auto guest = GetEntity<Guest>(guestItem.Id);
                         if (guest != nullptr)
                         {
-                            window_guest_open(guest);
+                            WindowGuestOpen(guest);
                         }
                         break;
                     }
@@ -962,7 +962,7 @@ private:
     }
 };
 
-rct_window* window_guest_list_open()
+rct_window* WindowGuestListOpen()
 {
     auto* window = window_bring_to_front_by_class(WC_GUEST_LIST);
     if (window == nullptr)
@@ -975,9 +975,9 @@ rct_window* window_guest_list_open()
 /**
  * @param index The number of the ride or index of the thought
  */
-rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index)
+rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index)
 {
-    auto* w = static_cast<GuestListWindow*>(window_guest_list_open());
+    auto* w = static_cast<GuestListWindow*>(WindowGuestListOpen());
     if (w != nullptr)
     {
         w->SetFilter(type, index);
@@ -985,7 +985,7 @@ rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t
     return w;
 }
 
-void window_guest_list_refresh_list()
+void WindowGuestListRefreshList()
 {
     auto* w = window_find_by_class(WC_GUEST_LIST);
     if (w != nullptr)

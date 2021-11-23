@@ -370,7 +370,7 @@ public:
     }
 };
 
-rct_window* window_new_campaign_open(int16_t campaignType)
+rct_window* WindowNewCampaignOpen(int16_t campaignType)
 {
     auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WC_NEW_CAMPAIGN));
     if (w != nullptr)

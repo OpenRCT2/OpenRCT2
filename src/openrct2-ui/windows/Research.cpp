@@ -99,36 +99,36 @@ static rct_widget *window_research_page_widgets[] = {
 
 #pragma region Events
 
-static void window_research_development_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_research_development_update(rct_window *w);
-static void window_research_development_invalidate(rct_window *w);
-static void window_research_development_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowResearchDevelopmentMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowResearchDevelopmentUpdate(rct_window *w);
+static void WindowResearchDevelopmentInvalidate(rct_window *w);
+static void WindowResearchDevelopmentPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_research_funding_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_research_funding_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_research_funding_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_research_funding_update(rct_window *w);
-static void window_research_funding_invalidate(rct_window *w);
-static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowResearchFundingMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowResearchFundingMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowResearchFundingDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowResearchFundingUpdate(rct_window *w);
+static void WindowResearchFundingInvalidate(rct_window *w);
+static void WindowResearchFundingPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //
 static rct_window_event_list window_research_development_events([](auto& events)
 {
-    events.mouse_up = &window_research_development_mouseup;
-    events.update = &window_research_development_update;
-    events.invalidate = &window_research_development_invalidate;
-    events.paint = &window_research_development_paint;
+    events.mouse_up = &WindowResearchDevelopmentMouseup;
+    events.update = &WindowResearchDevelopmentUpdate;
+    events.invalidate = &WindowResearchDevelopmentInvalidate;
+    events.paint = &WindowResearchDevelopmentPaint;
 });
 
 // 0x009890E8
 static rct_window_event_list window_research_funding_events([](auto& events)
 {
-    events.mouse_up = &window_research_funding_mouseup;
-    events.mouse_down = &window_research_funding_mousedown;
-    events.dropdown = &window_research_funding_dropdown;
-    events.update = &window_research_funding_update;
-    events.invalidate = &window_research_funding_invalidate;
-    events.paint = &window_research_funding_paint;
+    events.mouse_up = &WindowResearchFundingMouseup;
+    events.mouse_down = &WindowResearchFundingMousedown;
+    events.dropdown = &WindowResearchFundingDropdown;
+    events.update = &WindowResearchFundingUpdate;
+    events.invalidate = &WindowResearchFundingInvalidate;
+    events.paint = &WindowResearchFundingPaint;
 });
 
 static rct_window_event_list *window_research_page_events[] = {
@@ -175,11 +175,11 @@ static constexpr const rct_string_id ResearchStageNames[] = {
     STR_RESEARCH_STAGE_UNKNOWN,
 };
 
-static void window_research_set_page(rct_window* w, int32_t page);
-static void window_research_set_pressed_tab(rct_window* w);
-static void window_research_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w);
+static void WindowResearchSetPage(rct_window* w, int32_t page);
+static void WindowResearchSetPressedTab(rct_window* w);
+static void WindowResearchDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
 
-rct_window* window_research_open()
+rct_window* WindowResearchOpen()
 {
     rct_window* w;
 
@@ -219,7 +219,7 @@ rct_window* window_research_open()
  *
  *  rct2: 0x006B6B38
  */
-static void window_research_development_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowResearchDevelopmentMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -228,7 +228,7 @@ static void window_research_development_mouseup(rct_window* w, rct_widgetindex w
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
-            window_research_set_page(w, widgetIndex - WIDX_TAB_1);
+            WindowResearchSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_LAST_DEVELOPMENT_BUTTON:
             News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);
@@ -240,7 +240,7 @@ static void window_research_development_mouseup(rct_window* w, rct_widgetindex w
  *
  *  rct2: 0x0069CBA6
  */
-static void window_research_development_update(rct_window* w)
+static void WindowResearchDevelopmentUpdate(rct_window* w)
 {
     // Tab animation
     if (++w->frame_no >= window_research_tab_animation_loops[w->page])
@@ -252,7 +252,7 @@ static void window_research_development_update(rct_window* w)
  *
  *  rct2: 0x006B6819
  */
-static void window_research_development_invalidate(rct_window* w)
+static void WindowResearchDevelopmentInvalidate(rct_window* w)
 {
     if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT])
     {
@@ -260,7 +260,7 @@ static void window_research_development_invalidate(rct_window* w)
         WindowInitScrollWidgets(w);
     }
 
-    window_research_set_pressed_tab(w);
+    WindowResearchSetPressedTab(w);
 
     window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
     if (gResearchLastItem.has_value())
@@ -277,15 +277,15 @@ static void window_research_development_invalidate(rct_window* w)
  *
  *  rct2: 0x006B689B
  */
-static void window_research_development_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowResearchDevelopmentPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    window_research_draw_tab_images(dpi, w);
+    WindowResearchDrawTabImages(dpi, w);
 
-    window_research_development_page_paint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
+    WindowResearchDevelopmentPagePaint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
 }
 
-void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex)
+void WindowResearchDevelopmentPagePaint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex)
 {
     baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
 
@@ -415,7 +415,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
  *
  *  rct2: 0x0069DB3F
  */
-static void window_research_funding_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowResearchFundingMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -424,7 +424,7 @@ static void window_research_funding_mouseup(rct_window* w, rct_widgetindex widge
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
-            window_research_set_page(w, widgetIndex - WIDX_TAB_1);
+            WindowResearchSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_TRANSPORT_RIDES:
         case WIDX_GENTLE_RIDES:
@@ -447,7 +447,7 @@ static void window_research_funding_mouseup(rct_window* w, rct_widgetindex widge
  *
  *  rct2: 0x0069DB66
  */
-static void window_research_funding_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowResearchFundingMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     rct_widget* dropdownWidget;
     int32_t i;
@@ -474,7 +474,7 @@ static void window_research_funding_mousedown(rct_window* w, rct_widgetindex wid
  *
  *  rct2: 0x0069DB6D
  */
-static void window_research_funding_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowResearchFundingDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || dropdownIndex == -1)
         return;
@@ -487,7 +487,7 @@ static void window_research_funding_dropdown(rct_window* w, rct_widgetindex widg
  *
  *  rct2: 0x0069DC23
  */
-static void window_research_funding_update(rct_window* w)
+static void WindowResearchFundingUpdate(rct_window* w)
 {
     // Tab animation
     if (++w->frame_no >= window_research_tab_animation_loops[w->page])
@@ -499,7 +499,7 @@ static void window_research_funding_update(rct_window* w)
  *
  *  rct2: 0x0069DA64
  */
-static void window_research_funding_invalidate(rct_window* w)
+static void WindowResearchFundingInvalidate(rct_window* w)
 {
     if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING])
     {
@@ -507,7 +507,7 @@ static void window_research_funding_invalidate(rct_window* w)
         WindowInitScrollWidgets(w);
     }
 
-    window_research_set_pressed_tab(w);
+    WindowResearchSetPressedTab(w);
 
     if ((gParkFlags & PARK_FLAGS_NO_MONEY) || (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL))
     {
@@ -555,15 +555,15 @@ static void window_research_funding_invalidate(rct_window* w)
  *
  *  rct2: 0x0069DAF0
  */
-static void window_research_funding_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowResearchFundingPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    window_research_draw_tab_images(dpi, w);
+    WindowResearchDrawTabImages(dpi, w);
 
-    window_research_funding_page_paint(w, dpi, WIDX_RESEARCH_FUNDING);
+    WindowResearchFundingPagePaint(w, dpi, WIDX_RESEARCH_FUNDING);
 }
 
-void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex)
+void WindowResearchFundingPagePaint(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex baseWidgetIndex)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return;
@@ -582,7 +582,7 @@ void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, r
  *
  *  rct2: 0x0069CAC5
  */
-static void window_research_set_page(rct_window* w, int32_t page)
+static void WindowResearchSetPage(rct_window* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
@@ -613,7 +613,7 @@ static void window_research_set_page(rct_window* w, int32_t page)
     w->Invalidate();
 }
 
-static void window_research_set_pressed_tab(rct_window* w)
+static void WindowResearchSetPressedTab(rct_window* w)
 {
     int32_t i;
     for (i = 0; i < WINDOW_RESEARCH_PAGE_COUNT; i++)
@@ -621,7 +621,7 @@ static void window_research_set_pressed_tab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void window_research_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
+static void WindowResearchDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
@@ -641,10 +641,10 @@ static void window_research_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w
     }
 }
 
-static void window_research_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowResearchDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    window_research_draw_tab_image(dpi, w, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
-    window_research_draw_tab_image(dpi, w, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);
+    WindowResearchDrawTabImage(dpi, w, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
+    WindowResearchDrawTabImage(dpi, w, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);
 }
 
 #pragma endregion

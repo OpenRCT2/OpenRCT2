@@ -62,7 +62,7 @@ private:
         Formatter ft;
         ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
         ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
-        window_text_input_open(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+        WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 
 public:
@@ -89,7 +89,7 @@ public:
     void OnClose() override
     {
         // If the tool wasn't changed, turn tool off
-        if (land_tool_is_active())
+        if (LandToolIsActive())
             tool_cancel();
     }
 
@@ -209,7 +209,7 @@ public:
 
     void OnUpdate() override
     {
-        if (!land_tool_is_active())
+        if (!LandToolIsActive())
             Close();
     }
 
@@ -328,7 +328,7 @@ public:
     }
 };
 
-rct_window* window_land_open()
+rct_window* WindowLandOpen()
 {
     return WindowFocusOrCreate<LandWindow>(WC_LAND, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 }

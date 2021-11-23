@@ -371,7 +371,7 @@ private:
     }
 };
 
-void window_text_input_raw_open(
+void WindowTextInputRawOpen(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
     const Formatter& descriptionArgs, const_utf8string existing_text, int32_t maxLength)
 {
@@ -387,7 +387,7 @@ void window_text_input_raw_open(
     }
 }
 
-void window_text_input_open(
+void WindowTextInputOpen(
     std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
     std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
 {
@@ -401,15 +401,15 @@ void window_text_input_open(
     }
 }
 
-void window_text_input_open(
+void WindowTextInputOpen(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
     const Formatter& descriptionArgs, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     auto existingText = format_string(existing_text, &existing_args);
-    window_text_input_raw_open(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
+    WindowTextInputRawOpen(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
 }
 
-void window_text_input_key(rct_window* w, char keychar)
+void WindowTextInputKey(rct_window* w, char keychar)
 {
     const auto wndNumber = w->number;
     const auto wndClass = w->classification;

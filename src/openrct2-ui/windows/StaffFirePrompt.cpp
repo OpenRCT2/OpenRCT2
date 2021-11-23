@@ -38,19 +38,19 @@ static rct_widget window_staff_fire_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowStaffFireMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowStaffFirePaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
 static rct_window_event_list window_staff_fire_events([](auto& events)
 {
-    events.mouse_up = &window_staff_fire_mouseup;
-    events.paint = &window_staff_fire_paint;
+    events.mouse_up = &WindowStaffFireMouseup;
+    events.paint = &WindowStaffFirePaint;
 });
 // clang-format on
 
 /** Based off of rct2: 0x6C0A77 */
-rct_window* window_staff_fire_prompt_open(Peep* peep)
+rct_window* WindowStaffFirePromptOpen(Peep* peep)
 {
     rct_window* w;
 
@@ -76,7 +76,7 @@ rct_window* window_staff_fire_prompt_open(Peep* peep)
  *
  *  rct2: 0x006C0B40
  */
-static void window_staff_fire_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowStaffFireMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -96,7 +96,7 @@ static void window_staff_fire_mouseup(rct_window* w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x006C0AF2
  */
-static void window_staff_fire_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowStaffFirePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 

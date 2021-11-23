@@ -314,7 +314,7 @@ private:
     }
 };
 
-rct_window* window_changelog_open(int personality)
+rct_window* WindowChangelogOpen(int personality)
 {
     auto* window = window_bring_to_front_by_class(WC_CHANGELOG);
     if (window == nullptr)

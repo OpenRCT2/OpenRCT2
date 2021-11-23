@@ -307,7 +307,7 @@ public:
     }
 };
 
-rct_window* window_news_open()
+rct_window* WindowNewsOpen()
 {
     return WindowFocusOrCreate<NewsWindow>(WC_RECENT_NEWS, WW, WH, 0);
 }

@@ -545,7 +545,7 @@ void ChangeShortcutWindow::NotifyShortcutKeysWindow()
     }
 }
 
-rct_window* window_shortcut_keys_open()
+rct_window* WindowShortcutKeysOpen()
 {
     auto w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
     if (w == nullptr)

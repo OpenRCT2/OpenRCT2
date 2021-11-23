@@ -89,12 +89,12 @@ void Dropdown::SetDisabled(int32_t index, bool value)
     _dropdownItemsDisabled[index] = value;
 }
 
-static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowDropdownPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
 static rct_window_event_list window_dropdown_events([](auto& events)
 {
-    events.paint = &window_dropdown_paint;
+    events.paint = &WindowDropdownPaint;
 });
 // clang-format on
 
@@ -285,7 +285,7 @@ void WindowDropdownClose()
     window_close_by_class(WC_DROPDOWN);
 }
 
-static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowDropdownPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 

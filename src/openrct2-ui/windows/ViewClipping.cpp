@@ -398,7 +398,7 @@ private:
     }
 };
 
-rct_window* window_view_clipping_open()
+rct_window* WindowViewClippingOpen()
 {
     auto* window = window_bring_to_front_by_class(WC_VIEW_CLIPPING);
     if (window == nullptr)

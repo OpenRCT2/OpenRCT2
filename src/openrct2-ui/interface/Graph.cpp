@@ -131,7 +131,7 @@ static const ScreenCoordsXY ScreenCoordsForHistoryIndex(
     return coords;
 }
 
-static const FinancialTooltipInfo finance_tooltip_info_from_money(
+static const FinancialTooltipInfo FinanceTooltipInfoFromMoney(
     const money64* history, const int32_t historyCount, const int32_t modifier, const int32_t offset,
     const ScreenRect& chartFrame, const ScreenCoordsXY& cursorPosition)
 {
@@ -246,8 +246,7 @@ namespace Graph
             return;
         }
 
-        const auto info = finance_tooltip_info_from_money(
-            history, ChartMaxDataCount, modifier, offset, chartFrame, cursorPosition);
+        const auto info = FinanceTooltipInfoFromMoney(history, ChartMaxDataCount, modifier, offset, chartFrame, cursorPosition);
 
         if (info.money == MONEY64_UNDEFINED)
         {

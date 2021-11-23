@@ -43,24 +43,24 @@ static rct_widget window_custom_currency_widgets[] = {
 };
 
 
-static void custom_currency_window_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void custom_currency_window_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void custom_currency_window_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void custom_currency_window_text_input(struct rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void CustomCurrencyWindowMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void CustomCurrencyWindowMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void CustomCurrencyWindowDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void CustomCurrencyWindowTextInput(struct rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void CustomCurrencyWindowPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 
 static rct_window_event_list _windowCustomCurrencyEvents([](auto& events)
 {
-    events.mouse_up = &custom_currency_window_mouseup;
-    events.mouse_down = &custom_currency_window_mousedown;
-    events.dropdown = &custom_currency_window_dropdown;
-    events.text_input = &custom_currency_window_text_input;
-    events.paint = &custom_currency_window_paint;
+    events.mouse_up = &CustomCurrencyWindowMouseup;
+    events.mouse_down = &CustomCurrencyWindowMousedown;
+    events.dropdown = &CustomCurrencyWindowDropdown;
+    events.text_input = &CustomCurrencyWindowTextInput;
+    events.paint = &CustomCurrencyWindowPaint;
 });
 // clang-format on
 
-rct_window* custom_currency_window_open()
+rct_window* CustomCurrencyWindowOpen()
 {
     rct_window* window;
 
@@ -83,7 +83,7 @@ rct_window* custom_currency_window_open()
     return window;
 }
 
-static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void CustomCurrencyWindowMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     widget = &w->widgets[widgetIndex - 1];
 
@@ -133,26 +133,26 @@ static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widg
             break;
 
         case WIDX_SYMBOL_TEXT:
-            window_text_input_raw_open(
+            WindowTextInputRawOpen(
                 w, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC, {},
                 CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, CURRENCY_SYMBOL_MAX_SIZE);
             break;
     }
 }
 
-static void custom_currency_window_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void CustomCurrencyWindowMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
         case WIDX_RATE:
-            window_text_input_open(
+            WindowTextInputOpen(
                 w, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, {}, STR_FORMAT_INTEGER,
                 static_cast<uint32_t>(CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate), CURRENCY_RATE_MAX_NUM_DIGITS);
             break;
     }
 }
 
-static void custom_currency_window_dropdown([[maybe_unused]] rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void CustomCurrencyWindowDropdown([[maybe_unused]] rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
@@ -177,7 +177,7 @@ static void custom_currency_window_dropdown([[maybe_unused]] rct_window* w, rct_
     }
 }
 
-static void custom_currency_window_text_input([[maybe_unused]] struct rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void CustomCurrencyWindowTextInput([[maybe_unused]] struct rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     if (text == nullptr)
         return;
@@ -209,7 +209,7 @@ static void custom_currency_window_text_input([[maybe_unused]] struct rct_window
     }
 }
 
-static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void CustomCurrencyWindowPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto ft = Formatter::Common();
     ft.Add<money64>(MONEY(10, 0));

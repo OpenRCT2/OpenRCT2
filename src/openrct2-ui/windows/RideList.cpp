@@ -912,7 +912,7 @@ private:
  *
  *  rct2: 0x006B30BC
  */
-rct_window* window_ride_list_open()
+rct_window* WindowRideListOpen()
 {
     // Check if window is already open
     auto* window = window_bring_to_front_by_class(WC_RIDE_LIST);
@@ -923,7 +923,7 @@ rct_window* window_ride_list_open()
     return window;
 }
 
-void window_ride_list_refresh_list(rct_window* w)
+void WindowRideListRefreshList(rct_window* w)
 {
     dynamic_cast<RideListWindow*>(w)->RefreshListWrapper();
 }

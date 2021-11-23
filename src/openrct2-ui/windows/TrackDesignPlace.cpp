@@ -70,27 +70,27 @@ static rct_widget window_track_place_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_track_place_close(rct_window *w);
-static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_track_place_update(rct_window *w);
-static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_track_place_toolabort(rct_window *w, rct_widgetindex widgetIndex);
-static void window_track_place_unknown14(rct_window *w);
-static void window_track_place_invalidate(rct_window *w);
-static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowTrackPlaceClose(rct_window *w);
+static void WindowTrackPlaceMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTrackPlaceUpdate(rct_window *w);
+static void WindowTrackPlaceToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTrackPlaceTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTrackPlaceToolabort(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTrackPlaceUnknown14(rct_window *w);
+static void WindowTrackPlaceInvalidate(rct_window *w);
+static void WindowTrackPlacePaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_track_place_events([](auto& events)
 {
-    events.close = &window_track_place_close;
-    events.mouse_up = &window_track_place_mouseup;
-    events.update = &window_track_place_update;
-    events.tool_update = &window_track_place_toolupdate;
-    events.tool_down = &window_track_place_tooldown;
-    events.tool_abort = &window_track_place_toolabort;
-    events.viewport_rotate = &window_track_place_unknown14;
-    events.invalidate = &window_track_place_invalidate;
-    events.paint = &window_track_place_paint;
+    events.close = &WindowTrackPlaceClose;
+    events.mouse_up = &WindowTrackPlaceMouseup;
+    events.update = &WindowTrackPlaceUpdate;
+    events.tool_update = &WindowTrackPlaceToolupdate;
+    events.tool_down = &WindowTrackPlaceTooldown;
+    events.tool_abort = &WindowTrackPlaceToolabort;
+    events.viewport_rotate = &WindowTrackPlaceUnknown14;
+    events.invalidate = &WindowTrackPlaceInvalidate;
+    events.paint = &WindowTrackPlacePaint;
 });
 // clang-format on
 
@@ -104,24 +104,24 @@ static money32 _window_track_place_last_cost;
 
 static std::unique_ptr<TrackDesign> _trackDesign;
 
-static void window_track_place_clear_provisional();
-static int32_t window_track_place_get_base_z(const CoordsXY& loc);
+static void WindowTrackPlaceClearProvisional();
+static int32_t WindowTrackPlaceGetBaseZ(const CoordsXY& loc);
 
-static void window_track_place_clear_mini_preview();
-static void window_track_place_draw_mini_preview(TrackDesign* td6);
-static void window_track_place_draw_mini_preview_track(
+static void WindowTrackPlaceClearMiniPreview();
+static void WindowTrackPlaceDrawMiniPreview(TrackDesign* td6);
+static void WindowTrackPlaceDrawMiniPreviewTrack(
     TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max);
-static void window_track_place_draw_mini_preview_maze(
+static void WindowTrackPlaceDrawMiniPreviewMaze(
     TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max);
-static ScreenCoordsXY draw_mini_preview_get_pixel_position(const CoordsXY& location);
-static bool draw_mini_preview_is_pixel_in_bounds(const ScreenCoordsXY& pixel);
-static uint8_t* draw_mini_preview_get_pixel_ptr(const ScreenCoordsXY& pixel);
+static ScreenCoordsXY DrawMiniPreviewGetPixelPosition(const CoordsXY& location);
+static bool DrawMiniPreviewIsPixelInBounds(const ScreenCoordsXY& pixel);
+static uint8_t* DrawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel);
 
 /**
  *
  *  rct2: 0x006D182E
  */
-static void window_track_place_clear_mini_preview()
+static void WindowTrackPlaceClearMiniPreview()
 {
     // Fill with transparent colour.
     std::fill(_window_track_place_mini_preview.begin(), _window_track_place_mini_preview.end(), PALETTE_INDEX_0);
@@ -131,7 +131,7 @@ static void window_track_place_clear_mini_preview()
  *
  *  rct2: 0x006CFCA0
  */
-rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
+rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
 {
     _trackDesign = TrackDesignImport(tdFileRef->path);
     if (_trackDesign == nullptr)
@@ -155,8 +155,8 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
     _windowTrackPlaceLast.SetNull();
     _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 
-    window_track_place_clear_mini_preview();
-    window_track_place_draw_mini_preview(_trackDesign.get());
+    WindowTrackPlaceClearMiniPreview();
+    WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
 
     return w;
 }
@@ -165,9 +165,9 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
  *
  *  rct2: 0x006D0119
  */
-static void window_track_place_close(rct_window* w)
+static void WindowTrackPlaceClose(rct_window* w)
 {
-    window_track_place_clear_provisional();
+    WindowTrackPlaceClearProvisional();
     viewport_set_visibility(0);
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -182,7 +182,7 @@ static void window_track_place_close(rct_window* w)
  *
  *  rct2: 0x006CFEAC
  */
-static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTrackPlaceMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -190,18 +190,18 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_close(w);
             break;
         case WIDX_ROTATE:
-            window_track_place_clear_provisional();
+            WindowTrackPlaceClearProvisional();
             _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
             w->Invalidate();
             _windowTrackPlaceLast.SetNull();
-            window_track_place_draw_mini_preview(_trackDesign.get());
+            WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
             break;
         case WIDX_MIRROR:
             TrackDesignMirror(_trackDesign.get());
             _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
             w->Invalidate();
             _windowTrackPlaceLast.SetNull();
-            window_track_place_draw_mini_preview(_trackDesign.get());
+            WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
             break;
         case WIDX_SELECT_DIFFERENT_DESIGN:
             window_close(w);
@@ -218,7 +218,7 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006CFCA0
  */
-static void window_track_place_update(rct_window* w)
+static void WindowTrackPlaceUpdate(rct_window* w)
 {
     if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         if (gCurrentToolWidget.window_classification != WC_TRACK_DESIGN_PLACE)
@@ -248,7 +248,7 @@ static GameActions::Result::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, 
  *
  *  rct2: 0x006CFF2D
  */
-static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTrackPlaceToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     int16_t mapZ;
 
@@ -261,7 +261,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
     if (mapCoords.IsNull())
     {
-        window_track_place_clear_provisional();
+        WindowTrackPlaceClearProvisional();
         return;
     }
 
@@ -275,12 +275,12 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     money32 cost = MONEY32_UNDEFINED;
 
     // Get base Z position
-    mapZ = window_track_place_get_base_z(mapCoords);
+    mapZ = WindowTrackPlaceGetBaseZ(mapCoords);
     CoordsXYZ trackLoc = { mapCoords, mapZ };
 
     if (game_is_not_paused() || gCheatsBuildInPauseMode)
     {
-        window_track_place_clear_provisional();
+        WindowTrackPlaceClearProvisional();
         auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
 
         if (res->Error == GameActions::Status::Ok)
@@ -315,9 +315,9 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
  *
  *  rct2: 0x006CFF34
  */
-static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTrackPlaceTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    window_track_place_clear_provisional();
+    WindowTrackPlaceClearProvisional();
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -328,7 +328,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
         return;
 
     // Try increasing Z until a feasible placement is found
-    int16_t mapZ = window_track_place_get_base_z(mapCoords);
+    int16_t mapZ = WindowTrackPlaceGetBaseZ(mapCoords);
     CoordsXYZ trackLoc = { mapCoords, mapZ };
 
     auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
@@ -382,30 +382,30 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006D015C
  */
-static void window_track_place_toolabort(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTrackPlaceToolabort(rct_window* w, rct_widgetindex widgetIndex)
 {
-    window_track_place_clear_provisional();
+    WindowTrackPlaceClearProvisional();
 }
 
 /**
  *
  *  rct2: 0x006CFF01
  */
-static void window_track_place_unknown14(rct_window* w)
+static void WindowTrackPlaceUnknown14(rct_window* w)
 {
-    window_track_place_draw_mini_preview(_trackDesign.get());
+    WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
 }
 
-static void window_track_place_invalidate(rct_window* w)
+static void WindowTrackPlaceInvalidate(rct_window* w)
 {
-    window_track_place_draw_mini_preview(_trackDesign.get());
+    WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
 }
 
 /**
  *
  *  rct2: 0x006D017F
  */
-static void window_track_place_clear_provisional()
+static void WindowTrackPlaceClearProvisional()
 {
     if (_window_track_place_last_was_valid)
     {
@@ -448,7 +448,7 @@ void TrackPlaceRestoreProvisional()
  *
  *  rct2: 0x006D17C6
  */
-static int32_t window_track_place_get_base_z(const CoordsXY& loc)
+static int32_t WindowTrackPlaceGetBaseZ(const CoordsXY& loc)
 {
     auto surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)
@@ -477,7 +477,7 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc)
  *
  *  rct2: 0x006CFD9D
  */
-static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTrackPlacePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto ft = Formatter::Common();
     ft.Add<char*>(_trackDesign->name.c_str());
@@ -509,9 +509,9 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006D1845
  */
-static void window_track_place_draw_mini_preview(TrackDesign* td6)
+static void WindowTrackPlaceDrawMiniPreview(TrackDesign* td6)
 {
-    window_track_place_clear_mini_preview();
+    WindowTrackPlaceClearMiniPreview();
 
     // First pass is used to determine the width and height of the image so it can centre it
     CoordsXY min = { 0, 0 };
@@ -527,16 +527,16 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
 
         if (td6->type == RIDE_TYPE_MAZE)
         {
-            window_track_place_draw_mini_preview_maze(td6, pass, origin, min, max);
+            WindowTrackPlaceDrawMiniPreviewMaze(td6, pass, origin, min, max);
         }
         else
         {
-            window_track_place_draw_mini_preview_track(td6, pass, origin, min, max);
+            WindowTrackPlaceDrawMiniPreviewTrack(td6, pass, origin, min, max);
         }
     }
 }
 
-static void window_track_place_draw_mini_preview_track(
+static void WindowTrackPlaceDrawMiniPreviewTrack(
     TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
 {
     const uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
@@ -567,10 +567,10 @@ static void window_track_place_draw_mini_preview_track(
             }
             else
             {
-                auto pixelPosition = draw_mini_preview_get_pixel_position(rotatedAndOffsetTrackBlock);
-                if (draw_mini_preview_is_pixel_in_bounds(pixelPosition))
+                auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetTrackBlock);
+                if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                 {
-                    uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
+                    uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
                     auto bits = trackBlock->var_08.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
@@ -626,10 +626,10 @@ static void window_track_place_draw_mini_preview_track(
         }
         else
         {
-            auto pixelPosition = draw_mini_preview_get_pixel_position(rotatedAndOffsetEntrance);
-            if (draw_mini_preview_is_pixel_in_bounds(pixelPosition))
+            auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetEntrance);
+            if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
             {
-                uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
+                uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
                 uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
                 for (int32_t i = 0; i < 4; i++)
                 {
@@ -643,7 +643,7 @@ static void window_track_place_draw_mini_preview_track(
     }
 }
 
-static void window_track_place_draw_mini_preview_maze(
+static void WindowTrackPlaceDrawMiniPreviewMaze(
     TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
@@ -660,10 +660,10 @@ static void window_track_place_draw_mini_preview_maze(
         }
         else
         {
-            auto pixelPosition = draw_mini_preview_get_pixel_position(rotatedMazeCoords);
-            if (draw_mini_preview_is_pixel_in_bounds(pixelPosition))
+            auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedMazeCoords);
+            if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
             {
-                uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
+                uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
                 uint8_t colour = _PaletteIndexColourTrack;
 
@@ -685,18 +685,18 @@ static void window_track_place_draw_mini_preview_maze(
     }
 }
 
-static ScreenCoordsXY draw_mini_preview_get_pixel_position(const CoordsXY& location)
+static ScreenCoordsXY DrawMiniPreviewGetPixelPosition(const CoordsXY& location)
 {
     auto tilePos = TileCoordsXY(location);
     return { (80 + (tilePos.y - tilePos.x) * 4), (38 + (tilePos.y + tilePos.x) * 2) };
 }
 
-static bool draw_mini_preview_is_pixel_in_bounds(const ScreenCoordsXY& pixel)
+static bool DrawMiniPreviewIsPixelInBounds(const ScreenCoordsXY& pixel)
 {
     return pixel.x >= 0 && pixel.y >= 0 && pixel.x <= 160 && pixel.y <= 75;
 }
 
-static uint8_t* draw_mini_preview_get_pixel_ptr(const ScreenCoordsXY& pixel)
+static uint8_t* DrawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel)
 {
     return &_window_track_place_mini_preview[pixel.y * TRACK_MINI_PREVIEW_WIDTH + pixel.x];
 }
