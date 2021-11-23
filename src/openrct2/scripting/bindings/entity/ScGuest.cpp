@@ -368,6 +368,8 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->GuestHeadingToRideId = static_cast<ride_id_t>(value);
+            peep->GuestIsLostCountdown = 200; 
+            peep->ResetPathfindGoal(); 
         }
     }
 
