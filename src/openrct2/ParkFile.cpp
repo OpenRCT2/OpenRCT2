@@ -1931,7 +1931,7 @@ namespace OpenRCT2
             cs.ReadWrite(thought.type);
             if (version <= 2)
             {
-                int16_t item;
+                int16_t item{};
                 cs.ReadWrite(item);
                 thought.item = item;
             }
