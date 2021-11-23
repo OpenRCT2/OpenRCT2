@@ -39,7 +39,7 @@ enum class LIST_ITEM_TYPE : uint8_t
     SCENARIO,
 };
 
-struct ListItem
+struct ScenarioListItem
 {
     LIST_ITEM_TYPE type;
     union
@@ -56,7 +56,7 @@ struct ListItem
     };
 };
 
-static std::vector<ListItem> _listItems;
+static std::vector<ScenarioListItem> _listItems;
 
 enum {
     WIDX_BACKGROUND,
@@ -744,14 +744,14 @@ static void InitialiseListItems(rct_window* w)
 
         if (headingStringId != STR_NONE)
         {
-            ListItem headerItem;
+            ScenarioListItem headerItem;
             headerItem.type = LIST_ITEM_TYPE::HEADING;
             headerItem.heading.string_id = headingStringId;
             _listItems.push_back(std::move(headerItem));
         }
 
         // Scenario
-        ListItem scenarioItem;
+        ScenarioListItem scenarioItem;
         scenarioItem.type = LIST_ITEM_TYPE::SCENARIO;
         scenarioItem.scenario.scenario = scenario;
         if (IsLockingEnabled(w))
