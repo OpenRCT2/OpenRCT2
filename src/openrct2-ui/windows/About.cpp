@@ -91,25 +91,25 @@ static uint64_t window_about_page_enabled_widgets[] = {
     DEFAULT_ENABLED_WIDGETS,
 };
 
-static void WindowAboutOpenrct2Mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowAboutOpenrct2Paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowAboutOpenrct2Invalidate(rct_window *w);
+static void WindowAboutOpenRCT2Mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowAboutOpenRCT2Paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowAboutOpenRCT2Invalidate(rct_window *w);
 
-static void WindowAboutRct2Mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowAboutRct2Paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowAboutOpenrct2CommonPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowAboutRCT2Mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowAboutRCT2Paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowAboutOpenRCT2CommonPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_about_openrct2_events([](auto& events)
 {
-    events.mouse_up = &WindowAboutOpenrct2Mouseup;
-    events.invalidate = &WindowAboutOpenrct2Invalidate;
-    events.paint = &WindowAboutOpenrct2Paint;
+    events.mouse_up = &WindowAboutOpenRCT2Mouseup;
+    events.invalidate = &WindowAboutOpenRCT2Invalidate;
+    events.paint = &WindowAboutOpenRCT2Paint;
 });
 
 static rct_window_event_list window_about_rct2_events([](auto& events)
 {
-    events.mouse_up = &WindowAboutRct2Mouseup;
-    events.paint = &WindowAboutRct2Paint;
+    events.mouse_up = &WindowAboutRCT2Mouseup;
+    events.paint = &WindowAboutRCT2Paint;
 });
 
 static rct_window_event_list *window_about_page_events[] = {
@@ -144,7 +144,7 @@ rct_window* WindowAboutOpen()
 
 #pragma region OpenRCT2
 
-static void WindowAboutOpenrct2Mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowAboutOpenRCT2Mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -170,7 +170,7 @@ static void WindowAboutOpenrct2Mouseup(rct_window* w, rct_widgetindex widgetInde
     }
 }
 
-static void WindowAboutOpenrct2CommonPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowAboutOpenRCT2CommonPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
@@ -196,9 +196,9 @@ static void WindowAboutOpenrct2CommonPaint(rct_window* w, rct_drawpixelinfo* dpi
     }
 }
 
-static void WindowAboutOpenrct2Paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowAboutOpenRCT2Paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowAboutOpenrct2CommonPaint(w, dpi);
+    WindowAboutOpenRCT2CommonPaint(w, dpi);
 
     // Draw logo on placeholder widget
     ScreenCoordsXY logoCoords = w->windowPos
@@ -220,7 +220,7 @@ static void WindowAboutOpenrct2Paint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextWrapped(dpi, centrePos, width, STR_STRING, ft, { w->colours[1], TextAlignment::CENTRE });
 }
 
-static void WindowAboutOpenrct2Invalidate(rct_window* w)
+static void WindowAboutOpenRCT2Invalidate(rct_window* w)
 {
     if (w->page == WINDOW_ABOUT_PAGE_OPENRCT2 && OpenRCT2::GetContext()->HasNewVersionInfo())
     {
@@ -238,7 +238,7 @@ static void WindowAboutOpenrct2Invalidate(rct_window* w)
  *
  *  rct2: 0x0066D4D5
  */
-static void WindowAboutRct2Mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowAboutRCT2Mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -256,9 +256,9 @@ static void WindowAboutRct2Mouseup(rct_window* w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x0066D321
  */
-static void WindowAboutRct2Paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowAboutRCT2Paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowAboutOpenrct2CommonPaint(w, dpi);
+    WindowAboutOpenRCT2CommonPaint(w, dpi);
 
     int32_t yPage = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
 
