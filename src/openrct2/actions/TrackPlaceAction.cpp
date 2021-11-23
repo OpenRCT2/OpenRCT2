@@ -24,10 +24,11 @@
 using namespace OpenRCT2::TrackMetaData;
 
 TrackPlaceAction::TrackPlaceAction(
-    NetworkRideId_t rideIndex, int32_t trackType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
-    int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign)
+    NetworkRideId_t rideIndex, int32_t trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed,
+    int32_t colour, int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign)
     : _rideIndex(rideIndex)
     , _trackType(trackType)
+    , _rideType(rideType)
     , _origin(origin)
     , _brakeSpeed(brakeSpeed)
     , _colour(colour)
@@ -43,6 +44,7 @@ void TrackPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit(_origin);
     visitor.Visit("ride", _rideIndex);
     visitor.Visit("trackType", _trackType);
+    visitor.Visit("rideType", _rideType);
     visitor.Visit("brakeSpeed", _brakeSpeed);
     visitor.Visit("colour", _colour);
     visitor.Visit("seatRotation", _seatRotation);
@@ -59,8 +61,8 @@ void TrackPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_rideIndex) << DS_TAG(_trackType) << DS_TAG(_origin) << DS_TAG(_brakeSpeed) << DS_TAG(_colour)
-           << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags);
+    stream << DS_TAG(_rideIndex) << DS_TAG(_trackType) << DS_TAG(_rideType) << DS_TAG(_origin) << DS_TAG(_brakeSpeed)
+           << DS_TAG(_colour) << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags);
 }
 
 GameActions::Result TrackPlaceAction::Query() const
@@ -83,6 +85,19 @@ GameActions::Result TrackPlaceAction::Query() const
     if (!direction_valid(_origin.direction))
     {
         log_warning("Invalid direction for track placement, direction = %d", _origin.direction);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+    }
+
+    if (_rideType != ride->type && !gCheatsAllowArbitraryRideTypeChanges)
+    {
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+    }
+
+    if (_rideType > RIDE_TYPE_COUNT)
+    {
+        log_warning("Invalid ride type for track placement, rideType = %d", _rideType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
@@ -585,7 +600,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         trackElement->SetSequenceIndex(trackBlock->index);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetTrackType(_trackType);
-        trackElement->SetRideType(ride->type);
+        trackElement->SetRideType(_rideType);
         trackElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
         switch (_trackType)

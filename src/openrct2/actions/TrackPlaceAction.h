@@ -21,6 +21,7 @@ class TrackPlaceAction final : public GameActionBase<GameCommand::PlaceTrack>
 private:
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
     int32_t _trackType{};
+    ride_type_t _rideType{};
     CoordsXYZD _origin;
     int32_t _brakeSpeed{};
     int32_t _colour{};
@@ -31,8 +32,8 @@ private:
 public:
     TrackPlaceAction() = default;
     TrackPlaceAction(
-        NetworkRideId_t rideIndex, int32_t trackType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
-        int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign);
+        NetworkRideId_t rideIndex, int32_t trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed,
+        int32_t colour, int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
