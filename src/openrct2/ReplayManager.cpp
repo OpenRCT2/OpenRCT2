@@ -26,13 +26,13 @@
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
+#include "entity/EntityTweener.h"
+#include "entity/Sprite.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "scenario/Scenario.h"
-#include "world/EntityTweener.h"
 #include "world/Park.h"
-#include "world/Sprite.h"
 #include "zlib.h"
 
 #include <chrono>

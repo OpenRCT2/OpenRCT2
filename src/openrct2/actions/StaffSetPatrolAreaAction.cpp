@@ -9,10 +9,10 @@
 
 #include "StaffSetPatrolAreaAction.h"
 
+#include "../entity/Entity.h"
 #include "../interface/Window.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
-#include "../world/Entity.h"
 
 StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc, const StaffSetPatrolAreaMode mode)
     : _spriteId(spriteId)

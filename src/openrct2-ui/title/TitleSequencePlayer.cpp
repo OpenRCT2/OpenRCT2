@@ -23,6 +23,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/entity/Sprite.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/management/NewsItem.h>
@@ -38,7 +39,6 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Sprite.h>
 
 using namespace OpenRCT2;
 

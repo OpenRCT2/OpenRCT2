@@ -28,6 +28,8 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
+#include "../entity/EntityList.h"
+#include "../entity/Sprite.h"
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
 #include "../interface/Window_internal.h"
@@ -48,10 +50,8 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
-#include "../world/EntityList.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 #include "Viewport.h"
 
 #include <algorithm>

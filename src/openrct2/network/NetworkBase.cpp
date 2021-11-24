@@ -20,6 +20,9 @@
 #include "../actions/PeepPickupAction.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
+#include "../entity/EntityList.h"
+#include "../entity/EntityTweener.h"
+#include "../entity/Sprite.h"
 #include "../localisation/Formatting.h"
 #include "../platform/Platform2.h"
 #include "../scenario/Scenario.h"
@@ -27,10 +30,7 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/SawyerCoding.h"
-#include "../world/EntityList.h"
-#include "../world/EntityTweener.h"
 #include "../world/Location.hpp"
-#include "../world/Sprite.h"
 #include "network.h"
 
 #include <algorithm>

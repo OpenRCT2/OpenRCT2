@@ -19,6 +19,7 @@
 #include "ReplayManager.h"
 #include "actions/GameAction.h"
 #include "config/Config.h"
+#include "entity/Sprite.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
@@ -37,7 +38,6 @@
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "world/Sprite.h"
 
 #include <algorithm>
 #include <chrono>

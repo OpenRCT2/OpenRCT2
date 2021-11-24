@@ -8,13 +8,13 @@
  *****************************************************************************/
 
 #include "../../drawing/Drawing.h"
+#include "../../entity/Sprite.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
-#include "../../world/Sprite.h"
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"

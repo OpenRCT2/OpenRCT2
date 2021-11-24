@@ -10,11 +10,11 @@
 #include "StaffSetCostumeAction.h"
 
 #include "../Context.h"
+#include "../entity/Entity.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
-#include "../world/Entity.h"
 
 /** rct2: 0x00982134 */
 constexpr const bool peep_slow_walking_types[] = {

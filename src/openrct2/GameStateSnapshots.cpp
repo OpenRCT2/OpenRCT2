@@ -10,17 +10,17 @@
 #include "GameStateSnapshots.h"
 
 #include "core/CircularBuffer.h"
+#include "entity/Balloon.h"
+#include "entity/Duck.h"
+#include "entity/EntityList.h"
+#include "entity/Fountain.h"
+#include "entity/Litter.h"
+#include "entity/MoneyEffect.h"
+#include "entity/Particle.h"
+#include "entity/Sprite.h"
 #include "peep/Guest.h"
 #include "peep/Staff.h"
 #include "ride/Vehicle.h"
-#include "world/Balloon.h"
-#include "world/Duck.h"
-#include "world/EntityList.h"
-#include "world/Fountain.h"
-#include "world/Litter.h"
-#include "world/MoneyEffect.h"
-#include "world/Particle.h"
-#include "world/Sprite.h"
 
 static constexpr size_t MaximumGameStateSnapshots = 32;
 static constexpr uint32_t InvalidTick = 0xFFFFFFFF;

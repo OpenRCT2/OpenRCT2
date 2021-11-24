@@ -10,12 +10,12 @@
 #include "StaffSetOrdersAction.h"
 
 #include "../Context.h"
+#include "../entity/Entity.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../peep/Staff.h"
 #include "../windows/Intent.h"
-#include "../world/Entity.h"
 
 StaffSetOrdersAction::StaffSetOrdersAction(uint16_t spriteIndex, uint8_t ordersId)
     : _spriteIndex(spriteIndex)

@@ -15,6 +15,8 @@
 #include "../actions/FootpathRemoveAction.h"
 #include "../actions/LandSetRightsAction.h"
 #include "../core/Guard.hpp"
+#include "../entity/EntityList.h"
+#include "../entity/Sprite.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -30,11 +32,9 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../util/Util.h"
-#include "EntityList.h"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
-#include "Sprite.h"
 #include "Surface.h"
 
 #include <algorithm>

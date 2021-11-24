@@ -7,11 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Paint.h"
+
 #include "../../Context.h"
 #include "../../Game.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/LightFX.h"
+#include "../../entity/Entity.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/FootpathObject.h"
@@ -24,13 +27,11 @@
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
 #include "../../ride/TrackPaint.h"
-#include "../../world/Entity.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/Surface.h"
 #include "../../world/TileInspector.h"
-#include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.Surface.h"
 #include "Paint.TileElement.h"

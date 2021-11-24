@@ -20,11 +20,11 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/Sprite.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
-#include <openrct2/world/Sprite.h>
 
 using namespace OpenRCT2;
 

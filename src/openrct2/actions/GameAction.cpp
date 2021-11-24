@@ -14,6 +14,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
+#include "../entity/MoneyEffect.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
@@ -23,7 +24,6 @@
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../world/MoneyEffect.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 

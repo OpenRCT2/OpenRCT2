@@ -3,8 +3,8 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/StringIds.h"
+#include "../world/Map.h"
 #include "EntityList.h"
-#include "Map.h"
 #include "Sprite.h"
 
 static bool isLocationLitterable(const CoordsXYZ& mapPos)

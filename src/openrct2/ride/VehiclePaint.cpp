@@ -12,12 +12,12 @@
 #include "../Game.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
+#include "../entity/Entity.h"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
 #include "../paint/sprite/Paint.Sprite.h"
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
-#include "../world/Entity.h"
 #include "Track.h"
 
 #include <iterator>

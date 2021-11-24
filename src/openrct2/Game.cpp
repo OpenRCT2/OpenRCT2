@@ -25,6 +25,7 @@
 #include "core/Console.hpp"
 #include "core/FileScanner.h"
 #include "core/Path.hpp"
+#include "entity/Sprite.h"
 #include "interface/Colour.h"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
@@ -62,7 +63,6 @@
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "world/Sprite.h"
 #include "world/Surface.h"
 #include "world/Water.h"
 

@@ -13,11 +13,11 @@
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
+#include "../entity/Entity.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
-#include "../world/Entity.h"
 #include "../world/Park.h"
 
 GuestSetNameAction::GuestSetNameAction(uint16_t spriteIndex, const std::string& name)

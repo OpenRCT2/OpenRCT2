@@ -13,10 +13,10 @@
 
 #    include "../../../Context.h"
 #    include "../../../common.h"
+#    include "../../../entity/EntityList.h"
+#    include "../../../entity/Sprite.h"
 #    include "../../../peep/Peep.h"
 #    include "../../../util/Util.h"
-#    include "../../../world/EntityList.h"
-#    include "../../../world/Sprite.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 

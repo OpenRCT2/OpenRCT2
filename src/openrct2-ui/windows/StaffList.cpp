@@ -19,16 +19,16 @@
 #include <openrct2/actions/StaffSetColourAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityList.h>
+#include <openrct2/entity/Sprite.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/EntityList.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Sprite.h>
 #include <vector>
 
 enum

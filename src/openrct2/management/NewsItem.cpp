@@ -13,6 +13,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
+#include "../entity/Entity.h"
 #include "../interface/Window.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
@@ -23,7 +24,6 @@
 #include "../ride/Vehicle.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/Entity.h"
 #include "../world/Location.hpp"
 
 News::ItemQueues gNewsItems;

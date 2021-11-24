@@ -19,6 +19,7 @@
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
+#include "../entity/Litter.h"
 #include "../interface/Colour.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -36,7 +37,6 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
-#include "Litter.h"
 #include "Map.h"
 #include "Surface.h"
 

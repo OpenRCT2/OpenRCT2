@@ -10,9 +10,9 @@
 #include "CableLift.h"
 
 #include "../audio/audio.h"
+#include "../entity/EntityList.h"
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
-#include "../world/EntityList.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"

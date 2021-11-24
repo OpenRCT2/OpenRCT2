@@ -13,12 +13,12 @@
 #include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/Entity.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/peep/Peep.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
-#include <openrct2/world/Entity.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_RECENT_MESSAGES;
 static constexpr const int32_t WH = 300;

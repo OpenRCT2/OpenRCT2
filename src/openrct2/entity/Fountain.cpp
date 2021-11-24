@@ -11,9 +11,9 @@
 
 #include "../Game.h"
 #include "../scenario/Scenario.h"
-#include "Footpath.h"
-#include "Map.h"
-#include "Scenery.h"
+#include "../world/Footpath.h"
+#include "../world/Map.h"
+#include "../world/Scenery.h"
 #include "Sprite.h"
 
 enum class PATTERN

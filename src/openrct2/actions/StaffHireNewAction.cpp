@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
+#include "../entity/Sprite.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
@@ -24,7 +25,6 @@
 #include "../ui/WindowManager.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 /* rct2: 0x009929FC */
 static constexpr const PeepSpriteType spriteTypes[] = {

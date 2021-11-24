@@ -11,9 +11,9 @@
 
 #include "../common.h"
 #include "../rct12/RCT12.h"
+#include "../world/Location.hpp"
 #include "Entity.h"
 #include "EntityBase.h"
-#include "Location.hpp"
 
 #include <list>
 #include <vector>
