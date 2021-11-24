@@ -36,16 +36,23 @@
 
 union Entity
 {
-    uint8_t pad_00[0x200];
-    EntityBase base;
-    // Provide a constructor as EntityBase is not trivially constructible
-    Entity()
-        : pad_00()
-    {
-    }
+    EntityBase base{};
+    Vehicle vehicle;
+    Guest guest;
+    Staff staff;
+    Litter litter;
+    SteamParticle steamParticle;
+    MoneyEffect money;
+    VehicleCrashParticle crashParticle;
+    ExplosionCloud explosionCloud;
+    CrashSplashParticle crashSplash;
+    ExplosionFlare explosionFlare;
+    JumpingFountain jumpingFountain;
+    Balloon balloon;
+    Duck duck;
 };
 
-static Entity _entities[MAX_ENTITIES];
+static Entity _entities[MAX_ENTITIES]{};
 static std::array<std::list<uint16_t>, EnumValue(EntityType::Count)> gEntityLists;
 static std::vector<uint16_t> _freeIdList;
 
