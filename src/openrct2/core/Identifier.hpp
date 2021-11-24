@@ -63,4 +63,14 @@ public:
     {
         return _handle != other;
     }
+
+    constexpr bool operator==(const TIdentifier& other) const noexcept
+    {
+        return _handle == other._handle;
+    }
+
+    constexpr bool operator!=(const TIdentifier& other) const noexcept
+    {
+        return _handle != other._handle;
+    }
 };
