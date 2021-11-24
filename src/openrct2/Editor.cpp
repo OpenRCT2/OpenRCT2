@@ -348,7 +348,7 @@ namespace Editor
             staff->SetName({});
         }
 
-        reset_sprite_list();
+        ResetAllEntities();
         staff_reset_modes();
         gNumGuestsInPark = 0;
         gNumGuestsHeadingForPark = 0;

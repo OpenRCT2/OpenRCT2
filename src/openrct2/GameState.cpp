@@ -63,7 +63,7 @@ void GameState::InitAll(int32_t mapSize)
     finance_init();
     banner_init();
     ride_init_all();
-    reset_sprite_list();
+    ResetAllEntities();
     staff_reset_modes();
     date_reset();
     climate_reset(ClimateType::CoolAndWet);

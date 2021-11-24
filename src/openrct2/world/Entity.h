@@ -13,18 +13,18 @@
 
 constexpr uint16_t MAX_ENTITIES = 65535;
 
-EntityBase* try_get_sprite(size_t spriteIndex);
-EntityBase* get_sprite(size_t sprite_idx);
+EntityBase* TryGetEntity(size_t spriteIndex);
+EntityBase* GetEntity(size_t sprite_idx);
 
 template<typename T = EntityBase> T* GetEntity(size_t sprite_idx)
 {
-    auto spr = get_sprite(sprite_idx);
+    auto spr = GetEntity(sprite_idx);
     return spr != nullptr ? spr->As<T>() : nullptr;
 }
 
 template<typename T = EntityBase> T* TryGetEntity(size_t sprite_idx)
 {
-    auto spr = try_get_sprite(sprite_idx);
+    auto spr = TryGetEntity(sprite_idx);
     return spr != nullptr ? spr->As<T>() : nullptr;
 }
 

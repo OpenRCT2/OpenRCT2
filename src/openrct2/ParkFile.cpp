@@ -2181,7 +2181,7 @@ namespace OpenRCT2
         os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this, &os](OrcaStream::ChunkStream& cs) {
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
-                reset_sprite_list();
+                ResetAllEntities();
             }
 
             std::vector<uint16_t> entityIndices;

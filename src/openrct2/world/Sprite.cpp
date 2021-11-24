@@ -43,7 +43,7 @@ static bool _spriteFlashingList[MAX_ENTITIES];
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
-static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
+static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gEntitySpatialIndex;
 
 static void FreeEntity(EntityBase& entity);
 
@@ -132,24 +132,24 @@ std::string rct_sprite_checksum::ToString() const
     return result;
 }
 
-EntityBase* try_get_sprite(size_t spriteIndex)
+EntityBase* TryGetEntity(size_t spriteIndex)
 {
     return spriteIndex >= MAX_ENTITIES ? nullptr : &_spriteList[spriteIndex].base;
 }
 
-EntityBase* get_sprite(size_t spriteIndex)
+EntityBase* GetEntity(size_t spriteIndex)
 {
     if (spriteIndex == SPRITE_INDEX_NULL)
     {
         return nullptr;
     }
     openrct2_assert(spriteIndex < MAX_ENTITIES, "Tried getting sprite %u", spriteIndex);
-    return try_get_sprite(spriteIndex);
+    return TryGetEntity(spriteIndex);
 }
 
 const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
 {
-    return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos)];
+    return gEntitySpatialIndex[GetSpatialIndexOffset(spritePos)];
 }
 
 void EntityBase::Invalidate()
@@ -216,7 +216,7 @@ const std::list<uint16_t>& GetEntityList(const EntityType id)
  *
  *  rct2: 0x0069EB13
  */
-void reset_sprite_list()
+void ResetAllEntities()
 {
     gSavedAge = 0;
 
@@ -261,7 +261,7 @@ static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc);
  */
 void reset_sprite_spatial_index()
 {
-    for (auto& vec : gSpriteSpatialIndex)
+    for (auto& vec : gEntitySpatialIndex)
     {
         vec.clear();
     }
@@ -458,7 +458,7 @@ void sprite_misc_update_all()
 static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc);
-    auto& spatialVector = gSpriteSpatialIndex[newIndex];
+    auto& spatialVector = gEntitySpatialIndex[newIndex];
     auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
     spatialVector.insert(index, sprite->sprite_index);
 }
@@ -466,7 +466,7 @@ static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc)
 static void SpriteSpatialRemove(EntityBase* sprite)
 {
     size_t currentIndex = GetSpatialIndexOffset({ sprite->x, sprite->y });
-    auto& spatialVector = gSpriteSpatialIndex[currentIndex];
+    auto& spatialVector = gEntitySpatialIndex[currentIndex];
     auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
     if (index != std::end(spatialVector) && *index == sprite->sprite_index)
     {
