@@ -15,3 +15,6 @@
 #include <limits>
 
 using ParkEntranceIndex = TIdentifier<uint8_t, std::numeric_limits<uint8_t>::max(), struct ParkEntranceIndexTag>;
+
+using BannerIndex = TIdentifier<uint16_t, std::numeric_limits<uint16_t>::max(), struct BannerIndexTag>;
+constexpr BannerIndex BANNER_INDEX_NULL = BannerIndex::GetNull();

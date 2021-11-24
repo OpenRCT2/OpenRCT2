@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "Location.hpp"
@@ -19,11 +20,8 @@ class Formatter;
 struct TileElement;
 struct WallElement;
 
-using BannerIndex = uint16_t;
-
 constexpr ObjectEntryIndex BANNER_NULL = OBJECT_ENTRY_INDEX_NULL;
 constexpr size_t MAX_BANNERS = 8192;
-constexpr BannerIndex BANNER_INDEX_NULL = static_cast<BannerIndex>(-1);
 
 constexpr uint8_t SCROLLING_MODE_NONE = 255;
 
