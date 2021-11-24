@@ -35,8 +35,8 @@ constexpr const uint8_t NumTabs = 8;
 // clang-format off
 enum class ListItemType : uint8_t
 {
-    HEADING,
-    SCENARIO,
+    Heading,
+    Scenario,
 };
 
 struct ScenarioListItem
@@ -313,10 +313,10 @@ static void WindowScenarioselectScrollgetsize(rct_window* w, int32_t scrollIndex
     {
         switch (listItem.type)
         {
-            case ListItemType::HEADING:
+            case ListItemType::Heading:
                 y += 18;
                 break;
-            case ListItemType::SCENARIO:
+            case ListItemType::Scenario:
                 y += scenarioItemHeight;
                 break;
         }
@@ -337,10 +337,10 @@ static void WindowScenarioselectScrollmousedown(rct_window* w, int32_t scrollInd
     {
         switch (listItem.type)
         {
-            case ListItemType::HEADING:
+            case ListItemType::Heading:
                 mutableScreenCoords.y -= 18;
                 break;
-            case ListItemType::SCENARIO:
+            case ListItemType::Scenario:
                 mutableScreenCoords.y -= scenarioItemHeight;
                 if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                 {
@@ -377,10 +377,10 @@ static void WindowScenarioselectScrollmouseover(rct_window* w, int32_t scrollInd
     {
         switch (listItem.type)
         {
-            case ListItemType::HEADING:
+            case ListItemType::Heading:
                 mutableScreenCoords.y -= 18;
                 break;
-            case ListItemType::SCENARIO:
+            case ListItemType::Scenario:
                 mutableScreenCoords.y -= scenarioItemHeight;
                 if (mutableScreenCoords.y < 0)
                 {
@@ -581,7 +581,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
 
         switch (listItem.type)
         {
-            case ListItemType::HEADING:
+            case ListItemType::Heading:
             {
                 const int32_t horizontalRuleMargin = 4;
                 DrawCategoryHeading(
@@ -589,7 +589,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                 y += 18;
                 break;
             }
-            case ListItemType::SCENARIO:
+            case ListItemType::Scenario:
             {
                 // Draw hover highlight
                 const scenario_index_entry* scenario = listItem.scenario.scenario;
@@ -745,14 +745,14 @@ static void InitialiseListItems(rct_window* w)
         if (headingStringId != STR_NONE)
         {
             ScenarioListItem headerItem;
-            headerItem.type = ListItemType::HEADING;
+            headerItem.type = ListItemType::Heading;
             headerItem.heading.string_id = headingStringId;
             _listItems.push_back(std::move(headerItem));
         }
 
         // Scenario
         ScenarioListItem scenarioItem;
-        scenarioItem.type = ListItemType::SCENARIO;
+        scenarioItem.type = ListItemType::Scenario;
         scenarioItem.scenario.scenario = scenario;
         if (IsLockingEnabled(w))
         {
@@ -797,9 +797,9 @@ static void InitialiseListItems(rct_window* w)
             for (auto it = _listItems.begin(); it != _listItems.end(); it++)
             {
                 const auto& listItem = *it;
-                if (listItem.type == ListItemType::HEADING)
+                if (listItem.type == ListItemType::Heading)
                 {
-                    if ((it + 1) == _listItems.end() || (it + 1)->type == ListItemType::HEADING)
+                    if ((it + 1) == _listItems.end() || (it + 1)->type == ListItemType::Heading)
                     {
                         it = _listItems.erase(it);
                         it--;
