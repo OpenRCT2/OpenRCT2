@@ -1013,32 +1013,33 @@ namespace OpenRCT2::Scripting
         if (idx == BANNER_INDEX_NULL)
             duk_push_null(ctx);
         else
-            duk_push_int(ctx, idx);
+            duk_push_int(ctx, idx.ToUnderlying());
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::bannerIndex_set(uint16_t value)
     {
         ThrowIfGameStateNotMutable();
+
         switch (_element->GetType())
         {
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             {
                 auto el = _element->AsLargeScenery();
-                el->SetBannerIndex(value);
+                el->SetBannerIndex(BannerIndex::FromUnderlying(value));
                 Invalidate();
                 break;
             }
             case TILE_ELEMENT_TYPE_WALL:
             {
                 auto el = _element->AsWall();
-                el->SetBannerIndex(value);
+                el->SetBannerIndex(BannerIndex::FromUnderlying(value));
                 Invalidate();
                 break;
             }
             case TILE_ELEMENT_TYPE_BANNER:
             {
                 auto el = _element->AsBanner();
-                el->SetIndex(value);
+                el->SetIndex(BannerIndex::FromUnderlying(value));
                 Invalidate();
                 break;
             }

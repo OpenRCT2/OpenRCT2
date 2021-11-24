@@ -507,14 +507,14 @@ namespace RCT2
                 // This scenario breaks pathfinding. Create passages between the worlds. (List is grouped by neighbouring
                 // tiles.)
                 // clang-format off
-            FixLandOwnershipTilesWithOwnership(
-                {
-                    { 67, 94 }, { 68, 94 }, { 69, 94 },
-                    { 58, 24 }, { 58, 25 }, { 58, 26 }, { 58, 27 }, { 58, 28 }, { 58, 29 }, { 58, 30 }, { 58, 31 }, { 58, 32 },
-                    { 26, 44 }, { 26, 45 },
-                    { 32, 79 }, { 32, 80 }, { 32, 81 },
-                },
-                OWNERSHIP_OWNED);
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 67, 94 }, { 68, 94 }, { 69, 94 },
+                        { 58, 24 }, { 58, 25 }, { 58, 26 }, { 58, 27 }, { 58, 28 }, { 58, 29 }, { 58, 30 }, { 58, 31 }, { 58, 32 },
+                        { 26, 44 }, { 26, 45 },
+                        { 32, 79 }, { 32, 80 }, { 32, 81 },
+                    },
+                    OWNERSHIP_OWNED);
                 // clang-format on
             }
             else if (String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6"))
@@ -1357,7 +1357,7 @@ namespace RCT2
                         if (bannerIndex < std::size(_s6.banners))
                         {
                             auto srcBanner = &_s6.banners[bannerIndex];
-                            auto dstBanner = GetOrCreateBanner(bannerIndex);
+                            auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                             if (dstBanner == nullptr)
                             {
                                 dst2->SetBannerIndex(BANNER_INDEX_NULL);
@@ -1365,7 +1365,7 @@ namespace RCT2
                             else
                             {
                                 ImportBanner(dstBanner, srcBanner);
-                                dst2->SetBannerIndex(src2->GetBannerIndex());
+                                dst2->SetBannerIndex(BannerIndex::FromUnderlying(src2->GetBannerIndex()));
                             }
                         }
                     }
@@ -1390,7 +1390,7 @@ namespace RCT2
                         if (bannerIndex < std::size(_s6.banners))
                         {
                             auto srcBanner = &_s6.banners[bannerIndex];
-                            auto dstBanner = GetOrCreateBanner(bannerIndex);
+                            auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                             if (dstBanner == nullptr)
                             {
                                 dst2->SetBannerIndex(BANNER_INDEX_NULL);
@@ -1398,7 +1398,7 @@ namespace RCT2
                             else
                             {
                                 ImportBanner(dstBanner, srcBanner);
-                                dst2->SetBannerIndex(src2->GetBannerIndex());
+                                dst2->SetBannerIndex(BannerIndex::FromUnderlying(src2->GetBannerIndex()));
                             }
                         }
                     }
@@ -1416,7 +1416,7 @@ namespace RCT2
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
-                        auto dstBanner = GetOrCreateBanner(bannerIndex);
+                        auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                         if (dstBanner == nullptr)
                         {
                             dst2->SetIndex(BANNER_INDEX_NULL);
@@ -1424,7 +1424,7 @@ namespace RCT2
                         else
                         {
                             ImportBanner(dstBanner, srcBanner);
-                            dst2->SetIndex(bannerIndex);
+                            dst2->SetIndex(BannerIndex::FromUnderlying(bannerIndex));
                         }
                     }
                     else

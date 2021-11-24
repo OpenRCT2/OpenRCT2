@@ -323,7 +323,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    const auto temp = value.ToUnderlying();
+                    auto temp = value.ToUnderlying();
                     ReadWrite(temp);
                 }
             }

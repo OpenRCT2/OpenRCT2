@@ -1863,7 +1863,7 @@ namespace RCT1
                     if (index < std::size(_s4.banners))
                     {
                         auto srcBanner = &_s4.banners[index];
-                        auto dstBanner = GetOrCreateBanner(index);
+                        auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(index));
                         if (dstBanner == nullptr)
                         {
                             dst2->SetIndex(BANNER_INDEX_NULL);
@@ -1871,7 +1871,7 @@ namespace RCT1
                         else
                         {
                             ImportBanner(dstBanner, srcBanner);
-                            dst2->SetIndex(index);
+                            dst2->SetIndex(BannerIndex::FromUnderlying(index));
                         }
                     }
                     else

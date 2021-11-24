@@ -843,3 +843,24 @@ template<> struct DataSerializerTraits_t<TileCoordsXYZD>
         stream->Write(msg, strlen(msg));
     }
 };
+
+template<typename T, T TNull, typename TTag> struct DataSerializerTraits_t<TIdentifier<T, TNull, TTag>>
+{
+    static void encode(OpenRCT2::IStream* stream, const TIdentifier<T, TNull, TTag>& id)
+    {
+        stream->WriteValue(ByteSwapBE(id.ToUnderlying()));
+    }
+
+    static void decode(OpenRCT2::IStream* stream, TIdentifier<T, TNull, TTag>& id)
+    {
+        auto temp = ByteSwapBE(stream->ReadValue<T>());
+        id = TIdentifier<T, TNull, TTag>::FromUnderlying(temp);
+    }
+
+    static void log(OpenRCT2::IStream* stream, const TIdentifier<T, TNull, TTag>& id)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "Id(%u)", static_cast<uint32_t>(id.ToUnderlying()));
+        stream->Write(msg, strlen(msg));
+    }
+};

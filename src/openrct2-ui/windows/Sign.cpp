@@ -61,7 +61,7 @@ private:
 
     void ShowTextInput()
     {
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(BannerIndex::FromUnderlying(number));
         if (banner != nullptr)
         {
             auto bannerText = banner->GetText();
@@ -87,14 +87,14 @@ public:
     {
         number = windowNumber;
         _isSmall = isSmall;
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(BannerIndex::FromUnderlying(number));
         if (banner == nullptr)
         {
             return false;
         }
 
         auto signViewPosition = banner->position.ToCoordsXY().ToTileCentre();
-        auto* tileElement = banner_get_tile_element(number);
+        auto* tileElement = banner_get_tile_element(BannerIndex::FromUnderlying(number));
         if (tileElement == nullptr)
             return false;
 
@@ -138,7 +138,7 @@ public:
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(BannerIndex::FromUnderlying(number));
         if (banner == nullptr)
         {
             Close();
@@ -151,7 +151,7 @@ public:
                 break;
             case WIDX_SIGN_DEMOLISH:
             {
-                auto* tileElement = banner_get_tile_element(number);
+                auto* tileElement = banner_get_tile_element(BannerIndex::FromUnderlying(number));
                 if (tileElement == nullptr)
                 {
                     Close();
@@ -203,7 +203,8 @@ public:
                 if (dropdownIndex == -1)
                     return;
                 list_information_type = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(number, dropdownIndex, var_492, !_isSmall);
+                auto signSetStyleAction = SignSetStyleAction(
+                    BannerIndex::FromUnderlying(number), dropdownIndex, var_492, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -212,7 +213,8 @@ public:
                 if (dropdownIndex == -1)
                     return;
                 var_492 = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(number, list_information_type, dropdownIndex, !_isSmall);
+                auto signSetStyleAction = SignSetStyleAction(
+                    BannerIndex::FromUnderlying(number), list_information_type, dropdownIndex, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -227,7 +229,7 @@ public:
     {
         if (widgetIndex == WIDX_SIGN_TEXT && !text.empty())
         {
-            auto signSetNameAction = SignSetNameAction(number, std::string(text));
+            auto signSetNameAction = SignSetNameAction(BannerIndex::FromUnderlying(number), std::string(text));
             GameActions::Execute(&signSetNameAction);
         }
     }
@@ -288,7 +290,7 @@ public:
     {
         RemoveViewport();
 
-        auto banner = GetBanner(number);
+        auto banner = GetBanner(BannerIndex::FromUnderlying(number));
         if (banner == nullptr)
         {
             return;
