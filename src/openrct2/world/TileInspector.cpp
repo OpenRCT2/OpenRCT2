@@ -328,7 +328,7 @@ namespace OpenRCT2::TileInspector
         {
             // Check if the element to be pasted refers to a banner index
             auto bannerIndex = element.GetBannerIndex();
-            if (bannerIndex != BANNER_INDEX_NULL)
+            if (bannerIndex != BannerIndex::GetNull())
             {
                 // The element to be pasted refers to a banner index - make a copy of it
                 auto newBanner = CreateBanner();

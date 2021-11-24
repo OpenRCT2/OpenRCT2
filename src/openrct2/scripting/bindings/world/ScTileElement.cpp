@@ -1010,7 +1010,7 @@ namespace OpenRCT2::Scripting
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         BannerIndex idx = _element->GetBannerIndex();
-        if (idx == BANNER_INDEX_NULL)
+        if (idx == BannerIndex::GetNull())
             duk_push_null(ctx);
         else
             duk_push_int(ctx, idx.ToUnderlying());

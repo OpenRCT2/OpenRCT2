@@ -27,7 +27,7 @@ constexpr uint8_t SCROLLING_MODE_NONE = 255;
 
 struct Banner
 {
-    BannerIndex id = BANNER_INDEX_NULL;
+    BannerIndex id = BannerIndex::GetNull();
     ObjectEntryIndex type = BANNER_NULL;
     uint8_t flags{};
     std::string text;

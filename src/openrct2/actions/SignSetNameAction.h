@@ -14,7 +14,7 @@
 class SignSetNameAction final : public GameActionBase<GameCommand::SetSignName>
 {
 private:
-    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
+    BannerIndex _bannerIndex{ BannerIndex::GetNull() };
     std::string _name;
 
 public:

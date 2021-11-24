@@ -25,7 +25,7 @@ class BannerSetStyleAction final : public GameActionBase<GameCommand::SetBannerS
 {
 private:
     BannerSetStyleType _type{ BannerSetStyleType::Count };
-    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
+    BannerIndex _bannerIndex{ BannerIndex::GetNull() };
     uint8_t _parameter{};
 
 public:

@@ -13,7 +13,7 @@
 
 struct BannerPlaceActionResult
 {
-    BannerIndex bannerId = BANNER_INDEX_NULL;
+    BannerIndex bannerId = BannerIndex::GetNull();
 };
 
 class BannerPlaceAction final : public GameActionBase<GameCommand::PlaceBanner>

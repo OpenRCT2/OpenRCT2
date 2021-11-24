@@ -128,7 +128,7 @@ static BannerIndex BannerGetNewIndex()
             return BannerIndex::FromUnderlying(bannerIndex);
         }
     }
-    return BANNER_INDEX_NULL;
+    return BannerIndex::GetNull();
 }
 
 /**
@@ -267,7 +267,7 @@ void fix_duplicated_banners()
             for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(bannerPos))
             {
                 auto bannerIndex = bannerElement->GetIndex();
-                if (bannerIndex == BANNER_INDEX_NULL)
+                if (bannerIndex == BannerIndex::GetNull())
                     continue;
 
                 const auto index = bannerIndex.ToUnderlying();

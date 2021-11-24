@@ -1349,7 +1349,7 @@ namespace RCT2
                     dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
 
                     // Import banner information
-                    dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                    dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
                     if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
                     {
@@ -1360,7 +1360,7 @@ namespace RCT2
                             auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                             if (dstBanner == nullptr)
                             {
-                                dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                                dst2->SetBannerIndex(BannerIndex::GetNull());
                             }
                             else
                             {
@@ -1382,7 +1382,7 @@ namespace RCT2
                     dst2->SetSecondaryColour(src2->GetSecondaryColour());
 
                     // Import banner information
-                    dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                    dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
                     if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
                     {
@@ -1393,7 +1393,7 @@ namespace RCT2
                             auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                             if (dstBanner == nullptr)
                             {
-                                dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                                dst2->SetBannerIndex(BannerIndex::GetNull());
                             }
                             else
                             {
@@ -1419,7 +1419,7 @@ namespace RCT2
                         auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                         if (dstBanner == nullptr)
                         {
-                            dst2->SetIndex(BANNER_INDEX_NULL);
+                            dst2->SetIndex(BannerIndex::GetNull());
                         }
                         else
                         {
@@ -1429,7 +1429,7 @@ namespace RCT2
                     }
                     else
                     {
-                        dst2->SetIndex(BANNER_INDEX_NULL);
+                        dst2->SetIndex(BannerIndex::GetNull());
                     }
                     break;
                 }
