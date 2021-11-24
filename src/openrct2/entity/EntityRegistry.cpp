@@ -153,7 +153,7 @@ EntityBase* GetEntity(size_t entityIndex)
     {
         return nullptr;
     }
-    openrct2_assert(entityIndex < MAX_ENTITIES, "Tried getting sprite %u", entityIndex);
+    openrct2_assert(entityIndex < MAX_ENTITIES, "Tried getting entity %u", entityIndex);
     return TryGetEntity(entityIndex);
 }
 
