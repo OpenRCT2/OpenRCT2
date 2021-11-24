@@ -36,20 +36,12 @@
 
 union Entity
 {
-    EntityBase base{};
-    Vehicle vehicle;
-    Guest guest;
-    Staff staff;
-    Litter litter;
-    SteamParticle steamParticle;
-    MoneyEffect money;
-    VehicleCrashParticle crashParticle;
-    ExplosionCloud explosionCloud;
-    CrashSplashParticle crashSplash;
-    ExplosionFlare explosionFlare;
-    JumpingFountain jumpingFountain;
-    Balloon balloon;
-    Duck duck;
+    uint8_t pad_00[0x200];
+    EntityBase base;
+    Entity()
+        : pad_00()
+    {
+    }
 };
 
 static Entity _entities[MAX_ENTITIES]{};
