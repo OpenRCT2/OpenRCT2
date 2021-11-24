@@ -15,6 +15,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/peep/Guest.h>
 #include <openrct2/ride/RideData.h>
@@ -23,7 +24,6 @@
 #include <openrct2/util/Math.hpp>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Sprite.h>
 #include <vector>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_GUESTS;

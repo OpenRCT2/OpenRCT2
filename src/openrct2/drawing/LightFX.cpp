@@ -14,6 +14,7 @@
 #    include "../Game.h"
 #    include "../common.h"
 #    include "../config/Config.h"
+#    include "../entity/Entity.h"
 #    include "../interface/Viewport.h"
 #    include "../interface/Window.h"
 #    include "../interface/Window_internal.h"
@@ -22,7 +23,6 @@
 #    include "../ride/Vehicle.h"
 #    include "../util/Util.h"
 #    include "../world/Climate.h"
-#    include "../world/Entity.h"
 #    include "../world/Map.h"
 #    include "Drawing.h"
 

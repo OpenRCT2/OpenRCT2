@@ -11,7 +11,7 @@
 #include "../audio/audio.h"
 #include "../paint/sprite/Paint.Sprite.h"
 #include "../scenario/Scenario.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 #include <iterator>
 

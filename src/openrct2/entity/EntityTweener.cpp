@@ -12,7 +12,7 @@
 #include "../peep/Staff.h"
 #include "../ride/Vehicle.h"
 #include "EntityList.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 #include <cmath>
 void EntityTweener::PopulateEntities()

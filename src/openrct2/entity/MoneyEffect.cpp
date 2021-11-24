@@ -16,7 +16,7 @@
 #include "../network/network.h"
 #include "../world/Map.h"
 #include "Entity.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 static constexpr const CoordsXY _moneyEffectMoveOffset[] = {
     { 1, -1 },

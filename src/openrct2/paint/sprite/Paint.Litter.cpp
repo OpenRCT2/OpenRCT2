@@ -7,8 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../entity/Litter.h"
 #include "../../interface/Viewport.h"
-#include "../../world/Litter.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
 

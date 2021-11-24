@@ -14,7 +14,7 @@
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/Scenery.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 enum class PATTERN
 {

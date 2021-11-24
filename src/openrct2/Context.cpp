@@ -39,6 +39,8 @@
 #include "core/String.hpp"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/LightFX.h"
+#include "entity/EntityRegistry.h"
+#include "entity/EntityTweener.h"
 #include "interface/Chat.h"
 #include "interface/InteractiveConsole.h"
 #include "interface/Viewport.h"
@@ -65,9 +67,7 @@
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/Util.h"
-#include "world/EntityTweener.h"
 #include "world/Park.h"
-#include "world/Sprite.h"
 
 #include <algorithm>
 #include <cmath>

@@ -14,7 +14,7 @@
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../world/Surface.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 #include <algorithm>
 #include <iterator>

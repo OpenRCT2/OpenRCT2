@@ -19,6 +19,8 @@
 #include "actions/LandBuyRightsAction.h"
 #include "actions/LandSetRightsAction.h"
 #include "audio/audio.h"
+#include "entity/EntityList.h"
+#include "entity/EntityRegistry.h"
 #include "interface/Viewport.h"
 #include "interface/Window_internal.h"
 #include "localisation/Localisation.h"
@@ -36,12 +38,10 @@
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
-#include "world/EntityList.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "world/Sprite.h"
 
 #include <algorithm>
 #include <array>

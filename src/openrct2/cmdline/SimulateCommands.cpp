@@ -12,9 +12,9 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
+#include "../entity/EntityRegistry.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
-#include "../world/Sprite.h"
 #include "CommandLine.hpp"
 
 #include <cstdlib>
