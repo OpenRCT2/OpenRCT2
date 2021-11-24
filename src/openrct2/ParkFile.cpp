@@ -2031,7 +2031,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.AssignedStaffType);
         cs.ReadWrite(entity.MechanicTimeSinceCall);
         cs.ReadWrite(entity.HireDate);
-        if (os.GetHeader().TargetVersion <= 2)
+        if (os.GetHeader().TargetVersion <= 4)
         {
             cs.Ignore<uint8_t>();
         }
